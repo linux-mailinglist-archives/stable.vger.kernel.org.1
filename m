@@ -1,60 +1,77 @@
-Return-Path: <stable+bounces-264174-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265707-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id HgslH6ZwMWp2jQUAu9opvQ
-	(envelope-from <stable+bounces-264174-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:49:58 +0200
+	id /PnkJ+KOMWqcmgUAu9opvQ
+	(envelope-from <stable+bounces-265707-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:58:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D5BF6916B4
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:49:58 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07A43693AD4
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:58:58 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=DOg3wbTX;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264174-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264174-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=aBBR9KAL;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265707-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265707-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 813563043F3B
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:42:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F132C30107E5
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:56:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C02F344D6AB;
-	Tue, 16 Jun 2026 15:41:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F9B6478E5E;
+	Tue, 16 Jun 2026 17:56:14 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 600BD44CF39;
-	Tue, 16 Jun 2026 15:41:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6389D356766;
+	Tue, 16 Jun 2026 17:56:11 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781624509; cv=none; b=tg9UOXQ3n6LZRPnVflzekje7HOHTlRtELI/F1oX3m2XVIq8Q3GA73nEv+pcrcmdFQlNf5jSnvuBT/pJwbnfi4PaZ71BesOhbsxXqanCM231LYwUSCJkwkR0ErCky5lggnOxOL8VYCWLHIVuzYL2+t0udHHd/cepqajgXUsyb3JY=
+	t=1781632574; cv=none; b=FOvYqObzFTo9fxm1VocLyjTnGGfuZrLG310AHk/UQLXIrM1PN3gfOYN2bD3R7Pv12hviN51iG72iJ02YMR4fSLyzGBTEwEPPWc5INS8P1zV7l+oqjW0/O0GwNUF8qpommrawwKPnRzn6dkeOderTkPK6G3CeWVRvjo5KgZAgptM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781624509; c=relaxed/simple;
-	bh=WAD22yXXaVK9L+8FNsQHcvxzTpJ3CMrtoeuHakchNuo=;
+	s=arc-20240116; t=1781632574; c=relaxed/simple;
+	bh=a3LBogworAIxLZ5KRWqebH+DF9hpwU8tHIxiZxN7qtM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TEAb1PJiT7HNhRetCLQkhAL5tSevZhOjm8lvRphDMfhW6cDxzXwlAH3cJzqlGZkH/XEG1Jw8MIn6JWiV0bX17J7kN9NHev+Y0Hi6jzuGcshnXFKe6ih4Y01FZiSUZ33IeRpaIK0oAKcLd2MHg/0ASCggZB/XRMFKqHJ758uAiF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DOg3wbTX; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51B841F000E9;
-	Tue, 16 Jun 2026 15:41:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ssg4rWLBzXTGVIoSsvi68nDxQMe9yoh9eIovW0OQZhaEovx+ueN0VevRBk0gmY+wCzSs8fdYGHpShhR9UPHFSCjUdp5Tk0DnqWA6NggWG6PpPgCY15BmGVu0D66+ibmk2/qSwch7gpkX1e+nHQCioujRTOOocsNC9R2H1L+3tjE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aBBR9KAL; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 171501F000E9;
+	Tue, 16 Jun 2026 17:56:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781624508;
-	bh=srXpCY6rjvVEH7yUPyP6DAiiT9Ld/oJN55STH8YSBuo=;
+	s=korg; t=1781632571;
+	bh=w1P0+CpnbdWo+orDwwDCRQa+whO8Hf+bxQeQdjS28MM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=DOg3wbTXi//VWaWpWMDRx/wXrh/qki2HJTz3RYoew23DhG2oN+Y29qM+sGU31u7EX
-	 8ObAhzZrNmTQqD5DaJbC/NX/nNpbF3g5Ze4tE3xXQ/ErTBHEXPJ7su1C6zWXvWqt/k
-	 XG3R4i6Rj0Tf9by8+del7v73ARlxH5YCHvvr1YFk=
+	b=aBBR9KALOeFvxWXa76UrDQ0EJoYVK3bJ7JuK8u6tfJtGv7KWzPf1+zipf9xvBBEBK
+	 IEm6AnPBThz39SMRCa9wdB+CcJjIdp5QE4KwRv0f2OKJ4rxPS1f/XJk4TKzIH8kjq3
+	 3IJ8+FEv49j/0JtljuJNwr309JQrwThsCJ6gyiU4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Priya Hosur <Priya.Hosur@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 7.0 351/378] drm/amd/pm: smu_v14_0_0: use SoftMin for gfxclk in set_soft_freq_limited_range
+	Alistair Popple <apopple@nvidia.com>,
+	=?UTF-8?q?Arsen=20Arsenovi=C4=87?= <aarsenovic@baylibre.com>,
+	Balbir Singh <balbirs@nvidia.com>,
+	David Hildenbrand <david@kernel.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Peter Xu <peterx@redhat.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 435/522] mm/memory: fix spurious warning when unmapping device-private/exclusive pages
 Date: Tue, 16 Jun 2026 20:29:42 +0530
-Message-ID: <20260616145128.625190965@linuxfoundation.org>
+Message-ID: <20260616145146.309256047@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,85 +81,231 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264174-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:apopple@nvidia.com,m:aarsenovic@baylibre.com,m:balbirs@nvidia.com,m:david@kernel.org,m:jgg@ziepe.ca,m:jhubbard@nvidia.com,m:leon@kernel.org,m:liam@infradead.org,m:ljs@kernel.org,m:peterx@redhat.com,m:matthew.brost@intel.com,m:mhocko@suse.com,m:rppt@kernel.org,m:shuah@kernel.org,m:surenb@google.com,m:thomas.hellstrom@linux.intel.com,m:vbabka@kernel.org,m:akpm@linux-foundation.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:Priya.Hosur@amd.com,m:alexander.deucher@amd.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[22];
+	TAGGED_FROM(0.00)[bounces-265707-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,amd.com:email,vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2D5BF6916B4
+X-Rspamd-Queue-Id: 07A43693AD4
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Priya Hosur <Priya.Hosur@amd.com>
+From: Alistair Popple <apopple@nvidia.com>
 
-commit 03b70e0d8aa26bab89a0f1394c1c80a871925e42 upstream.
+[ Upstream commit be3f38d05cc5a7c3f13e51994c5dd043ab604d28 ]
 
-In smu_v14_0_0_set_soft_freq_limited_range(), the gfxclk floor is
-programmed via SetHardMinGfxClk together with SetSoftMaxGfxClk. Under
-power_dpm_force_performance_level=high this pins HardMin to peak gfxclk.
+Device private and exclusive entries are only supported for anonymous
+folios.  This condition is tested in __migrate_device_pages() and
+make_device_exclusive() using folio_test_anon().  However the unmap path
+tests this assumption using vma_is_anonymous().
 
-In PMFW arbitration HardMin has higher priority than SoftMax, so the
-firmware thermal/PPT throttler cannot clamp gfxclk via SoftMax once
-HardMin is set to peak. Replace SetHardMinGfxClk with SetSoftMinGfxclk
-so the driver still requests peak performance but the firmware
-throttler retains the ability to clamp gfxclk under thermal/PPT
-pressure. SoftMax handling is unchanged and no other clock domains
-are affected.
+This is wrong because whilst anonymous VMAs can only contain folios where
+folio_test_anon() is true the opposite relation does not hold.  A folio
+for which folio_test_anon() is true does not imply vma_is_anonymous() is
+true.  Such a condition can occur if for example a folio is part of a
+private filebacked mapping.
 
-Signed-off-by: Priya Hosur <Priya.Hosur@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 3ea273267fd29cbf6d83ee72329f59eb5042605b)
-Cc: stable@vger.kernel.org
+In this case vma_is_anonymous() is false as the mapping is filebacked, but
+folio_test_anon() may be true, thus permitting devices to migrate the
+folio to device private memory.  This can lead to the following spurious
+warnings during process teardown:
+
+[  772.737706] ------------[ cut here ]------------
+[  772.739201] WARNING: mm/memory.c:1754 at unmap_page_range.cold+0x26/0x18a, CPU#17: hmm-tests/2041
+[  772.742050] Modules linked in: test_hmm nvidia_uvm(O) nvidia(O)
+[  772.743959] CPU: 17 UID: 0 PID: 2041 Comm: hmm-tests Tainted: G        W  O        7.0.0+ #387 PREEMPT(full)
+[  772.747104] Tainted: [W]=WARN, [O]=OOT_MODULE
+[  772.748509] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.17.0-0-gb52ca86e094d-prebuilt.qemu.org 04/01/2014
+[  772.752117] RIP: 0010:unmap_page_range.cold+0x26/0x18a
+[  772.753780] Code: 7e fe ff ff 48 89 4c 24 78 4c 89 44 24 38 e8 f2 ff b1 00 48 8b 4c 24 78 4c 8b 44 24 38 48 8b 44 24 18 48 83 78 48 00 74 04 90 <0f> 0b 90 48 89 ca b8 ff ff 37 00 48 c1 ea 03 48 c1 e0 2a 80 3c 02
+[  772.759602] RSP: 0018:ffff888112607550 EFLAGS: 00010286
+[  772.761310] RAX: ffff88811bbf4dc0 RBX: dffffc0000000000 RCX: ffffea03e9bfffd8
+[  772.763583] RDX: 1ffff1102377e9c1 RSI: 0000000000000008 RDI: ffff88811bbf4e08
+[  772.765914] RBP: 0000000000000006 R08: ffff8881059f7448 R09: ffffed10224c0e68
+[  772.768184] R10: ffff888112607347 R11: 0000000000000001 R12: 0000000000000001
+[  772.770461] R13: ffffea03e9bfffc0 R14: ffff888112607908 R15: ffffea03e9bfffc0
+[  772.772782] FS:  00007f327caa2780(0000) GS:ffff888427b7d000(0000) knlGS:0000000000000000
+[  772.775328] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  772.777187] CR2: 00007f327ca89000 CR3: 00000001994d5000 CR4: 00000000000006f0
+[  772.779135] Call Trace:
+[  772.779792]  <TASK>
+[  772.780317]  ? dmirror_interval_invalidate+0x1a3/0x290 [test_hmm]
+[  772.781873]  ? vm_normal_page_pud+0x2b0/0x2b0
+[  772.782992]  ? __rwlock_init+0x150/0x150
+[  772.784006]  ? lock_release+0x216/0x2b0
+[  772.785008]  ? __mmu_notifier_invalidate_range_start+0x505/0x6e0
+[  772.786522]  ? lock_release+0x216/0x2b0
+[  772.787498]  ? unmap_single_vma+0xb6/0x210
+[  772.788573]  unmap_vmas+0x27d/0x520
+[  772.789506]  ? unmap_single_vma+0x210/0x210
+[  772.790607]  ? mas_update_gap.part.0+0x620/0x620
+[  772.791834]  unmap_region+0x19e/0x350
+[  772.792769]  ? remove_vma+0x130/0x130
+[  772.793684]  ? mas_alloc_nodes+0x1f2/0x300
+[  772.794730]  vms_complete_munmap_vmas+0x8c1/0xe20
+[  772.795926]  ? unmap_region+0x350/0x350
+[  772.796917]  do_vmi_align_munmap+0x36a/0x4e0
+[  772.798018]  ? lock_release+0x216/0x2b0
+[  772.799024]  ? vma_shrink+0x620/0x620
+[  772.799983]  do_vmi_munmap+0x150/0x2c0
+[  772.800939]  __vm_munmap+0x161/0x2c0
+[  772.801872]  ? expand_downwards+0xd60/0xd60
+[  772.802948]  ? clockevents_program_event+0x1ef/0x540
+[  772.804217]  ? lock_release+0x216/0x2b0
+[  772.805158]  __x64_sys_munmap+0x59/0x80
+[  772.805776]  do_syscall_64+0xfc/0x670
+[  772.806336]  ? irqentry_exit+0xda/0x580
+[  772.806976]  entry_SYSCALL_64_after_hwframe+0x4b/0x53
+[  772.807772] RIP: 0033:0x7f327cbb2717
+[  772.808323] Code: 73 01 c3 48 8b 0d f9 76 0d 00 f7 d8 64 89 01 48 83 c8 ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 b8 0b 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d c9 76 0d 00 f7 d8 64 89 01 48
+[  772.811337] RSP: 002b:00007ffde7f57d38 EFLAGS: 00000202 ORIG_RAX: 000000000000000b
+[  772.812564] RAX: ffffffffffffffda RBX: 00007f327cc9c000 RCX: 00007f327cbb2717
+[  772.813733] RDX: 0000000000000000 RSI: 0000000000400000 RDI: 00007f327c289000
+[  772.814867] RBP: 0000000000421360 R08: 000000000000001a R09: 0000000000000000
+[  772.815991] R10: 0000000000000003 R11: 0000000000000202 R12: 00007ffde7f57d74
+[  772.817121] R13: 00007f327c689010 R14: 0000000000100000 R15: 00007f327c289000
+[  772.818272]  </TASK>
+[  772.818614] irq event stamp: 0
+[  772.819159] hardirqs last  enabled at (0): [<0000000000000000>] 0x0
+[  772.820174] hardirqs last disabled at (0): [<ffffffff82a57ab3>] copy_process+0x19f3/0x6440
+[  772.821511] softirqs last  enabled at (0): [<ffffffff82a57b00>] copy_process+0x1a40/0x6440
+[  772.822869] softirqs last disabled at (0): [<0000000000000000>] 0x0
+[  772.823871] ---[ end trace 0000000000000000 ]---
+
+Fix this by using the same check for folio_test_anon() in
+zap_nonpresent_ptes(). Also add a hmm-test case for this.
+
+Link: https://lore.kernel.org/20260501065116.2057242-1-apopple@nvidia.com
+Fixes: 999dad824c39 ("mm/shmem: persist uffd-wp bit across zapping for file-backed")
+Signed-off-by: Alistair Popple <apopple@nvidia.com>
+Reported-by: Arsen Arsenović <aarsenovic@baylibre.com>
+Reviewed-by: Balbir Singh <balbirs@nvidia.com>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: John Hubbard <jhubbard@nvidia.com>
+Cc: Leon Romanovsky <leon@kernel.org>
+Cc: Liam R. Howlett <liam@infradead.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Cc: Vlastimil Babka <vbabka@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+[ adapted `folio_test_anon(folio)` to `PageAnon(page)` ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_0_ppt.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ mm/memory.c                            |    2 -
+ tools/testing/selftests/vm/hmm-tests.c |   50 +++++++++++++++++++++++++++++++++
+ 2 files changed, 51 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_0_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_0_ppt.c
-@@ -1228,7 +1228,8 @@ static int smu_v14_0_0_set_soft_freq_lim
- 	switch (clk_type) {
- 	case SMU_GFXCLK:
- 	case SMU_SCLK:
--		msg_set_min = SMU_MSG_SetHardMinGfxClk;
-+		/* SoftMin lets PMFW throttle gfxclk; HardMin would override SoftMax. */
-+		msg_set_min = SMU_MSG_SetSoftMinGfxclk;
- 		msg_set_max = SMU_MSG_SetSoftMaxGfxClk;
- 		break;
- 	case SMU_FCLK:
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -1471,7 +1471,7 @@ again:
+ 			 * consider uffd-wp bit when zap. For more information,
+ 			 * see zap_install_uffd_wp_if_needed().
+ 			 */
+-			WARN_ON_ONCE(!vma_is_anonymous(vma));
++			WARN_ON_ONCE(!PageAnon(page));
+ 			rss[mm_counter(page)]--;
+ 			if (is_device_private_entry(entry))
+ 				page_remove_rmap(page, vma, false);
+--- a/tools/testing/selftests/vm/hmm-tests.c
++++ b/tools/testing/selftests/vm/hmm-tests.c
+@@ -994,6 +994,56 @@ TEST_F(hmm, migrate)
+ }
+ 
+ /*
++ * Migrate private file memory to device private memory.
++ */
++TEST_F(hmm, migrate_file_private)
++{
++	struct hmm_buffer *buffer;
++	unsigned long npages;
++	unsigned long size;
++	unsigned long i;
++	int *ptr;
++	int ret;
++	int fd;
++
++	npages = ALIGN(HMM_BUFFER_SIZE, self->page_size) >> self->page_shift;
++	ASSERT_NE(npages, 0);
++	size = npages << self->page_shift;
++
++	fd = hmm_create_file(size);
++	ASSERT_GE(fd, 0);
++
++	buffer = malloc(sizeof(*buffer));
++	ASSERT_NE(buffer, NULL);
++
++	buffer->fd = fd;
++	buffer->size = size;
++	buffer->mirror = malloc(size);
++	ASSERT_NE(buffer->mirror, NULL);
++
++	buffer->ptr = mmap(NULL, size,
++			   PROT_READ | PROT_WRITE,
++			   MAP_PRIVATE,
++			   buffer->fd, 0);
++	ASSERT_NE(buffer->ptr, MAP_FAILED);
++
++	/* Initialize buffer in system memory. */
++	for (i = 0, ptr = buffer->ptr; i < size / sizeof(*ptr); ++i)
++		ptr[i] = i;
++
++	/* Migrate memory to device. */
++	ret = hmm_migrate_sys_to_dev(self->fd, buffer, npages);
++	ASSERT_EQ(ret, 0);
++	ASSERT_EQ(buffer->cpages, npages);
++
++	/* Check what the device read. */
++	for (i = 0, ptr = buffer->mirror; i < size / sizeof(*ptr); ++i)
++		ASSERT_EQ(ptr[i], i);
++
++	hmm_buffer_free(buffer);
++}
++
++/*
+  * Migrate anonymous memory to device private memory and fault some of it back
+  * to system memory, then try migrating the resulting mix of system and device
+  * private memory to the device.
 
 
 
