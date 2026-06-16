@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-263911-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266228-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id g/ZRDsVqMWpOiwUAu9opvQ
-	(envelope-from <stable+bounces-263911-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:24:53 +0200
+	id tZOtLwKZMWpAnwUAu9opvQ
+	(envelope-from <stable+bounces-266228-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:42:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83D71691009
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:24:52 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48A8E69459A
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:42:10 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=hkPnlmt+;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263911-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263911-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=tlz8y9lJ;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266228-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266228-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 61AF831F6B6D
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:18:48 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 50EC830463B1
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:42:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BD1843DA53;
-	Tue, 16 Jun 2026 15:18:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00BB7478E3E;
+	Tue, 16 Jun 2026 18:42:07 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C3C143DA2C;
-	Tue, 16 Jun 2026 15:18:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6B2D38C437;
+	Tue, 16 Jun 2026 18:42:05 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781623127; cv=none; b=WrXgc3cLCxv6Id9C1XO9UHSoj0SWYRnucJfRJ2BMZHy8787vP3dRoJi2pe6X4J3A85ZlT1eXmpsRqc35ZPcQq/6zQ5aS8FYm9bvts5b53ZiKRCFdYzvft5sd6hf43T6zhIUpQYHqUYhrkbY+6BxV7sHg8gfZnFTr/RXwHYpW8wQ=
+	t=1781635326; cv=none; b=plyPNoPXRHrWBGIkWeTLEdFoBhLlkR/LNZCXTViRF7v6Nz9080rptecLsJF1tYrftQ0M0f/oW716fIofBPckK17y9Hh1zNrSQM5qXi6OnHIn6/fk79lByt2B/oT+kwBvXj/FY1Kcli07UOW3O8YMGiOQ7FZIgwRfMQZKnkDphjA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781623127; c=relaxed/simple;
-	bh=Ry9OS9HnHFJyFJuJvYHATezQAU0uTi2BLV6qjUkec+0=;
+	s=arc-20240116; t=1781635326; c=relaxed/simple;
+	bh=FB22KC/jibS//Q4HwMhYedqlfMig7mEbWSCPoRG7SHo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GFP52Xo9zQVXprkkeOLdhmsybY4f+PW3yL6F8GtFqJ/GYQg3C9RrvNAiCimNERj0l6SAQ9QOHzAG8NG/zsNd12Al/c41QzLv56mCSkNSxyfI4Z7x9BTF635xdIiGwv5sgZy6piICdtBcOCUKBtdZzGmE6BVXoEpCl8eV4mYi6N0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hkPnlmt+; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A5B41F000E9;
-	Tue, 16 Jun 2026 15:18:44 +0000 (UTC)
+	 MIME-Version; b=J9+hAeRx1wIdEHXfyv2evjYqGqWvFfH7a8dHAe02hPE/Qg1V2+D4V7BZ6bTT6/IXsvz4xF+NErgyBeADfQktIRkuQScreyOCSKbHlcD4FPHNtoBURpVzIBDrCiUu+FTQmyD0H965oR74fbFBRxoYo3LEw6+b7pzqjxehJEwGghE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tlz8y9lJ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DCA91F000E9;
+	Tue, 16 Jun 2026 18:42:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781623125;
-	bh=k5o+NzBo3tilC4nT9IAlXvueWqRG9qSy316ayS9753g=;
+	s=korg; t=1781635325;
+	bh=f46pBipB4Oh44cWPxroOr2x9Pyk/7/Js6ia7ZX9kCAE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hkPnlmt+O+soZWLGnwj3TJMBorHQE65TsWnjOtpDT3cLRvXAu1E3PSufEX4W2yx/a
-	 JO9uObZNDqbMsAD3dDa+2nx9RXV4KMJGLqrL2S8PEv65Oj4SRefmqzZZiewbCR6geH
-	 NI7H3W/0LRh6zc6TYBDQ1ABf4yFijg8+ojdOaDJ0=
+	b=tlz8y9lJzq6gO+wcaTXY31F7glf/8wFsp9w/9bYh4APGb9bMmTCWg0ssG2y1eHm4b
+	 4eF7bKRVVOHWmaprhHgT/uZCvh0Wh4+DNLTzIFf/tAE9nOo4r3DeNyaNeU98R1Dgf7
+	 u+9xZGdEW/hXynpqHM2PNtpSLqMDq4/1uy+jLp1Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nam Cao <namcao@linutronix.de>,
-	Gabriele Monaco <gmonaco@redhat.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 092/378] tools/rv: Fix substring match when listing container monitors
-Date: Tue, 16 Jun 2026 20:25:23 +0530
-Message-ID: <20260616145115.120850680@linuxfoundation.org>
+Subject: [PATCH 5.10 028/342] Bluetooth: L2CAP: Fix possible crash on l2cap_ecred_conn_rsp
+Date: Tue, 16 Jun 2026 20:25:24 +0530
+Message-ID: <20260616145049.568957286@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,22 +71,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-263911-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-266228-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:namcao@linutronix.de,m:gmonaco@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:luiz.von.dentz@intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -98,54 +97,88 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linutronix.de:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,intel.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 83D71691009
+X-Rspamd-Queue-Id: 48A8E69459A
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabriele Monaco <gmonaco@redhat.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit ba0247c5aa3fcb2890a92a97a88c70fe5ce704a6 ]
+[ Upstream commit 41c2713b204e6cb6a94587bc6bf6935107df5479 ]
 
-When listing monitors within a specific container (rv list <container>),
-the tool incorrectly matched monitors if the requested container name
-was only a prefix of the actual container (e.g., 'rv list sche' would
-incorrectly list monitors from 'sched:').
+If dcid is received for an already-assigned destination CID the spec
+requires that both channels to be discarded, but calling l2cap_chan_del
+may invalidate the tmp cursor created by list_for_each_entry_safe and
+in fact it is the wrong procedure as the chan->dcid may be assigned
+previously it really needs to be disconnected.
 
-Fix this by ensuring the container name is an exact match and is
-immediately followed by the ':' separator.
+Calling l2cap_chan_clone directly may still lead to l2cap_chan_del so
+instead schedule l2cap_chan_timeout with delay 0 to close the channel
+asynchronously.
 
-Fixes: eba321a16fc6 ("tools/rv: Add support for nested monitors")
-Reviewed-by: Nam Cao <namcao@linutronix.de>
-Link: https://lore.kernel.org/r/20260514152055.229162-3-gmonaco@redhat.com
-Signed-off-by: Gabriele Monaco <gmonaco@redhat.com>
+Fixes: 15f02b910562 ("Bluetooth: L2CAP: Add initial code for Enhanced Credit Based Mode")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/verification/rv/src/in_kernel.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ net/bluetooth/l2cap_core.c | 27 ++++++++++++++++++++++-----
+ 1 file changed, 22 insertions(+), 5 deletions(-)
 
-diff --git a/tools/verification/rv/src/in_kernel.c b/tools/verification/rv/src/in_kernel.c
-index 95eac9ab148468..e4f35940374f5a 100644
---- a/tools/verification/rv/src/in_kernel.c
-+++ b/tools/verification/rv/src/in_kernel.c
-@@ -193,8 +193,12 @@ static int ikm_fill_monitor_definition(char *name, struct monitor *ikm, char *co
- 	nested_name = strstr(name, ":");
- 	if (nested_name) {
- 		/* it belongs in container if it starts with "container:" */
--		if (container && strstr(name, container) != name)
--			return 1;
-+		if (container) {
-+			int len = strlen(container);
+diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
+index f30624d20bb09c..89e770f359ef20 100644
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -6232,6 +6232,7 @@ static inline int l2cap_ecred_conn_rsp(struct l2cap_conn *conn,
+ 	cmd_len -= sizeof(*rsp);
+ 
+ 	list_for_each_entry_safe(chan, tmp, &conn->chan_l, list) {
++		struct l2cap_chan *orig;
+ 		u16 dcid;
+ 
+ 		if (chan->ident != cmd->ident ||
+@@ -6253,8 +6254,10 @@ static inline int l2cap_ecred_conn_rsp(struct l2cap_conn *conn,
+ 
+ 		BT_DBG("dcid[%d] 0x%4.4x", i, dcid);
+ 
++		orig = __l2cap_get_chan_by_dcid(conn, dcid);
 +
-+			if (strncmp(name, container, len) || name[len] != ':')
-+				return 1;
-+		}
- 		*nested_name = '/';
- 		++nested_name;
- 		ikm->nested = 1;
+ 		/* Check if dcid is already in use */
+-		if (dcid && __l2cap_get_chan_by_dcid(conn, dcid)) {
++		if (dcid && orig) {
+ 			/* If a device receives a
+ 			 * L2CAP_CREDIT_BASED_CONNECTION_RSP packet with an
+ 			 * already-assigned Destination CID, then both the
+@@ -6263,10 +6266,24 @@ static inline int l2cap_ecred_conn_rsp(struct l2cap_conn *conn,
+ 			 */
+ 			l2cap_chan_del(chan, ECONNREFUSED);
+ 			l2cap_chan_unlock(chan);
+-			chan = __l2cap_get_chan_by_dcid(conn, dcid);
+-			l2cap_chan_lock(chan);
+-			l2cap_chan_del(chan, ECONNRESET);
+-			l2cap_chan_unlock(chan);
++
++			/* Check that the dcid channel mode is
++			 * L2CAP_MODE_EXT_FLOWCTL since this procedure is only
++			 * valid for that mode and shouldn't disconnect a dcid
++			 * in other modes.
++			 */
++			if (orig->mode == L2CAP_MODE_EXT_FLOWCTL) {
++				l2cap_chan_lock(orig);
++				/* Disconnect the original channel as it may be
++				 * considered connected since dcid has already
++				 * been assigned; don't call l2cap_chan_close
++				 * directly since that could lead to
++				 * l2cap_chan_del and then removing the channel
++				 * from the list while we're iterating over it.
++				 */
++				__set_chan_timer(orig, 0);
++				l2cap_chan_unlock(orig);
++			}
+ 			continue;
+ 		}
+ 
 -- 
 2.53.0
 
