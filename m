@@ -1,59 +1,64 @@
-Return-Path: <stable+bounces-265379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263860-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 0viDG0+JMWrflwUAu9opvQ
-	(envelope-from <stable+bounces-265379-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:35:11 +0200
+	id mM0sJs5pMWoDiwUAu9opvQ
+	(envelope-from <stable+bounces-263860-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:20:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DFE7693474
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:35:10 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15DCE690F0F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:20:46 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=O96yPWpM;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265379-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265379-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=QeZUL3AR;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263860-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263860-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id BB43D303DD5F
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:28:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1170331A5E18
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:14:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3E4B47AF43;
-	Tue, 16 Jun 2026 17:28:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7271D43DA5E;
+	Tue, 16 Jun 2026 15:14:14 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D8543A3E78;
-	Tue, 16 Jun 2026 17:28:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1924143CEC7;
+	Tue, 16 Jun 2026 15:14:13 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781630898; cv=none; b=S6PZX2tD8ncaB5pIEVb2n5JR9vEuAJRxoLV+WenZWQiFk23wTQXiEWcsrENK7C+559BK2SaPuluE1dvGiq1mqGa1IenCETUK1+r7IXl+YZlcSSnJkMNLy/oMdN6wGxzk84VqLfsI8f7uM4150PRfZOkR5Z7uAtxu5nbeUj+m/tY=
+	t=1781622854; cv=none; b=rzSLmgx7XyjCefFzfnQmu/uVXrxlMUxVoHpkyEh9COMyHs9I3v589VCQzIdfYMO1y2PlvmGZR5KNDrlDpucsiycFwMQAkFDgW4XwbqmKIcQwtgMSfBQtfq1rlCGkjbkF3k/1hfqNcw57u1ZXr1Dm8ysJQWCnnbsp3Smgd6v89HI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781630898; c=relaxed/simple;
-	bh=1W0Th9IAdNoLknYIk2M3IrtRTXfATEWEXbuJRlf4mTg=;
+	s=arc-20240116; t=1781622854; c=relaxed/simple;
+	bh=bmx7j2VRIRlJA9z/gqLToNR67cZPcDHlSTBRy74B41w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BlfGzqQviGbSyyrzBGiNTFfvmgFcuKHVngavnUe/v3tURnlaJeuGGtVDk/tK1r6uZ+5pAXNZ3vPTgxMkxn21sHOKv6TYbir9fYYHoV3mNNuXZ7UddIewWi+NIV5kPWVOiKCnm/Z1tjrZlPGPGpAVQ+r7RxD5GNQBNYwSKOfx7Do=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O96yPWpM; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B45D61F00A3A;
-	Tue, 16 Jun 2026 17:28:14 +0000 (UTC)
+	 MIME-Version; b=oHgmfUeyNyfSL8ZVo9k+30Jyn/FIPJ+PRZ3dJScUlLzkuvcunMyHseZiZe4HPD3oarFmKRS/ogT8i1W2WoaWgY2DzZUk3E9MvXzNYqPzxCnlVMyVymhUbXCozSC6amtkul2c2yUN5t22Fbrx/41O+eFU6HQ3t4wfU50fsdhgsI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QeZUL3AR; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 020981F000E9;
+	Tue, 16 Jun 2026 15:14:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781630895;
-	bh=MVBiA6k1ekSEa8ErPAaB4ssmyxbSWd0uCrIW0fKw2nY=;
+	s=korg; t=1781622853;
+	bh=KMQFpKPXbTFXVQQkK5PoH4CKRYAwHdpG+lqFJ8cLBDA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=O96yPWpMpOq+rFTsXlWSKn1RhZ11+EaFvrGTyfX2lA9cYMfn1X9U37tEHhcvdtksV
-	 4GDXh/6FU7C4DEsEi2oqtWfnRSh8quBrGsOkspMqBiw9BqBwO6ZGuf6n2EtFXBJvBA
-	 Xtp8zIFF8asEscB34Wq5VdT5UehXQa6sut5OjFIc=
+	b=QeZUL3ARqvHJyApfHM0i7VKgMUVE/KT+MrRC064vQ/umSLqHC10E4FlrN1mUkckm8
+	 YTLAz9fHx0hLlQ3kn54vZKdIyaLMlEivkz32zNcTUSdHvli4ZeyICmdZrqw0nyb+HH
+	 JUQ6FMlS71dX4wotdezRl1vuB85nES0V6ChS3VAk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.1 118/522] Input: elan_i2c - validate firmware size before use
+	syzbot+e809069bc15f26300526@syzkaller.appspotmail.com,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 034/378] tcp: Add preempt_{disable,enable}_nested() in reqsk_queue_hash_req().
 Date: Tue, 16 Jun 2026 20:24:25 +0530
-Message-ID: <20260616145131.493328465@linuxfoundation.org>
+Message-ID: <20260616145111.664111905@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,72 +76,153 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265379-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-263860-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:dmitry.torokhov@gmail.com,m:dmitrytorokhov@gmail.com,s:lists@lfdr.de];
-	RCPT_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:syzbot+e809069bc15f26300526@syzkaller.appspotmail.com,m:kuniyu@google.com,m:edumazet@google.com,m:bigeasy@linutronix.de,m:kuba@kernel.org,m:sashal@kernel.org,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	TAGGED_RCPT(0.00)[stable,e809069bc15f26300526];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linutronix.de:email,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5DFE7693474
+X-Rspamd-Queue-Id: 15DCE690F0F
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-commit 76b0d0baa9ae9c60e726bbe1b6ff0bec2c993634 upstream.
+[ Upstream commit e10902df24488ca722303133acfc82490f7d59ad ]
 
-Ensure that the firmware file is large enough to contain the expected
-number of pages and the signature (which resides at the end of the
-firmware blob) before accessing them to prevent potential out-of-bounds
-reads.
+syzbot reported a weird reqsk->rsk_refcnt underflow in
+__inet_csk_reqsk_queue_drop().
 
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/ae2dOgiFvXRm4BHo@google.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The captured reqsk_put() in __inet_csk_reqsk_queue_drop()
+is called only when it successfully removes reqsk from ehash.
+
+Moreover, reqsk_timer_handler() calls another reqsk_put()
+after that.
+
+This indicates that the reqsk was missing both refcnts for
+ehash and the timer itself.
+
+Since all the syzbot reports had PREEMPT_RT enabled, the only
+possible scenario is that reqsk_queue_hash_req() is preempted
+after mod_timer() and before refcount_set(), and then the timer
+triggered after 1s aborts the reqsk due to its listener's close().
+
+Let's wrap mod_timer() and refcount_set() with
+preempt_disable_nested() and preempt_enable_nested().
+
+Note that inet_ehash_insert() holds the normal spin_lock()
+(mutex in PREEMPT_RT), so it must be called outside of
+preempt_disable_nested(), but this is fine.
+
+The lookup path just ignores 0 sk_refcnt entries in ehash
+and tries to create another reqsk, but this will fail at
+inet_ehash_insert().
+
+[0]:
+refcount_t: underflow; use-after-free.
+WARNING: lib/refcount.c:28 at refcount_warn_saturate+0xb2/0x110 lib/refcount.c:28, CPU#0: ktimers/0/16
+Modules linked in:
+CPU: 0 UID: 0 PID: 16 Comm: ktimers/0 Tainted: G             L      syzkaller #0 PREEMPT_{RT,(full)}
+Tainted: [L]=SOFTLOCKUP
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/18/2026
+RIP: 0010:refcount_warn_saturate+0xb2/0x110 lib/refcount.c:28
+Code: e4 7d d1 0a 67 48 0f b9 3a eb 4a e8 38 3d 23 fd 48 8d 3d e1 7d d1 0a 67 48 0f b9 3a eb 37 e8 25 3d 23 fd 48 8d 3d de 7d d1 0a <67> 48 0f b9 3a eb 24 e8 12 3d 23 fd 48 8d 3d db 7d d1 0a 67 48 0f
+RSP: 0000:ffffc90000157948 EFLAGS: 00010246
+RAX: ffffffff84a1301b RBX: 0000000000000003 RCX: ffff88801ca98000
+RDX: 0000000000000100 RSI: 0000000000000000 RDI: ffffffff8f72ae00
+RBP: ffffffff99ae3b01 R08: ffff88801ca98000 R09: 0000000000000005
+R10: 0000000000000100 R11: 0000000000000004 R12: ffff8880425ef568
+R13: ffff8880425ef4f8 R14: ffff8880425ef578 R15: 0000000000000000
+FS:  0000000000000000(0000) GS:ffff888126386000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f7b46710e9c CR3: 000000000dbb6000 CR4: 00000000003526f0
+Call Trace:
+ <TASK>
+ __refcount_sub_and_test include/linux/refcount.h:400 [inline]
+ __refcount_dec_and_test include/linux/refcount.h:432 [inline]
+ refcount_dec_and_test include/linux/refcount.h:450 [inline]
+ reqsk_put include/net/request_sock.h:136 [inline]
+ __inet_csk_reqsk_queue_drop+0x3ce/0x440 net/ipv4/inet_connection_sock.c:1007
+ reqsk_timer_handler+0x651/0xdf0 net/ipv4/inet_connection_sock.c:1137
+ call_timer_fn+0x192/0x5e0 kernel/time/timer.c:1748
+ expire_timers kernel/time/timer.c:1799 [inline]
+ __run_timers kernel/time/timer.c:2374 [inline]
+ __run_timer_base+0x6a3/0x9f0 kernel/time/timer.c:2386
+ run_timer_base kernel/time/timer.c:2395 [inline]
+ run_timer_softirq+0x67/0x170 kernel/time/timer.c:2403
+ handle_softirqs+0x1de/0x6d0 kernel/softirq.c:622
+ __do_softirq kernel/softirq.c:656 [inline]
+ run_ktimerd+0x69/0x100 kernel/softirq.c:1151
+ smpboot_thread_fn+0x541/0xa50 kernel/smpboot.c:160
+ kthread+0x388/0x470 kernel/kthread.c:436
+ ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
+
+Fixes: d2d6422f8bd1 ("x86: Allow to enable PREEMPT_RT.")
+Reported-by: syzbot+e809069bc15f26300526@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/6a1a7bcf.0a9e871e.332604.000b.GAE@google.com/
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Link: https://patch.msgid.link/20260601182101.3183993-1-kuniyu@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/mouse/elan_i2c_core.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ net/ipv4/inet_connection_sock.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/input/mouse/elan_i2c_core.c
-+++ b/drivers/input/mouse/elan_i2c_core.c
-@@ -646,6 +646,11 @@ static ssize_t elan_sysfs_update_fw(stru
- 		return error;
- 	}
- 
-+	if (fw->size < data->fw_signature_address + sizeof(signature)) {
-+		dev_err(dev, "firmware file too small\n");
-+		return -EBADF;
-+	}
+diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_sock.c
+index f1988fd503540d..d9f6c8d4d7e63a 100644
+--- a/net/ipv4/inet_connection_sock.c
++++ b/net/ipv4/inet_connection_sock.c
+@@ -1151,6 +1151,9 @@ static bool reqsk_queue_hash_req(struct request_sock *req)
+ 	/* The timer needs to be setup after a successful insertion. */
+ 	req->timeout = tcp_timeout_init((struct sock *)req);
+ 	timer_setup(&req->rsk_timer, reqsk_timer_handler, TIMER_PINNED);
 +
- 	/* Firmware file must match signature data */
- 	fw_signature = &fw->data[data->fw_signature_address];
- 	if (memcmp(fw_signature, signature, sizeof(signature)) != 0) {
++	preempt_disable_nested();
++
+ 	mod_timer(&req->rsk_timer, jiffies + req->timeout);
+ 
+ 	/* before letting lookups find us, make sure all req fields
+@@ -1158,6 +1161,9 @@ static bool reqsk_queue_hash_req(struct request_sock *req)
+ 	 */
+ 	smp_wmb();
+ 	refcount_set(&req->rsk_refcnt, 2 + 1);
++
++	preempt_enable_nested();
++
+ 	return true;
+ }
+ 
+-- 
+2.53.0
+
 
 
 
