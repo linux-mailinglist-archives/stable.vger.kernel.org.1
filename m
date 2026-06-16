@@ -1,65 +1,67 @@
-Return-Path: <stable+bounces-265844-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263846-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id bAWzLRuRMWqgmwUAu9opvQ
-	(envelope-from <stable+bounces-265844-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:08:27 +0200
+	id VMv4FSNoMWp5igUAu9opvQ
+	(envelope-from <stable+bounces-263846-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:13:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48015693D42
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:08:27 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6422690D6F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:13:38 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=i5MTuwKv;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265844-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-265844-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=tKPGZH6C;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263846-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263846-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B6903302D4D6
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:08:26 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B8E3F30302E9
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:13:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B65433D565C;
-	Tue, 16 Jun 2026 18:08:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E08C543CEC7;
+	Tue, 16 Jun 2026 15:13:02 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 973333D45CB;
-	Tue, 16 Jun 2026 18:08:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B48A738C437;
+	Tue, 16 Jun 2026 15:13:01 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781633305; cv=none; b=CZOtPHeB2fZvwHCcDy2/1YIOdILmFUGbgOcZ2+Qczx/Ule+clhzjcRwRy4ydQ+VFZI2tO7PYaqTpN7I/Nfe3ejhWRqWyBPrZ1Xr3Y318R7Kq4dD5TVcMC2cQVsFRLfW8raywpcBOLVJ7x1LvPmRpMYOm/pE2elPyU2gLkZrkWh0=
+	t=1781622782; cv=none; b=n0VTvMzkKM72ypOho6acdBRDm82ARPvRCLVIxVADhc+pU93rUuZpoy5oCzUHccKg4dU4kL5H6COqJr+28hufCButGxn9/xE8u6WdVDye4kREkAXek7l+3z1lO3Yqen0jNToNzu4D3NjQCYit3q+DSSIhn7sUjEiKUhDjapWKEls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781633305; c=relaxed/simple;
-	bh=j7qc3fkERYNHZpNElpxEFCNvrn1AtNbTTmRIJjuXPjg=;
+	s=arc-20240116; t=1781622782; c=relaxed/simple;
+	bh=Mis+YH0/xlcU6rtGvsbDzeFiQZZOOeAnzqKlKRr/gbg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CkgcosM8rDXFCLxX8RGmKOPyYYIrpj4p86OiogbZLfIwXWTVrNajtZsKt10VE27vp0xdbOC2QR9+McGbzACe95GtQKmMGxF0bmgzr+ucXozBVcCSny3OqfUWQrOs+PKXBypHXMt1Ty7Dqfdk3x6Go62GCU/673CKq/E5Tmd85Y4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i5MTuwKv; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B92D1F000E9;
-	Tue, 16 Jun 2026 18:08:23 +0000 (UTC)
+	 MIME-Version; b=GZEjbCCiBQq3okBUeN9lMwDOMpNh4oyL87YJTXK3oQemPgJDlJOvZFoNR6e9VLednCM3X5VdnUq7INHcTSAZ8MZ8O2K43nYwUtMm5FL9Ov97Q/MqgFzgxUzRyJytgP59JrDDTs47nw+095fZNtEf7QoLjqEIu9lm4FWp26js3Oc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tKPGZH6C; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33D991F000E9;
+	Tue, 16 Jun 2026 15:12:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781633304;
-	bh=R5o91Pju35wpGyyHH2jn3P17Ime9vIa39/90oC1Qgno=;
+	s=korg; t=1781622781;
+	bh=A5qMpwquWzJ/FpbYL8pULVTxPX3P9rI1Rt7i/CXhUZE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=i5MTuwKvhgQkYcwt6MVhMlPNSPPKY5sLPazItYTBsgqJb71RtXuTK9rg5eXIn7HR5
-	 AvS/mwrJOG+l9UmtkWXeNw9AOb2t2iUuScFi5ku7Kf+GVSX7x5lXMUrwillCj7ymOF
-	 NhM/nE1ei8g97L1TZgtljMZrDHNAKfjGEyQgkBSA=
+	b=tKPGZH6Cu55NOOcJWxJRNbWuPu10raSJYvssqIkY3ETw+H7jQDnXlpKGsjf9+bhMh
+	 cKGmyTTbZFTMy78oLkR9awYnuwGn/jKRA75dQDePnNV18Vrt/ol7IgZUUAGn3xrxc0
+	 dhyeD2zVsqbZaCZe4ehleezxwxoeIU9KE0xkHGrM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jian Zhou <eilaimemedsnaimel@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	Jason Xing <kerneljasonxing@gmail.com>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>,
+	Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>,
+	Ao Wang <wangao@seu.edu.cn>,
+	Xuewei Feng <fengxw06@126.com>,
+	Qi Li <qli01@tsinghua.edu.cn>,
+	Ke Xu <xuke@tsinghua.edu.cn>,
+	Alexander Aring <aahringo@redhat.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 020/411] ipv4: free net->ipv4.sysctl_local_reserved_ports after unregister_net_sysctl_table()
+Subject: [PATCH 7.0 027/378] 6lowpan: fix off-by-one in multicast context address compression
 Date: Tue, 16 Jun 2026 20:24:18 +0530
-Message-ID: <20260616145101.457048648@linuxfoundation.org>
+Message-ID: <20260616145111.279448701@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,86 +73,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,linux.dev,kernel.org];
-	TAGGED_FROM(0.00)[bounces-265844-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:eilaimemedsnaimel@gmail.com,m:edumazet@google.com,m:xiyou.wangcong@gmail.com,m:kerneljasonxing@gmail.com,m:jiayuan.chen@linux.dev,m:kuba@kernel.org,m:sashal@kernel.org,m:xiyouwangcong@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	TAGGED_FROM(0.00)[bounces-263846-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:zhaoyz24@mails.tsinghua.edu.cn,m:yangyx22@mails.tsinghua.edu.cn,m:wangao@seu.edu.cn,m:fengxw06@126.com,m:qli01@tsinghua.edu.cn,m:xuke@tsinghua.edu.cn,m:aahringo@redhat.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,mails.tsinghua.edu.cn,seu.edu.cn,126.com,tsinghua.edu.cn,redhat.com,kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,seu.edu.cn:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 48015693D42
+X-Rspamd-Queue-Id: E6422690D6F
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
 
-[ Upstream commit 87a1e0fe7776da7ab411be332b4be58ac8840d10 ]
+[ Upstream commit 2a58899d11009bffc7b4b32a571858f381121837 ]
 
-ipv4_sysctl_exit_net() is currently freeing net->ipv4.sysctl_local_reserved_ports
-too soon.
+The second memcpy in lowpan_iphc_mcast_ctx_addr_compress() uses
+&data[1] as destination and &ipaddr->s6_addr[11] as source, but
+both should be offset by one: &data[2] and &ipaddr->s6_addr[12]
+respectively.
 
-Only after unregister_net_sysctl_table() we can be sure no threads can possibly
-use the sysctls, including /proc/sys/net/ipv4/ip_local_reserved_ports.
+This off-by-one has two consequences:
+1. data[1] is overwritten with s6_addr[11], corrupting the RIID
+   field in the compressed multicast address
+2. data[5] is never written, so uninitialized kernel stack memory
+   is transmitted over the network via lowpan_push_hc_data(),
+   leaking kernel stack contents
 
-Fixes: 122ff243f5f1 ("ipv4: make ip_local_reserved_ports per netns")
-Reported-by: Ji'an Zhou <eilaimemedsnaimel@gmail.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Cong Wang <xiyou.wangcong@gmail.com>
-Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
-Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Link: https://patch.msgid.link/20260521122147.3584624-1-edumazet@google.com
+The correct inline data layout must match what the decompression
+function lowpan_uncompress_multicast_ctx_daddr() expects:
+  data[0..1] = s6_addr[1..2]  (flags/scope + RIID)
+  data[2..5] = s6_addr[12..15] (group ID)
+
+Also zero-initialize the data array as a defensive measure against
+similar bugs in the future.
+
+Fixes: 5609c185f24d ("6lowpan: iphc: add support for stateful compression")
+Reported-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+Reported-by: Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>
+Reported-by: Ao Wang <wangao@seu.edu.cn>
+Reported-by: Xuewei Feng <fengxw06@126.com>
+Reported-by: Qi Li <qli01@tsinghua.edu.cn>
+Reported-by: Ke Xu <xuke@tsinghua.edu.cn>
+Signed-off-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+Acked-by: Alexander Aring <aahringo@redhat.com>
+Link: https://patch.msgid.link/20260527081806.42747-1-zhaoyz24@mails.tsinghua.edu.cn
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/sysctl_net_ipv4.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/6lowpan/iphc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv4/sysctl_net_ipv4.c b/net/ipv4/sysctl_net_ipv4.c
-index 1f22e72074fdca..a7d335ab000403 100644
---- a/net/ipv4/sysctl_net_ipv4.c
-+++ b/net/ipv4/sysctl_net_ipv4.c
-@@ -1415,10 +1415,10 @@ static __net_exit void ipv4_sysctl_exit_net(struct net *net)
+diff --git a/net/6lowpan/iphc.c b/net/6lowpan/iphc.c
+index e116d308a8df6d..37eaff3f7b6940 100644
+--- a/net/6lowpan/iphc.c
++++ b/net/6lowpan/iphc.c
+@@ -1086,12 +1086,12 @@ static u8 lowpan_iphc_mcast_ctx_addr_compress(u8 **hc_ptr,
+ 					      const struct lowpan_iphc_ctx *ctx,
+ 					      const struct in6_addr *ipaddr)
  {
- 	struct ctl_table *table;
+-	u8 data[6];
++	u8 data[6] = {};
  
--	kfree(net->ipv4.sysctl_local_reserved_ports);
- 	table = net->ipv4.ipv4_hdr->ctl_table_arg;
- 	unregister_net_sysctl_table(net->ipv4.ipv4_hdr);
- 	kfree(table);
-+	kfree(net->ipv4.sysctl_local_reserved_ports);
- }
+ 	/* flags/scope, reserved (RIID) */
+ 	memcpy(data, &ipaddr->s6_addr[1], 2);
+ 	/* group ID */
+-	memcpy(&data[1], &ipaddr->s6_addr[11], 4);
++	memcpy(&data[2], &ipaddr->s6_addr[12], 4);
+ 	lowpan_push_hc_data(hc_ptr, data, 6);
  
- static __net_initdata struct pernet_operations ipv4_sysctl_ops = {
+ 	return LOWPAN_IPHC_DAM_00;
 -- 
 2.53.0
 
