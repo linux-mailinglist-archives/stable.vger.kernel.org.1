@@ -1,63 +1,63 @@
-Return-Path: <stable+bounces-265398-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264819-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id mgCFAWGJMWrtlwUAu9opvQ
-	(envelope-from <stable+bounces-265398-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:35:29 +0200
+	id ym0ONOB8MWqekgUAu9opvQ
+	(envelope-from <stable+bounces-264819-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:42:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C636693490
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:35:28 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 720C96925BD
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:42:08 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=yYtkTUtu;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265398-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265398-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=dNJZcVwG;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264819-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-264819-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 352E231C500A
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:30:02 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9DDEC304BF36
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:41:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF5AD47AF43;
-	Tue, 16 Jun 2026 17:29:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AAF3478E45;
+	Tue, 16 Jun 2026 16:40:56 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82F9C2750ED;
-	Tue, 16 Jun 2026 17:29:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43A76477E51;
+	Tue, 16 Jun 2026 16:40:55 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781630997; cv=none; b=jiL2/3z8MGEkJTBrcLbYkrz1pOYFd6fIW6WuHi35q6rZrQYFzouoemyVjydS8YtbYVhE3H7OnXHRgch7GeNbS2burRrFia0BaUzIlMW8RxeGArEXLurJr5YoQb0uXuq9ZQwbU/q4ssGQWUsKe0PLhbgpWVol6OZEhFs84oJwkMg=
+	t=1781628056; cv=none; b=JtzCbMokF31VZCrI2xsxcbjeD4YEZ+Rih/DJZozvVBst/CWfOeJU4Bkwrq0T1bthegRuiYMvlsByv2d6sFR2i01Sx8z/vUUXhdH5dUWyEQd/SwTjMizkwXEXNm0IQA0gqpBU2ufKa85XXeJNAcMASfHMPcRQkKDz/VR5z060T2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781630997; c=relaxed/simple;
-	bh=sE1ylj2dYS1jJNkIicMbAHxljrC2blR1sV6w7HdgpO0=;
+	s=arc-20240116; t=1781628056; c=relaxed/simple;
+	bh=RelKAkuveNOlTdWnuqoLYJXg+fkUZ+IAqwFZ+wkVMYY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sWY4Nma174qir/E0Xzz0yP7Htsn5ZzdtSZ41eRFjcKeJQIhvexIKBk3tmk9BVN768CPLsf1XOA/R/OTKvZBOoGWfb3WE/KDW4WBRXkoEuRwW7sAYPzqMwkp/TMOudLXm2OSQdUJljzxvnPJ6s4wbDdkp2JjrPHmCeFMrXSaJOJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yYtkTUtu; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8812D1F000E9;
-	Tue, 16 Jun 2026 17:29:55 +0000 (UTC)
+	 MIME-Version; b=hAKLVljRCjUQb42Ln2WdE9OUNJvN48B/i1cntU/gVJ6kLqinMvucmTk2tJdVf3BIY0+bkgYblxKWZ/qXWSJcs08qcX0EhlmOLuWX41YuNnVxh+q4RM1IihqV1yi6IwRrRzS2/GFfAgwHBTMIArMdDWWeMWiNafYWdVDSH8+nbRs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dNJZcVwG; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 540AF1F00A3A;
+	Tue, 16 Jun 2026 16:40:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781630996;
-	bh=L+BGQDBLkG84ak/wuWtYXnglAKdRY7o2jHRkgQLmsrQ=;
+	s=korg; t=1781628055;
+	bh=KSiWFAn9RysS26xeRsWJwci0jmnW2NPMf5fVjVJsNCU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=yYtkTUtu9HXNW7LeohsgE8HAzwGlPIEHVbh6fzzFE0EhmYePTPhDCwD8rf5zWyQ0Y
-	 vu6vZ4JYrKSKpBDDgDd/m//l0PbVVTpFrd57DS0boAYzd1icwm2K2yJ3Eg6j7x/Fo6
-	 61z9x+02bizDGj4WdWVY3WWTvyjhCHj6mrxYvnXo=
+	b=dNJZcVwGt3im7piHJP+ANMZ0sNag+fvBDSS+wqUD6c8Or1Hg51syw3k3JddizpYGJ
+	 zVYvy1QahnzKh7Wn4FSLzH9K9z/DRtDKGFTZUr0xcwKhK+sLP7xNB0PYy/SI637gom
+	 iEGs/tIfD2zAkEv8P0uwuKKAm+afGmQSqQnCnBTE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christofer Jonason <christofer.jonason@guidelinegeo.com>,
-	Andy Shevchenko <andriy.shevchenko@intel.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Salih Erim <salih.erim@amd.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.1 103/522] iio: adc: xilinx-xadc: Fix sequencer mode in postdisable for dual mux
+	Halil Pasic <pasic@linux.ibm.com>,
+	Alexandra Winter <wintera@linux.ibm.com>,
+	Mahanta Jambigi <mjambigi@linux.ibm.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 023/452] net/smc: Do not re-initialize smc hashtables
 Date: Tue, 16 Jun 2026 20:24:10 +0530
-Message-ID: <20260616145130.748598199@linuxfoundation.org>
+Message-ID: <20260616145119.059460615@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,114 +67,101 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-265398-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:christofer.jonason@guidelinegeo.com,m:andriy.shevchenko@intel.com,m:nuno.sa@analog.com,m:salih.erim@amd.com,m:Jonathan.Cameron@huawei.com,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264819-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:pasic@linux.ibm.com,m:wintera@linux.ibm.com,m:mjambigi@linux.ibm.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[guidelinegeo.com:email,analog.com:email,vger.kernel.org:from_smtp,amd.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,intel.com:email,huawei.com:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7C636693490
+X-Rspamd-Queue-Id: 720C96925BD
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christofer Jonason <christofer.jonason@guidelinegeo.com>
+From: Alexandra Winter <wintera@linux.ibm.com>
 
-commit 852534744c2d35626a604f128ff0b8ec12805591 upstream.
+[ Upstream commit 9e4389b0038781f19f97895186ed941ff8ac1678 ]
 
-xadc_postdisable() unconditionally sets the sequencer to continuous
-mode. For dual external multiplexer configurations this is incorrect:
-simultaneous sampling mode is required so that ADC-A samples through
-the mux on VAUX[0-7] while ADC-B simultaneously samples through the
-mux on VAUX[8-15]. In continuous mode only ADC-A is active, so
-VAUX[8-15] channels return incorrect data.
+INIT_HLIST_HEAD(&smc_v*_hashinfo.ht) are called after smc_nl_init(),
+proto_register() and sock_register(). This can lead to smc_v*_hashinfo.ht
+being reset even though hash entries already exist and are being used,
+possibly resulting in a corrupted list.
 
-Since postdisable is also called from xadc_probe() to set the initial
-idle state, the wrong sequencer mode is active from the moment the
-driver loads.
+Remove unnecessary and dangerous re-initialisation of smc_v*_hashinfo.ht in
+smc_init(); it is implicitly initialised to zero anyhow. Add
+HLIST_HEAD_INIT to the definitions for clarity.
 
-The preenable path already uses xadc_get_seq_mode() which returns
-SIMULTANEOUS for dual mux. Fix postdisable to do the same.
-
-Fixes: bdc8cda1d010 ("iio:adc: Add Xilinx XADC driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Christofer Jonason <christofer.jonason@guidelinegeo.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
-Reviewed-by: Salih Erim <salih.erim@amd.com>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f16a7dd5cf27 ("smc: netlink interface for SMC sockets")
+Suggested-by: Halil Pasic <pasic@linux.ibm.com>
+Signed-off-by: Alexandra Winter <wintera@linux.ibm.com>
+Acked-by: Halil Pasic <pasic@linux.ibm.com>
+Reviewed-by: Mahanta Jambigi <mjambigi@linux.ibm.com>
+Link: https://patch.msgid.link/20260521145639.10317-1-wintera@linux.ibm.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/xilinx-xadc-core.c |   11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ net/smc/af_smc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/iio/adc/xilinx-xadc-core.c
-+++ b/drivers/iio/adc/xilinx-xadc-core.c
-@@ -821,6 +821,7 @@ static int xadc_postdisable(struct iio_d
- {
- 	struct xadc *xadc = iio_priv(indio_dev);
- 	unsigned long scan_mask;
-+	int seq_mode;
- 	int ret;
- 	int i;
+diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
+index 6629fd61be06a6..7a82e1a8a83f4b 100644
+--- a/net/smc/af_smc.c
++++ b/net/smc/af_smc.c
+@@ -181,10 +181,12 @@ static bool smc_hs_congested(const struct sock *sk)
  
-@@ -828,6 +829,12 @@ static int xadc_postdisable(struct iio_d
- 	for (i = 0; i < indio_dev->num_channels; i++)
- 		scan_mask |= BIT(indio_dev->channels[i].scan_index);
+ static struct smc_hashinfo smc_v4_hashinfo = {
+ 	.lock = __RW_LOCK_UNLOCKED(smc_v4_hashinfo.lock),
++	.ht = HLIST_HEAD_INIT,
+ };
  
-+	/*
-+	 * Use the correct sequencer mode for the idle state: simultaneous
-+	 * mode for dual external mux configurations, continuous otherwise.
-+	 */
-+	seq_mode = xadc_get_seq_mode(xadc, scan_mask);
-+
- 	/* Enable all channels and calibration */
- 	ret = xadc_write_adc_reg(xadc, XADC_REG_SEQ(0), scan_mask & 0xffff);
- 	if (ret)
-@@ -838,11 +845,11 @@ static int xadc_postdisable(struct iio_d
- 		return ret;
+ static struct smc_hashinfo smc_v6_hashinfo = {
+ 	.lock = __RW_LOCK_UNLOCKED(smc_v6_hashinfo.lock),
++	.ht = HLIST_HEAD_INIT,
+ };
  
- 	ret = xadc_update_adc_reg(xadc, XADC_REG_CONF1, XADC_CONF1_SEQ_MASK,
--		XADC_CONF1_SEQ_CONTINUOUS);
-+				  seq_mode);
- 	if (ret)
- 		return ret;
+ int smc_hash_sk(struct sock *sk)
+@@ -3579,8 +3581,6 @@ static int __init smc_init(void)
+ 		pr_err("%s: sock_register fails with %d\n", __func__, rc);
+ 		goto out_proto6;
+ 	}
+-	INIT_HLIST_HEAD(&smc_v4_hashinfo.ht);
+-	INIT_HLIST_HEAD(&smc_v6_hashinfo.ht);
  
--	return xadc_power_adc_b(xadc, XADC_CONF1_SEQ_CONTINUOUS);
-+	return xadc_power_adc_b(xadc, seq_mode);
- }
- 
- static int xadc_preenable(struct iio_dev *indio_dev)
+ 	rc = smc_ib_register_client();
+ 	if (rc) {
+-- 
+2.53.0
+
 
 
 
