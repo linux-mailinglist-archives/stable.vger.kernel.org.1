@@ -1,63 +1,61 @@
-Return-Path: <stable+bounces-263905-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265873-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id KWNFNRZrMWppiwUAu9opvQ
-	(envelope-from <stable+bounces-263905-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:26:14 +0200
+	id F+tTOa2RMWrfmwUAu9opvQ
+	(envelope-from <stable+bounces-265873-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:10:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 601D4691062
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:26:14 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 863C2693DD2
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:10:53 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=SmRpmCBj;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263905-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-263905-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=LQGYdWaA;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265873-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265873-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 008AC30CD633
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:18:20 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 009303036092
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:10:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F66943E49D;
-	Tue, 16 Jun 2026 15:18:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1AAD3D45CB;
+	Tue, 16 Jun 2026 18:10:51 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70EC643DA2C;
-	Tue, 16 Jun 2026 15:18:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B93E73D47CE;
+	Tue, 16 Jun 2026 18:10:50 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781623094; cv=none; b=bNS1zwPILWIXyG55ah78BFF7jXfyNjrc4cYTDIAJdCWUXWde8v+mZw0gK0zD/rrdpgaGEg0KXcygtRbbotjEdSI2Lbr6iOZ5FvXtsiPMwW8nUVhrL9I7id0oP3Q6BV3QkwDO71cAl1D8yq+TRNKUuK5IqM3xD9BPDAvnbAKylZY=
+	t=1781633451; cv=none; b=Uw2Tgu0X5//O6RGXY+tx0CEgQypR7vd0wiyBlIDDFH1hdXUoLJF5OF9yw9B34cCe34kSCmzFzRDs+0wFjDXWwOZuBi0TPeZG5myb+7Gm9XmbQ+/3HX1UhnnG/7Ilo5KGEPRgr26DvWDT2vFlj44rLPLMc+F9YI653F3xd2COW4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781623094; c=relaxed/simple;
-	bh=3r73Ck+nh2Jxo9qF+SUdq01/VOroRtE2ftZtzHfhKBo=;
+	s=arc-20240116; t=1781633451; c=relaxed/simple;
+	bh=SRUJH3d2igwyUsXMyBOHKzVvjR3oL4Bn4pB4oXnMTWc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h3L9EStV75fti3enY7fb7yUijoIN1B7ao+hGuE5Zd2I4V8m8HgpnUhueq7RyWE61Pj1LfBcVGtpVdy1pMKHrL73luZ7CgbysesKDvmQ1IALnC6sJmW5/n3yXA26+qwjQTYIOhpVHyyBW45gFEkSb0DeYMAtCxfajZgSogs0jRq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SmRpmCBj; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 092DE1F00A3A;
-	Tue, 16 Jun 2026 15:18:11 +0000 (UTC)
+	 MIME-Version; b=hoF2G/NOeBX24hte6UBDcls1zySs6cLrUszWR50uCgH4pVhOO7Dot+bVSGNyrcsYMSTLRuRuottnr2MHAqDtSXjBhiHAwU59FONso5WNs+sllJiRdlCbha59psj6wFfpIk8smQys4B6g06fFTMzBbSFmj8BFsjYs7vLfKyY4tMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LQGYdWaA; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A638B1F00A3D;
+	Tue, 16 Jun 2026 18:10:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781623093;
-	bh=EAmEtb7vUW7XQe5j82os3ncEl09iCwjRkkwvGbgkL6c=;
+	s=korg; t=1781633450;
+	bh=32qzgMV7ImmH29JGKv4rgYaC9yCM/rjYEMpKdOL//cY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=SmRpmCBjQ1kEFkXTkUjvpbRXGdMu206BDx2vzpN3YCNUWzgGXoTUKY4Cak5gwMWYS
-	 FzOjIeDJgrD5tJ1unyf2XvWRK4zrtONWgNFFvz/Rpnlgbx569tEEGNa9xx87K6Q26H
-	 Pvc9NT2znygCsKlCzcimIAWMZckOmrVaeIr9zwZI=
+	b=LQGYdWaASYs0b1lLkuRag2ChDwDLtwpPx+rAXhVq7s0TcZ/l+crbD9O1O8JbeAiyr
+	 kOFuhwBkxVrh61wabqvRMs318Y6vepdynLf0kb+2xWUQujJSSSXG/IXjiDx1mwt/7t
+	 W3X/JDv4CuAKSPqaSBmeiVY/p1QQjlvh/IRHPirQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Babu Moger <babu.moger@amd.com>,
-	Tony Luck <tony.luck@intel.com>,
-	Reinette Chatre <reinette.chatre@intel.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 087/378] x86/resctrl: Only check Intel systems for SNC
+	stable <stable@kernel.org>,
+	Peter Chen <peter.chen@kernel.org>,
+	Yongchao Wu <yongchao.wu@autochips.com>
+Subject: [PATCH 5.15 080/411] usb: cdns3: gadget: fix request skipping after clearing halt
 Date: Tue, 16 Jun 2026 20:25:18 +0530
-Message-ID: <20260616145114.829858459@linuxfoundation.org>
+Message-ID: <20260616145104.525852015@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,91 +69,105 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-263905-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265873-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:babu.moger@amd.com,m:tony.luck@intel.com,m:reinette.chatre@intel.com,m:mingo@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:peter.chen@kernel.org,m:yongchao.wu@autochips.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,intel.com:email,msgid.link:url,vger.kernel.org:from_smtp,amd.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,msgid.link:url,autochips.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 601D4691062
+X-Rspamd-Queue-Id: 863C2693DD2
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Luck <tony.luck@intel.com>
+From: Yongchao Wu <yongchao.wu@autochips.com>
 
-[ Upstream commit 6f6947b2387e94e405f80d472f8a189bfbf2bd6c ]
+commit c8778ff817a7047d6848fefba99dcb27b1bf01fe upstream.
 
-topology_num_nodes_per_package() reports values greater than one on certain
-AMD systems resulting in resctrl's Intel model specific SNC detection
-printing the confusing message:
+According to the cdns3 datasheet, the EPRST (Endpoint Reset) command
+causes the DMA engine to reposition its internal pointer to the next
+Transfer Descriptor (TD) if it was already processing one.
 
-   "CoD enabled system? Resctrl not supported"
+This issue is consistently observed during the ADB identification
+process on macOS hosts, where the host issues a Clear_Halt. Although
+commit 4bf2dd65135a ("usb: cdns3: gadget: toggle cycle bit before reset
+endpoint") attempted to avoid DMA advance by toggling the cycle bit,
+trace logs show that on certain hosts like macOS, the DMA pointer
+(EP_TRADDR) still shifts after EPRST:
 
-Add a check for Intel systems before looking at the topology.
+  cdns3_ctrl_req: Clear Endpoint Feature(Halt ep1out)
+  cdns3_doorbell_epx: ep1out, ep_trbaddr f9c04030  <-- Should be f9c04000
+  cdns3_gadget_giveback: ep1out: req: ... length: 16384/16384
 
-[ reinette: Add Closes tag, fix tag typos, rework changelog ]
+As shown above, the DMA pointer jumped to the next TD, causing
+the controller to skip the initial TRBs of the request. This leads to
+data misalignment and ADB protocol hangs on macOS.
 
-Fixes: 59674fc9d0bf ("x86/resctrl: Fix SNC detection")
-Reported-by: Babu Moger <babu.moger@amd.com>
-Signed-off-by: Tony Luck <tony.luck@intel.com>
-Signed-off-by: Reinette Chatre <reinette.chatre@intel.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Tested-by: Babu Moger <babu.moger@amd.com>
-Link: https://patch.msgid.link/9849330f45ac86344cc5ac54df2d313906d70bc4.1780634584.git.reinette.chatre@intel.com
-Closes: https://lore.kernel.org/lkml/37ac0376-43a3-4283-a3d5-4d57b3bec578@amd.com/
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this by manually restoring the EP_TRADDR register to the starting
+physical address of the current request after the EPRST operation is
+complete.
+
+Fixes: 7733f6c32e36 ("usb: cdns3: Add Cadence USB3 DRD Driver")
+Cc: stable <stable@kernel.org>
+Cc: Peter Chen <peter.chen@kernel.org>
+Signed-off-by: Yongchao Wu <yongchao.wu@autochips.com>
+Acked-by: Peter Chen <peter.chen@kernel.org>
+Link: https://patch.msgid.link/20260513160012.2547894-1-yongchao.wu@autochips.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/resctrl/monitor.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/usb/cdns3/cdns3-gadget.c |   12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/cpu/resctrl/monitor.c b/arch/x86/kernel/cpu/resctrl/monitor.c
-index 9bd87bae498342..59215fef3924c8 100644
---- a/arch/x86/kernel/cpu/resctrl/monitor.c
-+++ b/arch/x86/kernel/cpu/resctrl/monitor.c
-@@ -377,7 +377,12 @@ static const struct x86_cpu_id snc_cpu_ids[] __initconst = {
+--- a/drivers/usb/cdns3/cdns3-gadget.c
++++ b/drivers/usb/cdns3/cdns3-gadget.c
+@@ -2812,9 +2812,19 @@ int __cdns3_gadget_ep_clear_halt(struct
+ 	priv_ep->flags &= ~(EP_STALLED | EP_STALL_PENDING);
  
- static __init int snc_get_config(void)
- {
--	int ret = topology_num_nodes_per_package();
-+	int ret;
-+
-+	if (boot_cpu_data.x86_vendor != X86_VENDOR_INTEL)
-+		return 1;
-+
-+	ret = topology_num_nodes_per_package();
+ 	if (request) {
+-		if (trb)
++		if (trb) {
+ 			*trb = trb_tmp;
  
- 	if (ret > 1 && !x86_match_cpu(snc_cpu_ids)) {
- 		pr_warn("CoD enabled system? Resctrl not supported\n");
--- 
-2.53.0
-
++			/*
++			 * Per datasheet, EPRST causes DMA to reposition to the next TD.
++			 * Manually reset EP_TRADDR to the current TRB to prevent
++			 * the hardware from skipping the interrupted request.
++			 */
++			writel(EP_TRADDR_TRADDR(priv_ep->trb_pool_dma +
++						priv_req->start_trb * TRB_SIZE),
++						&priv_dev->regs->ep_traddr);
++		}
++
+ 		cdns3_rearm_transfer(priv_ep, 1);
+ 	}
+ 
 
 
 
