@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-266002-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266342-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id /WmcDmGUMWpGnQUAu9opvQ
-	(envelope-from <stable+bounces-266002-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:22:25 +0200
+	id othKNlicMWqroAUAu9opvQ
+	(envelope-from <stable+bounces-266342-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:56:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0EE4694131
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:22:24 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33026694966
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:56:24 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=COw7sUoP;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266002-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-266002-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=cocwMOVD;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266342-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266342-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 428A6302A57A
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:22:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 28BDC3251154
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:52:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 505AE466B64;
-	Tue, 16 Jun 2026 18:22:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D74BF47D925;
+	Tue, 16 Jun 2026 18:51:59 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AF1F3D8105;
-	Tue, 16 Jun 2026 18:22:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC2B747AF68;
+	Tue, 16 Jun 2026 18:51:58 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781634143; cv=none; b=Xp55sfbtt4DB+XTKllwWOA/pMwbTsUODPXjuMKwHX4Hst/+JXcMvQ2vnIFK8Fw3wyHjdZfTNG7pvxtcN0Kp0eRvLNTjIV/EPiRAslp+D6tc90wHp1Lhe+g/PRo6zHLkofFwzhgFDBganBuxt7BOtaKLl70EDCCoTiGRBCzu06ts=
+	t=1781635919; cv=none; b=s1P63yzRget6hZa7rxysj960/EYFFjwjkVxxGaksJx+nGf90aWfU5dEQwWI9e1J26GBCTjfbXoCW+Z/GKOWPvgIOFgPqs8rdzphCv/ffSimF0LjBXb9DtQCvzKCXuQn/JPNs1xmINEQjMGffzeSn6V02G1pshfFLysHk6pKYo3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781634143; c=relaxed/simple;
-	bh=RKUi84FQijCfTQAns8BZHmI6LsUhX6kEg7WwZM/qG6k=;
+	s=arc-20240116; t=1781635919; c=relaxed/simple;
+	bh=zbM/peYECVqRW3z9KyWPYXxCl0fZYuzKBEFksSNIODg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p6C3GXaX4VjRo0a2BRXHLhv+dOo9Q4c16vdYa5JFFPNbQBohXE2UU+hP9EWhRWaBNru1JECznePin93JBFlF/IYms9Anbaycwsn/fdZKf3vKInSMX9tk1IICQIn9IT/4bGbl8JdRpkgOowPqkSzt3y8VkdnNU6p5EP/Xxc3MiQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=COw7sUoP; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BFBE1F000E9;
-	Tue, 16 Jun 2026 18:22:20 +0000 (UTC)
+	 MIME-Version; b=YIoyAi86858sS9QDDSgldcaOIIRwOzX3U9nhKN5L9XHYG/Ww50zJlEzbsQVXihh7aY/lJlzECQfIA8CI6guyhJIH8qyV8b7iDZC7m0qNlTH/QKUpAsIgHwHIpaNAXcJ8SJ7xwUWvRcmfrs+C7Vzamp2GkqBLxi13GlB0T2X/Hnc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cocwMOVD; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73B831F000E9;
+	Tue, 16 Jun 2026 18:51:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781634142;
-	bh=UrinH8DF6Bl1hWFd7Ztu8XvpgW1AhWjJ6lX+sf2MB+A=;
+	s=korg; t=1781635918;
+	bh=+8eBlrKf0j5Zi1r4R01TyoBvcUM0trGaWSfiCUhoQHs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=COw7sUoPZWHxLjtrQwzyseU1i0rXpnFvgRSy130ngHfll705BDS8cHbo6jZmbNibq
-	 7VaDKlz3m8Ezy46/TXq0XR3tkqz7D2HiV0jp/VRlp12oqaqYnWOhW/NDbcZ9nd+ScG
-	 lTOoH2OS9lmKJ3a1RtNq0Yt7MvFg5KKZyuZ7P4oA=
+	b=cocwMOVDOCRqgttz+cUtYOziNYLbZYzY6Whu68Y60E7KheYsrTknB1xxrF0I54YTZ
+	 fPOydrEqsUjS+Ra7ZAQ2dr0LF+1K4hfh1goKeBoxPnh9iZ4lOXtk730lkAEPqpXfk+
+	 Ti0U8ag2l88gQ30QR26sbGouuzFfvNYHDbzyPav8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Til Kaiser <mail@tk154.de>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Oscar Maes <oscmaes92@gmail.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 199/411] net: mvpp2: build skb from XDP-adjusted data on XDP_PASS
+Subject: [PATCH 5.10 141/342] pcnet32: stop holding device spin lock during napi_complete_done
 Date: Tue, 16 Jun 2026 20:27:17 +0530
-Message-ID: <20260616145111.299856043@linuxfoundation.org>
+Message-ID: <20260616145054.753242649@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,138 +74,91 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266002-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mail@tk154.de,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,lunn.ch,gmail.com,intel.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-266342-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:andrew@lunn.ch,m:oscmaes92@gmail.com,m:aleksander.lobakin@intel.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,tk154.de:email,vger.kernel.org:from_smtp,xdp.data:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,lunn.ch:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D0EE4694131
+X-Rspamd-Queue-Id: 33026694966
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Til Kaiser <mail@tk154.de>
+From: Oscar Maes <oscmaes92@gmail.com>
 
-[ Upstream commit 77a6b90ce56bc982dcfa94229b8e28e6abb16e95 ]
+[ Upstream commit 73bf3cca7de6a73f53b6a52dc3b1c82ae5667a4d ]
 
-When an XDP program uses bpf_xdp_adjust_head() or bpf_xdp_adjust_tail()
-and then returns XDP_PASS, mvpp2 still builds the skb from fixed offsets
-derived from the original RX descriptor. Packet geometry changes made by
-the XDP program are therefore discarded before the skb reaches the stack.
+napi_complete_done may call gro_flush_normal (though not currently, as GRO
+is unsupported at the moment), which may result in packet TX. This will
+eventually result in calling pcnet32_start_xmit - resulting in a deadlock
+while trying to re-acquire the already locked spin lock.
 
-Update rx_offset and rx_bytes from xdp.data and xdp.data_end for
-XDP_PASS. This makes skb_reserve() and skb_put() reflect the packet seen
-by XDP, and makes RX byte accounting for XDP_PASS follow the length of the
-skb passed to the network stack.
+It is safe to split the spinlock block into two, because the hardware
+registers are still protected from concurrent access, and the two blocks
+perform unrelated operations that don't need to happen atomically.
 
-Keep a separate rx_sync_size for page-pool recycling on skb allocation
-failure, which must stay tied to the received buffer range.
-
-Non-PASS verdicts continue to account the descriptor length because no skb
-is passed up in those cases.
-
-Fixes: 07dd0a7aae7f ("mvpp2: add basic XDP support")
-Signed-off-by: Til Kaiser <mail@tk154.de>
-Link: https://patch.msgid.link/20260607134943.21996-5-mail@tk154.de
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 5b2ec6f2be51 ("pcnet32: use napi_complete_done()")
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Oscar Maes <oscmaes92@gmail.com>
+Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Link: https://patch.msgid.link/20260528140320.5556-1-oscmaes92@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/marvell/mvpp2/mvpp2_main.c   | 21 +++++++++++++------
- 1 file changed, 15 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/amd/pcnet32.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-index 04002548a46327..c4951eb88241b0 100644
---- a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-+++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-@@ -3916,10 +3916,10 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
- 		struct mvpp2_bm_pool *bm_pool;
- 		struct page_pool *pp = NULL;
- 		struct sk_buff *skb;
--		unsigned int frag_size;
-+		unsigned int frag_size, rx_sync_size;
- 		dma_addr_t dma_addr;
- 		phys_addr_t phys_addr;
--		int pool, rx_bytes, err, ret;
-+		int pool, rx_bytes, rx_offset, err, ret;
- 		struct page *page;
- 		void *data;
+diff --git a/drivers/net/ethernet/amd/pcnet32.c b/drivers/net/ethernet/amd/pcnet32.c
+index f78daba60b35c0..ce5b8e6aa976f9 100644
+--- a/drivers/net/ethernet/amd/pcnet32.c
++++ b/drivers/net/ethernet/amd/pcnet32.c
+@@ -1399,8 +1399,10 @@ static int pcnet32_poll(struct napi_struct *napi, int budget)
+ 		pcnet32_restart(dev, CSR0_START);
+ 		netif_wake_queue(dev);
+ 	}
++	spin_unlock_irqrestore(&lp->lock, flags);
  
-@@ -3932,6 +3932,8 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
- 		rx_status = mvpp2_rxdesc_status_get(port, rx_desc);
- 		rx_bytes = mvpp2_rxdesc_size_get(port, rx_desc);
- 		rx_bytes -= MVPP2_MH_SIZE;
-+		rx_sync_size = rx_bytes + MVPP2_MH_SIZE;
-+		rx_offset = MVPP2_MH_SIZE + MVPP2_SKB_HEADROOM;
- 		dma_addr = mvpp2_rxdesc_dma_addr_get(port, rx_desc);
+ 	if (work_done < budget && napi_complete_done(napi, work_done)) {
++		spin_lock_irqsave(&lp->lock, flags);
+ 		/* clear interrupt masks */
+ 		val = lp->a->read_csr(ioaddr, CSR3);
+ 		val &= 0x00ff;
+@@ -1408,9 +1410,9 @@ static int pcnet32_poll(struct napi_struct *napi, int budget)
  
- 		pool = (rx_status & MVPP2_RXD_BM_POOL_ID_MASK) >>
-@@ -3947,7 +3949,7 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
+ 		/* Set interrupt enable. */
+ 		lp->a->write_csr(ioaddr, CSR0, CSR0_INTEN);
++		spin_unlock_irqrestore(&lp->lock, flags);
+ 	}
  
- 		dma_sync_single_range_for_cpu(dev->dev.parent, dma_addr,
- 					      MVPP2_SKB_HEADROOM,
--					      rx_bytes + MVPP2_MH_SIZE,
-+					      rx_sync_size,
- 					      dma_dir);
+-	spin_unlock_irqrestore(&lp->lock, flags);
+ 	return work_done;
+ }
  
- 		/* Buffer header not supported */
-@@ -3998,6 +4000,14 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
- 				continue;
- 			}
- 
-+			rx_sync_size = max_t(unsigned int, rx_sync_size,
-+					     xdp.data_end - xdp.data_hard_start -
-+					     MVPP2_SKB_HEADROOM);
-+
-+			/* Update offset and length to reflect any XDP adjustments. */
-+			rx_offset = xdp.data     - data;
-+			rx_bytes  = xdp.data_end - xdp.data;
-+
- 			metasize = xdp.data - xdp.data_meta;
- 		}
- 
-@@ -4006,8 +4016,7 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
- 			netdev_warn(port->dev, "skb build failed\n");
- 			if (pp) {
- 				page_pool_put_page(pp, virt_to_head_page(data),
--						   rx_bytes + MVPP2_MH_SIZE,
--						   true);
-+						   rx_sync_size, true);
- 			} else {
- 				dma_unmap_single_attrs(dev->dev.parent, dma_addr,
- 						       bm_pool->buf_size,
-@@ -4037,7 +4046,7 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
- 		ps.rx_packets++;
- 		ps.rx_bytes += rx_bytes;
- 
--		skb_reserve(skb, MVPP2_MH_SIZE + MVPP2_SKB_HEADROOM);
-+		skb_reserve(skb, rx_offset);
- 		skb_put(skb, rx_bytes);
- 		if (metasize)
- 			skb_metadata_set(skb, metasize);
 -- 
 2.53.0
 
