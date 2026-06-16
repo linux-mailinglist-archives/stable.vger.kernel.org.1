@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-263769-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264339-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id cTfILlllMWrbiQUAu9opvQ
-	(envelope-from <stable+bounces-263769-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:01:45 +0200
+	id tdnrK+1yMWqGjgUAu9opvQ
+	(envelope-from <stable+bounces-264339-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:59:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A083690BA4
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:01:44 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06E9469199D
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:59:41 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=UB4gERkk;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263769-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263769-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=JayIVQJb;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264339-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264339-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 11202305EFE7
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:00:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A1C84305A5EE
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:56:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13E9A3CAE7F;
-	Tue, 16 Jun 2026 15:00:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C1A744E025;
+	Tue, 16 Jun 2026 15:56:13 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F8F43C2B82;
-	Tue, 16 Jun 2026 15:00:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE77744CAF9;
+	Tue, 16 Jun 2026 15:56:11 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781622008; cv=none; b=OdV82eH/g3pCwi82tq20+cL0PlmeK8OOTpa6d36Afb5oXFjo4IRu50v6KKXw+EMs/i8QgbwmNXuDqEYE2/t64fAnm4Aj3kxQ4iwxQJFo9LzR0U2pKPVJr/y/qzXFrEBqqjenTPAmP4O97uLgnu8Pt2AgumTqxEjyT7AqWbMjxho=
+	t=1781625372; cv=none; b=sdqR9+kWhrecekXUxptjhURuiMaZVb0xQawnOmWZc4OlxclA63zzDn0xSX7eQLEX0F2KHdv+QvzMVevVpvvzGMl+5PW0yoTWWR3CVB+LDsDUH22iDbioArP5jZrYJmCjrOajFRAoETypO3UCV8SSjcAw/DJgYtIJIigQxB4eJsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781622008; c=relaxed/simple;
-	bh=5jP/zQ10W0PfB7FAZyxMPuxlZvSzZ+qiPmOcK+bOmUg=;
+	s=arc-20240116; t=1781625372; c=relaxed/simple;
+	bh=IZ7GFdIo2VI5q6w8QD4NEe19ckuks7f3bjdBdb8NESM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KHjQR7EjUUBelhpUqqKasG+UbonnYS0iF3XbrQ1ydlpDruh+fdOpXHMe9OGC1pg6f6eYiE0Gk+zvqRndGywlhp9+Q7wLNR5C0KnMB3R32U/7x6VtDvftulaIpEn3RTMMUdI1SSkFqg+TuGMxcV2Q3T7rcCA1sce04waBcK3zebg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UB4gERkk; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 480081F00A3F;
-	Tue, 16 Jun 2026 15:00:06 +0000 (UTC)
+	 MIME-Version; b=mxQod7qzUm8eFJNXuA4On7xNWCYCV0DfTiWCf4o/Gu9MZxhzGNXEnU123TuRej4PN9IWWYB4UHa856a75ESwo4PWnM0YjIpjbGsFBfybIYyxJHbbiSKIwMI0TTFLLfWUwPmV06YUkX8/ufDgG+i9//88soY4eG6jep10i7YH2ZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JayIVQJb; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C87D21F000E9;
+	Tue, 16 Jun 2026 15:56:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781622007;
-	bh=6IEQe+pvzUENqXuyOy7c5F1iT15Wx2j/xJOScqJn0g8=;
+	s=korg; t=1781625371;
+	bh=6cncp2XO25urVt+2rD97ZuujWfrPNp9IRCTOheP6gPs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=UB4gERkkuG95fZxH3jAW13UWOO1Yx1WplJjiWTCPYml0A36Oc2xXUEk/C0NXvAWtP
-	 Cj1cSUJdn1cBFKzzKZKFl5xFchtWNfPnhG5J13osZB/OHlvxz/2U8Ed6f95bN77YIw
-	 AjaWRlJM9zS9ND18GZ5ibRcIBpoMZmtEfcLKE6bU=
+	b=JayIVQJbaV0TX9CT7h8JDaMb6wfPP2ArUr0KrgHcumSxbDx9S8BUM1+M9RshGPLNZ
+	 sAN2whA4dgUacvpcHPx86cr5yJPaAPxDFshBTHOG3lW27hgXYL9NTMkKraXcjfq/2T
+	 zzjuo6dW1HTDUiY/aFX9aY8pW9zLnVEE0TjrgXwI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Mingyu Wang <25181214217@stu.xidian.edu.cn>,
-	"Christian Brauner (Amutable)" <brauner@kernel.org>
-Subject: [PATCH 7.1 1/8] fs/fcntl: fix SOFTIRQ-unsafe lock order in fasync signaling
+	Til Kaiser <mail@tk154.de>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 130/325] net: mvpp2: limit XDP frame size to the RX buffer
 Date: Tue, 16 Jun 2026 20:28:46 +0530
-Message-ID: <20260616145523.379523542@linuxfoundation.org>
+Message-ID: <20260616145104.203684813@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145523.335696673@linuxfoundation.org>
-References: <20260616145523.335696673@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,21 +72,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-263769-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264339-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jlayton@kernel.org,m:25181214217@stu.xidian.edu.cn,m:brauner@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mail@tk154.de,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -98,100 +98,55 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,tk154.de:email,msgid.link:url,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 6A083690BA4
+X-Rspamd-Queue-Id: 06E9469199D
 
-7.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mingyu Wang <25181214217@stu.xidian.edu.cn>
+From: Til Kaiser <mail@tk154.de>
 
-commit 00633c4683828acd5256fa8d5163f440d74bbe71 upstream.
+[ Upstream commit f3c6aa078927e6fe8121c9c591ddee8716c5305a ]
 
-A SOFTIRQ-safe to SOFTIRQ-unsafe lock order deadlock can occur in
-send_sigio() and send_sigurg() when a process group receives a signal.
+mvpp2 has short and long BM pools, and short pool buffers can be smaller
+than PAGE_SIZE. The XDP path nevertheless initializes every xdp_buff with
+PAGE_SIZE as frame size.
 
-When FASYNC is configured for a process group (PIDTYPE_PGID), both
-functions use read_lock(&tasklist_lock) to traverse the task list.
-However, they are frequently called from softirq context:
-- send_sigio() via input_inject_event -> kill_fasync
-- send_sigurg() via tcp_check_urg -> sk_send_sigurg (NET_RX_SOFTIRQ)
+XDP helpers use frame_sz to validate tail growth and to derive the hard
+end of the data area. Advertising PAGE_SIZE for short buffers can let
+bpf_xdp_adjust_tail() grow a packet past the real allocation, corrupting
+memory or later tripping skb tailroom checks.
 
-The deadlock is caused by the rwlock writer fairness mechanism:
-1. CPU 0 (process context) holds read_lock(&tasklist_lock) in do_wait().
-2. CPU 1 (process context) attempts write_lock(&tasklist_lock) in
-   fork() or exit() and spins, which blocks all new readers.
-3. CPU 0 is interrupted by a softirq (e.g., TCP URG packet reception).
-4. The softirq calls send_sigurg() and attempts to acquire
-   read_lock(&tasklist_lock), deadlocking because CPU 1 is waiting.
+Initialize the XDP buffer with bm_pool->frag_size so XDP tailroom matches
+the actual buffer backing the packet.
 
-Since PID hashing and do_each_pid_task() traversals are already
-RCU-protected, the read_lock on tasklist_lock is no longer strictly
-required for safe traversal. Fix this by replacing tasklist_lock with
-rcu_read_lock(), aligning the process group signaling path with the
-single-PID path. This also mitigates a potential remote denial of
-service vector via TCP URG packets.
-
-Lockdep splat:
-=====================================================
-WARNING: SOFTIRQ-safe -> SOFTIRQ-unsafe lock order detected
-[...]
-Chain exists of:
-  &dev->event_lock --> &f_owner->lock --> tasklist_lock
-
-Possible interrupt unsafe locking scenario:
-       CPU0                    CPU1
-       ----                    ----
-  lock(tasklist_lock);
-                           local_irq_disable();
-                           lock(&dev->event_lock);
-                           lock(&f_owner->lock);
-  <Interrupt>
-    lock(&dev->event_lock);
-
-*** DEADLOCK ***
-
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Mingyu Wang <25181214217@stu.xidian.edu.cn>
-Link: https://patch.msgid.link/20260523135210.590928-1-w15303746062@163.com
-Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 07dd0a7aae7f ("mvpp2: add basic XDP support")
+Signed-off-by: Til Kaiser <mail@tk154.de>
+Link: https://patch.msgid.link/20260607134943.21996-3-mail@tk154.de
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/fcntl.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/fcntl.c
-+++ b/fs/fcntl.c
-@@ -929,11 +929,11 @@ void send_sigio(struct fown_struct *fown
- 			send_sigio_to_task(p, fown, fd, band, type);
- 		rcu_read_unlock();
- 	} else {
--		read_lock(&tasklist_lock);
-+		rcu_read_lock();
- 		do_each_pid_task(pid, type, p) {
- 			send_sigio_to_task(p, fown, fd, band, type);
- 		} while_each_pid_task(pid, type, p);
--		read_unlock(&tasklist_lock);
-+		rcu_read_unlock();
- 	}
-  out_unlock_fown:
- 	read_unlock_irqrestore(&fown->lock, flags);
-@@ -975,11 +975,11 @@ int send_sigurg(struct file *file)
- 			send_sigurg_to_task(p, fown, type);
- 		rcu_read_unlock();
- 	} else {
--		read_lock(&tasklist_lock);
-+		rcu_read_lock();
- 		do_each_pid_task(pid, type, p) {
- 			send_sigurg_to_task(p, fown, type);
- 		} while_each_pid_task(pid, type, p);
--		read_unlock(&tasklist_lock);
-+		rcu_read_unlock();
- 	}
-  out_unlock_fown:
- 	read_unlock_irqrestore(&fown->lock, flags);
+diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
+index 5ef8637d408015..814b60b16a23dc 100644
+--- a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
++++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
+@@ -3981,7 +3981,7 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
+ 			else
+ 				xdp_rxq = &rxq->xdp_rxq_long;
+ 
+-			xdp_init_buff(&xdp, PAGE_SIZE, xdp_rxq);
++			xdp_init_buff(&xdp, bm_pool->frag_size, xdp_rxq);
+ 			xdp_prepare_buff(&xdp, data,
+ 					 MVPP2_MH_SIZE + MVPP2_SKB_HEADROOM,
+ 					 rx_bytes, true);
+-- 
+2.53.0
+
 
 
 
