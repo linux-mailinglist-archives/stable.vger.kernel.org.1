@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-265798-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264763-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id yWcYMRaQMWoymwUAu9opvQ
-	(envelope-from <stable+bounces-265798-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:04:06 +0200
+	id NlJtIFB9MWrIkgUAu9opvQ
+	(envelope-from <stable+bounces-264763-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:44:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56D04693C56
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:04:06 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24571692652
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:44:00 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=YW9yFekm;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265798-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-265798-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=h+ALMHoc;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264763-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264763-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C4D543006790
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:04:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8BF1F310B42F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:36:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDFE83CEBBD;
-	Tue, 16 Jun 2026 18:04:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE79D478864;
+	Tue, 16 Jun 2026 16:36:07 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8F533C5842;
-	Tue, 16 Jun 2026 18:04:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B24564779A8;
+	Tue, 16 Jun 2026 16:36:06 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781633042; cv=none; b=TH1/tD+gaQz0Y6bg9bSjOmG8kbwUJykE6CsVVDUXeB/gk/Z8aDAoVasAeKCXrsZmmj0rqg1m2ohizLMHTNoMXnk34h06o7qKI69kyHjOSTaujA7i4oYKLcTRxZFa6BMpaFlPjQ0Iw11OgazWXvwLY5eSadpzqu9AbDOaFuvpb4g=
+	t=1781627767; cv=none; b=C4wgHEKaGiXs5kSVCylXi1LexhGNd0dQX/YcEcjqv2moKkvvJU30o7pk1h4eMz92lXEtaH1SP/etiEQ8wRosrx+RZ32HuQ/XCknbJLmfqLLuEaVBnAvoKr46p1YbOSItYaqLBuhXh11aGCBX0TVfzyP+lU811yDKCCl+KVdk2x8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781633042; c=relaxed/simple;
-	bh=u84xK7Nea4famwqJllIb1jylLmZQfp7dZEUV7hiBE8Y=;
+	s=arc-20240116; t=1781627767; c=relaxed/simple;
+	bh=s+ZRsiWbv0AngYbdMquwW8L2vS8EJ0LITqQ+0qCGVUI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NxHkp2I23hJYwCasDHMmGtiXH7lnYDn7RFQDU04y5DwigEjgRMJA8Sk4ARQMBjhx4+DCDMLkNOT/IL1Q2Fcdekz+UTIhoGlolj0EypwOJSR/LUFHMxe/M/iHYWVuFfHtKFaRs1zfr/hJ03WEWeomV8sSdJY35Vd7Q3P2yHmMSjg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YW9yFekm; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9BF61F000E9;
-	Tue, 16 Jun 2026 18:03:59 +0000 (UTC)
+	 MIME-Version; b=nFP28teYWlP7dcdo0x+5VgTwt3hy3531CpzP50yOYc6ir9QNxX28rth5gWElgtTkfVofA2HUqOjIBuY1yKyqwd5iWf+9o+IU74T32d1ZG5F2eZnUS3EEdQB4v2eO6hOw7HWclv7WBxdevaQ2+ejfToVuXiFlJEGxy5LGs3P6uPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h+ALMHoc; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 765161F000E9;
+	Tue, 16 Jun 2026 16:36:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781633041;
-	bh=ik2KdHSlW3k8eKeWo/Y/ko4ewSuPlu9i2PKITMPcAAs=;
+	s=korg; t=1781627766;
+	bh=DLy1uEUcsqzXsgRUBG+PpL7lsuCQCxR8rF03OgRaknE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=YW9yFekmyvMCN+18IcoPzZ5HGq3AcYVP00X8o4fX5OY/QQoRdRowl3dkaSd0nUDxi
-	 61MPd2f54FacviA0rxYGH/DJQlTX81yeawAutyyoqolCPTPMh4zC2h274SOajZ7tv0
-	 jZb/sQq/MQXeMZrnsE+XGcdyFTNZ5lQm/CErxizo=
+	b=h+ALMHocrkfwo2f35kMzniFwsnHaWMnXX3YsF2/Z2kyv/l2Z4xn+E2oa9RtIAfQth
+	 zrl4sF1ySnilnW2rqaEE4+/2q4K6q2NFfuQrAtCVuo23FGbbMuQYeWo8VFrLLJQRRy
+	 WbhWBJJF1+eP45untlWgbnzH7jUpQhavMWbWa7qo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 6.1 515/522] arm64: cputype: Add C1-Premium definitions
+	Alex Hung <alex.hung@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Ray Wu <ray.wu@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 224/261] drm/amd/display: Clamp HDMI HDCP2 rx_id_list read to buffer size
 Date: Tue, 16 Jun 2026 20:31:02 +0530
-Message-ID: <20260616145149.821674524@linuxfoundation.org>
+Message-ID: <20260616145055.407498147@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,85 +71,85 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265798-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mark.rutland@arm.com,m:catalin.marinas@arm.com,m:will@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264763-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:alex.hung@amd.com,m:harry.wentland@amd.com,m:ray.wu@amd.com,m:daniel.wheeler@amd.com,m:alexander.deucher@amd.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:url,arm.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,amd.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 56D04693C56
+X-Rspamd-Queue-Id: 24571692652
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Harry Wentland <harry.wentland@amd.com>
 
-commit d28413bfc5a255957241f1df5d7fd0c2cd74fe18 upstream.
+commit f0f3981c43b32cadfe373d636d9e9ca522bb3702 upstream.
 
-Add cputype definitions for C1-Premium. These will be used for errata
-detection in subsequent patches.
+[Why & How]
+During HDCP 2.x repeater authentication over HDMI, the driver reads the
+sink's RxStatus register and extracts a 10-bit message size field (max
+value 1023). This value is used as the read length for the ReceiverID
+list without being clamped to the size of the destination buffer
+rx_id_list[177]. A malicious HDMI repeater could advertise a message
+size larger than the buffer, causing an out-of-bounds write during the
+I2C read.
 
-These values can be found in the C1-Premium TRM:
+Clamp the read length in mod_hdcp_read_rx_id_list() to the size of the
+rx_id_list buffer, matching the approach already used in the DP branch.
 
-  https://developer.arm.com/documentation/109416/0100/
-
-... in section A.5.1 ("MIDR_EL1, Main ID Register").
-
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Signed-off-by: Will Deacon <will@kernel.org>
-[Mark: backport to v6.1.y]
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Fixes: eff682f83c9c ("drm/amd/display: Add DDC handles for HDCP2.2")
+Assisted-by: Copilot:claude-opus-4.6
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Ray Wu <ray.wu@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 229212219e4247d9486f8ba41ef087358490be09)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/include/asm/cputype.h |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/amd/display/modules/hdcp/hdcp_ddc.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/arm64/include/asm/cputype.h
-+++ b/arch/arm64/include/asm/cputype.h
-@@ -99,6 +99,7 @@
- #define ARM_CPU_PART_CORTEX_A725	0xD87
- #define ARM_CPU_PART_C1_ULTRA		0xD8C
- #define ARM_CPU_PART_NEOVERSE_N3	0xD8E
-+#define ARM_CPU_PART_C1_PREMIUM		0xD90
- 
- #define APM_CPU_PART_XGENE		0x000
- #define APM_CPU_VAR_POTENZA		0x00
-@@ -182,6 +183,7 @@
- #define MIDR_CORTEX_A725 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A725)
- #define MIDR_C1_ULTRA MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_C1_ULTRA)
- #define MIDR_NEOVERSE_N3 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_N3)
-+#define MIDR_C1_PREMIUM MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_C1_PREMIUM)
- #define MIDR_THUNDERX	MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX)
- #define MIDR_THUNDERX_81XX MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX_81XX)
- #define MIDR_THUNDERX_83XX MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX_83XX)
+--- a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_ddc.c
++++ b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_ddc.c
+@@ -529,7 +529,8 @@ enum mod_hdcp_status mod_hdcp_read_rx_id
+ 	} else {
+ 		status = read(hdcp, MOD_HDCP_MESSAGE_ID_READ_REPEATER_AUTH_SEND_RECEIVERID_LIST,
+ 				hdcp->auth.msg.hdcp2.rx_id_list,
+-				hdcp->auth.msg.hdcp2.rx_id_list_size);
++				MIN(hdcp->auth.msg.hdcp2.rx_id_list_size,
++				    sizeof(hdcp->auth.msg.hdcp2.rx_id_list)));
+ 	}
+ 	return status;
+ }
 
 
 
