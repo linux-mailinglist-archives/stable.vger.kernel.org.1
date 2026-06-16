@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-264273-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266025-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id uxArIItyMWpXjgUAu9opvQ
-	(envelope-from <stable+bounces-264273-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:58:03 +0200
+	id b8CqCuiUMWqAnQUAu9opvQ
+	(envelope-from <stable+bounces-266025-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:24:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AD2E69191C
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:58:03 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 822416941AB
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:24:39 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=DdjE9c+i;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264273-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-264273-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=cmNH9VfM;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266025-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266025-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C8945300398B
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:51:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 13354318361C
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:24:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2588744B66E;
-	Tue, 16 Jun 2026 15:51:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4B96466B64;
+	Tue, 16 Jun 2026 18:24:24 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED4EF4418DF;
-	Tue, 16 Jun 2026 15:51:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C14346AF1B;
+	Tue, 16 Jun 2026 18:24:23 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781625095; cv=none; b=R4J01wuUvCDifkLLdHsGZOcjCD0TbxDkhwry5EAefmsFLPXGKEiBL+LmR6Dubd7/7LmOqWM89v5mrksCZLbKDPGc0s6sJvp/Xf2hq1AwU6PzwUCHPI9fzPictHhQOV9RD4NVddqti5j6rDU3Dg1sjyuRclF7M0uMDKfdk3AqNe0=
+	t=1781634264; cv=none; b=PLEnfio+DJYoKqOEQD2ghNr+oQrxo4vFYT/+Xh9r65qc6XxUfPzcVJWwmrXiCfU2KA2xFFJflwv5xARprua+nOt8QBk4Gd7qAq5zAIGGl8xmXRsR9bePgSy0HkuQBBHquq+emcvZ5ubnkkZeTPwbe98C+6pJ2ZLMfgv9OkxJs8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781625095; c=relaxed/simple;
-	bh=MTUJG+wb9zXgxfm+QTkvUedxlIiJrTaF0InaUl3Ag88=;
+	s=arc-20240116; t=1781634264; c=relaxed/simple;
+	bh=cf/92yuffpGojz05p1pe4/wMczQwalnB5Lz9/XUqoFU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IhDNpGxoELJy6fovbleP9n20MOfdbjkaGix1qDsA/7fpWhem6UD6YRD56UOqcgWCXZwM0TtaTKB+HCeHEVo+FkyzYpBVxuCx7a7UahjLAbNoJZn6FWng6holWsdBZay53CDYFEKlTII7HReyrF9FwjxCqHkd3Lgbz6FNwMQG+xQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DdjE9c+i; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1C911F000E9;
-	Tue, 16 Jun 2026 15:51:33 +0000 (UTC)
+	 MIME-Version; b=Nnz3+VNLoiyYGH7+JBQCrcmicZqJlnT37p9negsYxVaKxg2q3IIvk7W0Xle462Hjz9eZYwR9kkcZBIgFcTyE92gvMHP80heZp+kTfox6yLxQwvSkk3c6hiD6Oq09pVEM0Jfel2I0y3boX+w2EVUMBH8PksZnnQfc0ZbvX6M5UBs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cmNH9VfM; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 846521F000E9;
+	Tue, 16 Jun 2026 18:24:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781625094;
-	bh=Y0bd+fDTyX4hBbIcI5qK1MpiOkEQaU+/aQ5e4Ead61E=;
+	s=korg; t=1781634263;
+	bh=ZIUmRDxzl7LaCCMHXLreiT227SMIhq6IkSf1vsA6GsY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=DdjE9c+i3G5u10ZgDJTQ0GICkTyo0j35QH2iCQ8IR8oF3N/+m58xfQh8ail6022Q5
-	 ZC6NCougg+zl70LAss1LTperoAvvcbrh1doWEiX15Tu4jo2arFDAPD/R38GZ4QPtiV
-	 +9duwMLzm4jbRaOwckny+a1txNMwcOsBdflCBrTA=
+	b=cmNH9VfMvQDI/FZUS/cFRnF5QRyDqwEhU3sfoYwftAsvQgvpSArIV4e5bZ6sxNM0w
+	 NC86qVsG86R+HYc7RLpGrmibtoGULSMah2FxuM5mgwKNIlK28t3WUf7RdbTY2CXcTm
+	 gVGmOHl8sy5m8eF/NRYzKpkgG8Bz1MgfkTeYtVZU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jian Zhou <eilaimemedsnaimel@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 075/325] ALSA: PCM: Fix wait queue list corruption in snd_pcm_drain() on linked streams
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Ulf Hansson <ulfh@kernel.org>
+Subject: [PATCH 5.15 233/411] mmc: renesas_sdhi: Add OF entry for RZ/G2H SoC
 Date: Tue, 16 Jun 2026 20:27:51 +0530
-Message-ID: <20260616145101.473553330@linuxfoundation.org>
+Message-ID: <20260616145113.218914401@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,106 +68,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-264273-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:eilaimemedsnaimel@gmail.com,m:tiwai@suse.de,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-266025-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de,kernel.org];
-	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:prabhakar.mahadev-lad.rj@bp.renesas.com,m:wsa+renesas@sang-engineering.com,m:geert+renesas@glider.be,m:ulfh@kernel.org,m:wsa@sang-engineering.com,m:geert@glider.be,s:lists@lfdr.de];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,suse.de:email,vger.kernel.org:from_smtp,msgid.link:url]
+	TAGGED_RCPT(0.00)[stable,renesas];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,sang-engineering.com:email,glider.be:email,renesas.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 1AD2E69191C
+X-Rspamd-Queue-Id: 822416941AB
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ji'an Zhou <eilaimemedsnaimel@gmail.com>
+From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 
-[ Upstream commit 88fe2e3658726cb21ff2dcf9770bf672f9b9d31b ]
+commit f48ee49726ee4ab545fd2dc644f169c0809b19b3 upstream.
 
-snd_pcm_drain() uses init_waitqueue_entry which does not clear
-entry.prev/next, and add_wait_queue with a conditional
-remove_wait_queue that is skipped when to_check is no longer
-in the group after concurrent UNLINK.  The orphaned wait entry
-remains on the unlinked substream sleep queue.  On the next
-drain iteration, add_wait_queue adds the entry to a new queue
-while still linked on the old one, corrupting both lists.  A
-subsequent wake_up dereferences NULL at the func pointer
-(mapped from the spinlock at offset 0 of the misinterpreted
-wait_queue_head_t), causing a kernel panic.
+The RZ/G2H (R8A774E1) SoC was previously handled via the generic
+"renesas,rcar-gen3-sdhi" fallback compatible string. However, because
+the SDHI IP on RZ/G2H is identical with the R-Car H3-N (R8A77951), it
+requires the specific quirks and configuration defined in
+`of_r8a7795_compatible` rather than the generic Gen3 data.
 
-Replace init_waitqueue_entry/add_wait_queue/conditional
-remove_wait_queue with init_wait_entry/prepare_to_wait/
-finish_wait.  init_wait_entry clears prev/next via
-INIT_LIST_HEAD on each iteration and sets
-autoremove_wake_function which auto-removes the entry on
-wake-up.  finish_wait safely handles both the already-removed
-and still-queued cases.
+Add the explicit "renesas,sdhi-r8a774e1" match entry to map it correctly.
+Note that the DT binding file renesas,sdhi.yaml does not need an update
+as the entry for this SoC is already present.
 
-Fixes: 9b1dbd69ba6f ("ALSA: pcm: fix use-after-free on linked stream runtime in snd_pcm_drain")
-Signed-off-by: Ji'an Zhou <eilaimemedsnaimel@gmail.com>
-Link: https://patch.msgid.link/20260604142559.3840881-1-eilaimemedsnaimel@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 31941342888d ("arm64: dts: renesas: r8a774e1: Add SDHI nodes")
+Cc: stable@vger.kernel.org
+Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Ulf Hansson <ulfh@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/core/pcm_native.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/mmc/host/renesas_sdhi_internal_dmac.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/core/pcm_native.c b/sound/core/pcm_native.c
-index 495ff93fcd1db2..0ae95a46708915 100644
---- a/sound/core/pcm_native.c
-+++ b/sound/core/pcm_native.c
-@@ -2176,9 +2176,8 @@ static int snd_pcm_drain(struct snd_pcm_substream *substream,
- 		drain_no_period_wakeup = to_check->no_period_wakeup;
- 		drain_rate = to_check->rate;
- 		drain_bufsz = to_check->buffer_size;
--		init_waitqueue_entry(&wait, current);
--		set_current_state(TASK_INTERRUPTIBLE);
--		add_wait_queue(&to_check->sleep, &wait);
-+		init_wait_entry(&wait, 0);
-+		prepare_to_wait(&to_check->sleep, &wait, TASK_INTERRUPTIBLE);
- 		snd_pcm_stream_unlock_irq(substream);
- 		if (drain_no_period_wakeup)
- 			tout = MAX_SCHEDULE_TIMEOUT;
-@@ -2196,7 +2195,7 @@ static int snd_pcm_drain(struct snd_pcm_substream *substream,
- 		group = snd_pcm_stream_group_ref(substream);
- 		snd_pcm_group_for_each_entry(s, substream) {
- 			if (s->runtime == to_check) {
--				remove_wait_queue(&to_check->sleep, &wait);
-+				finish_wait(&to_check->sleep, &wait);
- 				break;
- 			}
- 		}
--- 
-2.53.0
-
+--- a/drivers/mmc/host/renesas_sdhi_internal_dmac.c
++++ b/drivers/mmc/host/renesas_sdhi_internal_dmac.c
+@@ -231,6 +231,7 @@ static const struct renesas_sdhi_of_data
+ static const struct of_device_id renesas_sdhi_internal_dmac_of_match[] = {
+ 	{ .compatible = "renesas,sdhi-r7s9210", .data = &of_rza2_compatible, },
+ 	{ .compatible = "renesas,sdhi-mmc-r8a77470", .data = &of_rcar_gen3_compatible, },
++	{ .compatible = "renesas,sdhi-r8a774e1", .data = &of_r8a7795_compatible, },
+ 	{ .compatible = "renesas,sdhi-r8a7795", .data = &of_r8a7795_compatible, },
+ 	{ .compatible = "renesas,sdhi-r8a7796", .data = &of_rcar_gen3_compatible, },
+ 	{ .compatible = "renesas,sdhi-r8a77961", .data = &of_r8a77961_compatible, },
 
 
 
