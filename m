@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-264132-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265663-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ljNcLvhvMWo0jQUAu9opvQ
-	(envelope-from <stable+bounces-264132-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:47:04 +0200
+	id 1GFwIl6NMWrdmQUAu9opvQ
+	(envelope-from <stable+bounces-265663-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:52:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5123669160C
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:47:04 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46A8269391F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:52:30 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=zX6rrNut;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264132-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264132-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=YR+qj5NX;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265663-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-265663-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C17ED314D47F
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:38:18 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id AF9C4300A499
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:52:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56F6B44CAF9;
-	Tue, 16 Jun 2026 15:38:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC359478E53;
+	Tue, 16 Jun 2026 17:52:28 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 201D544CAE0;
-	Tue, 16 Jun 2026 15:38:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C8CE466B4B;
+	Tue, 16 Jun 2026 17:52:26 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781624295; cv=none; b=R1+y2TJuVDUSB4wnR+08g7Uu3Ph5dcpqAZUL483ZwfwW4ctwX2UUmd3kGSdofNgyW5tLWc2RjGIGra68fgA0/3YZaMyM6xO3LB39nXbu4IK2r8bi56RmOGjjaugl22CziFhQznxL2vlC5AKymCb1quSuZebGbIzT3frpb4z5lVk=
+	t=1781632348; cv=none; b=g8k9oWet73SsgDSUSda+BXaW4NspOLWj2sperU6pg+D1s/AGQXtVP4eNCpUk0NFEVFDvXGT82eVMvGPeLmku2nCvkK6ha6ZfOo/1VsRBmnVgyb004LKhBJlo8+oU9oW6Dc3nJzmqqR/Ps0HitSt917YCLD2DD5StnOatQy53wNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781624295; c=relaxed/simple;
-	bh=HndvdQadL2BOVDlxA492qgXoBd0irZYz/j5mVVVQroY=;
+	s=arc-20240116; t=1781632348; c=relaxed/simple;
+	bh=9iO9F/CX8uAQgJ4WTycPG9rdag51vGGj/o1DoXBvVsA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W6IVIJiXF+HyJ/sIyP1HcvN4VocdODsAlFET/vIZTzYTL+T8TIvpX4Hu6RiBZiFePm/XGgtFEU+QF9iRW6ZZBvdClajDVzY0V3IapH5cJJ9cARRHEUJWoKbcsVYcO+rImKz+s1SUIwqRr6t9sUPLXw8Hw2VIiNSonm50LMx9Q4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zX6rrNut; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F21591F000E9;
-	Tue, 16 Jun 2026 15:38:12 +0000 (UTC)
+	 MIME-Version; b=KpnbW//oqVz0WTNl1OXJa1mWMfraUUsnvVW3yrUkbTG7/9nznb7jI/DJqmX+rToyLTd/uFNB6LOETL/pSXtXJwpantHhprhdPNsnrScjBzIlWa1EYuenEPV23d06A6ZuPYGxQrvrI6GIXfQAiw4/Jc8c+FcIIZcANuLXt21ZoME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YR+qj5NX; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13EB61F000E9;
+	Tue, 16 Jun 2026 17:52:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781624293;
-	bh=zzzMFKCv735k4uXaq+jMx9M2op7ZEvxe2J6NYk21+To=;
+	s=korg; t=1781632345;
+	bh=slR9Wzuz9Lq2Eyx6bLsPJYoO02LnWaaV/HdpwRTSjnI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=zX6rrNutGz0OP/AnZtwEopYixkHELfy/qWEzg6PaQ4VDpAJNKkd1j649pHtbbPWhj
-	 ZfeW68DQGvWaai47zHmW2WDUW0fGe0LmXCEWjZg4cej2jjeLReUCq/1445fSF5J5e3
-	 2mDtbBhJyBH4zUl7/eZalgoMkNnyxWZ2cti+ORYE=
+	b=YR+qj5NX82YpT61nPP19lNqCTzI66FIE4EHohgoZu/3M94ByB220rIUIGL7xRDqht
+	 +uQfVqvKRiwZKj4oG8cnvqq2x2s3WDjUd4XOR8rfg6aBZAElGFlMA8etqrkyteXFVN
+	 31iiHzerJccTvIji4JsDsBRIMMjJehD36P7EbYS8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Inochi Amaoto <inochiama@gmail.com>,
-	Gabriel Somlo <gsomlo@gmail.com>,
-	Ulf Hansson <ulfh@kernel.org>
-Subject: [PATCH 7.0 309/378] mmc: litex_mmc: Set mandatory idle clocks before CMD0
+	Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>,
+	Johan Hovold <johan@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 393/522] spi: zynq-qspi: fix controller deregistration
 Date: Tue, 16 Jun 2026 20:29:00 +0530
-Message-ID: <20260616145126.467397097@linuxfoundation.org>
+Message-ID: <20260616145144.201167379@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,102 +70,108 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-264132-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:inochiama@gmail.com,m:gsomlo@gmail.com,m:ulfh@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-265663-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:naga.sureshkumar.relli@xilinx.com,m:johan@kernel.org,m:broonie@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,xilinx.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5123669160C
+X-Rspamd-Queue-Id: 46A8269391F
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Inochi Amaoto <inochiama@gmail.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit 99982b743e5ba72bd1f5de0e03e3b96ae70b1e51 upstream.
+[ Upstream commit c9c012706c9fa8ca6d129a9161caf92ab625a3fd ]
 
-The litex_mmc driver assumes the card is already probed in the BIOS
-and skip the phy initialization. This will cause the command fail
-like the following when the old card is unplugged and then insert
-a new card:
+Make sure to deregister the controller before disabling it during driver
+unbind.
 
-[   62.923593] litex-mmc f0004000.mmc: Command (cmd 8) error, status -110
-[   62.949717] litex-mmc f0004000.mmc: Command (cmd 55) error, status -110
-[   62.976606] litex-mmc f0004000.mmc: Command (cmd 55) error, status -110
-[   63.002516] litex-mmc f0004000.mmc: Command (cmd 55) error, status -110
-[   63.028442] litex-mmc f0004000.mmc: Command (cmd 55) error, status -110
+Note that clocks were also disabled before the recent commit
+1f8fd9490e31 ("spi: zynq-qspi: Simplify clock handling with
+devm_clk_get_enabled()").
 
-Add required clock settings and initialization for the CMD 0, so it can
-probe the new card.
-
-Fixes: 92e099104729 ("mmc: Add driver for LiteX's LiteSDCard interface")
-Signed-off-by: Inochi Amaoto <inochiama@gmail.com>
-Reviewed-by: Gabriel Somlo <gsomlo@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Ulf Hansson <ulfh@kernel.org>
+Fixes: 67dca5e580f1 ("spi: spi-mem: Add support for Zynq QSPI controller")
+Cc: stable@vger.kernel.org	# 5.2: 8eb2fd00f65a
+Cc: stable@vger.kernel.org	# 5.2
+Cc: Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260410081757.503099-27-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/litex_mmc.c |   14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/spi/spi-zynq-qspi.c |   15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
---- a/drivers/mmc/host/litex_mmc.c
-+++ b/drivers/mmc/host/litex_mmc.c
-@@ -69,6 +69,9 @@
- #define SD_SLEEP_US       5
- #define SD_TIMEOUT_US 20000
+--- a/drivers/spi/spi-zynq-qspi.c
++++ b/drivers/spi/spi-zynq-qspi.c
+@@ -641,7 +641,7 @@ static int zynq_qspi_probe(struct platfo
  
-+#define SD_INIT_DELAY_US  1000
-+#define SD_INIT_CLK_HZ    400000
-+
- #define SDIRQ_CARD_DETECT    1
- #define SDIRQ_SD_TO_MEM_DONE 2
- #define SDIRQ_MEM_TO_SD_DONE 4
-@@ -450,6 +453,17 @@ static void litex_mmc_set_ios(struct mmc
- 	struct litex_mmc_host *host = mmc_priv(mmc);
+ 	xqspi = spi_controller_get_devdata(ctlr);
+ 	xqspi->dev = dev;
+-	platform_set_drvdata(pdev, xqspi);
++	platform_set_drvdata(pdev, ctlr);
+ 	xqspi->regs = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(xqspi->regs)) {
+ 		ret = PTR_ERR(xqspi->regs);
+@@ -699,9 +699,9 @@ static int zynq_qspi_probe(struct platfo
+ 	/* QSPI controller initializations */
+ 	zynq_qspi_init_hw(xqspi, ctlr->num_chipselect);
  
- 	/*
-+	 * The SD specification requires at least 74 idle clocks before CMD0.
-+	 * These dummy cycles is generated by writing LITEX_PHY_INITIALIZE.
-+	 */
-+	if (ios->chip_select == MMC_CS_HIGH) {
-+		litex_mmc_setclk(host, SD_INIT_CLK_HZ);
-+		litex_write8(host->sdphy + LITEX_PHY_INITIALIZE, 1);
-+		fsleep(SD_INIT_DELAY_US);
-+		return;
-+	}
+-	ret = devm_spi_register_controller(&pdev->dev, ctlr);
++	ret = spi_register_controller(ctlr);
+ 	if (ret) {
+-		dev_err(&pdev->dev, "devm_spi_register_controller failed\n");
++		dev_err(&pdev->dev, "failed to register controller\n");
+ 		goto remove_ctlr;
+ 	}
+ 
+@@ -725,9 +725,16 @@ remove_ctlr:
+  */
+ static void zynq_qspi_remove(struct platform_device *pdev)
+ {
+-	struct zynq_qspi *xqspi = platform_get_drvdata(pdev);
++	struct spi_controller *ctlr = platform_get_drvdata(pdev);
++	struct zynq_qspi *xqspi = spi_controller_get_devdata(ctlr);
 +
-+	/*
- 	 * NOTE: Ignore any ios->bus_width updates; they occur right after
- 	 * the mmc core sends its own acmd6 bus-width change notification,
- 	 * which is redundant since we snoop on the command flow and inject
++	spi_controller_get(ctlr);
++
++	spi_unregister_controller(ctlr);
+ 
+ 	zynq_qspi_write(xqspi, ZYNQ_QSPI_ENABLE_OFFSET, 0);
++
++	spi_controller_put(ctlr);
+ }
+ 
+ static const struct of_device_id zynq_qspi_of_match[] = {
 
 
 
