@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-264904-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265886-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 8DOlHVCAMWoUlAUAu9opvQ
-	(envelope-from <stable+bounces-264904-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:56:48 +0200
+	id EqyAKIiSMWpWnAUAu9opvQ
+	(envelope-from <stable+bounces-265886-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:14:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DC3369299D
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:56:47 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 248C9693F08
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:14:32 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=JljdT0j8;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264904-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264904-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=aEf7dbeN;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265886-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265886-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B64D230172D7
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:48:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A163C31CC5FA
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:12:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0A1645348A;
-	Tue, 16 Jun 2026 16:48:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 343E33D75CE;
+	Tue, 16 Jun 2026 18:12:02 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99AB83C09F3;
-	Tue, 16 Jun 2026 16:48:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0022C3D091A;
+	Tue, 16 Jun 2026 18:12:00 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781628502; cv=none; b=owes+Dv3Nkm396hEk6dJxSHkRVHz02a9AjxPEAe+B6H3PSKzp7otia8zKC/Lt6jk4+6U4y1kjdb8ln4CAx0xi9Qoo7QZwAHaWt6KmthzCWwMsFk6NcpzcNQsZFB4mxqAe4/ZX7RCPCrHUr4TDcNAyT19ZTfBh+BabX5uV2V8M+Q=
+	t=1781633522; cv=none; b=LebQoi1AkvUO5SbFpdsuS061PJn5oeblHaNCy1c43B7/5cCsPTAbAH8l9krR4QF1As45uRtbPxCNDG71VSW6cj7XuGNz1kHOzfg9nlAATI8jH03hlw4rJH3bFiz5aJi19A/BCi2UD4a1aFrTmncQwglgRi+KjpYsAW7rflE8CE0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781628502; c=relaxed/simple;
-	bh=oQEFOwgNzrQvkoAh2Vjs67xrusdDeaTEXsa8WQWP8UM=;
+	s=arc-20240116; t=1781633522; c=relaxed/simple;
+	bh=E3OgqDs1kdVvGVG6s44MuIDEOxSZ5T8no7Xzr2Hj244=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NV00eEx71uIKCCYXOVAARw7Mh9nB692jnpNE02PhE6WherLoAaShP0q9S8qvHjnMN2BM4REdzQRnkhWQHnl0ajgj77k7MXfOIkSpZ2459cXj7Mls0Ga4YMWn+A8UT8GKLw7wL2d+8i963sosg5jp5TBlHkA6XaAdxAbEDFir91I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JljdT0j8; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C7671F000E9;
-	Tue, 16 Jun 2026 16:48:20 +0000 (UTC)
+	 MIME-Version; b=hX4yHTZdCrUxaEajcWLdiWuA8kU0aLIGEwvSafte4eWUmccf+pvrNNdQAihqyMH43FV31uOCR2wim+7ezBiSbx8AT3EURsBigzGpzsMK2yLipCtZ2N22a8CFb6vJNTou8DRgJpNgvp0LGqw7y/QR6Zya+tY5TRi8BYLT87+pS/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aEf7dbeN; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC09E1F00A3A;
+	Tue, 16 Jun 2026 18:11:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781628501;
-	bh=soB1W5/qydvuk9qbgdTAXviZnMN52IUs72FjLsNrjoA=;
+	s=korg; t=1781633520;
+	bh=SK/6KO/zuWPL4/Mth+mxEsy96PTsWRMwRXRlTC04Ux4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=JljdT0j8ezmZvJLnO7Xq9wLG0Qf9mj+5/sq7xGJww+Z0MYp/EPkkBlCM7f/V9kM/F
-	 +Jzhrgdg8bIGGkJVlzkOVTd1AsRW8Z+MARYQjNSz/MSxC7LNdkrTypONpI3iZaVyEQ
-	 LQhGRPHLTnFziQJwUGYBFLP45bugvwmMy4UL8bsg=
+	b=aEf7dbeN6l+7XQ+ZFkv8QQazpz2Jp4IreyinayxvmI1R42rEbRPIMZqRdvPt3KbRv
+	 xg0/qDL7xCWHZlqjWr77r33VvItN+1ROAh3yKzZiBhm/kAQXG3vkNiCyAavG+cFFea
+	 BUPBFRM3TrAVJtTYcjnr6f8vDn3pHs6RgPTJ3SwQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Naveen N Rao (AMD)" <naveen@kernel.org>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.6 106/452] KVM: SVM: Flush the current TLB when transitioning from xAVIC => x2AVIC
+	Simon Horman <horms@kernel.org>,
+	Ashutosh Desai <ashutoshdesai993@gmail.com>,
+	David Heidelberg <david@ixit.cz>
+Subject: [PATCH 5.15 095/411] nfc: hci: fix out-of-bounds read in HCP header parsing
 Date: Tue, 16 Jun 2026 20:25:33 +0530
-Message-ID: <20260616145123.343980225@linuxfoundation.org>
+Message-ID: <20260616145105.266719989@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,118 +72,125 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264904-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265886-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:horms@kernel.org,m:ashutoshdesai993@gmail.com,m:david@ixit.cz,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:naveen@kernel.org,m:seanjc@google.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,ixit.cz];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,ixit.cz:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9DC3369299D
+X-Rspamd-Queue-Id: 248C9693F08
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Ashutosh Desai <ashutoshdesai993@gmail.com>
 
-commit a9e18aa3263f356edae305e29830e5fe63d8597a upstream.
+commit f040e590c035bfd9553fe79ee9585caf1b14d67b upstream.
 
-Flush the current TLB when xAVIC *or* x2AVIC is activated, as KVM is
-(apparently) responsible for purging TLB entries when transitioning from
-xAVIC to x2AVIC.  The APM says a whole lot of nothing about TLB flushing
-with respect to (x2)AVIC, but empirical data strongly suggests hardware
-also does a whole lot of nothing.
+Both nfc_hci_recv_from_llc() and nci_hci_data_received_cb() read
+packet->header from skb->data at function entry without first checking
+that the buffer holds at least one byte. A malicious NFC peer can send
+a 0-byte HCP frame that passes through the SHDLC layer and reaches
+these functions, causing an out-of-bounds heap read of packet->header.
+The same 0-byte frame, if queued as a non-final fragment, also causes
+the reassembly loop to underflow msg_len to UINT_MAX, triggering
+skb_over_panic() when the reassembled skb is written.
 
-Failure to flush the TLB when enabling x2AVIC can lead to guest accesses
-to the APIC base address getting incorrectly redirected to the virtual
-APIC page.  The flaw most visibly manifests as failures in KVM-Unit-Test's
-verify_disabled_apic_mmio() testcase when x2APIC is enabled (though for
-reasons unknown, the test only reliably fails with EFI builds).
+Fix this by adding a pskb_may_pull() check at the entry of each
+function before packet->header is first accessed. The existing
+pskb_may_pull() checks before the reassembled hcp_skb is cast to
+struct hcp_packet remain in place to guard the 2-byte HCP message
+header.
 
-Fixes: 0ccf3e7cb95a ("KVM: SVM: Flush the "current" TLB when activating AVIC")
-Fixes: 4d1d7942e36a ("KVM: SVM: Introduce logic to (de)activate x2AVIC mode")
+Fixes: 8b8d2e08bf0d ("NFC: HCI support")
+Fixes: 11f54f228643 ("NFC: nci: Add HCI over NCI protocol support")
 Cc: stable@vger.kernel.org
-Cc: Naveen N Rao (AMD) <naveen@kernel.org>
-Link: https://patch.msgid.link/20260515171536.1841645-1-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Ashutosh Desai <ashutoshdesai993@gmail.com>
+Link: https://patch.msgid.link/20260505170712.96560-1-ashutoshdesai993@gmail.com
+Signed-off-by: David Heidelberg <david@ixit.cz>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/svm/avic.c |   35 +++++++++++++++++++++++++++++------
- 1 file changed, 29 insertions(+), 6 deletions(-)
+ net/nfc/hci/core.c |   10 ++++++++++
+ net/nfc/nci/hci.c  |   10 ++++++++++
+ 2 files changed, 20 insertions(+)
 
---- a/arch/x86/kvm/svm/avic.c
-+++ b/arch/x86/kvm/svm/avic.c
-@@ -111,6 +111,35 @@ static void avic_activate_vmcb(struct vc
- 	svm_clr_intercept(svm, INTERCEPT_CR8_WRITE);
+--- a/net/nfc/hci/core.c
++++ b/net/nfc/hci/core.c
+@@ -861,6 +861,11 @@ static void nfc_hci_recv_from_llc(struct
+ 	struct sk_buff *frag_skb;
+ 	int msg_len;
  
- 	/*
-+	 * Flush the TLB when enabling (x2)AVIC and when transitioning between
-+	 * xAVIC and x2AVIC, as the CPU may have inserted a TLB entry for the
-+	 * "wrong" mapping.
-+	 *
-+	 * KVM uses a per-VM "scratch" page to back the APIC memslot, because
-+	 * KVM also uses per-VM page tables *and* maintains the page table (NPT
-+	 * or shadow page) mappings for said memslot even if one or more vCPUs
-+	 * have their local APIC hardware-disabled or are in x2APIC mode, i.e.
-+	 * even if one or more vCPUs' APIC MMIO BAR is effectively disabled.
-+	 *
-+	 * If xAVIC is fully enabled, hardware ignores the physical address in
-+	 * KVM's page tables, i.e. in the leaf SPTE for the APIC memslot, and
-+	 * instead redirects the access to the AVIC backing page, i.e. to the
-+	 * vCPU's virtual APIC page.  If xAVIC is not enabled (APIC is either
-+	 * hardware-disabled or in x2APIC mode), then guest accesses will use
-+	 * the page table mapping verbatim, i.e. will access the per-VM scratch
-+	 * page, as normal memory.
-+	 *
-+	 * In both cases, the CPU is allowed to cache TLB entries for the APIC
-+	 * base GPA.  So, KVM needs to flush the TLB when enabling xAVIC, as
-+	 * accesses need to be redirected to the virtual APIC page, but the TLB
-+	 * may contain entries pointing at the scratch page.  KVM also needs to
-+	 * flush the TLB when enabling x2AVIC, as accesses need to go to the
-+	 * scratch page, but the TLB may contain entries tagged as xAVIC, i.e.
-+	 * entries pointing to the vCPU's virtual APIC page.
-+	 */
-+	kvm_make_request(KVM_REQ_TLB_FLUSH_CURRENT, &svm->vcpu);
++	if (!pskb_may_pull(skb, NFC_HCI_HCP_PACKET_HEADER_LEN)) {
++		kfree_skb(skb);
++		return;
++	}
 +
-+	/*
- 	 * Note: KVM supports hybrid-AVIC mode, where KVM emulates x2APIC MSR
- 	 * accesses, while interrupt injection to a running vCPU can be
- 	 * achieved using AVIC doorbell.  KVM disables the APIC access page
-@@ -123,12 +152,6 @@ static void avic_activate_vmcb(struct vc
- 		/* Disabling MSR intercept for x2APIC registers */
- 		svm_set_x2apic_msr_interception(svm, false);
- 	} else {
--		/*
--		 * Flush the TLB, the guest may have inserted a non-APIC
--		 * mapping into the TLB while AVIC was disabled.
--		 */
--		kvm_make_request(KVM_REQ_TLB_FLUSH_CURRENT, &svm->vcpu);
--
- 		/* Enabling MSR intercept for x2APIC registers */
- 		svm_set_x2apic_msr_interception(svm, true);
+ 	packet = (struct hcp_packet *)skb->data;
+ 	if ((packet->header & ~NFC_HCI_FRAGMENT) == 0) {
+ 		skb_queue_tail(&hdev->rx_hcp_frags, skb);
+@@ -904,6 +909,11 @@ static void nfc_hci_recv_from_llc(struct
+ 	 * unblock waiting cmd context. Otherwise, enqueue to dispatch
+ 	 * in separate context where handler can also execute command.
+ 	 */
++	if (!pskb_may_pull(hcp_skb, NFC_HCI_HCP_HEADER_LEN)) {
++		kfree_skb(hcp_skb);
++		return;
++	}
++
+ 	packet = (struct hcp_packet *)hcp_skb->data;
+ 	type = HCP_MSG_GET_TYPE(packet->message.header);
+ 	if (type == NFC_HCI_HCP_RESPONSE) {
+--- a/net/nfc/nci/hci.c
++++ b/net/nfc/nci/hci.c
+@@ -439,6 +439,11 @@ void nci_hci_data_received_cb(void *cont
+ 		return;
  	}
+ 
++	if (!pskb_may_pull(skb, NCI_HCI_HCP_PACKET_HEADER_LEN)) {
++		kfree_skb(skb);
++		return;
++	}
++
+ 	packet = (struct nci_hcp_packet *)skb->data;
+ 	if ((packet->header & ~NCI_HCI_FRAGMENT) == 0) {
+ 		skb_queue_tail(&ndev->hci_dev->rx_hcp_frags, skb);
+@@ -482,6 +487,11 @@ void nci_hci_data_received_cb(void *cont
+ 	 * unblock waiting cmd context. Otherwise, enqueue to dispatch
+ 	 * in separate context where handler can also execute command.
+ 	 */
++	if (!pskb_may_pull(hcp_skb, NCI_HCI_HCP_HEADER_LEN)) {
++		kfree_skb(hcp_skb);
++		return;
++	}
++
+ 	packet = (struct nci_hcp_packet *)hcp_skb->data;
+ 	type = NCI_HCP_MSG_GET_TYPE(packet->message.header);
+ 	if (type == NCI_HCI_HCP_RESPONSE) {
 
 
 
