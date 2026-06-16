@@ -1,63 +1,61 @@
-Return-Path: <stable+bounces-266541-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265787-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id mb1+HFGfMWr+oQUAu9opvQ
-	(envelope-from <stable+bounces-266541-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:09:05 +0200
+	id jr/OLdePMWoWmwUAu9opvQ
+	(envelope-from <stable+bounces-265787-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:03:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8AB1694C98
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:09:04 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54759693C24
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:03:03 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=v5bU4fKV;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266541-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266541-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="Uy8OFc/Q";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265787-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265787-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5B44E306407D
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:08:48 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C9253300A4BE
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:03:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3B9F3DE422;
-	Tue, 16 Jun 2026 19:08:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F5533CF97E;
+	Tue, 16 Jun 2026 18:03:01 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A087C3DD851;
-	Tue, 16 Jun 2026 19:08:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A4E1352007;
+	Tue, 16 Jun 2026 18:03:00 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781636925; cv=none; b=Y8/2fikeuyC2bi0YinKQNHHH7vEGXQGDQP+byhmxn8s75s7UZ+eSdX6BzOEZDIeYjk9eILv+2iNAv5smWFH9a7X6Z8uzmL1IgYKfCF920fQMW/35TzqDvG2Cb5AMUEEaSLo0YCt15LVnAHKPJ3HMgf49C/A9/TS9c38ApM12fJM=
+	t=1781632981; cv=none; b=cJRYgb9b0gYT+DnwhpmfzLSmh+JMfcSQqrERKdtSMY3/spTwRpKSZ2SBviQBETL+nT2p6J487/iJEkjswx1S8X3qkerOK3d7u++zRk7H1TNbzWp6NBEbKXQjGBkDvN8i0zRmyQDvBNz4zdk1zckUMbgtKTb7DIk5/4l2Chppu6Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781636925; c=relaxed/simple;
-	bh=AJebVowShW+xem6PnrZmee6NIgwDmTUTvHf2BAUWQHA=;
+	s=arc-20240116; t=1781632981; c=relaxed/simple;
+	bh=OvT6guNYowoJ2J2Z7wmU3Vx9XKS82AOKbKEiQ2Dfvxo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OlnRtNVbyVI/VqD8/zj1CmU31g3CiR2s4X4QAEdEy2SHW/s14v5sUGp/WSXczRTV4MkDtmZSwR6kB1L5uVfAnpOoAqZtrMgPtB0DSTu9P97ZHOWbECSwQJiPNcLk7KPh8oyD27JV54QdEBDQ/nXCrlZ+qy8qO/wnFeFC7Pe+orU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v5bU4fKV; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90FF91F00A3F;
-	Tue, 16 Jun 2026 19:08:43 +0000 (UTC)
+	 MIME-Version; b=eHRk/LTxcIF/7hgfBgQ8nvPZMhfglXq8ahkjIoMA2ATCyIUXDq06Oqdjy68iZO3W1CiVYLRGbipGtmozt8fSUuC6ppg3yLtZqJ4IShTQW19KIgv+WUDH/a6QbiSaZr+n8R+ukpuPsCy56IROoe1hvQx/BUZAp7eT2z8nEtuhEc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uy8OFc/Q; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28D001F000E9;
+	Tue, 16 Jun 2026 18:02:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781636924;
-	bh=8OQX8acm0kScIt/ZivFEGgkc7YJx0DGUaQABLmMz5Eg=;
+	s=korg; t=1781632980;
+	bh=nkYZ30zeDTEho5PYqAwIerUE+ETh+ep+H5WM1M+AsTQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=v5bU4fKVJjYjv141Ak1DQAHg6NgJhXyi/m5bCals/HYtmRDUEyoHsZWDLTdgAE6wA
-	 V+tN52ZcjPZjfWmMLywtTb1p8AjmKvTsyCq6BchAEm3f8TsjP8yaNwRdyUUVFNKnye
-	 +6GAdvSFai2MDnNwdlgIyh9pEhe4sQzVFPFIkcFo=
+	b=Uy8OFc/QvkioPWN7D+gUyWnvmz/hPEAliYGG2cKVthRUP7Lk8wLCbKeAltfhgL7nO
+	 iojDkPhTh62y0c6eVE3DuhDcjYqu0hsqh/gAU84+shBh3F5G9BPh0mG0/DtiWnia7H
+	 G+yI757zZW2wKFblSFqWhRiBsase0huSWx1W52lk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lukas Wunner <lukas@wunner.de>,
-	Ignat Korchagin <ignat@linux.win>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Eric Biggers <ebiggers@kernel.org>,
-	Yiming Qian <yimingqian591@gmail.com>
-Subject: [PATCH 5.10 332/342] lib/crypto: mpi: Fix integer underflow in mpi_read_raw_from_sgl()
+	Anton Leontev <leontyevantony@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 481/522] hv_netvsc: use kmap_local_page in netvsc_copy_to_send_buf
 Date: Tue, 16 Jun 2026 20:30:28 +0530
-Message-ID: <20260616145104.070101494@linuxfoundation.org>
+Message-ID: <20260616145148.322925731@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,106 +72,125 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,wunner.de,linux.win,kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-266541-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:lukas@wunner.de,m:ignat@linux.win,m:jarkko@kernel.org,m:ebiggers@kernel.org,m:yimingqian591@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-265787-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:leontyevantony@gmail.com,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com,kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,linux.win:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D8AB1694C98
+X-Rspamd-Queue-Id: 54759693C24
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukas Wunner <lukas@wunner.de>
+From: Anton Leontev <leontyevantony@gmail.com>
 
-commit 8c2f1288250a90a4b5cabed5d888d7e3aeed4035 upstream.
+[ Upstream commit 004e9ecfe6c5384f9e0b2f6f6389d42ec22789af ]
 
-Yiming reports an integer underflow in mpi_read_raw_from_sgl() when
-subtracting "lzeros" from the unsigned "nbytes".
+netvsc_copy_to_send_buf() copies page buffer entries into the VMBus
+send buffer using phys_to_virt() on the entry PFN. Entries for the
+RNDIS header and the skb linear data come from kmalloc'd memory and
+are always in the kernel direct map, but entries for skb fragments
+reference page cache or user pages, which on 32-bit x86 with
+CONFIG_HIGHMEM=y can live above the LOWMEM boundary. For such a page
+phys_to_virt() returns an address outside the direct map and the
+subsequent memcpy() faults on the transmit softirq path, which is
+fatal.
 
-For this to happen, the scatterlist "sgl" needs to occupy more bytes
-than the "nbytes" parameter and the first "nbytes + 1" bytes of the
-scatterlist must be zero.  Under these conditions, the while loop
-iterating over the scatterlist will count more zeroes than "nbytes",
-subtract the number of zeroes from "nbytes" and cause the underflow.
+Map the pages with kmap_local_page() instead, handling two properties
+of the page buffer entries:
 
-When commit 2d4d1eea540b ("lib/mpi: Add mpi sgl helpers") originally
-introduced the bug, it couldn't be triggered because all callers of
-mpi_read_raw_from_sgl() passed a scatterlist whose length was equal to
-"nbytes".
+ - pb[i].pfn is a Hyper-V PFN at HV_HYP_PAGE_SIZE (4K) granularity,
+   not a native PFN. Reconstruct the physical address first and derive
+   the native page from it, so the mapping stays correct where
+   PAGE_SIZE > HV_HYP_PAGE_SIZE (e.g. arm64 with 64K pages).
 
-However since commit 63ba4d67594a ("KEYS: asymmetric: Use new crypto
-interface without scatterlists"), the underflow can now actually be
-triggered.  When invoking a KEYCTL_PKEY_ENCRYPT system call with a
-larger "out_len" than "in_len" and filling the "in" buffer with zeroes,
-crypto_akcipher_sync_prep() will create an all-zero scatterlist used for
-both the "src" and "dst" member of struct akcipher_request and thereby
-fulfil the conditions to trigger the bug:
+ - Since commit 41a6328b2c55 ("hv_netvsc: Preserve contiguous PFN
+   grouping in the page buffer array"), an entry describes a full
+   physically contiguous fragment and pb[i].len can exceed PAGE_SIZE,
+   while kmap_local_page() maps a single page. Copy page by page,
+   splitting at native page boundaries.
 
-  sys_keyctl()
-    keyctl_pkey_e_d_s()
-      asymmetric_key_eds_op()
-        software_key_eds_op()
-          crypto_akcipher_sync_encrypt()
-            crypto_akcipher_sync_prep()
-              crypto_akcipher_encrypt()
-                rsa_enc()
-                  mpi_read_raw_from_sgl()
+The copy path only handles packets smaller than the send section size
+(6144 bytes by default); larger packets take the cp_partial path where
+only the RNDIS header is copied. So entries here are bounded by the
+section size and a copy is split at most once on 4K-page systems. On
+!CONFIG_HIGHMEM configs kmap_local_page() folds to page_address() and
+no mapping work is added.
 
-To the user this will be visible as a DoS as the kernel spins forever,
-causing soft lockup splats as a side effect.
-
-Fix it.
-
-Reported-by: Yiming Qian <yimingqian591@gmail.com> # off-list
-Fixes: 2d4d1eea540b ("lib/mpi: Add mpi sgl helpers")
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Cc: stable@vger.kernel.org # v4.4+
-Reviewed-by: Ignat Korchagin <ignat@linux.win>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Link: https://lore.kernel.org/r/59eca92ff4f87e2081777f1423a0efaaadcfdb39.1776003111.git.lukas@wunner.de
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+Fixes: c25aaf814a63 ("hyperv: Enable sendbuf mechanism on the send path")
+Cc: stable@vger.kernel.org
+Signed-off-by: Anton Leontev <leontyevantony@gmail.com>
+Link: https://patch.msgid.link/20260604165938.32033-1-leontyevantony@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[ adapted `phys_to_page(paddr)` to `pfn_to_page(PHYS_PFN(paddr))` ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/mpi/mpicoder.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/hyperv/netvsc.c |   19 +++++++++++++++----
+ 1 file changed, 15 insertions(+), 4 deletions(-)
 
---- a/lib/mpi/mpicoder.c
-+++ b/lib/mpi/mpicoder.c
-@@ -453,7 +453,7 @@ MPI mpi_read_raw_from_sgl(struct scatter
- 	lzeros = 0;
- 	len = 0;
- 	while (nbytes > 0) {
--		while (len && !*buff) {
-+		while (len && !*buff && lzeros < nbytes) {
- 			lzeros++;
- 			len--;
- 			buff++;
+--- a/drivers/net/hyperv/netvsc.c
++++ b/drivers/net/hyperv/netvsc.c
+@@ -12,6 +12,7 @@
+ #include <linux/sched.h>
+ #include <linux/wait.h>
+ #include <linux/mm.h>
++#include <linux/highmem.h>
+ #include <linux/delay.h>
+ #include <linux/io.h>
+ #include <linux/slab.h>
+@@ -992,12 +993,22 @@ static void netvsc_copy_to_send_buf(stru
+ 	}
+ 
+ 	for (i = 0; i < page_count; i++) {
+-		char *src = phys_to_virt(pb[i].pfn << HV_HYP_PAGE_SHIFT);
+-		u32 offset = pb[i].offset;
++		phys_addr_t paddr = (pb[i].pfn << HV_HYP_PAGE_SHIFT) +
++				    pb[i].offset;
+ 		u32 len = pb[i].len;
+ 
+-		memcpy(dest, (src + offset), len);
+-		dest += len;
++		while (len) {
++			struct page *page = pfn_to_page(PHYS_PFN(paddr));
++			u32 off = offset_in_page(paddr);
++			u32 chunk = min_t(u32, len, PAGE_SIZE - off);
++			char *src = kmap_local_page(page);
++
++			memcpy(dest, src + off, chunk);
++			kunmap_local(src);
++			dest += chunk;
++			paddr += chunk;
++			len -= chunk;
++		}
+ 	}
+ 
+ 	if (padding)
 
 
 
