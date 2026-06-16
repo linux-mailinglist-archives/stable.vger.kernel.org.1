@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-266084-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266434-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 60B/HBKWMWoCngUAu9opvQ
-	(envelope-from <stable+bounces-266084-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:29:38 +0200
+	id eIhEMTedMWoZoQUAu9opvQ
+	(envelope-from <stable+bounces-266434-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:00:07 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCBF86942D0
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:29:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CEA9694A5C
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:00:07 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=JK6wu7rP;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266084-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266084-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=LBvy8lcs;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266434-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266434-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E50C63019CBE
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:29:36 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 29EB33045469
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:00:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EF7C47A0D4;
-	Tue, 16 Jun 2026 18:29:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 927FA3D9DAA;
+	Tue, 16 Jun 2026 19:00:04 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 196FB466B5E;
-	Tue, 16 Jun 2026 18:29:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D86B3ACA68;
+	Tue, 16 Jun 2026 19:00:03 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781634576; cv=none; b=j6ydS8m2uWrufJsI58fRuPAfupVD16of+Ym+x8cZBsQO13paHm0G12ii4AT60W+DWvnQ1nrIXOm73vFnMlQKiDkIvQMebRuJ7fcAT9+QpRHbGxarubJesKqoWX74H6XKj7vqfWMNtzzmDSBZYDDti5NmSmDtGhXRw2ErrlNhs4I=
+	t=1781636404; cv=none; b=EbNoB0A3JINPryytPhoIk4+2x5Qg81MvwSeLbjlDFuKMIMyx9mr575FcRi8erxFitcxFE+WIN4M+yoic9kkhfXBktNQSct6hPymZqVVZR8siJ49P53Wbjn3NtnexBIIcxJRdvQT0isE429N2dz/Dnt7BD2EgQfPWO0Rj8/Uv+ac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781634576; c=relaxed/simple;
-	bh=PavJPHQ7pGHsZTJU8K5E3mo48JXGSC0RA8nsEC8O1zg=;
+	s=arc-20240116; t=1781636404; c=relaxed/simple;
+	bh=ZwpNfZf5qHG8uDqCOVe3MjmfEPwKGYenPtBRGwSKFw8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aHqwhZMmWvuI3q9vARInux5jRdS0VOoE7fWDI7O3om00UqSBeGdffW3WHOxouQQAnOfQRw4g7ESXBmopHsonGvhZIloW5aV6SMWmxYMw/unqJ1Iw0ga4gfhTWeBw2k0+qX7Bq4X0zhUP7X3klmIQ2QD50bQHDEtlKMI9r2ayKBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JK6wu7rP; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21C9B1F000E9;
-	Tue, 16 Jun 2026 18:29:33 +0000 (UTC)
+	 MIME-Version; b=YvKeIN2dvD93qOKEeeZRwQdQ85NKFfcQ4VYI2tKjIgGAamdw7G2ct/x+cAVfUjTrjwqRant2OMCW25ZZ69/x18NGjPHzMRP4Bkx01DKhkEAqKECVss3iFkN2g4Ww1YWTtro0VN4Ifcx/sKHecvxVTVWQ+hU9FmomYPGTkBQ2uwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LBvy8lcs; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 195A61F000E9;
+	Tue, 16 Jun 2026 19:00:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781634575;
-	bh=ZcEYJAlm5+ac5ghU/woQ/Bf/OF0tAX5dXKH+o7wWFrs=;
+	s=korg; t=1781636403;
+	bh=Hghlkp8QU9jmfAPmUpPzHZJ0GHKBT1Hw1TJctqATKRk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=JK6wu7rPR2SEc2xYyZ00k8KEr7Wx4rmcyS8ONE6MEbvwk5NsWmxfGJN2ZiR4/AvD+
-	 2vpqLXpBVntioIfGxz6gMS2+bd/NfMk9c8vDZ5MjfdVCun7fF/woFk2w3PjkKsTePh
-	 eYLVoPcFaAnBIRKg1Z3oCA9PfnxacaF+hyOqZDHQ=
+	b=LBvy8lcsHo5cFHkii+KtWkH97ASgyjSuJy2sBfMuqrVXd+rmkZhgpgi8cfMG1JCBD
+	 CAw8/WHPA70PoyixppPjScCMCh49BUdvS4JGgtMfw4u3WeiGOq/EyYzvTf8qaX2agg
+	 fo37LwTsrDkybue+417AhqQRC1WgsNvYcgJMMlm4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Joseph Salisbury <joseph.salisbury@oracle.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 290/411] crypto: nx - Avoid -Wflex-array-member-not-at-end warning
+Subject: [PATCH 5.10 232/342] sched: Use u64 for bandwidth ratio calculations
 Date: Tue, 16 Jun 2026 20:28:48 +0530
-Message-ID: <20260616145116.563516089@linuxfoundation.org>
+Message-ID: <20260616145059.010270287@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,12 +77,12 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266084-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-266434-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:gustavoars@kernel.org,m:herbert@gondor.apana.org.au,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:joseph.salisbury@oracle.com,m:peterz@infradead.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
@@ -98,126 +98,80 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,apana.org.au:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,oracle.com:email,vger.kernel.org:from_smtp,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: DCBF86942D0
+X-Rspamd-Queue-Id: 4CEA9694A5C
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Gustavo A. R. Silva" <gustavoars@kernel.org>
+From: Joseph Salisbury <joseph.salisbury@oracle.com>
 
-[ Upstream commit 1e6b251ce1759392666856908113dd5d7cea044d ]
+[ Upstream commit c6e80201e057dfb7253385e60bf541121bf5dc33 ]
 
--Wflex-array-member-not-at-end is coming in GCC-14, and we are getting
-ready to enable it globally. So, we are deprecating flexible-array
-members in the middle of another structure.
+to_ratio() computes BW_SHIFT-scaled bandwidth ratios from u64 period and
+runtime values, but it returns unsigned long.  tg_rt_schedulable() also
+stores the current group limit and the accumulated child sum in unsigned
+long.
 
-There is currently an object (`header`) in `struct nx842_crypto_ctx`
-that contains a flexible structure (`struct nx842_crypto_header`):
+On 32-bit builds, large bandwidth ratios can be truncated and the RT
+group sum can wrap when enough siblings are present.  That can let an
+overcommitted RT hierarchy pass the schedulability check, and it also
+narrows the helper result for other callers.
 
-struct nx842_crypto_ctx {
-	...
-        struct nx842_crypto_header header;
-        struct nx842_crypto_header_group group[NX842_CRYPTO_GROUP_MAX];
-	...
-};
+Return u64 from to_ratio() and use u64 for the RT group totals so
+bandwidth ratios are preserved and compared at full width on both 32-bit
+and 64-bit builds.
 
-So, in order to avoid ending up with a flexible-array member in the
-middle of another struct, we use the `struct_group_tagged()` helper to
-separate the flexible array from the rest of the members in the flexible
-structure:
-
-struct nx842_crypto_header {
-	struct_group_tagged(nx842_crypto_header_hdr, hdr,
-
-		... the rest of the members
-
-	);
-        struct nx842_crypto_header_group group[];
-} __packed;
-
-With the change described above, we can now declare an object of the
-type of the tagged struct, without embedding the flexible array in the
-middle of another struct:
-
-struct nx842_crypto_ctx {
-	...
-        struct nx842_crypto_header_hdr header;
-        struct nx842_crypto_header_group group[NX842_CRYPTO_GROUP_MAX];
-	...
- } __packed;
-
-We also use `container_of()` whenever we need to retrieve a pointer to
-the flexible structure, through which we can access the flexible
-array if needed.
-
-So, with these changes, fix the following warning:
-
-In file included from drivers/crypto/nx/nx-842.c:55:
-drivers/crypto/nx/nx-842.h:174:36: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-  174 |         struct nx842_crypto_header header;
-      |                                    ^~~~~~
-
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Stable-dep-of: adb3faf2db1a ("crypto: nx - fix bounce buffer leaks in nx842_crypto_{alloc,free}_ctx")
+Fixes: b40b2e8eb521 ("sched: rt: multi level group constraints")
+Assisted-by: Codex:GPT-5
+Signed-off-by: Joseph Salisbury <joseph.salisbury@oracle.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20260403210014.2713404-1-joseph.salisbury@oracle.com
+[ dropped `extern` keyword from `to_ratio()` declaration ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/nx/nx-842.c |    6 ++++--
- drivers/crypto/nx/nx-842.h |   10 ++++++----
- 2 files changed, 10 insertions(+), 6 deletions(-)
+ kernel/sched/core.c  |    2 +-
+ kernel/sched/rt.c    |    2 +-
+ kernel/sched/sched.h |    2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/crypto/nx/nx-842.c
-+++ b/drivers/crypto/nx/nx-842.c
-@@ -251,7 +251,9 @@ int nx842_crypto_compress(struct crypto_
- 			  u8 *dst, unsigned int *dlen)
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -3328,7 +3328,7 @@ void sched_post_fork(struct task_struct
+ 	uclamp_post_fork(p);
+ }
+ 
+-unsigned long to_ratio(u64 period, u64 runtime)
++u64 to_ratio(u64 period, u64 runtime)
  {
- 	struct nx842_crypto_ctx *ctx = crypto_tfm_ctx(tfm);
--	struct nx842_crypto_header *hdr = &ctx->header;
-+	struct nx842_crypto_header *hdr =
-+				container_of(&ctx->header,
-+					     struct nx842_crypto_header, hdr);
- 	struct nx842_crypto_param p;
- 	struct nx842_constraints c = *ctx->driver->constraints;
- 	unsigned int groups, hdrsize, h;
-@@ -490,7 +492,7 @@ int nx842_crypto_decompress(struct crypt
- 	}
+ 	if (runtime == RUNTIME_INF)
+ 		return BW_UNIT;
+--- a/kernel/sched/rt.c
++++ b/kernel/sched/rt.c
+@@ -2527,7 +2527,7 @@ static int tg_rt_schedulable(struct task
+ {
+ 	struct rt_schedulable_data *d = data;
+ 	struct task_group *child;
+-	unsigned long total, sum = 0;
++	u64 total, sum = 0;
+ 	u64 period, runtime;
  
- 	memcpy(&ctx->header, src, hdr_len);
--	hdr = &ctx->header;
-+	hdr = container_of(&ctx->header, struct nx842_crypto_header, hdr);
+ 	period = ktime_to_ns(tg->rt_bandwidth.rt_period);
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -1956,7 +1956,7 @@ extern void init_dl_inactive_task_timer(
+ #define RATIO_SHIFT		8
+ #define MAX_BW_BITS		(64 - BW_SHIFT)
+ #define MAX_BW			((1ULL << MAX_BW_BITS) - 1)
+-unsigned long to_ratio(u64 period, u64 runtime);
++u64 to_ratio(u64 period, u64 runtime);
  
- 	for (n = 0; n < hdr->groups; n++) {
- 		/* ignore applies to last group */
---- a/drivers/crypto/nx/nx-842.h
-+++ b/drivers/crypto/nx/nx-842.h
-@@ -157,9 +157,11 @@ struct nx842_crypto_header_group {
- } __packed;
- 
- struct nx842_crypto_header {
--	__be16 magic;		/* NX842_CRYPTO_MAGIC */
--	__be16 ignore;		/* decompressed end bytes to ignore */
--	u8 groups;		/* total groups in this header */
-+	struct_group_tagged(nx842_crypto_header_hdr, hdr,
-+		__be16 magic;		/* NX842_CRYPTO_MAGIC */
-+		__be16 ignore;		/* decompressed end bytes to ignore */
-+		u8 groups;		/* total groups in this header */
-+	);
- 	struct nx842_crypto_header_group group[];
- } __packed;
- 
-@@ -171,7 +173,7 @@ struct nx842_crypto_ctx {
- 	u8 *wmem;
- 	u8 *sbounce, *dbounce;
- 
--	struct nx842_crypto_header header;
-+	struct nx842_crypto_header_hdr header;
- 	struct nx842_crypto_header_group group[NX842_CRYPTO_GROUP_MAX];
- 
- 	struct nx842_driver *driver;
+ extern void init_entity_runnable_average(struct sched_entity *se);
+ extern void post_init_entity_util_avg(struct task_struct *p);
 
 
 
