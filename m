@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-265776-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264758-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ubSSHM6PMWoTmwUAu9opvQ
-	(envelope-from <stable+bounces-265776-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:02:54 +0200
+	id a6bhMEB9MWq/kgUAu9opvQ
+	(envelope-from <stable+bounces-264758-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:43:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8F0B693C15
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:02:53 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DD94692635
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:43:44 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=zEngv096;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265776-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265776-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=0pjkYNxl;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264758-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264758-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CB1C6310D3F4
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:02:03 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CEE2E3102FCD
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:36:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 556283CE4BA;
-	Tue, 16 Jun 2026 18:02:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A5C247884C;
+	Tue, 16 Jun 2026 16:35:41 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6CCB2F12AE;
-	Tue, 16 Jun 2026 18:02:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E4C447798F;
+	Tue, 16 Jun 2026 16:35:40 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781632922; cv=none; b=UzKJQffExi8EdEuTxAVJAqLSSgBCuKeulptE+gWLBHJO3Aezw6mmabzHwO24pQg3eec4f1qt7UEZvo4Dp1feN/cZTcOo9T8OaNlX6q09crR6c2nff4YUpECmux+9i3U3FDAnL3yGeBpoTdQjNa9K2UN+EXx/46DoOnnjYxvScdg=
+	t=1781627741; cv=none; b=pQCNxMlYUQ/ZBRzbVxQnvHeFPURF+bskuld1j7KVOhDpq3blR+3QWM2MZx8v/1muTTKIRrhITFUkG+3IU+PnDNxHerV+LIlYBXR2YOYe1zDoIJXv+vDBzhShxpe88JnhBd0yPRPZ/nHdLWKVWX40QCV9ye/mT/z3Kvew25fv2pg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781632922; c=relaxed/simple;
-	bh=+e2boGZ1fqnDzoRojDB1aeotpDcf6tHORqT1guzXXEw=;
+	s=arc-20240116; t=1781627741; c=relaxed/simple;
+	bh=OKXP1wqowPCf3s8N2W0g6P0rXlpEEIrSshio7ly1jM8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U8U4nonX8ZmmdoydM0hmGPLU9QdMKzly43/athDL+20GSDuhqkMO7aXgOpsviKcN8dH2AMHLEI4ui/z50+DQEJwhpD/ePq4YP4G0GexOu3Aj/W9bOwofA5VTlZ3oqI2IAea0/QiY5cXAMsXSoMwwbNZUyY6pOMRWcGVDPiekg4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zEngv096; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ADF31F000E9;
-	Tue, 16 Jun 2026 18:01:59 +0000 (UTC)
+	 MIME-Version; b=KBladaXc7Vh6ozRzGSRmlzrWFMb9cCx931qU3Ew5iSMaOkpp5MIkHDspFD0y5QzZDU4NVjLmtwn+oPWOTLlvZG+A7y1PJcg1fz2XywyvOXRbrwwiEfI5qRLeP+tvvId9n6TitEdKH9m1eMbO9WoD5NCKeKHlEUrjL7LqZFiSijE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0pjkYNxl; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 202F61F000E9;
+	Tue, 16 Jun 2026 16:35:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781632920;
-	bh=SRoudnKKWTBz5NAA5h+2gfozovrElM8yR4zBGq27+YY=;
+	s=korg; t=1781627740;
+	bh=cXWPBnsy0zcQxR77t1EXzPX+BuBHlkpX3bQEHixrT2k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=zEngv096Sm1zYqhNdTG4MB/L8DqCpM1a8kyvAZyEFoJ3A6q+q1w3nTboS2F+akZDg
-	 m63Y8INge2X5o8uMSKTmkNLvN2b3psbLvXUkNkdkS+pJZsHAJUE2E6SaiGRQi7gZ+9
-	 36EOI1276o1Pmn7H171U+5rfOExXha3OJy2g2sy8=
+	b=0pjkYNxl9VbHl+nCGgrmf5pFPIFGscjGPsfcskAM3lp6VujXQ/4hHufj/JQrtr1Iv
+	 /awY5N41H1mlXva1yNwjNj55+0Aw2nE97yPcKom7ry0kpcxVDbeDCb9YSRfoMv7rUm
+	 Gt4WD0t4F2sw+sSFtGYSC8UpeIzfQK/p1pDceUFE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Xiao <252270051@hdu.edu.cn>,
-	Corey Minyard <corey@minyard.net>
-Subject: [PATCH 6.1 502/522] ipmi:ssif: Clean up kthread on errors
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>,
+	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
+	Srinivas Kandagatla <srini@kernel.org>
+Subject: [PATCH 6.12 211/261] slimbus: qcom-ngd-ctrl: Initialize controller resources in controller
 Date: Tue, 16 Jun 2026 20:30:49 +0530
-Message-ID: <20260616145149.245848616@linuxfoundation.org>
+Message-ID: <20260616145054.819083279@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,94 +70,146 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265776-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:252270051@hdu.edu.cn,m:corey@minyard.net,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264758-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:dmitry.baryshkov@oss.qualcomm.com,m:mukesh.ojha@oss.qualcomm.com,m:bjorn.andersson@oss.qualcomm.com,m:srini@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,hdu.edu.cn:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,minyard.net:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,qualcomm.com:email,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B8F0B693C15
+X-Rspamd-Queue-Id: 4DD94692635
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Corey Minyard <corey@minyard.net>
+From: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
 
-commit 75c486cb1bcaa1a3ec3a6438498176a3a4998ae4 upstream.
+commit 07c564ea5fb859b7381429de935d5df4781947c6 upstream.
 
-If an error occurs after the ssif kthread is created, but before the
-main IPMI code starts the ssif interface, the ssif kthread will not
-be stopped.
+The work structs and work queue are controller resources, create and
+destroy them in the controller context. Creating them as part of the
+child device's probe path seems to be okay now that the controller's
+probe has been updated, but if for some reason the child does not probe
+successfully a SSR or PDR notification will schedule_work() on an
+uninitialized "ngd_up_work".
 
-So make sure the kthread is stopped on an error condition if it is
-running.
+Move the initialization of these controller resources to the controller
+probe function to avoid any issues, and to clarify the ownership.
 
-Fixes: 259307074bfc ("ipmi: Add SMBus interface driver (SSIF)")
-Reported-by: Li Xiao <<252270051@hdu.edu.cn>
+Fixes: 917809e2280b ("slimbus: ngd: Add qcom SLIMBus NGD driver")
 Cc: stable@vger.kernel.org
-Reviewed-by: Li Xiao <252270051@hdu.edu.cn>
-Signed-off-by: Corey Minyard <corey@minyard.net>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
+Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
+Link: https://patch.msgid.link/20260530204421.116824-7-srini@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/ipmi/ipmi_ssif.c |   13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ drivers/slimbus/qcom-ngd-ctrl.c |   38 ++++++++++++++++----------------------
+ 1 file changed, 16 insertions(+), 22 deletions(-)
 
---- a/drivers/char/ipmi/ipmi_ssif.c
-+++ b/drivers/char/ipmi/ipmi_ssif.c
-@@ -1287,8 +1287,10 @@ static void shutdown_ssif(void *send_inf
- 	ssif_info->stopping = true;
- 	del_timer_sync(&ssif_info->watch_timer);
- 	del_timer_sync(&ssif_info->retry_timer);
--	if (ssif_info->thread)
-+	if (ssif_info->thread) {
- 		kthread_stop(ssif_info->thread);
-+		ssif_info->thread = NULL;
+--- a/drivers/slimbus/qcom-ngd-ctrl.c
++++ b/drivers/slimbus/qcom-ngd-ctrl.c
+@@ -1588,25 +1588,8 @@ static int qcom_slim_ngd_probe(struct pl
+ 	pm_runtime_enable(dev);
+ 	pm_runtime_get_noresume(dev);
+ 	ret = qcom_slim_ngd_qmi_svc_event_init(ctrl);
+-	if (ret) {
++	if (ret)
+ 		dev_err(&pdev->dev, "QMI service registration failed:%d", ret);
+-		return ret;
+-	}
+-
+-	INIT_WORK(&ctrl->m_work, qcom_slim_ngd_master_worker);
+-	INIT_WORK(&ctrl->ngd_up_work, qcom_slim_ngd_up_worker);
+-	ctrl->mwq = create_singlethread_workqueue("ngd_master");
+-	if (!ctrl->mwq) {
+-		dev_err(&pdev->dev, "Failed to start master worker\n");
+-		ret = -ENOMEM;
+-		goto wq_err;
+-	}
+-
+-	return 0;
+-wq_err:
+-	qcom_slim_ngd_qmi_svc_event_deinit(&ctrl->qmi);
+-	if (ctrl->mwq)
+-		destroy_workqueue(ctrl->mwq);
+ 
+ 	return ret;
+ }
+@@ -1659,9 +1642,18 @@ static int qcom_slim_ngd_ctrl_probe(stru
+ 	init_completion(&ctrl->qmi.qmi_comp);
+ 	init_completion(&ctrl->qmi_up);
+ 
++	INIT_WORK(&ctrl->m_work, qcom_slim_ngd_master_worker);
++	INIT_WORK(&ctrl->ngd_up_work, qcom_slim_ngd_up_worker);
++
++	ctrl->mwq = create_singlethread_workqueue("ngd_master");
++	if (!ctrl->mwq)
++		return dev_err_probe(dev, -ENOMEM, "Failed to start master worker\n");
++
+ 	ctrl->pdr = pdr_handle_alloc(slim_pd_status, ctrl);
+-	if (IS_ERR(ctrl->pdr))
+-		return dev_err_probe(dev, PTR_ERR(ctrl->pdr), "Failed to init PDR handle\n");
++	if (IS_ERR(ctrl->pdr)) {
++		ret = dev_err_probe(dev, PTR_ERR(ctrl->pdr), "Failed to init PDR handle\n");
++		goto err_destroy_mwq;
 +	}
+ 
+ 	ret = of_qcom_slim_ngd_register(dev, ctrl);
+ 	if (ret)
+@@ -1688,6 +1680,8 @@ err_unregister_ngd:
+ 	qcom_slim_ngd_unregister(ctrl);
+ err_pdr_release:
+ 	pdr_handle_release(ctrl->pdr);
++err_destroy_mwq:
++	destroy_workqueue(ctrl->mwq);
+ 
+ 	return ret;
+ }
+@@ -1697,6 +1691,8 @@ static void qcom_slim_ngd_ctrl_remove(st
+ 	struct qcom_slim_ngd_ctrl *ctrl = platform_get_drvdata(pdev);
+ 
+ 	qcom_slim_ngd_unregister(ctrl);
++
++	destroy_workqueue(ctrl->mwq);
  }
  
- static void ssif_remove(struct i2c_client *client)
-@@ -1916,6 +1918,15 @@ static int ssif_probe(struct i2c_client
+ static void qcom_slim_ngd_remove(struct platform_device *pdev)
+@@ -1709,8 +1705,6 @@ static void qcom_slim_ngd_remove(struct
+ 	qcom_slim_ngd_enable(ctrl, false);
+ 	qcom_slim_ngd_exit_dma(ctrl);
+ 	qcom_slim_ngd_qmi_svc_event_deinit(&ctrl->qmi);
+-	if (ctrl->mwq)
+-		destroy_workqueue(ctrl->mwq);
  
-  out:
- 	if (rv) {
-+		/*
-+		 * If ipmi_register_smi() starts the interface, it will
-+		 * call shutdown and that will free the thread and set
-+		 * it to NULL.  Otherwise it must be freed here.
-+		 */
-+		if (ssif_info->thread) {
-+			kthread_stop(ssif_info->thread);
-+			ssif_info->thread = NULL;
-+		}
- 		if (addr_info)
- 			addr_info->client = NULL;
- 
+ 	kfree(ctrl->ngd);
+ 	ctrl->ngd = NULL;
 
 
 
