@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-265574-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266363-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 6M90HZCLMWr9mAUAu9opvQ
-	(envelope-from <stable+bounces-265574-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:44:48 +0200
+	id Su7QNPGcMWr3oAUAu9opvQ
+	(envelope-from <stable+bounces-266363-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:58:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4D666936F8
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:44:47 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3220A694A17
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:58:57 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=MME5TgLa;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265574-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265574-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="t2/ZaMr0";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266363-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266363-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C2F1B304BCDF
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:44:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A01F03213973
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:53:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75456472767;
-	Tue, 16 Jun 2026 17:44:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00B2646AEE1;
+	Tue, 16 Jun 2026 18:53:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43BD44657D0;
-	Tue, 16 Jun 2026 17:44:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8C22472798;
+	Tue, 16 Jun 2026 18:53:48 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781631886; cv=none; b=oOOug7+5Kl4nQOJy6nf3KJoYPv1dOv0TEqlsFt6VSYoab3W0668wTv6pQs4p0jvXvntfnNw0qbBSBBgATS2HrH8yR0wFO96HZvjJnGYgJLlilP8MDrS5JTK2UPEUq2wH4vcyGZ3jFenCAyOtZsIy6p3kew2eF7KJ76oAzrBhoLw=
+	t=1781636029; cv=none; b=GlYyMGPlhXkWBo0FIdi/g6PRS4rW5O4Jh+nD+hYyco/fnaFsNicf2VcXFP2VtnHS4yznwfm50rYw4XA3A2Ir9N4SaGC0CAOS/Eir0TwyatMaeZpCs6mIhJyRWv/QwZvReYiIddbWfcIS7CnJZ3mwmZwW3KNvkVXCCgac4eojwTk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781631886; c=relaxed/simple;
-	bh=Zw5gybPIR8O8ZH09DfyLuSDQCRgqhRX6tI6ibMoWpnk=;
+	s=arc-20240116; t=1781636029; c=relaxed/simple;
+	bh=rb1p2pVMsgxD9W9Mh54IFankvZp6hY/tiXfi80pSA+o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lf34wn2YqakHT3pU5ZxLfe1bFqid4Ci7iqp/Un+mBySUth0oORJVy0ZBFOjGe20wGHi23b1jfg5MD+0EHBfPOnl96UfkK4tmxt33K9bXjeCvVkBn01MD54DjfWl408RscT7R7dEWcEaBNO4IoGkwPEHPxpHwy6NUp1Usy9r7gGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MME5TgLa; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4822D1F000E9;
-	Tue, 16 Jun 2026 17:44:43 +0000 (UTC)
+	 MIME-Version; b=p1+TUFT1w+u4vtg7ekiVRgHOR08IyPxkIxko1mQpYnR0dZSBIOemzROOMYU4plCqn5s8ahRLojsHtH7Fz9UaBOtYGqKdtut96CUjgxrm8hks/PbPmrHOQaaUJAKOY5KzS/TdgCbNiz3I+NriXLHWzN6rVxrJ+21j2jr9WePxzpE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t2/ZaMr0; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B557E1F000E9;
+	Tue, 16 Jun 2026 18:53:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781631884;
-	bh=KSs0E6+BUnWohc/iXsNP3AESfeqpShjOQx9lzkZSnxA=;
+	s=korg; t=1781636028;
+	bh=F/T8c805nWnMAXA1aq4abNp2PX10DjMK2uBgnOWOxKg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=MME5TgLa/2jtstWU68uTdojsvACeVfEbDbFTg4jDW1aP1n8QK5gkIF1fJmI7wClnC
-	 z0mVFfOVgmsJuTvLwZ2nQ0fcKAohp9dlym/wl9EG9pskMAyCDP+4TzBK2Ph8XbK7lP
-	 kKnqpINfpJ1gOwDJk3PNnYTpxEfLhMFdmkMOEeJg=
+	b=t2/ZaMr0lN9+cKvRpweU6l0l19Nc0ATZNCOjtHFz3i6D+CyiDKUFe7yxG9GJZmQ6S
+	 fe4515YneQ2U2fwdZ7g8nnTVFTjXYbIVjfePnPzgsvtWWmKQ8Il7DE5GMxMqi6wV/+
+	 1PXvuZ+NFy4OKSxgjFZaG44c4pLhmRGxOhKsYbBA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jack Wu <jackbb_wu@compal.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.1 276/522] USB: serial: option: add usb-id for Dell Wireless DW5826e-m
-Date: Tue, 16 Jun 2026 20:27:03 +0530
-Message-ID: <20260616145138.867508772@linuxfoundation.org>
+	Nathan Chancellor <nathan@kernel.org>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 128/342] compiler-clang.h: Add __diag infrastructure for clang
+Date: Tue, 16 Jun 2026 20:27:04 +0530
+Message-ID: <20260616145054.164143894@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,106 +73,95 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265574-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jackbb_wu@compal.com,m:johan@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-266363-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:nathan@kernel.org,m:memxor@gmail.com,m:ast@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E4D666936F8
+X-Rspamd-Queue-Id: 3220A694A17
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jack Wu <jackbb_wu@compal.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-commit 1938fb9fe38c4f04a3f30bea44f8071c80a63be4 upstream.
+commit f014a00bbeb09cea16017b82448d32a468a6b96f upstream.
 
-Add support for Dell DW5826e-m with USB-id 0x413c:0x81ea
+Add __diag macros similar to those in compiler-gcc.h, so that warnings
+that need to be adjusted for specific cases but not globally can be
+ignored when building with clang.
 
-T:  Bus=03 Lev=01 Prnt=01 Port=04 Cnt=01 Dev#=  8 Spd=480  MxCh= 0
-D:  Ver= 2.10 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=413c ProdID=81ea Rev= 5.04
-S:  Manufacturer=DELL
-S:  Product=DW5826e-m Qualcomm Snapdragon X12 Global LTE-A
-S:  SerialNumber=358988870177734
-C:* #Ifs= 7 Cfg#= 1 Atr=a0 MxPwr=500mA
-A:  FirstIf#=12 IfCount= 2 Cls=02(comm.) Sub=0e Prot=00
-I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 4 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=ff Driver=(none)
-E:  Ad=87(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:* If#=12 Alt= 0 #EPs= 1 Cls=02(comm.) Sub=0e Prot=00 Driver=cdc_mbim
-E:  Ad=88(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:  If#=13 Alt= 0 #EPs= 0 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-I:* If#=13 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=0f(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Link: https://lore.kernel.org/bpf/20220304224645.3677453-6-memxor@gmail.com
 
-Signed-off-by: Jack Wu <jackbb_wu@compal.com>
-Reviewed-by: Lars Melin <larsm17@gmail>
-Cc: stable@vger.kernel.org
-[ johan: reserve also interface 4 ]
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[ Kartikeya: wrote commit message ]
+
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/option.c |    3 +++
- 1 file changed, 3 insertions(+)
+ include/linux/compiler-clang.h | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -202,6 +202,7 @@ static void option_instat_callback(struc
- #define DELL_PRODUCT_5821E_ESIM			0x81e0
- #define DELL_PRODUCT_5829E_ESIM			0x81e4
- #define DELL_PRODUCT_5829E			0x81e6
-+#define DELL_PRODUCT_5826E_ESIM			0x81ea
- 
- #define DELL_PRODUCT_FM101R_ESIM		0x8213
- #define DELL_PRODUCT_FM101R			0x8215
-@@ -1123,6 +1124,8 @@ static const struct usb_device_id option
- 	  .driver_info = RSVD(0) | RSVD(6) },
- 	{ USB_DEVICE(DELL_VENDOR_ID, DELL_PRODUCT_5829E_ESIM),
- 	  .driver_info = RSVD(0) | RSVD(6) },
-+	{ USB_DEVICE_INTERFACE_CLASS(DELL_VENDOR_ID, DELL_PRODUCT_5826E_ESIM, 0xff),
-+	  .driver_info = RSVD(1) | RSVD(4) },
- 	{ USB_DEVICE_INTERFACE_CLASS(DELL_VENDOR_ID, DELL_PRODUCT_FM101R, 0xff) },
- 	{ USB_DEVICE_INTERFACE_CLASS(DELL_VENDOR_ID, DELL_PRODUCT_FM101R_ESIM, 0xff) },
- 	{ USB_DEVICE(ANYDATA_VENDOR_ID, ANYDATA_PRODUCT_ADU_E100A) },	/* ADU-E100, ADU-310 */
+diff --git a/include/linux/compiler-clang.h b/include/linux/compiler-clang.h
+index d9376e327d665f..fae3775d02b516 100644
+--- a/include/linux/compiler-clang.h
++++ b/include/linux/compiler-clang.h
+@@ -126,3 +126,25 @@
+ #if __has_feature(shadow_call_stack)
+ # define __noscs	__attribute__((__no_sanitize__("shadow-call-stack")))
+ #endif
++
++/*
++ * Turn individual warnings and errors on and off locally, depending
++ * on version.
++ */
++#define __diag_clang(version, severity, s) \
++	__diag_clang_ ## version(__diag_clang_ ## severity s)
++
++/* Severity used in pragma directives */
++#define __diag_clang_ignore	ignored
++#define __diag_clang_warn	warning
++#define __diag_clang_error	error
++
++#define __diag_str1(s)		#s
++#define __diag_str(s)		__diag_str1(s)
++#define __diag(s)		_Pragma(__diag_str(clang diagnostic s))
++
++#if CONFIG_CLANG_VERSION >= 110000
++#define __diag_clang_11(s)	__diag(s)
++#else
++#define __diag_clang_11(s)
++#endif
+-- 
+2.53.0
+
 
 
 
