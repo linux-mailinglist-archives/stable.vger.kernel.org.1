@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-264353-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264131-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 3oC/IwR2MWqjjwUAu9opvQ
-	(envelope-from <stable+bounces-264353-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:12:52 +0200
+	id iBBSAkdwMWpTjQUAu9opvQ
+	(envelope-from <stable+bounces-264131-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:48:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D88B691D0D
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:12:52 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id E42A8691665
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:48:21 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ihdCgk9L;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264353-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264353-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=XYmk+hi1;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264131-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-264131-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0A4353075FF3
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:57:22 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3AC7B3056343
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:38:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2655A44E027;
-	Tue, 16 Jun 2026 15:57:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9033E44D01D;
+	Tue, 16 Jun 2026 15:38:10 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDED936E46C;
-	Tue, 16 Jun 2026 15:57:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 546A144CAEA;
+	Tue, 16 Jun 2026 15:38:09 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781625438; cv=none; b=eozr9xvQDsxdJxxwTyR0OacF1Xsl+7AQlp0hyAZKTMJMDfE0GD9XRlhqOLn1yLtaX3+f4hiFrfyJqWF7yOHL/8pK7dWxVfjr8SKuuLvs2hm1GwTLf3ftxGlSJFwCX6J+GWFWS7/FfqXYsuDMdbB2PPgq5mgCxVbwCTNPxirL5j4=
+	t=1781624290; cv=none; b=id2VRWjaPNDKE9poLUKyG4v8Ss0nJZQeD2cykg/mt5pj96DwG6E5zFY0M0pEd1COKICgo6KbUf61X85/5NgKSUDPRoRGMILBCLC4AMlJ0zvUPQO/8qdmkaqTeJu084j8F1gCMjmfJ0HC5XztuQVV3R+NzVuWJn/ZdqBUNtB47rY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781625438; c=relaxed/simple;
-	bh=sNteZ4JFuKDKqJw/FpzkGZk4onfAmK10wZlsnPit25o=;
+	s=arc-20240116; t=1781624290; c=relaxed/simple;
+	bh=8iIKaGT5VrGcohwg8KrrwCxbTNIYj5BQFZ8E34R3xiI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gTIfUIKYeymIT58M1pOHrhkbjcj5vGSW3wUt6k1Snwl8rg3MfnRc/RQSkB7q+eRLf/OQYabX9EU1jedGC2wSprZGnO8FLbUmzW6v3mmWDPgptwZMyg0NjQXnB/5mMKobJt4csy7gP1F86C79rR2rf7RDKImTR3Vr4IjUaLRQqaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ihdCgk9L; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 020F11F000E9;
-	Tue, 16 Jun 2026 15:57:16 +0000 (UTC)
+	 MIME-Version; b=iu1kIf+Q3gMZnmsJkOnOFHZiPewNbZQJ2leJioknY+ij2n1sCj13QZITbp+BK64fcFRiXcKwUUwZALUlpNHgG565tHnABw4nih/rNq/vjejmOBFyf4EWIM+shouQV8X+uEZowY9k1Oe5t+cX+NgkU0V2aond9CWC/bp1iba3KWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XYmk+hi1; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AE0A1F000E9;
+	Tue, 16 Jun 2026 15:38:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781625437;
-	bh=GmXv6WV4zV1P8ldGF85o1sYQU9vTHL8mnDryduucjs0=;
+	s=korg; t=1781624289;
+	bh=XFRt2PJaDjWcxzjaIn4P4pyXgLTbdomxRVWA3BE3Ggg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ihdCgk9L3LGhmYKYWLxCZbPxoiqcuSeIOwAkp6jSapT2SWzNzVbRxtkjoPftjSkzP
-	 OGQ4pP/hRsfyrjunCYY5t78VzaJVEb8XhD8Q7nUDbLtVWggQQGKp1AjeBkgROyu8NW
-	 opxCzy8Iy9hdXKt0cXxXkPZhJD6zw1iALzldpOjU=
+	b=XYmk+hi1urEfRjkiXDMQ2tKuk4axX3aN7ZgAvrgBpE058JebCuOhnPXo7iCJ4y0CR
+	 6Fe0BqrGG4Fg55h1mXyUwxQLcrCyObdbTSK8RqZ3H4oMhIOhNjbYaQRRRA4iT8lURJ
+	 T568P5U2rDdR1n7dDx4zs4EUZT0VxdHLWxPMyXJI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
-	Jani Nikula <jani.nikula@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 142/325] drm/i915/edp: Check supported link rates DPCD read
-Date: Tue, 16 Jun 2026 20:28:58 +0530
-Message-ID: <20260616145104.812163893@linuxfoundation.org>
+	Heiko Stuebner <heiko@sntech.de>,
+	Shawn Lin <shawn.lin@rock-chips.com>,
+	Ulf Hansson <ulfh@kernel.org>
+Subject: [PATCH 7.0 308/378] mmc: dw_mmc-rockchip: Add missing private data for very old controllers
+Date: Tue, 16 Jun 2026 20:28:59 +0530
+Message-ID: <20260616145126.407643763@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,97 +69,107 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264353-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264131-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:n.zhandarovich@fintech.ru,m:jani.nikula@intel.com,m:tursulin@ursulin.net,m:sashal@kernel.org,s:lists@lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:heiko@sntech.de,m:shawn.lin@rock-chips.com,m:ulfh@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,intel.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxtesting.org:url,ursulin.net:email,fintech.ru:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,rock-chips.com:email,vger.kernel.org:from_smtp,sntech.de:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2D88B691D0D
+X-Rspamd-Queue-Id: E42A8691665
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+From: Heiko Stuebner <heiko@sntech.de>
 
-[ Upstream commit 2673cefa99ca918e7ac5b0388ff578a83656c896 ]
+commit 1e9a4850afa0ceb63984fb1a9f3e86d0fc4fd18f upstream.
 
-intel_edp_set_sink_rates() reads DP_SUPPORTED_LINK_RATES into a local
-stack array and then parses the array unconditionally. If the read
-fails, the array contents are not valid and may result in bogus sink
-link rates being used.
+The really old controllers (rk2928, rk3066, rk3188) do not support UHS
+speeds at all, and thus never handled phase data.
 
-Use drm_dp_dpcd_read_data() and clear the sink rate array on failure,
-so the existing parser falls back to the default sink rate handling.
+For that reason it never had a parse_dt callback and no driver private
+data at all.
 
-Found by Linux Verification Center (linuxtesting.org) with static
-analysis tool SVACE.
+Commit ff6f0286c896 ("mmc: dw_mmc-rockchip: Add memory clock auto-gating
+support") makes the private data sort of mandatory, because the init
+function checks whether phases are configured internally or through the
+clock controller.
 
-Fixes: 68f357cb7347 ("drm/i915/dp: generate and cache sink rate array for all DP, not just eDP 1.4")
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Reviewed-by: Jani Nikula <jani.nikula@intel.com>
-Link: https://patch.msgid.link/20260529145759.1640646-1-n.zhandarovich@fintech.ru
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-(cherry picked from commit bd61c7756b34157e093028225a69383b4b1203cc)
-Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This results in the old SoCs then experiencing NULL-pointer dereferences
+when they try to access that private-data struct.
+
+While we could have if (priv) conditionals in all places, it's way less
+cluttery to just give the old types their private-data struct.
+
+Fixes: ff6f0286c896 ("mmc: dw_mmc-rockchip: Add memory clock auto-gating support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Acked-by: Shawn Lin <shawn.lin@rock-chips.com>
+Signed-off-by: Ulf Hansson <ulfh@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/display/intel_dp.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/mmc/host/dw_mmc-rockchip.c |   17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_dp.c b/drivers/gpu/drm/i915/display/intel_dp.c
-index a44fbac1e5e272..c7886b36477067 100644
---- a/drivers/gpu/drm/i915/display/intel_dp.c
-+++ b/drivers/gpu/drm/i915/display/intel_dp.c
-@@ -4372,10 +4372,17 @@ intel_edp_set_sink_rates(struct intel_dp *intel_dp)
+--- a/drivers/mmc/host/dw_mmc-rockchip.c
++++ b/drivers/mmc/host/dw_mmc-rockchip.c
+@@ -433,6 +433,22 @@ static int dw_mci_common_parse_dt(struct
+ 	return 0;
+ }
  
- 	if (intel_dp->edp_dpcd[0] >= DP_EDP_14) {
- 		__le16 sink_rates[DP_MAX_SUPPORTED_RATES];
-+		int ret;
- 		int i;
++static int dw_mci_rk2928_parse_dt(struct dw_mci *host)
++{
++	struct dw_mci_rockchip_priv_data *priv;
++	int err;
++
++	err = dw_mci_common_parse_dt(host);
++	if (err)
++		return err;
++
++	priv = host->priv;
++
++	priv->internal_phase = false;
++
++	return 0;
++}
++
+ static int dw_mci_rk3288_parse_dt(struct dw_mci *host)
+ {
+ 	struct dw_mci_rockchip_priv_data *priv;
+@@ -506,6 +522,7 @@ static int dw_mci_rockchip_init(struct d
  
--		drm_dp_dpcd_read(&intel_dp->aux, DP_SUPPORTED_LINK_RATES,
--				 sink_rates, sizeof(sink_rates));
-+		ret = drm_dp_dpcd_read_data(&intel_dp->aux,
-+					    DP_SUPPORTED_LINK_RATES,
-+					    sink_rates, sizeof(sink_rates));
-+		if (ret < 0) {
-+			drm_dbg_kms(display->drm,
-+				    "Unable to read eDP supported link rates, using default rates\n");
-+			memset(sink_rates, 0, sizeof(sink_rates));
-+		}
+ static const struct dw_mci_drv_data rk2928_drv_data = {
+ 	.init			= dw_mci_rockchip_init,
++	.parse_dt		= dw_mci_rk2928_parse_dt,
+ };
  
- 		for (i = 0; i < ARRAY_SIZE(sink_rates); i++) {
- 			int rate;
--- 
-2.53.0
-
+ static const struct dw_mci_drv_data rk3288_drv_data = {
 
 
 
