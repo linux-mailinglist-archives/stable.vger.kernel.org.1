@@ -1,63 +1,64 @@
-Return-Path: <stable+bounces-265859-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266218-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 6K+TMvORMWr8mwUAu9opvQ
-	(envelope-from <stable+bounces-265859-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:12:03 +0200
+	id 2FTLCdGYMWomnwUAu9opvQ
+	(envelope-from <stable+bounces-266218-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:41:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D2A3693E13
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:12:03 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EE3E694551
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:41:20 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="EFNOwZ/c";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265859-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265859-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=nAO6rz3j;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266218-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266218-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4ACEA320FBD4
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:09:39 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 46A7D30074C9
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:41:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24C3D3D525E;
-	Tue, 16 Jun 2026 18:09:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32F093DF007;
+	Tue, 16 Jun 2026 18:41:14 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD9743D75AA;
-	Tue, 16 Jun 2026 18:09:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE27513777E;
+	Tue, 16 Jun 2026 18:41:12 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781633378; cv=none; b=jGhbLYfjsxK9Z6tUcamSkF7nnMqbdRThTEhJXRqS73OrR/SNj1mzsj146a7I2Z3vDYPIOGlwr8l3igLEpIAWHHGfdjJ6hBQNGcpucRKxCFGCfDXu4XrYGnr9lKilgHudtrMeOP1bvc/MP+h77oWGrC9e1XRLdrgoeGTIu36OlQo=
+	t=1781635274; cv=none; b=EpFRZO20mWh1Au2eoAppIbR+IZ/WwrfyDFEDnxSxzQ00OEkMCWeS9wWwEVEhd9CguGBcmq6xeUpaU8cKbOlMKTcg5Lq1zc96p4uPrpb8/l4bEpF8EiiSCmzG8S/1xl6Az9T+cIMaUErlf+em1RlaCFyX/gJFSbQqN/KQodsjrDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781633378; c=relaxed/simple;
-	bh=N+AXtiSIt5+73KQp2fnvxGKXvqiuLUlSytbFMKUFsKM=;
+	s=arc-20240116; t=1781635274; c=relaxed/simple;
+	bh=qSzA2T1ib4zB8OqRaIwhNzAt6tHz75/R3zyu3C5pRMU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Wiq4IjlKUx+xEJAWGtTXdB8UX/7dkWWbH5Z4zPd6Zs2eC8rtwpEl5lSpQdjX1MZfm6hojgj9aackf3aNVgHveZgIj3KezX16+KF+lkV8FgjNRUCMPyFoICARQ/nRAAQn65PaavZEwFvuI9dWgBZph3x2ZJoI4gPO6QLqPhAI4+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EFNOwZ/c; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9C5B1F000E9;
-	Tue, 16 Jun 2026 18:09:36 +0000 (UTC)
+	 MIME-Version; b=D4q855ibAkbg8YFDvYd+qXDiK6xSK9SJxlmighiZib6wGfmDoKX63CqkNW3pZajyQlKOz+7FPZmn/g8z1OKNx1zLdfjthw+6MxcOIfCeG9yCEHoXTfuye8M6tui3TTvzJtIicAs+LwzmZG4F94gzEZnRLFchs+tuY0/eExyL8Es=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nAO6rz3j; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2A751F000E9;
+	Tue, 16 Jun 2026 18:41:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781633377;
-	bh=yyLpLMBi3JbLUobClJ1JVJXeN3oZe4B5gLSSl3HhxOE=;
+	s=korg; t=1781635272;
+	bh=rzZE6rWX486jHTi0qRCmafIcjN95kuto3VUGKmtU2ek=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=EFNOwZ/cGQR4A/460mciKs61vbsP/Pu2yTZvZoyZ6j6mAeaCX012oJe72CgBQXmMH
-	 iqC7qn6xHHYVs+Gy6vLkAyUawSrnuYt3pwL1cB9oONaBG1bL00oaPr/qFi686v9NNt
-	 OsQsNulA6WNcNrSio35SEeIPPBbBfe7fvpIh5twQ=
+	b=nAO6rz3jN9nMBD+fb8noKVor8XHF9gHuqqZwRXOgzZj8zyKkMf0a19BamH2fl47A6
+	 v7ZttEFfpCuUEy82ES2q8XNwF61gr1Ge1xcuvY3Gny72nxwCT3DB/K36D2Qi6atKwD
+	 oMY21U83nXKRJGe2B3ylrAAog2NLuD0/D3yrwc1I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christofer Jonason <christofer.jonason@guidelinegeo.com>,
-	Andy Shevchenko <andriy.shevchenko@intel.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Salih Erim <salih.erim@amd.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.15 068/411] iio: adc: xilinx-xadc: Fix sequencer mode in postdisable for dual mux
+	Carl Lee <carl.lee@amd.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+	Mark Pearson <mpearson-lenovo@squebb.ca>,
+	Luca Stefani <luca.stefani.ge1@gmail.com>,
+	David Heidelberg <david@ixit.cz>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 010/342] nfc: nxp-nci: i2c: use rising-edge IRQ on ACPI systems
 Date: Tue, 16 Jun 2026 20:25:06 +0530
-Message-ID: <20260616145103.897168621@linuxfoundation.org>
+Message-ID: <20260616145048.794709512@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,114 +68,127 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-265859-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,amd.com,oss.qualcomm.com,squebb.ca,gmail.com,ixit.cz,kernel.org];
+	TAGGED_FROM(0.00)[bounces-266218-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:carl.lee@amd.com,m:bartosz.golaszewski@oss.qualcomm.com,m:mpearson-lenovo@squebb.ca,m:luca.stefani.ge1@gmail.com,m:david@ixit.cz,m:sashal@kernel.org,m:lucastefanige1@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:christofer.jonason@guidelinegeo.com,m:andriy.shevchenko@intel.com,m:nuno.sa@analog.com,m:salih.erim@amd.com,m:Jonathan.Cameron@huawei.com,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,huawei.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,amd.com:email,intel.com:email,analog.com:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,squebb.ca:email,qualcomm.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2D2A3693E13
+X-Rspamd-Queue-Id: 1EE3E694551
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christofer Jonason <christofer.jonason@guidelinegeo.com>
+From: Carl Lee <carl.lee@amd.com>
 
-commit 852534744c2d35626a604f128ff0b8ec12805591 upstream.
+[ Upstream commit f23bf992d65a42007c517b060ca35cebdea3525a ]
 
-xadc_postdisable() unconditionally sets the sequencer to continuous
-mode. For dual external multiplexer configurations this is incorrect:
-simultaneous sampling mode is required so that ADC-A samples through
-the mux on VAUX[0-7] while ADC-B simultaneously samples through the
-mux on VAUX[8-15]. In continuous mode only ADC-A is active, so
-VAUX[8-15] channels return incorrect data.
+Some ACPI-based platforms report incorrect IRQ trigger types (e.g.
+IRQF_TRIGGER_HIGH), which can lead to interrupt storms.
 
-Since postdisable is also called from xadc_probe() to set the initial
-idle state, the wrong sequencer mode is active from the moment the
-driver loads.
+Use the historically working rising-edge trigger on ACPI systems to
+avoid this regression.
 
-The preenable path already uses xadc_get_seq_mode() which returns
-SIMULTANEOUS for dual mux. Fix postdisable to do the same.
+Device Tree-based systems continue to use the firmware-provided
+trigger type.
 
-Fixes: bdc8cda1d010 ("iio:adc: Add Xilinx XADC driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Christofer Jonason <christofer.jonason@guidelinegeo.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
-Reviewed-by: Salih Erim <salih.erim@amd.com>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 57be33f85e36 ("nfc: nxp-nci: remove interrupt trigger type")
+Signed-off-by: Carl Lee <carl.lee@amd.com>
+Tested-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+Tested-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+Tested-by: Luca Stefani <luca.stefani.ge1@gmail.com>
+Link: https://patch.msgid.link/20260516-nfc-nxp-nci-i2c-restore-irq-trigger-fallback-v3-1-37ba4b6e9086@amd.com
+Signed-off-by: David Heidelberg <david@ixit.cz>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/xilinx-xadc-core.c |   11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/nfc/nxp-nci/i2c.c | 21 ++++++++++++++++++++-
+ 1 file changed, 20 insertions(+), 1 deletion(-)
 
---- a/drivers/iio/adc/xilinx-xadc-core.c
-+++ b/drivers/iio/adc/xilinx-xadc-core.c
-@@ -819,6 +819,7 @@ static int xadc_postdisable(struct iio_d
+diff --git a/drivers/nfc/nxp-nci/i2c.c b/drivers/nfc/nxp-nci/i2c.c
+index 237b344a30bbd8..989b4a0e5b1982 100644
+--- a/drivers/nfc/nxp-nci/i2c.c
++++ b/drivers/nfc/nxp-nci/i2c.c
+@@ -16,6 +16,7 @@
+ #include <linux/delay.h>
+ #include <linux/i2c.h>
+ #include <linux/interrupt.h>
++#include <linux/irq.h>
+ #include <linux/module.h>
+ #include <linux/nfc.h>
+ #include <linux/gpio/consumer.h>
+@@ -268,6 +269,7 @@ static int nxp_nci_i2c_probe(struct i2c_client *client,
  {
- 	struct xadc *xadc = iio_priv(indio_dev);
- 	unsigned long scan_mask;
-+	int seq_mode;
- 	int ret;
- 	int i;
+ 	struct device *dev = &client->dev;
+ 	struct nxp_nci_i2c_phy *phy;
++	unsigned long irqflags;
+ 	int r;
  
-@@ -826,6 +827,12 @@ static int xadc_postdisable(struct iio_d
- 	for (i = 0; i < indio_dev->num_channels; i++)
- 		scan_mask |= BIT(indio_dev->channels[i].scan_index);
+ 	if (!i2c_check_functionality(client->adapter, I2C_FUNC_I2C)) {
+@@ -304,9 +306,26 @@ static int nxp_nci_i2c_probe(struct i2c_client *client,
+ 	if (r < 0)
+ 		return r;
  
 +	/*
-+	 * Use the correct sequencer mode for the idle state: simultaneous
-+	 * mode for dual external mux configurations, continuous otherwise.
++	 * ACPI platforms may report incorrect IRQ trigger types
++	 * (e.g. level-high), which can lead to interrupt storms.
++	 *
++	 * Use the historically stable rising-edge trigger for ACPI devices.
++	 *
++	 * On non-ACPI systems (e.g. Device Tree), prefer the firmware-
++	 * provided trigger type, falling back to rising-edge if not set.
 +	 */
-+	seq_mode = xadc_get_seq_mode(xadc, scan_mask);
++	if (ACPI_COMPANION(dev)) {
++		irqflags = IRQF_TRIGGER_RISING;
++	} else {
++		irqflags = irq_get_trigger_type(client->irq);
++		if (!irqflags)
++			irqflags = IRQF_TRIGGER_RISING;
++	}
 +
- 	/* Enable all channels and calibration */
- 	ret = xadc_write_adc_reg(xadc, XADC_REG_SEQ(0), scan_mask & 0xffff);
- 	if (ret)
-@@ -836,11 +843,11 @@ static int xadc_postdisable(struct iio_d
- 		return ret;
- 
- 	ret = xadc_update_adc_reg(xadc, XADC_REG_CONF1, XADC_CONF1_SEQ_MASK,
--		XADC_CONF1_SEQ_CONTINUOUS);
-+				  seq_mode);
- 	if (ret)
- 		return ret;
- 
--	return xadc_power_adc_b(xadc, XADC_CONF1_SEQ_CONTINUOUS);
-+	return xadc_power_adc_b(xadc, seq_mode);
- }
- 
- static int xadc_preenable(struct iio_dev *indio_dev)
+ 	r = request_threaded_irq(client->irq, NULL,
+ 				 nxp_nci_i2c_irq_thread_fn,
+-				 IRQF_ONESHOT,
++				 irqflags | IRQF_ONESHOT,
+ 				 NXP_NCI_I2C_DRIVER_NAME, phy);
+ 	if (r < 0)
+ 		nfc_err(&client->dev, "Unable to register IRQ handler\n");
+-- 
+2.53.0
+
 
 
 
