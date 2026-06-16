@@ -1,63 +1,61 @@
-Return-Path: <stable+bounces-265814-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265376-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id w2P6H2yQMWpnmwUAu9opvQ
-	(envelope-from <stable+bounces-265814-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:05:32 +0200
+	id jzgcJsOHMWojlwUAu9opvQ
+	(envelope-from <stable+bounces-265376-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:28:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09DC2693CB4
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:05:32 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13D6069329F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:28:35 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=dMwKErvE;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265814-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265814-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=zePozLxs;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265376-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-265376-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 46ADF301AF7D
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:05:30 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 09E5630465C1
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:28:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D115D3D091A;
-	Tue, 16 Jun 2026 18:05:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D1DD47B415;
+	Tue, 16 Jun 2026 17:28:03 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF1F93C09E1;
-	Tue, 16 Jun 2026 18:05:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 628B547AF5F;
+	Tue, 16 Jun 2026 17:28:00 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781633129; cv=none; b=GkjmTXHg1SzMs+c0WXNF/8b9OrpZMl38ewu68AVy1aSop5uoddlmdIeb+egMsKAsGT+ukGNJkr8EdCQ/TEQtxS0Wz3fw2BnvGmeALUlApi9V0wp581qWW8MtBnxy5uvHun0fQbbvkQ3eQO0LuNFhgQfwhquwejhlwTRZ3B2r4mo=
+	t=1781630882; cv=none; b=JbGSzRmlWB1YGC0XapLhsQfoFkAha+QPC8KIlvgsTqCy/w5WXDSzK6PtiGFlN/jjPmBCQ95OqtH6HCQOejjJXqhqXlAmP/1JtZlthkKZBFZ7RFRUPqpOL7xnDagBh83pSy4HTsNFIzbJISiDfdabFBB5HXu06qxrMLVlG1hqTqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781633129; c=relaxed/simple;
-	bh=6JelwhtKkyx8n02Ei2O0R9i+dzu3TH4YGH/p0kGdXto=;
+	s=arc-20240116; t=1781630882; c=relaxed/simple;
+	bh=s5PkFonJwyzDGQzrzZa7ehQ1hTdgMHEkclOqylT9TSU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lg2GNiEsx9MIebvxOZHOBy8b2qSaskUsoCbIYGjbH/z7H/xX6BoCKOg4iC0bpA9Iipyu85oxTRGVt1FL8VENqUzIb2e7dvloFGUrvJvnAm2tTFSJFtq/KgVlNF88LGgYl+wa7FqyFlCaajN6kRPVx6yWAO6CbynCror9+6by2jQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dMwKErvE; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A00CD1F000E9;
-	Tue, 16 Jun 2026 18:05:27 +0000 (UTC)
+	 MIME-Version; b=Y0k0AzHrts0I7vgoKnv2765H/SZEpCuoCnS6g7c+K3hiB/Ot5t7a+R0GYu8mwNXfprO+c+IMVNHmPV0a+FQ6ZndT9PVjq/12P5kDPOE6uTprTUWI6BN4EL4pdxW2dQLZmmhKvgGnDnq1X9A7wxsNKbJ+xLTaqHavHlPb+hWKqgA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zePozLxs; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E92A81F000E9;
+	Tue, 16 Jun 2026 17:27:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781633128;
-	bh=5zOorEBYf0N8EiNtRPJd7dV0eNEwxI7VzI2mv+NDpkU=;
+	s=korg; t=1781630879;
+	bh=gxr7J4A1uC6L92UaL+YT53AYCInq7WQDqrF5FXURH9A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dMwKErvE6ja1Dh+1815084UKm5Ohxi2Ps3ZBvujBruDLdz615oUEyvgYG/jssKIyu
-	 VetKTqyZ+w1cqdwkggbo7eI3SAHRAYoZGeJL+EfrqnWaDQXZAUDJSIsCFypa86WI+N
-	 MLNgLEZDZ1+7DKTP/CR1n6+Kx1F1U0H5FNujrRAs=
+	b=zePozLxs1cp/JM6YbNfp5Wnk8Sy/sxDhGb9/7OTU0NeYqsw7q12SpkOJUa65GKz+/
+	 O7chpDKHqotd22C0O8/872Rs3XacAtVM7X2FI50mSQKPqXhWk3HqQsmeCwo/fzWRZ7
+	 GichBCcYeB80Rm4nSn4EaFlKwvrITnsbLVjoy4ZU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damiano Melotti <melotti@google.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 024/411] tunnels: do not assume transport header in iptunnel_pmtud_check_icmp()
+	stable <stable@kernel.org>,
+	Peter Chen <peter.chen@kernel.org>,
+	Yongchao Wu <yongchao.wu@autochips.com>
+Subject: [PATCH 6.1 115/522] usb: cdns3: gadget: fix request skipping after clearing halt
 Date: Tue, 16 Jun 2026 20:24:22 +0530
-Message-ID: <20260616145101.653349994@linuxfoundation.org>
+Message-ID: <20260616145131.341807392@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,104 +69,105 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265814-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265376-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:melotti@google.com,m:edumazet@google.com,m:kuniyu@google.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:peter.chen@kernel.org,m:yongchao.wu@autochips.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,autochips.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 09DC2693CB4
+X-Rspamd-Queue-Id: 13D6069329F
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Yongchao Wu <yongchao.wu@autochips.com>
 
-[ Upstream commit 509323077ef79a26ba0c60bb556e45c12c398b2d ]
+commit c8778ff817a7047d6848fefba99dcb27b1bf01fe upstream.
 
-In some cases, iptunnel_pmtud_check_icmp() can be called while
-skb transport header is not set.
+According to the cdns3 datasheet, the EPRST (Endpoint Reset) command
+causes the DMA engine to reposition its internal pointer to the next
+Transfer Descriptor (TD) if it was already processing one.
 
-This triggers an out-of-bound access, because
-(typeof(skb->transport_header))~0U is 65535.
+This issue is consistently observed during the ADB identification
+process on macOS hosts, where the host issues a Clear_Halt. Although
+commit 4bf2dd65135a ("usb: cdns3: gadget: toggle cycle bit before reset
+endpoint") attempted to avoid DMA advance by toggling the cycle bit,
+trace logs show that on certain hosts like macOS, the DMA pointer
+(EP_TRADDR) still shifts after EPRST:
 
-Access the icmp header based on IPv4 network header,
-after making sure icmp->type is present in skb linear part.
+  cdns3_ctrl_req: Clear Endpoint Feature(Halt ep1out)
+  cdns3_doorbell_epx: ep1out, ep_trbaddr f9c04030  <-- Should be f9c04000
+  cdns3_gadget_giveback: ep1out: req: ... length: 16384/16384
 
-Note that iptunnel_pmtud_check_icmpv6()) is fine.
+As shown above, the DMA pointer jumped to the next TD, causing
+the controller to skip the initial TRBs of the request. This leads to
+data misalignment and ADB protocol hangs on macOS.
 
-Fixes: 4cb47a8644cc ("tunnels: PMTU discovery support for directly bridged IP packets")
-Reported-by: Damiano Melotti <melotti@google.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20260522115512.1519110-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this by manually restoring the EP_TRADDR register to the starting
+physical address of the current request after the EPRST operation is
+complete.
+
+Fixes: 7733f6c32e36 ("usb: cdns3: Add Cadence USB3 DRD Driver")
+Cc: stable <stable@kernel.org>
+Cc: Peter Chen <peter.chen@kernel.org>
+Signed-off-by: Yongchao Wu <yongchao.wu@autochips.com>
+Acked-by: Peter Chen <peter.chen@kernel.org>
+Link: https://patch.msgid.link/20260513160012.2547894-1-yongchao.wu@autochips.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/ip_tunnel_core.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ drivers/usb/cdns3/cdns3-gadget.c |   12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv4/ip_tunnel_core.c b/net/ipv4/ip_tunnel_core.c
-index 4d80bbcd15d5a4..f535b875a02b88 100644
---- a/net/ipv4/ip_tunnel_core.c
-+++ b/net/ipv4/ip_tunnel_core.c
-@@ -262,7 +262,6 @@ static int iptunnel_pmtud_build_icmp(struct sk_buff *skb, int mtu)
-  */
- static int iptunnel_pmtud_check_icmp(struct sk_buff *skb, int mtu)
- {
--	const struct icmphdr *icmph = icmp_hdr(skb);
- 	const struct iphdr *iph = ip_hdr(skb);
+--- a/drivers/usb/cdns3/cdns3-gadget.c
++++ b/drivers/usb/cdns3/cdns3-gadget.c
+@@ -2812,9 +2812,19 @@ int __cdns3_gadget_ep_clear_halt(struct
+ 	priv_ep->flags &= ~(EP_STALLED | EP_STALL_PENDING);
  
- 	if (mtu < 576 || iph->frag_off != htons(IP_DF))
-@@ -273,9 +272,17 @@ static int iptunnel_pmtud_check_icmp(struct sk_buff *skb, int mtu)
- 	    ipv4_is_lbcast(iph->saddr)  || ipv4_is_multicast(iph->saddr))
- 		return 0;
+ 	if (request) {
+-		if (trb)
++		if (trb) {
+ 			*trb = trb_tmp;
  
--	if (iph->protocol == IPPROTO_ICMP && icmp_is_err(icmph->type))
--		return 0;
-+	if (iph->protocol == IPPROTO_ICMP) {
-+		const struct icmphdr *icmph;
++			/*
++			 * Per datasheet, EPRST causes DMA to reposition to the next TD.
++			 * Manually reset EP_TRADDR to the current TRB to prevent
++			 * the hardware from skipping the interrupted request.
++			 */
++			writel(EP_TRADDR_TRADDR(priv_ep->trb_pool_dma +
++						priv_req->start_trb * TRB_SIZE),
++						&priv_dev->regs->ep_traddr);
++		}
++
+ 		cdns3_rearm_transfer(priv_ep, 1);
+ 	}
  
-+		if (!pskb_network_may_pull(skb, iph->ihl * 4 +
-+						offsetofend(struct icmphdr, type)))
-+			return 0;
-+		iph = ip_hdr(skb);
-+		icmph = (void *)iph + iph->ihl * 4;
-+		if (icmp_is_err(icmph->type))
-+			return 0;
-+	}
- 	return iptunnel_pmtud_build_icmp(skb, mtu);
- }
- 
--- 
-2.53.0
-
 
 
 
