@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-266464-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264150-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id +JgIA8mdMWpCoQUAu9opvQ
-	(envelope-from <stable+bounces-266464-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:02:33 +0200
+	id FJ+NN+FwMWqIjQUAu9opvQ
+	(envelope-from <stable+bounces-264150-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:50:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9286A694ADA
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:02:32 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74DF1691700
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:50:57 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=IAPk0EbV;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266464-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-266464-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="Ld98/KBK";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264150-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264150-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0BEE530386E6
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:02:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A1EB830E626C
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:40:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EE923DBD76;
-	Tue, 16 Jun 2026 19:02:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1645945349C;
+	Tue, 16 Jun 2026 15:39:48 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8668349CF0;
-	Tue, 16 Jun 2026 19:02:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7B5345107A;
+	Tue, 16 Jun 2026 15:39:46 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781636550; cv=none; b=ev4383jogof/0ULhIBvX3UtVblcHiWKIAVxs2zFDPn6lRdg99A8TPJf5F6JMif/hsMrDVDZctX2pusZ3gdZK4uviNcrEEpC2punZdcRRguucUwshXVpwJQXIaLRUMoy+5mT4YBwUhoW00m9t5w0qu6kvDV98nJM7v0/raqChgaQ=
+	t=1781624387; cv=none; b=ux3D50+jlXM6AdNESBdtbkLW4ll3c2QGqZ+cXY71PCTn1zQlzktMGTS4qGepll9SWyWwYy3gAXSpeLtJE3fy0f0icvVlQknJ0ky0nPT4GScXIItsvCU6+uj/w+jOoqRVY4BU5uaBervR7rJnh20YIvfhlXHlqWIpaOpnbsdpexs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781636550; c=relaxed/simple;
-	bh=cG2AmIooLNinCg37jun76/7nyqE89hX+BtFuYg7qqfI=;
+	s=arc-20240116; t=1781624387; c=relaxed/simple;
+	bh=A6jY91AJJ7dFHtOZxrAVgPSMDV9Lsb+k0nt89yXhArg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U7lTqFEFvjoh8HRMbJEPUav0Jetb7sg2ORMaUOShT5c8ORK8aYeZEtKSdGMDAKb/89iCSNLRdQLjrnTgExYOa1YX4L8OTozuGY0JkBGTc2io35YqhXOlaTmAYpDgNt1pUj4bXulTfo4FywG1k6UJvD3BM/lY37Hhx8sF3pAPBZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IAPk0EbV; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBA721F000E9;
-	Tue, 16 Jun 2026 19:02:28 +0000 (UTC)
+	 MIME-Version; b=kizWnTAaDL/eez7HtAr3jE0mjg8mzo+n0UT0BuHmfOFvPU/zCByCWl7tmJ0TaSfJ9/+Edq5cswHtfk9wPIvimwVj2Lr/VfCKEzu77/Otsd/n05VJSNleCgzdA0HsVWzI2z4rb6LICgBcfdfIOph4AFBPeakbwRhO57fuvzYIAfY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ld98/KBK; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC6D41F00A3A;
+	Tue, 16 Jun 2026 15:39:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781636549;
-	bh=BLK5pApShqzUq1OXjHCB2NxWP08jpjM9mhkOoazCVtU=;
+	s=korg; t=1781624386;
+	bh=TruGZtgB/WISfIdLyTQk72fvBM0KEcVz3FZXxz3+3PQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=IAPk0EbVEr7wviJ7Mtnvxy9Fu1HgzIqv3YSDtj93bjloZw4be1Ly1Sa/RM8PNhyZe
-	 gE4QQKC5XtpMPbLYG2ven8x/EQ1DuUMM+xk+Wk9ppN4NHYZU7ukQi8xP0McvyZG523
-	 65UOmmJCca99LNZqzumukCjX+iOgjBJSipdJnkE0=
+	b=Ld98/KBKdPJmOrN1VOs5z9d8lRQ85U24aJp5o+gJ5DWIrcnXTODsTe4G8LDKOBBsL
+	 9MJR+0oRglm3zExG3RjKh1tcCsPY6n/tgddK6Mb/ryR1zLD/4IiVXM97+DqfcsvJRm
+	 5oROlWehQ7RSQ4DjchH+H2drM+3v58XhsH1Wvx1A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jingoo Han <jg1.han@samsung.com>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 261/342] spi: tegra20-sflash: fix controller deregistration
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>,
+	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
+	Srinivas Kandagatla <srini@kernel.org>
+Subject: [PATCH 7.0 326/378] slimbus: qcom-ngd-ctrl: Fix up platform_driver registration
 Date: Tue, 16 Jun 2026 20:29:17 +0530
-Message-ID: <20260616145100.415084516@linuxfoundation.org>
+Message-ID: <20260616145127.381569569@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,22 +72,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266464-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264150-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jg1.han@samsung.com,m:johan@kernel.org,m:broonie@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:dmitry.baryshkov@oss.qualcomm.com,m:mukesh.ojha@oss.qualcomm.com,m:bjorn.andersson@oss.qualcomm.com,m:srini@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -99,64 +99,103 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,samsung.com:email,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,qualcomm.com:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9286A694ADA
+X-Rspamd-Queue-Id: 74DF1691700
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
 
-[ Upstream commit ad7310e983327f939dd6c4e801eab13238992572 ]
+commit 8663e8334d7b6007f5d8a4e5dd270246f35107a6 upstream.
 
-Make sure to deregister the controller before disabling underlying
-resources like clocks during driver unbind.
+Device drivers should not invoke platform_driver_register()/unregister()
+in their probe and remove paths. They should further not rely on
+platform_driver_unregister() as their only means of "deleting" their
+child devices.
 
-Fixes: f12f7318c44a ("spi: tegra20-sflash: use devm_spi_register_master()")
-Cc: stable@vger.kernel.org	# 3.13
-Cc: Jingoo Han <jg1.han@samsung.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260410081757.503099-23-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-[ renamed spi_controller/host APIs to spi_master/master equivalents and switched devm_spi_register_master to spi_register_master ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Introduce a helper to unregister the child device and move the
+platform_driver_register()/unregister() to module_init()/exit().
+
+Fixes: 917809e2280b ("slimbus: ngd: Add qcom SLIMBus NGD driver")
+Cc: stable@vger.kernel.org
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
+Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
+Link: https://patch.msgid.link/20260530204421.116824-3-srini@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-tegra20-sflash.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/slimbus/qcom-ngd-ctrl.c |   36 +++++++++++++++++++++++++++++++++---
+ 1 file changed, 33 insertions(+), 3 deletions(-)
 
---- a/drivers/spi/spi-tegra20-sflash.c
-+++ b/drivers/spi/spi-tegra20-sflash.c
-@@ -508,7 +508,7 @@ static int tegra_sflash_probe(struct pla
- 	pm_runtime_put(&pdev->dev);
- 
- 	master->dev.of_node = pdev->dev.of_node;
--	ret = devm_spi_register_master(&pdev->dev, master);
-+	ret = spi_register_master(master);
- 	if (ret < 0) {
- 		dev_err(&pdev->dev, "can not register to master err %d\n", ret);
- 		goto exit_pm_disable;
-@@ -531,12 +531,18 @@ static int tegra_sflash_remove(struct pl
- 	struct spi_master *master = platform_get_drvdata(pdev);
- 	struct tegra_sflash_data	*tsd = spi_master_get_devdata(master);
- 
-+	spi_master_get(master);
-+
-+	spi_unregister_master(master);
-+
- 	free_irq(tsd->irq, tsd);
- 
- 	pm_runtime_disable(&pdev->dev);
- 	if (!pm_runtime_status_suspended(&pdev->dev))
- 		tegra_sflash_runtime_suspend(&pdev->dev);
- 
-+	spi_master_put(master);
-+
- 	return 0;
+--- a/drivers/slimbus/qcom-ngd-ctrl.c
++++ b/drivers/slimbus/qcom-ngd-ctrl.c
+@@ -1560,6 +1560,13 @@ static int of_qcom_slim_ngd_register(str
+ 	return -ENODEV;
  }
  
++static void qcom_slim_ngd_unregister(struct qcom_slim_ngd_ctrl *ctrl)
++{
++	struct qcom_slim_ngd *ngd = ctrl->ngd;
++
++	platform_device_del(ngd->pdev);
++}
++
+ static int qcom_slim_ngd_probe(struct platform_device *pdev)
+ {
+ 	struct device *dev = &pdev->dev;
+@@ -1662,7 +1669,6 @@ static int qcom_slim_ngd_ctrl_probe(stru
+ 		goto err_pdr_lookup;
+ 	}
+ 
+-	platform_driver_register(&qcom_slim_ngd_driver);
+ 	return of_qcom_slim_ngd_register(dev, ctrl);
+ 
+ err_pdr_alloc:
+@@ -1676,7 +1682,9 @@ err_pdr_lookup:
+ 
+ static void qcom_slim_ngd_ctrl_remove(struct platform_device *pdev)
+ {
+-	platform_driver_unregister(&qcom_slim_ngd_driver);
++	struct qcom_slim_ngd_ctrl *ctrl = platform_get_drvdata(pdev);
++
++	qcom_slim_ngd_unregister(ctrl);
+ }
+ 
+ static void qcom_slim_ngd_remove(struct platform_device *pdev)
+@@ -1752,6 +1760,28 @@ static struct platform_driver qcom_slim_
+ 	},
+ };
+ 
+-module_platform_driver(qcom_slim_ngd_ctrl_driver);
++static int qcom_slim_ngd_init(void)
++{
++	int ret;
++
++	ret = platform_driver_register(&qcom_slim_ngd_driver);
++	if (ret)
++		return ret;
++
++	ret = platform_driver_register(&qcom_slim_ngd_ctrl_driver);
++	if (ret)
++		platform_driver_unregister(&qcom_slim_ngd_driver);
++
++	return ret;
++}
++
++static void qcom_slim_ngd_exit(void)
++{
++	platform_driver_unregister(&qcom_slim_ngd_ctrl_driver);
++	platform_driver_unregister(&qcom_slim_ngd_driver);
++}
++
++module_init(qcom_slim_ngd_init);
++module_exit(qcom_slim_ngd_exit);
+ MODULE_LICENSE("GPL v2");
+ MODULE_DESCRIPTION("Qualcomm SLIMBus NGD controller");
 
 
 
