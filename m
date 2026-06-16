@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-264139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265130-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id tgToBmBwMWpajQUAu9opvQ
-	(envelope-from <stable+bounces-264139-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:48:48 +0200
+	id +J97JWaEMWqvlQUAu9opvQ
+	(envelope-from <stable+bounces-265130-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:14:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EAD7691675
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:48:47 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1CAE692E50
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:14:13 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=qJAiTpYQ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264139-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-264139-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=IO4Jcaw4;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265130-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265130-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id ABA163058BA1
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:38:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 08B6E30B06CB
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:07:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9765944CAC9;
-	Tue, 16 Jun 2026 15:38:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3E3C47DD45;
+	Tue, 16 Jun 2026 17:07:02 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70E7634889F;
-	Tue, 16 Jun 2026 15:38:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1830947B435;
+	Tue, 16 Jun 2026 17:07:01 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781624331; cv=none; b=cg36p8i0SSgijT2uHBAjAZmzGiblBBsYnzC8p7D1WQGeFb4WGTWKpmHdm/jH6Y21D+GcJEHtpOvwQXAulk8R8Tt7BI4JuON9NehKy1EshSGafaXjdvd+ea69YAb/vpIHe1JQw8skeAZrkLAL4W2QJOZ0+/2DASGGat+/gzqABIc=
+	t=1781629622; cv=none; b=qG+dtDcdXusNJMBDU2glVTkj96BvpphqySFioNy5yooy657E4DBhozqIzyINX/VCxE3X1Qo2lM6BMoJjBvMa1qLz0uWjTRe7QGOUbh178Yrby3ghfqhLqwMp2qzhNozJMk4/Ua35hgtl9fMuVtTvU9CbTOaYKcPQ5HthQXhcoLs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781624331; c=relaxed/simple;
-	bh=9AYStCQ6WtdxM7hv2cyJfHl5hG9Qn3LmiTOllohaF0o=;
+	s=arc-20240116; t=1781629622; c=relaxed/simple;
+	bh=337svMRh7EBG6RVWiGlKpNo1skBB1nLIcKjNfJc1pfs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g/W4jawOoF+AO8jNcCmp7QliOg9/K/VnjgyjPo0T3EjILbX08MS38lWDN8hl9yLZPQ+7XiZJhbzP6SJRz+1oo85aQRRUzK1Tcr0+NnD+2s0p2v1uIaoqApPjzUWknkRMXIUpF0W/KdvXgSrUI03ckX69vKYOqC3FanRaweeC1p8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qJAiTpYQ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DC811F000E9;
-	Tue, 16 Jun 2026 15:38:49 +0000 (UTC)
+	 MIME-Version; b=Uf1Ls0KFGhoeTJ0QqWR9IYfMGT5QmnpAUPTpL4zOvGUE8LnldolR7Fz2Jws2EKVJf6h5NSnsoeIrB/kGnAyKwTlpPLrM/ZqHbJ/Tola7abtpU3bvRllj/HYGMOZs71PXdsjfHBiUwpM//D0otnCaProN7VE9xJW2RVig0jAxJwc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IO4Jcaw4; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A2B81F000E9;
+	Tue, 16 Jun 2026 17:06:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781624330;
-	bh=8bMXHmT7TPjHNOCyK45zYj3OTFZ8EKnjue8MpC4FFvs=;
+	s=korg; t=1781629621;
+	bh=0io+wL+y/vJkBb3+TG0YylYXQgs6aH03RbgN2cim6Ek=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=qJAiTpYQkHB9WUorABD1+8ztI5FtddZZB8zZ+9Plhp3TfkxygBsr3eGs9V92RM9Se
-	 5A07NRscYjDUr4d4NC0wpE/p+HgqAr79GQRmqLU/d72IjERACGaS7hNG0BAjb8cIsQ
-	 6SyqUG5NzZLnOIcSsL68p9f8yKT7bIbYh6MVO9i4=
+	b=IO4Jcaw44U12JX+QqQcG0D/wR2JP76nBbqVa40pOpv4e49Hn7WVDKxqyJQpIqI0cY
+	 sr4zWlbnxUHG4fxw6H2sddl66MECR4gSiTbeDlwrF6z1dPJZbXQNlAAAzfqYjqXQp5
+	 doM1rWgHWApxJRHoWuEqlTbl0BH5Irhnl616DYb4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Lai <justinlai0215@realtek.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 7.0 316/378] rtase: Reset TX subqueue when clearing TX ring
-Date: Tue, 16 Jun 2026 20:29:07 +0530
-Message-ID: <20260616145126.894310434@linuxfoundation.org>
+	Chancel Liu <chancel.liu@nxp.com>,
+	Shengjiu Wang <shengjiu.wang@gmail.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.6 321/452] ASoC: fsl_sai: Fix 32 slots TDM broken by integer shift UB in xMR write
+Date: Tue, 16 Jun 2026 20:29:08 +0530
+Message-ID: <20260616145134.310642327@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,81 +67,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264139-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:justinlai0215@realtek.com,m:aleksander.lobakin@intel.com,m:kuba@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265130-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:chancel.liu@nxp.com,m:shengjiu.wang@gmail.com,m:broonie@kernel.org,m:shengjiuwang@gmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,nxp.com,gmail.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,realtek.com:email,intel.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,nxp.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 0EAD7691675
+X-Rspamd-Queue-Id: F1CAE692E50
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Lai <justinlai0215@realtek.com>
+From: Chancel Liu <chancel.liu@nxp.com>
 
-commit ab1ecaabe74b7d86c38ab2ab44bd56cdcc33645a upstream.
+commit 4790af1cc2e8871fb31f28c66e42b9a949a23992 upstream.
 
-rtase_tx_clear() clears the TX ring and resets the ring indexes.
-However, the TX queue state and BQL accounting are not reset at
-the same time.
+When configuring 32 slots TDM (channels == slots == 32), the xMR
+(Mask Register) write used:
+~0UL - ((1 << min(channels, slots)) - 1)
 
-This may leave __QUEUE_STATE_STACK_XOFF asserted after
-rtase_sw_reset(), preventing new TX packets from being scheduled.
+The literal "1" is a signed 32-bit int. Shifting it by 32 positions is
+undefined behaviour which may set this register to 0xFFFFFFFF, masking
+all 32 slots.
 
-Reset the TX subqueue when clearing the TX ring so the TX queue
-state and BQL accounting are restored together.
+Use GENMASK_U32() macro instead. For 32 slots this produces a zero mask:
+~GENMASK_U32(31, 0) = ~0xFFFFFFFF = 0x00000000
+Behaviour for fewer than 32 slots is unchanged.
 
-Fixes: 5a2a2f15244c ("rtase: Implement the rtase_down function")
+Fixes: 770f58d7d2c5 ("ASoC: fsl_sai: Support multiple data channel enable bits")
 Cc: stable@vger.kernel.org
-Signed-off-by: Justin Lai <justinlai0215@realtek.com>
-Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-Link: https://patch.msgid.link/20260602114659.12335-1-justinlai0215@realtek.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Chancel Liu <chancel.liu@nxp.com>
+Reviewed-by: Shengjiu Wang <shengjiu.wang@gmail.com>
+Link: https://patch.msgid.link/20260601083327.1535185-1-chancel.liu@oss.nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/realtek/rtase/rtase_main.c |    2 ++
- 1 file changed, 2 insertions(+)
+ sound/soc/fsl/fsl_sai.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/realtek/rtase/rtase_main.c
-+++ b/drivers/net/ethernet/realtek/rtase/rtase_main.c
-@@ -239,6 +239,8 @@ static void rtase_tx_clear(struct rtase_
- 		rtase_tx_clear_range(ring, ring->dirty_idx, RTASE_NUM_DESC);
- 		ring->cur_idx = 0;
- 		ring->dirty_idx = 0;
-+
-+		netdev_tx_reset_subqueue(tp->dev, i);
- 	}
- }
+--- a/sound/soc/fsl/fsl_sai.c
++++ b/sound/soc/fsl/fsl_sai.c
+@@ -705,7 +705,7 @@ static int fsl_sai_hw_params(struct snd_
+ 				   FSL_SAI_CR4_FSD_MSTR, FSL_SAI_CR4_FSD_MSTR);
  
+ 	regmap_write(sai->regmap, FSL_SAI_xMR(tx),
+-		     ~0UL - ((1 << min(channels, slots)) - 1));
++		     ~GENMASK_U32(min(channels, slots) - 1, 0));
+ 
+ 	return 0;
+ }
 
 
 
