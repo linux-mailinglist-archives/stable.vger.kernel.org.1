@@ -1,66 +1,63 @@
-Return-Path: <stable+bounces-265609-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266393-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id buJ/LjGNMWq6mQUAu9opvQ
-	(envelope-from <stable+bounces-265609-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:51:45 +0200
+	id gBDbNmGcMWqwoAUAu9opvQ
+	(envelope-from <stable+bounces-266393-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:56:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 288CE6938D4
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:51:45 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D02F8694971
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:56:32 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=WX6E3Rsw;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265609-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265609-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=2D8apAK6;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266393-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266393-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3C9EA30BC942
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:47:48 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E17963004CA6
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:56:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B90F63CC33F;
-	Tue, 16 Jun 2026 17:47:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCAE93EB0F5;
+	Tue, 16 Jun 2026 18:56:28 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 945C6169AD2;
-	Tue, 16 Jun 2026 17:47:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0C993CC303;
+	Tue, 16 Jun 2026 18:56:27 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781632067; cv=none; b=iBDpWd/A60jHKD10L9fzykFUS6a9wc5OKwg5w+8gsHocKsyhxZokuHesBPl3C4HJGD/JvUbnY//2+Ulx67fWsPD6ihyIVVKhFXSR1egk3c0uBhvrYLnB8Nz5faA9GtRbQ1ZSJdN+XJIyT6X9uNBnmYp1fWpVihAsr26AXPAisDY=
+	t=1781636188; cv=none; b=ialn5FZBR1FayoseM2WSlSUuV09bmX8srtEsJsuItmX218MYewTIh/K78nO09DQXB6zaVWH/oRLmhtAfAqH2CVNtKkF+eSDfuuDrXvZ/ufQ8zfZHGjSzwFxCKe2Cn/q3rZ5fObIoJb19tVCnI/jx91ib8W805IXPFceY3JXkRDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781632067; c=relaxed/simple;
-	bh=iP2Ko4vld5puFssBKa06oHCPwfompNIb9NB9r5IIqxE=;
+	s=arc-20240116; t=1781636188; c=relaxed/simple;
+	bh=EjOehb+S9t9/iv9djwFa9q9jdpkceqmPKRwmWjeKXGk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=imdP/SX3Y8P5no8CRDdgYg33DsyFcWV0fRRK4x7gsOcK0j17KpVsRvDd93QymBCuOWGeAmJZjnMykUo4A3xD4ubZhMZOWngAHGtKaLlUeeFBL1mnkRy1SzoY5QeVlPhiAmhd59vjTNYzZcTMkTmxIo2FWcF9smz1k/oTnuoI/YM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WX6E3Rsw; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A37EC1F000E9;
-	Tue, 16 Jun 2026 17:47:45 +0000 (UTC)
+	 MIME-Version; b=hccx87VSGftDPRQ/iG0itX3qFpJmYYjnR7f7JyeCsDh9i1fxLy2h4gnrC3HtTvxbnpqL030cfJeonb2FGUhxTG8qtpOF1QyidekjohDKdtkh1kFbnp/eRGOimaFgquvXt2ivWED8FUwbK5sv+ryRJMH6MFknabfHCBxrzJWXLYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2D8apAK6; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 845F01F00A3A;
+	Tue, 16 Jun 2026 18:56:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781632066;
-	bh=QK+PXgBpUH1bNts4mWIjrkn2aC3eEssP4IP5Ym3zO9c=;
+	s=korg; t=1781636187;
+	bh=zGzzLjN8wwUXt0158I3e7kU54WBYR/8YKGdgfo6jU8A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=WX6E3RswYlLkvbKReFCMZ21tt4olXmdsAuk9f7bhyp9ulp0jzz2iGkHuxGokeDzHM
-	 CxrfTVMgHa89aD5DIzAMxlbiwCOEiW1EAcBah2FVNhQBTuEoD+uLrrxpV5aK5IHDwp
-	 19lM3XxRgbZA0whVEM32pdXW3LmAsu8tkaVK0JcM=
+	b=2D8apAK6nTR8GBXGjQMnjZINjqjlmzXYsOabKI6ba8aBAB4bsss3UnEHE0+W5NxjC
+	 470uB0nh4beeoyTHtT3zxjvqmpew7J881Ab9nf6spfVxBWraxY0DWpZ4ERUmmB+rM0
+	 RE0USNp2LP30X7KEXIfzN5BiYpLiLuRZvHYg5vsA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Zhengchuan Liang <zcliangcn@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Yuqi Xu <xuyq21@lenovo.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Allison Henderson <achender@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 307/522] net: rds: clear i_sends on setup unwind
+	Felix Gu <ustc.gu@gmail.com>,
+	Johan Hovold <johan@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	Alexey Panov <apanov@astralinux.ru>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 158/342] spi: meson-spicc: Fix double-put in remove path
 Date: Tue, 16 Jun 2026 20:27:34 +0530
-Message-ID: <20260616145140.239177099@linuxfoundation.org>
+Message-ID: <20260616145055.530154728@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,27 +69,28 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,lenovo.com];
-	TAGGED_FROM(0.00)[bounces-265609-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,astralinux.ru];
+	TAGGED_FROM(0.00)[bounces-266393-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:yuantan098@gmail.com,m:zcliangcn@gmail.com,m:bird@lzu.edu.cn,m:xuyq21@lenovo.com,m:n05ec@lzu.edu.cn,m:achender@kernel.org,m:kuba@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:ustc.gu@gmail.com,m:johan@kernel.org,m:broonie@kernel.org,m:apanov@astralinux.ru,m:sashal@kernel.org,m:ustcgu@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -100,60 +98,58 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,lenovo.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 288CE6938D4
+X-Rspamd-Queue-Id: D02F8694971
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuqi Xu <xuyq21@lenovo.com>
+From: Felix Gu <ustc.gu@gmail.com>
 
-commit 20cf0fb715c41111469577e85e35d15f099473e0 upstream.
+commit 63542bb402b7013171c9f621c28b609eda4dbf1f upstream.
 
-The RDS IB connection teardown path is written so it can run during
-partial startup and on repeated shutdown attempts. It uses NULL
-pointers to distinguish resources that are still owned from resources
-that have already been released.
+meson_spicc_probe() registers the controller with
+devm_spi_register_controller(), so teardown already drops the
+controller reference via devm cleanup.
 
-When rds_ib_setup_qp() fails after allocating i_sends but before
-allocating i_recvs, the sends_out path frees i_sends without clearing
-the pointer. A later shutdown pass can still treat that stale pointer
-as a live send ring allocation.
+Calling spi_controller_put() again in meson_spicc_remove()
+causes a double-put.
 
-Clear i_sends after vfree() in the error unwind path so the existing
-shutdown logic continues to use the correct ownership state.
-
-Fixes: 3b12f73a5c29 ("rds: ib: add error handle")
-Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Zhengchuan Liang <zcliangcn@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Yuqi Xu <xuyq21@lenovo.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Reviewed-by: Allison Henderson <achender@kernel.org>
-Link: https://patch.msgid.link/5a0f7624bb9845a7b67d26166a150b59e7f394ce.1779632468.git.xuyq21@lenovo.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8311ee2164c5 ("spi: meson-spicc: fix memory leak in meson_spicc_remove")
+Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+Reviewed-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260322-rockchip-v1-1-fac3f0c6dad8@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+[ Alexey: Remove the equivalent legacy spi_master_put() call used in
+  linux-5.10.y. ]
+Signed-off-by: Alexey Panov <apanov@astralinux.ru>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rds/ib_cm.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/spi/spi-meson-spicc.c | 2 --
+ 1 file changed, 2 deletions(-)
 
---- a/net/rds/ib_cm.c
-+++ b/net/rds/ib_cm.c
-@@ -656,6 +656,7 @@ static int rds_ib_setup_qp(struct rds_co
+diff --git a/drivers/spi/spi-meson-spicc.c b/drivers/spi/spi-meson-spicc.c
+index 6974a1c947aad6..ae818e7df79198 100644
+--- a/drivers/spi/spi-meson-spicc.c
++++ b/drivers/spi/spi-meson-spicc.c
+@@ -863,8 +863,6 @@ static int meson_spicc_remove(struct platform_device *pdev)
+ 	clk_disable_unprepare(spicc->core);
+ 	clk_disable_unprepare(spicc->pclk);
  
- sends_out:
- 	vfree(ic->i_sends);
-+	ic->i_sends = NULL;
+-	spi_master_put(spicc->master);
+-
+ 	return 0;
+ }
  
- ack_dma_out:
- 	rds_dma_hdr_free(rds_ibdev->dev, ic->i_ack, ic->i_ack_dma,
+-- 
+2.53.0
+
 
 
 
