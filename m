@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-266406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265622-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id U8BjB6WcMWrPoAUAu9opvQ
-	(envelope-from <stable+bounces-266406-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:57:41 +0200
+	id Ky5DAYWMMWpbmQUAu9opvQ
+	(envelope-from <stable+bounces-265622-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:48:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C353D6949BE
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:57:40 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37355693801
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:48:52 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=NoX5y2ke;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266406-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266406-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=GWRknijC;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265622-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-265622-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3EA7A300825F
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:57:40 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3D31E306C2B5
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:48:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28F7C47CC7E;
-	Tue, 16 Jun 2026 18:57:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 545863CC33F;
+	Tue, 16 Jun 2026 17:48:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC1563CEBBD;
-	Tue, 16 Jun 2026 18:57:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D7F5169AD2;
+	Tue, 16 Jun 2026 17:48:48 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781636259; cv=none; b=Sn2PPu670XSoRyBaH+/YFGrBU2o26/a4f4xYo3hP/4H6BJeM5N4YpP4x92mmlj2RCy6onLpSDeK4ml8ivUh2KT3T8WeHLcaTA9hTIi/fRuzUay/MD5hhDrZcYIP0orddvP1i1z5l84BbSz0mvzIplYRRog8ErfEAlzIC6z+hGJU=
+	t=1781632130; cv=none; b=Gq3ShYWyIGjxQzcLy+h3TDevAT2XBD5OvTppE2YXLNdMwt1mYToMw+2a4UPIKhDfmetuukpxsDop/23c0XqiR9IBKay9sKjSRtdNU/8wGws24kINin7seiMZgyS8qOQ4mzW2kYqawawWVqvmKwSyhlOKebU5rSYL0eqT3Mz816U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781636259; c=relaxed/simple;
-	bh=oOzCkgKYgj6TCIScV5m+ej3kTFF5CcCLYxOJ/+4pq84=;
+	s=arc-20240116; t=1781632130; c=relaxed/simple;
+	bh=6+RW/tjJ2Q4PCJHiJydTTH+W5YpVmqOLyPfHU4kB6yo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F68GMt1g9k0YXsbB7RCJOYPlXc+gsPJ06eL+psALAcvZ3iN4VrRBVZIWcaVd8DHB21Ek1IncN/EDz3InTLhq1yVA6Z+ysxnr2AfCn7nSOO3bjbg7+amojyLwH4iJ27s0PEk/F22v6yQbJynE2yXTqlXIbr9TZwkB0KEU8++oC9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NoX5y2ke; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A41031F000E9;
-	Tue, 16 Jun 2026 18:57:36 +0000 (UTC)
+	 MIME-Version; b=PCF4x8OiIolNjOz33gpR2gzMVx1vFOKXXgIy1qe1H8pAeg4oUawAJ2yZqT3AYvMTDy4WRhkWo94JTY4yZFwNH8HXsn52T+dSpGBuXI6+lrOalWObK028SNN+ngyqiUyT6xdpQjHQEK6ZPiZlUiOrUffhElzkHtbaOfmADf7suRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GWRknijC; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9D061F000E9;
+	Tue, 16 Jun 2026 17:48:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781636257;
-	bh=uEndllCSgNh8aeop4dXKhAonfkCUPHJbfEt7Gpq4gP4=;
+	s=korg; t=1781632128;
+	bh=Xu+T77irdz0xcl5dEaGmHkUB+bijGCy0JJ878ikSm7g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=NoX5y2keXVO3AKCY+AnaRYiGsTcY4KSwhAJEkjRdoOceZY4QGaA6vLCbiMWHk+Zvb
-	 s0jJs+wMuPu3LDYoHoyuXEaDa1+AQoF3ymMblcO/Z5Nebl3Gk0CUekWhjwZmiih8Q3
-	 A8nmLovSLeE3q9jAAZ0RuDRN/cb/FVoMQhGA28Xg=
+	b=GWRknijC4epjMr3fwx022nSC5OgwycLFEMnFlGpIniAN8xA9PpNAizXSolFv1Nsc4
+	 A38GNs2eCzaeewULXWeBWrKH9/dIm8So2CRvejkD7Pdn50xaHusPZ/lW2YqmDwWiI2
+	 D7UaykVnJRKRYsdxNsVMSh3jroM/nr19OsgZOLg8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jisheng Zhang <jszhang@kernel.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulfh@kernel.org>
-Subject: [PATCH 5.10 204/342] mmc: sdhci: add signal voltage switch in sdhci_resume_host
+	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 353/522] net: qrtr: ns: Limit the total number of nodes
 Date: Tue, 16 Jun 2026 20:28:20 +0530
-Message-ID: <20260616145057.681360258@linuxfoundation.org>
+Message-ID: <20260616145142.310613761@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,21 +72,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266406-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265622-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jszhang@kernel.org,m:adrian.hunter@intel.com,m:ulfh@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:manivannan.sadhasivam@oss.qualcomm.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -98,56 +98,78 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C353D6949BE
+X-Rspamd-Queue-Id: 37355693801
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jisheng Zhang <jszhang@kernel.org>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
 
-commit f595e8e77a51eee35e331f69321766593a845ef2 upstream.
+[ Upstream commit 27d5e84e810b0849d08b9aec68e48570461ce313 ]
 
-I met one suspend/resume issue with sdr104 capable sdio wifi card (with
-"keep-power-in-suspend" set in DT property):
-After resuming from suspend to ram, the sdio wifi card stops working.
-Further debug shows that although ios shows the sdio card is at sdr104
-mode, the voltage is still at 3V3. This is due to missing the calling
-of ->start_signal_voltage_switch() in sdhci_resume_host().
+Currently, the nameserver doesn't limit the number of nodes it handles.
+This can be an attack vector if a malicious client starts registering
+random nodes, leading to memory exhaustion.
 
-Fix this issue by adding ->start_signal_voltage_switch() in
-sdhci_resume_host(). This also matches what we do for
-sdhci_runtime_resume_host().
+Hence, limit the maximum number of nodes to 64. Note that, limit of 64 is
+chosen based on the current platform requirements. If requirement changes
+in the future, this limit can be increased.
 
-Then the question is: why this issue hasn't reported and fixed for so
-long time. IMHO, several reasons: Some host controllers just kick off
-the runtime resume for system resume, so they benefit from the well
-supported runtime pm code; Some platforms just use the old sdio wifi
-card which doesn't need signal voltage switch at all, the default
-voltage is 3v3 after resuming.
-
-Fixes: 6308d2905bd3 ("mmc: sdhci: add quirk for keeping card power during suspend")
-Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Ulf Hansson <ulfh@kernel.org>
+Fixes: 0c2204a4ad71 ("net: qrtr: Migrate nameservice to kernel from userspace")
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260409-qrtr-fix-v3-4-00a8a5ff2b51@oss.qualcomm.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ dropped node_count-- hunk since ctrl_cmd_bye() has no delete_node ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/sdhci.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/qrtr/ns.c |   17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
---- a/drivers/mmc/host/sdhci.c
-+++ b/drivers/mmc/host/sdhci.c
-@@ -3756,6 +3756,7 @@ int sdhci_resume_host(struct sdhci_host
- 		host->pwr = 0;
- 		host->clock = 0;
- 		host->reinit_uhs = true;
-+		mmc->ops->start_signal_voltage_switch(mmc, &mmc->ios);
- 		mmc->ops->set_ios(mmc, &mmc->ios);
- 	} else {
- 		sdhci_init(host, (host->mmc->pm_flags & MMC_PM_KEEP_POWER));
+--- a/net/qrtr/ns.c
++++ b/net/qrtr/ns.c
+@@ -75,6 +75,16 @@ struct qrtr_node {
+  */
+ #define QRTR_NS_MAX_LOOKUPS 64
+ 
++/* Max nodes, server, lookup limits are chosen based on the current platform
++ * requirements. If the requirement changes in the future, these values can be
++ * increased.
++ */
++#define QRTR_NS_MAX_NODES   64
++#define QRTR_NS_MAX_SERVERS 256
++#define QRTR_NS_MAX_LOOKUPS 64
++
++static u8 node_count;
++
+ static struct qrtr_node *node_get(unsigned int node_id)
+ {
+ 	struct qrtr_node *node;
+@@ -83,6 +93,11 @@ static struct qrtr_node *node_get(unsign
+ 	if (node)
+ 		return node;
+ 
++	if (node_count >= QRTR_NS_MAX_NODES) {
++		pr_err_ratelimited("QRTR clients exceed max node limit!\n");
++		return NULL;
++	}
++
+ 	/* If node didn't exist, allocate and insert it to the tree */
+ 	node = kzalloc(sizeof(*node), GFP_KERNEL);
+ 	if (!node)
+@@ -96,6 +111,8 @@ static struct qrtr_node *node_get(unsign
+ 		return NULL;
+ 	}
+ 
++	node_count++;
++
+ 	return node;
+ }
+ 
 
 
 
