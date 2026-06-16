@@ -1,65 +1,57 @@
-Return-Path: <stable+bounces-264638-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264603-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id orPINyV7MWrEkQUAu9opvQ
-	(envelope-from <stable+bounces-264638-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:34:45 +0200
+	id +LN9A9Z5MWpLkQUAu9opvQ
+	(envelope-from <stable+bounces-264603-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:29:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48C0D692383
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:34:45 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 895AF6921F7
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:29:09 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="vT0H4Ic/";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264638-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264638-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=MFeDzfYq;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264603-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264603-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B18AA31B6623
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:23:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0B95930B913F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:19:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1005946AEC5;
-	Tue, 16 Jun 2026 16:23:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6505246AEFE;
+	Tue, 16 Jun 2026 16:19:35 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C95491E8320;
-	Tue, 16 Jun 2026 16:23:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FBE237DEBF;
+	Tue, 16 Jun 2026 16:19:34 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781626984; cv=none; b=LPdYRvIiuIYRAq50igejiZezx5o6Sxv+bkRZB8qspa3RSTpOjcfbFd5aivzKDv2f+sxQEIe9TkMB7w2Ndp2yBH/vk08lteCRbXPFrBMEUtmwq8p12MOAC0gk80EAg2ebmkXfqf3qAYMtV2IJ4iSMOo3qj+zJpRcb9JwDmvrd0O4=
+	t=1781626775; cv=none; b=suULlUf1dEVjTKg1pOSr64I0N1QfqgVjxdfpcCh0kJiaPYYegbzC84N8jKQGDz6vp5Ies86yyaIfdrm8Tjl7j7Ts2gvozSmpFzy+Wt5jrWHd1BRlgKUl5Zlhs8g4Fi2y8AWGh9h1hGptGf9d2GBrpcuH+KuprNKHDtGoUW4GbVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781626984; c=relaxed/simple;
-	bh=P/yAgMKFU3k7oj1pdvkaJc5h2b9WDrlfej5Th7saj94=;
+	s=arc-20240116; t=1781626775; c=relaxed/simple;
+	bh=szNccRDhwiODn4yZh2rY4xfvgRQpV04U3ryPH4MgI5o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oB0yQVWXmB6W7kQwt2nKADRaZ3O52EL6X4ybIl9TfKr/2eqGO/A0WEkr2kpUPe+ng9dHOQ0lynANvnvWKeJRnGi+04aHSfz6bcCKjHrF/nVAcbWDaZdbBGnIWIbMn2YfLMwVhmS2rtfnqdyO0rxCpZOuVma6plUwbe7F0ZFAz84=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vT0H4Ic/; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDC671F000E9;
-	Tue, 16 Jun 2026 16:22:53 +0000 (UTC)
+	 MIME-Version; b=kA/6QznQ85JQ0KvplB4OOeeGpRHia23K/WzCEBQYSBwQwuIyCgoUYvg+lcLZjaoMlUY4wz2KpMdY+c04nhWFte5y/e6iStSTHgwrsQO9M/g02e3aDY2n/KLwX5apcNV/sirYIBECE+Fuanp7dPbPXZOPlIXlw+bKQ5l+lpoYFHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MFeDzfYq; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37A521F000E9;
+	Tue, 16 Jun 2026 16:19:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781626983;
-	bh=qpyGesDQj+gPTsFM+QrkZv6pEY3xo2jgnU7gvAll8bY=;
+	s=korg; t=1781626774;
+	bh=qDDBZZaEy5g1WXiQIkdeB8AFL8WrHKPb6wXau1sbwqQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=vT0H4Ic/QJCGfL+uSWPS3/0Qk/0WsrMuHgWQW+rA9WIiM90JdeDsDqlMzwMi5O/Zq
-	 xqFIRK+kSKXriqTdjr1Y1i09+Tlhcbf2OdvfsjMAEr6DJnQJLiUMEMD8vmFuPqY+Q3
-	 GEudxgVBGtgQ+3oKeinw9eQQyIGTnNVlMbx5JIEk=
+	b=MFeDzfYqU5kqkoVl4j7JWg1YgyqpL8T20uGE/3z5h8oI7qtMfl2/bwbv6UtdVjTMp
+	 8gPkBY/IL74q/4OR+D3f2GSXwNNi8HvW453uAJKiPlPUM3RDuPOEQkQPV7nnRFhfDL
+	 95QPT7CTXE3XD53/t30vubv7FL5EB3qCdinl0jl4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Zhengchuan Liang <zcliangcn@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Yuqi Xu <xuyq21@lenovo.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Xin Long <lucien.xin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Rui Qi <qirui.001@bytedance.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 059/261] sctp: purge outqueue on stale COOKIE-ECHO handling
-Date: Tue, 16 Jun 2026 20:28:17 +0530
-Message-ID: <20260616145047.885995066@linuxfoundation.org>
+Subject: [PATCH 6.12 060/261] ipmi: Fix rcu_read_unlock to srcu_read_unlock in handle_read_event_rsp
+Date: Tue, 16 Jun 2026 20:28:18 +0530
+Message-ID: <20260616145047.932122926@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
 References: <20260616145044.869532709@linuxfoundation.org>
@@ -74,126 +66,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264638-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:yuantan098@gmail.com,m:yifanwucs@gmail.com,m:tomapufckgml@gmail.com,m:zcliangcn@gmail.com,m:bird@lzu.edu.cn,m:xuyq21@lenovo.com,m:n05ec@lzu.edu.cn,m:lucien.xin@gmail.com,m:kuba@kernel.org,m:sashal@kernel.org,m:lucienxin@gmail.com,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,lenovo.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-264603-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:qirui.001@bytedance.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,lenovo.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,lzu.edu.cn:email,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 48C0D692383
+X-Rspamd-Queue-Id: 895AF6921F7
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xin Long <lucien.xin@gmail.com>
+From: Rui Qi <qirui.001@bytedance.com>
 
-[ Upstream commit e374b22e9b07b72a25909621464ff74096151bfb ]
+Fix a bug where rcu_read_unlock() was used instead of srcu_read_unlock()
+in handle_read_event_rsp() when ipmi_alloc_recv_msg() fails.
 
-sctp_stream_update() is only invoked when the association is moved into
-COOKIE_WAIT during association setup/reconfiguration. In this path, the
-outbound stream scheduler state (stream->out_curr) is expected to be
-clean, since no user data should have been transmitted yet unless the
-state machine has already partially progressed.
+This mismatch leads to an SRCU read-side critical section imbalance: the
+entry uses srcu_read_lock(&intf->users_srcu) but the error path
+incorrectly calls rcu_read_unlock(), which is a no-op for SRCU and
+leaves the SRCU lock held.
 
-However, a corner case exists in sctp_sf_do_5_2_6_stale(): when a
-Stale Cookie ERROR is received, the association is rolled back from
-COOKIE_ECHOED to COOKIE_WAIT. In this scenario, user data may already
-have been queued and even bundled with the COOKIE-ECHO chunk.
+The offending code was restructured in mainline by commit 3be997d5a64a
+("ipmi:msghandler: Remove srcu from the ipmi user structure"), which
+replaced the SRCU locking with a mutex in this function, effectively
+eliminating the mismatch. However, that commit is part of a larger
+SRCU removal series that is not suitable for stable backport. This
+minimal fix addresses the SRCU imbalance for 6.12 and earlier stable
+branches that still carry the original locking scheme.
 
-During the rollback, sctp_stream_update() frees the old stream table
-and installs a new one, but it does not invalidate stream->out_curr.
-As a result, out_curr may still point to a freed sctp_stream_out
-entry from the previous stream state.
-
-Later, SCTP scheduler dequeue paths (FCFS, RR, PRIO, etc.) rely on
-stream->out_curr->ext, which can lead to use-after-free once the old
-stream state has been released via sctp_stream_free().
-
-This results in crashes such as (reported by Yuqi):
-
-  BUG: KASAN: slab-use-after-free in sctp_sched_fcfs_dequeue+0x13a/0x140
-  Read of size 8 at addr ff1100004d4d3208 by task mini_poc/9312
-  CPU: 1 UID: 1001 PID: 9312 Comm: mini_poc Not tainted
-     7.1.0-rc1-00305-gbd3a4795d574 #5 PREEMPT(full)
-   sctp_sched_fcfs_dequeue+0x13a/0x140
-   sctp_outq_flush+0x1603/0x33e0
-   sctp_do_sm+0x31c9/0x5d30
-   sctp_assoc_bh_rcv+0x392/0x6f0
-   sctp_inq_push+0x1db/0x270
-   sctp_rcv+0x138d/0x3c10
-
-Fix this by fully purging the association outqueue when handling the
-Stale Cookie case. This ensures all pending transmit and retransmit
-state is dropped, and any scheduler cached pointers are invalidated,
-making it safe to rebuild stream state during COOKIE_WAIT restart.
-
-Updating only stream->out_curr would be insufficient, since queued
-and retransmittable data would still reference the old stream state and
-trigger later use-after-free in dequeue paths.
-
-Fixes: 5bbbbe32a431 ("sctp: introduce stream scheduler foundations")
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Zhengchuan Liang <zcliangcn@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Reported-by: Yuqi Xu <xuyq21@lenovo.com>
-Reported-by: Ren Wei <n05ec@lzu.edu.cn>
-Signed-off-by: Xin Long <lucien.xin@gmail.com>
-Link: https://patch.msgid.link/94318159b9052907a6cbb7256aee8b5f8dfbfccb.1780510304.git.lucien.xin@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: e86ee2d44b44 ("ipmi: Rework locking and shutdown for hot remove")
+Cc: stable@vger.kernel.org
+Signed-off-by: Rui Qi <qirui.001@bytedance.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sctp/sm_statefuns.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ drivers/char/ipmi/ipmi_msghandler.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/sctp/sm_statefuns.c b/net/sctp/sm_statefuns.c
-index 376d4ce5ebb3cb..613c5c3fa8462e 100644
---- a/net/sctp/sm_statefuns.c
-+++ b/net/sctp/sm_statefuns.c
-@@ -2598,11 +2598,7 @@ static enum sctp_disposition sctp_sf_do_5_2_6_stale(
- 	 */
- 	sctp_add_cmd_sf(commands, SCTP_CMD_DEL_NON_PRIMARY, SCTP_NULL());
+diff --git a/drivers/char/ipmi/ipmi_msghandler.c b/drivers/char/ipmi/ipmi_msghandler.c
+index 188722ec0337b3..41ae4dac4eebad 100644
+--- a/drivers/char/ipmi/ipmi_msghandler.c
++++ b/drivers/char/ipmi/ipmi_msghandler.c
+@@ -4395,7 +4395,7 @@ static int handle_read_event_rsp(struct ipmi_smi *intf,
  
--	/* If we've sent any data bundled with COOKIE-ECHO we will need to
--	 * resend
--	 */
--	sctp_add_cmd_sf(commands, SCTP_CMD_T1_RETRAN,
--			SCTP_TRANSPORT(asoc->peer.primary_path));
-+	sctp_add_cmd_sf(commands, SCTP_CMD_PURGE_OUTQUEUE, SCTP_NULL());
- 
- 	/* Cast away the const modifier, as we want to just
- 	 * rerun it through as a sideffect.
+ 		recv_msg = ipmi_alloc_recv_msg(user);
+ 		if (IS_ERR(recv_msg)) {
+-			rcu_read_unlock();
++			srcu_read_unlock(&intf->users_srcu, index);
+ 			list_for_each_entry_safe(recv_msg, recv_msg2, &msgs,
+ 						 link) {
+ 				list_del(&recv_msg->link);
 -- 
 2.53.0
 
