@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-265884-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265435-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id WmvwLH+SMWpMnAUAu9opvQ
-	(envelope-from <stable+bounces-265884-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:14:23 +0200
+	id OdOBA0GKMWpHmAUAu9opvQ
+	(envelope-from <stable+bounces-265435-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:39:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16191693EF1
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:14:23 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F59E69356D
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:39:12 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=LZWjJWxM;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265884-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265884-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=pnJwqItN;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265435-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265435-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A14C531C96A6
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:11:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 636AD3212A1B
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:33:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FB933D5656;
-	Tue, 16 Jun 2026 18:11:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58FDF47CC62;
+	Tue, 16 Jun 2026 17:33:09 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D81AE3CEBBD;
-	Tue, 16 Jun 2026 18:11:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20FA147AF75;
+	Tue, 16 Jun 2026 17:33:08 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781633510; cv=none; b=RUm9tu8MVPQ2U1oI0hmaTVe6k4e9bJZ91hpLPKSZTZ5MQJpZtMByqw8nTBbcDUw72vZvKN+nNhIzeC53WkdXUQa42SBadqqp2YMLpTCFzlE6AfbHquLcapJEfV9bpXoqdSkxVy0bbfL4J63N3R1NgzDwh3PB5Q6bUN0fEc2EnlA=
+	t=1781631189; cv=none; b=EG3zPmIACIC4sKEXW/FS5HAjbhfa393bMgc9mtX2+rIHbMxKNKV8SBPSRq7H7mfQTyBwn9iMQj8gNodam9uZanZ9XE6woIvwxAluMRpW4lirKlHIqLF2Yj9GyQBYCKP1nda5JmQLXmYIlF5Zkm4zHsV/D5Zv+uiufobAnCL2P7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781633510; c=relaxed/simple;
-	bh=5YdRK5VabV86p5D8TWtf3hs57sv4TnzSyLXuEwUtFB4=;
+	s=arc-20240116; t=1781631189; c=relaxed/simple;
+	bh=GTPo8wT532wlCMQK29wFl1HlQE7Cto43T8PI4RbtWDE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LsPlJXeuHSScw6qCc7BKmB69atsShCrmYO+sSBS4kO1mECJTON0cX5QpWET+an77wHPacF5LP1J+9VNZUJ//ape/rC6jxHcqvqPKsPOQ7Z1UWaoXliJeW3n1ygQ8KH6ROe9NuvCzsjKpzIPL+ewBZ3rC8YuLLDQYrJXTXrZ+YOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LZWjJWxM; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 964B51F000E9;
-	Tue, 16 Jun 2026 18:11:48 +0000 (UTC)
+	 MIME-Version; b=CVxg9Tv+FAMXfZjznB1/FbsYti9u5qZwZbITd81SMHT+AwGijnfFiXH0hJP6voo6NAazbMH2NsMbbArVS2Sleq1kiP7pdkSx41kxw2Bnpsv1tnvIRbPhPzOREu2PGlHMbq3cWBEvB1mhXeQYvoAX61wyUcu+ToRbG9DQqeWR97Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pnJwqItN; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 309451F000E9;
+	Tue, 16 Jun 2026 17:33:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781633509;
-	bh=AArfrxEaKmzDzue1IvNsaFvbw8SAHiXTCbtzyDdfzL0=;
+	s=korg; t=1781631188;
+	bh=UcImETCVU5TCTuhOZOhccrNb9WuDstET+inY36bO7T8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=LZWjJWxMrozNnTWxkwIVyTomOv7dTgf/V6VwV7ztfiNJVki4noS53i37r/s/sr/f7
-	 H/PZvBolW7ui0fHTfeS8aD2oSBeAZ+Zmtq9h4byJJ2M2PbpOywXPMW9QqtyOCy6sxx
-	 A5jg9ykk+jJXfCpmhGQFYc2oAvo1mSVQ/kadMynk=
+	b=pnJwqItNY1bm5xNEJzVyLwIiG49OOVZ9V4VOggRNwToMTJObIKxY3ETxeFXzR1U7u
+	 DTGStm5/Zz2TLVZ1qq+nfx9iKpoWygSaVUKbOOE5k/eorme+Rzn10hGmjKs/2INkwL
+	 h+WaZ3K9rP4D1QwmZ7XVaj4aRwwKc6HEpU+l2YDY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>,
-	Suraj Kandpal <suraj.kandpal@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 049/411] drm/i915/psr: Apply Intel DPCD workaround when SDP on prior line used
+	stable <stable@kernel.org>,
+	Ian Abbott <abbotti@mev.co.uk>
+Subject: [PATCH 6.1 140/522] comedi: comedi_test: Fix limiting of convert_arg in waveform_ai_cmdtest()
 Date: Tue, 16 Jun 2026 20:24:47 +0530
-Message-ID: <20260616145102.887645134@linuxfoundation.org>
+Message-ID: <20260616145132.642048833@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,116 +64,111 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-265884-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jouni.hogander@intel.com,m:suraj.kandpal@intel.com,m:tursulin@ursulin.net,m:sashal@kernel.org,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265435-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:abbotti@mev.co.uk,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	TAGGED_RCPT(0.00)[stable];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,intel.com:email,vger.kernel.org:from_smtp,msgid.link:url]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mev.co.uk:email,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 16191693EF1
+X-Rspamd-Queue-Id: 4F59E69356D
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jouni Högander <jouni.hogander@intel.com>
+From: Ian Abbott <abbotti@mev.co.uk>
 
-commit 4703049f768fc1c1caac754134118bee1a3af189 upstream.
+commit 8a3bee801d420be8a7a0bae4a26547b353b8fe22 upstream.
 
-There is Intel specific workaround DPCD address containing workaround for
-case where SDP is on prior line. Apply this workaround according to values
-in the offset.
+The function checks and possibly modifies the description of an
+asynchronous command to be run on the analog input subdevice of a comedi
+device attached to the "comedi_test" driver, returning 0 if no
+modifications were required, or a positive value that indicates which
+step of the checking process it failed on.  Step 4 fixes up various
+argument values for various trigger sources.
 
-Fixes: 61e887329e33 ("drm/i915/xelpd: Handle PSR2 SDP indication in the prior scanline")
-Cc: <stable@vger.kernel.org> # v5.15+
-Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
-Reviewed-by: Suraj Kandpal <suraj.kandpal@intel.com>
-Link: https://patch.msgid.link/20260515095756.2799483-4-jouni.hogander@intel.com
-(cherry picked from commit c3fe899fbeac86ea4a5ca9dd845b2cbc0da46249)
-Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
-Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+There are two bugs in the fixing up of the `convert_arg` value to keep
+the `scan_begin_arg` value within the range of `unsigned int` when
+`scan_begin_src` and `convert_src` both have the value `TRIG_TIMER`,
+which indicates that the corresponding `_arg` values hold a time period
+in nanoseconds.  The code also uses `scan_end_arg` which hold the number
+of "conversions" within each "scan".  The goal is to end up with the
+scan period being less than or equal to the convert period multiplied by
+the number of conversions per scan.  It intends to do that by clamping
+the `convert_arg` value to a maximum value of `UINT_MAX / scan_end_arg`
+rounded down to a multiple of 1000 (`NSEC_PER_USEC`).
+
+(The rounding from nanoseconds to microseconds is because the driver is
+modelling a device that uses a 1 MHz clock for timing.  This is partly
+because that is a more typical timing base for real hardware devices
+driven by comedi, and partly because the driver used to use `struct
+timeval` internally.)
+
+The first bug is that the code checks if `scan_begin_arg == TRIG_TIMER`
+when it should be checking if `scan_begin_src == TRIG_TIMER`.  The
+bugged check will always fail because if `scan_begin_src == TRIG_TIMER`,
+then `scan_begin_arg` will be at least 1000 (`NSEC_PER_USEC`), otherwise
+`scan_begin_src == TRIG_FOLLOW` and `scan_begin_arg` will be 0.  (N.B
+`TRIG_TIMER` is defined as `0x10`.)  The second bug is that is rounding
+the maximum value down to a multiple of 1000000000 (`NSEC_PER_SEC`)
+instead of 1000 (`NSEC_PER_USEC`), however this bug is not reached due
+to the first bug.  This patch fixes both bugs.
+
+Fixes: 783ddaebd397 ("staging: comedi: comedi_test: support scan_begin_src == TRIG_FOLLOW")
+Fixes: 5afdcad2f818 ("staging: comedi: comedi_test: limit maximum convert_arg")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+Link: https://patch.msgid.link/20260422144637.27692-1-abbotti@mev.co.uk
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/display/intel_psr.c | 27 +++++++++++++++++++++++-
- 1 file changed, 26 insertions(+), 1 deletion(-)
+ drivers/comedi/drivers/comedi_test.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_psr.c b/drivers/gpu/drm/i915/display/intel_psr.c
-index aa00e062a2a6aa..fca55ae3ffe5bd 100644
---- a/drivers/gpu/drm/i915/display/intel_psr.c
-+++ b/drivers/gpu/drm/i915/display/intel_psr.c
-@@ -824,6 +824,30 @@ static bool psr2_granularity_check(struct intel_dp *intel_dp,
- 	return true;
- }
- 
-+static bool apply_scanline_indication_wa(struct intel_dp *intel_dp,
-+					 struct intel_crtc_state *crtc_state)
-+{
-+	u8 early_scanline_support = intel_dp->intel_wa_dpcd &
-+		INTEL_DPCD_INTEL_WA_REGISTER_CAPS_PSR2_EARLYSCANLINE_SDP_SUPPORT_MASK;
-+
-+	if (intel_dp->edp_dpcd[0] >= DP_EDP_15)
-+		return true;
-+
-+	switch (early_scanline_support)	{
-+	case INTEL_DPCD_INTEL_WA_REGISTER_CAPS_FALL_BACK_TO_PSR1:
-+		crtc_state->req_psr2_sdp_prior_scanline = false;
-+		return false;
-+	case INTEL_DPCD_INTEL_WA_REGISTER_CAPS_PSR2_WITH_EARLY_SCANLINE:
-+		return true;
-+	case INTEL_DPCD_INTEL_WA_REGISTER_CAPS_PSR2_WITHOUT_EARLY_SCANLINE:
-+		crtc_state->req_psr2_sdp_prior_scanline = false;
-+		return true;
-+	default:
-+		MISSING_CASE(early_scanline_support);
-+		return false;
-+	}
-+}
-+
- static bool _compute_psr2_sdp_prior_scanline_indication(struct intel_dp *intel_dp,
- 							struct intel_crtc_state *crtc_state)
- {
-@@ -844,7 +868,8 @@ static bool _compute_psr2_sdp_prior_scanline_indication(struct intel_dp *intel_d
- 		return false;
- 
- 	crtc_state->req_psr2_sdp_prior_scanline = true;
--	return true;
-+
-+	return apply_scanline_indication_wa(intel_dp, crtc_state);
- }
- 
- static bool _compute_psr2_wake_times(struct intel_dp *intel_dp,
--- 
-2.53.0
-
+--- a/drivers/comedi/drivers/comedi_test.c
++++ b/drivers/comedi/drivers/comedi_test.c
+@@ -322,10 +322,10 @@ static int waveform_ai_cmdtest(struct co
+ 		arg = min(arg,
+ 			  rounddown(UINT_MAX, (unsigned int)NSEC_PER_USEC));
+ 		arg = NSEC_PER_USEC * DIV_ROUND_CLOSEST(arg, NSEC_PER_USEC);
+-		if (cmd->scan_begin_arg == TRIG_TIMER) {
++		if (cmd->scan_begin_src == TRIG_TIMER) {
+ 			/* limit convert_arg to keep scan_begin_arg in range */
+ 			limit = UINT_MAX / cmd->scan_end_arg;
+-			limit = rounddown(limit, (unsigned int)NSEC_PER_SEC);
++			limit = rounddown(limit, (unsigned int)NSEC_PER_USEC);
+ 			arg = min(arg, limit);
+ 		}
+ 		err |= comedi_check_trigger_arg_is(&cmd->convert_arg, arg);
 
 
 
