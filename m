@@ -1,62 +1,63 @@
-Return-Path: <stable+bounces-263796-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265971-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 2jGfF1pmMWoJigUAu9opvQ
-	(envelope-from <stable+bounces-263796-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:06:02 +0200
+	id nbyQKcSTMWoBnQUAu9opvQ
+	(envelope-from <stable+bounces-265971-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:19:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA2F0690C21
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:06:01 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A41F2694099
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:19:47 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=pNnnteJp;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263796-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263796-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=aUUz1wyg;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265971-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265971-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DAA0D3051A44
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:05:03 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D26A13004615
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:19:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2DC436F42B;
-	Tue, 16 Jun 2026 15:05:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D34D93D091A;
+	Tue, 16 Jun 2026 18:19:41 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E4A43A9D94;
-	Tue, 16 Jun 2026 15:05:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 938EF35292A;
+	Tue, 16 Jun 2026 18:19:40 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781622302; cv=none; b=SKgnSzDQmZchzoP93lJsUDNLmZ3K9vGzMM6CNPmR3NQ5SHqmZKhlG2cb8JreY/65bhZxqpB39Cxa9jwMqePhCLiOjg667u71Nqzd0jikPyqTR/1Q3HfR1yTQhLIW+DtuzSUv/8cEnAk5Qwf1o/P/iPNoLZ07qnUY+f711WFEzn8=
+	t=1781633981; cv=none; b=WPsS6SNtfr3ec8c8lcbaZ/tAZYXq53y/rXj43tGOVw0RmbZoblLIHhXFm5a7XEm2dfkPVfiof6fBnodRrBe+JGICHFp86ZlKYqcCsoBUhXWLcGT4LEIPZ6PXXzqD7VpOLRs8ab17AA2z3keR1WTV/5u1YVIiI70Tg04NEbdCFUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781622302; c=relaxed/simple;
-	bh=Fum+62qEJk0Uja4sR7So94wyGrEk4j+Zlps66fsffgc=;
+	s=arc-20240116; t=1781633981; c=relaxed/simple;
+	bh=sgXp11dCD13tuaEqMn+YKggoXzPDi0Zvgi9Wur7GdHE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NQ3QnGa/e4IaJ9fi24IJBQ0IISPlYmji6npVLecnw9aepNU/ZeOOZKUNh4COqFwdsFthZcnnytmBrFmYVK5lHVjkZrXJgUgc1aNt7h6AuJZOVnqrwlJe9W8AlFEvcUIOM2+7zb3avmJ5YreiwKdeMqnwD8/wOrM49Yk7HMKLVC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pNnnteJp; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9897E1F000E9;
-	Tue, 16 Jun 2026 15:05:00 +0000 (UTC)
+	 MIME-Version; b=U3ztwBgLBdz1I7/ws6ce0W8E2ktF8ce0zfGRZLW9hRYw39Yqwl3QZ4yLHJiGP5h8Wf/+JGYhiUUy6IIpnDnQbk7NgZNOuzFiMHO5B//H51YhJ0ywbVUXOyfj18dpudhFzX3WK5vRi/tj1KJ58RSrNSuBeGPVD0LHXswjlqHcN80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aUUz1wyg; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B7391F000E9;
+	Tue, 16 Jun 2026 18:19:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781622301;
-	bh=Jmx4mJ6V9g+imjCH/f40yhzKJUIYXfT0oRb9A+HIm/s=;
+	s=korg; t=1781633980;
+	bh=A+JLg9WZtin89emdSl1uROQGkhiBBWg5VZzgpuEiYHA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=pNnnteJp0M5aEwlfhLsVSuTHvZbtfbgp3X8KmexUC55AfGt2cLPzVUoCy7rFbOQzJ
-	 WDzIFo5j0Xm08eh5QnXlbKICh0IlhuvvHYorUMOVq4AfcVKMhmgUmo47lQw7mHyqs4
-	 SVw6zFWabgfF4wuVNy0dhv2Rvd9yIATVZzQRp5ag=
+	b=aUUz1wygggPIgXuYpd19EgVcNMpr/vr4YfkUytXxPIrbg+KQt+2O17BRC49lnuYp4
+	 SkyZIQMM7Bgid5675mVVefCaatIFo3QF2UJ6gQXJI/ftHD3IS1RTc4PvLZbXoYb5m4
+	 Tu2uznTHA6hEzX2QzDZYRaDoe0B8w0tJVshRkucE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xie Yuanbin <xieyuanbin1@huawei.com>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	David Thompson <davthompson@nvidia.com>,
+	Thangaraj Samynathan <Thangaraj.s@microchip.com>,
+	Nicolai Buchwitz <nb@tipi-net.de>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 003/325] ARM: allow __do_kernel_fault() to report execution of memory faults
+Subject: [PATCH 5.15 161/411] net: lan743x: permit VLAN-tagged packets up to configured MTU
 Date: Tue, 16 Jun 2026 20:26:39 +0530
-Message-ID: <20260616145057.989124303@linuxfoundation.org>
+Message-ID: <20260616145109.063225340@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,77 +69,136 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-263796-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265971-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:xieyuanbin1@huawei.com,m:rmk+kernel@armlinux.org.uk,m:bigeasy@linutronix.de,m:sashal@kernel.org,m:rmk@armlinux.org.uk,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:davthompson@nvidia.com,m:Thangaraj.s@microchip.com,m:nb@tipi-net.de,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,kernel];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linutronix.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,armlinux.org.uk:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,microchip.com:email,msgid.link:url,nvidia.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: BA2F0690C21
+X-Rspamd-Queue-Id: A41F2694099
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+From: David Thompson <davthompson@nvidia.com>
 
-commit 40b466db1dffb41f0529035c59c5739636d0e5b8 upstream.
+[ Upstream commit 8173d22b211f615015f7b35f48ab11a6dd78dc99 ]
 
-Allow __do_kernel_fault() to detect the execution of memory, so we can
-provide the same fault message as do_page_fault() would do. This is
-required when we split the kernel address fault handling from the
-main do_page_fault() code path.
+VLAN-tagged interfaces on lan743x devices were previously unreachable via
+SSH and failed to respond to large ping packets (e.g. "ping -s 1469" given
+MTU=1500). In these scenarios, "ethtool -S" reports non-zero "RX Oversize
+Frame Errors". According to Microchip AN2948, the MAC_RX FSE (VLAN field
+size enforcement) bit determines whether frames with VLAN tags exceeding
+the base MTU plus tag length are discarded.
 
-Reviewed-by: Xie Yuanbin <xieyuanbin1@huawei.com>
-Tested-by: Xie Yuanbin <xieyuanbin1@huawei.com>
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+The driver must set the MAC_RX.FSE bit before setting MAC_RX.RXEN to allow
+VLAN-tagged frames up to the interface MTU, preventing them from being
+treated as oversized. As a result, both the base and VLAN-tagged interfaces
+can use the same MTU without receive errors.
+
+Fixes: 23f0703c125b ("lan743x: Add main source files for new lan743x driver")
+Signed-off-by: David Thompson <davthompson@nvidia.com>
+Reviewed-by: Thangaraj Samynathan <Thangaraj.s@microchip.com>
+Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
+Tested-by: Nicolai Buchwitz <nb@tipi-net.de> # lan7430 on arm64 (RevPi
+Link: https://patch.msgid.link/20260529210300.433135-1-davthompson@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/mm/fault.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/microchip/lan743x_main.c | 32 +++++++++++++++++++
+ drivers/net/ethernet/microchip/lan743x_main.h |  1 +
+ 2 files changed, 33 insertions(+)
 
-diff --git a/arch/arm/mm/fault.c b/arch/arm/mm/fault.c
-index f87f353e5a8b0a..192c8ab196dbab 100644
---- a/arch/arm/mm/fault.c
-+++ b/arch/arm/mm/fault.c
-@@ -175,6 +175,8 @@ __do_kernel_fault(struct mm_struct *mm, unsigned long addr, unsigned int fsr,
- 	 */
- 	if (addr < PAGE_SIZE) {
- 		msg = "NULL pointer dereference";
-+	} else if (is_permission_fault(fsr) && fsr & FSR_LNX_PF) {
-+		msg = "execution of memory";
- 	} else {
- 		if (is_translation_fault(fsr) &&
- 		    kfence_handle_page_fault(addr, is_write_fault(fsr), regs))
+diff --git a/drivers/net/ethernet/microchip/lan743x_main.c b/drivers/net/ethernet/microchip/lan743x_main.c
+index 49d40685136d46..8db83741aaa570 100644
+--- a/drivers/net/ethernet/microchip/lan743x_main.c
++++ b/drivers/net/ethernet/microchip/lan743x_main.c
+@@ -792,6 +792,36 @@ static void lan743x_mac_set_address(struct lan743x_adapter *adapter,
+ 		   "MAC address set to %pM\n", addr);
+ }
+ 
++static void lan743x_mac_rx_enable_fse(struct lan743x_adapter *adapter)
++{
++	u32 mac_rx;
++	bool rxen;
++
++	mac_rx = lan743x_csr_read(adapter, MAC_RX);
++	if (mac_rx & MAC_RX_FSE_)
++		return;
++
++	rxen = mac_rx & MAC_RX_RXEN_;
++	if (rxen) {
++		mac_rx &= ~MAC_RX_RXEN_;
++		lan743x_csr_write(adapter, MAC_RX, mac_rx);
++		lan743x_csr_wait_for_bit(adapter, MAC_RX, MAC_RX_RXD_,
++					 1, 1000, 20000, 100);
++	}
++
++	/* Per AN2948, hardware prevents modification of the FSE bit while the
++	 * MAC receiver is enabled (RXEN bit set). Use separate register write
++	 * to assert the FSE bit before enabling the RXEN bit in MAC_RX
++	 */
++	mac_rx |= MAC_RX_FSE_;
++	lan743x_csr_write(adapter, MAC_RX, mac_rx);
++
++	if (rxen) {
++		mac_rx |= MAC_RX_RXEN_;
++		lan743x_csr_write(adapter, MAC_RX, mac_rx);
++	}
++}
++
+ static int lan743x_mac_init(struct lan743x_adapter *adapter)
+ {
+ 	bool mac_address_valid = true;
+@@ -831,6 +861,8 @@ static int lan743x_mac_init(struct lan743x_adapter *adapter)
+ 	lan743x_mac_set_address(adapter, adapter->mac_address);
+ 	eth_hw_addr_set(netdev, adapter->mac_address);
+ 
++	lan743x_mac_rx_enable_fse(adapter);
++
+ 	return 0;
+ }
+ 
+diff --git a/drivers/net/ethernet/microchip/lan743x_main.h b/drivers/net/ethernet/microchip/lan743x_main.h
+index a1226ab0fb4217..40351d38299aac 100644
+--- a/drivers/net/ethernet/microchip/lan743x_main.h
++++ b/drivers/net/ethernet/microchip/lan743x_main.h
+@@ -118,6 +118,7 @@
+ #define MAC_RX				(0x104)
+ #define MAC_RX_MAX_SIZE_SHIFT_		(16)
+ #define MAC_RX_MAX_SIZE_MASK_		(0x3FFF0000)
++#define MAC_RX_FSE_			BIT(2)
+ #define MAC_RX_RXD_			BIT(1)
+ #define MAC_RX_RXEN_			BIT(0)
+ 
 -- 
 2.53.0
 
