@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-264984-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265497-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id xC5dN86AMWpUlAUAu9opvQ
-	(envelope-from <stable+bounces-264984-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:58:54 +0200
+	id ivNaMH2LMWr2mAUAu9opvQ
+	(envelope-from <stable+bounces-265497-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:44:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B982692A0F
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:58:54 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2974A6936E3
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:44:29 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=0sj9lR3m;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264984-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264984-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=sUfg3qO7;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265497-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265497-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 609E330A5B56
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:55:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E08B031429C6
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:38:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 947C5478E55;
-	Tue, 16 Jun 2026 16:55:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ACCA331A44;
+	Tue, 16 Jun 2026 17:38:26 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6490C477995;
-	Tue, 16 Jun 2026 16:55:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F07824611CF;
+	Tue, 16 Jun 2026 17:38:24 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781628919; cv=none; b=rd8FXuCqi3UevFNE+lrJCxklPc2wxYreJpEYjNNpvqEh/Kq+LvGisfjY5qOeZKtwtpLuwwPyYeNeGwljXYIEAfulYneIRWY+WmBglVFaxE6DId8voPIRMu75daWWQu8sOfCrxJGrwg54hQu12uQyMdY3cJOuDQKDHfSoPXEB1B0=
+	t=1781631506; cv=none; b=BJObrTHsHHcj36a3ILpoOmvZZpV5AvjwiwHsZZqozC5XxLiewqyOGuPO6cfWpLANW1m3pH1OqkOGZJmd68h+cSvoZ+RodE9lQ7FzUIbL088XcZ9v7Ow5wmQA4ic+/d2k8jGKN44BmFdhpL30avxOx5vIrN8m1aZtOWjiJT3EUCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781628919; c=relaxed/simple;
-	bh=mwX7/RN26CQ/XqT914i1abrpTYpv1rI446np1K7wNHo=;
+	s=arc-20240116; t=1781631506; c=relaxed/simple;
+	bh=9dZdLxtnrdPD9u37qMjKlPabyTXaOOLVXXIT9u8OPRY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U9uJ6ZHH5Inmqtv3xhZGgY3ocTAw9l/Wh7CK0DHbtXl+LHBKSj3i3F8RehmYb7PYEh3gZE3EjtEb8sF93NdNex1tCxgaRLRKGKYikrxfCan9rWMyyxmf1kEJH/hsqPA6d1mqN0Lil5Wv8cXeLBtLW6PA9j7P2f8MPWVwBeAUqY4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0sj9lR3m; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33BAC1F000E9;
-	Tue, 16 Jun 2026 16:55:16 +0000 (UTC)
+	 MIME-Version; b=cdA1Xg7ERql1j03liOAK+5yiZmgvcA9Q7P3Q6huJlu8NZbxjvhwW9CSgvLobfLGEl9deCJ6yKtNb5oqnD9vjF5QSoNDZ74KIefwRo4crqX5ZNkWBl6zrSPxEHyVDYQr39l3F7nimK2NSZQKvylYWZlzs5zbvK3smjMNUUIxD7H8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sUfg3qO7; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C00F31F000E9;
+	Tue, 16 Jun 2026 17:38:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781628918;
-	bh=kf5BQEVNk/PWAXBbTXEQ7Od+aCNce0R/ZIzg7QlJ63M=;
+	s=korg; t=1781631504;
+	bh=7XzgobV2HG3ISdARtJbDZl6Y/UIxLBBTS7fWnTUEgZI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=0sj9lR3m0i4Q8Wz9lb9ROJ6wzNDHlMG8uLlN8PWWAnCm1LnKFz2X0o3KXY05V8iiT
-	 fpfnuCwkPK+MH/F1UT7RgJ99eV/SPh6pprdXdgGtjQ1OjuAs/itGXP/9Zx7Wlu4B4W
-	 ttlovg+NnOfGoJpZuVREh0514UrLDU/yd9t+DL+E=
+	b=sUfg3qO7owsALrofySNCOuGQ2uvCxOP51UaFhsWaj0zV+XMF/gr67OsgA3sPnIB4w
+	 ljgNJbCfeVd3U6hF9WyDHznWogBkVO3n2+d/ltumA67in30C8LaaazaSxDK3Qmwl/O
+	 2KXObQ0hGJteCEZmNBDaSTkrvZerrfFzTepXnNHg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Stephen J. Fuhry" <fuhrysteve@gmail.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.6 153/452] USB: quirks: add NO_LPM for Lenovo ThinkPad USB-C Dock Gen2 hub controllers
+	Val Packett <val@packett.cool>,
+	stable <stable@kernel.org>,
+	Kuen-Han Tsai <khtsai@google.com>,
+	Carlos Llamas <cmllamas@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 233/522] usb: gadget: u_ether: Fix NULL pointer deref in eth_get_drvinfo
 Date: Tue, 16 Jun 2026 20:26:20 +0530
-Message-ID: <20260616145125.738207424@linuxfoundation.org>
+Message-ID: <20260616145136.892384839@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,79 +71,99 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-264984-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:fuhrysteve@gmail.com,m:stable@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-265497-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:val@packett.cool,m:stable@kernel.org,m:khtsai@google.com,m:cmllamas@google.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4B982692A0F
+X-Rspamd-Queue-Id: 2974A6936E3
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephen J. Fuhry <fuhrysteve@gmail.com>
+From: Kuen-Han Tsai <khtsai@google.com>
 
-commit 9ddb9c0deca48d2c2a22ebf4d2f35c925a520328 upstream.
+[ Upstream commit e002e92e88e12457373ed096b18716d97e7bbb20 ]
 
-The Lenovo ThinkPad USB-C Dock Gen2 (17ef:a391, 17ef:a392) hub
-controllers exhibit link instability when USB Link Power Management
-is enabled, similar to the dock's Ethernet adapter (17ef:a387) which
-already carries USB_QUIRK_NO_LPM.
+Commit ec35c1969650 ("usb: gadget: f_ncm: Fix net_device lifecycle with
+device_move") reparents the gadget device to /sys/devices/virtual during
+unbind, clearing the gadget pointer. If the userspace tool queries on
+the surviving interface during this detached window, this leads to a
+NULL pointer dereference.
 
-When the dock reconnects after a transient disconnect, the hub
-controllers enter LPM states between re-enumeration retries, causing
-repeated disconnect/reconnect cycles lasting up to two minutes.
-Disabling LPM for these devices restores stable enumeration.
+Unable to handle kernel NULL pointer dereference
+Call trace:
+ eth_get_drvinfo+0x50/0x90
+ ethtool_get_drvinfo+0x5c/0x1f0
+ __dev_ethtool+0xaec/0x1fe0
+ dev_ethtool+0x134/0x2e0
+ dev_ioctl+0x338/0x560
 
-Signed-off-by: Stephen J. Fuhry <fuhrysteve@gmail.com>
+Add a NULL check for dev->gadget in eth_get_drvinfo(). When detached,
+skip copying the fw_version and bus_info strings, which is natively
+handled by ethtool_get_drvinfo for empty strings.
+
+Suggested-by: Val Packett <val@packett.cool>
+Reported-by: Val Packett <val@packett.cool>
+Closes: https://lore.kernel.org/linux-usb/10890524-cf83-4a71-b879-93e2b2cc1fcc@packett.cool/
+Fixes: ec35c1969650 ("usb: gadget: f_ncm: Fix net_device lifecycle with device_move")
 Cc: stable <stable@kernel.org>
-Link: https://patch.msgid.link/20260513171419.44849-1-fuhrysteve@gmail.com
+Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
+Link: https://patch.msgid.link/20260316-eth-null-deref-v1-1-07005f33be85@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/quirks.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/usb/gadget/function/u_ether.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/core/quirks.c
-+++ b/drivers/usb/core/quirks.c
-@@ -511,6 +511,10 @@ static const struct usb_device_id usb_qu
- 	/* Lenovo ThinkPad USB-C Dock Gen2 Ethernet (RTL8153 GigE) */
- 	{ USB_DEVICE(0x17ef, 0xa387), .driver_info = USB_QUIRK_NO_LPM },
+diff --git a/drivers/usb/gadget/function/u_ether.c b/drivers/usb/gadget/function/u_ether.c
+index e972de236be5e2..83dfc5008b689e 100644
+--- a/drivers/usb/gadget/function/u_ether.c
++++ b/drivers/usb/gadget/function/u_ether.c
+@@ -147,8 +147,10 @@ static void eth_get_drvinfo(struct net_device *net, struct ethtool_drvinfo *p)
  
-+	/* Lenovo ThinkPad USB-C Dock Gen2 USB 3.1 and USB 2.0 hub controllers */
-+	{ USB_DEVICE(0x17ef, 0xa391), .driver_info = USB_QUIRK_NO_LPM },
-+	{ USB_DEVICE(0x17ef, 0xa392), .driver_info = USB_QUIRK_NO_LPM },
-+
- 	/* BUILDWIN Photo Frame */
- 	{ USB_DEVICE(0x1908, 0x1315), .driver_info =
- 			USB_QUIRK_HONOR_BNUMINTERFACES },
+ 	strscpy(p->driver, "g_ether", sizeof(p->driver));
+ 	strscpy(p->version, UETH__VERSION, sizeof(p->version));
+-	strscpy(p->fw_version, dev->gadget->name, sizeof(p->fw_version));
+-	strscpy(p->bus_info, dev_name(&dev->gadget->dev), sizeof(p->bus_info));
++	if (dev->gadget) {
++		strscpy(p->fw_version, dev->gadget->name, sizeof(p->fw_version));
++		strscpy(p->bus_info, dev_name(&dev->gadget->dev), sizeof(p->bus_info));
++	}
+ }
+ 
+ /* REVISIT can also support:
+-- 
+2.53.0
+
 
 
 
