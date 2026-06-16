@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-264704-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266520-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id UUJbO5l7MWoCkgUAu9opvQ
-	(envelope-from <stable+bounces-264704-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:36:41 +0200
+	id PgELJemfMWpJogUAu9opvQ
+	(envelope-from <stable+bounces-266520-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:11:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98F58692422
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:36:41 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10196694DA1
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:11:37 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=hn4+svQV;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264704-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264704-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=U2Lor8PK;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266520-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266520-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E7175303B4C4
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:30:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A70DF320EC44
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:07:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E07C547277E;
-	Tue, 16 Jun 2026 16:30:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3184C3DDDA0;
+	Tue, 16 Jun 2026 19:07:02 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B36B744BCB8;
-	Tue, 16 Jun 2026 16:30:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1AC83DDDBA;
+	Tue, 16 Jun 2026 19:07:00 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781627427; cv=none; b=osZCeC2qcneVF6iIUJXimCuujWpx+jYACQ3puHI/QuwEVJpEyER0Rcf5MHMhnlYU210i8qFvOtuXVdHrzDLnbmprjSBbtzO/z8Lf7YmIMFSdRzyq1spCivoMK2tK9Cb1ra2cCXeBzbqA14G6fUlSTrT3jx/Y9oNxI6NZ4EQNwGM=
+	t=1781636822; cv=none; b=n17usMQY+LqLd/7kzFnHbpnZrjMVqR6rjjG1Z3KfxFhPH9uYFsI56GWgPmUEAqT2hvnabe+mi0Sylb8G2gMbQfjMsc+1zRtHA7uCdOaU0bExZNvBNL9iOWa9EL9pvXjSsHWtqty1WD5g/AbWoLWJHtb/N/HNsEoTjO3Z8Hx5Jbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781627427; c=relaxed/simple;
-	bh=EDaX+vHNuu/Rzauk1AHZgym4tSio4k/xdOdwH5YkYSA=;
+	s=arc-20240116; t=1781636822; c=relaxed/simple;
+	bh=HGJXjwraJC9KMGuv5bFEk6klfgwfZ8M3AEsc54AiCwU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fb6vpMb0J87X95+gHiDhS2JCSoianhNofmNGdrQucKKHZbD8sBxE1OTMoyYYRp0gMh5KPJVCJXuNc8p9PSEczPHKRj/2872sbjXwylE9/E5HVaCHjhnXbAZqRsnOEe0PxE1tV9IcA2gBtbJNJcFyoOjjVT9JNDjAxJTZDutLJEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hn4+svQV; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 577FA1F000E9;
-	Tue, 16 Jun 2026 16:30:24 +0000 (UTC)
+	 MIME-Version; b=XgOOPDEZCuGDhfmPgzjkXIA6N7foYSEPA9LBGzEcoTXcwfMI9aro4HwTs1XKUS9f9/XzZ2Ssx6Sl826fw7Nlm/oje3P1i79PXFwpKBXNAfX7uNxSQ/B/Os4pA4hyZU706WWI4hN5dZbJn4IBe+Jgks7qa7+eO7nYqoNmfNLykxY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U2Lor8PK; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E23BF1F000E9;
+	Tue, 16 Jun 2026 19:06:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781627426;
-	bh=CrbCbEE1NI8yDonYoQ+BenftR0OU88BRCjmYw1Jfoo4=;
+	s=korg; t=1781636820;
+	bh=IZWIFAhi04+PDfiBmGY93iJseu0xgH23C6g19Ql3HMY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hn4+svQVwQQqc3Z3+TNDHRm83ESkAWsalh59NE1WgoE/njgo0OCb40PjwrQW6/97r
-	 xfahKUj/GhQtiipZsK6TtLdldVlP2OYghswZV/SYlBWoeBi+9KKI5H8GoAC1CRtzY0
-	 07bJ/+5+z8Gsqi3xpkXl1E507AvKiRIojsgJ3wHI=
+	b=U2Lor8PKZpA8l0FPjsTdOXtMgA2jYpNSUL0JLgCxtPWIJVX0zl51cijkVexgKcPmT
+	 teQOjIxc1qX0WwRaCb61jxbATa0AoxpVkooG6xrgOLUAxIOcvAi5//qqmtszVguG7S
+	 ropaRbBlGuux6sewRGx/lMGSr+wjHi4P/3m7lZyk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Hyunwoo Kim <imv4bel@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 168/261] inet: frags: fix use-after-free caused by the fqdir_pre_exit() flush
-Date: Tue, 16 Jun 2026 20:30:06 +0530
-Message-ID: <20260616145052.857670306@linuxfoundation.org>
+	Florian Westphal <fw@strlen.de>,
+	Davide Ornaghi <d.ornaghi97@gmail.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 311/342] netfilter: nft_fib: fix stale stack leak via the OIFNAME register
+Date: Tue, 16 Jun 2026 20:30:07 +0530
+Message-ID: <20260616145102.962575747@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
-References: <20260616145044.869532709@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,111 +68,125 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,strlen.de,gmail.com,netfilter.org,kernel.org];
+	TAGGED_FROM(0.00)[bounces-266520-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-264704-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:edumazet@google.com,m:imv4bel@gmail.com,m:kuba@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:fw@strlen.de,m:d.ornaghi97@gmail.com,m:pablo@netfilter.org,m:sashal@kernel.org,m:dornaghi97@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,gmail.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[netfilter.org:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,strlen.de:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 98F58692422
+X-Rspamd-Queue-Id: 10196694DA1
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hyunwoo Kim <imv4bel@gmail.com>
+From: Davide Ornaghi <d.ornaghi97@gmail.com>
 
-commit 32594b09854970d7ba83eb2dc8c69a2edd158c8e upstream.
+[ Upstream commit ab185e0c4fb82dfba6fb86f8271e06f931d9c64c ]
 
-On netns teardown, fqdir_pre_exit() walks the fqdir rhashtable and
-flushes every fragment queue that is not yet complete using
-inet_frag_queue_flush(). That helper frees all the skbs queued on the
-fragment queue but does not set INET_FRAG_COMPLETE, and leaves
-q->fragments_tail and q->last_run_head pointing at the freed skbs.
-The queue itself stays in the rhashtable.
+For NFT_FIB_RESULT_OIFNAME the destination register is declared with
+len = IFNAMSIZ (four 32-bit registers), but on the lookup-fail,
+RTN_LOCAL and oif-mismatch paths nft_fib{4,6}_eval() only writes one
+register via "*dest = 0". The remaining three registers are left as
+whatever was on the stack in nft_do_chain()'s struct nft_regs, and a
+downstream expression that loads the register span can leak that
+uninitialised kernel stack to userspace.
 
-fqdir_pre_exit() first lowers high_thresh to 0 to stop new queue lookups,
-but it cannot stop a fragment that already obtained the queue through
-inet_frag_find() earlier and stalled just before taking the queue lock.
-Once that fragment resumes after the flush and takes the queue lock,
-it passes the INET_FRAG_COMPLETE check and then dereferences the freed
-fragments_tail. inet_frag_queue_insert() reads FRAG_CB() and ->len of
-that pointer and, on the append path, writes ->next_frag, causing a
-slab use-after-free. IPv6, nf_conntrack_reasm6 and 6lowpan reassembly
-share the same flush path and are affected as well.
+The NFTA_FIB_F_PRESENT existence check has the same shape: it is only
+meaningful for NFT_FIB_RESULT_OIF, yet it was accepted for any result type
+while the eval stores a single byte via nft_reg_store8(), leaving the rest
+of the declared span stale.
 
-Reset rb_fragments, fragments_tail and last_run_head in
-inet_frag_queue_flush() so a flushed queue no longer points at the
-freed skbs. A fragment that resumes after the flush and takes the
-queue lock then finds an empty queue and starts a new run instead of
-dereferencing the freed fragments_tail. ip_frag_reinit() already
-performed this reset after its own flush, so drop the now duplicate
-code there.
+Fix both:
 
+ - replace the bare "*dest = 0" in the eval with nft_fib_store_result(),
+   which strscpy_pad()s the whole IFNAMSIZ for OIFNAME (and is already
+   used on the other early-return path), and
+
+ - restrict NFTA_FIB_F_PRESENT to NFT_FIB_RESULT_OIF and declare its
+   destination as a single u8, so the marked span matches the one byte
+   the eval writes.
+
+Fixes: f6d0cbcf09c5 ("netfilter: nf_tables: add fib expression")
+Suggested-by: Florian Westphal <fw@strlen.de>
 Cc: stable@vger.kernel.org
-Fixes: 006a5035b495 ("inet: frags: flush pending skbs in fqdir_pre_exit()")
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
-Link: https://patch.msgid.link/ah6ukYq5G98LshdA@v4bel
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Davide Ornaghi <d.ornaghi97@gmail.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+[ kept the tree's existing `ip6_route_lookup`/`rt6_info` machinery (missing `fib6_lookup` refactor) and changed only `*dest = 0;` to `nft_fib_store_result(dest, priv, NULL)` ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/inet_fragment.c |    3 +++
- net/ipv4/ip_fragment.c   |    3 ---
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ net/ipv4/netfilter/nft_fib_ipv4.c |    2 +-
+ net/ipv6/netfilter/nft_fib_ipv6.c |    2 +-
+ net/netfilter/nft_fib.c           |    6 ++++++
+ 3 files changed, 8 insertions(+), 2 deletions(-)
 
---- a/net/ipv4/inet_fragment.c
-+++ b/net/ipv4/inet_fragment.c
-@@ -329,6 +329,9 @@ void inet_frag_queue_flush(struct inet_f
- 	reason = reason ?: SKB_DROP_REASON_FRAG_REASM_TIMEOUT;
- 	sum = inet_frag_rbtree_purge(&q->rb_fragments, reason);
- 	sub_frag_mem_limit(q->fqdir, sum);
-+	q->rb_fragments = RB_ROOT;
-+	q->fragments_tail = NULL;
-+	q->last_run_head = NULL;
- }
- EXPORT_SYMBOL(inet_frag_queue_flush);
+--- a/net/ipv4/netfilter/nft_fib_ipv4.c
++++ b/net/ipv4/netfilter/nft_fib_ipv4.c
+@@ -118,7 +118,7 @@ void nft_fib4_eval(const struct nft_expr
+ 		fl4.saddr = get_saddr(iph->daddr);
+ 	}
  
---- a/net/ipv4/ip_fragment.c
-+++ b/net/ipv4/ip_fragment.c
-@@ -265,9 +265,6 @@ static int ip_frag_reinit(struct ipq *qp
- 	qp->q.flags = 0;
- 	qp->q.len = 0;
- 	qp->q.meat = 0;
--	qp->q.rb_fragments = RB_ROOT;
--	qp->q.fragments_tail = NULL;
--	qp->q.last_run_head = NULL;
- 	qp->iif = 0;
- 	qp->ecn = 0;
+-	*dest = 0;
++	nft_fib_store_result(dest, priv, NULL);
  
+ 	if (fib_lookup(nft_net(pkt), &fl4, &res, FIB_LOOKUP_IGNORE_LINKSTATE))
+ 		return;
+--- a/net/ipv6/netfilter/nft_fib_ipv6.c
++++ b/net/ipv6/netfilter/nft_fib_ipv6.c
+@@ -189,7 +189,7 @@ void nft_fib6_eval(const struct nft_expr
+ 		}
+ 	}
+ 
+-	*dest = 0;
++	nft_fib_store_result(dest, priv, NULL);
+ 	rt = (void *)ip6_route_lookup(nft_net(pkt), &fl6, pkt->skb,
+ 				      lookup_flags);
+ 	if (rt->dst.error)
+--- a/net/netfilter/nft_fib.c
++++ b/net/netfilter/nft_fib.c
+@@ -105,6 +105,12 @@ int nft_fib_init(const struct nft_ctx *c
+ 		return -EINVAL;
+ 	}
+ 
++	if (priv->flags & NFTA_FIB_F_PRESENT) {
++		if (priv->result != NFT_FIB_RESULT_OIF)
++			return -EINVAL;
++		len = sizeof(u8);
++	}
++
+ 	err = nft_parse_register_store(ctx, tb[NFTA_FIB_DREG], &priv->dreg,
+ 				       NULL, NFT_DATA_VALUE, len);
+ 	if (err < 0)
 
 
 
