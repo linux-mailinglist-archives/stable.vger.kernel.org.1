@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-263865-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265831-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id qi1BAnhpMWrjigUAu9opvQ
-	(envelope-from <stable+bounces-263865-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:19:20 +0200
+	id SeYRNteQMWqGmwUAu9opvQ
+	(envelope-from <stable+bounces-265831-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:07:19 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90C6B690E95
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:19:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C9C7693D0E
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:07:19 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=w3E6h+Zs;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263865-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263865-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=A34mQa7z;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265831-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265831-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 47673301727C
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:14:41 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 77EF23065A7C
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:07:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD4E343C05C;
-	Tue, 16 Jun 2026 15:14:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E4C23D525E;
+	Tue, 16 Jun 2026 18:07:17 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ABA443CEC7;
-	Tue, 16 Jun 2026 15:14:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DD1E3CFF4A;
+	Tue, 16 Jun 2026 18:07:16 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781622879; cv=none; b=OnEZGcmE2kdVXfyBtLrN3N8V+/gG+SB93x9IF9nds2x3BiAP+voUSjBxxDj0L+uK4yxae6WxNwPZpZS/JpiRTEDDyTOU0wiymEKUzdCjEagLKMBLmpq4uhVugVT+FUhwuThxPAbW/7t/TxRKkL/kaQKbU5MMdVpN/CQBNpPGEgM=
+	t=1781633237; cv=none; b=efXqUP3f8XWjpVr3PEoxxPRq08uUi3xcdMkD8U9NtHus1I1Rk0nbg38pLM8kQklxZI/62XAn/ma6YyLQDBRBB/PD5IU9rR4ZTfOM4tsSDSe+zS4yv8TcXgXJoiiLEbN9+inQALwS6AGjf5ETg4K+OOIEFLW62CvBOp0MEjavGLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781622879; c=relaxed/simple;
-	bh=QjwooAWVjoRofBOdU1ramqjzlW9Jm1nGRqAdk2fBqjQ=;
+	s=arc-20240116; t=1781633237; c=relaxed/simple;
+	bh=k6YTPh7dyuC6ZPM13OUifyfJ3dqAKFq4820n2A3bkRM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jxaLprhme/2pYiUMKp/gM+k5n28V/NsmNNYthJFmMfRsAZ5/T7VqkZZCeMf4rvGXfAPf2/ErvvYnWXxqCljj4oeasa+BrkJptlQoYTS6t0SVquaGw91x9IPj5fr0OpBDI+eulB9AKwjtpBUhu2oCkXu0NQSULriiLNskE1CUZtY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w3E6h+Zs; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AA721F00A3A;
-	Tue, 16 Jun 2026 15:14:37 +0000 (UTC)
+	 MIME-Version; b=OzLN+lDUsRt4iS9BZWbuJAz8Z26ofTyncyYWZ+WGNe3VB9XpB/v6lHyBoj+pMArrSNP5tgEh7uDTdWpXGZRswGWxF3vRuR2xrEbCq+Tf0BnhWW9RjY7QH/JGQcq0hvhmp4tBAQUMEQB1Y9L+P82KNiUkZ70/a6ttpwPUthK22OA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A34mQa7z; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DF3F1F000E9;
+	Tue, 16 Jun 2026 18:07:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781622878;
-	bh=xXZBNDCq2GCQjBJ09uEzNy+z9SED89iQFTB7wzm9j00=;
+	s=korg; t=1781633236;
+	bh=L8pAxwbmdtp49BwogWeRqDSWho72f8VDOfmRaYHGKJo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=w3E6h+ZsVB1ZcqpOpSfqKKK9I8j1VHBhRWXMblxXKVHZ0lDeQrWTdvyg1YPXUAZRN
-	 jCzzN00V3coPwJmMfJFgo3V60bDq2c/gGKxZyUE86uVlgcRuTE0HCyNzw/m7ENl1dv
-	 BTpTbQusw0yEtt02k3755BR8hENROcPxd141N5NA=
+	b=A34mQa7zenk8mI36+LQkpBRrEKkPkrl6xLQAFhHQFL/J+9SlXG/OPKCE+8DjLSXnL
+	 A6CHE+n1jopFeS/VyNQYJJw9WXG3FSGkRgZWa3B6SSvQ29q5JcABLQkA8Wt2cM/gk6
+	 S5hCQxiHN6sQvTjKZfYyaKP9OdkZBs3maBKy1fdU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dudu Lu <phx0fer@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Ben Hutchings <benh@debian.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 047/378] Bluetooth: bnep: fix incorrect length parsing in bnep_rx_frame() extension handling
+Subject: [PATCH 5.15 040/411] selftests: forwarding: lib: Add helpers for checksum handling
 Date: Tue, 16 Jun 2026 20:24:38 +0530
-Message-ID: <20260616145112.397072449@linuxfoundation.org>
+Message-ID: <20260616145102.439111033@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,107 +71,143 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-263865-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:phx0fer@gmail.com,m:luiz.von.dentz@intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-265831-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:petrm@nvidia.com,m:razor@blackwall.org,m:davem@davemloft.net,m:benh@debian.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,intel.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,davemloft.net:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,blackwall.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 90C6B690E95
+X-Rspamd-Queue-Id: 6C9C7693D0E
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dudu Lu <phx0fer@gmail.com>
+From: Petr Machata <petrm@nvidia.com>
 
-[ Upstream commit 72b8deccff17a7644e0367e1aaf1a36cfb014324 ]
+commit 952e0ee38c7215c45192d8c899acd1830873f28b upstream.
 
-In bnep_rx_frame(), the BNEP_FILTER_NET_TYPE_SET and
-BNEP_FILTER_MULTI_ADDR_SET extension header parsing has two bugs:
+In order to generate IGMPv3 and MLDv2 packets on the fly, we will need
+helpers to calculate the packet checksum.
 
-1) The 2-byte length field is read with *(u16 *)(skb->data + 1), which
-   performs a native-endian read. The BNEP protocol specifies this field
-   in big-endian (network byte order), and the same file correctly uses
-   get_unaligned_be16() for the identical fields in
-   bnep_ctrl_set_netfilter() and bnep_ctrl_set_mcfilter().
+The approach presented in this patch revolves around payload templates
+for mausezahn. These are mausezahn-like payload strings (01:23:45:...)
+with possibly one 2-byte sequence replaced with the word PAYLOAD. The
+main function is payload_template_calc_checksum(), which calculates
+RFC 1071 checksum of the message. There are further helpers to then
+convert the checksum to the payload format, and to expand it.
 
-2) The length is multiplied by 2, but unlike BNEP_SETUP_CONN_REQ where
-   the length byte counts UUID pairs (requiring * 2 for two UUIDs per
-   entry), the filter extension length field already represents the total
-   data size in bytes. This is confirmed by bnep_ctrl_set_netfilter()
-   which reads the same field as a byte count and divides by 4 to get
-   the number of filter entries.
+For IPv6, MLDv2 message checksum is computed using a pseudoheader that
+differs from the header used in the payload itself. The fact that the
+two messages are different means that the checksum needs to be
+returned as a separate quantity, instead of being expanded in-place in
+the payload itself. Furthermore, the pseudoheader includes a length of
+the message. Much like the checksum, this needs to be expanded in
+mausezahn format. And likewise for number of addresses for (S,G)
+entries. Thus we have several places where a computed quantity needs
+to be presented in the payload format. Add a helper u16_to_bytes(),
+which will be used in all these cases.
 
-   The bogus * 2 means skb_pull advances twice as far as it should,
-   either dropping valid data from the next header or causing the pull
-   to fail entirely when the doubled length exceeds the remaining skb.
-
-Fix by splitting the pull into two steps: first use skb_pull_data() to
-safely pull and validate the 3-byte fixed header (ctrl type + length),
-then pull the variable-length data using the properly decoded length.
-
-Fixes: bf8b9a9cb77b ("Bluetooth: bnep: Add support to extended headers of control frames")
-Signed-off-by: Dudu Lu <phx0fer@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Stable-dep-of: 6770d3a8acdf ("Bluetooth: bnep: reject short frames before parsing")
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 02cb2e6bacbb ("selftests: forwarding: vxlan_bridge_1d: fix test failure with br_netfilter enabled")
+[bwh: Backported to 5.15: adjust context]
+Signed-off-by: Ben Hutchings <benh@debian.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/bnep/core.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ tools/testing/selftests/net/forwarding/lib.sh | 56 +++++++++++++++++++
+ 1 file changed, 56 insertions(+)
 
-diff --git a/net/bluetooth/bnep/core.c b/net/bluetooth/bnep/core.c
-index b3cef7a4db5412..0de5df690bd0b2 100644
---- a/net/bluetooth/bnep/core.c
-+++ b/net/bluetooth/bnep/core.c
-@@ -330,11 +330,18 @@ static int bnep_rx_frame(struct bnep_session *s, struct sk_buff *skb)
- 				goto badframe;
- 			break;
- 		case BNEP_FILTER_MULTI_ADDR_SET:
--		case BNEP_FILTER_NET_TYPE_SET:
--			/* Pull: ctrl type (1 b), len (2 b), data (len bytes) */
--			if (!skb_pull(skb, 3 + *(u16 *)(skb->data + 1) * 2))
-+		case BNEP_FILTER_NET_TYPE_SET: {
-+			u8 *hdr;
+diff --git a/tools/testing/selftests/net/forwarding/lib.sh b/tools/testing/selftests/net/forwarding/lib.sh
+index 83e8f9466d6273..c570d8f65a0cec 100644
+--- a/tools/testing/selftests/net/forwarding/lib.sh
++++ b/tools/testing/selftests/net/forwarding/lib.sh
+@@ -1491,3 +1491,59 @@ brmcast_check_sg_state()
+ 		check_err_fail $should_fail $? "Entry $src has blocked flag"
+ 	done
+ }
 +
-+			/* Pull ctrl type (1 b) + len (2 b) */
-+			hdr = skb_pull_data(skb, 3);
-+			if (!hdr)
-+				goto badframe;
-+			/* Pull data (len bytes); length is big-endian */
-+			if (!skb_pull(skb, get_unaligned_be16(&hdr[1])))
- 				goto badframe;
- 			break;
-+		}
- 		default:
- 			kfree_skb(skb);
- 			return 0;
++u16_to_bytes()
++{
++	local u16=$1; shift
++
++	printf "%04x" $u16 | sed 's/^/000/;s/^.*\(..\)\(..\)$/\1:\2/'
++}
++
++# Given a mausezahn-formatted payload (colon-separated bytes given as %02x),
++# possibly with a keyword CHECKSUM stashed where a 16-bit checksum should be,
++# calculate checksum as per RFC 1071, assuming the CHECKSUM field (if any)
++# stands for 00:00.
++payload_template_calc_checksum()
++{
++	local payload=$1; shift
++
++	(
++	    # Set input radix.
++	    echo "16i"
++	    # Push zero for the initial checksum.
++	    echo 0
++
++	    # Pad the payload with a terminating 00: in case we get an odd
++	    # number of bytes.
++	    echo "${payload%:}:00:" |
++		sed 's/CHECKSUM/00:00/g' |
++		tr '[:lower:]' '[:upper:]' |
++		# Add the word to the checksum.
++		sed 's/\(..\):\(..\):/\1\2+\n/g' |
++		# Strip the extra odd byte we pushed if left unconverted.
++		sed 's/\(..\):$//'
++
++	    echo "10000 ~ +"	# Calculate and add carry.
++	    echo "FFFF r - p"	# Bit-flip and print.
++	) |
++	    dc |
++	    tr '[:upper:]' '[:lower:]'
++}
++
++payload_template_expand_checksum()
++{
++	local payload=$1; shift
++	local checksum=$1; shift
++
++	local ckbytes=$(u16_to_bytes $checksum)
++
++	echo "$payload" | sed "s/CHECKSUM/$ckbytes/g"
++}
++
++payload_template_nbytes()
++{
++	local payload=$1; shift
++
++	payload_template_expand_checksum "${payload%:}" 0 |
++		sed 's/:/\n/g' | wc -l
++}
 -- 
 2.53.0
 
