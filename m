@@ -1,60 +1,65 @@
-Return-Path: <stable+bounces-266010-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266379-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id i9WXDo+UMWpZnQUAu9opvQ
-	(envelope-from <stable+bounces-266010-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:23:11 +0200
+	id kDppIhecMWqaoAUAu9opvQ
+	(envelope-from <stable+bounces-266379-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:55:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DB86694161
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:23:10 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id F071F694929
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:55:18 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=hVDNtwtz;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266010-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266010-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=RUgqca9I;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266379-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-266379-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 746D13002F6E
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:23:07 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0616630591AD
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:55:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABD52466B5E;
-	Tue, 16 Jun 2026 18:23:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19E644779BF;
+	Tue, 16 Jun 2026 18:55:15 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 818413BFE5A;
-	Tue, 16 Jun 2026 18:23:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E69943CC303;
+	Tue, 16 Jun 2026 18:55:13 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781634185; cv=none; b=btKKSqHcqWP6ZpItQ1XB0K//vpDzWwWCdi2eC/4BJPFpmvJWP1mtb3OVLxTLkDJQAgF8UJDJUE4VTIXDz9I5yCqzvjuU07mxfNBU8k8Z1oean1RZmw3LCKxd8RAF8EuCXCymdbnDt+pHyJFrO8aIK4iPwpYb3DIRiYYw/x4wgo8=
+	t=1781636114; cv=none; b=TN5bSGMo2oH8ilzKBuWcnfKXyb4M5WVrsh8WNIb8lEA9w0w+DNoRaGdbtaiVjRp5mr/qMjhTkLj8xyfAmXGdIw+WjokGw+8zfDBLYUSiAaYYb2RrSoYpxfruV5DSJZGMFSek6+KrMFUDv3E9k53EfUdQSKXN9sncfRcCXuoB7c0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781634185; c=relaxed/simple;
-	bh=vbNviFBeEMv7Ms8QUYvFkinwMzOFvY7BkmXhfoxn5Jg=;
+	s=arc-20240116; t=1781636114; c=relaxed/simple;
+	bh=Jg90f5M6pXt8XcA6S4V72x11HuJ0TqZD8OOi8Kp65Ek=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FqR5nwQA+Oomxw6E0QQeN9QlAI2CVXwmFeVQM+YRQYAe+CYb09TA20Jq/JPJZNmOdaBOLnapWNiOhEaRx1YHn4EFkwq/GyEJUAZRswTStcD5mNbnAfhE7W+H8XPjk+aGtGaqugulF8hCTOBczHanPy5SVvaaN+Z9tmL3X57Xb3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hVDNtwtz; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A5111F000E9;
-	Tue, 16 Jun 2026 18:23:03 +0000 (UTC)
+	 MIME-Version; b=CZ3kuV4yTxgLKc9sQRZaFGCeeNzArNyQazBbKX+rFvHK7ld0Sm5by/W8WbTVTuWw4CR8wplyh1iLxIRo+wShTrrk8CK53AJh5ewEaoq5NoVBfJ/yDe/SR3xYo4wkJ3PBVsDy92ZswSPhZ5S/6zAFcfk8/bx8dIdpCfnPpjNyr8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RUgqca9I; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86F0E1F000E9;
+	Tue, 16 Jun 2026 18:55:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781634184;
-	bh=g6GfiiBohW29lAynUwjkbOe+RC6L4R+UFkYrQ2gFjYU=;
+	s=korg; t=1781636113;
+	bh=5E1NXqp8nOT/FSmy/5xbAtK/M6K7suZoRvvgRQELDTI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hVDNtwtz5yVZ/LvTyF74KmsT7FI64A4JMZWlMN7KyabCQzPR1b/jgrFkytByd55yL
-	 5oTr2r0GBd2OSztnVGSbajtqLu7+ZqHWWtJkUyZ43aPL/qM59BjFGMJTR3PqNyyzsJ
-	 nwvD0UY3Hd33jP+aPQ5zs3yxvOOgtjbq43/jYFZU=
+	b=RUgqca9IfSiH2xLDILllGn8Zzk0fCU3DSeoKuXnFJxNFioBt6xujFH4F/4L3wR/PH
+	 EiCMqngVWvWwayEBtllyp+mZZSkqqmZ2ghh31rSEO0MpM6febuS9btdX+hEs1LfQWI
+	 1xZucaFcqQBzlwBZHcM2vxN8jxSaO4kcDEJZgCKE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Jason Gunthorpe <jgg@nvidia.com>
-Subject: [PATCH 5.15 218/411] IB/isert: Reject login PDUs shorter than ISER_HEADERS_LEN
+	Xiang Mei <xmei5@asu.edu>,
+	Weiming Shi <bestswngs@gmail.com>,
+	Dongli Zhang <dongli.zhang@oracle.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 160/342] tap: free page on error paths in tap_get_user_xdp()
 Date: Tue, 16 Jun 2026 20:27:36 +0530
-Message-ID: <20260616145112.370720287@linuxfoundation.org>
+Message-ID: <20260616145055.619341273@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,100 +71,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266010-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:jgg@nvidia.com,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nvidia.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,oracle.com,google.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-266379-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:xmei5@asu.edu,m:bestswngs@gmail.com,m:dongli.zhang@oracle.com,m:willemb@google.com,m:kuba@kernel.org,m:harshit.m.mogalapalli@oracle.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,nvidia.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,asu.edu:email,oracle.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3DB86694161
+X-Rspamd-Queue-Id: F071F694929
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Weiming Shi <bestswngs@gmail.com>
 
-commit 29e7b925ae6df64894e82ab6419994dc25580a8a upstream.
+[ Upstream commit 3bcf7aec6a9d16438f2cec29f5d7c8d5b8edf9b2 ]
 
-In drivers/infiniband/ulp/isert/ib_isert.c, isert_login_recv_done()
-computes the login request payload length as wc->byte_len minus
-ISER_HEADERS_LEN with no lower bound, and login_req_len is a signed int.
-A remote iSER initiator can post a login Send work request carrying
-fewer than ISER_HEADERS_LEN (76) bytes, so the subtraction underflows
-and login_req_len becomes negative.
+tap_get_user_xdp() rejects a frame shorter than ETH_HLEN with -EINVAL,
+and returns -ENOMEM when build_skb() fails. Both paths jump to the err
+label without freeing the page that vhost_net_build_xdp() allocated for
+the frame. tap_sendmsg() discards the per-buffer return value and always
+returns 0, so vhost_tx_batch() takes the success path and never frees
+the page; each rejected frame in a batch leaks one page-frag chunk.
 
-isert_rx_login_req() then reads that negative length back into a signed
-int, takes size = min(rx_buflen, MAX_KEY_VALUE_PAIRS), and because the
-min() is signed it keeps the negative value; the value is then passed as
-the memcpy() length and sign-extended to a multi-gigabyte size_t. The
-copy into the 8192-byte login->req_buf runs far out of bounds and
-faults, crashing the target node. The login phase precedes iSCSI
-authentication, so no credentials are required to reach this path.
+Free the page on both error paths, before the skb is built. This is the
+tap counterpart of the same leak in tun_xdp_one().
 
-Reject any login PDU shorter than ISER_HEADERS_LEN before the
-subtraction, mirroring the existing early return on a failed work
-completion, so login_req_len can never go negative. The upper bound was
-already safe: a posted login buffer cannot deliver more than
-ISER_RX_PAYLOAD_SIZE, so the difference stays at or below
-MAX_KEY_VALUE_PAIRS and the existing min() clamps it; only the missing
-lower bound needs to be added.
-
-Fixes: b8d26b3be8b3 ("iser-target: Add iSCSI Extensions for RDMA (iSER) target driver")
-Link: https://patch.msgid.link/r/20260602194642.2273217-1-michael.bommarito@gmail.com
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-8
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0efac27791ee ("tap: accept an array of XDP buffs through sendmsg()")
+Fixes: ed7f2afdd0e0 ("tap: add missing verification for short frame")
+Reported-by: Xiang Mei <xmei5@asu.edu>
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+Reviewed-by: Dongli Zhang <dongli.zhang@oracle.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20260521163230.1478627-2-bestswngs@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+(cherry picked from commit 3bcf7aec6a9d16438f2cec29f5d7c8d5b8edf9b2)
+Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/ulp/isert/ib_isert.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/tap.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/infiniband/ulp/isert/ib_isert.c
-+++ b/drivers/infiniband/ulp/isert/ib_isert.c
-@@ -1388,6 +1388,12 @@ isert_login_recv_done(struct ib_cq *cq,
- 	ib_dma_sync_single_for_cpu(ib_dev, isert_conn->login_desc->dma_addr,
- 			ISER_RX_SIZE, DMA_FROM_DEVICE);
+diff --git a/drivers/net/tap.c b/drivers/net/tap.c
+index 18f19fc66c64fa..6f5c996d3ed234 100644
+--- a/drivers/net/tap.c
++++ b/drivers/net/tap.c
+@@ -1145,6 +1145,7 @@ static int tap_get_user_xdp(struct tap_queue *q, struct xdp_buff *xdp)
+ 	int err, depth;
  
-+	if (unlikely(wc->byte_len < ISER_HEADERS_LEN)) {
-+		isert_dbg("login request length %u is too short\n",
-+			  wc->byte_len);
-+		return;
-+	}
-+
- 	isert_conn->login_req_len = wc->byte_len - ISER_HEADERS_LEN;
+ 	if (unlikely(xdp->data_end - xdp->data < ETH_HLEN)) {
++		put_page(virt_to_head_page(xdp->data));
+ 		err = -EINVAL;
+ 		goto err;
+ 	}
+@@ -1154,6 +1155,7 @@ static int tap_get_user_xdp(struct tap_queue *q, struct xdp_buff *xdp)
  
- 	if (isert_conn->conn) {
+ 	skb = build_skb(xdp->data_hard_start, buflen);
+ 	if (!skb) {
++		put_page(virt_to_head_page(xdp->data));
+ 		err = -ENOMEM;
+ 		goto err;
+ 	}
+-- 
+2.53.0
+
 
 
 
