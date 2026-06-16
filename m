@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-266482-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264139-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id r+ZnMHmeMWqvoQUAu9opvQ
-	(envelope-from <stable+bounces-266482-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:05:29 +0200
+	id tgToBmBwMWpajQUAu9opvQ
+	(envelope-from <stable+bounces-264139-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:48:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C518694BAD
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:05:29 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EAD7691675
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:48:47 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ZbTzr49H;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266482-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-266482-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=qJAiTpYQ;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264139-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-264139-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 85B1430BCE74
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:04:18 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id ABA163058BA1
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:38:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F351B3DE44E;
-	Tue, 16 Jun 2026 19:04:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9765944CAC9;
+	Tue, 16 Jun 2026 15:38:51 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C549F3DBD76;
-	Tue, 16 Jun 2026 19:04:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70E7634889F;
+	Tue, 16 Jun 2026 15:38:50 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781636646; cv=none; b=MLg+jfq0b4VuHPxJWlEthln6T4NVEWoj6d1/snWPIDy3uDTbPaZuGRukVMx0MS45RY6U62Kxo6/7valyLJzGtgiWPUhFVsSUTI5pegWGeUTMYbcSP+XXrsWi/pbnE/FawFgdaPum1G+or1WmcqSfD4Y6TWH95nM8eTKqSwLQQ6U=
+	t=1781624331; cv=none; b=cg36p8i0SSgijT2uHBAjAZmzGiblBBsYnzC8p7D1WQGeFb4WGTWKpmHdm/jH6Y21D+GcJEHtpOvwQXAulk8R8Tt7BI4JuON9NehKy1EshSGafaXjdvd+ea69YAb/vpIHe1JQw8skeAZrkLAL4W2QJOZ0+/2DASGGat+/gzqABIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781636646; c=relaxed/simple;
-	bh=FVV1T/4LvuRMXQpMQ3YYvQutpN0d1MsTVqUVMPXQBr4=;
+	s=arc-20240116; t=1781624331; c=relaxed/simple;
+	bh=9AYStCQ6WtdxM7hv2cyJfHl5hG9Qn3LmiTOllohaF0o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YwpWRsWwzqh4XhQRByHYU6RlxfRj1VsZce28LYh/0Llqi4VMbpTu4X2gbd6NhAj/alRVUoHglMSoaboOKlXYIev1/FXHoixCNRoi/JEfXjG/hsl/rEj2x8OTFr4ADD5nD3Q/EMZEhahqJOZhIHTHyBlhd2YevEv2XghHiH8nito=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZbTzr49H; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82E951F000E9;
-	Tue, 16 Jun 2026 19:04:04 +0000 (UTC)
+	 MIME-Version; b=g/W4jawOoF+AO8jNcCmp7QliOg9/K/VnjgyjPo0T3EjILbX08MS38lWDN8hl9yLZPQ+7XiZJhbzP6SJRz+1oo85aQRRUzK1Tcr0+NnD+2s0p2v1uIaoqApPjzUWknkRMXIUpF0W/KdvXgSrUI03ckX69vKYOqC3FanRaweeC1p8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qJAiTpYQ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DC811F000E9;
+	Tue, 16 Jun 2026 15:38:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781636645;
-	bh=DfWpE4gtgo6QUXowAEbqNR7B8FRac+lnp2+J3fVLdZA=;
+	s=korg; t=1781624330;
+	bh=8bMXHmT7TPjHNOCyK45zYj3OTFZ8EKnjue8MpC4FFvs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ZbTzr49HXatiUK7sgib6+7k1aBJW9zunHcqD1kDjObOOBZl34RtL06xj49UZgGqKB
-	 JaOFaEXzPvd3lRIZ4UsUzJNCO2WS2eV3CN5XUZM0glM4I/TE3Blca0LdeJxWtYTTak
-	 ge9SjkMQ3dXakiYUHBVBuYsEP4OwSyZ+rZMSwiD0=
+	b=qJAiTpYQkHB9WUorABD1+8ztI5FtddZZB8zZ+9Plhp3TfkxygBsr3eGs9V92RM9Se
+	 5A07NRscYjDUr4d4NC0wpE/p+HgqAr79GQRmqLU/d72IjERACGaS7hNG0BAjb8cIsQ
+	 6SyqUG5NzZLnOIcSsL68p9f8yKT7bIbYh6MVO9i4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 251/342] crypto: caam - guard HMAC key hex dumps in hash_digest_key
+	Justin Lai <justinlai0215@realtek.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 7.0 316/378] rtase: Reset TX subqueue when clearing TX ring
 Date: Tue, 16 Jun 2026 20:29:07 +0530
-Message-ID: <20260616145059.928992499@linuxfoundation.org>
+Message-ID: <20260616145126.894310434@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,21 +72,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266482-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264139-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:thorsten.blum@linux.dev,m:herbert@gondor.apana.org.au,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:justinlai0215@realtek.com,m:aleksander.lobakin@intel.com,m:kuba@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -98,74 +98,50 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,apana.org.au:email,linux.dev:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,realtek.com:email,intel.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2C518694BAD
+X-Rspamd-Queue-Id: 0EAD7691675
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thorsten Blum <thorsten.blum@linux.dev>
+From: Justin Lai <justinlai0215@realtek.com>
 
-[ Upstream commit 177730a273b18e195263ed953853273e901b5064 ]
+commit ab1ecaabe74b7d86c38ab2ab44bd56cdcc33645a upstream.
 
-Use print_hex_dump_devel() for dumping sensitive HMAC key bytes in
-hash_digest_key() to avoid leaking secrets at runtime when
-CONFIG_DYNAMIC_DEBUG is enabled.
+rtase_tx_clear() clears the TX ring and resets the ring indexes.
+However, the TX queue state and BQL accounting are not reset at
+the same time.
 
-Fixes: 045e36780f11 ("crypto: caam - ahash hmac support")
-Fixes: 3f16f6c9d632 ("crypto: caam/qi2 - add support for ahash algorithms")
+This may leave __QUEUE_STATE_STACK_XOFF asserted after
+rtase_sw_reset(), preventing new TX packets from being scheduled.
+
+Reset the TX subqueue when clearing the TX ring so the TX queue
+state and BQL accounting are restored together.
+
+Fixes: 5a2a2f15244c ("rtase: Implement the rtase_down function")
 Cc: stable@vger.kernel.org
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Justin Lai <justinlai0215@realtek.com>
+Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Link: https://patch.msgid.link/20260602114659.12335-1-justinlai0215@realtek.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/caam/caamalg_qi2.c |    4 ++--
- drivers/crypto/caam/caamhash.c    |    4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/realtek/rtase/rtase_main.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/crypto/caam/caamalg_qi2.c
-+++ b/drivers/crypto/caam/caamalg_qi2.c
-@@ -3261,7 +3261,7 @@ static int hash_digest_key(struct caam_h
- 	dpaa2_fl_set_addr(out_fle, key_dma);
- 	dpaa2_fl_set_len(out_fle, digestsize);
- 
--	print_hex_dump_debug("key_in@" __stringify(__LINE__)": ",
-+	print_hex_dump_devel("key_in@" __stringify(__LINE__)": ",
- 			     DUMP_PREFIX_ADDRESS, 16, 4, key, *keylen, 1);
- 	print_hex_dump_debug("shdesc@" __stringify(__LINE__)": ",
- 			     DUMP_PREFIX_ADDRESS, 16, 4, desc, desc_bytes(desc),
-@@ -3281,7 +3281,7 @@ static int hash_digest_key(struct caam_h
- 		/* in progress */
- 		wait_for_completion(&result.completion);
- 		ret = result.err;
--		print_hex_dump_debug("digested key@" __stringify(__LINE__)": ",
-+		print_hex_dump_devel("digested key@" __stringify(__LINE__)": ",
- 				     DUMP_PREFIX_ADDRESS, 16, 4, key,
- 				     digestsize, 1);
+--- a/drivers/net/ethernet/realtek/rtase/rtase_main.c
++++ b/drivers/net/ethernet/realtek/rtase/rtase_main.c
+@@ -239,6 +239,8 @@ static void rtase_tx_clear(struct rtase_
+ 		rtase_tx_clear_range(ring, ring->dirty_idx, RTASE_NUM_DESC);
+ 		ring->cur_idx = 0;
+ 		ring->dirty_idx = 0;
++
++		netdev_tx_reset_subqueue(tp->dev, i);
  	}
---- a/drivers/crypto/caam/caamhash.c
-+++ b/drivers/crypto/caam/caamhash.c
-@@ -390,7 +390,7 @@ static int hash_digest_key(struct caam_h
- 	append_seq_store(desc, digestsize, LDST_CLASS_2_CCB |
- 			 LDST_SRCDST_BYTE_CONTEXT);
+ }
  
--	print_hex_dump_debug("key_in@"__stringify(__LINE__)": ",
-+	print_hex_dump_devel("key_in@"__stringify(__LINE__)": ",
- 			     DUMP_PREFIX_ADDRESS, 16, 4, key, *keylen, 1);
- 	print_hex_dump_debug("jobdesc@"__stringify(__LINE__)": ",
- 			     DUMP_PREFIX_ADDRESS, 16, 4, desc, desc_bytes(desc),
-@@ -405,7 +405,7 @@ static int hash_digest_key(struct caam_h
- 		wait_for_completion(&result.completion);
- 		ret = result.err;
- 
--		print_hex_dump_debug("digested key@"__stringify(__LINE__)": ",
-+		print_hex_dump_devel("digested key@"__stringify(__LINE__)": ",
- 				     DUMP_PREFIX_ADDRESS, 16, 4, key,
- 				     digestsize, 1);
- 	}
 
 
 
