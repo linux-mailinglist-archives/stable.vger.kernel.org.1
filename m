@@ -1,63 +1,61 @@
-Return-Path: <stable+bounces-266510-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264695-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id I8kkFLGeMWrDoQUAu9opvQ
-	(envelope-from <stable+bounces-266510-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:06:25 +0200
+	id Xno2LgN8MWoqkgUAu9opvQ
+	(envelope-from <stable+bounces-264695-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:38:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BBBA694BF3
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:06:24 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 121836924A1
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:38:27 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=0gRYIcC6;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266510-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266510-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=oWoT9qS3;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264695-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264695-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id EB40C301AD9B
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:06:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8A40C31FE811
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:29:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BF7E3DDDDA;
-	Tue, 16 Jun 2026 19:06:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1038344E037;
+	Tue, 16 Jun 2026 16:29:05 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35B04349CF0;
-	Tue, 16 Jun 2026 19:06:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D27A84508F2;
+	Tue, 16 Jun 2026 16:29:03 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781636768; cv=none; b=Iy78acbmqTCokW61MLd7ZL6X6R5MI33ams1zDpMr29UpXETd3n8Fzdx08MWIJ188OnoNS5Kn0pcd9zjQRkcihR/utX+gnUiC/wd6kUTsa5sAOJcLmDWVW7DCbePJAHM695IaIOptTEEcg+MbZ7QwekAKmQrWAdbwyrhhm934lmY=
+	t=1781627344; cv=none; b=I0+syHff7t/44YBEhXZa3rqn9srbuIhGPArpA7aSHSmxU8o0Pw74oOlSwm2QaKeYzeXKxBWsNlXEUEXsVgpa48IfVgcluw+yVonNmD6LkH9m0gsOyT2MClFfzkKL8ca63MZf9DzO26abt2Qy3IEkYIa80uOhzCvLyg+vj/8JX+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781636768; c=relaxed/simple;
-	bh=PESs/1uhxVl0ZfHpNcz438xnr0mkxnxwpfS7JqfEEms=;
+	s=arc-20240116; t=1781627344; c=relaxed/simple;
+	bh=g4rSZEku/ZcX9sFLDA1gPas7T2DLxnvs+81+vJxctIE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a5a400OlvIoNUv4qyhMSFockLwtuhw2XxsmzaYRgOjd1N8pmcp5Kx0Zso5tFLVGKVmtCnP5ruj1zHUB4dDWMlVN7H1HxgSNKWcKo28dlxJInaGhGIcjbsVKoitB/iaBDSgCS4K/B12Guptyfmw5gGoxZS0rB5NZazil6DOZNcWU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0gRYIcC6; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE5CC1F000E9;
-	Tue, 16 Jun 2026 19:06:05 +0000 (UTC)
+	 MIME-Version; b=RkCq8LYOorK2Hf1jleiDsahaDeb+pZh8GJan+cX4PFl36oTeJk/XKOzGF4wr9VLmduu4NegD55FY1H6Bnw8QikYwF2VBWwaNHkyBueYo5bGorwFaIkI0ykFkucE3zEr5bSXr8Rp6Heru/skm4PQfeYkwP1NW1PNSPBzurp+Ti40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oWoT9qS3; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9B6D1F000E9;
+	Tue, 16 Jun 2026 16:29:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781636766;
-	bh=fDtlreKyajm2JnuPTMB4UFeg20kXHMh4Ourh2EtVF7I=;
+	s=korg; t=1781627343;
+	bh=Z/sYUmt7XLV624FGYSzXYP/T2ft6O5wWz6vBPCLoiys=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=0gRYIcC6b0ntnHDKlYvDo2LnhaM+BV/OCMDC2wCrOItYeLAcoF2YZUPt2q32ZLQ2s
-	 HTp9X406nh/Gr6mmjp36jbq3Ew5IHbc7TNU98ZSASsnBV3mpDNHgi3lQAx/RGBmtXK
-	 XsI2lvtso13HVv1oWppUKJcfqjIE/2kmXU76RN3g=
+	b=oWoT9qS3oDpFDlC9vtZq7etLhaboLqNKpFBTu2LGNE7XlPM2pkmdz1F59wRYGD8tg
+	 M+onAH/TI+DuG18izqo1yQNvAFw65QjMw24mC4CGXmx/UUZZW9SQ1PIFI5M7mqZhkk
+	 qY7LF7k6jauZM/JjGubme99KeNa0yRBoz+4Vt98g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>
-Subject: [PATCH 5.10 302/342] usb: typec: ucsi: Check if power role change actually happened before handling
+	Tao Cui <cuitao@kylinos.cn>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 160/261] selftests: mptcp: add test for extra_subflows underflow on userspace PM
 Date: Tue, 16 Jun 2026 20:29:58 +0530
-Message-ID: <20260616145102.502103327@linuxfoundation.org>
+Message-ID: <20260616145052.487137180@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,104 +69,76 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266510-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264695-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:myrrhperiwinkle@qtmlabs.xyz,m:heikki.krogerus@linux.intel.com,m:sashal@kernel.org,m:senozhatsky@chromium.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:cuitao@kylinos.cn,m:matttbe@kernel.org,m:kuba@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,vger.kernel.org:from_smtp,intel.com:email,qtmlabs.xyz:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,kylinos.cn:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5BBBA694BF3
+X-Rspamd-Queue-Id: 121836924A1
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
+From: Tao Cui <cuitao@kylinos.cn>
 
-[ Upstream commit b80e7d34c7ea6a564525119d6138fbb577a23dba ]
+commit 06fd2bec7aebf393288e4b78924482fe170caabc upstream.
 
-The CrOS EC may send a connector status change event with the power
-direction changed flag set even if the power direction hasn't actually
-changed after initiating a SET_PDR command internally [1]. In practice
-this happens on every system suspend due to other changes performed by
-the EC [2][3][4], causing suspend to fail.
+Add a test to verify that when userspace PM fails to create a subflow
+(e.g. using an unreachable address), the extra_subflows counter is not
+decremented below zero.
 
-Fix this by checking if the power role change actually happened before
-handling it.
-
-[1]: https://source.chromium.org/chromiumos/chromiumos/codesearch/+/main:src/platform/ec/zephyr/subsys/pd_controller/pdc_power_mgmt.c;l=1689;drc=2d5a1cffce4e5ac8a39442cb3b764d2d5e1cf794
-[2]: https://source.chromium.org/chromiumos/chromiumos/codesearch/+/main:src/platform/ec/zephyr/subsys/pd_controller/pdc_power_mgmt.c;l=3923;drc=2d5a1cffce4e5ac8a39442cb3b764d2d5e1cf794
-[3]: https://source.chromium.org/chromiumos/chromiumos/codesearch/+/main:src/platform/ec/zephyr/subsys/pd_controller/pdc_power_mgmt.c;l=5094;drc=2d5a1cffce4e5ac8a39442cb3b764d2d5e1cf794
-[4]: https://source.chromium.org/chromiumos/chromiumos/codesearch/+/main:src/platform/ec/zephyr/subsys/pd_controller/pdc_power_mgmt.c;l=2229;drc=2d5a1cffce4e5ac8a39442cb3b764d2d5e1cf794
-
-Cc: stable <stable@kernel.org>
-Fixes: 7616f006db07 ("usb: typec: ucsi: Update power_supply on power role change")
-Signed-off-by: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
-Reported-and-tested-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://patch.msgid.link/20260519-ucsi-fix-2-v1-1-6f1239535187@qtmlabs.xyz
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 77e4b94a3de6 ("mptcp: update userspace pm infos")
+Cc: stable@vger.kernel.org
+Signed-off-by: Tao Cui <cuitao@kylinos.cn>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260602-net-mptcp-misc-fixes-7-1-rc7-v2-6-856831229976@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/ucsi/ucsi.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ tools/testing/selftests/net/mptcp/mptcp_join.sh |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/usb/typec/ucsi/ucsi.c
-+++ b/drivers/usb/typec/ucsi/ucsi.c
-@@ -656,7 +656,7 @@ static void ucsi_handle_connector_change
- 	struct ucsi *ucsi = con->ucsi;
- 	struct ucsi_connector_status pre_ack_status;
- 	struct ucsi_connector_status post_ack_status;
--	enum typec_role role;
-+	enum typec_role role, prev_role;
- 	u16 inferred_changes;
- 	u16 changed_flags;
- 	u64 command;
-@@ -692,6 +692,8 @@ static void ucsi_handle_connector_change
- 	 * short transitional changes.
- 	 */
- 
-+	prev_role = !!(con->status.flags & UCSI_CONSTAT_PWR_DIR);
-+
- 	/* 1. First UCSI_GET_CONNECTOR_STATUS */
- 	command = UCSI_GET_CONNECTOR_STATUS | UCSI_CONNECTOR_NUMBER(con->num);
- 	ret = ucsi_send_command(ucsi, command, &pre_ack_status,
-@@ -769,7 +771,8 @@ static void ucsi_handle_connector_change
- 		ucsi_port_psy_changed(con);
- 	}
- 
--	if (con->status.change & UCSI_CONSTAT_POWER_DIR_CHANGE) {
-+	if ((con->status.change & UCSI_CONSTAT_POWER_DIR_CHANGE) &&
-+	    role != prev_role) {
- 		typec_set_pwr_role(con->port, role);
- 
- 		/* Complete pending power role swap */
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -3711,6 +3711,10 @@ userspace_tests()
+ 		chk_rm_nr 0 1
+ 		chk_mptcp_info subflows 0 subflows 0
+ 		chk_subflows_total 1 1
++		# check counters are not affected by errors at creation time
++		userspace_pm_add_sf $ns2 10.0.12.2 10 2>/dev/null
++		chk_mptcp_info subflows 0 subflows 0
++		chk_subflows_total 1 1
+ 		kill_events_pids
+ 		mptcp_lib_kill_group_wait $tests_pid
+ 	fi
 
 
 
