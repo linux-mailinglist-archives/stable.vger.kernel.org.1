@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-265652-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264346-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id mCruHEuNMWrOmQUAu9opvQ
-	(envelope-from <stable+bounces-265652-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:52:11 +0200
+	id sfL4H09zMWqmjgUAu9opvQ
+	(envelope-from <stable+bounces-264346-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:01:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77CFF6938FA
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:52:10 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D6496919FB
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:01:18 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=aLcWnrAx;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265652-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-265652-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=XKtB9kCy;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264346-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-264346-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 549BD300BD44
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:51:48 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1371B302BEC7
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:56:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A214247A0B5;
-	Tue, 16 Jun 2026 17:51:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD62544D6B2;
+	Tue, 16 Jun 2026 15:56:44 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24D2047CC9C;
-	Tue, 16 Jun 2026 17:51:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 352E044CAF9;
+	Tue, 16 Jun 2026 15:56:43 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781632293; cv=none; b=ZiNWvNOZ4qPi8N2ycqv6AsrfvRjE5p/eLON2X8/di21NkVQVAUB+jviVDYGubBsSYCsFFejxHkvkAtI89EZK4taS0Mt28xrJ57LtzA0fy9fFgSMF/08hE4ecx7ccxtEQfaRDVS6yUwEACWoC0y6Eg6QNeyxOzoZrpCCkG7dh4uQ=
+	t=1781625404; cv=none; b=FEllmCJEoFlbo70Z9WRZxQAKEvIPBpxtrxj2SP0qz4s9lLQh2q80oyZR0SCqJrJzDVoniUXID33g7PI+jfcCuNaZr7DneY2yZKdnpaqyKOBvSoSGqgRKxi7XJ6PApbhvaDOisV27noZSEdmNDg7EoA3arpF4gwvxWs6bfLRD1d8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781632293; c=relaxed/simple;
-	bh=z9UvWuksUOigBK0+GDlVacE2xv5w674FpRJCOIQWuvI=;
+	s=arc-20240116; t=1781625404; c=relaxed/simple;
+	bh=xNA3Z+zdGMiHPDPM273Pepg5rGRu90XEps44VnmaPp4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t1i9PsI1rZ301PnOdjdDce+Ko40T+/e2GPBDfhCB6mt8wc7S7knRj5NQkgnz5rlF7q2HDTedgOemW9/u+XPm4opxmjeV6iIHz+SoT/BgUDWTebXITypZ+7oG6vR1K7hxtytYHRGBJJOA1WlYQwzp7jBafrb5sk8YV8SOAlnErQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aLcWnrAx; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB1921F000E9;
-	Tue, 16 Jun 2026 17:51:28 +0000 (UTC)
+	 MIME-Version; b=gJHTAmTzB5Ew7SrzKDq/6oJIF6sG1QWVr47fnjDXxr50FZJxl9sMGtbs1mydLm3JP4/bohR+T35fbTTc1xXHtwBNtZjzkUgZv4IzXbfPRgk17lfVGlvMCZ0KJnG9Ik9pBJmXGDsWxO2olfCVRmhQ5IJEexqaIJuRr52TW2jOMM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XKtB9kCy; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 354A91F000E9;
+	Tue, 16 Jun 2026 15:56:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781632289;
-	bh=NNCQ2xAhP7e2kOvS64H1xR9dfVuVYoXAcppCEZFWkjA=;
+	s=korg; t=1781625403;
+	bh=BRXp+RrKrGTmeVVbzUeqGJza4LC33iAIcuZhPBQfFqM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=aLcWnrAxit+Gq0N0VCy5m1raOCjZMIMgVgZL7r406rswO7KaKnPMPJ0jCMzdBPSzQ
-	 r9PC3HyFlk17WB13sdZaUKNPu+7mI4epA5qFKPvWxGnxZTSbezQa+gV++qVtqqXmKr
-	 YKWAvYjimGnIJTs50Edg1F0/lZTGbUU58JSaBtVE=
+	b=XKtB9kCyDiGr9H7oJNFPDb+GPgIRYRkhfNk/QPMqHhlBaFR9BIaz1cAIwb40wrnLH
+	 zm9tv8PZgZ4NCMH4pn5kscVZcS6RR8ofAl6OLbprdHGVcaAE3MGwbkzlSaxYURK167
+	 zzdZB0OVF9bGDuachukxNT+8SEoiw0HOy3gDHAzY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Yingliang <yangyingliang@huawei.com>,
-	Mark Brown <broonie@kernel.org>,
+	Jiawen Wu <jiawenwu@trustnetic.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 383/522] spi: sun4i: switch to use modern name
-Date: Tue, 16 Jun 2026 20:28:50 +0530
-Message-ID: <20260616145143.698903125@linuxfoundation.org>
+Subject: [PATCH 6.18 135/325] net: txgbe: rename the SFP related
+Date: Tue, 16 Jun 2026 20:28:51 +0530
+Message-ID: <20260616145104.460785506@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,21 +72,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265652-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264346-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:yangyingliang@huawei.com,m:broonie@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jiawenwu@trustnetic.com,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -98,213 +98,268 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,huawei.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,trustnetic.com:email,vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 77CFF6938FA
+X-Rspamd-Queue-Id: 0D6496919FB
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Yingliang <yangyingliang@huawei.com>
+From: Jiawen Wu <jiawenwu@trustnetic.com>
 
-[ Upstream commit 6d232cc8a7e59af0c083319827541966a68817a0 ]
+[ Upstream commit dbba6b7a47cba914d48890da7233a64c7b9f3ccc ]
 
-Change legacy name master to modern name host or controller.
+QSFP supported will be introduced for AML 40G devices, the code related
+to identify various modules should be renamed to more appropriate names.
 
-No functional changed.
+And struct txgbe_hic_i2c_read used to get module information is renamed
+as struct txgbe_hic_get_module_info, because another SW-FW command to
+read I2C will be added later.
 
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
-Link: https://msgid.link/r/20231128093031.3707034-7-yangyingliang@huawei.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 42108a2f03e0 ("spi: sun4i: fix controller deregistration")
+Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+Link: https://patch.msgid.link/20251118080259.24676-3-jiawenwu@trustnetic.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Stable-dep-of: 0487cfca4651 ("net: txgbe: initialize module info buffer")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-sun4i.c |   72 ++++++++++++++++++++++++------------------------
- 1 file changed, 36 insertions(+), 36 deletions(-)
+ drivers/net/ethernet/wangxun/libwx/wx_type.h  |  2 +-
+ .../net/ethernet/wangxun/txgbe/txgbe_aml.c    | 39 ++++++++++---------
+ .../net/ethernet/wangxun/txgbe/txgbe_aml.h    |  2 +-
+ .../ethernet/wangxun/txgbe/txgbe_ethtool.c    |  2 +-
+ .../net/ethernet/wangxun/txgbe/txgbe_main.c   | 12 +++---
+ .../net/ethernet/wangxun/txgbe/txgbe_type.h   | 12 +++---
+ 6 files changed, 35 insertions(+), 34 deletions(-)
 
---- a/drivers/spi/spi-sun4i.c
-+++ b/drivers/spi/spi-sun4i.c
-@@ -75,7 +75,7 @@
- #define SUN4I_FIFO_STA_TF_CNT_BITS		16
- 
- struct sun4i_spi {
--	struct spi_master	*master;
-+	struct spi_controller	*host;
- 	void __iomem		*base_addr;
- 	struct clk		*hclk;
- 	struct clk		*mclk;
-@@ -161,7 +161,7 @@ static inline void sun4i_spi_fill_fifo(s
- 
- static void sun4i_spi_set_cs(struct spi_device *spi, bool enable)
- {
--	struct sun4i_spi *sspi = spi_master_get_devdata(spi->master);
-+	struct sun4i_spi *sspi = spi_controller_get_devdata(spi->controller);
- 	u32 reg;
- 
- 	reg = sun4i_spi_read(sspi, SUN4I_CTL_REG);
-@@ -201,11 +201,11 @@ static size_t sun4i_spi_max_transfer_siz
- 	return SUN4I_MAX_XFER_SIZE - 1;
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_type.h b/drivers/net/ethernet/wangxun/libwx/wx_type.h
+index d367644debef36..f040b014f2dd74 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_type.h
++++ b/drivers/net/ethernet/wangxun/libwx/wx_type.h
+@@ -1229,7 +1229,7 @@ enum wx_pf_flags {
+ 	WX_FLAG_RX_HWTSTAMP_IN_REGISTER,
+ 	WX_FLAG_PTP_PPS_ENABLED,
+ 	WX_FLAG_NEED_LINK_CONFIG,
+-	WX_FLAG_NEED_SFP_RESET,
++	WX_FLAG_NEED_MODULE_RESET,
+ 	WX_FLAG_NEED_UPDATE_LINK,
+ 	WX_FLAG_NEED_DO_RESET,
+ 	WX_PF_FLAGS_NBITS               /* must be last */
+diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c
+index 05f852e31e6e52..0bc59431d43343 100644
+--- a/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c
++++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c
+@@ -38,7 +38,7 @@ irqreturn_t txgbe_gpio_irq_handler_aml(int irq, void *data)
+ 	wr32(wx, WX_GPIO_INTMASK, 0xFF);
+ 	status = rd32(wx, WX_GPIO_INTSTATUS);
+ 	if (status & TXGBE_GPIOBIT_2) {
+-		set_bit(WX_FLAG_NEED_SFP_RESET, wx->flags);
++		set_bit(WX_FLAG_NEED_MODULE_RESET, wx->flags);
+ 		wr32(wx, WX_GPIO_EOI, TXGBE_GPIOBIT_2);
+ 		wx_service_event_schedule(wx);
+ 	}
+@@ -63,15 +63,16 @@ int txgbe_test_hostif(struct wx *wx)
+ 					 WX_HI_COMMAND_TIMEOUT, false);
  }
  
--static int sun4i_spi_transfer_one(struct spi_master *master,
-+static int sun4i_spi_transfer_one(struct spi_controller *host,
- 				  struct spi_device *spi,
- 				  struct spi_transfer *tfr)
+-static int txgbe_identify_sfp_hostif(struct wx *wx, struct txgbe_hic_i2c_read *buffer)
++static int txgbe_identify_module_hostif(struct wx *wx,
++					struct txgbe_hic_get_module_info *buffer)
  {
--	struct sun4i_spi *sspi = spi_master_get_devdata(master);
-+	struct sun4i_spi *sspi = spi_controller_get_devdata(host);
- 	unsigned int mclk_rate, div, timeout;
- 	unsigned int start, end, tx_time;
- 	unsigned int tx_len = 0;
-@@ -334,7 +334,7 @@ static int sun4i_spi_transfer_one(struct
- 					      msecs_to_jiffies(tx_time));
- 	end = jiffies;
- 	if (!timeout) {
--		dev_warn(&master->dev,
-+		dev_warn(&host->dev,
- 			 "%s: timeout transferring %u bytes@%iHz for %i(%i)ms",
- 			 dev_name(&spi->dev), tfr->len, tfr->speed_hz,
- 			 jiffies_to_msecs(end - start), tx_time);
-@@ -389,8 +389,8 @@ static irqreturn_t sun4i_spi_handler(int
+-	buffer->hdr.cmd = FW_READ_SFP_INFO_CMD;
+-	buffer->hdr.buf_len = sizeof(struct txgbe_hic_i2c_read) -
++	buffer->hdr.cmd = FW_GET_MODULE_INFO_CMD;
++	buffer->hdr.buf_len = sizeof(struct txgbe_hic_get_module_info) -
+ 			      sizeof(struct wx_hic_hdr);
+ 	buffer->hdr.cmd_or_resp.cmd_resv = FW_CEM_CMD_RESERVED;
  
- static int sun4i_spi_runtime_resume(struct device *dev)
- {
--	struct spi_master *master = dev_get_drvdata(dev);
--	struct sun4i_spi *sspi = spi_master_get_devdata(master);
-+	struct spi_controller *host = dev_get_drvdata(dev);
-+	struct sun4i_spi *sspi = spi_controller_get_devdata(host);
- 	int ret;
- 
- 	ret = clk_prepare_enable(sspi->hclk);
-@@ -418,8 +418,8 @@ out:
- 
- static int sun4i_spi_runtime_suspend(struct device *dev)
- {
--	struct spi_master *master = dev_get_drvdata(dev);
--	struct sun4i_spi *sspi = spi_master_get_devdata(master);
-+	struct spi_controller *host = dev_get_drvdata(dev);
-+	struct sun4i_spi *sspi = spi_controller_get_devdata(host);
- 
- 	clk_disable_unprepare(sspi->mclk);
- 	clk_disable_unprepare(sspi->hclk);
-@@ -429,62 +429,62 @@ static int sun4i_spi_runtime_suspend(str
- 
- static int sun4i_spi_probe(struct platform_device *pdev)
- {
--	struct spi_master *master;
-+	struct spi_controller *host;
- 	struct sun4i_spi *sspi;
- 	int ret = 0, irq;
- 
--	master = spi_alloc_master(&pdev->dev, sizeof(struct sun4i_spi));
--	if (!master) {
--		dev_err(&pdev->dev, "Unable to allocate SPI Master\n");
-+	host = spi_alloc_host(&pdev->dev, sizeof(struct sun4i_spi));
-+	if (!host) {
-+		dev_err(&pdev->dev, "Unable to allocate SPI Host\n");
- 		return -ENOMEM;
- 	}
- 
--	platform_set_drvdata(pdev, master);
--	sspi = spi_master_get_devdata(master);
-+	platform_set_drvdata(pdev, host);
-+	sspi = spi_controller_get_devdata(host);
- 
- 	sspi->base_addr = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(sspi->base_addr)) {
- 		ret = PTR_ERR(sspi->base_addr);
--		goto err_free_master;
-+		goto err_free_host;
- 	}
- 
- 	irq = platform_get_irq(pdev, 0);
- 	if (irq < 0) {
- 		ret = -ENXIO;
--		goto err_free_master;
-+		goto err_free_host;
- 	}
- 
- 	ret = devm_request_irq(&pdev->dev, irq, sun4i_spi_handler,
- 			       0, "sun4i-spi", sspi);
- 	if (ret) {
- 		dev_err(&pdev->dev, "Cannot request IRQ\n");
--		goto err_free_master;
-+		goto err_free_host;
- 	}
- 
--	sspi->master = master;
--	master->max_speed_hz = 100 * 1000 * 1000;
--	master->min_speed_hz = 3 * 1000;
--	master->set_cs = sun4i_spi_set_cs;
--	master->transfer_one = sun4i_spi_transfer_one;
--	master->num_chipselect = 4;
--	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH | SPI_LSB_FIRST;
--	master->bits_per_word_mask = SPI_BPW_MASK(8);
--	master->dev.of_node = pdev->dev.of_node;
--	master->auto_runtime_pm = true;
--	master->max_transfer_size = sun4i_spi_max_transfer_size;
-+	sspi->host = host;
-+	host->max_speed_hz = 100 * 1000 * 1000;
-+	host->min_speed_hz = 3 * 1000;
-+	host->set_cs = sun4i_spi_set_cs;
-+	host->transfer_one = sun4i_spi_transfer_one;
-+	host->num_chipselect = 4;
-+	host->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH | SPI_LSB_FIRST;
-+	host->bits_per_word_mask = SPI_BPW_MASK(8);
-+	host->dev.of_node = pdev->dev.of_node;
-+	host->auto_runtime_pm = true;
-+	host->max_transfer_size = sun4i_spi_max_transfer_size;
- 
- 	sspi->hclk = devm_clk_get(&pdev->dev, "ahb");
- 	if (IS_ERR(sspi->hclk)) {
- 		dev_err(&pdev->dev, "Unable to acquire AHB clock\n");
- 		ret = PTR_ERR(sspi->hclk);
--		goto err_free_master;
-+		goto err_free_host;
- 	}
- 
- 	sspi->mclk = devm_clk_get(&pdev->dev, "mod");
- 	if (IS_ERR(sspi->mclk)) {
- 		dev_err(&pdev->dev, "Unable to acquire module clock\n");
- 		ret = PTR_ERR(sspi->mclk);
--		goto err_free_master;
-+		goto err_free_host;
- 	}
- 
- 	init_completion(&sspi->done);
-@@ -496,16 +496,16 @@ static int sun4i_spi_probe(struct platfo
- 	ret = sun4i_spi_runtime_resume(&pdev->dev);
- 	if (ret) {
- 		dev_err(&pdev->dev, "Couldn't resume the device\n");
--		goto err_free_master;
-+		goto err_free_host;
- 	}
- 
- 	pm_runtime_set_active(&pdev->dev);
- 	pm_runtime_enable(&pdev->dev);
- 	pm_runtime_idle(&pdev->dev);
- 
--	ret = devm_spi_register_master(&pdev->dev, master);
-+	ret = devm_spi_register_controller(&pdev->dev, host);
- 	if (ret) {
--		dev_err(&pdev->dev, "cannot register SPI master\n");
-+		dev_err(&pdev->dev, "cannot register SPI host\n");
- 		goto err_pm_disable;
- 	}
- 
-@@ -514,8 +514,8 @@ static int sun4i_spi_probe(struct platfo
- err_pm_disable:
- 	pm_runtime_disable(&pdev->dev);
- 	sun4i_spi_runtime_suspend(&pdev->dev);
--err_free_master:
--	spi_master_put(master);
-+err_free_host:
-+	spi_controller_put(host);
- 	return ret;
+ 	return wx_host_interface_command(wx, (u32 *)buffer,
+-					 sizeof(struct txgbe_hic_i2c_read),
++					 sizeof(struct txgbe_hic_get_module_info),
+ 					 WX_HI_COMMAND_TIMEOUT, true);
  }
  
+@@ -109,9 +110,9 @@ static void txgbe_get_link_capabilities(struct wx *wx, int *speed,
+ {
+ 	struct txgbe *txgbe = wx->priv;
+ 
+-	if (test_bit(PHY_INTERFACE_MODE_25GBASER, txgbe->sfp_interfaces))
++	if (test_bit(PHY_INTERFACE_MODE_25GBASER, txgbe->link_interfaces))
+ 		*speed = SPEED_25000;
+-	else if (test_bit(PHY_INTERFACE_MODE_10GBASER, txgbe->sfp_interfaces))
++	else if (test_bit(PHY_INTERFACE_MODE_10GBASER, txgbe->link_interfaces))
+ 		*speed = SPEED_10000;
+ 	else
+ 		*speed = SPEED_UNKNOWN;
+@@ -150,7 +151,7 @@ int txgbe_set_phy_link(struct wx *wx)
+ 	return 0;
+ }
+ 
+-static int txgbe_sfp_to_linkmodes(struct wx *wx, struct txgbe_sfp_id *id)
++static int txgbe_sfp_to_linkmodes(struct wx *wx, struct txgbe_sff_id *id)
+ {
+ 	__ETHTOOL_DECLARE_LINK_MODE_MASK(modes) = { 0, };
+ 	DECLARE_PHY_INTERFACE_MASK(interfaces);
+@@ -204,9 +205,9 @@ static int txgbe_sfp_to_linkmodes(struct wx *wx, struct txgbe_sfp_id *id)
+ 	phylink_set(modes, Asym_Pause);
+ 	phylink_set(modes, FIBRE);
+ 
+-	if (!linkmode_equal(txgbe->sfp_support, modes)) {
+-		linkmode_copy(txgbe->sfp_support, modes);
+-		phy_interface_and(txgbe->sfp_interfaces,
++	if (!linkmode_equal(txgbe->link_support, modes)) {
++		linkmode_copy(txgbe->link_support, modes);
++		phy_interface_and(txgbe->link_interfaces,
+ 				  wx->phylink_config.supported_interfaces,
+ 				  interfaces);
+ 		linkmode_copy(txgbe->advertising, modes);
+@@ -217,10 +218,10 @@ static int txgbe_sfp_to_linkmodes(struct wx *wx, struct txgbe_sfp_id *id)
+ 	return 0;
+ }
+ 
+-int txgbe_identify_sfp(struct wx *wx)
++int txgbe_identify_module(struct wx *wx)
+ {
+-	struct txgbe_hic_i2c_read buffer;
+-	struct txgbe_sfp_id *id;
++	struct txgbe_hic_get_module_info buffer;
++	struct txgbe_sff_id *id;
+ 	int err = 0;
+ 	u32 gpio;
+ 
+@@ -228,9 +229,9 @@ int txgbe_identify_sfp(struct wx *wx)
+ 	if (gpio & TXGBE_GPIOBIT_2)
+ 		return -ENODEV;
+ 
+-	err = txgbe_identify_sfp_hostif(wx, &buffer);
++	err = txgbe_identify_module_hostif(wx, &buffer);
+ 	if (err) {
+-		wx_err(wx, "Failed to identify SFP module\n");
++		wx_err(wx, "Failed to identify module\n");
+ 		return err;
+ 	}
+ 
+@@ -247,10 +248,10 @@ void txgbe_setup_link(struct wx *wx)
+ {
+ 	struct txgbe *txgbe = wx->priv;
+ 
+-	phy_interface_zero(txgbe->sfp_interfaces);
+-	linkmode_zero(txgbe->sfp_support);
++	phy_interface_zero(txgbe->link_interfaces);
++	linkmode_zero(txgbe->link_support);
+ 
+-	txgbe_identify_sfp(wx);
++	txgbe_identify_module(wx);
+ }
+ 
+ static void txgbe_get_link_state(struct phylink_config *config,
+diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.h b/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.h
+index 25d4971ca0d911..7c8fa48e68d378 100644
+--- a/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.h
++++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.h
+@@ -8,7 +8,7 @@ void txgbe_gpio_init_aml(struct wx *wx);
+ irqreturn_t txgbe_gpio_irq_handler_aml(int irq, void *data);
+ int txgbe_test_hostif(struct wx *wx);
+ int txgbe_set_phy_link(struct wx *wx);
+-int txgbe_identify_sfp(struct wx *wx);
++int txgbe_identify_module(struct wx *wx);
+ void txgbe_setup_link(struct wx *wx);
+ int txgbe_phylink_init_aml(struct txgbe *txgbe);
+ 
+diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_ethtool.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_ethtool.c
+index e8dd277a35c7a4..d7f9053594588d 100644
+--- a/drivers/net/ethernet/wangxun/txgbe/txgbe_ethtool.c
++++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_ethtool.c
+@@ -32,7 +32,7 @@ int txgbe_get_link_ksettings(struct net_device *netdev,
+ 	cmd->base.port = txgbe->link_port;
+ 	cmd->base.autoneg = phylink_test(txgbe->advertising, Autoneg) ?
+ 			    AUTONEG_ENABLE : AUTONEG_DISABLE;
+-	linkmode_copy(cmd->link_modes.supported, txgbe->sfp_support);
++	linkmode_copy(cmd->link_modes.supported, txgbe->link_support);
+ 	linkmode_copy(cmd->link_modes.advertising, txgbe->advertising);
+ 
+ 	return 0;
+diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
+index 1377ea90a8c284..4d20b178af236b 100644
+--- a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
++++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
+@@ -89,21 +89,21 @@ static int txgbe_enumerate_functions(struct wx *wx)
+ 	return physfns;
+ }
+ 
+-static void txgbe_sfp_detection_subtask(struct wx *wx)
++static void txgbe_module_detection_subtask(struct wx *wx)
+ {
+ 	int err;
+ 
+-	if (!test_bit(WX_FLAG_NEED_SFP_RESET, wx->flags))
++	if (!test_bit(WX_FLAG_NEED_MODULE_RESET, wx->flags))
+ 		return;
+ 
+-	/* wait for SFP module ready */
++	/* wait for SFF module ready */
+ 	msleep(200);
+ 
+-	err = txgbe_identify_sfp(wx);
++	err = txgbe_identify_module(wx);
+ 	if (err)
+ 		return;
+ 
+-	clear_bit(WX_FLAG_NEED_SFP_RESET, wx->flags);
++	clear_bit(WX_FLAG_NEED_MODULE_RESET, wx->flags);
+ }
+ 
+ static void txgbe_link_config_subtask(struct wx *wx)
+@@ -128,7 +128,7 @@ static void txgbe_service_task(struct work_struct *work)
+ {
+ 	struct wx *wx = container_of(work, struct wx, service_task);
+ 
+-	txgbe_sfp_detection_subtask(wx);
++	txgbe_module_detection_subtask(wx);
+ 	txgbe_link_config_subtask(wx);
+ 
+ 	wx_service_event_complete(wx);
+diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h b/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
+index 34920b49d0c09b..4d77da720eba16 100644
+--- a/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
++++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
+@@ -341,9 +341,9 @@ void txgbe_do_reset(struct net_device *netdev);
+ 
+ #define FW_PHY_GET_LINK_CMD             0xC0
+ #define FW_PHY_SET_LINK_CMD             0xC1
+-#define FW_READ_SFP_INFO_CMD            0xC5
++#define FW_GET_MODULE_INFO_CMD          0xC5
+ 
+-struct txgbe_sfp_id {
++struct txgbe_sff_id {
+ 	u8 identifier;		/* A0H 0x00 */
+ 	u8 com_1g_code;		/* A0H 0x06 */
+ 	u8 com_10g_code;	/* A0H 0x03 */
+@@ -356,9 +356,9 @@ struct txgbe_sfp_id {
+ 	u8 reserved[3];
+ };
+ 
+-struct txgbe_hic_i2c_read {
++struct txgbe_hic_get_module_info {
+ 	struct wx_hic_hdr hdr;
+-	struct txgbe_sfp_id id;
++	struct txgbe_sff_id id;
+ };
+ 
+ struct txgbe_hic_ephy_setlink {
+@@ -449,8 +449,8 @@ struct txgbe {
+ 	int fdir_filter_count;
+ 	spinlock_t fdir_perfect_lock; /* spinlock for FDIR */
+ 
+-	DECLARE_PHY_INTERFACE_MASK(sfp_interfaces);
+-	__ETHTOOL_DECLARE_LINK_MODE_MASK(sfp_support);
++	DECLARE_PHY_INTERFACE_MASK(link_interfaces);
++	__ETHTOOL_DECLARE_LINK_MODE_MASK(link_support);
+ 	__ETHTOOL_DECLARE_LINK_MODE_MASK(advertising);
+ 	u8 link_port;
+ };
+-- 
+2.53.0
+
 
 
 
