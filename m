@@ -1,65 +1,61 @@
-Return-Path: <stable+bounces-266379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265577-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id kDppIhecMWqaoAUAu9opvQ
-	(envelope-from <stable+bounces-266379-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:55:19 +0200
+	id 8Zo8NJ6LMWoCmQUAu9opvQ
+	(envelope-from <stable+bounces-265577-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:45:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id F071F694929
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:55:18 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3396B693704
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:45:02 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=RUgqca9I;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266379-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-266379-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ltgjSykF;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265577-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265577-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0616630591AD
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:55:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 37EEC304C050
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:45:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19E644779BF;
-	Tue, 16 Jun 2026 18:55:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFDC43BFAF7;
+	Tue, 16 Jun 2026 17:45:00 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E69943CC303;
-	Tue, 16 Jun 2026 18:55:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 995A7331A44;
+	Tue, 16 Jun 2026 17:44:59 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781636114; cv=none; b=TN5bSGMo2oH8ilzKBuWcnfKXyb4M5WVrsh8WNIb8lEA9w0w+DNoRaGdbtaiVjRp5mr/qMjhTkLj8xyfAmXGdIw+WjokGw+8zfDBLYUSiAaYYb2RrSoYpxfruV5DSJZGMFSek6+KrMFUDv3E9k53EfUdQSKXN9sncfRcCXuoB7c0=
+	t=1781631900; cv=none; b=f4o13/DF6tdh4ScuWSVMY6t9vuZZBK31cQQeRzw1koaiGNw4qBF8tsdMlAXgMRnDFMHIBR3oJuYfjYhlZ9WtHMm54nkkxVh5BvGJj+4j/StcGeKBL6J8fcg3X7vC5Xr2Ox1SGBJo2qB2sMZl4oo7SFF5WuvTciN9gpfA4NyIAB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781636114; c=relaxed/simple;
-	bh=Jg90f5M6pXt8XcA6S4V72x11HuJ0TqZD8OOi8Kp65Ek=;
+	s=arc-20240116; t=1781631900; c=relaxed/simple;
+	bh=9pnad41aAVBadcIK1bPpQm9mATOfPzL7UjDaMTFxa9g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CZ3kuV4yTxgLKc9sQRZaFGCeeNzArNyQazBbKX+rFvHK7ld0Sm5by/W8WbTVTuWw4CR8wplyh1iLxIRo+wShTrrk8CK53AJh5ewEaoq5NoVBfJ/yDe/SR3xYo4wkJ3PBVsDy92ZswSPhZ5S/6zAFcfk8/bx8dIdpCfnPpjNyr8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RUgqca9I; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86F0E1F000E9;
-	Tue, 16 Jun 2026 18:55:12 +0000 (UTC)
+	 MIME-Version; b=QN+7R0iQbOPuJXUKOQHU9T5xTt/HwiN8ElFDH7rxbKXSTa2hNiIYcT0QMa7801Qt0L7dgaT9uR0djWy8xNdhGZ7x0ZSfVRyF7tiwfqac8UgK9jnPTQcAdfOPzlYAhE8MjkkJZDXghThebgAcIUT/hqk5WZp+plUKfbH1HJCx1Ow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ltgjSykF; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9A8E1F000E9;
+	Tue, 16 Jun 2026 17:44:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781636113;
-	bh=5E1NXqp8nOT/FSmy/5xbAtK/M6K7suZoRvvgRQELDTI=;
+	s=korg; t=1781631899;
+	bh=L4oAPEGOFA1NnS8yvc6p5Yj+MrOB66owRILkOADukiw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=RUgqca9IfSiH2xLDILllGn8Zzk0fCU3DSeoKuXnFJxNFioBt6xujFH4F/4L3wR/PH
-	 EiCMqngVWvWwayEBtllyp+mZZSkqqmZ2ghh31rSEO0MpM6febuS9btdX+hEs1LfQWI
-	 1xZucaFcqQBzlwBZHcM2vxN8jxSaO4kcDEJZgCKE=
+	b=ltgjSykFAlBLzENeAHPty93UA4VBj4hBZGrhGI80yOuFs1rFEWVDiG9/FdDfdPidC
+	 28fYHcdnNrIXNpw+HWQZ+9+DfjMjK+Md2foY1PYUtC8l3o+5JIhdzqwuZSX8KH1Go+
+	 vs858pvI46PLlbIWn9SeyoQdYzNL/fnz/na/VikY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang Mei <xmei5@asu.edu>,
-	Weiming Shi <bestswngs@gmail.com>,
-	Dongli Zhang <dongli.zhang@oracle.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 160/342] tap: free page on error paths in tap_get_user_xdp()
+	Kamal Dasu <kamal.dasu@broadcom.com>,
+	Shawn Lin <shawn.lin@rock-chips.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.1 309/522] mmc: core: Fix host controller programming for fixed driver type
 Date: Tue, 16 Jun 2026 20:27:36 +0530
-Message-ID: <20260616145055.619341273@linuxfoundation.org>
+Message-ID: <20260616145140.330695504@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,93 +72,81 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,oracle.com,google.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-266379-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265577-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:xmei5@asu.edu,m:bestswngs@gmail.com,m:dongli.zhang@oracle.com,m:willemb@google.com,m:kuba@kernel.org,m:harshit.m.mogalapalli@oracle.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kamal.dasu@broadcom.com,m:shawn.lin@rock-chips.com,m:ulf.hansson@linaro.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,asu.edu:email,oracle.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[rock-chips.com:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linaro.org:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,broadcom.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: F071F694929
+X-Rspamd-Queue-Id: 3396B693704
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weiming Shi <bestswngs@gmail.com>
+From: Kamal Dasu <kamal.dasu@broadcom.com>
 
-[ Upstream commit 3bcf7aec6a9d16438f2cec29f5d7c8d5b8edf9b2 ]
+commit 5a52c5701a67d5176eb1afbf1bdaf7d6dfeec597 upstream.
 
-tap_get_user_xdp() rejects a frame shorter than ETH_HLEN with -EINVAL,
-and returns -ENOMEM when build_skb() fails. Both paths jump to the err
-label without freeing the page that vhost_net_build_xdp() allocated for
-the frame. tap_sendmsg() discards the per-buffer return value and always
-returns 0, so vhost_tx_batch() takes the success path and never frees
-the page; each rejected frame in a batch leaks one page-frag chunk.
+When using the fixed-emmc-driver-type device tree property, the MMC core
+correctly selects the driver strength for the card but fails to program
+the host controller accordingly. This causes a mismatch where the card
+uses the specified driver type while the host controller defaults to
+Type B (since ios->drv_type remains zero).
 
-Free the page on both error paths, before the skb is built. This is the
-tap counterpart of the same leak in tun_xdp_one().
+Split the driver type programming logic to handle both fixed and dynamic
+driver type selection paths. For fixed driver types, program the host
+controller with the selected drive_strength value. For dynamic selection,
+use the existing drv_type as before.
 
-Fixes: 0efac27791ee ("tap: accept an array of XDP buffs through sendmsg()")
-Fixes: ed7f2afdd0e0 ("tap: add missing verification for short frame")
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
-Reviewed-by: Dongli Zhang <dongli.zhang@oracle.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20260521163230.1478627-2-bestswngs@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-(cherry picked from commit 3bcf7aec6a9d16438f2cec29f5d7c8d5b8edf9b2)
-Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This ensures both the eMMC device and host controller use matching driver
+strengths, preventing potential signal integrity issues.
+
+Fixes: 6186d06c519e ("mmc: parse new binding for eMMC fixed driver type")
+Signed-off-by: Kamal Dasu <kamal.dasu@broadcom.com>
+Reviewed-by: Shawn Lin <shawn.lin@rock-chips.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/tap.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/mmc/core/mmc.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/tap.c b/drivers/net/tap.c
-index 18f19fc66c64fa..6f5c996d3ed234 100644
---- a/drivers/net/tap.c
-+++ b/drivers/net/tap.c
-@@ -1145,6 +1145,7 @@ static int tap_get_user_xdp(struct tap_queue *q, struct xdp_buff *xdp)
- 	int err, depth;
+--- a/drivers/mmc/core/mmc.c
++++ b/drivers/mmc/core/mmc.c
+@@ -1354,7 +1354,9 @@ static void mmc_select_driver_type(struc
  
- 	if (unlikely(xdp->data_end - xdp->data < ETH_HLEN)) {
-+		put_page(virt_to_head_page(xdp->data));
- 		err = -EINVAL;
- 		goto err;
- 	}
-@@ -1154,6 +1155,7 @@ static int tap_get_user_xdp(struct tap_queue *q, struct xdp_buff *xdp)
+ 	card->drive_strength = drive_strength;
  
- 	skb = build_skb(xdp->data_hard_start, buflen);
- 	if (!skb) {
-+		put_page(virt_to_head_page(xdp->data));
- 		err = -ENOMEM;
- 		goto err;
- 	}
--- 
-2.53.0
-
+-	if (drv_type)
++	if (fixed_drv_type >= 0 && drive_strength)
++		mmc_set_driver_type(card->host, drive_strength);
++	else if (drv_type)
+ 		mmc_set_driver_type(card->host, drv_type);
+ }
+ 
 
 
 
