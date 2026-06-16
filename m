@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-264148-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264653-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id YD6BNitwMWpHjQUAu9opvQ
-	(envelope-from <stable+bounces-264148-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:47:55 +0200
+	id cHuuC9B4MWrakAUAu9opvQ
+	(envelope-from <stable+bounces-264653-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:24:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46A8F691643
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:47:55 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1DE36920CA
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:24:47 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=uPVaPAg0;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264148-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264148-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=LBgXcK6M;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264653-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-264653-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5C90A317B4D8
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:39:55 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5094C30322D4
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:24:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F3D544D03B;
-	Tue, 16 Jun 2026 15:39:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 903CD46AF14;
+	Tue, 16 Jun 2026 16:24:45 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3589044E021;
-	Tue, 16 Jun 2026 15:39:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DF323BFE40;
+	Tue, 16 Jun 2026 16:24:44 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781624377; cv=none; b=pVXJprCnC33CmTeHnzvRHS8jVguQlVqH+JXX7BG/bbuOW54wqbRraxOIhUvTsJfE845ep+OhkPed/VeXLm90zPk+sANEzGwfhP3qvEHLoxkAZg5trlZTQYQaYIf2ychCqtRdB7Ex0xCH2Ng3KvfGkB2Jax0RAIW7qmmEQiyKrjc=
+	t=1781627085; cv=none; b=Yz/eA5vzjNPX3dNdrtqZU+kPm06SochE91qyetprKUiMIizXc4Zn/YtkCT2Rne+j9LTOdsm/XSeYSbkKTjRTiooxshoCOdvQ85W/pFAfgqaFSXj/EnUwcPlqdJnYpvoA6QiqrAY2El03F6AzejN/n91VvpLmY9gD+e9Q45dn73Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781624377; c=relaxed/simple;
-	bh=lYG1rJakGM/CvZ8bxq5+dW9QdDY+xvA6l25DYLPxYTY=;
+	s=arc-20240116; t=1781627085; c=relaxed/simple;
+	bh=n/7yb4kxT4PU06RjwsiEzsTZndNP/dP38s0BlTc+f2c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OSLtrGl4h7IxDQ+mdPRlXsKxFEQsWbrlmkYTX0VsBOHw7GfTC/RA4wPBEuFF+KDQuaJpa8oyMeTKa/V8RuDNAQQFg1CTC5YdQ+I6fe2QdGf29gNThYk235Cek9YVRn7ug8a3PRvewHvj9Zw2pd6Ddim3R54rBLuyGoQ11Uh37qM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uPVaPAg0; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 439AC1F00A3D;
-	Tue, 16 Jun 2026 15:39:35 +0000 (UTC)
+	 MIME-Version; b=X7FwZTynLq4qrzNsSMFV5go3wOrFL0its58NxdUUGOE8BpdbWHVF2pW01ZaVPV3DUuFvVgXsw29C+1nKH2euOUrp/z23IJFQqgq8CI6PL41pTg+Fin8YQAHErljd/H9C+cRDPohYxc0puz7K0DAmsSJpTWqqE4fT1jf52FMtFMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LBgXcK6M; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1549D1F000E9;
+	Tue, 16 Jun 2026 16:24:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781624376;
-	bh=mqjfzTjR+v3CjsurCoG/TcStz1cCkpwqtspLAOc7LBE=;
+	s=korg; t=1781627084;
+	bh=IvSBqEygOxCbjwT2KkFbrpbU+qmOq7YvUDma1Z+37bI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=uPVaPAg0oTOiH+UCwioTm82bVabbDBWagYRqg1QluIT6jhkWBTW9wtz5sxpmcbhaW
-	 toeaKdXUf4BkB2n8nJsPah5Qo5/79RHKy6FMa4rrvnF/JGSdZfhsV33kYcFeSgtpHO
-	 zBBKqM9mHvbNt8MnV/yiCd6+jpP+D0eN/3UZxcCg=
+	b=LBgXcK6MQ04gOsihUzUpjlkiznWF6rttBup3D2MblanntNUnojrs75+3dSXJrW3k+
+	 g5EkGH/jnLJHYVwiBZ/3lRWUhQrAXs0RcRnI7qIUz2eP3kfHEKXJfxr1UERuVGFCIH
+	 aO0ffQ4J18GhMdKwQrJAt3ZKzMV8pbPYBnYduvI8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: [PATCH 7.0 324/378] thunderbolt: Limit XDomain response copy to actual frame size
+	Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+	Ryosuke Yasuoka <ryasuoka@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 117/261] drm/virtio: Fix driver removal with disabled KMS
 Date: Tue, 16 Jun 2026 20:29:15 +0530
-Message-ID: <20260616145127.284767671@linuxfoundation.org>
+Message-ID: <20260616145050.480694602@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,82 +67,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264653-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264148-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:dmitry.osipenko@collabora.com,m:ryasuoka@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.intel.com];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:mika.westerberg@linux.intel.com,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,intel.com:email,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,collabora.com:email,vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 46A8F691643
+X-Rspamd-Queue-Id: D1DE36920CA
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
 
-commit 4db2bd2ed4785dbadaeeab9f4e346b21ac5fb8eb upstream.
+[ Upstream commit f329e8325e054bd6d84d10904f8dd51137281b92 ]
 
-tb_xdomain_copy() copies req->response_size bytes from the received
-packet buffer regardless of the actual frame size.  When a short
-response arrives, this reads past the valid frame data in the DMA
-pool buffer into stale contents from previous transactions.
+DRM atomic and modesetting aren't initialized if virtio-gpu driver built
+with disabled KMS, leading to access of uninitialized data on driver
+removal/unbinding and crashing kernel. Fix it by skipping shutting down
+atomic core with unavailable KMS.
 
-Use the minimum of frame size and expected response size for the
-copy length.
-
-Fixes: cdae7c07e3e3 ("thunderbolt: Add support for XDomain properties")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-7
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 72122c69d717 ("drm/virtio: Add option to disable KMS support")
+Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Tested-by: Ryosuke Yasuoka <ryasuoka@redhat.com>
+Reviewed-by: Ryosuke Yasuoka <ryasuoka@redhat.com>
+Link: https://patch.msgid.link/20260604122743.13383-1-dmitry.osipenko@collabora.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thunderbolt/xdomain.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/virtio/virtgpu_drv.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/thunderbolt/xdomain.c
-+++ b/drivers/thunderbolt/xdomain.c
-@@ -123,7 +123,9 @@ static bool tb_xdomain_match(const struc
- static bool tb_xdomain_copy(struct tb_cfg_request *req,
- 			    const struct ctl_pkg *pkg)
- {
--	memcpy(req->response, pkg->buffer, req->response_size);
-+	size_t len = min_t(size_t, pkg->frame.size, req->response_size);
+diff --git a/drivers/gpu/drm/virtio/virtgpu_drv.c b/drivers/gpu/drm/virtio/virtgpu_drv.c
+index e5a2665e50eac4..44d99e89bb9b65 100644
+--- a/drivers/gpu/drm/virtio/virtgpu_drv.c
++++ b/drivers/gpu/drm/virtio/virtgpu_drv.c
+@@ -118,7 +118,10 @@ static void virtio_gpu_remove(struct virtio_device *vdev)
+ 	struct drm_device *dev = vdev->priv;
+ 
+ 	drm_dev_unplug(dev);
+-	drm_atomic_helper_shutdown(dev);
 +
-+	memcpy(req->response, pkg->buffer, len);
- 	req->result.err = 0;
- 	return true;
++	if (drm_core_check_feature(dev, DRIVER_ATOMIC))
++		drm_atomic_helper_shutdown(dev);
++
+ 	virtio_gpu_deinit(dev);
+ 	drm_dev_put(dev);
  }
+-- 
+2.53.0
+
 
 
 
