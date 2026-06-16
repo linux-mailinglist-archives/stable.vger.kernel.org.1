@@ -1,66 +1,61 @@
-Return-Path: <stable+bounces-264576-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264088-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id qQDLJiR6MWppkQUAu9opvQ
-	(envelope-from <stable+bounces-264576-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:30:28 +0200
+	id 24P9KxxvMWrwjAUAu9opvQ
+	(envelope-from <stable+bounces-264088-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:43:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13B2A692261
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:30:28 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2276469154D
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:43:24 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=hbeNIQD7;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264576-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264576-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=xDHpVIwV;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264088-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264088-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7EF9B3221E6F
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:17:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 860F0309F946
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:34:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E24946AF02;
-	Tue, 16 Jun 2026 16:17:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A415B44105C;
+	Tue, 16 Jun 2026 15:34:22 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBA8943E4BA;
-	Tue, 16 Jun 2026 16:17:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B21A44103D;
+	Tue, 16 Jun 2026 15:34:21 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781626648; cv=none; b=iR2BXJd4K4jMS/Ol6zSiOM5UMOC3lnuKm9IMlgs8IaQzHffePawf6yNHFGZU1Vkf1nPO6vqdzbshl8Td6QJNyHnV0zKC6G0vWDSGtMAX3tvCH3D74RZqwdUNiNxkzA8TRG0aUJF2npVNLP33jV7rLs9Rhr4k0YzgKIsW0iP/yG8=
+	t=1781624062; cv=none; b=akEuA7huSiKcBnDhFAvx63rpPURXZSXQkPXb8Jzxb95YoWxPE7F1LB8ITr8ek/UNzjfKkZOib9k3lb75ACsImuxslhYUmQ4FYY25ommfRNQ8bbUAizTRsfb1vE5aJn38JKL/b1ng4DUqzYWKBRw9O9W9/nabNAOuOiPhTEoyc9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781626648; c=relaxed/simple;
-	bh=svf2PJH1Pv6Wv50Jup4n5U0W8cAtdTNsMKlxRMEPXnE=;
+	s=arc-20240116; t=1781624062; c=relaxed/simple;
+	bh=YeWg3IT2aNFrh9mFcR6onekUkbALkq+8VM6VFVH9aFM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eobKk4Akiz0qr4aFDSqkVLQTsQo5K+DeBj5uVSaAIUEgOdbCgohCIKLdpIPmzWtK9CqsrfW9WjI+z4Kd0sw7LMVNiS8ndKNPaOniowtwpJTLr2cwb7Bx3QyoLWe98c01PxzpyRGpneNuL4LgOfXXUI5Eg84rCEnYhPyE9miFEcw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hbeNIQD7; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1DD41F00A3A;
-	Tue, 16 Jun 2026 16:17:26 +0000 (UTC)
+	 MIME-Version; b=pWX7zCoU9V6Fydn9EhO8ZMubltLyQlNX19ruBq8coEVaVbXUGb7hguGkpx/nfjKBQ3dVOyBxj1FfqgPT6YH2f0wcGkDMdY8BZ0v4o3b979YUrxXQg9hS24bmkbolfMSx/ohfcp1aEMyVuo2jFBVlEEFOWg+P3kDeyqLOgpVPrC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xDHpVIwV; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 595951F00A3D;
+	Tue, 16 Jun 2026 15:34:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781626647;
-	bh=yZvGPoIkkI2g83IsKQMYqmo3TH99SejGPAV1UfBWFag=;
+	s=korg; t=1781624061;
+	bh=/LfHq1+5C+tfegnS0uoKBTjrRPjEt2sYYhd54++67ik=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hbeNIQD71l1eaZB8sVwMtyvV/oEpT7E8XnBR2FBbvCYMGStvYnEwj0A8msYJ/RRpA
-	 BQBsiNYxDNcb7+YJKV6HcwM/Z57YsGeI+k0aEjZK1p+o8prMMEqn4dxFrn/473+5ya
-	 sMtnSk2zOEwHtkN8lae9WIqCjo0Sqy7kMkczDa+w=
+	b=xDHpVIwV/OFUlvuTKu7vSuDY5ht1vBSzyJSte5SIgooVLwi7Tf2Pwysvnbp1v/aIu
+	 vsrLIt5jT5EOeQK5ymJm1UyA+iqr2wvmW/NidISGd+bQ/7RcRV4lN9ag4rCWZafdRQ
+	 hRbBr92VnC5BbsVUKsiXaYpGuY79jsU2O53SvjMY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	Kyle Zeng <kylebot@openai.com>,
-	Victor Nogueira <victor@mojatatu.com>,
-	syzbot@syzkaller.appspotmail.com,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Pedro Tammela <pctammela@mojatatu.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 025/261] net/sched: act_api: use RCU with deferred freeing for action lifecycle
+	Paolo Abeni <pabeni@redhat.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 7.0 232/378] mptcp: close TOCTOU race while computing rcv_wnd
 Date: Tue, 16 Jun 2026 20:27:43 +0530
-Message-ID: <20260616145046.147747328@linuxfoundation.org>
+Message-ID: <20260616145122.468964965@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
-References: <20260616145044.869532709@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,143 +69,163 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264576-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264088-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kuba@kernel.org,m:kylebot@openai.com,m:victor@mojatatu.com,m:syzbot@syzkaller.appspotmail.com,m:jhs@mojatatu.com,m:pctammela@mojatatu.com,m:edumazet@google.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:pabeni@redhat.com,m:matttbe@kernel.org,m:kuba@kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,appspotmail.com:email,vger.kernel.org:from_smtp,openai.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 13B2A692261
+X-Rspamd-Queue-Id: 2276469154D
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jamal Hadi Salim <jhs@mojatatu.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit 5057e1aca011e51ef51498c940ef96f3d3e8a305 ]
+commit 8ab24fdebc369c0dfb90f82c1650b1e66662bb45 upstream.
 
-When NEWTFILTER and DELFILTER are run concurrently it is possible to create a
-race with an associated action.
+The MPTCP output path access locklessly the MPTCP-level ack_seq
+in multiple times, using possibly different values for the data_ack
+in the DSS option and to compute the announced rcv wnd for the same
+packet.
 
-Let's illustrate with CPU0 running NEWTFILTER and CPU1 running DELFILTER:
+Refactor the cote to avoid inconsistencies which may confuse the
+peer. Also ensure that the MPTCP level rcv wnd is updated only when
+the egress packet actually contains a DSS ack.
 
- 0: mutex_lock() <-- holds the idr lock
- 0: rcu_read_lock()
- 0: p = idr_find(idr, index) <-- action p is valid (RCU protects IDR)
- 0: mutex_unlock() <-- releases the idr lock
- 1: refcount_dec_and_mutex_lock() <-- refcnt 1->0, mutex held
- 1: idr_remove(idr, index) <-- Action removed from IDR
- 1: mutex_unlock() <-- mutex released allowing us to delete the action
- 1: tcf_action_cleanup(p); kfree(p) <-- Kfrees p immediately, no deferral
- 0: refcount_inc_not_zero(&p->tcfa_refcnt) <-- ouch, UAF p points to freed memory
-
-This patch fixes the race condition between NEWTFILTER and DELFILTER by
-adding struct rcu_head to tc_action used in the deferral and introducing a
-call_rcu() in the delete path to defer the final kfree().
-
-Note: this is a revert of commit d7fb60b9cafb ("net_sched: get rid of tcfa_rcu")
-but also modernization/simplification to directly use kfree_rcu().
-
-Let's illustrate the new restored code path:
-
- 0: rcu_read_lock()
- 1: refcount_dec_and_mutex_lock() <-- refcnt 1->0, mutex held
- 1: idr_remove(idr, index)
- 1: mutex_unlock()
- 1: call_rcu(&p->tcfa_rcu, tcf_action_rcu_free) <-- defer kfree after grace period
- 0: p = idr_find(idr, index)
- 0: refcount_inc_not_zero(&p->tcfa_refcnt) <-- fails, refcnt already 0
- 1: rcu_read_unlock() <-- release so freeing can run after grace period
-
-After CPU1 calls idr_remove(), the object is no longer reachable through the IDR.
-CPU0's subsequent idr_find() will return NULL, and even if it still held a
-stale pointer, the immediate kfree() is now deferred until after the RCU grace
-period, so no UAF can occur.
-
-Fixes: d7fb60b9cafb ("net_sched: get rid of tcfa_rcu")
-Suggested-by: Jakub Kicinski <kuba@kernel.org>
-Reported-by: Kyle Zeng <kylebot@openai.com>
-Tested-by: Victor Nogueira <victor@mojatatu.com>
-Tested-by: syzbot@syzkaller.appspotmail.com
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Tested-by: Kyle Zeng <kylebot@openai.com>
-Reviewed-by: Pedro Tammela <pctammela@mojatatu.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Victor Nogueira <victor@mojatatu.com>
-Link: https://patch.msgid.link/20260531160812.68020-1-jhs@mojatatu.com
+Fixes: fa3fe2b15031 ("mptcp: track window announced to peer")
+Cc: stable@vger.kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260602-net-mptcp-misc-fixes-7-1-rc7-v2-3-856831229976@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/act_api.h | 1 +
- net/sched/act_api.c   | 7 +------
- 2 files changed, 2 insertions(+), 6 deletions(-)
+ net/mptcp/options.c |   36 ++++++++++++++++++------------------
+ 1 file changed, 18 insertions(+), 18 deletions(-)
 
-diff --git a/include/net/act_api.h b/include/net/act_api.h
-index d8103b2270d98f..539ea6693a2470 100644
---- a/include/net/act_api.h
-+++ b/include/net/act_api.h
-@@ -42,6 +42,7 @@ struct tc_action {
- 	struct tc_cookie	__rcu *user_cookie;
- 	struct tcf_chain	__rcu *goto_chain;
- 	u32			tcfa_flags;
-+	struct rcu_head         tcfa_rcu;
- 	u8			hw_stats;
- 	u8			used_hw_stats;
- 	bool			used_hw_stats_valid;
-diff --git a/net/sched/act_api.c b/net/sched/act_api.c
-index eecad65fec92ca..7d903f0607439d 100644
---- a/net/sched/act_api.c
-+++ b/net/sched/act_api.c
-@@ -112,11 +112,6 @@ struct tcf_chain *tcf_action_set_ctrlact(struct tc_action *a, int action,
- }
- EXPORT_SYMBOL(tcf_action_set_ctrlact);
+--- a/net/mptcp/options.c
++++ b/net/mptcp/options.c
+@@ -570,7 +570,6 @@ static bool mptcp_established_options_ds
+ 	struct mptcp_ext *mpext;
+ 	unsigned int ack_size;
+ 	bool ret = false;
+-	u64 ack_seq;
  
--/* XXX: For standalone actions, we don't need a RCU grace period either, because
-- * actions are always connected to filters and filters are already destroyed in
-- * RCU callbacks, so after a RCU grace period actions are already disconnected
-- * from filters. Readers later can not find us.
-- */
- static void free_tcf(struct tc_action *p)
+ 	opts->csum_reqd = READ_ONCE(msk->csum_enabled);
+ 	mpext = skb ? mptcp_get_ext(skb) : NULL;
+@@ -601,14 +600,11 @@ static bool mptcp_established_options_ds
+ 		return ret;
+ 	}
+ 
+-	ack_seq = READ_ONCE(msk->ack_seq);
+ 	if (READ_ONCE(msk->use_64bit_ack)) {
+ 		ack_size = TCPOLEN_MPTCP_DSS_ACK64;
+-		opts->ext_copy.data_ack = ack_seq;
+ 		opts->ext_copy.ack64 = 1;
+ 	} else {
+ 		ack_size = TCPOLEN_MPTCP_DSS_ACK32;
+-		opts->ext_copy.data_ack32 = (uint32_t)ack_seq;
+ 		opts->ext_copy.ack64 = 0;
+ 	}
+ 	opts->ext_copy.use_ack = 1;
+@@ -1296,19 +1292,14 @@ bool mptcp_incoming_options(struct sock
+ 	return true;
+ }
+ 
+-static void mptcp_set_rwin(struct tcp_sock *tp, struct tcphdr *th)
++static u64 mptcp_set_rwin(struct mptcp_sock *msk, struct tcp_sock *tp,
++			  struct tcphdr *th, u64 ack_seq)
  {
- 	struct tcf_chain *chain = rcu_dereference_protected(p->goto_chain, 1);
-@@ -129,7 +124,7 @@ static void free_tcf(struct tc_action *p)
- 	if (chain)
- 		tcf_chain_put_by_act(chain);
+ 	const struct sock *ssk = (const struct sock *)tp;
+-	struct mptcp_subflow_context *subflow;
+-	u64 ack_seq, rcv_wnd_old, rcv_wnd_new;
+-	struct mptcp_sock *msk;
++	u64 rcv_wnd_old, rcv_wnd_new;
+ 	u32 new_win;
+ 	u64 win;
  
--	kfree(p);
-+	kfree_rcu(p, tcfa_rcu);
+-	subflow = mptcp_subflow_ctx(ssk);
+-	msk = mptcp_sk(subflow->conn);
+-
+-	ack_seq = READ_ONCE(msk->ack_seq);
+ 	rcv_wnd_new = ack_seq + tp->rcv_wnd;
+ 
+ 	rcv_wnd_old = atomic64_read(&msk->rcv_wnd_sent);
+@@ -1360,7 +1351,7 @@ raise_win:
+ 
+ update_wspace:
+ 	WRITE_ONCE(msk->old_wspace, tp->rcv_wnd);
+-	subflow->rcv_wnd_sent = rcv_wnd_new;
++	return rcv_wnd_new;
  }
  
- static void offload_action_hw_count_set(struct tc_action *act,
--- 
-2.53.0
-
+ static void mptcp_track_rwin(struct tcp_sock *tp)
+@@ -1472,13 +1463,25 @@ void mptcp_write_options(struct tcphdr *
+ 		*ptr++ = mptcp_option(MPTCPOPT_DSS, len, 0, flags);
+ 
+ 		if (mpext->use_ack) {
++			struct mptcp_sock *msk;
++			u64 ack_seq;
++
++			/* DSS option is set only by mptcp_established_options,
++			 * the caller is __tcp_transmit_skb() and ssk is always
++			 * not NULL.
++			 */
++			subflow = mptcp_subflow_ctx(ssk);
++			msk = mptcp_sk(subflow->conn);
++			ack_seq = READ_ONCE(msk->ack_seq);
+ 			if (mpext->ack64) {
+-				put_unaligned_be64(mpext->data_ack, ptr);
++				put_unaligned_be64(ack_seq, ptr);
+ 				ptr += 2;
+ 			} else {
+-				put_unaligned_be32(mpext->data_ack32, ptr);
++				put_unaligned_be32(ack_seq, ptr);
+ 				ptr += 1;
+ 			}
++			subflow->rcv_wnd_sent = mptcp_set_rwin(msk, tp, th,
++							       ack_seq);
+ 		}
+ 
+ 		if (mpext->use_map) {
+@@ -1706,9 +1709,6 @@ mp_capable_done:
+ 			i += 4;
+ 		}
+ 	}
+-
+-	if (tp)
+-		mptcp_set_rwin(tp, th);
+ }
+ 
+ __be32 mptcp_get_reset_option(const struct sk_buff *skb)
 
 
 
