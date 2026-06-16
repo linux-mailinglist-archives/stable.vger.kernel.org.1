@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-264447-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265216-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 9QfKF450MWoLjwUAu9opvQ
-	(envelope-from <stable+bounces-264447-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:06:38 +0200
+	id xTWtKD2GMWpzlgUAu9opvQ
+	(envelope-from <stable+bounces-265216-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:22:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C759691B14
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:06:38 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 052D4693094
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:22:05 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Kdqq0wCj;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264447-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-264447-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=k9uZjyse;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265216-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265216-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 85B203030371
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:05:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C261331146C1
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:14:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FA4B44DB64;
-	Tue, 16 Jun 2026 16:05:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BFAC3C5827;
+	Tue, 16 Jun 2026 17:14:29 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40EA544BCB8;
-	Tue, 16 Jun 2026 16:05:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 084103AE71F;
+	Tue, 16 Jun 2026 17:14:28 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781625931; cv=none; b=gHqr3AzbRxt/0hxohnxE9OwHU3zg5mvsGqQpDsMbnSA4nkPdX3vpHTLm/kxdoLrVPOHy9KwbdUw/D3i9d6tgJ2RqwSllWmy0AI1s4tbXSKdGswNmXrkDXu2emPK9jyPErqpKVWebGA1jjg+3Q5f8vKkyq/9pqnKkODPj9ZwM1e4=
+	t=1781630069; cv=none; b=gNJWb23rWtGWGbyAUc+JMZeGsJkIqC7YD5YyXcu1MZ5woGpOAD4T7WE/mn633e9tZKq9Fe7T7PZ7Yor0GscE5GIwbP1Tv1lEvwWop992n57gaT/vBMICyFN4Bi3ov19cWk1dYGXphapKtfyVS/Wh3VJP6SvI6xaQVqAbIJb7Vvw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781625931; c=relaxed/simple;
-	bh=8LOqgTjnLFDPuzODS+M1rAniK1v+yhZswMX3pkU6eSM=;
+	s=arc-20240116; t=1781630069; c=relaxed/simple;
+	bh=R+peHRlwp5pJ26WczNsqqK4pYarococLO8qj7YfeOWE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hGAOXl/sFYltbm6Ceq0Yvf7IkCJFtDe+fv1Sk8zsBSrcts/r3Bj5s8xDZMit2C938K1vdY45wpVgT9chkxST7YZneEJDgbbCsT8KCL/eYuYanLkcRwWOzjhaGT8G03ahFuYIAtw+dxM3ptQGCIRxQKw52oKPvBiYL5I+wPHbwQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kdqq0wCj; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31DAA1F000E9;
-	Tue, 16 Jun 2026 16:05:28 +0000 (UTC)
+	 MIME-Version; b=atfHLYYAmjs3zWmQ84EL8LDs5BnUa09V9EWs8YT/s0j+JacERVINgfcYNYce/LxR9qWXzs+Qwl2y+fNi15refEXn4yvrnwZcMEX+kYjvmynlcq37F3H5rlbgQ8YfgzwmmbwJ5nvYfknZ4eecowCZsf8ApLuBjrUYlkuityHpMwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k9uZjyse; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1CD81F000E9;
+	Tue, 16 Jun 2026 17:14:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781625930;
-	bh=Q2NJ0L9OUdU67uzRbYmHrm+xgAER5ImXCnQpfXeH92E=;
+	s=korg; t=1781630067;
+	bh=dkPZKsqXWrAzdbUlX/1FfmlCRQMOvIYviXGnCAh5B44=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Kdqq0wCjnGhnCW6mbZW+iGe5lyb1jyEegwTLrua9Eqw0BQhBDuedmjiA8VmKF9R9a
-	 acuY5+lw6Gwt3hX/b7WkW+5RmtUrP08TX1pyPZWKMV4OJ2YhEDWq2pcj6Suf5qf7ml
-	 JN7O79P7IK+BINextti6eUnNG3JXLD34qbZnlpjE=
+	b=k9uZjysez7agv6drIWIb0nfCrW0VaDKdcndddVID8AvANqVGcliFa+I0HtvItq1C1
+	 DZhVGZO1A8xa8xzNQLpWnVQt5rDO+Dq+V0MTfg3gomCzG79ojD6W40qKesU2upWPae
+	 vxwdjt+kcF2vKfvl2hLqE5bgFkqngi1pVjCTGSaE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Srinivas Kandagatla <srini@kernel.org>
-Subject: [PATCH 6.18 234/325] misc: fastrpc: Fix NULL pointer dereference in rpmsg callback
+	SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 403/452] mm/damon/sysfs-schemes: delete tried region in regions_rmdirs()
 Date: Tue, 16 Jun 2026 20:30:30 +0530
-Message-ID: <20260616145110.073388783@linuxfoundation.org>
+Message-ID: <20260616145138.006284022@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,21 +72,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264447-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265216-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mukesh.ojha@oss.qualcomm.com,m:andersson@kernel.org,m:srini@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:sj@kernel.org,m:akpm@linux-foundation.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -98,88 +98,100 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,qualcomm.com:email,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linux-foundation.org:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 0C759691B14
+X-Rspamd-Queue-Id: 052D4693094
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
+From: SeongJae Park <sj@kernel.org>
 
-commit 5401fb4fe10fac6134c308495df18ed74aebb9c4 upstream.
+[ Upstream commit 441f92f7d386b85bad16de49db95a307cba048a2 ]
 
-A NULL pointer dereference was observed on Hawi at boot when the DSP
-sends a glink message before fastrpc_rpmsg_probe() has completed
-initialization:
+DAMON sysfs maintains the DAMOS tried region directory objects via a
+linked list.  When the user requests refresh of the directories, DAMON
+sysfs removes all the region directories first, and then generate updated
+regions directory on the empty space.  The removal function
+(damon_sysfs_scheme_regions_rm_dirs()) only puts the kobj objects.
+Deletion of the container region object from the linked list is done
+inside the kobj release callback function.
 
-  Unable to handle kernel NULL pointer dereference at virtual address 0000000000000178
-  pc : _raw_spin_lock_irqsave+0x34/0x8c
-  lr : fastrpc_rpmsg_callback+0x3c/0xcc [fastrpc]
-  ...
-  Call trace:
-   _raw_spin_lock_irqsave+0x34/0x8c (P)
-   fastrpc_rpmsg_callback+0x3c/0xcc [fastrpc]
-   qcom_glink_native_rx+0x538/0x6a4
-   qcom_glink_smem_intr+0x14/0x24 [qcom_glink_smem]
+If somehow the callback invocation is delayed, the list will contain
+regions list that gonna be freed.  If the updated region directories
+creation is started in this situation, the list can be corrupted and
+use-after-free can happen.
 
-The faulting address 0x178 corresponds to the lock variable inside
-struct fastrpc_channel_ctx, confirming that cctx is NULL when
-fastrpc_rpmsg_callback() attempts to take the spinlock.
+Because the kobj objects are managed by only DAMON sysfs, the issue cannot
+happen in normal situation.  But, such delays can be made on kernels that
+built with CONFIG_DEBUG_KOBJECT_RELEASE.  On the kernel, the issue can
+indeed be reproduced like below.
 
-There are two issues here. First, dev_set_drvdata() is called before
-spin_lock_init() and idr_init(), leaving a window where the callback
-can retrieve a valid cctx pointer but operate on an uninitialized
-spinlock. Second, the rpmsg channel becomes live as soon as the driver
-is bound, so fastrpc_rpmsg_callback() can fire before dev_set_drvdata()
-is called at all, resulting in dev_get_drvdata() returning NULL.
+    # damo start --damos_action stat
+    # cd /sys/kernel/mm/damon/admin/kdamonds/0/
+    # for i in {1..10}; do echo update_schemes_tried_regions > state; done
+    # dmesg | grep underflow
+    [   89.296152] refcount_t: underflow; use-after-free.
 
-Fix both issues by moving all cctx initialization ahead of
-dev_set_drvdata() so the structure is fully initialized before it
-becomes visible to the callback, and add a NULL check in
-fastrpc_rpmsg_callback() as a guard against any remaining window.
+Fix the issue by removing the region object from the list when
+decrementing the reference count.
 
-Fixes: f6f9279f2bf0 ("misc: fastrpc: Add Qualcomm fastrpc basic driver model")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
-Reviewed-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
-Link: https://patch.msgid.link/20260530204528.116920-4-srini@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Also update damos_sysfs_populate_region_dir() to add the region object to
+the list only after the kobject_init_and_add() is success, so that fail of
+kobject_init_and_add() is not leaving the deallocated object on the list.
+
+The issue was discovered [1] by Sashiko.
+
+Link: https://lore.kernel.org/20260518152559.93038-1-sj@kernel.org
+Link: https://lore.kernel.org/20260513011920.119183-1-sj@kernel.org [1]
+Fixes: 9277d0367ba1 ("mm/damon/sysfs-schemes: implement scheme region directory")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: <stable@vger.kernel.org> # 6.2.x
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/fastrpc.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ mm/damon/sysfs-schemes.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/misc/fastrpc.c
-+++ b/drivers/misc/fastrpc.c
-@@ -2404,7 +2404,6 @@ static int fastrpc_rpmsg_probe(struct rp
+--- a/mm/damon/sysfs-schemes.c
++++ b/mm/damon/sysfs-schemes.c
+@@ -78,7 +78,6 @@ static void damon_sysfs_scheme_region_re
+ 	struct damon_sysfs_scheme_region *region = container_of(kobj,
+ 			struct damon_sysfs_scheme_region, kobj);
  
- 	kref_init(&data->refcount);
+-	list_del(&region->list);
+ 	kfree(region);
+ }
  
--	dev_set_drvdata(&rpdev->dev, data);
- 	rdev->dma_mask = &data->dma_mask;
- 	dma_set_mask_and_coherent(rdev, DMA_BIT_MASK(32));
- 	INIT_LIST_HEAD(&data->users);
-@@ -2413,6 +2412,7 @@ static int fastrpc_rpmsg_probe(struct rp
- 	idr_init(&data->ctx_idr);
- 	data->domain_id = domain_id;
- 	data->rpdev = rpdev;
-+	dev_set_drvdata(&rpdev->dev, data);
+@@ -151,7 +150,7 @@ static void damon_sysfs_scheme_regions_r
+ 	struct damon_sysfs_scheme_region *r, *next;
  
- 	err = of_platform_populate(rdev->of_node, NULL, NULL, rdev);
- 	if (err)
-@@ -2486,6 +2486,9 @@ static int fastrpc_rpmsg_callback(struct
- 	if (len < sizeof(*rsp))
- 		return -EINVAL;
+ 	list_for_each_entry_safe(r, next, &regions->regions_list, list) {
+-		/* release function deletes it from the list */
++		list_del(&r->list);
+ 		kobject_put(&r->kobj);
+ 		regions->nr_regions--;
+ 	}
+@@ -1772,14 +1771,15 @@ static int damon_sysfs_before_damos_appl
+ 	region = damon_sysfs_scheme_region_alloc(r);
+ 	if (!region)
+ 		return 0;
+-	list_add_tail(&region->list, &sysfs_regions->regions_list);
+-	sysfs_regions->nr_regions++;
+ 	if (kobject_init_and_add(&region->kobj,
+ 				&damon_sysfs_scheme_region_ktype,
+ 				&sysfs_regions->kobj, "%d",
+ 				damon_sysfs_schemes_region_idx++)) {
+ 		kobject_put(&region->kobj);
++		return 0;
+ 	}
++	list_add_tail(&region->list, &sysfs_regions->regions_list);
++	sysfs_regions->nr_regions++;
+ 	return 0;
+ }
  
-+	if (!cctx)
-+		return -ENODEV;
-+
- 	ctxid = ((rsp->ctx & FASTRPC_CTXID_MASK) >> 4);
- 
- 	spin_lock_irqsave(&cctx->lock, flags);
 
 
 
