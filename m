@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-266287-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265935-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id td/IDzmaMWr6nwUAu9opvQ
-	(envelope-from <stable+bounces-266287-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:47:21 +0200
+	id BWPVHvySMWqMnAUAu9opvQ
+	(envelope-from <stable+bounces-265935-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:16:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3355E694785
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:47:20 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFA24693FA2
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:16:27 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=vrMuzgYN;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266287-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-266287-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=XrfbWxv8;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265935-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-265935-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 3CCFB30091DD
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:47:15 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 472983020121
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:16:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D06134657C2;
-	Tue, 16 Jun 2026 18:47:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D2433D45CB;
+	Tue, 16 Jun 2026 18:16:12 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A64BB3CFF55;
-	Tue, 16 Jun 2026 18:47:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D7523ACA5A;
+	Tue, 16 Jun 2026 18:16:10 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781635632; cv=none; b=a6n2kcXqQcd7lgDZKfE1aa3pdkSANECtcsH+xW6jYtGVcS8+iT0qqwUo2OyRwXrz6LbUdXU3hKpjIcyNX+ezHbRgF89In0bFsVavwIsRv3t04Uw9seCaTK8vVdYYefWOHtcDGfSgdYDoTOgSFHm3K+SqsYDGyuVVFLKV4C9Feyg=
+	t=1781633772; cv=none; b=h/XEKPD5Qd7u77A1P3qaPf7wxCjHF21qMSjCI+49L9jEo9t8yxHfs4X4SfDt2ZaQnCnACeTbPpBGkf1rCRrn9l+zTfFAMEPlLPKmMUY1csehM6Iar034/Esl2iQlcQaH6ZGmxC4Dqs0TNv0F7VIkpVqne+u/r5uxUUNyPVXvjaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781635632; c=relaxed/simple;
-	bh=MntT3d87tJ9ak+PAtBHvlmL1+R2zU0KYxbKsgQKxSVQ=;
+	s=arc-20240116; t=1781633772; c=relaxed/simple;
+	bh=vWB8tRt0YGbtLA1o2rJqKKVzjHVkwj5t7Q20zYbucxM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d8zy37i0cEkFsm5JwPKyEZnA6gVcpnoTmR0923oRMcPG1nQ8TwzM4EfYC5s+a11Dmqp7Qpa4YO7dpqCY7adSJTNGCVxjk7edkvNlZqcipIRg+gtziqjJ8yMSqCzW3Xm5wfFudnCDK5rlWTCYFLjAzlwglcOS/cFg/0MupHWqjvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vrMuzgYN; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 565A71F000E9;
-	Tue, 16 Jun 2026 18:47:10 +0000 (UTC)
+	 MIME-Version; b=E9DK1wyeCmFizX/6+MkhUQlfK85SXmeG7ZevjOCkuA4iZ5uytcaM8kFopnxr62rjMkztFr2KGhb7v7s1pqz7eNINMfLM+OZrpDa+g44eYgZ+Z5gbOcJmPytfezM1/KzXmk9xWEUZZJ1BdmVYvBhqhQP4acLy4L2f0ilCAGETuPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XrfbWxv8; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD9EE1F000E9;
+	Tue, 16 Jun 2026 18:16:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781635631;
-	bh=EjoCxkcHAaD34CzWl5W+yjFLt2mkPAgEPDo35mpSKHA=;
+	s=korg; t=1781633770;
+	bh=Nl1DeXPviodyxZA1U0JwB+9jZ8sCp7Dk5AC4/A+54JY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=vrMuzgYNuOa7AiQR+YnWw1Hk+ikzbsXtPRz8SwrxPfxTfqToZEJK44y9BD8+UfKEr
-	 rpvZZas2AEKwzoSuTg4nD23bNxrD87GVEwGlpCGfVvzBs7KMfdf+HOwzEPDrSUUR06
-	 4OS/05SOaoX/vh2DgINz+DttCj0euv3T7GSNvHNY=
+	b=XrfbWxv8uMMyx9f+GfbCza34GuijbZxm8mmQa10UsqtRT5DduGW7RDXjyzrzn09Xu
+	 HwfRhKBxJLQGZdRB+DwBuMv8FZyyVbXEFsOQdiN5sdN/A0PEg1KpfhUf+WLvi/ski4
+	 seCb2U/jqyIGHRaYx6BwfASXe+ZGpGl2m8ZVWoOs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lin Ma <malin89@huawei.com>,
-	Chenyuan Mi <michenyuan@huawei.com>,
-	Jingguo Tan <tanjingguo@huawei.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Steffen Klassert <steffen.klassert@secunet.com>
-Subject: [PATCH 5.10 084/342] xfrm: esp: restore combined single-frag length gate
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	Michal Pecio <michal.pecio@gmail.com>
+Subject: [PATCH 5.15 142/411] usb: core: Fix SuperSpeed root hub wMaxPacketSize
 Date: Tue, 16 Jun 2026 20:26:20 +0530
-Message-ID: <20260616145052.159111831@linuxfoundation.org>
+Message-ID: <20260616145107.926607139@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,100 +66,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266287-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:malin89@huawei.com,m:michenyuan@huawei.com,m:tanjingguo@huawei.com,m:sd@queasysnail.net,m:steffen.klassert@secunet.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265935-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mathias.nyman@linux.intel.com,m:michal.pecio@gmail.com,m:michalpecio@gmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.intel.com,gmail.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,queasysnail.net:email,vger.kernel.org:from_smtp,huawei.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,intel.com:email,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3355E694785
+X-Rspamd-Queue-Id: EFA24693FA2
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jingguo Tan <tanjingguo@huawei.com>
+From: Michal Pecio <michal.pecio@gmail.com>
 
-commit dfa0d7b0ff1eb6b2c416b8fdb9b4f2cefba57a40 upstream.
+commit d1e280334b7f0a1df441e08bd1f6a1bcc36b3bbb upstream.
 
-The ESP out-of-place fast path appends the trailer in esp_output_head()
-before esp_output_tail() allocates the destination page frag. The
-head-side gate currently checks skb->data_len and tailen separately, but
-the tail code allocates a single destination frag from the combined
-post-trailer skb->data_len.
+There is no good reason to have wBytesPerInterval < wMaxPacketSize -
+either one is too low or the other too high, and we may want to warn
+about such descriptors. Start with cleaning up our own root hubs.
 
-Reject the page-frag fast path when the combined aligned length exceeds a
-page. Otherwise skb_page_frag_refill() may fall back to a single page while
-the destination sg still spans the combined skb->data_len.
+USB 3.2 section 10.15.1 sets wMaxPacketSize and wBytesPerInterval of
+SuperSpeed hub status endpoints at 2 bytes, so reduce wMaxPacketSize
+from its former value of 4, which was derived from USB 2.0 spec and
+the kernel's USB_MAXCHILDREN limit. They don't apply because USB 3.2
+10.15.2.1 specifies SuperSpeed hubs to have up to 15 ports.
 
-Restore this combined-length page gate for both IPv4 and IPv6.
-
-Fixes: 5bd8baab087d ("esp: limit skb_page_frag_refill use to a single page")
-Cc: stable@vger.kernel.org
-Signed-off-by: Lin Ma <malin89@huawei.com>
-Signed-off-by: Chenyuan Mi <michenyuan@huawei.com>
-Signed-off-by: Jingguo Tan <tanjingguo@huawei.com>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Suggested-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
+Link: https://patch.msgid.link/20260518073121.7bc1da0f.michal.pecio@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/esp4.c |    4 ++--
- net/ipv6/esp6.c |    4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/usb/core/hcd.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/net/ipv4/esp4.c
-+++ b/net/ipv4/esp4.c
-@@ -459,8 +459,8 @@ int esp_output_head(struct xfrm_state *x
- 			return err;
- 	}
+--- a/drivers/usb/core/hcd.c
++++ b/drivers/usb/core/hcd.c
+@@ -353,9 +353,7 @@ static const u8 ss_rh_config_descriptor[
+ 	USB_DT_ENDPOINT, /* __u8 ep_bDescriptorType; Endpoint */
+ 	0x81,       /*  __u8  ep_bEndpointAddress; IN Endpoint 1 */
+ 	0x03,       /*  __u8  ep_bmAttributes; Interrupt */
+-		    /* __le16 ep_wMaxPacketSize; 1 + (MAX_ROOT_PORTS / 8)
+-		     * see hub.c:hub_configure() for details. */
+-	(USB_MAXCHILDREN + 1 + 7) / 8, 0x00,
++	0x02, 0x00, /* __le16 ep_wMaxPacketSize; 2 bytes per USB3 10.15.1 */
+ 	0x0c,       /*  __u8  ep_bInterval; (256ms -- usb 2.0 spec) */
  
--	if (ALIGN(tailen, L1_CACHE_BYTES) > PAGE_SIZE ||
--	    ALIGN(skb->data_len, L1_CACHE_BYTES) > PAGE_SIZE)
-+	if (ALIGN(skb->data_len + tailen, L1_CACHE_BYTES) >
-+	    PAGE_SIZE)
- 		goto cow;
- 
- 	if (!skb_cloned(skb)) {
---- a/net/ipv6/esp6.c
-+++ b/net/ipv6/esp6.c
-@@ -493,8 +493,8 @@ int esp6_output_head(struct xfrm_state *
- 			return err;
- 	}
- 
--	if (ALIGN(tailen, L1_CACHE_BYTES) > PAGE_SIZE ||
--	    ALIGN(skb->data_len, L1_CACHE_BYTES) > PAGE_SIZE)
-+	if (ALIGN(skb->data_len + tailen, L1_CACHE_BYTES) >
-+	    PAGE_SIZE)
- 		goto cow;
- 
- 	if (!skb_cloned(skb)) {
+ 	/* one SuperSpeed endpoint companion descriptor */
 
 
 
