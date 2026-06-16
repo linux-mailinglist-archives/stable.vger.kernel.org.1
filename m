@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-265822-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265824-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id APLBAp2QMWp2mwUAu9opvQ
-	(envelope-from <stable+bounces-265822-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:06:21 +0200
+	id QoQRCa2QMWp7mwUAu9opvQ
+	(envelope-from <stable+bounces-265824-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:06:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C380693CE1
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:06:20 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9190B693CE9
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:06:36 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=fbx+NJxy;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265822-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-265822-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=tezS9KXW;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265824-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265824-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 50DBD300CF0B
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:06:17 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id EB9F63088111
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:06:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A8A83D565C;
-	Tue, 16 Jun 2026 18:06:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C9643D45CB;
+	Tue, 16 Jun 2026 18:06:27 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EC023CFF4A;
-	Tue, 16 Jun 2026 18:06:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DB2A3D45D0;
+	Tue, 16 Jun 2026 18:06:26 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781633174; cv=none; b=YIgk8kN5MSTGx/o25q/ll/aei3j88KUoFoAv7HaVmwTySg/9y67ALi3BGAfccpGapOANUtYDsF8qamzDs1Oxjl8iwbOZVWNBCGOupoZdnNmd+uH0ivUh73PK/2pUImRU0WE72OJHEA7kBHDfJJQPcdSsjmSzSlKpVohuJSIGBp8=
+	t=1781633187; cv=none; b=kvMj6tsUuZQIs2C1zbAngUUb62xwaR3VWWlSiQrAYVb+3xM23ZpzetDzuQ/JDtJ9qR2A7NSHphZJbiAnHo/Rj3y70jiYhoOnBdvJxHd7djHwVWIjwxzT1OyHTaJGXRyrF8yUZkpj4Lw+Vau4DgC+X/nBxwuEzvrgy+tQHuF2xK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781633174; c=relaxed/simple;
-	bh=LhM+FOwQLfbCFjoWzWlg3Xj8lVodXk8Ex+EAvPi43gg=;
+	s=arc-20240116; t=1781633187; c=relaxed/simple;
+	bh=iNzxiOy6nnn82X08Q91Q/J0eXEcTGdc/kwXatjKiads=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HMrRRSNbIfIgO6BUws/tvLOScV0th3LU9/rYTsbgqzTdjpJ0S4RyKmwb0BwkWrwGE2XMtzfD88xoKcZxN7IWv/ViDjcSLHUKaWfVxH8fxwTmpsWmHB6qT4aksjrnkHhHfhSIB6i5aq6ZW6MrcIVSzUdXEjYb8RqmDgfeLHy3en4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fbx+NJxy; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70D6C1F000E9;
-	Tue, 16 Jun 2026 18:06:12 +0000 (UTC)
+	 MIME-Version; b=I+KSA1CX4+uZyRLkMT/nME32RkfNv2viFoDUqxg1/bvQT8g8fiVHZJE6Sguxd7OfI4bIVDIpdQZi3REWofznCXjy+Ys9p23YEh4VbhpQ8AKAycQFq+Xkv58O4nwpEF3Vr8sS90W6BkXHUKY1dM/x81hSgM7nwgkL7ivb2ZDLYN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tezS9KXW; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F32581F000E9;
+	Tue, 16 Jun 2026 18:06:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781633173;
-	bh=mZ14ZKw32M0wuqoR0JjMrlk254LU356C0RAFO6y4Rxg=;
+	s=korg; t=1781633186;
+	bh=Emz4QOHuUjuSejMLInnFeEWTr3EZ0Q9cdYyj9DYF78M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fbx+NJxy4DoFckGE5zq7nG8FDx97NVpsbkqN6WiSCz6kKBQn0o2uly11H+GnG+KDc
-	 yYrB/Hc8VhjkGuRxH7UNt74Bmi7PvKY/rLqANGC6i5nKKlOdIEH/kUyVyE8z7tAsE2
-	 5Chyty5yEw8+srZazdGu9liRGeGx85fMTk56sAzk=
+	b=tezS9KXWyDgNg+MV2KGWY1Jbem8BqVX6j8kUzBsqf1Zc2+wdYDcQ4UDCTlM/J6a5w
+	 sdyZo5w8GNhGoF8DKQRMDOIqLadonC1DH9TmaNQB7KAgzjm01ZIwOupOFuTtpD9rmu
+	 EAogjIXILj1Y+Vod6DbK2w7F+cbB0Nwfdvpn97Yo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Marco Scardovi <scardracs@disroot.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 032/411] Bluetooth: L2CAP: Fix possible crash on l2cap_ecred_conn_rsp
-Date: Tue, 16 Jun 2026 20:24:30 +0530
-Message-ID: <20260616145102.046513091@linuxfoundation.org>
+Subject: [PATCH 5.15 033/411] gpio: rockchip: convert bank->clk to devm_clk_get_enabled()
+Date: Tue, 16 Jun 2026 20:24:31 +0530
+Message-ID: <20260616145102.094673612@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
 References: <20260616145100.376842714@linuxfoundation.org>
@@ -71,22 +72,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265822-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265824-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:luiz.von.dentz@intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:scardracs@disroot.org,m:bartosz.golaszewski@oss.qualcomm.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -97,88 +98,84 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,intel.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,disroot.org:email,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,qualcomm.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 0C380693CE1
+X-Rspamd-Queue-Id: 9190B693CE9
 
 5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Marco Scardovi <scardracs@disroot.org>
 
-[ Upstream commit 41c2713b204e6cb6a94587bc6bf6935107df5479 ]
+[ Upstream commit 3e46c18d5d87f063a93ae0fe7662fbf6660459d5 ]
 
-If dcid is received for an already-assigned destination CID the spec
-requires that both channels to be discarded, but calling l2cap_chan_del
-may invalidate the tmp cursor created by list_for_each_entry_safe and
-in fact it is the wrong procedure as the chan->dcid may be assigned
-previously it really needs to be disconnected.
+The bank->clk was previously obtained via of_clk_get() and manually
+prepared/enabled. However, it was missing a corresponding clk_put() in
+both the error paths and the remove function, leading to a reference leak.
 
-Calling l2cap_chan_clone directly may still lead to l2cap_chan_del so
-instead schedule l2cap_chan_timeout with delay 0 to close the channel
-asynchronously.
+Convert the allocation to devm_clk_get_enabled(), which also properly
+propagates failures from clk_prepare_enable() that were previously ignored.
 
-Fixes: 15f02b910562 ("Bluetooth: L2CAP: Add initial code for Enhanced Credit Based Mode")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+The GPIO bank device uses the same OF node as the previous of_clk_get()
+call, so devm_clk_get_enabled(dev, NULL) correctly resolves the same
+clock provider entry.
+
+Fix the reference leak and simplify the code by removing the manual
+clk_disable_unprepare() calls in the probe error paths and in the
+remove function.
+
+Fixes: 936ee2675eee ("gpio/rockchip: add driver for rockchip gpio")
+Assisted-by: Antigravity:gemini-3.5-flash
+Signed-off-by: Marco Scardovi <scardracs@disroot.org>
+Link: https://patch.msgid.link/20260526171050.12785-2-scardracs@disroot.org
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/l2cap_core.c | 27 ++++++++++++++++++++++-----
- 1 file changed, 22 insertions(+), 5 deletions(-)
+ drivers/gpio/gpio-rockchip.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
-index 7e3825c1b10b95..38ac75f85144be 100644
---- a/net/bluetooth/l2cap_core.c
-+++ b/net/bluetooth/l2cap_core.c
-@@ -6222,6 +6222,7 @@ static inline int l2cap_ecred_conn_rsp(struct l2cap_conn *conn,
- 	cmd_len -= sizeof(*rsp);
+diff --git a/drivers/gpio/gpio-rockchip.c b/drivers/gpio/gpio-rockchip.c
+index d331745da1a3a8..df2eefc1554a01 100644
+--- a/drivers/gpio/gpio-rockchip.c
++++ b/drivers/gpio/gpio-rockchip.c
+@@ -649,11 +649,10 @@ static int rockchip_get_bank_data(struct rockchip_pin_bank *bank)
+ 	if (!bank->irq)
+ 		return -EINVAL;
  
- 	list_for_each_entry_safe(chan, tmp, &conn->chan_l, list) {
-+		struct l2cap_chan *orig;
- 		u16 dcid;
+-	bank->clk = of_clk_get(bank->of_node, 0);
++	bank->clk = devm_clk_get_enabled(bank->dev, NULL);
+ 	if (IS_ERR(bank->clk))
+ 		return PTR_ERR(bank->clk);
  
- 		if (chan->ident != cmd->ident ||
-@@ -6243,8 +6244,10 @@ static inline int l2cap_ecred_conn_rsp(struct l2cap_conn *conn,
+-	clk_prepare_enable(bank->clk);
+ 	id = readl(bank->reg_base + gpio_regs_v2.version_id);
  
- 		BT_DBG("dcid[%d] 0x%4.4x", i, dcid);
- 
-+		orig = __l2cap_get_chan_by_dcid(conn, dcid);
-+
- 		/* Check if dcid is already in use */
--		if (dcid && __l2cap_get_chan_by_dcid(conn, dcid)) {
-+		if (dcid && orig) {
- 			/* If a device receives a
- 			 * L2CAP_CREDIT_BASED_CONNECTION_RSP packet with an
- 			 * already-assigned Destination CID, then both the
-@@ -6253,10 +6256,24 @@ static inline int l2cap_ecred_conn_rsp(struct l2cap_conn *conn,
- 			 */
- 			l2cap_chan_del(chan, ECONNREFUSED);
- 			l2cap_chan_unlock(chan);
--			chan = __l2cap_get_chan_by_dcid(conn, dcid);
--			l2cap_chan_lock(chan);
--			l2cap_chan_del(chan, ECONNRESET);
--			l2cap_chan_unlock(chan);
-+
-+			/* Check that the dcid channel mode is
-+			 * L2CAP_MODE_EXT_FLOWCTL since this procedure is only
-+			 * valid for that mode and shouldn't disconnect a dcid
-+			 * in other modes.
-+			 */
-+			if (orig->mode == L2CAP_MODE_EXT_FLOWCTL) {
-+				l2cap_chan_lock(orig);
-+				/* Disconnect the original channel as it may be
-+				 * considered connected since dcid has already
-+				 * been assigned; don't call l2cap_chan_close
-+				 * directly since that could lead to
-+				 * l2cap_chan_del and then removing the channel
-+				 * from the list while we're iterating over it.
-+				 */
-+				__set_chan_timer(orig, 0);
-+				l2cap_chan_unlock(orig);
-+			}
- 			continue;
+ 	/* If not gpio v2, that is default to v1. */
+@@ -663,7 +662,6 @@ static int rockchip_get_bank_data(struct rockchip_pin_bank *bank)
+ 		bank->db_clk = of_clk_get(bank->of_node, 1);
+ 		if (IS_ERR(bank->db_clk)) {
+ 			dev_err(bank->dev, "cannot find debounce clk\n");
+-			clk_disable_unprepare(bank->clk);
+ 			return -EINVAL;
  		}
+ 	} else {
+@@ -737,7 +735,6 @@ static int rockchip_gpio_probe(struct platform_device *pdev)
  
+ 	ret = rockchip_gpiolib_register(bank);
+ 	if (ret) {
+-		clk_disable_unprepare(bank->clk);
+ 		mutex_unlock(&bank->deferred_lock);
+ 		return ret;
+ 	}
+@@ -773,7 +770,6 @@ static int rockchip_gpio_remove(struct platform_device *pdev)
+ {
+ 	struct rockchip_pin_bank *bank = platform_get_drvdata(pdev);
+ 
+-	clk_disable_unprepare(bank->clk);
+ 	gpiochip_remove(&bank->gpio_chip);
+ 
+ 	return 0;
 -- 
 2.53.0
 
