@@ -1,63 +1,61 @@
-Return-Path: <stable+bounces-265735-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264757-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id IvDwItWOMWqWmgUAu9opvQ
-	(envelope-from <stable+bounces-265735-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:58:45 +0200
+	id PMfxNZl9MWrrkgUAu9opvQ
+	(envelope-from <stable+bounces-264757-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:45:13 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FADC693AC3
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:58:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 493816926CE
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:45:13 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=XeLf8T2F;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265735-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265735-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=bKMwc1yi;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264757-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264757-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 313583010BA2
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:58:44 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 07B7A30FDC5D
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:36:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C334A47A0B2;
-	Tue, 16 Jun 2026 17:58:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C01E64779AA;
+	Tue, 16 Jun 2026 16:35:36 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A7984779B3;
-	Tue, 16 Jun 2026 17:58:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D15247A0A1;
+	Tue, 16 Jun 2026 16:35:35 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781632721; cv=none; b=itl6i3tNlcQQIDkeEb+RabWkTaCr8N03+N8Jp/5W+rpI0S6/e2m37G+2h0ueFGfdMiGW6T8BxRqCANsjk8bj9sG69CUs8yTVfbBL3fwweqkDlO78MQpUq8Xy5WYwV4u6L5uBpSonwC0mcCp4lIXUjho12Yw5VjdWHCVFCUdGzE4=
+	t=1781627736; cv=none; b=TFDEONGjnQ6afInBKnsi2xjBAwmx9pswTxFspgNYe4SkTWiVdUx6eHYmPPjMP6Mclh+BYc9f4gEwhBshtxKpJOtb3409HdaXYRT0Sb58RL1yvKpySiDavn/10GaOosRNSg85vQLBeM8Pa6QH3pK0aHAyVI9P/F/7erDAhP4ymQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781632721; c=relaxed/simple;
-	bh=8DPsm2KQgjAbDn1stmeVD9W6j0GIyTTGpO+YnnM/z5U=;
+	s=arc-20240116; t=1781627736; c=relaxed/simple;
+	bh=q13XvFDDNa1wOyXZmTyZhNT9AbFLASxNCRzTN9LHYYE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NaX0RMSt7OnleW0QXdFkr0qNcA7rhWz+wvSKU1fIk2zPcszx/yjKAujMtIizG0GT0XSDHXRHz+T/03ONLiIZtZcOe2lgC+LF20KffGTtBuct/NZKhE7bwq43KbT2g2x2KYTahXClUEg88kvgbHIW86sURg2zYQPILDZngDoe5KU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XeLf8T2F; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 825971F000E9;
-	Tue, 16 Jun 2026 17:58:39 +0000 (UTC)
+	 MIME-Version; b=Z8wEXgEO9W4482GjyjTPWMSvFe5nWOOTYe7NLiqGAloMxKeCBgR83TxiW6B33GJuVWRfMCA2pV06MGM3+ppQ7EPv9Tb4RqfimWgsLLPGRnI3PsNqgZ8hJlAigotNVeVfwza0duMaIfg0RPUA0C52eEPZBSYfc9HtShkQkc5u4jI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bKMwc1yi; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46D5A1F000E9;
+	Tue, 16 Jun 2026 16:35:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781632720;
-	bh=WFjF7PBRCJh5pSuJNh8BsWLAduqPdPWF7r4y7UPKXOI=;
+	s=korg; t=1781627735;
+	bh=z5XHPnR7/qwDjDn6hwVxfqbaLGgJvU6zGacqe0rXGQ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=XeLf8T2FJ8jdMhdNDS2NPYOXabwDD/fNgxZoaCfeTXrBhJ1vvQnXHtD13XrpdPko/
-	 0XuTRMXQY/5pIG+0W1ut1Emh4wjMQrK21Bx3IKssHpnuUpS8DMtqJaXV48TUXOMteV
-	 J3T2lhGXEulLX+9jWUNcsTxUpw7bZR3E26VW72N4=
+	b=bKMwc1yioFdj5XVBOeHq06wbu/0JCfjEkzsJnTI8Zz3J4PX5L1CjDqsX+4CLx7BMC
+	 388GiLYK+wYLDib1leSWEEw8LOZ9CruksemYh5bmKhIxTBwItXyF1Ftzt+T+E8YXAp
+	 dy+SogL5eWEc7q193twi8PpBaW0vz9kfjEYDtHjA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@intel.com>,
-	Rodrigo Alencar <rodrigo.alencar@analog.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <jic23@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 464/522] iio: dac: ad5686: fix ref bit initialization for single-channel parts
-Date: Tue, 16 Jun 2026 20:30:11 +0530
-Message-ID: <20260616145147.585395262@linuxfoundation.org>
+	Akhil R <akhilrajeev@nvidia.com>,
+	Jon Hunter <jonathanh@nvidia.com>,
+	Andi Shyti <andi.shyti@kernel.org>
+Subject: [PATCH 6.12 174/261] i2c: tegra: Fix NOIRQ suspend/resume
+Date: Tue, 16 Jun 2026 20:30:12 +0530
+Message-ID: <20260616145053.137440151@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,100 +69,159 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265735-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264757-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:andriy.shevchenko@intel.com,m:rodrigo.alencar@analog.com,m:Stable@vger.kernel.org,m:jic23@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:akhilrajeev@nvidia.com,m:jonathanh@nvidia.com,m:andi.shyti@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,analog.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,nvidia.com:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 1FADC693AC3
+X-Rspamd-Queue-Id: 493816926CE
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rodrigo Alencar <rodrigo.alencar@analog.com>
+From: Akhil R <akhilrajeev@nvidia.com>
 
-[ Upstream commit ecae2ae606d493cf11457946436335bd0e726663 ]
+commit 656646b3847ac6a21b074a813223feef2aadd6e2 upstream.
 
-The reference bit position was ignored when writing the register at the
-probe() function (!!val was used). When such bit is 1, internal voltage
-reference is disabled so that an external one can be used. For
-multi-channel devices, bit 0 of the Internal Reference Setup command
-behaves the same way, so AD5686_REF_BIT_MSK is created. The issue exists
-since support for single-channel devices were first introduced.
+The Tegra I2C driver relies on runtime PM to wake up the controller before
+each transfer. However, runtime PM is disabled between the system suspend
+and NOIRQ suspend. If an I2C device initiates a transfer during this
+window, the I2C controller fails to wake up and the transfer fails. To
+handle this, the controller must be kept available for this period to
+allow transfers.
 
-Fixes: be1b24d24541 ("iio:dac:ad5686: Add AD5691R/AD5692R/AD5693/AD5693R support")
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Signed-off-by: Rodrigo Alencar <rodrigo.alencar@analog.com>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <jic23@kernel.org>
-[ adapted `has_external_vref` to the in-tree equivalent `voltage_uv` variable in the `val =` computation ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Rework the I2C controller's system PM callbacks such that the controller
+is resumed from runtime suspend during system suspend and it stays
+RPM_ACTIVE throughout the suspend-resume cycle until it is runtime
+suspended back in the system resume. The clocks are disabled in NOIRQ
+suspend and enabled back in NOIRQ resume by calling the controller's
+runtime PM functions directly.
+
+Fixes: 8ebf15e9c869 ("i2c: tegra: Move suspend handling to NOIRQ phase")
+Assisted-by: Cursor:claude-4.6-opus
+Signed-off-by: Akhil R <akhilrajeev@nvidia.com>
+Cc: <stable@vger.kernel.org> # v5.4+
+Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/20260518114013.62065-5-akhilrajeev@nvidia.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/dac/ad5686.c |    6 +++---
- drivers/iio/dac/ad5686.h |    1 +
- 2 files changed, 4 insertions(+), 3 deletions(-)
+ drivers/i2c/busses/i2c-tegra.c |   53 +++++++++++++++++++++++------------------
+ 1 file changed, 30 insertions(+), 23 deletions(-)
 
---- a/drivers/iio/dac/ad5686.c
-+++ b/drivers/iio/dac/ad5686.c
-@@ -521,7 +521,7 @@ int ad5686_probe(struct device *dev,
- 		break;
- 	case AD5686_REGMAP:
- 		cmd = AD5686_CMD_INTERNAL_REFER_SETUP;
--		ref_bit_msk = 0;
-+		ref_bit_msk = AD5686_REF_BIT_MSK;
- 		break;
- 	case AD5693_REGMAP:
- 		cmd = AD5686_CMD_CONTROL_REG;
-@@ -533,9 +533,9 @@ int ad5686_probe(struct device *dev,
- 		goto error_disable_reg;
- 	}
+--- a/drivers/i2c/busses/i2c-tegra.c
++++ b/drivers/i2c/busses/i2c-tegra.c
+@@ -1887,28 +1887,37 @@ static int __maybe_unused tegra_i2c_runt
  
--	val = (voltage_uv | ref_bit_msk);
-+	val = voltage_uv ? ref_bit_msk : 0;
+ static int __maybe_unused tegra_i2c_suspend(struct device *dev)
+ {
++	/*
++	 * Bring the controller up and hold a usage count so it stays
++	 * available until the noirq phase.
++	 */
++	return pm_runtime_resume_and_get(dev);
++}
++
++static int __maybe_unused tegra_i2c_suspend_noirq(struct device *dev)
++{
+ 	struct tegra_i2c_dev *i2c_dev = dev_get_drvdata(dev);
+-	int err;
  
--	ret = st->write(st, cmd, 0, !!val);
-+	ret = st->write(st, cmd, 0, val);
- 	if (ret)
- 		goto error_disable_reg;
+ 	i2c_mark_adapter_suspended(&i2c_dev->adapter);
  
---- a/drivers/iio/dac/ad5686.h
-+++ b/drivers/iio/dac/ad5686.h
-@@ -46,6 +46,7 @@
+-	if (!pm_runtime_status_suspended(dev)) {
+-		err = tegra_i2c_runtime_suspend(dev);
+-		if (err)
+-			return err;
+-	}
+-
+-	return 0;
++	/*
++	 * Runtime PM is already disabled at this point, so invoke the
++	 * runtime_suspend callback directly to put the controller down.
++	 */
++	return tegra_i2c_runtime_suspend(dev);
+ }
  
- #define AD5310_REF_BIT_MSK			BIT(8)
- #define AD5683_REF_BIT_MSK			BIT(12)
-+#define AD5686_REF_BIT_MSK			BIT(0)
- #define AD5693_REF_BIT_MSK			BIT(12)
+-static int __maybe_unused tegra_i2c_resume(struct device *dev)
++static int __maybe_unused tegra_i2c_resume_noirq(struct device *dev)
+ {
+ 	struct tegra_i2c_dev *i2c_dev = dev_get_drvdata(dev);
+ 	int err;
  
- /**
+ 	/*
+-	 * We need to ensure that clocks are enabled so that registers can be
+-	 * restored in tegra_i2c_init().
++	 * Runtime PM is still disabled at this point, so invoke the
++	 * runtime_resume callback directly to bring the controller back up
++	 * before re-initializing the hardware. The adapter is then marked
++	 * resumed so that consumers can issue transfers from their own
++	 * resume_noirq() handlers and onwards.
+ 	 */
+ 	err = tegra_i2c_runtime_resume(dev);
+ 	if (err)
+@@ -1918,24 +1927,22 @@ static int __maybe_unused tegra_i2c_resu
+ 	if (err)
+ 		return err;
+ 
+-	/*
+-	 * In case we are runtime suspended, disable clocks again so that we
+-	 * don't unbalance the clock reference counts during the next runtime
+-	 * resume transition.
+-	 */
+-	if (pm_runtime_status_suspended(dev)) {
+-		err = tegra_i2c_runtime_suspend(dev);
+-		if (err)
+-			return err;
+-	}
+-
+ 	i2c_mark_adapter_resumed(&i2c_dev->adapter);
+ 
+ 	return 0;
+ }
+ 
++static int __maybe_unused tegra_i2c_resume(struct device *dev)
++{
++	pm_runtime_put(dev);
++
++	return 0;
++}
++
+ static const struct dev_pm_ops tegra_i2c_pm = {
+-	SET_NOIRQ_SYSTEM_SLEEP_PM_OPS(tegra_i2c_suspend, tegra_i2c_resume)
++	SET_SYSTEM_SLEEP_PM_OPS(tegra_i2c_suspend, tegra_i2c_resume)
++	SET_NOIRQ_SYSTEM_SLEEP_PM_OPS(tegra_i2c_suspend_noirq,
++				      tegra_i2c_resume_noirq)
+ 	SET_RUNTIME_PM_OPS(tegra_i2c_runtime_suspend, tegra_i2c_runtime_resume,
+ 			   NULL)
+ };
 
 
 
