@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-266071-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266458-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id tfGKHeSVMWrsnQUAu9opvQ
-	(envelope-from <stable+bounces-266071-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:28:52 +0200
+	id aViYGDSfMWrxoQUAu9opvQ
+	(envelope-from <stable+bounces-266458-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:08:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED3EB694295
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:28:51 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 057D0694C6F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:08:36 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=V4+GGKti;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266071-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266071-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=V1VFllOb;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266458-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266458-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D49F7309031C
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:28:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 95E61316006A
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:02:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EA3547A0B2;
-	Tue, 16 Jun 2026 18:28:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C3743D7D9D;
+	Tue, 16 Jun 2026 19:02:00 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC2B3466B5E;
-	Tue, 16 Jun 2026 18:28:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C853C3DC87A;
+	Tue, 16 Jun 2026 19:01:58 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781634507; cv=none; b=lqOBy73IVsYzSmCVDSSml1+pFM0sJ95L5wdxy+x7Yi2ckmq6rBnTt0MlVf/OU550kxMSoBq9RC0cAzfbvQcjjPuCtONH4I+BC3L9uvZKC3gvohFehBJX1+NNkfrMsnQrSe48kq52mkZ3YjIM0jwOKUCeB4+9s8UZTZPpizeO6Ok=
+	t=1781636519; cv=none; b=Vd5OnqteQddF2SggewsuGtlL1/zLcliPPELNaPqxBVhq2H0AXT+cjdOhDUpjLR0sPWjIwiIumPrDrkLBUX4A7cwZ9Cbn67IxNe3vKdlKctBbIlKr927xQJFWWml9yRHVVscAN8+hXpNbUuXt3M+uQHKKKHD2QqU3YK1cyt6OSL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781634507; c=relaxed/simple;
-	bh=yrV8A7LTbzzwl0kY/RoVDpYOObc+ABu67G14sVXmXbU=;
+	s=arc-20240116; t=1781636519; c=relaxed/simple;
+	bh=tb51y8H0SzFvFwIXrXx6hiLYVPYHBdgLWes2B/yQQBw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HZNY56a9cVH1Hm77eNCH7QBETTWCSl4soTcj5qQ1lruw3d3TfY9sT3FtNgL32EEUf7YiF5Yb2gyt/7ZODQ2lFN91sVTSiVbuVdcs4heYEU31JQfv3RYMv6KfJedO//LGbMWPZmty+1HPJbICDWXoNyxC7m9s+KRt/txcyIzw9qk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V4+GGKti; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A500E1F000E9;
-	Tue, 16 Jun 2026 18:28:25 +0000 (UTC)
+	 MIME-Version; b=DYZsl+HZ5WToLsUnoNFHkMmcpEYtm8nCLeV6csXm90ROKA1ovMzN1HqAU00+SiQyohMkbWaPLf60ekWPb/CR/r5tg59RCvoZ6ZhSfApZ94O+PcRmAcSdAKlqwygxyBenHWcO8oTyH/GBrYpH34djYrgyP+47BcIocKS53Tmo04g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V1VFllOb; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D31411F000E9;
+	Tue, 16 Jun 2026 19:01:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781634506;
-	bh=v2htNStGioWCsraTTxBs85f4AsOqZw+abfSth522p2Y=;
+	s=korg; t=1781636518;
+	bh=NDBx8f59U/+qSLdn31NspPe8+yYSQEXcHSi7a2Vpglo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=V4+GGKtid+lUiDn8hk04V4j57oMuuw/SmbKFkqmkFB3m3xgxeLR/grQsHM98u1SKm
-	 b5Gz7jk4omw80YZwg7toetBUwIu+D7CgD+xLPmZRoYNpMgvUK/Qm2QDb/feIEIv+k6
-	 1DCPjJ0RErv1249eUP9W4M+7a+FKZ7kbXtQ2nHfs=
+	b=V1VFllObE8P0J4X9g3Uhb+VOGUs3ox+kWVvs15FImE//fj82WU0msHT/fWkotYYgn
+	 PzBszc0u4+ZFT9DyYiUYsDvKmRLvkjt/tIzehFO60QCsPJylRXF5WKynxFBe1zQy4R
+	 hmELlLcGBt1xW1ij9QSiNRZxiDO9PFw0xbHPQvJ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
+	Bingquan Chen <patzilla007@gmail.com>,
+	Willem de Bruijn <willemb@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 278/411] net: qrtr: ns: Limit the total number of nodes
-Date: Tue, 16 Jun 2026 20:28:36 +0530
-Message-ID: <20260616145115.910988114@linuxfoundation.org>
+Subject: [PATCH 5.10 221/342] net/packet: fix TOCTOU race on mmapd vnet_hdr in tpacket_snd()
+Date: Tue, 16 Jun 2026 20:28:37 +0530
+Message-ID: <20260616145058.493120831@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,104 +73,129 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266071-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:manivannan.sadhasivam@oss.qualcomm.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-266458-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:patzilla007@gmail.com,m:willemb@google.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,qualcomm.com:email,vger.kernel.org:from_smtp,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: ED3EB694295
+X-Rspamd-Queue-Id: 057D0694C6F
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+From: Bingquan Chen <patzilla007@gmail.com>
 
-[ Upstream commit 27d5e84e810b0849d08b9aec68e48570461ce313 ]
+[ Upstream commit 2c054e17d9d41f1020376806c7f750834ced4dc5 ]
 
-Currently, the nameserver doesn't limit the number of nodes it handles.
-This can be an attack vector if a malicious client starts registering
-random nodes, leading to memory exhaustion.
+In tpacket_snd(), when PACKET_VNET_HDR is enabled, vnet_hdr points
+directly into the mmap'd TX ring buffer shared with userspace. The
+kernel validates the header via __packet_snd_vnet_parse() but then
+re-reads all fields later in virtio_net_hdr_to_skb(). A concurrent
+userspace thread can modify the vnet_hdr fields between validation
+and use, bypassing all safety checks.
 
-Hence, limit the maximum number of nodes to 64. Note that, limit of 64 is
-chosen based on the current platform requirements. If requirement changes
-in the future, this limit can be increased.
+The non-TPACKET path (packet_snd()) already correctly copies vnet_hdr
+to a stack-local variable. All other vnet_hdr consumers in the kernel
+(tun.c, tap.c, virtio_net.c) also use stack copies. The TPACKET TX
+path is the only caller of virtio_net_hdr_to_skb() that reads directly
+from user-controlled shared memory.
 
-Cc: stable@vger.kernel.org
-Fixes: 0c2204a4ad71 ("net: qrtr: Migrate nameservice to kernel from userspace")
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260409-qrtr-fix-v3-4-00a8a5ff2b51@oss.qualcomm.com
+Fix this by copying vnet_hdr from the mmap'd ring buffer to a
+stack-local variable before validation and use, consistent with the
+approach used in packet_snd() and all other callers.
+
+Fixes: 1d036d25e560 ("packet: tpacket_snd gso and checksum offload")
+Signed-off-by: Bingquan Chen <patzilla007@gmail.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20260418112006.78823-1-patzilla007@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ dropped node_count-- hunk since ctrl_cmd_bye() has no delete_node ]
+[ replaced `vnet_hdr_sz` with `sizeof(vnet_hdr)` and `if (vnet_hdr_sz)` with `if (po->has_vnet_hdr)` ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/qrtr/ns.c |   17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ net/packet/af_packet.c |   25 +++++++++++++++----------
+ 1 file changed, 15 insertions(+), 10 deletions(-)
 
---- a/net/qrtr/ns.c
-+++ b/net/qrtr/ns.c
-@@ -75,6 +75,16 @@ struct qrtr_node {
-  */
- #define QRTR_NS_MAX_LOOKUPS 64
- 
-+/* Max nodes, server, lookup limits are chosen based on the current platform
-+ * requirements. If the requirement changes in the future, these values can be
-+ * increased.
-+ */
-+#define QRTR_NS_MAX_NODES   64
-+#define QRTR_NS_MAX_SERVERS 256
-+#define QRTR_NS_MAX_LOOKUPS 64
-+
-+static u8 node_count;
-+
- static struct qrtr_node *node_get(unsigned int node_id)
+--- a/net/packet/af_packet.c
++++ b/net/packet/af_packet.c
+@@ -2726,7 +2726,8 @@ static int tpacket_snd(struct packet_soc
  {
- 	struct qrtr_node *node;
-@@ -83,6 +93,11 @@ static struct qrtr_node *node_get(unsign
- 	if (node)
- 		return node;
+ 	struct sk_buff *skb = NULL;
+ 	struct net_device *dev;
+-	struct virtio_net_hdr *vnet_hdr = NULL;
++	struct virtio_net_hdr vnet_hdr;
++	bool has_vnet_hdr = false;
+ 	struct sockcm_cookie sockc;
+ 	__be16 proto;
+ 	int err, reserve = 0;
+@@ -2826,16 +2827,20 @@ static int tpacket_snd(struct packet_soc
+ 		hlen = LL_RESERVED_SPACE(dev);
+ 		tlen = dev->needed_tailroom;
+ 		if (po->has_vnet_hdr) {
+-			vnet_hdr = data;
+-			data += sizeof(*vnet_hdr);
+-			tp_len -= sizeof(*vnet_hdr);
+-			if (tp_len < 0 ||
+-			    __packet_snd_vnet_parse(vnet_hdr, tp_len)) {
++			data += sizeof(vnet_hdr);
++			tp_len -= sizeof(vnet_hdr);
++			if (tp_len < 0) {
++				tp_len = -EINVAL;
++				goto tpacket_error;
++			}
++			memcpy(&vnet_hdr, data - sizeof(vnet_hdr), sizeof(vnet_hdr));
++			if (__packet_snd_vnet_parse(&vnet_hdr, tp_len)) {
+ 				tp_len = -EINVAL;
+ 				goto tpacket_error;
+ 			}
+ 			copylen = __virtio16_to_cpu(vio_le(),
+-						    vnet_hdr->hdr_len);
++						    vnet_hdr.hdr_len);
++			has_vnet_hdr = true;
+ 		}
+ 		copylen = max_t(int, copylen, dev->hard_header_len);
+ 		skb = sock_alloc_send_skb(&po->sk,
+@@ -2872,12 +2877,12 @@ tpacket_error:
+ 			}
+ 		}
  
-+	if (node_count >= QRTR_NS_MAX_NODES) {
-+		pr_err_ratelimited("QRTR clients exceed max node limit!\n");
-+		return NULL;
-+	}
-+
- 	/* If node didn't exist, allocate and insert it to the tree */
- 	node = kzalloc(sizeof(*node), GFP_KERNEL);
- 	if (!node)
-@@ -96,6 +111,8 @@ static struct qrtr_node *node_get(unsign
- 		return NULL;
- 	}
+-		if (po->has_vnet_hdr) {
+-			if (virtio_net_hdr_to_skb(skb, vnet_hdr, vio_le())) {
++		if (has_vnet_hdr) {
++			if (virtio_net_hdr_to_skb(skb, &vnet_hdr, vio_le())) {
+ 				tp_len = -EINVAL;
+ 				goto tpacket_error;
+ 			}
+-			virtio_net_hdr_set_proto(skb, vnet_hdr);
++			virtio_net_hdr_set_proto(skb, &vnet_hdr);
+ 		}
  
-+	node_count++;
-+
- 	return node;
- }
- 
+ 		skb->destructor = tpacket_destruct_skb;
 
 
 
