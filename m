@@ -1,67 +1,60 @@
-Return-Path: <stable+bounces-265031-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266010-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id YtrIF6KCMWrilAUAu9opvQ
-	(envelope-from <stable+bounces-265031-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:06:42 +0200
+	id i9WXDo+UMWpZnQUAu9opvQ
+	(envelope-from <stable+bounces-266010-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:23:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C89AD692BA8
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:06:41 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DB86694161
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:23:10 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=yUIXtSpq;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265031-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-265031-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=hVDNtwtz;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266010-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266010-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6F28F311C317
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:58:54 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 746D13002F6E
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:23:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10547477E57;
-	Tue, 16 Jun 2026 16:58:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABD52466B5E;
+	Tue, 16 Jun 2026 18:23:05 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC216305688;
-	Tue, 16 Jun 2026 16:58:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 818413BFE5A;
+	Tue, 16 Jun 2026 18:23:04 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781629132; cv=none; b=jIDDj6iFt+0UY9ASLU+azY0x0GXqxmUqYXZgujFTYNh62p2AJUiTq42WNp+4sLUVunCW2JszGYxYy5WeMzYxqj8oKNG6fjNyQO7CtJ/jo3HXjBCXNyDDDfvxaIBTnojUjNjP30K7hhpuHmTEIvZuD9I5p14fyVKQpqWX+U1l8fU=
+	t=1781634185; cv=none; b=btKKSqHcqWP6ZpItQ1XB0K//vpDzWwWCdi2eC/4BJPFpmvJWP1mtb3OVLxTLkDJQAgF8UJDJUE4VTIXDz9I5yCqzvjuU07mxfNBU8k8Z1oean1RZmw3LCKxd8RAF8EuCXCymdbnDt+pHyJFrO8aIK4iPwpYb3DIRiYYw/x4wgo8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781629132; c=relaxed/simple;
-	bh=BjUUs+G3XTE8T+gYpVqR7bJUuDdC/kR6WETz53yfIHk=;
+	s=arc-20240116; t=1781634185; c=relaxed/simple;
+	bh=vbNviFBeEMv7Ms8QUYvFkinwMzOFvY7BkmXhfoxn5Jg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YoRZjjO9r9ErGTir7y/AdRsqlmWh58CDdMFtfXYahFcAq0sWoiiaUuTcDMsPZOGw5PK/PpbRZTpbPNbX26kkWyFf6bJgs/Yc420BcZS4bnTxY4JrRFkxNQ59hEZtKz2cHeD9IkmGfgPhvz852CAyayxCeug4AI5JBSzAqLvja1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yUIXtSpq; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CED1D1F00A3D;
-	Tue, 16 Jun 2026 16:58:50 +0000 (UTC)
+	 MIME-Version; b=FqR5nwQA+Oomxw6E0QQeN9QlAI2CVXwmFeVQM+YRQYAe+CYb09TA20Jq/JPJZNmOdaBOLnapWNiOhEaRx1YHn4EFkwq/GyEJUAZRswTStcD5mNbnAfhE7W+H8XPjk+aGtGaqugulF8hCTOBczHanPy5SVvaaN+Z9tmL3X57Xb3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hVDNtwtz; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A5111F000E9;
+	Tue, 16 Jun 2026 18:23:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781629131;
-	bh=cFwMpReUcUMq3ZeI2uM9siwTkgCfr4DrXNaQy7/MGUI=;
+	s=korg; t=1781634184;
+	bh=g6GfiiBohW29lAynUwjkbOe+RC6L4R+UFkYrQ2gFjYU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=yUIXtSpq6yKKas0M5GkOUNjSghvrXHN5YESE2fw5xaoIB7dXAVrN56xRuLkmjm0ca
-	 vgmKicBBCUsa6khihudiloy1DQ4vAM33v/wzyQ+kfSdbbXmq9wyya6kbT49Nvx+uOm
-	 IfFMeW9cFEPbImlMRaph5Bn7aUlwEgv2mxMue7sc=
+	b=hVDNtwtz5yVZ/LvTyF74KmsT7FI64A4JMZWlMN7KyabCQzPR1b/jgrFkytByd55yL
+	 5oTr2r0GBd2OSztnVGSbajtqLu7+ZqHWWtJkUyZ43aPL/qM59BjFGMJTR3PqNyyzsJ
+	 nwvD0UY3Hd33jP+aPQ5zs3yxvOOgtjbq43/jYFZU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>,
-	Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>,
-	Ao Wang <wangao@seu.edu.cn>,
-	Xuewei Feng <fengxw06@126.com>,
-	Qi Li <qli01@tsinghua.edu.cn>,
-	Ke Xu <xuke@tsinghua.edu.cn>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 228/452] net: garp: fix unsigned integer underflow in garp_pdu_parse_attr
-Date: Tue, 16 Jun 2026 20:27:35 +0530
-Message-ID: <20260616145129.712239319@linuxfoundation.org>
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Jason Gunthorpe <jgg@nvidia.com>
+Subject: [PATCH 5.15 218/411] IB/isert: Reject login PDUs shorter than ISER_HEADERS_LEN
+Date: Tue, 16 Jun 2026 20:27:36 +0530
+Message-ID: <20260616145112.370720287@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,27 +66,28 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	TAGGED_FROM(0.00)[bounces-265031-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:zhaoyz24@mails.tsinghua.edu.cn,m:yangyx22@mails.tsinghua.edu.cn,m:wangao@seu.edu.cn,m:fengxw06@126.com,m:qli01@tsinghua.edu.cn,m:xuke@tsinghua.edu.cn,m:horms@kernel.org,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,mails.tsinghua.edu.cn,seu.edu.cn,126.com,tsinghua.edu.cn,kernel.org];
+	TAGGED_FROM(0.00)[bounces-266010-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:jgg@nvidia.com,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nvidia.com];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -101,71 +95,71 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,seu.edu.cn:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,tsinghua.edu.cn:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,nvidia.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C89AD692BA8
+X-Rspamd-Queue-Id: 3DB86694161
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-[ Upstream commit 16e408e607a94b646fb14a2a98422c6877ae4b3c ]
+commit 29e7b925ae6df64894e82ab6419994dc25580a8a upstream.
 
-The receive-side GARP attribute parser computes dlen with reversed
-operands:
+In drivers/infiniband/ulp/isert/ib_isert.c, isert_login_recv_done()
+computes the login request payload length as wc->byte_len minus
+ISER_HEADERS_LEN with no lower bound, and login_req_len is a signed int.
+A remote iSER initiator can post a login Send work request carrying
+fewer than ISER_HEADERS_LEN (76) bytes, so the subtraction underflows
+and login_req_len becomes negative.
 
-        dlen = sizeof(*ga) - ga->len;
+isert_rx_login_req() then reads that negative length back into a signed
+int, takes size = min(rx_buflen, MAX_KEY_VALUE_PAIRS), and because the
+min() is signed it keeps the negative value; the value is then passed as
+the memcpy() length and sign-extended to a multi-gigabyte size_t. The
+copy into the 8192-byte login->req_buf runs far out of bounds and
+faults, crashing the target node. The login phase precedes iSCSI
+authentication, so no credentials are required to reach this path.
 
-ga->len is the on-wire attribute length and includes the GARP attribute
-header. For normal attributes with data, ga->len is larger than
-sizeof(*ga), so the subtraction underflows in unsigned arithmetic.
+Reject any login PDU shorter than ISER_HEADERS_LEN before the
+subtraction, mirroring the existing early return on a failed work
+completion, so login_req_len can never go negative. The upper bound was
+already safe: a posted login buffer cannot deliver more than
+ISER_RX_PAYLOAD_SIZE, so the difference stays at or below
+MAX_KEY_VALUE_PAIRS and the existing min() clamps it; only the missing
+lower bound needs to be added.
 
-The resulting value is later passed to garp_attr_lookup(), whose length
-argument is u8. After truncation, the parsed data length usually no
-longer matches the length stored for locally registered attributes, so
-received Join/Leave events are ignored. This breaks the GARP receive path
-for common attributes, such as GVRP VLAN registration attributes.
-
-Compute the data length as the attribute length minus the header length.
-
-Fixes: eca9ebac651f ("net: Add GARP applicant-only participant")
-Reported-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
-Reported-by: Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>
-Reported-by: Ao Wang <wangao@seu.edu.cn>
-Reported-by: Xuewei Feng <fengxw06@126.com>
-Reported-by: Qi Li <qli01@tsinghua.edu.cn>
-Reported-by: Ke Xu <xuke@tsinghua.edu.cn>
-Signed-off-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260527083200.42861-1-zhaoyz24@mails.tsinghua.edu.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: b8d26b3be8b3 ("iser-target: Add iSCSI Extensions for RDMA (iSER) target driver")
+Link: https://patch.msgid.link/r/20260602194642.2273217-1-michael.bommarito@gmail.com
+Cc: stable@vger.kernel.org
+Assisted-by: Claude:claude-opus-4-8
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/802/garp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/infiniband/ulp/isert/ib_isert.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/net/802/garp.c b/net/802/garp.c
-index ab24b21fbb4938..d263f8ffdceec3 100644
---- a/net/802/garp.c
-+++ b/net/802/garp.c
-@@ -452,7 +452,7 @@ static int garp_pdu_parse_attr(struct garp_applicant *app, struct sk_buff *skb,
- 	if (!pskb_may_pull(skb, ga->len))
- 		return -1;
- 	skb_pull(skb, ga->len);
--	dlen = sizeof(*ga) - ga->len;
-+	dlen = ga->len - sizeof(*ga);
+--- a/drivers/infiniband/ulp/isert/ib_isert.c
++++ b/drivers/infiniband/ulp/isert/ib_isert.c
+@@ -1388,6 +1388,12 @@ isert_login_recv_done(struct ib_cq *cq,
+ 	ib_dma_sync_single_for_cpu(ib_dev, isert_conn->login_desc->dma_addr,
+ 			ISER_RX_SIZE, DMA_FROM_DEVICE);
  
- 	if (attrtype > app->app->maxattr)
- 		return 0;
--- 
-2.53.0
-
++	if (unlikely(wc->byte_len < ISER_HEADERS_LEN)) {
++		isert_dbg("login request length %u is too short\n",
++			  wc->byte_len);
++		return;
++	}
++
+ 	isert_conn->login_req_len = wc->byte_len - ISER_HEADERS_LEN;
+ 
+ 	if (isert_conn->conn) {
 
 
 
