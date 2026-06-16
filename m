@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-264458-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264740-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id oVOqG5p3MWpNkAUAu9opvQ
-	(envelope-from <stable+bounces-264458-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:19:38 +0200
+	id kU3UD7h8MWp+kgUAu9opvQ
+	(envelope-from <stable+bounces-264740-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:41:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7251A691F08
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:19:37 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4731692588
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:41:27 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=H9PefhGb;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264458-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264458-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=MF1KTEGH;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264740-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264740-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EB826320F0E2
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:06:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 734AE308C564
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:33:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76B4445349C;
-	Tue, 16 Jun 2026 16:06:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9905F4779A8;
+	Tue, 16 Jun 2026 16:33:57 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 535F0451052;
-	Tue, 16 Jun 2026 16:06:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F53046AF3C;
+	Tue, 16 Jun 2026 16:33:56 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781625989; cv=none; b=MLTlhNJ8vds51biNA8f4wlWVSzWanT8kTfT8Vd+Qnqs5VqQ4s6s9E1xI9AiFpEEUriOX9IYgU+4C8QaZaBNnxAMobM3HAc0shjYsgAxVUamm/QbxobYiiKN1BwlZmVvjO2OoPz1S3uazdEldk+dDtz2AtA4P3NOoeVSQGv+bMp8=
+	t=1781627637; cv=none; b=TPj3F1lT0KtnDjMcJna26Zv4HGN3egsNruT57Uc3CZzk3fQkHfh5uVlFeJy97e/QHj06jowyhh1pjZJTojnqcrE7CrxvlmD9jHOx0fWXRGUjJ3wsMUyv3kVgqQOXt3kef5pT2T/P8EwPKi1MeqcDyqu8PkPRPK2xXhK8rrw/5XU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781625989; c=relaxed/simple;
-	bh=m3auon5TbE8bt4Rs0koMYW22yXdIGPzfJaTibYDz4c0=;
+	s=arc-20240116; t=1781627637; c=relaxed/simple;
+	bh=cPHEhziBTErVOfFPLu+08+1KGq9HLu86gn3Qopj3smo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KsyUQ4Ujng6rr4dSXWYFdM5htimGurT+OHpTBaGFN65QvyNdNyfUILOG61ukkhsRbSwyxpU0VvIYrtxEuv0mGg/OBrEDZ+UIzl5bZ+/ru0PbPQNvY7VGIqSRLPowyc6h5FWpJiM4dp8UpDwOi+Ktlfll7SfTmnIIxGiOhcb+pjw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H9PefhGb; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 396221F000E9;
-	Tue, 16 Jun 2026 16:06:26 +0000 (UTC)
+	 MIME-Version; b=PxmYZWGIquVFGm/JmHkKehQqem6W3+ILM3aOduLMhen8Ps7dexnCmHgDin6f6eUPETeG9LB898QpdPUK8GclIVYUAMc83F/yt/SVyn3iVwApasdviKTQ5+w182pzH+Q97pLAR0ZJCWMUHMhjRsMH7eYdwEk0dWen7mT/BXsRn40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MF1KTEGH; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7152B1F000E9;
+	Tue, 16 Jun 2026 16:33:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781625988;
-	bh=kXy+dwxqS69GkZ+7Mm7zB7/u0dXkUnBf6glxKgQVH0g=;
+	s=korg; t=1781627636;
+	bh=aM+SPBPQSVpqYHsyySMRoRYxoXlW1mZdtM36nVyIGsE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=H9PefhGbwAMTdQgqvzL38gwqEyvDDDc4hvNrv3MTKkglCeNfFUfM84IKHdumA+8Cp
-	 x4AWkAjyfK/BsBuVCznVSsB0DpPjDayzAe0TmP+zYqFgUJx2WIDGThuHJmEpjUD+s7
-	 SSQuljbEMdf3xspnREe2tLwtadjTXMTy3xQPQm2I=
+	b=MF1KTEGHdF128svEy6H1ou2sY3167UWYZYEnrU+h6V8cMOET6Jm7Rs+gkBWjV/EYA
+	 uaaFm3RvocqSrjcYJ7FuSabPaaEXArjSPqvR3D5t6sLoEVOSJ5UWF8+qbd03ZGj7bA
+	 XRozeXmLTkPsMv19qBL+x0mnr7Y05VPzUXOsFiOc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stable@vger.kernel.org,
-	Andre Heider <a.heider@gmail.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Srinivas Kandagatla <srini@kernel.org>
-Subject: [PATCH 6.18 244/325] nvmem: layouts: onie-tlv: fix hang on unknown types
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: [PATCH 6.12 202/261] thunderbolt: Reject zero-length property entries in validator
 Date: Tue, 16 Jun 2026 20:30:40 +0530
-Message-ID: <20260616145110.636394206@linuxfoundation.org>
+Message-ID: <20260616145054.412825431@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,83 +71,79 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,vger.kernel.org,gmail.com,bootlin.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-264458-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:Stable@vger.kernel.org,m:a.heider@gmail.com,m:miquel.raynal@bootlin.com,m:srini@kernel.org,m:aheider@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264740-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:mika.westerberg@linux.intel.com,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.intel.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,bootlin.com:email,cell.name:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,intel.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7251A691F08
+X-Rspamd-Queue-Id: B4731692588
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andre Heider <a.heider@gmail.com>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-commit ea41020b9018e31c2ea7e9d89021e3e6d7470883 upstream.
+commit cff8eb65d1eafe7793e54b4d0cf6bf831644630b upstream.
 
-The EEPROM on my board has a vendor specific entry of type 0x41. When
-stumbling upon that, this driver hangs in an endless loop.
+tb_property_entry_valid() accepts entries with length == 0 for
+DIRECTORY, DATA, and TEXT types.  A zero-length TEXT entry passes
+validation but causes an underflow in the null-termination logic:
 
-Fix it by keep incrementing the offset on unknown entries, so the loop
-will eventually stop.
+  property->value.text[property->length * 4 - 1] = '\0';
 
-Fixes: d3c0d12f6474 ("nvmem: layouts: onie-tlv: Add new layout driver")
-Cc: Stable@vger.kernel.org
-Signed-off-by: Andre Heider <a.heider@gmail.com>
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
-Link: https://patch.msgid.link/20260530204340.116743-2-srini@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+When property->length is 0 this writes to offset -1 relative to
+the allocation.
+
+Reject zero-length entries early in the validator since they have no
+valid representation in the XDomain property protocol.
+
+Fixes: cdae7c07e3e3 ("thunderbolt: Add support for XDomain properties")
+Cc: stable@vger.kernel.org
+Assisted-by: Claude:claude-opus-4-7
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvmem/layouts/onie-tlv.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/thunderbolt/property.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/nvmem/layouts/onie-tlv.c
-+++ b/drivers/nvmem/layouts/onie-tlv.c
-@@ -119,7 +119,7 @@ static int onie_tlv_add_cells(struct dev
- 
- 		cell.name = onie_tlv_cell_name(tlv.type);
- 		if (!cell.name)
--			continue;
-+			goto next;
- 
- 		cell.offset = hdr_len + offset + sizeof(tlv.type) + sizeof(tlv.len);
- 		cell.bytes = tlv.len;
-@@ -132,6 +132,7 @@ static int onie_tlv_add_cells(struct dev
- 			return ret;
- 		}
- 
-+next:
- 		offset += sizeof(tlv) + tlv.len;
- 	}
- 
+--- a/drivers/thunderbolt/property.c
++++ b/drivers/thunderbolt/property.c
+@@ -60,6 +60,8 @@ static bool tb_property_entry_valid(cons
+ 	case TB_PROPERTY_TYPE_DIRECTORY:
+ 	case TB_PROPERTY_TYPE_DATA:
+ 	case TB_PROPERTY_TYPE_TEXT:
++		if (!entry->length)
++			return false;
+ 		if (entry->length > block_len)
+ 			return false;
+ 		if (check_add_overflow(entry->value, entry->length, &end) ||
 
 
 
