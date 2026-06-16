@@ -1,65 +1,59 @@
-Return-Path: <stable+bounces-266234-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264899-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 9HutLyGZMWpQnwUAu9opvQ
-	(envelope-from <stable+bounces-266234-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:42:41 +0200
+	id IPYBI91/MWrMkwUAu9opvQ
+	(envelope-from <stable+bounces-264899-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:54:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A0A16945C0
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:42:41 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05282692926
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:54:53 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=yFtki9dz;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266234-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-266234-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=j1MXq1Aw;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264899-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264899-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 01FC4302F486
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:42:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F335A31E302A
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:47:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB75D46AEE1;
-	Tue, 16 Jun 2026 18:42:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72A3144CAF5;
+	Tue, 16 Jun 2026 16:47:54 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB4ED13777E;
-	Tue, 16 Jun 2026 18:42:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56F2B32B138;
+	Tue, 16 Jun 2026 16:47:53 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781635357; cv=none; b=ESlB3RP4mb0Mx217gvBEbp4j66YiOaj/RZz1ZkJ9wdUADwt2HvOpheoAH+m1sY2zbfJ5lwTotgt+9KekqUVdEOsQVBXILRfzT3BKymgXYbvnrckyGJxZD6ZRvIDGX56aI8eppp6i914yZjOJMiPU31qZnqkQNQosTPZYEi8+8vg=
+	t=1781628474; cv=none; b=dQcvny6YLw8UqjZ9+OHRI4TKV0R5K7A0VGFVS50psdEz3YP3067k929IRbIFXMB3ErgvgvdwZnhm+3wmZoqszXSEnHWujfrsTomUrlkYUzkFuLR7gPRpxr/2N55vyX9N1FdQ+n16XCpjMibliNnZOLfdn5/Ebha41mBqmQfNwMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781635357; c=relaxed/simple;
-	bh=jyCzQbCRrPfi9LTFtc7yCT2773H2bczZjN1EmwFH81A=;
+	s=arc-20240116; t=1781628474; c=relaxed/simple;
+	bh=jaulM1O2Q9Ya1CGtdsJsLT8LFtWj79nxTQLAMKLRfW8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gQwABRrZKDpII2YMUc58tF9I3vMuMWUT111LzxTh3UCMKmxtvNbaumq7i9nOtECWZougjPMjX1gXlvIEm1VF4Q89G4qYP/T8kIohmCoyc1pXoqOQm8pLJWwR3nAkf00RwpeA/SD4VtA/vdN5xK8TcK3eTem8SHvl/ZJq75dIPw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yFtki9dz; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 942141F000E9;
-	Tue, 16 Jun 2026 18:42:35 +0000 (UTC)
+	 MIME-Version; b=ZkpOwhmikjN76tlEqDUa9KyruvnGe/LRiykdgEoSRq3ZPCeU/aWSYG8XhftOgKTuqjDzV+vj3pvNa9AMX12lpLvR/KxoMp6w07eayZymddk8mI0tnHf1r8Gg8oLaRMY+lpO6s7PeBtFZBdV/vMZYfsCU16yg9XTKCCKvlYWedK8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j1MXq1Aw; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C6771F000E9;
+	Tue, 16 Jun 2026 16:47:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781635356;
-	bh=rdQUSzBIpN0pAJz/IaBW9JuIYROtMr6kRwvN6PVsIRY=;
+	s=korg; t=1781628473;
+	bh=Vf51AqiiDne+SOa5KZHV7Zrr7u1ZoMIpL7jvfiEYNqc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=yFtki9dzfnqrQVR20E7HJUcBwISmQQDxOa4FOESxfPTwlFER587ZMnLWcLAg71EjW
-	 l5lC1lGAiazEoNb68sFIbO34cK+bK2Mi0bcBSrWkK46R1mUgp4uko+8NJp3bJw3acd
-	 0hBd1zoSc9+MdrcNI51EAKTD7U7U7t/ohDL5pYpg=
+	b=j1MXq1AwZEF+UtbTdR3j6YGrU5GPgFrWTUv4NUn7RMBwLeVXBKhEEQL3OochXmpL8
+	 paj5sLVsIKtc9gHz6Zl6KrVUTZbwOxWziwb8HUk8a+hwdo7gJWJ1Rj/x/NHHXCrz/A
+	 nBfqO/hnu43UZCU/UvaLQtJhP5aYKCWJy4jiOc+M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Sven Eckelmann <sven@narfation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 033/342] batman-adv: tvlv: reject oversized TVLV packets
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.6 102/452] Input: xpad - fix out-of-bounds access for Share button
 Date: Tue, 16 Jun 2026 20:25:29 +0530
-Message-ID: <20260616145049.795165575@linuxfoundation.org>
+Message-ID: <20260616145123.141680631@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,126 +65,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,narfation.org];
-	TAGGED_FROM(0.00)[bounces-266234-lists,stable=lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264899-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:yuantan098@gmail.com,m:yifanwucs@gmail.com,m:tomapufckgml@gmail.com,m:bird@lzu.edu.cn,m:sven@narfation.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:dmitry.torokhov@gmail.com,m:dmitrytorokhov@gmail.com,s:lists@lfdr.de];
+	RCPT_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,lzu.edu.cn:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,narfation.org:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8A0A16945C0
+X-Rspamd-Queue-Id: 05282692926
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 
-commit f50487e3566358b2b982b7801945e858c78ad9ab upstream.
+commit 6cdc46b38cf146ce81d4831b6472dbf7731849a2 upstream.
 
-batadv_tvlv_container_ogm_append() builds a TVLV packet section from
-the tvlv.container_list. The total size of this section is computed by
-batadv_tvlv_container_list_size(), which sums the sizes of all registered
-containers.
+xpadone_process_packet() receives len directly from urb->actual_length
+and uses it to index the share-button byte at data[len - 18] or
+data[len - 26]. Since both len and data[0] are under the device's
+control, a broken controller can send a GIP_CMD_INPUT packet with
+actual_length < 18 (e.g. 5 bytes) and reach this code path, causing
+accesses beyond the actual array.
 
-The return type and accumulator in batadv_tvlv_container_list_size() were
-u16. If the accumulated size exceeds U16_MAX, the value wraps around,
-causing the subsequent allocation in batadv_tvlv_container_ogm_append()
-to be undersized. The memcpy-style copy that follows would then write
-beyond the end of the allocated buffer, corrupting kernel memory.
+Fix this by calculating the offset and checking bounds against the
+packet length.
 
-Fix this by widening the return type of batadv_tvlv_container_list_size()
-to size_t. In batadv_tvlv_container_ogm_append(), check the computed length
-against U16_MAX before proceeding, and bail out as if the allocation had
-failed when the limit is exceeded.
-
-Cc: stable@kernel.org
-Fixes: ef26157747d4 ("batman-adv: tvlv - basic infrastructure")
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Reviewed-by: Yuan Tan <yuantan098@gmail.com>
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4ef46367073b ("Input: xpad - fix Share button on Xbox One controllers")
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/tvlv.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/input/joystick/xpad.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/net/batman-adv/tvlv.c b/net/batman-adv/tvlv.c
-index 75f7ea827ed9dd..8da8184a2ebdfc 100644
---- a/net/batman-adv/tvlv.c
-+++ b/net/batman-adv/tvlv.c
-@@ -13,6 +13,7 @@
- #include <linux/if_ether.h>
- #include <linux/kernel.h>
- #include <linux/kref.h>
-+#include <linux/limits.h>
- #include <linux/list.h>
- #include <linux/lockdep.h>
- #include <linux/netdevice.h>
-@@ -160,10 +161,10 @@ batadv_tvlv_container_get(struct batadv_priv *bat_priv, u8 type, u8 version)
-  *
-  * Return: size of all currently registered tvlv containers in bytes.
-  */
--static u16 batadv_tvlv_container_list_size(struct batadv_priv *bat_priv)
-+static size_t batadv_tvlv_container_list_size(struct batadv_priv *bat_priv)
- {
- 	struct batadv_tvlv_container *tvlv;
--	u16 tvlv_len = 0;
-+	size_t tvlv_len = 0;
+--- a/drivers/input/joystick/xpad.c
++++ b/drivers/input/joystick/xpad.c
+@@ -1079,10 +1079,10 @@ static void xpadone_process_packet(struc
+ 		input_report_key(dev, BTN_START,  data[4] & BIT(2));
+ 		input_report_key(dev, BTN_SELECT, data[4] & BIT(3));
+ 		if (xpad->mapping & MAP_SHARE_BUTTON) {
+-			if (xpad->mapping & MAP_SHARE_OFFSET)
+-				input_report_key(dev, KEY_RECORD, data[len - 26] & BIT(0));
+-			else
+-				input_report_key(dev, KEY_RECORD, data[len - 18] & BIT(0));
++			u32 offset = (xpad->mapping & MAP_SHARE_OFFSET) ? 26 : 18;
++
++			if (len >= offset)
++				input_report_key(dev, KEY_RECORD, data[len - offset] & BIT(0));
+ 		}
  
- 	lockdep_assert_held(&bat_priv->tvlv.container_list_lock);
- 
-@@ -316,13 +317,17 @@ int batadv_tvlv_container_ogm_append(struct batadv_priv *bat_priv,
- {
- 	struct batadv_tvlv_container *tvlv;
- 	struct batadv_tvlv_hdr *tvlv_hdr;
--	u16 tvlv_value_len;
-+	size_t tvlv_value_len;
- 	void *tvlv_value;
- 	int tvlv_len_ret;
- 	bool ret;
- 
- 	spin_lock_bh(&bat_priv->tvlv.container_list_lock);
- 	tvlv_value_len = batadv_tvlv_container_list_size(bat_priv);
-+	if (tvlv_value_len > U16_MAX) {
-+		tvlv_len_ret = -E2BIG;
-+		goto end;
-+	}
- 
- 	ret = batadv_tvlv_realloc_packet_buff(packet_buff, packet_buff_len,
- 					      packet_min_len, tvlv_value_len);
--- 
-2.53.0
-
+ 		/* buttons A,B,X,Y */
 
 
 
