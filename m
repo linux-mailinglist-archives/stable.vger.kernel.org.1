@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-264756-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266178-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id FbXwBhJ9MWqvkgUAu9opvQ
-	(envelope-from <stable+bounces-264756-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:42:58 +0200
+	id b+IzLRCYMWrdngUAu9opvQ
+	(envelope-from <stable+bounces-266178-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:38:08 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A6C96925FD
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:42:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FE08694499
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:38:08 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=IAsVk54s;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264756-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264756-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Fbnu58JO;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266178-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-266178-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A03A930B0CC8
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:35:35 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 974E43093649
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:37:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0AFB4779AA;
-	Tue, 16 Jun 2026 16:35:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3204846AF3C;
+	Tue, 16 Jun 2026 18:37:42 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D30B0477995;
-	Tue, 16 Jun 2026 16:35:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F3143DF007;
+	Tue, 16 Jun 2026 18:37:41 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781627732; cv=none; b=TOVrq1IkcAtwmawAdR7cr5tQP1Y01jOeL/C+vv4rS6+w+7FdGRcnK+mClZSbWn532ykeM3dQcKroIuuFnGIqQ0+KDzvbqWST9+5pErt0Wd9HLxuVXTYinC+O0L62je6Q+Z8QJRvFE2ZPNEx1k8AJovTkco/LqQvJwX4VAftD8ao=
+	t=1781635062; cv=none; b=MukJIZqnbDTm+KmcR8DTaqOBaN1K/6DF05U8ifc2wWQIsw1MOPRZHYWnzfJN4LMbzn1y6KAAR+ZYRzYCAJ9wGuZhw3tf2qGAupNNVwlkJBQExp43AHLkMzwXeoaimUF/p+jDo92k8ikwjqtLenbp7qorPB0zgGyWwWEzWrAxL2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781627732; c=relaxed/simple;
-	bh=Fg+WZPymvot35Nu3P//V2iFALnKjJtUEZBz+iQ2Tcuw=;
+	s=arc-20240116; t=1781635062; c=relaxed/simple;
+	bh=gWKOkM7klhBiW3nJIHwSLuqJq6w2bPd3PnSb0Gwbrak=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J3PiPAjB3O5c0fMuiRcgZBADnqYuPPL30B/NbaVffqUCfd469LNHi/MpkZipA2ZcyIgz+SqP4KMpmb5OnmaK+FyH1XuNPAeP3yNkjYQaMS608jVvPZ5JdoxJL7DRupl5H4YqifP/cbOOoYYOE3f49iTHf7wffYovOHvo0eIdsEg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IAsVk54s; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 939291F000E9;
-	Tue, 16 Jun 2026 16:35:29 +0000 (UTC)
+	 MIME-Version; b=nbdUUIHEZRv2eB3QT89KTAfFaG+QIVtLWQ32vJZcLvYSohogbdHaZk4yzZRhdverZZIusr4wWqwiP8Vuueo+0ajTTc67nVaGvArrCJ4rCp7Gyeh/0MIM6lngVlLG0GU/9zRhWNuDTE/Mc120APNCG50P4mhVN6nV1jE+klQjnIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fbnu58JO; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DBD71F000E9;
+	Tue, 16 Jun 2026 18:37:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781627730;
-	bh=t/T1gn9TGkY1DUjXNAJXTbD1BbUmdCHKIE8r9ycXm2k=;
+	s=korg; t=1781635061;
+	bh=m7lJe6K+BFVNi7iDfDIApk1d60csjTpmbv3fEL9Sjrk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=IAsVk54s48DaIfp2ezaVxU/YcVcIutQRDBUolrWFcw+dmOu1GpbiLZr6gIF82Kv7/
-	 SoVnhGT8m7c57/au6CT9Xo4jrojxN9CHv8/jS/Ax/jViKVYY6gXMdSnYD9UJ59yL5L
-	 ojzvuZ53GgTy84XEb7oaag+xF1g/zBh1wCSNigKI=
+	b=Fbnu58JODUDtEbpZqpdygYHT/MTzPxQGpEGPnMGrY9BVxK1Ig5nWezwwVS3y2RexZ
+	 4S1VYI9VMTe2JnNc7oRQ2ZYSu0CD3hQkVlUpOFl5I2XE+/c2KeQRcDfU/Uh9Ag5zfc
+	 MS7K5dO9Cal9IrbJ7xgK+WmRdRH+88JbJPXB+in0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ZhaoJinming <zhaojinming@uniontech.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.12 183/261] net: bonding: fix NULL pointer dereference in bond_do_ioctl()
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 383/411] tty: serial: qcom-geni-serial: remove unused symbols
 Date: Tue, 16 Jun 2026 20:30:21 +0530
-Message-ID: <20260616145053.549565645@linuxfoundation.org>
+Message-ID: <20260616145121.623115772@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
-References: <20260616145044.869532709@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,17 +77,17 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264756-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-266178-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:zhaojinming@uniontech.com,m:pabeni@redhat.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bartosz.golaszewski@linaro.org,m:konrad.dybcio@linaro.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -97,66 +98,79 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,linaro.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9A6C96925FD
+X-Rspamd-Queue-Id: 2FE08694499
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ZhaoJinming <zhaojinming@uniontech.com>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-commit a764b0e8317a863006e05732e1aefe821b9d8c2d upstream.
+[ Upstream commit 68c6bd92c86cbc4937834c79963b27c77ee3bf51 ]
 
-In bond_do_ioctl(), slave_dev is obtained via __dev_get_by_name() which
-can return NULL if the requested interface name does not exist. However,
-the subsequent slave_dbg() call is placed before the NULL check:
+Drop all unused symbols from the driver.
 
-    slave_dev = __dev_get_by_name(net, ifr->ifr_slave);
-    slave_dbg(bond_dev, slave_dev, "slave_dev=%p:\n", slave_dev); //here
-    if (!slave_dev)
-        return -ENODEV;
-
-The slave_dbg() macro expands to netdev_dbg(bond_dev, "(slave %s): " fmt,
-(slave_dev)->name, ...) which unconditionally dereferences slave_dev->name
-before the NULL check is performed. This results in a NULL pointer
-dereference kernel oops when a user calls bonding ioctl (e.g.
-SIOCBONDENSLAVE, SIOCBONDRELEASE, etc.) with a non-existent slave
-interface name.
-
-This is reachable from userspace via the bonding ioctl interface with
-CAP_NET_ADMIN capability, making it a potential local denial-of-service
-vector.
-
-Fix by moving the slave_dbg() call after the NULL check.
-
-Fixes: e2a7420df2e0 ("bonding/main: convert to using slave printk macros")
-Cc: stable@vger.kernel.org # v5.2+
-Signed-off-by: ZhaoJinming <zhaojinming@uniontech.com>
-Link: https://patch.msgid.link/20260601085649.4029067-1-zhaojinming@uniontech.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20221229155030.418800-4-brgl@bgdev.pl
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: ca2584d841b6 ("serial: qcom-geni: fix UART_RX_PAR_EN bit position")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/bonding/bond_main.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/tty/serial/qcom_geni_serial.c |   15 ---------------
+ 1 file changed, 15 deletions(-)
 
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -4673,11 +4673,11 @@ static int bond_do_ioctl(struct net_devi
+--- a/drivers/tty/serial/qcom_geni_serial.c
++++ b/drivers/tty/serial/qcom_geni_serial.c
+@@ -38,20 +38,11 @@
+ #define UART_TX_PAR_EN		BIT(0)
+ #define UART_CTS_MASK		BIT(1)
  
- 	slave_dev = __dev_get_by_name(net, ifr->ifr_slave);
- 
--	slave_dbg(bond_dev, slave_dev, "slave_dev=%p:\n", slave_dev);
+-/* SE_UART_TX_WORD_LEN */
+-#define TX_WORD_LEN_MSK		GENMASK(9, 0)
 -
- 	if (!slave_dev)
- 		return -ENODEV;
+ /* SE_UART_TX_STOP_BIT_LEN */
+-#define TX_STOP_BIT_LEN_MSK	GENMASK(23, 0)
+ #define TX_STOP_BIT_LEN_1	0
+-#define TX_STOP_BIT_LEN_1_5	1
+ #define TX_STOP_BIT_LEN_2	2
  
-+	slave_dbg(bond_dev, slave_dev, "slave_dev=%p:\n", slave_dev);
-+
- 	switch (cmd) {
- 	case SIOCBONDENSLAVE:
- 		res = bond_enslave(bond_dev, slave_dev, NULL);
+-/* SE_UART_TX_TRANS_LEN */
+-#define TX_TRANS_LEN_MSK	GENMASK(23, 0)
+-
+ /* SE_UART_RX_TRANS_CFG */
+-#define UART_RX_INS_STATUS_BIT	BIT(2)
+ #define UART_RX_PAR_EN		BIT(3)
+ 
+ /* SE_UART_RX_WORD_LEN */
+@@ -62,12 +53,9 @@
+ 
+ /* SE_UART_TX_PARITY_CFG/RX_PARITY_CFG */
+ #define PAR_CALC_EN		BIT(0)
+-#define PAR_MODE_MSK		GENMASK(2, 1)
+-#define PAR_MODE_SHFT		1
+ #define PAR_EVEN		0x00
+ #define PAR_ODD			0x01
+ #define PAR_SPACE		0x10
+-#define PAR_MARK		0x11
+ 
+ /* SE_UART_MANUAL_RFR register fields */
+ #define UART_MANUAL_RFR_EN	BIT(31)
+@@ -76,11 +64,8 @@
+ 
+ /* UART M_CMD OP codes */
+ #define UART_START_TX		0x1
+-#define UART_START_BREAK	0x4
+-#define UART_STOP_BREAK		0x5
+ /* UART S_CMD OP codes */
+ #define UART_START_READ		0x1
+-#define UART_PARAM		0x1
+ 
+ #define UART_OVERSAMPLING	32
+ #define STALE_TIMEOUT		16
 
 
 
