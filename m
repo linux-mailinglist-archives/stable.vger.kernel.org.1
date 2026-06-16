@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-264556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266008-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id PMaoE8Z2MWrwjwUAu9opvQ
-	(envelope-from <stable+bounces-264556-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:16:06 +0200
+	id JdlbI5KUMWpanQUAu9opvQ
+	(envelope-from <stable+bounces-266008-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:23:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F0B5691DEB
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:16:06 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BF22694164
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:23:14 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ZJI7dDEU;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264556-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-264556-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=x1miJhFK;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266008-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266008-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5312E302D4E9
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:15:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1602C3188DA0
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:22:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC98946AEC5;
-	Tue, 16 Jun 2026 16:15:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DB55466B5E;
+	Tue, 16 Jun 2026 18:22:55 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C0B535AC1E;
-	Tue, 16 Jun 2026 16:15:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 781103BFE5A;
+	Tue, 16 Jun 2026 18:22:54 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781626546; cv=none; b=rSBXkQmp2qFoQq1NSEikwYAaNHlyJAP0JkTRvPFgVicCLFpmWjl4zIYJjorbq0wWmVEjaq9zeR486ZJu3e9WxTGrmu0LnEdP3ar0umq5vAQZQ+rTAQHJs+4alll4RRX8WfmekuRiStazYJc+iXX8bQXo8PN/FxALeYf2Cf+6yow=
+	t=1781634175; cv=none; b=UfK8YzGvbMrkSIF2AiPYN8EsJKS+HirjTEBNgSK6GXitVW3ylngcDzNez4veNohq+M31y4/NgFNJCouFIQ/9Q9/2LIfw9E1/U3w5mMy9zgaiyhP3wcmHGaRmKkf1elATJ4whwoDXJjKZ6OqyJRhkKd6AHOEHm4IjYVjJtuFZYn4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781626546; c=relaxed/simple;
-	bh=NvzCbQtnjRkdmutYt7DnND8NUDB96hJrGTHIJ7olBdM=;
+	s=arc-20240116; t=1781634175; c=relaxed/simple;
+	bh=2Fk1J3iwQ/fh40swnPckL4r8q2JW3iSfhlmC+qZmWOM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mb/ooSDAX/f7iOa70aeD138DCBZc9ygHouYrgGoRhe053aHGyHhVQnpR6a1QUlFOgfh3y8vGhLEJQpTBRfSk9NOjsBdhXRVjL4ichG9FgeGmIZuW88WEqgFwqayoOWRUav1z5r6vQk/WCdwgh4PcEPWC6AeLfDUco9BQZA5xKeI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZJI7dDEU; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D7311F000E9;
-	Tue, 16 Jun 2026 16:15:44 +0000 (UTC)
+	 MIME-Version; b=hDxzBxkUnsni6tBWVWZZ4S1sX/NtK/yCGchkuRoYK9Gj/KFSOU8TpwLNx5hV+/QR827CtByHrjcmScrZfnxMGCgki4VS0qxVrTlhx1idmjMwA+GvUGw7+7dnka5d3z5avVHMNz9YlKP0LXctUeAKmkYSpK+tYF58JfVnxBnuWNw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x1miJhFK; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 751521F000E9;
+	Tue, 16 Jun 2026 18:22:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781626545;
-	bh=N5nOcN/UzK9gbMI06mC4Ql6XcEWU3oxyCwprsW+5DJ8=;
+	s=korg; t=1781634174;
+	bh=YJrVrL6qwWzI8DLA2wEf9gRm5TVR5omnqaRdlbmp4/4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ZJI7dDEUDi89WLm/TxaiQ+RT+lqpbXQiGwi62Y46gFlSYxTxl5HHb4kVZjL65VCat
-	 dNyGLoi11LPbOCbbvMGh7BPf9iNP5kpP8cuwDlwzwlXnn4lGbtaWwOmQe/IH2V7tBH
-	 8fUkGhJX+hQPN52JGIwhL9LAMzac/ORwMEKd7AvQ=
+	b=x1miJhFKAcSvMtyRlczvcXa8QRbraCGduKBP0H6/r1GegcYyIGVLKzoK0jigjPInu
+	 XKJBcVyZRlPHBkM5Xw1uF+ZroeuNebTIGjW6BfWpnVZQ6Bd5jRUAnWma4svEoTSRXV
+	 NrKs9JZzyFO3WFIsMwDWmsw8ajrWDdty23LSN6Xk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+fd222bb38e916df26fa4@syzkaller.appspotmail.com,
-	Johannes Berg <johannes.berg@intel.com>,
-	Carlos Llamas <cmllamas@google.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 008/261] wifi: remove zero-length arrays
+	HyeongJun An <sammiee5311@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.15 208/411] USB: serial: kl5kusb105: fix bulk-out buffer overflow
 Date: Tue, 16 Jun 2026 20:27:26 +0530
-Message-ID: <20260616145045.417959255@linuxfoundation.org>
+Message-ID: <20260616145111.805312952@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
-References: <20260616145044.869532709@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,133 +66,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264556-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-266008-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:sammiee5311@gmail.com,m:johan@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:syzbot+fd222bb38e916df26fa4@syzkaller.appspotmail.com,m:johannes.berg@intel.com,m:cmllamas@google.com,m:sashal@kernel.org,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,fd222bb38e916df26fa4];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,vger.kernel.org:from_smtp,appspotmail.com:email,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 0F0B5691DEB
+X-Rspamd-Queue-Id: 0BF22694164
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: HyeongJun An <sammiee5311@gmail.com>
 
-commit a85b8544d46390469b6ca72d6bfd3ecb7be985ff upstream.
+commit 96d47e40bf9db4a9efd5c8fb53287a508d165f14 upstream.
 
-All of these are really meant to be variable-length, and
-in the case of s1g_beacon it's actually accessed. Make that
-one in particular, and a couple of others (that aren't used
-as arrays now), actually variable.
+klsi_105_prepare_write_buffer() is called by the generic write path
+with the bulk-out buffer and its size (bulk_out_size, 64 bytes). It
+stores a two-byte length header at the start of the buffer and copies
+the payload from the write fifo starting at buf + KLSI_HDR_LEN, but
+passes the full buffer size as the number of bytes to copy:
 
-Reported-by: syzbot+fd222bb38e916df26fa4@syzkaller.appspotmail.com
-Fixes: 1e1f706fc2ce ("wifi: cfg80211/mac80211: correctly parse S1G beacon optional elements")
-Link: https://patch.msgid.link/20250614003037.a3e82e882251.I2e8b58e56ff2a9f8b06c66f036578b7c1d4e4685@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  count = kfifo_out_locked(&port->write_fifo, buf + KLSI_HDR_LEN,
+                           size, &port->lock);
+
+When the fifo holds at least size bytes, size bytes are copied starting
+two bytes into the size-byte buffer, writing KLSI_HDR_LEN bytes past its
+end. Copy at most size - KLSI_HDR_LEN bytes instead, leaving room for
+the header as safe_serial already does.
+
+Writing bulk_out_size or more bytes to the tty triggers a slab
+out-of-bounds write, observed with KASAN by emulating the device with
+dummy_hcd and raw-gadget:
+
+  BUG: KASAN: slab-out-of-bounds in kfifo_copy_out+0x83/0xc0
+  Write of size 64 at addr ffff888112c62202 by task python3
+   kfifo_copy_out
+   klsi_105_prepare_write_buffer [kl5kusb105]
+   usb_serial_generic_write_start [usbserial]
+  Allocated by task 139:
+   usb_serial_probe [usbserial]
+  The buggy address is located 2 bytes inside of allocated 64-byte region
+
+The out-of-bounds write no longer occurs with this change applied.
+
+Fixes: 60b3013cdaf3 ("USB: kl5usb105: reimplement using generic framework")
+Cc: stable@vger.kernel.org
+Assisted-by: Claude:claude-opus-4-8
+Signed-off-by: HyeongJun An <sammiee5311@gmail.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/ieee80211.h | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ drivers/usb/serial/kl5kusb105.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
-index abb069aa5fa54f..85bf3ac6db570b 100644
---- a/include/linux/ieee80211.h
-+++ b/include/linux/ieee80211.h
-@@ -1266,7 +1266,7 @@ struct ieee80211_ext {
- 			u8 sa[ETH_ALEN];
- 			__le32 timestamp;
- 			u8 change_seq;
--			u8 variable[0];
-+			u8 variable[];
- 		} __packed s1g_beacon;
- 	} u;
- } __packed __aligned(2);
-@@ -1522,7 +1522,7 @@ struct ieee80211_mgmt {
- 					u8 action_code;
- 					u8 dialog_token;
- 					__le16 capability;
--					u8 variable[0];
-+					u8 variable[];
- 				} __packed tdls_discover_resp;
- 				struct {
- 					u8 action_code;
-@@ -1690,35 +1690,35 @@ struct ieee80211_tdls_data {
- 		struct {
- 			u8 dialog_token;
- 			__le16 capability;
--			u8 variable[0];
-+			u8 variable[];
- 		} __packed setup_req;
- 		struct {
- 			__le16 status_code;
- 			u8 dialog_token;
- 			__le16 capability;
--			u8 variable[0];
-+			u8 variable[];
- 		} __packed setup_resp;
- 		struct {
- 			__le16 status_code;
- 			u8 dialog_token;
--			u8 variable[0];
-+			u8 variable[];
- 		} __packed setup_cfm;
- 		struct {
- 			__le16 reason_code;
--			u8 variable[0];
-+			u8 variable[];
- 		} __packed teardown;
- 		struct {
- 			u8 dialog_token;
--			u8 variable[0];
-+			u8 variable[];
- 		} __packed discover_req;
- 		struct {
- 			u8 target_channel;
- 			u8 oper_class;
--			u8 variable[0];
-+			u8 variable[];
- 		} __packed chan_switch_req;
- 		struct {
- 			__le16 status_code;
--			u8 variable[0];
-+			u8 variable[];
- 		} __packed chan_switch_resp;
- 	} u;
- } __packed;
--- 
-2.53.0
-
+--- a/drivers/usb/serial/kl5kusb105.c
++++ b/drivers/usb/serial/kl5kusb105.c
+@@ -357,8 +357,8 @@ static int klsi_105_prepare_write_buffer
+ 	unsigned char *buf = dest;
+ 	int count;
+ 
+-	count = kfifo_out_locked(&port->write_fifo, buf + KLSI_HDR_LEN, size,
+-								&port->lock);
++	count = kfifo_out_locked(&port->write_fifo, buf + KLSI_HDR_LEN,
++				 size - KLSI_HDR_LEN, &port->lock);
+ 	put_unaligned_le16(count, buf);
+ 
+ 	return count + KLSI_HDR_LEN;
 
 
 
