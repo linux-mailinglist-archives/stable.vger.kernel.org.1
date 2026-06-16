@@ -1,63 +1,61 @@
-Return-Path: <stable+bounces-264260-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266021-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id aRK4GLFwMWp6jQUAu9opvQ
-	(envelope-from <stable+bounces-264260-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:50:09 +0200
+	id 2M+YLdqUMWp9nQUAu9opvQ
+	(envelope-from <stable+bounces-266021-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:24:26 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B04686916C5
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:50:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E3C36941A0
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:24:26 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=rcWkTPVe;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264260-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264260-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=XHRDCilM;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266021-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266021-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6D01C307F51A
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:50:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F19893189BAF
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:24:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 043893C414F;
-	Tue, 16 Jun 2026 15:50:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66FFA466B64;
+	Tue, 16 Jun 2026 18:24:03 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5E7639282C;
-	Tue, 16 Jun 2026 15:50:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F73644CAF5;
+	Tue, 16 Jun 2026 18:24:02 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781625006; cv=none; b=YRUeotJKP1AjK9nIvcPgBGYuNF3rQO/4w1qX7m/IwAK+XF2I78W94SKbVrPke6Jebk/E3UBe71bQV49zLIIYaEP1o/xQJPhag4UUknICsaSqs9cD91YMsRba6TzOQkYHjH8Wd4bPrN3BBFH/ONAFHSF4hbm/nBzZSgbs8tAgRMI=
+	t=1781634243; cv=none; b=UKikE/jGDMCymg5pNvi7QH9CKxW+Fq0PD9JvoeHPBfZiUddQbDJus88QqZPS61S2k3STKdv2EvGELRn3OQfj/5z6ihhWejDErseCWHIfw8//ziVnCHKZRmcH2wPBF9IGJYmBAYD9bZXf06e48KbRHsI8QnQfjm/N4ig0iZvlpAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781625006; c=relaxed/simple;
-	bh=ZIv/J9+CgWCJCF8qX0SI/MYdLb24wZeIyZPBFCXUhG8=;
+	s=arc-20240116; t=1781634243; c=relaxed/simple;
+	bh=ELfdXE77WlCU595anh5/mYfqv++zoOjBmYgztZ3mpwE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GILwbLn99yRGyR12+3lmwD8t3mr4r2Vq0Ajb9udoGK26fPOpGFdXWAPGz5XDmoBV9yDLzyAwuzHcRSTLjTxY7u6aPqSoKZyTrmOvvcc5UIie0/YwmKorf5KYyjf+zUMQVrjhdagn+YfHTdKBaMob60C9O49GjN6jGL0AuKTgOyY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rcWkTPVe; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A85C1F000E9;
-	Tue, 16 Jun 2026 15:50:03 +0000 (UTC)
+	 MIME-Version; b=eYD8HtNXjIF4FuptO9akFetw5YHTgjK0Ame9ooHz9/2zjXox/eEWA2ihZRANgVVARv0U3tMG0uNdzm+K+KBjAHfEB9m5aA2xlG611NYzgOBPZ00Jc7BJSmRbsn4JzDlV2agwbZly5skQJyyRpI76Z9+5Xc/or+HEv3UK5XI3PUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XHRDCilM; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43BA91F000E9;
+	Tue, 16 Jun 2026 18:24:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781625005;
-	bh=HNJolk6s+dP58r/nI6MY8QBetNweOs6tO2cZsR8/04s=;
+	s=korg; t=1781634242;
+	bh=B6c0NdUUylljec1FwDx3FHoHL54n8ETU0CsiVYPBGTY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=rcWkTPVeKzjV1unBI70k9a3R3kqR1o5dR5Nfs96v6XWPpOjF8c7JC5zZDvY0A+jhn
-	 PY4n6FTD2rhmyYqBXAwmBZ/L/91Li/Zd/dNxUjSDtFOa0Ru/VRG390lqZiraHquT3J
-	 T7ag8jMy7k8i41qs5EXJL7jyxC4rR6fDxSltx4QQ=
+	b=XHRDCilM68NHvIUNdXluz6IaoabCPgHTa1s7qiZjULFykOHBT7FF9EibX863RqTib
+	 2dFt+otNxyEVJUt16iLU/uIavX9rWGkyOpXm8lb6YdPiFH4ZieEaqgAFRcjCGQhGa4
+	 5FNw7HcIBikdf7UEkfVkkNMJMUTBc0Mt/fUXF2sI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chirag Shah <chirag@nvidia.com>,
-	Andy Roulin <aroulin@nvidia.com>,
-	Petr Machata <petrm@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 063/325] vxlan: vnifilter: send notification on VNI add
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Andi Shyti <andi.shyti@kernel.org>
+Subject: [PATCH 5.15 221/411] i2c: qcom-cci: Fix NULL pointer dereference in cci_remove()
 Date: Tue, 16 Jun 2026 20:27:39 +0530
-Message-ID: <20260616145100.836213319@linuxfoundation.org>
+Message-ID: <20260616145112.554072920@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,107 +69,93 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264260-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-266021-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:chirag@nvidia.com,m:aroulin@nvidia.com,m:petrm@nvidia.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:vladimir.zapolskiy@linaro.org,m:konrad.dybcio@oss.qualcomm.com,m:andi.shyti@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,nvidia.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,qualcomm.com:email,vger.kernel.org:from_smtp,linaro.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B04686916C5
+X-Rspamd-Queue-Id: 2E3C36941A0
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Roulin <aroulin@nvidia.com>
+From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
 
-[ Upstream commit aa6ca1c5c338907817374b59f7551fd855a88754 ]
+commit 729ac5a4b966aac42e08a94dea966f4429008548 upstream.
 
-When a new VNI is added to a vxlan device with vnifilter enabled,
-no RTM_NEWTUNNEL notification is sent to userspace. This means
-'bridge monitor vni' never shows VNI add events, even though
-VNI delete events are reported correctly.
+On all modern platforms Qualcomm CCI controller provides two I2C masters,
+and on particular boards only one I2C master may be initialized, and in
+such cases the device unbinding or driver removal causes a NULL pointer
+dereference, because cci_halt() is called for all two I2C masters, but
+a completion is initialized only for the single enabled master:
 
-The bug is in vxlan_vni_add(), where the notification is guarded by
-'if (changed)'. The 'changed' flag is set by vxlan_vni_update_group()
-only when the multicast group or remote IP is modified, but for a
-new VNI added without a group (e.g. in L3 VxLAN interface scenarios),
-the function returns early without setting changed=true. Since this
-is a new VNI, the notification should be sent unconditionally.
+    % rmmod i2c-qcom-cci
+    Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
+    <snip>
+    Call trace:
+    __wait_for_common+0x194/0x1a8 (P)
+    wait_for_completion_timeout+0x20/0x2c
+    cci_remove+0xc4/0x138 [i2c_qcom_cci]
+    platform_remove+0x20/0x30
+    device_remove+0x4c/0x80
+    device_release_driver_internal+0x1c8/0x224
+    driver_detach+0x50/0x98
+    bus_remove_driver+0x6c/0xbc
+    driver_unregister+0x30/0x60
+    platform_driver_unregister+0x14/0x20
+    qcom_cci_driver_exit+0x18/0x1008 [i2c_qcom_cci]
+    ....
 
-The notification is not guarded by the return value of
-vxlan_vni_update_group() because, at this point, the VNI has already
-been inserted into the hash table and list with no rollback on error.
-The VNI will be visible in 'bridge vni show' regardless, so userspace
-should be informed. This is consistent with vxlan_vni_del() which also
-notifies unconditionally.
-
-The 'if (changed)' guard remains correct in vxlan_vni_update(), which
-handles the case where a VNI already exists and is being re-added --
-there, we only want to notify if the group/remote actually changed.
-
-Reproducer:
-
- # ip link add vxlan100 type vxlan dstport 4789 local 10.0.0.1 \
-      nolearning external vnifilter
- # ip link set vxlan100 up
- # bridge monitor vni &
- # bridge vni add vni 1000 dev vxlan100    # no notification
- # bridge vni delete vni 1000 dev vxlan100 # notification received
-
-Fixes: f9c4bb0b245c ("vxlan: vni filtering support on collect metadata device")
-Reported-by: Chirag Shah <chirag@nvidia.com>
-Signed-off-by: Andy Roulin <aroulin@nvidia.com>
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Link: https://patch.msgid.link/20260602185138.253265-2-aroulin@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e517526195de ("i2c: Add Qualcomm CCI I2C driver")
+Signed-off-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+Cc: <stable@vger.kernel.org> # v5.8+
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/20260515234121.1607425-2-vladimir.zapolskiy@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/vxlan/vxlan_vnifilter.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/i2c/busses/i2c-qcom-cci.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/vxlan/vxlan_vnifilter.c b/drivers/net/vxlan/vxlan_vnifilter.c
-index adc89e651e27c8..43c70c395b58e5 100644
---- a/drivers/net/vxlan/vxlan_vnifilter.c
-+++ b/drivers/net/vxlan/vxlan_vnifilter.c
-@@ -759,8 +759,7 @@ static int vxlan_vni_add(struct vxlan_dev *vxlan,
- 	err = vxlan_vni_update_group(vxlan, vninode, group, true, &changed,
- 				     extack);
+--- a/drivers/i2c/busses/i2c-qcom-cci.c
++++ b/drivers/i2c/busses/i2c-qcom-cci.c
+@@ -683,8 +683,8 @@ static int cci_remove(struct platform_de
+ 		if (cci->master[i].cci) {
+ 			i2c_del_adapter(&cci->master[i].adap);
+ 			of_node_put(cci->master[i].adap.dev.of_node);
++			cci_halt(cci, i);
+ 		}
+-		cci_halt(cci, i);
+ 	}
  
--	if (changed)
--		vxlan_vnifilter_notify(vxlan, vninode, RTM_NEWTUNNEL);
-+	vxlan_vnifilter_notify(vxlan, vninode, RTM_NEWTUNNEL);
- 
- 	return err;
- }
--- 
-2.53.0
-
+ 	disable_irq(cci->irq);
 
 
 
