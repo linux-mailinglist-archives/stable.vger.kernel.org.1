@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-264335-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264620-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id RkNACax2MWrpjwUAu9opvQ
-	(envelope-from <stable+bounces-264335-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:15:40 +0200
+	id 0N8+N958MWqbkgUAu9opvQ
+	(envelope-from <stable+bounces-264620-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:42:06 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39EF7691DCF
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:15:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 959646925B5
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:42:05 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=JTyYbwfp;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264335-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-264335-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=R6tIuO1l;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264620-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-264620-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7BD6D3073755
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:55:55 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id EA2AF3030415
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:21:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FCA444DB7D;
-	Tue, 16 Jun 2026 15:55:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7064146AF21;
+	Tue, 16 Jun 2026 16:21:02 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1503244CF44;
-	Tue, 16 Jun 2026 15:55:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ECCC44DB64;
+	Tue, 16 Jun 2026 16:21:00 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781625352; cv=none; b=A8xR6ZZH/bFBv6BZd0fJCZc/jUev0EwfYIRVir+4kj7rC5BVW1ZDFMzXyg/WNnfNNSWi2Mdce1OFJkHQCohJhH/zCZBe3bIuchrB+31GNgIE3eKOlaq/k6dL6KwpTohAoMROFDbpioBMDYQA13Ne8W4t0ZikV9GGO/Xl1y2gdYA=
+	t=1781626862; cv=none; b=FE/JUubN/0WoiIsM9GBEXFmiCPBDnwUb4D7rOAYnZxdmnjZ95mLTDmQXfdwxZX+Qz+J79JjN3DryR+1rUWFjVxEQ6YYOb/Y+ZeoJJ8u2KW8il7oElelQ7wye1lf2/3Vbi8Fdmr819bhcj8a8jay6kNltawq7I6Ts+xG5NRxq0wQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781625352; c=relaxed/simple;
-	bh=e4lTl9LbAh0aEDSQBhP2y9UEtAV0WG29TVZb5b/w1fI=;
+	s=arc-20240116; t=1781626862; c=relaxed/simple;
+	bh=8fk+LB+uP8lLKZANkthWaomLLvoz0S2JtYnlSy1Nn1o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZsGmo+tFnYt/JAfzT4d95xAH+/oqYmgAkuMPBhsIB7neLRDrZhmDaFvSapnkNsNbgKkEDxtiT31QM9UmBzBihYgOXhEPPEf+katlyBU8NBGPFH71j13MbxAldM0gGb+S32Fxu4e7SUfv/AukOIFLhNmZ9Frxrl1ObaEvJefQ1vk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JTyYbwfp; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A25871F000E9;
-	Tue, 16 Jun 2026 15:55:49 +0000 (UTC)
+	 MIME-Version; b=j2GjMzzvz/5nrjGjgg1RrijS0mJAd8YJLSUDDsO1Mq5zDLOZXUUp4hDlb7mt/lq1CwATPgMjG0pqhL/k1ipJZTPUROkJ+xPCVvPifmKcd8JiHfeIvQB2wz8WddGCJg1TCk3OMpxrj2RKliJ+7HFbf3pEdjRm9gANYJHqrKZ8x7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R6tIuO1l; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E90381F00A3D;
+	Tue, 16 Jun 2026 16:20:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781625350;
-	bh=1gp9VBybFUez6Po7dX0ttaOR6EURLWz6ktngZ0oaRAw=;
+	s=korg; t=1781626860;
+	bh=a8t0UVJ+fy8D/r832Y30Y++wp351wwpixxlk5VPxgNY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=JTyYbwfpSFhx+C4AGBPKGLSiHkvMVBXOfZ6WbJe/YNlAZ0hUjM2UyHNeAnjIHw/8T
-	 VDhng4qDgakW/suG5eHUOu7nIFpde4HaWGkx2KwbAkqhYQfEH0Lmad5nd3Ze0iyqVx
-	 DGg4gygOWGudp5jPZtD09aWfJW3hOrsd5pQxn4WU=
+	b=R6tIuO1lTikTxJCSuhgfx7RRwBq0Eo2s4X6KIr7rVG1YF7a3o8gpjONd0K+fVil2w
+	 j+T4Rxfx55WnJd0I+V6aRYiTrRA5os1s17TgwL9VwzZq5yuB0FJ8I+d9MY78L2xKGp
+	 hQgEVEmBiHesnq5l6fw8WIbsEBKbdGh+X2X6nLDk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kyle Zeng <kylebot@openai.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Mingyu Wang <25181214217@stu.xidian.edu.cn>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 126/325] netfilter: x_tables: avoid leaking percpu counter pointers
+Subject: [PATCH 6.12 084/261] net: qrtr: fix refcount saturation and potential UAF in qrtr_port_remove
 Date: Tue, 16 Jun 2026 20:28:42 +0530
-Message-ID: <20260616145103.994995161@linuxfoundation.org>
+Message-ID: <20260616145048.948358230@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,178 +70,114 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264335-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kylebot@openai.com,m:pablo@netfilter.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264620-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:25181214217@stu.xidian.edu.cn,m:horms@kernel.org,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,netfilter.org:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,openai.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,msgid.link:url,xidian.edu.cn:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 39EF7691DCF
+X-Rspamd-Queue-Id: 959646925B5
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kyle Zeng <kylebot@openai.com>
+From: Mingyu Wang <25181214217@stu.xidian.edu.cn>
 
-[ Upstream commit f7f2fbb0e893a0238dc464f8d8c0f5609bec584f ]
+[ Upstream commit a2171131ecda1ed61a594a1eb715e75fdad0fef5 ]
 
-The native and compat get-entries paths copy the fixed rule entry header
-from the kernelized rule blob to userspace before overwriting the entry's
-counter fields with a sanitized counter snapshot.
+In qrtr_port_remove(), the socket reference count is decremented via
+__sock_put() before the port is removed from the qrtr_ports XArray and
+before the RCU grace period elapses.
 
-On SMP kernels, entry->counters.pcnt contains the percpu allocation
-address used by x_tables rule counters. A caller can provide a userspace
-buffer that faults during the initial fixed-header copy after pcnt has
-been copied but before the later sanitized counter copy runs. The syscall
-then returns -EFAULT while leaving the raw percpu pointer in userspace.
+This breaks the fundamental RCU update paradigm. It exposes a race
+window where a concurrent RCU reader (such as qrtr_reset_ports() or
+qrtr_port_lookup()) can obtain a pointer to the socket from the XArray,
+and attempt to call sock_hold() on a socket whose reference count has
+already dropped to zero.
 
-Copy only the fixed entry prefix before counters from the kernelized rule
-blob, then copy the sanitized counter snapshot into the counter field.
-Apply this ordering to the IPv4, IPv6, and ARP native and compat
-get-entries implementations so a fault cannot expose the internal percpu
-counter pointer.
+This exact race condition was hit during syzkaller fuzzing, leading to
+the following refcount saturation warning and a potential Use-After-Free:
 
-Fixes: 71ae0dff02d7 ("netfilter: xtables: use percpu rule counters")
-Signed-off-by: Kyle Zeng <kylebot@openai.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+  refcount_t: saturated; leaking memory.
+  WARNING: CPU: 3 PID: 1273 at lib/refcount.c:22 refcount_warn_saturate+0xae/0x1d0
+  Modules linked in: qrtr(+) bochs drm_shmem_helper ...
+  Call Trace:
+   <TASK>
+   qrtr_reset_ports net/qrtr/af_qrtr.c:768 [inline] [qrtr]
+   __qrtr_bind.isra.0+0x48b/0x570 net/qrtr/af_qrtr.c:805 [qrtr]
+   qrtr_bind+0x17d/0x210 net/qrtr/af_qrtr.c:901 [qrtr]
+   kernel_bind+0xe4/0x120 net/socket.c:3592
+   qrtr_ns_init+0x1a6/0x380 net/qrtr/ns.c:715 [qrtr]
+   qrtr_proto_init+0x3b/0xff0 net/qrtr/af_qrtr.c:169 [qrtr]
+   do_one_initcall+0xf5/0x5e0 init/main.c:1283
+   ...
+   </TASK>
+
+Fix this by deferring the reference count decrement until after the
+xa_erase() and the synchronize_rcu() complete.
+
+(Note: The v1 of this patch incorrectly replaced __sock_put() with
+sock_put(). As Simon Horman pointed out, the callers of qrtr_port_remove()
+still hold a reference to the socket, so freeing the socket memory here
+would lead to a subsequent UAF in the caller. Thus, the __sock_put() is
+kept, but only repositioned to close the RCU race.)
+
+Fixes: bdabad3e363d ("net: Add Qualcomm IPC router")
+Signed-off-by: Mingyu Wang <25181214217@stu.xidian.edu.cn>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260604064801.1180388-1-w15303746062@163.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/netfilter/arp_tables.c | 15 ++++++---------
- net/ipv4/netfilter/ip_tables.c  | 15 ++++++---------
- net/ipv6/netfilter/ip6_tables.c | 15 ++++++---------
- 3 files changed, 18 insertions(+), 27 deletions(-)
+ net/qrtr/af_qrtr.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv4/netfilter/arp_tables.c b/net/ipv4/netfilter/arp_tables.c
-index f3dadbc416a3a5..1490466b146e4b 100644
---- a/net/ipv4/netfilter/arp_tables.c
-+++ b/net/ipv4/netfilter/arp_tables.c
-@@ -702,14 +702,12 @@ static int copy_entries_to_user(unsigned int total_size,
- 		const struct xt_entry_target *t;
+diff --git a/net/qrtr/af_qrtr.c b/net/qrtr/af_qrtr.c
+index b703e4c6458532..2c009793f1931d 100644
+--- a/net/qrtr/af_qrtr.c
++++ b/net/qrtr/af_qrtr.c
+@@ -707,13 +707,13 @@ static void qrtr_port_remove(struct qrtr_sock *ipc)
+ 	if (port == QRTR_PORT_CTRL)
+ 		port = 0;
  
- 		e = loc_cpu_entry + off;
--		if (copy_to_user(userptr + off, e, sizeof(*e))) {
--			ret = -EFAULT;
--			goto free_counters;
--		}
--		if (copy_to_user(userptr + off
-+		if (copy_to_user(userptr + off, e,
-+				 offsetof(struct arpt_entry, counters)) ||
-+		    copy_to_user(userptr + off
- 				 + offsetof(struct arpt_entry, counters),
- 				 &counters[num],
--				 sizeof(counters[num])) != 0) {
-+				 sizeof(counters[num]))) {
- 			ret = -EFAULT;
- 			goto free_counters;
- 		}
-@@ -1327,9 +1325,8 @@ static int compat_copy_entry_to_user(struct arpt_entry *e, void __user **dstptr,
+-	__sock_put(&ipc->sk);
+-
+ 	xa_erase(&qrtr_ports, port);
  
- 	origsize = *size;
- 	ce = *dstptr;
--	if (copy_to_user(ce, e, sizeof(struct arpt_entry)) != 0 ||
--	    copy_to_user(&ce->counters, &counters[i],
--	    sizeof(counters[i])) != 0)
-+	if (copy_to_user(ce, e, offsetof(struct compat_arpt_entry, counters)) ||
-+	    copy_to_user(&ce->counters, &counters[i], sizeof(counters[i])))
- 		return -EFAULT;
+ 	/* Ensure that if qrtr_port_lookup() did enter the RCU read section we
+ 	 * wait for it to up increment the refcount */
+ 	synchronize_rcu();
++
++	__sock_put(&ipc->sk);
+ }
  
- 	*dstptr += sizeof(struct compat_arpt_entry);
-diff --git a/net/ipv4/netfilter/ip_tables.c b/net/ipv4/netfilter/ip_tables.c
-index f4079f0718deae..0549fad53c0364 100644
---- a/net/ipv4/netfilter/ip_tables.c
-+++ b/net/ipv4/netfilter/ip_tables.c
-@@ -832,14 +832,12 @@ copy_entries_to_user(unsigned int total_size,
- 		const struct xt_entry_target *t;
- 
- 		e = loc_cpu_entry + off;
--		if (copy_to_user(userptr + off, e, sizeof(*e))) {
--			ret = -EFAULT;
--			goto free_counters;
--		}
--		if (copy_to_user(userptr + off
-+		if (copy_to_user(userptr + off, e,
-+				 offsetof(struct ipt_entry, counters)) ||
-+		    copy_to_user(userptr + off
- 				 + offsetof(struct ipt_entry, counters),
- 				 &counters[num],
--				 sizeof(counters[num])) != 0) {
-+				 sizeof(counters[num]))) {
- 			ret = -EFAULT;
- 			goto free_counters;
- 		}
-@@ -1228,9 +1226,8 @@ compat_copy_entry_to_user(struct ipt_entry *e, void __user **dstptr,
- 
- 	origsize = *size;
- 	ce = *dstptr;
--	if (copy_to_user(ce, e, sizeof(struct ipt_entry)) != 0 ||
--	    copy_to_user(&ce->counters, &counters[i],
--	    sizeof(counters[i])) != 0)
-+	if (copy_to_user(ce, e, offsetof(struct compat_ipt_entry, counters)) ||
-+	    copy_to_user(&ce->counters, &counters[i], sizeof(counters[i])))
- 		return -EFAULT;
- 
- 	*dstptr += sizeof(struct compat_ipt_entry);
-diff --git a/net/ipv6/netfilter/ip6_tables.c b/net/ipv6/netfilter/ip6_tables.c
-index dfaea4f6727ed9..3586e636c66bdc 100644
---- a/net/ipv6/netfilter/ip6_tables.c
-+++ b/net/ipv6/netfilter/ip6_tables.c
-@@ -848,14 +848,12 @@ copy_entries_to_user(unsigned int total_size,
- 		const struct xt_entry_target *t;
- 
- 		e = loc_cpu_entry + off;
--		if (copy_to_user(userptr + off, e, sizeof(*e))) {
--			ret = -EFAULT;
--			goto free_counters;
--		}
--		if (copy_to_user(userptr + off
-+		if (copy_to_user(userptr + off, e,
-+				 offsetof(struct ip6t_entry, counters)) ||
-+		    copy_to_user(userptr + off
- 				 + offsetof(struct ip6t_entry, counters),
- 				 &counters[num],
--				 sizeof(counters[num])) != 0) {
-+				 sizeof(counters[num]))) {
- 			ret = -EFAULT;
- 			goto free_counters;
- 		}
-@@ -1244,9 +1242,8 @@ compat_copy_entry_to_user(struct ip6t_entry *e, void __user **dstptr,
- 
- 	origsize = *size;
- 	ce = *dstptr;
--	if (copy_to_user(ce, e, sizeof(struct ip6t_entry)) != 0 ||
--	    copy_to_user(&ce->counters, &counters[i],
--	    sizeof(counters[i])) != 0)
-+	if (copy_to_user(ce, e, offsetof(struct compat_ip6t_entry, counters)) ||
-+	    copy_to_user(&ce->counters, &counters[i], sizeof(counters[i])))
- 		return -EFAULT;
- 
- 	*dstptr += sizeof(struct compat_ip6t_entry);
+ /* Assign port number to socket.
 -- 
 2.53.0
 
