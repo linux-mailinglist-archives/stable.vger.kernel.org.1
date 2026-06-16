@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-264435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266174-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id /Mh1GYB0MWoEjwUAu9opvQ
-	(envelope-from <stable+bounces-264435-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:06:24 +0200
+	id aqywOe2XMWrOngUAu9opvQ
+	(envelope-from <stable+bounces-266174-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:37:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20112691AFB
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:06:24 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCC1A69446F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:37:32 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=abb37p63;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264435-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264435-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="k9rGDC/2";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266174-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266174-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0F3CA303017B
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:04:41 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B7AF83001A7C
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:37:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FF484534A3;
-	Tue, 16 Jun 2026 16:04:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65B43478E5E;
+	Tue, 16 Jun 2026 18:37:26 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0060344CF44;
-	Tue, 16 Jun 2026 16:04:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 334413D8105;
+	Tue, 16 Jun 2026 18:37:25 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781625869; cv=none; b=GDv24qIeYfKIf6j1IIsaVJ9NGs/Iku+9EMEJzcjcJh761blPUqbVUniro6sSVi48bitCx/m4RKDS1FUH7yg2zlYyhEI1fgekQiaNyuNv7Yo1w2IqhY7hgOGVK3hBZRG1DKnDd2EVGUFZLmmiRVxYJYEbWFDvok2nIPWDe+rFpg0=
+	t=1781635046; cv=none; b=pylcv8IFsfRfIKTnaCrUoJqd9GkzQXwxA/m1t6fpB7i29OAXBkN3BuBxfvpes5bteDbJcHd9b/1V2SBxPdCc8Hoxz8hPTLOSsWAhHOGVBiO27djW3Wu3cmEI6CoFpMKqDxvjcvAllhZ5claD1OM61ZflizYYhMTZzQ6c6Clcr0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781625869; c=relaxed/simple;
-	bh=fUzxUzfNkRyB0iE3dipIUcYb1De5TuZDQVehtaWDUc4=;
+	s=arc-20240116; t=1781635046; c=relaxed/simple;
+	bh=Tji2aXtQlr/grkJQTnCAouXq/0XRmLbGfdtnGJjdsS8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WdidOu2tiLRiAugZUki2RHBRNBA/mmhzN8ajxaEMhVrpV4tBqcgRpk61UIRLdigsuK2Hnh6TjHMrxT1KlY+Xp6gnnndmhXAJ3mXq8ZO4SH2UDX0GDQXM0/NHydOUhA2BXewxryFCQMwcQsjsh1um7y+EgRCPx7fCAM84EgI4MO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=abb37p63; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3C891F000E9;
-	Tue, 16 Jun 2026 16:04:26 +0000 (UTC)
+	 MIME-Version; b=pHZ8+9FxB5fEodBuQekk0nWaybfKvLyb/ktV4Cy0SpQUVLwx/77RkO883koJUh8aTwdeHSP8ECRD0FjW2e3OO3iX696NsYqpe+sJgp2tQr0ekNMBuQYw+6LyqfyBdH63Clq0BvDtU91+57UfRhtDpwowCUtz1Hpjf2Yq9jAIj1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k9rGDC/2; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03DE31F000E9;
+	Tue, 16 Jun 2026 18:37:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781625867;
-	bh=vTcmISRLBNaieul5uN37ub/0AXJQKXtk9eMkuNojK2g=;
+	s=korg; t=1781635045;
+	bh=2z71P/r/entEIwtH0qmWrxaGMvBYwqvDLMhEuEZsFWw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=abb37p63VMZnKF44TxLTrftnOeas+e1Su0z/y05YTbeIeoJzYeX/FlFYI+ILvKV8q
-	 uJleUK6wKBF/0NqQ1ZuyXZNnuRYt6HlmYvh81adC4rYkaAdl7J32sW9BsXlSVmbyAr
-	 CXv/nVLGcRRH9GWPdtYDEBxz0Gxbba1uNsDMvkp4=
+	b=k9rGDC/2FQTkkQ8B/2SgCWYPtLKTy0sgCO21I+Nd1mypAiJSSchnoiNRxZj4O9fUb
+	 nEZFQmuKxF9hGO0CMQeimC/DzZGY38875Jf9vAKppaJBuiMk44c1XhdA8lYnZWtqfr
+	 Ey6zaAnQ6SoNPJ2YrXoC7s2SeUjlT72rVI/saD4c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Guillermo=20Rodr=C3=ADguez?= <guille.rodriguez@gmail.com>,
-	Alain Volmat <alain.volmat@foss.st.com>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 6.18 223/325] i2c: stm32f7: fix timing computation ignoring i2c-analog-filter
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 381/411] serial: altera_jtaguart: Use platform_get_irq_optional() to get the interrupt
 Date: Tue, 16 Jun 2026 20:30:19 +0530
-Message-ID: <20260616145109.342115395@linuxfoundation.org>
+Message-ID: <20260616145121.528316852@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,100 +64,98 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-264435-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:guille.rodriguez@gmail.com,m:alain.volmat@foss.st.com,m:andi.shyti@kernel.org,m:guillerodriguez@gmail.com,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-266174-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,foss.st.com,kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:prabhakar.mahadev-lad.rj@bp.renesas.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,st.com:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[renesas.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 20112691AFB
+X-Rspamd-Queue-Id: DCC1A69446F
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guillermo Rodríguez <guille.rodriguez@gmail.com>
+From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 
-commit a124579c0763da7bc408f4cd7e8f606cadc94855 upstream.
+[ Upstream commit 60302276caff50f907bc3391a364691ab4a21b43 ]
 
-stm32f7_i2c_compute_timing() uses i2c_dev->analog_filter to pick
-the analog filter delay, but i2c_dev->analog_filter is parsed from
-the "i2c-analog-filter" DT property only after the compute_timing
-loop in stm32f7_i2c_setup_timing(), so in practice the timing
-calculations always ignore the analog filter. On an STM32MP1 board
-with clock-frequency = <400000> and i2c-analog-filter set, measured
-SCL frequency was ~382 kHz.
+platform_get_resource(pdev, IORESOURCE_IRQ, ..) relies on static
+allocation of IRQ resources in DT core code, this causes an issue
+when using hierarchical interrupt domains using "interrupts" property
+in the node as this bypasses the hierarchical setup and messes up the
+irq chaining.
 
-This also affects (widens) the computed SDADEL range. At high bus
-clock speeds, this can select an SDADEL value that violates tVD;DAT
-(data valid time).
+In preparation for removal of static setup of IRQ resource from DT core
+code use platform_get_irq_optional().
 
-Fix by parsing "i2c-analog-filter" before the compute_timing loop.
-
-Fixes: 83c3408f7b9c ("i2c: stm32f7: support DT binding i2c-analog-filter")
-Signed-off-by: Guillermo Rodríguez <guille.rodriguez@gmail.com>
-Cc: <stable@vger.kernel.org> # v5.13+
-Acked-by: Alain Volmat <alain.volmat@foss.st.com>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20260526091210.20383-1-guille.rodriguez@gmail.com
+Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Link: https://lore.kernel.org/r/20211224142917.6966-7-prabhakar.mahadev-lad.rj@bp.renesas.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: ea66be25f0e9 ("serial: altera_jtaguart: handle uart_add_one_port() failures")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-stm32f7.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/tty/serial/altera_jtaguart.c |   11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
---- a/drivers/i2c/busses/i2c-stm32f7.c
-+++ b/drivers/i2c/busses/i2c-stm32f7.c
-@@ -694,6 +694,9 @@ static int stm32f7_i2c_setup_timing(stru
- 	if (!of_property_read_bool(i2c_dev->dev->of_node, "i2c-digital-filter"))
- 		i2c_dev->dnf_dt = STM32F7_I2C_DNF_DEFAULT;
+--- a/drivers/tty/serial/altera_jtaguart.c
++++ b/drivers/tty/serial/altera_jtaguart.c
+@@ -418,8 +418,9 @@ static int altera_jtaguart_probe(struct
+ 	struct altera_jtaguart_platform_uart *platp =
+ 			dev_get_platdata(&pdev->dev);
+ 	struct uart_port *port;
+-	struct resource *res_irq, *res_mem;
++	struct resource *res_mem;
+ 	int i = pdev->id;
++	int irq;
  
-+	i2c_dev->analog_filter = of_property_read_bool(i2c_dev->dev->of_node,
-+						       "i2c-analog-filter");
-+
- 	do {
- 		ret = stm32f7_i2c_compute_timing(i2c_dev, setup,
- 						 &i2c_dev->timing);
-@@ -715,9 +718,6 @@ static int stm32f7_i2c_setup_timing(stru
- 		return ret;
- 	}
+ 	/* -1 emphasizes that the platform must have one port, no .N suffix */
+ 	if (i == -1)
+@@ -438,9 +439,11 @@ static int altera_jtaguart_probe(struct
+ 	else
+ 		return -ENODEV;
  
--	i2c_dev->analog_filter = of_property_read_bool(i2c_dev->dev->of_node,
--						       "i2c-analog-filter");
--
- 	dev_dbg(i2c_dev->dev, "I2C Speed(%i), Clk Source(%i)\n",
- 		setup->speed_freq, setup->clock_src);
- 	dev_dbg(i2c_dev->dev, "I2C Rise(%i) and Fall(%i) Time\n",
+-	res_irq = platform_get_resource(pdev, IORESOURCE_IRQ, 0);
+-	if (res_irq)
+-		port->irq = res_irq->start;
++	irq = platform_get_irq_optional(pdev, 0);
++	if (irq < 0 && irq != -ENXIO)
++		return irq;
++	if (irq > 0)
++		port->irq = irq;
+ 	else if (platp)
+ 		port->irq = platp->irq;
+ 	else
 
 
 
