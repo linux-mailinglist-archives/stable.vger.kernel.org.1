@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-266432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263771-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id dev0Ci6dMWoQoQUAu9opvQ
-	(envelope-from <stable+bounces-266432-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:59:58 +0200
+	id BfEvOYZlMWrhiQUAu9opvQ
+	(envelope-from <stable+bounces-263771-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:02:30 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADDD3694A51
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:59:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7760690BB0
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:02:25 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=uKX36nYF;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266432-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-266432-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=fNWPL80X;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263771-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-263771-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BA1D13042020
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:59:56 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 13E1F30258B6
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:00:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C8DB47CC7E;
-	Tue, 16 Jun 2026 18:59:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EF3C42B74A;
+	Tue, 16 Jun 2026 15:00:23 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C6E83EB0F5;
-	Tue, 16 Jun 2026 18:59:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39B77425CFF;
+	Tue, 16 Jun 2026 15:00:22 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781636394; cv=none; b=WsnwY0WtmgVbNP06E7fye6Y5rb+tH9Ku8i1kvCqHN0JsEoQINupDm5Lgqp9GMpqwv7hkApIFSjSXOrmskxO6aVg2pQiGwwLbP7P5fOiQFvf6EuNuVDQIYx4jIKAYRSSxJqRhPDXfQTwOwYc0bOMjHjzALFSyA2U0VFb74mL+afE=
+	t=1781622023; cv=none; b=jUN8OaMiqd7amWM13JTUQvXcNVjU/SsP+Rm+2+I9lAZnTlEDCPh6NnJ+kZjL9ezpNGwud8/7Ffgpt8RTx7rrp5qcGpurADFHeWBqIzn5g+PaA1EtidBdK8g1mBjXDH/iWopmt4PBOSaRM2kvmePrvaKfv4+CyWaobskmYeiQizo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781636394; c=relaxed/simple;
-	bh=LF+/ZotUdtGrHRhg94JPu7cpfLLB7jRO0/Po55ufaw4=;
+	s=arc-20240116; t=1781622023; c=relaxed/simple;
+	bh=Wwq/KYiOKFLNxA4GOrJg381N4ZtOyK0KCci4Pq1qXkM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eildktru95hbDorkKX/h5Zzdl4yZ0DAFhqv5b2YpzMyf1fP5EryeDfupTXNDgZ3XN/naWKiYK4eWeGbj5yiO1cSzHg3kPEpH1GC8BR09WOvLQhPwCpcgh7ax4PB/pazZFoh/1qaojMHfujqicT5VrPwmrXTMefQN57SPUNPs5Y8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uKX36nYF; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F08D1F000E9;
-	Tue, 16 Jun 2026 18:59:51 +0000 (UTC)
+	 MIME-Version; b=Xd6x5oiT1/KXFqZnzVkFzinxoL4fdPMWCGLTDDH4X/RffaXmxhfJigfaUCGz6V2fLu/nJsJXh49tTURqS54o5BXu1Z90J6h9m2Zo4WPKFtr56B9q5e1RnGBfseDxe0F6o1HIa0qi2DitWf3ye0D/AfHLAFYxc2joVw1SMBemIlU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fNWPL80X; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DE2E1F00A3A;
+	Tue, 16 Jun 2026 15:00:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781636393;
-	bh=LgmmIL7IDYOs6PGxyq1SQCni9aAuaz1EE1qbHtWj22o=;
+	s=korg; t=1781622022;
+	bh=c9S9/2W39+1KMTSr0J3sFpjeWCSmPuPXducFJLmWc/8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=uKX36nYFWG3caLR7X3OLwMla/gKR6bXeg3VbEuO49RNkNnOQEBawgFMgRPO7fHD5B
-	 hTafLL0aw+YbUqXvTTclqyPfirmJBCmPHp2a4OZomi8EfUYV5Y+Y2XQ4yo15w+8aBg
-	 5kXgwC7fzq/k8u3oRLCCZ3Y5cquRwSvFXXvFy9ug=
+	b=fNWPL80XcGMirwkNOOjyu3jeOGp8CuBl3nxaGBalhFIz8WcFZgkQlbi9NbbTRNFlt
+	 HF/g5Aqm8IANpL8u5gbIWql0PD2BhSAP29QJ175rwqiptvbc9mbo4vttdetGYZc4Zf
+	 eJzj5eV40/C8rb6otO0ZG71sFczWcnDiellOpGk4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Neukum <oneukum@suse.com>,
-	Sean Young <sean@mess.org>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 231/342] media: rc: igorplugusb: heed coherency rules
+	Johan Hovold <johan@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH 7.1 2/8] driver core: faux: fix root device registration
 Date: Tue, 16 Jun 2026 20:28:47 +0530
-Message-ID: <20260616145058.963204459@linuxfoundation.org>
+Message-ID: <20260616145523.407123558@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145523.335696673@linuxfoundation.org>
+References: <20260616145523.335696673@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,8 +66,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
@@ -78,121 +75,114 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266432-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-263771-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:oneukum@suse.com,m:sean@mess.org,m:hverkuil+cisco@kernel.org,m:sashal@kernel.org,m:hverkuil@kernel.org,s:lists@lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:johan@kernel.org,m:dakr@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,cisco];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mess.org:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,suse.com:email,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: ADDD3694A51
+X-Rspamd-Queue-Id: A7760690BB0
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+7.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit eac69475b01fe1e861dfe3960b57fa95671c132e ]
+commit 580a795105dae2ef1622df72a27a8fb0605e2f6b upstream.
 
-In a control request, the USB request structure
-can be subject to DMA on some HCs. Hence it must obey
-the rules for DMA coherency. Allocate it separately.
+A recent change made the faux bus root device be allocated dynamically
+but failed to provide a release function to free the memory when the
+last reference is dropped (on theoretical failure to register the device
+or bus).
 
-Fixes: b1c97193c6437 ("[media] rc: port IgorPlug-USB to rc-core")
-Cc: stable@vger.kernel.org
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Signed-off-by: Sean Young <sean@mess.org>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
-[ replaced kzalloc_obj() with kzalloc(sizeof(*ir->request), GFP_KERNEL) ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this by using root_device_register() instead of open coding.
+
+Also add the missing sanity check when registering faux devices to avoid
+use-after-free if the bus failed to register (which would previously
+have triggered a bunch of use-after-free warnings).
+
+Fixes: 61b76d07d2b4 ("driver core: faux: stop using static struct device")
+Cc: stable@vger.kernel.org	# 7.0
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260424153127.2647405-2-johan@kernel.org
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/rc/igorplugusb.c |   17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ drivers/base/faux.c |   22 ++++++++++------------
+ 1 file changed, 10 insertions(+), 12 deletions(-)
 
---- a/drivers/media/rc/igorplugusb.c
-+++ b/drivers/media/rc/igorplugusb.c
-@@ -14,6 +14,7 @@
- #include <linux/device.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
-+#include <linux/slab.h>
- #include <linux/usb.h>
- #include <linux/usb/input.h>
- #include <media/rc-core.h>
-@@ -34,7 +35,7 @@ struct igorplugusb {
+--- a/drivers/base/faux.c
++++ b/drivers/base/faux.c
+@@ -133,6 +133,9 @@ struct faux_device *faux_device_create_w
  	struct device *dev;
- 
- 	struct urb *urb;
--	struct usb_ctrlrequest request;
-+	struct usb_ctrlrequest *request;
- 
- 	struct timer_list timer;
- 
-@@ -123,7 +124,7 @@ static void igorplugusb_cmd(struct igorp
- {
  	int ret;
  
--	ir->request.bRequest = cmd;
-+	ir->request->bRequest = cmd;
- 	ir->urb->transfer_flags = 0;
- 	ret = usb_submit_urb(ir->urb, GFP_ATOMIC);
- 	if (ret)
-@@ -165,13 +166,17 @@ static int igorplugusb_probe(struct usb_
- 	if (!ir)
- 		return -ENOMEM;
- 
-+	ir->request = kzalloc(sizeof(*ir->request), GFP_KERNEL);
-+	if (!ir->request)
-+		goto fail;
++	if (!faux_bus_root)
++		return NULL;
 +
- 	ir->dev = &intf->dev;
+ 	faux_obj = kzalloc_obj(*faux_obj);
+ 	if (!faux_obj)
+ 		return NULL;
+@@ -232,19 +235,12 @@ EXPORT_SYMBOL_GPL(faux_device_destroy);
  
- 	timer_setup(&ir->timer, igorplugusb_timer, 0);
+ int __init faux_bus_init(void)
+ {
++	struct device *root;
+ 	int ret;
  
--	ir->request.bRequest = GET_INFRACODE;
--	ir->request.bRequestType = USB_TYPE_VENDOR | USB_DIR_IN;
--	ir->request.wLength = cpu_to_le16(sizeof(ir->buf_in));
-+	ir->request->bRequest = GET_INFRACODE;
-+	ir->request->bRequestType = USB_TYPE_VENDOR | USB_DIR_IN;
-+	ir->request->wLength = cpu_to_le16(sizeof(ir->buf_in));
+-	faux_bus_root = kzalloc_obj(*faux_bus_root);
+-	if (!faux_bus_root)
+-		return -ENOMEM;
+-
+-	dev_set_name(faux_bus_root, "faux");
+-
+-	ret = device_register(faux_bus_root);
+-	if (ret) {
+-		put_device(faux_bus_root);
+-		return ret;
+-	}
++	root = root_device_register("faux");
++	if (IS_ERR(root))
++		return PTR_ERR(root);
  
- 	ir->urb = usb_alloc_urb(0, GFP_KERNEL);
- 	if (!ir->urb)
-@@ -223,6 +228,7 @@ fail:
- 	rc_free_device(ir->rc);
- 	usb_free_urb(ir->urb);
- 	del_timer(&ir->timer);
-+	kfree(ir->request);
+ 	ret = bus_register(&faux_bus_type);
+ 	if (ret)
+@@ -254,12 +250,14 @@ int __init faux_bus_init(void)
+ 	if (ret)
+ 		goto error_driver;
  
++	faux_bus_root = root;
++
+ 	return ret;
+ 
+ error_driver:
+ 	bus_unregister(&faux_bus_type);
+ 
+ error_bus:
+-	device_unregister(faux_bus_root);
++	root_device_unregister(root);
  	return ret;
  }
-@@ -236,6 +242,7 @@ static void igorplugusb_disconnect(struc
- 	usb_set_intfdata(intf, NULL);
- 	usb_kill_urb(ir->urb);
- 	usb_free_urb(ir->urb);
-+	kfree(ir->request);
- }
- 
- static const struct usb_device_id igorplugusb_table[] = {
 
 
 
