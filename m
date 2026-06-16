@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-264000-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265934-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 1HCuIC5tMWoojAUAu9opvQ
-	(envelope-from <stable+bounces-264000-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:35:10 +0200
+	id 1Qd1KvmSMWqLnAUAu9opvQ
+	(envelope-from <stable+bounces-265934-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:16:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0D166912BC
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:35:09 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E3C4693F9F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:16:25 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=exG1sKi4;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264000-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264000-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=SW3KQhb8;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265934-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-265934-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 27E6E30D247B
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:26:47 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CE2C7308DBB8
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:16:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4411337C912;
-	Tue, 16 Jun 2026 15:26:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FF793EB0F5;
+	Tue, 16 Jun 2026 18:16:07 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E9EC3A8746;
-	Tue, 16 Jun 2026 15:26:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB1A035292A;
+	Tue, 16 Jun 2026 18:16:05 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781623606; cv=none; b=i59huk0qparQu1Rg0mQMW18duQedJszAv/swWJ+g9xn+b60m2bDvE2IXEUaLs87zPz71GFpfPOjygGYYU+Op+m8xi3eLh+gLp0mMCdbTW2/oL68Opg9G0IDe99VScvpTDe0KLJKL+JSXZYc5wT/8/P9AblV5/xwuS8eGFnu7I08=
+	t=1781633767; cv=none; b=J/SkKoucLG/7aBm2AQ2znofzp+wPmmD8zD0Dy4J8ff7JOwmo/GnWMeMrg3JyMqJ2FyLi8H7srCJUtJvTtW+bqZ7TgYbM79JmDT8Tl5pBKiEYjTt4jjjYl1hMFQkHBVBiXf93MLJ7IAzstvXUyAwD9HkSYhzzE1snXreO7fAwGec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781623606; c=relaxed/simple;
-	bh=pS6+3HM5QtOF0raU2pacz7FgVpmlo/TOqvu+Ykol4uw=;
+	s=arc-20240116; t=1781633767; c=relaxed/simple;
+	bh=rDRRedisskJkBTJK/n2mfRoHcZA12pxsVj5Btbu8nHE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZUdaxJkXdfds7STTF3qRxKeftv4r3fSOzIhj05foJruF4vXGlaWPvZly0LpcXHyrUP07i2fAWNdtIQF1vuPWAuG5/xGar0O5ffZmetCb3ynYib6ueLyFTe8ZtlRLbVcXDP9v7BIAIPASwBsYEU+3AluTB10y+zpdKZMh/ofnjjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=exG1sKi4; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7A471F00A3A;
-	Tue, 16 Jun 2026 15:26:43 +0000 (UTC)
+	 MIME-Version; b=QaUj5lLYQIG3NL2ysH2uepbAZhoI4HCyB5jTNtBk1dvXnqt5IRljFEML215wy8vOCHEkqTmeYyMos2kUTLn7CCQ6VNjBo9UOoWiDUwoDsFI6rTd/GnsXzcxQsns2yVxWRo6mEnCIYR0fjZLarEdn8dSy/WPOiKEJ43kdpPfdj0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SW3KQhb8; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE5F51F000E9;
+	Tue, 16 Jun 2026 18:16:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781623604;
-	bh=yCsdtCP6EX0PTakMq33Nflyj8o9VABCfhVXJ64koYFE=;
+	s=korg; t=1781633765;
+	bh=A3QQVK+1v1A2y/pUKZ7n/l1tVakip42zD2QDE1qaKD4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=exG1sKi4a7RzRGsHGA1HI40eJ0TZaqOk/i7clSTkZlIFUH+fiUKmVz2shCc8CH8Lr
-	 nI1rtp24VdOLdnvc/Gbim01dBdfk/XWL4ctbqrSW3C0ZcYUN04dQAGHNRR3Db3vt7M
-	 p5lResA1d0KEyn42kgsjdbWAVf2vVyjxR5CCAagk=
+	b=SW3KQhb85EY/gfPQgJKP+STChTPfNLJQQsc2pWL9JKktszP9socVYiFBwwhMNqBfx
+	 3mg7FoQcpr7Oj54Nd1TqjSEqG64O1qK0OmQS04q9WsKIec8hQxbnOnm9LPJ3J+gp1z
+	 naasbIxH46iyLDqYItOdhV6W4LPXByp5W1SZojlI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Til Kaiser <mail@tk154.de>,
-	Paolo Abeni <pabeni@redhat.com>,
+	"Maciej W. Rozycki" <macro@orcam.me.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 147/378] net: mvpp2: limit XDP frame size to the RX buffer
-Date: Tue, 16 Jun 2026 20:26:18 +0530
-Message-ID: <20260616145118.001389547@linuxfoundation.org>
+Subject: [PATCH 5.15 141/411] serial: dz: Fix bootconsole handover lockup
+Date: Tue, 16 Jun 2026 20:26:19 +0530
+Message-ID: <20260616145107.868406795@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,22 +71,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264000-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265934-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mail@tk154.de,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:macro@orcam.me.uk,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -98,52 +97,120 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tk154.de:email,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[orcam.me.uk:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E0D166912BC
+X-Rspamd-Queue-Id: 2E3C4693F9F
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Til Kaiser <mail@tk154.de>
+From: Maciej W. Rozycki <macro@orcam.me.uk>
 
-[ Upstream commit f3c6aa078927e6fe8121c9c591ddee8716c5305a ]
+commit 7f127b2208e5e2b817243cad41fe4211a6d5a7a3 upstream.
 
-mvpp2 has short and long BM pools, and short pool buffers can be smaller
-than PAGE_SIZE. The XDP path nevertheless initializes every xdp_buff with
-PAGE_SIZE as frame size.
+Calling dz_reset() in the course of setting up the serial device causes
+line parameters to be reset and the transmitter disabled.  We've been
+lucky in that no message is usually produced to the kernel log between
+this call and the later call to uart_set_options() in the course of
+console setup done by dz_serial_console_init(), or the system would hang
+as the console output handler in the firmware tried to access a port the
+transmitter of which has been disabled and line parameters messed up.
 
-XDP helpers use frame_sz to validate tail growth and to derive the hard
-end of the data area. Advertising PAGE_SIZE for short buffers can let
-bpf_xdp_adjust_tail() grow a packet past the real allocation, corrupting
-memory or later tripping skb tailroom checks.
+This will change with the next change to the driver, so fix dz_reset()
+such that line parameters are set for 9600n8 console operation as with
+the system firmware and the transmitter re-enabled after reset.  This
+also means dz_pm() serves no purpose anymore, so drop it.
 
-Initialize the XDP buffer with bm_pool->frag_size so XDP tailroom matches
-the actual buffer backing the packet.
-
-Fixes: 07dd0a7aae7f ("mvpp2: add basic XDP support")
-Signed-off-by: Til Kaiser <mail@tk154.de>
-Link: https://patch.msgid.link/20260607134943.21996-3-mail@tk154.de
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: e6ee512f5a77 ("dz.c: Resource management")
+Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Cc: stable@vger.kernel.org # v2.6.25+
+Link: https://patch.msgid.link/alpine.DEB.2.21.2605062302010.46195@angie.orcam.me.uk
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[ Avoid C99+ 'for' loop initial declaration for 5.15.y. ]
+Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tty/serial/dz.c | 37 +++++++++++++------------------------
+ 1 file changed, 13 insertions(+), 24 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-index 92a701f4fe3f57..3372ed27cc8d67 100644
---- a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-+++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-@@ -3979,7 +3979,7 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
- 			else
- 				xdp_rxq = &rxq->xdp_rxq_long;
+diff --git a/drivers/tty/serial/dz.c b/drivers/tty/serial/dz.c
+index 6d74ba5a5a431c..05f22e76a50893 100644
+--- a/drivers/tty/serial/dz.c
++++ b/drivers/tty/serial/dz.c
+@@ -546,6 +546,7 @@ static void dz_reset(struct dz_port *dport)
+ 	struct dz_mux *mux = dport->mux;
+ 	unsigned short tcr;
+ 	int loops = 10000;
++	int line;
  
--			xdp_init_buff(&xdp, PAGE_SIZE, xdp_rxq);
-+			xdp_init_buff(&xdp, bm_pool->frag_size, xdp_rxq);
- 			xdp_prepare_buff(&xdp, data,
- 					 MVPP2_MH_SIZE + MVPP2_SKB_HEADROOM,
- 					 rx_bytes, true);
+ 	if (mux->initialised)
+ 		return;
+@@ -573,6 +574,18 @@ static void dz_reset(struct dz_port *dport)
+ 	while (dz_in(dport, DZ_CSR) & DZ_CLR);
+ 	iob();
+ 
++	/*
++	 * Set parameters across all lines such as not to interfere
++	 * with the initial PROM-based console.  Otherwise any output
++	 * produced before the console handover would cause the system
++	 * firmware to produce rubbish.
++	 */
++	for (line = 0; line < DZ_NB_PORT; line++)
++		dz_out(dport, DZ_LPR, DZ_B9600 | DZ_CS8 | line);
++
++	/* Re-enable transmission for the initial PROM-based console.  */
++	dz_out(dport, DZ_TCR, tcr);
++
+ 	/* Enable scanning.  */
+ 	dz_out(dport, DZ_CSR, DZ_MSE);
+ 
+@@ -653,26 +666,6 @@ static void dz_set_termios(struct uart_port *uport, struct ktermios *termios,
+ 	spin_unlock_irqrestore(&dport->port.lock, flags);
+ }
+ 
+-/*
+- * Hack alert!
+- * Required solely so that the initial PROM-based console
+- * works undisturbed in parallel with this one.
+- */
+-static void dz_pm(struct uart_port *uport, unsigned int state,
+-		  unsigned int oldstate)
+-{
+-	struct dz_port *dport = to_dport(uport);
+-	unsigned long flags;
+-
+-	spin_lock_irqsave(&dport->port.lock, flags);
+-	if (state < 3)
+-		dz_start_tx(&dport->port);
+-	else
+-		dz_stop_tx(&dport->port);
+-	spin_unlock_irqrestore(&dport->port.lock, flags);
+-}
+-
+-
+ static const char *dz_type(struct uart_port *uport)
+ {
+ 	return "DZ";
+@@ -768,7 +761,6 @@ static const struct uart_ops dz_ops = {
+ 	.startup	= dz_startup,
+ 	.shutdown	= dz_shutdown,
+ 	.set_termios	= dz_set_termios,
+-	.pm		= dz_pm,
+ 	.type		= dz_type,
+ 	.release_port	= dz_release_port,
+ 	.request_port	= dz_request_port,
+@@ -893,10 +885,7 @@ static int __init dz_console_setup(struct console *co, char *options)
+ 	if (ret)
+ 		return ret;
+ 
+-	spin_lock_init(&dport->port.lock);	/* For dz_pm().  */
+-
+ 	dz_reset(dport);
+-	dz_pm(uport, 0, -1);
+ 
+ 	if (options)
+ 		uart_parse_options(options, &baud, &parity, &bits, &flow);
 -- 
 2.53.0
 
