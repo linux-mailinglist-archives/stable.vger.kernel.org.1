@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-265638-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266069-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id UXEdJ96MMWqWmQUAu9opvQ
-	(envelope-from <stable+bounces-265638-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:50:22 +0200
+	id YoxZLMSVMWrbnQUAu9opvQ
+	(envelope-from <stable+bounces-266069-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:28:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id B448E693876
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:50:21 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59479694283
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:28:20 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=OReylYCz;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265638-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-265638-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=R5AFVWuW;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266069-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-266069-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id BF42F3002B47
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:50:18 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C8E6130320BE
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:28:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC9DD472760;
-	Tue, 16 Jun 2026 17:50:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98038472798;
+	Tue, 16 Jun 2026 18:28:18 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0C0D43D4E9;
-	Tue, 16 Jun 2026 17:50:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C20F477E33;
+	Tue, 16 Jun 2026 18:28:17 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781632214; cv=none; b=ExJLb+x0EjT4sbHLvuYwzqYEqG3K95G0W1Iwuot17aRKfwwZnh2qTgKOeBOt8mP9i5NGw0UNU21xM0q+JlwcPy++H6GTo6v1XX3JVcZeGoZtjWBSofKATMp9Y7wBDw8ssBZ5FNO1pgOygiJ/Ex5k8ErzdQsy1/7e6zqJgkye3iA=
+	t=1781634498; cv=none; b=qNeg20tk+58RcnbovvKHoxjCSqCzo01nJdaaAgEEm7TQCgnGzdd250+qqIEO1ruJgha2ODN7z8pRIGA6TxQM6LLaivt9ihYsiYgfO7T1bK5BJ8e6weDXs2pWiWdBOxWPrFyrHaj/vGhCVqSm2Iy9i5vnM38z4HCa7noJ12vwhL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781632214; c=relaxed/simple;
-	bh=d++nFxTDhzagcjaSyOLSqLQvPDfPwcGgEO5RUsGZSe0=;
+	s=arc-20240116; t=1781634498; c=relaxed/simple;
+	bh=O/wWyg+Ocbv/Rd6ezFKMKDM/o6xDUWuYq0KeFO+NjIE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pd9byCA6wHXnqQoF2IocPdIqQEWmhzEVbTu7EZtHjMZjJZQnS1lm/hOKTGoQdUPlGxE1VQDU4Le8RMJR0CkY97O8xpMpRmlnLi5cfN0OZXb6qc/+GZY1oDK4Q3xJ9KU2gGEC17D5OwxvtzKCAzxobwi18suImxWUTSjlphMAnmU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OReylYCz; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D07761F000E9;
-	Tue, 16 Jun 2026 17:50:12 +0000 (UTC)
+	 MIME-Version; b=XGYe5aiiays3coJU19QLqMx33LSxpquYQBbt3QZt5om5X/Vg4Kpx2A8pfcfl255iElSL2qCfK0R2mbpV56tOYF+XgsYpOmVIkRSibcsDwdnoUlZI8+l5Ng2LmDZQRMO6LyjEMyfzVg9q0cisp299G6DR7S+usPP1+UjdzbK7eBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R5AFVWuW; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4014D1F000E9;
+	Tue, 16 Jun 2026 18:28:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781632213;
-	bh=oRrjkxxkLFvvRtO/Shc5HH1xNrwhJnRwzSaHV+jpj9E=;
+	s=korg; t=1781634497;
+	bh=3QwQICISKxM+5Z83O/t1Dw/8BNNafBY9wrSjzW2V4cM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OReylYCz8Ya5a98XtuaivNeD8XkipCQLsIrBQZuOYznljqNwQEwBQtJPjpG3kztRw
-	 m1dUfq2ClWB4Wxl//EBwcLQUrqkQWuIISWHVXA8AFPoiczz0PxW5DJGXzck0MLHL8X
-	 PgtmPzX2GmSDn9ldBpXWOaJYWMW9tbUEqMzMbGI4=
+	b=R5AFVWuWRwIoJYSzSWZVKNF5xrs+f3n9ok4Xqv/eZicmBeDECOy8/rau90r2SKyak
+	 dhGpGsHazqM6vux2+HwHNCSWnhjWT+/b0r5Kly1grTenorEabkqxzOmErfP0VGVHv3
+	 hdRs5gCRBcCh6qhXylQICKT2JwkaVOGDyp5IgV70=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 367/522] crypto: caam - guard HMAC key hex dumps in hash_digest_key
+Subject: [PATCH 5.15 276/411] net: qrtr: ns: Free the node during ctrl_cmd_bye()
 Date: Tue, 16 Jun 2026 20:28:34 +0530
-Message-ID: <20260616145142.950428109@linuxfoundation.org>
+Message-ID: <20260616145115.796109547@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,21 +72,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265638-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-266069-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:thorsten.blum@linux.dev,m:herbert@gondor.apana.org.au,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:manivannan.sadhasivam@oss.qualcomm.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -98,74 +98,83 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,apana.org.au:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,qualcomm.com:email,vger.kernel.org:from_smtp,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B448E693876
+X-Rspamd-Queue-Id: 59479694283
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thorsten Blum <thorsten.blum@linux.dev>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
 
-[ Upstream commit 177730a273b18e195263ed953853273e901b5064 ]
+[ Upstream commit 68efba36446a7774ea5b971257ade049272a07ac ]
 
-Use print_hex_dump_devel() for dumping sensitive HMAC key bytes in
-hash_digest_key() to avoid leaking secrets at runtime when
-CONFIG_DYNAMIC_DEBUG is enabled.
+A node sends the BYE packet when it is about to go down. So the nameserver
+should advertise the removal of the node to all remote and local observers
+and free the node finally. But currently, the nameserver doesn't free the
+node memory even after processing the BYE packet. This causes the node
+memory to leak.
 
-Fixes: 045e36780f11 ("crypto: caam - ahash hmac support")
-Fixes: 3f16f6c9d632 ("crypto: caam/qi2 - add support for ahash algorithms")
+Hence, remove the node from Xarray list and free the node memory during
+both success and failure case of ctrl_cmd_bye().
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: 0c2204a4ad71 ("net: qrtr: Migrate nameservice to kernel from userspace")
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260409-qrtr-fix-v3-3-00a8a5ff2b51@oss.qualcomm.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/caam/caamalg_qi2.c |    4 ++--
- drivers/crypto/caam/caamhash.c    |    4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ net/qrtr/ns.c |   20 +++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
 
---- a/drivers/crypto/caam/caamalg_qi2.c
-+++ b/drivers/crypto/caam/caamalg_qi2.c
-@@ -3264,7 +3264,7 @@ static int hash_digest_key(struct caam_h
- 	dpaa2_fl_set_addr(out_fle, key_dma);
- 	dpaa2_fl_set_len(out_fle, digestsize);
+--- a/net/qrtr/ns.c
++++ b/net/qrtr/ns.c
+@@ -344,7 +344,7 @@ static int ctrl_cmd_bye(struct sockaddr_
+ 	struct qrtr_node *node;
+ 	unsigned long index;
+ 	struct kvec iv;
+-	int ret;
++	int ret = 0;
  
--	print_hex_dump_debug("key_in@" __stringify(__LINE__)": ",
-+	print_hex_dump_devel("key_in@" __stringify(__LINE__)": ",
- 			     DUMP_PREFIX_ADDRESS, 16, 4, key, *keylen, 1);
- 	print_hex_dump_debug("shdesc@" __stringify(__LINE__)": ",
- 			     DUMP_PREFIX_ADDRESS, 16, 4, desc, desc_bytes(desc),
-@@ -3284,7 +3284,7 @@ static int hash_digest_key(struct caam_h
- 		/* in progress */
- 		wait_for_completion(&result.completion);
- 		ret = result.err;
--		print_hex_dump_debug("digested key@" __stringify(__LINE__)": ",
-+		print_hex_dump_devel("digested key@" __stringify(__LINE__)": ",
- 				     DUMP_PREFIX_ADDRESS, 16, 4, key,
- 				     digestsize, 1);
+ 	iv.iov_base = &pkt;
+ 	iv.iov_len = sizeof(pkt);
+@@ -359,8 +359,10 @@ static int ctrl_cmd_bye(struct sockaddr_
+ 
+ 	/* Advertise the removal of this client to all local servers */
+ 	local_node = node_get(qrtr_ns.local_node);
+-	if (!local_node)
+-		return 0;
++	if (!local_node) {
++		ret = 0;
++		goto delete_node;
++	}
+ 
+ 	memset(&pkt, 0, sizeof(pkt));
+ 	pkt.cmd = cpu_to_le32(QRTR_TYPE_BYE);
+@@ -377,10 +379,18 @@ static int ctrl_cmd_bye(struct sockaddr_
+ 		ret = kernel_sendmsg(qrtr_ns.sock, &msg, &iv, 1, sizeof(pkt));
+ 		if (ret < 0) {
+ 			pr_err("failed to send bye cmd\n");
+-			return ret;
++			goto delete_node;
+ 		}
  	}
---- a/drivers/crypto/caam/caamhash.c
-+++ b/drivers/crypto/caam/caamhash.c
-@@ -390,7 +390,7 @@ static int hash_digest_key(struct caam_h
- 	append_seq_store(desc, digestsize, LDST_CLASS_2_CCB |
- 			 LDST_SRCDST_BYTE_CONTEXT);
+-	return 0;
++
++	/* Ignore -ENODEV */
++	ret = 0;
++
++delete_node:
++	xa_erase(&nodes, from->sq_node);
++	kfree(node);
++
++	return ret;
+ }
  
--	print_hex_dump_debug("key_in@"__stringify(__LINE__)": ",
-+	print_hex_dump_devel("key_in@"__stringify(__LINE__)": ",
- 			     DUMP_PREFIX_ADDRESS, 16, 4, key, *keylen, 1);
- 	print_hex_dump_debug("jobdesc@"__stringify(__LINE__)": ",
- 			     DUMP_PREFIX_ADDRESS, 16, 4, desc, desc_bytes(desc),
-@@ -405,7 +405,7 @@ static int hash_digest_key(struct caam_h
- 		wait_for_completion(&result.completion);
- 		ret = result.err;
- 
--		print_hex_dump_debug("digested key@"__stringify(__LINE__)": ",
-+		print_hex_dump_devel("digested key@"__stringify(__LINE__)": ",
- 				     DUMP_PREFIX_ADDRESS, 16, 4, key,
- 				     digestsize, 1);
- 	}
+ static int ctrl_cmd_del_client(struct sockaddr_qrtr *from,
 
 
 
