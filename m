@@ -1,66 +1,61 @@
-Return-Path: <stable+bounces-265469-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266290-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 7kTpJ/iKMWqbmAUAu9opvQ
-	(envelope-from <stable+bounces-265469-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:42:16 +0200
+	id +hO8OvCaMWosoAUAu9opvQ
+	(envelope-from <stable+bounces-266290-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:50:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A289693622
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:42:16 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B30F69481C
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:50:24 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="eIS/ezFT";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265469-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265469-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=P1cvAcUC;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266290-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266290-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8EC1E3241A6A
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:35:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8DA033222828
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:47:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EF254611CF;
-	Tue, 16 Jun 2026 17:35:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B3F94657C2;
+	Tue, 16 Jun 2026 18:47:28 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4D1832E728;
-	Tue, 16 Jun 2026 17:35:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ADD43CFF55;
+	Tue, 16 Jun 2026 18:47:27 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781631356; cv=none; b=fdNqKZJzSoAmmnfaWEma7+JGP52dVkdk4+iCeCQlf6QQdyWCUlFNeztKvwUffmTh0Ux7amT1BA+gF2/H/hW70NmkVQyrtX4dC2hphnNj3JiHv4pAAg+HKts2CaOxxptMJBrhAk/bgr32OFsCQsNgXTu/I446sydl2zNOVwibZFc=
+	t=1781635648; cv=none; b=jomMBt92h3uHHt3ARFO3IfkLMyKlU2Esj/MflBqNxyn7Ov7ME6GRTJBwzuQdAV1T3mpkalAUQkO9b3eIT+5mbB7tGLkafPj9mMSrW0W2RiTOW/sB2DJLNHERlM/b97rMozO5bFlf+SviMrM/9dSSr3ZkrGtmlijA75s6beVG1jI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781631356; c=relaxed/simple;
-	bh=Lzlq3qI1cJrjjNCwd1GbW3l6xosjouVB5VesBJaZqco=;
+	s=arc-20240116; t=1781635648; c=relaxed/simple;
+	bh=TckqbwD62SPi1x4igDw3SlLE0LoKWaLbno8QKjwHDf0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CVqlNPiCBy2A7UmmL39JfM3IseqNZMornxSzwvWT9P0oCy1j+jQSEWtayAUuJRjjJNX+2n5xMNvLbe2muAPNMaJ3wMFrCbcySVE6Dkp0ASyleyowVt7kWWODNK7lXspjp7dqgMl7L2Y03zfEjNE6RGGVD2ykDzzqkcsuAoHeWDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eIS/ezFT; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43A4E1F00A3A;
-	Tue, 16 Jun 2026 17:35:52 +0000 (UTC)
+	 MIME-Version; b=V4uZ+wBnenH8yWAM0TlW4XieTu3pX9R+WP0/YPz1jyRIguTjWtU5EKk/erX0zZvaXOxheaLftptLfeHbtorwD7MaFdR1Bo/oAvNDHju4sS4GxwfQ0DwHr87bhkARAPMAK6nRx2F34L1T693xbGP9E69l8vIb59+QwH7sDmbEb58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P1cvAcUC; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C3F41F000E9;
+	Tue, 16 Jun 2026 18:47:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781631354;
-	bh=rbSDirl+RlSNQ2MRDXiDi3zRCE7PYLaWuzTFKXqTLrk=;
+	s=korg; t=1781635647;
+	bh=Ph4DAFS9ziPIEkChjfGtrghH75nSMy4BlMg4ytuW5OA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=eIS/ezFT+iF5vj+CtkYoTzKvqYrjp7a1wxKgGcI0VOuttKpeOce4lHMhbWwMmYYGx
-	 yVNuv9kN/szQ5EmluijHa0R72kBrpQ7EHmOxVMHQYlIU7x2aTTLdtFj908+a5qdvpn
-	 aGMuhCZcG7iN1260UEj8HzqulojW4mTWn/ACU0pg=
+	b=P1cvAcUCPyMw/87RnvmkxvkkUcVqSO1jkEptbOAj8FAvxiGQRUYu3eMQljnn13Daz
+	 +M2u6Ys4xeVJh4zX9s5KvE9XEe7Zcjd5B1CTUDyKbZaoFNq9lwKuf+LDLIKqe2NgkA
+	 8X0L2yj4jon/k7Dpbj6u9w+EwL2NpE2toHRKvSMo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	Kyle Zeng <kylebot@openai.com>,
-	Victor Nogueira <victor@mojatatu.com>,
-	syzbot@syzkaller.appspotmail.com,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Pedro Tammela <pctammela@mojatatu.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 204/522] net/sched: act_api: use RCU with deferred freeing for action lifecycle
+	stable <stable@kernel.org>,
+	Ben Hutchings <benh@debian.org>,
+	Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+Subject: [PATCH 5.10 055/342] parport: Fix race between port and client registration
 Date: Tue, 16 Jun 2026 20:25:51 +0530
-Message-ID: <20260616145135.615929801@linuxfoundation.org>
+Message-ID: <20260616145050.821643731@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,145 +67,151 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265469-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kuba@kernel.org,m:kylebot@openai.com,m:victor@mojatatu.com,m:syzbot@syzkaller.appspotmail.com,m:jhs@mojatatu.com,m:pctammela@mojatatu.com,m:edumazet@google.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-266290-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:benh@debian.org,m:sudipm.mukherjee@gmail.com,m:sudipmmukherjee@gmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,debian.org,gmail.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,appspotmail.com:email,openai.com:email,mojatatu.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 0A289693622
+X-Rspamd-Queue-Id: 6B30F69481C
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jamal Hadi Salim <jhs@mojatatu.com>
+From: Ben Hutchings <benh@debian.org>
 
-[ Upstream commit 5057e1aca011e51ef51498c940ef96f3d3e8a305 ]
+commit ef15ccbb3e8640a723c42ad90eaf81d66ae02017 upstream.
 
-When NEWTFILTER and DELFILTER are run concurrently it is possible to create a
-race with an associated action.
+The parport subsystem registers port devices before they are fully
+initialised, resulting in a race condition where client drivers such
+as lp can attach to ports that are not completely initialised or even
+being torn down.
 
-Let's illustrate with CPU0 running NEWTFILTER and CPU1 running DELFILTER:
+When the port and client drivers are built as modules and loaded
+around the same time during boot, this occasionally results in a
+crash.  I was able to make this happen reliably in a VM with a
+PC-style parallel port by patching parport_pc to fail probing:
 
- 0: mutex_lock() <-- holds the idr lock
- 0: rcu_read_lock()
- 0: p = idr_find(idr, index) <-- action p is valid (RCU protects IDR)
- 0: mutex_unlock() <-- releases the idr lock
- 1: refcount_dec_and_mutex_lock() <-- refcnt 1->0, mutex held
- 1: idr_remove(idr, index) <-- Action removed from IDR
- 1: mutex_unlock() <-- mutex released allowing us to delete the action
- 1: tcf_action_cleanup(p); kfree(p) <-- Kfrees p immediately, no deferral
- 0: refcount_inc_not_zero(&p->tcfa_refcnt) <-- ouch, UAF p points to freed memory
+> --- a/drivers/parport/parport_pc.c
+> +++ b/drivers/parport/parport_pc.c
+> @@ -2069,7 +2069,7 @@ static struct parport *__parport_pc_probe_port(unsigned long int base,
+>  	if (!p)
+>  		goto out3;
+>
+> -	base_res = request_region(base, 3, p->name);
+> +	base_res = NULL;
+>  	if (!base_res)
+>  		goto out4;
+>
 
-This patch fixes the race condition between NEWTFILTER and DELFILTER by
-adding struct rcu_head to tc_action used in the deferral and introducing a
-call_rcu() in the delete path to defer the final kfree().
+and then running:
 
-Note: this is a revert of commit d7fb60b9cafb ("net_sched: get rid of tcfa_rcu")
-but also modernization/simplification to directly use kfree_rcu().
+    while true; do
+        modprobe lp & modprobe parport_pc
+	wait
+	rmmod lp parport_pc
+    done
 
-Let's illustrate the new restored code path:
+for a few seconds.
 
- 0: rcu_read_lock()
- 1: refcount_dec_and_mutex_lock() <-- refcnt 1->0, mutex held
- 1: idr_remove(idr, index)
- 1: mutex_unlock()
- 1: call_rcu(&p->tcfa_rcu, tcf_action_rcu_free) <-- defer kfree after grace period
- 0: p = idr_find(idr, index)
- 0: refcount_inc_not_zero(&p->tcfa_refcnt) <-- fails, refcnt already 0
- 1: rcu_read_unlock() <-- release so freeing can run after grace period
+In the long term I think port registration should be changed to put
+the call to device_add() inside parport_announce_port(), but since the
+latter currently cannot fail this will require changing all port
+drivers.
 
-After CPU1 calls idr_remove(), the object is no longer reachable through the IDR.
-CPU0's subsequent idr_find() will return NULL, and even if it still held a
-stale pointer, the immediate kfree() is now deferred until after the RCU grace
-period, so no UAF can occur.
+For now, add a flag to indicate whether a port has been "announced"
+and only try to attach client drivers to ports when the flag is set.
 
-Fixes: d7fb60b9cafb ("net_sched: get rid of tcfa_rcu")
-Suggested-by: Jakub Kicinski <kuba@kernel.org>
-Reported-by: Kyle Zeng <kylebot@openai.com>
-Tested-by: Victor Nogueira <victor@mojatatu.com>
-Tested-by: syzbot@syzkaller.appspotmail.com
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Tested-by: Kyle Zeng <kylebot@openai.com>
-Reviewed-by: Pedro Tammela <pctammela@mojatatu.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Victor Nogueira <victor@mojatatu.com>
-Link: https://patch.msgid.link/20260531160812.68020-1-jhs@mojatatu.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 6fa45a226897 ("parport: add device-model to parport subsystem")
+Closes: https://bugs.debian.org/1130365
+Closes: https://lore.kernel.org/all/6ba903ad-9897-42bb-8c2d-337385cc3746@molgen.mpg.de/
+Cc: stable <stable@kernel.org>
+Signed-off-by: Ben Hutchings <benh@debian.org>
+Acked-by: Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+Link: https://patch.msgid.link/afo6uBv68GDevbMD@decadent.org.uk
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/act_api.h | 1 +
- net/sched/act_api.c   | 7 +------
- 2 files changed, 2 insertions(+), 6 deletions(-)
+ drivers/parport/share.c |   11 +++++++++--
+ include/linux/parport.h |    1 +
+ 2 files changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/include/net/act_api.h b/include/net/act_api.h
-index 31e8d8f8bcd7eb..55e3b5ec1d92d8 100644
---- a/include/net/act_api.h
-+++ b/include/net/act_api.h
-@@ -42,6 +42,7 @@ struct tc_action {
- 	struct tc_cookie	__rcu *act_cookie;
- 	struct tcf_chain	__rcu *goto_chain;
- 	u32			tcfa_flags;
-+	struct rcu_head         tcfa_rcu;
- 	u8			hw_stats;
- 	u8			used_hw_stats;
- 	bool			used_hw_stats_valid;
-diff --git a/net/sched/act_api.c b/net/sched/act_api.c
-index b75e22756c4b09..47f0d4c3dc487f 100644
---- a/net/sched/act_api.c
-+++ b/net/sched/act_api.c
-@@ -111,11 +111,6 @@ struct tcf_chain *tcf_action_set_ctrlact(struct tc_action *a, int action,
- }
- EXPORT_SYMBOL(tcf_action_set_ctrlact);
- 
--/* XXX: For standalone actions, we don't need a RCU grace period either, because
-- * actions are always connected to filters and filters are already destroyed in
-- * RCU callbacks, so after a RCU grace period actions are already disconnected
-- * from filters. Readers later can not find us.
-- */
- static void free_tcf(struct tc_action *p)
+--- a/drivers/parport/share.c
++++ b/drivers/parport/share.c
+@@ -223,10 +223,14 @@ static void get_lowlevel_driver(void)
+ static int port_check(struct device *dev, void *dev_drv)
  {
- 	struct tcf_chain *chain = rcu_dereference_protected(p->goto_chain, 1);
-@@ -128,7 +123,7 @@ static void free_tcf(struct tc_action *p)
- 	if (chain)
- 		tcf_chain_put_by_act(chain);
+ 	struct parport_driver *drv = dev_drv;
++	struct parport *port;
  
--	kfree(p);
-+	kfree_rcu(p, tcfa_rcu);
+ 	/* only send ports, do not send other devices connected to bus */
+-	if (is_parport(dev))
+-		drv->match_port(to_parport_dev(dev));
++	if (is_parport(dev)) {
++		port = to_parport_dev(dev);
++		if (test_bit(PARPORT_ANNOUNCED, &port->devflags))
++			drv->match_port(port);
++	}
+ 	return 0;
  }
  
- static void offload_action_hw_count_set(struct tc_action *act,
--- 
-2.53.0
-
+@@ -553,6 +557,7 @@ void parport_announce_port(struct parpor
+ 		if (slave)
+ 			attach_driver_chain(slave);
+ 	}
++	set_bit(PARPORT_ANNOUNCED, &port->devflags);
+ 	mutex_unlock(&registration_lock);
+ }
+ EXPORT_SYMBOL(parport_announce_port);
+@@ -582,6 +587,8 @@ void parport_remove_port(struct parport
+ 
+ 	mutex_lock(&registration_lock);
+ 
++	clear_bit(PARPORT_ANNOUNCED, &port->devflags);
++
+ 	/* Spread the word. */
+ 	detach_driver_chain(port);
+ 
+--- a/include/linux/parport.h
++++ b/include/linux/parport.h
+@@ -245,6 +245,7 @@ struct parport {
+ 
+ 	unsigned long devflags;
+ #define PARPORT_DEVPROC_REGISTERED	0
++#define PARPORT_ANNOUNCED		1
+ 	struct pardevice *proc_device;	/* Currently register proc device */
+ 
+ 	struct list_head full_list;
 
 
 
