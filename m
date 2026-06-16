@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-264746-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265229-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id QtK4FfF8MWqmkgUAu9opvQ
-	(envelope-from <stable+bounces-264746-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:42:25 +0200
+	id CWcuOoWGMWqZlgUAu9opvQ
+	(envelope-from <stable+bounces-265229-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:23:17 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D63566925D4
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:42:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CC226930FC
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:23:17 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=BVgI0g6E;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264746-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264746-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=AYSQTg3t;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265229-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265229-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6E4103206035
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:34:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 66EEA3137978
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:15:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E65E477995;
-	Tue, 16 Jun 2026 16:34:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A8B7477E36;
+	Tue, 16 Jun 2026 17:15:38 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E25A64779A8;
-	Tue, 16 Jun 2026 16:34:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67AEF478E2B;
+	Tue, 16 Jun 2026 17:15:37 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781627668; cv=none; b=ct/K6rw/4NfIal130M+3r7Sxxbfv1nqmI2xccXInCJEoNa1St2JT3KDnFJJlLu7QA0foJC+yTTdmjx91Nv4Frp060bXASnAcEAC4hiRVi3MRr2e6LMu2yMyMWgcdBeCw986L4x4cXMfSMURYLV+qS05AbCp31xFTtJacU/6iaWQ=
+	t=1781630138; cv=none; b=dZ/r5HaAj7LljudqDGBvgUI6/lzMsXHVMUgUJFMsHpb/zQl4y0RLymwDup0rspsHvUV4m/RbU/R+q/dTzbBpdvruuo4OqvzF+pmD7E0VQBFZOuW1fc5aODfXoIcEOkJF39+nisEvDIhd3bKKdRkVJTLGXg7dRdVi5SpYQ36rOHY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781627668; c=relaxed/simple;
-	bh=B6440wugUa80IiZfQnR/2zUZHND8GP9iZqDe8MNxMyE=;
+	s=arc-20240116; t=1781630138; c=relaxed/simple;
+	bh=8mRDgMYJ2IAEqe9Qa7rf0CWSQqeGhG5CIBl4Ni3LMq8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NejdzGs04A3Bn5RGWmINvBzHiDZEcjXWEZqBoyiD1IrX9gSb4t10osYvgKndC9Rv0VGQ37X/rIH7CDvbfleVtmW5hapA86cu+Foh/F+179FoJc7e4KOBL/6h5Md/J4ahkkng6SBgmch471m9YCglSQiQLlEJbym8OMrUP4pWgx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BVgI0g6E; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8E111F000E9;
-	Tue, 16 Jun 2026 16:34:26 +0000 (UTC)
+	 MIME-Version; b=fB8D/j30ksXq9XFvIiewlCsZFmRi713vqRSL79FtNTkLgKQ5QLfJxrFTLBd+T9YqiT0k0hRddqI+Vz/8gfZ/YiHIj+JjCDJFh9jhsAPdTr8rDid7EpfXeua0wJJgOVGBQGREQaVZg3B582RQZBJEkbGVL2sT6MqhG3PEwin9v0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AYSQTg3t; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72EDC1F000E9;
+	Tue, 16 Jun 2026 17:15:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781627667;
-	bh=A4ORgAXvyYfJ9qtXriZqDI1E2CWCEWot03MSaEiGnfU=;
+	s=korg; t=1781630137;
+	bh=JFR7XXkCBrB0K/PY28RbGmHtkVVYgNhui55WDWWiWAs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=BVgI0g6EI128ZZD6szYT+xxAtyLBiUalbYKF7uAYAfUvzEHmJMNInwqw1UEZ/ugpM
-	 ijPEua6IgGSjFUpAby4VML2rgyyZyxska0q45nPo3hD8CP4VpRCsnLJsjjTMKNZCVY
-	 igQG7aFjK+/iEZK8vZXe4ZuW/WuDYnY6ZlwD7ESg=
+	b=AYSQTg3tBL94tNN0vE7csW66wyLcafhjchjPT42TB2gh7jNq11R79rLI1HdmFXj6w
+	 jBi5OZBnfH9F3MlQkmlDuDbHO9jafGVu+r31AYTfwsd/I6DyqkLfSddFdawslKO9vJ
+	 gDoIBZnMj35fRMpG/AGq7m58mxRf97mEs5wStomk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: [PATCH 6.12 206/261] thunderbolt: Limit XDomain response copy to actual frame size
-Date: Tue, 16 Jun 2026 20:30:44 +0530
-Message-ID: <20260616145054.592903485@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	John Ogness <john.ogness@linutronix.de>,
+	Tudor Ambarus <tudor.ambarus@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 418/452] tty: serial: samsung: Remove redundant port lock acquisition in rx helpers
+Date: Tue, 16 Jun 2026 20:30:45 +0530
+Message-ID: <20260616145138.728586158@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
-References: <20260616145044.869532709@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,82 +68,122 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264746-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:mika.westerberg@linux.intel.com,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265229-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:john.ogness@linutronix.de,m:tudor.ambarus@linaro.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.intel.com];
 	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,intel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,vger.kernel.org:from_smtp,linutronix.de:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linaro.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D63566925D4
+X-Rspamd-Queue-Id: 2CC226930FC
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Tudor Ambarus <tudor.ambarus@linaro.org>
 
-commit 4db2bd2ed4785dbadaeeab9f4e346b21ac5fb8eb upstream.
+[ Upstream commit a3bb136bff5e6a5e48cdd813246c9c4686feaaa9 ]
 
-tb_xdomain_copy() copies req->response_size bytes from the received
-packet buffer regardless of the actual frame size.  When a short
-response arrives, this reads past the valid frame data in the DMA
-pool buffer into stale contents from previous transactions.
+Sashiko identified a deadlock when the console flow is engaged [1].
 
-Use the minimum of frame size and expected response size for the
-copy length.
+When console flow control is enabled (UPF_CONS_FLOW),
+s3c24xx_serial_stop_tx() calls s3c24xx_serial_rx_enable() and
+s3c24xx_serial_start_tx() calls s3c24xx_serial_rx_disable().
 
-Fixes: cdae7c07e3e3 ("thunderbolt: Add support for XDomain properties")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-7
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+The serial core framework invokes the .stop_tx() and .start_tx()
+callbacks with the port->lock spinlock already held. Furthermore, all
+internal driver paths that invoke stop_tx (such as the DMA TX
+completion handler s3c24xx_serial_tx_dma_complete() or the PIO TX IRQ
+handler s3c24xx_serial_tx_irq()) also acquire port->lock prior to
+calling it. (Note that s3c24xx_serial_start_tx() is only invoked by the
+serial core).
+
+However, s3c24xx_serial_rx_enable() and s3c24xx_serial_rx_disable()
+unconditionally attempt to acquire port->lock again using
+uart_port_lock_irqsave(). Since spinlocks are not recursive, this
+causes a deadlock on the same CPU when console flow control is engaged.
+
+Remove the redundant lock acquisition from both rx helper functions.
+
+Cc: stable <stable@kernel.org>
+Fixes: b497549a035c ("[ARM] S3C24XX: Split serial driver into core and per-cpu drivers")
+Reported-by: John Ogness <john.ogness@linutronix.de>
+Closes: https://sashiko.dev/#/patchset/20260506121606.5805-1-john.ogness%40linutronix.de [1]
+Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+Link: https://patch.msgid.link/20260515-samsung-tty-flow-control-deadlock-v1-1-93255edbc9bc@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/thunderbolt/xdomain.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/tty/serial/samsung_tty.c |    8 --------
+ 1 file changed, 8 deletions(-)
 
---- a/drivers/thunderbolt/xdomain.c
-+++ b/drivers/thunderbolt/xdomain.c
-@@ -123,7 +123,9 @@ static bool tb_xdomain_match(const struc
- static bool tb_xdomain_copy(struct tb_cfg_request *req,
- 			    const struct ctl_pkg *pkg)
+--- a/drivers/tty/serial/samsung_tty.c
++++ b/drivers/tty/serial/samsung_tty.c
+@@ -244,12 +244,9 @@ static int s3c24xx_serial_txempty_nofifo
+ static void s3c24xx_serial_rx_enable(struct uart_port *port)
  {
--	memcpy(req->response, pkg->buffer, req->response_size);
-+	size_t len = min_t(size_t, pkg->frame.size, req->response_size);
-+
-+	memcpy(req->response, pkg->buffer, len);
- 	req->result.err = 0;
- 	return true;
+ 	struct s3c24xx_uart_port *ourport = to_ourport(port);
+-	unsigned long flags;
+ 	int count = 10000;
+ 	u32 ucon, ufcon;
+ 
+-	uart_port_lock_irqsave(port, &flags);
+-
+ 	while (--count && !s3c24xx_serial_txempty_nofifo(port))
+ 		udelay(100);
+ 
+@@ -262,23 +259,18 @@ static void s3c24xx_serial_rx_enable(str
+ 	wr_regl(port, S3C2410_UCON, ucon);
+ 
+ 	ourport->rx_enabled = 1;
+-	uart_port_unlock_irqrestore(port, flags);
  }
+ 
+ static void s3c24xx_serial_rx_disable(struct uart_port *port)
+ {
+ 	struct s3c24xx_uart_port *ourport = to_ourport(port);
+-	unsigned long flags;
+ 	u32 ucon;
+ 
+-	uart_port_lock_irqsave(port, &flags);
+-
+ 	ucon = rd_regl(port, S3C2410_UCON);
+ 	ucon &= ~S3C2410_UCON_RXIRQMODE;
+ 	wr_regl(port, S3C2410_UCON, ucon);
+ 
+ 	ourport->rx_enabled = 0;
+-	uart_port_unlock_irqrestore(port, flags);
+ }
+ 
+ static void s3c24xx_serial_stop_tx(struct uart_port *port)
 
 
 
