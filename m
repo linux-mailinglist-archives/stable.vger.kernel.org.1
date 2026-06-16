@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-265449-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265888-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id SNRSE32KMWpjmAUAu9opvQ
-	(envelope-from <stable+bounces-265449-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:40:13 +0200
+	id 4b0CCACSMWoAnAUAu9opvQ
+	(envelope-from <stable+bounces-265888-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:12:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BFA769359C
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:40:12 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBD3C693E23
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:12:15 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=gbqBQ3to;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265449-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-265449-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=r7VMmrCF;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265888-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-265888-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 41EF6302CB62
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:34:21 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 661A130302F2
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:12:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D497B46AF1E;
-	Tue, 16 Jun 2026 17:34:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55D793D566F;
+	Tue, 16 Jun 2026 18:12:12 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 919074502F;
-	Tue, 16 Jun 2026 17:34:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DCF33CEBBD;
+	Tue, 16 Jun 2026 18:12:11 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781631257; cv=none; b=Dq5cRQx16o0/NqdGXbD2P0Ri4AUrnXzLJgTXAOo0lh8IQR+pczHAZ/hw2QmbK8WxTYx4YveKnZX9dsyJ/i1lyjVoFUonbMEHBggD3C3eg6O7rIDL+DyIJMh5paRxslZRzK5qe3Y6WD8Z2eWnwgls1FRCYTTVIvSMgPAxBqxUmTk=
+	t=1781633532; cv=none; b=pX1kxZUj8ULHIMXhnwzPvsV7Cfj77fW/k04Nf+vf65KjDy/GC/d9SHUli8SukFOgS5+ewOdql0Kj4f/SARFD3Gm+YJKruN4u23j53dfiMXCiPF1t8HOA8+mAqUzz81XYEw39wvCopUc6SOa7s0KjtwEDnr4h4mpYLxvPcv0UDJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781631257; c=relaxed/simple;
-	bh=bNoojzieyQ4uVp5NWNNi01dXIJyh2uWbDaF5tpWDahs=;
+	s=arc-20240116; t=1781633532; c=relaxed/simple;
+	bh=ue2GyJG7qZ2We+hZkzCfsqo1X+cgMllWZjQRakYaQjU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i3QYZlJOvEuf187FU4d6xtUh9Y0sKreNx+WQOEitwopo3Tc8TYd1SK/U349h+0X+p1DAR4TJgX0JY0TfUtfivuyYCIC/fBV3Ht8QSStv64kmWCqv3MUz/+LItOfs+Y0e2XCLI3p23D20qrcEV49ULBf9WgjtWlWAFthtg0ApzoE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gbqBQ3to; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 919701F000E9;
-	Tue, 16 Jun 2026 17:34:15 +0000 (UTC)
+	 MIME-Version; b=Jytl5Nb8sXsKWI8UvwSPf3OTrpn1YhctLAGA+LhQy92U3NuuWLB1w6mCQIeqeBhCJhXpZN3/T/62tJq5wsb92szCChu961dqf+E5UOaarjjpbEgArOpUc9BoVmJlLFLDulFC0q5cJCcChm8vuAEbD5ZYXylmyRVgcy4Yr50ciSQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r7VMmrCF; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 038811F000E9;
+	Tue, 16 Jun 2026 18:12:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781631256;
-	bh=/+aDcqJBXXwwPnooYg/WyXyt5O6fim8bOt89eazf6DQ=;
+	s=korg; t=1781633531;
+	bh=BNySIJ9LOqA+Ek0entKRUDoTrvK22ot1O3csWm/xGL0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gbqBQ3tovwsSTJHI2BcksccVTY/HAq+GItvt3cUs+OxinGPiKram62XPWPH841pla
-	 ZSSX05JeBDa1SyimAQtmo4imA4pwnVZLgUW35H/8ojSoLyy3oouzidEsg11y2t+Wyv
-	 jOqlQeb3KcolNfVs9bE05G6vCmdlDh35ztJ0fkcQ=
+	b=r7VMmrCFJ6uW/ZAd60Uw6tTPupcTttavLEfY31yfevYb2URILcqrvUguDZpmqTa4i
+	 mxwG5lqTF9STYyVcJEpOyktzdK5oBQWTNzXYJzDBO/hyD/81mt1iyiZMPBMiACJG9y
+	 PxwfsMSNV5IYf1xqQZdkLQ53Sw/StiP5hEadgZ8g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 187/522] serial: dz: Fix bootconsole handover lockup
-Date: Tue, 16 Jun 2026 20:25:34 +0530
-Message-ID: <20260616145134.862824309@linuxfoundation.org>
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Steffen Klassert <steffen.klassert@secunet.com>
+Subject: [PATCH 5.15 097/411] xfrm: ah: use skb_to_full_sk in async output callbacks
+Date: Tue, 16 Jun 2026 20:25:35 +0530
+Message-ID: <20260616145105.373624637@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,144 +66,128 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265449-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:macro@orcam.me.uk,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265888-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:steffen.klassert@secunet.com,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,secunet.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,orcam.me.uk:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,secunet.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5BFA769359C
+X-Rspamd-Queue-Id: EBD3C693E23
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej W. Rozycki <macro@orcam.me.uk>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-commit 7f127b2208e5e2b817243cad41fe4211a6d5a7a3 upstream.
+commit 79d8be262377f7112cfa3088dfc4142d5a2533f3 upstream.
 
-Calling dz_reset() in the course of setting up the serial device causes
-line parameters to be reset and the transmitter disabled.  We've been
-lucky in that no message is usually produced to the kernel log between
-this call and the later call to uart_set_options() in the course of
-console setup done by dz_serial_console_init(), or the system would hang
-as the console output handler in the firmware tried to access a port the
-transmitter of which has been disabled and line parameters messed up.
+When AH output is offloaded to an asynchronous crypto provider
+(hardware accelerators such as AMD CCP, or a forced-async software
+shim used for testing), the digest completion fires
+ah_output_done() / ah6_output_done() on a workqueue.  The egress
+skb at that point may have been originated by a TCP listener
+sending a SYN-ACK, which sets skb->sk to a request_sock via
+skb_set_owner_edemux(); it may also have been originated by an
+inet_timewait_sock retransmit.  Neither is a full struct sock, and
+passing the raw skb->sk to xfrm_output_resume() then forwards a
+non-full socket through the rest of the xfrm output chain.
 
-This will change with the next change to the driver, so fix dz_reset()
-such that line parameters are set for 9600n8 console operation as with
-the system firmware and the transmitter re-enabled after reset.  This
-also means dz_pm() serves no purpose anymore, so drop it.
+xfrm_output_resume() and its downstream consumers expect a full
+sk where they dereference at all.  The natural egress path
+through ah_output_done() does not crash today because the
+consumers that read past sock_common are either gated by
+sk_fullsock() or short-circuit on flags that are clear on a fresh
+request_sock; an exhaustive walk of the 50 most plausible
+consumers under sch_fq, dev_queue_xmit, netfilter, tc-egress and
+cgroup-egress BPF found no current unguarded deref.  The bug is
+still a real type confusion that future consumer changes could
+turn into a memory-corruption primitive.
 
-Fixes: e6ee512f5a77 ("dz.c: Resource management")
-Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Cc: stable@vger.kernel.org # v2.6.25+
-Link: https://patch.msgid.link/alpine.DEB.2.21.2605062302010.46195@angie.orcam.me.uk
+This is the same bug class fixed for ESP in commit 1620c88887b1
+("xfrm: Fix the usage of skb->sk").  Apply the analogous fix to
+AH: convert skb->sk to a full socket pointer (or NULL) via
+skb_to_full_sk() before handing it to xfrm_output_resume().
+
+The same async AH callbacks were touched recently for an
+independent ESN-related ICV layout bug in commit ec54093e6a8f
+("xfrm: ah: account for ESN high bits in async callbacks"); the
+sk type-confusion addressed here is orthogonal.  This patch is
+part of an ongoing audit of the AH callback paths; an ah_output
+ihl-validation hardening series is also currently under review on
+netdev.
+
+Reproduced under UML + KASAN + lockdep with a forced-async
+hmac(sha1) shim that registers at priority 9999 and wraps the
+sync in-tree hmac-sha1-lib.  With the shim loaded, ah_output_done
+runs on every SYN-ACK egress through a transport-mode AH SA and
+skb->sk arrives as a request_sock (TCP_NEW_SYN_RECV); after this
+patch, xfrm_output_resume() receives the listener (the result of
+sk_to_full_sk()) and consumer derefs land on full-sock fields as
+intended.
+
+Fixes: 9ab1265d5231 ("xfrm: Use actual socket sk instead of skb socket for xfrm_output_resume")
+Cc: stable@vger.kernel.org
+Assisted-by: Claude:claude-opus-4-7
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/dz.c | 36 ++++++++++++------------------------
- 1 file changed, 12 insertions(+), 24 deletions(-)
+ net/ipv4/ah4.c |    2 +-
+ net/ipv6/ah6.c |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/tty/serial/dz.c b/drivers/tty/serial/dz.c
-index a16738799418ca..d80bbd95a7f786 100644
---- a/drivers/tty/serial/dz.c
-+++ b/drivers/tty/serial/dz.c
-@@ -573,6 +573,18 @@ static void dz_reset(struct dz_port *dport)
- 	while (dz_in(dport, DZ_CSR) & DZ_CLR);
- 	iob();
+--- a/net/ipv4/ah4.c
++++ b/net/ipv4/ah4.c
+@@ -141,7 +141,7 @@ static void ah_output_done(struct crypto
+ 	}
  
-+	/*
-+	 * Set parameters across all lines such as not to interfere
-+	 * with the initial PROM-based console.  Otherwise any output
-+	 * produced before the console handover would cause the system
-+	 * firmware to produce rubbish.
-+	 */
-+	for (int line = 0; line < DZ_NB_PORT; line++)
-+		dz_out(dport, DZ_LPR, DZ_B9600 | DZ_CS8 | line);
-+
-+	/* Re-enable transmission for the initial PROM-based console.  */
-+	dz_out(dport, DZ_TCR, tcr);
-+
- 	/* Enable scanning.  */
- 	dz_out(dport, DZ_CSR, DZ_MSE);
- 
-@@ -656,26 +668,6 @@ static void dz_set_termios(struct uart_port *uport, struct ktermios *termios,
- 	spin_unlock_irqrestore(&dport->port.lock, flags);
+ 	kfree(AH_SKB_CB(skb)->tmp);
+-	xfrm_output_resume(skb->sk, skb, err);
++	xfrm_output_resume(skb_to_full_sk(skb), skb, err);
  }
  
--/*
-- * Hack alert!
-- * Required solely so that the initial PROM-based console
-- * works undisturbed in parallel with this one.
-- */
--static void dz_pm(struct uart_port *uport, unsigned int state,
--		  unsigned int oldstate)
--{
--	struct dz_port *dport = to_dport(uport);
--	unsigned long flags;
--
--	spin_lock_irqsave(&dport->port.lock, flags);
--	if (state < 3)
--		dz_start_tx(&dport->port);
--	else
--		dz_stop_tx(&dport->port);
--	spin_unlock_irqrestore(&dport->port.lock, flags);
--}
--
--
- static const char *dz_type(struct uart_port *uport)
- {
- 	return "DZ";
-@@ -771,7 +763,6 @@ static const struct uart_ops dz_ops = {
- 	.startup	= dz_startup,
- 	.shutdown	= dz_shutdown,
- 	.set_termios	= dz_set_termios,
--	.pm		= dz_pm,
- 	.type		= dz_type,
- 	.release_port	= dz_release_port,
- 	.request_port	= dz_request_port,
-@@ -896,10 +887,7 @@ static int __init dz_console_setup(struct console *co, char *options)
- 	if (ret)
- 		return ret;
+ static int ah_output(struct xfrm_state *x, struct sk_buff *skb)
+--- a/net/ipv6/ah6.c
++++ b/net/ipv6/ah6.c
+@@ -338,7 +338,7 @@ static void ah6_output_done(struct crypt
+ 	ah6_restore_hdrs(top_iph, iph_ext, extlen);
  
--	spin_lock_init(&dport->port.lock);	/* For dz_pm().  */
--
- 	dz_reset(dport);
--	dz_pm(uport, 0, -1);
+ 	kfree(AH_SKB_CB(skb)->tmp);
+-	xfrm_output_resume(skb->sk, skb, err);
++	xfrm_output_resume(skb_to_full_sk(skb), skb, err);
+ }
  
- 	if (options)
- 		uart_parse_options(options, &baud, &parity, &bits, &flow);
--- 
-2.53.0
-
+ static int ah6_output(struct xfrm_state *x, struct sk_buff *skb)
 
 
 
