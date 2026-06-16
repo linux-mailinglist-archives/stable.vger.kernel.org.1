@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-263909-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265876-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 4ft3ML1qMWpKiwUAu9opvQ
-	(envelope-from <stable+bounces-263909-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:24:45 +0200
+	id 7R+yNsCRMWrlmwUAu9opvQ
+	(envelope-from <stable+bounces-265876-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:11:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B987690FF8
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:24:45 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4824693DE0
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:11:11 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="Dfq/8U/4";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263909-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-263909-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=14XjhrlT;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265876-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-265876-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2BB5D30AAD86
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:18:36 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id F17193001060
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:11:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABB8643DA53;
-	Tue, 16 Jun 2026 15:18:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DA7C3D525E;
+	Tue, 16 Jun 2026 18:11:07 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 808AE43DA56;
-	Tue, 16 Jun 2026 15:18:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35A403CC324;
+	Tue, 16 Jun 2026 18:11:06 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781623115; cv=none; b=VMfDHaJpWQhN2q7YPLmXprxUwCwUs3cr0xzbuKFL+BA9GsU3U5guad4o4d3YfaPZ7JVmHEG1p0EOHkK4c4Uhzh9Soo7fCxltXrK+pT6krT8iCoX01n9WHdvXv9xR2zegWhOP5DUVJQXk8j1ONSQvSP9FYuIjjtB04HYDZ+Y8P/4=
+	t=1781633467; cv=none; b=kGZXmM5sFEV97b0V+Vtt7b8teSxeDZzkfuTcLPTLXGhfIRwwM5IvB3J+Rp53G03Twi3lU48fyGLF+ivV2c/w6Q7IGAcFRgydQq1MfNmkz9mghFI2bM0IcULvwBz4WrTyu1REj4LiKpdcPvA4xPzTVeFVX4u+oYYcJ8o646q5Fjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781623115; c=relaxed/simple;
-	bh=wbDWxTjOgaNm5M8u8MoZx4uYN0XnULNE5BI0hAX9C9I=;
+	s=arc-20240116; t=1781633467; c=relaxed/simple;
+	bh=dhImHzkxptijonpEqi54G6HPeuDij8Wvz1mODJ24VKY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ld1+fK01Gp3dNFJb08l+sgc/1Jx4pe1cdFFbLDKZ0F3ayZ630hhOkZgZ3Cd4wGLT0TcHSdVzKcsDls1kyujO5Q8JaHSnVQ/qlJgUEdJao6NSBlbFhvwvrwkAukocQl36exye9MTr2jBronaRJC6409WDpc9G4sVGSnxaUFHqMR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dfq/8U/4; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EBED1F000E9;
-	Tue, 16 Jun 2026 15:18:33 +0000 (UTC)
+	 MIME-Version; b=IyRTXaneQCdZ1JxleFK94kFxK6jrpN5v4SnRaoOTWQidqKhGF3YZ6rOy2ekKyZD1BQ0UV0Zb3JVSak3QuMHHlhcYQc/nbHvnu8CzPXzb59GsA8xcJ0OBZmSFXyzEJ4kFzi7nDQmex3cOS3XNGs/SIJ153U2juShq1kr8fnqfAns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=14XjhrlT; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 283DA1F000E9;
+	Tue, 16 Jun 2026 18:11:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781623114;
-	bh=wL1ahz19fmHj7hppao81D7CbmQsF9vp4KvVUNSydXJU=;
+	s=korg; t=1781633466;
+	bh=xLJfiGSLuAsCTvWao2WZL5qVd56vNlRcxq2DCpluihc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Dfq/8U/4noemXjWJRRTK4tAhIghgb8EfGoLrnx11B1psBp4a+lnJ6xvPeH794WdLH
-	 FAtG2OrdW3mxe9mIQF5UO295/Hx5twNxuN39vZmqo4JauY+a7HXQxRK4HhSJsVIyJ1
-	 T0UnshOQ4DozgWsA6zyzblE1I2dmNx6yjysyZFTo=
+	b=14XjhrlTXoHtSOHRJinsHpNFVMFCpnD4tPkYlQqt6MNS+UNQ5501AyChLlCxz9Aid
+	 uTxBxqTBlHmeZ1LRwy/Elz5sVgqGZ7Ab/F7j1Zk11h61z2r1fZsPI7jmhChTjFunKu
+	 8tzvSNegUZLcRBwYd5eZp8IyGK5BGx6Ea2OCAw08=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	unknownbbqrx <dev@unknownbbqr.xyz>,
-	Gabriele Monaco <gmonaco@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 090/378] tools/rv: Ensure monitor name and desc are NUL-terminated
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 5.15 083/411] Input: elan_i2c - validate firmware size before use
 Date: Tue, 16 Jun 2026 20:25:21 +0530
-Message-ID: <20260616145115.003665186@linuxfoundation.org>
+Message-ID: <20260616145104.670268275@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,87 +65,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-263909-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:dev@unknownbbqr.xyz,m:gmonaco@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265876-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:dmitry.torokhov@gmail.com,m:dmitrytorokhov@gmail.com,s:lists@lfdr.de];
+	RCPT_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 1B987690FF8
+X-Rspamd-Queue-Id: D4824693DE0
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabriele Monaco <gmonaco@redhat.com>
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 
-[ Upstream commit 08904765bb941f98306ae6841c33cfd299343faf ]
+commit 76b0d0baa9ae9c60e726bbe1b6ff0bec2c993634 upstream.
 
-ikm_fill_monitor_definition() copies monitor name and description with
-strncpy(), but does not guarantee NUL termination when source strings are
-equal to or longer than the destination buffers.
+Ensure that the firmware file is large enough to contain the expected
+number of pages and the signature (which resides at the end of the
+firmware blob) before accessing them to prevent potential out-of-bounds
+reads.
 
-Clamp copies to sizeof(dst) - 1 and explicitly append '\0' for both fields
-to keep them safe for later string operations.
-
-Suggested-by: unknownbbqrx <dev@unknownbbqr.xyz>
-Fixes: 6d60f89691fc9 ("tools/rv: Add in-kernel monitor interface")
-Link: https://lore.kernel.org/r/20260604120946.90302-2-gmonaco@redhat.com
-Signed-off-by: Gabriele Monaco <gmonaco@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/ae2dOgiFvXRm4BHo@google.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/verification/rv/src/in_kernel.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/input/mouse/elan_i2c_core.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/tools/verification/rv/src/in_kernel.c b/tools/verification/rv/src/in_kernel.c
-index 4bb746ea6e1735..d324538249d3ab 100644
---- a/tools/verification/rv/src/in_kernel.c
-+++ b/tools/verification/rv/src/in_kernel.c
-@@ -215,10 +215,11 @@ static int ikm_fill_monitor_definition(char *name, struct monitor *ikm, char *co
- 		return -1;
+--- a/drivers/input/mouse/elan_i2c_core.c
++++ b/drivers/input/mouse/elan_i2c_core.c
+@@ -646,6 +646,11 @@ static ssize_t elan_sysfs_update_fw(stru
+ 		return error;
  	}
  
--	strncpy(ikm->name, nested_name, MAX_DA_NAME_LEN);
-+	strncpy(ikm->name, nested_name, sizeof(ikm->name) - 1);
-+	ikm->name[sizeof(ikm->name) - 1] = '\0';
- 	ikm->enabled = enabled;
--	strncpy(ikm->desc, desc, MAX_DESCRIPTION);
--
-+	strncpy(ikm->desc, desc, sizeof(ikm->desc) - 1);
-+	ikm->desc[sizeof(ikm->desc) - 1] = '\0';
- 	free(desc);
- 
- 	return 0;
--- 
-2.53.0
-
++	if (fw->size < data->fw_signature_address + sizeof(signature)) {
++		dev_err(dev, "firmware file too small\n");
++		return -EBADF;
++	}
++
+ 	/* Firmware file must match signature data */
+ 	fw_signature = &fw->data[data->fw_signature_address];
+ 	if (memcmp(fw_signature, signature, sizeof(signature)) != 0) {
 
 
 
