@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-264866-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265409-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id G5caDO1+MWpukwUAu9opvQ
-	(envelope-from <stable+bounces-264866-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:50:53 +0200
+	id VabBFV+IMWp5lwUAu9opvQ
+	(envelope-from <stable+bounces-265409-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:31:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 794E6692829
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:50:52 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7213693368
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:31:10 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=k8auqMsm;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264866-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264866-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=XXgc6V1J;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265409-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265409-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CCD7E31D4221
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:45:02 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 495E7303BDCC
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:30:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A36C746AF17;
-	Tue, 16 Jun 2026 16:45:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDA8147A0DA;
+	Tue, 16 Jun 2026 17:30:53 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB75933A9EB;
-	Tue, 16 Jun 2026 16:45:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2E7032ED55;
+	Tue, 16 Jun 2026 17:30:52 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781628302; cv=none; b=hjDiDJpu+EXeu8dau/8a6hGyvq8l/7+z5Vs5lWlFEWK9Nt2ohEHlctJT7twl1b1VZT2+vj+iqnS4AeEez4AHqQVu/C05QU5M4KDXViDNWTWcdCfp3SXgcVeE/lg/m9fJ95ZU/G0sjUQGJeI6VotvibAmX2ZR1KRAOgpFc2A20WQ=
+	t=1781631053; cv=none; b=sbJvKcV3cYOP4gpm0Sw9KfRMlnr+U42pR1BIX0z0zSZp5/db5wy41JcaULaZv+7dmcVjQlQTX3K13mI0IAObKrt0ObznbUQHAVGvvxczL3U2IDZwough8BP0xVcJkSBsezBuOkQguC9BdYPVQqI3ZD0e1MKSl8HM62dyg3FaoRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781628302; c=relaxed/simple;
-	bh=iW/GI3duvFR78LU2djya5qqAae/gzl1dFJhHqi1/l2Q=;
+	s=arc-20240116; t=1781631053; c=relaxed/simple;
+	bh=q2MJKQqPg0BCdfoL8nDt2FH8WwrEjCJYdRXTIaZPRIU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IBxFJ4FZzWiMeHQMh3/5qFVlHNG514UKsYuJqhLnm/VatPMMy32nzh3fkw2vBqJw5S6LjSDI4/qD+C3uL03U0wUpchOhQG4DHQQ5DYmDmhIs1gq2ikfg1MIlJ7/ojQ41NrnMLZIJx+oZD04E99DMmGun5STxynL70/Sx6CEpYuA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k8auqMsm; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC7801F000E9;
-	Tue, 16 Jun 2026 16:44:59 +0000 (UTC)
+	 MIME-Version; b=eeOUJixHoNFry7XDBTRAg6CE+NW2qCCkLsySwJ9vjYnHjeRfvem0HSrt/Pak1VHo6d80IwH/cXAKUXlJZaDT7WM5GzVEczejHrKd6G8s7TYP6LfKRTvzkmsOFbwoswXIFu2BosjX9+CKJitLjo31JvZwmf2kOkLXyxdD1TQlc5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XXgc6V1J; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BD801F000E9;
+	Tue, 16 Jun 2026 17:30:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781628300;
-	bh=Bz+4eBy27iPGiSNhaQNxalsj29zF5VqgS29/csfdIWM=;
+	s=korg; t=1781631052;
+	bh=P4iOlVXIx3RbeNvevBRUf+Syt8sPfy60Ov4jx15wwbA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=k8auqMsm/89NZNx6DXGS2fdAn/FTxDVruhuRkKDI1mKbTVOfw73I0ILnEruSWlK5L
-	 Nyng50bjUJP8Wc4VphdT95hbQB36XXZXKt1r9XMFEinFH54oUZ2Nm4ob7XnRNXP8DU
-	 IfnTNPGT/Yl93KpAzaHKV81oLaIo0vQb470+I6vs=
+	b=XXgc6V1J4QfoBnqG2E2giwUY+GQYR7xyDOgmEJ9ehispzpBZ6FymYlrazBE3+yxeZ
+	 6KeY7ibOSA7zZu9gM6Xy+BZZP8Q4wcL2zZiAUmftUleeuUBJPev3XxVcIiZ2GR5dDK
+	 Upmp33aCnj+xREjn/aiy1U+zmQXMcCtj6GQXPXJg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Rajani Kantha <681739313@139.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 068/452] inet: frags: flush pending skbs in fqdir_pre_exit()
+	syzbot+abbfd103085885cf16a2@syzkaller.appspotmail.com,
+	stable <stable@kernel.org>,
+	Michal Pecio <michal.pecio@gmail.com>,
+	Heitor Alves de Siqueira <halves@igalia.com>
+Subject: [PATCH 6.1 148/522] usb: usbtmc: check URB actual_length for interrupt-IN notifications
 Date: Tue, 16 Jun 2026 20:24:55 +0530
-Message-ID: <20260616145121.505968271@linuxfoundation.org>
+Message-ID: <20260616145133.011169071@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,230 +68,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [3.84 / 15.00];
-	SEM_URIBL(3.50)[139.com:email];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	BAD_REP_POLICIES(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,kernel.org,gmail.com,igalia.com];
+	TAGGED_FROM(0.00)[bounces-265409-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-264866-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:edumazet@google.com,m:kuba@kernel.org,m:681739313@139.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:syzbot+abbfd103085885cf16a2@syzkaller.appspotmail.com,m:stable@kernel.org,m:michal.pecio@gmail.com,m:halves@igalia.com,m:syzbot@syzkaller.appspotmail.com,m:michalpecio@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,kernel.org,139.com];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	R_SPF_ALLOW(0.00)[+ip4:172.234.253.10:c];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	TAGGED_RCPT(0.00)[stable,abbfd103085885cf16a2];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,syzkaller.appspot.com:url,igalia.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 794E6692829
+X-Rspamd-Queue-Id: B7213693368
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Heitor Alves de Siqueira <halves@igalia.com>
 
-[ Upstream commit 006a5035b495dec008805df249f92c22c89c3d2e ]
+commit 52f2ad3f7e5eb3b5908e1d685d4342519dc9cfcd upstream.
 
-We have been seeing occasional deadlocks on pernet_ops_rwsem since
-September in NIPA. The stuck task was usually modprobe (often loading
-a driver like ipvlan), trying to take the lock as a Writer.
-lockdep does not track readers for rwsems so the read wasn't obvious
-from the reports.
+USBTMC devices can use an optional interrupt endpoint for notification
+messages. These typically contain two-byte headers indicating the
+payload format, but the driver does not check if these headers are
+present before accessing the data buffers. In cases where the URB
+actual_length is not enough to fit these headers, the driver will either
+cause an out-of-bounds read, or consume stale leftover data from a
+previous notification.
 
-On closer inspection the Reader holding the lock was conntrack looping
-forever in nf_conntrack_cleanup_net_list(). Based on past experience
-with occasional NIPA crashes I looked thru the tests which run before
-the crash and noticed that the crash follows ip_defrag.sh. An immediate
-red flag. Scouring thru (de)fragmentation queues reveals skbs sitting
-around, holding conntrack references.
+Fix by checking if actual_data contains enough bytes for the headers,
+otherwise resubmit URB to the interrupt endpoint.
 
-The problem is that since conntrack depends on nf_defrag_ipv6,
-nf_defrag_ipv6 will load first. Since nf_defrag_ipv6 loads first its
-netns exit hooks run _after_ conntrack's netns exit hook.
-
-Flush all fragment queue SKBs during fqdir_pre_exit() to release
-conntrack references before conntrack cleanup runs. Also flush
-the queues in timer expiry handlers when they discover fqdir->dead
-is set, in case packet sneaks in while we're running the pre_exit
-flush.
-
-The commit under Fixes is not exactly the culprit, but I think
-previously the timer firing would eventually unblock the spinning
-conntrack.
-
-Fixes: d5dd88794a13 ("inet: fix various use-after-free in defrags units")
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20251207010942.1672972-4-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Rajani Kantha <681739313@139.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: dbf3e7f654c0 ("Implement an ioctl to support the USMTMC-USB488 READ_STATUS_BYTE operation.")
+Reported-by: syzbot+abbfd103085885cf16a2@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=abbfd103085885cf16a2
+Cc: stable <stable@kernel.org>
+Suggested-by: Michal Pecio <michal.pecio@gmail.com>
+Signed-off-by: Heitor Alves de Siqueira <halves@igalia.com>
+Link: https://patch.msgid.link/20260505-usbtmc-iin-size-v3-1-a36113f62db7@igalia.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/inet_frag.h  | 13 +------------
- include/net/ipv6_frag.h  |  9 ++++++---
- net/ipv4/inet_fragment.c | 36 ++++++++++++++++++++++++++++++++++++
- net/ipv4/ip_fragment.c   | 12 +++++++-----
- 4 files changed, 50 insertions(+), 20 deletions(-)
+ drivers/usb/class/usbtmc.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/include/net/inet_frag.h b/include/net/inet_frag.h
-index 94edc0e130d2c4..fcabb34fff35de 100644
---- a/include/net/inet_frag.h
-+++ b/include/net/inet_frag.h
-@@ -123,18 +123,7 @@ void inet_frags_fini(struct inet_frags *);
+--- a/drivers/usb/class/usbtmc.c
++++ b/drivers/usb/class/usbtmc.c
+@@ -2310,6 +2310,14 @@ static void usbtmc_interrupt(struct urb
  
- int fqdir_init(struct fqdir **fqdirp, struct inet_frags *f, struct net *net);
- 
--static inline void fqdir_pre_exit(struct fqdir *fqdir)
--{
--	/* Prevent creation of new frags.
--	 * Pairs with READ_ONCE() in inet_frag_find().
--	 */
--	WRITE_ONCE(fqdir->high_thresh, 0);
--
--	/* Pairs with READ_ONCE() in inet_frag_kill(), ip_expire()
--	 * and ip6frag_expire_frag_queue().
--	 */
--	WRITE_ONCE(fqdir->dead, true);
--}
-+void fqdir_pre_exit(struct fqdir *fqdir);
- void fqdir_exit(struct fqdir *fqdir);
- 
- void inet_frag_kill(struct inet_frag_queue *q);
-diff --git a/include/net/ipv6_frag.h b/include/net/ipv6_frag.h
-index 7321ffe3a108c1..df61b98b521531 100644
---- a/include/net/ipv6_frag.h
-+++ b/include/net/ipv6_frag.h
-@@ -68,9 +68,6 @@ ip6frag_expire_frag_queue(struct net *net, struct frag_queue *fq)
- 	struct sk_buff *head;
- 
- 	rcu_read_lock();
--	/* Paired with the WRITE_ONCE() in fqdir_pre_exit(). */
--	if (READ_ONCE(fq->q.fqdir->dead))
--		goto out_rcu_unlock;
- 	spin_lock(&fq->q.lock);
- 
- 	if (fq->q.flags & INET_FRAG_COMPLETE)
-@@ -79,6 +76,12 @@ ip6frag_expire_frag_queue(struct net *net, struct frag_queue *fq)
- 	fq->q.flags |= INET_FRAG_DROP;
- 	inet_frag_kill(&fq->q);
- 
-+	/* Paired with the WRITE_ONCE() in fqdir_pre_exit(). */
-+	if (READ_ONCE(fq->q.fqdir->dead)) {
-+		inet_frag_queue_flush(&fq->q, 0);
-+		goto out;
-+	}
-+
- 	dev = dev_get_by_index_rcu(net, fq->iif);
- 	if (!dev)
- 		goto out;
-diff --git a/net/ipv4/inet_fragment.c b/net/ipv4/inet_fragment.c
-index 1e390d24f11440..8cf88882d65e3e 100644
---- a/net/ipv4/inet_fragment.c
-+++ b/net/ipv4/inet_fragment.c
-@@ -219,6 +219,41 @@ static int __init inet_frag_wq_init(void)
- 
- pure_initcall(inet_frag_wq_init);
- 
-+void fqdir_pre_exit(struct fqdir *fqdir)
-+{
-+	struct inet_frag_queue *fq;
-+	struct rhashtable_iter hti;
-+
-+	/* Prevent creation of new frags.
-+	 * Pairs with READ_ONCE() in inet_frag_find().
-+	 */
-+	WRITE_ONCE(fqdir->high_thresh, 0);
-+
-+	/* Pairs with READ_ONCE() in inet_frag_kill(), ip_expire()
-+	 * and ip6frag_expire_frag_queue().
-+	 */
-+	WRITE_ONCE(fqdir->dead, true);
-+
-+	rhashtable_walk_enter(&fqdir->rhashtable, &hti);
-+	rhashtable_walk_start(&hti);
-+
-+	while ((fq = rhashtable_walk_next(&hti))) {
-+		if (IS_ERR(fq)) {
-+			if (PTR_ERR(fq) != -EAGAIN)
-+				break;
-+			continue;
+ 	switch (status) {
+ 	case 0: /* SUCCESS */
++		/* ensure at least two bytes of headers were transferred */
++		if (urb->actual_length < 2) {
++			dev_warn(dev,
++				"actual length %d not sufficient for interrupt headers\n",
++				urb->actual_length);
++			goto exit;
 +		}
-+		spin_lock_bh(&fq->lock);
-+		if (!(fq->flags & INET_FRAG_COMPLETE))
-+			inet_frag_queue_flush(fq, 0);
-+		spin_unlock_bh(&fq->lock);
-+	}
 +
-+	rhashtable_walk_stop(&hti);
-+	rhashtable_walk_exit(&hti);
-+}
-+EXPORT_SYMBOL(fqdir_pre_exit);
-+
- void fqdir_exit(struct fqdir *fqdir)
- {
- 	INIT_WORK(&fqdir->destroy_work, fqdir_work_fn);
-@@ -291,6 +326,7 @@ void inet_frag_queue_flush(struct inet_frag_queue *q,
- {
- 	unsigned int sum;
- 
-+	reason = reason ?: SKB_DROP_REASON_FRAG_REASM_TIMEOUT;
- 	sum = inet_frag_rbtree_purge(&q->rb_fragments, reason);
- 	sub_frag_mem_limit(q->fqdir, sum);
- }
-diff --git a/net/ipv4/ip_fragment.c b/net/ipv4/ip_fragment.c
-index 7214d5bcc647e5..f5b5aa036cc668 100644
---- a/net/ipv4/ip_fragment.c
-+++ b/net/ipv4/ip_fragment.c
-@@ -148,11 +148,6 @@ static void ip_expire(struct timer_list *t)
- 	net = qp->q.fqdir->net;
- 
- 	rcu_read_lock();
--
--	/* Paired with WRITE_ONCE() in fqdir_pre_exit(). */
--	if (READ_ONCE(qp->q.fqdir->dead))
--		goto out_rcu_unlock;
--
- 	spin_lock(&qp->q.lock);
- 
- 	if (qp->q.flags & INET_FRAG_COMPLETE)
-@@ -160,6 +155,13 @@ static void ip_expire(struct timer_list *t)
- 
- 	qp->q.flags |= INET_FRAG_DROP;
- 	ipq_kill(qp);
-+
-+	/* Paired with WRITE_ONCE() in fqdir_pre_exit(). */
-+	if (READ_ONCE(qp->q.fqdir->dead)) {
-+		inet_frag_queue_flush(&qp->q, 0);
-+		goto out;
-+	}
-+
- 	__IP_INC_STATS(net, IPSTATS_MIB_REASMFAILS);
- 	__IP_INC_STATS(net, IPSTATS_MIB_REASMTIMEOUT);
- 
--- 
-2.53.0
-
+ 		/* check for valid STB notification */
+ 		if (data->iin_buffer[0] > 0x81) {
+ 			data->bNotify1 = data->iin_buffer[0];
 
 
 
