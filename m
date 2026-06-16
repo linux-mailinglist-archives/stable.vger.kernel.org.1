@@ -1,155 +1,163 @@
-Return-Path: <stable+bounces-263625-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263471-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id qGQoFm/zMGqDZQUAu9opvQ
-	(envelope-from <stable+bounces-263625-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 08:55:43 +0200
+	id 6wQUGzx1MGrrTAUAu9opvQ
+	(envelope-from <stable+bounces-263471-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 23:57:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8E4368CAC5
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 08:55:42 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6950E68A3E8
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 23:57:15 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=rLe7AsV5;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263625-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263625-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=linuxfoundation.org;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=CMPdLQMn;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263471-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-263471-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2092F305FAFD
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 06:55:37 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 77F423008094
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 21:57:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C9043161AD;
-	Tue, 16 Jun 2026 06:55:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BEF93AC0F5;
+	Mon, 15 Jun 2026 21:57:11 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42A9F3148C2
-	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 06:55:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15689319852
+	for <stable@vger.kernel.org>; Mon, 15 Jun 2026 21:57:09 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781592936; cv=none; b=exsX8XfKPBLWIsHOW0PIYzZAKpTFh6RspjxGo99Lk3yjpNLpB98YhO+iuukAqMnYUd6oYBeuNarCE4Us94CnNblCuAFazHeXVuLHsTab1cLIrPMbQUt6cU5JbvlYjArMajhuEug3ajCjWSmWPCcn1bS8qseVfGMpKs3X7Ate6fQ=
+	t=1781560631; cv=none; b=O+KHJ4h1zx+9hapMSc7EzqpG9aszes/PtWY9W49dKL8s3DG7MHEVtcSfqc9avgxsMRzX5W6MF7qvEvtI8pRIF1e5Jx/ft68SAzjVkhJnfBOzI8iP1gjsJbfGZ3KGHhIRp7dpArzpk8yK8DET7w/WL1VDh+Rp666/Zv4ASVhLlf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781592936; c=relaxed/simple;
-	bh=3HfITxVGTDvbV6I0CHXjJI4ktEOEYcWlDGfg65X5/r8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KpBwW/BRDtdemynM1i/a1I2zaIxul6mB1pn1kmpXrf9U+2+LszOvVyBy6Aa7hWuUhFepeEwCIdI/t/1SiKprrPLu6Ar871E9k3Nhb0MbGA19TviYbOZj0FKR7um2DTvQiKyg2mCh1lIzRIpdULHKsj4uEVhlBG9UglJqlazxxz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rLe7AsV5; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24EB41F000E9;
-	Tue, 16 Jun 2026 06:55:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781592935;
-	bh=dpEk3OrKYc2Q+i7d7zo70OdWHTvJ54nuZ3pYl/gCfgo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=rLe7AsV5qprgVmyHPDKQeDLrna0oDRDNs9yYq7F+Q10uOpCbGTmcYBdP0aOpVXqBS
-	 TNb5E2EaWAczBjgzn0YqKjw7BDBxiRoFZCEr/N5EP13jCjRPiNTOY8sAEniyf6Xvno
-	 0uCLBBKbfNIaVxYTMBR3xmJhbTB7dtu7J45z21dk=
-Date: Tue, 16 Jun 2026 12:24:30 +0530
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Sven Eckelmann <sven@narfation.org>
-Cc: wangjiexun2025@gmail.com, bird@lzu.edu.cn, n05ec@lzu.edu.cn,
-	tomapufckgml@gmail.com, tr0jan@lzu.edu.cn, yifanwucs@gmail.com,
-	yuantan098@gmail.com, stable@vger.kernel.org
-Subject: Re: FAILED: patch "[PATCH] batman-adv: stop tp_meter sessions during
- mesh teardown" failed to apply to 5.10-stable tree
-Message-ID: <2026061623-unreeling-dangle-5f46@gregkh>
-References: <2026051555-germproof-bolt-6720@gregkh>
- <2004925.tdWV9SEqCh@sven-desktop>
+	s=arc-20240116; t=1781560631; c=relaxed/simple;
+	bh=DCS6KZLUxkgrDiPxwM2MsNX+j4Hds16585emdMUCp2E=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gTAdcjvXW+OmStzmI6XjszTuziDrKqod9HuCojC+kY03FLLQ0bM8lZxS4xXEornUQ78+7tMKRfdadNW6zJhWklLiS860RSeBqWP+1N30967qmhXMwPi0DuPijegy58IAy8JJWtwjg7mMctm4CzBhiNxf3Ms5krvXAbQJvcqpOqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CMPdLQMn; arc=none smtp.client-ip=209.85.214.178
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2bf1cda2b17so27994805ad.1
+        for <stable@vger.kernel.org>; Mon, 15 Jun 2026 14:57:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781560629; x=1782165429; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=FIyvWCdTdGpwmgLj68ZKIBwap2l4YcZzm7SxNeqPKYk=;
+        b=CMPdLQMnnW3Ou0jnYnnTXvOcWy03jCcIntl7rT7dQ2LhP98NOH2N3ugGI/9YoFiRsR
+         eLZQXpH0jU3deIPbrlix6VYmjWJZrx9YNhJ2ldQXP+0Gj/sn+2e47S9HCFhcSkkeqj9v
+         0zB07vhxydesMjlx1uhoVQFkVenJ6WDBgHMwrcghsudl0kuMMxh49CMsOc2OChLaDaVO
+         y7Z216c9aW68ALFJG1dQCS5BVJEhwRtd11cpNxhJEVYStWNmReuDsTU8T9u/Zp//Wcg+
+         LMuLSTp9stxB9UB7V8iv/pH+y02MxzqtaHUjohI7Db+V9cg8lv570uwcfNuuyioAcBAj
+         5inQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781560629; x=1782165429;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=FIyvWCdTdGpwmgLj68ZKIBwap2l4YcZzm7SxNeqPKYk=;
+        b=C6bGQOCF8w5M1JnEW10xj56sqWqUZ6I9T8C+w3Hju7ISvHdfwyvbnQn9V9DA3bCH6T
+         4xH4AQwcdn1dwwnflreQoWhe78/Ev/SI4ngf0y4+QU4BbPBf6r2ZhNR3NyQL6bg43XjA
+         UccqPP6lDy7jBZ2ud9yn/F8H0jWSoVTVK0+3Z/+3pEcRDdCKzJJDcmkc6aaeK13y9e4l
+         HFrMXuJdPrY//VexLoXOK10OoPzO3v7Y7sgAXUrvKs/hMZyHTyKgjgVkFzNsDBJtFcT+
+         TQ2tWqXaAwvihxJIRcWj1wa9dh9x9SjOBbdqFh+bPeBZx8OY5FDPK/ZxIzbRl7N0r9O/
+         E0BA==
+X-Gm-Message-State: AOJu0YxIuiz3yOyc4/1MbJUHlH4OzYgXYEfKjofUrCKbkFcbth+BuirT
+	AY0/7fq7EyZNW5o1ACyE0zV2cIG8DRcqBVfER/rDcXyF5MzOCQn1X7HAK2kVy6do
+X-Gm-Gg: Acq92OFhVH0kVTZnEl39EfFYH+N266ylDx6ZYzxQkn3Bzxpb7sugFxpkmVC7fP7n7pP
+	1SEhJE4/YCJKTwUqvTOGAkgLvXZBtUiRxDWvizyTenEUgouZrZmKIL4/3WdnrfMXB57SjYPq+XJ
+	Pl06zu8c6UaMmyozpq2Ojf+l6Dpi+f2zUezlfYDTnmGDRZl70nckDo+w5Rj1CeWjm7x6YNpwK78
+	5mV5BV3DdF7d0ChSgZ5o0s1/nKj1opTX9Y9k1b45lTZWSKVgYRvbZi8fAp5fJF+gJq5YlNLE81Q
+	q5kEdQ9yXhUTJzbv9yB/jeJfwglXdW/mqQDxLXez5GzHLCUu5AkzEAkqN/tWrTJsLNdMPgFN84X
+	xDj24uswEsfL9PAWIWEWldQq8XNrJdCUnxAOhmNVSAvjB0vJpGsEtkMgcLwmkfHdOO6jvvrO1Yz
+	1Yc162c3vCdPDvd2cJLvUIFmxZ7KxeGg26aWjdseFVc4sh+1r9qnhs4E8Bv3vY98AGp2MOGIANQ
+	CXOGg==
+X-Received: by 2002:a17:902:ef4d:b0:2c0:c262:b924 with SMTP id d9443c01a7336-2c699b03432mr8817225ad.13.1781560629203;
+        Mon, 15 Jun 2026 14:57:09 -0700 (PDT)
+Received: from ljh-System-Product-Name.tail61485f.ts.net ([203.246.85.145])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c43326b085sm107796755ad.70.2026.06.15.14.57.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 15 Jun 2026 14:57:08 -0700 (PDT)
+From: JaeHoon Lee <dlwognsdc610@gmail.com>
+To: dlwognsdc610@gmail.com
+Cc: stable@vger.kernel.org
+Subject: [PATCH] drm/v3d: reject an invalid indirect CSD buffer handle
+Date: Tue, 16 Jun 2026 06:57:21 +0000
+Message-ID: <20260616065721.1589362-1-dlwognsdc610@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2004925.tdWV9SEqCh@sven-desktop>
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [3.34 / 15.00];
+	DATE_IN_FUTURE(4.00)[9];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-263625-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:sven@narfation.org,m:wangjiexun2025@gmail.com,m:bird@lzu.edu.cn,m:n05ec@lzu.edu.cn,m:tomapufckgml@gmail.com,m:tr0jan@lzu.edu.cn,m:yifanwucs@gmail.com,m:yuantan098@gmail.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FREEMAIL_CC(0.00)[gmail.com,lzu.edu.cn,vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-263471-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWO(0.00)[2];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:dlwognsdc610@gmail.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[dlwognsdc610@gmail.com,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dlwognsdc610@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	TO_DN_NONE(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ALIAS_RESOLVED(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,gregkh:mid,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:from_mime]
+	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C8E4368CAC5
+X-Rspamd-Queue-Id: 6950E68A3E8
 
-On Fri, May 15, 2026 at 01:37:05PM +0200, Sven Eckelmann wrote:
-> On Friday, 15 May 2026 10:44:55 CEST gregkh@linuxfoundation.org wrote:
-> > 
-> > The patch below does not apply to the 5.10-stable tree.
-> > If someone wants it applied there, or to any other stable or longterm
-> > tree, then please email the backport, including the original git commit
-> > id to <stable@vger.kernel.org>.
-> > 
-> > To reproduce the conflict and resubmit, you may use the following commands:
-> > 
-> > git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
-> > git checkout FETCH_HEAD
-> > git cherry-pick -x 3d3cf6a7314aca4df0a6dde28ce784a2a30d0166
-> > # <resolve conflicts, build, test, etc.>
-> > git commit -s
-> > git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026051555-germproof-bolt-6720@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
-> > 
-> > Possible dependencies:
-> 
-> 
-> I had a look at it but it would need get a backport of timer_shutdown_sync for 
-> the original patch. Then the version from 5.15 should work directly.
-> 
-> But when I've looked into the patches. I saw that there is a big gap already 
-> between 5.10 and 5.15.
-> 
-> Already backported in 5.15 (and could be used as reference for 5.10)
-> 
-> b0b0aa5d858d ("Documentation: Remove bogus claim about del_timer_sync()")
-> 80b55772d41d ("ARM: spear: Do not use timer namespace for timer_shutdown() function")
-> 5135c7150732 ("clocksource/drivers/arm_arch_timer: Do not use timer namespace for timer_shutdown() function")
-> 6e1fc2591f11 ("clocksource/drivers/sp804: Do not use timer namespace for timer_shutdown() function")
-> 82ed6f7ef58f ("timers: Replace BUG_ON()s")
-> 2249b9ec4232 ("Documentation: Replace del_timer/del_timer_sync()")
-> d02e382cef06 ("timers: Silently ignore timers with a NULL function")
-> 8553b5f2774a ("timers: Split [try_to_]del_timer[_sync]() to prepare for shutdown mode")
-> 0cc04e80458a ("timers: Add shutdown mechanism to the internal functions")
-> f571faf6e443 ("timers: Provide timer_shutdown[_sync]()")
-> a31323bef2b6 ("timers: Update the documentation to reflect on the new timer_shutdown() API")
-> 20739af07383 ("timers: Fix NULL function pointer race in timer_shutdown_sync()")
-> 
-> But between 5.10 and 5.15 are 134 patches which at least partially should be 
-> relevant for the backporting of timer_shutdown_sync.
-> 
-> For the moment, I will skip the backporting of timer_shutdown_sync and switch 
-> it to del_timer_sync() - which should work here because the re-arming will 
-> only happen by the timer.
+v3d_get_cpu_indirect_csd_params() does not check the result of
+drm_gem_object_lookup().  A bogus indirect CSD handle from userspace
+makes it store NULL in info->indirect; when the CPU job runs,
+v3d_rewrite_csd_job_wg_counts_from_indirect() dereferences it through
+v3d_get_bo_vaddr() and oopses the kernel.  Any unprivileged client can
+trigger this.
 
-Seems reasonable, thanks!
+Reject the NULL handle with -ENOENT, as every other GEM lookup in this
+driver does.  v3d_cpu_job_free() drops the reference under a NULL check,
+so the error path leaks nothing.
 
-greg k-h
+Fixes: 18b8413b25b7 ("drm/v3d: Create a CPU job extension for a indirect CSD job")
+Cc: stable@vger.kernel.org
+Signed-off-by: JaeHoon Lee <dlwognsdc610@gmail.com>
+---
+ drivers/gpu/drm/v3d/v3d_submit.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/gpu/drm/v3d/v3d_submit.c b/drivers/gpu/drm/v3d/v3d_submit.c
+index ee2ac2540ed5..05f98379c1a4 100644
+--- a/drivers/gpu/drm/v3d/v3d_submit.c
++++ b/drivers/gpu/drm/v3d/v3d_submit.c
+@@ -605,6 +605,8 @@ v3d_get_cpu_indirect_csd_params(struct drm_file *file_priv,
+ 	       sizeof(indirect_csd.wg_uniform_offsets));
+ 
+ 	info->indirect = drm_gem_object_lookup(file_priv, indirect_csd.indirect);
++	if (!info->indirect)
++		return -ENOENT;
+ 
+ 	return 0;
+ }
+-- 
+2.43.0
+
 
