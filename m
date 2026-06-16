@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-264416-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266513-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 4qF4Jyl2MWqvjwUAu9opvQ
-	(envelope-from <stable+bounces-264416-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:13:29 +0200
+	id HVPqH9qfMWpDogUAu9opvQ
+	(envelope-from <stable+bounces-266513-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:11:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CE02691D28
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:13:29 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E82FD694D99
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:11:21 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=jTQIrska;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264416-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264416-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="yxu/k6KU";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266513-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266513-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BD02C302A064
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:02:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E389931FCB39
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:06:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 697CA44DB6D;
-	Tue, 16 Jun 2026 16:02:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1837C3DDDA1;
+	Tue, 16 Jun 2026 19:06:25 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44E7D3C0628;
-	Tue, 16 Jun 2026 16:02:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D91393DD509;
+	Tue, 16 Jun 2026 19:06:23 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781625772; cv=none; b=arAlSD7EAItFVLQR6CRdAe3RtQoFr0QCyFbV1d5TpgMo7m39ZGN3rI9Y9LW9dtHzCWv+fgARAgR/7V/rYLuaxJxtvY4Wnl37tTxImilwWCkGWPUhgK75npWSn6boQ1E+c6nxhbvFWF/kQyA3/HcqLAkjMaSjmdHItPnRZ8HEww8=
+	t=1781636784; cv=none; b=anGYcQOwC54KP+2Ph6eEgHatSnESIhvZBKP/D5gNOLWWMElcKXDTM7x237UeH0ASbi3WtonEnufZYMw7rHgtRF2Y1CgAmM4jZypSEFJbjxmUR506KJ8emKsqdq+swfE2Xu5ITONaL7s1Bo/oRl51ylZRJinGVOQdATj6HmwC82s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781625772; c=relaxed/simple;
-	bh=E/v0iZXqO5GHrjQXdjVpG+HwwnPdyfZ8ubIPWdQ1pC8=;
+	s=arc-20240116; t=1781636784; c=relaxed/simple;
+	bh=AOUncLR/w6OfoVxNnbiv1p4IcFIRu1oTT5q72+lRHCg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kRC/K0rM6AiBx3f4qWGr4nZSaLlZmc+K8c9zfNUPiMHJdKDUzRHP6xlGJIP6WPAJ5v+j5kVfLcxzc46M5Qf7fGmOykTtJYGcqYB9rX9DvQl7O60JhH6HRfpmhpw9iO2IPj1/OdrKMlJE5p4OM1AvAWmsvqpCWkw6luOY7yoizu8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jTQIrska; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 448C61F000E9;
-	Tue, 16 Jun 2026 16:02:49 +0000 (UTC)
+	 MIME-Version; b=K3JvlwABnPqExdlHgFNmPrAxMM+mTuX2dORiA+CbFv2SpTcU/OpEFB6EfRHDkWJkx9AKBAyrpUI2tL7SLvJ0vGOVPbfX/KnYz2FhOOI4h5ckITgFb5d+CFfn5Prs98EmejajulcIhvZYIrXnRogt9WSIpoj1Kq4PU2mErubeWWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yxu/k6KU; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9F8B1F000E9;
+	Tue, 16 Jun 2026 19:06:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781625771;
-	bh=4PM1OT3VUcYiPAXDrEXeKzEFet49MgxOZOlAcZ0kLCA=;
+	s=korg; t=1781636783;
+	bh=iSlrHEWf7l2WfHbOSUwrCqxiUyccM2SVzKQgsZ6y8Vo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jTQIrska0zDA+iv+IRI3Ri+64v1eSeq9Tp9rZc3SL7bGnLodYfE2cXzzo1JTQ1DKQ
-	 TS4A5gP1isOru7TUUb9v2FZL2xQZ3b5jjbuDCFyWf/RC25ydcBXDIStf7xVxgx1e/V
-	 6Uh65b6LaiSTU4gZvlPN4zd6ArwOkqsnwnhdpsGs=
+	b=yxu/k6KUN6d/yj97jXMR1LYSoqFuBLedMTHft7D7dMdslI0VkOyqkDemSOqXTyklV
+	 HW6b0u4NNQBjnHxo1yHaa/3ka/RJV3Y4OPMf/eOTa0h+yWSLMtEZrXCOUM51gDlv8d
+	 q1/hsFwNupaisQnGqQrWiNv6Liyac49ThfG6YUDc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yingjie Gao <gaoyingjie@uniontech.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Carlos Maiolino <cem@kernel.org>
-Subject: [PATCH 6.18 204/325] xfs: fix rtgroup cleanup in CoW fork repair
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 304/342] tty: serial: qcom-geni-serial: remove unused symbols
 Date: Tue, 16 Jun 2026 20:30:00 +0530
-Message-ID: <20260616145108.198055186@linuxfoundation.org>
+Message-ID: <20260616145102.606804343@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,21 +72,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264416-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-266513-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:gaoyingjie@uniontech.com,m:djwong@kernel.org,m:cem@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bartosz.golaszewski@linaro.org,m:konrad.dybcio@linaro.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -98,53 +98,79 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linaro.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 0CE02691D28
+X-Rspamd-Queue-Id: E82FD694D99
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yingjie Gao <gaoyingjie@uniontech.com>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-commit c3e073894379532c00cca7ba5762e18fafe29da8 upstream.
+[ Upstream commit 68c6bd92c86cbc4937834c79963b27c77ee3bf51 ]
 
-xrep_cow_find_bad_rt() initializes scrub rtgroup state before the
-force-rebuild path calls xrep_cow_mark_file_range(). If that call
-fails, the code jumps directly to out_rtg, which skips the scrub
-rtgroup cleanup and only drops the local rtgroup reference.
+Drop all unused symbols from the driver.
 
-Remove the unnecessary jump so the function falls through to out_sr,
-ensuring the realtime cursors, lock state, and sr->rtg reference are
-released before returning.
-
-Fixes: fd97fe111208 ("xfs: fix CoW forks for realtime files")
-Cc: <stable@vger.kernel.org> # v6.14
-Signed-off-by: Yingjie Gao <gaoyingjie@uniontech.com>
-Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
-Signed-off-by: Carlos Maiolino <cem@kernel.org>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20221229155030.418800-4-brgl@bgdev.pl
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: ca2584d841b6 ("serial: qcom-geni: fix UART_RX_PAR_EN bit position")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/scrub/cow_repair.c |    5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/tty/serial/qcom_geni_serial.c |   15 ---------------
+ 1 file changed, 15 deletions(-)
 
---- a/fs/xfs/scrub/cow_repair.c
-+++ b/fs/xfs/scrub/cow_repair.c
-@@ -382,12 +382,9 @@ xrep_cow_find_bad_rt(
- 	 * CoW fork and then scan for staging extents in the refcountbt.
- 	 */
- 	if ((sc->sm->sm_flags & XFS_SCRUB_IFLAG_FORCE_REBUILD) ||
--	    XFS_TEST_ERROR(sc->mp, XFS_ERRTAG_FORCE_SCRUB_REPAIR)) {
-+	    XFS_TEST_ERROR(sc->mp, XFS_ERRTAG_FORCE_SCRUB_REPAIR))
- 		error = xrep_cow_mark_file_range(xc, xc->irec.br_startblock,
- 				xc->irec.br_blockcount);
--		if (error)
--			goto out_rtg;
--	}
+--- a/drivers/tty/serial/qcom_geni_serial.c
++++ b/drivers/tty/serial/qcom_geni_serial.c
+@@ -38,20 +38,11 @@
+ #define UART_TX_PAR_EN		BIT(0)
+ #define UART_CTS_MASK		BIT(1)
  
- out_sr:
- 	xchk_rtgroup_btcur_free(&sc->sr);
+-/* SE_UART_TX_WORD_LEN */
+-#define TX_WORD_LEN_MSK		GENMASK(9, 0)
+-
+ /* SE_UART_TX_STOP_BIT_LEN */
+-#define TX_STOP_BIT_LEN_MSK	GENMASK(23, 0)
+ #define TX_STOP_BIT_LEN_1	0
+-#define TX_STOP_BIT_LEN_1_5	1
+ #define TX_STOP_BIT_LEN_2	2
+ 
+-/* SE_UART_TX_TRANS_LEN */
+-#define TX_TRANS_LEN_MSK	GENMASK(23, 0)
+-
+ /* SE_UART_RX_TRANS_CFG */
+-#define UART_RX_INS_STATUS_BIT	BIT(2)
+ #define UART_RX_PAR_EN		BIT(3)
+ 
+ /* SE_UART_RX_WORD_LEN */
+@@ -62,12 +53,9 @@
+ 
+ /* SE_UART_TX_PARITY_CFG/RX_PARITY_CFG */
+ #define PAR_CALC_EN		BIT(0)
+-#define PAR_MODE_MSK		GENMASK(2, 1)
+-#define PAR_MODE_SHFT		1
+ #define PAR_EVEN		0x00
+ #define PAR_ODD			0x01
+ #define PAR_SPACE		0x10
+-#define PAR_MARK		0x11
+ 
+ /* SE_UART_MANUAL_RFR register fields */
+ #define UART_MANUAL_RFR_EN	BIT(31)
+@@ -76,11 +64,8 @@
+ 
+ /* UART M_CMD OP codes */
+ #define UART_START_TX		0x1
+-#define UART_START_BREAK	0x4
+-#define UART_STOP_BREAK		0x5
+ /* UART S_CMD OP codes */
+ #define UART_START_READ		0x1
+-#define UART_PARAM		0x1
+ 
+ #define UART_OVERSAMPLING	32
+ #define STALE_TIMEOUT		16
 
 
 
