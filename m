@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-266362-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264223-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id VBgDFr6bMWp6oAUAu9opvQ
-	(envelope-from <stable+bounces-266362-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:53:50 +0200
+	id JwBdAtxzMWrYjgUAu9opvQ
+	(envelope-from <stable+bounces-264223-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:03:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59E4B6948D9
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:53:49 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58487691A66
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:03:39 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=gGsQZn1E;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266362-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266362-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=QxYs4ZLj;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264223-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264223-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 96088300B289
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:53:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 24EB830EEA75
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:47:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1ECB4779BF;
-	Tue, 16 Jun 2026 18:53:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FBC04657F6;
+	Tue, 16 Jun 2026 15:46:21 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94C6C3CC303;
-	Tue, 16 Jun 2026 18:53:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EBFC466B5B;
+	Tue, 16 Jun 2026 15:46:18 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781636024; cv=none; b=WwXnswZn4WwnQ9aIMzzC9ojFN/ctoz1IPBGQvD4/aREq7BcC9CoKbXDGbDUxoyjIohkwX3k+6Iircnjo6KAKiRRHIRRnZ8j1meKZfewKJvR+txRrpGTBfTbecLmG2QnIr0r8LXVqdVKduQO8qdXXOstoGaVK2zlXbcjQM4/Yn2E=
+	t=1781624780; cv=none; b=sKI8lP1hvrr3SbakiguZmR1rhqXlcl1Qpzb/8khunreld2HWFHDwBuLtk5nIr6pErF2myky9TlpAVeZ+XcRC0vWGc/nYc78E1H9zy4Oh378K73+lNM/Rhd2Pkn9YMQSRECdOj1QtqAK9hwTPMPFnCN3wPYYk55B+czWzN4RDPgw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781636024; c=relaxed/simple;
-	bh=P+TrZzb077Y/ZOaprXqTIjVt5J2QDt8sdoNStaH0acE=;
+	s=arc-20240116; t=1781624780; c=relaxed/simple;
+	bh=ZFgqm8foWYIRP8ZF8+vokRzm9SnXEK+/ftJFL2NkGlk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rVseHX97+IiAgafl+mWc4E3w8+Kzro7nvQChktS+v2FbLtPhqqYtXUVgV2WAZB6anb2z6mFICTF3o0FJrOP1g7BOJxgoAaZQ1W3+S317dLaDWfqqs1I7QRAW3I2TZ3+5tmrEZ/hFvlS9Pfvf2rpmRXaczmdZyxnbBnwWAGYybLw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gGsQZn1E; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 938DD1F000E9;
-	Tue, 16 Jun 2026 18:53:42 +0000 (UTC)
+	 MIME-Version; b=NPAOWtGle+MozRu1VBh+UiMEmR9AShhVkNhjD8Yf0ErzZ4lpu4LavQRtFXsy85sJLPoFhV9bv1QZUyxA0oK71tdZ4u9CKE+4W7VjLX9h+t4ch77AxawJ7rCNvj6/VJ69darsjf3ykJW+vxjWufHIXwMLpgAGn6Mp0wSU/OKHyNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QxYs4ZLj; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED01F1F000E9;
+	Tue, 16 Jun 2026 15:46:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781636023;
-	bh=08V0cZY+Shg41dVzLDrEuPPpemiWsDLhGKszlXQnWBc=;
+	s=korg; t=1781624777;
+	bh=S3Vcd4lNBk7ybZK7fT1SrlGz+lPu+kh1/TxVRzkoer0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gGsQZn1EUbwW0z0CU8aLIGJnfD2/M410InQxz85KyT/Ey9Ucd08BZN7QEk4alqO+B
-	 tZk00ltw9suN8t/SxE3ek/83Oj6tn0ImnZ/beFRDUELI5dBrjmiMUUr2wt0jZN522s
-	 5zqtUKxJ5h9XuAA0zae3utxuzJdIPWGFl66g4F+o=
+	b=QxYs4ZLjC1B5PWekgabiAb5J/wR9Y7gqqyo508PiS0Qod7yAIwbEx+oot9wy8XWum
+	 5vs9Y1PV/89cvaQKo7eQ4U55aehpZq5JU7nQaDhADCpWTnO9r4C3165q21fo7X+aW0
+	 tmOlOB7ieLDtQ+MBLGhHJLk6URBoukx9KAQDDMrU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>,
+	Guangshuo Li <lgs201920130244@gmail.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 127/342] USB: serial: mct_u232: fix memory corruption with small endpoint
+Subject: [PATCH 6.18 027/325] dm cache policy smq: check allocation under invalidate lock
 Date: Tue, 16 Jun 2026 20:27:03 +0530
-Message-ID: <20260616145054.120010702@linuxfoundation.org>
+Message-ID: <20260616145059.117265170@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,113 +72,104 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266362-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264223-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:lgs201920130244@gmail.com,m:mpatocka@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:johan@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com,kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 59E4B6948D9
+X-Rspamd-Queue-Id: 58487691A66
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Guangshuo Li <lgs201920130244@gmail.com>
 
-commit 915b36d701950503c4ea0f6e314b10868e59fce3 upstream.
+[ Upstream commit d3f0a606b9f278ece8a0df626ded9c4044071235 ]
 
-The driver overrides the maximum transfer size for a specific device
-which only accepts 16 byte packets for its 32 byte bulk-out endpoint.
+commit 2d1f7b65f5de ("dm cache policy smq: fix missing locks in
+invalidating cache blocks") added mq->lock around the destructive part of
+smq_invalidate_mapping(), but left the e->allocated check outside the
+critical section.
 
-Make sure to never increase the maximum transfer size to prevent slab
-corruption should a malicious device report a smaller endpoint max
-packet size than expected.
+That leaves a check-then-act race. Two concurrent invalidators can both
+observe e->allocated as true before either of them takes mq->lock. The
+first invalidator that acquires the lock removes the entry from the
+queues and hash table and then calls free_entry(), which clears
+e->allocated and puts the entry back on the free list. The second
+invalidator can then acquire mq->lock and continue with the stale result
+of the unlocked check.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Johan Hovold <johan@kernel.org>
+This can corrupt the SMQ queues or hash table by deleting an entry that
+is no longer on those structures. It can also hit the allocation check in
+free_entry() when the same entry is freed again.
+
+Move the allocation check under mq->lock so the predicate and the
+destructive operations are serialized by the same lock.
+
+Fixes: 2d1f7b65f5de ("dm cache policy smq: fix missing locks in invalidating cache blocks")
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/mct_u232.c | 21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
+ drivers/md/dm-cache-policy-smq.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/usb/serial/mct_u232.c b/drivers/usb/serial/mct_u232.c
-index 04f16d4a0a68ad..8842a1db72b396 100644
---- a/drivers/usb/serial/mct_u232.c
-+++ b/drivers/usb/serial/mct_u232.c
-@@ -378,6 +378,7 @@ static int mct_u232_port_probe(struct usb_serial_port *port)
- {
- 	struct usb_serial *serial = port->serial;
- 	struct mct_u232_private *priv;
-+	u16 pid;
- 
- 	/* check first to simplify error handling */
- 	if (!serial->port[1] || !serial->port[1]->interrupt_in_urb) {
-@@ -385,6 +386,16 @@ static int mct_u232_port_probe(struct usb_serial_port *port)
- 		return -ENODEV;
- 	}
- 
-+	/*
-+	 * Compensate for a hardware bug: although the Sitecom U232-P25
-+	 * device reports a maximum output packet size of 32 bytes,
-+	 * it seems to be able to accept only 16 bytes (and that's what
-+	 * SniffUSB says too...)
-+	 */
-+	pid = le16_to_cpu(serial->dev->descriptor.idProduct);
-+	if (pid == MCT_U232_SITECOM_PID)
-+		port->bulk_out_size = min(16, port->bulk_out_size);
-+
- 	priv = kzalloc(sizeof(*priv), GFP_KERNEL);
- 	if (!priv)
- 		return -ENOMEM;
-@@ -412,7 +423,6 @@ static int mct_u232_port_remove(struct usb_serial_port *port)
- 
- static int  mct_u232_open(struct tty_struct *tty, struct usb_serial_port *port)
- {
--	struct usb_serial *serial = port->serial;
- 	struct mct_u232_private *priv = usb_get_serial_port_data(port);
- 	int retval = 0;
- 	unsigned int control_state;
-@@ -420,15 +430,6 @@ static int  mct_u232_open(struct tty_struct *tty, struct usb_serial_port *port)
- 	unsigned char last_lcr;
- 	unsigned char last_msr;
- 
--	/* Compensate for a hardware bug: although the Sitecom U232-P25
--	 * device reports a maximum output packet size of 32 bytes,
--	 * it seems to be able to accept only 16 bytes (and that's what
--	 * SniffUSB says too...)
--	 */
--	if (le16_to_cpu(serial->dev->descriptor.idProduct)
--						== MCT_U232_SITECOM_PID)
--		port->bulk_out_size = 16;
+diff --git a/drivers/md/dm-cache-policy-smq.c b/drivers/md/dm-cache-policy-smq.c
+index 76a35cce85028e..7f661e8cbcc2be 100644
+--- a/drivers/md/dm-cache-policy-smq.c
++++ b/drivers/md/dm-cache-policy-smq.c
+@@ -1590,18 +1590,22 @@ static int smq_invalidate_mapping(struct dm_cache_policy *p, dm_cblock_t cblock)
+ 	struct smq_policy *mq = to_smq_policy(p);
+ 	struct entry *e = get_entry(&mq->cache_alloc, from_cblock(cblock));
+ 	unsigned long flags;
 -
- 	/* Do a defined restart: the normal serial device seems to
- 	 * always turn on DTR and RTS here, so do the same. I'm not
- 	 * sure if this is really necessary. But it should not harm
+-	if (!e->allocated)
+-		return -ENODATA;
++	int r = 0;
+ 
+ 	spin_lock_irqsave(&mq->lock, flags);
++	if (!e->allocated) {
++		r = -ENODATA;
++		goto out;
++	}
+ 	// FIXME: what if this block has pending background work?
+ 	del_queue(mq, e);
+ 	h_remove(&mq->table, e);
+ 	free_entry(&mq->cache_alloc, e);
++
++out:
+ 	spin_unlock_irqrestore(&mq->lock, flags);
+ 
+-	return 0;
++	return r;
+ }
+ 
+ static uint32_t smq_get_hint(struct dm_cache_policy *p, dm_cblock_t cblock)
 -- 
 2.53.0
 
