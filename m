@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-264816-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263858-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ObegDg1/MWp1kwUAu9opvQ
-	(envelope-from <stable+bounces-264816-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:51:25 +0200
+	id 9NfXE05pMWrMigUAu9opvQ
+	(envelope-from <stable+bounces-263858-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:18:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3787D692847
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:51:24 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B870A690E54
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:18:37 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=eKvxc5bm;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264816-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264816-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=xYOz4mWR;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263858-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263858-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6127F300BD60
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:40:44 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C69E0306EF35
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:14:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97B434508E4;
-	Tue, 16 Jun 2026 16:40:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8232843D4E9;
+	Tue, 16 Jun 2026 15:14:03 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2795D472777;
-	Tue, 16 Jun 2026 16:40:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 568803264FF;
+	Tue, 16 Jun 2026 15:14:02 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781628041; cv=none; b=k5BiXDJsh+fO/z458xLEzaDC7+VH7EGFCDtkhF5kZihHrXXJDbDAF5ePCshG0CeY5tqWqrmM8WHeepL735gi6nGINhEu8hQr8Y8MTDZ2nsiavUk1X2IuqMnAO1HdN+BsGhOvySp6HJxW+vi2XDZIu4fU53+hrQiPVEJciOI0g4Y=
+	t=1781622843; cv=none; b=BsUvSyNITEZZ2ay34Sb6JeKaMFVMj1b1vZyQm85mKB7KDeLMxz33XT2eP2Fn73XYC5TJqt75e8Lb603zlqz+4xcMkxbmrIG2WSCmM+LerIyS95jgkeCVq9l82F3guUkqAIuRUA75MLNXLNAVsU3usPdLdhAVJYpYfK1CBnCwdMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781628041; c=relaxed/simple;
-	bh=RaYk6KdxmuUlU1mlrEgdwBqEl4lGGYTSF2nKvfLNf70=;
+	s=arc-20240116; t=1781622843; c=relaxed/simple;
+	bh=D0FLt0Uryp2WEuIoQnKRTaBVKzu6RJVw/u2vkQSBkPw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g/EKQN6+SRkLRuxz8710iXm3Cxfu6/0+2Wy95L4CgHneLZXhrKAFWzwt1sCohknnjxCr0KA9jPQGUQfYH1X0eriebhdlmCoh+rbnXQRxkOxhdrtsWmgPzEtPiF1Ll/ToXKFyLkXZeprjErdNBqb81KTHGgVydEzwNOzW8HrSLcM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eKvxc5bm; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C415F1F000E9;
-	Tue, 16 Jun 2026 16:40:38 +0000 (UTC)
+	 MIME-Version; b=SxtpjMocWuCJmV3vsp/DDp30pCOCpL6y0jPDX7bV2IuEbImBMa98oxPckf8xhQugNOG/9gKnciIvDPyJDKxMPuaBST3VLBrPnA5mjOn4+kr+VkHXMxMnEXnXHfk1BT2gf6DrhLurp4a3RZ2A799XY2UaC8C8i0oqIpM/Jv5fCb0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xYOz4mWR; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 670531F00A3A;
+	Tue, 16 Jun 2026 15:14:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781628039;
-	bh=sM5RTh/Ig7flN+gLYVnMmPm5A5G+z+ohWFx70N1Yy90=;
+	s=korg; t=1781622842;
+	bh=WiU3jAp7AErxV5OuUMRf6myUu8oo+NFdePuhGzboaZA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=eKvxc5bmeWxw/TUxwSx3FFk7NomBk3ElA6xzXWhbGtaGeYqu38P0AZdRWPCxhDqOU
-	 IIiOMtFwN+U9OB57IGhbk4MmsujOIKbCNoxy3xlj516lnZxBUwJ13ifGX74J7+5Bt9
-	 9l3n8oykgYBjzTTrZgn8KSAwzs2GRcJLXFrDONyM=
+	b=xYOz4mWRMuP1d86XJy5TM/CUA6qcLs+oiyZozUzwp/oT1M8icRaGq/37VmYONijnz
+	 aB7/L5wBoOObhStoMwFY9EKTB9ZpP1fd/ViINaqdyXigtFehfOnfbffLb93En3aIlK
+	 XfD3uCdyxExRqBv15//j0ADS2A+hn1MvhYIE9P1c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ziyu Zhang <ziyuzhang201@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	syzbot+52bae5c495dbe261a0bc@syzkaller.appspotmail.com,
+	Chao Yu <chao@kernel.org>,
+	Jianan Huang <jnhuang95@gmail.com>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 020/452] vsock: keep poll shutdown state consistent
+Subject: [PATCH 7.0 016/378] erofs: fix use-after-free on sbi->sync_decompress
 Date: Tue, 16 Jun 2026 20:24:07 +0530
-Message-ID: <20260616145118.875717360@linuxfoundation.org>
+Message-ID: <20260616145110.665994826@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,285 +69,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,kernel.org,gmail.com,linux.alibaba.com];
+	TAGGED_FROM(0.00)[bounces-263858-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-264816-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:ziyuzhang201@gmail.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:syzbot+52bae5c495dbe261a0bc@syzkaller.appspotmail.com,m:chao@kernel.org,m:jnhuang95@gmail.com,m:hsiangkao@linux.alibaba.com,m:sashal@kernel.org,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url]
+	TAGGED_RCPT(0.00)[stable,52bae5c495dbe261a0bc];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,syzkaller.appspot.com:url,alibaba.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3787D692847
+X-Rspamd-Queue-Id: B870A690E54
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ziyu Zhang <ziyuzhang201@gmail.com>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
 
-[ Upstream commit aae9d8a5528b8ee9ff8dc5d3558b8a9f852a724a ]
+[ Upstream commit 1aee05e814d292064bf5fa15733741040cdc48ba ]
 
-vsock_poll() reads vsk->peer_shutdown before taking the socket lock
-to set EPOLLHUP and EPOLLRDHUP, then reads it again after taking
-the lock to report EOF readability. A shutdown packet can update
-peer_shutdown while poll is waiting for the lock, so one poll invocation
-can report EOF readability without the corresponding HUP/RDHUP bits.
+z_erofs_decompress_kickoff() can race with filesystem unmount, causing
+a use-after-free on sbi->sync_decompress.
 
-For connectible sockets, take one peer_shutdown snapshot after
-lock_sock() and use it for all peer-shutdown-derived poll bits. For
-datagram sockets, which do not take lock_sock() in poll(), take one
-lockless READ_ONCE() snapshot and pair it with WRITE_ONCE() on the
-writer side.
+When I/O completes, z_erofs_endio() calls z_erofs_decompress_kickoff()
+to queue z_erofs_decompressqueue_work() asynchronously. Then, after all
+folios are unlocked, unmount workflow can proceed and sbi will be freed
+before accessing to sbi->sync_decompress.
 
-This keeps the peer-shutdown-derived bits internally consistent for each
-poll pass.
+Thread (unmount)        I/O completion        kworker
+                        queue_work
+                                              z_erofs_decompressqueue_work
+                                               (all folios are unlocked)
+cleanup_mnt
+ ..
+ erofs_kill_sb
+  erofs_sb_free
+   kfree(sbi)
+                        access sbi->sync_decompress  // UAF!!
 
-Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
-Signed-off-by: Ziyu Zhang <ziyuzhang201@gmail.com>
-Link: https://patch.msgid.link/20260519165636.62542-1-ziyuzhang201@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 40452ffca3c1 ("erofs: add sysfs node to control sync decompression strategy")
+Reported-by: syzbot+52bae5c495dbe261a0bc@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=52bae5c495dbe261a0bc
+Reviewed-by: Chao Yu <chao@kernel.org>
+Reviewed-by: Jianan Huang <jnhuang95@gmail.com>
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/vmw_vsock/af_vsock.c                | 49 ++++++++++++++++---------
- net/vmw_vsock/hyperv_transport.c        |  9 +++--
- net/vmw_vsock/virtio_transport_common.c | 14 ++++---
- net/vmw_vsock/vmci_transport.c          |  8 ++--
- 4 files changed, 52 insertions(+), 28 deletions(-)
+ fs/erofs/zdata.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
-index 187cc259f820b5..a06f708f300c4a 100644
---- a/net/vmw_vsock/af_vsock.c
-+++ b/net/vmw_vsock/af_vsock.c
-@@ -522,7 +522,7 @@ int vsock_assign_transport(struct vsock_sock *vsk, struct vsock_sock *psk)
- 		 */
- 		sock_reset_flag(sk, SOCK_DONE);
- 		sk->sk_state = TCP_CLOSE;
--		vsk->peer_shutdown = 0;
-+		WRITE_ONCE(vsk->peer_shutdown, 0);
+diff --git a/fs/erofs/zdata.c b/fs/erofs/zdata.c
+index d7445e98312d80..50a5a1568370b0 100644
+--- a/fs/erofs/zdata.c
++++ b/fs/erofs/zdata.c
+@@ -1457,6 +1457,9 @@ static void z_erofs_decompress_kickoff(struct z_erofs_decompressqueue *io,
+ 	if (atomic_add_return(bios, &io->pending_bios))
+ 		return;
+ 	if (z_erofs_in_atomic()) {
++		/* See `sync_decompress` in sysfs-fs-erofs for more details */
++		if (sbi->sync_decompress == EROFS_SYNC_DECOMPRESS_AUTO)
++			sbi->sync_decompress = EROFS_SYNC_DECOMPRESS_FORCE_ON;
+ #ifdef CONFIG_EROFS_FS_PCPU_KTHREAD
+ 		struct kthread_worker *worker;
+ 
+@@ -1473,9 +1476,6 @@ static void z_erofs_decompress_kickoff(struct z_erofs_decompressqueue *io,
+ #else
+ 		queue_work(z_erofs_workqueue, &io->u.work);
+ #endif
+-		/* See `sync_decompress` in sysfs-fs-erofs for more details */
+-		if (sbi->sync_decompress == EROFS_SYNC_DECOMPRESS_AUTO)
+-			sbi->sync_decompress = EROFS_SYNC_DECOMPRESS_FORCE_ON;
+ 		return;
  	}
- 
- 	if (sk->sk_type == SOCK_SEQPACKET) {
-@@ -813,7 +813,7 @@ static struct sock *__vsock_create(struct net *net,
- 	vsk->rejected = false;
- 	vsk->sent_request = false;
- 	vsk->ignore_connecting_rst = false;
--	vsk->peer_shutdown = 0;
-+	WRITE_ONCE(vsk->peer_shutdown, 0);
- 	INIT_DELAYED_WORK(&vsk->connect_work, vsock_connect_timeout);
- 	INIT_DELAYED_WORK(&vsk->pending_work, vsock_pending_work);
- 
-@@ -1095,6 +1095,25 @@ static int vsock_shutdown(struct socket *sock, int mode)
- 	return err;
- }
- 
-+static __poll_t vsock_poll_shutdown(struct sock *sk, u32 peer_shutdown)
-+{
-+	__poll_t mask = 0;
-+
-+	/* INET sockets treat local write shutdown and peer write shutdown as a
-+	 * case of EPOLLHUP set.
-+	 */
-+	if (sk->sk_shutdown == SHUTDOWN_MASK ||
-+	    ((sk->sk_shutdown & SEND_SHUTDOWN) &&
-+	     (peer_shutdown & SEND_SHUTDOWN)))
-+		mask |= EPOLLHUP;
-+
-+	if (sk->sk_shutdown & RCV_SHUTDOWN ||
-+	    peer_shutdown & SEND_SHUTDOWN)
-+		mask |= EPOLLRDHUP;
-+
-+	return mask;
-+}
-+
- static __poll_t vsock_poll(struct file *file, struct socket *sock,
- 			       poll_table *wait)
- {
-@@ -1112,24 +1131,17 @@ static __poll_t vsock_poll(struct file *file, struct socket *sock,
- 		/* Signify that there has been an error on this socket. */
- 		mask |= EPOLLERR;
- 
--	/* INET sockets treat local write shutdown and peer write shutdown as a
--	 * case of EPOLLHUP set.
--	 */
--	if ((sk->sk_shutdown == SHUTDOWN_MASK) ||
--	    ((sk->sk_shutdown & SEND_SHUTDOWN) &&
--	     (vsk->peer_shutdown & SEND_SHUTDOWN))) {
--		mask |= EPOLLHUP;
--	}
--
--	if (sk->sk_shutdown & RCV_SHUTDOWN ||
--	    vsk->peer_shutdown & SEND_SHUTDOWN) {
--		mask |= EPOLLRDHUP;
--	}
--
- 	if (sk_is_readable(sk))
- 		mask |= EPOLLIN | EPOLLRDNORM;
- 
- 	if (sock->type == SOCK_DGRAM) {
-+		u32 peer_shutdown = READ_ONCE(vsk->peer_shutdown);
-+
-+		/* DGRAM sockets do not take lock_sock() in poll(), so use one
-+		 * lockless snapshot for all shutdown-derived mask bits.
-+		 */
-+		mask |= vsock_poll_shutdown(sk, peer_shutdown);
-+
- 		/* For datagram sockets we can read if there is something in
- 		 * the queue and write as long as the socket isn't shutdown for
- 		 * sending.
-@@ -1144,6 +1156,7 @@ static __poll_t vsock_poll(struct file *file, struct socket *sock,
- 
- 	} else if (sock_type_connectible(sk->sk_type)) {
- 		const struct vsock_transport *transport;
-+		u32 peer_shutdown;
- 
- 		lock_sock(sk);
- 
-@@ -1176,8 +1189,10 @@ static __poll_t vsock_poll(struct file *file, struct socket *sock,
- 		 * terminated should also be considered read, and we check the
- 		 * shutdown flag for that.
- 		 */
-+		peer_shutdown = READ_ONCE(vsk->peer_shutdown);
-+		mask |= vsock_poll_shutdown(sk, peer_shutdown);
- 		if (sk->sk_shutdown & RCV_SHUTDOWN ||
--		    vsk->peer_shutdown & SEND_SHUTDOWN) {
-+		    peer_shutdown & SEND_SHUTDOWN) {
- 			mask |= EPOLLIN | EPOLLRDNORM;
- 		}
- 
-diff --git a/net/vmw_vsock/hyperv_transport.c b/net/vmw_vsock/hyperv_transport.c
-index 34871ed1a099c6..865e004ee286f2 100644
---- a/net/vmw_vsock/hyperv_transport.c
-+++ b/net/vmw_vsock/hyperv_transport.c
-@@ -264,7 +264,7 @@ static void hvs_do_close_lock_held(struct vsock_sock *vsk,
- 	struct sock *sk = sk_vsock(vsk);
- 
- 	sock_set_flag(sk, SOCK_DONE);
--	vsk->peer_shutdown = SHUTDOWN_MASK;
-+	WRITE_ONCE(vsk->peer_shutdown, SHUTDOWN_MASK);
- 	if (vsock_stream_has_data(vsk) <= 0)
- 		sk->sk_state = TCP_CLOSING;
- 	sk->sk_state_change(sk);
-@@ -593,7 +593,9 @@ static int hvs_update_recv_data(struct hvsock *hvs)
- 		return -EIO;
- 
- 	if (payload_len == 0)
--		hvs->vsk->peer_shutdown |= SEND_SHUTDOWN;
-+		WRITE_ONCE(hvs->vsk->peer_shutdown,
-+			   READ_ONCE(hvs->vsk->peer_shutdown) |
-+			   SEND_SHUTDOWN);
- 
- 	hvs->recv_data_len = payload_len;
- 	hvs->recv_data_off = 0;
-@@ -704,7 +706,8 @@ static s64 hvs_stream_has_data(struct vsock_sock *vsk)
- 		ret = 1;
- 		break;
- 	case 0:
--		vsk->peer_shutdown |= SEND_SHUTDOWN;
-+		WRITE_ONCE(vsk->peer_shutdown,
-+			   READ_ONCE(vsk->peer_shutdown) | SEND_SHUTDOWN);
- 		ret = 0;
- 		break;
- 	default: /* -1 */
-diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-index d4ff9506eaf6d5..16431ef52799db 100644
---- a/net/vmw_vsock/virtio_transport_common.c
-+++ b/net/vmw_vsock/virtio_transport_common.c
-@@ -1043,7 +1043,7 @@ static void virtio_transport_do_close(struct vsock_sock *vsk,
- 	struct sock *sk = sk_vsock(vsk);
- 
- 	sock_set_flag(sk, SOCK_DONE);
--	vsk->peer_shutdown = SHUTDOWN_MASK;
-+	WRITE_ONCE(vsk->peer_shutdown, SHUTDOWN_MASK);
- 	if (vsock_stream_has_data(vsk) <= 0)
- 		sk->sk_state = TCP_CLOSING;
- 	sk->sk_state_change(sk);
-@@ -1244,12 +1244,15 @@ virtio_transport_recv_connected(struct sock *sk,
- 	case VIRTIO_VSOCK_OP_CREDIT_UPDATE:
- 		sk->sk_write_space(sk);
- 		break;
--	case VIRTIO_VSOCK_OP_SHUTDOWN:
-+	case VIRTIO_VSOCK_OP_SHUTDOWN: {
-+		u32 peer_shutdown = READ_ONCE(vsk->peer_shutdown);
-+
- 		if (le32_to_cpu(hdr->flags) & VIRTIO_VSOCK_SHUTDOWN_RCV)
--			vsk->peer_shutdown |= RCV_SHUTDOWN;
-+			peer_shutdown |= RCV_SHUTDOWN;
- 		if (le32_to_cpu(hdr->flags) & VIRTIO_VSOCK_SHUTDOWN_SEND)
--			vsk->peer_shutdown |= SEND_SHUTDOWN;
--		if (vsk->peer_shutdown == SHUTDOWN_MASK) {
-+			peer_shutdown |= SEND_SHUTDOWN;
-+		WRITE_ONCE(vsk->peer_shutdown, peer_shutdown);
-+		if (peer_shutdown == SHUTDOWN_MASK) {
- 			if (vsock_stream_has_data(vsk) <= 0 && !sock_flag(sk, SOCK_DONE)) {
- 				(void)virtio_transport_reset(vsk, NULL);
- 				virtio_transport_do_close(vsk, true);
-@@ -1264,6 +1267,7 @@ virtio_transport_recv_connected(struct sock *sk,
- 		if (le32_to_cpu(virtio_vsock_hdr(skb)->flags))
- 			sk->sk_state_change(sk);
- 		break;
-+	}
- 	case VIRTIO_VSOCK_OP_RST:
- 		virtio_transport_do_close(vsk, true);
- 		break;
-diff --git a/net/vmw_vsock/vmci_transport.c b/net/vmw_vsock/vmci_transport.c
-index 4cd11f355e9d6b..443125e48f2481 100644
---- a/net/vmw_vsock/vmci_transport.c
-+++ b/net/vmw_vsock/vmci_transport.c
-@@ -811,7 +811,7 @@ static void vmci_transport_handle_detach(struct sock *sk)
- 		/* On a detach the peer will not be sending or receiving
- 		 * anymore.
- 		 */
--		vsk->peer_shutdown = SHUTDOWN_MASK;
-+		WRITE_ONCE(vsk->peer_shutdown, SHUTDOWN_MASK);
- 
- 		/* We should not be sending anymore since the peer won't be
- 		 * there to receive, but we can still receive if there is data
-@@ -1534,7 +1534,9 @@ static int vmci_transport_recv_connected(struct sock *sk,
- 		if (pkt->u.mode) {
- 			vsk = vsock_sk(sk);
- 
--			vsk->peer_shutdown |= pkt->u.mode;
-+			WRITE_ONCE(vsk->peer_shutdown,
-+				   READ_ONCE(vsk->peer_shutdown) |
-+				   pkt->u.mode);
- 			sk->sk_state_change(sk);
- 		}
- 		break;
-@@ -1551,7 +1553,7 @@ static int vmci_transport_recv_connected(struct sock *sk,
- 		 * a clean shutdown.
- 		 */
- 		sock_set_flag(sk, SOCK_DONE);
--		vsk->peer_shutdown = SHUTDOWN_MASK;
-+		WRITE_ONCE(vsk->peer_shutdown, SHUTDOWN_MASK);
- 		if (vsock_stream_has_data(vsk) <= 0)
- 			sk->sk_state = TCP_CLOSING;
- 
+ 	gfp_flag = memalloc_noio_save();
 -- 
 2.53.0
 
