@@ -1,63 +1,62 @@
-Return-Path: <stable+bounces-266160-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265696-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id gIuYFqWXMWqtngUAu9opvQ
-	(envelope-from <stable+bounces-266160-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:36:21 +0200
+	id zzlzDgWOMWpCmgUAu9opvQ
+	(envelope-from <stable+bounces-265696-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:55:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF7F369443E
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:36:20 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD3A8693A13
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:55:16 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ydMJAPK+;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266160-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266160-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=P9S6C6LX;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265696-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265696-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CB17F308B2A9
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:36:19 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3B15C3036829
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:55:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02EC443CEC7;
-	Tue, 16 Jun 2026 18:36:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B3A83BFE5A;
+	Tue, 16 Jun 2026 17:55:15 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6615169AD2;
-	Tue, 16 Jun 2026 18:36:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17F41257827;
+	Tue, 16 Jun 2026 17:55:14 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781634978; cv=none; b=tcr0lo3RhEZzjQpSbHLHO+rY0ar6UB464YKjaD/6jHu17wdInxs+i1SpFORjcnd6/EDXBk5b1WxGSh/5U/zkxHWPhkC97Ek2gum1A+BM7+AptkmuKm52An0CHk5hcMOlZPA3VEScNZkScxXfBuzxkZr1RVnb3efkCeSqbSyCay8=
+	t=1781632515; cv=none; b=bmgK4H91FIQVP/vyl0Ka64nhgaUO3wQ3i0p9gWb81lQsAc2C7n85m26bqcSV7IPBf4VnDOowvflpaC6TEnLsjvcHWi4Y3EG8BHNVBNrGdiuQZjLzb9+8EjM/hWCpJgy9uSqdId6WvMRQwz+ZV52xCfau+AHjqWjfoIPktEqNHC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781634978; c=relaxed/simple;
-	bh=Cob6JLo9Wy97eZ1bPdpE79srGsCdMbFs0A02Kktbq0g=;
+	s=arc-20240116; t=1781632515; c=relaxed/simple;
+	bh=djSPV24qU94eD23D6Hbfxmcg3YWaLgMOaASSkTLh8LU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZEEKWNqQGqzrUBoFN48Y13xGZ+TFhd8Oe1zWVWFt3TWkTaLZU5+Bl73TmeoRTN3lPDOOJQcvPqD7mcI/JFxd++etJvZnE9H2/0U97Bg3C30xUaC2x7qxhXDyuin8Ng4ft3mdlxypLm1uRV6b8hRqtE+198THP/fHIzPv92yuI9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ydMJAPK+; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5453B1F000E9;
-	Tue, 16 Jun 2026 18:36:16 +0000 (UTC)
+	 MIME-Version; b=gJiaoAVBEMkgUfxKTw/IFjQe4gHigo/Nvg5zd2n7Jgxr0hHkzWhxBVBFnecQHqttK2lPXKI4CTnUASRfi+M3lprp6mPKueKz2TMi2ChoKixjf3BkuEm89UFKEkW99GjnVZ1Y2wYi+fLZoj/rFqehLhko5hJTAjPK9UCDp2Qq87w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P9S6C6LX; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CF4B1F000E9;
+	Tue, 16 Jun 2026 17:55:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781634977;
-	bh=zsQY21QLSUrDNwgG9IHWwBgFJxscvA70qKbgFR4Nmic=;
+	s=korg; t=1781632514;
+	bh=PrcNM+3vRPBWDdaEGZ9jZ3rqq/t1RGZNXMYYTxzYmQM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ydMJAPK+y+Rpep2/kgHqz0M6fTIVZW94eK3UUkzQo7eoGi2bXjtuE6EP3UIwQ6Wgn
-	 656KpucGBrQ70W6Ix4ITsnibefkFhD1NIFRJ9tUR5qyZcBpGx6rZNdIFJEBfuqdqNd
-	 evsWXQIyZFKycHfx+zG5aE91cbRmQx+JWr/w2xlE=
+	b=P9S6C6LX57KIN6eC5uIdOsZUho2i1rXbYnR4ZcXskZMqpC37CTai1sNg7g3K6+HCS
+	 HVualmjS7rXZb4xi5eu3EqKiuAG0v8INA2MS2HNSqy9DbMzk9a6RJ8MBKtmxVVi0w3
+	 2cxg4Xc00HFKUWfS7xbmzCHWuasTkZzatT/CJ0Ko=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 334/411] f2fs: fix false alarm of lockdep on cp_global_sem lock
+Subject: [PATCH 6.1 425/522] mptcp: pm: ADD_ADDR rtx: resched blocked ADD_ADDR quicker
 Date: Tue, 16 Jun 2026 20:29:32 +0530
-Message-ID: <20260616145118.916496425@linuxfoundation.org>
+Message-ID: <20260616145145.868507083@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,22 +72,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266160-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265696-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:shinichiro.kawasaki@wdc.com,m:chao@kernel.org,m:jaegeuk@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:martineau@kernel.org,m:matttbe@kernel.org,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -97,111 +96,62 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: BF7F369443E
+X-Rspamd-Queue-Id: BD3A8693A13
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 
-[ Upstream commit 6a5e3de9c2bb0b691d16789a5d19e9276a09b308 ]
+[ Upstream commit 3cf12492891c4b5ff54dda404a2de4ec54c9e1b5 ]
 
-lockdep reported a potential deadlock:
+When an ADD_ADDR needs to be retransmitted and another one has already
+been prepared -- e.g. multiple ADD_ADDRs have been sent in a row and
+need to be retransmitted later -- this additional retransmission will
+need to wait.
 
-a) TCMU device removal context:
- - call del_gendisk() to get q->q_usage_counter
- - call start_flush_work() to get work_completion of wb->dwork
-b) f2fs writeback context:
- - in wb_workfn(), which holds work_completion of wb->dwork
- - call f2fs_balance_fs() to get sbi->gc_lock
-c) f2fs vfs_write context:
- - call f2fs_gc() to get sbi->gc_lock
- - call f2fs_write_checkpoint() to get sbi->cp_global_sem
-d) f2fs mount context:
- - call recover_fsync_data() to get sbi->cp_global_sem
- - call f2fs_check_and_fix_write_pointer() to call blkdev_report_zones()
-   that goes down to blk_mq_alloc_request and get q->q_usage_counter
+In this case, the timer was reset to TCP_RTO_MAX / 8, which is ~15
+seconds. This delay is unnecessary long: it should just be rescheduled
+at the next opportunity, e.g. after the retransmission timeout.
 
-Original callstack is in Closes tag.
+Without this modification, some issues can be seen from time to time in
+the selftests when multiple ADD_ADDRs are sent, and the host takes time
+to process them, e.g. the "signal addresses, ADD_ADDR timeout" MPTCP
+Join selftest, especially with a debug kernel config.
 
-However, I think this is a false alarm due to before mount returns
-successfully (context d), we can not access file therein via vfs_write
-(context c).
+Note that on older kernels, 'timeout' is not available. It should be
+enough to replace it by one second (HZ).
 
-Let's introduce per-sb cp_global_sem_key, and assign the key for
-cp_global_sem, so that lockdep can recognize cp_global_sem from
-different super block correctly.
-
-A lot of work are done by Shin'ichiro Kawasaki, thanks a lot for
-the work.
-
-Fixes: c426d99127b1 ("f2fs: Check write pointer consistency of open zones")
-Cc: stable@kernel.org
-Reported-and-tested-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-Closes: https://lore.kernel.org/linux-f2fs-devel/20260218125237.3340441-1-shinichiro.kawasaki@wdc.com
-Signed-off-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-[ adapted to plain `struct rw_semaphore` (no `f2fs_rwsem` wrapper) and moved success-path `lockdep_unregister_key` from `kill_f2fs_super` to `f2fs_put_super` where sbi is actually freed ]
+Fixes: 00cfd77b9063 ("mptcp: retransmit ADD_ADDR when timeout")
+Cc: stable@vger.kernel.org
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260505-net-mptcp-pm-fixes-7-1-rc3-v1-6-fca8091060a4@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ replaced `TCP_RTO_MAX / 8` with `HZ` ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/f2fs.h  |    3 +++
- fs/f2fs/super.c |   11 +++++++++++
- 2 files changed, 14 insertions(+)
+ net/mptcp/pm_netlink.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/f2fs/f2fs.h
-+++ b/fs/f2fs/f2fs.h
-@@ -1798,6 +1798,9 @@ struct f2fs_sb_info {
- 	spinlock_t iostat_lat_lock;
- 	struct iostat_lat_info *iostat_io_lat;
- #endif
-+#ifdef CONFIG_DEBUG_LOCK_ALLOC
-+	struct lock_class_key cp_global_sem_key;
-+#endif
- };
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -323,7 +323,7 @@ static void mptcp_pm_add_timer(struct ti
+ 	}
  
- struct f2fs_private_dio {
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -1668,6 +1668,9 @@ static void f2fs_put_super(struct super_
- #ifdef CONFIG_UNICODE
- 	utf8_unload(sb->s_encoding);
- #endif
-+#ifdef CONFIG_DEBUG_LOCK_ALLOC
-+	lockdep_unregister_key(&sbi->cp_global_sem_key);
-+#endif
- 	kfree(sbi);
- }
+ 	if (mptcp_pm_should_add_signal_addr(msk)) {
+-		sk_reset_timer(sk, timer, jiffies + TCP_RTO_MAX / 8);
++		sk_reset_timer(sk, timer, jiffies + HZ);
+ 		goto out;
+ 	}
  
-@@ -4123,6 +4126,11 @@ try_onemore:
- 	init_rwsem(&sbi->gc_lock);
- 	mutex_init(&sbi->writepages);
- 	init_rwsem(&sbi->cp_global_sem);
-+#ifdef CONFIG_DEBUG_LOCK_ALLOC
-+	lockdep_register_key(&sbi->cp_global_sem_key);
-+	lockdep_set_class(&sbi->cp_global_sem,
-+					&sbi->cp_global_sem_key);
-+#endif
- 	init_rwsem(&sbi->node_write);
- 	init_rwsem(&sbi->node_change);
- 
-@@ -4524,6 +4532,9 @@ free_sb_buf:
- free_sbi:
- 	if (sbi->s_chksum_driver)
- 		crypto_free_shash(sbi->s_chksum_driver);
-+#ifdef CONFIG_DEBUG_LOCK_ALLOC
-+	lockdep_unregister_key(&sbi->cp_global_sem_key);
-+#endif
- 	kfree(sbi);
- 
- 	/* give only one another chance */
 
 
 
