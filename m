@@ -1,63 +1,61 @@
-Return-Path: <stable+bounces-266554-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264435-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id cPdLMoSfMWoZogUAu9opvQ
-	(envelope-from <stable+bounces-266554-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:09:56 +0200
+	id /Mh1GYB0MWoEjwUAu9opvQ
+	(envelope-from <stable+bounces-264435-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:06:24 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5667C694CED
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:09:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20112691AFB
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:06:24 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=PgWtW+FC;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266554-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266554-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=abb37p63;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264435-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264435-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A33193028DF3
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:09:55 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0F3CA303017B
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:04:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EED5B3DDDA1;
-	Tue, 16 Jun 2026 19:09:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FF484534A3;
+	Tue, 16 Jun 2026 16:04:29 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE1AF35DA78;
-	Tue, 16 Jun 2026 19:09:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0060344CF44;
+	Tue, 16 Jun 2026 16:04:28 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781636992; cv=none; b=KBTUlYGHvsaZYT+1CDfZ30AdtGPs1qK923guyf9wYYK5loK7X795seIz4PQPMIjmKFiw75EYXBRtlzfcgeCwfl+Qh/GLif5zY2ZhihudxtpAuInukw+8bzYbRKQ2mm0sL291/CSsXXZy3lGYIRENx8ct/U84grA8DuSFO74EIb8=
+	t=1781625869; cv=none; b=GDv24qIeYfKIf6j1IIsaVJ9NGs/Iku+9EMEJzcjcJh761blPUqbVUniro6sSVi48bitCx/m4RKDS1FUH7yg2zlYyhEI1fgekQiaNyuNv7Yo1w2IqhY7hgOGVK3hBZRG1DKnDd2EVGUFZLmmiRVxYJYEbWFDvok2nIPWDe+rFpg0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781636992; c=relaxed/simple;
-	bh=nuIqDvt4GrsurTCDuKCfdCSSt5V41NGOt6ve8CkHJR0=;
+	s=arc-20240116; t=1781625869; c=relaxed/simple;
+	bh=fUzxUzfNkRyB0iE3dipIUcYb1De5TuZDQVehtaWDUc4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lm5+2hq/IEoYcEvYQlqnxizaY1AjNtUgkMerHxa35DK2NEYk7NGNnw89GBMURDw3SMJROl/RP2lc2vh0t+5YWTpSs7e7fRU+D8N9ay4WMFn88CZuAxlYDI0D1K0XZo3YATsQ+XkLyS6+yUiqipPOc3J4V0Bw8frKiioVU7zLEN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PgWtW+FC; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAE881F000E9;
-	Tue, 16 Jun 2026 19:09:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WdidOu2tiLRiAugZUki2RHBRNBA/mmhzN8ajxaEMhVrpV4tBqcgRpk61UIRLdigsuK2Hnh6TjHMrxT1KlY+Xp6gnnndmhXAJ3mXq8ZO4SH2UDX0GDQXM0/NHydOUhA2BXewxryFCQMwcQsjsh1um7y+EgRCPx7fCAM84EgI4MO8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=abb37p63; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3C891F000E9;
+	Tue, 16 Jun 2026 16:04:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781636991;
-	bh=qwcKFCAIqQFdbWh+LSHANM6yAZsD/h4dOZnHkafwinQ=;
+	s=korg; t=1781625867;
+	bh=vTcmISRLBNaieul5uN37ub/0AXJQKXtk9eMkuNojK2g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=PgWtW+FClFr/6ncqF0oZ1Cu9DKAgLPTvErAZimEvoymtBKClOJRipFWp+JlPp59hf
-	 bsoQKzShgQVY9n81F/uD/a0w9NFgMZhsgFlCm95NP8mZU5ig0YP9Y+/f67r0QpFRt+
-	 +VwBg9fzlK8uwTi9IWDmO7uCGjv17tLoZIbWuQ2g=
+	b=abb37p63VMZnKF44TxLTrftnOeas+e1Su0z/y05YTbeIeoJzYeX/FlFYI+ILvKV8q
+	 uJleUK6wKBF/0NqQ1ZuyXZNnuRYt6HlmYvh81adC4rYkaAdl7J32sW9BsXlSVmbyAr
+	 CXv/nVLGcRRH9GWPdtYDEBxz0Gxbba1uNsDMvkp4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antoniu Miclaus <antoniu.miclaus@analog.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 323/342] iio: gyro: adis16260: fix division by zero in write_raw
+	=?UTF-8?q?Guillermo=20Rodr=C3=ADguez?= <guille.rodriguez@gmail.com>,
+	Alain Volmat <alain.volmat@foss.st.com>,
+	Andi Shyti <andi.shyti@kernel.org>
+Subject: [PATCH 6.18 223/325] i2c: stm32f7: fix timing computation ignoring i2c-analog-filter
 Date: Tue, 16 Jun 2026 20:30:19 +0530
-Message-ID: <20260616145103.614501760@linuxfoundation.org>
+Message-ID: <20260616145109.342115395@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,75 +68,97 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-266554-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-264435-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:guille.rodriguez@gmail.com,m:alain.volmat@foss.st.com,m:andi.shyti@kernel.org,m:guillerodriguez@gmail.com,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:antoniu.miclaus@analog.com,m:nuno.sa@analog.com,m:Stable@vger.kernel.org,m:Jonathan.Cameron@huawei.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,foss.st.com,kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	TAGGED_RCPT(0.00)[stable];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[analog.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,huawei.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,st.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5667C694CED
+X-Rspamd-Queue-Id: 20112691AFB
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antoniu Miclaus <antoniu.miclaus@analog.com>
+From: Guillermo Rodríguez <guille.rodriguez@gmail.com>
 
-[ Upstream commit 761e8b489e6cf166c574034b70637f8a7eadd0ee ]
+commit a124579c0763da7bc408f4cd7e8f606cadc94855 upstream.
 
-Add a validation check for the sampling frequency value before using it
-as a divisor. A user writing zero to the sampling_frequency sysfs
-attribute triggers a division by zero in the kernel.
+stm32f7_i2c_compute_timing() uses i2c_dev->analog_filter to pick
+the analog filter delay, but i2c_dev->analog_filter is parsed from
+the "i2c-analog-filter" DT property only after the compute_timing
+loop in stm32f7_i2c_setup_timing(), so in practice the timing
+calculations always ignore the analog filter. On an STM32MP1 board
+with clock-frequency = <400000> and i2c-analog-filter set, measured
+SCL frequency was ~382 kHz.
 
-Fixes: 089a41985c6c ("staging: iio: adis16260 digital gyro driver")
-Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This also affects (widens) the computed SDADEL range. At high bus
+clock speeds, this can select an SDADEL value that violates tVD;DAT
+(data valid time).
+
+Fix by parsing "i2c-analog-filter" before the compute_timing loop.
+
+Fixes: 83c3408f7b9c ("i2c: stm32f7: support DT binding i2c-analog-filter")
+Signed-off-by: Guillermo Rodríguez <guille.rodriguez@gmail.com>
+Cc: <stable@vger.kernel.org> # v5.13+
+Acked-by: Alain Volmat <alain.volmat@foss.st.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/20260526091210.20383-1-guille.rodriguez@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/gyro/adis16260.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/i2c/busses/i2c-stm32f7.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/iio/gyro/adis16260.c
-+++ b/drivers/iio/gyro/adis16260.c
-@@ -293,6 +293,9 @@ static int adis16260_write_raw(struct ii
- 		addr = adis16260_addresses[chan->scan_index][1];
- 		return adis_write_reg_16(adis, addr, val);
- 	case IIO_CHAN_INFO_SAMP_FREQ:
-+		if (val <= 0)
-+			return -EINVAL;
+--- a/drivers/i2c/busses/i2c-stm32f7.c
++++ b/drivers/i2c/busses/i2c-stm32f7.c
+@@ -694,6 +694,9 @@ static int stm32f7_i2c_setup_timing(stru
+ 	if (!of_property_read_bool(i2c_dev->dev->of_node, "i2c-digital-filter"))
+ 		i2c_dev->dnf_dt = STM32F7_I2C_DNF_DEFAULT;
+ 
++	i2c_dev->analog_filter = of_property_read_bool(i2c_dev->dev->of_node,
++						       "i2c-analog-filter");
 +
- 		mutex_lock(&adis->state_lock);
- 		if (spi_get_device_id(adis->spi)->driver_data)
- 			t = 256 / val;
+ 	do {
+ 		ret = stm32f7_i2c_compute_timing(i2c_dev, setup,
+ 						 &i2c_dev->timing);
+@@ -715,9 +718,6 @@ static int stm32f7_i2c_setup_timing(stru
+ 		return ret;
+ 	}
+ 
+-	i2c_dev->analog_filter = of_property_read_bool(i2c_dev->dev->of_node,
+-						       "i2c-analog-filter");
+-
+ 	dev_dbg(i2c_dev->dev, "I2C Speed(%i), Clk Source(%i)\n",
+ 		setup->speed_freq, setup->clock_src);
+ 	dev_dbg(i2c_dev->dev, "I2C Rise(%i) and Fall(%i) Time\n",
 
 
 
