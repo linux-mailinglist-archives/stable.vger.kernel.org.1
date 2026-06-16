@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-265345-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263813-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id w3HrEhCHMWrhlgUAu9opvQ
-	(envelope-from <stable+bounces-265345-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:25:36 +0200
+	id GICSHiBnMWo3igUAu9opvQ
+	(envelope-from <stable+bounces-263813-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:09:20 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5C4B6931CE
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:25:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D5FF690CB4
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:09:20 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=yZwPN4Kq;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265345-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-265345-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=xGU1iTYL;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263813-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-263813-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DEDA830088A1
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:25:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DCEF930158A4
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:08:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DE0C4502F;
-	Tue, 16 Jun 2026 17:25:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E69F36E470;
+	Tue, 16 Jun 2026 15:08:24 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1A0447A0DE;
-	Tue, 16 Jun 2026 17:25:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6D993BED69;
+	Tue, 16 Jun 2026 15:08:22 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781630732; cv=none; b=rJoTkJ28g4sLNqlcSrU9ete4OBIA0aDLEXZIQWBrSnUCgRVmgQOCn/MVYnzZCCKRbCJg+gazZ6d9fXB0xFtOWtQ8W2TqN13DxBjNsha6cK4uGf8JcdCi9+KJRVeABff8MHwF1HPJfoendkivg/70uWqdy9pAefq3JW18XT60d8I=
+	t=1781622504; cv=none; b=DpHik1qQtBt3r0IfWJaKHWVW3eXLZZdYRPy1sWxfFNwOYrcT8klQPBYW4AQ/UL8xCQcs+YYabRipfTqfKMsaOsnTpoEG7dabTuHJuYp+xxEqqAs95PNIAgz2pZanwrqqsiP0BMmc4K1VEsxOWBpcFjGBiE7d4lSG4xSinT+jqdU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781630732; c=relaxed/simple;
-	bh=xtk5XeFiqI9yTk+Gpgd699S94wmeSEBEu4pWWnULLfw=;
+	s=arc-20240116; t=1781622504; c=relaxed/simple;
+	bh=XVOpqMdofMUZGvi3EQ54ZWw7vNxR3uwz5Bv4b72Dq00=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KjxsPkT7mTP5pjQz7wMvCk7DvqkhDKI2sbtUAIo7Z2+CEB0KX+1a35a94gSg5tlKn7NLSXHzG31w6HjwwkWAf/oH5MDTkCfO+/jpbGMJQsQ3A1VUIBUWmOGhyNYCMLKrN9ytTP8JcmDt0bcHKpdIpDFjd6JSDFpNhqVt0DSNc5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yZwPN4Kq; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EC551F000E9;
-	Tue, 16 Jun 2026 17:25:29 +0000 (UTC)
+	 MIME-Version:Content-Type; b=h4+YV+ZRlw0pJ9oYF2kBUzt3mtNtjPKlNS/A54FKqS04HHjd/WFAmu/QihODOyHVZN8awakdDFVfC7MN3gAQQ2m5yLyVGdUIJ9ryR+KKZ51GAvg1yyBAeHwzm9CFw8ZdulqmOH7uSjXjN6XLH5zuFZ1DRUYKKZ0BVVJyKCjzykM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xGU1iTYL; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8E8D1F000E9;
+	Tue, 16 Jun 2026 15:08:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781630730;
-	bh=cQzECBqe/27mkgNhpQ2/FruKdRIy9bX4ZaDpJDkPU8I=;
+	s=korg; t=1781622502;
+	bh=nn29J02JMhHcWCnmIcbzi2kips3nEN/O/Uqinylr/iI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=yZwPN4KqACEpZia+qkfLiu/txjk5do/gwV3wsBHOgSVhqAtmFksoas/JYde9VeZ2b
-	 Tk7TqWL/HQghux5PhDyDXAOQPrQ6QYIJhBpRue1/RHdSQes3qOQZQz0rc0YYG9IzXy
-	 FlhRrtrVvNauWXBnAAftL9xqE3Gct+oMeKt/fs0U=
+	b=xGU1iTYLT21iT0Yr0I1nsA3g64rhlGP/Vfu2ortXL4T/UzP7VtmdawaJLF5gZKYnm
+	 x/aO242qdN16NQly4mRPe1L9Zam8BYlkcpKIOpUxtAceCSUbTWIIsWy4QPTSCcMq4+
+	 z1W5yksI1JpW7ksfqHHKZvVmHOmWTw+8jYSnMdM4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 6.1 085/522] usb: typec: altmodes/displayport: validate count before reading Status Update VDO
+	Carlos Eduardo Gallo Filho <gcarlos@disroot.org>,
+	=?UTF-8?q?Andr=C3=A9=20Almeida?= <andrealmeid@igalia.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 005/452] drm: Remove plane hsub/vsub alignment requirement for core helpers
 Date: Tue, 16 Jun 2026 20:23:52 +0530
-Message-ID: <20260616145129.847178536@linuxfoundation.org>
+Message-ID: <20260616145118.075313328@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,77 +66,105 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265345-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-263813-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:heikki.krogerus@linux.intel.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:gcarlos@disroot.org,m:andrealmeid@igalia.com,m:tzimmermann@suse.de,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,intel.com:email,msgid.link:url]
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[igalia.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,suse.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,patchwork.freedesktop.org:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D5C4B6931CE
+X-Rspamd-Queue-Id: 0D5FF690CB4
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Carlos Eduardo Gallo Filho <gcarlos@disroot.org>
 
-commit 8a18f896e667df491331371b55d4ad644dc51d60 upstream.
+[ Upstream commit f2f455981a34ce8ca88a41458c09494b387d344f ]
 
-A broken/malicious device can send the incorrect count for a status
-update VDO, which will cause the kernel to read uninitialized stack data
-and send it off elsewhere.
+The drm_format_info_plane_{height,width} functions was implemented using
+regular division for the plane size calculation, which cause issues [1][2]
+when used on contexts where the dimensions are misaligned with relation
+to the subsampling factors. So, replace the regular division by the
+DIV_ROUND_UP macro.
 
-Fix this up by correctly verifying the count for the update object.
+This allows these functions to be used in more drivers, making further
+work to bring more core presence on them possible.
 
-Assisted-by: gkh_clanker_t1000
-Cc: stable <stable@kernel.org>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://patch.msgid.link/2026051350-reacquire-sculpture-4244@gregkh
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[1] http://patchwork.freedesktop.org/patch/msgid/20170321181218.10042-3-ville.syrjala@linux.intel.com
+[2] https://patchwork.freedesktop.org/patch/msgid/20211026225105.2783797-2-imre.deak@intel.com
+
+Signed-off-by: Carlos Eduardo Gallo Filho <gcarlos@disroot.org>
+Reviewed-by: André Almeida <andrealmeid@igalia.com>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230926141519.9315-2-gcarlos@disroot.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/altmodes/displayport.c |    2 ++
- 1 file changed, 2 insertions(+)
+ include/drm/drm_fourcc.h | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/typec/altmodes/displayport.c
-+++ b/drivers/usb/typec/altmodes/displayport.c
-@@ -308,6 +308,8 @@ static int dp_altmode_vdm(struct typec_a
- 			}
- 			break;
- 		case DP_CMD_STATUS_UPDATE:
-+			if (count < 2)
-+				break;
- 			dp->data.status = *vdo;
- 			ret = dp_altmode_status_update(dp);
- 			break;
+diff --git a/include/drm/drm_fourcc.h b/include/drm/drm_fourcc.h
+index 532ae78ca747e6..ccf91daa430702 100644
+--- a/include/drm/drm_fourcc.h
++++ b/include/drm/drm_fourcc.h
+@@ -22,6 +22,7 @@
+ #ifndef __DRM_FOURCC_H__
+ #define __DRM_FOURCC_H__
+ 
++#include <linux/math.h>
+ #include <linux/types.h>
+ #include <uapi/drm/drm_fourcc.h>
+ 
+@@ -279,7 +280,7 @@ int drm_format_info_plane_width(const struct drm_format_info *info, int width,
+ 	if (plane == 0)
+ 		return width;
+ 
+-	return width / info->hsub;
++	return DIV_ROUND_UP(width, info->hsub);
+ }
+ 
+ /**
+@@ -301,7 +302,7 @@ int drm_format_info_plane_height(const struct drm_format_info *info, int height,
+ 	if (plane == 0)
+ 		return height;
+ 
+-	return height / info->vsub;
++	return DIV_ROUND_UP(height, info->vsub);
+ }
+ 
+ const struct drm_format_info *__drm_format_info(u32 format);
+-- 
+2.53.0
+
 
 
 
