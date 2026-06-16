@@ -1,61 +1,73 @@
-Return-Path: <stable+bounces-266016-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264040-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id FpRgN7OUMWptnQUAu9opvQ
-	(envelope-from <stable+bounces-266016-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:23:47 +0200
+	id fHN7NK5uMWrGjAUAu9opvQ
+	(envelope-from <stable+bounces-264040-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:41:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4330C694181
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:23:47 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D9D96914B6
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:41:34 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=e1mn5W2O;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266016-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266016-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=pmrijibm;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264040-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264040-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BC2FE3171372
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:23:38 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2F6D030744B6
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:30:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B08A3D88F6;
-	Tue, 16 Jun 2026 18:23:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE58F3C414F;
+	Tue, 16 Jun 2026 15:30:07 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40F16466B5E;
-	Tue, 16 Jun 2026 18:23:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7303F4418DF;
+	Tue, 16 Jun 2026 15:30:06 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781634217; cv=none; b=YTmKg+iFl6qUNcA0TE1YHxWDjQrV7cye8FpQbJPPUp5CCGFM7649pfawjevMOuYAiHNluekx/W9rGooNY4ZWHw/w6wxFvVPade56g/KPoqOgLJkMxtoSNZ5Kf5hQ7J4WYCr1/BR6OevxrFRfYCTjmIh+5gxjjwuxyWgCfee1Qws=
+	t=1781623807; cv=none; b=oa3ui0GQ8LOuvtwwGijnaflhiJOOMcypaq+SfkA7uChKswy3LJzqkh5uq8+BkrLUsC/S0XknP4zNFgQvQ5wKmbVIoVctYVukQbzZPnKHjn3WBMR/8a3oXyL2HsizEzTouDyg4J4/VMfMdYL0prQsEV45q1sBOJvLW9iTTCXUFCs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781634217; c=relaxed/simple;
-	bh=PbJA6BCok+aMdtTzVz79FGxbpJliO4y+yAgP8OLm8EE=;
+	s=arc-20240116; t=1781623807; c=relaxed/simple;
+	bh=0YvvWJioPThYDR26nfATSWGQuh2uezj5K21BVMRtGco=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PeH7/rQcPjO593WqqGq3XLH1FWYndWn2Nnd3LBmNUUpbSY7StdCjdKj5oALwPVWcwRw2nhNKaEwHbamcefq6M1ECfvC2yWPSIjZnMZvgC+++bObsolKb2ych7T4njzOy4IxvXn0Z1BhH21wQncYRrikqGus29jPqpzQmw7hP/uo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e1mn5W2O; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42DFD1F000E9;
-	Tue, 16 Jun 2026 18:23:34 +0000 (UTC)
+	 MIME-Version; b=qaurbhcS5oVPcKgjrcP0hyeb/dcXr76eDi0xD4Wad+fE+wopkBOxKtqh+SF/SAaeo72noZvCPod6jEy6UMRJ1XtMuKnOSyM8zDDkKuR8rLXyIIHPod+lGD3MEYuG1YM7+wqQmDJ3CBqWnVPnkjTtvQmeZFF+wcfI/1Y+mTOW/zU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pmrijibm; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 321121F000E9;
+	Tue, 16 Jun 2026 15:30:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781634216;
-	bh=oxu70sP3hr4FmM9717ALC8oJi9rIsRl4gA802yXweIo=;
+	s=korg; t=1781623806;
+	bh=67kEeF5ZlTK4OhxQDLKB1chRFXRLRLFv5nwPN4s9Xq8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=e1mn5W2OhnX4OG/Ocd5Na/kDEtx0WIFa3l8EgDTfUTfZ3B5PSQdzihqz2MnvCR6l+
-	 n1QtPtXlaHjYkJaT83PKeMe1HARwJphnFmjANmlQMCieg6SCJ8JISJ5m9JAAt8h/wi
-	 NY+iMPDUHZ/KZov3t4H1cmSgJs1+rLF/lrSpKzHE=
+	b=pmrijibmLgUV8Lhjxr+MiR9cBhoctVi3s/5TmMrpL6vht4MU52XjeySybucaDOzVy
+	 H9OIcY3FWr6w2hSK1+dyH8HRGVELXomrhPxlkASqb/xqiLjM28XSYoUlkNLCR316G1
+	 OkUY+neWBtrL8DG5GsvCWKNgkToa8FrqWSucGxIU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Karl Mehltretter <kmehltretter@gmail.com>,
-	Linus Walleij <linusw@kernel.org>,
-	Russell King <rmk+kernel@armlinux.org.uk>
-Subject: [PATCH 5.15 213/411] ARM: 9474/1: io: avoid KASAN instrumentation of raw halfword I/O
+	Yin Tirui <yintirui@huawei.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"David Hildenbrand (arm)" <david@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Dev Jain <dev.jain@arm.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Barry Song <baohua@kernel.org>,
+	Chen Jun <chenjun102@huawei.com>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Nico Pache <npache@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 7.0 220/378] mm/huge_memory: update file PUD counter before folio_put()
 Date: Tue, 16 Jun 2026 20:27:31 +0530
-Message-ID: <20260616145112.087601064@linuxfoundation.org>
+Message-ID: <20260616145121.893890619@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,99 +79,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266016-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kmehltretter@gmail.com,m:linusw@kernel.org,m:rmk+kernel@armlinux.org.uk,m:rmk@armlinux.org.uk,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264040-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[18];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,armlinux.org.uk];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:yintirui@huawei.com,m:ljs@kernel.org,m:david@kernel.org,m:lance.yang@linux.dev,m:dev.jain@arm.com,m:apopple@nvidia.com,m:baolin.wang@linux.alibaba.com,m:baohua@kernel.org,m:chenjun102@huawei.com,m:wangkefeng.wang@huawei.com,m:liam@infradead.org,m:npache@redhat.com,m:ryan.roberts@arm.com,m:ziy@nvidia.com,m:akpm@linux-foundation.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,kernel];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,armlinux.org.uk:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,huawei.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4330C694181
+X-Rspamd-Queue-Id: 4D9D96914B6
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Karl Mehltretter <kmehltretter@gmail.com>
+From: Yin Tirui <yintirui@huawei.com>
 
-commit d59ed803715a71fb9582e139d648ece8d66dc743 upstream.
+commit 40990c87a26e371594475acdc560c93cfae308a1 upstream.
 
-For CPUs before ARMv6, __raw_readw() and __raw_writew() are implemented
-as C volatile halfword accesses so the compiler can generate an access
-sequence that is safe for those machines. With KASAN enabled, those C
-accesses are instrumented as normal memory accesses.
+__split_huge_pud_locked() updates the file/shmem RSS counter after
+dropping the PUD mapping's folio reference.  If folio_put() drops the last
+reference, mm_counter_file() can later read freed folio state via
+folio_test_swapbacked().
 
-That is not valid for MMIO. On ARM926/VersatilePB with KASAN enabled,
-PL011 probing traps in __asan_store2() while registering the UART, because
-the instrumented writew() tries to check KASAN shadow for an MMIO address.
+Move the counter update before folio_put().
 
-Keep the existing volatile halfword access, but move the ARMv5 definitions
-into __no_kasan_or_inline functions so raw MMIO halfword accesses are not
-instrumented by KASAN. The ARMv6-and-newer inline assembly path is
-unchanged.
-
-Fixes: 421015713b30 ("ARM: 9017/2: Enable KASan for ARM")
-Cc: stable@vger.kernel.org # v5.11+
-Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
-Reviewed-by: Linus Walleij <linusw@kernel.org>
-Signed-off-by: Russell King <rmk+kernel@armlinux.org.uk>
+Link: https://lore.kernel.org/20260526101355.1984244-1-yintirui@huawei.com
+Fixes: dbe54153296d ("mm/huge_memory: add vmf_insert_folio_pud()")
+Signed-off-by: Yin Tirui <yintirui@huawei.com>
+Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
+Acked-by: David Hildenbrand (arm) <david@kernel.org>
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
+Reviewed-by: Dev Jain <dev.jain@arm.com>
+Cc: Alistair Popple <apopple@nvidia.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Barry Song <baohua@kernel.org>
+Cc: Chen Jun <chenjun102@huawei.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Liam R. Howlett <liam@infradead.org>
+Cc: Nico Pache <npache@redhat.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Zi Yan <ziy@nvidia.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/include/asm/io.h |   15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ mm/huge_memory.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/arm/include/asm/io.h
-+++ b/arch/arm/include/asm/io.h
-@@ -56,8 +56,19 @@ void __raw_readsl(const volatile void __
-  * the bus. Rather than special-case the machine, just let the compiler
-  * generate the access for CPUs prior to ARMv6.
-  */
--#define __raw_readw(a)         (__chk_io_ptr(a), *(volatile unsigned short __force *)(a))
--#define __raw_writew(v,a)      ((void)(__chk_io_ptr(a), *(volatile unsigned short __force *)(a) = (v)))
-+#define __raw_writew __raw_writew
-+static __no_kasan_or_inline void __raw_writew(u16 val, volatile void __iomem *addr)
-+{
-+	__chk_io_ptr(addr);
-+	*(volatile unsigned short __force *)addr = val;
-+}
-+
-+#define __raw_readw __raw_readw
-+static __no_kasan_or_inline u16 __raw_readw(const volatile void __iomem *addr)
-+{
-+	__chk_io_ptr(addr);
-+	return *(const volatile unsigned short __force *)addr;
-+}
- #else
- /*
-  * When running under a hypervisor, we want to avoid I/O accesses with
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -2913,9 +2913,9 @@ static void __split_huge_pud_locked(stru
+ 	if (!folio_test_referenced(folio) && pud_young(old_pud))
+ 		folio_set_referenced(folio);
+ 	folio_remove_rmap_pud(folio, page, vma);
+-	folio_put(folio);
+ 	add_mm_counter(vma->vm_mm, mm_counter_file(folio),
+ 		-HPAGE_PUD_NR);
++	folio_put(folio);
+ }
+ 
+ void __split_huge_pud(struct vm_area_struct *vma, pud_t *pud,
 
 
 
