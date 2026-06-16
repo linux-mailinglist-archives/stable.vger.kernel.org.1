@@ -1,65 +1,62 @@
-Return-Path: <stable+bounces-264976-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265521-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id wdN6E3WAMWotlAUAu9opvQ
-	(envelope-from <stable+bounces-264976-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:57:25 +0200
+	id QzR5BJeKMWpomAUAu9opvQ
+	(envelope-from <stable+bounces-265521-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:40:39 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA6A66929CC
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:57:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B60E6935B0
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:40:38 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=cVLr16sv;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264976-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264976-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ZnOYla0F;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265521-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265521-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 025D43065BE8
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:54:44 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 833F83014760
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:40:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 510D2477E57;
-	Tue, 16 Jun 2026 16:54:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D647E47AF6E;
+	Tue, 16 Jun 2026 17:40:34 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2AEE4502F;
-	Tue, 16 Jun 2026 16:54:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6B363C4178;
+	Tue, 16 Jun 2026 17:40:33 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781628882; cv=none; b=fKXh+Vsvh86YTbAOADEjYpvh533771pC+ih/QKQYnF4oYRlb/6bEs+iAyh1AGWV5TJowk3CrCkw6OmA9Lej0zivbFrSmHgtK6INtQF31LfiBou0j0Z0tmjkTuoGGINDSLHrQLIu02VdJV3ba+qg8sgqErZLML7kJsSquXYO9M6Y=
+	t=1781631634; cv=none; b=H/ehvACFXam/WiZNaNA2ID7Jd7gcPBXuKU2tytZo67wrT/WmrMB6Ku2A+yY2TA3RyzHeOxQUPD8+SMo3x88k41AY2cMRu73O1hjrSVtcsapENhytaksDR9ZbIuigfz0++I/OiaPI9svUmbCzIqx+ywCe2evRuaLikoJ37cqTWVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781628882; c=relaxed/simple;
-	bh=1npLnQ2KMT+p+5fQZ/vCWNHrfnTQ2nqiwCYUgc0vkfI=;
+	s=arc-20240116; t=1781631634; c=relaxed/simple;
+	bh=Z5DZ0Vryi4MiyGQbRTSO51KmGcBiYLkOIgJZov46t7Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SPnHShCy7wWxYdPNIw+AMcW2AQ4Y/cxL1BwCI6+zy4CMzO98Zrz/4Wm4LAZm9dcrVjydwIHcJhzwNcR/O9mKe0xAzCHreCliADgOfQY28U2g1oo2pC5KRYxCM39ZYmpcPjhcGxBFkdwSIgRcWKbJU44YNy1ZxFIlTQaVt55ue+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cVLr16sv; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C19ED1F00A3A;
-	Tue, 16 Jun 2026 16:54:39 +0000 (UTC)
+	 MIME-Version; b=oTV8Dco0OCL+8wr/psXyttwSa25OKwYj4GbKakOZMX5t1oH0hC4iKXTXdk9rdr2Qq8X/SR2tSl64pF4y0mJ1PVGqVqOGp9ZG0EAl+XFWfHpSXA0HNYMnWba9s+tCTyCaYrVThwJCAAUiJZ0zkVEtirjSe7PSjoRL8brHAxyR1ug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZnOYla0F; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 829881F000E9;
+	Tue, 16 Jun 2026 17:40:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781628880;
-	bh=lJvwnH2bscLwMOdtikVVKn5AbmSrXHhp297outPaLVc=;
+	s=korg; t=1781631633;
+	bh=90sYIe34XuvvkbX/lRbSfyx0CqekqEeQVIi/xeoMe4A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=cVLr16svfbuuVs9oikvd52L0QRF0/jx24uBC6Eq5DAMj/jHveOHPMLPscmybberAQ
-	 Fd0oqIbzaFUsTOuBCbzjb6AFvD/lFss/GYH9oNnwPQuF7qzsGSCwQvsJh6Td+3LXbs
-	 UQ63Gz0+FgLK9q0neJQGNUx7fVGUVg5kjvkLVzQw=
+	b=ZnOYla0FkBB9KVXsMzv4yxGfpKjff613tE7O1rzvK2A2ZqwIEHsU5G4JB0l1tEhy3
+	 cjLSObMkIcMlcGJ7GPETCAJaqC78TstWiPJeegKJ1I03X+63Ya5Fr4l3qwuEAXjYPv
+	 nL21k43kWjjx5kV40SsFzQLdyY1/m3JVgg8G/SAg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
-	Matthew Auld <matthew.auld@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Andi Shyti <andi.shyti@linux.intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>
-Subject: [PATCH 6.6 178/452] drm/i915: Fix potential UAF in TTM object purge
+	Weiming Shi <bestswngs@gmail.com>,
+	Xiang Mei <xmei5@asu.edu>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 258/522] netfilter: nf_log: validate MAC header was set before dumping it
 Date: Tue, 16 Jun 2026 20:26:45 +0530
-Message-ID: <20260616145127.220724615@linuxfoundation.org>
+Message-ID: <20260616145138.019371649@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,191 +66,113 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-264976-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,asu.edu,netfilter.org,kernel.org];
+	TAGGED_FROM(0.00)[bounces-265521-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bestswngs@gmail.com,m:xmei5@asu.edu,m:pablo@netfilter.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:janusz.krzysztofik@linux.intel.com,m:matthew.auld@intel.com,m:thomas.hellstrom@linux.intel.com,m:sebastian.brzezinka@intel.com,m:christian.koenig@amd.com,m:andi.shyti@linux.intel.com,m:tursulin@ursulin.net,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	TAGGED_RCPT(0.00)[stable];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,amd.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,intel.com:email,ursulin.net:email,decode_stacktrace.sh:url,gitlab.freedesktop.org:url]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,asu.edu:email,netfilter.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: BA6A66929CC
+X-Rspamd-Queue-Id: 7B60E6935B0
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+From: Xiang Mei <xmei5@asu.edu>
 
-commit 5c4063c87a619e4df954c179d24628636f5db15f upstream.
+[ Upstream commit a84b6fedbc97078788be78dbdd7517d143ad1a77 ]
 
-TLDR: The bo->ttm object might be changed by calling ttm_bo_validate(),
-      move casting it to an i915_tt object later to actually get the right
-      pointer.
+The fallback path of dump_mac_header() guards the MAC header access
+only with "skb->mac_header != skb->network_header", without checking
+skb_mac_header_was_set(). When the MAC header is unset, mac_header is
+0xffff, so the test passes and skb_mac_header(skb) returns
+skb->head + 0xffff, ~64 KiB past the buffer; the loop then reads
+dev->hard_header_len bytes out of bounds into the kernel log.
 
-A user reported hitting the following bug under heavy use on DG2:
+This is reachable via the netdev logger: nf_log_unknown_packet() calls
+dump_mac_header() unconditionally, and an skb sent through AF_PACKET
+with PACKET_QDISC_BYPASS reaches the egress hook with mac_header still
+unset (__dev_queue_xmit(), which would reset it, is bypassed).
 
-[26620.095550] Oops: general protection fault, probably for non-canonical address 0xa56b6b6b6b6b6b8b: 0000 1 SMP NOPTI
-[26620.095556] CPU: 2 UID: 0 PID: 631 Comm: Xorg Not tainted 6.18.8 #1 PREEMPT(lazy)
-[26620.095558] Hardware name: ASRock B850M Steel Legend WiFi/B850M Steel Legend WiFi, BIOS 3.50 09/18/2025
-[26620.095559] RIP: 0010:i915_ttm_purge+0x84/0x100 [i915]
-[26620.095604] Code: 00 00 00 48 8d 54 24 10 48 89 e6 48 89 fb e8 83 aa ae ff 85 c0 75 6f 48 83 bb a8 01 00 00 00 74 2c 48 8b 45 78 48 85 c0 74 23 <48> 8b 78 20 48 c7 c2 ff ff ff ff 31 f6 e8 7a 73 e3 e0 48 8b 7d 78
-[26620.095605] RSP: 0018:ffffc90005fd7430 EFLAGS: 00010282
-[26620.095607] RAX: a56b6b6b6b6b6b6b RBX: ffff8881f46c3dc0 RCX: 0000000000000000
-[26620.095608] RDX: 0000000000000000 RSI: 0000000000000246 RDI: 00000000ffffffff
-[26620.095609] RBP: ffff888289610f00 R08: 0000000000000001 R09: ffff88823b022000
-[26620.095609] R10: ffff888103029b28 R11: ffff8881fc7f3800 R12: ffff88810b6150d0
-[26620.095609] R13: ffff888289610f00 R14: 0000000000000000 R15: ffff8881f46c3dc0
-[26620.095610] FS: 00007f1004d86900(0000) GS:ffff88901c858000(0000) knlGS:0000000000000000
-[26620.095611] CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[26620.095611] CR2: 00007f0fdf489000 CR3: 000000035b0c1000 CR4: 0000000000750ef0
-[26620.095612] PKRU: 55555554
-[26620.095612] Call Trace:
-[26620.095615] <TASK>
-[26620.095615] i915_ttm_move+0x2b9/0x420 [i915]
-[26620.095642] ? ttm_tt_init+0x65/0x80 [ttm]
-[26620.095644] ? i915_ttm_tt_create+0xc6/0x150 [i915]
-[26620.095667] ttm_bo_handle_move_mem+0xb6/0x160 [ttm]
-[26620.095669] ttm_bo_evict+0x100/0x150 [ttm]
-[26620.095671] ? preempt_count_add+0x64/0xa0
-[26620.095673] ? _raw_spin_lock+0xe/0x30
-[26620.095675] ? _raw_spin_unlock+0xd/0x30
-[26620.095675] ? i915_gem_object_evictable+0xb7/0xd0 [i915]
-[26620.095704] ttm_bo_evict_cb+0x6e/0xd0 [ttm]
-[26620.095705] ttm_lru_walk_for_evict+0xa6/0x200 [ttm]
-[26620.095708] ttm_bo_alloc_resource+0x185/0x4f0 [ttm]
-[26620.095709] ? init_object+0x62/0xd0
-[26620.095712] ttm_bo_validate+0x7a/0x180 [ttm]
-[26620.095713] ? _raw_spin_unlock_irqrestore+0x16/0x30
-[26620.095714] __i915_ttm_get_pages+0xb0/0x170 [i915]
-[26620.095737] i915_ttm_get_pages+0x9f/0x150 [i915]
-[26620.095759] ? i915_gem_do_execbuffer+0xedc/0x2b40 [i915]
-[26620.095786] ? alloc_debug_processing+0xd0/0x100
-[26620.095787] ? _raw_spin_unlock_irqrestore+0x16/0x30
-[26620.095788] ? i915_vma_instance+0xa0/0x4e0 [i915]
-[26620.095822] __i915_gem_object_get_pages+0x2f/0x40 [i915]
-[26620.095848] i915_vma_pin_ww+0x706/0x980 [i915]
-[26620.095875] ? i915_gem_do_execbuffer+0xedc/0x2b40 [i915]
-[26620.095904] eb_validate_vmas+0x170/0xa00 [i915]
-[26620.095930] i915_gem_do_execbuffer+0x1201/0x2b40 [i915]
-[26620.095953] ? alloc_debug_processing+0xd0/0x100
-[26620.095954] ? _raw_spin_unlock_irqrestore+0x16/0x30
-[26620.095955] ? i915_gem_execbuffer2_ioctl+0xc9/0x240 [i915]
-[26620.095977] ? __wake_up_sync_key+0x32/0x50
-[26620.095979] ? i915_gem_execbuffer2_ioctl+0xc9/0x240 [i915]
-[26620.096001] ? __slab_alloc.isra.0+0x67/0xc0
-[26620.096003] i915_gem_execbuffer2_ioctl+0x11a/0x240 [i915]
+Add the skb_mac_header_was_set() check the ARPHRD_ETHER path already
+uses, and replace the open-coded MAC header length test with
+skb_mac_header_len(). Only skbs with an unset MAC header are affected;
+valid ones are dumped as before.
 
-Results from decode_stacktrace.sh pointed to dereference of a file pointer
-field of a i915 TTM page vector container associated with an object being
-purged on eviction.  That path is taken when the object is marked as no
-longer needed.
+ BUG: KASAN: slab-out-of-bounds in dump_mac_header (net/netfilter/nf_log_syslog.c:831)
+ Read of size 1 at addr ffff88800ea49d3f by task exploit/148
+ Call Trace:
+  kasan_report (mm/kasan/report.c:595)
+  dump_mac_header (net/netfilter/nf_log_syslog.c:831)
+  nf_log_netdev_packet (net/netfilter/nf_log_syslog.c:938 net/netfilter/nf_log_syslog.c:963)
+  nf_log_packet (net/netfilter/nf_log.c:260)
+  nft_log_eval (net/netfilter/nft_log.c:60)
+  nft_do_chain (net/netfilter/nf_tables_core.c:285)
+  nft_do_chain_netdev (net/netfilter/nft_chain_filter.c:307)
+  nf_hook_slow (net/netfilter/core.c:619)
+  nf_hook_direct_egress (net/packet/af_packet.c:257)
+  packet_xmit (net/packet/af_packet.c:280)
+  packet_sendmsg (net/packet/af_packet.c:3114)
+  __sys_sendto (net/socket.c:2265)
 
-Code analysis revealed a possibility of the i915 TTM page vector container
-being replaced with a new instance inside a function that purges content
-of the object, should it be still busy.  That function is called,
-indirectly via a more general function that changes the object's placement
-and caching policy, before the problematic dereference, but still after
-a pointer to the container is captured, rendering the pointer no longer
-valid.
-
-Fix the issue by capturing the pointer to the container only after its
-potential replacement.
-
-v2: Move the container_of() inside the if block (Sebastian),
-  - a simplified version of the commit description that explains briefly
-    why the change is necessary (Christian).
-
-Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/work_items/14882
-Fixes: 7ae034590ceae ("drm/i915/ttm: add tt shmem backend")
-Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Cc: stable@vger.kernel.org # v5.17+
-Cc: Matthew Auld <matthew.auld@intel.com>
-Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Cc: Sebastian Brzezinka <sebastian.brzezinka@intel.com>
-Cc: Christian König <christian.koenig@amd.com>
-Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-Link: https://lore.kernel.org/r/20260508122612.469227-2-janusz.krzysztofik@linux.intel.com
-(cherry picked from commit 4462966a93eb185849b7f174f0d0de53476d00a4)
-Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7eb9282cd0ef ("netfilter: ipt_LOG/ip6t_LOG: add option to print decoded MAC header")
+Reported-by: Weiming Shi <bestswngs@gmail.com>
+Assisted-by: Claude:claude-opus-4-8
+Signed-off-by: Xiang Mei <xmei5@asu.edu>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/gem/i915_gem_ttm.c |   28 ++++++++++++++++------------
- 1 file changed, 16 insertions(+), 12 deletions(-)
+ net/netfilter/nf_log_syslog.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/i915/gem/i915_gem_ttm.c
-+++ b/drivers/gpu/drm/i915/gem/i915_gem_ttm.c
-@@ -423,8 +423,6 @@ void i915_ttm_free_cached_io_rsgt(struct
- int i915_ttm_purge(struct drm_i915_gem_object *obj)
- {
- 	struct ttm_buffer_object *bo = i915_gem_to_ttm(obj);
--	struct i915_ttm_tt *i915_tt =
--		container_of(bo->ttm, typeof(*i915_tt), ttm);
- 	struct ttm_operation_ctx ctx = {
- 		.interruptible = true,
- 		.no_wait_gpu = false,
-@@ -439,16 +437,22 @@ int i915_ttm_purge(struct drm_i915_gem_o
- 	if (ret)
- 		return ret;
+diff --git a/net/netfilter/nf_log_syslog.c b/net/netfilter/nf_log_syslog.c
+index 58402226045e84..09b9152e9e5492 100644
+--- a/net/netfilter/nf_log_syslog.c
++++ b/net/netfilter/nf_log_syslog.c
+@@ -799,8 +799,8 @@ static void dump_mac_header(struct nf_log_buf *m,
  
--	if (bo->ttm && i915_tt->filp) {
--		/*
--		 * The below fput(which eventually calls shmem_truncate) might
--		 * be delayed by worker, so when directly called to purge the
--		 * pages(like by the shrinker) we should try to be more
--		 * aggressive and release the pages immediately.
--		 */
--		shmem_truncate_range(file_inode(i915_tt->filp),
--				     0, (loff_t)-1);
--		fput(fetch_and_zero(&i915_tt->filp));
-+	if (bo->ttm) {
-+		struct i915_ttm_tt *i915_tt =
-+			container_of(bo->ttm, typeof(*i915_tt), ttm);
-+
-+		if (i915_tt->filp) {
-+			/*
-+			 * The below fput(which eventually calls shmem_truncate)
-+			 * might be delayed by worker, so when directly called
-+			 * to purge the pages(like by the shrinker) we should
-+			 * try to be more aggressive and release the pages
-+			 * immediately.
-+			 */
-+			shmem_truncate_range(file_inode(i915_tt->filp),
-+					     0, (loff_t)-1);
-+			fput(fetch_and_zero(&i915_tt->filp));
-+		}
- 	}
+ fallback:
+ 	nf_log_buf_add(m, "MAC=");
+-	if (dev->hard_header_len &&
+-	    skb->mac_header != skb->network_header) {
++	if (dev->hard_header_len && skb_mac_header_was_set(skb) &&
++	    skb_mac_header_len(skb) != 0) {
+ 		const unsigned char *p = skb_mac_header(skb);
+ 		unsigned int i;
  
- 	obj->write_domain = 0;
+-- 
+2.53.0
+
 
 
 
