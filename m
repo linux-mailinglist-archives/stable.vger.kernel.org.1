@@ -1,67 +1,60 @@
-Return-Path: <stable+bounces-265470-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265907-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id xwkuMfuKMWqcmAUAu9opvQ
-	(envelope-from <stable+bounces-265470-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:42:19 +0200
+	id GAtbNWOSMWo7nAUAu9opvQ
+	(envelope-from <stable+bounces-265907-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:13:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28077693627
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:42:19 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76F47693ECC
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:13:55 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=AxdX9FEh;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265470-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265470-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=uAT9++tM;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265907-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265907-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A83E93051C50
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:36:01 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7B5E0303E8D3
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:13:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 239DC335081;
-	Tue, 16 Jun 2026 17:36:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC24E3D5656;
+	Tue, 16 Jun 2026 18:13:46 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D32543D4E9;
-	Tue, 16 Jun 2026 17:35:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 870053CEBBD;
+	Tue, 16 Jun 2026 18:13:45 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781631360; cv=none; b=jNIEvc/r/u+GQrJf5ZY72WF2a69JuqvA+H0D2Zvqse1gbwZ54CRHEUURGz/RUVugyBh8rAumF/JrIBN27zEOKVynp+GSvXuaQT6DUwFkx2T6JKzLo0rBppil6ObYLuzoIkK4eDQmRWmw0ib7rl40l2ZPyB8A0QHiWpLmnqLKaF4=
+	t=1781633626; cv=none; b=UU2qMzRw0Pa6kRFh2EQbQ4ih7iBIL3GjtY+8PXXTHJvaxx8uDohx2AvNdEs1Ddk+WPgTv9bfyyrckPP/Zih0eRyYQcCBDKFs2xYM+2n0sCuDhUIffRahwls45weDrfj9ebRysjZ+jGhRHR9tFJrx7nPqU+pO5bzB5cDM/AAiXLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781631360; c=relaxed/simple;
-	bh=lDQXyvqkfEKGIwZaRpsgmOlSMvMX9BybkEEVLbgkxSE=;
+	s=arc-20240116; t=1781633626; c=relaxed/simple;
+	bh=aUC4VHnWG6k3SQMMdaWv8y8S2/bwcxqJym0IYGz4Nds=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gMFig12d/G3pwJGJTg6Vxfh6tamhJPqd0RDDoa7oRTAJIuQ3bg363CEQD7EDZZx7axysi7LJj7Chc6rv4+xw9OVoyzRKZh0ZW+KjAMyskQzjh6RGkMx8+GumDaohZeQDQKn4YlNeUhD1xZrVxOh7DjtMY+aOCFzbMLD2xUtxJD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AxdX9FEh; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 524D61F000E9;
-	Tue, 16 Jun 2026 17:35:57 +0000 (UTC)
+	 MIME-Version; b=COdxXxAXiYqgv1fQnb1mb/z6FqOo2i+ZITeIBBFONdE/2qlRSWrs4xncyIRPdP6d20Vlzm/pFRwswZraAoBT+r2aqUPQgzEA4v2ZrRDv9qhh4rwlf8iMBz3QQ5KtoiOYhvXRKT4FpGuJF+tMS1uGLlAzsHIJwvLryiCb8JrQ2nE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uAT9++tM; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83C381F000E9;
+	Tue, 16 Jun 2026 18:13:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781631359;
-	bh=RmSKpOstwtv52ufND9ONQjUyMp36KG3iLLantz+Js4A=;
+	s=korg; t=1781633625;
+	bh=wfqWF+lfOs8iUlb8cOnhtUWoBjqI6y+y/NnXgJb8J2A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=AxdX9FEhYoVyy8ksi+od8prYPyD8gjhCrC1Oxb0cKBvYWIb2p8Ot9gx37RqnGXPGp
-	 lgtWcCRy45BUrfr66vviBEALudKGK5iS/zAIf2WctaPZ9VuFb5ZncV8qg5vjx4HDQA
-	 NqjbMWBXNQqE45ogKxqrfIJ3fDgIKe23iZeFbRxg=
+	b=uAT9++tMJXrIY9pEwT8jaD/IW5pDrxfOq4iFXF6m1dNg0tiXT1BiHuQD5gTwUs21m
+	 8NI1nhou7mGvmYU8K0W/e+w3gRkn6aiLY5XaPU3OPt1RDG/nzJf0Jvjej+6tMFh9yc
+	 lDr8tblYLYJlIQzFkGomEujqA4NHtXThKX2kZvGY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>,
-	Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>,
-	Ao Wang <wangao@seu.edu.cn>,
-	Xuewei Feng <fengxw06@126.com>,
-	Qi Li <qli01@tsinghua.edu.cn>,
-	Ke Xu <xuke@tsinghua.edu.cn>,
-	Alexander Aring <aahringo@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 205/522] 6lowpan: fix off-by-one in multicast context address compression
+	Jan Volckaert <janvolck@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.15 114/411] USB: serial: option: add MeiG SRM813Q
 Date: Tue, 16 Jun 2026 20:25:52 +0530
-Message-ID: <20260616145135.659851654@linuxfoundation.org>
+Message-ID: <20260616145106.360372115@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,21 +71,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	TAGGED_FROM(0.00)[bounces-265470-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:zhaoyz24@mails.tsinghua.edu.cn,m:yangyx22@mails.tsinghua.edu.cn,m:wangao@seu.edu.cn,m:fengxw06@126.com,m:qli01@tsinghua.edu.cn,m:xuke@tsinghua.edu.cn,m:aahringo@redhat.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-265907-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:janvolck@gmail.com,m:johan@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,mails.tsinghua.edu.cn,seu.edu.cn,126.com,tsinghua.edu.cn,redhat.com,kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -101,80 +94,107 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tsinghua.edu.cn:email,seu.edu.cn:email,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 28077693627
+X-Rspamd-Queue-Id: 76F47693ECC
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+From: Jan Volckaert <janvolck@gmail.com>
 
-[ Upstream commit 2a58899d11009bffc7b4b32a571858f381121837 ]
+commit 7d2b37d3e42d19071b62f4ddbee6e16e905efbf1 upstream.
 
-The second memcpy in lowpan_iphc_mcast_ctx_addr_compress() uses
-&data[1] as destination and &ipaddr->s6_addr[11] as source, but
-both should be offset by one: &data[2] and &ipaddr->s6_addr[12]
-respectively.
+Add support for the Qualcomm Technology Snapdragon X35-based MeiG
+SRM813Q module.
 
-This off-by-one has two consequences:
-1. data[1] is overwritten with s6_addr[11], corrupting the RIID
-   field in the compressed multicast address
-2. data[5] is never written, so uninitialized kernel stack memory
-   is transmitted over the network via lowpan_push_hc_data(),
-   leaking kernel stack contents
+The module can be put in different modes via AT commands to
+enable/disable GPS functionality:
 
-The correct inline data layout must match what the decompression
-function lowpan_uncompress_multicast_ctx_daddr() expects:
-  data[0..1] = s6_addr[1..2]  (flags/scope + RIID)
-  data[2..5] = s6_addr[12..15] (group ID)
+MODEM - PPP mode(2dee:4d63): AT+SER=1,1
 
-Also zero-initialize the data array as a defensive measure against
-similar bugs in the future.
+If#= 0: RMNET
+If#= 1: DIAG/ADB
+If#= 2: MODEM
+If#= 3: AT
 
-Fixes: 5609c185f24d ("6lowpan: iphc: add support for stateful compression")
-Reported-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
-Reported-by: Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>
-Reported-by: Ao Wang <wangao@seu.edu.cn>
-Reported-by: Xuewei Feng <fengxw06@126.com>
-Reported-by: Qi Li <qli01@tsinghua.edu.cn>
-Reported-by: Ke Xu <xuke@tsinghua.edu.cn>
-Signed-off-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
-Acked-by: Alexander Aring <aahringo@redhat.com>
-Link: https://patch.msgid.link/20260527081806.42747-1-zhaoyz24@mails.tsinghua.edu.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+P:  Vendor=2dee ProdID=4d63 Rev=05.15
+S:  Manufacturer=MEIG
+S:  Product=LTE-A Module
+S:  SerialNumber=1bd51f0e
+C:  #Ifs= 4 Cfg#= 1 Atr=80 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+
+NMEA mode(2dee:4d64): AT+SER=51,1
+
+If#= 0: RMNET
+If#= 1: DIAG/ADB
+If#= 2: NMEA
+If#= 3: AT
+
+P:  Vendor=2dee ProdID=4d64 Rev=05.15
+S:  Manufacturer=MEIG
+S:  Product=LTE-A Module
+S:  SerialNumber=1bd51f0e
+C:  #Ifs= 4 Cfg#= 1 Atr=80 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+
+Signed-off-by: Jan Volckaert <janvolck@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/6lowpan/iphc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/serial/option.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/net/6lowpan/iphc.c b/net/6lowpan/iphc.c
-index 52fad5dad9f715..d762c49e722fae 100644
---- a/net/6lowpan/iphc.c
-+++ b/net/6lowpan/iphc.c
-@@ -1086,12 +1086,12 @@ static u8 lowpan_iphc_mcast_ctx_addr_compress(u8 **hc_ptr,
- 					      const struct lowpan_iphc_ctx *ctx,
- 					      const struct in6_addr *ipaddr)
- {
--	u8 data[6];
-+	u8 data[6] = {};
- 
- 	/* flags/scope, reserved (RIID) */
- 	memcpy(data, &ipaddr->s6_addr[1], 2);
- 	/* group ID */
--	memcpy(&data[1], &ipaddr->s6_addr[11], 4);
-+	memcpy(&data[2], &ipaddr->s6_addr[12], 4);
- 	lowpan_push_hc_data(hc_ptr, data, 6);
- 
- 	return LOWPAN_IPHC_DAM_00;
--- 
-2.53.0
-
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -2450,6 +2450,12 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d38, 0xff, 0xff, 0x30) },	/* MeiG Smart SRM825WN (Diag) */
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d38, 0xff, 0xff, 0x40) },	/* MeiG Smart SRM825WN (AT) */
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d38, 0xff, 0xff, 0x60) },	/* MeiG Smart SRM825WN (NMEA) */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d63, 0xff, 0xff, 0x30) },	/* MeiG SRM813Q (Diag) */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d63, 0xff, 0xff, 0x40) },	/* MeiG SRM813Q (AT) */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d64, 0xff, 0xff, 0x30) },	/* MeiG SRM813Q (Diag) */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d64, 0xff, 0xff, 0x40) },	/* MeiG SRM813Q (AT) */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d64, 0xff, 0xff, 0x60) },	/* MeiG SRM813Q (NMEA) */
++
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x2df3, 0x9d03, 0xff) },			/* LongSung M5710 */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x305a, 0x1404, 0xff) },			/* GosunCn GM500 RNDIS */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x305a, 0x1405, 0xff) },			/* GosunCn GM500 MBIM */
 
 
 
