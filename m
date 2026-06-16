@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-265265-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264775-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id zCEsInaFMWoulgUAu9opvQ
-	(envelope-from <stable+bounces-265265-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:18:46 +0200
+	id uWQqKdF9MWr5kgUAu9opvQ
+	(envelope-from <stable+bounces-264775-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:46:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44987692FBF
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:18:46 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18A066926F5
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:46:09 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=dIi8bjx3;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265265-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265265-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=xt1jwhqz;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264775-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264775-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B70FC3004907
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:18:45 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9C06030448B3
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:37:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFC6B47A0B5;
-	Tue, 16 Jun 2026 17:18:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D33CF4779B0;
+	Tue, 16 Jun 2026 16:37:04 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 991803A5E91;
-	Tue, 16 Jun 2026 17:18:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C27D466B5E;
+	Tue, 16 Jun 2026 16:37:03 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781630324; cv=none; b=MXg2h0J+gWwP1yhol6HxiH38XCh1V1HkVAt7ebrYZTr4Mj48w6y0uysDIGXdqA+EnyVVUKPzO835TPJnXMB6C5aSFZoUF/3S6o13bGE0zlzIdZu/Hla7T+/8eCto3+mTTVojBLFyi6NKyTIVzT4BsbnoLzSv/J73oWMsQIokc2M=
+	t=1781627824; cv=none; b=F2ho9LQ01VNaYMhqDgBMtDaSBKmCW8bKe/1yJgLwkMWa0iqe+HugcnyqyyxxxFjnksJBWHSHPUDV0oOG7N+8s4elzlgz3Gtpho8oSnPqu9chZiRCT2cjzpamGpq/Wa2LTl6frRzJogO9KxNLA8rKyvtUOzWQbyq2WUf3u8cQjgM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781630324; c=relaxed/simple;
-	bh=AFIeTVCL8XI/GhzSDRNPiKSHcF28UHMUkB7olckWxHo=;
+	s=arc-20240116; t=1781627824; c=relaxed/simple;
+	bh=Idh7vYhUGw259sy10Ds5bFtW2wLJ/BE8Mnda/6/1tnA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BafMS9IicAfFnFz+iC7rfPRYVOYt3u41HE5BBxjqyneeV72EAgwkB3HeMc21wqqhaLxQibW1v6IvUtEIpNR1NFd32zyn3JOWCgYTlEWALVsjrvRGiIzskNk3/XBInMCHXY7Q6gv47oy/SCm9JYKDJ9LN+anhASgsXL4xWeHAbAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dIi8bjx3; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D82A1F000E9;
-	Tue, 16 Jun 2026 17:18:42 +0000 (UTC)
+	 MIME-Version; b=H5bbR6bx5yJOdmT/sxx/KImx5Jx0Zr3K6KImrOve/O1n1n78ltWcIJMjasIhdCLitLZF+8C22GgzgJhaZ3mjWBvQTyg7w4T2e0W69+aJ/MQivuGczRkEKWAqZlDT29hVdVUXS6kV887hkYdG17HZpkpRRqJaz+EsNDOSngyV+A0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xt1jwhqz; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2D9C1F000E9;
+	Tue, 16 Jun 2026 16:37:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781630323;
-	bh=rPIn8zLa+vpu3+oGfeLmfZGRbTSZkUcyGvIAnpSOfIg=;
+	s=korg; t=1781627823;
+	bh=aU8ykx0c0kJIlS9rVu8mrKf48HiIwnUDu6YydCug1kA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dIi8bjx3H20tLnVvqcP+jBkDiIndpTftKWRdLBXezBqsaiHZ8a0FC+Et4J6a3ETIU
-	 Bo843PEcTx6OzO2VHgvfIMEWDgTckaMSdC26ikn4h57TNxs/uoEdJ3a1+oA7Vt7wLa
-	 XIJpP+2rtKKok6kCfeXM0IIOuM/vxGxKs9NLCbKE=
+	b=xt1jwhqzTd9zd4qZjSwfi1Xjq+jOhM5s4HzmBftaeeSsRmUhyxKuUiNot2M59ATX/
+	 BjDgI14b15stIdL2wsZxUTBxpcEBFbCXE7Jtxbw22yJzk9GkWhJF6Sueyawc9ZA5ji
+	 f7C+sXAcLehKLFNqm+3uZLGPo51v50g+ufWZIDLk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shanker Donthineni <sdonthineni@nvidia.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>
-Subject: [PATCH 6.6 445/452] arm64: errata: Mitigate TLBI errata on NVIDIA Olympus CPU
+	Florian Westphal <fw@strlen.de>,
+	Davide Ornaghi <d.ornaghi97@gmail.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 234/261] netfilter: nft_fib: fix stale stack leak via the OIFNAME register
 Date: Tue, 16 Jun 2026 20:31:12 +0530
-Message-ID: <20260616145139.912775978@linuxfoundation.org>
+Message-ID: <20260616145055.894060336@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,114 +68,125 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265265-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,strlen.de,gmail.com,netfilter.org,kernel.org];
+	TAGGED_FROM(0.00)[bounces-264775-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:sdonthineni@nvidia.com,m:catalin.marinas@arm.com,m:will@kernel.org,m:mark.rutland@arm.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:fw@strlen.de,m:d.ornaghi97@gmail.com,m:pablo@netfilter.org,m:sashal@kernel.org,m:dornaghi97@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,arm.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,nvidia.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,netfilter.org:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,strlen.de:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 44987692FBF
+X-Rspamd-Queue-Id: 18A066926F5
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shanker Donthineni <sdonthineni@nvidia.com>
+From: Davide Ornaghi <d.ornaghi97@gmail.com>
 
-commit ec7216f92e4ebd485b1c6dc6aa3f6064b71a5768 upstream.
+[ Upstream commit ab185e0c4fb82dfba6fb86f8271e06f931d9c64c ]
 
-NVIDIA Olympus cores are affected by the TLBI completion issue tracked as
-CVE-2025-10263. The existing ARM64_ERRATUM_4118414 handling already uses
-ARM64_WORKAROUND_REPEAT_TLBI to issue an additional broadcast TLBI;DSB
-sequence and ensure affected memory write effects are globally observed.
+For NFT_FIB_RESULT_OIFNAME the destination register is declared with
+len = IFNAMSIZ (four 32-bit registers), but on the lookup-fail,
+RTN_LOCAL and oif-mismatch paths nft_fib{4,6}_eval() only writes one
+register via "*dest = 0". The remaining three registers are left as
+whatever was on the stack in nft_do_chain()'s struct nft_regs, and a
+downstream expression that loads the register span can leak that
+uninitialised kernel stack to userspace.
 
-Add MIDR_NVIDIA_OLYMPUS to the repeat-TLBI match list so the same
-mitigation is enabled on affected Olympus systems. Also document the
-NVIDIA Olympus erratum in the arm64 silicon errata table and list it in
-the Kconfig help text.
+The NFTA_FIB_F_PRESENT existence check has the same shape: it is only
+meaningful for NFT_FIB_RESULT_OIF, yet it was accepted for any result type
+while the eval stores a single byte via nft_reg_store8(), leaving the rest
+of the declared span stale.
 
-Signed-off-by: Shanker Donthineni <sdonthineni@nvidia.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Acked-by: Mark Rutland <mark.rutland@arm.com>
-Signed-off-by: Will Deacon <will@kernel.org>
-[Mark: backport to v6.6.y]
-Signed-off-by: Shanker Donthineni <sdonthineni@nvidia.com>
+Fix both:
+
+ - replace the bare "*dest = 0" in the eval with nft_fib_store_result(),
+   which strscpy_pad()s the whole IFNAMSIZ for OIFNAME (and is already
+   used on the other early-return path), and
+
+ - restrict NFTA_FIB_F_PRESENT to NFT_FIB_RESULT_OIF and declare its
+   destination as a single u8, so the marked span matches the one byte
+   the eval writes.
+
+Fixes: f6d0cbcf09c5 ("netfilter: nf_tables: add fib expression")
+Suggested-by: Florian Westphal <fw@strlen.de>
+Cc: stable@vger.kernel.org
+Signed-off-by: Davide Ornaghi <d.ornaghi97@gmail.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+[ kept the tree's older `ip6_route_lookup()`/`rt6_info` IPv6 context and changed only `*dest = 0;` to `nft_fib_store_result(dest, priv, NULL);` ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/arch/arm64/silicon-errata.rst |    2 ++
- arch/arm64/Kconfig                          |    3 ++-
- arch/arm64/kernel/cpu_errata.c              |    1 +
- 3 files changed, 5 insertions(+), 1 deletion(-)
+ net/ipv4/netfilter/nft_fib_ipv4.c |    2 +-
+ net/ipv6/netfilter/nft_fib_ipv6.c |    2 +-
+ net/netfilter/nft_fib.c           |    6 ++++++
+ 3 files changed, 8 insertions(+), 2 deletions(-)
 
---- a/Documentation/arch/arm64/silicon-errata.rst
-+++ b/Documentation/arch/arm64/silicon-errata.rst
-@@ -274,6 +274,8 @@ stable kernels.
- +----------------+-----------------+-----------------+-----------------------------+
- | NVIDIA         | Carmel Core     | N/A             | NVIDIA_CARMEL_CNP_ERRATUM   |
- +----------------+-----------------+-----------------+-----------------------------+
-+| NVIDIA         | Olympus core    | T410-OLY-1029   | ARM64_ERRATUM_4118414       |
-++----------------+-----------------+-----------------+-----------------------------+
- | NVIDIA         | T241 GICv3/4.x  | T241-FABRIC-4   | N/A                         |
- +----------------+-----------------+-----------------+-----------------------------+
- +----------------+-----------------+-----------------+-----------------------------+
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -1121,7 +1121,7 @@ config ARM64_ERRATUM_4193714
- 	  If unsure, say Y.
+--- a/net/ipv4/netfilter/nft_fib_ipv4.c
++++ b/net/ipv4/netfilter/nft_fib_ipv4.c
+@@ -127,7 +127,7 @@ void nft_fib4_eval(const struct nft_expr
+ 		fl4.saddr = get_saddr(iph->daddr);
+ 	}
  
- config ARM64_ERRATUM_4118414
--	bool "Cortex-*/Neoverse-*/C1-*: Completion of affected memory accesses might not be guaranteed by completion of a TLBI"
-+	bool "Various: Completion of affected memory accesses might not be guaranteed by completion of a TLBI"
- 	default y
- 	select ARM64_WORKAROUND_REPEAT_TLBI
- 	help
-@@ -1148,6 +1148,7 @@ config ARM64_ERRATUM_4118414
- 	  * ARM Neoverse-V2 erratum 4193787
- 	  * ARM Neoverse-V3 erratum 4193784
- 	  * ARM Neoverse-V3AE erratum 4193784
-+	  * NVIDIA Olympus erratum T410-OLY-1029
+-	*dest = 0;
++	nft_fib_store_result(dest, priv, NULL);
  
- 	  On affected cores, some memory accesses might not be completed by
- 	  broadcast TLB invalidation.
---- a/arch/arm64/kernel/cpu_errata.c
-+++ b/arch/arm64/kernel/cpu_errata.c
-@@ -265,6 +265,7 @@ static const struct arm64_cpu_capabiliti
- 			MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V2),
- 			MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V3),
- 			MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V3AE),
-+			MIDR_ALL_VERSIONS(MIDR_NVIDIA_OLYMPUS),
- 			{}
- 		})),
- 	},
+ 	if (fib_lookup(nft_net(pkt), &fl4, &res, FIB_LOOKUP_IGNORE_LINKSTATE))
+ 		return;
+--- a/net/ipv6/netfilter/nft_fib_ipv6.c
++++ b/net/ipv6/netfilter/nft_fib_ipv6.c
+@@ -192,7 +192,7 @@ void nft_fib6_eval(const struct nft_expr
+ 
+ 	lookup_flags = nft_fib6_flowi_init(&fl6, priv, pkt, oif, iph);
+ 
+-	*dest = 0;
++	nft_fib_store_result(dest, priv, NULL);
+ 	rt = (void *)ip6_route_lookup(nft_net(pkt), &fl6, pkt->skb,
+ 				      lookup_flags);
+ 	if (rt->dst.error)
+--- a/net/netfilter/nft_fib.c
++++ b/net/netfilter/nft_fib.c
+@@ -107,6 +107,12 @@ int nft_fib_init(const struct nft_ctx *c
+ 		return -EINVAL;
+ 	}
+ 
++	if (priv->flags & NFTA_FIB_F_PRESENT) {
++		if (priv->result != NFT_FIB_RESULT_OIF)
++			return -EINVAL;
++		len = sizeof(u8);
++	}
++
+ 	err = nft_parse_register_store(ctx, tb[NFTA_FIB_DREG], &priv->dreg,
+ 				       NULL, NFT_DATA_VALUE, len);
+ 	if (err < 0)
 
 
 
