@@ -1,61 +1,64 @@
-Return-Path: <stable+bounces-263971-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265500-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id /M50GZZsMWrniwUAu9opvQ
-	(envelope-from <stable+bounces-263971-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:32:38 +0200
+	id BAlIHCuKMWo6mAUAu9opvQ
+	(envelope-from <stable+bounces-265500-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:38:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 651D26911E8
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:32:37 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id D96B8693555
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:38:50 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=G7xq3mTz;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263971-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-263971-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Ihv1DrmS;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265500-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-265500-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 208A230BF0E1
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:24:41 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 94DA030506B5
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:38:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15BDB44A72C;
-	Tue, 16 Jun 2026 15:24:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F55847B432;
+	Tue, 16 Jun 2026 17:38:41 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4C2326B0A9;
-	Tue, 16 Jun 2026 15:24:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1880447A0CD;
+	Tue, 16 Jun 2026 17:38:40 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781623455; cv=none; b=ppt2cBw6KqqsPYgRfzDxJ6Mrs2O/KpMhJYGT074rUL3z8Wf4bAAeLbdOo8Vh4zXvqQxX25j4OskoiKjv286kA50s2pb7AelqgWuF/Z3scsreWoVePXj1SxqoyS2YLE+8CFSZ+Sfu18vQpZJGT6IPwn8NRFJoG6NhA0NntdtpdFU=
+	t=1781631521; cv=none; b=oKUAtBnrscHFDZ7A/0HFCNf2DL3t95nXYTe+9/r+a0gHBbeR8APiAT9w5rSxPKObXC14ylbMvjJ1CkIuZ745cXawuEwCBDuIjbfw5rDjJkVcZr6wUyrq2MQnv/U15vzUgM+J6d7N4LWY9O7myOoTmakD9pMNWvcp5l4ZvD+cc9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781623455; c=relaxed/simple;
-	bh=q+kVimrAmrrwoJcs25KgMmgSaJGUFc3lBc33eDLm6Ug=;
+	s=arc-20240116; t=1781631521; c=relaxed/simple;
+	bh=WSewvlRTrdvnDpT4woyeDFenwaq/59m0QTTK/goc4Cc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hgJ1GOSA2Un9TKOQMJoaB1fFUH3yEh1ZOVDxUk1tjDxbdRQ6tIVYKIoErHBSUehWMh/7XIH3KcRbZqZumAFzioZNY5odMvHRkmgpIkHOcTjC6XMf+5OiCi2AWHrhFqHqbjiOI35AaQVYjIVvunnPi+xEAnB159VXwMJaZnZfI3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G7xq3mTz; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5A491F00A3A;
-	Tue, 16 Jun 2026 15:24:13 +0000 (UTC)
+	 MIME-Version; b=CEgdddxy/WQ6NVxFcWsmEOWODeTFTLdcsXCa6sripERxGmFm/aBiNYzV0njsYG+IW+EzLE1K3TXWIQaXuIufigqpkHMYHNU+tqDB0MvM2vAsCmzGIYORTNfJu9Q9HxSmkE2jHx7kul9g06eduAN0bau10pVhFh5VV7apv3nQGLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ihv1DrmS; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEF371F000E9;
+	Tue, 16 Jun 2026 17:38:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781623454;
-	bh=1XfJxFAGsj5StyTqXXpThjCQQmsMP4p9P+Q6rLPoJEM=;
+	s=korg; t=1781631520;
+	bh=j4FQRnMnyZojE9LHa92q7xPAoey5IXsktZZlZ8GJoRI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=G7xq3mTzGCk4Q5HMFchwZxDuIh4wD/pY7/grvGZ6Lq53ioGruBlHyC8AhTnJoZnEu
-	 d28nafNJ43RtsvDr3fzxpJdlIAvL+GL3Y+SM1HCOZnYp81ZBTiReqF2CgoaJoQlbWT
-	 YKzloWngIM5yUglCXUbfpgGHUPokyX2zvihSCSxY=
+	b=Ihv1DrmSvmhu/Q2aeZkXCPBJX61cJNoe639b/dzfGyaTZWX6d4R8aQAwdyYraP7/K
+	 ulEg+vcHkBWKR9NP+GDPRF8AOAend9SuEvVNoscA099P3dtFevjvoA/q+fE27+hjzT
+	 0DZiMvARSCscFm3/lHEwbP/eqH6Lj5Xk8aGQVnGI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiawen Wu <jiawenwu@trustnetic.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 152/378] net: txgbe: initialize PHY interface to 0
+Subject: [PATCH 6.1 236/522] KVM: arm64: Remove VPIPT I-cache handling
 Date: Tue, 16 Jun 2026 20:26:23 +0530
-Message-ID: <20260616145118.245115286@linuxfoundation.org>
+Message-ID: <20260616145137.024706056@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,97 +72,155 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-263971-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jiawenwu@trustnetic.com,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265500-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:yuzenghui@huawei.com,m:anshuman.khandual@arm.com,m:maz@kernel.org,m:mark.rutland@arm.com,m:will@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,trustnetic.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,huawei.com:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 651D26911E8
+X-Rspamd-Queue-Id: D96B8693555
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiawen Wu <jiawenwu@trustnetic.com>
+From: Marc Zyngier <maz@kernel.org>
 
-[ Upstream commit 47f848aac4e79bdb197f849fa86e71fff1ad36ef ]
+commit ced242ba9d7cb3571f6e0f165f643cb832d52148 upstream.
 
-DECLARE_PHY_INTERFACE_MASK() does not guarantee zeroed contents. Add a
-new macro DECLARE_PHY_INTERFACE_MASK_ZERO(), make the stack variable to
-be zeroed before setting supported interfaces.
+We have some special handling for VPIPT I-cache in critical parts
+of the cache and TLB maintenance. Remove it.
 
-Fixes: 57d39faed4c9 ("net: txgbe: improve functions of AML 40G devices")
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
-Link: https://patch.msgid.link/20260608070842.36504-4-jiawenwu@trustnetic.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Zenghui Yu <yuzenghui@huawei.com>
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Acked-by: Mark Rutland <mark.rutland@arm.com>
+Link: https://lore.kernel.org/r/20231204143606.1806432-2-maz@kernel.org
+Signed-off-by: Will Deacon <will@kernel.org>
+[Mark: Backport to v6.1.y. VPIPT HW was never built; this is all dead code]
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c  | 4 ++--
- drivers/net/ethernet/wangxun/txgbe/txgbe_type.h | 3 +++
- 2 files changed, 5 insertions(+), 2 deletions(-)
+ arch/arm64/include/asm/kvm_mmu.h |  4 ++--
+ arch/arm64/kvm/hyp/nvhe/tlb.c    | 35 --------------------------------
+ arch/arm64/kvm/hyp/vhe/tlb.c     | 13 ------------
+ 3 files changed, 2 insertions(+), 50 deletions(-)
 
-diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c
-index bdac654a236465..8fc32df8e49a44 100644
---- a/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c
-+++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c
-@@ -204,7 +204,7 @@ int txgbe_set_phy_link(struct wx *wx)
- static int txgbe_sfp_to_linkmodes(struct wx *wx, struct txgbe_sff_id *id)
+diff --git a/arch/arm64/include/asm/kvm_mmu.h b/arch/arm64/include/asm/kvm_mmu.h
+index 7784081088e78f..1495fcddd98e58 100644
+--- a/arch/arm64/include/asm/kvm_mmu.h
++++ b/arch/arm64/include/asm/kvm_mmu.h
+@@ -214,8 +214,8 @@ static inline void __invalidate_icache_guest_page(void *va, size_t size)
+ 	if (icache_is_aliasing()) {
+ 		/* any kind of VIPT cache */
+ 		icache_inval_all_pou();
+-	} else if (is_kernel_in_hyp_mode() || !icache_is_vpipt()) {
+-		/* PIPT or VPIPT at EL2 (see comment in __kvm_tlb_flush_vmid_ipa) */
++	} else {
++		/* PIPT */
+ 		icache_inval_pou((unsigned long)va, (unsigned long)va + size);
+ 	}
+ }
+diff --git a/arch/arm64/kvm/hyp/nvhe/tlb.c b/arch/arm64/kvm/hyp/nvhe/tlb.c
+index d296d617f58963..291789df24e3ee 100644
+--- a/arch/arm64/kvm/hyp/nvhe/tlb.c
++++ b/arch/arm64/kvm/hyp/nvhe/tlb.c
+@@ -84,28 +84,6 @@ void __kvm_tlb_flush_vmid_ipa(struct kvm_s2_mmu *mmu,
+ 	dsb(ish);
+ 	isb();
+ 
+-	/*
+-	 * If the host is running at EL1 and we have a VPIPT I-cache,
+-	 * then we must perform I-cache maintenance at EL2 in order for
+-	 * it to have an effect on the guest. Since the guest cannot hit
+-	 * I-cache lines allocated with a different VMID, we don't need
+-	 * to worry about junk out of guest reset (we nuke the I-cache on
+-	 * VMID rollover), but we do need to be careful when remapping
+-	 * executable pages for the same guest. This can happen when KSM
+-	 * takes a CoW fault on an executable page, copies the page into
+-	 * a page that was previously mapped in the guest and then needs
+-	 * to invalidate the guest view of the I-cache for that page
+-	 * from EL1. To solve this, we invalidate the entire I-cache when
+-	 * unmapping a page from a guest if we have a VPIPT I-cache but
+-	 * the host is running at EL1. As above, we could do better if
+-	 * we had the VA.
+-	 *
+-	 * The moral of this story is: if you have a VPIPT I-cache, then
+-	 * you should be running with VHE enabled.
+-	 */
+-	if (icache_is_vpipt())
+-		icache_inval_all_pou();
+-
+ 	__tlb_switch_to_host(&cxt);
+ }
+ 
+@@ -144,18 +122,5 @@ void __kvm_flush_vm_context(void)
  {
- 	__ETHTOOL_DECLARE_LINK_MODE_MASK(modes) = { 0, };
--	DECLARE_PHY_INTERFACE_MASK(interfaces);
-+	DECLARE_PHY_INTERFACE_MASK_ZERO(interfaces);
- 	struct txgbe *txgbe = wx->priv;
- 
- 	if (id->cable_tech & TXGBE_SFF_DA_PASSIVE_CABLE) {
-@@ -271,7 +271,7 @@ static int txgbe_sfp_to_linkmodes(struct wx *wx, struct txgbe_sff_id *id)
- static int txgbe_qsfp_to_linkmodes(struct wx *wx, struct txgbe_sff_id *id)
+ 	dsb(ishst);
+ 	__tlbi(alle1is);
+-
+-	/*
+-	 * VIPT and PIPT caches are not affected by VMID, so no maintenance
+-	 * is necessary across a VMID rollover.
+-	 *
+-	 * VPIPT caches constrain lookup and maintenance to the active VMID,
+-	 * so we need to invalidate lines with a stale VMID to avoid an ABA
+-	 * race after multiple rollovers.
+-	 *
+-	 */
+-	if (icache_is_vpipt())
+-		asm volatile("ic ialluis");
+-
+ 	dsb(ish);
+ }
+diff --git a/arch/arm64/kvm/hyp/vhe/tlb.c b/arch/arm64/kvm/hyp/vhe/tlb.c
+index 24cef9b87f9e9c..fc3fcd29ccc306 100644
+--- a/arch/arm64/kvm/hyp/vhe/tlb.c
++++ b/arch/arm64/kvm/hyp/vhe/tlb.c
+@@ -146,18 +146,5 @@ void __kvm_flush_vm_context(void)
  {
- 	__ETHTOOL_DECLARE_LINK_MODE_MASK(modes) = { 0, };
--	DECLARE_PHY_INTERFACE_MASK(interfaces);
-+	DECLARE_PHY_INTERFACE_MASK_ZERO(interfaces);
- 	struct txgbe *txgbe = wx->priv;
- 
- 	if (id->transceiver_type & TXGBE_SFF_ETHERNET_40G_CR4) {
-diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h b/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
-index 6b05f32b4a0109..877234e3fdc2b6 100644
---- a/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
-+++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
-@@ -315,6 +315,9 @@ void txgbe_up(struct wx *wx);
- int txgbe_setup_tc(struct net_device *dev, u8 tc);
- void txgbe_do_reset(struct net_device *netdev);
- 
-+#define DECLARE_PHY_INTERFACE_MASK_ZERO(name) \
-+	unsigned long name[PHY_INTERFACE_MODE_MAX] = { 0, }
-+
- #define TXGBE_LINK_SPEED_UNKNOWN        0
- #define TXGBE_LINK_SPEED_10GB_FULL      4
- #define TXGBE_LINK_SPEED_25GB_FULL      0x10
+ 	dsb(ishst);
+ 	__tlbi(alle1is);
+-
+-	/*
+-	 * VIPT and PIPT caches are not affected by VMID, so no maintenance
+-	 * is necessary across a VMID rollover.
+-	 *
+-	 * VPIPT caches constrain lookup and maintenance to the active VMID,
+-	 * so we need to invalidate lines with a stale VMID to avoid an ABA
+-	 * race after multiple rollovers.
+-	 *
+-	 */
+-	if (icache_is_vpipt())
+-		asm volatile("ic ialluis");
+-
+ 	dsb(ish);
+ }
 -- 
 2.53.0
 
