@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-266225-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263909-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id VVwqMPOYMWo5nwUAu9opvQ
-	(envelope-from <stable+bounces-266225-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:41:55 +0200
+	id 4ft3ML1qMWpKiwUAu9opvQ
+	(envelope-from <stable+bounces-263909-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:24:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DEF7694589
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:41:55 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B987690FF8
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:24:45 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="MQyU/V9A";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266225-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266225-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="Dfq/8U/4";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263909-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-263909-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 46E31307B4F3
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:41:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2BB5D30AAD86
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:18:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD5834418D7;
-	Tue, 16 Jun 2026 18:41:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABB8643DA53;
+	Tue, 16 Jun 2026 15:18:35 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84FB2478E5E;
-	Tue, 16 Jun 2026 18:41:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 808AE43DA56;
+	Tue, 16 Jun 2026 15:18:34 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781635311; cv=none; b=Bhc5Fr5687FPVNzwspGD7fo9CJES4IkR7pUcWzqfQagOmnR9Vpcr/8li19XsIh4UIL+bQ+uPlYEI/6BCggp7GJ/7QT8TS6gq6xYeRLHenifV5qwfkCQP9i0qo062+MWJ76pBBIqnFvQsQzC0ZDDxERAv5Znhv4JEc/GBO/av+d0=
+	t=1781623115; cv=none; b=VMfDHaJpWQhN2q7YPLmXprxUwCwUs3cr0xzbuKFL+BA9GsU3U5guad4o4d3YfaPZ7JVmHEG1p0EOHkK4c4Uhzh9Soo7fCxltXrK+pT6krT8iCoX01n9WHdvXv9xR2zegWhOP5DUVJQXk8j1ONSQvSP9FYuIjjtB04HYDZ+Y8P/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781635311; c=relaxed/simple;
-	bh=T0q1+v1C0rcc/J32AGYFG9IR/7QoI4g9q16GdwOcOUs=;
+	s=arc-20240116; t=1781623115; c=relaxed/simple;
+	bh=wbDWxTjOgaNm5M8u8MoZx4uYN0XnULNE5BI0hAX9C9I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HrV9Y3Av4X1KXPbU+6gkXRvTPvOtWxbcDyn8KpIPaPTQ69JyYW/OYPOVY/QVRknhBDpTdSZcmJphd98gjY9mMMfwbfJec7O79EgUpd8JTTpkX6iWNJZ3GuGrPlTHNGLwki7/wz6//qDpX9kIqDT53NVmuOAvPZAixajxgMlWjck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MQyU/V9A; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B80B1F000E9;
-	Tue, 16 Jun 2026 18:41:48 +0000 (UTC)
+	 MIME-Version; b=Ld1+fK01Gp3dNFJb08l+sgc/1Jx4pe1cdFFbLDKZ0F3ayZ630hhOkZgZ3Cd4wGLT0TcHSdVzKcsDls1kyujO5Q8JaHSnVQ/qlJgUEdJao6NSBlbFhvwvrwkAukocQl36exye9MTr2jBronaRJC6409WDpc9G4sVGSnxaUFHqMR4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dfq/8U/4; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EBED1F000E9;
+	Tue, 16 Jun 2026 15:18:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781635310;
-	bh=Fs8PZerIXY+zTb+PziJVIPfJjLrdWvbRmvxmKs1XVkc=;
+	s=korg; t=1781623114;
+	bh=wL1ahz19fmHj7hppao81D7CbmQsF9vp4KvVUNSydXJU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=MQyU/V9AS95uA3JVZuRHKdA3FjZsxU+o71Kx147M+5R9ilXCQLQxKhakkncIz1lzk
-	 9PbTUwpYkBq8B5iY/P88/Q+9F7j0LUF+Sruzg3S0KxkPgVVfJ5PORAv6HoIXEgsR8+
-	 1289EDICUNWlNTXXHvn6SW461bZ/iMBxCtTTgR1I=
+	b=Dfq/8U/4noemXjWJRRTK4tAhIghgb8EfGoLrnx11B1psBp4a+lnJ6xvPeH794WdLH
+	 FAtG2OrdW3mxe9mIQF5UO295/Hx5twNxuN39vZmqo4JauY+a7HXQxRK4HhSJsVIyJ1
+	 T0UnshOQ4DozgWsA6zyzblE1I2dmNx6yjysyZFTo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rahul Chandelkar <rc@rexion.ai>,
-	Jakub Kicinski <kuba@kernel.org>,
+	unknownbbqrx <dev@unknownbbqr.xyz>,
+	Gabriele Monaco <gmonaco@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 025/342] ipv6: rpl: fix hdrlen overflow in ipv6_rpl_srh_decompress()
+Subject: [PATCH 7.0 090/378] tools/rv: Ensure monitor name and desc are NUL-terminated
 Date: Tue, 16 Jun 2026 20:25:21 +0530
-Message-ID: <20260616145049.431194665@linuxfoundation.org>
+Message-ID: <20260616145115.003665186@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,21 +72,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266225-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-263909-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:rc@rexion.ai,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:dev@unknownbbqr.xyz,m:gmonaco@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -98,68 +98,53 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3DEF7694589
+X-Rspamd-Queue-Id: 1B987690FF8
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rahul Chandelkar <rc@rexion.ai>
+From: Gabriele Monaco <gmonaco@redhat.com>
 
-[ Upstream commit 9d5e7a46a9f6d8f503b41bfefef70659845f1679 ]
+[ Upstream commit 08904765bb941f98306ae6841c33cfd299343faf ]
 
-ipv6_rpl_srh_decompress() computes:
+ikm_fill_monitor_definition() copies monitor name and description with
+strncpy(), but does not guarantee NUL termination when source strings are
+equal to or longer than the destination buffers.
 
-    outhdr->hdrlen = (((n + 1) * sizeof(struct in6_addr)) >> 3);
+Clamp copies to sizeof(dst) - 1 and explicitly append '\0' for both fields
+to keep them safe for later string operations.
 
-hdrlen is __u8. For n >= 127 the result exceeds 255 and silently
-truncates. With n=127 (cmpri=15, cmpre=15, pad=0, hdrlen=16):
-
-    (128 * 16) >> 3 = 256, truncated to 0 as __u8
-
-The caller in ipv6_rpl_srh_rcv() then places the compressed header
-at buf + ((ohdr->hdrlen + 1) << 3). With hdrlen=0 this is buf + 8,
-but the decompressed region occupies buf[0..2055] (8-byte header
-plus 128 full addresses). The compressed header overlaps the
-decompressed data, and ipv6_rpl_srh_compress() writes into this
-overlap, corrupting the routing header of the forwarded packet.
-
-The existing guard at exthdrs.c:546 checks (n + 1) > 255, which
-prevents n+1 from overflowing unsigned char (the segments_left
-field), but does not prevent the computed hdrlen from overflowing
-__u8. n=127 passes because 128 <= 255, yet hdrlen=256 does not
-fit.
-
-Tighten the bound to (n + 1) > 127. This caps n at 126, giving
-hdrlen = (127 * 16) >> 3 = 254, which fits in __u8. The compressed
-header then lands at buf + ((254 + 1) << 3) = buf + 2040, exactly
-past the decompressed region (buf[0..2039]). No overlap. 127
-segments is well beyond any realistic RPL deployment.
-
-Fixes: 8610c7c6e3bd ("net: ipv6: add support for rpl sr exthdr")
-Signed-off-by: Rahul Chandelkar <rc@rexion.ai>
-Link: https://patch.msgid.link/20260525154031.2290876-1-rc@rexion.ai
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Suggested-by: unknownbbqrx <dev@unknownbbqr.xyz>
+Fixes: 6d60f89691fc9 ("tools/rv: Add in-kernel monitor interface")
+Link: https://lore.kernel.org/r/20260604120946.90302-2-gmonaco@redhat.com
+Signed-off-by: Gabriele Monaco <gmonaco@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/exthdrs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/verification/rv/src/in_kernel.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/net/ipv6/exthdrs.c b/net/ipv6/exthdrs.c
-index 924f3d7901f09c..1bef03e2d8fc98 100644
---- a/net/ipv6/exthdrs.c
-+++ b/net/ipv6/exthdrs.c
-@@ -544,7 +544,7 @@ static int ipv6_rpl_srh_rcv(struct sk_buff *skb)
- 	 * unsigned char which is segments_left field. Should not be
- 	 * higher than that.
- 	 */
--	if (r || (n + 1) > 255) {
-+	if (r || (n + 1) > 127) {
- 		kfree_skb(skb);
+diff --git a/tools/verification/rv/src/in_kernel.c b/tools/verification/rv/src/in_kernel.c
+index 4bb746ea6e1735..d324538249d3ab 100644
+--- a/tools/verification/rv/src/in_kernel.c
++++ b/tools/verification/rv/src/in_kernel.c
+@@ -215,10 +215,11 @@ static int ikm_fill_monitor_definition(char *name, struct monitor *ikm, char *co
  		return -1;
  	}
+ 
+-	strncpy(ikm->name, nested_name, MAX_DA_NAME_LEN);
++	strncpy(ikm->name, nested_name, sizeof(ikm->name) - 1);
++	ikm->name[sizeof(ikm->name) - 1] = '\0';
+ 	ikm->enabled = enabled;
+-	strncpy(ikm->desc, desc, MAX_DESCRIPTION);
+-
++	strncpy(ikm->desc, desc, sizeof(ikm->desc) - 1);
++	ikm->desc[sizeof(ikm->desc) - 1] = '\0';
+ 	free(desc);
+ 
+ 	return 0;
 -- 
 2.53.0
 
