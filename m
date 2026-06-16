@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-265525-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265539-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id JX0xDBmMMWo5mQUAu9opvQ
-	(envelope-from <stable+bounces-265525-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:47:05 +0200
+	id FQDIGWCMMWpQmQUAu9opvQ
+	(envelope-from <stable+bounces-265539-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:48:16 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DD62693798
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:47:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CAAC96937E6
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:48:15 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=h+DDWRGW;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265525-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265525-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=NC8lm6zQ;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265539-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265539-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9F4743056852
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:40:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EF4A931BE055
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:41:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D272147B429;
-	Tue, 16 Jun 2026 17:40:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A8A247CC7E;
+	Tue, 16 Jun 2026 17:41:56 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB50946AF3C;
-	Tue, 16 Jun 2026 17:40:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E13194779B9;
+	Tue, 16 Jun 2026 17:41:50 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781631654; cv=none; b=UDGrYVAf/08IgtxVPeG+d4Xa8zV8KZ2cRBNReOWgUCOhYHLfIs9/JxdZ6x0e95YdqefiZfwOLYew9V/ssxoUACUOWC/C8pD8wrCl2/jCYtZB0ve6bd2WmlEBrXJIFSwqDfhyr4LhnLy8/c1rv56fcCt8T+8SgFe8pJkdejXueGU=
+	t=1781631715; cv=none; b=mea9mmXhUwWUHbbGkzVEpv/o0kHx1QPYqrDmXSRVwYQRCpO9PVreCa3edNWiBIcPGOgKspqIpsE2/xkmoASahutLqBcbviKNhdZcWknKYIOyCZbzf/z2jrSqZrnZerhTcX2orKERDRd9kNN6DTwKLL4pRr+LILfLyfPUgu/3lt8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781631654; c=relaxed/simple;
-	bh=z3/nMbIPwWEHJ2rvOh+tQDMvjqwDj2nTMH4ETEMz1YY=;
+	s=arc-20240116; t=1781631715; c=relaxed/simple;
+	bh=bM5FkfKyYMS8M4e8B4+KYpI95uOTPyyokrABRI8aNB8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UFLm3TbJIeeYO9+bDOkyjdgBvXyJza8tK4+513pmgQd2d0E+ZpZpMSmo3QQKeC34Ou/coryOE0hLlKr9XSHJ3t9DxmDCcL1SvPgIEY2iefvsdFMkkDzlQbcRwhqWkdzAgQlRCOGNeHlYLHvgg3j23lnG81OwgO2KlbgT94GhwbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h+DDWRGW; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B13FA1F000E9;
-	Tue, 16 Jun 2026 17:40:52 +0000 (UTC)
+	 MIME-Version; b=iVWTIyq7gWkPXILTQJC+ipO3nCG7InKq0U73c1iAIkO/NafivyzFZMb2s4YEnCM8tYAFxNjT/sBO0dlO3g7KSBQhBgSWA7OJ4qYfXqyAmGM2MvGpx0v8bkpvpjJTnHBUBw1nYJlGkPGMMeV+ubvAgvxkWsGHmI0F6ZDvqcDcZpw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NC8lm6zQ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CBFD1F000E9;
+	Tue, 16 Jun 2026 17:41:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781631653;
-	bh=RlAqIlol1ea0NA+9Vhsxiu348vnnGoiHHW2O522FwWM=;
+	s=korg; t=1781631710;
+	bh=Ka4g3SPJ/5G1+p9xLGzfZlKeqFhrYikAL0mZNcbJuCc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=h+DDWRGWzZVumkYH2vtXxuJul8+tQzfWK6SAXbANRTPjX752BlwMDp9PqaAAee1Mg
-	 jIpiEVC78ahRQinvTxG1w6fTM4ncC+EXe34uKrFDSSThVAsx1ORMK0cO0zY692pwPf
-	 wujJZlTfYLc6SOKgn0jk0HFc5VzyEIHXE84Dvd2k=
+	b=NC8lm6zQPz3S+M0j+aPcm4pOFBxI+Kdq6h7HZwTG9V3U5Bwyeouzy001LbtcLA2Hj
+	 D0Fz4rLBfPvwr8/+E99ODdpt4jcUP3VWKOBNUxK/Lba5kzucodXKAmZGkukmXX6GOP
+	 n95Tpc43kevMWYvFfFDYPkSKWDwDFY3hrQrQepj0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yao Sang <sangyao@kylinos.cn>,
-	Jacob Keller <jacob.e.keller@intel.com>,
+	Mingyu Wang <25181214217@stu.xidian.edu.cn>,
+	Simon Horman <horms@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 244/522] net/mlx4: avoid GCC 10 __bad_copy_from() false positive
-Date: Tue, 16 Jun 2026 20:26:31 +0530
-Message-ID: <20260616145137.395405405@linuxfoundation.org>
+Subject: [PATCH 6.1 245/522] net: qrtr: fix refcount saturation and potential UAF in qrtr_port_remove
+Date: Tue, 16 Jun 2026 20:26:32 +0530
+Message-ID: <20260616145137.439573029@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
 References: <20260616145125.307082728@linuxfoundation.org>
@@ -79,10 +79,10 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265525-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265539-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:sangyao@kylinos.cn,m:jacob.e.keller@intel.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:25181214217@stu.xidian.edu.cn,m:horms@kernel.org,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
@@ -99,67 +99,85 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,intel.com:email,kylinos.cn:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,xidian.edu.cn:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9DD62693798
+X-Rspamd-Queue-Id: CAAC96937E6
 
 6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yao Sang <sangyao@kylinos.cn>
+From: Mingyu Wang <25181214217@stu.xidian.edu.cn>
 
-[ Upstream commit 2365343f4aad3e1b1e7a2e87e98cf66d5e590589 ]
+[ Upstream commit a2171131ecda1ed61a594a1eb715e75fdad0fef5 ]
 
-mlx4_init_user_cqes() fills a scratch buffer with the CQE
-initialization pattern and then copies from that buffer to userspace.
+In qrtr_port_remove(), the socket reference count is decremented via
+__sock_put() before the port is removed from the qrtr_ports XArray and
+before the RCU grace period elapses.
 
-In the single-copy path, the copy length is array_size(entries,
-cqe_size), but the scratch buffer is allocated with PAGE_SIZE. GCC 10
-does not carry the branch invariant strongly enough through the object
-size checks and falsely triggers __bad_copy_from().
+This breaks the fundamental RCU update paradigm. It exposes a race
+window where a concurrent RCU reader (such as qrtr_reset_ports() or
+qrtr_port_lookup()) can obtain a pointer to the socket from the XArray,
+and attempt to call sock_hold() on a socket whose reference count has
+already dropped to zero.
 
-Size the scratch buffer to the actual copy length for the active path,
-keep array_size() for the single-copy case, and retain a WARN_ON_ONCE()
-guard for the PAGE_SIZE invariant before allocating the buffer.
+This exact race condition was hit during syzkaller fuzzing, leading to
+the following refcount saturation warning and a potential Use-After-Free:
 
-Fixes: f69bf5dee7ef ("net/mlx4: Use array_size() helper in copy_to_user()")
-Signed-off-by: Yao Sang <sangyao@kylinos.cn>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+  refcount_t: saturated; leaking memory.
+  WARNING: CPU: 3 PID: 1273 at lib/refcount.c:22 refcount_warn_saturate+0xae/0x1d0
+  Modules linked in: qrtr(+) bochs drm_shmem_helper ...
+  Call Trace:
+   <TASK>
+   qrtr_reset_ports net/qrtr/af_qrtr.c:768 [inline] [qrtr]
+   __qrtr_bind.isra.0+0x48b/0x570 net/qrtr/af_qrtr.c:805 [qrtr]
+   qrtr_bind+0x17d/0x210 net/qrtr/af_qrtr.c:901 [qrtr]
+   kernel_bind+0xe4/0x120 net/socket.c:3592
+   qrtr_ns_init+0x1a6/0x380 net/qrtr/ns.c:715 [qrtr]
+   qrtr_proto_init+0x3b/0xff0 net/qrtr/af_qrtr.c:169 [qrtr]
+   do_one_initcall+0xf5/0x5e0 init/main.c:1283
+   ...
+   </TASK>
+
+Fix this by deferring the reference count decrement until after the
+xa_erase() and the synchronize_rcu() complete.
+
+(Note: The v1 of this patch incorrectly replaced __sock_put() with
+sock_put(). As Simon Horman pointed out, the callers of qrtr_port_remove()
+still hold a reference to the socket, so freeing the socket memory here
+would lead to a subsequent UAF in the caller. Thus, the __sock_put() is
+kept, but only repositioned to close the RCU race.)
+
+Fixes: bdabad3e363d ("net: Add Qualcomm IPC router")
+Signed-off-by: Mingyu Wang <25181214217@stu.xidian.edu.cn>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260604064801.1180388-1-w15303746062@163.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx4/cq.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ net/qrtr/af_qrtr.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx4/cq.c b/drivers/net/ethernet/mellanox/mlx4/cq.c
-index 4d4f9cf9facb87..fb83d8af8dcb9c 100644
---- a/drivers/net/ethernet/mellanox/mlx4/cq.c
-+++ b/drivers/net/ethernet/mellanox/mlx4/cq.c
-@@ -290,6 +290,7 @@ static void mlx4_cq_free_icm(struct mlx4_dev *dev, int cqn)
- static int mlx4_init_user_cqes(void *buf, int entries, int cqe_size)
- {
- 	int entries_per_copy = PAGE_SIZE / cqe_size;
-+	size_t copy_bytes;
- 	void *init_ents;
- 	int err = 0;
- 	int i;
-@@ -314,8 +315,14 @@ static int mlx4_init_user_cqes(void *buf, int entries, int cqe_size)
- 			buf += PAGE_SIZE;
- 		}
- 	} else {
-+		copy_bytes = array_size(entries, cqe_size);
-+		if (WARN_ON_ONCE(copy_bytes > PAGE_SIZE)) {
-+			err = -EINVAL;
-+			goto out;
-+		}
-+
- 		err = copy_to_user((void __user *)buf, init_ents,
--				   array_size(entries, cqe_size)) ?
-+				   copy_bytes) ?
- 			-EFAULT : 0;
- 	}
+diff --git a/net/qrtr/af_qrtr.c b/net/qrtr/af_qrtr.c
+index 3831eb25e240ae..8cedf26d78ee02 100644
+--- a/net/qrtr/af_qrtr.c
++++ b/net/qrtr/af_qrtr.c
+@@ -702,13 +702,13 @@ static void qrtr_port_remove(struct qrtr_sock *ipc)
+ 	if (port == QRTR_PORT_CTRL)
+ 		port = 0;
  
+-	__sock_put(&ipc->sk);
+-
+ 	xa_erase(&qrtr_ports, port);
+ 
+ 	/* Ensure that if qrtr_port_lookup() did enter the RCU read section we
+ 	 * wait for it to up increment the refcount */
+ 	synchronize_rcu();
++
++	__sock_put(&ipc->sk);
+ }
+ 
+ /* Assign port number to socket.
 -- 
 2.53.0
 
