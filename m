@@ -1,63 +1,65 @@
-Return-Path: <stable+bounces-263955-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265482-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 3VQaJNdqMWpUiwUAu9opvQ
-	(envelope-from <stable+bounces-263955-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:25:11 +0200
+	id dXBVIkmLMWrQmAUAu9opvQ
+	(envelope-from <stable+bounces-265482-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:43:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FA7F69101A
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:25:10 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01385693684
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:43:36 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=FLAZOqqp;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263955-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-263955-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=LcGW3WUG;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265482-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265482-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 98AA13026025
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:23:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4D9333100FBF
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:37:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 163D14418DC;
-	Tue, 16 Jun 2026 15:22:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7E4C47AF5F;
+	Tue, 16 Jun 2026 17:37:04 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D13AC1E8320;
-	Tue, 16 Jun 2026 15:22:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90A0D477E57;
+	Tue, 16 Jun 2026 17:37:03 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781623376; cv=none; b=spl0UNf6PpIHZ67ZH+oxibFjPEz0XNepFEScexn6e2OcPdsRQI6Wed3yHaA6aFoT7mQhlz9OAffxi4MtA8O2lBJG2EgdFq/HynFJ2ehNEZl7ppz54orYnsDyjrjku3eVRf5nQ91q6ADcdWLizsCbBigU4p+nYoC7yMNndCsxgjI=
+	t=1781631424; cv=none; b=REASNFRNTxuIaUZjmGBg9ydHjHPxoqEcBVNHnN/0riVVCplnwHqZlJ1/sokRibgU5IkFUQJNuhZTcNnGWJjR1tqygr3cKKqMcv3UaRFP7pBIQxWCYusvTwN+MXaES5/mJO5NYFZeRM9mN8p1Ws0Q17UYUJI5dpOcLxjNibnpVX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781623376; c=relaxed/simple;
-	bh=GZWJwvqWOmtadTZv9Evo72J2oCfE2+kzT4bJIH/Rc+U=;
+	s=arc-20240116; t=1781631424; c=relaxed/simple;
+	bh=/N9Nkkx7Cs6HZVftl9ObDmIZkqoWNf/XBXZsfuRyW4w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ty33xuncqqz3R6Ngf4eIWOxwIEg7U4sYCa+NS5i47wO+xvoY8RDJApvy3ROB0gUDbI7uaOYrjfh22RC7LLElF1DdYG6O2mwlfuebrRBJxmtcRihpZNcP5m6r9/nR/MW7NhRuPWBU4OzTZnup78IRK35r74qotpZn1TPuPM23rQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FLAZOqqp; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2A4C1F000E9;
-	Tue, 16 Jun 2026 15:22:54 +0000 (UTC)
+	 MIME-Version; b=CEn0vKGtjchxv26Gr6RmKvJDMU/kNSXzBznRbapW0DXH+KVEaRyaW/QWLdLlWP7gT/CcB037ieDnVeV4c1WHlBpR7yHLJUKanvSPeqLB9kfzzCkzeyteMDdjmQBAG2s6HGTwplqMDWudK+FnAOTBSNcoXDOPbkVAcl6w8p3u6RE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LcGW3WUG; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B1B91F000E9;
+	Tue, 16 Jun 2026 17:37:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781623375;
-	bh=1GVhf7ubM3ePhibBrcJ1TbuhxLrLzVbEClpSTp2RLwo=;
+	s=korg; t=1781631423;
+	bh=Cz9A2T033a3W2dZ0/E64LYkS4KoFSORwjo6h/eSpt2I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=FLAZOqqpeJvhIlKQgVA+kmRVcUXRCOOf3KoI91gXDIHhqEAw3kQ1jtmlMpvPKrkR9
-	 0xxdpYZ6EGSTkMhINCYmVteuhyNINV1daYjVm8MMKr2VBp6P7TlNsu1RXKS1W4ioFc
-	 NMYLYWucWpSEG4v4B0yvyl73wp+7ToR5VnSe7q1E=
+	b=LcGW3WUG+5z0ZhefAK7DAxwdicLy5/VrOe3MV8u+wQbni3SuW9fMDV4CzEBVEkPmF
+	 3/ny/EouFxMVYLpnXlLmu9JEdisQP1E2Odj17XxWC7LhmzASt7pX9f3k53Pmp8YT+K
+	 Nx1UrTMilWiArJWj5EZdmdMVPCoxa/OWfjUX8YKg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang Mei <xmei5@asu.edu>,
-	Weiming Shi <bestswngs@gmail.com>,
-	Allison Henderson <achender@kernel.org>,
+	Tamir Shahar <tamirthesis@gmail.com>,
+	Amit Klein <aksecurity@gmail.com>,
+	Eric Dumazet <edumazet@google.com>,
+	David Ahern <dsahern@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 135/378] net/rds: fix NULL deref in rds_ib_send_cqe_handler() on masked atomic completion
+Subject: [PATCH 6.1 219/522] ipv4: restrict IPOPT_SSRR and IPOPT_LSRR options
 Date: Tue, 16 Jun 2026 20:26:06 +0530
-Message-ID: <20260616145117.408351326@linuxfoundation.org>
+Message-ID: <20260616145136.274382412@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,21 +76,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-263955-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,kernel.org,nvidia.com];
+	TAGGED_FROM(0.00)[bounces-265482-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:xmei5@asu.edu,m:bestswngs@gmail.com,m:achender@kernel.org,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:tamirthesis@gmail.com,m:aksecurity@gmail.com,m:edumazet@google.com,m:dsahern@kernel.org,m:idosch@nvidia.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -98,76 +100,63 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,asu.edu:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,vger.kernel.org:from_smtp,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8FA7F69101A
+X-Rspamd-Queue-Id: 01385693684
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weiming Shi <bestswngs@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 34080db3e70ddf94c38512ad2331e3c3afca6cc1 ]
+[ Upstream commit d3915a1f5a4bc0ac911032903c3c6ab8df9fcc7c ]
 
-rds_ib_xmit_atomic() always programs a masked atomic opcode
-(IB_WR_MASKED_ATOMIC_CMP_AND_SWP or IB_WR_MASKED_ATOMIC_FETCH_AND_ADD)
-for every RDS atomic cmsg.  But the completion-side switch in
-rds_ib_send_unmap_op() only handles the non-masked opcodes, so a masked
-atomic completion falls through to default and returns rm == NULL while
-send->s_op is left set.  rds_ib_send_cqe_handler() then dereferences the
-NULL rm via rm->m_final_op, oopsing in softirq context.  An unprivileged
-AF_RDS sendmsg() of an atomic cmsg over an active RDS/IB connection
-triggers it; on hardware that natively accepts masked atomics (mlx4,
-mlx5) no extra setup is needed.
+This patch restricts setting Loose Source and Record Route (LSRR)
+and Strict Source and Record Route (SSRR) IP options to users
+with CAP_NET_RAW capability.
 
-  RDS/IB: rds_ib_send_unmap_op: unexpected opcode 0xd in WR!
-  Oops: general protection fault [#1] SMP KASAN
-  KASAN: null-ptr-deref in range [0x0000000000000190-0x0000000000000197]
-  RIP: rds_ib_send_cqe_handler+0x25c/0xb10 (net/rds/ib_send.c:282)
-  Call Trace:
-   <IRQ>
-   rds_ib_send_cqe_handler (net/rds/ib_send.c:282)
-   poll_scq (net/rds/ib_cm.c:274)
-   rds_ib_tasklet_fn_send (net/rds/ib_cm.c:294)
-   tasklet_action_common (kernel/softirq.c:943)
-   handle_softirqs (kernel/softirq.c:573)
-   run_ksoftirqd (kernel/softirq.c:479)
-   </IRQ>
-  Kernel panic - not syncing: Fatal exception in interrupt
+This prevents unprivileged applications from forcing packets to route
+through attacker-controlled nodes to leak TCP ISN and possibly other
+protocol information.
 
-Handle the masked atomic opcodes in the same case as the non-masked
-ones: they map to the same struct rds_message.atomic union member, so
-the existing container_of()/rds_ib_send_unmap_atomic() body is correct
-for them.
+While LSRR and SSRR are commonly filtered in many network environments,
+they may still be supported and forwarded along some network paths.
 
-Fixes: 20c72bd5f5f9 ("RDS: Implement masked atomic operations")
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
-Reviewed-by: Allison Henderson <achender@kernel.org>
-Link: https://patch.msgid.link/20260606192447.1179255-2-bestswngs@gmail.com
+RFC 7126 (Recommendations on Filtering of IPv4 Packets Containing
+IPv4 Options) recommend to drop these options in 4.3 and 4.4.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: Tamir Shahar <tamirthesis@gmail.com>
+Reported-by: Amit Klein <aksecurity@gmail.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20260602161547.2642155-1-edumazet@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rds/ib_send.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/ipv4/ip_options.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/net/rds/ib_send.c b/net/rds/ib_send.c
-index fcd04c29f543e6..d6be95542119f6 100644
---- a/net/rds/ib_send.c
-+++ b/net/rds/ib_send.c
-@@ -170,6 +170,8 @@ static struct rds_message *rds_ib_send_unmap_op(struct rds_ib_connection *ic,
- 		break;
- 	case IB_WR_ATOMIC_FETCH_AND_ADD:
- 	case IB_WR_ATOMIC_CMP_AND_SWP:
-+	case IB_WR_MASKED_ATOMIC_FETCH_AND_ADD:
-+	case IB_WR_MASKED_ATOMIC_CMP_AND_SWP:
- 		if (send->s_op) {
- 			rm = container_of(send->s_op, struct rds_message, atomic);
- 			rds_ib_send_unmap_atomic(ic, send->s_op, wc_status);
+diff --git a/net/ipv4/ip_options.c b/net/ipv4/ip_options.c
+index d898e1523a453e..7a60bbf4bee3aa 100644
+--- a/net/ipv4/ip_options.c
++++ b/net/ipv4/ip_options.c
+@@ -530,6 +530,10 @@ int ip_options_get(struct net *net, struct ip_options_rcu **optp,
+ 		kfree(opt);
+ 		return -EINVAL;
+ 	}
++	if (opt->opt.srr && !ns_capable(net->user_ns, CAP_NET_RAW)) {
++		kfree(opt);
++		return -EPERM;
++	}
+ 	kfree(*optp);
+ 	*optp = opt;
+ 	return 0;
 -- 
 2.53.0
 
