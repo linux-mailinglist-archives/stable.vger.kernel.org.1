@@ -1,70 +1,102 @@
-Return-Path: <stable+bounces-263687-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263689-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id EmkaE/04MWpgeQUAu9opvQ
-	(envelope-from <stable+bounces-263687-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 13:52:29 +0200
+	id S0U8IgA7MWofegUAu9opvQ
+	(envelope-from <stable+bounces-263689-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 14:01:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C5A368EF40
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 13:52:28 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8033A68F0CD
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 14:01:03 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=microchip.com header.s=mchp header.b=lcskD+PS;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263687-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-263687-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=reject) header.from=microchip.com;
+	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=N7N5Lq1O;
+	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=RZBShAU1;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263689-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263689-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=reject) header.from=qualcomm.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 54A463008FE8
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 11:51:45 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8797D304C418
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 11:55:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 548D843CEC7;
-	Tue, 16 Jun 2026 11:51:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 319B9449EC2;
+	Tue, 16 Jun 2026 11:55:08 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D54FA3B7750;
-	Tue, 16 Jun 2026 11:51:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85BF543D4EC
+	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 11:55:05 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781610701; cv=none; b=Btx2KbvLWfA1swVKZs9XTjRVoQYHpjkFnVCEFZfAkQDngm+RgOhCYDr51PoSUeW2p9Nx9dncUT59jea79LBL9pS6jrJRUVNWAoEKPKBiQ3z+J1vY9QVSwKsaWyKLa8CooUxifpfcX0d9hpfkGrcaK0r4o6DWHNWR4xoQSXqRAZk=
+	t=1781610908; cv=none; b=lS2a1VzDEw2Ahx2ZAvG9MMZgqJqInXkwO+j5eGGvLSmlrBXQLL6WV31QS4Kk19lie6LcQ3VHz/6pBJ/kDCfPfqS4sIoRrzVqTrUOarGgzVLs2MkqH5rP6SrhI21cmZWc93KqKk8cU0xB+RR4zPpNxatWOo2gb5trfBZoR+q6gxg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781610701; c=relaxed/simple;
-	bh=SxzBbuBlwjbtjYGLmz2Oeyz/+xEFkhUQzeE9vbG913c=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=hxD/4t+7jA5bRjp+VwtjmgFszOpjW3luHysGQlD9OCChrdm/3g/6SKKdl09qhMubQf8xgMDDBowBy2rrBZCp9hvIuccIVWriKQQXLZUt2USiiWVb8ir0XJqawFnQsp0GQbD7aME9Do75pNOhrJhDvSrDV4w3umJSKR/vXqo+Lu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=lcskD+PS; arc=none smtp.client-ip=68.232.153.233
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1781610699; x=1813146699;
-  h=from:date:subject:mime-version:content-transfer-encoding:
-   message-id:references:in-reply-to:to:cc;
-  bh=SxzBbuBlwjbtjYGLmz2Oeyz/+xEFkhUQzeE9vbG913c=;
-  b=lcskD+PScwFMQr9T5MKNDvLlTsfNCTYy8NPaj0IZJGqwLhmVmbQ+TEBE
-   JQUKnfJ3SgrpHIJojuEYrpgqaDDD7nm7qCaBIDj48dwidazQRQIZ2Y8zH
-   eQ1iZtLSUORrJd5B6JQ3F7uuQfSkyf4yzPQDJ300o4i2UOYQI+xH2q231
-   QQMvWHzftTHirv+4cbZ1XpRErxOIFwuweAbGFLgzPnRkio+T3KNId/2AU
-   ukSAVDWx5o1Mf3A4I8tOU4aQBHORIo9qESAnda69P41jIYQs1ym2B/Iav
-   frtehMVxOlY9Bkf/kxx4SLmoAi5p/uae2IbTyEqmRAjxOxIXFbtn+0NMI
-   Q==;
-X-CSE-ConnectionGUID: yUEv8uVTS++fLEtg8vYCdA==
-X-CSE-MsgGUID: ZeilqATYRyqrf+8fsThokA==
-X-IronPort-AV: E=Sophos;i="6.24,208,1774335600"; 
-   d="scan'208";a="68270805"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa1.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 16 Jun 2026 04:51:37 -0700
-Received: from chn-vm-ex02.mchp-main.com (10.10.85.144) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Tue, 16 Jun 2026 04:51:36 -0700
-Received: from [127.0.0.1] (10.10.85.11) by chn-vm-ex02.mchp-main.com
- (10.10.85.144) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
- Transport; Tue, 16 Jun 2026 04:51:33 -0700
-From: Balakrishnan Sambath <balakrishnan.s@microchip.com>
-Date: Tue, 16 Jun 2026 17:21:05 +0530
-Subject: [PATCH 10/10] media: microchip-isc: fix WB offset and gain
- register field masking
+	s=arc-20240116; t=1781610908; c=relaxed/simple;
+	bh=IkcWGshUEa4u7dhMzEQVwaerWwxFO++zUBrXJW6rS0I=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=NoBQfviav2yeOlEXdOcFtOLGBs1chr/P1GPWrci2XusfNMnqvBaRKqwt6GljtuLwV6p80pgZex5C2nrRES+wAbYUmCV9a5t0Y562Olcwy+uxppj0dFxJY2EbNq7OdtFob22TZXrNx50/ggANkw2wZst4V4xVX0t7D+ourfDDw5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=N7N5Lq1O; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=RZBShAU1; arc=none smtp.client-ip=205.220.168.131
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65GA9K2X2914540
+	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 11:55:05 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=BqZE6aH27VWQfilGircM46
+	jMc+11CYdxAMP4Jw18oyE=; b=N7N5Lq1OFoJ0CYokMHJIfzVUE42feUuuPAlMCW
+	bSyiqjlXwezZCSZI9F/oa97kHLKqVxOj7anvgIpmJUy0Gxcr8X80b6d2mKK3mSn2
+	1U2R9rHDuJcJXsRYunJvEbT5L35aJLI0zy4x7fEbScFp1SNvoCHbIWYY7kA5objE
+	WMtOQBIPMw0+QeK+Tvz4KMYjYmiKpN/0u/ra9Kuuw6j6zQOs57R85nKxxmT3+fAL
+	3rxTeiwjkZO6An/VLpzWfV+21F05CMl+8PUmOcjhQ6iRVK/jbNGfYtFxWx1mYb10
+	QQayrxpiLJJa9gLx3kpqT/kPxUhVicgjtgjIlJtHqj7o8jnA==
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4eu1761b1c-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 11:55:04 +0000 (GMT)
+Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-842446a3851so2399215b3a.0
+        for <stable@vger.kernel.org>; Tue, 16 Jun 2026 04:55:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1781610904; x=1782215704; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=BqZE6aH27VWQfilGircM46jMc+11CYdxAMP4Jw18oyE=;
+        b=RZBShAU1r4mVUAEY6NAVlS6cabAgs/elnO92K6A54fnkm3Qtnq7+2EMTXi7FoBWO02
+         wqsbtL3Ypzy60y8GGVNkWTxBC5JFpjAa7OyanarbCo+jd0J9U5y0023QKaV0CfBViDmj
+         W8H9ieZdx9lOuyASQW34gZXOoDJjjz7Zy0jQ8y6z6/r3u3Esb7mlXxezRejjwlOsIA0x
+         +Jn93K3XRiW0fK6UUqtkW3gCqtFfk+RbwFtN4hIscjSqDMnbQM+9VefBdkv//bgnYddW
+         +796gLj/2W8F4E+vVF8GZziY4h6kF4wyko0ciyPRyRrttxkOWCKWpGLX2Q82MqfZM3fD
+         c/mw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781610904; x=1782215704;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=BqZE6aH27VWQfilGircM46jMc+11CYdxAMP4Jw18oyE=;
+        b=KA0C8/Rb5ZuQrukb2AiHw6ebcz7YWUxSghC7lSg6x7tFjD4LwRl+lkmJkw+tzumITr
+         KlemDEGUxoPQOndzDfWRCuFVshdy3IboFX9QLvMzp98rJXOAsM9BAZ+g2lGuVQc8uy20
+         pmuQvcAeBsvnX7y4FqfaGlSUg56JpR3gPQS7HwQNrYaxEdc6dWM3+Cyl6CKHisPk6OPK
+         5LtXYFqvybAVpEicvBdtBUJsI+GyJZpL6AYBOzsHQs6suT56zQyOubudv+TxBCU7934w
+         IETm4CRPTjWIg9rKGHa1/sUGU8aXODZFWu6Uj24iaTtZlGdt3FrkjhFBB+dovZ6RYbm/
+         rtBQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/ioFEDWymZsLD0cCAITY5Z2DwHGqM8AM9JK/tDJlqBccGIg+0hxa5MaDRtP6wClHyONoATwIs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxIZYq02mwh9oimn0TUpmLYmkENsioBy7YV4xc54kS86U6hCBwu
+	tLp2G+xBlpRWowPTm77h6APy/kerwB9WTCn02eca5SX054MVskqK8rG5Iv4th1uQiy6vBMH6ZUy
+	5tFVbjYCrevvxoAc74FFU4xUeO4bS928re8P3Ic1xQemqr0CxyJqja0vyMRw=
+X-Gm-Gg: Acq92OEJ7mRYjqwL8Edi3IA2gswgiz60mMnvK9+eGkGKF9ATwV8ZHW5nJjURbZXeVWI
+	4s2tGG0h2j9vhS0G1KYt4w9XfUCO9XLHaTXS017llg2bXt477dKj4yv/mdC0VOhl+mgs8btSKlB
+	IbBiEWTgJOI1noTJOO7gZHOazjd5EZirRbBN8NoO6FVu5YRUgYdT6FXJedfak8QaXDwc+5riuBj
+	lLooyHVCH+RrYMygSKDype0FwSOGZxXKUSLyLAXa01+0LBd7CZIeKONJ3AWbbm+tPR4KWKGmYky
+	p2I5Emd0G39OSN5HpUvHLF+2ouwQ9pkuT3th6KnmEXVIjmx3HuvmbEs9T3l0KqYT7uLkXLXh3Tk
+	k928VUwK2xZDOcjaISOmVBJWE9pfLx/4/PaVLfYGCo8vj5Zkmyfc=
+X-Received: by 2002:a05:6a00:1907:b0:842:2ddb:e305 with SMTP id d2e1a72fcca58-844e1ab9f5amr15874128b3a.43.1781610904055;
+        Tue, 16 Jun 2026 04:55:04 -0700 (PDT)
+X-Received: by 2002:a05:6a00:1907:b0:842:2ddb:e305 with SMTP id d2e1a72fcca58-844e1ab9f5amr15874098b3a.43.1781610903559;
+        Tue, 16 Jun 2026 04:55:03 -0700 (PDT)
+Received: from hu-smankad-hyd.qualcomm.com ([202.46.22.19])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8434acf4b5csm16050549b3a.23.2026.06.16.04.54.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 16 Jun 2026 04:55:02 -0700 (PDT)
+From: Sneh Mankad <sneh.mankad@oss.qualcomm.com>
+Date: Tue, 16 Jun 2026 17:24:53 +0530
+Subject: [PATCH v3] pinctrl: qcom: Unconditionally mark gpio as wakeup
+ enable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -73,100 +105,158 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-ID: <20260616-balki-isc-prefix-fixes-v1-v1-10-b23677fc5ab6@microchip.com>
-References: <20260616-balki-isc-prefix-fixes-v1-v1-0-b23677fc5ab6@microchip.com>
-In-Reply-To: <20260616-balki-isc-prefix-fixes-v1-v1-0-b23677fc5ab6@microchip.com>
-To: Eugen Hristev <ehristev@kernel.org>, Mauro Carvalho Chehab
-	<mchehab@kernel.org>
-CC: Hans Verkuil <hverkuil@kernel.org>, Sakari Ailus
-	<sakari.ailus@linux.intel.com>, <linux-media@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, Balakrishnan Sambath
-	<balakrishnan.s@microchip.com>, <stable@vger.kernel.org>
-X-Mailer: b4 0.14.3
+Message-Id: <20260616-enable_wakeup_capable_gpios-v3-1-fb59647d89cb@oss.qualcomm.com>
+X-B4-Tracking: v=1; b=H4sIAIw5MWoC/5XNSw6CMBSF4a2Yji3pg1cduQ9jSCkXaARaW6kaw
+ t4tjB3o5Cb/HXxnQR6cBo9OhwU5CNprM8XgxwNSvZw6wLqJjRhhOUk5wTDJeoDqKW8w20pJu2d
+ ntfFY1SLlQkJZFAxFwTpo9WvXL9fYvfYP4977WKDb9zc3UExx1gAXdUtyItKz8T65z3JQZhyTe
+ NDGB/YHySJZKpZLVYiM0/ILua7rB21wq4IgAQAA
+X-Change-ID: 20260430-enable_wakeup_capable_gpios-cb9439ae8772
+To: Bjorn Andersson <andersson@kernel.org>, Linus Walleij <linusw@kernel.org>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Sneh Mankad <sneh.mankad@oss.qualcomm.com>,
+        Maulik Shah <maulik.shah@oss.qualcomm.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1781610899; l=3105;
+ i=sneh.mankad@oss.qualcomm.com; s=20250818; h=from:subject:message-id;
+ bh=IkcWGshUEa4u7dhMzEQVwaerWwxFO++zUBrXJW6rS0I=;
+ b=63/ySxmq4UtHp74zjtRfXCIVzdA1nKbfE7WhjCV7hFsTX1yJph99Hoiu7jCnjvdAcpGXY05M0
+ dZta5VjWstWAVVUwVYWl8QdLDmgBclpumiWMGiMuBcfMIu4tufXwvQj
+X-Developer-Key: i=sneh.mankad@oss.qualcomm.com; a=ed25519;
+ pk=sv57EGwdcfnp6xJmoBCIT1JFSqWI+gawRHkJWj/T2B0=
+X-Proofpoint-GUID: 9zkQdJVzihJJ4s-drqZFlpiaUm-yCoWa
+X-Proofpoint-ORIG-GUID: 9zkQdJVzihJJ4s-drqZFlpiaUm-yCoWa
+X-Authority-Analysis: v=2.4 cv=I4RVgtgg c=1 sm=1 tr=0 ts=6a313998 cx=c_pps
+ a=m5Vt/hrsBiPMCU0y4gIsQw==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
+ a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=eoimf2acIAo5FJnRuUoq:22
+ a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=SnbX5S4nitk782EHpS4A:9 a=QEXdDO2ut3YA:10
+ a=IoOABgeZipijB_acs4fv:22
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjE2MDEyMSBTYWx0ZWRfX5ALm5atp7acX
+ eQFsee4xSIG5ctgJa4mJo11jBaTQva7VIKPH9JCKPv7sj8hMJl75ZKTbRKUeymm0rj3BjdWvnAn
+ r5HhFyMXdkTHuuqwig8LJRa+LPEEZQE=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjE2MDEyMSBTYWx0ZWRfX+pT6vFjT8XYe
+ bcGwfhB47btm6VXzCektMCvq3m/PW48XOOlnfngmqSl6YBWNuloZ4Os0bVj820HcX+Q+/u9ceOz
+ dfvGthH0lnZeVtvjWtQI10t/+s16xuYgbZR/+luWTVPoZ6GDUHXMJQTKkGZ8kwrW/kjbzLj5Re9
+ mRjg7kdPZ9nICmBallJ+P+0UMSkppleVuMZB8UBaiev2t3PbPxEoKth06u5VijDFPAPs1H3ZSYf
+ iMs5zJEV5iNBMqcbTy+fEfhHt4fErhGKnlNMKsILG1KHGdNNRM8x4P9bP3x7brJ6HthoJqjz85Q
+ 4xKqlVBK4l5Dchk6sXbLzoUR1MS/V4B2FHC4u0rkdnc34ZtfHANMmLX6yRekjOihcKZsQ8V/OF/
+ y72nSG+K7PpbktjOhmq7lUgB5zTlDL6IYZ/9yNowta+COnD4i5uskW0Z62cNS/hDFpxKbTQbs37
+ tQW9cDWfnc1oieGBYaw==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-16_03,2026-06-15_04,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 phishscore=0 spamscore=0 suspectscore=0 lowpriorityscore=0
+ priorityscore=1501 clxscore=1015 bulkscore=0 malwarescore=0 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606040000 definitions=main-2606160121
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[microchip.com,reject];
-	R_DKIM_ALLOW(-0.20)[microchip.com:s=mchp];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-263687-lists,stable=lfdr.de];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER(0.00)[balakrishnan.s@microchip.com,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:ehristev@kernel.org,m:mchehab@kernel.org,m:hverkuil@kernel.org,m:sakari.ailus@linux.intel.com,m:linux-media@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:balakrishnan.s@microchip.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
 	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-263689-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[microchip.com:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[balakrishnan.s@microchip.com,stable@vger.kernel.org];
+	FORGED_SENDER(0.00)[sneh.mankad@oss.qualcomm.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:andersson@kernel.org,m:linusw@kernel.org,m:neil.armstrong@linaro.org,m:krzk@kernel.org,m:linux-arm-msm@vger.kernel.org,m:linux-gpio@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:sneh.mankad@oss.qualcomm.com,m:maulik.shah@oss.qualcomm.com,s:lists@lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,oss.qualcomm.com:dkim,oss.qualcomm.com:mid,oss.qualcomm.com:from_mime,qualcomm.com:dkim,qualcomm.com:email];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sneh.mankad@oss.qualcomm.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[microchip.com:dkim,microchip.com:email,microchip.com:mid,microchip.com:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7C5A368EF40
+X-Rspamd-Queue-Id: 8033A68F0CD
 
-ISC_WB_O_* and ISC_WB_G_* pack two 13-bit fields per register. Sign
-extension from negative offsets corrupts the upper field. Mask both
-fields to 13 bits before packing.
+GPIO interrupts that are wakeup capable need to be forwarded to wakeup
+capable parent irqchip. This is done via writing to it's wakeup_enable bit.
 
-Fixes: 91b4e487b0c6 ("media: microchip: add ISC driver as Microchip ISC")
-Cc: stable@vger.kernel.org
-Signed-off-by: Balakrishnan Sambath <balakrishnan.s@microchip.com>
+Currently the bit is set only for PDC irqchip by checking skip_wake_irqs.
+skip_wake_irqs is set to differentiate between parent irqchips MPM and
+PDC. It is set when the parent irqchip is PDC to inform pinctrl about
+skipping the IRQ setting up at TLMM.
+
+However, the functionality to forward GPIO interrupts during SoC low
+power mode is needed regardless of which parent irqchip it is.
+Without the functionality it is impossible for MPM irqchip to detect the
+GPIO interrupt during SoC low power mode since for MPM irqchip the
+skip_wake_irqs is always false.
+
+Remove skip_wake_irqs condition when setting wakeup enable bit to allow
+forwarding GPIO interrupts for SoCs using MPM irqchip too.
+
+Fixes: 76b446f5b86e ("pinctrl: qcom: handle intr_target_reg wakeup_present/enable bits")
+Signed-off-by: Sneh Mankad <sneh.mankad@oss.qualcomm.com>
+Reviewed-by: Maulik Shah <maulik.shah@oss.qualcomm.com>
 ---
- .../media/platform/microchip/microchip-isc-base.c   | 21 +++++++++++++--------
- 1 file changed, 13 insertions(+), 8 deletions(-)
+Changes in v3:
+- Added explanation about skip_wake_irqs in commit message.
+- Link to v2: https://lore.kernel.org/r/20260430-enable_wakeup_capable_gpios-v2-1-8c26ac795318@oss.qualcomm.com
 
-diff --git a/drivers/media/platform/microchip/microchip-isc-base.c b/drivers/media/platform/microchip/microchip-isc-base.c
-index a09d6d1ca7e5..19c371458eee 100644
---- a/drivers/media/platform/microchip/microchip-isc-base.c
-+++ b/drivers/media/platform/microchip/microchip-isc-base.c
-@@ -61,18 +61,23 @@ static inline void isc_update_awb_ctrls(struct isc_device *isc)
- 
- 	/* In here we set our actual hw pipeline config */
- 
-+	/*
-+	 * Mask offset fields to 13 bits. Sign extension of negative s32
-+	 * values would otherwise corrupt the adjacent field.
-+	 */
- 	regmap_write(isc->regmap, ISC_WB_O_RGR,
--		     ((ctrls->offset[ISC_HIS_CFG_MODE_R])) |
--		     ((ctrls->offset[ISC_HIS_CFG_MODE_GR]) << 16));
-+		     ((u32)ctrls->offset[ISC_HIS_CFG_MODE_R] & GENMASK(12, 0)) |
-+		     (((u32)ctrls->offset[ISC_HIS_CFG_MODE_GR] & GENMASK(12, 0)) << 16));
- 	regmap_write(isc->regmap, ISC_WB_O_BGB,
--		     ((ctrls->offset[ISC_HIS_CFG_MODE_B])) |
--		     ((ctrls->offset[ISC_HIS_CFG_MODE_GB]) << 16));
-+		     ((u32)ctrls->offset[ISC_HIS_CFG_MODE_B] & GENMASK(12, 0)) |
-+		     (((u32)ctrls->offset[ISC_HIS_CFG_MODE_GB] & GENMASK(12, 0)) << 16));
-+	/* Gains are 13-bit unsigned fields [12:0] and [28:16] */
- 	regmap_write(isc->regmap, ISC_WB_G_RGR,
--		     ctrls->gain[ISC_HIS_CFG_MODE_R] |
--		     (ctrls->gain[ISC_HIS_CFG_MODE_GR] << 16));
-+		     (ctrls->gain[ISC_HIS_CFG_MODE_R] & GENMASK(12, 0)) |
-+		     ((ctrls->gain[ISC_HIS_CFG_MODE_GR] & GENMASK(12, 0)) << 16));
- 	regmap_write(isc->regmap, ISC_WB_G_BGB,
--		     ctrls->gain[ISC_HIS_CFG_MODE_B] |
--		     (ctrls->gain[ISC_HIS_CFG_MODE_GB] << 16));
-+		     (ctrls->gain[ISC_HIS_CFG_MODE_B] & GENMASK(12, 0)) |
-+		     ((ctrls->gain[ISC_HIS_CFG_MODE_GB] & GENMASK(12, 0)) << 16));
- }
- 
- static inline void isc_reset_awb_ctrls(struct isc_device *isc)
+Changes in v2:
+- Modified comment to specify MPM HW as well.
+- Spelling correction.
+- Link to v1: https://lore.kernel.org/r/20260430-enable_wakeup_capable_gpios-v1-1-5de39bf06094@oss.qualcomm.com
+---
+ drivers/pinctrl/qcom/pinctrl-msm.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
+diff --git a/drivers/pinctrl/qcom/pinctrl-msm.c b/drivers/pinctrl/qcom/pinctrl-msm.c
+index 45b3a2763eb85405fecdd4770ba3d4ab684563f0..6a24f9b5e4a979528ba6b5b87fd297c2783ec765 100644
+--- a/drivers/pinctrl/qcom/pinctrl-msm.c
++++ b/drivers/pinctrl/qcom/pinctrl-msm.c
+@@ -1242,12 +1242,12 @@ static int msm_gpio_irq_reqres(struct irq_data *d)
+ 	/*
+ 	 * If the wakeup_enable bit is present and marked as available for the
+ 	 * requested GPIO, it should be enabled when the GPIO is marked as
+-	 * wake irq in order to allow the interrupt event to be transfered to
+-	 * the PDC HW.
++	 * wake irq in order to allow the interrupt event to be transferred to
++	 * the PDC/MPM HW.
+ 	 * While the name implies only the wakeup event, it's also required for
+ 	 * the interrupt event.
+ 	 */
+-	if (test_bit(d->hwirq, pctrl->skip_wake_irqs) && g->intr_wakeup_present_bit) {
++	if (g->intr_wakeup_present_bit) {
+ 		u32 intr_cfg;
+ 
+ 		raw_spin_lock_irqsave(&pctrl->lock, flags);
+@@ -1275,7 +1275,7 @@ static void msm_gpio_irq_relres(struct irq_data *d)
+ 	unsigned long flags;
+ 
+ 	/* Disable the wakeup_enable bit if it has been set in msm_gpio_irq_reqres() */
+-	if (test_bit(d->hwirq, pctrl->skip_wake_irqs) && g->intr_wakeup_present_bit) {
++	if (g->intr_wakeup_present_bit) {
+ 		u32 intr_cfg;
+ 
+ 		raw_spin_lock_irqsave(&pctrl->lock, flags);
+
+---
+base-commit: b4e07588e743c989499ca24d49e752c074924a9a
+change-id: 20260430-enable_wakeup_capable_gpios-cb9439ae8772
+
+Best regards,
 -- 
-2.34.1
+Sneh Mankad <sneh.mankad@oss.qualcomm.com>
 
 
