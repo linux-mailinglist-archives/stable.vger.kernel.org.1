@@ -1,60 +1,68 @@
-Return-Path: <stable+bounces-265869-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264884-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id I6jFCzqSMWoinAUAu9opvQ
-	(envelope-from <stable+bounces-265869-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:13:14 +0200
+	id WcCWJTmAMWoGlAUAu9opvQ
+	(envelope-from <stable+bounces-264884-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:56:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EC9F693E87
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:13:13 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93D73692983
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:56:24 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=xftsxSKo;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265869-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265869-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Ug33zjP4;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264884-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264884-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A325331AD628
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:10:30 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C79033018CD3
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:46:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 367503D525E;
-	Tue, 16 Jun 2026 18:10:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6069043E4BF;
+	Tue, 16 Jun 2026 16:46:38 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DF2C3D091A;
-	Tue, 16 Jun 2026 18:10:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3011D3C063F;
+	Tue, 16 Jun 2026 16:46:37 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781633430; cv=none; b=l2OuyVoUCWyprGeKkU6KMhzS3zgqd/L3EYV/AWdS1UINpDI3Jeq4ZWuYIPJ+csS9ndiVR4DwMLkGmlxpd84NgTz8CIsiqQc5/GdxdEsFz36iN3kgOlcSStbogN0PifKtlu8F7xipGlkG0UHqQ1buBpfxH5Uw3HQM1ZNaJEcSzsM=
+	t=1781628398; cv=none; b=N8ZOwE4zLh3ic6ixDIplGcpvDAcVTyKXKSq86Zk21e1tLvhh3bE3tqvXTXw8wLjli2yFAJ8CPH1YAIZi6NhDtFUuMCIMPn5y9V6IZNq7da0O0LOYX2JWFpBzug1ynipEHp4JJ9uygR65z98jTftEid0zTS9VkmziwD1SiY4qv9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781633430; c=relaxed/simple;
-	bh=7GV5+lSItvDjqg2UXWv52BLoEN9QvD4pA2QbBnxBCvk=;
+	s=arc-20240116; t=1781628398; c=relaxed/simple;
+	bh=vIRGES+nopC7RBTcLTtCxh72GG7jDoNyWifOzMgTINM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nYgXpXTobWLuDvFR6KVNsvcLWMYz7kPmBTDJAMmsuMb8Z4lpKcDxUCnOCIHzlCft5UJrcUWRTUntFJI1uJ6J777p6aGnA2q26copwUjroLVrYVuPmu3LdSx5X2NnNXlhbzIbvr4uf/AcQb634qmM0vzWi2HsAFlws/Bb+zDEFsY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xftsxSKo; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA3611F000E9;
-	Tue, 16 Jun 2026 18:10:27 +0000 (UTC)
+	 MIME-Version; b=nk5nsDb65jfENJCh6rZvt1K7HtruZ/Mt2olGMcesEbnvkyF64Uat2JIerrkmRD6IvE7YNvpAbCavID2iuvglq79eENghVsKvgsoPgc5VTe4AJKe+MJud10N8W6dvSnMHhcbMZ3+afkLStMzZzHmYdaYPp6GrRqwXksDQgJiA+8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ug33zjP4; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBDB81F000E9;
+	Tue, 16 Jun 2026 16:46:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781633428;
-	bh=6UclTnMBuzPbmxDfYpF894rrrCTLA8+IhOeT+yTnGio=;
+	s=korg; t=1781628397;
+	bh=Gn65VriyqpoutqJU8Hw9q59bu8PqCxMeg2ABBeQXQWg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=xftsxSKojKCuIU6BmJFUyb2s5bhwrOOSUG+SI9Qr7mtiBT0QtmeKwWN9MjvWCLYAa
-	 fy6A8bCDd7sq9Q9MzFxeoo0yWztkvo0+4RRGUkKcIU75DzxOuH6IcTODn/nglDN9+p
-	 293R8u8jxzCHqA5qKcK3Cb0ZoMGtuB6TrD9wSXNc=
+	b=Ug33zjP4OdHXn5Vhxe4CNMwSBxkGmhMOYNLCzN0t2R9wCaH7ABCvlbPyP3VQ6MO9x
+	 5mMaX9sIa6FejHS/SUWh0JTI0fG5syA6eWk0Zs7+TwJbe7iK1OPjXUJa8+BySzHdi1
+	 A39HL2GNC5KOuzcMfAR+9B6t8Pylx4V5pp1WcQEs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aldo Conte <aldocontelk@gmail.com>,
-	Jonathan Cameron <jic23@kernel.org>
-Subject: [PATCH 5.15 077/411] iio: light: cm3323: fix reg_conf not being initialized correctly
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Benson Leung <bleung@chromium.org>,
+	Jameson Thies <jthies@google.com>,
+	Nathan Rebello <nathan.c.rebello@gmail.com>,
+	Johan Hovold <johan@kernel.org>,
+	Pooja Katiyar <pooja.katiyar@intel.com>,
+	Hsin-Te Yuan <yuanhsinte@chromium.org>,
+	Abel Vesa <abelvesa@kernel.org>,
+	stable <stable@kernel.org>,
+	Abel Vesa <abel.vesa@oss.qualcomm.com>
+Subject: [PATCH 6.6 088/452] usb: typec: ucsi: validate connector number in ucsi_connector_change()
 Date: Tue, 16 Jun 2026 20:25:15 +0530
-Message-ID: <20260616145104.365017747@linuxfoundation.org>
+Message-ID: <20260616145122.467891644@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,27 +74,28 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-265869-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:aldocontelk@gmail.com,m:jic23@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-264884-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:heikki.krogerus@linux.intel.com,m:bleung@chromium.org,m:jthies@google.com,m:nathan.c.rebello@gmail.com,m:johan@kernel.org,m:pooja.katiyar@intel.com,m:yuanhsinte@chromium.org,m:abelvesa@kernel.org,m:stable@kernel.org,m:abel.vesa@oss.qualcomm.com,m:nathancrebello@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.intel.com,chromium.org,google.com,gmail.com,kernel.org,intel.com,oss.qualcomm.com];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -94,79 +103,78 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,vger.kernel.org:from_smtp,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,chromium.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7EC9F693E87
+X-Rspamd-Queue-Id: 93D73692983
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aldo Conte <aldocontelk@gmail.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit 1f4f0bcc5255dec5c4c3a1551bf49d8c33b69b20 upstream.
+commit 288a81a8507052bcfbf884d39a463c44c42c5fd9 upstream.
 
-The code stores the return value of i2c_smbus_write_word_data()
-in data->reg_conf; however, this value represents the result
-of the write operation and not the value actually written to
-the configuration register. This meant that the contents of
-data->reg_conf did not truly reflect the contents
-of the hardware register.
+The connector number in a UCSI CCI notification is a 7-bit field
+supplied by the PPM.  ucsi_connector_change() uses it to index the
+ucsi->connector[] array without checking it against the number of
+connectors the PPM reported at init time, so a buggy or malicious PPM
+(EC firmware, or an I2C-attached UCSI controller on the ccg / stm32g0 /
+glink transports) can drive schedule_work() on memory past the end of
+the array.
 
-Instead, save the value of the register before the write
-and use this value in the I2C write.
+Reject connector numbers that are zero or exceed cap.num_connectors
+before dereferencing the array.
 
-The bug was found by code inspection: i2c_smbus_write_word_data()
-returns 0 on success, not the value written to the register.
-
-Tested using i2c-stub on a Raspberry Pi 3B running a custom 6.19.10
-kernel. Before loading the driver, the configuration register 0x00
-CM3323_CMD_CONF was populated with 0x0030 using
-`i2cset -y 11 0x10 0x00 0x0030 w`, encoding an integration time of 320ms
-in bits[6:4].
-
-Due to incorrect initialization of data->reg_conf in
-cm3323_init(), the print of integration_time returns 0.040000
-instead of the expected 0.320000. This happens because the read of the
-integration_time depends on cm3323_get_it_bits() that is based on the
-value of data->reg_conf, which is erroneously set to 0.
-
-With this fix applied, data->reg_conf correctly saves 0x0030 after init
-and the successive integration_time reports 0.320000 as expected.
-
-Fixes: 8b0544263761 ("iio: light: Add support for Capella CM3323 color sensor")
-Cc: stable@vger.kernel.org
-Signed-off-by: Aldo Conte <aldocontelk@gmail.com>
-Signed-off-by: Jonathan Cameron <jic23@kernel.org>
+Assisted-by: gkh_clanker_t1000
+Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Cc: Benson Leung <bleung@chromium.org>
+Cc: Jameson Thies <jthies@google.com>
+Cc: Nathan Rebello <nathan.c.rebello@gmail.com>
+Cc: Johan Hovold <johan@kernel.org>
+Cc: Pooja Katiyar <pooja.katiyar@intel.com>
+Cc: Hsin-Te Yuan <yuanhsinte@chromium.org>
+Cc: Abel Vesa <abelvesa@kernel.org>
+Cc: stable <stable@kernel.org>
+Reviewed-by: Abel Vesa <abel.vesa@oss.qualcomm.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Reviewed-by: Benson Leung <bleung@chromium.org>
+Link: https://patch.msgid.link/2026051351-truck-steadfast-df48@gregkh
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/light/cm3323.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/usb/typec/ucsi/ucsi.c |   11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
---- a/drivers/iio/light/cm3323.c
-+++ b/drivers/iio/light/cm3323.c
-@@ -89,15 +89,14 @@ static int cm3323_init(struct iio_dev *i
+--- a/drivers/usb/typec/ucsi/ucsi.c
++++ b/drivers/usb/typec/ucsi/ucsi.c
+@@ -960,13 +960,22 @@ out_unlock:
+  */
+ void ucsi_connector_change(struct ucsi *ucsi, u8 num)
+ {
+-	struct ucsi_connector *con = &ucsi->connector[num - 1];
++	struct ucsi_connector *con;
  
- 	/* enable sensor and set auto force mode */
- 	ret &= ~(CM3323_CONF_SD_BIT | CM3323_CONF_AF_BIT);
-+	data->reg_conf = ret;
- 
--	ret = i2c_smbus_write_word_data(data->client, CM3323_CMD_CONF, ret);
-+	ret = i2c_smbus_write_word_data(data->client, CM3323_CMD_CONF, data->reg_conf);
- 	if (ret < 0) {
- 		dev_err(&data->client->dev, "Error writing reg_conf\n");
- 		return ret;
+ 	if (!(ucsi->ntfy & UCSI_ENABLE_NTFY_CONNECTOR_CHANGE)) {
+ 		dev_dbg(ucsi->dev, "Early connector change event\n");
+ 		return;
  	}
  
--	data->reg_conf = ret;
--
- 	return 0;
++	if (!num || num > ucsi->cap.num_connectors) {
++		dev_warn_ratelimited(ucsi->dev,
++				     "Bogus connector change on %u (max %u)\n",
++				     num, ucsi->cap.num_connectors);
++		return;
++	}
++
++	con = &ucsi->connector[num - 1];
++
+ 	if (!test_and_set_bit(EVENT_PENDING, &ucsi->flags))
+ 		schedule_work(&con->work);
  }
- 
 
 
 
