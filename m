@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-265124-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264134-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id s/ydHdaDMWpylQUAu9opvQ
-	(envelope-from <stable+bounces-265124-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:11:50 +0200
+	id iNQnCFRwMWpVjQUAu9opvQ
+	(envelope-from <stable+bounces-264134-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:48:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3DCC692D6C
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:11:49 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44F7569166D
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:48:35 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=X6SmTf7l;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265124-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265124-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=MfdX6Lxm;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264134-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-264134-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6441C308E13C
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:06:32 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id EC9C83037A8A
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:38:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78248472767;
-	Tue, 16 Jun 2026 17:06:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36A7E44CAE6;
+	Tue, 16 Jun 2026 15:38:26 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 445CF43E4BC;
-	Tue, 16 Jun 2026 17:06:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D84D834889F;
+	Tue, 16 Jun 2026 15:38:24 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781629589; cv=none; b=CmVnDrTKVoK71xjhIyhQXvVkiA+35a44bBHAlG81zYhU6BMSIM7DRVBfduS95jbJFktSaj6C6Wb/lL4TD6e3cDX9urMxC3ozUBnEG/wJmMRAF6Dqy8UVek/A4pU8s3FVPbStWc4rvtbSIJfNiSB24Wl0YQ9O98PVOsjSfxwLbGE=
+	t=1781624306; cv=none; b=DaM4Dsbu9Ci1qZuuK6DvdVe71WxjwlKOr7/GUNDpS0ncfX1Iopwr3Zzmuulf4sfy75m3wy564L804JJ1Z/Y9vfzL47c+P3uW7h5RBdYMu0dB6q5ROBq3v5Xz7Ll9B3D/izUSokg5uzUeHqLOC0mU7gOMFaJX0HzzjiosZiQ3wyY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781629589; c=relaxed/simple;
-	bh=DntLDfFYAXgF1fHDvrQqg2/CtAhZMSKvRjf5qm8WvVE=;
+	s=arc-20240116; t=1781624306; c=relaxed/simple;
+	bh=lag4pSLh0H+JuFdEhe+7MAtTOLMrarH9xbRTR7WxELQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kXJXjTEXdmyRgnhmbbGamS5PghhzCWhLkI/KciH8xyAQC7gKm+DXVlNn1nJiOh9rX5MEBJUoMoFF/6ATxlT3dHfYvVfOPmL5PSKe4wbwGbab7S1WXrZgj904cNdVeYf3X+pV857M3rX/DLcaLr+uMEnSP6ttQutRD2hPoJRAEtk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X6SmTf7l; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 544861F000E9;
-	Tue, 16 Jun 2026 17:06:27 +0000 (UTC)
+	 MIME-Version; b=AVEt2FZ1pOauW9YTH1H0EVjIqPISU67UbirpnvGw4LwfBuxEyu7s3r3ZnHJnGBg+Bp6guIRNFfDrtwnFEQdJTPQkSIHPVj0BwTQD2skimjNFnqStiParTDSBBkAyse91vcKhKOty4iGw2BrY/ifQfis7TLWga5dj2wO/pkskmaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MfdX6Lxm; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8160D1F000E9;
+	Tue, 16 Jun 2026 15:38:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781629588;
-	bh=zFEYZJWToI4ajaU09afYg0pK9fn/WMpkIkwPF6ssgdo=;
+	s=korg; t=1781624304;
+	bh=55E7az65Dhx8cXETbsvF+F1biIVO07rbebvigVmUYrw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=X6SmTf7loHx/EHEv1a2G3xwGdnbZMUO1c5Fd97tdmLxp/Y0OdwkQke9uOxjPQhcXw
-	 I69M6QqymnfcLfgYf7d96vqTrRuSoSYtoiWuPBSJPeD9co7st2lCN4Gccp7kWeJrUi
-	 aXw7s3CLK3ZSSp3yaz6xHjwmdn0JUAn5PcmsdqnE=
+	b=MfdX6LxmKFpX8X70MHoKTe1GOTfEbt/XA8jA/JM1MSJ9BfXw3ylaTIVLS4mqZCsC8
+	 ejz77vNMq31znktMXaKAovBQpMCg8IrQKsx9bl3NzXIVtaRvn1JlToGGwSiRQJUO6q
+	 HJSfOfsnfGUCHmT2ay+FogMbslSuiWFnSqbVllOE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 315/452] mptcp: close TOCTOU race while computing rcv_wnd
+	Huan He <hehuan1@eswincomputing.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulfh@kernel.org>
+Subject: [PATCH 7.0 311/378] mmc: sdhci-of-dwcmshc: Fix reset, clk, and SDIO support for Eswin EIC7700
 Date: Tue, 16 Jun 2026 20:29:02 +0530
-Message-ID: <20260616145134.043606294@linuxfoundation.org>
+Message-ID: <20260616145126.588668097@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,21 +72,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265124-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264134-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:pabeni@redhat.com,m:matttbe@kernel.org,m:kuba@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:hehuan1@eswincomputing.com,m:adrian.hunter@intel.com,m:ulfh@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -98,134 +98,181 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,eswincomputing.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: F3DCC692D6C
+X-Rspamd-Queue-Id: 44F7569166D
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Huan He <hehuan1@eswincomputing.com>
 
-commit 8ab24fdebc369c0dfb90f82c1650b1e66662bb45 upstream.
+commit 8d4ae34e997062076a9098602eaca43353665bd9 upstream.
 
-The MPTCP output path access locklessly the MPTCP-level ack_seq
-in multiple times, using possibly different values for the data_ack
-in the DSS option and to compute the announced rcv wnd for the same
-packet.
+The EIC7700 code in sdhci-of-dwcmshc uses host->mmc->caps2 to select
+different configuration paths for different card types. The current logic
+distinguishes eMMC and SD, but does not handle SDIO separately.
 
-Refactor the cote to avoid inconsistencies which may confuse the
-peer. Also ensure that the MPTCP level rcv wnd is updated only when
-the egress packet actually contains a DSS ack.
+Update the EIC7700 card-type checks so that eMMC, SD and SDIO are
+distinguished explicitly.
 
-Fixes: fa3fe2b15031 ("mptcp: track window announced to peer")
+Switch the reset path to dwcmshc_reset() so that pending interrupt state
+is cleared consistently, and use sdhci_enable_clk() so the clock enable
+sequence follows the standard SDHCI flow.
+
+Fixes: 32b2633219d3 ("mmc: sdhci-of-dwcmshc: Add support for Eswin EIC7700")
+Signed-off-by: Huan He <hehuan1@eswincomputing.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260602-net-mptcp-misc-fixes-7-1-rc7-v2-3-856831229976@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Ulf Hansson <ulfh@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/options.c |   36 ++++++++++++++++++------------------
- 1 file changed, 18 insertions(+), 18 deletions(-)
+ drivers/mmc/host/sdhci-of-dwcmshc.c |   44 ++++++++++++++++++------------------
+ 1 file changed, 22 insertions(+), 22 deletions(-)
 
---- a/net/mptcp/options.c
-+++ b/net/mptcp/options.c
-@@ -571,7 +571,6 @@ static bool mptcp_established_options_ds
- 	struct mptcp_ext *mpext;
- 	unsigned int ack_size;
- 	bool ret = false;
--	u64 ack_seq;
+--- a/drivers/mmc/host/sdhci-of-dwcmshc.c
++++ b/drivers/mmc/host/sdhci-of-dwcmshc.c
+@@ -251,6 +251,7 @@
+ #define PHY_DELAY_CODE_MAX		0x7f
+ #define PHY_DELAY_CODE_EMMC		0x17
+ #define PHY_DELAY_CODE_SD		0x55
++#define PHY_DELAY_CODE_SDIO		0x29
  
- 	opts->csum_reqd = READ_ONCE(msk->csum_enabled);
- 	mpext = skb ? mptcp_get_ext(skb) : NULL;
-@@ -602,14 +601,11 @@ static bool mptcp_established_options_ds
- 		return ret;
- 	}
+ enum dwcmshc_rk_type {
+ 	DWCMSHC_RK3568,
+@@ -1273,10 +1274,7 @@ static void sdhci_eic7700_set_clock(stru
+ 	clk_set_rate(pltfm_host->clk, clock);
  
--	ack_seq = READ_ONCE(msk->ack_seq);
- 	if (READ_ONCE(msk->use_64bit_ack)) {
- 		ack_size = TCPOLEN_MPTCP_DSS_ACK64;
--		opts->ext_copy.data_ack = ack_seq;
- 		opts->ext_copy.ack64 = 1;
- 	} else {
- 		ack_size = TCPOLEN_MPTCP_DSS_ACK32;
--		opts->ext_copy.data_ack32 = (uint32_t)ack_seq;
- 		opts->ext_copy.ack64 = 0;
- 	}
- 	opts->ext_copy.use_ack = 1;
-@@ -1295,19 +1291,14 @@ bool mptcp_incoming_options(struct sock
- 	return true;
+ 	clk = sdhci_readw(host, SDHCI_CLOCK_CONTROL);
+-	clk |= SDHCI_CLOCK_INT_EN;
+-	sdhci_writew(host, clk, SDHCI_CLOCK_CONTROL);
+-
+-	dwcmshc_enable_card_clk(host);
++	sdhci_enable_clk(host, clk);
  }
  
--static void mptcp_set_rwin(struct tcp_sock *tp, struct tcphdr *th)
-+static u64 mptcp_set_rwin(struct mptcp_sock *msk, struct tcp_sock *tp,
-+			  struct tcphdr *th, u64 ack_seq)
+ static void sdhci_eic7700_config_phy_delay(struct sdhci_host *host, int delay)
+@@ -1337,7 +1335,7 @@ static void sdhci_eic7700_config_phy(str
+ 
+ static void sdhci_eic7700_reset(struct sdhci_host *host, u8 mask)
  {
- 	const struct sock *ssk = (const struct sock *)tp;
--	struct mptcp_subflow_context *subflow;
--	u64 ack_seq, rcv_wnd_old, rcv_wnd_new;
--	struct mptcp_sock *msk;
-+	u64 rcv_wnd_old, rcv_wnd_new;
- 	u32 new_win;
- 	u64 win;
+-	sdhci_reset(host, mask);
++	dwcmshc_reset(host, mask);
  
--	subflow = mptcp_subflow_ctx(ssk);
--	msk = mptcp_sk(subflow->conn);
--
--	ack_seq = READ_ONCE(msk->ack_seq);
- 	rcv_wnd_new = ack_seq + tp->rcv_wnd;
+ 	/* after reset all, the phy's config will be clear */
+ 	if (mask == SDHCI_RESET_ALL)
+@@ -1434,18 +1432,17 @@ static int sdhci_eic7700_phase_code_tuni
+ {
+ 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
+ 	struct dwcmshc_priv *priv = sdhci_pltfm_priv(pltfm_host);
+-	u32 sd_caps = MMC_CAP2_NO_MMC | MMC_CAP2_NO_SDIO;
++	u32 emmc_caps = MMC_CAP2_NO_SD | MMC_CAP2_NO_SDIO;
+ 	int phase_code = -1;
+ 	int code_range = -1;
+-	bool is_sd = false;
+ 	int code_min = -1;
+ 	int code_max = -1;
+ 	int cmd_error = 0;
++	bool is_emmc;
+ 	int ret = 0;
+ 	int i = 0;
  
- 	rcv_wnd_old = atomic64_read(&msk->rcv_wnd_sent);
-@@ -1359,7 +1350,7 @@ raise_win:
+-	if ((host->mmc->caps2 & sd_caps) == sd_caps)
+-		is_sd = true;
++	is_emmc = (host->mmc->caps2 & emmc_caps) == emmc_caps;
  
- update_wspace:
- 	WRITE_ONCE(msk->old_wspace, tp->rcv_wnd);
--	subflow->rcv_wnd_sent = rcv_wnd_new;
-+	return rcv_wnd_new;
- }
+ 	for (i = 0; i <= MAX_PHASE_CODE; i++) {
+ 		/* Centered Phase code */
+@@ -1454,8 +1451,8 @@ static int sdhci_eic7700_phase_code_tuni
+ 		host->ops->reset(host, SDHCI_RESET_CMD | SDHCI_RESET_DATA);
  
- static void mptcp_track_rwin(struct tcp_sock *tp)
-@@ -1471,13 +1462,25 @@ void mptcp_write_options(struct tcphdr *
- 		*ptr++ = mptcp_option(MPTCPOPT_DSS, len, 0, flags);
- 
- 		if (mpext->use_ack) {
-+			struct mptcp_sock *msk;
-+			u64 ack_seq;
-+
-+			/* DSS option is set only by mptcp_established_options,
-+			 * the caller is __tcp_transmit_skb() and ssk is always
-+			 * not NULL.
-+			 */
-+			subflow = mptcp_subflow_ctx(ssk);
-+			msk = mptcp_sk(subflow->conn);
-+			ack_seq = READ_ONCE(msk->ack_seq);
- 			if (mpext->ack64) {
--				put_unaligned_be64(mpext->data_ack, ptr);
-+				put_unaligned_be64(ack_seq, ptr);
- 				ptr += 2;
- 			} else {
--				put_unaligned_be32(mpext->data_ack32, ptr);
-+				put_unaligned_be32(ack_seq, ptr);
- 				ptr += 1;
+ 		if (ret) {
+-			/* SD specific range tracking */
+-			if (is_sd && code_min != -1 && code_max != -1) {
++			/* SD/SDIO specific range tracking */
++			if (!is_emmc && code_min != -1 && code_max != -1) {
+ 				if (code_max - code_min > code_range) {
+ 					code_range = code_max - code_min;
+ 					phase_code = (code_min + code_max) / 2;
+@@ -1466,17 +1463,17 @@ static int sdhci_eic7700_phase_code_tuni
+ 				code_max = -1;
  			}
-+			subflow->rcv_wnd_sent = mptcp_set_rwin(msk, tp, th,
-+							       ack_seq);
- 		}
- 
- 		if (mpext->use_map) {
-@@ -1705,9 +1708,6 @@ mp_capable_done:
- 			i += 4;
- 		}
+ 			/* EMMC breaks after first valid range */
+-			if (!is_sd && code_min != -1 && code_max != -1)
++			if (is_emmc && code_min != -1 && code_max != -1)
+ 				break;
+ 		} else {
+ 			/* Track valid phase code range */
+ 			if (code_min == -1) {
+ 				code_min = i;
+-				if (!is_sd)
++				if (is_emmc)
+ 					continue;
+ 			}
+ 			code_max = i;
+-			if (is_sd && i == MAX_PHASE_CODE) {
++			if (!is_emmc && i == MAX_PHASE_CODE) {
+ 				if (code_max - code_min > code_range) {
+ 					code_range = code_max - code_min;
+ 					phase_code = (code_min + code_max) / 2;
+@@ -1486,19 +1483,19 @@ static int sdhci_eic7700_phase_code_tuni
  	}
--
--	if (tp)
--		mptcp_set_rwin(tp, th);
- }
  
- __be32 mptcp_get_reset_option(const struct sk_buff *skb)
+ 	/* Handle tuning failure case */
+-	if ((is_sd && phase_code == -1) ||
+-	    (!is_sd && code_min == -1 && code_max == -1)) {
++	if ((!is_emmc && phase_code == -1) ||
++	    (is_emmc && code_min == -1 && code_max == -1)) {
+ 		pr_err("%s: phase code tuning failed!\n", mmc_hostname(host->mmc));
+ 		sdhci_writew(host, 0, priv->vendor_specific_area1 + DWCMSHC_AT_STAT);
+ 		return -EIO;
+ 	}
+-	if (!is_sd)
++	if (is_emmc)
+ 		phase_code = (code_min + code_max) / 2;
+ 
+ 	sdhci_writew(host, phase_code, priv->vendor_specific_area1 + DWCMSHC_AT_STAT);
+ 
+-	/* SD specific final verification */
+-	if (is_sd) {
++	/* SD/SDIO specific final verification */
++	if (!is_emmc) {
+ 		ret = mmc_send_tuning(host->mmc, opcode, &cmd_error);
+ 		host->ops->reset(host, SDHCI_RESET_CMD | SDHCI_RESET_DATA);
+ 		if (ret) {
+@@ -1596,9 +1593,9 @@ static void sdhci_eic7700_set_uhs_signal
+ 
+ static void sdhci_eic7700_set_uhs_wrapper(struct sdhci_host *host, unsigned int timing)
+ {
+-	u32 sd_caps = MMC_CAP2_NO_MMC | MMC_CAP2_NO_SDIO;
++	u32 emmc_caps = MMC_CAP2_NO_SD | MMC_CAP2_NO_SDIO;
+ 
+-	if ((host->mmc->caps2 & sd_caps) == sd_caps)
++	if ((host->mmc->caps2 & emmc_caps) != emmc_caps)
+ 		sdhci_set_uhs_signaling(host, timing);
+ 	else
+ 		sdhci_eic7700_set_uhs_signaling(host, timing);
+@@ -1607,6 +1604,7 @@ static void sdhci_eic7700_set_uhs_wrappe
+ static int eic7700_init(struct device *dev, struct sdhci_host *host, struct dwcmshc_priv *dwc_priv)
+ {
+ 	u32 emmc_caps = MMC_CAP2_NO_SD | MMC_CAP2_NO_SDIO;
++	u32 sd_caps = MMC_CAP2_NO_MMC | MMC_CAP2_NO_SDIO;
+ 	unsigned int val, hsp_int_status, hsp_pwr_ctrl;
+ 	static const char * const clk_ids[] = {"axi"};
+ 	struct of_phandle_args args;
+@@ -1661,8 +1659,10 @@ static int eic7700_init(struct device *d
+ 
+ 	if ((host->mmc->caps2 & emmc_caps) == emmc_caps)
+ 		dwc_priv->delay_line = PHY_DELAY_CODE_EMMC;
+-	else
++	else if ((host->mmc->caps2 & sd_caps) == sd_caps)
+ 		dwc_priv->delay_line = PHY_DELAY_CODE_SD;
++	else
++		dwc_priv->delay_line = PHY_DELAY_CODE_SDIO;
+ 
+ 	if (!of_property_read_u32(dev->of_node, "eswin,drive-impedance-ohms", &val))
+ 		priv->drive_impedance = eic7700_convert_drive_impedance_ohm(dev, val);
 
 
 
