@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-265839-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265427-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id r6nyMAKRMWqWmwUAu9opvQ
-	(envelope-from <stable+bounces-265839-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:08:02 +0200
+	id 7bpoCv6JMWoumAUAu9opvQ
+	(envelope-from <stable+bounces-265427-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:38:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B207693D2F
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:08:02 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11139693537
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:38:05 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=RuGN3Aml;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265839-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-265839-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=e4ZkNpWq;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265427-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265427-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 498A53073A17
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:08:01 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E5580301D522
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:32:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 296B43D525E;
-	Tue, 16 Jun 2026 18:08:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A92BA47AF66;
+	Tue, 16 Jun 2026 17:32:27 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3FEE2F12AE;
-	Tue, 16 Jun 2026 18:07:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8700946AF1E;
+	Tue, 16 Jun 2026 17:32:26 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781633280; cv=none; b=pMfD4f/zmqVFW3+f26LDuRNIIYIYEUPhUWM1K5sQYIbofPULrQ5+6TVZDEEaZoCNIj4lags6zXUx/qKDj2HYcRrGvU+67zx4zgsYDWx90un7SL3XetC/QvdXawCwaFHGVk3eNLtd9qQFipOYjHLF0noyajK8hKhKgktUi1whyp8=
+	t=1781631147; cv=none; b=Z0J9wpzN7iUZuwbixOZsV7dzU1dFJIPYj70k2U/DgEYWO5nTwjCSUVPhaP0Iobo5D5Vw3NCW66oGcK/NsrzSbaYun9rH8LLZeZeCWu7bZfKoyqEYYhu4ojvRQUA50+lywvf0MIvpYxI77zQ8v/JoRu8VrdLrf7shT50PvFVSEVo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781633280; c=relaxed/simple;
-	bh=VVA5aCvsh/Q9ewFiv0yLCR+YHsoS+sAK3+qvd2iX0G0=;
+	s=arc-20240116; t=1781631147; c=relaxed/simple;
+	bh=Rck4v8BZVxXQwxbsjtl4k8dbuGVrqL2ZXl6VRa3IgLc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iiGkNzPBFHbKoe4WmOiKY0WD+1i37kMYjMrpEv+xbLIccVWvGryDNoqPzUH2UNZHRJj3YRjKnk5d/8yzqNL7j+N/dAWQ8R6YHQHmQSErQkIy3gZsCwZJwYfA4ghznCCp7AWSep0TNHMnFwNo3uJqjdaAShEaTlr/Uhdnzy9SPIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RuGN3Aml; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 026411F000E9;
-	Tue, 16 Jun 2026 18:07:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=U59RzpFTc+m3Kb3NR8/NJ0TsaIFjR3ioEnU/tVmxNISZiN1fHqybMy9SW1HlzhhjHs+IgLu8PfVQk8ng8u03yvrllYXQ8W8FuJ+Eb3M9u0XLzTklbWco26ZJDKpoXroiJPz5dUX0+d+RT4Rj13mdXUUsQLMT3+ocVGWBjD6BA1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e4ZkNpWq; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BE081F000E9;
+	Tue, 16 Jun 2026 17:32:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781633278;
-	bh=YB3FAeJbyKe3OSB0qHW9Uom86Ie2QzvlLf5+NTKSfjM=;
+	s=korg; t=1781631146;
+	bh=YS0UURF3mXA1IYuELmJ12RQBBuBoTd/Kp8Rq5Hf01ak=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=RuGN3AmlfxcSL5HXZc/dFPqf+8Vq0/9PRA0vzc6P+JhdjTDbRgzg1ta8kAk+wl8dL
-	 bvY3KwCHiX1b7Caw3Xf9mQ+Yh5JMyIcQzrNduEi+5jBNWFconEUycUKlvMKjIm9RvE
-	 e52cPn8yMc/lcnLJFQClllRLJsZh3dzzHVvYumCw=
+	b=e4ZkNpWqhyKDAjJcT3XH21+6nK/MuAzF0hjeTKoyrTdsx/YmYA+DvU14zmk2UbPeJ
+	 91XUwwozNRktSn4R7IfXg2BH5dxITigCDcx2tsrvSb4hgjj9X039ir4lBx/r46stqC
+	 Ep1B7hkMwKwIGVsxXNxltnw2naKMTodAHJ1Ewd7M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>,
-	Suraj Kandpal <suraj.kandpal@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 047/411] drm/i915/psr: Read Intel DPCD workaround register
+	=?UTF-8?q?Nicol=C3=A1s=20Bazaes?= <contacto@bazaes.cl>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.1 138/522] Input: synaptics - add LEN2058 to SMBus passlist for ThinkPad E490
 Date: Tue, 16 Jun 2026 20:24:45 +0530
-Message-ID: <20260616145102.784739318@linuxfoundation.org>
+Message-ID: <20260616145132.558258575@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,103 +67,83 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-265839-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-265427-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:contacto@bazaes.cl,m:dmitry.torokhov@gmail.com,m:dmitrytorokhov@gmail.com,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jouni.hogander@intel.com,m:suraj.kandpal@intel.com,m:tursulin@ursulin.net,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,bazaes.cl,gmail.com];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	TAGGED_RCPT(0.00)[stable];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3B207693D2F
+X-Rspamd-Queue-Id: 11139693537
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jouni Högander <jouni.hogander@intel.com>
+From: Nicolás Bazaes <contacto@bazaes.cl>
 
-commit f30bece421a4ae34359254e1dc2a187a42b6af9b upstream.
+commit 16ca52bc209fa4bf9239cd9e5643e95533476b58 upstream.
 
-Read Intel DPCD workaround register and store it into
-intel_connector->dp.psr_caps. psr_caps was chosen as currently it contains
-only PSR workaround for PSR2 SDP on prior scanline implementation.
+The Lenovo ThinkPad E490 (PNP ID: LEN2058) has a Synaptics TM3471-020
+touchpad that supports SMBus/RMI4 mode but is not listed in
+smbus_pnp_ids[]. Without this entry, RMI4 over SMBus is not enabled
+by default, and the touchpad falls back to PS/2 mode.
 
-Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
-Reviewed-by: Suraj Kandpal <suraj.kandpal@intel.com>
-Link: https://patch.msgid.link/20260515095756.2799483-3-jouni.hogander@intel.com
-(cherry picked from commit c48ff24d0f4ab7ad696b2d35ad64ce7e049c668c)
-Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Adding LEN2058 to the passlist enables automatic RMI4 detection without
+requiring the psmouse.synaptics_intertouch parameter, and matches
+the behavior of similar ThinkPad models already in the list
+(E480/LEN2054, E580/LEN2055).
+
+Tested on ThinkPad E490 with kernel 7.0.5-zen1 and Arch Linux.
+RMI4 over SMBus is confirmed working without any kernel parameters.
+
+Signed-off-by: Nicolás Bazaes <contacto@bazaes.cl>
+Assisted-by: Claude:claude-sonnet-4-6
+Link: https://patch.msgid.link/20260514013552.14234-1-contacto@bazaes.cl
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/display/intel_display_types.h | 1 +
- drivers/gpu/drm/i915/display/intel_psr.c           | 7 +++++++
- 2 files changed, 8 insertions(+)
+ drivers/input/mouse/synaptics.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_display_types.h b/drivers/gpu/drm/i915/display/intel_display_types.h
-index 90e055f0569940..ef4c280d2cb630 100644
---- a/drivers/gpu/drm/i915/display/intel_display_types.h
-+++ b/drivers/gpu/drm/i915/display/intel_display_types.h
-@@ -1554,6 +1554,7 @@ struct intel_dp {
- 	u8 lttpr_phy_caps[DP_MAX_LTTPR_COUNT][DP_LTTPR_PHY_CAP_SIZE];
- 	u8 fec_capable;
- 	u8 pcon_dsc_dpcd[DP_PCON_DSC_ENCODER_CAP_SIZE];
-+	u8 intel_wa_dpcd;
- 	/* source rates */
- 	int num_source_rates;
- 	const int *source_rates;
-diff --git a/drivers/gpu/drm/i915/display/intel_psr.c b/drivers/gpu/drm/i915/display/intel_psr.c
-index 93d2fd4cd16b7c..aa00e062a2a6aa 100644
---- a/drivers/gpu/drm/i915/display/intel_psr.c
-+++ b/drivers/gpu/drm/i915/display/intel_psr.c
-@@ -30,6 +30,7 @@
- #include "intel_atomic.h"
- #include "intel_de.h"
- #include "intel_display_types.h"
-+#include "intel_dpcd.h"
- #include "intel_dp_aux.h"
- #include "intel_hdmi.h"
- #include "intel_psr.h"
-@@ -363,6 +364,12 @@ void intel_psr_init_dpcd(struct intel_dp *intel_dp)
- 			intel_dp_get_su_granularity(intel_dp);
- 		}
- 	}
-+
-+	if (intel_dp->psr.sink_psr2_support)
-+		drm_dp_dpcd_read(&intel_dp->aux,
-+				 INTEL_DPCD_INTEL_WA_REGISTER_CAPS,
-+				 &intel_dp->intel_wa_dpcd,
-+				 sizeof(intel_dp->intel_wa_dpcd));
- }
- 
- static void hsw_psr_setup_aux(struct intel_dp *intel_dp)
--- 
-2.53.0
-
+--- a/drivers/input/mouse/synaptics.c
++++ b/drivers/input/mouse/synaptics.c
+@@ -189,6 +189,7 @@ static const char * const smbus_pnp_ids[
+ 	"LEN2044", /* L470  */
+ 	"LEN2054", /* E480 */
+ 	"LEN2055", /* E580 */
++	"LEN2058", /* E490 */
+ 	"LEN2068", /* T14 Gen 1 */
+ 	"SYN1221", /* TUXEDO InfinityBook Pro 14 v5 */
+ 	"SYN3003", /* HP EliteBook 850 G1 */
 
 
 
