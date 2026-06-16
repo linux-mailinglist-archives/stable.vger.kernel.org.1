@@ -1,65 +1,61 @@
-Return-Path: <stable+bounces-265105-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265682-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id dyE3DcCEMWrTlQUAu9opvQ
-	(envelope-from <stable+bounces-265105-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:15:44 +0200
+	id S/zZHsyNMWopmgUAu9opvQ
+	(envelope-from <stable+bounces-265682-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:54:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8B83692ECA
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:15:43 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08EFA6939D2
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:54:20 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="Jt/WONbl";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265105-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265105-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=vvR8fbKI;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265682-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265682-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D2E5A303748A
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:04:58 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9CCF7303FC66
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:54:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75B8943E4BC;
-	Tue, 16 Jun 2026 17:04:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 110BE3C76AF;
+	Tue, 16 Jun 2026 17:54:01 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3832E328610;
-	Tue, 16 Jun 2026 17:04:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3FC547CC91;
+	Tue, 16 Jun 2026 17:53:59 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781629498; cv=none; b=jpLn6LJPNqOfxkTA6XIRz3NXpy+Z2sDyL9Jkcurk0MIz/Pc5fWwhU+0uU5/iT9SSpM1V+T0+IkoPKUYVF7ZA5uzHBa78x87b1zXMSKlzzlvSuUvPtWCfo4XLWu/3wQSPpdlJwFcf8F9F5D9yuipBNBVQeybUUSr9gXZj502AGOo=
+	t=1781632440; cv=none; b=ql0uA6b45US0uvkJ7LKF6W5YIMXmq5YX9oqu/1GO2JJxoWkhjNadg9OBPlA3s8nMufFsXmuB+Ii3ArSeod2kz82nl50EEARkyJd47okBFjUpzoDH9mljw3J7GOVAO+wjV8FSCc3sJp9JwYJmlVujMpBp5BRK6x55bm/VZSp0RdM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781629498; c=relaxed/simple;
-	bh=lruVkSVgtHAbUzp4e7cf2kvGFosFVfW4OqmHhi7fmoU=;
+	s=arc-20240116; t=1781632440; c=relaxed/simple;
+	bh=EnQJAuLLRG+NolvPuCYz6psFYeq5N18aQkADh5ZQLGM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dOXailInAJBUlFocCOIVe721Tg69bmwdUk3ELQu9BpYczNUafY+CK14NCnolqBUsyKKzjlCNxmpB6OcRiJ1bfWPjj/QOVJOkabc2dXUU7qp2HtzXEFlY2ZU3igfGxuj/AJ0F8YD64jTcUyblZ5Fymb3NlzvutFe4RfXdp2Vtw24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jt/WONbl; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D0941F000E9;
-	Tue, 16 Jun 2026 17:04:55 +0000 (UTC)
+	 MIME-Version; b=gGGwF6ukF7xVC677r+bQMwPyzwcm6xj1/RoAC6SFpw2udYuxR2/hYa/4rc1vreMy16VsIFARkRqrZGiRV0kWCLUAyqz5yHHZrgQ77QYpEr21iYnMJ7/zu90RTn88vtdywfCbVwJOz3lo1p95TcaQ8sMYsNzaND6B7Q4+ip09WEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vvR8fbKI; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7F841F000E9;
+	Tue, 16 Jun 2026 17:53:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781629497;
-	bh=rokjXT2dEMAmCA4TvXhwKsXwmsSSdLhqkEnmtg9zZAw=;
+	s=korg; t=1781632439;
+	bh=VXW8arXBXhc81Yx3mV7B7AXO0W9DMohxY7g9MHUR54U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Jt/WONblqJpL3MbelaOgxJO08+aSAn5pPrrVbUKeI89LuvaPTStcbH+Tzqjmj+IZt
-	 cqz+PRUjOwFnZLILnLw1n3xyatGRoj0NcoVstkU6CrVmlGR7DUGaVbNJIrAifC6bOE
-	 ryvOy7Nw/ijsAcnrRa40u7V8RGp/pLEtFBwUdZ7g=
+	b=vvR8fbKIcY2utofQ5OIWp6Ly1fl1u/BDJ+pRvpa6j3hX/tKzd9ly+a4SlOjpH8ctM
+	 an8J7kAtDQC5mULTSEVH3xRcNsw2G60Lhc9YPncO04yd3pW/JU0/JlTnI7jXb/Pn0p
+	 6m2+ZoHZytmxkxtt4lAgRZLXXcg7qWFkLwObey4o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	Simona Vetter <simona@ffwll.ch>,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Subject: [PATCH 6.6 297/452] drm/i915/gem: Fix phys BO pread/pwrite with offset
-Date: Tue, 16 Jun 2026 20:28:44 +0530
-Message-ID: <20260616145133.128150349@linuxfoundation.org>
+	Michal Kosiorek <mkosiorek121@gmail.com>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 378/522] xfrm: defensively unhash xfrm_state lists in __xfrm_state_delete
+Date: Tue, 16 Jun 2026 20:28:45 +0530
+Message-ID: <20260616145143.463857749@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,126 +69,154 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-265682-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mkosiorek121@gmail.com,m:steffen.klassert@secunet.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265105-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:willy@infradead.org,m:tursulin@ursulin.net,m:simona@ffwll.ch,m:jani.nikula@linux.intel.com,m:rodrigo.vivi@intel.com,m:joonas.lahtinen@linux.intel.com,m:tvrtko.ursulin@igalia.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,secunet.com,kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,infradead.org:email,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,intel.com:email,ffwll.ch:email,ursulin.net:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[secunet.com:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A8B83692ECA
+X-Rspamd-Queue-Id: 08EFA6939D2
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+From: Michal Kosiorek <mkosiorek121@gmail.com>
 
-commit d21ad938398bca695a511307de38a65889e3b354 upstream.
+[ Upstream commit 14acf9652e5690de3c7486c6db5fb8dafd0a32a3 ]
 
-sg_page() returns struct page pointer not (void *) so the scaling
-of pread/pwrite is wrong for phys BO and wrong parts of BO would be
-accessed if non-zero offset is used.
+KASAN reproduces a slab-use-after-free in __xfrm_state_delete()'s
+hlist_del_rcu calls under syzkaller load on linux-6.12.y stable
+(reproduced on 6.12.47, also reachable via the same code path on
+torvalds/master and on the ipsec tree). Nine unique signatures cluster
+in the xfrm_state lifecycle, the load-bearing one being:
 
-Last impacted platform with overlay or cursor planes using phys
-mapping was Gen3/945G/Lakeport.
+  BUG: KASAN: slab-use-after-free in __hlist_del include/linux/list.h:990 [inline]
+  BUG: KASAN: slab-use-after-free in hlist_del_rcu include/linux/rculist.h:516 [inline]
+  BUG: KASAN: slab-use-after-free in __xfrm_state_delete net/xfrm/xfrm_state.c
+  Write of size 8 at addr ffff8881198bcb70 by task kworker/u8:9/435
 
-Reported-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Fixes: c6790dc22312 ("drm/i915: Wean off drm_pci_alloc/drm_pci_free")
-Cc: <stable@vger.kernel.org> # v4.5+
-Cc: Tvrtko Ursulin <tursulin@ursulin.net>
-Cc: Simona Vetter <simona@ffwll.ch>
-Cc: Jani Nikula <jani.nikula@linux.intel.com>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Link: https://patch.msgid.link/20260610060314.26111-1-joonas.lahtinen@linux.intel.com
-(cherry picked from commit 3e49a2f85070b2fb672c1e0fdba281a4ea3aebe6)
-Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
+  Workqueue: netns cleanup_net
+  Call Trace:
+   __hlist_del / hlist_del_rcu
+   __xfrm_state_delete
+   xfrm_state_delete
+   xfrm_state_flush
+   xfrm_state_fini
+   ops_exit_list
+   cleanup_net
+
+The other observed signatures hit the same slab object from
+__xfrm_state_lookup, xfrm_alloc_spi, __xfrm_state_insert and an OOB
+write variant of __xfrm_state_delete, all on the byseq/byspi
+hash chains.
+
+__xfrm_state_delete() guards its byseq and byspi unhashes with
+value-based predicates:
+
+	if (x->km.seq)
+		hlist_del_rcu(&x->byseq);
+	if (x->id.spi)
+		hlist_del_rcu(&x->byspi);
+
+while everywhere else in the file (e.g. state_cache, state_cache_input)
+the safer hlist_unhashed() check is used. xfrm_alloc_spi() sets
+x->id.spi = newspi inside xfrm_state_lock and then immediately inserts
+into byspi, but a path that observes x->id.spi != 0 outside of
+xfrm_state_lock can still skip-or-hit the byspi unhash inconsistently
+with whether x is actually on the list. The same holds for x->km.seq
+versus byseq, and the bydst/bysrc unhashes have no predicate at all,
+so a second __xfrm_state_delete() on the same object writes through
+LIST_POISON pprev.
+
+The defensive change here:
+
+  - Use hlist_del_init_rcu() instead of hlist_del_rcu() on bydst,
+    bysrc, byseq and byspi so a second deletion is a no-op rather
+    than a write through LIST_POISON pprev. The byseq/byspi nodes
+    are already initialised in xfrm_state_alloc().
+  - Test hlist_unhashed() rather than the value predicate for
+    byseq/byspi, so the unhash decision tracks list state rather than
+    mutable scalar fields.
+
+Empirical verification: applied this patch on top of v6.12.47, rebuilt,
+and re-ran the same syzkaller harness for 1h16m on a previously-crashy
+configuration that produced ~100 hits each of slab-use-after-free
+Read in xfrm_alloc_spi / Read in __xfrm_state_lookup / Write in
+__xfrm_state_delete. After the patch, 7.1M execs across 32 VMs at
+~1550 exec/sec produced zero xfrm_state UAF/OOB hits. /proc/slabinfo
+confirms the xfrm_state slab is actively allocated and freed during
+the run (~143 KiB resident), so the fuzzer is still exercising those
+code paths -- they just no longer crash.
+
+Reproduction:
+
+  - Linux 6.12.47 x86_64 + KASAN_GENERIC + KASAN_INLINE + KCOV
+  - syzkaller @ 746545b8b1e4c3a128db8652b340d3df90ce61db
+  - 32 QEMU/KVM VMs x 2 vCPU on AWS c5.metal bare metal
+  - 9 unique signatures collected in ~9h, all within xfrm_state
+    lifecycle
+
+Fixes: fe9f1d8779cb ("xfrm: add state hashtable keyed by seq")
+Fixes: 7b4dc3600e48 ("[XFRM]: Do not add a state whose SPI is zero to the SPI hash.")
+Reported-by: Michal Kosiorek <mkosiorek121@gmail.com>
+Tested-by: Michal Kosiorek <mkosiorek121@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Michal Kosiorek <mkosiorek121@gmail.com>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+[ dropped state_cache/state_cache_input unhash hunks and xfrm_nat_keepalive_state_updated() call ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/gem/i915_gem_phys.c |   19 +++++++++++++++----
- 1 file changed, 15 insertions(+), 4 deletions(-)
+ net/xfrm/xfrm_state.c |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/drivers/gpu/drm/i915/gem/i915_gem_phys.c
-+++ b/drivers/gpu/drm/i915/gem/i915_gem_phys.c
-@@ -17,6 +17,17 @@
- #include "i915_gem_tiling.h"
- #include "i915_scatterlist.h"
- 
-+/* Abuse scatterlist to store pointer instead of struct page. */
-+static inline void __set_phys_vaddr(struct scatterlist *sg, void *vaddr)
-+{
-+	sg_assign_page(sg, (struct page *)vaddr);
-+}
-+
-+static inline void *__get_phys_vaddr(struct scatterlist *sg)
-+{
-+	return (void *)sg_page(sg);
-+}
-+
- static int i915_gem_object_get_pages_phys(struct drm_i915_gem_object *obj)
- {
- 	struct address_space *mapping = obj->base.filp->f_mapping;
-@@ -57,7 +68,7 @@ static int i915_gem_object_get_pages_phy
- 	sg->offset = 0;
- 	sg->length = obj->base.size;
- 
--	sg_assign_page(sg, (struct page *)vaddr);
-+	__set_phys_vaddr(sg, vaddr);
- 	sg_dma_address(sg) = dma;
- 	sg_dma_len(sg) = obj->base.size;
- 
-@@ -101,7 +112,7 @@ i915_gem_object_put_pages_phys(struct dr
- 			       struct sg_table *pages)
- {
- 	dma_addr_t dma = sg_dma_address(pages->sgl);
--	void *vaddr = sg_page(pages->sgl);
-+	void *vaddr = __get_phys_vaddr(pages->sgl);
- 
- 	__i915_gem_object_release_shmem(obj, pages, false);
- 
-@@ -144,7 +155,7 @@ i915_gem_object_put_pages_phys(struct dr
- int i915_gem_object_pwrite_phys(struct drm_i915_gem_object *obj,
- 				const struct drm_i915_gem_pwrite *args)
- {
--	void *vaddr = sg_page(obj->mm.pages->sgl) + args->offset;
-+	void *vaddr = __get_phys_vaddr(obj->mm.pages->sgl) + args->offset;
- 	char __user *user_data = u64_to_user_ptr(args->data_ptr);
- 	struct drm_i915_private *i915 = to_i915(obj->base.dev);
- 	int err;
-@@ -175,7 +186,7 @@ int i915_gem_object_pwrite_phys(struct d
- int i915_gem_object_pread_phys(struct drm_i915_gem_object *obj,
- 			       const struct drm_i915_gem_pread *args)
- {
--	void *vaddr = sg_page(obj->mm.pages->sgl) + args->offset;
-+	void *vaddr = __get_phys_vaddr(obj->mm.pages->sgl) + args->offset;
- 	char __user *user_data = u64_to_user_ptr(args->data_ptr);
- 	int err;
+--- a/net/xfrm/xfrm_state.c
++++ b/net/xfrm/xfrm_state.c
+@@ -682,12 +682,12 @@ int __xfrm_state_delete(struct xfrm_stat
+ 		x->km.state = XFRM_STATE_DEAD;
+ 		spin_lock(&net->xfrm.xfrm_state_lock);
+ 		list_del(&x->km.all);
+-		hlist_del_rcu(&x->bydst);
+-		hlist_del_rcu(&x->bysrc);
+-		if (x->km.seq)
+-			hlist_del_rcu(&x->byseq);
+-		if (x->id.spi)
+-			hlist_del_rcu(&x->byspi);
++		hlist_del_init_rcu(&x->bydst);
++		hlist_del_init_rcu(&x->bysrc);
++		if (!hlist_unhashed(&x->byseq))
++			hlist_del_init_rcu(&x->byseq);
++		if (!hlist_unhashed(&x->byspi))
++			hlist_del_init_rcu(&x->byspi);
+ 		net->xfrm.state_num--;
+ 		spin_unlock(&net->xfrm.xfrm_state_lock);
  
 
 
