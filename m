@@ -1,64 +1,60 @@
-Return-Path: <stable+bounces-263966-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264946-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id NVcSGLFrMWqciwUAu9opvQ
-	(envelope-from <stable+bounces-263966-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:28:49 +0200
+	id qznMIyODMWoclQUAu9opvQ
+	(envelope-from <stable+bounces-264946-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:08:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F085691106
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:28:49 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id A713B692C74
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:08:50 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=F6Hrm0no;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263966-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-263966-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=i+DD5PX9;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264946-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-264946-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8F35A309666B
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:24:31 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 71B0E30A5B26
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:52:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A49574418F2;
-	Tue, 16 Jun 2026 15:23:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33D1C478E57;
+	Tue, 16 Jun 2026 16:52:01 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E20C44104F;
-	Tue, 16 Jun 2026 15:23:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDC5D47A0C0;
+	Tue, 16 Jun 2026 16:51:59 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781623430; cv=none; b=L3+ubdnSE2uoyLxVGezfpHj1m1wywONDwy2wh+sikfMM8SyTf4wcTtuO23/eYgYJwdRh44KjogmM0myuCypooYP+RP6ZXo2iHRVNBTraxGnr0C5jI28jdnf/1RbNDw2EVESNFKT9NYhS1xSfrH3As2A7vLNAtdBTxe177J9OIdw=
+	t=1781628721; cv=none; b=vBTgmCn75lBNxMK4xOanwtXGdPAKhKPiM7fs9jK95mlWSY3eLOg7gefrmDqrDatS1y9npgsZ4OZveiqpxe4qcGyBBbIj6inqX5GIJHmdkNcIQ0yWo3Jd5cZTnTiPv8UJln6hojdhhtuYV8O750REdrlrxW4fdJJNjHiG28/PQ9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781623430; c=relaxed/simple;
-	bh=buUFoTQ45nZ3db2dhSJNwrh0AXWQP2dfObJEKqi0v30=;
+	s=arc-20240116; t=1781628721; c=relaxed/simple;
+	bh=P8qPkl2lIxZw9mw+5HTMYrJWS7KUvXcJs34G3DPwQhU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J/LSCEdH91xV+MRHFbu05PEEFcEMiIaT56W9jTySr9H6mQCa+VbMwrwWMYUKhJxIHu1itHMDcwiz1jYHX+HWm9A/CW03J1hmxZ0MQG+60l7XtiWXDUPDqzQ4rX+YIfM4Oy4/DEMObAHycPV8bz+KQt3mRlNTLPsEGOYqr9M5U8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F6Hrm0no; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27FEC1F000E9;
-	Tue, 16 Jun 2026 15:23:47 +0000 (UTC)
+	 MIME-Version; b=ZE7+y0SgXS5rELDrP7afl+EeBst5mxXRl0rNPcz+ccrsAjniMwNbWN7KLQENwZPIV6xTeXDCRBHclA02hL/KBmjYkrLPV3lQnBa2owJvBXMI9LJlVP9HjQdfAEXpDVlyfPLMZrBJ0uoJfiIKlMnxkRGGbrkLV1xS4kPp+6Tz6Og=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i+DD5PX9; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F36AD1F000E9;
+	Tue, 16 Jun 2026 16:51:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781623429;
-	bh=iy3SV1I1DfNK0H+kyFxrJ6YAKCdx0aDZHZeCONxHtTk=;
+	s=korg; t=1781628719;
+	bh=5/UU1n5n0/l8KZuzMTRO3vyA6kk027D2TpcUmOdCKfk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=F6Hrm0no+cCKcYfWCb1cwvUIEgShc8D7isZ4X4c2LMhPxJPQ2UIxWffk0xbf6toSf
-	 WUcmL3aouz5pDZf5Hp4bbrzc8nm7JK222CTHsS9fb/xoh/q5fOTISlRki4xCN+CNBF
-	 VajSMGcigHf2foKGJAzjMEPaOmuUnGyC2Cdqb94k=
+	b=i+DD5PX9nqqXiiyQ/hNtV/cRfrONBw2NuaOa5m99JKRr2GwqdImCyCfrRxolNNkcS
+	 aEuHGdye7NBozfvuTb2DW+9vKAtmJy8ZAvCFklhq8j8fkgTFaIJK8KCBfxeNXC85uJ
+	 Xo2uHiOWd1VW2HWQLZDEs/vmnl7Vvlgvv+nSr5mY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sashiko <sashiko-bot@kernel.org>,
-	Bobby Eshleman <bobbyeshleman@meta.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 113/378] netdev: fix double-free in netdev_nl_bind_rx_doit()
+	Aldo Conte <aldocontelk@gmail.com>,
+	Jonathan Cameron <jic23@kernel.org>
+Subject: [PATCH 6.6 117/452] iio: light: cm3323: fix reg_conf not being initialized correctly
 Date: Tue, 16 Jun 2026 20:25:44 +0530
-Message-ID: <20260616145116.316180952@linuxfoundation.org>
+Message-ID: <20260616145123.851859229@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,90 +68,105 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-264946-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:aldocontelk@gmail.com,m:jic23@kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-263966-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:sashiko-bot@kernel.org,m:bobbyeshleman@meta.com,m:daniel@iogearbox.net,m:razor@blackwall.org,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,iogearbox.net:email,blackwall.org:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 0F085691106
+X-Rspamd-Queue-Id: A713B692C74
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Aldo Conte <aldocontelk@gmail.com>
 
-[ Upstream commit c849de7d8757a7af801fc4a4058f71d481d367f2 ]
+commit 1f4f0bcc5255dec5c4c3a1551bf49d8c33b69b20 upstream.
 
-Sashiko flags that genlmsg_reply() always consumes the skb.
-The error path calls nlmsg_free(rsp) so we can't jump directly
-to it. Let's not unbind, just propagate the error to the user.
-This is the typical way of handling genlmsg_reply() failures.
-They shouldn't happen unless user does something silly like
-calling the kernel with an already-full rcvbuf.
+The code stores the return value of i2c_smbus_write_word_data()
+in data->reg_conf; however, this value represents the result
+of the write operation and not the value actually written to
+the configuration register. This meant that the contents of
+data->reg_conf did not truly reflect the contents
+of the hardware register.
 
-Reported-by: Sashiko <sashiko-bot@kernel.org>
-Fixes: 170aafe35cb9 ("netdev: support binding dma-buf to netdevice")
-Reviewed-by: Bobby Eshleman <bobbyeshleman@meta.com>
-Acked-by: Daniel Borkmann <daniel@iogearbox.net>
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Instead, save the value of the register before the write
+and use this value in the I2C write.
+
+The bug was found by code inspection: i2c_smbus_write_word_data()
+returns 0 on success, not the value written to the register.
+
+Tested using i2c-stub on a Raspberry Pi 3B running a custom 6.19.10
+kernel. Before loading the driver, the configuration register 0x00
+CM3323_CMD_CONF was populated with 0x0030 using
+`i2cset -y 11 0x10 0x00 0x0030 w`, encoding an integration time of 320ms
+in bits[6:4].
+
+Due to incorrect initialization of data->reg_conf in
+cm3323_init(), the print of integration_time returns 0.040000
+instead of the expected 0.320000. This happens because the read of the
+integration_time depends on cm3323_get_it_bits() that is based on the
+value of data->reg_conf, which is erroneously set to 0.
+
+With this fix applied, data->reg_conf correctly saves 0x0030 after init
+and the successive integration_time reports 0.320000 as expected.
+
+Fixes: 8b0544263761 ("iio: light: Add support for Capella CM3323 color sensor")
+Cc: stable@vger.kernel.org
+Signed-off-by: Aldo Conte <aldocontelk@gmail.com>
+Signed-off-by: Jonathan Cameron <jic23@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/netdev-genl.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/iio/light/cm3323.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/net/core/netdev-genl.c b/net/core/netdev-genl.c
-index 470fabbeacd9bd..93ea09bd1e7bab 100644
---- a/net/core/netdev-genl.c
-+++ b/net/core/netdev-genl.c
-@@ -1019,8 +1019,6 @@ int netdev_nl_bind_rx_doit(struct sk_buff *skb, struct genl_info *info)
- 	genlmsg_end(rsp, hdr);
+--- a/drivers/iio/light/cm3323.c
++++ b/drivers/iio/light/cm3323.c
+@@ -89,15 +89,14 @@ static int cm3323_init(struct iio_dev *i
  
- 	err = genlmsg_reply(rsp, info);
--	if (err)
--		goto err_unbind;
+ 	/* enable sensor and set auto force mode */
+ 	ret &= ~(CM3323_CONF_SD_BIT | CM3323_CONF_AF_BIT);
++	data->reg_conf = ret;
  
- 	bitmap_free(rxq_bitmap);
+-	ret = i2c_smbus_write_word_data(data->client, CM3323_CMD_CONF, ret);
++	ret = i2c_smbus_write_word_data(data->client, CM3323_CMD_CONF, data->reg_conf);
+ 	if (ret < 0) {
+ 		dev_err(&data->client->dev, "Error writing reg_conf\n");
+ 		return ret;
+ 	}
  
-@@ -1028,7 +1026,7 @@ int netdev_nl_bind_rx_doit(struct sk_buff *skb, struct genl_info *info)
+-	data->reg_conf = ret;
+-
+ 	return 0;
+ }
  
- 	mutex_unlock(&priv->lock);
- 
--	return 0;
-+	return err < 0 ? err : 0;
- 
- err_unbind:
- 	net_devmem_unbind_dmabuf(binding);
--- 
-2.53.0
-
 
 
 
