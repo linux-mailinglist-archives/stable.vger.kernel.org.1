@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-264029-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266337-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id vHNdNnpuMWqsjAUAu9opvQ
-	(envelope-from <stable+bounces-264029-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:40:42 +0200
+	id iwz9DzqbMWpPoAUAu9opvQ
+	(envelope-from <stable+bounces-266337-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:51:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AC29691463
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:40:42 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7837D694864
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:51:37 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=bAYQimlH;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264029-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264029-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=wExwuUpC;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266337-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-266337-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 965033040D9E
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:29:14 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A52C33009E08
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:51:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A33944103D;
-	Tue, 16 Jun 2026 15:29:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6398747B435;
+	Tue, 16 Jun 2026 18:51:33 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DBBE3AA4E1;
-	Tue, 16 Jun 2026 15:29:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CCD832E13B;
+	Tue, 16 Jun 2026 18:51:32 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781623751; cv=none; b=t4mWCePayRmoUZWQct0WAqyTnI7B7f3sRbxm0YCo9k5qXAlj2PRKf8R4BS7SdFwMt+C4ph8atBttUNanyDS3sWDTx3UNrlr1JUcwGpQqA85d1WbtItKBnKMvDhMWj3eVZXxAgI9ovN4wdCTmf693dfhELDpiSCqB4/IJ7XWtySE=
+	t=1781635893; cv=none; b=cbkI5fbfSbzd7DvT4Xl9gfGgI6E9MYMXHJsjowLgeaeaaQj9E59iA9hPXGmwPyDcYCAvbTRFCfRPu707BhXTFfraAjGGFvCkyYOBBrY98xzcLYq/1kIGPKw94XOgHecO2yZa2W9Fr4UyqehPhDosubjsifl3S5nSLoiCAQULXqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781623751; c=relaxed/simple;
-	bh=+SvABPlDMjgTZpxtBqqY04tZYVH+5Sj9LartFr6Pw94=;
+	s=arc-20240116; t=1781635893; c=relaxed/simple;
+	bh=9MPCnPGvoTcYehAZcIwgnT8N1yAePXCQ0lHtV+FEajw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dOTdf/o4v7ooYhpkriWjFZR1nFYGuHPCGUwTzsdcGvKyvI6dxviUYykYlRED/Qeyo5LPABFJBml5FszxuYqxqOPfqKOkcj9CRlvy44zKNoK4wISm7t8wCnM2paE3bXx0astusg7zziMV7pucTvUA7K1IYYES4u9SeadEyDJ3jMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bAYQimlH; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C61C1F000E9;
-	Tue, 16 Jun 2026 15:29:08 +0000 (UTC)
+	 MIME-Version; b=PqUR9sDC0a/pxTcEAkD1w1Z4n/8SOkxMYYZUI0+TF/igygGpgHyFIH4RCX9zPS+QIZF+tl/0JKelP0wAaPkTBHKJYeN7WRt2utJPh7so1Fvwpb8Y51vcXTaOFR3qNpGsIQVrE1x1UolhSWFlKFMdQEpbd2TfGfZ8hC7xJm+dZ2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wExwuUpC; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CD1B1F000E9;
+	Tue, 16 Jun 2026 18:51:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781623749;
-	bh=cT8+FMODqvfyGODMQ79UIZ/IhAlPG6yYZV/AFi4ZXjw=;
+	s=korg; t=1781635892;
+	bh=jkDjFk3t8ctT1vTFdyae+l4YXOWrwWPnLUuKbMovo1g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=bAYQimlHjaHKawL/AVc+yO0RRPSQT5sFTXc1jH0UJ47mqMWufTyFgkf6B+G6KXv07
-	 7kLGnSMIYDdK1AmWTjQ8/mrH57GvOSDJkwDwwcz+tDaVUb2CLJ29yjTRGuyrz+ZQ8B
-	 ibaWnwjohMJ08bGLPKjOChdClua2WmvGruQ30EHI=
+	b=wExwuUpCEU7wrDQPqqkLVwJpBnakaSrjYfEvf61BnlD1AiSIEhMoZNtTFK3QWn6aD
+	 rMDA5PAkpDR+aZMVf1kOpRpQGunbUeHL3CMFm+BRWBZDwk85LPxAkdvAt/26z8CqMT
+	 Nq7IqB0ITzqkQdguOvhATTJoBA2B8k3aRcmkcdUw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anton Leontev <leontyevantony@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 7.0 201/378] hv_netvsc: use kmap_local_page in netvsc_copy_to_send_buf
+	Yiming Qian <yimingqian591@gmail.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 136/342] netfilter: bridge: make ebt_snat ARP rewrite writable
 Date: Tue, 16 Jun 2026 20:27:12 +0530
-Message-ID: <20260616145120.970552178@linuxfoundation.org>
+Message-ID: <20260616145054.524653820@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,123 +73,94 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-264029-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:leontyevantony@gmail.com,m:pabeni@redhat.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,strlen.de,netfilter.org,kernel.org];
+	TAGGED_FROM(0.00)[bounces-266337-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:yimingqian591@gmail.com,m:fw@strlen.de,m:pablo@netfilter.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,netfilter.org:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,strlen.de:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8AC29691463
+X-Rspamd-Queue-Id: 7837D694864
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anton Leontev <leontyevantony@gmail.com>
+From: Yiming Qian <yimingqian591@gmail.com>
 
-commit 004e9ecfe6c5384f9e0b2f6f6389d42ec22789af upstream.
+[ Upstream commit 67ba971ae02514d85818fe0c32549ab4bfa3bf49 ]
 
-netvsc_copy_to_send_buf() copies page buffer entries into the VMBus
-send buffer using phys_to_virt() on the entry PFN. Entries for the
-RNDIS header and the skb linear data come from kmalloc'd memory and
-are always in the kernel direct map, but entries for skb fragments
-reference page cache or user pages, which on 32-bit x86 with
-CONFIG_HIGHMEM=y can live above the LOWMEM boundary. For such a page
-phys_to_virt() returns an address outside the direct map and the
-subsequent memcpy() faults on the transmit softirq path, which is
-fatal.
+The ebtables SNAT target keeps the Ethernet source address rewrite
+behind skb_ensure_writable(skb, 0).  This is intentional: at the bridge
+ebtables hooks the Ethernet header is addressed through
+skb_mac_header()/eth_hdr(), while skb->data points at the Ethernet
+payload.  Asking skb_ensure_writable() for ETH_HLEN bytes would check
+the payload, not the Ethernet header, and would reintroduce the small
+packet regression fixed by commit 63137bc5882a.
 
-Map the pages with kmap_local_page() instead, handling two properties
-of the page buffer entries:
+However, the optional ARP sender hardware address rewrite is different.
+It writes through skb_store_bits() at an offset relative to skb->data:
 
- - pb[i].pfn is a Hyper-V PFN at HV_HYP_PAGE_SIZE (4K) granularity,
-   not a native PFN. Reconstruct the physical address first and derive
-   the native page from it, so the mapping stays correct where
-   PAGE_SIZE > HV_HYP_PAGE_SIZE (e.g. arm64 with 64K pages).
+        skb_store_bits(skb, sizeof(struct arphdr), info->mac, ETH_ALEN)
 
- - Since commit 41a6328b2c55 ("hv_netvsc: Preserve contiguous PFN
-   grouping in the page buffer array"), an entry describes a full
-   physically contiguous fragment and pb[i].len can exceed PAGE_SIZE,
-   while kmap_local_page() maps a single page. Copy page by page,
-   splitting at native page boundaries.
+skb_header_pointer() only safely reads the ARP header; it does not make
+the later sender hardware address range writable.  If that range is
+still held in a nonlinear skb fragment backed by a splice-imported file
+page, skb_store_bits() maps the frag page and copies the new MAC address
+directly into it.
 
-The copy path only handles packets smaller than the send section size
-(6144 bytes by default); larger packets take the cp_partial path where
-only the RNDIS header is copied. So entries here are bounded by the
-section size and a copy is split at most once on 4K-page systems. On
-!CONFIG_HIGHMEM configs kmap_local_page() folds to page_address() and
-no mapping work is added.
+Ensure the ARP SHA range is writable before reading the ARP header and
+before calling skb_store_bits().
 
-Fixes: c25aaf814a63 ("hyperv: Enable sendbuf mechanism on the send path")
-Cc: stable@vger.kernel.org
-Signed-off-by: Anton Leontev <leontyevantony@gmail.com>
-Link: https://patch.msgid.link/20260604165938.32033-1-leontyevantony@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 63137bc5882a ("netfilter: ebtables: Fixes dropping of small packets in bridge nat")
+Reported-by: Yiming Qian <yimingqian591@gmail.com>
+Signed-off-by: Yiming Qian <yimingqian591@gmail.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/hyperv/netvsc.c |   19 +++++++++++++++----
- 1 file changed, 15 insertions(+), 4 deletions(-)
+ net/bridge/netfilter/ebt_snat.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/net/hyperv/netvsc.c
-+++ b/drivers/net/hyperv/netvsc.c
-@@ -12,6 +12,7 @@
- #include <linux/sched.h>
- #include <linux/wait.h>
- #include <linux/mm.h>
-+#include <linux/highmem.h>
- #include <linux/delay.h>
- #include <linux/io.h>
- #include <linux/slab.h>
-@@ -965,12 +966,22 @@ static void netvsc_copy_to_send_buf(stru
- 	}
+diff --git a/net/bridge/netfilter/ebt_snat.c b/net/bridge/netfilter/ebt_snat.c
+index 7dfbcdfc30e5d2..c9e229af0366b8 100644
+--- a/net/bridge/netfilter/ebt_snat.c
++++ b/net/bridge/netfilter/ebt_snat.c
+@@ -31,6 +31,9 @@ ebt_snat_tg(struct sk_buff *skb, const struct xt_action_param *par)
+ 		const struct arphdr *ap;
+ 		struct arphdr _ah;
  
- 	for (i = 0; i < page_count; i++) {
--		char *src = phys_to_virt(pb[i].pfn << HV_HYP_PAGE_SHIFT);
--		u32 offset = pb[i].offset;
-+		phys_addr_t paddr = (pb[i].pfn << HV_HYP_PAGE_SHIFT) +
-+				    pb[i].offset;
- 		u32 len = pb[i].len;
- 
--		memcpy(dest, (src + offset), len);
--		dest += len;
-+		while (len) {
-+			struct page *page = phys_to_page(paddr);
-+			u32 off = offset_in_page(paddr);
-+			u32 chunk = min_t(u32, len, PAGE_SIZE - off);
-+			char *src = kmap_local_page(page);
++		if (skb_ensure_writable(skb, sizeof(_ah) + ETH_ALEN))
++			return EBT_DROP;
 +
-+			memcpy(dest, src + off, chunk);
-+			kunmap_local(src);
-+			dest += chunk;
-+			paddr += chunk;
-+			len -= chunk;
-+		}
- 	}
- 
- 	if (padding)
+ 		ap = skb_header_pointer(skb, 0, sizeof(_ah), &_ah);
+ 		if (ap == NULL)
+ 			return EBT_DROP;
+-- 
+2.53.0
+
 
 
 
