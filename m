@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-264929-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266263-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id mWzOE/KAMWpklAUAu9opvQ
-	(envelope-from <stable+bounces-264929-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:59:30 +0200
+	id xp8KAQuaMWrknwUAu9opvQ
+	(envelope-from <stable+bounces-266263-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:46:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3D9C692A35
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:59:29 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6748669474C
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:46:34 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=wk+97khP;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264929-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264929-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=CTRpTgM7;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266263-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266263-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B027131D93D6
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:51:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 41B8931DBC48
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:45:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA3E4478E57;
-	Tue, 16 Jun 2026 16:50:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1EFE47D951;
+	Tue, 16 Jun 2026 18:45:12 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 639CA478E53;
-	Tue, 16 Jun 2026 16:50:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8E5C47D949;
+	Tue, 16 Jun 2026 18:45:09 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781628632; cv=none; b=rJSsw5gWghIhIs2BlEwsEw/jUgI6oGO6KAtGluezf9DaD3wkPqucUZNG8KULQ1vTQ/5fhcwhKoI4E1RkIuWgT8rN58ubkrWGVAMAc7JKPfj+aW5x+CmomPZGewUguFvxVpfY1EohKSQpSxdakDe0kaYKGrdpnjA78y8GcvnpzGU=
+	t=1781635512; cv=none; b=N334lwoxjdN0h/KSTZBU/qBlcO32CrO0SuKDEpYa0im2/dvRjZ3ehOogn50ibxNBM6ulQCgIf1u2BT2mcYCCOKUf7G72oK1D5llUTTXQezZlL1VNDgSIwlfO1md8t332Ywx5ZN7Zq/ddkmGlKPoVERBHjh5pCQi/04+2TP1RgTQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781628632; c=relaxed/simple;
-	bh=exKq8DrzLPleDja9UhIJOmCJ45y5koKjEUwvdsckReY=;
+	s=arc-20240116; t=1781635512; c=relaxed/simple;
+	bh=7pK4hhn/6jz5QBsyIQJWr0/2oC0UCyzrjyklfuSrX2M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K3Cucvz5K8KrJxgmEeBt8uGpeqJvSaMNhxoj2SjGlr3LBNkaIqcWQ1P24eA1ovO7w/ByDWJPaFaHa4mcEKgvYz7BHjD1peIRvoBc1LLWKkI97yX08IDsHnn85SLW1CmBGoLJYmYIs+901/FrkAzETXwf1VVcPLt0i3E+MnXnWRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wk+97khP; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D3481F00A3A;
-	Tue, 16 Jun 2026 16:50:29 +0000 (UTC)
+	 MIME-Version; b=HP/4asANMAXq0q7Zs+BRNj15ZO3nwoowWiUjbND/Ds5bcpOZ3bfxEMaergGUAl2cd7T6F5Px6P+UhdBftWrmVpqCNg050Esa+Fucz7fwyqZO6CbUAuK8KsoxTG4dUyxRVj4twWtJ2fEJRG2khOLFFezTFiUY0qq/85HX74L4TRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CTRpTgM7; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4627E1F000E9;
+	Tue, 16 Jun 2026 18:45:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781628631;
-	bh=9dfeKOJUH1nUFOgMds0X5qIhsQBvxmaHRjFTLOp0UIo=;
+	s=korg; t=1781635509;
+	bh=DGMvcTteGW4Dr3naZIe1jkeADPDryd3nY1UYqu+lTSM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=wk+97khPD56OTqzEs29z73lxLiFc3GgNMPX/2mGtDze8fueT/trnB/81GHpv6A+mm
-	 DBz7MccDtnbBkJIOXAkrDA0hMR0dqTEVkO/KbKkQzYsW6cAfFzOY3SK9hIoOeNF4aM
-	 akWQXbIuJlBXfNt1/nAvHAzkpBAdnWrpjXRk/LFE=
+	b=CTRpTgM7l8AYUXmkl0+EmJM7IxzTo0kCSjSQkL5yijnhMyhWkm4RK470ZRH+PX5bF
+	 xaEVWK7zqo1bKgsRerJfy/UsgyGscCei2Rl+Y5L+UMONguMyIc2YYgX88Y7BUjTuWY
+	 Fxuj2G2OeqEvHHj2yqF0j1OaDnUhp0fpzrTy+mMk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maoyi Xie <maoyi.xie@ntu.edu.sg>,
-	Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.6 132/452] ip6: vti: Use ip6_tnl.net in vti6_changelink().
+	Aldo Conte <aldocontelk@gmail.com>,
+	Jonathan Cameron <jic23@kernel.org>
+Subject: [PATCH 5.10 063/342] iio: light: cm3323: fix reg_conf not being initialized correctly
 Date: Tue, 16 Jun 2026 20:25:59 +0530
-Message-ID: <20260616145124.665648901@linuxfoundation.org>
+Message-ID: <20260616145051.193548191@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,113 +68,104 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-266263-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:aldocontelk@gmail.com,m:jic23@kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264929-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:maoyi.xie@ntu.edu.sg,m:edumazet@google.com,m:kuniyu@google.com,m:pabeni@redhat.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,ntu.edu.sg:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A3D9C692A35
+X-Rspamd-Queue-Id: 6748669474C
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Aldo Conte <aldocontelk@gmail.com>
 
-commit 11b326fb0a374f4654f9be22d0f0f7abd9f7d3fe upstream.
+commit 1f4f0bcc5255dec5c4c3a1551bf49d8c33b69b20 upstream.
 
-ip netns add ns1
-ip netns add ns2
-ip -n ns1 link add vti6_test type vti6 remote ::1 local ::2 key 7
-ip -n ns1 link set vti6_test netns ns2
-ip -n ns2 link set vti6_test type vti6 remote ::3 local ::4 key 9
-ip netns del ns2
-ip netns del ns1
-[  132.495484] ------------[ cut here ]------------
-[  132.497609] kernel BUG at net/core/dev.c:12376!
+The code stores the return value of i2c_smbus_write_word_data()
+in data->reg_conf; however, this value represents the result
+of the write operation and not the value actually written to
+the configuration register. This meant that the contents of
+data->reg_conf did not truly reflect the contents
+of the hardware register.
 
-Commit 61220ab34948 ("vti6: Enable namespace changing") dropped
-NETIF_F_NETNS_LOCAL from vti6 devices. A vti6 tunnel can then
-move through IFLA_NET_NS_FD. After the move dev_net(dev) points
-at the new netns while t->net stays at the creation netns.
+Instead, save the value of the register before the write
+and use this value in the I2C write.
 
-vti6_changelink() and vti6_update() still use dev_net(dev) and
-dev_net(t->dev). They unlink from one per netns hash and relink
-into another. The creation netns is left with a stale entry.
-cleanup_net() of that netns later walks freed memory.
+The bug was found by code inspection: i2c_smbus_write_word_data()
+returns 0 on success, not the value written to the register.
 
-Reachable from an unprivileged user namespace (unshare --user
---map-root-user --net). Cross tenant scope on container hosts.
+Tested using i2c-stub on a Raspberry Pi 3B running a custom 6.19.10
+kernel. Before loading the driver, the configuration register 0x00
+CM3323_CMD_CONF was populated with 0x0030 using
+`i2cset -y 11 0x10 0x00 0x0030 w`, encoding an integration time of 320ms
+in bits[6:4].
 
-Fixes: 61220ab34948 ("vti6: Enable namespace changing")
-Reported-by: Maoyi Xie <maoyi.xie@ntu.edu.sg>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Cc: stable@vger.kernel.org # v5.15+
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20260521130555.3421684-2-maoyixie.tju@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Due to incorrect initialization of data->reg_conf in
+cm3323_init(), the print of integration_time returns 0.040000
+instead of the expected 0.320000. This happens because the read of the
+integration_time depends on cm3323_get_it_bits() that is based on the
+value of data->reg_conf, which is erroneously set to 0.
+
+With this fix applied, data->reg_conf correctly saves 0x0030 after init
+and the successive integration_time reports 0.320000 as expected.
+
+Fixes: 8b0544263761 ("iio: light: Add support for Capella CM3323 color sensor")
+Cc: stable@vger.kernel.org
+Signed-off-by: Aldo Conte <aldocontelk@gmail.com>
+Signed-off-by: Jonathan Cameron <jic23@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/ip6_vti.c |   12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ drivers/iio/light/cm3323.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/net/ipv6/ip6_vti.c
-+++ b/net/ipv6/ip6_vti.c
-@@ -726,10 +726,11 @@ vti6_tnl_change(struct ip6_tnl *t, const
- static int vti6_update(struct ip6_tnl *t, struct __ip6_tnl_parm *p,
- 		       bool keep_mtu)
- {
--	struct net *net = dev_net(t->dev);
--	struct vti6_net *ip6n = net_generic(net, vti6_net_id);
-+	struct net *net = t->net;
-+	struct vti6_net *ip6n;
- 	int err;
+--- a/drivers/iio/light/cm3323.c
++++ b/drivers/iio/light/cm3323.c
+@@ -89,15 +89,14 @@ static int cm3323_init(struct iio_dev *i
  
-+	ip6n = net_generic(net, vti6_net_id);
- 	vti6_tnl_unlink(ip6n, t);
- 	synchronize_net();
- 	err = vti6_tnl_change(t, p, keep_mtu);
-@@ -1043,11 +1044,12 @@ static int vti6_changelink(struct net_de
- 			   struct nlattr *data[],
- 			   struct netlink_ext_ack *extack)
- {
--	struct ip6_tnl *t;
-+	struct ip6_tnl *t = netdev_priv(dev);
-+	struct net *net = t->net;
- 	struct __ip6_tnl_parm p;
--	struct net *net = dev_net(dev);
--	struct vti6_net *ip6n = net_generic(net, vti6_net_id);
-+	struct vti6_net *ip6n;
+ 	/* enable sensor and set auto force mode */
+ 	ret &= ~(CM3323_CONF_SD_BIT | CM3323_CONF_AF_BIT);
++	data->reg_conf = ret;
  
-+	ip6n = net_generic(net, vti6_net_id);
- 	if (dev == ip6n->fb_tnl_dev)
- 		return -EINVAL;
+-	ret = i2c_smbus_write_word_data(data->client, CM3323_CMD_CONF, ret);
++	ret = i2c_smbus_write_word_data(data->client, CM3323_CMD_CONF, data->reg_conf);
+ 	if (ret < 0) {
+ 		dev_err(&data->client->dev, "Error writing reg_conf\n");
+ 		return ret;
+ 	}
+ 
+-	data->reg_conf = ret;
+-
+ 	return 0;
+ }
  
 
 
