@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-264753-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266172-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id mX7hFAR9MWqrkgUAu9opvQ
-	(envelope-from <stable+bounces-264753-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:42:44 +0200
+	id 9juZI+SXMWrIngUAu9opvQ
+	(envelope-from <stable+bounces-266172-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:37:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7EB76925EC
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:42:43 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EEDB694463
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:37:24 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=fNXODQsg;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264753-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264753-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=fGYFjUwq;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266172-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-266172-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 65C0B30B2AF3
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:35:12 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 380CE3090FA5
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:37:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA81047798F;
-	Tue, 16 Jun 2026 16:35:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8B033DF007;
+	Tue, 16 Jun 2026 18:37:20 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B868D4779B8;
-	Tue, 16 Jun 2026 16:35:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C1283D8105;
+	Tue, 16 Jun 2026 18:37:19 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781627711; cv=none; b=Up8gJPlyOyQWqXpMjH6BKNNif5uvFh4PH6EgcQfcirYns6B+27uAAi3lCjzg7aHrVpaFaASAk7T9zIFEXBPAPj3a4Ej7rHk53WtCeryTdI2HAcKLyj8Gf5b6JWy7g0ShSLNseF+SIcxL+yzDESQdL/aQRaau1Xb6x69tgqHIOQE=
+	t=1781635040; cv=none; b=Fg0Bqrjqhj0dEQAGdlQMrHSBpseJ/8aaPbcNeQA/21ldTDM80egUoNiMj3JBbLdQGBC860yJqhqMpecVlL1EDARb5++2bq7zeKvcRUvbfh0m/JVCfWV5jbc30VyL2uhx4p4RQd80RzkYn/3nq3DP2+MPOxNzyIy1guu89atcht4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781627711; c=relaxed/simple;
-	bh=XW+GMvGv7dQN+MR7h7PykbUc+IRb/HGWlFo7I+Tm4rw=;
+	s=arc-20240116; t=1781635040; c=relaxed/simple;
+	bh=2sV+GB0ijThM3NJgqsL0UHQfPE96R5nRtHt4Uud8+xk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VbgdXj8SH0aPZJI8pvzvIQZfuKQ0KhRCpkDsMU/toitpuWDx22w6zvyx56cbfrkaQBrKrLtFk+1q/y7ni4vECM0lYoS+c6S3LTESj5RIVxIMaiLoKNvZzmOui4AXYi453UMNSVdy5QVB4G/UuIB30SCIG2P5spfS93jQ8PVV7wY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fNXODQsg; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A21031F000E9;
-	Tue, 16 Jun 2026 16:35:09 +0000 (UTC)
+	 MIME-Version; b=kkL0MmER8WFMIbvXql9KY2xywfSlzcHR0aOnK+e1AD1jT1+kASXl0pLPTcE44Z90zIyL0q8xuBYz39lGzlaR08502yglIzlAI14BADqWuOCxSDVHyrEBbOKIS9pwK19wkzhsOsqVkR84HVFldveaArHaHca+IklBqDRgTDOcdRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fGYFjUwq; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F3051F000E9;
+	Tue, 16 Jun 2026 18:37:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781627710;
-	bh=pCdVecW8JFhBL6d8vPbZ+kD2mTBfHJmCEier+FFgykY=;
+	s=korg; t=1781635039;
+	bh=rMEORZ3nocbfspl4LzbdeI4GRthLU/VqlTnQrUrip08=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fNXODQsgxcOukzXTKhkLfXd8ZHNZvN9h1WOP9TGKBBGO5/r8O4HBHqXXAz/o67LBJ
-	 axRiRWmPO5xdqTmwvfLliJ/BeEdWKMYYgywMbn0te4vxXxfGK0/qXOmqtjtfQrOXCB
-	 Kpk57SR1l5A18cPATPIpnrr3YX4S0fmyPQVBpaMY=
+	b=fGYFjUwqUSrt/6Q1ptEpnA2rRKjlDVKTOvOQzFhKNovm9ZjJCF3B7RzC1RzLVgLEX
+	 7hSAfanIlarJdS7emmGxIR3YOuhCRaLlDwp15dCcCpSIwXBXoZCk6VL5Rsspe/mBUH
+	 n2QIIzwHv0lvGDRlto6mXgx02f8ha6iz8CEWRxic=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuhao Jiang <danisjiang@gmail.com>,
-	Junrui Luo <moonafterrain@outlook.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Srinivas Kandagatla <srini@kernel.org>
-Subject: [PATCH 6.12 180/261] misc: fastrpc: fix DMA address corruption due to find_vma misuse
+	Berkant Koc <me@berkoc.com>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 380/411] drm/hyperv: validate resolution_count and fix WIN8 fallback
 Date: Tue, 16 Jun 2026 20:30:18 +0530
-Message-ID: <20260616145053.414416275@linuxfoundation.org>
+Message-ID: <20260616145121.481758001@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
-References: <20260616145044.869532709@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,21 +73,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,outlook.com,oss.qualcomm.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-264753-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,berkoc.com,outlook.com,linux.microsoft.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-266172-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:danisjiang@gmail.com,m:moonafterrain@outlook.com,m:dmitry.baryshkov@oss.qualcomm.com,m:srini@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:me@berkoc.com,m:mhklinux@outlook.com,m:hamzamahfooz@linux.microsoft.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -100,49 +100,77 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,qualcomm.com:email,msgid.link:url,outlook.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,outlook.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B7EB76925EC
+X-Rspamd-Queue-Id: 2EEDB694463
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junrui Luo <moonafterrain@outlook.com>
+From: Berkant Koc <me@berkoc.com>
 
-commit 464c6ad2aa16e1e1df9d559289199356493d1e00 upstream.
+[ Upstream commit 13d33b9ef67066c77c84273fac5a1d3fde3533d1 ]
 
-fastrpc_get_args() uses find_vma() to look up the VMA for a user-provided
-pointer and compute a DMA address offset. When the address falls in a gap
-before the returned VMA, (ptr & PAGE_MASK) - vma->vm_start underflows,
-corrupting the DMA address sent to the DSP.
+A SYNTHVID_RESOLUTION_RESPONSE with resolution_count > 64 walks past
+the supported_resolution[SYNTHVID_MAX_RESOLUTION_COUNT] array in the
+parse loop. Bound resolution_count against the array size, folded
+into the existing zero-check.
 
-Replace find_vma() with vma_lookup(), which returns NULL when the address
-is not contained within any VMA.
+When the WIN10 resolution probe fails, the caller in
+hyperv_connect_vsp() left hv->screen_*_max / preferred_* unpopulated,
+which sets mode_config.max_width / max_height to 0 and makes
+drm_internal_framebuffer_create() reject every userspace framebuffer
+with -EINVAL. The pre-WIN10 branch had the same gap for
+preferred_width / preferred_height. Use a single post-probe fallback
+guarded by screen_width_max == 0 so both paths converge on the WIN8
+defaults.
 
-Cc: stable@vger.kernel.org
-Fixes: 80f3afd72bd4 ("misc: fastrpc: consider address offset before sending to DSP")
-Reported-by: Yuhao Jiang <danisjiang@gmail.com>
-Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
-Link: https://patch.msgid.link/20260530204528.116920-3-srini@kernel.org
+Signed-off-by: Berkant Koc <me@berkoc.com>
+Assisted-by: Claude:claude-opus-4-7 berkoc-pipeline
+Fixes: 76c56a5affeb ("drm/hyperv: Add DRM driver for hyperv synthetic video device")
+Cc: stable@vger.kernel.org # 5.14+
+Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+Tested-by: Michael Kelley <mhklinux@outlook.com>
+Signed-off-by: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
+Link: https://patch.msgid.link/6945b22419c7d404b4954a113de2ac9c900dba93.1779542874.git.me@berkoc.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/fastrpc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/hyperv/hyperv_drm_proto.c |   13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
---- a/drivers/misc/fastrpc.c
-+++ b/drivers/misc/fastrpc.c
-@@ -1061,7 +1061,7 @@ static int fastrpc_get_args(u32 kernel,
- 			pages[i].addr = ctx->maps[i]->phys;
+--- a/drivers/gpu/drm/hyperv/hyperv_drm_proto.c
++++ b/drivers/gpu/drm/hyperv/hyperv_drm_proto.c
+@@ -396,8 +396,11 @@ static int hyperv_get_supported_resoluti
+ 		return -ETIMEDOUT;
+ 	}
  
- 			mmap_read_lock(current->mm);
--			vma = find_vma(current->mm, ctx->args[i].ptr);
-+			vma = vma_lookup(current->mm, ctx->args[i].ptr);
- 			if (vma)
- 				pages[i].addr += (ctx->args[i].ptr & PAGE_MASK) -
- 						 vma->vm_start;
+-	if (msg->resolution_resp.resolution_count == 0) {
+-		drm_err(dev, "No supported resolutions\n");
++	if (msg->resolution_resp.resolution_count == 0 ||
++	    msg->resolution_resp.resolution_count >
++	    SYNTHVID_MAX_RESOLUTION_COUNT) {
++		drm_err(dev, "Invalid resolution count: %d\n",
++			msg->resolution_resp.resolution_count);
+ 		return -ENODEV;
+ 	}
+ 
+@@ -587,9 +590,13 @@ int hyperv_connect_vsp(struct hv_device
+ 		ret = hyperv_get_supported_resolution(hdev);
+ 		if (ret)
+ 			drm_err(dev, "Failed to get supported resolution from host, use default\n");
+-	} else {
++	}
++
++	if (!hv->screen_width_max) {
+ 		hv->screen_width_max = SYNTHVID_WIDTH_WIN8;
+ 		hv->screen_height_max = SYNTHVID_HEIGHT_WIN8;
++		hv->preferred_width = SYNTHVID_WIDTH_WIN8;
++		hv->preferred_height = SYNTHVID_HEIGHT_WIN8;
+ 	}
+ 
+ 	hv->mmio_megabytes = hdev->channel->offermsg.offer.mmio_megabytes;
 
 
 
