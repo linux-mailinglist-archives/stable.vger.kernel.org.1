@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-266537-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264752-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id jTT7AEGfMWrzoQUAu9opvQ
-	(envelope-from <stable+bounces-266537-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:08:49 +0200
+	id JAQFNfN8MWqnkgUAu9opvQ
+	(envelope-from <stable+bounces-264752-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:42:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A5CB694C7B
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:08:48 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41CB36925D9
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:42:27 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="Ufr/SlU4";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266537-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266537-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="jk/sx8dA";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264752-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264752-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 37955308DBB3
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:08:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A3CBA301F18B
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:35:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD2DF3DE45B;
-	Tue, 16 Jun 2026 19:08:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 629E04779B3;
+	Tue, 16 Jun 2026 16:35:06 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60B933DD851;
-	Tue, 16 Jun 2026 19:08:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 384AA47798F;
+	Tue, 16 Jun 2026 16:35:04 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781636904; cv=none; b=ILWoPXFg2TD8bEB1NW4bwKBtCn7lffshYGi9veSqC0r3CrgdQ5B6iVxj1Ya8yEPfkxbkS/uLEcnBCfIZTqImY+vB+yGC9TXkxQY8A3+8kIDfEdvf+CcWkRg8QhwpEX77zVKHW4AjxRsaJct2dO8iJOc90IYMsXDpCneS+9CvFVw=
+	t=1781627706; cv=none; b=WJjzAggntAwOnYtCwfO/08jhmkZYBcCmwVTKLFyxfYvYjLXqLJ5+Zn1NQJHYxZi+n21kBafkhe5xF1I02XGna4+yWwmwCQ7JWYq48xq4ec7xu1g4KbePWNFlcaAGEKyzEGb5Bc02pBDmXmBtnylyf9Vr/nmwentIKVDe9mY5H1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781636904; c=relaxed/simple;
-	bh=DhGBUJe5wD1AmL1hqAe3+A98cW0XGM3m9L4n6F6dHmU=;
+	s=arc-20240116; t=1781627706; c=relaxed/simple;
+	bh=7jIU0df49x1N8DaK5lgknXg0/PAp2NCLtQcYMD7JxLk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cPvDwklyfdApldPoMNo949o9kUhfCjtIgHVIX8XAA3SLZkGWKDnXTQzGLRsYW2r7xVadRBQkpmO3X42SI6NTeTwQWi+1fBBkiNWvbc+8JUenSI3W0hrdnhdatoK0wIzbuCr7NHJT2jRz59/gREthtzrtyAJB4wHQkqpbSDxwzH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ufr/SlU4; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 321381F000E9;
-	Tue, 16 Jun 2026 19:08:21 +0000 (UTC)
+	 MIME-Version; b=BABAeOyg95oDpURZr683e7xIhI/OMVim9yb7tio0MYQ2iTIgcelSl9kN6Yu4DOdu95fnDQTvputBRQXL6ryp0jEciQtYseVNY6tnzMGKDzmNUTBKIz5cSYA+RZ+TEz/HHGCbfHSyaTO2kgJ6UHrnh/p/hhI1pUzl/96AJrnCRQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jk/sx8dA; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8054D1F000E9;
+	Tue, 16 Jun 2026 16:35:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781636903;
-	bh=M4i3Z6hid9SULvLBqJs91IyrThiJW4qAbeVmcQBbbkw=;
+	s=korg; t=1781627704;
+	bh=sVLBhgXGU7QHXeL8NhbvNVcTQxqcfqn5RywARWIH9v0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Ufr/SlU4gtPDgvl0GFq0QY2qDFg5Rds29hrKnzpxHb3njIQUCB8ZyX3epaI5QC5E0
-	 i2j4OAUPwl2OhidhmlcNj/QCfreZHL3+vV+sOg6ouxFbvMfVmxdPT+XBb4lHFI9EuH
-	 iEtT3u1DgxJtPesu6W89etnjiaID5Cc1iXKB5iDo=
+	b=jk/sx8dA8HSssXm0LItx9OfeFFLmvJmtLqzZUtcbYac9+TxlYCC/OlO9PnVV5Vm76
+	 qhhGcIusL4XrjChT5hN2oCG9k5dHjzqEOr1w3Uu7ZuoDgngV5amQcWikwwgX+4pQSW
+	 0zMgHH/59Y3EZD+5pn5kmIY4KHWuW+T9J05dPQrY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Peter Chen <peter.chen@kernel.org>,
-	Yongchao Wu <yongchao.wu@autochips.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 320/342] usb: cdns3: gadget: fix request skipping after clearing halt
-Date: Tue, 16 Jun 2026 20:30:16 +0530
-Message-ID: <20260616145103.462766973@linuxfoundation.org>
+	Zhenghang Xiao <kipreyyy@gmail.com>,
+	Srinivas Kandagatla <srini@kernel.org>
+Subject: [PATCH 6.12 179/261] misc: fastrpc: fix use-after-free race in fastrpc_map_create
+Date: Tue, 16 Jun 2026 20:30:17 +0530
+Message-ID: <20260616145053.371310099@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,104 +68,122 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-264752-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kipreyyy@gmail.com,m:srini@kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266537-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:peter.chen@kernel.org,m:yongchao.wu@autochips.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8A5CB694C7B
+X-Rspamd-Queue-Id: 41CB36925D9
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yongchao Wu <yongchao.wu@autochips.com>
+From: Zhenghang Xiao <kipreyyy@gmail.com>
 
-[ Upstream commit c8778ff817a7047d6848fefba99dcb27b1bf01fe ]
+commit 07ebe87915d8accdaba20c4f88c5ae430fe62fbb upstream.
 
-According to the cdns3 datasheet, the EPRST (Endpoint Reset) command
-causes the DMA engine to reposition its internal pointer to the next
-Transfer Descriptor (TD) if it was already processing one.
+fastrpc_map_lookup returns a raw pointer after releasing fl->lock. The
+caller fastrpc_map_create then calls fastrpc_map_get (kref_get_unless_zero)
+on this unprotected pointer. A concurrent MEM_UNMAP can free the map
+between the lock release and the kref operation, resulting in a
+use-after-free on the freed slab object.
 
-This issue is consistently observed during the ADB identification
-process on macOS hosts, where the host issues a Clear_Halt. Although
-commit 4bf2dd65135a ("usb: cdns3: gadget: toggle cycle bit before reset
-endpoint") attempted to avoid DMA advance by toggling the cycle bit,
-trace logs show that on certain hosts like macOS, the DMA pointer
-(EP_TRADDR) still shifts after EPRST:
+Restore the take_ref parameter to fastrpc_map_lookup so the reference
+is acquired atomically under fl->lock before the pointer is exposed to
+the caller.
 
-  cdns3_ctrl_req: Clear Endpoint Feature(Halt ep1out)
-  cdns3_doorbell_epx: ep1out, ep_trbaddr f9c04030  <-- Should be f9c04000
-  cdns3_gadget_giveback: ep1out: req: ... length: 16384/16384
-
-As shown above, the DMA pointer jumped to the next TD, causing
-the controller to skip the initial TRBs of the request. This leads to
-data misalignment and ADB protocol hangs on macOS.
-
-Fix this by manually restoring the EP_TRADDR register to the starting
-physical address of the current request after the EPRST operation is
-complete.
-
-Fixes: 7733f6c32e36 ("usb: cdns3: Add Cadence USB3 DRD Driver")
-Cc: stable <stable@kernel.org>
-Cc: Peter Chen <peter.chen@kernel.org>
-Signed-off-by: Yongchao Wu <yongchao.wu@autochips.com>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Link: https://patch.msgid.link/20260513160012.2547894-1-yongchao.wu@autochips.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 10df039834f8 ("misc: fastrpc: Skip reference for DMA handles")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zhenghang Xiao <kipreyyy@gmail.com>
+Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
+Link: https://patch.msgid.link/20260530204528.116920-5-srini@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/cdns3/gadget.c |   12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ drivers/misc/fastrpc.c |   25 +++++++++++--------------
+ 1 file changed, 11 insertions(+), 14 deletions(-)
 
---- a/drivers/usb/cdns3/gadget.c
-+++ b/drivers/usb/cdns3/gadget.c
-@@ -2798,9 +2798,19 @@ int __cdns3_gadget_ep_clear_halt(struct
- 	priv_ep->flags &= ~(EP_STALLED | EP_STALL_PENDING);
+--- a/drivers/misc/fastrpc.c
++++ b/drivers/misc/fastrpc.c
+@@ -365,7 +365,7 @@ static int fastrpc_map_get(struct fastrp
  
- 	if (request) {
--		if (trb)
-+		if (trb) {
- 			*trb = trb_tmp;
  
-+			/*
-+			 * Per datasheet, EPRST causes DMA to reposition to the next TD.
-+			 * Manually reset EP_TRADDR to the current TRB to prevent
-+			 * the hardware from skipping the interrupted request.
-+			 */
-+			writel(EP_TRADDR_TRADDR(priv_ep->trb_pool_dma +
-+						priv_req->start_trb * TRB_SIZE),
-+						&priv_dev->regs->ep_traddr);
+ static int fastrpc_map_lookup(struct fastrpc_user *fl, int fd,
+-			    struct fastrpc_map **ppmap)
++			    struct fastrpc_map **ppmap, bool take_ref)
+ {
+ 	struct fastrpc_map *map = NULL;
+ 	struct dma_buf *buf;
+@@ -380,6 +380,12 @@ static int fastrpc_map_lookup(struct fas
+ 		if (map->fd != fd || map->buf != buf)
+ 			continue;
+ 
++		if (take_ref) {
++			ret = fastrpc_map_get(map);
++			if (ret)
++				break;
 +		}
 +
- 		cdns3_rearm_transfer(priv_ep, 1);
+ 		*ppmap = map;
+ 		ret = 0;
+ 		break;
+@@ -894,19 +900,10 @@ get_err:
+ static int fastrpc_map_create(struct fastrpc_user *fl, int fd,
+ 			      u64 len, u32 attr, struct fastrpc_map **ppmap)
+ {
+-	struct fastrpc_session_ctx *sess = fl->sctx;
+-	int err = 0;
++	if (!fastrpc_map_lookup(fl, fd, ppmap, true))
++		return 0;
+ 
+-	if (!fastrpc_map_lookup(fl, fd, ppmap)) {
+-		if (!fastrpc_map_get(*ppmap))
+-			return 0;
+-		dev_dbg(sess->dev, "%s: Failed to get map fd=%d\n",
+-			__func__, fd);
+-	}
+-
+-	err = fastrpc_map_attach(fl, fd, len, attr, ppmap);
+-
+-	return err;
++	return fastrpc_map_attach(fl, fd, len, attr, ppmap);
+ }
+ 
+ /*
+@@ -1176,7 +1173,7 @@ cleanup_fdlist:
+ 	for (i = 0; i < FASTRPC_MAX_FDLIST; i++) {
+ 		if (!fdlist[i])
+ 			break;
+-		if (!fastrpc_map_lookup(fl, (int)fdlist[i], &mmap))
++		if (!fastrpc_map_lookup(fl, (int)fdlist[i], &mmap, false))
+ 			fastrpc_map_put(mmap);
  	}
  
 
