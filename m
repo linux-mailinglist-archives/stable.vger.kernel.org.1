@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-266353-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264557-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 7tZIB4qbMWproAUAu9opvQ
-	(envelope-from <stable+bounces-266353-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:52:58 +0200
+	id tU68FNp2MWr0jwUAu9opvQ
+	(envelope-from <stable+bounces-264557-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:16:26 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A658C6948BA
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:52:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E481A691DFB
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:16:25 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=XAZzvnl7;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266353-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266353-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=LWE9RDHL;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264557-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264557-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id EE0C8303BED7
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:52:56 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 578A13030172
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:15:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 132AB47B435;
-	Tue, 16 Jun 2026 18:52:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1629472762;
+	Tue, 16 Jun 2026 16:15:51 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB1683C943F;
-	Tue, 16 Jun 2026 18:52:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE81D46AF25;
+	Tue, 16 Jun 2026 16:15:50 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781635975; cv=none; b=rhtQrAJdk4nchYMsoS+R/SStRB+Asw4N5cNSoogbnVp2tNy3vR7d6hcHBrFvnnYQbtuokvXY21CblCmlys9g/7ZBOvHHkAMYoix9dvroL1qUKthI0cG61NAlFRH6Tqd5yJEe4bfQYZbwpEoGPVal8FWZ4DEz+iaZ48T+jTLw9OU=
+	t=1781626551; cv=none; b=sco5ZbAAsOkcdVRU1MpB/QSN/j3NI55v+MQWpTrh92VWm9XhF8Q8wWPi2C7Xr3JHliEsmWoYwaJPUYNecJE5Xw8bL/vo07/b6R5YrR/vzppaMxDuWNiGY1Q1j7RKoBxCGsc3wJ+mvHuDcoqE4FVUsGHd52MAKafq9amOvMCuh80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781635975; c=relaxed/simple;
-	bh=1JE2ijbcrfTv1wQ5d4j21SZei6/kYEjsrmrRA+N8k7g=;
+	s=arc-20240116; t=1781626551; c=relaxed/simple;
+	bh=lzA9rKr0fPxpOK+JODuYzMIVhdUTvN2BhsRcWJTKBPs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DSFCFF7tNh0iLzGMprYX4sMfWaKG4eaoRWnOHcOWtVfOaGUR9CoV2qgSVvTur4YJqJMTPh+DukOrfahnyy9AU0UMy1VaKFUBi0229BFdzo/lF/TGBpBq4Iq7zpM9ldMSYoRqxINTEcxLuvzCe1s2zmLM3kbVJPV1wkO27MzfVU0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XAZzvnl7; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04D931F000E9;
-	Tue, 16 Jun 2026 18:52:53 +0000 (UTC)
+	 MIME-Version; b=JiLkBB9suSchZ8aH38FIZpUW2A7i+zDa9DcVWHLKTy4VIDxNRdesxiLuJovv/mdVITiqc1jne48HZJm2TqgYx2Ro5zxItUa/esEiualRL26wzpRH42bFf/oGUFGgVRuPkSzIV57EiNMYabsCWpug38kkE5hRAWlEQHJA5j3jK4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LWE9RDHL; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE65A1F00A3A;
+	Tue, 16 Jun 2026 16:15:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781635974;
-	bh=ggGuue0e/N4ZjYEeRc9fNHiX86tIyc+Z9EX+m13nzFU=;
+	s=korg; t=1781626550;
+	bh=Pg9eiHU8NRr7Cfcw2qA0S1tid9Mb4+huWlX5aZ7BxcA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=XAZzvnl7Svh9EH5E7X4cq+kNxWzePEtIBRLJ2r/CFIyRtENSjlfHq0V5RUHmD+6b5
-	 Wjdxg2teo3g41G5yLMcveBzZrLOFk1m44mRKgs6M/T6oKFjOLkfv96E0B1RfSJP8o6
-	 926OTckaFMgEkUd0nByYDUlMSaF/UY17t6kQ2qfM=
+	b=LWE9RDHL1BO8LMdFroBqGB8StfM6zTVa5aWkiECaAIVK71TXkKvysgmCcaqMGRseR
+	 gejNf1JyNQ87Fr3IEJ43AXgXFriSASTA0Jd5VYBkffvxPbDbUTEhZ3jSMbkKeZIDfp
+	 jDsDx5YDCC47ng6cnRS7GnvM+P18ElQoIVfryaGg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Naveen Kumar Chaudhary <naveen.osdev@gmail.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	John Stultz <jstultz@google.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 151/342] time: Fix off-by-one in settimeofday() usec validation
+	Mingyu Wang <25181214217@stu.xidian.edu.cn>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>
+Subject: [PATCH 6.12 009/261] i2c: dev: prevent integer overflow in I2C_TIMEOUT ioctl
 Date: Tue, 16 Jun 2026 20:27:27 +0530
-Message-ID: <20260616145055.202630420@linuxfoundation.org>
+Message-ID: <20260616145045.459032771@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,81 +71,96 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,google.com];
-	TAGGED_FROM(0.00)[bounces-266353-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:naveen.osdev@gmail.com,m:tglx@kernel.org,m:jstultz@google.com,m:sashal@kernel.org,m:naveenosdev@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-264557-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:25181214217@stu.xidian.edu.cn,m:wsa+renesas@sang-engineering.com,m:wsa@sang-engineering.com,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	TAGGED_RCPT(0.00)[stable,renesas];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sang-engineering.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,xidian.edu.cn:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A658C6948BA
+X-Rspamd-Queue-Id: E481A691DFB
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Naveen Kumar Chaudhary <naveen.osdev@gmail.com>
+From: Mingyu Wang <25181214217@stu.xidian.edu.cn>
 
-[ Upstream commit ce4abda5e12622f33450159e76c8f56d28d7f03d ]
+commit 617eb7c0961a8dfcfc811844a6396e406b2923ea upstream.
 
-The validation check uses '>' instead of '>=' when comparing tv_usec
-against USEC_PER_SEC, allowing the value 1000000 through. After
-conversion to nanoseconds (*= 1000), this produces tv_nsec ==
-NSEC_PER_SEC, violating the timespec invariant that tv_nsec must be
-less than NSEC_PER_SEC.
+While fuzzing with Syzkaller, a persistent `schedule_timeout: wrong
+timeout value` warning was observed, accompanied by SMBus controller
+state machine corruption.
 
-Use '>=' to reject tv_usec values that are not in the valid range of
-0 to 999999.
+The I2C_TIMEOUT ioctl accepts a user-provided timeout in multiples of
+10 ms. The user argument is checked against INT_MAX, but it is
+subsequently multiplied by 10 before being passed to msecs_to_jiffies().
 
-Fixes: 5e0fb1b57bea ("y2038: time: avoid timespec usage in settimeofday()")
-Signed-off-by: Naveen Kumar Chaudhary <naveen.osdev@gmail.com>
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Acked-by: John Stultz <jstultz@google.com>
-Link: https://patch.msgid.link/4rikk44zew3s6577dugmx4jyblz7o5c57niuap6ct3td5yfm6w@gh7pcumg7qor
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+A malicious user can pass a large value (e.g., 429496729) that passes
+the `arg > INT_MAX` check but overflows when multiplied by 10. This
+results in a truncated 32-bit unsigned value that bypasses the
+internal `(int)m < 0` check in `msecs_to_jiffies()`.
+
+The truncated value is then assigned to `client->adapter->timeout`
+(a signed 32-bit int), which is reinterpreted as a negative number.
+When passed to wait_for_completion_timeout(), this negative value
+undergoes sign extension to a 64-bit unsigned long, triggering the
+`schedule_timeout` warning and causing premature returns. This leaves
+the SMBus state machine in an unrecoverable state, constituting a
+local Denial of Service (DoS).
+
+Fix this by bounding the user argument to `INT_MAX / 10`.
+
+Signed-off-by: Mingyu Wang <25181214217@stu.xidian.edu.cn>
+[wsa: move the comment as well]
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/time/time.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/i2c/i2c-dev.c |    9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/time/time.c b/kernel/time/time.c
-index 37c381607f3729..808ce6f4953572 100644
---- a/kernel/time/time.c
-+++ b/kernel/time/time.c
-@@ -207,7 +207,7 @@ SYSCALL_DEFINE2(settimeofday, struct __kernel_old_timeval __user *, tv,
- 		    get_user(new_ts.tv_nsec, &tv->tv_usec))
- 			return -EFAULT;
- 
--		if (new_ts.tv_nsec > USEC_PER_SEC || new_ts.tv_nsec < 0)
-+		if (new_ts.tv_nsec >= USEC_PER_SEC || new_ts.tv_nsec < 0)
+--- a/drivers/i2c/i2c-dev.c
++++ b/drivers/i2c/i2c-dev.c
+@@ -487,12 +487,13 @@ static long i2cdev_ioctl(struct file *fi
+ 		client->adapter->retries = arg;
+ 		break;
+ 	case I2C_TIMEOUT:
+-		if (arg > INT_MAX)
++		/*
++		 * For historical reasons, user-space sets the timeout value in
++		 * units of 10 ms.
++		 */
++		if (arg > INT_MAX / 10)
  			return -EINVAL;
  
- 		new_ts.tv_nsec *= NSEC_PER_USEC;
--- 
-2.53.0
-
+-		/* For historical reasons, user-space sets the timeout
+-		 * value in units of 10 ms.
+-		 */
+ 		client->adapter->timeout = msecs_to_jiffies(arg * 10);
+ 		break;
+ 	default:
 
 
 
