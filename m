@@ -1,192 +1,146 @@
-Return-Path: <stable+bounces-263739-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263732-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id LjjNOY1OMWqCgQUAu9opvQ
-	(envelope-from <stable+bounces-263739-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:24:29 +0200
+	id df/NGLZMMWoYgQUAu9opvQ
+	(envelope-from <stable+bounces-263732-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:16:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65F2568FE4D
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:24:29 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDD0D68FD14
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:16:37 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=JeS9FKln;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263739-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263739-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263732-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-263732-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 777843034EFA
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 13:23:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 54D443094C96
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 13:15:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43E5432E13B;
-	Tue, 16 Jun 2026 13:23:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB85F27CCE0;
+	Tue, 16 Jun 2026 13:15:23 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78210329E7E
-	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 13:23:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C34E18872A;
+	Tue, 16 Jun 2026 13:15:19 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781616219; cv=none; b=Z7oq7IstSIdET2HqjGH5eDVKAzOtglc+hhHsYvxq4fjZt9kNo7lPgTp3bbfJPXVOixK9vK0uAc6K1Bn+Xb0OhVKIee0I4VtsYhAo1qXI4T3rYlhQIHlFYTG76GBanIM/M06UTotfQ2Yp1ULPne8gfuf0B9zTfSgfLYzMDtxTY8w=
+	t=1781615723; cv=none; b=BDF31qQE3JY2NhqCASNOhSuiVwNWeC8SAcbdYEdLcfv5kEi33qbMjXObJJd/j8rWl97wNFxsFl6yCwA/0rzdGNYhESoRCcQ+nfXgPf/YN2UcFo5VGC5R6AY1fXlNKDv9Tr6PgY4e4eYoEdI0j7Y3cLVxOrxqe2QnFceNs2aZ2hI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781616219; c=relaxed/simple;
-	bh=guMWy7wf98B65PfVClETVri2NzA1ofjmGgJWY8rzEb4=;
-	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References; b=nuIx5qjSCCsdwdT7r3rQ61ULJOOsVIvDdgsCfg89yRhSWvRprL4DNO1Q/nQoG7ZJ7QaaswYJQKVsPEvbVxEwKxOmbx7is/e3pw5qsouZgpLhHqbDl1ifRI8W5kC0ZTbnNA02AvytNJa/Gucknh1Q/hRxSuisBAiZSURmwO8om9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JeS9FKln; arc=none smtp.client-ip=209.85.216.42
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-36dd65b95f2so3259035a91.0
-        for <stable@vger.kernel.org>; Tue, 16 Jun 2026 06:23:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781616216; x=1782221016; darn=vger.kernel.org;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=i2eQVWR69DVBll8DZTLTpPBD8LsUE2YsnnLAZbM4NLE=;
-        b=JeS9FKlnZWX6vOmsRq815yzvCmadjACpNiIdJjmdx2tKQfvPw/Va6P4hYzAaHjj8R8
-         VvfZf6LHKKAc0b46wgdxM7yxHn8XijamyY323Jd2aAgZ6HWUsp32pafusdS0ccPqX194
-         LD0XcpAFnejk3WEmf7FJKlIku7l6WhDAbM/uYyQ1y+Xu+JNjwcVD6q4diY3xpOeiU9vw
-         o3tuCWW5DB7xEcCXejildWIb2Go0ouFB7f5NMF3pxs7cLKjJ7d0Q2U0rBvr/VMtIty1A
-         Pv6BAS9DPj5fmEdl3HXr0xWAruVm9wV1xn/Vn9YhEKguGTlzRvHanMJLTeyTuXJqC15E
-         I9nQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781616216; x=1782221016;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=i2eQVWR69DVBll8DZTLTpPBD8LsUE2YsnnLAZbM4NLE=;
-        b=VAzOLW49hhkOE7YXMzLF1iuH2kiHZ7uNEZqbNXUijM5pOzHVE3pw4YFEKx/EZoKqJl
-         VZe1hjiwzu/eGBsDvkUbFGO5/E2FtR0EMx3Bhj0rUY5UmEytaqylchz1CqgT9X4FoLdf
-         IaeppXDia/BfLNj2yGvVzRyQpYX8vfiK7qUbXBI41UtiN0619FHoRfGeKOnTGZiALWOa
-         xZJUus3VgXxpO7NYn09L1CpbtjVA32LTEW+fa2lQ+OwB1/GkalRYlqp98LvPuet2cLgO
-         IEHYwf1KfZMSMpXe/oE8VACD/GwuNGB4jpeRcUpsBndd9Bf9bbybVA8HJPCya7OlhuRC
-         oAVg==
-X-Forwarded-Encrypted: i=1; AFNElJ/TD+MGOoMgNJYMepWuUZoUKPKh2Av3rUpRPshzizgcx2tErOYmE28GwpPB76u/kSvyQ2IxS+I=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwQmezKn11+J7rQRnkRVWZDS0XYCQllvXGkJMheBUI8M/clJx8G
-	d6xbw7c1+5sGnf90SJcyOKRbfXYxiJuzKVXkoDsnat0iBWokirHahkxB
-X-Gm-Gg: Acq92OGHcBQPojgvKQlZFzpnOs00qTmAONbKQ0I2uFWOHkBQQ6Mdsd34Vk4FGztA5TF
-	Cbp2U8mYhC42+4DWhxbyAOiCyoyI523Hc+zfijVMLjQ8G6IHhR5Qfdtm1zj2DqbvTQJE8cet2k8
-	MWpvrJMvOZ57XylwTWk668SfBfxGA/Jq3y0rDe/8y/P9UWAUfYYwUbkLrkl7i251N+kQV5EOHV9
-	btNgSuPzqwATQ8Y6dQq6GJ7qsjYEyOlxlDPcTuyZjumqNlvWXTSY8wq4Nt+1aAbtXnVK90WBrs4
-	2icOJJfSj9ckC3ZOzD1poBg2E0UGOO6RGHaKIh3hfUU9FBCJ+AIpPyoe0mnjb/6BktW54OMYNRp
-	IHwOBy6/URW9f7jkqV1E754q5hKVFluYwM+K8b3ysGqxz3/q6d6gzBsOFmHbOhewvr4dobpsnjn
-	W1Yam3tHr+lo+XdJMYdKJa+nOGJg==
-X-Received: by 2002:a17:90b:1d51:b0:368:65d1:893 with SMTP id 98e67ed59e1d1-37c5235adeamr3228415a91.5.1781616215829;
-        Tue, 16 Jun 2026 06:23:35 -0700 (PDT)
-Received: from pve-server ([49.205.216.49])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c866518677dsm11704475a12.19.2026.06.16.06.23.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Jun 2026 06:23:35 -0700 (PDT)
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-To: Amit Machhiwal <amachhiw@linux.ibm.com>
-Cc: Amit Machhiwal <amachhiw@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, Madhavan Srinivasan <maddy@linux.ibm.com>, Vaibhav Jain <vaibhav@linux.ibm.com>, Harsh Prateek Bora <harshpb@linux.ibm.com>, Anushree Mathur <anushree.mathur@linux.ibm.com>, Gautam Menghani <gautam@linux.ibm.com>, Mukesh Kumar Chaurasiya <mkchauras@gmail.com>, Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Thomas Huth <thuth@redhat.com>, kvm@vger.kernel.org, stable@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] KVM: PPC: Book3S HV: Validate arch_compat against host compatibility mode
-In-Reply-To: <20260616182627.2ebf3cfc-3a-amachhiw@linux.ibm.com>
-Date: Tue, 16 Jun 2026 18:39:11 +0530
-Message-ID: <8q8eeio8.ritesh.list@gmail.com>
-References: <20260609053327.61563-1-amachhiw@linux.ibm.com> <cxxqerzk.ritesh.list@gmail.com> <20260616161011.835c90f0-38-amachhiw@linux.ibm.com> <a4suelh6.ritesh.list@gmail.com> <20260616182627.2ebf3cfc-3a-amachhiw@linux.ibm.com>
+	s=arc-20240116; t=1781615723; c=relaxed/simple;
+	bh=xqq+XIxT7PztbwpeQpj5ADv0uMZ/3NYTda2OTWeHMlg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=jdZFvZF9kCXGaMAmDUZuJzW3/qOtUm5gkNUV8KfCzt40oCWKXBYgVw/CoPEYEx73z5/yb1Tv4fk8CG7/FJMrv2SfiFEuyOTIHOEt4Zoqd0yKZmRwym52kqgnjqhnhalE09pfE43gb/oNPizlFfVihkvLD2nHQKB7ZhpYNz4N2LY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
+Received: from dfae2b116770.home.arpa (unknown [36.110.52.2])
+	by APP-05 (Coremail) with SMTP id zQCowAAnlullTDFqP1rCEw--.23077S2;
+	Tue, 16 Jun 2026 21:15:17 +0800 (CST)
+From: Wentao Liang <vulab@iscas.ac.cn>
+To: brgl@kernel.org
+Cc: linux-pm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Wentao Liang <vulab@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] pwrseq: core: fix use-after-free in pwrseq_debugfs_seq_next()
+Date: Tue, 16 Jun 2026 13:15:14 +0000
+Message-Id: <20260616131514.1677558-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:zQCowAAnlullTDFqP1rCEw--.23077S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7ZF1rXFW7JFWUWryrGF13XFb_yoW8GrW7p3
+	98G3sYyrW5WFWUJFs8JFWxXFyrAa17t34fuan7CwnYvw15Xa4jyry5ArW5XryjvFykZFya
+	qw4xK3W8W34j9FJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUkG14x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
+	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
+	jxv20xvE14v26r1Y6r17McIj6I8E87Iv67AKxVWxJr0_GcWlOx8S6xCaFVCjc4AY6r1j6r
+	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwCY1x0262kKe7AKxVWU
+	AVWUtwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14
+	v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIxkG
+	c2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI
+	0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4U
+	MIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUZeOJUUU
+	UU=
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBgwAA2oxFj3ONQAAsC
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [0.04 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-263739-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[linux.ibm.com,lists.ozlabs.org,gmail.com,ellerman.id.au,kernel.org,redhat.com,vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:amachhiw@linux.ibm.com,m:linuxppc-dev@lists.ozlabs.org,m:maddy@linux.ibm.com,m:vaibhav@linux.ibm.com,m:harshpb@linux.ibm.com,m:anushree.mathur@linux.ibm.com,m:gautam@linux.ibm.com,m:mkchauras@gmail.com,m:npiggin@gmail.com,m:mpe@ellerman.id.au,m:chleroy@kernel.org,m:thuth@redhat.com,m:kvm@vger.kernel.org,m:stable@vger.kernel.org,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[riteshlist@gmail.com,stable@vger.kernel.org];
-	FORWARDED(0.00)[lists@lfdr.de];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[riteshlist@gmail.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TO_DN_SOME(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DMARC_NA(0.00)[iscas.ac.cn];
+	FORGED_RECIPIENTS(0.00)[m:brgl@kernel.org,m:linux-pm@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:vulab@iscas.ac.cn,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-263732-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	R_DKIM_NA(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,iscas.ac.cn:mid,iscas.ac.cn:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 65F2568FE4D
+X-Rspamd-Queue-Id: CDD0D68FD14
 
-Amit Machhiwal <amachhiw@linux.ibm.com> writes:
+pwrseq_debugfs_seq_next() declares the 'next' device pointer with
+__free(put_device), which causes put_device() to drop the reference
+as soon as the variable goes out of scope. Returning 'next' directly
+thus gives the caller a pointer whose reference has already been
+decremented, resulting in a use-after-free.
 
-> On 2026/06/16 05:38 PM, Ritesh Harjani wrote:
->> Amit Machhiwal <amachhiw@linux.ibm.com> writes:
->> 
->> >> > diff --git a/arch/powerpc/include/asm/reg.h b/arch/powerpc/include/asm/reg.h
->> >> > index 3449dd2b577d..7472b9522f71 100644
->> >> > --- a/arch/powerpc/include/asm/reg.h
->> >> > +++ b/arch/powerpc/include/asm/reg.h
->> >> > @@ -1356,6 +1356,7 @@
->> >> >  #define PVR_ARCH_300	0x0f000005
->> >> >  #define PVR_ARCH_31	0x0f000006
->> >> >  #define PVR_ARCH_31_P11	0x0f000007
->> >> > +#define PVR_ARCH_INVALID	0xffffffff
->> >> 
->> >> Logical processor version is defined as part of the PAPR spec. We should
->> >> ensure that this invalid PVR is also documented in the PAPR spec.
->> >> 
->> >> If you have already taken care of that, then please confirm and feel free to add:
->> >
->> > Regarding the PAPR specification documentation: The PAPR spec documents
->> > the valid Processor Version Register (PVR) values for each processor
->> > generation (POWER8, POWER9, POWER10, POWER11, etc.). However, the
->> > PVR_ARCH_INVALID value (0xffffffff) introduced in this patch series is a
->> > KVM implementation detail used internally to mark invalid compatibility
->> > mode requests - it's not an architectural value that would be defined in
->> > PAPR itself.
->> >
->> > The validation logic and the use of PVR_ARCH_INVALID as a sentinel value
->> > are documented in the kernel code and commit message.
->> >
->> 
->> But that still worries me on what if PAPR wants to re-use this value for
->> some other purpose in future. 
->
-> This is a valid concern about potential future conflicts with PAPR.
-> However, I'd like to point out that PAPR explicitly specifies:
->
->   "The first byte of the logical processor version value shall be 0x0F."
->
-> Since PVR_ARCH_INVALID (0xffffffff) has a first byte of 0xFF, it's
-> explicitly outside the valid PAPR-defined range for logical PVR values.
-> This means there shouldn't be any risk of future conflict with PAPR
-> specifications.
->
+Fix this by removing the automatic cleanup and returning the pointer
+directly. The reference is now properly released in the stop() callback
+of the seq_file operations.
 
-aah ok.. That make sense. Thanks for confirming that.
-Can we please update a small comment in the code and log this info,
-maybe something like:
+Cc: stable@vger.kernel.org
+Fixes: 249ebf3f65f8 ("power: sequencing: implement the pwrseq core")
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
 
-/*
- * PAPR specifies that the first byte of a valid logical PVR value is
- * 0x0f. 0xffffffff therefore lies permanently outside the PAPR-defined
- * range and is safe to repurpose as a kernel-internal sentinel. KVM
- * stores it in vc->arch_compat when userspace requests an unsupported
- * compatibility mode (e.g. Power11 on a Power10 compat host);
- * kvmppc_sanity_check() detects this and prevents the vCPU from running
- * until a valid arch_compat is set.
- */
-#define PVR_ARCH_INVALID      0xffffffff
+---
+v2: Drop __free() and no_free_ptr().
+---
+ drivers/power/sequencing/core.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-
--ritesh
+diff --git a/drivers/power/sequencing/core.c b/drivers/power/sequencing/core.c
+index 4dff71be11b6..e8721368f08a 100644
+--- a/drivers/power/sequencing/core.c
++++ b/drivers/power/sequencing/core.c
+@@ -1008,9 +1008,7 @@ static void *pwrseq_debugfs_seq_next(struct seq_file *seq, void *data,
+ 
+ 	++*pos;
+ 
+-	struct device *next __free(put_device) =
+-			bus_find_next_device(&pwrseq_bus, curr);
+-	return next;
++	return bus_find_next_device(&pwrseq_bus, curr);
+ }
+ 
+ static void pwrseq_debugfs_seq_show_target(struct seq_file *seq,
+-- 
+2.34.1
 
 
