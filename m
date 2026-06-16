@@ -1,65 +1,61 @@
-Return-Path: <stable+bounces-265598-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266381-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Lrg1BxGMMWozmQUAu9opvQ
-	(envelope-from <stable+bounces-265598-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:46:57 +0200
+	id eqj5OiGcMWqeoAUAu9opvQ
+	(envelope-from <stable+bounces-266381-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:55:29 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C63869378D
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:46:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 67A9A694939
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:55:29 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=OH5rN6cY;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265598-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265598-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=btNWyRTx;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266381-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266381-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 84D733008527
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:46:55 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 58355305DAD9
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:55:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55DF64779B3;
-	Tue, 16 Jun 2026 17:46:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C5A4472798;
+	Tue, 16 Jun 2026 18:55:25 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EBAE3D34AD;
-	Tue, 16 Jun 2026 17:46:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 460003CC303;
+	Tue, 16 Jun 2026 18:55:24 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781632013; cv=none; b=L6nnB3eF4Q0caifcdI+L5QyaBluloVOKN00gkMsnin6G2FKrHIoyHxOJ1LzLZJiBQoebJB3Tg+PsAb4Qv4agingWFF/c5K1h6ec9dG8ZIVHQJ0+I0XFvmgD2fBpfp5CCrod8PTEjzhLOC4H6d7HAe5Viej5at6IE5ne0lNFLt14=
+	t=1781636125; cv=none; b=KxMhN7tCI6ttq5fYhbqkEeW/f6YqckvF+WgHpTpTArgw392HdM0Gcnak1fn5fx+GqtxyuFr0BY6REhM6q2EIEFT8JovqLsj3VvYZatols1lvuVoODqCBTPY7tkAmn/t5zSVP9ktibycy0fLMG4Nb+6Rmj45CcAZoabTjglIl2Rc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781632013; c=relaxed/simple;
-	bh=HOfaHQsZ3OBVE9jWOXbnInG3EXv0i5eOIbGp4z/ShQg=;
+	s=arc-20240116; t=1781636125; c=relaxed/simple;
+	bh=/EZaHKW9TbyuZrdgJ2DPwnkrGMFqD4N9ChouPMcVPAI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kHszu3Mo1DthbKySBYaILtsOdzQFVrKJTdPX7Dm1MVCvag6TR8CYnNAL/0uzdz3gqDuXT5sIQPFmNc6sCziP6rnmVIBCw9awzBEnHC3psCOk+D3tIhJMuPYvg5pZFybySRb0GNo+nlS57/OfDuUmI6Y5QS/f3hThPOxnyrgZu0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OH5rN6cY; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8A901F000E9;
-	Tue, 16 Jun 2026 17:46:48 +0000 (UTC)
+	 MIME-Version; b=R35WyvW2Yz1elGxGoAv5+KmjDWuTwSY6D3jFBl6KyeLIYJHKzYZW8A7Kb+shKkbNktEKFM4lyGrBa/KISZ6I8yTghiHqDVV6GGZo7RmvZ1nKrVgukvOwMLgVNNP6d6sh1yBwLkALEjUUErqj9GFS1ZHC7GrXRvqFvGDs5hB++b4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=btNWyRTx; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31E7E1F000E9;
+	Tue, 16 Jun 2026 18:55:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781632009;
-	bh=O6NGo3l6z6w793Rd/4h8+ee1TK3El7g0b+TYRPS+1V8=;
+	s=korg; t=1781636124;
+	bh=ZmgTRncklbiQnG0hjlOyRFGlvrdQtkqYeTnOHTsIm+w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OH5rN6cY/1Dml4PetSILq16iMqajXp2vxloEAv3FhmFrDbbajaTg+ocqr0FnfH3Ux
-	 wzwK0eHj6gBkGObITFNpsmqJGhrnukIeEV94FRsc7I3TPamhCVg+WycmiwKWbnkgot
-	 rQEj62ay0vDyBS+EeYVnBAcYbNVID620qjOSufBA=
+	b=btNWyRTxVCsxCw8jM9eXhIT0EfwuTKohqcPfdcVk3y1etLDwZoCEeIrIAtoccffXO
+	 bxjZsdYeH8eJVrYpQy9G02gGWtFJ3eX5s+68JYjnxNKMars9J8Zj899WBSEeOh8H2L
+	 TNftY1seQcRM/NPESQkau7EQpC3i/PiSMn/7RVb4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Oscar Salvador <osalvador@suse.de>,
-	Jann Horn <jannh@google.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 328/522] mm/hugetlb: avoid false positive lockdep assertion
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 5.10 179/342] Bluetooth: L2CAP: reject BR/EDR signaling packets over MTUsig
 Date: Tue, 16 Jun 2026 20:27:55 +0530
-Message-ID: <20260616145141.176817776@linuxfoundation.org>
+Message-ID: <20260616145056.540921320@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,295 +67,170 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265598-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:ljs@kernel.org,m:david@kernel.org,m:osalvador@suse.de,m:jannh@google.com,m:muchun.song@linux.dev,m:akpm@linux-foundation.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-266381-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:luiz.dentz@gmail.com,m:michael.bommarito@gmail.com,m:luiz.von.dentz@intel.com,m:luizdentz@gmail.com,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linux-foundation.org:email,suse.de:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7C63869378D
+X-Rspamd-Queue-Id: 67A9A694939
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Stoakes <ljs@kernel.org>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-[ Upstream commit b4aea43cd37afad714b5684fe9fdfcb0e78dba26 ]
+commit dd214733544427587a95f66dbf3adff072568990 upstream.
 
-Commit 081056dc00a2 ("mm/hugetlb: unshare page tables during VMA split,
-not before") changed the locking model around hugetlbfs PMD unsharing on
-VMA split, but did not update the function which asserts the locks,
-hugetlb_vma_assert_locked().
+net/bluetooth/l2cap_core.c:l2cap_sig_channel() accepts BR/EDR
+signaling packets up to the channel MTU and dispatches each command
+without enforcing the signaling MTU (MTUsig). A Bluetooth BR/EDR peer
+within radio range can send a fixed-channel CID 0x0001 packet that is
+larger than MTUsig and contains many L2CAP_ECHO_REQ commands before
+pairing. In a real-radio stock-kernel run, one 681-byte signaling
+packet containing 168 zero-length ECHO_REQ commands made the target
+transmit 168 ECHO_RSP frames over about 220 ms.
 
-This function asserts that either the hugetlb VMA lock is held (if a
-shared mapping) or that the reservation map lock is held (if private).
+Impact: a Bluetooth BR/EDR peer within radio range, before pairing, can
+force 168 ECHO_RSP frames from one 681-byte fixed-channel signaling
+packet containing packed ECHO_REQ commands.
 
-If you get an unfortunate race between something which results in one of
-these locks being released and a hugetlb VMA split and you have
-CONFIG_LOCKDEP enabled, you can therefore see a false positive assertion
-arise when there is in fact no issue.
+Define Linux's BR/EDR signaling MTU as the spec minimum of 48 bytes and
+reject any larger signaling packet with one L2CAP_COMMAND_REJECT_RSP
+carrying L2CAP_REJ_MTU_EXCEEDED before any command is dispatched.
 
-Since this change introduced a new take_locks parameter to
-hugetlb_unshare_pmds(), which, when set to false, indicates that locking
-is sufficient, simply pass this to the unsharing logic and predicate the
-lock assertions on this.
+The Bluetooth Core spec wording for MTUExceeded says the reject
+identifier shall match the first request command in the packet, and
+that packets containing only responses shall be silently discarded.
+Linux intentionally deviates from that prescription: silently
+discarding desynchronizes the peer because the remote stack never
+learns its responses were dropped, and locating the first request
+command requires walking command headers past MTUsig, i.e. processing
+bytes from a packet we have already decided is too large to process.
+We therefore always emit one reject and use the identifier from the
+first command header, a single fixed-offset byte read.
 
-This is safe, as we already asserted the file rmap lock and the VMA write
-lock prior to this (implying exclusive mmap write lock), so we cannot be
-raced by either rmap or page fault page table walkers which the asserted
-locks are intended to protect against (we don't mind GUP-fast).
+The unrestricted BR/EDR signaling parser and ECHO_REQ response path both
+trace to the initial git import; no later introducing commit is
+available for a Fixes tag.
 
-Separate out huge_pmd_unshare() into __huge_pmd_unshare() to add a
-check_locks parameter, and update hugetlb_unshare_pmds() to pass this
-parameter to it.
-
-This leaves all other callers of huge_pmd_unshare() still correctly
-asserting the locks.
-
-The below reproducer will trigger the assert in a kernel with
-CONFIG_LOCKDEP enabled by racing process teardown (which will release the
-hugetlb lock) against a hugetlb split.
-
-void execute_one(void)
-{
-	void *ptr;
-	pid_t pid;
-
-	/*
-	 * Create a hugetlb mapping spanning a PUD entry.
-	 *
-	 * We force the hugetlb page allocation with populate and
-	 * noreserve.
-	 *
-	 * |---------------------|
-	 * |                     |
-	 * |---------------------|
-	 * 0                 PUD boundary
-	 */
-	ptr = mmap(0, PUD_SIZE, PROT_READ | PROT_WRITE,
-		   MAP_FIXED | MAP_SHARED | MAP_ANON |
-		   MAP_NORESERVE | MAP_HUGETLB | MAP_POPULATE,
-		   -1, 0);
-	if (ptr == MAP_FAILED) {
-		perror("mmap");
-		exit(EXIT_FAILURE);
-	}
-
-	/*
-	 * Fork but with a bogus stack pointer so we try to execute code in
-	 * a non-VM_EXEC VMA, causing segfault + teardown via exit_mmap().
-	 *
-	 * The clone will cause PMD page table sharing between the
-	 * processes first via:
-	 * copy_process() -> ... -> huge_pte_alloc() -> huge_pmd_share()
-	 *
-	 * Then tear down and release the hugetlb 'VMA' lock via:
-	 * exit_mmap() -> ... -> vma_close() -> hugetlb_vma_lock_free()
-	 */
-	pid = syscall(__NR_clone, 0, 2 * PMD_SIZE, 0, 0, 0);
-	if (pid < 0) {
-		perror("clone");
-		exit(EXIT_FAILURE);
-	} if (pid == 0) {
-		/* Pop stack... */
-		return;
-	}
-
-	/*
-	 * We are the parent process.
-	 *
-	 * Race the child process's teardown with a PMD unshare.
-	 *
-	 * We do this by triggering:
-	 *
-	 * __split_vma() -> hugetlb_split() -> hugetlb_unshare_pmds()
-	 *
-	 * Which, importantly, doesn't hold the hugetlb VMA lock (nor can
-	 * it), meaning we assert in hugetlb_vma_assert_locked().
-	 *
-	 *            .
-	 * |----------.----------|
-	 * |          .          |
-	 * |----------.----------|
-	 * 0          .     PUD boundary
-	 */
-	mmap(0, PUD_SIZE / 2, PROT_READ | PROT_WRITE,
-	     MAP_FIXED | MAP_ANON | MAP_PRIVATE, -1, 0);
-}
-
-int main(void)
-{
-	int i;
-
-	/* Kick off fork children. */
-	for (i = 0; i < NUM_FORKS; i++) {
-		pid_t pid = fork();
-
-		if (pid < 0) {
-			perror("fork");
-			exit(EXIT_FAILURE);
-		}
-
-		/* Fork children do their work and exit. */
-		if (!pid) {
-			int j;
-
-			for (j = 0; j < NUM_ITERS; j++)
-				execute_one();
-			return EXIT_SUCCESS;
-		}
-	}
-
-	/* If we succeeded, wait on children. */
-	for (i = 0; i < NUM_FORKS; i++)
-		wait(NULL);
-
-	return EXIT_SUCCESS;
-}
-
-[ljs@kernel.org: account for the !CONFIG_HUGETLB_PMD_PAGE_TABLE_SHARING case]
-  Link: https://lore.kernel.org/agWZsPGYid08uU6O@lucifer
-Link: https://lore.kernel.org/20260513085658.45264-1-ljs@kernel.org
-Fixes: 081056dc00a2 ("mm/hugetlb: unshare page tables during VMA split, not before")
-Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-Acked-by: Oscar Salvador <osalvador@suse.de>
-Cc: Jann Horn <jannh@google.com>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Suggested-by: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Link: https://lore.kernel.org/r/20260518002800.1361430-1-michael.bommarito@gmail.com
+Link: https://lore.kernel.org/r/20260520135034.1060859-1-michael.bommarito@gmail.com
+Link: https://lore.kernel.org/r/20260521000555.3712030-1-michael.bommarito@gmail.com
+Assisted-by: Claude:claude-opus-4-7
+Assisted-by: Codex:gpt-5-5-xhigh
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/hugetlb.c | 56 ++++++++++++++++++++++++++++++++++------------------
- 1 file changed, 37 insertions(+), 19 deletions(-)
+ include/net/bluetooth/l2cap.h |    1 
+ net/bluetooth/l2cap_core.c    |   46 ++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 47 insertions(+)
 
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 161f95473c2ac2..6585389f93199d 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -94,6 +94,9 @@ static int hugetlb_acct_memory(struct hstate *h, long delta);
- static void hugetlb_vma_lock_free(struct vm_area_struct *vma);
- static void hugetlb_vma_lock_alloc(struct vm_area_struct *vma);
- static void __hugetlb_vma_unlock_write_free(struct vm_area_struct *vma);
-+static int __huge_pmd_unshare(struct mmu_gather *tlb,
-+		struct vm_area_struct *vma, unsigned long addr, pte_t *ptep,
-+		bool check_locks);
- static void hugetlb_unshare_pmds(struct vm_area_struct *vma,
- 		unsigned long start, unsigned long end, bool take_locks);
- static struct resv_map *vma_resv_map(struct vm_area_struct *vma);
-@@ -7116,6 +7119,31 @@ pte_t *huge_pmd_share(struct mm_struct *mm, struct vm_area_struct *vma,
- 	return pte;
+--- a/include/net/bluetooth/l2cap.h
++++ b/include/net/bluetooth/l2cap.h
+@@ -33,6 +33,7 @@
+ /* L2CAP defaults */
+ #define L2CAP_DEFAULT_MTU		672
+ #define L2CAP_DEFAULT_MIN_MTU		48
++#define L2CAP_SIG_MTU			48	/* BR/EDR signaling MTU */
+ #define L2CAP_DEFAULT_FLUSH_TO		0xFFFF
+ #define L2CAP_EFS_DEFAULT_FLUSH_TO	0xFFFFFFFF
+ #define L2CAP_DEFAULT_TX_WINDOW		63
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -6618,6 +6618,15 @@ static inline void l2cap_sig_send_rej(st
+ 	l2cap_send_cmd(conn, ident, L2CAP_COMMAND_REJ, sizeof(rej), &rej);
  }
  
-+static int __huge_pmd_unshare(struct mmu_gather *tlb,
-+		struct vm_area_struct *vma, unsigned long addr, pte_t *ptep,
-+		bool check_locks)
++static inline void l2cap_sig_send_mtu_rej(struct l2cap_conn *conn, u8 ident)
 +{
-+	unsigned long sz = huge_page_size(hstate_vma(vma));
-+	struct mm_struct *mm = vma->vm_mm;
-+	pgd_t *pgd = pgd_offset(mm, addr);
-+	p4d_t *p4d = p4d_offset(pgd, addr);
-+	pud_t *pud = pud_offset(p4d, addr);
++	struct l2cap_cmd_rej_mtu rej;
 +
-+	if (sz != PMD_SIZE)
-+		return 0;
-+	if (!atomic_read(&virt_to_page(ptep)->pt_share_count))
-+		return 0;
-+	i_mmap_assert_write_locked(vma->vm_file->f_mapping);
-+	if (check_locks)
-+		hugetlb_vma_assert_locked(vma);
-+	pud_clear(pud);
-+
-+	tlb_unshare_pmd_ptdesc(tlb, virt_to_page(ptep), addr);
-+
-+	mm_dec_nr_pmds(mm);
-+	return 1;
++	rej.reason = cpu_to_le16(L2CAP_REJ_MTU_EXCEEDED);
++	rej.max_mtu = cpu_to_le16(L2CAP_SIG_MTU);
++	l2cap_send_cmd(conn, ident, L2CAP_COMMAND_REJ, sizeof(rej), &rej);
 +}
 +
- /**
-  * huge_pmd_unshare - Unmap a pmd table if it is shared by multiple users
-  * @tlb: the current mmu_gather.
-@@ -7135,24 +7163,7 @@ pte_t *huge_pmd_share(struct mm_struct *mm, struct vm_area_struct *vma,
- int huge_pmd_unshare(struct mmu_gather *tlb, struct vm_area_struct *vma,
- 		unsigned long addr, pte_t *ptep)
+ static inline void l2cap_sig_channel(struct l2cap_conn *conn,
+ 				     struct sk_buff *skb)
  {
--	unsigned long sz = huge_page_size(hstate_vma(vma));
--	struct mm_struct *mm = vma->vm_mm;
--	pgd_t *pgd = pgd_offset(mm, addr);
--	p4d_t *p4d = p4d_offset(pgd, addr);
--	pud_t *pud = pud_offset(p4d, addr);
--
--	i_mmap_assert_write_locked(vma->vm_file->f_mapping);
--	hugetlb_vma_assert_locked(vma);
--	if (sz != PMD_SIZE)
--		return 0;
--	if (!atomic_read(&virt_to_page(ptep)->pt_share_count))
--		return 0;
--
--	pud_clear(pud);
--	tlb_unshare_pmd_ptdesc(tlb, virt_to_page(ptep), addr);
--
--	mm_dec_nr_pmds(mm);
--	return 1;
-+	return __huge_pmd_unshare(tlb, vma, addr, ptep, /*check_locks=*/true);
- }
+@@ -6630,6 +6639,43 @@ static inline void l2cap_sig_channel(str
+ 	if (hcon->type != ACL_LINK)
+ 		goto drop;
  
- /*
-@@ -7186,6 +7197,13 @@ pte_t *huge_pmd_share(struct mm_struct *mm, struct vm_area_struct *vma,
- 	return NULL;
- }
- 
-+static int __huge_pmd_unshare(struct mmu_gather *tlb,
-+		struct vm_area_struct *vma, unsigned long addr, pte_t *ptep,
-+		bool check_locks)
-+{
-+	return 0;
-+}
++	/*
++	 * Bluetooth Core v5.4, Vol 3, Part A, Section 4: the BR/EDR
++	 * signaling channel has a fixed signaling MTU (MTUsig) whose
++	 * minimum and default is 48 octets.  Section 4.1 says that on
++	 * an MTUExceeded command reject the identifier "shall match
++	 * the first request command in the L2CAP packet" and that
++	 * packets containing only response commands "shall be
++	 * silently discarded".
++	 *
++	 * Linux intentionally deviates from that prescription:
++	 *
++	 *   1. Silently discarding desynchronizes the peer.  The
++	 *      remote stack never learns its responses were dropped,
++	 *      so any state machine waiting on a paired response
++	 *      stalls until its own timer fires.
++	 *
++	 *   2. Locating "the first request command" requires walking
++	 *      command headers past MTUsig, i.e. processing bytes
++	 *      from a packet we have already decided is too large to
++	 *      process.
++	 *
++	 * Reject every over-MTUsig signaling packet with one
++	 * L2CAP_REJ_MTU_EXCEEDED command reject.  The reject's
++	 * reason field is what tells the peer that the whole packet
++	 * was discarded; the identifier value is informational, so
++	 * we use the identifier from the first command header, a
++	 * single fixed-offset byte read.
++	 */
++	if (skb->len > L2CAP_SIG_MTU) {
++		u8 ident = skb->data[1];
 +
- int huge_pmd_unshare(struct mmu_gather *tlb, struct vm_area_struct *vma,
- 		unsigned long addr, pte_t *ptep)
- {
-@@ -7569,7 +7587,7 @@ static void hugetlb_unshare_pmds(struct vm_area_struct *vma,
- 		if (!ptep)
- 			continue;
- 		ptl = huge_pte_lock(h, mm, ptep);
--		huge_pmd_unshare(&tlb, vma, address, ptep);
-+		__huge_pmd_unshare(&tlb, vma, address, ptep, take_locks);
- 		spin_unlock(ptl);
- 	}
- 	huge_pmd_unshare_flush(&tlb, vma);
--- 
-2.53.0
-
++		BT_DBG("signaling packet exceeds MTU: %u > %u",
++		       skb->len, L2CAP_SIG_MTU);
++		l2cap_sig_send_mtu_rej(conn, ident);
++		goto drop;
++	}
++
+ 	while (skb->len >= L2CAP_CMD_HDR_SIZE) {
+ 		u16 len;
+ 
 
 
 
