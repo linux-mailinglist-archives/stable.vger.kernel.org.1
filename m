@@ -1,64 +1,61 @@
-Return-Path: <stable+bounces-264814-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265806-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id FGkYIkN+MWokkwUAu9opvQ
-	(envelope-from <stable+bounces-264814-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:48:03 +0200
+	id LezeAUSQMWpLmwUAu9opvQ
+	(envelope-from <stable+bounces-265806-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:04:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF06969275F
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:48:02 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 042AE693C89
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:04:51 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=vkB+MFJp;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264814-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264814-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="R/0eU4Sk";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265806-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265806-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6E778306DEE7
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:40:32 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 32828300F782
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:04:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9D894779B1;
-	Tue, 16 Jun 2026 16:40:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20D6A3CF97E;
+	Tue, 16 Jun 2026 18:04:45 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A594233AD9B;
-	Tue, 16 Jun 2026 16:40:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F11AC3C09E1;
+	Tue, 16 Jun 2026 18:04:43 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781628029; cv=none; b=rHO2b/xWK3SqcYu5zM8dnRPjOOvC3zoxWg0xJgdGj/S/xAWAeOkKUKddc/KAU57k+SOeF/eFw97aWAUpg5ViPnLP2n7hWGoqYiNfRi9J5KPS4QXIRoMn8Plwa6jBFYJHu5JK9chVL3JXS5iNka5H6nUGn7aDtcJv0KLIsADpKjo=
+	t=1781633084; cv=none; b=gDGzxMFOEKFfk2/sv7A/x9q0UTlxcY/xDR0cH8Jds+jyG+DXiOnKfus3SBpZgEgY8nuz+3zhSjApGluf2zCdyczh4Nk0pel131i1ZRFam0mgOSGsQtF01V6Zz0oZmS4FtlTd69aR3zTQ4xQlMalyOcuTIc3X7uwEJ0f1ZrCEWc0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781628029; c=relaxed/simple;
-	bh=XNNYc8yiGuvI/eXebEf8659QmtWPGV7Mn3QePKe8Gos=;
+	s=arc-20240116; t=1781633084; c=relaxed/simple;
+	bh=8qB1rSUiAbgixj3XVRWPxgJ++PkPL6tDDaz+1itdO+4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rpGUqbP+eNBDTqlUL4hO85H7aFkg0EncBiB1ZyTZGHikBz/PHwhccrCSAMs4kTHeSFVpuv+/umtgYC9VZ8vwrxrmu0+OgXclvUmTlq2N+eY0nDvGDgaZb7fKoE6d+kbLrZWe+kOB0d/mKIJ1L+Po2Eta5mobPNHF7knkJ1xP57I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vkB+MFJp; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0A811F000E9;
-	Tue, 16 Jun 2026 16:40:27 +0000 (UTC)
+	 MIME-Version; b=S0M7fk8lerdgE9jI/fSUxGupQiar/uv6ucYGPockNkDYExDM+rQgp/6wlXrnnSNNzTuddQ2tTxj9//tjUMQ8/TJPu8x1jvrt68wGP6ysbyy4fbzXYNmDItXjktWbVJWz78XaFmv0yr6UKPe2pAKLNKNWt3uDQxuHtwMPH0hmLec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R/0eU4Sk; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A21671F000E9;
+	Tue, 16 Jun 2026 18:04:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781628028;
-	bh=tFMx2CQhb7mdtsOWaajTofyTmDrRDf3qg6rNQxmG4To=;
+	s=korg; t=1781633083;
+	bh=3IwV/crOlCAwPMC8yGgLgexcylYC1RnU5E46lfBnmao=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=vkB+MFJpaiOJQZRtZAWbJ4HNjKUfalQoSCKb7pce5bF4iBniaMbXblWOMMj1iCGYe
-	 QmgpxtqPYuUFydk3lMijOKdh4qtXiNFRcKOzc5LU33eM9OQx2rvtGoVZWf8HwFSYjc
-	 Ju/afVLhpbUFoNzPOGTDK1myhoad9JagOMfH5Um8=
+	b=R/0eU4SkyFqEWwT4I+cQAPHxbDH0USPtSDYjUWwKBJlEumfsmtNJZqykl7cQwfjvV
+	 94n9Sg8fcGvGgLfY8AGQdpvZyNriSezgNFFPMulKdZMwkiPHcmB3asfV2zf2kpLedD
+	 3O7vobOP699hyiGbWTat9qhLS5xdYNtwOfqTQpeU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang Mei <xmei5@asu.edu>,
-	Weiming Shi <bestswngs@gmail.com>,
-	Dongli Zhang <dongli.zhang@oracle.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Lee Jones <lee@kernel.org>,
+	David Heidelberg <david@ixit.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 018/452] tun: free page on short-frame rejection in tun_xdp_one()
-Date: Tue, 16 Jun 2026 20:24:05 +0530
-Message-ID: <20260616145118.768863765@linuxfoundation.org>
+Subject: [PATCH 5.15 008/411] nfc: llcp: Fix use-after-free in llcp_sock_release()
+Date: Tue, 16 Jun 2026 20:24:06 +0530
+Message-ID: <20260616145100.803677689@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,87 +72,72 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,oracle.com,google.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-264814-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265806-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:xmei5@asu.edu,m:bestswngs@gmail.com,m:dongli.zhang@oracle.com,m:willemb@google.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:lee@kernel.org,m:david@ixit.cz,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,oracle.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,ixit.cz:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: DF06969275F
+X-Rspamd-Queue-Id: 042AE693C89
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weiming Shi <bestswngs@gmail.com>
+From: Lee Jones <lee@kernel.org>
 
-[ Upstream commit f4feb1e20058e407cb00f45aff47f5b7e19a6bbf ]
+[ Upstream commit f4268b466190dae95a7585f69b4f1f8ad097632c ]
 
-tun_xdp_one() returns -EINVAL on a frame shorter than ETH_HLEN without
-freeing the page that vhost_net_build_xdp() allocated for it.
-tun_sendmsg() discards that -EINVAL and still returns total_len, so
-vhost_tx_batch() takes the success path and never frees the page; each
-short frame in a batch leaks one page-frag chunk.
+llcp_sock_release() unconditionally unlinks the socket from the local
+sockets list.  However, if the socket is still in connecting state, it
+is on the connecting list.
 
-A local process that can open /dev/net/tun and /dev/vhost-net can hit
-this path: it attaches a tun/tap device as the vhost-net backend and
-feeds TX descriptors whose length minus the virtio-net header is below
-ETH_HLEN. Each kick leaks the page-frag chunks for that batch, and a
-tight submission loop exhausts host memory and triggers an OOM panic.
-Free the page before returning -EINVAL, matching the XDP-program error
-path in the same function.
+Fix this by checking the socket state and unlinking from the correct list.
 
-Fixes: 049584807f1d ("tun: add missing verification for short frame")
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
-Reviewed-by: Dongli Zhang <dongli.zhang@oracle.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20260520160020.375349-2-bestswngs@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: b4011239a08e ("NFC: llcp: Fix non blocking sockets connections")
+Signed-off-by: Lee Jones <lee@kernel.org>
+Link: https://patch.msgid.link/20260429134115.3558604-1-lee@kernel.org
+Signed-off-by: David Heidelberg <david@ixit.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/tun.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/nfc/llcp_sock.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/tun.c b/drivers/net/tun.c
-index 97dbec8d78077d..88b704b5d0b26e 100644
---- a/drivers/net/tun.c
-+++ b/drivers/net/tun.c
-@@ -2459,8 +2459,10 @@ static int tun_xdp_one(struct tun_struct *tun,
- 	bool skb_xdp = false;
- 	struct page *page;
+diff --git a/net/nfc/llcp_sock.c b/net/nfc/llcp_sock.c
+index 6e1fba2084930e..54af85d939c6b9 100644
+--- a/net/nfc/llcp_sock.c
++++ b/net/nfc/llcp_sock.c
+@@ -640,6 +640,8 @@ static int llcp_sock_release(struct socket *sock)
  
--	if (unlikely(datasize < ETH_HLEN))
-+	if (unlikely(datasize < ETH_HLEN)) {
-+		put_page(virt_to_head_page(xdp->data));
- 		return -EINVAL;
-+	}
+ 	if (sock->type == SOCK_RAW)
+ 		nfc_llcp_sock_unlink(&local->raw_sockets, sk);
++	else if (sk->sk_state == LLCP_CONNECTING)
++		nfc_llcp_sock_unlink(&local->connecting_sockets, sk);
+ 	else
+ 		nfc_llcp_sock_unlink(&local->sockets, sk);
  
- 	xdp_prog = rcu_dereference(tun->xdp_prog);
- 	if (xdp_prog) {
 -- 
 2.53.0
 
