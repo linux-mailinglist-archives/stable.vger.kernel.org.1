@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-264930-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265509-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id j+6ZMBGCMWq5lAUAu9opvQ
-	(envelope-from <stable+bounces-264930-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:04:17 +0200
+	id SZJjIdOLMWocmQUAu9opvQ
+	(envelope-from <stable+bounces-265509-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:45:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C628692B1D
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:04:17 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D382B69374D
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:45:54 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=a3QgaMRL;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264930-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264930-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="q/fDdfKC";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265509-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265509-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9BB1231D955C
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:51:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CF9A4321BDC9
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:39:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B05F47A0A1;
-	Tue, 16 Jun 2026 16:50:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6A32477E57;
+	Tue, 16 Jun 2026 17:39:31 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA2AD45348A;
-	Tue, 16 Jun 2026 16:50:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8F0347AF67;
+	Tue, 16 Jun 2026 17:39:30 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781628636; cv=none; b=ombaKqSMxqTsFrdJsOZ+S6+TAdcitGscMV2hZ81LMLdvOZhJUR3RBtZU+o8kVxhQphHPN9Pazc9wXl6/ceE91CqZ6EO8bEoypdQ6RDWAGc3V1mMIIJabatMpeO+B03nPnqUJhhlXxb9rW333uSLLteSedkkJlYACFhnjV2OqD9o=
+	t=1781631571; cv=none; b=Z4XaNXJBYhAE3xgoHJEsh5n39hlP4oBTYHBIZsSnfgMdp7UTl09XiVCwae5PALfSzzyaSRl8XtJmAR7Fca03kY3d79lkmbum8K9Pp10632ZOGnakpmoGRaK5RWhgQtcyiydMpTDyM1Y3SuMQMOgXUGC+BoCidkksqs2n3OcFps0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781628636; c=relaxed/simple;
-	bh=1wZ1+m8G95iHhnYFQ6DByiO/chFCgXegzvUqB34uJtQ=;
+	s=arc-20240116; t=1781631571; c=relaxed/simple;
+	bh=6Rmm7USUl4OGGtKBP410d36150HC8+fWxW9lQMCNtHU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=doMAZtkRMS4QyqGq/xobyS9/8ulBbh0QQZU5hN/Exnu5vKn91e0peKBOBZh7QCDkSixrc1YwoMX6x2snFeIzrPenu51WhKSn1xWipQwKU0/4uGg4DohFysazKj8Ebz9tNlS0M9xRo0mPvqMQM2gE1dXuOw0b3SzN2J9khNg0z7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a3QgaMRL; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF4521F000E9;
-	Tue, 16 Jun 2026 16:50:34 +0000 (UTC)
+	 MIME-Version; b=r8QyEzVizDAcXZ5j27N7id3JvXj2IlTCLZQkOeBxgAtT8YWBPgqTsJzwzzJzHh7zEHdZAuF71KoAZ64ZgFNk5/npXPoiFBPPcvXhoeQ7U8+EF/2fTx4thB7jMSM0gPXoS/js7Ydy+GKLC/9gI/hw8MfXUDfk+/7/HxvBMlnJcjE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q/fDdfKC; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9D531F000E9;
+	Tue, 16 Jun 2026 17:39:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781628635;
-	bh=bvOr7NQ8Wq1obU6MU1TOk3OrJ9TCFHUq8CiAvF1H5rY=;
+	s=korg; t=1781631570;
+	bh=qsh29OnlyYsLjzHjpYmQzRyMxvvbEqfuZ1ZQZalZkUg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=a3QgaMRLJEioNLNKGIpnRf4V8Zj15tvijZhjsCYdHkJatD7ctkVtflBez3FTZGaHx
-	 4l/WNeypyrrRNKzys66apo37qZCYh+zHpM5NqICCDZf+y1M95mMsQy2aCmGNP9dZan
-	 PKx5AzLHcYgcxvsMYxHolmLfmGe9xzF/DRSRuKRY=
+	b=q/fDdfKC4fINEoCaUc130hxA7mvi8TFRL/W6HUWsPPyFzi8P8xL9oJ40AeRwgXc77
+	 8UvI6Xqn2nOPHhQ6zXur8p0AjmIoxDEaIhmxwyyGEVIul0za1mXm+ifqGiK0Fu0ITg
+	 8mzMfIjp9MoOyczinPQ4zr1RUvxFTq65Jh1nmdfw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ping Cheng <ping.cheng@wacom.com>,
-	Lee Jones <lee@kernel.org>,
-	Benjamin Tissoires <bentiss@kernel.org>
-Subject: [PATCH 6.6 133/452] HID: wacom: Fix OOB write in wacom_hid_set_device_mode()
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Zhang Cen <rollkingzzc@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 213/522] Bluetooth: MGMT: validate advertising TLV before type checks
 Date: Tue, 16 Jun 2026 20:26:00 +0530
-Message-ID: <20260616145124.721167130@linuxfoundation.org>
+Message-ID: <20260616145136.010681508@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,116 +73,109 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264930-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:ping.cheng@wacom.com,m:lee@kernel.org,m:bentiss@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,molgen.mpg.de,gmail.com,intel.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-265509-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:pmenzel@molgen.mpg.de,m:rollkingzzc@gmail.com,m:luiz.von.dentz@intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,wacom.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,mpg.de:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2C628692B1D
+X-Rspamd-Queue-Id: D382B69374D
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lee Jones <lee@kernel.org>
+From: Zhang Cen <rollkingzzc@gmail.com>
 
-commit c0a8899e02ddebd51e2589835182c239c2e224ae upstream.
+[ Upstream commit de23fb62259aa01d294f77238ae3b835eb674413 ]
 
-wacom_hid_set_device_mode() currently assumes that the HID_DG_INPUTMODE
-usage is always located in the first field (field[0]) of the feature report.
-However, a device can specify HID_DG_INPUTMODE in a different field.
+tlv_data_is_valid() reads each advertising data field length from
+data[i], then inspects data[i + 1] for managed EIR types before
+checking that the current field still fits inside the supplied buffer.
 
-If HID_DG_INPUTMODE is in a field other than the first one and the first
-field has a report_count smaller than the usage_index of HID_DG_INPUTMODE,
-this leads to an out-of-bounds write to r->field[0]->value.
+A malformed field whose length byte is the last byte of the buffer can
+therefore make the parser read one byte past the advertising data.
 
-Fix this by storing the field index of HID_DG_INPUTMODE in 'struct
-hid_data' during feature mapping.  In wacom_hid_set_device_mode(), use
-this stored field index to access the correct field and add bounds
-checks to ensure both the field index and the value index are within
-valid ranges before writing.
+KASAN reported the following when a malformed MGMT_OP_ADD_ADVERTISING
+request reached that path:
 
-Cc: stable@vger.kernel.org
-Fixes: 5ae6e89f7409 ("HID: wacom: implement the finger part of the HID generic handling")
-Tested-by: Ping Cheng <ping.cheng@wacom.com>
-Reviewed-by: Ping Cheng <ping.cheng@wacom.com>
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  BUG: KASAN: vmalloc-out-of-bounds in tlv_data_is_valid()
+  Read of size 1
+  Call trace:
+    tlv_data_is_valid()
+    add_advertising()
+    hci_mgmt_cmd()
+    hci_sock_sendmsg()
+
+Move the existing element-length check before any type-octet inspection
+so each non-empty element is proven to contain its type byte before the
+parser looks at data[i + 1].
+
+Fixes: 2bb36870e8cb ("Bluetooth: Unify advertising instance flags check")
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Signed-off-by: Zhang Cen <rollkingzzc@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/wacom_sys.c |   13 ++++++++++---
- drivers/hid/wacom_wac.h |    1 +
- 2 files changed, 11 insertions(+), 3 deletions(-)
+ net/bluetooth/mgmt.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/drivers/hid/wacom_sys.c
-+++ b/drivers/hid/wacom_sys.c
-@@ -341,6 +341,7 @@ static void wacom_feature_mapping(struct
+diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
+index dd7d12418e0738..cc058c77d2e252 100644
+--- a/net/bluetooth/mgmt.c
++++ b/net/bluetooth/mgmt.c
+@@ -8602,6 +8602,12 @@ static bool tlv_data_is_valid(struct hci_dev *hdev, u32 adv_flags, u8 *data,
+ 		if (!cur_len)
+ 			continue;
  
- 		hid_data->inputmode = field->report->id;
- 		hid_data->inputmode_index = usage->usage_index;
-+		hid_data->inputmode_field_index = field->index;
- 		break;
- 
- 	case HID_UP_DIGITIZER:
-@@ -556,9 +557,14 @@ static int wacom_hid_set_device_mode(str
- 
- 	re = &(hdev->report_enum[HID_FEATURE_REPORT]);
- 	r = re->report_id_hash[hid_data->inputmode];
--	if (r) {
--		r->field[0]->value[hid_data->inputmode_index] = 2;
--		hid_hw_request(hdev, r, HID_REQ_SET_REPORT);
-+	if (r && hid_data->inputmode_field_index >= 0 &&
-+	    hid_data->inputmode_field_index < r->maxfield) {
-+		struct hid_field *field = r->field[hid_data->inputmode_field_index];
++		/* If the current field length would exceed the total data
++		 * length, then it's invalid.
++		 */
++		if (i + cur_len >= len)
++			return false;
 +
-+		if (field && hid_data->inputmode_index < field->report_count) {
-+			field->value[hid_data->inputmode_index] = 2;
-+			hid_hw_request(hdev, r, HID_REQ_SET_REPORT);
-+		}
+ 		if (data[i + 1] == EIR_FLAGS &&
+ 		    (!is_adv_data || flags_managed(adv_flags)))
+ 			return false;
+@@ -8618,12 +8624,6 @@ static bool tlv_data_is_valid(struct hci_dev *hdev, u32 adv_flags, u8 *data,
+ 		if (data[i + 1] == EIR_APPEARANCE &&
+ 		    appearance_managed(adv_flags))
+ 			return false;
+-
+-		/* If the current field length would exceed the total data
+-		 * length, then it's invalid.
+-		 */
+-		if (i + cur_len >= len)
+-			return false;
  	}
- 	return 0;
- }
-@@ -2810,6 +2816,7 @@ static int wacom_probe(struct hid_device
- 		return error;
  
- 	wacom_wac->hid_data.inputmode = -1;
-+	wacom_wac->hid_data.inputmode_field_index = -1;
- 	wacom_wac->mode_report = -1;
- 
- 	if (hid_is_usb(hdev)) {
---- a/drivers/hid/wacom_wac.h
-+++ b/drivers/hid/wacom_wac.h
-@@ -297,6 +297,7 @@ struct wacom_shared {
- struct hid_data {
- 	__s16 inputmode;	/* InputMode HID feature, -1 if non-existent */
- 	__s16 inputmode_index;	/* InputMode HID feature index in the report */
-+	__s16 inputmode_field_index; /* InputMode HID feature field index in the report */
- 	bool sense_state;
- 	bool inrange_state;
- 	bool invert_state;
+ 	return true;
+-- 
+2.53.0
+
 
 
 
