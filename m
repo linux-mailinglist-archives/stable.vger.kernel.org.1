@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-265496-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264984-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id R3auB3qLMWr1mAUAu9opvQ
-	(envelope-from <stable+bounces-265496-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:44:26 +0200
+	id xC5dN86AMWpUlAUAu9opvQ
+	(envelope-from <stable+bounces-264984-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:58:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C5AC6936E0
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:44:25 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B982692A0F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:58:54 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=y45M6FPq;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265496-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265496-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=0sj9lR3m;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264984-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264984-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6CBBA31C7361
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:38:21 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 609E330A5B56
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:55:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E15D4611CF;
-	Tue, 16 Jun 2026 17:38:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 947C5478E55;
+	Tue, 16 Jun 2026 16:55:19 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3DB2331A44;
-	Tue, 16 Jun 2026 17:38:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6490C477995;
+	Tue, 16 Jun 2026 16:55:18 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781631500; cv=none; b=Rpnwre8gZtGkEafEavb3Pq4axLMqoexDEoldraHu/DNoUKwb8SwZUQzYQjp2lt28dJahPr3PZriILo09somAO2mzCb22e9H98lno2EIj/sdhzXnXGFQ9W+dMuU5zDw7kyixPSPUqQuse74JjEn4z8WMdmzWL/q3IxlewkKuy94A=
+	t=1781628919; cv=none; b=rd8FXuCqi3UevFNE+lrJCxklPc2wxYreJpEYjNNpvqEh/Kq+LvGisfjY5qOeZKtwtpLuwwPyYeNeGwljXYIEAfulYneIRWY+WmBglVFaxE6DId8voPIRMu75daWWQu8sOfCrxJGrwg54hQu12uQyMdY3cJOuDQKDHfSoPXEB1B0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781631500; c=relaxed/simple;
-	bh=nq1JbfD9CSe/ZpUeJiXYJHDXEVygbAMjZG9tPf/hVl0=;
+	s=arc-20240116; t=1781628919; c=relaxed/simple;
+	bh=mwX7/RN26CQ/XqT914i1abrpTYpv1rI446np1K7wNHo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N5O3RnLl8ZTU/R6MbOv8yF5Xi5T1CZfQKJoxMTv8incwOzwBlqDM8RBbShp29te8tZjJSt4jIV9ZUKawsFEYSzxcPWONHR8bnmEru5R61mNeVUHCEJvLpTWF+3OxA2mwgAGKaMLHSTlZ04wxcrq49YkqGUyoanwSvzcGeVWfrcM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y45M6FPq; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CBA41F000E9;
-	Tue, 16 Jun 2026 17:38:18 +0000 (UTC)
+	 MIME-Version; b=U9uJ6ZHH5Inmqtv3xhZGgY3ocTAw9l/Wh7CK0DHbtXl+LHBKSj3i3F8RehmYb7PYEh3gZE3EjtEb8sF93NdNex1tCxgaRLRKGKYikrxfCan9rWMyyxmf1kEJH/hsqPA6d1mqN0Lil5Wv8cXeLBtLW6PA9j7P2f8MPWVwBeAUqY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0sj9lR3m; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33BAC1F000E9;
+	Tue, 16 Jun 2026 16:55:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781631499;
-	bh=Ak/CSEdHmexIQNEAfeC9kDyDXHXhsP3JQmsI5S8HKrY=;
+	s=korg; t=1781628918;
+	bh=kf5BQEVNk/PWAXBbTXEQ7Od+aCNce0R/ZIzg7QlJ63M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=y45M6FPqfPo2EF3DsCxmyPT75EwqkAi6fFjidB0SxqwLZRT+8+rwA//cV6L5jI8rv
-	 SjO0kB0ufhO77/x3DY6EC1+B+SIIwN4Cw8EjaLGln+IcZwnxW2T95LliAynBv+DTbY
-	 qGcMqFeeRJf9MfJWh7gfGNcEYWdXV2lDUc9ScSNc=
+	b=0sj9lR3m0i4Q8Wz9lb9ROJ6wzNDHlMG8uLlN8PWWAnCm1LnKFz2X0o3KXY05V8iiT
+	 fpfnuCwkPK+MH/F1UT7RgJ99eV/SPh6pprdXdgGtjQ1OjuAs/itGXP/9Zx7Wlu4B4W
+	 ttlovg+NnOfGoJpZuVREh0514UrLDU/yd9t+DL+E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Kuen-Han Tsai <khtsai@google.com>,
-	Jianqiang kang <jianqkang@sina.cn>,
-	Carlos Llamas <cmllamas@google.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 232/522] usb: gadget: f_ncm: Fix net_device lifecycle with device_move
-Date: Tue, 16 Jun 2026 20:26:19 +0530
-Message-ID: <20260616145136.846800764@linuxfoundation.org>
+	"Stephen J. Fuhry" <fuhrysteve@gmail.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.6 153/452] USB: quirks: add NO_LPM for Lenovo ThinkPad USB-C Dock Gen2 hub controllers
+Date: Tue, 16 Jun 2026 20:26:20 +0530
+Message-ID: <20260616145125.738207424@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,256 +71,76 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,google.com,sina.cn];
-	TAGGED_FROM(0.00)[bounces-265496-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:khtsai@google.com,m:jianqkang@sina.cn,m:cmllamas@google.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-264984-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:fuhrysteve@gmail.com,m:stable@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,sina.cn:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 6C5AC6936E0
+X-Rspamd-Queue-Id: 4B982692A0F
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuen-Han Tsai <khtsai@google.com>
+From: Stephen J. Fuhry <fuhrysteve@gmail.com>
 
-[ Upstream commit ec35c1969650e7cb6c8a91020e568ed46e3551b0 ]
+commit 9ddb9c0deca48d2c2a22ebf4d2f35c925a520328 upstream.
 
-The network device outlived its parent gadget device during
-disconnection, resulting in dangling sysfs links and null pointer
-dereference problems.
+The Lenovo ThinkPad USB-C Dock Gen2 (17ef:a391, 17ef:a392) hub
+controllers exhibit link instability when USB Link Power Management
+is enabled, similar to the dock's Ethernet adapter (17ef:a387) which
+already carries USB_QUIRK_NO_LPM.
 
-A prior attempt to solve this by removing SET_NETDEV_DEV entirely [1]
-was reverted due to power management ordering concerns and a NO-CARRIER
-regression.
+When the dock reconnects after a transient disconnect, the hub
+controllers enter LPM states between re-enumeration retries, causing
+repeated disconnect/reconnect cycles lasting up to two minutes.
+Disabling LPM for these devices restores stable enumeration.
 
-A subsequent attempt to defer net_device allocation to bind [2] broke
-1:1 mapping between function instance and network device, making it
-impossible for configfs to report the resolved interface name. This
-results in a regression where the DHCP server fails on pmOS.
-
-Use device_move to reparent the net_device between the gadget device and
-/sys/devices/virtual/ across bind/unbind cycles. This preserves the
-network interface across USB reconnection, allowing the DHCP server to
-retain their binding.
-
-Introduce gether_attach_gadget()/gether_detach_gadget() helpers and use
-__free(detach_gadget) macro to undo attachment on bind failure. The
-bind_count ensures device_move executes only on the first bind.
-
-[1] https://lore.kernel.org/lkml/f2a4f9847617a0929d62025748384092e5f35cce.camel@crapouillou.net/
-[2] https://lore.kernel.org/linux-usb/795ea759-7eaf-4f78-81f4-01ffbf2d7961@ixit.cz/
-
-Fixes: 40d133d7f542 ("usb: gadget: f_ncm: convert to new function interface with backward compatibility")
+Signed-off-by: Stephen J. Fuhry <fuhrysteve@gmail.com>
 Cc: stable <stable@kernel.org>
-Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
-Link: https://patch.msgid.link/20260309-f-ncm-revert-v2-7-ea2afbc7d9b2@google.com
+Link: https://patch.msgid.link/20260513171419.44849-1-fuhrysteve@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[ Use no_free_ptr() since retain_and_null_ptr() is unavailable in Linux 6.1. ]
-Signed-off-by: Jianqiang kang <jianqkang@sina.cn>
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/f_ncm.c   | 35 ++++++++++++++++++---------
- drivers/usb/gadget/function/u_ether.c | 22 +++++++++++++++++
- drivers/usb/gadget/function/u_ether.h | 26 ++++++++++++++++++++
- drivers/usb/gadget/function/u_ncm.h   |  2 +-
- 4 files changed, 73 insertions(+), 12 deletions(-)
+ drivers/usb/core/quirks.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/usb/gadget/function/f_ncm.c b/drivers/usb/gadget/function/f_ncm.c
-index addd016ffbb3f7..5e240cafbe9ee8 100644
---- a/drivers/usb/gadget/function/f_ncm.c
-+++ b/drivers/usb/gadget/function/f_ncm.c
-@@ -1440,6 +1440,7 @@ static int ncm_bind(struct usb_configuration *c, struct usb_function *f)
- 	struct f_ncm_opts	*ncm_opts;
+--- a/drivers/usb/core/quirks.c
++++ b/drivers/usb/core/quirks.c
+@@ -511,6 +511,10 @@ static const struct usb_device_id usb_qu
+ 	/* Lenovo ThinkPad USB-C Dock Gen2 Ethernet (RTL8153 GigE) */
+ 	{ USB_DEVICE(0x17ef, 0xa387), .driver_info = USB_QUIRK_NO_LPM },
  
- 	struct usb_os_desc_table	*os_desc_table __free(kfree) = NULL;
-+	struct net_device		*net __free(detach_gadget) = NULL;
- 	struct usb_request		*request __free(free_usb_request) = NULL;
- 
- 	if (!can_support_ecm(cdev->gadget))
-@@ -1453,16 +1454,18 @@ static int ncm_bind(struct usb_configuration *c, struct usb_function *f)
- 			return -ENOMEM;
- 	}
- 
--	mutex_lock(&ncm_opts->lock);
--	gether_set_gadget(ncm_opts->net, cdev->gadget);
--	if (!ncm_opts->bound)
--		status = gether_register_netdev(ncm_opts->net);
--	mutex_unlock(&ncm_opts->lock);
--
--	if (status)
--		return status;
--
--	ncm_opts->bound = true;
-+	scoped_guard(mutex, &ncm_opts->lock)
-+		if (ncm_opts->bind_count == 0) {
-+			if (!device_is_registered(&ncm_opts->net->dev)) {
-+				gether_set_gadget(ncm_opts->net, cdev->gadget);
-+				status = gether_register_netdev(ncm_opts->net);
-+			} else
-+				status = gether_attach_gadget(ncm_opts->net, cdev->gadget);
++	/* Lenovo ThinkPad USB-C Dock Gen2 USB 3.1 and USB 2.0 hub controllers */
++	{ USB_DEVICE(0x17ef, 0xa391), .driver_info = USB_QUIRK_NO_LPM },
++	{ USB_DEVICE(0x17ef, 0xa392), .driver_info = USB_QUIRK_NO_LPM },
 +
-+			if (status)
-+				return status;
-+			net = ncm_opts->net;
-+		}
- 
- 	ncm_string_defs[1].s = ncm->ethaddr;
- 
-@@ -1562,6 +1565,9 @@ static int ncm_bind(struct usb_configuration *c, struct usb_function *f)
- 	}
-         ncm->notify_req = no_free_ptr(request);
- 
-+	ncm_opts->bind_count++;
-+	no_free_ptr(net);
-+
- 	DBG(cdev, "CDC Network: %s speed IN/%s OUT/%s NOTIFY/%s\n",
- 			gadget_is_superspeed(c->cdev->gadget) ? "super" :
- 			gadget_is_dualspeed(c->cdev->gadget) ? "dual" : "full",
-@@ -1610,7 +1616,7 @@ static void ncm_free_inst(struct usb_function_instance *f)
- 	struct f_ncm_opts *opts;
- 
- 	opts = container_of(f, struct f_ncm_opts, func_inst);
--	if (opts->bound)
-+	if (device_is_registered(&opts->net->dev))
- 		gether_cleanup(netdev_priv(opts->net));
- 	else
- 		free_netdev(opts->net);
-@@ -1672,9 +1678,12 @@ static void ncm_free(struct usb_function *f)
- static void ncm_unbind(struct usb_configuration *c, struct usb_function *f)
- {
- 	struct f_ncm *ncm = func_to_ncm(f);
-+	struct f_ncm_opts *ncm_opts;
- 
- 	DBG(c->cdev, "ncm unbind\n");
- 
-+	ncm_opts = container_of(f->fi, struct f_ncm_opts, func_inst);
-+
- 	hrtimer_cancel(&ncm->task_timer);
- 
- 	kfree(f->os_desc_table);
-@@ -1690,6 +1699,10 @@ static void ncm_unbind(struct usb_configuration *c, struct usb_function *f)
- 
- 	kfree(ncm->notify_req->buf);
- 	usb_ep_free_request(ncm->notify, ncm->notify_req);
-+
-+	ncm_opts->bind_count--;
-+	if (ncm_opts->bind_count == 0)
-+		gether_detach_gadget(ncm_opts->net);
- }
- 
- static struct usb_function *ncm_alloc(struct usb_function_instance *fi)
-diff --git a/drivers/usb/gadget/function/u_ether.c b/drivers/usb/gadget/function/u_ether.c
-index e84178bffe7803..e972de236be5e2 100644
---- a/drivers/usb/gadget/function/u_ether.c
-+++ b/drivers/usb/gadget/function/u_ether.c
-@@ -910,6 +910,28 @@ void gether_set_gadget(struct net_device *net, struct usb_gadget *g)
- }
- EXPORT_SYMBOL_GPL(gether_set_gadget);
- 
-+int gether_attach_gadget(struct net_device *net, struct usb_gadget *g)
-+{
-+	int ret;
-+
-+	ret = device_move(&net->dev, &g->dev, DPM_ORDER_DEV_AFTER_PARENT);
-+	if (ret)
-+		return ret;
-+
-+	gether_set_gadget(net, g);
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(gether_attach_gadget);
-+
-+void gether_detach_gadget(struct net_device *net)
-+{
-+	struct eth_dev *dev = netdev_priv(net);
-+
-+	device_move(&net->dev, NULL, DPM_ORDER_NONE);
-+	dev->gadget = NULL;
-+}
-+EXPORT_SYMBOL_GPL(gether_detach_gadget);
-+
- int gether_set_dev_addr(struct net_device *net, const char *dev_addr)
- {
- 	struct eth_dev *dev;
-diff --git a/drivers/usb/gadget/function/u_ether.h b/drivers/usb/gadget/function/u_ether.h
-index 40144546d1b07f..3e12d60053c136 100644
---- a/drivers/usb/gadget/function/u_ether.h
-+++ b/drivers/usb/gadget/function/u_ether.h
-@@ -149,6 +149,32 @@ static inline struct net_device *gether_setup_default(void)
-  */
- void gether_set_gadget(struct net_device *net, struct usb_gadget *g);
- 
-+/**
-+ * gether_attach_gadget - Reparent net_device to the gadget device.
-+ * @net: The network device to reparent.
-+ * @g: The target USB gadget device to parent to.
-+ *
-+ * This function moves the network device to be a child of the USB gadget
-+ * device in the device hierarchy. This is typically done when the function
-+ * is bound to a configuration.
-+ *
-+ * Returns 0 on success, or a negative error code on failure.
-+ */
-+int gether_attach_gadget(struct net_device *net, struct usb_gadget *g);
-+
-+/**
-+ * gether_detach_gadget - Detach net_device from its gadget parent.
-+ * @net: The network device to detach.
-+ *
-+ * This function moves the network device to be a child of the virtual
-+ * devices parent, effectively detaching it from the USB gadget device
-+ * hierarchy. This is typically done when the function is unbound
-+ * from a configuration but the instance is not yet freed.
-+ */
-+void gether_detach_gadget(struct net_device *net);
-+
-+DEFINE_FREE(detach_gadget, struct net_device *, if (_T) gether_detach_gadget(_T))
-+
- /**
-  * gether_set_dev_addr - initialize an ethernet-over-usb link with eth address
-  * @net: device representing this link
-diff --git a/drivers/usb/gadget/function/u_ncm.h b/drivers/usb/gadget/function/u_ncm.h
-index 5408854d84072d..297e5087872f3f 100644
---- a/drivers/usb/gadget/function/u_ncm.h
-+++ b/drivers/usb/gadget/function/u_ncm.h
-@@ -18,7 +18,7 @@
- struct f_ncm_opts {
- 	struct usb_function_instance	func_inst;
- 	struct net_device		*net;
--	bool				bound;
-+	int				bind_count;
- 
- 	struct config_group		*ncm_interf_group;
- 	struct usb_os_desc		ncm_os_desc;
--- 
-2.53.0
-
+ 	/* BUILDWIN Photo Frame */
+ 	{ USB_DEVICE(0x1908, 0x1315), .driver_info =
+ 			USB_QUIRK_HONOR_BNUMINTERFACES },
 
 
 
