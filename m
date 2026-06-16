@@ -1,65 +1,62 @@
-Return-Path: <stable+bounces-265969-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264214-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id yTQkOLiTMWr5nAUAu9opvQ
-	(envelope-from <stable+bounces-265969-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:19:36 +0200
+	id LoTNHbxzMWrQjgUAu9opvQ
+	(envelope-from <stable+bounces-264214-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:03:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6ACE694091
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:19:35 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD4DB691A50
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:03:06 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=fkzrh5j2;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265969-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-265969-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=B2pAo2ks;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264214-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264214-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2F8813002B5F
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:19:33 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0097431FE158
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:47:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B89943D091A;
-	Tue, 16 Jun 2026 18:19:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4614846AF18;
+	Tue, 16 Jun 2026 15:45:34 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F8A935292A;
-	Tue, 16 Jun 2026 18:19:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E43E46AEF2;
+	Tue, 16 Jun 2026 15:45:31 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781633970; cv=none; b=YMlAr70ZlxoEXHeYTy4AImiyz9ARnV+x7jexQIr7LQlLVm7KlWsGFM6racAsNvBCBE+MFUf16gc3nWlnjIIRNYlRbxnbo923IaBq9YUmX4eyuD2N5MSEyZUtAkdPVln9dla9tzf044ga862Pyyw8dELlP1LXlneSKNI9FW/nkiw=
+	t=1781624733; cv=none; b=SqSIDk1EOnlYDgORH+ITIP69RL9n4DlvT7U0cuzSisADKKXQ7S5Yqtu/7YMd4XtS83Lqv5rgjrqCpHjOqzILVTMg+wC2PyHzhJBLewDJCX5RPdA8zth6BrlK0j7928fZC9vqWriitW7a8z2UD2mySr4OC1wbEGSnp0zHj3S7b74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781633970; c=relaxed/simple;
-	bh=wwRV8p461imdW1w306IjmqXg5IrwFKLKOf4wAh66DnE=;
+	s=arc-20240116; t=1781624733; c=relaxed/simple;
+	bh=xHDIFi8Yf2cRNLnluWCdzzFy665IHhhWqzaZW0+S0QE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C//7mlZpXJQt0OLhci8Fvl21DpZVejybaVkpRhSaWXUia3/NkWNOBC+9eRBZ7q6kVhh/vjVdJMazHbjTEIxvrgtee0oWRHgdXvUjOzRfF4rsFc3lOOKVDVVyD+cdLse/URkMHOQYTbwjYMEhqg6X+Fs/gCrOZiW7eyQDzzXdgzY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fkzrh5j2; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 756841F000E9;
-	Tue, 16 Jun 2026 18:19:28 +0000 (UTC)
+	 MIME-Version; b=W+A/dEcH73hkx3KPxwS13lG8f47N58mXKs5FkgNHJf9Uo8lehTosWqeakrqTCGGKzhavFzKhUUH6XXIXdPou2Hu+/BtCMnGdpJl9nLgaOQJU1qEVL26CstZn603MRwwTZC+UkAmsOwvjD9hE8nv6q4oAOu+wYy0rJGwgk/MLu5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B2pAo2ks; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D95F21F000E9;
+	Tue, 16 Jun 2026 15:45:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781633969;
-	bh=9teiSd6F75jgX7+fQdh4JVNwXFr3J1rYG8Kn34HuVKY=;
+	s=korg; t=1781624730;
+	bh=XeGNvLzc/McAIt9lE+aHn3L5hH5VQxjUi55/RTkaeII=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fkzrh5j2Fr6ie/OW7/2WgwotKwQiP+caihYRNycxXOG8bid8d5aB0EIhhA+veEP7v
-	 9zAiV/K1+sdBNdpjM9Y/qp0u+7jKeihS1q1AzGCt09JWS4Efskf09YRhqBXA907sMO
-	 m5Evsln94KSPJiFusZoBafXDNEIvBJ7fdNrpZOhQ=
+	b=B2pAo2kspwdoP2FteeFoVVHHn0p/8iQi0vEcRNSjJGXvPZGN4cCMaySrPPw0IImmu
+	 dchTeotoUrgOw1cZXXPCB1Sm4VWpYCdamIYNIlaGTmLtHcF5iYf0VCDRoiE5k7V9cz
+	 aZGmAPz3nwhgs8QQeDp+ro0vdOU3ifAtgfyeRAJM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang Mei <xmei5@asu.edu>,
-	Weiming Shi <bestswngs@gmail.com>,
-	Dongli Zhang <dongli.zhang@oracle.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 177/411] tap: free page on error paths in tap_get_user_xdp()
+Subject: [PATCH 6.18 019/325] wifi: iwlwifi: mvm: dont support the reset handshake for old firmwares
 Date: Tue, 16 Jun 2026 20:26:55 +0530
-Message-ID: <20260616145110.080425920@linuxfoundation.org>
+Message-ID: <20260616145058.750924406@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,93 +70,79 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,oracle.com,google.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-265969-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:xmei5@asu.edu,m:bestswngs@gmail.com,m:dongli.zhang@oracle.com,m:willemb@google.com,m:kuba@kernel.org,m:harshit.m.mogalapalli@oracle.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264214-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:emmanuel.grumbach@intel.com,m:johannes.berg@intel.com,m:miriam.rachel.korenblit@intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,oracle.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,vger.kernel.org:from_smtp,intel.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E6ACE694091
+X-Rspamd-Queue-Id: DD4DB691A50
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weiming Shi <bestswngs@gmail.com>
+From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-[ Upstream commit 3bcf7aec6a9d16438f2cec29f5d7c8d5b8edf9b2 ]
+[ Upstream commit 0eaa1f245ac03ed0c6394159360532726f666811 ]
 
-tap_get_user_xdp() rejects a frame shorter than ETH_HLEN with -EINVAL,
-and returns -ENOMEM when build_skb() fails. Both paths jump to the err
-label without freeing the page that vhost_net_build_xdp() allocated for
-the frame. tap_sendmsg() discards the per-buffer return value and always
-returns 0, so vhost_tx_batch() takes the success path and never frees
-the page; each rejected frame in a batch leaks one page-frag chunk.
+-77.ucode doesn't contain the fixes for this flow it seems.
+Don't use the firmware reset handshake even if the firmware claims
+support for it.
 
-Free the page on both error paths, before the skb is built. This is the
-tap counterpart of the same leak in tun_xdp_one().
-
-Fixes: 0efac27791ee ("tap: accept an array of XDP buffs through sendmsg()")
-Fixes: ed7f2afdd0e0 ("tap: add missing verification for short frame")
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
-Reviewed-by: Dongli Zhang <dongli.zhang@oracle.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20260521163230.1478627-2-bestswngs@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-(cherry picked from commit 3bcf7aec6a9d16438f2cec29f5d7c8d5b8edf9b2)
-Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Fixes: 906d4eb84408 ("iwlwifi: support firmware reset handshake")
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220600
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20260529085453.9307b81d9b02.I21bba9e649f4cd0e35d3ea6cd97a03258be5832f@changeid
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/tap.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/wireless/intel/iwlwifi/mvm/ops.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/tap.c b/drivers/net/tap.c
-index a08adca412b41a..3a91972485cc36 100644
---- a/drivers/net/tap.c
-+++ b/drivers/net/tap.c
-@@ -1143,6 +1143,7 @@ static int tap_get_user_xdp(struct tap_queue *q, struct xdp_buff *xdp)
- 	int err, depth;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
+index 5ebd046371f50d..8e6913c7712f09 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
+@@ -1416,6 +1416,12 @@ iwl_op_mode_mvm_start(struct iwl_trans *trans, const struct iwl_rf_cfg *cfg,
+ 		fw_has_capa(&mvm->fw->ucode_capa,
+ 			    IWL_UCODE_TLV_CAPA_FW_RESET_HANDSHAKE);
  
- 	if (unlikely(xdp->data_end - xdp->data < ETH_HLEN)) {
-+		put_page(virt_to_head_page(xdp->data));
- 		err = -EINVAL;
- 		goto err;
- 	}
-@@ -1152,6 +1153,7 @@ static int tap_get_user_xdp(struct tap_queue *q, struct xdp_buff *xdp)
- 
- 	skb = build_skb(xdp->data_hard_start, buflen);
- 	if (!skb) {
-+		put_page(virt_to_head_page(xdp->data));
- 		err = -ENOMEM;
- 		goto err;
- 	}
++	/* Those firmware versions claim to support the fw_reset_handshake
++	 * but they are buggy.
++	 */
++	if (IWL_UCODE_MAJOR(mvm->fw->ucode_ver) <= 77)
++		trans->conf.fw_reset_handshake = false;
++
+ 	trans->conf.queue_alloc_cmd_ver =
+ 		iwl_fw_lookup_cmd_ver(mvm->fw,
+ 				      WIDE_ID(DATA_PATH_GROUP,
 -- 
 2.53.0
 
