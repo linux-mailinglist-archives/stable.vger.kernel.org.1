@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-264989-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264218-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 6RMUAuiAMWpilAUAu9opvQ
-	(envelope-from <stable+bounces-264989-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:59:20 +0200
+	id AE2pFOhxMWrzjQUAu9opvQ
+	(envelope-from <stable+bounces-264218-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:55:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E114692A2D
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:59:19 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3B13691829
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:55:19 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=NiPAp7sL;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264989-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264989-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=awdGx3t0;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264218-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264218-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F2FE7304F41A
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:55:45 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B8CA93038F68
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:47:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF3D3169AD2;
-	Tue, 16 Jun 2026 16:55:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85BCE4657D7;
+	Tue, 16 Jun 2026 15:45:55 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B864744D014;
-	Tue, 16 Jun 2026 16:55:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0287C44CF4E;
+	Tue, 16 Jun 2026 15:45:51 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781628944; cv=none; b=IgT36PYUcJX5dxWLT1P9plw5jSm4/F/XjIlcM7yAEY7WH2mKLg9D6gbDr4vlU4JIojEXLXo0jsO9LSjeLlgkesSbDPqDpphrSRWNbvJXuIU5FZ+eWgwKeJiGcYaCvEC7qghqhUKE1RuEOdehTW0KHTeygMAq8ePrPlmH++vXR7k=
+	t=1781624754; cv=none; b=R68lXQLgoL9qc1UxtXF9otYDWwuji15B2ad4IFFWONCWgmPNxjuj1cS6SPnljBx2hIT6luD/PJDJlAw+MXEgC9JSRJZ5hTwEpf4frgZDGWuyu1X5niX6fQAxG08o74UIMvnGPQPKthhyl6Q89KIibt3xcTn9U6QUSh+Kn5hU0c0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781628944; c=relaxed/simple;
-	bh=GDB3qCIHel6Mc2vbHqm3lXvBcCQ0jcvU1frqL7r3Bnk=;
+	s=arc-20240116; t=1781624754; c=relaxed/simple;
+	bh=qcF6UrEwND6yoNeLF5HFmCaSETpnFwGFnx+laQI8yX0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oLmTGjdOtQhkK0iID5zDx8ScKEBfmq59G1RNvNvS+bsYowmW1f0ICBrDv/uJnQXpbWcGgz23Qy8Ak0WvXavfm4tbRzuH1cbVMVJrzKnEg4k6fowLxRqC2sOPFa3GYy4UwSLM7ymdMBuAkf+PEeuWMjmo/lacmq+fulz5HMsJh7I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NiPAp7sL; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F4E81F00A3A;
-	Tue, 16 Jun 2026 16:55:42 +0000 (UTC)
+	 MIME-Version; b=bKnEeZPbCO8Iy/ocjt1sNRkMSccOg2A0SIds2JoERkeIZEOP3ETBbSETy5wBa994SyGygGpDNkYaajMzg3pWfjLsaJnWLab6hlVi1BeVghHDoPZT970na9eDmIVSyjXcq5/ehnGnxaEQsRrKQxCyRUsKMD/f7rYkw0Cy6QXei88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=awdGx3t0; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0EBE1F000E9;
+	Tue, 16 Jun 2026 15:45:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781628943;
-	bh=0KbO73aQBToGIfs295ZxncHv/fyuR0qYrAy5JTty8WM=;
+	s=korg; t=1781624751;
+	bh=ld4MrRoMFHP5wQYooovJNTHUlV1w0VObgomj8WSIfsc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=NiPAp7sLvW0dn9jjoHvh1PVQFuFLO+4hoh3iKR4N/Emv7gb8jwBfdMDBe+dd7/gWY
-	 b2pxC+4xlb91UnEfS1Z7brfDsqt73oLL0yaVBvL9TPJtNkhah1QJRzJmyp6y91g5mg
-	 Kkc4w4KTWSwJua4GzTLatOSP4AZAoRq8G3/PC2IQ=
+	b=awdGx3t0I3UJTVvPYA83KfsIvcjinJUxkdhXg4z3kftRl8zcVxqCfczGP/iqBYFO1
+	 BTEP/P0nVBcrdgALoh1oeuYB42DYqvO98U4EwwCwI05gfUdp4ubDC/91RAeYgULuD4
+	 XM2/2zy3+pRx5W+r+4XSkhgEcDd1lEF2fKrm+nAA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Doruk Tan Ozturk <doruk@0sec.ai>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 192/452] Bluetooth: hci_sync: fix UAF in hci_le_create_cis_sync
+Subject: [PATCH 6.18 023/325] netfilter: synproxy: add mutex to guard hook reference counting
 Date: Tue, 16 Jun 2026 20:26:59 +0530
-Message-ID: <20260616145127.921707561@linuxfoundation.org>
+Message-ID: <20260616145058.932434347@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,119 +70,148 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264989-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:doruk@0sec.ai,m:luiz.von.dentz@intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264218-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:fmancera@suse.de,m:fw@strlen.de,m:pablo@netfilter.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,intel.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,0sec.ai:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,netfilter.org:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,strlen.de:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7E114692A2D
+X-Rspamd-Queue-Id: E3B13691829
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Doruk Tan Ozturk <doruk@0sec.ai>
+From: Fernando Fernandez Mancera <fmancera@suse.de>
 
-[ Upstream commit bfea6091e0fffb270c20e74384b660910277eb6c ]
+[ Upstream commit 2fcba19caaeb2a33017459d3430f057967bb91b6 ]
 
-hci_le_create_cis_sync() dereferences conn->conn_timeout after releasing
-both rcu_read_lock() and hci_dev_lock(hdev).  The conn pointer was
-obtained from an RCU-protected iteration over hdev->conn_hash.list and
-is not valid once these locks are dropped.  A concurrent disconnect can
-free the hci_conn between the unlock and the dereference, causing a
-use-after-free read.
+As the synproxy infrastructure register netfilter hooks on-demand when a
+user adds the first iptables target or nftables expression, if done
+concurrently they can race each other.
 
-The cancellation mechanism in hci_conn_del() cannot prevent this because
-hci_le_create_cis_pending() queues hci_create_cis_sync with data=NULL:
+Introduce a mutex to serialize the refcount control blocks access from
+both frontends. While a per namespace mutex might be more efficient, it
+is not needed for target/expression like SYNPROXY.
 
-    hci_cmd_sync_queue(hdev, hci_create_cis_sync, NULL, NULL);
-
-While hci_conn_del() dequeues with data=conn:
-
-    hci_cmd_sync_dequeue(hdev, NULL, conn, NULL);
-
-Since NULL != conn, the lookup in _hci_cmd_sync_lookup_entry() never
-matches, and the pending work item is not cancelled.
-
-Fix this by saving conn->conn_timeout into a local variable while the
-locks are still held, so the stale conn pointer is never dereferenced
-after unlock.
-
-This is the same class of bug as the one fixed by commit 035c25007c9e
-("Bluetooth: hci_sync: Fix UAF on le_read_features_complete") which
-addressed the identical pattern in a different function.
-
-This vulnerability was identified using 0sec.ai, an open-source
-automated security auditing platform (https://github.com/0sec-labs).
-
-Fixes: c09b80be6ffc ("Bluetooth: hci_conn: Fix not waiting for HCI_EVT_LE_CIS_ESTABLISHED")
-Cc: stable@vger.kernel.org
-Reported-by: Doruk Tan Ozturk <doruk@0sec.ai>
-Signed-off-by: Doruk Tan Ozturk <doruk@0sec.ai>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-[doruk: adjust context for 6.6 \u2014 open-coded cmd struct instead of
- DEFINE_FLEX, num_cis tracked via cmd.cp.num_cis]
-Signed-off-by: Doruk Tan Ozturk <doruk@0sec.ai>
+Fixes: ad49d86e07a4 ("netfilter: nf_tables: Add synproxy support")
+Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_sync.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/netfilter/nf_synproxy_core.c | 24 ++++++++++++++++++------
+ 1 file changed, 18 insertions(+), 6 deletions(-)
 
-diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
-index a41cfc76e98bf1..7cba461b21de4f 100644
---- a/net/bluetooth/hci_sync.c
-+++ b/net/bluetooth/hci_sync.c
-@@ -6631,6 +6631,7 @@ int hci_le_create_cis_sync(struct hci_dev *hdev)
- 		struct hci_cis cis[0x1f];
- 	} cmd;
- 	struct hci_conn *conn;
-+	u16 timeout = 0;
- 	u8 cig = BT_ISO_QOS_CIG_UNSET;
+diff --git a/net/netfilter/nf_synproxy_core.c b/net/netfilter/nf_synproxy_core.c
+index 6a851ac4dd048f..a277b2bd3275dc 100644
+--- a/net/netfilter/nf_synproxy_core.c
++++ b/net/netfilter/nf_synproxy_core.c
+@@ -21,6 +21,8 @@
+ #include <net/netfilter/nf_conntrack_zones.h>
+ #include <net/netfilter/nf_synproxy.h>
  
- 	/* The spec allows only one pending LE Create CIS command at a time. If
-@@ -6703,6 +6704,7 @@ int hci_le_create_cis_sync(struct hci_dev *hdev)
- 		set_bit(HCI_CONN_CREATE_CIS, &conn->flags);
- 		cis->acl_handle = cpu_to_le16(conn->parent->handle);
- 		cis->cis_handle = cpu_to_le16(conn->handle);
-+		timeout = conn->conn_timeout;
- 		cmd.cp.num_cis++;
++static DEFINE_MUTEX(synproxy_mutex);
++
+ unsigned int synproxy_net_id;
+ EXPORT_SYMBOL_GPL(synproxy_net_id);
  
- 		if (cmd.cp.num_cis >= ARRAY_SIZE(cmd.cis))
-@@ -6722,7 +6724,7 @@ int hci_le_create_cis_sync(struct hci_dev *hdev)
- 					sizeof(cmd.cp) + sizeof(cmd.cis[0]) *
- 					cmd.cp.num_cis, &cmd,
- 					HCI_EVT_LE_CIS_ESTABLISHED,
--					conn->conn_timeout, NULL);
-+					timeout, NULL);
+@@ -768,26 +770,31 @@ static const struct nf_hook_ops ipv4_synproxy_ops[] = {
+ 
+ int nf_synproxy_ipv4_init(struct synproxy_net *snet, struct net *net)
+ {
+-	int err;
++	int err = 0;
+ 
++	mutex_lock(&synproxy_mutex);
+ 	if (snet->hook_ref4 == 0) {
+ 		err = nf_register_net_hooks(net, ipv4_synproxy_ops,
+ 					    ARRAY_SIZE(ipv4_synproxy_ops));
+ 		if (err)
+-			return err;
++			goto out;
+ 	}
+ 
+ 	snet->hook_ref4++;
+-	return 0;
++out:
++	mutex_unlock(&synproxy_mutex);
++	return err;
  }
+ EXPORT_SYMBOL_GPL(nf_synproxy_ipv4_init);
  
- int hci_le_remove_cig_sync(struct hci_dev *hdev, u8 handle)
+ void nf_synproxy_ipv4_fini(struct synproxy_net *snet, struct net *net)
+ {
++	mutex_lock(&synproxy_mutex);
+ 	snet->hook_ref4--;
+ 	if (snet->hook_ref4 == 0)
+ 		nf_unregister_net_hooks(net, ipv4_synproxy_ops,
+ 					ARRAY_SIZE(ipv4_synproxy_ops));
++	mutex_unlock(&synproxy_mutex);
+ }
+ EXPORT_SYMBOL_GPL(nf_synproxy_ipv4_fini);
+ 
+@@ -1192,27 +1199,32 @@ static const struct nf_hook_ops ipv6_synproxy_ops[] = {
+ int
+ nf_synproxy_ipv6_init(struct synproxy_net *snet, struct net *net)
+ {
+-	int err;
++	int err = 0;
+ 
++	mutex_lock(&synproxy_mutex);
+ 	if (snet->hook_ref6 == 0) {
+ 		err = nf_register_net_hooks(net, ipv6_synproxy_ops,
+ 					    ARRAY_SIZE(ipv6_synproxy_ops));
+ 		if (err)
+-			return err;
++			goto out;
+ 	}
+ 
+ 	snet->hook_ref6++;
+-	return 0;
++out:
++	mutex_unlock(&synproxy_mutex);
++	return err;
+ }
+ EXPORT_SYMBOL_GPL(nf_synproxy_ipv6_init);
+ 
+ void
+ nf_synproxy_ipv6_fini(struct synproxy_net *snet, struct net *net)
+ {
++	mutex_lock(&synproxy_mutex);
+ 	snet->hook_ref6--;
+ 	if (snet->hook_ref6 == 0)
+ 		nf_unregister_net_hooks(net, ipv6_synproxy_ops,
+ 					ARRAY_SIZE(ipv6_synproxy_ops));
++	mutex_unlock(&synproxy_mutex);
+ }
+ EXPORT_SYMBOL_GPL(nf_synproxy_ipv6_fini);
+ #endif /* CONFIG_IPV6 */
 -- 
 2.53.0
 
