@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-266491-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264144-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id E0PnGqifMWoxogUAu9opvQ
-	(envelope-from <stable+bounces-266491-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:10:32 +0200
+	id 9nflI2BvMWoJjQUAu9opvQ
+	(envelope-from <stable+bounces-264144-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:44:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3357694D4D
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:10:31 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0E236915AC
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:44:31 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="z8nNh/CC";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266491-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266491-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=iIeMJf6b;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264144-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264144-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 415CF31D48AF
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:04:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5166731CEC93
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:39:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B62F33DDDA0;
-	Tue, 16 Jun 2026 19:04:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 260BF44CF25;
+	Tue, 16 Jun 2026 15:39:17 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B95D3DBD76;
-	Tue, 16 Jun 2026 19:04:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00B8444CAE6;
+	Tue, 16 Jun 2026 15:39:16 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781636695; cv=none; b=bj4a5A+LKG2a92n8FtkRC4w5huunp44JRQhVH6Hu9tVpv228lWVcbBwBRe7AE313d6naJqng17AtMGYFvPuknwmpgFzKBJplNRNOsZX3GGx4OBVxk7Gmc93rtqpc/NRBUjjdABi6SgN8RvTivwTYY6SclozXK6BZQATtoIF+Oqk=
+	t=1781624356; cv=none; b=KeXrzmPGbVLafdFHIoEXpFQqyHqcuG6KmYae65IbWM0hf36cORV5w90egWa+8FVGvBOfjME/gr8Xkx7Q3IqhJpDN8gydHazesmLCGW77pWUoRRARbMskTwsfsr+Qfp6FrdNlXKZPs99NZByX9KWNtzTIc+ex8js7O7SHSLlJXj0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781636695; c=relaxed/simple;
-	bh=tP/P0FFQMedIgZVdK89LKPxKYHzGNS/XyN/5hhn5BHE=;
+	s=arc-20240116; t=1781624356; c=relaxed/simple;
+	bh=ZJRFeh8qFIvdPf0JGbaBoPdQvOTfZdSOyl9yuXThNOw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SvFCWLlQiYnUf4juqC6rOp3T3Lfi23NnqDwLuzSXc3y/HB0mYiOP3hILvetqAbQHSDnXInWJT9/+qFydmRF8KXXXkF2I1QwWcNdtBYbA+8dAHjq8xEglQSFV5S4fT1cd/Yh0gO6LNtAFrszw7bGTqSatIZL0e5MCRlCfStU+Pzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z8nNh/CC; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 691961F000E9;
-	Tue, 16 Jun 2026 19:04:53 +0000 (UTC)
+	 MIME-Version; b=gKgWvY4N1fQOgUI8IvVd4n21HUr41HyOXu8moRe8mc37nGTzaA4OHSizzeTTXQ1xAkkGCMsnJEA4BlTA1HPtO5RbGWUPWMGLjTk4QsEYfidZ64lt1K02jwY+FCx59CIcRBymIkohP2xqNt7tKDWQa3o9INURVPpGdsWsM7A6foo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iIeMJf6b; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A1FE1F000E9;
+	Tue, 16 Jun 2026 15:39:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781636694;
-	bh=Dbow8YkyJKbnasqnWb9La0DPTKCI3rO7SqtMNkyuZeM=;
+	s=korg; t=1781624355;
+	bh=YGuLDHactLS0tlS49ml3TIFbS+z0xWh6PdHv4hd72zQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=z8nNh/CCRpjbqu8+SflU27yFtoueWKyv/e35Edr8AnFbVD5aAM1PIP+Nz42QoHbfo
-	 WcIOPEGik+NsIf4YmlRpMzny4O+IqpOKBcpKWhEkC4ZaQ1BvsKLZR6vScqvrDKvzJ+
-	 wk9OHoUoroBq/2r91RGJm4KNP65xyeCwIk4rzzbw=
+	b=iIeMJf6bg0Dlg55rOOkkp6dG5go1JX4q7c1xdH83qfj4kn710J8nBLsSfVEp/wb00
+	 x+9g82C7HYM0CliXlAIdjVcKWmdNrCC3zbvStpxqpECFIDrSws6cL22wrZIgnftj9V
+	 ZKAgWFQQ2y/+/bFYt30QPz3qN/sIUidChm9TZbsU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Pritam Manohar Sutar <pritam.sutar@samsung.com>,
-	Selvarasu Ganesan <selvarasu.g@samsung.com>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 255/342] usb: dwc3: Move GUID programming after PHY initialization
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: [PATCH 7.0 320/378] thunderbolt: Reject zero-length property entries in validator
 Date: Tue, 16 Jun 2026 20:29:11 +0530
-Message-ID: <20260616145100.132012785@linuxfoundation.org>
+Message-ID: <20260616145127.092456847@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,100 +66,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266491-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:pritam.sutar@samsung.com,m:selvarasu.g@samsung.com,m:Thinh.Nguyen@synopsys.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264144-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:mika.westerberg@linux.intel.com,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.intel.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,synopsys.com:email,vger.kernel.org:from_smtp,samsung.com:email,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,intel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C3357694D4D
+X-Rspamd-Queue-Id: E0E236915AC
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Selvarasu Ganesan <selvarasu.g@samsung.com>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-[ Upstream commit aad35f9c926ec220b0742af1ada45666ae667956 ]
+commit cff8eb65d1eafe7793e54b4d0cf6bf831644630b upstream.
 
-The Linux Version Code is currently written to the GUID register before
-PHY initialization. Certain PHY implementations (such as Synopsys eUSB
-PHY performing link_sw_reset) clear the GUID register to its default
-value during initialization, causing the kernel version information to
-be lost.
+tb_property_entry_valid() accepts entries with length == 0 for
+DIRECTORY, DATA, and TEXT types.  A zero-length TEXT entry passes
+validation but causes an underflow in the null-termination logic:
 
-Move the GUID register programming to occur after PHY initialization
-completes to ensure the Linux version information persists.
+  property->value.text[property->length * 4 - 1] = '\0';
 
-Fixes: fa0ea13e9f1c ("usb: dwc3: core: write LINUX_VERSION_CODE to our GUID register")
-Cc: stable <stable@kernel.org>
-Reported-by: Pritam Manohar Sutar <pritam.sutar@samsung.com>
-Signed-off-by: Selvarasu Ganesan <selvarasu.g@samsung.com>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://patch.msgid.link/20260417063314.2359-1-selvarasu.g@samsung.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[ adapted dwc3_writel(dwc, ...) to dwc3_writel(dwc->regs, ...) ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+When property->length is 0 this writes to offset -1 relative to
+the allocation.
+
+Reject zero-length entries early in the validator since they have no
+valid representation in the XDomain property protocol.
+
+Fixes: cdae7c07e3e3 ("thunderbolt: Add support for XDomain properties")
+Cc: stable@vger.kernel.org
+Assisted-by: Claude:claude-opus-4-7
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc3/core.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/thunderbolt/property.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/usb/dwc3/core.c
-+++ b/drivers/usb/dwc3/core.c
-@@ -978,12 +978,6 @@ static int dwc3_core_init(struct dwc3 *d
- 
- 	hw_mode = DWC3_GHWPARAMS0_MODE(dwc->hwparams.hwparams0);
- 
--	/*
--	 * Write Linux Version Code to our GUID register so it's easy to figure
--	 * out which kernel version a bug was found.
--	 */
--	dwc3_writel(dwc->regs, DWC3_GUID, LINUX_VERSION_CODE);
--
- 	ret = dwc3_phy_setup(dwc);
- 	if (ret)
- 		goto err0;
-@@ -1023,6 +1017,12 @@ static int dwc3_core_init(struct dwc3 *d
- 	if (ret)
- 		goto err1;
- 
-+	/*
-+	 * Write Linux Version Code to our GUID register so it's easy to figure
-+	 * out which kernel version a bug was found.
-+	 */
-+	dwc3_writel(dwc->regs, DWC3_GUID, LINUX_VERSION_CODE);
-+
- 	dwc3_core_setup_global_control(dwc);
- 	dwc3_core_num_eps(dwc);
- 
+--- a/drivers/thunderbolt/property.c
++++ b/drivers/thunderbolt/property.c
+@@ -60,6 +60,8 @@ static bool tb_property_entry_valid(cons
+ 	case TB_PROPERTY_TYPE_DIRECTORY:
+ 	case TB_PROPERTY_TYPE_DATA:
+ 	case TB_PROPERTY_TYPE_TEXT:
++		if (!entry->length)
++			return false;
+ 		if (entry->length > block_len)
+ 			return false;
+ 		if (check_add_overflow(entry->value, entry->length, &end) ||
 
 
 
