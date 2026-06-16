@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-265146-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263777-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id PpeYHhKFMWr+lQUAu9opvQ
-	(envelope-from <stable+bounces-265146-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:17:06 +0200
+	id wWN6Da9lMWrjiQUAu9opvQ
+	(envelope-from <stable+bounces-263777-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:03:11 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E51CF692F53
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:17:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BE71690BB9
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:03:10 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=1f0iFacj;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265146-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-265146-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=R6WPTh9N;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263777-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-263777-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9611D3016032
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:08:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 926AE30309DC
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:01:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F14A047AF5F;
-	Tue, 16 Jun 2026 17:08:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9632D425CFF;
+	Tue, 16 Jun 2026 15:00:57 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFCA143D4E8;
-	Tue, 16 Jun 2026 17:08:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 711823AA1BA;
+	Tue, 16 Jun 2026 15:00:56 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781629704; cv=none; b=na5ucrxtYjf2VYS2rfFkE7jTFLuIuaCfg/8TK51d7LYvO5ZI0P8ausLBEwpD9Ru8djaY7gQacFUFuBHxMg4pBPtDqswUewYZEAz7E03nORSt7xVmPKLUXH4VOtA8nFavznonb/J+jrx8x52RB5sTWCg15iKXvoYJqd2kq76jdQI=
+	t=1781622057; cv=none; b=BOqZscN6DbNxy/FzlhiXal7hg43LC1Rdhj3BdBRxVDyEMY1/Le42eihJlYa1Z3xmca1GUN7dJdrW2HaMsfBhEztBdyyHyV9/ZsLjq+zKMBoJGKb2o03ZF5eU5tDS4GJvtKfE9AyWEMWe9Mnx03e+t2KDlLXsPdGCdQCI4UID/eY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781629704; c=relaxed/simple;
-	bh=NmuUfcfvE5+fPFaHeuEO5cjvGQ3PTNJ/ZU/GrReRUgI=;
+	s=arc-20240116; t=1781622057; c=relaxed/simple;
+	bh=xiAfXOz+fDPXctjBtvVx9pRyeU+zAs83KWgMZykGwaE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZPmcD/HOE5+3eeanmdO9gssnKPck+sO35DUikn0vLNqPl7WetUwiyX461B84eWvGKPHpJNPLgWVwvyyf9f4wdkfKL2Y8ancqzqIbumF7/30DILkXBAXNCKhAlMVXYQxR3KyTZScQHXqNlApOgkBYfINEWg885iQNdhSl2dr1Hcc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1f0iFacj; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFEA11F000E9;
-	Tue, 16 Jun 2026 17:08:22 +0000 (UTC)
+	 MIME-Version; b=GlwLC44/8x7ZxcWUhSqkOE2WEzjdetSroStnd3eFoQCxKk9vncIgpWXoZOTC49cMvIkOdzEl6Db4MM8ZxO6UN0UNLdNSCOfGp0g2wbtgCzVSfA1L75OLrcVlU9LxLoRFr+bEQxNhxrhwAzrdG5/borAfn7+AyTsVkSZycanrEho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R6WPTh9N; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5659A1F000E9;
+	Tue, 16 Jun 2026 15:00:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781629703;
-	bh=gQiwKkREEkwrlC+x8KwKJrAKOeT6Nb1lXehExpT82GM=;
+	s=korg; t=1781622056;
+	bh=DEV7KiNJUl0u7Fp12kmLOK2iUEMlr1fe7sCzILQB62U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=1f0iFacj9HZMjKoFV0e2Dx2nwnnCyGEFfhvz1VWSoi7WjWJYLlRPX6J1GpPND7hJ7
-	 MUWTIb6l/BylkMpM5DT+zyMzmb3/TWYH3aq0Bo6IHGuUjtwAlLkCMCzj1Ca/ZaBU00
-	 yU3xt7ywhj2GgFAUL/BDxxfocF7+IjG+bg3+aZyk=
+	b=R6WPTh9NZdJDErxKWs9re6d51jh97fRccyyoT8XIuLGAugEDzpZdT2rae7daPY5p9
+	 QA6+AktiGMa2W2ZyBVI4l1tXGPnPoLLk47UH42yUGp6bFbCS2rbXrp/gXIjme3y1xv
+	 wTLHwNEPFqbtxEFQCHVRcOAL0gtfLhJlDI51Uxw8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Hung <alex.hung@amd.com>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Ray Wu <ray.wu@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.6 306/452] drm/amd/display: Reject gpio_bitshift >= 32 in bios_parser_get_gpio_pin_info()
+	Will Deacon <will@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>
+Subject: [PATCH 7.1 8/8] arm64: errata: Mitigate TLBI errata on Microsoft Azure Cobalt 100 CPU
 Date: Tue, 16 Jun 2026 20:28:53 +0530
-Message-ID: <20260616145133.581174825@linuxfoundation.org>
+Message-ID: <20260616145523.583441428@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145523.335696673@linuxfoundation.org>
+References: <20260616145523.335696673@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,86 +68,93 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265146-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-263777-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:alex.hung@amd.com,m:harry.wentland@amd.com,m:ray.wu@amd.com,m:daniel.wheeler@amd.com,m:alexander.deucher@amd.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:will@kernel.org,m:mark.rutland@arm.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,amd.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,arm.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E51CF692F53
+X-Rspamd-Queue-Id: 9BE71690BB9
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harry Wentland <harry.wentland@amd.com>
+From: Will Deacon <will@kernel.org>
 
-commit 49c3da65961fe9857c831d47fa1989084e87514a upstream.
+commit 1940e70a8144bf75e6df26bf6f600862ea7f7ea1 upstream.
 
-[Why & How]
-gpio_bitshift is a uint8_t read directly from the VBIOS GPIO pin table.
-If the value is >= 32, the expression "1 << gpio_bitshift" triggers
-undefined behaviour in C (shift count exceeds type width). On x86 the
-shift is silently masked to 5 bits, producing an incorrect GPIO mask
-that may cause wrong MMIO register bits to be toggled.
+Commit fb091ff39479 ("arm64: Subscribe Microsoft Azure Cobalt 100 to ARM
+Neoverse N2 errata") states that Microsoft Azure Cobalt 100 CPU "is a
+Microsoft implemented CPU based on r0p0 of the ARM Neoverse N2 CPU, and
+therefore suffers from all the same errata.".
 
-Validate gpio_bitshift before use and return BP_RESULT_BADBIOSTABLE for
-out-of-range values.
+So enable the workaround for the latest broadcast TLB invalidation bug
+on these parts.
 
-Fixes: ae79c310b1a6 ("drm/amd/display: Add DCE12 bios parser support")
-Assisted-by: Copilot:claude-opus-4.6
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Ray Wu <ray.wu@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit eadf438ab8d370b9d19acee9359918c85afeb80d)
-Cc: stable@vger.kernel.org
+Signed-off-by: Will Deacon <will@kernel.org>
+[Mark: backport to v7.1.y]
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ Documentation/arch/arm64/silicon-errata.rst |    2 ++
+ arch/arm64/Kconfig                          |    1 +
+ arch/arm64/kernel/cpu_errata.c              |    1 +
+ 3 files changed, 4 insertions(+)
 
---- a/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
-+++ b/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
-@@ -697,8 +697,10 @@ static enum bp_result bios_parser_get_gp
- 		info->offset_en = info->offset + 1;
- 		info->offset_mask = info->offset - 1;
+--- a/Documentation/arch/arm64/silicon-errata.rst
++++ b/Documentation/arch/arm64/silicon-errata.rst
+@@ -367,3 +367,5 @@ stable kernels.
+ +----------------+-----------------+-----------------+-----------------------------+
+ | Microsoft      | Azure Cobalt 100| #3324339        | ARM64_ERRATUM_3194386       |
+ +----------------+-----------------+-----------------+-----------------------------+
++| Microsoft      | Azure Cobalt 100| #4193789        | ARM64_ERRATUM_4118414       |
+++----------------+-----------------+-----------------+-----------------------------+
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -1182,6 +1182,7 @@ config ARM64_ERRATUM_4118414
+ 	  * ARM Neoverse-V2 erratum 4193787
+ 	  * ARM Neoverse-V3 erratum 4193784
+ 	  * ARM Neoverse-V3AE erratum 4193784
++	  * Microsoft Azure Cobalt 100 4193789
+ 	  * NVIDIA Olympus erratum T410-OLY-1029
  
--		info->mask = (uint32_t) (1 <<
--			header->gpio_pin[i].gpio_bitshift);
-+		if (header->gpio_pin[i].gpio_bitshift >= 32)
-+			return BP_RESULT_BADBIOSTABLE;
-+
-+		info->mask = 1u << header->gpio_pin[i].gpio_bitshift;
- 		info->mask_y = info->mask + 2;
- 		info->mask_en = info->mask + 1;
- 		info->mask_mask = info->mask - 1;
+ 	  On affected cores, some memory accesses might not be completed by
+--- a/arch/arm64/kernel/cpu_errata.c
++++ b/arch/arm64/kernel/cpu_errata.c
+@@ -365,6 +365,7 @@ static const struct arm64_cpu_capabiliti
+ 			MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V3),
+ 			MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V3AE),
+ 			MIDR_ALL_VERSIONS(MIDR_NVIDIA_OLYMPUS),
++			MIDR_ALL_VERSIONS(MIDR_MICROSOFT_AZURE_COBALT_100),
+ 			{}
+ 		})),
+ 	},
 
 
 
