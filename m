@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-265001-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266364-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id C+k7IZGBMWqPlAUAu9opvQ
-	(envelope-from <stable+bounces-265001-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:02:09 +0200
+	id 8zHAHMSbMWp8oAUAu9opvQ
+	(envelope-from <stable+bounces-266364-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:53:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF8E9692AAA
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:02:08 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4727B6948E2
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:53:56 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=dg5Rcskz;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265001-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265001-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=0p4C977p;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266364-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266364-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D28D130F766C
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:56:26 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B6D2C303C987
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:53:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BB8C47A0DE;
-	Tue, 16 Jun 2026 16:56:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4BE447B435;
+	Tue, 16 Jun 2026 18:53:54 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8F2547A0D0;
-	Tue, 16 Jun 2026 16:56:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7373A3CC303;
+	Tue, 16 Jun 2026 18:53:53 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781628980; cv=none; b=Bm4PX9pcAyCIQNAf/4JJdixHx2ewG7UDBdJttMkOYbh5MpQ5449U9oDvtMoEG4ZI7xZikAwX/RWvSMDxZCsRn092GTIYZC2/wi1QzgcZc70efb+7AYd2dairYOzkJlZXpOz84fxGsicH5nLFbwA+A9t/7KidFN3otC2n/5eDVTY=
+	t=1781636034; cv=none; b=C78CyIy7nfWg+KFasG/RypDGb2kH7Sg/wi2SeI6Lt+BmmZ3MOTNI3YyNtuMok7dBjGVEpgdlIbrJherBkT/neQLOID6qAs6L375vPm9TOxSAP8CUV5lIAitWrht4vU6Z6P2MhWW4CETCLNYBBC77hKeZRHYYtVtjau9qa4X4g8A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781628980; c=relaxed/simple;
-	bh=pLl95MXFE0Td3bAHf3DfnAaHoZZ+WKwmGG2uRQc4/mQ=;
+	s=arc-20240116; t=1781636034; c=relaxed/simple;
+	bh=CPCh6hjvOTFGC/mxos/eKaaezAIauwboIXJfQAnLmPE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vbhg0OCFzG9eNPhtc3uM0nNyrOpm1XJxgK4uDMU9Y7djrZU7+baUs5AXJbJSFsP+USQ/HXmLiVe3GlN5iL3XTsolhW7aNJwMmUljo0OCqLvfiPX1ZylcIT0qcKa/kEcioqyvIWorc2ihWvOApkSPgIJp1yGU7KkxF2ExtvmSMOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dg5Rcskz; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 329991F00A3D;
-	Tue, 16 Jun 2026 16:56:13 +0000 (UTC)
+	 MIME-Version; b=Wotpdq1QKz4ghtkWIFdCZJfetWqEUoEo5i4ZfiFiIsoifBLuAw+Fk7LuEp9DiJhFrIHzrLqBZsLMDFp0rpzIw1Ou/kYIi/u+pEsrhCvoNTOKB1VXdIsCkOCJprXjIEqG/lTsuRMQDUCNReXPuGiRzRkHsbAuDt3euBHkKZvXPhY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0p4C977p; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82C091F000E9;
+	Tue, 16 Jun 2026 18:53:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781628975;
-	bh=FuPY7yhhazwo9DBlo9NGVTSU3tXSlbWYjWdjVuhh8kU=;
+	s=korg; t=1781636033;
+	bh=ckANAfpf3xCi0dJc6aGP5lc8l4xUu4GQqPDIQXeTOec=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dg5Rcskz6ZdiEAA3yA9/uXZqKT5FWrgKkKcH3lDvfmNlALR6IkQ81KKerTR+DMlv6
-	 3p/qX1Ifq3OVCUSJvByV9Kf8DugezlW6yfWhjWIogJLd28mdNwPcB/ETsbViaS91kJ
-	 aqY1gKzfavdKaZfcvcsG/0N5DyEr9Y3FfcAYSwH4=
+	b=0p4C977pXvI65tYaLb7yyhkxSiLl2n8GHVEkYCcAnq2xm60Vs2RvjyTSOgcrtCYzu
+	 WClT+e3lpGk/6bnIKUhEIcH8I7m9haHZ1JXeJUVWhuaRxa6s6eee0r2qZvkjIaFJEH
+	 E7CRPL71eqH0v5I04d7Sm6A1MItrrjhRN01oIiGc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>,
+	Nathan Chancellor <nathan@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 198/452] serial: dz: Convert to use a platform device
+Subject: [PATCH 5.10 129/342] Disable -Wattribute-alias for clang-23 and newer
 Date: Tue, 16 Jun 2026 20:27:05 +0530
-Message-ID: <20260616145128.231176572@linuxfoundation.org>
+Message-ID: <20260616145054.208355449@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,21 +71,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265001-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-266364-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:macro@orcam.me.uk,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:nathan@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -97,422 +97,127 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,orcam.me.uk:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: CF8E9692AAA
+X-Rspamd-Queue-Id: 4727B6948E2
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej W. Rozycki <macro@orcam.me.uk>
+From: Nathan Chancellor <nathan@kernel.org>
 
-commit 5d7a49d60b8fda66da60e240fd7315232fa1754f upstream.
+commit 175db11786bde9061db526bf1ac5107d915f5163 upstream.
 
-Prevent a crash from happening as the first serial port is initialised:
+Clang recently added support for -Wattribute-alias [1], which results in
+the same warnings that necessitated commit bee20031772a ("disable
+-Wattribute-alias warning for SYSCALL_DEFINEx()") for GCC.
 
-  Console: switching to colour frame buffer device 160x64
-  tgafb: SFB+ detected, rev=0x02
-  fb0: Digital ZLX-E1 frame buffer device at 0x1e000000
-  DECstation DZ serial driver version 1.04
-  CPU 0 Unable to handle kernel paging request at virtual address 000000bc, epc == 8048b3a4, ra == 80470a78
-  Oops[#1]:
-  CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.19.0-dirty #35 NONE
-  $ 0   : 00000000 1000ac00 00000004 804707ac
-  $ 4   : 00000000 80e20850 80e20858 81000030
-  $ 8   : 00000000 8072c81c 00000008 fefefeff
-  $12   : 6c616972 00000006 80c5917f 69726420
-  $16   : 80e20800 00000000 808f8968 80e20800
-  $20   : 00000000 807f5a90 808b0094 808d3bc8
-  $24   : 00000018 80479030
-  $28   : 80c2e000 80c2fd70 00000069 80470a78
-  Hi    : 00000004
-  Lo    : 00000000
-  epc   : 8048b3a4 __dev_fwnode+0x0/0xc
-  ra    : 80470a78 serial_base_ctrl_add+0xa0/0x168
-  Status: 1000ac04	IEp
-  Cause : 30000008 (ExcCode 02)
-  BadVA : 000000bc
-  PrId  : 00000220 (R3000)
-  Modules linked in:
-  Process swapper/0 (pid: 1, threadinfo=(ptrval), task=(ptrval), tls=00000000)
-  Stack : 00400044 00400040 8046f4cc 00000000 808a6148 808a0000 808f8968 8086983c
-          808e0000 8046fc84 1000ac01 00000028 80e20700 802ba3f8 80e20700 80d34a94
-          80c1b900 80e20700 80e20700 80e20700 80e20700 80444650 00000000 00000000
-          00000000 807f5a90 808b0094 80447080 00400040 808e0000 80d34a94 808a6148
-          80d34a94 00000004 80e20700 00000000 8076974c 80469810 80c2fe3c 1000ac01
-          ...
-  Call Trace:
-  [<8048b3a4>] __dev_fwnode+0x0/0xc
-  [<80470a78>] serial_base_ctrl_add+0xa0/0x168
-  [<8046fc84>] serial_core_register_port+0x1c8/0x974
-  [<808c6af0>] dz_init+0x74/0xc8
-  [<800470e0>] do_one_initcall+0x44/0x2d4
-  [<808b111c>] kernel_init_freeable+0x258/0x308
-  [<8072e434>] kernel_init+0x20/0x114
-  [<80049cd0>] ret_from_kernel_thread+0x14/0x1c
+  kernel/time/itimer.c:325:1: error: alias and aliasee have different types 'long (unsigned int)' and 'long (typeof (__builtin_choose_expr((__builtin_types_compatible_p(typeof ((unsigned int)0), typeof (0LL)) || __builtin_types_compatible_p(typeof ((unsigned int)0), typeof (0ULL))), 0LL, 0L)))' (aka 'long (long)') [-Werror,-Wattribute-alias]
+    325 | SYSCALL_DEFINE1(alarm, unsigned int, seconds)
+        | ^
+  include/linux/syscalls.h:225:36: note: expanded from macro 'SYSCALL_DEFINE1'
+    225 | #define SYSCALL_DEFINE1(name, ...) SYSCALL_DEFINEx(1, _##name, __VA_ARGS__)
+        |                                    ^
+  include/linux/syscalls.h:236:2: note: expanded from macro 'SYSCALL_DEFINEx'
+    236 |         __SYSCALL_DEFINEx(x, sname, __VA_ARGS__)
+        |         ^
+  include/linux/syscalls.h:251:18: note: expanded from macro '__SYSCALL_DEFINEx'
+    251 |                 __attribute__((alias(__stringify(__se_sys##name))));    \
+        |                                ^
+  kernel/time/itimer.c:325:1: note: aliasee is declared here
+  include/linux/syscalls.h:225:36: note: expanded from macro 'SYSCALL_DEFINE1'
+    225 | #define SYSCALL_DEFINE1(name, ...) SYSCALL_DEFINEx(1, _##name, __VA_ARGS__)
+        |                                    ^
+  include/linux/syscalls.h:236:2: note: expanded from macro 'SYSCALL_DEFINEx'
+    236 |         __SYSCALL_DEFINEx(x, sname, __VA_ARGS__)
+        |         ^
+  include/linux/syscalls.h:255:18: note: expanded from macro '__SYSCALL_DEFINEx'
+    255 |         asmlinkage long __se_sys##name(__MAP(x,__SC_LONG,__VA_ARGS__))  \
+        |                         ^
+  <scratch space>:16:1: note: expanded from here
+     16 | __se_sys_alarm
+        | ^
 
-  Code: 27bd0018  03e00008  2402ffea <8c8200bc> 03e00008  00000000  27bdffc0  afbe0038  afb30024
+Disable the warnings in the same way for clang-23 and newer. Disable the
+warning about unknown warning options to avoid breaking the build for
+versions of clang-23 that do not have -Wattribute-alias, such as ones
+deployed by vendors like Android or CI systems or when bisecting LLVM
+between llvmorg-23-init and release/23.x.
 
-  ---[ end trace 0000000000000000 ]---
-
--- where a pointer is dereferenced that has been derived from a null
-pointer to the port's parent device.
-
-Since no device is available with legacy probing and it's not anymore a
-preferable way to discover devices anyway, switch the driver to using a
-platform device and use it as the port's parent device.  Update resource
-handling accordingly and only request the actual span of addresses used
-within the slot, which will have had its resource already requested by
-generic platform device code.
-
-Use platform_driver_probe() not just because the DZ device is fixed with
-solder on board and not straightforward to remove, but foremost because
-the associated TTY's major device number is the same as used by the zs
-driver and the first driver to claim it will prevent the other one from
-using it.  Either one DZ device or some SCC devices will be present in a
-given system but never both at a time, and therefore we want the major
-device number to be claimed by the first driver to actually successfully
-bind to its device and platform_driver_probe() is a way to fulfil that.
-
-An unfortunate consequence of the switch to a platform device is we now
-hand the console over from the bootconsole much later in the bootstrap.
-The firmware console handler appears good enough though to work so late
-and in particular with interrupts enabled.
-
-Conversely only starting the console port so late lets the reset code
-fully utilise our delay handlers, so switch from udelay() to fsleep()
-for transmitter draining so as to avoid busy-waiting for an excessive
-amount of time.
-
-Fixes: 84a9582fd203 ("serial: core: Start managing serial controllers to enable runtime PM")
-Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Cc: stable@vger.kernel.org # needs to use .remove_new for <= 6.10
-Link: https://patch.msgid.link/alpine.DEB.2.21.2605062326540.46195@angie.orcam.me.uk
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org
+Closes: https://github.com/ClangBuiltLinux/linux/issues/2163
+Link: https://github.com/llvm/llvm-project/commit/40da6920a0d71d49dfa2392b09153600b0759f5e [1]
+Link: https://patch.msgid.link/20260515-syscall-disable-attribute-alias-for-clang-v1-1-9a9d95d41df6@kernel.org
+[nathan: Drop arch/riscv hunk in older trees and address conflicts]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/dec/platform.c |  55 ++++++++++++++++++-
- drivers/tty/serial/dz.c  | 116 +++++++++++++++++++--------------------
- 2 files changed, 110 insertions(+), 61 deletions(-)
+ include/linux/compat.h         | 4 ++++
+ include/linux/compiler-clang.h | 6 ++++++
+ include/linux/compiler_types.h | 4 ++++
+ include/linux/syscalls.h       | 4 ++++
+ 4 files changed, 18 insertions(+)
 
-diff --git a/arch/mips/dec/platform.c b/arch/mips/dec/platform.c
-index c4fcb8c58e01ce..fdecc91ee22abb 100644
---- a/arch/mips/dec/platform.c
-+++ b/arch/mips/dec/platform.c
-@@ -10,6 +10,13 @@
- #include <linux/mc146818rtc.h>
- #include <linux/platform_device.h>
- 
-+#include <asm/bootinfo.h>
-+
-+#include <asm/dec/interrupts.h>
-+#include <asm/dec/kn01.h>
-+#include <asm/dec/kn02.h>
-+#include <asm/dec/system.h>
-+
- static struct resource dec_rtc_resources[] = {
- 	{
- 		.name = "rtc",
-@@ -30,11 +37,57 @@ static struct platform_device dec_rtc_device = {
- 	.num_resources = ARRAY_SIZE(dec_rtc_resources),
- };
- 
-+static struct resource dec_dz_resources[] = {
-+	{ .name = "dz", .flags = IORESOURCE_MEM, },
-+	{ .name = "dz", .flags = IORESOURCE_IRQ, },
-+};
-+
-+static struct platform_device dec_dz_device = {
-+	.name = "dz",
-+	.id = PLATFORM_DEVID_NONE,
-+	.resource = dec_dz_resources,
-+	.num_resources = ARRAY_SIZE(dec_dz_resources),
-+};
-+
-+static struct platform_device *dec_dz_devices[] __initdata = {
-+	&dec_dz_device,
-+};
-+
- static int __init dec_add_devices(void)
- {
-+	int ret1, ret2;
-+	int num_dz;
-+	int irq, i;
-+
- 	dec_rtc_resources[0].start = RTC_PORT(0);
- 	dec_rtc_resources[0].end = RTC_PORT(0) + dec_kn_slot_size - 1;
--	return platform_device_register(&dec_rtc_device);
-+
-+	i = 0;
-+	irq = dec_interrupt[DEC_IRQ_DZ11];
-+	if (IS_ENABLED(CONFIG_32BIT) && irq >= 0) {
-+		resource_size_t base;
-+
-+		switch (mips_machtype) {
-+		case MACH_DS23100:
-+		case MACH_DS5100:
-+			base = dec_kn_slot_base + KN01_DZ11;
-+			break;
-+		default:
-+			base = dec_kn_slot_base + KN02_DZ11;
-+			break;
-+		}
-+		dec_dz_device.resource[0].start = base;
-+		dec_dz_device.resource[0].end = base + dec_kn_slot_size - 1;
-+		dec_dz_device.resource[1].start = irq;
-+		dec_dz_device.resource[1].end = irq;
-+		i++;
-+	}
-+	num_dz = i;
-+
-+	ret1 = platform_device_register(&dec_rtc_device);
-+	ret2 = IS_ENABLED(CONFIG_32BIT) ?
-+	       platform_add_devices(dec_dz_devices, num_dz) : 0;
-+	return ret1 ? ret1 : ret2;
- }
- 
- device_initcall(dec_add_devices);
-diff --git a/drivers/tty/serial/dz.c b/drivers/tty/serial/dz.c
-index 90231ec00ff070..08f2414bf1d92e 100644
---- a/drivers/tty/serial/dz.c
-+++ b/drivers/tty/serial/dz.c
-@@ -40,6 +40,7 @@
- #include <linux/kernel.h>
- #include <linux/major.h>
- #include <linux/module.h>
-+#include <linux/platform_device.h>
- #include <linux/serial.h>
- #include <linux/serial_core.h>
- #include <linux/sysrq.h>
-@@ -48,14 +49,6 @@
- 
- #include <linux/atomic.h>
- #include <linux/io.h>
--#include <asm/bootinfo.h>
--
--#include <asm/dec/interrupts.h>
--#include <asm/dec/kn01.h>
--#include <asm/dec/kn02.h>
--#include <asm/dec/machtype.h>
--#include <asm/dec/prom.h>
--#include <asm/dec/system.h>
- 
- #include "dz.h"
- 
-@@ -65,7 +58,9 @@ MODULE_LICENSE("GPL");
- 
- 
- static char dz_name[] __initdata = "DECstation DZ serial driver version ";
--static char dz_version[] __initdata = "1.04";
-+static char dz_version[] __initdata = "1.05";
-+
-+#define DZ_IO_SIZE 0x20			/* IOMEM space size.  */
- 
- struct dz_port {
- 	struct dz_mux		*mux;
-@@ -81,6 +76,7 @@ struct dz_mux {
- };
- 
- static struct dz_mux dz_mux;
-+static struct uart_driver dz_reg;
- 
- static inline struct dz_port *to_dport(struct uart_port *uport)
- {
-@@ -565,7 +561,7 @@ static void dz_reset(struct dz_port *dport)
- 			iob();
- 			udelay(2);		/* 1.4us TRDY recovery.  */
- 		}
--		udelay(1200);			/* Transmitter drain.  */
-+		fsleep(1200);			/* Transmitter drain.  */
- 	}
- 
- 	dz_out(dport, DZ_CSR, DZ_CLR);
-@@ -682,14 +678,13 @@ static void dz_release_port(struct uart_port *uport)
- 
- 	map_guard = atomic_add_return(-1, &mux->map_guard);
- 	if (!map_guard)
--		release_mem_region(uport->mapbase, dec_kn_slot_size);
-+		release_mem_region(uport->mapbase, DZ_IO_SIZE);
- }
- 
- static int dz_map_port(struct uart_port *uport)
- {
- 	if (!uport->membase)
--		uport->membase = ioremap(uport->mapbase,
--						 dec_kn_slot_size);
-+		uport->membase = ioremap(uport->mapbase, DZ_IO_SIZE);
- 	if (!uport->membase) {
- 		printk(KERN_ERR "dz: Cannot map MMIO\n");
- 		return -ENOMEM;
-@@ -705,8 +700,7 @@ static int dz_request_port(struct uart_port *uport)
- 
- 	map_guard = atomic_add_return(1, &mux->map_guard);
- 	if (map_guard == 1) {
--		if (!request_mem_region(uport->mapbase, dec_kn_slot_size,
--					"dz")) {
-+		if (!request_mem_region(uport->mapbase, DZ_IO_SIZE, "dz")) {
- 			atomic_add(-1, &mux->map_guard);
- 			printk(KERN_ERR
- 			       "dz: Unable to reserve MMIO resource\n");
-@@ -717,7 +711,7 @@ static int dz_request_port(struct uart_port *uport)
- 	if (ret) {
- 		map_guard = atomic_add_return(-1, &mux->map_guard);
- 		if (!map_guard)
--			release_mem_region(uport->mapbase, dec_kn_slot_size);
-+			release_mem_region(uport->mapbase, DZ_IO_SIZE);
- 		return ret;
- 	}
- 	return 0;
-@@ -769,20 +763,15 @@ static const struct uart_ops dz_ops = {
- 	.verify_port	= dz_verify_port,
- };
- 
--static void __init dz_init_ports(void)
-+static int __init dz_probe(struct platform_device *pdev)
- {
--	static int first = 1;
--	unsigned long base;
-+	struct resource *mem_resource, *irq_resource;
- 	int line;
- 
--	if (!first)
--		return;
--	first = 0;
--
--	if (mips_machtype == MACH_DS23100 || mips_machtype == MACH_DS5100)
--		base = dec_kn_slot_base + KN01_DZ11;
--	else
--		base = dec_kn_slot_base + KN02_DZ11;
-+	mem_resource = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	irq_resource = platform_get_resource(pdev, IORESOURCE_IRQ, 0);
-+	if (!mem_resource || !irq_resource)
-+		return -ENODEV;
- 
- 	for (line = 0; line < DZ_NB_PORT; line++) {
- 		struct dz_port *dport = &dz_mux.dport[line];
-@@ -790,14 +779,33 @@ static void __init dz_init_ports(void)
- 
- 		dport->mux	= &dz_mux;
- 
--		uport->irq	= dec_interrupt[DEC_IRQ_DZ11];
-+		uport->dev	= &pdev->dev;
-+		uport->irq	= irq_resource->start;
- 		uport->fifosize	= 1;
- 		uport->iotype	= UPIO_MEM;
- 		uport->flags	= UPF_BOOT_AUTOCONF;
- 		uport->ops	= &dz_ops;
- 		uport->line	= line;
--		uport->mapbase	= base;
-+		uport->mapbase	= mem_resource->start;
- 		uport->has_sysrq = IS_ENABLED(CONFIG_SERIAL_DZ_CONSOLE);
-+
-+		if (uart_add_one_port(&dz_reg, uport))
-+			uport->dev = NULL;
-+	}
-+
-+	return 0;
-+}
-+
-+static void __exit dz_remove(struct platform_device *pdev)
-+{
-+	int line;
-+
-+	for (line = DZ_NB_PORT - 1; line >= 0; line--) {
-+		struct dz_port *dport = &dz_mux.dport[line];
-+		struct uart_port *uport = &dport->port;
-+
-+		if (uport->dev)
-+			uart_remove_one_port(&dz_reg, uport);
- 	}
- }
- 
-@@ -880,21 +888,14 @@ static int __init dz_console_setup(struct console *co, char *options)
- 	int bits = 8;
- 	int parity = 'n';
- 	int flow = 'n';
--	int ret;
--
--	ret = dz_map_port(uport);
--	if (ret)
--		return ret;
--
--	dz_reset(dport);
- 
-+	if (!dport->mux)
-+		return -ENODEV;
- 	if (options)
- 		uart_parse_options(options, &baud, &parity, &bits, &flow);
--
--	return uart_set_options(&dport->port, co, baud, parity, bits, flow);
-+	return uart_set_options(uport, co, baud, parity, bits, flow);
- }
- 
--static struct uart_driver dz_reg;
- static struct console dz_console = {
- 	.name	= "ttyS",
- 	.write	= dz_console_print,
-@@ -905,18 +906,6 @@ static struct console dz_console = {
- 	.data	= &dz_reg,
- };
- 
--static int __init dz_serial_console_init(void)
--{
--	if (!IOASIC) {
--		dz_init_ports();
--		register_console(&dz_console);
--		return 0;
--	} else
--		return -ENXIO;
--}
--
--console_initcall(dz_serial_console_init);
--
- #define SERIAL_DZ_CONSOLE	&dz_console
+diff --git a/include/linux/compat.h b/include/linux/compat.h
+index 8dffffe846ce54..93c9bbec96acba 100644
+--- a/include/linux/compat.h
++++ b/include/linux/compat.h
+@@ -75,6 +75,10 @@
+ 	__diag_push();								\
+ 	__diag_ignore(GCC, 8, "-Wattribute-alias",				\
+ 		      "Type aliasing is used to sanitize syscall arguments");\
++	__diag_ignore(clang, 23, "-Wunknown-warning-option",			\
++		      "Avoid breaking versions without -Wattribute-alias");	\
++	__diag_ignore(clang, 23, "-Wattribute-alias",				\
++		      "Type aliasing is used to sanitize syscall arguments");	\
+ 	asmlinkage long compat_sys##name(__MAP(x,__SC_DECL,__VA_ARGS__));	\
+ 	asmlinkage long compat_sys##name(__MAP(x,__SC_DECL,__VA_ARGS__))	\
+ 		__attribute__((alias(__stringify(__se_compat_sys##name))));	\
+diff --git a/include/linux/compiler-clang.h b/include/linux/compiler-clang.h
+index fae3775d02b516..a8953f9c766bcf 100644
+--- a/include/linux/compiler-clang.h
++++ b/include/linux/compiler-clang.h
+@@ -148,3 +148,9 @@
  #else
- #define SERIAL_DZ_CONSOLE	NULL
-@@ -932,25 +921,32 @@ static struct uart_driver dz_reg = {
- 	.cons			= SERIAL_DZ_CONSOLE,
- };
- 
-+static struct platform_driver dz_driver = {
-+	.remove_new = __exit_p(dz_remove),
-+	.driver = { .name = "dz" },
-+};
+ #define __diag_clang_11(s)
+ #endif
 +
- static int __init dz_init(void)
- {
--	int ret, i;
--
--	if (IOASIC)
--		return -ENXIO;
-+	int ret;
++#if CONFIG_CLANG_VERSION >= 230000
++#define __diag_clang_23(s)	__diag(s)
++#else
++#define __diag_clang_23(s)
++#endif
+diff --git a/include/linux/compiler_types.h b/include/linux/compiler_types.h
+index 9cecd02c1280a9..88cc4457297d22 100644
+--- a/include/linux/compiler_types.h
++++ b/include/linux/compiler_types.h
+@@ -320,6 +320,10 @@ struct ftrace_likely_data {
+ #define __diag_GCC(version, severity, string)
+ #endif
  
- 	printk("%s%s\n", dz_name, dz_version);
++#ifndef __diag_clang
++#define __diag_clang(version, severity, string)
++#endif
++
+ #define __diag_push()	__diag(push)
+ #define __diag_pop()	__diag(pop)
  
--	dz_init_ports();
--
- 	ret = uart_register_driver(&dz_reg);
- 	if (ret)
- 		return ret;
-+	ret = platform_driver_probe(&dz_driver, dz_probe);
-+	if (ret)
-+		uart_unregister_driver(&dz_reg);
- 
--	for (i = 0; i < DZ_NB_PORT; i++)
--		uart_add_one_port(&dz_reg, &dz_mux.dport[i].port);
-+	return ret;
-+}
- 
--	return 0;
-+static void __exit dz_exit(void)
-+{
-+	platform_driver_unregister(&dz_driver);
-+	uart_unregister_driver(&dz_reg);
- }
- 
- module_init(dz_init);
-+module_exit(dz_exit);
+diff --git a/include/linux/syscalls.h b/include/linux/syscalls.h
+index a96e924c7b45ed..339a35aad83935 100644
+--- a/include/linux/syscalls.h
++++ b/include/linux/syscalls.h
+@@ -236,6 +236,10 @@ static inline int is_syscall_trace_event(struct trace_event_call *tp_event)
+ 	__diag_push();							\
+ 	__diag_ignore(GCC, 8, "-Wattribute-alias",			\
+ 		      "Type aliasing is used to sanitize syscall arguments");\
++	__diag_ignore(clang, 23, "-Wunknown-warning-option",		\
++		      "Avoid breaking versions without -Wattribute-alias");\
++	__diag_ignore(clang, 23, "-Wattribute-alias",			\
++		      "Type aliasing is used to sanitize syscall arguments");\
+ 	asmlinkage long sys##name(__MAP(x,__SC_DECL,__VA_ARGS__))	\
+ 		__attribute__((alias(__stringify(__se_sys##name))));	\
+ 	ALLOW_ERROR_INJECTION(sys##name, ERRNO);			\
 -- 
 2.53.0
 
