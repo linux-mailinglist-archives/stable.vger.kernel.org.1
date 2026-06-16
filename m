@@ -1,62 +1,65 @@
-Return-Path: <stable+bounces-263893-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265388-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id i3T+H2RpMWrYigUAu9opvQ
-	(envelope-from <stable+bounces-263893-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:19:00 +0200
+	id r5apNWCJMWrslwUAu9opvQ
+	(envelope-from <stable+bounces-265388-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:35:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8353D690E7C
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:18:59 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5B2E69348F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:35:27 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="frVyN/YP";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263893-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-263893-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=zpfDoTiy;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265388-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265388-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D2D7C302E9E4
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:17:11 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 21805303F8AB
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:29:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AEE743E49F;
-	Tue, 16 Jun 2026 15:17:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3024947AF5D;
+	Tue, 16 Jun 2026 17:29:07 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13A3343C05C;
-	Tue, 16 Jun 2026 15:17:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00D6647AF6B;
+	Tue, 16 Jun 2026 17:29:04 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781623027; cv=none; b=ArHrn/sC5wDjeASonhEGhEd5xTSCdUTg13wTXeshif7eVvYnAfDly6J82xh8db0RfFmq2UxGI52UeWobWDSxJYv2h5+XZVGEraolcnUscGgGKZ1RiX87799d4PrIvZu7N6p7EIp2+9bYfux9CFriz6oWl6o5fe63xwKXmZYUQ6o=
+	t=1781630946; cv=none; b=Cm6Qxz0BzB1b5vM5bwwEnIZxU91V0b86pFn0/trSKI7hod0rh7elLi8tT3Z9BOn6ZBnVl9MRvAuyQpFXrU+1zzG4RMTS33g7hA924UDfEII4+U/QXOAKu8PSUWyAMHWqLRPbF+WLypvQtFRvQxVHfi6fYlcW5pWxXYVfQSU9eGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781623027; c=relaxed/simple;
-	bh=2xNehpR3PyWjuZBS8z49TVituj7xrOwAqNdvYhqxfdk=;
+	s=arc-20240116; t=1781630946; c=relaxed/simple;
+	bh=lOPBc7y9pchS8OFpoXtX6eWzYQRw2CbFIc6/KSdqXJI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t92Y/TknR66cEpXzcmxt55De9XFiM8Tdygk92rfEPwbDf0y1XX3HBFVuQ0aWTREzR0Y6Olx1a/E6KhSqPREQ5qnzR7TF0qbdWKsLs9lQM2MI3Yd/xTogLdMWoE3f0ILbh42Dhs+izynIYgVVEKXDNY+8F3sEcC88zowPli6VGrY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=frVyN/YP; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E63E31F000E9;
-	Tue, 16 Jun 2026 15:17:04 +0000 (UTC)
+	 MIME-Version; b=pDnkihkQ8+2IGSGrDv3cViqrUFrqbbCqUV/TtNqjUvMoolgYJ4ptEy9m1foI6OirbDPuxQ3NTx7gcrqvZGCbx8p2A0w2pQzmcRB25tzWJUx+XZLgNsEP3M0B84vFCAOu5CC/bYZCFd4r8zed64Kb128Zk1zJSwWHRNd2zNuB4lE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zpfDoTiy; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A25EA1F000E9;
+	Tue, 16 Jun 2026 17:29:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781623026;
-	bh=W41CLREQVqv9Yna/Om4SWozzdOoMcvueXt9jt4w/MoA=;
+	s=korg; t=1781630944;
+	bh=PGsCIJX+I/IxTpjcZNzIAZRU2emilKOTMm7wARRmd04=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=frVyN/YPXicaIizoTdJ0uaNKjfaYjF1mUe6V6WIpdmtlqHru+Re5MCpX5zbQoI+41
-	 ySjk1ooadT0H04ed6KWRLlyE97GRQHWtOvD1TOfTN1Qc7eSFmK+legEPI5QVntXG2d
-	 hPHUphihs6JXJpFWZwoDg5N2kXk9zDmrKVvTJaGQ=
+	b=zpfDoTiyFnzI+DCeCYqD6uCuCGZ67/AKpdClvLSE4EyATo4Frq8jTb6XUB1L1LDqT
+	 oaVDN4zILcD5TV0kJDMUJSn4hV3KVlaAtPuAWgvkMGuRSMojHq4gLK7maBtoBdUkBM
+	 7prHc5pulO9CzUBMgiYBZNp4ioZuapyQrwoI61Sg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hari Chandrakanthan <quic_haric@quicinc.com>,
-	Amith A <amith.a@oss.qualcomm.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 041/378] wifi: cfg80211: add support to handle incumbent signal detected event from mac80211/driver
-Date: Tue, 16 Jun 2026 20:24:32 +0530
-Message-ID: <20260616145112.059532063@linuxfoundation.org>
+	stable@kernel.org,
+	Yuan Tan <yuantan098@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Luxing Yin <tr0jan@lzu.edu.cn>,
+	Zhengchuan Liang <zcliangcn@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Steffen Klassert <steffen.klassert@secunet.com>
+Subject: [PATCH 6.1 126/522] xfrm: input: hold netns during deferred transport reinjection
+Date: Tue, 16 Jun 2026 20:24:33 +0530
+Message-ID: <20260616145131.893173697@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,243 +73,114 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-263893-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,secunet.com];
+	TAGGED_FROM(0.00)[bounces-265388-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:quic_haric@quicinc.com,m:amith.a@oss.qualcomm.com,m:johannes.berg@intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:yuantan098@gmail.com,m:bird@lzu.edu.cn,m:tr0jan@lzu.edu.cn,m:zcliangcn@gmail.com,m:n05ec@lzu.edu.cn,m:steffen.klassert@secunet.com,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,quicinc.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,intel.com:email,fcc.gov:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[secunet.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,lzu.edu.cn:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8353D690E7C
+X-Rspamd-Queue-Id: D5B2E69348F
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hari Chandrakanthan <quic_haric@quicinc.com>
+From: Zhengchuan Liang <zcliangcn@gmail.com>
 
-[ Upstream commit 6a584e336cefb230e2d981a464f4d85562eb750c ]
+commit c16f74dc1d75d0e2e7670076d5375deda110ebeb upstream.
 
-When any incumbent signal is detected by an AP/mesh interface operating
-in 6 GHz band, FCC mandates the AP/mesh to vacate the channels affected
-by it [1].
+Transport-mode reinjection stores a struct net pointer in skb->cb and
+uses it later from xfrm_trans_reinject(). That pointer must stay valid
+until the deferred callback runs.
 
-Add a new API cfg80211_incumbent_signal_notify() that can be used
-by mac80211 or drivers to notify the higher layers about the signal
-interference event with the interference bitmap in which each bit
-denotes the affected 20 MHz in the operating channel.
+Take a netns reference when queueing deferred reinjection work and drop
+it after the callback completes. Use maybe_get_net() so the queueing
+path does not revive a namespace that is already being torn down.
 
-Add support for the new nl80211 event and nl80211 attribute as well to
-notify userspace on the details about the interference event. Userspace is
-expected to process it and take further action - vacate the channel, or
-reduce the bandwidth.
+This keeps the existing workqueue design and fixes the netns lifetime
+handling in one place for all users of xfrm_trans_queue_net().
 
-[1] - https://apps.fcc.gov/kdb/GetAttachment.html?id=nXQiRC%2B4mfiA54Zha%2BrW4Q%3D%3D&desc=987594%20D02%20U-NII%206%20GHz%20EMC%20Measurement%20v03&tracking_number=277034
-
-Signed-off-by: Hari Chandrakanthan <quic_haric@quicinc.com>
-Signed-off-by: Amith A <amith.a@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260216032027.2310956-2-amith.a@oss.qualcomm.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Stable-dep-of: cb9959ab5f99 ("wifi: cfg80211: enforce HE/EHT cap/oper consistency")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 7b3801927e52 ("xfrm: introduce xfrm_trans_queue_net")
+Cc: stable@kernel.org
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Co-developed-by: Luxing Yin <tr0jan@lzu.edu.cn>
+Signed-off-by: Luxing Yin <tr0jan@lzu.edu.cn>
+Signed-off-by: Zhengchuan Liang <zcliangcn@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Assisted-by: Codex:gpt-5.4
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/cfg80211.h       | 23 +++++++++++++++++++++
- include/uapi/linux/nl80211.h | 19 +++++++++++++++++
- net/wireless/nl80211.c       | 40 ++++++++++++++++++++++++++++++++++++
- net/wireless/trace.h         | 19 +++++++++++++++++
- 4 files changed, 101 insertions(+)
+ net/xfrm/xfrm_input.c |   16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index fc01de19c7981a..2311d852e19ebc 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -10472,4 +10472,27 @@ cfg80211_s1g_get_primary_sibling(struct wiphy *wiphy,
- 	return ieee80211_get_channel_khz(wiphy, sibling_1mhz_khz);
+--- a/net/xfrm/xfrm_input.c
++++ b/net/xfrm/xfrm_input.c
+@@ -759,9 +759,12 @@ static void xfrm_trans_reinject(struct w
+ 	spin_unlock_bh(&trans->queue_lock);
+ 
+ 	local_bh_disable();
+-	while ((skb = __skb_dequeue(&queue)))
+-		XFRM_TRANS_SKB_CB(skb)->finish(XFRM_TRANS_SKB_CB(skb)->net,
+-					       NULL, skb);
++	while ((skb = __skb_dequeue(&queue))) {
++		struct net *net = XFRM_TRANS_SKB_CB(skb)->net;
++
++		XFRM_TRANS_SKB_CB(skb)->finish(net, NULL, skb);
++		put_net(net);
++	}
+ 	local_bh_enable();
  }
  
-+
-+/**
-+ * cfg80211_incumbent_signal_notify - Notify userspace of incumbent signal detection
-+ * @wiphy: the wiphy to use
-+ * @chandef: channel definition in which the interference was detected
-+ * @signal_interference_bitmap: bitmap indicating interference across 20 MHz segments
-+ * @gfp: allocation context for message creation and multicast; pass GFP_ATOMIC
-+ *	if called from atomic context (e.g. firmware event handler), otherwise
-+ *	GFP_KERNEL
-+ *
-+ * Use this function to notify userspace when an incumbent signal is detected on
-+ * the operating channel in the 6 GHz band. The notification includes the
-+ * current channel definition and a bitmap representing interference across
-+ * the operating bandwidth. Each bit in the bitmap corresponds to a 20 MHz
-+ * segment, with the lowest bit representing the lowest frequency segment.
-+ * Punctured sub-channels are included in the bitmap structure but are always
-+ * set to zero since interference detection is not performed on them.
-+ */
-+void cfg80211_incumbent_signal_notify(struct wiphy *wiphy,
-+				      const struct cfg80211_chan_def *chandef,
-+				      u32 signal_interference_bitmap,
-+				      gfp_t gfp);
-+
- #endif /* __NET_CFG80211_H */
-diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index b63f718509060d..b53e2d78c7bb3f 100644
---- a/include/uapi/linux/nl80211.h
-+++ b/include/uapi/linux/nl80211.h
-@@ -1361,6 +1361,12 @@
-  *	user space that the NAN new cluster has been joined. The cluster ID is
-  *	indicated by %NL80211_ATTR_MAC.
-  *
-+ * @NL80211_CMD_INCUMBENT_SIGNAL_DETECT: Once any incumbent signal is detected
-+ *	on the operating channel in 6 GHz band, userspace is notified with the
-+ *	signal interference bitmap using
-+ *	%NL80211_ATTR_INCUMBENT_SIGNAL_INTERFERENCE_BITMAP. The current channel
-+ *	definition is also sent.
-+ *
-  * @NL80211_CMD_MAX: highest used command number
-  * @__NL80211_CMD_AFTER_LAST: internal use
-  */
-@@ -1624,6 +1630,8 @@ enum nl80211_commands {
- 	NL80211_CMD_NAN_NEXT_DW_NOTIFICATION,
- 	NL80211_CMD_NAN_CLUSTER_JOINED,
+@@ -770,6 +773,7 @@ int xfrm_trans_queue_net(struct net *net
+ 				       struct sk_buff *))
+ {
+ 	struct xfrm_trans_tasklet *trans;
++	struct net *hold_net;
  
-+	NL80211_CMD_INCUMBENT_SIGNAL_DETECT,
-+
- 	/* add new commands above here */
+ 	trans = this_cpu_ptr(&xfrm_trans_tasklet);
  
- 	/* used to define NL80211_CMD_MAX below */
-@@ -2984,6 +2992,15 @@ enum nl80211_commands {
-  *	this feature during association. This is a flag attribute.
-  *	Currently only supported in mac80211 drivers.
-  *
-+ * @NL80211_ATTR_INCUMBENT_SIGNAL_INTERFERENCE_BITMAP: u32 attribute specifying
-+ *	the signal interference bitmap detected on the operating bandwidth for
-+ *	%NL80211_CMD_INCUMBENT_SIGNAL_DETECT. Each bit represents a 20 MHz
-+ *	segment, lowest bit corresponds to the lowest 20 MHz segment, in the
-+ *	operating bandwidth where the interference is detected. Punctured
-+ *	sub-channels are included in the bitmap structure; however, since
-+ *	interference detection is not performed on these sub-channels, their
-+ *	corresponding bits are consistently set to zero.
-+ *
-  * @NUM_NL80211_ATTR: total number of nl80211_attrs available
-  * @NL80211_ATTR_MAX: highest attribute number currently defined
-  * @__NL80211_ATTR_AFTER_LAST: internal use
-@@ -3557,6 +3574,8 @@ enum nl80211_attrs {
- 	NL80211_ATTR_UHR_CAPABILITY,
- 	NL80211_ATTR_DISABLE_UHR,
+@@ -778,8 +782,12 @@ int xfrm_trans_queue_net(struct net *net
  
-+	NL80211_ATTR_INCUMBENT_SIGNAL_INTERFERENCE_BITMAP,
-+
- 	/* add attributes here, update the policy in nl80211.c */
+ 	BUILD_BUG_ON(sizeof(struct xfrm_trans_cb) > sizeof(skb->cb));
  
- 	__NL80211_ATTR_AFTER_LAST,
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index b94231c8441c48..d00357488ea8ea 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -21120,6 +21120,46 @@ void cfg80211_ch_switch_notify(struct net_device *dev,
- }
- EXPORT_SYMBOL(cfg80211_ch_switch_notify);
- 
-+void cfg80211_incumbent_signal_notify(struct wiphy *wiphy,
-+				      const struct cfg80211_chan_def *chandef,
-+				      u32 signal_interference_bitmap,
-+				      gfp_t gfp)
-+{
-+	struct cfg80211_registered_device *rdev = wiphy_to_rdev(wiphy);
-+	struct sk_buff *msg;
-+	void *hdr;
++	hold_net = maybe_get_net(net);
++	if (!hold_net)
++		return -ENODEV;
 +
-+	trace_cfg80211_incumbent_signal_notify(wiphy, chandef, signal_interference_bitmap);
-+
-+	msg = nlmsg_new(NLMSG_DEFAULT_SIZE, gfp);
-+	if (!msg)
-+		return;
-+
-+	hdr = nl80211hdr_put(msg, 0, 0, 0, NL80211_CMD_INCUMBENT_SIGNAL_DETECT);
-+	if (!hdr)
-+		goto nla_put_failure;
-+
-+	if (nla_put_u32(msg, NL80211_ATTR_WIPHY, rdev->wiphy_idx))
-+		goto nla_put_failure;
-+
-+	if (nl80211_send_chandef(msg, chandef))
-+		goto nla_put_failure;
-+
-+	if (nla_put_u32(msg, NL80211_ATTR_INCUMBENT_SIGNAL_INTERFERENCE_BITMAP,
-+			signal_interference_bitmap))
-+		goto nla_put_failure;
-+
-+	genlmsg_end(msg, hdr);
-+
-+	genlmsg_multicast_netns(&nl80211_fam, wiphy_net(&rdev->wiphy), msg, 0,
-+				NL80211_MCGRP_MLME, gfp);
-+	return;
-+
-+nla_put_failure:
-+	nlmsg_free(msg);
-+}
-+EXPORT_SYMBOL(cfg80211_incumbent_signal_notify);
-+
- void cfg80211_ch_switch_started_notify(struct net_device *dev,
- 				       struct cfg80211_chan_def *chandef,
- 				       unsigned int link_id, u8 count,
-diff --git a/net/wireless/trace.h b/net/wireless/trace.h
-index 643ccf4f022722..352a57d8b96819 100644
---- a/net/wireless/trace.h
-+++ b/net/wireless/trace.h
-@@ -4225,6 +4225,25 @@ TRACE_EVENT(cfg80211_nan_cluster_joined,
- 		  WDEV_PR_ARG, __entry->cluster_id,
- 		  __entry->new_cluster ? " [new]" : "")
- );
-+
-+TRACE_EVENT(cfg80211_incumbent_signal_notify,
-+	TP_PROTO(struct wiphy *wiphy,
-+		 const struct cfg80211_chan_def *chandef,
-+		 u32 signal_interference_bitmap),
-+	TP_ARGS(wiphy, chandef, signal_interference_bitmap),
-+	TP_STRUCT__entry(
-+		WIPHY_ENTRY
-+		CHAN_DEF_ENTRY
-+		__field(u32, signal_interference_bitmap)
-+	),
-+	TP_fast_assign(
-+		WIPHY_ASSIGN;
-+		CHAN_DEF_ASSIGN(chandef);
-+		__entry->signal_interference_bitmap = signal_interference_bitmap;
-+	),
-+	TP_printk(WIPHY_PR_FMT ", " CHAN_DEF_PR_FMT ", signal_interference_bitmap=0x%x",
-+		  WIPHY_PR_ARG, CHAN_DEF_PR_ARG, __entry->signal_interference_bitmap)
-+);
- #endif /* !__RDEV_OPS_TRACE || TRACE_HEADER_MULTI_READ */
- 
- #undef TRACE_INCLUDE_PATH
--- 
-2.53.0
-
+ 	XFRM_TRANS_SKB_CB(skb)->finish = finish;
+-	XFRM_TRANS_SKB_CB(skb)->net = net;
++	XFRM_TRANS_SKB_CB(skb)->net = hold_net;
+ 	spin_lock_bh(&trans->queue_lock);
+ 	__skb_queue_tail(&trans->queue, skb);
+ 	spin_unlock_bh(&trans->queue_lock);
 
 
 
