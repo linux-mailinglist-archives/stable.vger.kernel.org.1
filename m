@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-265643-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264288-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ZxFwBvWMMWqemQUAu9opvQ
-	(envelope-from <stable+bounces-265643-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:50:45 +0200
+	id 0NREDN1yMWp8jgUAu9opvQ
+	(envelope-from <stable+bounces-264288-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:59:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9F5669388E
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:50:44 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2EB369198D
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:59:24 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=eh4Y2iYc;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265643-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-265643-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Y+EWWIBS;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264288-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264288-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 586343031307
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:50:44 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4EE0630320A3
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:52:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 303FC43D4E9;
-	Tue, 16 Jun 2026 17:50:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D343044B68E;
+	Tue, 16 Jun 2026 15:52:54 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0618F32A3C9;
-	Tue, 16 Jun 2026 17:50:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B75F915B998;
+	Tue, 16 Jun 2026 15:52:53 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781632241; cv=none; b=bw6fG5RQoKs0ceuPnpEHEfR3KZTNhPIobiMci07lNExZkkvxludZIvzR5vZC5BccpR9gyJG8K6cqK40WnILX+M1AJkB5Km9Q55ww04ktK97RXcVu/9mhUCTt2vmPI2KVT+KVr8tmrJ3+z6XPK88Mvsxah+GYHOlLowu6sGjZAnY=
+	t=1781625174; cv=none; b=YpHyc9Tx37pGMyoOA429oByZAp6mw59Pfk2GZjRoSxay8OaWNFLgLXgtAhpAtZ4Ec/Dfqs09P58ndUIWyH63fI2cGDntcVvPNqZ+BpDWZpmM5RRfj0ZB+k/yn9J482Kl40oMuFRqVNdMznGX5nLLgYraa+ldAMeqsqNcaCkRef4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781632241; c=relaxed/simple;
-	bh=LtC3Xhl94Tv9y2LAvGcpocHOpmN9cUYgXJgd56Dgpb0=;
+	s=arc-20240116; t=1781625174; c=relaxed/simple;
+	bh=Tb41KxDta9HnrxK0wTXK5yHXZoXIKmElBTWDwlTYRBM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V1PSbDeDM8otZAvbcjsww/rYEstX8NpsomNSsnTJZsxOOdcfaYaXSn1ComY+XpOL3iH7LmiinS5+bTcdHz8jEDULW+NsIhep2nguFbaB4SSoR10YY/yn6WCZGXv+izM7chcRnnLompbT17JvGgeyDQ6N3u4RQIt8L1wbr9IHgxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eh4Y2iYc; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F224E1F00A3A;
-	Tue, 16 Jun 2026 17:50:38 +0000 (UTC)
+	 MIME-Version; b=IiiRxPgUBOjNDWjGIodcplIbGJrWgzidMF7HIO8vl8fLZcnU+SLT32hMXmCqRYYUHgzKq4vk/Hvzg/+ZURrWgvZn5SIXDmXsND73BdJBEETe6n6BC2utBbs0ZC8rqRrx9qNEeYrsQVhE6v0wwL7FRSJS0LBlPFxO/p9NL3bM3Ro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y+EWWIBS; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B82BA1F000E9;
+	Tue, 16 Jun 2026 15:52:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781632239;
-	bh=h5w9Ef8VO2t+g0/yBzeUL4j7YWDYDcDtBtyA6Xc62V4=;
+	s=korg; t=1781625173;
+	bh=1A6ZFK4hj8Tjfjait4uoKKsodPuO9xXeoY6wdLpLMT0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=eh4Y2iYcS+F1Tm1drAhTSDZnYnXYbAHOxfJjnTne/l9FG4nS9D6kmgOPbfC9BgFVP
-	 sGj4Mb08TDcshHh/VVz/Revc6RGNgrE+MQXDRYquabMmWL1y6ojpFGZiTzmiMwNjVc
-	 nZw6H7xWNiFRYJ+toUpXIcVwCCxnXYD6Qrsnw5cg=
+	b=Y+EWWIBSI8Hu4FYZnXul/TKX0ZHON/IZ5yQM9Gab3sGFYq+/jFRr/jy51ls1JGjw3
+	 jQGL6fIQ58O9iK31tETiARzvQiJrbGLB3vTtJwPeItZHs7JXQk9LIJPmtHU4rp0m3p
+	 ap9pBdCqFWO830GFyBaBoKAV4BOvwniYsxE8qCQ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
+	Arthur Kiyanovski <akiyano@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 341/522] spi: imx: fix use-after-free on unbind
+Subject: [PATCH 6.18 092/325] net: ena: PHC: Add missing barrier
 Date: Tue, 16 Jun 2026 20:28:08 +0530
-Message-ID: <20260616145141.767931382@linuxfoundation.org>
+Message-ID: <20260616145102.284976709@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,86 +69,79 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265643-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264288-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mkl@pengutronix.de,m:johan@kernel.org,m:broonie@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:akiyano@amazon.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[pengutronix.de:email,vger.kernel.org:from_smtp,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D9F5669388E
+X-Rspamd-Queue-Id: B2EB369198D
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Arthur Kiyanovski <akiyano@amazon.com>
 
-[ Upstream commit 1c78c2002380a1fe31bfb01a3d5f29809e55a096 ]
+[ Upstream commit 954981dbbfbd78f21d2fbac1ac0742dbf38b4e69 ]
 
-The SPI subsystem frees the controller and any subsystem allocated
-driver data as part of deregistration (unless the allocation is device
-managed).
+Add dma_rmb() barrier after req_id completion check in
+ena_com_phc_get_timestamp(). On weakly-ordered architectures,
+payload fields may be read before req_id is observed as updated.
 
-Take another reference before deregistering the controller so that the
-driver data is not freed until the driver is done with it.
-
-Fixes: 307c897db762 ("spi: spi-imx: replace struct spi_imx_data::bitbang by pointer to struct spi_controller")
-Cc: stable@vger.kernel.org	# 5.19
-Acked-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260324082326.901043-2-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: e0ea34158ee8 ("net: ena: Add PHC support in the ENA driver")
+Closes: https://sashiko.dev/#/patchset/20260430032507.11586-1-akiyano%40amazon.com
+Signed-off-by: Arthur Kiyanovski <akiyano@amazon.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-imx.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/ethernet/amazon/ena/ena_com.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -1885,6 +1885,8 @@ static void spi_imx_remove(struct platfo
- 	struct spi_imx_data *spi_imx = spi_controller_get_devdata(controller);
- 	int ret;
+diff --git a/drivers/net/ethernet/amazon/ena/ena_com.c b/drivers/net/ethernet/amazon/ena/ena_com.c
+index 8c86789d867a5f..297fb36ab8c16f 100644
+--- a/drivers/net/ethernet/amazon/ena/ena_com.c
++++ b/drivers/net/ethernet/amazon/ena/ena_com.c
+@@ -1880,6 +1880,11 @@ int ena_com_phc_get_timestamp(struct ena_com_dev *ena_dev, u64 *timestamp)
+ 			continue;
+ 		}
  
-+	spi_controller_get(controller);
++		/* Ensure PHC payload (timestamp, error_flags) is read
++		 * after req_id update is observed
++		 */
++		dma_rmb();
 +
- 	spi_unregister_controller(controller);
- 
- 	ret = pm_runtime_get_sync(spi_imx->dev);
-@@ -1898,6 +1900,8 @@ static void spi_imx_remove(struct platfo
- 	pm_runtime_disable(spi_imx->dev);
- 
- 	spi_imx_sdma_exit(spi_imx);
-+
-+	spi_controller_put(controller);
- }
- 
- static int __maybe_unused spi_imx_runtime_resume(struct device *dev)
+ 		/* req_id was updated by the device which indicates that
+ 		 * PHC timestamp and error_flags are updated too,
+ 		 * checking errors before retrieving timestamp
+-- 
+2.53.0
+
 
 
 
