@@ -1,64 +1,61 @@
-Return-Path: <stable+bounces-264648-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266106-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Gx8aDmd6MWqDkQUAu9opvQ
-	(envelope-from <stable+bounces-264648-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:31:35 +0200
+	id OQetMsyXMWq3ngUAu9opvQ
+	(envelope-from <stable+bounces-266106-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:37:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAA9C6922A5
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:31:34 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D7CF69444F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:37:00 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=kfulqqZi;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264648-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264648-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=dKOenLKm;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266106-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266106-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AF9DD313C28E
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:24:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1D16D319338D
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:31:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A52E46AF21;
-	Tue, 16 Jun 2026 16:24:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 065883C4143;
+	Tue, 16 Jun 2026 18:31:32 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A33CD466B57;
-	Tue, 16 Jun 2026 16:24:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D004F3D669D;
+	Tue, 16 Jun 2026 18:31:30 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781627058; cv=none; b=Sh5gCxfomMGXaL/md+78ZzI+hQlrvkRWExG8X38/yg20qJMXgtV7zq/Xzdx0ShYdfD3DOPswSkoKDsHOHWgyLQeX3tBNkCowYUmBYe1aSxyEOjzca6Tx+BKeFlh2BIRXssGtVOQZmg0OxZrxPg9vjETWmAa/sbz4CBdX5AMP1So=
+	t=1781634691; cv=none; b=lzvq6jfJPQ6kqOPhbyvTTJS5PhYVjpinwmfPfsp/2hFa7aAOCmhLHWR4Wmip6VfbNjC7FsGpMq42G4mzoVbjMU6fDTKGj7O5w906VymnBS+z2m4jlHFwSn+rwbC+tIYI0f4XZDNjxNz025rlzFxRGjJs2UDJpalT/8gdd/1nSC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781627058; c=relaxed/simple;
-	bh=BOBjp77sacgQOoysPoLJ7zYJuANBHbJwChh9K+HgDWc=;
+	s=arc-20240116; t=1781634691; c=relaxed/simple;
+	bh=DCOqoUGgmTMgZf/ZwuYxIh6A27Y7IYfxn9HGRRjao6E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TX29Y1AKB3l2is8evdhFf406/IXp0go7P2IQbkghE21UC63/4DJo0YS433lLpMYL9xd8j4c6mWdCoWK3II/J3JpltxiK+cn421SM/va43txzLjKeYfT3WoAn110e7oJ5bmPvdzf4OLEgQV6QcGM9yds4DoHWbReyEV/mwRN6W1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kfulqqZi; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74CBD1F000E9;
-	Tue, 16 Jun 2026 16:24:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FA9A2cr/wmBykE4ms+itN9+BC2OcWdeaOz2RE9CM+UWDckID4W0kYG1QkSQEsoSQv+7yoyJ3IMNj7D0ks6IbiwgQjac0kWejtnBP08FoW2iPSDLX4p3fAGhwbSaUvgMHvhOmi2dxAJwmsKzXcSRtlXjCmyeikWWQEtAbv2nQdkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dKOenLKm; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB5421F000E9;
+	Tue, 16 Jun 2026 18:31:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781627057;
-	bh=JkF+KuV/O9dWx/u/oxJyL3MYqs2KDNHWax5Kfvx7Lw4=;
+	s=korg; t=1781634690;
+	bh=rnudS9bGDm+efCDJO05850+MGbJhFhOv6FIGRHFFA5w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=kfulqqZif02W+4jWee0ucjEp6nmcUPenvrYU8y7oL+e/bWKccwdiaHecxt3UhA1tv
-	 V4a0mlNEXTwmbQH9gFLb4K32M7iM1iFFbP2azUgKUfpZIlsj7x0Mjp83B9O6YQYl7w
-	 Nd26w14Z6/VHkoNpND4KydKcADVkmHhoA5k5N35Q=
+	b=dKOenLKmvWgIFL0++EAh3vofLdpEZjFpCCuQ9PKge0+8sWp9LbDpEXFFfrQHnmuZB
+	 VeKrbYaW5nqZAM50O2Vv0xOC4HMYJbdgewTra/ki7PJDYMdJ8nRYwUa2QUBVgowfXY
+	 /25b2dtPxQgCacTCWNpDeRF9N4fEMyhURpSMEo2o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dongli Zhang <dongli.zhang@oracle.com>,
-	Chao Gao <chao.gao@intel.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Gulshan Gabel <gulshan.gabel@nutanix.com>,
-	Jon Kohler <jon@nutanix.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 113/261] KVM: VMX: Update SVI during runtime APICv activation
+Subject: [PATCH 5.15 313/411] spi: spi-ti-qspi: Convert to platform remove callback returning void
 Date: Tue, 16 Jun 2026 20:29:11 +0530
-Message-ID: <20260616145050.301260065@linuxfoundation.org>
+Message-ID: <20260616145117.776185715@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
-References: <20260616145044.869532709@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,198 +65,115 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264648-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:dongli.zhang@oracle.com,m:chao.gao@intel.com,m:seanjc@google.com,m:gulshan.gabel@nutanix.com,m:jon@nutanix.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:u.kleine-koenig@pengutronix.de,m:broonie@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-266106-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,vger.kernel.org:from_smtp,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,oracle.com:email,nutanix.com:email]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,pengutronix.de:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: AAA9C6922A5
+X-Rspamd-Queue-Id: 2D7CF69444F
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dongli Zhang <dongli.zhang@oracle.com>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-commit b2849bec936be642b5420801f902337f2507648e upstream.
+[ Upstream commit 2f2802d1a59d79a3d00cb429841db502c2bbc3df ]
 
-The APICv (apic->apicv_active) can be activated or deactivated at runtime,
-for instance, because of APICv inhibit reasons. Intel VMX employs different
-mechanisms to virtualize LAPIC based on whether APICv is active.
+The .remove() callback for a platform driver returns an int which makes
+many driver authors wrongly assume it's possible to do error handling by
+returning an error code. However the value returned is ignored (apart
+from emitting a warning) and this typically results in resource leaks.
 
-When APICv is activated at runtime, GUEST_INTR_STATUS is used to configure
-and report the current pending IRR and ISR states. Unless a specific vector
-is explicitly included in EOI_EXIT_BITMAP, its EOI will not be trapped to
-KVM. Intel VMX automatically clears the corresponding ISR bit based on the
-GUEST_INTR_STATUS.SVI field.
+To improve here there is a quest to make the remove callback return
+void. In the first step of this quest all drivers are converted to
+.remove_new(), which already returns void. Eventually after all drivers
+are converted, .remove_new() will be renamed to .remove().
 
-When APICv is deactivated at runtime, the VM_ENTRY_INTR_INFO_FIELD is used
-to specify the next interrupt vector to invoke upon VM-entry. The
-VMX IDT_VECTORING_INFO_FIELD is used to report un-invoked vectors on
-VM-exit. EOIs are always trapped to KVM, so the software can manually clear
-pending ISR bits.
+Add an error message to the error path that returned an error before to
+replace the core's error message with more information. Apart from the
+different wording of the error message, this patch doesn't introduce a
+semantic difference.
 
-There are scenarios where, with APICv activated at runtime, a guest-issued
-EOI may not be able to clear the pending ISR bit.
-
-Taking vector 236 as an example, here is one scenario.
-
-1. Suppose APICv is inactive. Vector 236 is pending in the IRR.
-2. To handle KVM_REQ_EVENT, KVM moves vector 236 from the IRR to the ISR,
-and configures the VM_ENTRY_INTR_INFO_FIELD via vmx_inject_irq().
-3. After VM-entry, vector 236 is invoked through the guest IDT. At this
-point, the data in VM_ENTRY_INTR_INFO_FIELD is no longer valid. The guest
-interrupt handler for vector 236 is invoked.
-4. Suppose a VM exit occurs very early in the guest interrupt handler,
-before the EOI is issued.
-5. Nothing is reported through the IDT_VECTORING_INFO_FIELD because
-vector 236 has already been invoked in the guest.
-6. Now, suppose APICv is activated. Before the next VM-entry, KVM calls
-kvm_vcpu_update_apicv() to activate APICv.
-7. Unfortunately, GUEST_INTR_STATUS.SVI is not configured, although
-vector 236 is still pending in the ISR.
-8. After VM-entry, the guest finally issues the EOI for vector 236.
-However, because SVI is not configured, vector 236 is not cleared.
-9. ISR is stalled forever on vector 236.
-
-Here is another scenario.
-
-1. Suppose APICv is inactive. Vector 236 is pending in the IRR.
-2. To handle KVM_REQ_EVENT, KVM moves vector 236 from the IRR to the ISR,
-and configures the VM_ENTRY_INTR_INFO_FIELD via vmx_inject_irq().
-3. VM-exit occurs immediately after the next VM-entry. The vector 236 is
-not invoked through the guest IDT. Instead, it is saved to the
-IDT_VECTORING_INFO_FIELD during the VM-exit.
-4. KVM calls kvm_queue_interrupt() to re-queue the un-invoked vector 236
-into vcpu->arch.interrupt. A KVM_REQ_EVENT is requested.
-5. Now, suppose APICv is activated. Before the next VM-entry, KVM calls
-kvm_vcpu_update_apicv() to activate APICv.
-6. Although APICv is now active, KVM still uses the legacy
-VM_ENTRY_INTR_INFO_FIELD to re-inject vector 236. GUEST_INTR_STATUS.SVI is
-not configured.
-7. After the next VM-entry, vector 236 is invoked through the guest IDT.
-Finally, an EOI occurs. However, due to the lack of GUEST_INTR_STATUS.SVI
-configuration, vector 236 is not cleared from the ISR.
-8. ISR is stalled forever on vector 236.
-
-Using QEMU as an example, vector 236 is stuck in ISR forever.
-
-(qemu) info lapic 1
-dumping local APIC state for CPU 1
-
-LVT0	 0x00010700 active-hi edge  masked                      ExtINT (vec 0)
-LVT1	 0x00010400 active-hi edge  masked                      NMI
-LVTPC	 0x00000400 active-hi edge                              NMI
-LVTERR	 0x000000fe active-hi edge                              Fixed  (vec 254)
-LVTTHMR	 0x00010000 active-hi edge  masked                      Fixed  (vec 0)
-LVTT	 0x000400ec active-hi edge                 tsc-deadline Fixed  (vec 236)
-Timer	 DCR=0x0 (divide by 2) initial_count = 0 current_count = 0
-SPIV	 0x000001ff APIC enabled, focus=off, spurious vec 255
-ICR	 0x000000fd physical edge de-assert no-shorthand
-ICR2	 0x00000000 cpu 0 (X2APIC ID)
-ESR	 0x00000000
-ISR	 236
-IRR	 37(level) 236
-
-The issue isn't applicable to AMD SVM as KVM simply writes vmcb01 directly
-irrespective of whether L1 (vmcs01) or L2 (vmcb02) is active (unlike VMX,
-there is no need/cost to switch between VMCBs).  In addition,
-APICV_INHIBIT_REASON_IRQWIN ensures AMD SVM AVIC is not activated until
-the last interrupt is EOI'd.
-
-Fix the bug by configuring Intel VMX GUEST_INTR_STATUS.SVI if APICv is
-activated at runtime.
-
-Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
-Reviewed-by: Chao Gao <chao.gao@intel.com>
-Link: https://patch.msgid.link/20251110063212.34902-1-dongli.zhang@oracle.com
-[sean: call out that SVM writes vmcb01 directly, tweak comment]
-Link: https://patch.msgid.link/20251205231913.441872-2-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-(cherry picked from commit b2849bec936be642b5420801f902337f2507648e)
-Cc: stable@vger.kernel.org # 6.6.x and above
-Cc: Gulshan Gabel <gulshan.gabel@nutanix.com>
-Signed-off-by: Jon Kohler <jon@nutanix.com>
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Link: https://lore.kernel.org/r/20231105172649.3738556-2-u.kleine-koenig@pengutronix.de
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 0c18a1bacbb1 ("spi: ti-qspi: fix controller deregistration")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/vmx/vmx.c | 9 ---------
- arch/x86/kvm/x86.c     | 7 +++++++
- 2 files changed, 7 insertions(+), 9 deletions(-)
+ drivers/spi/spi-ti-qspi.c |   13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index b8aa9ef73e7a46..d9011af23fb625 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -6853,15 +6853,6 @@ void vmx_hwapic_isr_update(struct kvm_vcpu *vcpu, int max_isr)
- 	 * VM-Exit, otherwise L1 with run with a stale SVI.
- 	 */
- 	if (is_guest_mode(vcpu)) {
--		/*
--		 * KVM is supposed to forward intercepted L2 EOIs to L1 if VID
--		 * is enabled in vmcs12; as above, the EOIs affect L2's vAPIC.
--		 * Note, userspace can stuff state while L2 is active; assert
--		 * that VID is disabled if and only if the vCPU is in KVM_RUN
--		 * to avoid false positives if userspace is setting APIC state.
--		 */
--		WARN_ON_ONCE(vcpu->wants_to_run &&
--			     nested_cpu_has_vid(get_vmcs12(vcpu)));
- 		to_vmx(vcpu)->nested.update_vmcs01_hwapic_isr = true;
- 		return;
- 	}
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index a1ee8bd3ca1569..21c10a87eed5b2 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -10629,9 +10629,16 @@ void __kvm_vcpu_update_apicv(struct kvm_vcpu *vcpu)
- 	 * pending. At the same time, KVM_REQ_EVENT may not be set as APICv was
- 	 * still active when the interrupt got accepted. Make sure
- 	 * kvm_check_and_inject_events() is called to check for that.
-+	 *
-+	 * Update SVI when APICv gets enabled, otherwise SVI won't reflect the
-+	 * highest bit in vISR and the next accelerated EOI in the guest won't
-+	 * be virtualized correctly (the CPU uses SVI to determine which vISR
-+	 * vector to clear).
- 	 */
- 	if (!apic->apicv_active)
- 		kvm_make_request(KVM_REQ_EVENT, vcpu);
-+	else
-+		kvm_apic_update_hwapic_isr(vcpu);
+--- a/drivers/spi/spi-ti-qspi.c
++++ b/drivers/spi/spi-ti-qspi.c
+@@ -907,21 +907,22 @@ free_master:
+ 	return ret;
+ }
  
- out:
- 	preempt_enable();
--- 
-2.53.0
-
+-static int ti_qspi_remove(struct platform_device *pdev)
++static void ti_qspi_remove(struct platform_device *pdev)
+ {
+ 	struct ti_qspi *qspi = platform_get_drvdata(pdev);
+ 	int rc;
+ 
+ 	rc = spi_master_suspend(qspi->master);
+-	if (rc)
+-		return rc;
++	if (rc) {
++		dev_alert(&pdev->dev, "spi_master_suspend() failed (%pe)\n",
++			  ERR_PTR(rc));
++		return;
++	}
+ 
+ 	pm_runtime_put_sync(&pdev->dev);
+ 	pm_runtime_disable(&pdev->dev);
+ 
+ 	ti_qspi_dma_cleanup(qspi);
+-
+-	return 0;
+ }
+ 
+ static const struct dev_pm_ops ti_qspi_pm_ops = {
+@@ -930,7 +931,7 @@ static const struct dev_pm_ops ti_qspi_p
+ 
+ static struct platform_driver ti_qspi_driver = {
+ 	.probe	= ti_qspi_probe,
+-	.remove = ti_qspi_remove,
++	.remove_new = ti_qspi_remove,
+ 	.driver = {
+ 		.name	= "ti-qspi",
+ 		.pm =   &ti_qspi_pm_ops,
 
 
 
