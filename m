@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-266378-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264275-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id qCweDhGcMWqWoAUAu9opvQ
-	(envelope-from <stable+bounces-266378-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:55:13 +0200
+	id YA7KMsl0MWohjwUAu9opvQ
+	(envelope-from <stable+bounces-264275-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:07:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC962694924
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:55:12 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54C7B691B4B
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:07:37 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=2lrJPgSD;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266378-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266378-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=xA3u+P8w;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264275-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264275-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3A692303DB44
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:55:12 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4E3023042F2D
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:51:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EE6647CC96;
-	Tue, 16 Jun 2026 18:55:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5EBA44D015;
+	Tue, 16 Jun 2026 15:51:46 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14AAD472798;
-	Tue, 16 Jun 2026 18:55:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD47E44B69C;
+	Tue, 16 Jun 2026 15:51:45 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781636109; cv=none; b=T5sFNXLW642u82JdE94t10cqSoQKrHThYCke3U2NRBMqqDy9C2QKW1SK85csLoZu8QlBz0Y1+2fK5ouZjkCgl9R6v9EYw9IsPUmrIA5eQxzw0Nn1lTzdJ1sCgFOua64oSnsGOs1csr6Jc/n56HC0i7SZhRlKXWupVIIwXCGDImA=
+	t=1781625106; cv=none; b=EAT8Iao1rTTgSHDM9HMe7xNe0d1CAwdGpxJxA4OF2YPaaUGEUxsVzP0U6p32EbkIxV707kUA8DVCLZnnQBcr59eZ+q1BS9/JYAuNQTeYr2nM/+lrPXCSvRXIT/1Y2kPuGweOs3Rvd35BfLKDngTnoU7EMu8wIeeDQIxM0r24ndY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781636109; c=relaxed/simple;
-	bh=3tKCncAm767M4+3oO4t4ZxBl+Qs5zUrINgrQ5O5WGKA=;
+	s=arc-20240116; t=1781625106; c=relaxed/simple;
+	bh=PjsUU9yFt/v44RaoIKrUBqLH5053gSyYrfUuB4M+p78=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FBqZLvHg0R0z4wx0i3/uH3hQyiynJblLqAx0MgYnLfFvgaVIUrLO08VBYGptjGzOwE/xSHnCJiptJGzltHIaDviOl205rneF1dZlhNyTzzUTh3WO08XdhnqqsgUimqj4Ktx3ITwUgLrCfufsNYt5py8rp85wit7xJL42Q4tq/0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2lrJPgSD; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14D591F000E9;
-	Tue, 16 Jun 2026 18:55:06 +0000 (UTC)
+	 MIME-Version; b=jCT8BYM5a8sISWRf9RfAIrSJMQtAcGXnfpSWERka7g2JeqPYRn/NIoU11ijckiE6ZbGj/L94GDTq+qECTSnnWUPUnN4cCiq89nvvIiB0RHyV0LRx1AK7reRG1C8mp/oze5nCNTrtcD/EWnUu0vyBUSoXS0mkmsUqzdenNakmFnI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xA3u+P8w; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9599E1F000E9;
+	Tue, 16 Jun 2026 15:51:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781636108;
-	bh=7CI9ayqbIvlIGc8aXhcjA7fTIDItIPf6PKDA7s0vIIw=;
+	s=korg; t=1781625105;
+	bh=SgHZ0HLzkMkFWb0YaAFU0f74KPSHFAt66Bh1B64SVVw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=2lrJPgSDaM04uwM/wFpOpdVe2hvC7FXC1sT8c1dD4CC0sYBTTjKUVZmhUe2FzYcTW
-	 B0HMed++hy5PUBcsADOkSIJM0numMZ4JwyrAywJII/Ot2HJRig2ps1ueLEyQwTiud/
-	 nnE6TtCYjBK7EyYVMs/puVb6VSLGHxHv8qbSgE0g=
+	b=xA3u+P8wzjEuhnYRbaPjHnZFT27/cvSGJO+JuQFPRcynSGlqaSD7EMd/5WoaP/T8t
+	 jRGaGelOIGVp0qg9jS+cbxs//OdhjRklWIWtP89AIvB6LQp5CFTfDNWfMR40reoYHu
+	 z0nHAfkfYc1Pmdpens7n+euz/u1LEuudOcZQjLyA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Til Kaiser <mail@tk154.de>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Dhruva Gole <d-gole@ti.com>,
+	Johan Hovold <johan@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	Robert Garcia <rob_garcia@163.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 177/342] net: mvpp2: sync RX data at the hardware packet offset
+Subject: [PATCH 6.18 077/325] spi: cadence-quadspi: fix unclocked access on unbind
 Date: Tue, 16 Jun 2026 20:27:53 +0530
-Message-ID: <20260616145056.450977277@linuxfoundation.org>
+Message-ID: <20260616145101.567574567@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,83 +74,89 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266378-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mail@tk154.de,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,ti.com,kernel.org,163.com];
+	TAGGED_FROM(0.00)[bounces-264275-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:d-gole@ti.com,m:johan@kernel.org,m:broonie@kernel.org,m:rob_garcia@163.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tk154.de:email,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,sashiko.dev:url,ti.com:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: BC962694924
+X-Rspamd-Queue-Id: 54C7B691B4B
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Til Kaiser <mail@tk154.de>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 180235600934bef6add3be637c296d6cf3272e67 ]
+[ Upstream commit 233db2cb14db8b1935dda52a6affd97276462b82 ]
 
-mvpp2 programs the RX queue packet offset, so hardware writes received
-data at dma_addr + MVPP2_SKB_HEADROOM. The current CPU sync starts at
-dma_addr and only covers rx_bytes + MVPP2_MH_SIZE bytes, which syncs the
-unused headroom and misses the same number of bytes at the packet tail.
+Make sure that the controller is runtime resumed before disabling it
+during driver unbind to avoid an unclocked register access.
 
-On non-coherent DMA systems this can leave the CPU reading stale cache
-contents for the end of the received frame.
+This issue was flagged by Sashiko when reviewing a controller
+deregistration fix.
 
-Use dma_sync_single_range_for_cpu() with MVPP2_SKB_HEADROOM as the range
-offset so the sync covers the Marvell header and packet data actually
-written by hardware.
-
-Fixes: e1921168bbd4 ("mvpp2: sync only the received frame")
-Signed-off-by: Til Kaiser <mail@tk154.de>
-Link: https://patch.msgid.link/20260607134943.21996-2-mail@tk154.de
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 0578a6dbfe75 ("spi: spi-cadence-quadspi: add runtime pm support")
+Cc: stable@vger.kernel.org	# 6.7
+Cc: Dhruva Gole <d-gole@ti.com>
+Link: https://sashiko.dev/#/patchset/20260414134319.978196-1-johan%40kernel.org?part=2
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260421125354.1534871-4-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+[ Context adaptation performed. ]
+Signed-off-by: Robert Garcia <rob_garcia@163.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/spi/spi-cadence-quadspi.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-index e4e80c2b1ce400..6d672afc73d500 100644
---- a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-+++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-@@ -3588,9 +3588,10 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
- 			dma_dir = DMA_FROM_DEVICE;
- 		}
+diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
+index d61bc678b6f83b..0a32e28eefd515 100644
+--- a/drivers/spi/spi-cadence-quadspi.c
++++ b/drivers/spi/spi-cadence-quadspi.c
+@@ -2055,7 +2055,6 @@ static void cqspi_remove(struct platform_device *pdev)
+ 		cqspi_wait_idle(cqspi);
  
--		dma_sync_single_for_cpu(dev->dev.parent, dma_addr,
--					rx_bytes + MVPP2_MH_SIZE,
--					dma_dir);
-+		dma_sync_single_range_for_cpu(dev->dev.parent, dma_addr,
-+					      MVPP2_SKB_HEADROOM,
-+					      rx_bytes + MVPP2_MH_SIZE,
-+					      dma_dir);
+ 	spi_unregister_controller(cqspi->host);
+-	cqspi_controller_enable(cqspi, 0);
  
- 		/* Buffer header not supported */
- 		if (rx_status & MVPP2_RXD_BUF_HDR)
+ 	if (cqspi->rx_chan)
+ 		dma_release_channel(cqspi->rx_chan);
+@@ -2063,8 +2062,10 @@ static void cqspi_remove(struct platform_device *pdev)
+ 	if (!(ddata && (ddata->quirks & CQSPI_DISABLE_RUNTIME_PM)))
+ 		ret = pm_runtime_get_sync(&pdev->dev);
+ 
+-	if (ret >= 0)
++	if (ret >= 0) {
++		cqspi_controller_enable(cqspi, 0);
+ 		clk_disable(cqspi->clk);
++	}
+ 
+ 	if (cqspi->is_jh7110)
+ 		cqspi_jh7110_disable_clk(pdev, cqspi);
 -- 
 2.53.0
 
