@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-264535-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264810-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id jVhGJ2R4MWqfkAUAu9opvQ
-	(envelope-from <stable+bounces-264535-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:23:00 +0200
+	id 5AF0FUt9MWrEkgUAu9opvQ
+	(envelope-from <stable+bounces-264810-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:43:55 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B1BF692009
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:23:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E5FD692647
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:43:54 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=bx5rvANm;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264535-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264535-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=E1LFR+YA;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264810-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264810-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 51A3E31B9554
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:14:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 92B65301BA67
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:40:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDACA4657D0;
-	Tue, 16 Jun 2026 16:13:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 402AB4779B0;
+	Tue, 16 Jun 2026 16:40:09 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 912FC379EFC;
-	Tue, 16 Jun 2026 16:13:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 033A047798F;
+	Tue, 16 Jun 2026 16:40:07 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781626438; cv=none; b=JN+GayM82mY+Eh8z71F6mVqpO5gO/6TLFhthSoygBeLRXKi2XthcSVKhk+DZ9ViBwkDqTf4U+EvkOGSBF/M87t3EMwXM3U7cfsxbwQXIFufgtdnKPGQxtttzBoe1T4mZ6Zt+j4W7R05tpMSMBI/NGOLY1ZX7kmsLtzxjRaWfGlw=
+	t=1781628009; cv=none; b=n80GriJ7ZILEo85VYZqhYO4+U8qfqomTYSfBr+HWejAkZYodeEOyBYLE7Fxxg13vvXpKVNNsIdT/tZHYtMNxwV/uEVXx4MVKJ0iRVwWzHcshmQ2V0u8h3wxwELaejJy8ttBlXy4YW7g86G4rcvULzDQczDMinwv30l/LRmQdHdw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781626438; c=relaxed/simple;
-	bh=8CksO32J4Atcytf3xa8vy1A5pp3XOTr/OysRwXcyEhQ=;
+	s=arc-20240116; t=1781628009; c=relaxed/simple;
+	bh=aRMBjq/t3aaM+Blc4IWyBwrDsYg3K9YEXXVxkyXQiHU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EyI8E1mtt5JrKlsHk9rGLSWqdF9hdvffxs7EHgvIP0DSTo9Fzy35MCkEJIdNyclvEpv80UwYjM/4SI32qVD5vzQcjACY+jF/wPX+bBhQ14mNPmN7q5h+t5jX5yf8wxYRPsgSXZpzm1uYQYIiBFYnHneDlf8sM+1HJ7H+HngumT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bx5rvANm; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ABF21F000E9;
-	Tue, 16 Jun 2026 16:13:56 +0000 (UTC)
+	 MIME-Version; b=VJtLjbOMBxwRiP/68A7cP5ZnENC4nMIZO1gF2whD3JH+WZOZrlC5SdeFYLWN0HulfNNMNs/G7oP7kmf8lDj1u0zIIKB/eRmFJks2mdLdO9u9ETPLrHFk++T7UWRAgcdoVxpkoV/W8qy0nKOziE8nBYzi2wFOKbl3kgagOjQy5HI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E1LFR+YA; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B929B1F000E9;
+	Tue, 16 Jun 2026 16:40:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781626437;
-	bh=cM7rZUUiMrpWFbQ5QzPEVWcxqVqaZhZX5PN4+aP1C+U=;
+	s=korg; t=1781628007;
+	bh=urSiDip98pzM6j1EMx4D0WdPGD1Kbo+D9gd/ZGAgYYc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=bx5rvANmqu276MryqNSySjcf6jiXCBCYw9kGW8Ko/a+iIly9Hv8S7o3bbgJD8hGhR
-	 VNIoL3DOPl451tZRjx8KQSbzZdkXGxegxHDeXLaZ5OaO0Es1Iu6wy+/8eSVIT3KHAE
-	 y364UyLJK2IxU/jo/KSdGx7S3HJyNKbuPxkFH/NA=
+	b=E1LFR+YA/HFcKJTaeUaqza2J+qTRcMzDJaKE9uU9kEFNh7Ue3BR+fA5fjR4cyl+K3
+	 q7aQ1y2EBm+m3zx0hhRxmVGtlW7uVPwSmtAHoAzQz9HDc6HvDU8wvgsbrWsbZjnRZv
+	 qu0w8jmXGxXnEQZXFJnAJ2kmsnRLPzg9GTi1lLFo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Iago Toral Quiroga <itoral@igalia.com>,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
-Subject: [PATCH 6.18 288/325] drm/v3d: Fix global performance monitor reference counting
+	Corey Minyard <corey@minyard.net>
+Subject: [PATCH 6.12 246/261] ipmi:ssif: NULL thread on error
 Date: Tue, 16 Jun 2026 20:31:24 +0530
-Message-ID: <20260616145113.126515018@linuxfoundation.org>
+Message-ID: <20260616145056.481376950@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,124 +63,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-264810-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:itoral@igalia.com,m:mcanal@igalia.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:corey@minyard.net,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-264535-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,igalia.com:email,msgid.link:url]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,minyard.net:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 1B1BF692009
+X-Rspamd-Queue-Id: 9E5FD692647
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maíra Canal <mcanal@igalia.com>
+From: Corey Minyard <corey@minyard.net>
 
-commit 6bf7e2affc6e62da7add393d7f352d4040f5bc27 upstream.
+commit a8aebe93a4938c0ca1941eeaae821738f869be3d upstream.
 
-In the SET_GLOBAL ioctl, v3d_perfmon_find() bumps the reference count on
-the perfmon it returns, but v3d_perfmon_set_global_ioctl() and
-v3d_perfmon_delete() fail to release that reference on several paths:
+Cleanup code was checking the thread for NULL, but it was possibly
+a PTR_ERR() in one spot.
 
-  1. v3d_perfmon_set_global_ioctl() leaks the reference on its error
-     paths.
+Spotted with static analysis.
 
-  2. CLEAR_GLOBAL leaks both the find reference and the reference
-     previously stashed in v3d->global_perfmon by the SET_GLOBAL ioctl
-     that configured it.
-
-  3. Destroying a perfmon that is the current global perfmon leaks the
-     reference stashed by the SET_GLOBAL ioctl.
-
-Release each of these references explicitly.
-
+Link: https://sourceforge.net/p/openipmi/mailman/message/59324676/
+Fixes: 75c486cb1bca ("ipmi:ssif: Clean up kthread on errors")
+Cc: <stable@vger.kernel.org> # 91eb7ec72612: ipmi:ssif: Remove unnecessary indention
 Cc: stable@vger.kernel.org
-Fixes: c6eabbab359c ("drm/v3d: Add DRM_IOCTL_V3D_PERFMON_SET_GLOBAL")
-Reviewed-by: Iago Toral Quiroga <itoral@igalia.com>
-Link: https://patch.msgid.link/20260531-v3d-perfmon-lifetime-v2-1-60ed4485a203@igalia.com
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
+Signed-off-by: Corey Minyard <corey@minyard.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/v3d/v3d_perfmon.c |   24 +++++++++++++++++++-----
- 1 file changed, 19 insertions(+), 5 deletions(-)
+ drivers/char/ipmi/ipmi_ssif.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/gpu/drm/v3d/v3d_perfmon.c
-+++ b/drivers/gpu/drm/v3d/v3d_perfmon.c
-@@ -313,8 +313,11 @@ static int v3d_perfmon_idr_del(int id, v
- 	if (perfmon == v3d->active_perfmon)
- 		v3d_perfmon_stop(v3d, perfmon, false);
- 
--	/* If the global perfmon is being destroyed, set it to NULL */
--	cmpxchg(&v3d->global_perfmon, perfmon, NULL);
-+	/* If the global perfmon is being destroyed, clean it and release
-+	 * the reference stashed in v3d_perfmon_set_global_ioctl().
-+	 */
-+	if (cmpxchg(&v3d->global_perfmon, perfmon, NULL) == perfmon)
-+		v3d_perfmon_put(perfmon);
- 
- 	v3d_perfmon_put(perfmon);
- 
-@@ -481,16 +484,27 @@ int v3d_perfmon_set_global_ioctl(struct
- 
- 	/* If the request is to clear the global performance monitor */
- 	if (req->flags & DRM_V3D_PERFMON_CLEAR_GLOBAL) {
--		if (!v3d->global_perfmon)
-+		struct v3d_perfmon *old;
-+
-+		/* DRM_V3D_PERFMON_CLEAR_GLOBAL doesn't check if
-+		 * v3d->global_perfmon == perfmon. Therefore, there
-+		 * is no need to keep perfmon's reference.
-+		 */
-+		v3d_perfmon_put(perfmon);
-+
-+		old = xchg(&v3d->global_perfmon, NULL);
-+		if (!old)
- 			return -EINVAL;
- 
--		xchg(&v3d->global_perfmon, NULL);
-+		v3d_perfmon_put(old);
- 
- 		return 0;
- 	}
- 
--	if (cmpxchg(&v3d->global_perfmon, NULL, perfmon))
-+	if (cmpxchg(&v3d->global_perfmon, NULL, perfmon)) {
-+		v3d_perfmon_put(perfmon);
- 		return -EBUSY;
-+	}
- 
- 	return 0;
- }
+--- a/drivers/char/ipmi/ipmi_ssif.c
++++ b/drivers/char/ipmi/ipmi_ssif.c
+@@ -1907,6 +1907,7 @@ static int ssif_probe(struct i2c_client
+ 					"kssif%4.4x", thread_num);
+ 	if (IS_ERR(ssif_info->thread)) {
+ 		rv = PTR_ERR(ssif_info->thread);
++		ssif_info->thread = NULL;
+ 		dev_notice(&ssif_info->client->dev,
+ 			   "Could not start kernel thread: error %d\n",
+ 			   rv);
 
 
 
