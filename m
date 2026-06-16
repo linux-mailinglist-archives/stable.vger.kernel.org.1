@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-264717-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265171-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id dcT4H917MWockgUAu9opvQ
-	(envelope-from <stable+bounces-264717-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:37:49 +0200
+	id tQQfKyOEMWqUlQUAu9opvQ
+	(envelope-from <stable+bounces-265171-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:13:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10616692479
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:37:49 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40DDD692DEB
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:13:07 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=kBgVfw9f;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264717-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264717-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=mPeXiyay;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265171-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-265171-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1BCD7307071A
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:31:32 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 599D3304D2B8
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:10:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2379477990;
-	Tue, 16 Jun 2026 16:31:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B5781A6803;
+	Tue, 16 Jun 2026 17:10:36 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D71444E037;
-	Tue, 16 Jun 2026 16:31:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE3B4449EA8;
+	Tue, 16 Jun 2026 17:10:34 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781627490; cv=none; b=biKFEFOcL/4nnzQUVbIRmSVUQ4VsTTBHDCdeaRv19YcTczv0wqbN7FWG3S0Tx5eHbNREdNg02W7J5t6gEh/NhmEHi0C0FdYOaOgv8TH8kKZ1HlHlx21CWsF2p3rX2u2p72vf7+YtSsIuuqrQx3yKve6DWMGnDLhAlQjjjxsNH6s=
+	t=1781629836; cv=none; b=LbMqVNW85Xs3hDaPDLm1QFLgS5LwWwRwa5H8o+YNF1LKkOzRAZ3DgXxN6gXrTNlE0xMVtvdZo6gqId3p06bVGc2p0Q9h25dfstIv32gWLiCtH78cO+u4SmJ4Zfgxd5fnrzK7lO8ii/xQkN62gbGVgvgRn66c5xMfA5zNtCrxwrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781627490; c=relaxed/simple;
-	bh=uN6vqXqm3b1F8F0ZWAiulzJvdhQnfMlxQmN94jFwSAU=;
+	s=arc-20240116; t=1781629836; c=relaxed/simple;
+	bh=I1GaJPvLEgQsnF9SvLEyYYCrohM11LDDEh6wl49S33Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=as14xFAvA3jOAKYJjZNCLryGRHYoo23ivRgiByhJX9HZWPCGzTMMf5IUWmjGeBid6uAVM6cSAIesSZJpKsvly4OCqDD9FnVqpNvtIj7qk+6ReEEy2Ev1sC9I64APMXpONezke4JxeCGz5hL2Hp65n+rvwPKsi4bll+w5L/2lOM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kBgVfw9f; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8161A1F000E9;
-	Tue, 16 Jun 2026 16:31:28 +0000 (UTC)
+	 MIME-Version; b=kF4T7Eb5J8Q93XHjK6KY6wAqCsNjK7IX278vIannBz44pvwFtoPRDpmgZx5zzFj6WfJZY1LFw8pRlFI6tkP+zOIQ/hfoiE0mUXqXqYTjD24hZgdBQ2Uq4kPJ0abNz4148mm24/u5/8UYFq6TsHuqgozNQUF7FuTn4VR51cjZ1vo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mPeXiyay; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1D441F000E9;
+	Tue, 16 Jun 2026 17:10:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781627489;
-	bh=6CnZtIeVoqe0IcvGZsN9AF9FK+1NmsJXvfxTbaJwzDo=;
+	s=korg; t=1781629834;
+	bh=UpOSn6McfM/UEfTNPoDnQ5gSWi0CbXR6Xg1LmhCi6/o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=kBgVfw9fPbBwo2OQPiiD3HiNfx5MrJjFhUb+ENHZQeeGgVi+q6812N4UetjezbDoP
-	 +JXB9bp39o/Ye3DkenkYkl5ESSwohjv9rIrJbHmjUB4QfTOFYXY2aeyuFLdOvSurH6
-	 L2PyOdzW3SNJ3bn7cuiScqNxahe+1bbvX5DEkWko=
+	b=mPeXiyayL+2vGNH9G0+IdIiL2nHN303C2RiWsnLw6tWy167jEszR/E0FcvQiF0JnL
+	 Aoedjz53WyTGiV5aol7/8R5KENDR+zS/uKpLTfWyvQZFfNjeht/q3Gx5/7qWsaocHU
+	 TyvrhEwDEyxV5lW8fJgHNgElBjv6ptHNTY+H8RM4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Jason Gunthorpe <jgg@nvidia.com>
-Subject: [PATCH 6.12 150/261] RDMA/srp: bound SRP_RSP sense copy by the received length
+	Muhammad Bilal <meatuni001@gmail.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.6 361/452] drm/amdkfd: fix NULL dereference in get_queue_ids()
 Date: Tue, 16 Jun 2026 20:29:48 +0530
-Message-ID: <20260616145052.032857726@linuxfoundation.org>
+Message-ID: <20260616145136.070804094@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
-References: <20260616145044.869532709@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,28 +66,27 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264717-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:bvanassche@acm.org,m:jgg@nvidia.com,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,acm.org,nvidia.com];
+	TAGGED_FROM(0.00)[bounces-265171-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:meatuni001@gmail.com,m:alexander.deucher@amd.com,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -96,106 +94,58 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,nvidia.com:email,msgid.link:url,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,acm.org:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 10616692479
+X-Rspamd-Queue-Id: 40DDD692DEB
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Muhammad Bilal <meatuni001@gmail.com>
 
-commit 13e91fd076306f5d0cdfa14f53d69e37274723c4 upstream.
+commit 2bd550b547deabef98bd3b017ff743b7c34d3a6d upstream.
 
-srp_process_rsp() copies sense data from rsp->data + resp_data_len,
-where resp_data_len is the full 32-bit value supplied by the SRP target
-and is never checked against the number of bytes actually received
-(wc->byte_len). The copy length is bounded to SCSI_SENSE_BUFFERSIZE, so
-at most 96 bytes are copied, but the source offset is not bounded.
+When usr_queue_id_array is NULL and num_queues is non-zero,
+get_queue_ids() returns NULL. The callers check only IS_ERR() on the
+return value; since IS_ERR(NULL) == false the check passes, and
+suspend_queues() calls q_array_invalidate() which immediately
+dereferences NULL while iterating num_queues times.
 
-A malicious or compromised SRP target on the InfiniBand/RoCE fabric that
-the initiator has logged into can return an SRP_RSP with
-SRP_RSP_FLAG_SNSVALID set and a large resp_data_len. The receive buffer
-is allocated at the target-chosen max_ti_iu_len, so the source of the
-sense copy lands past the bytes actually received; with resp_data_len
-near 0xFFFFFFFF it is gigabytes past the buffer and the read faults.
+Userspace can trigger this via kfd_ioctl_set_debug_trap() by supplying
+num_queues > 0 with a zero queue_array_ptr, causing a kernel panic.
 
-Copy the sense data only if it has not been truncated, that is, only if
-the response header, the response data, and the sense region fit within
-the bytes actually received; otherwise drop the sense and log. The
-in-tree iSER and NVMe-RDMA receive paths already bound their parse by
-wc->byte_len; this brings ib_srp into line with them.
+A NULL usr_queue_id_array with num_queues == 0 is a legitimate no-op
+(q_array_invalidate never executes, and resume_queues already guards
+all queue_ids dereferences behind a NULL check). Return ERR_PTR(-EINVAL)
+only when num_queues is non-zero and the pointer is absent; both callers
+already propagate IS_ERR() returns correctly to userspace.
 
-Fixes: aef9ec39c47f ("IB: Add SCSI RDMA Protocol (SRP) initiator")
-Link: https://patch.msgid.link/r/20260602220457.2542840-1-michael.bommarito@gmail.com
+Fixes: a70a93fa568b ("drm/amdkfd: add debug suspend and resume process queues operation")
+Signed-off-by: Muhammad Bilal <meatuni001@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit f165a82cdf503884bb1797771c61b2fcc72113d4)
 Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-8
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/ulp/srp/ib_srp.c |   30 ++++++++++++++++++++++++------
- 1 file changed, 24 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/infiniband/ulp/srp/ib_srp.c
-+++ b/drivers/infiniband/ulp/srp/ib_srp.c
-@@ -1930,7 +1930,8 @@ static int srp_post_recv(struct srp_rdma
- 	return ib_post_recv(ch->qp, &wr, NULL);
- }
- 
--static void srp_process_rsp(struct srp_rdma_ch *ch, struct srp_rsp *rsp)
-+static void srp_process_rsp(struct srp_rdma_ch *ch, struct srp_rsp *rsp,
-+			    u32 byte_len)
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c
+@@ -2787,7 +2787,7 @@ static void copy_context_work_handler (s
+ static uint32_t *get_queue_ids(uint32_t num_queues, uint32_t *usr_queue_id_array)
  {
- 	struct srp_target_port *target = ch->target;
- 	struct srp_request *req;
-@@ -1971,10 +1972,27 @@ static void srp_process_rsp(struct srp_r
- 		scmnd->result = rsp->status;
+ 	if (!usr_queue_id_array)
+-		return NULL;
++		return num_queues ? ERR_PTR(-EINVAL) : NULL;
  
- 		if (rsp->flags & SRP_RSP_FLAG_SNSVALID) {
--			memcpy(scmnd->sense_buffer, rsp->data +
--			       be32_to_cpu(rsp->resp_data_len),
--			       min_t(int, be32_to_cpu(rsp->sense_data_len),
--				     SCSI_SENSE_BUFFERSIZE));
-+			u32 resp_len = be32_to_cpu(rsp->resp_data_len);
-+			u32 sense_len = be32_to_cpu(rsp->sense_data_len);
-+
-+			/*
-+			 * The sense data starts resp_data_len bytes past the
-+			 * response data area; both lengths come from the
-+			 * target-controlled response.  Copy the sense data
-+			 * only if it has not been truncated, that is, only if
-+			 * the full sense region fits within the bytes actually
-+			 * received.  Otherwise the copy source would run past
-+			 * the receive buffer (sized to the target-chosen
-+			 * max_ti_iu_len), reading out of bounds.
-+			 */
-+			if (sizeof(*rsp) + (u64)resp_len + sense_len <= byte_len)
-+				memcpy(scmnd->sense_buffer,
-+				       rsp->data + resp_len,
-+				       min(sense_len, SCSI_SENSE_BUFFERSIZE));
-+			else
-+				shost_printk(KERN_ERR, target->scsi_host,
-+					     "dropping truncated sense data (resp_data_len %u sense_data_len %u, %u bytes received)\n",
-+					     resp_len, sense_len, byte_len);
- 		}
- 
- 		if (unlikely(rsp->flags & SRP_RSP_FLAG_DIUNDER))
-@@ -2084,7 +2102,7 @@ static void srp_recv_done(struct ib_cq *
- 
- 	switch (opcode) {
- 	case SRP_RSP:
--		srp_process_rsp(ch, iu->buf);
-+		srp_process_rsp(ch, iu->buf, wc->byte_len);
- 		break;
- 
- 	case SRP_CRED_REQ:
+ 	if (num_queues > KFD_MAX_NUM_OF_QUEUES_PER_PROCESS)
+ 		return ERR_PTR(-EINVAL);
 
 
 
