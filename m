@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-264239-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264034-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id x2dbMRRzMWqajgUAu9opvQ
-	(envelope-from <stable+bounces-264239-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:00:20 +0200
+	id EIjBGcptMWppjAUAu9opvQ
+	(envelope-from <stable+bounces-264034-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:37:46 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3CC86919CE
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:00:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 470FB691391
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:37:45 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=K+IGvcEb;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264239-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264239-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=UDWzZqkD;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264034-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264034-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 98A7030BF8B5
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:48:22 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id DAD4E3050F8F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:30:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E611645348A;
-	Tue, 16 Jun 2026 15:47:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A3363A8746;
+	Tue, 16 Jun 2026 15:29:38 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B3C144DB95;
-	Tue, 16 Jun 2026 15:47:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4188544B681;
+	Tue, 16 Jun 2026 15:29:36 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781624865; cv=none; b=RI9Vz/jMVJ8IqRiifioVbDzOy5I5OmZlaA8C+uyT8zGgp6iF3zWWLCJrYcFsGGGDRdhKEvGgpSoydCiUKwxSjF0eWMExenTobXOSdWqr6QN5pzrxhbliJ45rXJO+PcIWvQRVrixopObzEjKU+FjO/Sw7blT8Tih0BqopWHhgk8Y=
+	t=1781623778; cv=none; b=hTWfxveAJil3vvq0HFzAAxKz637GxRoBTFu0dxsvpKnDC1w27P/4h953JcPN60xzHh28KZOwxqzdjtSE/4SAVCZAbQFyIRqFNTswx7XjmUoONyToN7Vm/VQWGk5k48tnScsMBCWMbWx6BtIJAkSWpdLt+FauUNK77kltWlgF4jg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781624865; c=relaxed/simple;
-	bh=mnoML2c0/3ske3G/ZxvkT6/fp5dsUr67I3UgzY5jUqw=;
+	s=arc-20240116; t=1781623778; c=relaxed/simple;
+	bh=R+GQkx3puef57+9b3VSVVZDTg6EQ9j/hZFuE+EpWHL4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gzzBY9+7F3PHB4SP+FI9+ChPo/8j7ikY1y5Muap+juooR1jiCZIlm/h+hiYh57jtK5Y4lFW1BFmm++b2mdhosjOX+ERD5xkP7+SQ23vToLf2J6krRoUuYmn0mTcwn4TRQPSq42AX0swXLEh7TYHkOmmAw3Y2tZivFwZWRaykq34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K+IGvcEb; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6250C1F00A3A;
-	Tue, 16 Jun 2026 15:47:43 +0000 (UTC)
+	 MIME-Version; b=iH+UsTUOadc3SUpGp0ZMRZfqqgY+IyO/nlvJoZUPbfTYPWjK/UDfadZ4L8CLyVeQ+iz1Uh84a3mEPuANAeo39sPx1+nRxeVurHwviJSI076cz+qDdxamqtJ4fBYjSjVgPJow+lGcZoxqsZMtwiQAtgp8ewL6uoCqVgYofq9c5Kg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UDWzZqkD; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 132661F000E9;
+	Tue, 16 Jun 2026 15:29:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781624864;
-	bh=doveR8SFvbsLpmxqgxcvu9lqCMiYy71m9WL2UL5WIUU=;
+	s=korg; t=1781623776;
+	bh=pzSGFYfj80yoRt053EK3cfCiQqKULiRZUa9VRXABaCQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=K+IGvcEbv5IrF4yNZ07EOKCWoDKVsgWOPwFJIcxKckxyqqqENgDNjFwFGzO96ajE6
-	 tbwJhvhD9oI8JxQH8Ht1fAa5CBPMgsXNZ+uMRyRg07KbFrNuQR++QjegH5U+MjdRXb
-	 PJdAZo0lj/ZuaBqWP/9tFs4DhljklBWHJ0aj87mE=
+	b=UDWzZqkDPMhrFXKiu7TwCzKXTJ2gnvbrwgB9SeNHGXiQeNIyKIba7/tpt0jDqb3/2
+	 27tp2VwwlKcRFQsdiLZits/lctcyOlkXCpfO6qVI5V9uND+Mikx2HYaIyQsNFseSAT
+	 kmI+q3dwT7qezsVNoXaP0x/nyDqAF9mamF3egPmU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 041/325] wifi: fix leak if split 6 GHz scanning fails
+	Christian Hopps <chopps@labn.net>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
+	Tristan Madani <tristan@talencesecurity.com>
+Subject: [PATCH 7.0 206/378] xfrm: iptfs: fix ABBA deadlock in iptfs_destroy_state()
 Date: Tue, 16 Jun 2026 20:27:17 +0530
-Message-ID: <20260616145059.776864714@linuxfoundation.org>
+Message-ID: <20260616145121.226888248@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,12 +77,12 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264239-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264034-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:pchelkin@ispras.ru,m:johannes.berg@intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:chopps@labn.net,m:steffen.klassert@secunet.com,m:tristan@talencesecurity.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
@@ -98,88 +98,84 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,linuxtesting.org:url,vger.kernel.org:from_smtp,intel.com:email,ispras.ru:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,secunet.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,talencesecurity.com:email,labn.net:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B3CC86919CE
+X-Rspamd-Queue-Id: 470FB691391
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Tristan Madani <tristmd@gmail.com>
 
-[ Upstream commit e8694f7cc29287e843648d1075177b9a2000d957 ]
+commit c8a8a75b733467b00c08b91a38dbaf207a08ed6e upstream.
 
-rdev->int_scan_req is leaked if cfg80211_scan() fails.  Note that it's
-supposed to be released at ___cfg80211_scan_done() but this doesn't happen
-as rdev->scan_req is NULL at that point, too, leading to the early return
-from the freeing function.
+iptfs_destroy_state() calls hrtimer_cancel() while holding a spinlock
+that the timer callback also acquires, leading to an ABBA deadlock on
+SMP systems.
 
-unreferenced object 0xffff8881161d0800 (size 512):
-  comm "wpa_supplicant", pid 379, jiffies 4294749765
-  hex dump (first 32 bytes):
-    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-    00 00 00 00 00 00 00 00 f0 81 13 16 81 88 ff ff  ................
-  backtrace (crc c867fdb6):
-    kmemleak_alloc+0x89/0x90
-    __kmalloc_noprof+0x2fd/0x410
-    cfg80211_scan+0x133/0x730
-    nl80211_trigger_scan+0xc69/0x1cc0
-    genl_family_rcv_msg_doit+0x204/0x2f0
-    genl_rcv_msg+0x431/0x6b0
-    netlink_rcv_skb+0x143/0x3f0
-    genl_rcv+0x27/0x40
-    netlink_unicast+0x4f6/0x820
-    netlink_sendmsg+0x797/0xce0
-    __sock_sendmsg+0xc4/0x160
-    ____sys_sendmsg+0x5e4/0x890
-    ___sys_sendmsg+0xf8/0x180
-    __sys_sendmsg+0x136/0x1e0
-    __x64_sys_sendmsg+0x76/0xc0
-    x64_sys_call+0x13f0/0x17d0
+For the output timer (iptfs_timer):
+  - iptfs_destroy_state() holds x->lock, calls hrtimer_cancel()
+  - iptfs_delay_timer() callback takes x->lock
 
-Found by Linux Verification Center (linuxtesting.org).
+For the drop timer (drop_timer):
+  - iptfs_destroy_state() holds drop_lock, calls hrtimer_cancel()
+  - iptfs_drop_timer() callback takes drop_lock
 
-Fixes: c8cb5b854b40 ("nl80211/cfg80211: support 6 GHz scanning")
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Link: https://patch.msgid.link/20260601094157.92703-1-pchelkin@ispras.ru
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Both timers use HRTIMER_MODE_REL_SOFT, so their callbacks run in softirq
+context.  When hrtimer_cancel() is called for a soft timer that is
+currently executing on another CPU, hrtimer_cancel_wait_running() spins
+on softirq_expiry_lock -- the same lock held by the softirq running the
+callback.  If the callback is blocked waiting for the spinlock held by
+the caller of hrtimer_cancel(), a circular dependency forms:
+
+  CPU 0: holds lock_A -> waits for softirq_expiry_lock
+  CPU 1: holds softirq_expiry_lock -> waits for lock_A
+
+Fix by calling hrtimer_cancel() before acquiring the respective locks.
+hrtimer_cancel() is safe to call without holding any lock and will wait
+for any in-progress callback to complete.  For the output timer, the
+lock is still acquired afterwards to drain the packet queue.  For the
+drop timer, the lock/unlock pair is removed entirely since it only
+existed to serialize with the timer callback, which hrtimer_cancel()
+already guarantees.
+
+Found by source code audit.
+
+Fixes: 4b3faf610cc6 ("xfrm: iptfs: add new iptfs xfrm mode impl")
+Cc: Christian Hopps <chopps@labn.net>
+Cc: Steffen Klassert <steffen.klassert@secunet.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/wireless/scan.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ net/xfrm/xfrm_iptfs.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/net/wireless/scan.c b/net/wireless/scan.c
-index 4a1cdfc3221ca4..199c63de01457a 100644
---- a/net/wireless/scan.c
-+++ b/net/wireless/scan.c
-@@ -1071,6 +1071,7 @@ int cfg80211_scan(struct cfg80211_registered_device *rdev)
- 	struct cfg80211_scan_request_int *request;
- 	struct cfg80211_scan_request_int *rdev_req = rdev->scan_req;
- 	u32 n_channels = 0, idx, i;
-+	int err;
+--- a/net/xfrm/xfrm_iptfs.c
++++ b/net/xfrm/xfrm_iptfs.c
+@@ -2730,8 +2730,9 @@ static void iptfs_destroy_state(struct x
+ 	if (!xtfs)
+ 		return;
  
- 	if (!(rdev->wiphy.flags & WIPHY_FLAG_SPLIT_SCAN_6GHZ)) {
- 		rdev_req->req.first_part = true;
-@@ -1101,8 +1102,14 @@ int cfg80211_scan(struct cfg80211_registered_device *rdev)
- 
- 	rdev_req->req.scan_6ghz = false;
- 	rdev_req->req.first_part = true;
-+	err = rdev_scan(rdev, request);
-+	if (err) {
-+		kfree(request);
-+		return err;
-+	}
+-	spin_lock_bh(&xtfs->x->lock);
+ 	hrtimer_cancel(&xtfs->iptfs_timer);
 +
- 	rdev->int_scan_req = request;
--	return rdev_scan(rdev, request);
-+	return 0;
- }
++	spin_lock_bh(&xtfs->x->lock);
+ 	__skb_queue_head_init(&list);
+ 	skb_queue_splice_init(&xtfs->queue, &list);
+ 	spin_unlock_bh(&xtfs->x->lock);
+@@ -2739,9 +2740,7 @@ static void iptfs_destroy_state(struct x
+ 	while ((skb = __skb_dequeue(&list)))
+ 		kfree_skb(skb);
  
- void ___cfg80211_scan_done(struct cfg80211_registered_device *rdev,
--- 
-2.53.0
-
+-	spin_lock_bh(&xtfs->drop_lock);
+ 	hrtimer_cancel(&xtfs->drop_timer);
+-	spin_unlock_bh(&xtfs->drop_lock);
+ 
+ 	if (xtfs->ra_newskb)
+ 		kfree_skb(xtfs->ra_newskb);
 
 
 
