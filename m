@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-263959-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265486-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id G6zKCmJtMWpCjAUAu9opvQ
-	(envelope-from <stable+bounces-263959-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:36:02 +0200
+	id noT+BVaLMWrWmAUAu9opvQ
+	(envelope-from <stable+bounces-265486-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:43:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87A2D691313
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:36:01 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6818769369E
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:43:49 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=2Ej8qZr9;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263959-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263959-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=R3BIGsB1;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265486-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265486-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7F0723109EDC
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:23:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 204C23134333
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:37:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D82844D01F;
-	Tue, 16 Jun 2026 15:23:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 543AA4779B9;
+	Tue, 16 Jun 2026 17:37:26 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60CDE44A725;
-	Tue, 16 Jun 2026 15:23:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21290331A44;
+	Tue, 16 Jun 2026 17:37:25 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781623398; cv=none; b=MMl1vYtS6ndWQdJLdoDBss1oMlPEf7ALUMRAR7FS9/8KvIhfvFbeMPiMfKr+4d6+cyhONwacnH0Z8E4QMvEkLAE9aSjwjodRH4N3cPhtMxz2XOjGNenrKJM/zUH8uOBlPwo+ql1bHHHFkVtavmXkNC76gbRbi4QpUwqACx4J1P0=
+	t=1781631446; cv=none; b=DtoJAwFtASxbBFg3U5Ue7EdwQKDNgeEZ8rWV3Esypi6XvveW5eX2qTCrp8FqrobcVNptdulpcWrAzemhvXPTZZopODMXPyqdg/2SqhaRFY1qrrydAd6QyqO8fQ73av5kgy5sHvVB13hB481JlYdkFRsUHb9rwFWpxUAIhfkgTzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781623398; c=relaxed/simple;
-	bh=CGzHyPQ/sDJjZELTYduMQugiUTBk+w8P8Zhv6KQFENE=;
+	s=arc-20240116; t=1781631446; c=relaxed/simple;
+	bh=Um0+gyjwMjNWvRRRMl0/VVP269Vj9SmiunLCOmW93Jw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O1gO9bkZDSg6Ncg1G9y8N7HwvgYMl/Kjv1ryNQ6zMJz7tgXjIW1dj+HgZ0Zu6aJhUVSGb5x+/JptDU3LWBMgavvUR9pTuINIeHlcavj8FBDRQB5uTKC93nuXPe1JAegwO4nE45uqvbHBGwya9+xL6oMprP7H/wRYhQ43AwOV3bg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Ej8qZr9; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B8971F000E9;
-	Tue, 16 Jun 2026 15:23:15 +0000 (UTC)
+	 MIME-Version; b=q3RVsVWIrf8w/noC/7mrZZ+QLSz9XNECppnfI/YL5gVkgl2K45PgJsL9BKVp4I1EcepE2FqTIDo72CE76SMUxPaCOVnHHHfgDs/5tLVFf53vIY3g2m8W2DMEYbz2A3zVaM10k2HWFr7UAlVxLlzZsuWjNu+hcxIIO6L3Sm69ukU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R3BIGsB1; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21B7B1F000E9;
+	Tue, 16 Jun 2026 17:37:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781623397;
-	bh=q4PxM+otgVaVIPnF7NIrKTDAP44hgqa+kZamJ1V+VNA=;
+	s=korg; t=1781631445;
+	bh=7KVTL4HTsvvXlRHw9LfwJ9IvIOq1hCpoum0laslwomA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=2Ej8qZr9ezEUPpIFeFpKs591sq7mBtQnYrrmQ4LGIIKr1RFGVf7r0/p8gBRDgMs46
-	 wjYWL540Ob6anNX2gBOGuhrRgENWIpYOWH0hI2qrpLLI7l2PFWqbfHpX8DIX4bcxET
-	 5Ym3B2LEjzDMAxgDxu2XABuL1oBXVWOMOEVmCu5E=
+	b=R3BIGsB1cyCAHC6GYyWWVGLKEt2781Ml0KSHeAoJjzxC43bhurHeWX5QCTHKwPRts
+	 +v7Ne8qvZck0v16SjLY2fzhqc1SitXKxbS/SSwWgx14SxHMRBbD5fQfyG95utM91OJ
+	 mXSO30Gguxn7u1ukzQNMpAqdAlRPIn3/QTt6Ow1g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Allison Henderson <achender@kernel.org>,
+	Andy Roulin <aroulin@nvidia.com>,
+	Petr Machata <petrm@nvidia.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 139/378] rds: mark snapshot pages dirty in rds_info_getsockopt()
+Subject: [PATCH 6.1 223/522] vxlan: vnifilter: fix spurious notification on VNI update
 Date: Tue, 16 Jun 2026 20:26:10 +0530
-Message-ID: <20260616145117.596653820@linuxfoundation.org>
+Message-ID: <20260616145136.448341113@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,22 +72,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-263959-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265486-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:leitao@debian.org,m:achender@kernel.org,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:aroulin@nvidia.com,m:petrm@nvidia.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -99,51 +99,61 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,vger.kernel.org:from_smtp,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 87A2D691313
+X-Rspamd-Queue-Id: 6818769369E
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Andy Roulin <aroulin@nvidia.com>
 
-[ Upstream commit 512db8267b73a220a64180d95ab5eebe7c4964a8 ]
+[ Upstream commit 84683b5b60c7274e2c8f7f413d39d78d3db5540f ]
 
-rds_info_getsockopt() pins the destination user pages with FOLL_WRITE and
-the RDS_INFO_* producers memcpy the snapshot into them through
-kmap_atomic(). Because that copy goes through the kernel direct map, the
-dirty bit on the user PTE is never set, so unpin_user_pages() releases the
-pages without marking them dirty. A file-backed destination page can then
-be reclaimed without writeback, silently discarding the copied data.
+When a VNI is re-added with the same attributes (e.g. same group or no
+group), vxlan_vni_update() sends a spurious RTM_NEWTUNNEL notification
+even though nothing changed.
 
-Use unpin_user_pages_dirty_lock() with make_dirty=true so the modified
-pages are marked dirty before they are unpinned.
+The bug is that 'if (changed)' tests whether the pointer is non-NULL,
+not the bool value it points to. Since every caller passes a valid
+pointer, the condition is always true and the notification fires
+unconditionally.
 
-Fixes: a8c879a7ee98 ("RDS: Info and stats")
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Reviewed-by: Allison Henderson <achender@kernel.org>
-Link: https://patch.msgid.link/20260608-rds_fix-v1-1-006c88543408@debian.org
+Fix by dereferencing the pointer: 'if (*changed)'.
+
+Reproducer:
+
+ # ip link add vxlan100 type vxlan dstport 4789 local 10.0.0.1 \
+      nolearning external vnifilter
+ # ip link set vxlan100 up
+ # bridge monitor vni &
+ # bridge vni add vni 1000 dev vxlan100
+ # bridge vni add vni 1000 dev vxlan100  # spurious notification
+
+Fixes: f9c4bb0b245c ("vxlan: vni filtering support on collect metadata device")
+Signed-off-by: Andy Roulin <aroulin@nvidia.com>
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Link: https://patch.msgid.link/20260602185138.253265-3-aroulin@nvidia.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rds/info.c | 2 +-
+ drivers/net/vxlan/vxlan_vnifilter.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/rds/info.c b/net/rds/info.c
-index f1b29994934a03..17061f6ff74e58 100644
---- a/net/rds/info.c
-+++ b/net/rds/info.c
-@@ -235,7 +235,7 @@ int rds_info_getsockopt(struct socket *sock, int optname, char __user *optval,
+diff --git a/drivers/net/vxlan/vxlan_vnifilter.c b/drivers/net/vxlan/vxlan_vnifilter.c
+index ca866740a955d0..abf96d60eb30d5 100644
+--- a/drivers/net/vxlan/vxlan_vnifilter.c
++++ b/drivers/net/vxlan/vxlan_vnifilter.c
+@@ -671,7 +671,7 @@ static int vxlan_vni_update(struct vxlan_dev *vxlan,
+ 	if (ret)
+ 		return ret;
  
- out:
- 	if (pages)
--		unpin_user_pages(pages, nr_pages);
-+		unpin_user_pages_dirty_lock(pages, nr_pages, true);
- 	kfree(pages);
+-	if (changed)
++	if (*changed)
+ 		vxlan_vnifilter_notify(vxlan, vninode, RTM_NEWTUNNEL);
  
- 	return ret;
+ 	return 0;
 -- 
 2.53.0
 
