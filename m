@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-264669-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266448-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 1JLNCet6MWq0kQUAu9opvQ
-	(envelope-from <stable+bounces-264669-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:33:47 +0200
+	id bpcOONKdMWpIoQUAu9opvQ
+	(envelope-from <stable+bounces-266448-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:02:42 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0FA969235C
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:33:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E6D2694AEE
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:02:42 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="vlkB7d/K";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264669-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264669-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=tL1myVX3;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266448-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-266448-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C4EFF301F7AA
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:26:31 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D22DE30C275F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:01:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FC7346AF2E;
-	Tue, 16 Jun 2026 16:26:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 865EA3DD51C;
+	Tue, 16 Jun 2026 19:01:08 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE9C944DB64;
-	Tue, 16 Jun 2026 16:26:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E34D349CF0;
+	Tue, 16 Jun 2026 19:01:07 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781627190; cv=none; b=dW70gVdC0ZB6T+B1HGpUTvHz1uTzFiH2pEDURG+xt7vKgBLOFCAhs/DiX3pVaSy5xbcw+mTOlLurdhWtkGLHhYy1MMrFvh0aJz/Sb3/MvrkwiMhrAgw0dDX1mgGfnzMWkhpbpseczxbtgJi/gis+aiKXkLjlCm4Z4vOQTheQs/A=
+	t=1781636468; cv=none; b=TzudmwrDfyknecDC+0pwhDv7jAsrjy400cDyrKGBH9cnExC607w/0VAIXtcmxvV7zII6JhulJMCa9+HKDPCLo5o6N4mLSDq3/eiXu9/nTe2RMBOGyESQ1LM9qgja+u0ftstpuaw+z3N12DIFZHAe/6+df/Tb1f3h1Uxq3eto5Sg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781627190; c=relaxed/simple;
-	bh=CRrARbBAgDBUJ+jpTQGq8Pftsw50jZiUThmwtFbNxXg=;
+	s=arc-20240116; t=1781636468; c=relaxed/simple;
+	bh=OUBSuenhVX3Tmb7+hSoi9yUKcZhabuyUkcCBLg+WUtI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OxQL6zqhNkHkxC+wE/GJWCrNSwej5r7hABjGpLlIrz89FyomnY3MDfdjPii2/hNh7E6pwpI39IopSovtJ7YJ/Dac+idpMbTxR97GS4SpP/65PC4DcnysBqMovSW8hRmENN22nknFdBbptQZI2DMbPoAeaVNToc/pvqJtRw1rytM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vlkB7d/K; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B3F11F00A3A;
-	Tue, 16 Jun 2026 16:26:28 +0000 (UTC)
+	 MIME-Version; b=N13P2UGb1d9H02yeU3o7LdvH8x66wxTRiA65UUD549FXhzWinKgVefqWcfmGKYEJqB+8HIcj/ud5mRY3r27dVAFFtzJDMrKh2whM6Vc2cEXlOjjjOVA7OlrUqZ49rYNTXcUzSXmsSAQDvfeSE9548vckaPYHlUvj7XwIMxTNZrs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tL1myVX3; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E31E1F000E9;
+	Tue, 16 Jun 2026 19:01:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781627189;
-	bh=g2bK+QevskIT/6ha3wF7LDP/sMRJ0kECTVr0CvfU2k0=;
+	s=korg; t=1781636467;
+	bh=Yllhu6vPvMe4/azqmps06OdcNIpnfdMd2/pcr2y/1m8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=vlkB7d/Kkml2izVPh/DQ2Mlwrd2k34alFGYOiney5l53QhQXRlWQdvt+vt0cmNJ2k
-	 aX5Zpl1WR5sh+TeGhSHplGmPmCiAb695gu3q1veYGFPtJvpIY1F2KwYI896UMModNu
-	 PjrS44eldZLtn9gTVrF6+vEWj9X/2c95QC3H55mo=
+	b=tL1myVX3m/Cqd/2h3frkjOQWtPHhTNZah/lTBIyEHUM9qf+UQzGGSeBAO9rnumFRk
+	 rtoOa7C54511m0Vt8jfAiCy4nXkR5NqjWfCBVMxzZvMNrxM3unFZbHnt+lELjs5pnH
+	 iGjtsBqqrM/wcOFeL3JjALJaV/rVAsO+etb9M9eQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jian Zhou <eilaimemedsnaimel@gmail.com>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Shuvam Pandey <shuvampandey1@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 101/261] netfilter: nft_exthdr: fix register tracking for F_PRESENT flag
+Subject: [PATCH 5.10 243/342] Bluetooth: hci_event: fix potential UAF in SSP passkey handlers
 Date: Tue, 16 Jun 2026 20:28:59 +0530
-Message-ID: <20260616145049.714552536@linuxfoundation.org>
+Message-ID: <20260616145059.533735001@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
-References: <20260616145044.869532709@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,81 +72,127 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,strlen.de,netfilter.org,kernel.org];
-	TAGGED_FROM(0.00)[bounces-264669-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-266448-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:shuvampandey1@gmail.com,m:luiz.von.dentz@intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:eilaimemedsnaimel@gmail.com,m:fw@strlen.de,m:pablo@netfilter.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,netfilter.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,strlen.de:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A0FA969235C
+X-Rspamd-Queue-Id: 5E6D2694AEE
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Shuvam Pandey <shuvampandey1@gmail.com>
 
-[ Upstream commit 772cecf198da732faebb5dcfc46d66a505be8495 ]
+[ Upstream commit 85fa3512048793076eef658f66489112dcc91993 ]
 
-nft_exthdr_init() passes user-controlled priv->len to
-nft_parse_register_store(), which marks that many bytes in the
-register bitmap as initialized.  However, when NFT_EXTHDR_F_PRESENT
-is set, the eval paths write only 1 byte (nft_reg_store8) or
-4 bytes (*dest = 0 on TCP/DCCP error path).  When len > 4,
-registers beyond the first are never written, retaining
-uninitialized stack data from nft_regs.
+hci_conn lookup and field access must be covered by hdev lock in
+hci_user_passkey_notify_evt() and hci_keypress_notify_evt(), otherwise
+the connection can be freed concurrently.
 
-Bail out if userspace requests too much data when F_PRESENT is set.
+Extend the hci_dev_lock critical section to cover all conn usage in both
+handlers.
 
-Reported-by: Ji'an Zhou <eilaimemedsnaimel@gmail.com>
-Fixes: c078ca3b0c5b ("netfilter: nft_exthdr: Add support for existence check")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Keep the existing keypress notification behavior unchanged by routing
+the early exits through a common unlock path.
+
+Fixes: 92a25256f142 ("Bluetooth: mgmt: Implement support for passkey notification")
+Cc: stable@vger.kernel.org
+Signed-off-by: Shuvam Pandey <shuvampandey1@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nft_exthdr.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/bluetooth/hci_event.c |   18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
 
-diff --git a/net/netfilter/nft_exthdr.c b/net/netfilter/nft_exthdr.c
-index c74012c9912554..1fc2a948d00afc 100644
---- a/net/netfilter/nft_exthdr.c
-+++ b/net/netfilter/nft_exthdr.c
-@@ -530,6 +530,9 @@ static int nft_exthdr_init(const struct nft_ctx *ctx,
- 			return err;
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -4842,9 +4842,11 @@ static void hci_user_passkey_notify_evt(
+ 
+ 	BT_DBG("%s", hdev->name);
+ 
++	hci_dev_lock(hdev);
++
+ 	conn = hci_conn_hash_lookup_ba(hdev, ACL_LINK, &ev->bdaddr);
+ 	if (!conn)
+-		return;
++		goto unlock;
+ 
+ 	conn->passkey_notify = __le32_to_cpu(ev->passkey);
+ 	conn->passkey_entered = 0;
+@@ -4853,6 +4855,9 @@ static void hci_user_passkey_notify_evt(
+ 		mgmt_user_passkey_notify(hdev, &conn->dst, conn->type,
+ 					 conn->dst_type, conn->passkey_notify,
+ 					 conn->passkey_entered);
++
++unlock:
++	hci_dev_unlock(hdev);
+ }
+ 
+ static void hci_keypress_notify_evt(struct hci_dev *hdev, struct sk_buff *skb)
+@@ -4862,14 +4867,16 @@ static void hci_keypress_notify_evt(stru
+ 
+ 	BT_DBG("%s", hdev->name);
+ 
++	hci_dev_lock(hdev);
++
+ 	conn = hci_conn_hash_lookup_ba(hdev, ACL_LINK, &ev->bdaddr);
+ 	if (!conn)
+-		return;
++		goto unlock;
+ 
+ 	switch (ev->type) {
+ 	case HCI_KEYPRESS_STARTED:
+ 		conn->passkey_entered = 0;
+-		return;
++		goto unlock;
+ 
+ 	case HCI_KEYPRESS_ENTERED:
+ 		conn->passkey_entered++;
+@@ -4884,13 +4891,16 @@ static void hci_keypress_notify_evt(stru
+ 		break;
+ 
+ 	case HCI_KEYPRESS_COMPLETED:
+-		return;
++		goto unlock;
  	}
  
-+	if ((flags & NFT_EXTHDR_F_PRESENT) && len != 1)
-+		return -EINVAL;
+ 	if (hci_dev_test_flag(hdev, HCI_MGMT))
+ 		mgmt_user_passkey_notify(hdev, &conn->dst, conn->type,
+ 					 conn->dst_type, conn->passkey_notify,
+ 					 conn->passkey_entered);
 +
- 	priv->type   = nla_get_u8(tb[NFTA_EXTHDR_TYPE]);
- 	priv->offset = offset;
- 	priv->len    = len;
--- 
-2.53.0
-
++unlock:
++	hci_dev_unlock(hdev);
+ }
+ 
+ static void hci_simple_pair_complete_evt(struct hci_dev *hdev,
 
 
 
