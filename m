@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-264414-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264192-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id VLdQEKZzMWrBjgUAu9opvQ
-	(envelope-from <stable+bounces-264414-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:02:46 +0200
+	id k/KxHkpzMWqjjgUAu9opvQ
+	(envelope-from <stable+bounces-264192-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:01:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6264D691A41
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:02:45 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22D146919ED
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:01:09 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ciwKasV+;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264414-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264414-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="DhQnHc/w";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264192-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264192-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A54F2300BBA7
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:02:44 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2628E314316B
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:45:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E082F44DB85;
-	Tue, 16 Jun 2026 16:02:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5B8B45BD57;
+	Tue, 16 Jun 2026 15:43:37 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C1913C0628;
-	Tue, 16 Jun 2026 16:02:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 772284534A9;
+	Tue, 16 Jun 2026 15:43:36 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781625760; cv=none; b=qUTwXiYk6D1T97erg68n1XhchQQonlkTsqJueYhSamN4oSfORVqeAAxdyfHKYCT1U7gIQ495xRj/tLNofYacFwW5w11u2ajvRi4qgt57cqnCGqlPFH0+OKjLVG2m9rGPO4BrVHUsftaX0o0dRyZ+g1WxLIfo6CPZkLuIMkybn5Y=
+	t=1781624617; cv=none; b=Quken1cNMLwrE8rCHNuc+oa58nYM0re0wwc6IyMdmMggReA1MfSss7bEf4thDaKq1PQ7pqvu0HXQ/ZdLnO9pBc1E/Jbh4MU1VvjLaahDVBMUP9FrVNmR1sKfCCz1YCW+Ju/Dn+Bf4XcoIBvxkh6YjdQkNyD5c36lLJwHJ7yGoU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781625760; c=relaxed/simple;
-	bh=WYxFMe8u+Udt9SA8W5QkzGFEt3NyKqI9vajNyYD8beY=;
+	s=arc-20240116; t=1781624617; c=relaxed/simple;
+	bh=6WA/hn/AgaWUqZ3AoN8Ve51KGvA9dys3BV0leSsX8Y4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gUCAMxyeYqup/J6AWWCU9q+kBMAaO16sYLb7nleWUd80YmnLWer+0U2t+55bTHfvFy0IRdWLZ0oYvHR4bw8ucH5BCrB//DFuD/7ykM28rwP10l5O6YQGzbIit4HhVXl4rmYhY/XR8KDOpXhSEzsfib70cHUjKXievBLqPqKn6ag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ciwKasV+; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DD541F000E9;
-	Tue, 16 Jun 2026 16:02:38 +0000 (UTC)
+	 MIME-Version; b=eXEJnLUBPxkX10INvFRoaSyki37lzCcFZx+DW3/aD7kWaZiVB641gStrBmtKtlhky14SpcsoXtiyrKvoZKT68YJhZ0rHmoHeNxVn3IEr5ymrzDUNRkP06byLEEP8M+CInKr0vYuAnG+awBoFVClffpHBrhJ+ianUv6niHdDzTPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DhQnHc/w; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 775271F000E9;
+	Tue, 16 Jun 2026 15:43:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781625759;
-	bh=rcTRpcngGNO0Dy3bse/Zi6xzZtL71tDMJ3wOoeZDMlw=;
+	s=korg; t=1781624616;
+	bh=lZLe2GpBjcDXgfZ/c0hMVtXhBGvgpYLYHDAJbz5A8zM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ciwKasV+w7+skSxYOJPS6DPD3OA2PbhVvWre9mZ5QYE9svPxM00j1nuKCb4fq0lGI
-	 w4cwW6tiORq1NHwxkyQ8p3lAFPG1uOIlfcY36ZVKRZn8n2VWUkBNUeg4wQ1BaQD9dO
-	 1+7tksrIID2dkgH0us4WGqDCd3MRNuy4QL7++V3o=
+	b=DhQnHc/wzk85ZwJ7FI1vSdORey5Wia6YJS26+rpxJbE63GuEI43a8+ZD71X955byY
+	 uXtovAdRwC1vKEyuw4C7aAWBsIFU/ct7skETF38M3S+XgTQY5ImIK20andcmhZsoGo
+	 q4vWzRQ2k8qmaDIgYXqW+AsSStJIachQfehvrYEI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.18 202/325] mptcp: add-addr: always drop other suboptions
+	Randy Dunlap <rdunlap@infradead.org>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 367/378] RDMA/umem: fix kernel-doc warnings
 Date: Tue, 16 Jun 2026 20:29:58 +0530
-Message-ID: <20260616145108.084075406@linuxfoundation.org>
+Message-ID: <20260616145129.445997590@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,200 +71,94 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264414-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:matttbe@kernel.org,m:kuba@kernel.org,s:lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:rdunlap@infradead.org,m:leon@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RSPAMD_URIBL_FAIL(0.00)[infradead.org:query timed out];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-264192-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,infradead.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 6264D691A41
+X-Rspamd-Queue-Id: 22D146919ED
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-commit bd34fa0257261b76964df1c98f44b3cb4ee14620 upstream.
+[ Upstream commit ff46d1392750444fab5ae5a0194764ffdc4ac0d2 ]
 
-When an ADD_ADDR needs to be sent, it could be prepared if there is
-enough remaining space and even if the packet is not a pure ACK. But it
-would be dropped soon after.
+Add or correct kernel-doc comments to eliminate warnings:
 
-Indeed, in mptcp_pm_add_addr_signal(), there is enough space to fit a
-DSS of 20 octets and an ADD_ADDR echo containing an IPv4 address on 8
-octets for example. In this case, the packet would be prepared, the
-MPTCP_ADD_ADDR_ECHO bit would be removed from pm->addr_signal, but the
-option would be silently dropped in mptcp_established_options_add_addr()
-not to override DSS info in the union from 'struct mptcp_out_options',
-and also because mptcp_write_options() will enforce mutually exclusion
-with DSS.
+Warning: include/rdma/ib_umem.h:104 function parameter 'biter' not
+ described in 'rdma_umem_for_each_dma_block'
+Warning: include/rdma/ib_umem.h:140 function parameter 'pgsz_bitmap' not
+ described in 'ib_umem_find_best_pgoff'
+Warning: include/rdma/ib_umem.h:141 No description found for return
+ value of 'ib_umem_find_best_pgoff'
 
-Instead, don't even try to send an ADD_ADDR if it is not a pure ACK.
-Retry for each new packet until a pure-ACK is emitted. That's fine to do
-that, because each time an ADD_ADDR (echo) is scheduled, a pure ACK is
-queued.
-
-This also simplifies the code, and the skb checks can be done earlier,
-before the lock.
-
-Note: also, since commit 6d0060f600ad ("mptcp: Write MPTCP DSS headers
-to outgoing data packets"), opts->ahmac would not have been set to 0
-when other suboptions were not dropped, and when sending an ADD_ADDR
-echo. That would have resulted in sending an ADD_ADDR using garbage
-info, where there was not enough space, instead of an echo one without
-the ADD_ADDR HMAC.
-
-Fixes: 1bff1e43a30e ("mptcp: optimize out option generation")
-Cc: stable@vger.kernel.org
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260602-net-mptcp-misc-fixes-7-1-rc7-v2-11-856831229976@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Link: https://patch.msgid.link/20260224003120.3173892-1-rdunlap@infradead.org
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Stable-dep-of: 15fe76e23615 ("RDMA/umem: Fix truncation for block sizes >= 4G")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/options.c  |   30 +++++++-----------------------
- net/mptcp/pm.c       |   15 ++++-----------
- net/mptcp/protocol.h |    7 +++----
- 3 files changed, 14 insertions(+), 38 deletions(-)
+ include/rdma/ib_umem.h |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/net/mptcp/options.c
-+++ b/net/mptcp/options.c
-@@ -661,7 +661,6 @@ static bool mptcp_established_options_ad
- {
- 	struct mptcp_subflow_context *subflow = mptcp_subflow_ctx(sk);
- 	struct mptcp_sock *msk = mptcp_sk(subflow->conn);
--	bool drop_other_suboptions = false;
- 	unsigned int opt_size = *size;
- 	struct mptcp_addr_info addr;
- 	bool echo;
-@@ -672,36 +671,20 @@ static bool mptcp_established_options_ad
- 	 */
- 	if (!mptcp_pm_should_add_signal(msk) ||
- 	    (opts->suboptions & (OPTION_MPTCP_MPJ_ACK | OPTION_MPTCP_MPC_ACK)) ||
--	    !mptcp_pm_add_addr_signal(msk, skb, opt_size, remaining, &addr,
--		    &echo, &drop_other_suboptions))
-+	    !skb || !skb_is_tcp_pure_ack(skb) ||
-+	    !mptcp_pm_add_addr_signal(msk, opt_size, remaining, &addr, &echo))
- 		return false;
- 
--	/*
--	 * Later on, mptcp_write_options() will enforce mutually exclusion with
--	 * DSS, bail out if such option is set and we can't drop it.
--	 */
--	if (drop_other_suboptions)
--		remaining += opt_size;
--	else if (opts->suboptions & OPTION_MPTCP_DSS)
--		return false;
-+	remaining += opt_size;
- 
- 	len = mptcp_add_addr_len(addr.family, echo, !!addr.port);
- 	if (remaining < len)
- 		return false;
- 
- 	*size = len;
--	if (drop_other_suboptions) {
--		pr_debug("drop other suboptions\n");
--		opts->suboptions = 0;
--
--		/* note that e.g. DSS could have written into the memory
--		 * aliased by ahmac, we must reset the field here
--		 * to avoid appending the hmac even for ADD_ADDR echo
--		 * options
--		 */
--		opts->ahmac = 0;
--		*size -= opt_size;
--	}
-+	pr_debug("drop other suboptions\n");
-+	opts->suboptions = 0;
-+	*size -= opt_size;
- 	opts->addr = addr;
- 	opts->suboptions |= OPTION_MPTCP_ADD_ADDR;
- 	if (!echo) {
-@@ -711,6 +694,7 @@ static bool mptcp_established_options_ad
- 						     &opts->addr);
- 	} else {
- 		MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_ECHOADDTX);
-+		opts->ahmac = 0;
- 	}
- 	pr_debug("addr_id=%d, ahmac=%llu, echo=%d, port=%d\n",
- 		 opts->addr.id, opts->ahmac, echo, ntohs(opts->addr.port));
---- a/net/mptcp/pm.c
-+++ b/net/mptcp/pm.c
-@@ -885,10 +885,9 @@ void mptcp_pm_mp_fail_received(struct so
- 	}
- }
- 
--bool mptcp_pm_add_addr_signal(struct mptcp_sock *msk, const struct sk_buff *skb,
--			      unsigned int opt_size, unsigned int remaining,
--			      struct mptcp_addr_info *addr, bool *echo,
--			      bool *drop_other_suboptions)
-+bool mptcp_pm_add_addr_signal(struct mptcp_sock *msk, unsigned int opt_size,
-+			      unsigned int remaining,
-+			      struct mptcp_addr_info *addr, bool *echo)
- {
- 	bool skip_add_addr = false;
- 	int ret = false;
-@@ -906,10 +905,7 @@ bool mptcp_pm_add_addr_signal(struct mpt
- 	 * plain dup-ack from TCP perspective. The other MPTCP-relevant info,
- 	 * if any, will be carried by the 'original' TCP ack
- 	 */
--	if (skb && skb_is_tcp_pure_ack(skb)) {
--		remaining += opt_size;
--		*drop_other_suboptions = true;
--	}
-+	remaining += opt_size;
- 
- 	*echo = mptcp_pm_should_add_signal_echo(msk);
- 	if (*echo) {
-@@ -927,9 +923,6 @@ bool mptcp_pm_add_addr_signal(struct mpt
- 	if (remaining < mptcp_add_addr_len(family, *echo, port)) {
- 		struct net *net = sock_net((struct sock *)msk);
- 
--		if (!*drop_other_suboptions)
--			goto out_unlock;
--
- 		if (*echo) {
- 			MPTCP_INC_STATS(net, MPTCP_MIB_ECHOADDTXDROP);
- 		} else {
---- a/net/mptcp/protocol.h
-+++ b/net/mptcp/protocol.h
-@@ -1180,10 +1180,9 @@ static inline int mptcp_rm_addr_len(cons
- 	return TCPOLEN_MPTCP_RM_ADDR_BASE + roundup(rm_list->nr - 1, 4) + 1;
- }
- 
--bool mptcp_pm_add_addr_signal(struct mptcp_sock *msk, const struct sk_buff *skb,
--			      unsigned int opt_size, unsigned int remaining,
--			      struct mptcp_addr_info *addr, bool *echo,
--			      bool *drop_other_suboptions);
-+bool mptcp_pm_add_addr_signal(struct mptcp_sock *msk, unsigned int opt_size,
-+			      unsigned int remaining,
-+			      struct mptcp_addr_info *addr, bool *echo);
- bool mptcp_pm_rm_addr_signal(struct mptcp_sock *msk, unsigned int remaining,
- 			     struct mptcp_rm_list *rm_list);
- int mptcp_pm_get_local_id(struct mptcp_sock *msk, struct sock_common *skc);
+--- a/include/rdma/ib_umem.h
++++ b/include/rdma/ib_umem.h
+@@ -95,6 +95,7 @@ static inline bool __rdma_umem_block_ite
+ /**
+  * rdma_umem_for_each_dma_block - iterate over contiguous DMA blocks of the umem
+  * @umem: umem to iterate over
++ * @biter: block iterator variable
+  * @pgsz: Page size to split the list into
+  *
+  * pgsz must be <= PAGE_SIZE or computed by ib_umem_find_best_pgsz(). The
+@@ -122,7 +123,7 @@ unsigned long ib_umem_find_best_pgsz(str
+  * ib_umem_find_best_pgoff - Find best HW page size
+  *
+  * @umem: umem struct
+- * @pgsz_bitmap bitmap of HW supported page sizes
++ * @pgsz_bitmap: bitmap of HW supported page sizes
+  * @pgoff_bitmask: Mask of bits that can be represented with an offset
+  *
+  * This is very similar to ib_umem_find_best_pgsz() except instead of accepting
+@@ -135,6 +136,9 @@ unsigned long ib_umem_find_best_pgsz(str
+  *
+  * If the pgoff_bitmask requires either alignment in the low bit or an
+  * unavailable page size for the high bits, this function returns 0.
++ *
++ * Returns: best HW page size for the parameters or 0 if none available
++ *   for the given parameters.
+  */
+ static inline unsigned long ib_umem_find_best_pgoff(struct ib_umem *umem,
+ 						    unsigned long pgsz_bitmap,
 
 
 
