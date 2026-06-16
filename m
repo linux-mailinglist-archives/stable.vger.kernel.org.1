@@ -1,63 +1,63 @@
-Return-Path: <stable+bounces-266232-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265443-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id m2wzEheZMWpLnwUAu9opvQ
-	(envelope-from <stable+bounces-266232-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:42:31 +0200
+	id CMDLAX+KMWplmAUAu9opvQ
+	(envelope-from <stable+bounces-265443-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:40:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A2106945B7
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:42:30 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B3E96935A4
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:40:14 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=qlF8aKrf;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266232-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266232-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=QbeTAIyO;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265443-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265443-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A88903095F82
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:42:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8AA0730416FB
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:33:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD0F5478E3E;
-	Tue, 16 Jun 2026 18:42:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 343124611CF;
+	Tue, 16 Jun 2026 17:33:46 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B529D13777E;
-	Tue, 16 Jun 2026 18:42:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 029A53A3E78;
+	Tue, 16 Jun 2026 17:33:44 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781635346; cv=none; b=Fxag28yw6MlP0B9704a/uEA6YdxdocsgbbUhivm8O0qqhXGNVfoJSUpUFFDJZNvszghx2/fGmULheFUE4If2NHr1tKRVhnuZMfDnDQpdGW1xWznFM3n30m6gFKaRBs20+Lk02WGjvPiwgvQDDJdyqSAZK4Ukzj4mrl/OyGGiGoA=
+	t=1781631226; cv=none; b=U4nZbdvYWPj0gSIaL65Vc/wmuJry3vctNKjNOQh/RVGZhh3riEn+1RWcUDhc+m7qZhLx5w6hNy7FbSdNn+BLxrU8wRMsXzL6qsjnGvXQYbQOBXPJlRn9adz7GVOdFp8gOnBEm+XJGXeSX0nhn9BYHLvGd4DvMKmkw2eZm9ETC1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781635346; c=relaxed/simple;
-	bh=awaR0ov3phMbk4QzLaIMslgJLBiTwH27HIUu1W2GPaw=;
+	s=arc-20240116; t=1781631226; c=relaxed/simple;
+	bh=Sb3+/xhFiBEWs2oCAjktg86lkt8FzdQOowwfjG744RQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G7nyl+BU8/8+zLM2UH4Cv7CIU0wNOrnfSWwHwb0M9zLCLEgbRturlLRMZKS1tQiigA5bFsdYuAe4HdS+WLfRPVq/kPa7JQ8c20AwoDV9sB5JzKo3jyy1jRLHDUfXJvCFVaFV5oe1hFeo9BW6vwhrsPROa6qYVmd1f9m8USiD10g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qlF8aKrf; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E2141F000E9;
-	Tue, 16 Jun 2026 18:42:24 +0000 (UTC)
+	 MIME-Version; b=WTtN6ADVGAPUedi3Rb5A84OxLQbtEQCuWm1WHFmnnolMtPGAO9LY6QD714uDvi2mSaED+D23oaaLbRwFaExccPc/vfI1RKbGYDAfzjbL25PF+vCXvxa3BCEsjLEsx0h2MCMX1qcUFH5p2TS8OMrTaLPtM40LnwWOB52KjAcv/tg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QbeTAIyO; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B110C1F000E9;
+	Tue, 16 Jun 2026 17:33:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781635345;
-	bh=rwR/HZ0kSTuIa6QnoGWjf/TXo0mCvDfNrFX4MMAb+Lc=;
+	s=korg; t=1781631224;
+	bh=NUfIoEXwX0PdICovYY3cXnoWYI8vPdiGHEo5yo//Sjk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=qlF8aKrf/4y93Z5EsrqLgm8NiNEP0WErNTD+DIrPJfE7xSEo/EyDV2MbSifs5RxHC
-	 IY5IoA9TIvRdyQuFusVQ+Stq2WlXc67gi+7SB/4tEQbeDvAwyMm4Rmld6BAviBaohj
-	 Sf4K87AczC4gNHtaVzFfTOZ+8cslcEseP30zmBrk=
+	b=QbeTAIyOlyaIv/yzGSq9bRyhfu5UW0NGciYfn3ghajZ4oHWHzGsvsxC6Qecw/EkQn
+	 M42uyfPkRjAMkFdUu9kSr++bi9ysKixjiQ91ybVrIyAiSa276AP+DRWKDkTt7Ev0y6
+	 5JIQjKxjC7b0lUXW09kimUtwahzFIyjueyewqbN8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Ido Schimmel <idosch@nvidia.com>,
-	syzbot+9fdcc9f05a98a540b816@syzkaller.appspotmail.com,
-	Sven Eckelmann <sven@narfation.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 032/342] batman-adv: bla: avoid NULL-ptr deref for claim via dropped interface
+Subject: [PATCH 6.1 181/522] HID: core: Fix size_t specifier in hid_report_raw_event()
 Date: Tue, 16 Jun 2026 20:25:28 +0530
-Message-ID: <20260616145049.747364807@linuxfoundation.org>
+Message-ID: <20260616145134.597488491@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,91 +69,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266232-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265443-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:idosch@nvidia.com,m:syzbot+9fdcc9f05a98a540b816@syzkaller.appspotmail.com,m:sven@narfation.org,m:sashal@kernel.org,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:ojeda@kernel.org,m:nathan@kernel.org,m:torvalds@linux-foundation.org,m:lee@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,9fdcc9f05a98a540b816];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,nvidia.com:email,syzkaller.appspot.com:url,narfation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,appspotmail.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9A2106945B7
+X-Rspamd-Queue-Id: 7B3E96935A4
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: Nathan Chancellor <nathan@kernel.org>
 
-commit f80d3d98d2ff78d9e2fe5d68b1f45948c4f7bd24 upstream.
+[ Upstream commit 4d3a2a466b8d68d852a1f3bbf11204b718428dc4 ]
 
-Without rtnl_lock held, a hardif might be retrieved as primary interface of
-a meshif, but then (while operating on this interface) getting decoupled
-from the mesh interface. In this case, the meshif still exists but the
-pointer from the primary hardif to the meshif is set to NULL.
+When building for 32-bit platforms, for which 'size_t' is
+'unsigned int', there are warnings around using the incorrect format
+specifier to print bsize in hid_report_raw_event():
 
-The mesh_iface must be checked first to be non-NULL before continuing to
-send an ARP request using meshif.
+  drivers/hid/hid-core.c:2054:29: error: format specifies type 'long' but the argument has type 'size_t' (aka 'unsigned int') [-Werror,-Wformat]
+   2053 |                 hid_warn_ratelimited(hid, "Event data for report %d is incorrect (%d vs %ld)\n",
+        |                                                                                         ~~~
+        |                                                                                         %zu
+   2054 |                                      report->id, csize, bsize);
+        |                                                         ^~~~~
+  drivers/hid/hid-core.c:2076:29: error: format specifies type 'long' but the argument has type 'size_t' (aka 'unsigned int') [-Werror,-Wformat]
+   2075 |                 hid_warn_ratelimited(hid, "Event data for report %d was too short (%d vs %ld)\n",
+        |                                                                                          ~~~
+        |                                                                                          %zu
+   2076 |                                      report->id, rsize, bsize);
+        |                                                         ^~~~~
 
-Cc: stable@kernel.org
-Fixes: 23721387c409 ("batman-adv: add basic bridge loop avoidance code")
-Reported-by: Ido Schimmel <idosch@nvidia.com>
-Reported-by: syzbot+9fdcc9f05a98a540b816@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=9fdcc9f05a98a540b816
-[ switch to old "mesh_iface" name "soft_iface" ]
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Use the proper 'size_t' format specifier, '%zu', to clear up the
+warnings.
+
+Cc: stable@vger.kernel.org
+Fixes: 2c85c61d1332 ("HID: pass the buffer size to hid_report_raw_event")
+Reported-by: Miguel Ojeda <ojeda@kernel.org>
+Closes: https://lore.kernel.org/20260516020430.110135-1-ojeda@kernel.org/
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/batman-adv/bridge_loop_avoidance.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/hid/hid-core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/batman-adv/bridge_loop_avoidance.c b/net/batman-adv/bridge_loop_avoidance.c
-index d8305961b59bd1..d01c636024ce15 100644
---- a/net/batman-adv/bridge_loop_avoidance.c
-+++ b/net/batman-adv/bridge_loop_avoidance.c
-@@ -357,12 +357,14 @@ static void batadv_bla_send_claim(struct batadv_priv *bat_priv, u8 *mac,
- 	       sizeof(local_claim_dest));
- 	local_claim_dest.type = claimtype;
+diff --git a/drivers/hid/hid-core.c b/drivers/hid/hid-core.c
+index 2be5823002a3a4..2191205ce5b0bf 100644
+--- a/drivers/hid/hid-core.c
++++ b/drivers/hid/hid-core.c
+@@ -2006,7 +2006,7 @@ int hid_report_raw_event(struct hid_device *hid, enum hid_report_type type, u8 *
+ 		return 0;
  
--	soft_iface = primary_if->soft_iface;
-+	soft_iface = READ_ONCE(primary_if->soft_iface);
-+	if (!soft_iface)
-+		goto out;
+ 	if (unlikely(bsize < csize)) {
+-		hid_warn_ratelimited(hid, "Event data for report %d is incorrect (%d vs %ld)\n",
++		hid_warn_ratelimited(hid, "Event data for report %d is incorrect (%d vs %zu)\n",
+ 				     report->id, csize, bsize);
+ 		return -EINVAL;
+ 	}
+@@ -2028,7 +2028,7 @@ int hid_report_raw_event(struct hid_device *hid, enum hid_report_type type, u8 *
+ 		rsize = max_buffer_size;
  
- 	skb = arp_create(ARPOP_REPLY, ETH_P_ARP,
- 			 /* IP DST: 0.0.0.0 */
- 			 zeroip,
--			 primary_if->soft_iface,
-+			 soft_iface,
- 			 /* IP SRC: 0.0.0.0 */
- 			 zeroip,
- 			 /* Ethernet DST: Broadcast */
+ 	if (bsize < rsize) {
+-		hid_warn_ratelimited(hid, "Event data for report %d was too short (%d vs %ld)\n",
++		hid_warn_ratelimited(hid, "Event data for report %d was too short (%d vs %zu)\n",
+ 				     report->id, rsize, bsize);
+ 		return -EINVAL;
+ 	}
 -- 
 2.53.0
 
