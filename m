@@ -1,75 +1,61 @@
-Return-Path: <stable+bounces-266052-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264089-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id pN4zKpCVMWq8nQUAu9opvQ
-	(envelope-from <stable+bounces-266052-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:27:28 +0200
+	id UIaGJoRuMWqzjAUAu9opvQ
+	(envelope-from <stable+bounces-264089-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:40:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA8E8694223
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:27:27 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 720F9691482
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:40:52 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Pwv1etSv;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266052-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266052-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=EolP7kOF;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264089-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264089-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B3FAA301A585
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:26:53 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B65AB30531E9
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:34:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE91D47AF6E;
-	Tue, 16 Jun 2026 18:26:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D528B44CAC6;
+	Tue, 16 Jun 2026 15:34:27 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8451A3D810C;
-	Tue, 16 Jun 2026 18:26:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC9CF38837F;
+	Tue, 16 Jun 2026 15:34:26 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781634409; cv=none; b=YA7ckwR0zb2Uh8tcm/s75TtDlP9W47/1jz5HwCZHYL/QGmJNIufeD6nS9Qp55mALwx3QmDKOsQ0Cp2aV4ddHI6k8A4jdtJpQXhlI8ojZzZWK1k88/fIa0cZmePU8xwsGSy4MrA8vhY7a5a/b9BQr6mtd1IuR9na+lQ30uzeiIeM=
+	t=1781624067; cv=none; b=gSQkAtz1hvVb6+pop9E4BJDOTSpSKerMfxnMhFjBjWKnOst/QvMdNg75kgqrqDrbLYiDWmVKAww/yl7M+I2NfX5A8VbI7zWLaLKuPSgwQ/4NSTUjrqNc3vARs3Pjh531W4D+5zJHmJebRreIRmesa4uHomfhFwd7rq+bZCNQCGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781634409; c=relaxed/simple;
-	bh=9D5nKbM5MpZYs9kzOIv94Uaw+0O70LygcJTCH4DcRHo=;
+	s=arc-20240116; t=1781624067; c=relaxed/simple;
+	bh=yU9sjATCC0LR34SsbCNnKVZ6psjMFjRRLEjCyorEYSA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vFbgC2XFSWyL6W3eeU0qce9Cg+cNO1Kf8qXVmp6BEa1o09vLGfcnLo7g9aeK9+Rmh6LmHT0acEkeY/3YQ2mEzNlcw2HfA+WXMpLv+f7RMRvspAHJx3pBRZ9HwOu13iU98e1Hi8QMHLgLl5De2/oPu+5q2v1UvXQ/66zrQGWKICY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pwv1etSv; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ADAC1F000E9;
-	Tue, 16 Jun 2026 18:26:47 +0000 (UTC)
+	 MIME-Version; b=WTNNDw9gcREa9d5yvITUejYQ8Op/sHOMm9hQ9vU9FqykEKOfKJ6srfHleWHNTchKwExc3y7VngQYDEHAhEfaZ8S/7QZRRA7voaH2YosVBOFi6uhXgFGxdHYc1qe5bHFjsRikFPlyIErOi97yHNOK/CXIfPQfnM8IRD2oscD0tfo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EolP7kOF; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A78391F000E9;
+	Tue, 16 Jun 2026 15:34:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781634408;
-	bh=Wq1REARUcGdOYf45/07K2wpwBnllS0gcyhsi/4d1Hqw=;
+	s=korg; t=1781624066;
+	bh=YlQxSKAd+QaAwYVBV3gCky5O5bhj7W17Xc2uGAmr2Ig=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Pwv1etSvbhO+vw97az5VkvdzxWzF/YtAW/NVPI6eQQDv4dlA/aufpWyjpjW+mdOQG
-	 jVuggs4p/zf6MP1jgfSZYRzXpervzXBCzcE4Hhf8QQ2BO5UJzgOaujhj4hkszTgnoW
-	 fBBYrSalvyA4HCDRV96Pb4bTeaGlKPAYQd2DTLAA=
+	b=EolP7kOFLFhMsUawahwBjp53Y8z/ayHTeuXzPmbzs5rzPHbfx14S1Bpqzesu+APVj
+	 CUNkLLkM21OSYz2QbgRyk95+jTz2ymQ69/HjeERGM9ETuXTtQ0ZHKuPg7Tfwh8RbUg
+	 WK2AJoJXXkboMbMvyDEjJqrOz5h81fajHnt9WjRE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Yilin Zhu <zylzyl2333@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Christian Brauner <brauner@kernel.org>,
-	Jeongjun Park <aha310510@gmail.com>,
-	Kees Cook <kees@kernel.org>,
-	Liam Howlett <liam@infradead.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Serge Hallyn <sergeh@kernel.org>,
-	Vasiliy Kulikov <segoon@openwall.com>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Serge Hallyn <serge@hallyn.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.15 226/411] ipc/shm: serialize orphan cleanup with shm_nattch updates
+	Paolo Abeni <pabeni@redhat.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 7.0 233/378] mptcp: allow subflow rcv wnd to shrink
 Date: Tue, 16 Jun 2026 20:27:44 +0530
-Message-ID: <20260616145112.819120223@linuxfoundation.org>
+Message-ID: <20260616145122.515345720@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -86,104 +72,94 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	TAGGED_FROM(0.00)[bounces-266052-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:yuantan098@gmail.com,m:yifanwucs@gmail.com,m:tomapufckgml@gmail.com,m:bird@lzu.edu.cn,m:zylzyl2333@gmail.com,m:n05ec@lzu.edu.cn,m:brauner@kernel.org,m:aha310510@gmail.com,m:kees@kernel.org,m:liam@infradead.org,m:ljs@kernel.org,m:sergeh@kernel.org,m:segoon@openwall.com,m:dave@stgolabs.net,m:oleg@redhat.com,m:serge@hallyn.com,m:akpm@linux-foundation.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,kernel.org,infradead.org,openwall.com,stgolabs.net,redhat.com,hallyn.com,linux-foundation.org];
+	TAGGED_FROM(0.00)[bounces-264089-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:pabeni@redhat.com,m:matttbe@kernel.org,m:kuba@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: AA8E8694223
+X-Rspamd-Queue-Id: 720F9691482
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yilin Zhu <zylzyl2333@gmail.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-commit 2e5c6f4fd4001562781e99bbfc7f1f0127187542 upstream.
+commit da23be77e1292cd611e736c3aa17da633d7ddce7 upstream.
 
-shm_destroy_orphaned() walks the shm idr under shm_ids(ns).rwsem, but that
-does not serialize all fields tested by shm_may_destroy().  In particular,
-shm_nattch is updated while holding shm_perm.lock, and attach paths can do
-that without holding the rwsem.
+In MPTCP connection, the `window` field in the TCP header refers to the
+MPTCP-level rcv_nxt and it's right edge should not move backward. Such
+constraint is enforced at DSS option generation time.
 
-Do not decide that an orphaned segment is unused before taking the object
-lock.  Move the shm_may_destroy() check under shm_perm.lock, matching the
-other destroy paths, and unlock the segment when it no longer qualifies
-for removal.
+At the same time, the TCP stack ensures independently that the TCP-level
+rcv wnd right's edge does not move backward. That in turn causes artificial
+inflating of the MPTCP rcv window when the incoming data is acked at the
+TCP level and is OoO in the MPTCP sequence space (or lands in the backlog).
 
-Link: https://lore.kernel.org/9d97cc1031de2d0bace0edf3a668818aa2f4eca6.1777410234.git.zylzyl2333@gmail.com
-Fixes: 4c677e2eefdb ("shm: optimize locking and ipc_namespace getting")
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Yilin Zhu <zylzyl2333@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Jeongjun Park <aha310510@gmail.com>
-Cc: Kees Cook <kees@kernel.org>
-Cc: Liam Howlett <liam@infradead.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Serge Hallyn <sergeh@kernel.org>
-Cc: Vasiliy Kulikov <segoon@openwall.com>
-Cc: Davidlohr Bueso <dave@stgolabs.net>
-Cc: Oleg Nesterov <oleg@redhat.com>
-Cc: Serge Hallyn <serge@hallyn.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+As a consequence, the incoming traffic can exceed the receiver rcvbuf size
+even when the sender is not misbehaving.
+
+Prevent such scenario forcibly allowing the TCP subflow to shrink the
+TCP-level rcv wnd regardless of the current netns setting.
+
+Fixes: f3589be0c420 ("mptcp: never shrink offered window")
+Cc: stable@vger.kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260602-net-mptcp-misc-fixes-7-1-rc7-v2-4-856831229976@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- ipc/shm.c |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ net/mptcp/options.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/ipc/shm.c
-+++ b/ipc/shm.c
-@@ -402,15 +402,17 @@ static int shm_try_destroy_orphaned(int
- 	 * We want to destroy segments without users and with already
- 	 * exit'ed originating process.
- 	 *
--	 * As shp->* are changed under rwsem, it's safe to skip shp locking.
-+	 * shm_nattch can be changed under shm_perm.lock without holding the
-+	 * rwsem, so take the object lock before checking shm_may_destroy().
- 	 */
- 	if (!list_empty(&shp->shm_clist))
- 		return 0;
+--- a/net/mptcp/options.c
++++ b/net/mptcp/options.c
+@@ -566,6 +566,7 @@ static bool mptcp_established_options_ds
+ {
+ 	struct mptcp_subflow_context *subflow = mptcp_subflow_ctx(sk);
+ 	struct mptcp_sock *msk = mptcp_sk(subflow->conn);
++	struct tcp_sock *tp = tcp_sk(sk);
+ 	unsigned int dss_size = 0;
+ 	struct mptcp_ext *mpext;
+ 	unsigned int ack_size;
+@@ -614,6 +615,12 @@ static bool mptcp_established_options_ds
+ 	if (dss_size == 0)
+ 		ack_size += TCPOLEN_MPTCP_DSS_BASE;
  
--	if (shm_may_destroy(shp)) {
--		shm_lock_by_ptr(shp);
-+	shm_lock_by_ptr(shp);
-+	if (shm_may_destroy(shp))
- 		shm_destroy(ns, shp);
--	}
-+	else
-+		shm_unlock(shp);
- 	return 0;
- }
++	/* The caller is __tcp_transmit_skb(), and will compute the new rcv
++	 * wnd soon: ensure that the window can shrink.
++	 */
++	if (skb)
++		tp->rcv_wnd = tp->rcv_nxt - tp->rcv_wup;
++
+ 	dss_size += ack_size;
  
+ 	*size = ALIGN(dss_size, 4);
 
 
 
