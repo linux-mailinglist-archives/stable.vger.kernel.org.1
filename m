@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-265019-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266347-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id DjnIIxyBMWp0lAUAu9opvQ
-	(envelope-from <stable+bounces-265019-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:00:12 +0200
+	id 6kCOLo6cMWq7oAUAu9opvQ
+	(envelope-from <stable+bounces-266347-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:57:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57581692A52
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:00:12 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A9B9694992
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:57:18 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="v/snFwsc";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265019-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265019-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=DrTVUOiQ;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266347-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266347-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 16518302C2FA
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:57:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AFA8C31A30F1
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:52:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18A97466B4B;
-	Tue, 16 Jun 2026 16:57:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA1E6472798;
+	Tue, 16 Jun 2026 18:52:25 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E388431328E;
-	Tue, 16 Jun 2026 16:57:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C175747A0B2;
+	Tue, 16 Jun 2026 18:52:24 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781629069; cv=none; b=k60aDfG3K9Tc9Q8mq1sg3VBKUYJvnMt0bjwmbpPlHTX5WLQNv8VA1/jy9Whu5W0cZFgTXKcZ2zSbQjTm5D7CBZ/bFqlG33B2eXO4/uUJYJ4L2RKoPIG2KvcaLWYUZCGPjTwwGvq8HRtsbcDjRF1gncy/3ZLKBbVrqupgg9FxACE=
+	t=1781635945; cv=none; b=FIanXJf360cOPpe8kq+UkHpD6wpqvIJSPAuUAdM52YsTonFcsaRWtPpaBirJ46RLtGPjItO1dihTjsu9QjQ7eb/FenOkC9A9HPQqaSQNBWorMwhIGKYJMCJKG3cgNlpl89JXA4HaqeTc8M/a9/tkZYyBd/KMYc0rAfwFd7IZtK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781629069; c=relaxed/simple;
-	bh=PbJuk+FFMVxuUflrGXw5rwLguWcxDM2aRxQi74vwtYU=;
+	s=arc-20240116; t=1781635945; c=relaxed/simple;
+	bh=XDlo/9R6mACppYH8f83+k5Nitpe0U+p/YR5W82FtLWY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tr5XV0KVnl6O0/BdCuWJ3xNuv1QUNjDdufdNbZfSoBk7DyuGA3c6XhA2Zb+pDDvGVzRktwIxnGmXKBWmqzW3jh14cY6MyfwcvWHVkiOhtpEszJBWXb4tnBfvdeg3PGWeJzEMJ3ZLhtYFWCmCv77/MWUUYds78AtuVTVFm8h3w5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v/snFwsc; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6A131F000E9;
-	Tue, 16 Jun 2026 16:57:47 +0000 (UTC)
+	 MIME-Version; b=nvlRU+aBTRZDGxd+iAYppR5agEq3TszEZzt9H9jf79C+z5rS8+X+sx7qQOc/8L9W2fi7WajGgX7Z7wvDny+Tx697u13Ymsd5bhH4JM8uqAG7QRvSy+Dnnb+4jrjnxvBa3Hge3n74AZpeTQWepFtAaFhbkPCVrSBZfJuzv82aEQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DrTVUOiQ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9875F1F000E9;
+	Tue, 16 Jun 2026 18:52:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781629068;
-	bh=AvPl+v6o3Asd8DnkWADI9+FcZjVZu1VhurFIzJlTkIg=;
+	s=korg; t=1781635944;
+	bh=7uIQsKcMOJbzgxcQNV8fE37XjfChf51Wa2Pn/RWd0xY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=v/snFwsc1M98IbJpDhEh3ZLbnOynssa/rcrjjRZbly0Z4SYxgwwR/5aAwORlX9XE2
-	 7lFaDuk7r6uVXCB17IXTKGa/uKBLqoo9vkh9WMsWqZSL0RuANK+IGr4BIWJZMDWn7b
-	 NhXNa8LgFMpC3nY6n8mxjXwoXg3yE1xh1NUjGRJA=
+	b=DrTVUOiQU3SFt6mWKk6GTCzbP+v2YQT8gbxP2x02rgf42rQ0PHiEIaZZR5GMSUBc1
+	 T0dIYQd25yrVymK6dycKy72xgo4F8cq8uN8Sklk6+0grnrvkglr4oMjmSiYQwVN/FH
+	 +aBIFQa/h4ZXFibd5iPCu/K8xezuVDz7M3JhscT4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gil Portnoy <dddhkts1@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Zhang Cen <rollkingzzc@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 214/452] ksmbd: fix NULL-deref of opinfo->conn in oplock/lease break notifiers
+Subject: [PATCH 5.10 145/342] Bluetooth: MGMT: validate advertising TLV before type checks
 Date: Tue, 16 Jun 2026 20:27:21 +0530
-Message-ID: <20260616145129.037375824@linuxfoundation.org>
+Message-ID: <20260616145054.932657001@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,21 +73,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
-	TAGGED_FROM(0.00)[bounces-265019-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,molgen.mpg.de,gmail.com,intel.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-266347-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:dddhkts1@gmail.com,m:linkinjeon@kernel.org,m:stfrench@microsoft.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:pmenzel@molgen.mpg.de,m:rollkingzzc@gmail.com,m:luiz.von.dentz@intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -100,81 +100,79 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,mpg.de:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 57581692A52
+X-Rspamd-Queue-Id: 1A9B9694992
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gil Portnoy <dddhkts1@gmail.com>
+From: Zhang Cen <rollkingzzc@gmail.com>
 
-[ Upstream commit b003086d76968298f22e7cf62239833b5a3a06b1 ]
+[ Upstream commit de23fb62259aa01d294f77238ae3b835eb674413 ]
 
-smb2_oplock_break_noti() and smb2_lease_break_noti() read opinfo->conn
-into a local with neither READ_ONCE() nor a NULL check.  Both run from
-oplock_break() after opinfo_get_list() has dropped ci->m_lock, so a
-concurrent SMB2 LOGOFF (session_fd_check()) can set op->conn = NULL
-under ci->m_lock within that window.  ksmbd_conn_r_count_inc(conn) then
-writes through NULL at offset 0xc4 -- a remotely triggerable oops.
+tlv_data_is_valid() reads each advertising data field length from
+data[i], then inspects data[i + 1] for managed EIR types before
+checking that the current field still fits inside the supplied buffer.
 
-Guard both reads the way compare_guid_key() already does: read
-opinfo->conn with READ_ONCE() and return early if it is NULL, before
-allocating the work struct so nothing leaks.  A NULL conn means the
-client is gone and the break is moot, so return 0; oplock_break() treats
-that as success and runs the normal teardown.
+A malformed field whose length byte is the last byte of the buffer can
+therefore make the parser read one byte past the advertising data.
 
-Fixes: c8efcc786146 ("ksmbd: add support for durable handles v1/v2")
-Assisted-by: Henry (Claude):claude-opus-4
-Signed-off-by: Gil Portnoy <dddhkts1@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+KASAN reported the following when a malformed MGMT_OP_ADD_ADVERTISING
+request reached that path:
+
+  BUG: KASAN: vmalloc-out-of-bounds in tlv_data_is_valid()
+  Read of size 1
+  Call trace:
+    tlv_data_is_valid()
+    add_advertising()
+    hci_mgmt_cmd()
+    hci_sock_sendmsg()
+
+Move the existing element-length check before any type-octet inspection
+so each non-empty element is proven to contain its type byte before the
+parser looks at data[i + 1].
+
+Fixes: 2bb36870e8cb ("Bluetooth: Unify advertising instance flags check")
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Signed-off-by: Zhang Cen <rollkingzzc@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/oplock.c | 15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ net/bluetooth/mgmt.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/fs/smb/server/oplock.c b/fs/smb/server/oplock.c
-index 5302c30a4a91d7..bba17ea84023e2 100644
---- a/fs/smb/server/oplock.c
-+++ b/fs/smb/server/oplock.c
-@@ -714,11 +714,16 @@ static void __smb2_oplock_break_noti(struct work_struct *wk)
-  */
- static int smb2_oplock_break_noti(struct oplock_info *opinfo)
- {
--	struct ksmbd_conn *conn = opinfo->conn;
-+	struct ksmbd_conn *conn;
- 	struct oplock_break_info *br_info;
- 	int ret = 0;
--	struct ksmbd_work *work = ksmbd_alloc_work_struct();
-+	struct ksmbd_work *work;
+diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
+index b768abbf2b121a..3647e51d31062b 100644
+--- a/net/bluetooth/mgmt.c
++++ b/net/bluetooth/mgmt.c
+@@ -7364,6 +7364,12 @@ static bool tlv_data_is_valid(struct hci_dev *hdev, u32 adv_flags, u8 *data,
+ 		if (!cur_len)
+ 			continue;
+ 
++		/* If the current field length would exceed the total data
++		 * length, then it's invalid.
++		 */
++		if (i + cur_len >= len)
++			return false;
 +
-+	conn = READ_ONCE(opinfo->conn);
-+	if (!conn)
-+		return 0;
+ 		if (data[i + 1] == EIR_FLAGS &&
+ 		    (!is_adv_data || flags_managed(adv_flags)))
+ 			return false;
+@@ -7380,12 +7386,6 @@ static bool tlv_data_is_valid(struct hci_dev *hdev, u32 adv_flags, u8 *data,
+ 		if (data[i + 1] == EIR_APPEARANCE &&
+ 		    appearance_managed(adv_flags))
+ 			return false;
+-
+-		/* If the current field length would exceed the total data
+-		 * length, then it's invalid.
+-		 */
+-		if (i + cur_len >= len)
+-			return false;
+ 	}
  
-+	work = ksmbd_alloc_work_struct();
- 	if (!work)
- 		return -ENOMEM;
- 
-@@ -818,11 +823,15 @@ static void __smb2_lease_break_noti(struct work_struct *wk)
-  */
- static int smb2_lease_break_noti(struct oplock_info *opinfo)
- {
--	struct ksmbd_conn *conn = opinfo->conn;
-+	struct ksmbd_conn *conn;
- 	struct ksmbd_work *work;
- 	struct lease_break_info *br_info;
- 	struct lease *lease = opinfo->o_lease;
- 
-+	conn = READ_ONCE(opinfo->conn);
-+	if (!conn)
-+		return 0;
-+
- 	work = ksmbd_alloc_work_struct();
- 	if (!work)
- 		return -ENOMEM;
+ 	return true;
 -- 
 2.53.0
 
