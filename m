@@ -1,65 +1,62 @@
-Return-Path: <stable+bounces-264387-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266120-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id BD15Gsp2MWrxjwUAu9opvQ
-	(envelope-from <stable+bounces-264387-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:16:10 +0200
+	id Hg9BGiaYMWrjngUAu9opvQ
+	(envelope-from <stable+bounces-266120-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:38:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3865691DF0
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:16:09 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7FA86944A4
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:38:29 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=FQHp26As;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264387-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264387-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=E6f57STr;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266120-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266120-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7382F31F2BD2
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:01:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E76ED31A59FE
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:32:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE73346AF1A;
-	Tue, 16 Jun 2026 16:00:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AFCB3DC4D9;
+	Tue, 16 Jun 2026 18:32:49 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87DE235C1B7;
-	Tue, 16 Jun 2026 16:00:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF32A3DA7E1;
+	Tue, 16 Jun 2026 18:32:47 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781625619; cv=none; b=uaqgOlsB/naFMGG4z+fstR1vl/UdhN9UCvxiROurDWpB8yBxfxlciJ3jhnwpdlgjA2GmexiZLhZSXmzEtdm8FLIJOjR8bJP/clioTrflt7h2YTVomgA0HyyJwUVP9tWZ7q6mMPHXv88bjvpeAXug668DVDukEd71FW0pA9F64PY=
+	t=1781634769; cv=none; b=ORgrUA/+lHWTwLNel1AdGMLvz14eHax6tByqf9wgRQ0chTJFLDK6WY8hRA1ZzCyMqrsKccLMnKVOhPfYsxOv0BfNl6H5M2ax9y8RB8PljtzuMH4fzJy1eGSgNYayoaeUMy0o9wAqQMhjrzjpF1PY/a9vhtwZQU+/XkG4roewCoM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781625619; c=relaxed/simple;
-	bh=TyLuToc+dTS1EghUP0xQjZCNDXJishfd5P21hYiFmPY=;
+	s=arc-20240116; t=1781634769; c=relaxed/simple;
+	bh=HrxoYq7FWAadK/+JbfNa621LhOfO7MDvpDei9zfi7WI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NVqdg06eo952Wvhpaj9o8RDXxVLFbRK2B/MjK3044SF/4j6SA0izHQPjPdIzfE6JXOCObr6ksbwO+EQ/DzP8jJYBgMZR2WbD6/8rF+Wvdoeixds9vSXQUKTf56u8aYTGkStcQ3QNYOgCPdy8RnNvq75CHXz8By9V2rWHQLq3HbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FQHp26As; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 995EA1F00A3D;
-	Tue, 16 Jun 2026 16:00:17 +0000 (UTC)
+	 MIME-Version; b=YXWF3ky0UPDL8GZLViOWbEtguijlI5dCfQoc2JO8lOLwu+LHkXSh315d5v8Gr/a/OpCMbklk6BitY/ILC8bxPhFM8Hf+ufEmZzzZ2ZWaK+72ZfgLAsMy3RPMqloBDnkdUk/ilvo5V58KjStqlPSW36tYBNcqnt9AxMAc1TEgKjc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E6f57STr; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7A101F000E9;
+	Tue, 16 Jun 2026 18:32:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781625618;
-	bh=ABlpOBlVeI6eTCwXKadYzv7g7MIQwQwrNPPHg9YbW0o=;
+	s=korg; t=1781634767;
+	bh=53hrTjHJR2zEmroBOg26MjFpXVY3fCHxIPAv9np7w/E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=FQHp26AsIAzL+um0x4K34phDHTmQx3F3aPHIsJRJ68Y3BivHp/atd4j88opsIEnOi
-	 uTKsi9WGrqPzx15T0c7faf4P7jZ2Il0/DNKz3wKBI1towV2UWZAIweKaX2EN6ZZ2Ir
-	 wbIqwiiyut16MEXQXHsJqzNIYj3kPt4UpLiPKwiU=
+	b=E6f57STreBYvsjcI/7eGAzQMP53QhP5XkpLGXZiIRWjpH9hQsTYKu0et7ENvsWzuJ
+	 sZdUQt+tInSK8qfwXzWBiSlE5nYPNUSIF3drSLMZH1Cz9Cg2xFa4qE62XiA4pT3r+O
+	 RSdlDY3lNu1KngduXuDWRemDf8CssuWwwx0nJAn0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	Simona Vetter <simona@ffwll.ch>,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Subject: [PATCH 6.18 168/325] drm/i915/gem: Fix phys BO pread/pwrite with offset
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 326/411] pmdomain: core: Fix detach procedure for virtual devices in genpd
 Date: Tue, 16 Jun 2026 20:29:24 +0530
-Message-ID: <20260616145106.186221070@linuxfoundation.org>
+Message-ID: <20260616145118.483217964@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,128 +68,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264387-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:willy@infradead.org,m:tursulin@ursulin.net,m:simona@ffwll.ch,m:jani.nikula@linux.intel.com,m:rodrigo.vivi@intel.com,m:joonas.lahtinen@linux.intel.com,m:tvrtko.ursulin@igalia.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-266120-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:geert@linux-m68k.org,m:geert+renesas@glider.be,m:ulf.hansson@linaro.org,m:sashal@kernel.org,m:geert@glider.be,s:lists@lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[igalia.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,infradead.org:email,intel.com:email,ursulin.net:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,ffwll.ch:email]
+	TAGGED_RCPT(0.00)[stable,renesas];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[glider.be:email,vger.kernel.org:from_smtp,linaro.org:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D3865691DF0
+X-Rspamd-Queue-Id: D7FA86944A4
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+From: Ulf Hansson <ulf.hansson@linaro.org>
 
-commit d21ad938398bca695a511307de38a65889e3b354 upstream.
+[ Upstream commit 26735dfdd8930d9ef1fa92e590a9bf77726efdf6 ]
 
-sg_page() returns struct page pointer not (void *) so the scaling
-of pread/pwrite is wrong for phys BO and wrong parts of BO would be
-accessed if non-zero offset is used.
+If a device is attached to a PM domain through genpd_dev_pm_attach_by_id(),
+genpd calls pm_runtime_enable() for the corresponding virtual device that
+it registers. While this avoids boilerplate code in drivers, there is no
+corresponding call to pm_runtime_disable() in genpd_dev_pm_detach().
 
-Last impacted platform with overlay or cursor planes using phys
-mapping was Gen3/945G/Lakeport.
+This means these virtual devices are typically detached from its genpd,
+while runtime PM remains enabled for them, which is not how things are
+designed to work. In worst cases it may lead to critical errors, like a
+NULL pointer dereference bug in genpd_runtime_suspend(), which was recently
+reported. For another case, we may end up keeping an unnecessary vote for a
+performance state for the device.
 
-Reported-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Fixes: c6790dc22312 ("drm/i915: Wean off drm_pci_alloc/drm_pci_free")
-Cc: <stable@vger.kernel.org> # v4.5+
-Cc: Tvrtko Ursulin <tursulin@ursulin.net>
-Cc: Simona Vetter <simona@ffwll.ch>
-Cc: Jani Nikula <jani.nikula@linux.intel.com>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Link: https://patch.msgid.link/20260610060314.26111-1-joonas.lahtinen@linux.intel.com
-(cherry picked from commit 3e49a2f85070b2fb672c1e0fdba281a4ea3aebe6)
-Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
+To fix these problems, let's add this missing call to pm_runtime_disable()
+in genpd_dev_pm_detach().
+
+Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Closes: https://lore.kernel.org/all/CAMuHMdWapT40hV3c+CSBqFOW05aWcV1a6v_NiJYgoYi0i9_PDQ@mail.gmail.com/
+Fixes: 3c095f32a92b ("PM / Domains: Add support for multi PM domains per device to genpd")
+Cc: stable@vger.kernel.org
+Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/gem/i915_gem_phys.c |   19 +++++++++++++++----
- 1 file changed, 15 insertions(+), 4 deletions(-)
+ drivers/base/power/domain.c |   10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/i915/gem/i915_gem_phys.c
-+++ b/drivers/gpu/drm/i915/gem/i915_gem_phys.c
-@@ -17,6 +17,17 @@
- #include "i915_gem_tiling.h"
- #include "i915_scatterlist.h"
+--- a/drivers/base/power/domain.c
++++ b/drivers/base/power/domain.c
+@@ -2596,6 +2596,7 @@ static struct bus_type genpd_bus_type =
+ static void genpd_dev_pm_detach(struct device *dev, bool power_off)
+ {
+ 	struct generic_pm_domain *pd;
++	bool is_virt_dev;
+ 	unsigned int i;
+ 	int ret = 0;
  
-+/* Abuse scatterlist to store pointer instead of struct page. */
-+static inline void __set_phys_vaddr(struct scatterlist *sg, void *vaddr)
-+{
-+	sg_assign_page(sg, (struct page *)vaddr);
-+}
+@@ -2605,6 +2606,13 @@ static void genpd_dev_pm_detach(struct d
+ 
+ 	dev_dbg(dev, "removing from PM domain %s\n", pd->name);
+ 
++	/* Check if the device was created by genpd at attach. */
++	is_virt_dev = dev->bus == &genpd_bus_type;
 +
-+static inline void *__get_phys_vaddr(struct scatterlist *sg)
-+{
-+	return (void *)sg_page(sg);
-+}
++	/* Disable runtime PM if we enabled it at attach. */
++	if (is_virt_dev)
++		pm_runtime_disable(dev);
 +
- static int i915_gem_object_get_pages_phys(struct drm_i915_gem_object *obj)
- {
- 	struct address_space *mapping = obj->base.filp->f_mapping;
-@@ -57,7 +68,7 @@ static int i915_gem_object_get_pages_phy
- 	sg->offset = 0;
- 	sg->length = obj->base.size;
+ 	/* Drop the default performance state */
+ 	if (dev_gpd_data(dev)->default_pstate) {
+ 		dev_pm_genpd_set_performance_state(dev, 0);
+@@ -2630,7 +2638,7 @@ static void genpd_dev_pm_detach(struct d
+ 	genpd_queue_power_off_work(pd);
  
--	sg_assign_page(sg, (struct page *)vaddr);
-+	__set_phys_vaddr(sg, vaddr);
- 	sg_dma_address(sg) = dma;
- 	sg_dma_len(sg) = obj->base.size;
- 
-@@ -98,7 +109,7 @@ i915_gem_object_put_pages_phys(struct dr
- 			       struct sg_table *pages)
- {
- 	dma_addr_t dma = sg_dma_address(pages->sgl);
--	void *vaddr = sg_page(pages->sgl);
-+	void *vaddr = __get_phys_vaddr(pages->sgl);
- 
- 	__i915_gem_object_release_shmem(obj, pages, false);
- 
-@@ -138,7 +149,7 @@ i915_gem_object_put_pages_phys(struct dr
- int i915_gem_object_pwrite_phys(struct drm_i915_gem_object *obj,
- 				const struct drm_i915_gem_pwrite *args)
- {
--	void *vaddr = sg_page(obj->mm.pages->sgl) + args->offset;
-+	void *vaddr = __get_phys_vaddr(obj->mm.pages->sgl) + args->offset;
- 	char __user *user_data = u64_to_user_ptr(args->data_ptr);
- 	struct drm_i915_private *i915 = to_i915(obj->base.dev);
- 	int err;
-@@ -169,7 +180,7 @@ int i915_gem_object_pwrite_phys(struct d
- int i915_gem_object_pread_phys(struct drm_i915_gem_object *obj,
- 			       const struct drm_i915_gem_pread *args)
- {
--	void *vaddr = sg_page(obj->mm.pages->sgl) + args->offset;
-+	void *vaddr = __get_phys_vaddr(obj->mm.pages->sgl) + args->offset;
- 	char __user *user_data = u64_to_user_ptr(args->data_ptr);
- 	int err;
+ 	/* Unregister the device if it was created by genpd. */
+-	if (dev->bus == &genpd_bus_type)
++	if (is_virt_dev)
+ 		device_unregister(dev);
+ }
  
 
 
