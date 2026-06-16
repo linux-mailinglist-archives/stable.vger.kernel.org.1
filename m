@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-265898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266250-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id L8REDHmSMWpKnAUAu9opvQ
-	(envelope-from <stable+bounces-265898-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:14:17 +0200
+	id +60CGnmZMWqWnwUAu9opvQ
+	(envelope-from <stable+bounces-266250-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:44:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C115693EE9
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:14:16 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CF6B69466D
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:44:08 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=OZ9m6lFV;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265898-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-265898-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=bhQLKm2v;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266250-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266250-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 086273022E13
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:13:18 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D6DC53016C0D
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:44:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E866347B42C;
-	Tue, 16 Jun 2026 18:12:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74566478E3E;
+	Tue, 16 Jun 2026 18:44:01 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 725BA47D92C;
-	Tue, 16 Jun 2026 18:12:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41C3F43CEC7;
+	Tue, 16 Jun 2026 18:44:00 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781633579; cv=none; b=Bq7WKw4hzVVHe8If1/luJmBlNhwF7lmnc6KSlQbo+44C/6sbgWDF3RwfgPDX42lrhv0A1NhyN1rDViTQIB/Fom3ZJdzs9llR8h1qa79N38kBiCsqFJEOkBw047XYlCgC6En87ftGXM6npbOt3BifpX+LPopdMYglxpsEPBIkF8Y=
+	t=1781635441; cv=none; b=agA+BN3YClHR4x7mtuAhQ46uXeAuYGhMTQBCHAtY6QY53nvrmD6OxGbqVd/HOt+5J9hjWL9yh7wriY77/jSD2JpXLlHG3pzmWhTnN9riZQ3q9yPcpGSP2W6YGx7DnJWOwkCZQpMqWY3snCfdExNF+fNrrJOaWgyfNXwzEE+/i3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781633579; c=relaxed/simple;
-	bh=JbnjKNCpSjn0+iXG4fUbgY8fvJ6UNj/TtLtBg+fZ5/8=;
+	s=arc-20240116; t=1781635441; c=relaxed/simple;
+	bh=amlaw6Ptp1qfpoJYmWxWuSQRsXcSXz1Zs7VhecYnV9o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qfw6bk7hzT7IZunQp0HvA/fuPP9Evpnka+g1uQEE35c2Okd0ALTulW/coLMoWeXXtH8oSci/KdoNxqz0pUI9YxhXBK6DCK7KxbomiBzmvBRn5F4lOYfdE7AIp/rQUN/DPYKMx6wdAybJoSgexYwnfAy5ykfI+O3F11NiFyxFYwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OZ9m6lFV; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40EEC1F00A3F;
-	Tue, 16 Jun 2026 18:12:56 +0000 (UTC)
+	 MIME-Version; b=K18NK+wSFVupQBUYV7xRwEO/Xsu/WeKu9u4AtBDieEcKI95WUIZQxIGj51fiZHVcUobkaJur6cW04nbf259/XKlaqjdxK+fjz+nlHLDedeeuc/2nl3kvgmeiWya+s1IWKaSxUa91Q2PhedPj+AaCi8q/v5yNdEE8v/r0yufM7pg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bhQLKm2v; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26FAC1F000E9;
+	Tue, 16 Jun 2026 18:43:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781633578;
-	bh=R6+byuhJ2Tc74OcXc9OdA4kwTqr3S3a1uN89/IZc8m8=;
+	s=korg; t=1781635440;
+	bh=katwKT6hhJHJVLxhhFQFnGuBS1j3BnDowZB7phGspUE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OZ9m6lFV8ZeqNKfqFVz1zR4ieFUPHp6hsL7lBZ+F2QJYjJSxIcwtkGlIGrJ493c01
-	 0Ii6qzwHM6X7/lR052f2yUBfbt8Jn7fWY/R8XiWXZFawwvPo5aPBPYuFuaUwbHzbop
-	 DhHRVi1VnAYGNHgYtsvXul8k1xfEZbYEflAfZHYI=
+	b=bhQLKm2v78pJ9vOthXgHcVtpCD0UHD9uZsjyPeXoN57WpcJVmYyW2i5+tcuuFMqri
+	 Sj8VuGg4/x75WfURkG2q+oUM1GyPBGCCR0ah4DCFA0StvXntMNS4qEXKUoqr2szbR9
+	 8/3qsZd1ey44XbnDH99+F1fen7PcJtEv9ETSICiw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	stable <stable@kernel.org>,
-	Ian Abbott <abbotti@mev.co.uk>
-Subject: [PATCH 5.15 105/411] comedi: comedi_test: Fix limiting of convert_arg in waveform_ai_cmdtest()
-Date: Tue, 16 Jun 2026 20:25:43 +0530
-Message-ID: <20260616145105.831503991@linuxfoundation.org>
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 5.10 048/342] usb: typec: wcove: dont write past struct pd_message in wcove_read_rx_buffer()
+Date: Tue, 16 Jun 2026 20:25:44 +0530
+Message-ID: <20260616145050.495191556@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,21 +71,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265898-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-266250-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:abbotti@mev.co.uk,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:heikki.krogerus@linux.intel.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -97,78 +97,88 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mev.co.uk:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,intel.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2C115693EE9
+X-Rspamd-Queue-Id: 6CF6B69466D
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Abbott <abbotti@mev.co.uk>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit 8a3bee801d420be8a7a0bae4a26547b353b8fe22 upstream.
+commit 4af7ad0e6d7aa4403dbb1dac7b9659b0421efcaa upstream.
 
-The function checks and possibly modifies the description of an
-asynchronous command to be run on the analog input subdevice of a comedi
-device attached to the "comedi_test" driver, returning 0 if no
-modifications were required, or a positive value that indicates which
-step of the checking process it failed on.  Step 4 fixes up various
-argument values for various trigger sources.
+wcove_read_rx_buffer() copies the PD RX FIFO into the caller's
+struct pd_message with
 
-There are two bugs in the fixing up of the `convert_arg` value to keep
-the `scan_begin_arg` value within the range of `unsigned int` when
-`scan_begin_src` and `convert_src` both have the value `TRIG_TIMER`,
-which indicates that the corresponding `_arg` values hold a time period
-in nanoseconds.  The code also uses `scan_end_arg` which hold the number
-of "conversions" within each "scan".  The goal is to end up with the
-scan period being less than or equal to the convert period multiplied by
-the number of conversions per scan.  It intends to do that by clamping
-the `convert_arg` value to a maximum value of `UINT_MAX / scan_end_arg`
-rounded down to a multiple of 1000 (`NSEC_PER_USEC`).
+	for (i = 0; i < USBC_RXINFO_RXBYTES(info); i++)
+		regmap_read(wcove->regmap, USBC_RX_DATA + i, msg + i);
 
-(The rounding from nanoseconds to microseconds is because the driver is
-modelling a device that uses a 1 MHz clock for timing.  This is partly
-because that is a more typical timing base for real hardware devices
-driven by comedi, and partly because the driver used to use `struct
-timeval` internally.)
+which has two problems:
 
-The first bug is that the code checks if `scan_begin_arg == TRIG_TIMER`
-when it should be checking if `scan_begin_src == TRIG_TIMER`.  The
-bugged check will always fail because if `scan_begin_src == TRIG_TIMER`,
-then `scan_begin_arg` will be at least 1000 (`NSEC_PER_USEC`), otherwise
-`scan_begin_src == TRIG_FOLLOW` and `scan_begin_arg` will be 0.  (N.B
-`TRIG_TIMER` is defined as `0x10`.)  The second bug is that is rounding
-the maximum value down to a multiple of 1000000000 (`NSEC_PER_SEC`)
-instead of 1000 (`NSEC_PER_USEC`), however this bug is not reached due
-to the first bug.  This patch fixes both bugs.
+USBC_RXINFO_RXBYTES() is a 5-bit field (max 31) while struct pd_message
+is 30 bytes (__le16 header + __le32 payload[PD_MAX_PAYLOAD], packed).
+The byte count latched in RXINFO is the number of bytes the port partner
+put on the wire, so a malicious partner that transmits a 31-byte frame
+can drive the loop one byte past the destination if the WCOVE BMC
+receiver does not enforce the PD object-count limit in hardware. The
+existing FIXME flagged this as unverified.
 
-Fixes: 783ddaebd397 ("staging: comedi: comedi_test: support scan_begin_src == TRIG_FOLLOW")
-Fixes: 5afdcad2f818 ("staging: comedi: comedi_test: limit maximum convert_arg")
+Independently, regmap_read() takes an unsigned int * and stores a full
+unsigned int at the destination. Passing the byte pointer msg + i means
+each iteration writes four bytes; the high three are zero (val_bits is
+8) and are normally overwritten by the next iteration, but the final
+iteration's high bytes are not. With RXBYTES == 30 the i == 29 iteration
+already writes three zero bytes past msg, which sits on the IRQ thread's
+stack in wcove_typec_irq().
+
+Clamp the loop to sizeof(struct pd_message) and read each register into
+a local before storing only its low byte, so the copy can never exceed
+the destination regardless of what RXINFO reports.
+
+Assisted-by: gkh_clanker_t1000
 Cc: stable <stable@kernel.org>
-Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
-Link: https://patch.msgid.link/20260422144637.27692-1-abbotti@mev.co.uk
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://patch.msgid.link/2026051347-clustered-deflected-9543@gregkh
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/comedi/drivers/comedi_test.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/typec/tcpm/wcove.c |   13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
---- a/drivers/comedi/drivers/comedi_test.c
-+++ b/drivers/comedi/drivers/comedi_test.c
-@@ -324,10 +324,10 @@ static int waveform_ai_cmdtest(struct co
- 		arg = min(arg,
- 			  rounddown(UINT_MAX, (unsigned int)NSEC_PER_USEC));
- 		arg = NSEC_PER_USEC * DIV_ROUND_CLOSEST(arg, NSEC_PER_USEC);
--		if (cmd->scan_begin_arg == TRIG_TIMER) {
-+		if (cmd->scan_begin_src == TRIG_TIMER) {
- 			/* limit convert_arg to keep scan_begin_arg in range */
- 			limit = UINT_MAX / cmd->scan_end_arg;
--			limit = rounddown(limit, (unsigned int)NSEC_PER_SEC);
-+			limit = rounddown(limit, (unsigned int)NSEC_PER_USEC);
- 			arg = min(arg, limit);
- 		}
- 		err |= comedi_check_trigger_arg_is(&cmd->convert_arg, arg);
+--- a/drivers/usb/typec/tcpm/wcove.c
++++ b/drivers/usb/typec/tcpm/wcove.c
+@@ -443,9 +443,11 @@ static int wcove_start_toggling(struct t
+ 	return regmap_write(wcove->regmap, USBC_CONTROL1, usbc_ctrl);
+ }
+ 
+-static int wcove_read_rx_buffer(struct wcove_typec *wcove, void *msg)
++static int wcove_read_rx_buffer(struct wcove_typec *wcove,
++				struct pd_message *msg)
+ {
+-	unsigned int info;
++	unsigned int info, val, len;
++	u8 *buf = (u8 *)msg;
+ 	int ret;
+ 	int i;
+ 
+@@ -453,12 +455,13 @@ static int wcove_read_rx_buffer(struct w
+ 	if (ret)
+ 		return ret;
+ 
+-	/* FIXME: Check that USBC_RXINFO_RXBYTES(info) matches the header */
++	len = min(USBC_RXINFO_RXBYTES(info), sizeof(*msg));
+ 
+-	for (i = 0; i < USBC_RXINFO_RXBYTES(info); i++) {
+-		ret = regmap_read(wcove->regmap, USBC_RX_DATA + i, msg + i);
++	for (i = 0; i < len; i++) {
++		ret = regmap_read(wcove->regmap, USBC_RX_DATA + i, &val);
+ 		if (ret)
+ 			return ret;
++		buf[i] = val;
+ 	}
+ 
+ 	return regmap_write(wcove->regmap, USBC_RXSTATUS,
 
 
 
