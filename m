@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-266320-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265533-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id XAEdDLKbMWpyoAUAu9opvQ
-	(envelope-from <stable+bounces-266320-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:53:38 +0200
+	id JZv2Nk6MMWpMmQUAu9opvQ
+	(envelope-from <stable+bounces-265533-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:47:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 717286948D1
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:53:37 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B8346937D5
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:47:58 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=pFgKc017;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266320-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266320-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=2OUCFd4U;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265533-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265533-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C78453215D34
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:50:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 998BF3261074
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:41:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CF6B4657F8;
-	Tue, 16 Jun 2026 18:50:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C32DD47D92C;
+	Tue, 16 Jun 2026 17:41:27 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 385263D8100;
-	Tue, 16 Jun 2026 18:50:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2D124779A8;
+	Tue, 16 Jun 2026 17:41:24 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781635805; cv=none; b=LWcAVLursfDufBVRR3UL4Zns3/tYktPfwm9vq9xs27QbPxDjkPUtIk9x56wUb8eZWW5eTeVezlgA4D7V5f1AmDsT0JP/khCf880QOM2wE4UGfsh8q5tSNyFOlaljYHd9/RX20MITUYQKVoJEQTGqp6IOHsGSSLCFFWmKJ84b1mE=
+	t=1781631687; cv=none; b=jnyJEFGqsQkYaMwpRPvqhGy2eQtCkObUxxexdubMX7ZzF4jtRHxpamnZYGENPdcsSq4Zyy4M4wqEwO/AL1XzNTEEo5NqY/dYMUB0cbAriXRBdvuL4DrxMz1/JBiJbDz0Setam8Y5EVseHie3EmqHWlZGpp4cq6i1Z3kp7ZwfGS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781635805; c=relaxed/simple;
-	bh=vReoA5u3XtukyAWFlofN7nk25J6iDc4W7yJ5eKMN0p4=;
+	s=arc-20240116; t=1781631687; c=relaxed/simple;
+	bh=jmCeg+0KEPpuFZhTmfTR7u0+JIKE04/cRma8uvBPDaw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nEAgRpBq4tGT5Aq505VpAhQaCPm44rkMUFSun6ME9aZYNXtEsJz78+H/5MEukPM7/fyV7YsEsNtCgMWSg754MBmtfjDTFYguAa6XVfJKIH9N3IffUBzfEOkn5YeQwELRhLfhz+MCLmE0zY8OKG/FY7Kh2Kt4KQMgVh2s10pSW10=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pFgKc017; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D0111F000E9;
-	Tue, 16 Jun 2026 18:50:03 +0000 (UTC)
+	 MIME-Version; b=mqa/DcWLE7d4nD8EuxNjnYJNuRbZnZWbkmV5cN6+Kpbf+PzrUq4SDx6ptEtks95I4xPRsPMUQBM83KRiWnXaP9JhlB8H1Qlhj5zc6U/H1rwS0/0Y/Rx084ngbVSRSsh+OSjgP4c2Jtyvyi4dLQuIag++t6tFrDtHzt5DqhCSHvw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2OUCFd4U; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 581241F000E9;
+	Tue, 16 Jun 2026 17:41:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781635804;
-	bh=VkDStdSYyV3FPlSpKcLjQEZtjYeQoViBmKY41IaVFHA=;
+	s=korg; t=1781631684;
+	bh=BrUR2LqRNl2uhFnAleP8Zc78BTjg5b5bBqsNzcuZNsA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=pFgKc017uriw6OoFXj9PFwmJtfNYXmsji0uXhku1biXg9TvQK1fs4nT9evJEhIa0d
-	 91VlEu8c6Zuwo+/QlHwgD5+GZyartrKjSqhwWh7mmtVwzF/voLIztU4K10B8FUgCd1
-	 8zXbzUbV3B/C6DvMTojM9D5C3x7TDW037wV8lvEI=
+	b=2OUCFd4U1hIBE3dm6PiCwwZieVQaqWo716mGsVm92qYsQnXJjh09HE22eo45mTiPD
+	 eLdgwmbMbGGxWOs2JfufMwaaf/G7+9EHOlX5+Bd4x40o2uN6pex6WoLWt7rgAdEfnm
+	 /AN+V1srRv8JKDy6/9PDsGUR3uIvtLEYXPbwE1k0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 117/342] USB: serial: digi_acceleport: fix memory corruption with small endpoints
-Date: Tue, 16 Jun 2026 20:26:53 +0530
-Message-ID: <20260616145053.664616371@linuxfoundation.org>
+	Tristan Madani <tristan@talencesecurity.com>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 6.1 267/522] netfilter: nft_tunnel: fix use-after-free on object destroy
+Date: Tue, 16 Jun 2026 20:26:54 +0530
+Message-ID: <20260616145138.438563962@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,104 +70,81 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266320-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:johan@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265533-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:tristan@talencesecurity.com,m:fmancera@suse.de,m:fw@strlen.de,m:pablo@netfilter.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,netfilter.org:email,talencesecurity.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,strlen.de:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 717286948D1
+X-Rspamd-Queue-Id: 2B8346937D5
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Tristan Madani <tristan@talencesecurity.com>
 
-commit cb3560e8eab1dfa1cac1ed52631adf8ec6ff2cd5 upstream.
+commit c32b26aaa2f9216520a38b3f4bfeec846eb3eb8a upstream.
 
-Add the missing bulk-out buffer size sanity checks to avoid
-out-of-bounds memory accesses or slab corruption should a malicious
-device report smaller buffers than expected.
+nft_tunnel_obj_destroy() calls metadata_dst_free() which directly
+kfree()s the metadata_dst, ignoring the dst_entry refcount. Packets
+that took a reference via dst_hold() in nft_tunnel_obj_eval() and
+are still queued (e.g. in a netem qdisc) are left with a dangling
+pointer. When these packets are eventually dequeued, dst_release()
+operates on freed memory.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Replace metadata_dst_free() with dst_release() so the metadata_dst
+is freed only after all references are dropped. The dst subsystem
+already handles metadata_dst cleanup in dst_destroy() when
+DST_METADATA is set.
+
+Fixes: af308b94a2a4 ("netfilter: nf_tables: add tunnel support")
 Cc: stable@vger.kernel.org
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
+Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/digi_acceleport.c | 23 +++++++++++++++++++++--
- 1 file changed, 21 insertions(+), 2 deletions(-)
+ net/netfilter/nft_tunnel.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/serial/digi_acceleport.c b/drivers/usb/serial/digi_acceleport.c
-index 0d606fa9fdca1a..d03bba38d802d2 100644
---- a/drivers/usb/serial/digi_acceleport.c
-+++ b/drivers/usb/serial/digi_acceleport.c
-@@ -1229,15 +1229,34 @@ static int digi_port_init(struct usb_serial_port *port, unsigned port_num)
- static int digi_startup(struct usb_serial *serial)
+--- a/net/netfilter/nft_tunnel.c
++++ b/net/netfilter/nft_tunnel.c
+@@ -699,7 +699,7 @@ static void nft_tunnel_obj_destroy(const
  {
- 	struct digi_serial *serial_priv;
-+	int oob_port_num;
- 	int ret;
-+	int i;
-+
-+	/*
-+	 * The port bulk-out buffers must be large enough for header and
-+	 * buffered data.
-+	 */
-+	for (i = 0; i < serial->type->num_ports; i++) {
-+		if (serial->port[i]->bulk_out_size < DIGI_OUT_BUF_SIZE + 2)
-+			return -EINVAL;
-+	}
-+
-+	/*
-+	 * The OOB port bulk-out buffer must be large enough for the two
-+	 * commands in digi_set_modem_signals().
-+	 */
-+	oob_port_num = serial->type->num_ports;
-+	if (serial->port[oob_port_num]->bulk_out_size < 8)
-+		return -EINVAL;
+ 	struct nft_tunnel_obj *priv = nft_obj_data(obj);
  
- 	serial_priv = kzalloc(sizeof(*serial_priv), GFP_KERNEL);
- 	if (!serial_priv)
- 		return -ENOMEM;
+-	metadata_dst_free(priv->md);
++	dst_release(&priv->md->dst);
+ }
  
- 	spin_lock_init(&serial_priv->ds_serial_lock);
--	serial_priv->ds_oob_port_num = serial->type->num_ports;
--	serial_priv->ds_oob_port = serial->port[serial_priv->ds_oob_port_num];
-+	serial_priv->ds_oob_port_num = oob_port_num;
-+	serial_priv->ds_oob_port = serial->port[oob_port_num];
- 
- 	ret = digi_port_init(serial_priv->ds_oob_port,
- 						serial_priv->ds_oob_port_num);
--- 
-2.53.0
-
+ static struct nft_object_type nft_tunnel_obj_type;
 
 
 
