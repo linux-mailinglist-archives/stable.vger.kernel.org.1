@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-264463-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266167-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 3tSdLb13MWpbkAUAu9opvQ
-	(envelope-from <stable+bounces-264463-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:20:13 +0200
+	id dfwzLcqXMWq2ngUAu9opvQ
+	(envelope-from <stable+bounces-266167-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:36:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 335E2691F46
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:20:13 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E8F369444A
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:36:58 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=RmiY7tpB;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264463-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264463-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=vBlKRzay;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266167-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-266167-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BFDE23220574
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:06:56 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id BA0F93036852
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:36:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBAD645349C;
-	Tue, 16 Jun 2026 16:06:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E52DF3DF007;
+	Tue, 16 Jun 2026 18:36:54 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CACB93A9627;
-	Tue, 16 Jun 2026 16:06:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C383832E13B;
+	Tue, 16 Jun 2026 18:36:53 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781626015; cv=none; b=sDZHZr8UYX9J1VecqIzQVs6gVeke23R2/uHbeIoPWzmTUwlJeLUPwQfvo/E89iCgxKKWGlVCiN7WlXoDTo/diYtoK01rZLjrN2ROmkmDLAj4MqKzZL9iaabd+4DgXsEx2+dbaWk4WtqUitT+p+iWycjUUdISHgp95N+Hc6bIx4I=
+	t=1781635014; cv=none; b=kUb6FW8ntr8yGFCRaIrNV4eM5ULC1idFzsiq/UB1KkZwe8Ve1F++F4YJI0M71D/qT5/fNF8g5Gq918F9ivhnux4DIFkNzlVu2CBXNsghjsmoyMCs0l4QjgpQKVY/fEJcq7IQ9LnzV+WkT8CFd44BY45wLYt4bfDMm9OQH8sSp/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781626015; c=relaxed/simple;
-	bh=Nblf+abPAV8QKe7K8udCU5zGOl9GlMXwSXxEWlFe0NE=;
+	s=arc-20240116; t=1781635014; c=relaxed/simple;
+	bh=gk9KG3j+EJ7UJ/FAFxS3FWI0sdJd/fc7IsB9mMGNqso=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=etCdWtjtNAqNcP1ZWzPfyXH07s/K2n36VO/f2SIFcDwre2oy1awnZcYzUIVtpi2hTXVzcFhbakuiPRaAE+ax8YhYGe/YgUI6wSMzhUYFn6n9k0+Grd2ABgPWgLP68uNMNBBL2h4yVQP+xmAcC6aLfIRoLM3mfeAsXktXHKG7ZSg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RmiY7tpB; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C90751F000E9;
-	Tue, 16 Jun 2026 16:06:53 +0000 (UTC)
+	 MIME-Version; b=k0cOpycVY5EVoGGttFtGDJfndGlRsTciR4TkofyUfBQUKXg2C6KMkmyfEtfzZHhZ98Omcj4uxCljV8bD2YlVU5oD1O2N7Uv/YYShmBQLmD17aSkbaaNaPr9BLIgg6dxRvSVz36vCA5ZZZYoHJpqTVYoq1MCoqzFtxdEFRFjXtOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vBlKRzay; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C94A61F000E9;
+	Tue, 16 Jun 2026 18:36:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781626014;
-	bh=vL8e/zg9bYvvngSJU+qZzKXmLCVfjyfGVgpuORr15ts=;
+	s=korg; t=1781635013;
+	bh=0d2bV4EYzrRocPAKA977piiYgDWd3np/H1m6pggth18=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=RmiY7tpBI72tE1RflvcsBWUcCx3wxEwTkOSEde13hNhmtE1TU3mRjzPJO7JSOG7R1
-	 b4psPCw3bLbCJac29hvrVjuQR5FiTJ00LTLQz0S3biC818dcCTWbW4Irwzsq1fUfSA
-	 /W3k9jfSNFAfrBRyaCxRUaIVeuZIW48t+LraNgEY=
+	b=vBlKRzay7dY0OfEUM+60jNx3LclclcbmabfgLIqe1W4HQVaOpNflZ0J0JpXVkx0mO
+	 0Eqf7QkrnwpP5NmzLDVaIspPZ9O4zqYsKbeJM3VFu7iCdo0esAlU9/B8cPv4xvUabZ
+	 CwrrpAvrQUMRzItgz5JmpXKjHakATauIyi2vYxsk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jann Horn <jannh@google.com>,
-	Miklos Szeredi <mszeredi@redhat.com>,
-	"Christian Brauner (Amutable)" <brauner@kernel.org>
-Subject: [PATCH 6.18 217/325] fuse: reject fuse_notify() pagecache ops on directories
+	stable <stable@kernel.org>,
+	Johan Hovold <johan@kernel.org>,
+	Guangshuo Li <lgs201920130244@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 375/411] usb: gadget: f_hid: fix device reference leak in hidg_alloc()
 Date: Tue, 16 Jun 2026 20:30:13 +0530
-Message-ID: <20260616145108.986891337@linuxfoundation.org>
+Message-ID: <20260616145121.239810841@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,91 +73,91 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264463-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jannh@google.com,m:mszeredi@redhat.com,m:brauner@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-266167-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:johan@kernel.org,m:lgs201920130244@gmail.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 335E2691F46
+X-Rspamd-Queue-Id: 4E8F369444A
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: Guangshuo Li <lgs201920130244@gmail.com>
 
-commit 9c954499d43aefac01c5dfb57a82b13d2dcf4b94 upstream.
+[ Upstream commit 4f88d65def6f3c90121601b4f62a4c967f3063a6 ]
 
-The operations FUSE_NOTIFY_STORE and FUSE_NOTIFY_RETRIEVE allow the
-FUSE daemon to actively write/read pagecache contents.
+hidg_alloc() initializes hidg->dev with device_initialize() before
+calling dev_set_name(). If dev_set_name() fails, the function currently
+jumps to err_unlock and returns without calling put_device().
 
-For directories with FOPEN_CACHE_DIR, the pagecache is used as
-kernel-internal cache storage, and userspace is not supposed to have
-direct access to this cache - in particular, fuse_parse_cache() will hit
-WARN_ON() if the cache contains bogus data.
+This leaves the device reference unbalanced and prevents hidg_release()
+from being called. Calling put_device() here is also safe, since
+hidg_release() only frees resources owned by hidg.
 
-Reject FUSE_NOTIFY_STORE and FUSE_NOTIFY_RETRIEVE on anything other than
-regular files with -EINVAL.
+The issue was identified by a static analysis tool I developed and
+confirmed by manual review.
 
-Fixes: 5d7bc7e8680c ("fuse: allow using readdir cache")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jann Horn <jannh@google.com>
-Link: https://patch.msgid.link/20260519-fuse-dir-pagecache-v2-1-5428fa48e175@google.com
-Acked-by: Miklos Szeredi <mszeredi@redhat.com>
-Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+Route the dev_set_name() failure path through err_put_device so the
+device reference is dropped properly.
+
+Fixes: 89ff3dfac604 ("usb: gadget: f_hid: fix f_hidg lifetime vs cdev")
+Cc: stable <stable@kernel.org>
+Reviewed-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+Reviewed-by: Johan Hovold johan@kernel.org
+Link: https://patch.msgid.link/20260413142119.2977716-1-lgs201920130244@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/fuse/dev.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/usb/gadget/function/f_hid.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/fs/fuse/dev.c
-+++ b/fs/fuse/dev.c
-@@ -1798,6 +1798,10 @@ static int fuse_notify_store(struct fuse
- 	inode = fuse_ilookup(fc, nodeid,  NULL);
- 	if (!inode)
- 		goto out_up_killsb;
-+	if (!S_ISREG(inode->i_mode)) {
-+		err = -EINVAL;
-+		goto out_iput;
-+	}
+--- a/drivers/usb/gadget/function/f_hid.c
++++ b/drivers/usb/gadget/function/f_hid.c
+@@ -1278,7 +1278,7 @@ static struct usb_function *hidg_alloc(s
+ 	hidg->dev.devt = MKDEV(major, opts->minor);
+ 	ret = dev_set_name(&hidg->dev, "hidg%d", opts->minor);
+ 	if (ret)
+-		goto err_unlock;
++		goto err_put_device;
  
- 	mapping = inode->i_mapping;
- 	index = outarg.offset >> PAGE_SHIFT;
-@@ -1977,7 +1981,10 @@ static int fuse_notify_retrieve(struct f
+ 	hidg->bInterfaceSubClass = opts->subclass;
+ 	hidg->bInterfaceProtocol = opts->protocol;
+@@ -1313,7 +1313,6 @@ static struct usb_function *hidg_alloc(s
  
- 	inode = fuse_ilookup(fc, nodeid, &fm);
- 	if (inode) {
--		err = fuse_retrieve(fm, inode, &outarg);
-+		if (!S_ISREG(inode->i_mode))
-+			err = -EINVAL;
-+		else
-+			err = fuse_retrieve(fm, inode, &outarg);
- 		iput(inode);
- 	}
- 	up_read(&fc->killsb);
+ err_put_device:
+ 	put_device(&hidg->dev);
+-err_unlock:
+ 	mutex_unlock(&opts->lock);
+ 	return ERR_PTR(ret);
+ }
 
 
 
