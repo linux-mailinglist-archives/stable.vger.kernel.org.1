@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-264450-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264734-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 1k+GOml3MWo2kAUAu9opvQ
-	(envelope-from <stable+bounces-264450-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:18:49 +0200
+	id XLGtG5J8MWpqkgUAu9opvQ
+	(envelope-from <stable+bounces-264734-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:40:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69C75691EC0
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:18:49 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE772692551
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:40:49 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=GIEcvc5T;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264450-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264450-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=VbVTelUy;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264734-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264734-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 559AC31E6B8E
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:05:47 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6450B307A051
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:33:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 052414534B3;
-	Tue, 16 Jun 2026 16:05:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68A4D46AF3C;
+	Tue, 16 Jun 2026 16:33:20 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0E4944DB64;
-	Tue, 16 Jun 2026 16:05:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42E042F745E;
+	Tue, 16 Jun 2026 16:33:19 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781625946; cv=none; b=Iava4e7WnZ4ae/0jgJQOx+0g3FKFHGN6jOGplEOuf+HUcuJxdgiE25TAAaep3ETUtBS66BgAPPyhTHorKoSV6+HuuQpg9Go17J8LVUVBOEP6BiDdTD951oVOja+qShCt0Lr4NwFnnRnk8j3hHf4drhx6DMT0ODSIaqdXcyJbBG4=
+	t=1781627600; cv=none; b=aKk75r+/yVJSEZaifnEPAPVQpic0S6T5lpid2XL96a0UH1iTr7Eiky7eqcYlxj6XwVmQRDsMOHzLGJNp55BzcFVP08rvtSr44l1PguCsZoa8QA6YtOHSlZMLuzFceACC+dyuDWmIWv+OiTNdk1lHc65pNbjZnVhCRCXurMtPpMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781625946; c=relaxed/simple;
-	bh=jjO9CmCvtNU1MSA4DCeLq8b8Bw+xM2HazA2PFRxXLxg=;
+	s=arc-20240116; t=1781627600; c=relaxed/simple;
+	bh=qyYOl3pw/uM7XyBgMy88PYe9tLrW8SLHrPdd7MKvIWI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h+twrtZTMzXe7WMAQv35K0FfKh/DHUfwNZzEJn+f5STwYegPwVpIiVooJ/gKqJO0ywHgI9cD6w/K1wSxzNFULFOnjQTg65zLGFkJLtEw0q4ifaTNEbtF7St1fT/Pe1cDL+iiaqYv+l5ENKQBHBm874CZqByZvRXRoWvZBCpQxWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GIEcvc5T; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4C671F000E9;
-	Tue, 16 Jun 2026 16:05:44 +0000 (UTC)
+	 MIME-Version; b=ffgZGArIJxTTRBLo1paBuB1oXbpn3Yt8X5znC6Dw+JHk75V54XntiaS2Qny9BmlkrCvGiI+/QWCtHpEI/ESi3KTcSoZn8coTo6JDlQkmgAtSqBOkzbo8ff8NH47oTaStOWJaB3QbUBuEz6+BHA/EMvI6uAlZ7YbLTygYdgcn6M8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VbVTelUy; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4436F1F000E9;
+	Tue, 16 Jun 2026 16:33:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781625945;
-	bh=5S7Q+4Da8HjvmwIr/P4dKtc5KkSpTiLuIn+PmB5utsw=;
+	s=korg; t=1781627599;
+	bh=4MqupAlk3jZD9FtGHXcPnzVnzCHC6tr3b6pOIWEMjLM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=GIEcvc5TNe0a/TAs/MPqdJbOZzRWrLEe1PYdxbJcMc7FQFdBjJhWnQc87VZtnPmlb
-	 qvaP9RgGNhMRroaPTeJ/Rtlj1CHGyokZOfsV4m2WAoLkalp4QROtdZLYgxIjlgBdtj
-	 7kATyB4Z6XtXKUlrD6l3t8akvBuMYfIeSxsMUexw=
+	b=VbVTelUypcSACXmfs/R2pvn0BlPr5ph0DK6L0ompfq3STp4YnBVopKW7BfzWDFwz+
+	 5IEWlLs03pCj5UdTm7NJyzRBXDuF2C4BbJiMO2LCvhIXBtRaMHxXvi3XaFzgI1k51r
+	 OZK6+tuNQnY8dCoUyZ+3nJ25Qtn6v8WSbyqRN4UA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ZhaoJinming <zhaojinming@uniontech.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.18 237/325] net: airoha: Add NULL check for of_reserved_mem_lookup() in airoha_qdma_init_hfwd_queues()
-Date: Tue, 16 Jun 2026 20:30:33 +0530
-Message-ID: <20260616145110.247801033@linuxfoundation.org>
+	Jisheng Zhang <jszhang@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulfh@kernel.org>
+Subject: [PATCH 6.12 196/261] mmc: sdhci: add signal voltage switch in sdhci_resume_host
+Date: Tue, 16 Jun 2026 20:30:34 +0530
+Message-ID: <20260616145054.142809269@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,21 +72,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264450-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264734-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:zhaojinming@uniontech.com,m:lorenzo@kernel.org,m:kuba@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jszhang@kernel.org,m:adrian.hunter@intel.com,m:ulfh@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -98,54 +98,56 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 69C75691EC0
+X-Rspamd-Queue-Id: CE772692551
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ZhaoJinming <zhaojinming@uniontech.com>
+From: Jisheng Zhang <jszhang@kernel.org>
 
-commit f9f25118faa4dd2b6e3d14a03d123bbdbd59925d upstream.
+commit f595e8e77a51eee35e331f69321766593a845ef2 upstream.
 
-of_reserved_mem_lookup() may return NULL if the reserved memory region
-referenced by the "memory-region" phandle is not found in the reserved
-memory table (e.g. due to a misconfigured DTS or a removed
-memory-region node).  The current code dereferences the returned
-pointer without checking for NULL, leading to a kernel NULL pointer
-dereference at the following lines:
+I met one suspend/resume issue with sdr104 capable sdio wifi card (with
+"keep-power-in-suspend" set in DT property):
+After resuming from suspend to ram, the sdio wifi card stops working.
+Further debug shows that although ios shows the sdio card is at sdr104
+mode, the voltage is still at 3V3. This is due to missing the calling
+of ->start_signal_voltage_switch() in sdhci_resume_host().
 
-    dma_addr = rmem->base;                          // line 1156
-    num_desc = div_u64(rmem->size, buf_size);       // line 1160
+Fix this issue by adding ->start_signal_voltage_switch() in
+sdhci_resume_host(). This also matches what we do for
+sdhci_runtime_resume_host().
 
-Add a NULL check after of_reserved_mem_lookup() and return -ENODEV if
-the lookup fails, which is consistent with the existing error handling
-for of_parse_phandle() failure in the same code block.
+Then the question is: why this issue hasn't reported and fixed for so
+long time. IMHO, several reasons: Some host controllers just kick off
+the runtime resume for system resume, so they benefit from the well
+supported runtime pm code; Some platforms just use the old sdio wifi
+card which doesn't need signal voltage switch at all, the default
+voltage is 3v3 after resuming.
 
-Fixes: 3a1ce9e3d01b ("net: airoha: Add the capability to allocate hwfd buffers via reserved-memory")
+Fixes: 6308d2905bd3 ("mmc: sdhci: add quirk for keeping card power during suspend")
+Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: ZhaoJinming <zhaojinming@uniontech.com>
-Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Ulf Hansson <ulfh@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/airoha/airoha_eth.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/mmc/host/sdhci.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/net/ethernet/airoha/airoha_eth.c
-+++ b/drivers/net/ethernet/airoha/airoha_eth.c
-@@ -1172,6 +1172,9 @@ static int airoha_qdma_init_hfwd_queues(
- 
- 		rmem = of_reserved_mem_lookup(np);
- 		of_node_put(np);
-+		if (!rmem)
-+			return -ENODEV;
-+
- 		dma_addr = rmem->base;
- 		/* Compute the number of hw descriptors according to the
- 		 * reserved memory size and the payload buffer size
+--- a/drivers/mmc/host/sdhci.c
++++ b/drivers/mmc/host/sdhci.c
+@@ -3782,6 +3782,7 @@ int sdhci_resume_host(struct sdhci_host
+ 		host->pwr = 0;
+ 		host->clock = 0;
+ 		host->reinit_uhs = true;
++		mmc->ops->start_signal_voltage_switch(mmc, &mmc->ios);
+ 		mmc->ops->set_ios(mmc, &mmc->ios);
+ 	} else {
+ 		sdhci_init(host, (mmc->pm_flags & MMC_PM_KEEP_POWER));
 
 
 
