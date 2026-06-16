@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-265212-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264725-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id JV3+Mt6FMWpSlgUAu9opvQ
-	(envelope-from <stable+bounces-265212-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:20:30 +0200
+	id mQWgDsJ6MWqkkQUAu9opvQ
+	(envelope-from <stable+bounces-264725-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:33:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6438269302D
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:20:30 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5C6B69231E
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:33:05 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=VATQaD6G;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265212-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265212-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=rDNAmjzr;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264725-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264725-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 92FCA301624D
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:14:09 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7FC9A304A4CC
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:32:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9D2D425CEE;
-	Tue, 16 Jun 2026 17:14:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F975477E33;
+	Tue, 16 Jun 2026 16:32:14 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8675932B138;
-	Tue, 16 Jun 2026 17:14:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3186F4508F2;
+	Tue, 16 Jun 2026 16:32:11 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781630048; cv=none; b=hxFlgnWXwiFID84/YjkuhNqgw8aWaiFtMXQQyBa8m8YGZORJ7kWp1c2L4gT8gjK7UMrpWnzhC9RVzT5xrd5upl0XC9W8FG21egdddkcwhcNCJlymOP+Qw2TsRiP/wc8aUR9XtLWxQAK1vIb/7T70njR1fFSplhtMwBfIcbzGfvo=
+	t=1781627533; cv=none; b=j79rmEHJ89fbvmzf1fmFuk9yfkafpXFlgJ3PB8t4YNzu3uoyInL6tlatRoNXpVOzG9WB6qyougN0NSjgRJrQTmazl+RLotROVZK9Vjjy2l5+oUxvChacXeUwCrp3zx44c2Yc4S6kCk1bGF28HPFVLrA944gZtW7lkH4T2MJt5Pw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781630048; c=relaxed/simple;
-	bh=h1OX+LjyAMdZIN+if3Oz2BpBW5ajK4RlkShhVuKT15s=;
+	s=arc-20240116; t=1781627533; c=relaxed/simple;
+	bh=Jyb9muVDZJh/85r6QgtsoAhQwpCl0vQlbq1q3+3sp88=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sqYVvS8/6DrSeOcMQQiOBC/F8ApKCpXm1vq4Z7+NRLwLHeDG2I442n8p9ZQijhPULe7HQK2pPVse6+yCiqQLRKZrTXaYZrYrH2tiWcfyAvTyyRalNLT5Hg3v3OltZHXUThyR0SGvvZxZ/FbUSpy6oTiT4Zjd99dAWOQFUaqExJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VATQaD6G; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37F611F000E9;
-	Tue, 16 Jun 2026 17:14:05 +0000 (UTC)
+	 MIME-Version; b=Tftznf/LoNxdyrCM1Cv56hcgUmgMCCbDklEcIPhppxjRU/B1GQTuhKffniZKq8GTOXeZxpRkVH9sCW0BTTmFoEI71FUvU+YUMXQou9LusnV5VzUe+l0QrH81FELu/WVBSgwjQexHBR1VZan3fVzdqcPmvS6VBV9J/R1IHBGS08U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rDNAmjzr; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1A921F000E9;
+	Tue, 16 Jun 2026 16:32:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781630047;
-	bh=fCHEZUD+LHFsM8lIeuau1cHdn0CB7MkZhnNT5IsHTXg=;
+	s=korg; t=1781627531;
+	bh=6tLH3RI7H0vb0FLEtmuHLomYoIF6weWPoMVd68bXzlU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=VATQaD6GwHbos7JROjTu+0fXqS69+sYzAAFApxRU5KpidXkSjiaEXyWvmA4qjh9Ba
-	 nPWDmOWR8MpdlCWjiTyhPm0ZsioM8u4mLtAGpLIlxifsCpX89poKBLz1CeQpfoUklz
-	 kGHx4CE0bQzF8i5Fzd0nk3GsMaPuAyFqZvk953QQ=
+	b=rDNAmjzr9OquNgf8JxRI3InrawvzdLzX6/0R9W796YzU87OJ80Mpqs7AB9o2dfctF
+	 0UApFjlLZJuuYngTKHks8ToPweZnr8zkEZqxzxFzMSkR0pCb0dMk2KwQkyiSx2IuTn
+	 1l3ZbmicwSDF5oy/+TihBuyUJKNojllWf6IsoEwM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Geliang Tang <geliang@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 400/452] mptcp: introduce the mptcp_init_skb helper
+	Federico Brasili <federico.brasili@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.12 189/261] io_uring/kbuf: dont truncate end buffer for bundles
 Date: Tue, 16 Jun 2026 20:30:27 +0530
-Message-ID: <20260616145137.869246842@linuxfoundation.org>
+Message-ID: <20260616145053.821640587@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,155 +66,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265212-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:matttbe@kernel.org,m:pabeni@redhat.com,m:geliang@kernel.org,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264725-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:federico.brasili@gmail.com,m:axboe@kernel.dk,m:federicobrasili@gmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.dk];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,kernel.dk:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 6438269302D
+X-Rspamd-Queue-Id: B5C6B69231E
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit 9a0afe0db46720ce1a009c7dac168aa0584bd732 ]
+Commit 70f4886bcbb929e88038c8807f1daf7fc587ae7c upstream.
 
-Factor out all the skb initialization step in a new helper and
-use it. Note that this change moves the MPTCP CB initialization
-earlier: we can do such step as soon as the skb leaves the
-subflow socket receive queues.
+If buffers have been peeked for a bundle receive, the kernel will
+truncate the end buffer, if the available length is shorter than the
+buffer itself. This is unnecessary, as applications iterating bundle
+receives must always use the minimum size of the buffer length and the
+remaining number of bytes in the bundle. The examples in liburing do
+that as well, eg examples/proxy.c.
 
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Tested-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250927-net-next-mptcp-rcv-path-imp-v1-4-5da266aa9c1a@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 50c2d91c5dfa ("mptcp: do not drop partial packets")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+If the kernel does truncate this buffer AND the current transfer fails,
+then the buffer will be left with a smaller size than what is otherwise
+available.
+
+Just remove the buffer truncation, as it's not necessary in the first
+place.
+
+Link: https://lore.kernel.org/io-uring/CAAEr8jbY60noGj1fw_k91UJRBkyiRVoS6=nLhZ7Svwidjn4CAA@mail.gmail.com/
+Reported-by: Federico Brasili <federico.brasili@gmail.com>
+Cc: stable@vger.kernel.org
+Fixes: 35c8711c8fc4 ("io_uring/kbuf: add helpers for getting/peeking multiple buffers")
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/protocol.c |   50 +++++++++++++++++++++++++++-----------------------
- 1 file changed, 27 insertions(+), 23 deletions(-)
+ io_uring/kbuf.c |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -323,7 +323,7 @@ end:
- 	mptcp_set_owner_r(skb, sk);
- }
- 
--static bool mptcp_rmem_schedule(struct sock *sk, struct sock *ssk, int size)
-+static bool mptcp_rmem_schedule(struct sock *sk, int size)
- {
- 	struct mptcp_sock *msk = mptcp_sk(sk);
- 	int amt, amount;
-@@ -341,27 +341,11 @@ static bool mptcp_rmem_schedule(struct s
- 	return true;
- }
- 
--static bool __mptcp_move_skb(struct mptcp_sock *msk, struct sock *ssk,
--			     struct sk_buff *skb, unsigned int offset,
--			     size_t copy_len)
-+static void mptcp_init_skb(struct sock *ssk, struct sk_buff *skb, int offset,
-+			   int copy_len)
- {
--	struct mptcp_subflow_context *subflow = mptcp_subflow_ctx(ssk);
--	struct sock *sk = (struct sock *)msk;
--	struct sk_buff *tail;
--	bool has_rxtstamp;
--
--	__skb_unlink(skb, &ssk->sk_receive_queue);
--
--	skb_ext_reset(skb);
--	skb_orphan(skb);
--
--	/* try to fetch required memory from subflow */
--	if (!mptcp_rmem_schedule(sk, ssk, skb->truesize)) {
--		MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_RCVPRUNED);
--		goto drop;
--	}
--
--	has_rxtstamp = TCP_SKB_CB(skb)->has_rxtstamp;
-+	const struct mptcp_subflow_context *subflow = mptcp_subflow_ctx(ssk);
-+	bool has_rxtstamp = TCP_SKB_CB(skb)->has_rxtstamp;
- 
- 	/* the skb map_seq accounts for the skb offset:
- 	 * mptcp_subflow_get_mapped_dsn() is based on the current tp->copied_seq
-@@ -373,6 +357,25 @@ static bool __mptcp_move_skb(struct mptc
- 	MPTCP_SKB_CB(skb)->has_rxtstamp = has_rxtstamp;
- 	MPTCP_SKB_CB(skb)->cant_coalesce = 0;
- 
-+	__skb_unlink(skb, &ssk->sk_receive_queue);
-+
-+	skb_ext_reset(skb);
-+	skb_dst_drop(skb);
-+}
-+
-+static bool __mptcp_move_skb(struct sock *sk, struct sk_buff *skb)
-+{
-+	u64 copy_len = MPTCP_SKB_CB(skb)->end_seq - MPTCP_SKB_CB(skb)->map_seq;
-+	struct mptcp_sock *msk = mptcp_sk(sk);
-+	struct sk_buff *tail;
-+
-+	/* try to fetch required memory from subflow */
-+	if (!mptcp_rmem_schedule(sk, skb->truesize)) {
-+		MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_RCVPRUNED);
-+		mptcp_drop(sk, skb);
-+		return false;
-+	}
-+
- 	if (MPTCP_SKB_CB(skb)->map_seq == msk->ack_seq) {
- 		/* in sequence */
- 		msk->bytes_received += copy_len;
-@@ -393,7 +396,6 @@ static bool __mptcp_move_skb(struct mptc
- 	 * will retransmit as needed, if needed.
- 	 */
- 	MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_DUPDATA);
--drop:
- 	mptcp_drop(sk, skb);
- 	return false;
- }
-@@ -720,7 +722,9 @@ static bool __mptcp_move_skbs_from_subfl
- 			if (tp->urg_data)
- 				done = true;
- 
--			if (__mptcp_move_skb(msk, ssk, skb, offset, len))
-+			mptcp_init_skb(ssk, skb, offset, len);
-+			skb_orphan(skb);
-+			if (__mptcp_move_skb(sk, skb))
- 				moved += len;
- 			seq += len;
+--- a/io_uring/kbuf.c
++++ b/io_uring/kbuf.c
+@@ -293,7 +293,6 @@ static int io_ring_buffers_peek(struct i
+ 				arg->partial_map = 1;
+ 				if (iov != arg->iovs)
+ 					break;
+-				WRITE_ONCE(buf->len, len);
+ 			}
+ 		}
  
 
 
