@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-263932-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265452-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id VL5ODKRqMWpDiwUAu9opvQ
-	(envelope-from <stable+bounces-263932-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:24:20 +0200
+	id 620EIi2JMWrSlwUAu9opvQ
+	(envelope-from <stable+bounces-265452-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:34:37 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB7C3690FDB
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:24:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2620769344B
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:34:37 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=akDGhlMr;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263932-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263932-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="xR/y7WPz";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265452-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265452-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BB8FF306F0E5
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:20:55 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9130E3028DC9
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:34:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 795C943E490;
-	Tue, 16 Jun 2026 15:20:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B54C7472767;
+	Tue, 16 Jun 2026 17:34:33 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F92F43E4BF;
-	Tue, 16 Jun 2026 15:20:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 644004502F;
+	Tue, 16 Jun 2026 17:34:32 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781623251; cv=none; b=FNWi016oy5lZ4QosOyD1BAx92TxLZJq18+q3kpjfE2otAAlMlLbCXEdy/MyObFJ5tZCu9rjyV6GfqKEunSjiz76/t3tIgrDH6YZgbfHMiTB/7JXh/DbeYK3nPbIkbS/27FjZuEh86sZKu16KM1I7MZfb2yUr4r41yBPZf3016MA=
+	t=1781631273; cv=none; b=TlYII028Ihe0cPRJafx8FElL92kMt6FVGQc2NRQ656pwfDKQ5b07ACQkvcIurhUVA4oFfbSrM9PqVYgGxy5zMKL4kgfNBf2IkweKa3qVI/zmsOiffme2vOba58yFUquMUBLv0tiaqkQtW2Sy24sLwwrAgff2OegMH2oheyhOEo0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781623251; c=relaxed/simple;
-	bh=cVoFmg0rf1sTtbKGbu16cqJrqaSvm7+0lomyDBKG60w=;
+	s=arc-20240116; t=1781631273; c=relaxed/simple;
+	bh=rIk01If3zGovB6mqglFMrx7srlJnCQVLD+cdapVbRQY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VhSAe3BlqCOPG55zDJhJfKazVSsFReUuh6jefuXMsgQX/enxQaWxJH6qC2YPSSQIujgp2v3TUZiyPY5fBXSf5/nc7KRN9jgzEkFQWG1X4jI6UfKN1HjTWZi1VjwbKsWd7yCSeGu8FQDCEBtigYcd0hCgYOB/dSHMORvguo3X8SE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=akDGhlMr; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7CC91F000E9;
-	Tue, 16 Jun 2026 15:20:48 +0000 (UTC)
+	 MIME-Version; b=UcXzL1x617ymeNsUqyMpnUBBBD1Cd3j9zWaoDx+IKRYrhF7C/ea+AQMQe/Sbeqv9iU2BYAtJXT69gjSHcQFFk50FYmPqSZBE2OXQYL1hbmC/EGtmpO5EgHweWNtLB9dghTDBHjQSnQymoUP88E99K5i5c5HMm33cuJ3ZyyLWw/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xR/y7WPz; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66C471F000E9;
+	Tue, 16 Jun 2026 17:34:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781623249;
-	bh=3Chf9eszS0MVXw/pJGg7nRAg7IHOmvljc3ajDOSWsAY=;
+	s=korg; t=1781631272;
+	bh=3ajYGecXNC6qJxGP57OFpMkQFOYchI+txjpjuI2kVI4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=akDGhlMrt35EZJ5dVO9R1/47D8n1uE2DB2cfTwzyf3pA/D8/9XeMzUmYjj9LrvfBo
-	 ca+H0wdpU2soOZqEZRtO2edBPmXcW/uABS7O0sG0J19FEd2bNpxHU7MRjnuHwJWB51
-	 ktJyJWRRoC4Vagvx00pRAsnCtktIYzJdhGb/PV4I=
+	b=xR/y7WPzOOJXQRcX8oalNZlY5EKj5EhKarPRAFNs4IBD9MDCnT8Ak6GCtPYO/Pja0
+	 mszwgI2j35WlxghZBhXQGqai0nLTA7STCBrl9AHJP/h38fW8YBBqxYSF+BusDI2cjA
+	 oDRnw/LnOWbquQw/I9QQakLl20GjAjl6PVOe/rbY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chenguang Zhao <zhaochenguang@kylinos.cn>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Eulgyu Kim <eulgyukim@snu.ac.kr>,
+	Taeyang Lee <0wn@theori.io>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 106/378] netlabel: validate unlabeled address and mask attribute lengths
+Subject: [PATCH 6.1 190/522] bpf: Free reuseport cBPF prog after RCU grace period.
 Date: Tue, 16 Jun 2026 20:25:37 +0530
-Message-ID: <20260616145115.941937508@linuxfoundation.org>
+Message-ID: <20260616145134.998150586@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,122 +71,174 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-263932-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:zhaochenguang@kylinos.cn,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265452-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:eulgyukim@snu.ac.kr,m:0wn@theori.io,m:kuniyu@google.com,m:daniel@iogearbox.net,m:sashal@kernel.org,s:lists@lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,kylinos.cn:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,theori.io:email,snu.ac.kr:email,iogearbox.net:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: EB7C3690FDB
+X-Rspamd-Queue-Id: 2620769344B
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chenguang Zhao <zhaochenguang@kylinos.cn>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-[ Upstream commit 9772589b57e44aedc240211c5c3f7a684a034d3a ]
+[ Upstream commit 18fc650ccd7fe3376eca89203668cfb8268f60df ]
 
-netlbl_unlabel_addrinfo_get() used the address attribute length to
-determine whether the attribute data could be read as an IPv4 or IPv6
-address, but did not independently validate the corresponding mask
-attribute length.  A crafted Generic Netlink request could therefore
-provide a valid IPv4/IPv6 address attribute with a shorter mask
-attribute, which would later be read as a full struct in_addr or
-struct in6_addr.
+Eulgyu Kim reported the splat below with a repro. [0]
 
-NLA_BINARY policy lengths are maximum lengths by default, so use
-NLA_POLICY_EXACT_LEN() for the unlabeled IPv4/IPv6 address and mask
-attributes.  This rejects short attributes during policy validation and
-also exposes the exact length requirements through policy introspection.
+The repro sets up a UDP reuseport group with a cBPF prog and
+replaces it with a new one while another thread is sending
+a UDP packet to the group.
 
-Fixes: 8cc44579d1bd ("NetLabel: Introduce static network labels for unlabeled connections")
-Signed-off-by: Chenguang Zhao <zhaochenguang@kylinos.cn>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+The reuseport prog is freed by sk_reuseport_prog_free().
+bpf_prog_put() is called for "e"BPF prog to destruct through
+multiple stages while cBPF prog is freed immediately by
+bpf_release_orig_filter() and bpf_prog_free().
+
+If a reuseport prog is detached from the setsockopt() path
+(reuseport_attach_prog() or reuseport_detach_prog()),
+sk_reuseport_prog_free() is called without waiting for RCU
+readers to complete, resulting in various bugs.
+
+Let's defer freeing the reuseport cBPF prog after one RCU
+grace period.
+
+Note "e"BPF prog is safe as is unless the fast path starts
+to touch fields destroyed in bpf_prog_put_deferred() and
+__bpf_prog_put_noref().
+
+[0]:
+BUG: KASAN: vmalloc-out-of-bounds in reuseport_select_sock+0xedc/0x1220 net/core/sock_reuseport.c:596
+Read of size 4 at addr ffffc9000051e004 by task slowme/10208
+CPU: 6 UID: 1000 PID: 10208 Comm: slowme Not tainted 7.0.0-geb7ac95ff75e #32 PREEMPT(full)
+Hardware name: QEMU Ubuntu 24.04 PC v2 (i440FX + PIIX, arch_caps fix, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+Call Trace:
+ <IRQ>
+ dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:378 [inline]
+ print_report+0xca/0x240 mm/kasan/report.c:482
+ kasan_report+0x118/0x150 mm/kasan/report.c:595
+ reuseport_select_sock+0xedc/0x1220 net/core/sock_reuseport.c:596
+ udp4_lib_lookup2+0x3bc/0x950 net/ipv4/udp.c:495
+ __udp4_lib_lookup+0x768/0xe20 net/ipv4/udp.c:723
+ __udp4_lib_lookup_skb+0x297/0x390 net/ipv4/udp.c:752
+ __udp4_lib_rcv+0x1312/0x2620 net/ipv4/udp.c:2752
+ ip_protocol_deliver_rcu+0x282/0x440 net/ipv4/ip_input.c:207
+ ip_local_deliver_finish+0x3bb/0x6f0 net/ipv4/ip_input.c:241
+ NF_HOOK+0x30c/0x3a0 include/linux/netfilter.h:318
+ NF_HOOK+0x30c/0x3a0 include/linux/netfilter.h:318
+ __netif_receive_skb_one_core net/core/dev.c:6181 [inline]
+ __netif_receive_skb net/core/dev.c:6294 [inline]
+ process_backlog+0xaa4/0x1960 net/core/dev.c:6645
+ __napi_poll+0xae/0x340 net/core/dev.c:7709
+ napi_poll net/core/dev.c:7772 [inline]
+ net_rx_action+0x5d7/0xf50 net/core/dev.c:7929
+ handle_softirqs+0x22b/0x870 kernel/softirq.c:622
+ do_softirq+0x76/0xd0 kernel/softirq.c:523
+ </IRQ>
+ <TASK>
+ __local_bh_enable_ip+0xf8/0x130 kernel/softirq.c:450
+ local_bh_enable include/linux/bottom_half.h:33 [inline]
+ rcu_read_unlock_bh include/linux/rcupdate.h:924 [inline]
+ __dev_queue_xmit+0x1dd7/0x3710 net/core/dev.c:4890
+ neigh_output include/net/neighbour.h:556 [inline]
+ ip_finish_output2+0xca9/0x1070 net/ipv4/ip_output.c:237
+ NF_HOOK_COND include/linux/netfilter.h:307 [inline]
+ ip_output+0x29f/0x450 net/ipv4/ip_output.c:438
+ ip_send_skb+0x45/0xc0 net/ipv4/ip_output.c:1508
+ udp_send_skb+0xb04/0x1510 net/ipv4/udp.c:1195
+ udp_sendmsg+0x1a71/0x2350 net/ipv4/udp.c:1485
+ sock_sendmsg_nosec net/socket.c:727 [inline]
+ __sock_sendmsg net/socket.c:742 [inline]
+ __sys_sendto+0x554/0x680 net/socket.c:2206
+ __do_sys_sendto net/socket.c:2213 [inline]
+ __se_sys_sendto net/socket.c:2209 [inline]
+ __x64_sys_sendto+0xde/0x100 net/socket.c:2209
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x160/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x415a2d
+Code: b3 66 2e 0f 1f 84 00 00 00 00 00 66 90 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f6bc31e41e8 EFLAGS: 00000212 ORIG_RAX: 000000000000002c
+RAX: ffffffffffffffda RBX: 00007f6bc31e4cdc RCX: 0000000000415a2d
+RDX: 0000000000000001 RSI: 00007f6bc31e421f RDI: 0000000000000003
+RBP: 00007f6bc31e4240 R08: 00007f6bc31e4220 R09: 0000000000000010
+R10: 0000000000000000 R11: 0000000000000212 R12: 00007f6bc31e46c0
+R13: ffffffffffffffb8 R14: 0000000000000000 R15: 00007ffc9b0d70b0
+ </TASK>
+
+Fixes: 538950a1b752 ("soreuseport: setsockopt SO_ATTACH_REUSEPORT_[CE]BPF")
+Reported-by: Eulgyu Kim <eulgyukim@snu.ac.kr>
+Reported-by: Taeyang Lee <0wn@theori.io>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/bpf/20260426012647.3233119-1-kuniyu@google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netlabel/netlabel_unlabeled.c | 30 ++++++++++--------------------
- 1 file changed, 10 insertions(+), 20 deletions(-)
+ net/core/filter.c | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/net/netlabel/netlabel_unlabeled.c b/net/netlabel/netlabel_unlabeled.c
-index ca7a9e2a3de781..870e7699326a4a 100644
---- a/net/netlabel/netlabel_unlabeled.c
-+++ b/net/netlabel/netlabel_unlabeled.c
-@@ -114,14 +114,14 @@ static struct genl_family netlbl_unlabel_gnl_family;
- /* NetLabel Netlink attribute policy */
- static const struct nla_policy netlbl_unlabel_genl_policy[NLBL_UNLABEL_A_MAX + 1] = {
- 	[NLBL_UNLABEL_A_ACPTFLG] = { .type = NLA_U8 },
--	[NLBL_UNLABEL_A_IPV6ADDR] = { .type = NLA_BINARY,
--				      .len = sizeof(struct in6_addr) },
--	[NLBL_UNLABEL_A_IPV6MASK] = { .type = NLA_BINARY,
--				      .len = sizeof(struct in6_addr) },
--	[NLBL_UNLABEL_A_IPV4ADDR] = { .type = NLA_BINARY,
--				      .len = sizeof(struct in_addr) },
--	[NLBL_UNLABEL_A_IPV4MASK] = { .type = NLA_BINARY,
--				      .len = sizeof(struct in_addr) },
-+	[NLBL_UNLABEL_A_IPV6ADDR] =
-+		NLA_POLICY_EXACT_LEN(sizeof(struct in6_addr)),
-+	[NLBL_UNLABEL_A_IPV6MASK] =
-+		NLA_POLICY_EXACT_LEN(sizeof(struct in6_addr)),
-+	[NLBL_UNLABEL_A_IPV4ADDR] =
-+		NLA_POLICY_EXACT_LEN(sizeof(struct in_addr)),
-+	[NLBL_UNLABEL_A_IPV4MASK] =
-+		NLA_POLICY_EXACT_LEN(sizeof(struct in_addr)),
- 	[NLBL_UNLABEL_A_IFACE] = { .type = NLA_NUL_STRING,
- 				   .len = IFNAMSIZ - 1 },
- 	[NLBL_UNLABEL_A_SECCTX] = { .type = NLA_BINARY }
-@@ -757,24 +757,14 @@ static int netlbl_unlabel_addrinfo_get(struct genl_info *info,
- 				       void **mask,
- 				       u32 *len)
+diff --git a/net/core/filter.c b/net/core/filter.c
+index 0ea9ede2c44724..3628ea596050f0 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -1643,15 +1643,24 @@ int sk_reuseport_attach_bpf(u32 ufd, struct sock *sk)
+ 	return err;
+ }
+ 
++static void sk_reuseport_prog_free_rcu(struct rcu_head *rcu)
++{
++	struct bpf_prog_aux *aux = container_of(rcu, struct bpf_prog_aux, rcu);
++	struct bpf_prog *prog = aux->prog;
++
++	bpf_release_orig_filter(prog);
++	bpf_prog_free(prog);
++}
++
+ void sk_reuseport_prog_free(struct bpf_prog *prog)
  {
--	u32 addr_len;
--
- 	if (info->attrs[NLBL_UNLABEL_A_IPV4ADDR] &&
- 	    info->attrs[NLBL_UNLABEL_A_IPV4MASK]) {
--		addr_len = nla_len(info->attrs[NLBL_UNLABEL_A_IPV4ADDR]);
--		if (addr_len != sizeof(struct in_addr) &&
--		    addr_len != nla_len(info->attrs[NLBL_UNLABEL_A_IPV4MASK]))
--			return -EINVAL;
--		*len = addr_len;
-+		*len = sizeof(struct in_addr);
- 		*addr = nla_data(info->attrs[NLBL_UNLABEL_A_IPV4ADDR]);
- 		*mask = nla_data(info->attrs[NLBL_UNLABEL_A_IPV4MASK]);
- 		return 0;
- 	} else if (info->attrs[NLBL_UNLABEL_A_IPV6ADDR]) {
--		addr_len = nla_len(info->attrs[NLBL_UNLABEL_A_IPV6ADDR]);
--		if (addr_len != sizeof(struct in6_addr) &&
--		    addr_len != nla_len(info->attrs[NLBL_UNLABEL_A_IPV6MASK]))
--			return -EINVAL;
--		*len = addr_len;
-+		*len = sizeof(struct in6_addr);
- 		*addr = nla_data(info->attrs[NLBL_UNLABEL_A_IPV6ADDR]);
- 		*mask = nla_data(info->attrs[NLBL_UNLABEL_A_IPV6MASK]);
- 		return 0;
+ 	if (!prog)
+ 		return;
+ 
+-	if (prog->type == BPF_PROG_TYPE_SK_REUSEPORT)
+-		bpf_prog_put(prog);
++	if (bpf_prog_was_classic(prog))
++		call_rcu(&prog->aux->rcu, sk_reuseport_prog_free_rcu);
+ 	else
+-		bpf_prog_destroy(prog);
++		bpf_prog_put(prog);
+ }
+ 
+ struct bpf_scratchpad {
 -- 
 2.53.0
 
