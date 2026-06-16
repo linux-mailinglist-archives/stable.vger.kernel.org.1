@@ -1,63 +1,62 @@
-Return-Path: <stable+bounces-263941-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266293-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id HyMLBoJqMWo8iwUAu9opvQ
-	(envelope-from <stable+bounces-263941-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:23:46 +0200
+	id VCMgN1OaMWoAoAUAu9opvQ
+	(envelope-from <stable+bounces-266293-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:47:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C4B6690FBF
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:23:45 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70B5669479A
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:47:47 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=eaxtXC09;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263941-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263941-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=EdjjBvy9;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266293-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266293-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0B1623030038
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:21:55 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B95DC303789F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:47:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79DE2449EA8;
-	Tue, 16 Jun 2026 15:21:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0738143D4E8;
+	Tue, 16 Jun 2026 18:47:45 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C7044418D7;
-	Tue, 16 Jun 2026 15:21:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB4693D8125;
+	Tue, 16 Jun 2026 18:47:43 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781623302; cv=none; b=gbw7wD3VXVqMQublUkhHUHw0csDZLPii02lVjS0GVGeK9KzQLCcDBPeHSEKrTwaX0oUhE5LlYMuZYfo+PdPtAb+2Z7tJI5+Q76u0ehOJYHIkrmPkXrdsjI/vHwkV3ONJfNoBWviVqxx0hdSxKr2hBPkUNsZYHikgX9RShF83CXc=
+	t=1781635664; cv=none; b=tXK3gO4SZGpJgnGW8l8tAFppdYKjh+l4uchUGWkMceOk7mbgoYAooocNtGFH1Eg6arnwvoLyZGYegCt9C1ZQwjx183Xx2hVH/3jA9vNkQKyh4IA2ke4Uhy6KMhpFPyFMJM6HNd8NYhSKUM6MWYoRp+znUGe5EfJSh3l7YoVZsks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781623302; c=relaxed/simple;
-	bh=hf/MacHu356K8TPA8DtgpxIjxbvZhddtMykq8WizSTg=;
+	s=arc-20240116; t=1781635664; c=relaxed/simple;
+	bh=QN/0R1EFQHXlUeAomdOpIl2OaVqNc4fO9OtVrRiOKmA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e6oB0rsbZJ/ITW4eBpuYAxEx7reK4UI+uiWcAsdwO2bOqWZjz31ZmKwjlWg89VdREh7nD2ikwsRK8/VUdw7IJvntsYEfE57SyeRtI5eZdLjfgVstOpVfdtp8rx+1/8Gg3Dw56VCZsa1Cn25xK0UbzBZh6gJD83TX43eaQpGN3TE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eaxtXC09; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D79E1F00A3A;
-	Tue, 16 Jun 2026 15:21:39 +0000 (UTC)
+	 MIME-Version; b=KJ9q2TCH8sPSX/qwVrORgmazFgM1cuXKhTdpR9Iq/WuNDd5WKafxlCzdcviM5Nok/cZU5uTPugFgNNlXKRuqKE8SPIgXjoo36pWYwGOyfMqEQ+xUHKgxnyFqkjzIZsFOweCcsALAJ+bEV6wkYABZSOnOS8Xo5/sk+qoyNOuIL6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EdjjBvy9; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 709C11F000E9;
+	Tue, 16 Jun 2026 18:47:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781623301;
-	bh=2Pe7o7w69c9rgl5uWxD6HzpTgvnSCxkR8F+YHxKpA0c=;
+	s=korg; t=1781635663;
+	bh=PmrEwbjfMJnsAtLIeAQUsNmu28NvJFq5Yaskvgbd7kU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=eaxtXC09r60BcxxxExM/UPxPVNbTl+FS22NoKPFB0Diz/2yfwCq9s1+z6gTUdS/DH
-	 5OtBJUfhxqIyoogYuRakXpLf5csn/wk/Rm1L5f+J28Oh/jjhURTazGY6/n5uJNQ/35
-	 cQulbDFL+Ve8gpWYvbpRJXwIi2rtZfIqOVPhBifo=
+	b=EdjjBvy9Y4HjUdDLQ63IRs94PaDJkagsfHw7jeRg54KA779rJNWrbtW7a4FRXPO6L
+	 YirzDnmJT2xY/lIcwMNIxY19AWb8m0nKeDAj6Ji0oD9TcybjzfhJKYQ4lJieGBYM05
+	 HIzHsuxZIYSiIr1YvU6xMDhqzeX+/xV8oQ1/3TSc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Moreno <amorenoz@redhat.com>,
-	Aaron Conole <aconole@redhat.com>,
-	Eelco Chaudron <echaudro@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 123/378] net: openvswitch: fix possible kfree_skb of ERR_PTR
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Rodrigo Alencar <rodrigo.alencar@analog.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <jic23@kernel.org>
+Subject: [PATCH 5.10 058/342] iio: dac: ad5686: fix input raw value check
 Date: Tue, 16 Jun 2026 20:25:54 +0530
-Message-ID: <20260616145116.820999093@linuxfoundation.org>
+Message-ID: <20260616145050.965132708@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,22 +72,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-263941-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-266293-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:amorenoz@redhat.com,m:aconole@redhat.com,m:echaudro@redhat.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:andriy.shevchenko@intel.com,m:rodrigo.alencar@analog.com,m:Stable@vger.kernel.org,m:jic23@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -97,60 +96,47 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,intel.com:email,vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,analog.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 0C4B6690FBF
+X-Rspamd-Queue-Id: 70B5669479A
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Moreno <amorenoz@redhat.com>
+From: Rodrigo Alencar <rodrigo.alencar@analog.com>
 
-[ Upstream commit ee30dd2909d8b98619f4341c70ec8dc8e155ab02 ]
+commit d01220ee5e43c65a206df827b39bf5cf5f7b9dce upstream.
 
-After the patch in the "Fixes" tag, the allocation of the "reply" skb
-can happen either before or after locking the ovs_mutex.
+Fix range check for input raw value, which is off by one, i.e., for a
+10-bit DAC the max valid value is 1023, but 1 << 10 equals 1024, which
+passes the previous check, allowing an out-of-range write. The issue
+exists since the ad5686 driver was first introduced.
 
-However, error cleanups still follow the classical reversed order,
-assuming "reply" is allocated before locking: it is freed after unlocking.
-
-If "reply" allocation happens after locking the mutex and it fails,
-"reply" is left with an ERR_PTR, and execution jumps to the correspondent
-cleanup stage which will try to free an invalid pointer.
-
-Fix this by setting the pointer to NULL after having saved its error
-value.
-
-Fixes: 893f139b9a6c ("openvswitch: Minimize ovs_flow_cmd_new|set critical sections.")
-Signed-off-by: Adrian Moreno <amorenoz@redhat.com>
-Reviewed-by: Aaron Conole <aconole@redhat.com>
-Acked-by: Eelco Chaudron <echaudro@redhat.com>
-Link: https://patch.msgid.link/20260604121946.942164-1-amorenoz@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c2f37c8dcadc ("iio: dac: New driver for AD5686R, AD5685R, AD5684R Digital to analog converters")
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Signed-off-by: Rodrigo Alencar <rodrigo.alencar@analog.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <jic23@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/openvswitch/datapath.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/iio/dac/ad5686.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/openvswitch/datapath.c b/net/openvswitch/datapath.c
-index bbbde50fc6498f..f0164817d9b723 100644
---- a/net/openvswitch/datapath.c
-+++ b/net/openvswitch/datapath.c
-@@ -1316,6 +1316,7 @@ static int ovs_flow_cmd_set(struct sk_buff *skb, struct genl_info *info)
+--- a/drivers/iio/dac/ad5686.c
++++ b/drivers/iio/dac/ad5686.c
+@@ -154,7 +154,7 @@ static int ad5686_write_raw(struct iio_d
  
- 		if (IS_ERR(reply)) {
- 			error = PTR_ERR(reply);
-+			reply = NULL;
- 			goto err_unlock_ovs;
- 		}
- 	}
--- 
-2.53.0
-
+ 	switch (mask) {
+ 	case IIO_CHAN_INFO_RAW:
+-		if (val > (1 << chan->scan_type.realbits) || val < 0)
++		if (val >= (1 << chan->scan_type.realbits) || val < 0)
+ 			return -EINVAL;
+ 
+ 		mutex_lock(&st->lock);
 
 
 
