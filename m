@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-266166-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265196-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id GltVJuOYMWoxnwUAu9opvQ
-	(envelope-from <stable+bounces-266166-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:41:39 +0200
+	id NPVUCeKFMWpTlgUAu9opvQ
+	(envelope-from <stable+bounces-265196-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:20:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12BB169456F
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:41:39 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E196693030
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:20:33 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=oW8ZuhYg;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266166-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266166-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=dxuMHY2Q;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265196-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265196-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 23C6131BB5AC
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:36:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 561A731E292A
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:12:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD5B043CEC7;
-	Tue, 16 Jun 2026 18:36:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D813B36E47E;
+	Tue, 16 Jun 2026 17:12:37 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82F5B3DC4D9;
-	Tue, 16 Jun 2026 18:36:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B54C433A9EB;
+	Tue, 16 Jun 2026 17:12:36 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781635009; cv=none; b=EnSElBclSd1UmOoTslDRcHiAide4z1P/xaeSqtHgV59eMCthWRtdvl41nF072r50bn5xzoszfN75w9izNuYkBh93hbzg/tBdZ3ozmfP36HH9UGUzDtqW8/pQ6LmmjE7209jI/f30A4RqlHtp321kFNIJSGZWIe0Im9SQzNEeV0A=
+	t=1781629957; cv=none; b=rKrlVMRPVtxBxvU1o0/CepAJ7/XrFa8JP2iAkVze4JTPR275Ksztkwpuo89DX1nR/zEif+7XXzQBcSAwcnCydnbz9JVumnuvz4cz53OQ7OatSXdhYDiT0MleqDVZ5eILHK9AR3L/mlpr4/HbPf6xnaDFpvF2Kg1q0KlYVYSVm+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781635009; c=relaxed/simple;
-	bh=IpJJwr0D2d28tp1bPwaEvyWE6+d3hKCfv2KkK6oXpy4=;
+	s=arc-20240116; t=1781629957; c=relaxed/simple;
+	bh=Qw0WwwIvu7bEvm3+LKDU3DWIArWB7ncRtYWqOXo8JWU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FaI3t3QjmAShi/kKURPYOYuFLtroBli5vviM1TtrcUDB5eQioV02aXm/9/uRMPSrA3NwBfTMoEvd3FHYPvwZoIonwA5ghcOivj7Z1vZ7umGvcWtINYc3kCsMFw1M4ziXs3ISw1J1Uex4AjPt2z9dKZpqdQ3drIWuEt7VN4Ym/ic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oW8ZuhYg; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 869471F000E9;
-	Tue, 16 Jun 2026 18:36:47 +0000 (UTC)
+	 MIME-Version; b=owK3VRl/UZsHWCw1QKf90ggOwylfXPFEO0Mmvlp3PeXGPU7J6r9nMq0zl+9vOGtbwDNxIhATO7IhvzFK3xggcTftIqE+fn8fP3TuUAca22L8k7LMulrKIt9mK2d1Tw2b8usaBNdZC9P97h+SEo459zHCllCyDH24SEtRtoq/a+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dxuMHY2Q; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CBAB1F000E9;
+	Tue, 16 Jun 2026 17:12:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781635008;
-	bh=blHUu70Cfa7R040/kwuM6PYY9v3F6L4kFbVyJ0Y+ens=;
+	s=korg; t=1781629956;
+	bh=ETD45T3oczGSSAOGbjw/OZVjf8lSJiopvQgBa2GvDn8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=oW8ZuhYgTBxXsZFjdK7ZEMT4m0D2l1jH7t3TD/CrkaeP4E9AJ809euv8s/Iz0QMVv
-	 y1wHUOCJfyJMB6sqNLx72YERhU3WP6J8NruJJHk48Vp/Cvlply70x8FAS0D/sG5o2T
-	 /yE/HHd+JP/HGyTV97B8cmaH26pYit4ZyG8AU1HU=
+	b=dxuMHY2QwbIZXTqjll9kqaK7ZAG96ESR0qn9BP8qmOKezr73k2NNN9BA334RpGW1U
+	 07t7lWwtYOFWs3QNlf2gY98NcfPL5vkghJW8lSRuPSV+pyTS8GJJnWpxYd8olEMEi6
+	 b4p8RCAG9fQczvElrplt41XuINfdCKsH87WeZvHs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lee Jones <lee@kernel.org>,
-	Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
-	John Keeping <john@metanate.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 374/411] usb: gadget: f_hid: tidy error handling in hidg_alloc
+Subject: [PATCH 6.6 385/452] mptcp: reset rcv wnd on disconnect
 Date: Tue, 16 Jun 2026 20:30:12 +0530
-Message-ID: <20260616145121.189051317@linuxfoundation.org>
+Message-ID: <20260616145137.162796372@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,122 +69,82 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266166-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265196-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:lee@kernel.org,m:andrzej.p@collabora.com,m:john@metanate.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:pabeni@redhat.com,m:matttbe@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,metanate.com:email,collabora.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 12BB169456F
+X-Rspamd-Queue-Id: 6E196693030
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Keeping <john@metanate.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit 944fe915d00d3cb1bacb1e77cabfb6dc82e6f8b8 ]
+[ Upstream commit 0981f90e1a05773a4c29c6e720f5ea1e3c8f1876 ]
 
-Unify error handling at the end of the function, reducing the risk of
-missing something on one of the error paths.
+If the MPTCP socket fallback to TCP before the MP handshake completion,
+the IASN remain 0, and the rcv_wnd_sent field is not explicitly
+initialized, just incremented over time with the data transfer.
 
-Moving the increment of opts->refcnt later means there is no need to
-decrement it on the error path and is safe as this is guarded by
-opts->lock which is held for this entire section.
+At disconnect time such value is not cleared. If the next connection falls
+back to TCP before the MP handshake completion, the data transfer will
+keep incrementing the receive window end sequence starting from the last
+value used in the previous connection: the announced window will be
+unrelated from the actual receiver buffer size and likely too big.
 
-Tested-by: Lee Jones <lee@kernel.org>
-Reviewed-by: Andrzej Pietrasiewicz <andrzej.p@collabora.com>
-Reviewed-by: Lee Jones <lee@kernel.org>
-Signed-off-by: John Keeping <john@metanate.com>
-Link: https://lore.kernel.org/r/20221122123523.3068034-4-john@metanate.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 4f88d65def6f ("usb: gadget: f_hid: fix device reference leak in hidg_alloc()")
+Address the issue zeroing the field at disconnect time.
+
+Fixes: b29fcfb54cd7 ("mptcp: full disconnect implementation")
+Cc: stable@vger.kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260515-net-mptcp-misc-fixes-7-1-rc4-v2-4-701e96419f2f@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/function/f_hid.c |   21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
+ net/mptcp/protocol.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/usb/gadget/function/f_hid.c
-+++ b/drivers/usb/gadget/function/f_hid.c
-@@ -1265,7 +1265,6 @@ static struct usb_function *hidg_alloc(s
- 	opts = container_of(fi, struct f_hid_opts, func_inst);
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -3333,6 +3333,7 @@ static int mptcp_disconnect(struct sock
  
- 	mutex_lock(&opts->lock);
--	++opts->refcnt;
+ 	/* for fallback's sake */
+ 	WRITE_ONCE(msk->ack_seq, 0);
++	atomic64_set(&msk->rcv_wnd_sent, 0);
  
- 	spin_lock_init(&hidg->write_spinlock);
- 	spin_lock_init(&hidg->read_spinlock);
-@@ -1278,11 +1277,8 @@ static struct usb_function *hidg_alloc(s
- 	hidg->dev.class = hidg_class;
- 	hidg->dev.devt = MKDEV(major, opts->minor);
- 	ret = dev_set_name(&hidg->dev, "hidg%d", opts->minor);
--	if (ret) {
--		--opts->refcnt;
--		mutex_unlock(&opts->lock);
--		return ERR_PTR(ret);
--	}
-+	if (ret)
-+		goto err_unlock;
- 
- 	hidg->bInterfaceSubClass = opts->subclass;
- 	hidg->bInterfaceProtocol = opts->protocol;
-@@ -1293,14 +1289,13 @@ static struct usb_function *hidg_alloc(s
- 					    opts->report_desc_length,
- 					    GFP_KERNEL);
- 		if (!hidg->report_desc) {
--			put_device(&hidg->dev);
--			--opts->refcnt;
--			mutex_unlock(&opts->lock);
--			return ERR_PTR(-ENOMEM);
-+			ret = -ENOMEM;
-+			goto err_put_device;
- 		}
- 	}
- 	hidg->use_out_ep = !opts->no_out_endpoint;
- 
-+	++opts->refcnt;
- 	mutex_unlock(&opts->lock);
- 
- 	hidg->func.name    = "hid";
-@@ -1315,6 +1310,12 @@ static struct usb_function *hidg_alloc(s
- 	hidg->qlen	   = 4;
- 
- 	return &hidg->func;
-+
-+err_put_device:
-+	put_device(&hidg->dev);
-+err_unlock:
-+	mutex_unlock(&opts->lock);
-+	return ERR_PTR(ret);
- }
- 
- DECLARE_USB_FUNCTION_INIT(hid, hidg_alloc_inst, hidg_alloc);
+ 	WRITE_ONCE(sk->sk_shutdown, 0);
+ 	sk_error_report(sk);
 
 
 
