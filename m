@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-263953-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264935-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id mcIrBqNqMWpCiwUAu9opvQ
-	(envelope-from <stable+bounces-263953-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:24:19 +0200
+	id +BcvHnt/MWqakwUAu9opvQ
+	(envelope-from <stable+bounces-264935-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:53:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 101A8690FD4
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:24:18 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34E4C6928BF
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:53:15 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=RzfBM9jl;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263953-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-263953-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=BzIlxD5L;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264935-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264935-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0B85F30163B6
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:22:50 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0A5723054544
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:51:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3A5538B135;
-	Tue, 16 Jun 2026 15:22:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 676F647A0B4;
+	Tue, 16 Jun 2026 16:51:02 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA31C26B0A9;
-	Tue, 16 Jun 2026 15:22:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ABDE4502F;
+	Tue, 16 Jun 2026 16:51:01 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781623366; cv=none; b=Y12KyA6xQ2+//hCzX+Qi+DFwcmLo3u17kJphrHKXSP0AeP0mDtCQ/oM/+HZNhJiYat3WTrTma013HWeKD1mz+pTcPmm0qK2QJBN0ujxS0mrL0F2zVC5I7avowHZpnjGZ66+ffkOwdp3h/hFfigrYmH34inzB7aV0oO1sBfCIWsQ=
+	t=1781628662; cv=none; b=d9UcuG+fok4TB1ZpXDcWnhqLsscFWqR7eYv+HFKu820N6iTtVLQNTTrWgjft3wlpIr9ql2Al3nhJgKgCVCVlAp1oP12mNw/b6+FiwB0VFYjC5PW6MktDXLZSUnP6y9vaCWVUxuQXck8B3g9v+ssVTWdMSwXGsHmbK3Gd7dTyixw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781623366; c=relaxed/simple;
-	bh=gJTyFlcZxJP2gKEooHNSt2QTqbyozHx+nmSUpXm/Mto=;
+	s=arc-20240116; t=1781628662; c=relaxed/simple;
+	bh=2/Z6zdWufE0zNlvzhXJdmD1/TnCuTI6Ms7tR3FYV84s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HEwXmpmrzuVva3MTU9rpFF/CB7uFovjgcsYolUeaaa/g3UFeigTar76OOsmU9I86Cv316SW1F0PPGGKPVO3cdFCXZGkPUG+nCsoawUbvAiR8YyWK+1iytN9FEcBTPF7OHUhCgs0MP14CwXWKhGzMQOUb897Ng63rpfbki0Cs5l4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RzfBM9jl; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E4B51F000E9;
-	Tue, 16 Jun 2026 15:22:44 +0000 (UTC)
+	 MIME-Version; b=rkktvucdADPIb1+6saVFmmO/W7MCpEkUNnCLNADiI7vB9/rR2xfcD8jFZFQpVi+v3mufkeUjqbVV/kcr9VL/v+nZG9+MqiHZwEyFoUhr5jEELsc+WonTxA780rvQfi7F7/TlstsbrFeQm0HknDfiipeuqMja6Bf/5/8xBJY+XN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BzIlxD5L; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 400EA1F000E9;
+	Tue, 16 Jun 2026 16:50:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781623365;
-	bh=nBAUxTZHFvIBLwCUXM3h6WmLxNXDyHishc8xTYstPkM=;
+	s=korg; t=1781628661;
+	bh=ljpAzMP8zuerJI7GWInHBa8sSimC9KevTtK7OFCIwS4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=RzfBM9jljTq/wUZ6e2rSB2ytPm9qigEe5HNEv73hbMxTMyjvymX0+7dwySzcLMJOz
-	 sNIfOpqk1ofF4EJkllnl0uzZNK8z6GcZc+fp8Hb7tNxfzv74dmzYlCueT2qvasOr0S
-	 LJVwiJTeD+x0lTq+h7dtgTjkJaQAZazLTrkIC0p0=
+	b=BzIlxD5LlUJ+9MJjTtO2RMIq/wzI13WYsoGmvReWACTMuGHzFxsjlbfiIyWhVawdC
+	 g+UBrFQzjuyvz2MZPaHRjFjpOFlCxelsGvIoO/JQetaMLPl8vy4GZ22GtkJXwgKw5P
+	 rWiJQaFm6haDVOO+p+q+/FNZ0iARR48V0H50FALo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kyle Zeng <kylebot@openai.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 134/378] net: guard timestamp cmsgs to real error queue skbs
+	Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>,
+	Florian Westphal <fw@strlen.de>
+Subject: [PATCH 6.6 138/452] netfilter: conntrack: tcp: do not force CLOSE on invalid-seq RST without direction check
 Date: Tue, 16 Jun 2026 20:26:05 +0530
-Message-ID: <20260616145117.355784729@linuxfoundation.org>
+Message-ID: <20260616145124.975569086@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,143 +68,87 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-263953-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264935-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kylebot@openai.com,m:kuniyu@google.com,m:willemb@google.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:hamzamahfooz@linux.microsoft.com,m:fw@strlen.de,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,openai.com:email,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,strlen.de:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 101A8690FD4
+X-Rspamd-Queue-Id: 34E4C6928BF
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kyle Zeng <kylebot@openai.com>
+From: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
 
-[ Upstream commit 1ee90b77b727df903033db873c75caac5c27ec98 ]
+commit bed6e04be8e6b9133d8b16d5a42d0e0ce674fa9a upstream.
 
-skb_is_err_queue() treats PACKET_OUTGOING as the sole marker for an skb
-from sk_error_queue. That assumption is not true for AF_PACKET sockets:
-outgoing packet taps are also delivered to packet sockets with
-skb->pkt_type == PACKET_OUTGOING, but their skb->cb is owned by AF_PACKET
-instead of struct sock_exterr_skb.
+An unintended behavior in the TCP conntrack state machine allows a
+connection to be forced into the CLOSE state using an RST packet with an
+invalid sequence number.
 
-If such an skb is received with timestamping enabled, the generic
-timestamp cmsg path can read AF_PACKET control-buffer state as
-sock_exterr_skb::opt_stats. With SO_RXQ_OVFL enabled, the packet drop
-counter overlaps opt_stats. An odd drop count makes the path emit
-SCM_TIMESTAMPING_OPT_STATS with skb->len and skb->data. For non-linear
-skbs this copies past the linear head and can trigger hardened usercopy or
-disclose adjacent heap contents.
+Specifically, after a SYN packet is observed, an RST with an invalid SEQ
+can transition the conntrack entry to TCP_CONNTRACK_CLOSE, regardless of
+whether the RST corresponds to the expected reply direction. The relevant
+code path assumes the RST is a response to an outgoing SYN, but does not
+validate packet direction or ensure that a matching SYN was actually sent
+in the opposite direction.
 
-Keep skb_is_err_queue() local to net/socket.c, but make it verify that
-the PACKET_OUTGOING marker is paired with the sock_rmem_free destructor
-installed by sock_queue_err_skb(). AF_PACKET receive skbs use normal
-receive ownership and no longer pass as error-queue skbs, while legitimate
-sk_error_queue entries keep the PACKET_OUTGOING marker and sock_rmem_free
-ownership.
+As a result, a crafted packet sequence consisting of a SYN followed by an
+invalid-sequence RST can prematurely terminate an active NAT entry. This
+makes connection teardown easier than intended.
 
-Fixes: 8605330aac5a ("tcp: fix SCM_TIMESTAMPING_OPT_STATS for normal skbs")
-Signed-off-by: Kyle Zeng <kylebot@openai.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20260607021819.49698-1-kylebot@openai.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+So, tighten the state transition logic to ensure that RST-triggered
+CLOSE transitions only occur when the RST is a valid response to a
+previously observed SYN in the correct direction.
+
+Cc: stable@vger.kernel.org
+Fixes: 9fb9cbb1082d ("[NETFILTER]: Add nf_conntrack subsystem.")
+Signed-off-by: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/sock.h |  1 +
- net/core/skbuff.c  |  6 +++---
- net/socket.c       | 11 ++++++-----
- 3 files changed, 10 insertions(+), 8 deletions(-)
+ net/netfilter/nf_conntrack_proto_tcp.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/include/net/sock.h b/include/net/sock.h
-index 6c9a83016e9551..24aab97f1bcae7 100644
---- a/include/net/sock.h
-+++ b/include/net/sock.h
-@@ -1853,6 +1853,7 @@ struct sk_buff *sock_omalloc(struct sock *sk, unsigned long size,
- 			     gfp_t priority);
- void skb_orphan_partial(struct sk_buff *skb);
- void sock_rfree(struct sk_buff *skb);
-+void sock_rmem_free(struct sk_buff *skb);
- void sock_efree(struct sk_buff *skb);
- #ifdef CONFIG_INET
- void sock_edemux(struct sk_buff *skb);
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index 9edad9b88433bb..6bee1a9d128bf2 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -5474,7 +5474,7 @@ int skb_cow_data(struct sk_buff *skb, int tailbits, struct sk_buff **trailer)
- }
- EXPORT_SYMBOL_GPL(skb_cow_data);
- 
--static void sock_rmem_free(struct sk_buff *skb)
-+void sock_rmem_free(struct sk_buff *skb)
- {
- 	struct sock *sk = skb->sk;
- 
-@@ -5483,8 +5483,8 @@ static void sock_rmem_free(struct sk_buff *skb)
- 
- static void skb_set_err_queue(struct sk_buff *skb)
- {
--	/* pkt_type of skbs received on local sockets is never PACKET_OUTGOING.
--	 * So, it is safe to (mis)use it to mark skbs on the error queue.
-+	/* The error-queue test in skb_is_err_queue() matches this marker
-+	 * with the sock_rmem_free destructor installed by sock_queue_err_skb().
- 	 */
- 	skb->pkt_type = PACKET_OUTGOING;
- 	BUILD_BUG_ON(PACKET_OUTGOING == 0);
-diff --git a/net/socket.c b/net/socket.c
-index 05952188127f5b..86dc88f5b76983 100644
---- a/net/socket.c
-+++ b/net/socket.c
-@@ -792,12 +792,13 @@ EXPORT_SYMBOL(kernel_sendmsg);
- 
- static bool skb_is_err_queue(const struct sk_buff *skb)
- {
--	/* pkt_type of skbs enqueued on the error queue are set to
--	 * PACKET_OUTGOING in skb_set_err_queue(). This is only safe to do
--	 * in recvmsg, since skbs received on a local socket will never
--	 * have a pkt_type of PACKET_OUTGOING.
-+	/* Error-queue skbs are marked as PACKET_OUTGOING in
-+	 * skb_set_err_queue() and use the destructor installed by
-+	 * sock_queue_err_skb(). PACKET_OUTGOING alone is not unique:
-+	 * AF_PACKET outgoing taps use the same pkt_type.
- 	 */
--	return skb->pkt_type == PACKET_OUTGOING;
-+	return skb->pkt_type == PACKET_OUTGOING &&
-+	       skb->destructor == sock_rmem_free;
- }
- 
- /* On transmit, software and hardware timestamps are returned independently.
--- 
-2.53.0
-
+--- a/net/netfilter/nf_conntrack_proto_tcp.c
++++ b/net/netfilter/nf_conntrack_proto_tcp.c
+@@ -1220,7 +1220,8 @@ int nf_conntrack_tcp_packet(struct nf_co
+ 			new_state = old_state;
+ 		}
+ 		if (((test_bit(IPS_SEEN_REPLY_BIT, &ct->status)
+-			 && ct->proto.tcp.last_index == TCP_SYN_SET)
++			 && ct->proto.tcp.last_index == TCP_SYN_SET
++			 && ct->proto.tcp.last_dir != dir)
+ 			|| (!test_bit(IPS_ASSURED_BIT, &ct->status)
+ 			    && ct->proto.tcp.last_index == TCP_ACK_SET))
+ 		    && ntohl(th->ack_seq) == ct->proto.tcp.last_end) {
 
 
 
