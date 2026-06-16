@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-264864-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265408-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id /th1Jb5/MWq7kwUAu9opvQ
-	(envelope-from <stable+bounces-264864-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:54:22 +0200
+	id mpf0DluIMWpzlwUAu9opvQ
+	(envelope-from <stable+bounces-265408-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:31:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F2B1692906
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:54:21 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61003693358
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:31:06 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=e4RbV1PF;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264864-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264864-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="bF0Sje1/";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265408-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-265408-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id CC41B302B9C5
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:44:52 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2B3D63035AA9
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:30:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ABBE47279B;
-	Tue, 16 Jun 2026 16:44:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AE1E47A0D8;
+	Tue, 16 Jun 2026 17:30:48 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B8102F745E;
-	Tue, 16 Jun 2026 16:44:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BA0C32ED55;
+	Tue, 16 Jun 2026 17:30:47 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781628291; cv=none; b=ecnfnDu++ZGcGg5ICrEGjP/vSHnlIrKySRBitCI6Vv4Z4LnmHQsw5M4yWU4BMUKJwEO4bKE6qmMOeSzN/0qbQEqDBtdZAo/3s2VoxvtsSBMrQg/x38YcMPaJbSvq3PpXdLVXkd0BdqZ1MSdYanbr5aPJw973+xp9a7/fJrc4DYw=
+	t=1781631048; cv=none; b=FG8NQ/nsYj7bBxnsSry1M0x27w1u6pRf5LywwXqUKEs14wtH8HwEogO+Fq7pDt45vaoVEZVp2Np+GBq5MvE6jAAYNyrUol4CqSBuJkin2muE0YaY0HQOt/1MqkYogadjexkAOynW4J3iVu8mKUVjc/iLOXEXuTRXHqLlz11WphU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781628291; c=relaxed/simple;
-	bh=9Ms2/AOQJ21mnM0u/bZZF8bfcZ53zEh3oIvL++CZub4=;
+	s=arc-20240116; t=1781631048; c=relaxed/simple;
+	bh=Z7g4YoauX6O5sGWJtq1GcTMptSUr01a2Pr9uTdGaccc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RHGtuhlhVR//2zipiS7B+oU1a4mCpfla6bIR1AmImspNKwh+41WKjEgNYDKQ2hFWb/IgpA5EZxmKzBcvnXTDFFF0Yge+9/ujaHy8mlAPUX4ewLDqDBTwUqHWHVmymWYA9oj5zaSrC/8vFy36b/CNKpvpy/Zy8pNLIHWA/+7T6yo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e4RbV1PF; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BE3D1F000E9;
-	Tue, 16 Jun 2026 16:44:48 +0000 (UTC)
+	 MIME-Version; b=mF9cWAFfIu8OrgZS4ARInBO9d3eXk1JY42ReP1vUiatZshNal2mFQyLfzU+Hx4S8V5D/UlbpcKC2UZC1ARglEfvsLXe7f85lEmf2HmsjNwWYNf/Ot/RyXhdbJrJNekdjVdbYhZzgLMELPZraPc6DbkqS3dpJMYAGllqhNo5S+X4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bF0Sje1/; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A7D41F000E9;
+	Tue, 16 Jun 2026 17:30:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781628290;
-	bh=+GlUeeZcUnoLpYbYe2e6z4ODrLyfz7Xwlj+Ytn+q0EU=;
+	s=korg; t=1781631047;
+	bh=vpqul9Vu0Uiabsb8z50hXleIlyTkJl+MGUxedjICnEc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=e4RbV1PFOMapKy5WelCdp0u79WcuHykLDgxOW7uoXtUSjG+X4Coaw9AB4Rlidbsak
-	 EcE/nCozNifJyxS2a5B8ElwfG/4tRAmN0/VdgGrKFaiIbxIBTPPt5LSdezGg3D9IlV
-	 ams/ev+WqQE3SngRGIrjQ405uceVEcsrYMgmsnao=
+	b=bF0Sje1/tBt33EugvVP55wNI8QfXlX0G8l5H2qba1/CHn1OEQ1o1pXjlaP7MJt/yV
+	 jce/FRUZVt3GB2OqrNWSj3i6qOOi3t9RnWND0vSczgVmc/+v7OlIZN3thXXTQdb6GY
+	 osn0ZECzH2DWTO+2p5Qss+TsDhpvUy8sGKkCNsLA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Rajani Kantha <681739313@139.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 067/452] inet: frags: add inet_frag_queue_flush()
+	stable <stable@kernel.org>,
+	Zheng Wang <zyytlz.wz@163.com>,
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Shuah Khan <skhan@linuxfoundation.org>
+Subject: [PATCH 6.1 147/522] usbip: vudc: Fix use after free bug in vudc_remove due to race condition
 Date: Tue, 16 Jun 2026 20:24:54 +0530
-Message-ID: <20260616145121.458781338@linuxfoundation.org>
+Message-ID: <20260616145132.966990760@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,141 +68,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [3.84 / 15.00];
-	SEM_URIBL(3.50)[139.com:email];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	BAD_REP_POLICIES(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,163.com,gmail.com];
+	TAGGED_FROM(0.00)[bounces-265408-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-264864-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:edumazet@google.com,m:kuba@kernel.org,m:681739313@139.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:zyytlz.wz@163.com,m:michael.bommarito@gmail.com,m:skhan@linuxfoundation.org,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,kernel.org,139.com];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	R_SPF_ALLOW(0.00)[+ip6:2600:3c15:e001:75::/64:c];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,139.com:email,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8F2B1692906
+X-Rspamd-Queue-Id: 61003693358
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-[ Upstream commit 1231eec6994be29d6bb5c303dfa54731ed9fc0e6 ]
+commit d96209626a29ea64666be98c30b30ac82e5f1be6 upstream.
 
-Instead of exporting inet_frag_rbtree_purge() which requires that
-caller takes care of memory accounting, add a new helper. We will
-need to call it from a few places in the next patch.
+This patch follows up Zheng Wang's 2023 report of a use-after-free in
+vudc_remove(). The original thread stalled on Shuah Khan's request for
+runtime testing of the unplug/unbind path. This patch supplies that
+testing and keeps Zheng's original fix shape.
 
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20251207010942.1672972-3-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Rajani Kantha <681739313@139.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+In vudc_probe(), v_init_timer() binds udc->tr_timer.timer to v_timer().
+usbip_sockfd_store() starts the timer via v_start_timer()/v_kick_timer().
+vudc_remove() can then free the containing struct vudc while the timer is
+still pending or executing.
+
+KASAN confirms the race on an unpatched x86_64 QEMU guest with
+CONFIG_KASAN=y, CONFIG_USBIP_VUDC=y, CONFIG_USB_ZERO=y, and a tight loop
+that repeatedly writes a socket fd to usbip_sockfd, closes the socket
+pair, and unbinds/rebinds usbip-vudc.0:
+
+  BUG: KASAN: slab-use-after-free in __run_timer_base.part.0+0x8ba/0x8e0
+  Write of size 8 at addr ffff888001b80740 by task trigger_and_unb/239
+  Allocated by task 239:
+    vudc_probe+0x4d/0xaa0
+  Freed by task 239:
+    kfree+0x18f/0x520
+    device_release_driver_internal+0x388/0x540
+    unbind_store+0xd9/0x100
+
+This lands in the timer core rather than v_timer() itself because the
+embedded timer_list is being walked after its containing struct vudc has
+already been freed. The underlying lifetime bug is the same one Zheng
+reported.
+
+With v_stop_timer() called from vudc_remove() and the timer deleted
+synchronously, the same harness completed 5000 bind/unbind iterations
+with no KASAN report.
+
+Fixes: b6a0ca111867 ("usbip: vudc: Add UDC specific ops")
+Cc: stable <stable@kernel.org>
+Reported-by: Zheng Wang <zyytlz.wz@163.com>
+Closes: https://lore.kernel.org/linux-usb/20230317100954.2626573-1-zyytlz.wz@163.com/
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Acked-by: Shuah Khan <skhan@linuxfoundation.org>
+Link: https://patch.msgid.link/20260417163552.807548-1-michael.bommarito@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/inet_frag.h  |  5 ++---
- net/ipv4/inet_fragment.c | 15 ++++++++++++---
- net/ipv4/ip_fragment.c   |  6 +-----
- 3 files changed, 15 insertions(+), 11 deletions(-)
+ drivers/usb/usbip/vudc_dev.c      |    1 +
+ drivers/usb/usbip/vudc_transfer.c |    3 ++-
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/include/net/inet_frag.h b/include/net/inet_frag.h
-index 5af6eb14c5db15..94edc0e130d2c4 100644
---- a/include/net/inet_frag.h
-+++ b/include/net/inet_frag.h
-@@ -141,9 +141,8 @@ void inet_frag_kill(struct inet_frag_queue *q);
- void inet_frag_destroy(struct inet_frag_queue *q);
- struct inet_frag_queue *inet_frag_find(struct fqdir *fqdir, void *key);
- 
--/* Free all skbs in the queue; return the sum of their truesizes. */
--unsigned int inet_frag_rbtree_purge(struct rb_root *root,
--				    enum skb_drop_reason reason);
-+void inet_frag_queue_flush(struct inet_frag_queue *q,
-+			   enum skb_drop_reason reason);
- 
- static inline void inet_frag_put(struct inet_frag_queue *q)
+--- a/drivers/usb/usbip/vudc_dev.c
++++ b/drivers/usb/usbip/vudc_dev.c
+@@ -633,6 +633,7 @@ int vudc_remove(struct platform_device *
  {
-diff --git a/net/ipv4/inet_fragment.c b/net/ipv4/inet_fragment.c
-index 496308c0238485..1e390d24f11440 100644
---- a/net/ipv4/inet_fragment.c
-+++ b/net/ipv4/inet_fragment.c
-@@ -264,8 +264,8 @@ static void inet_frag_destroy_rcu(struct rcu_head *head)
- 	kmem_cache_free(f->frags_cachep, q);
+ 	struct vudc *udc = platform_get_drvdata(pdev);
+ 
++	v_stop_timer(udc);
+ 	usb_del_gadget_udc(&udc->gadget);
+ 	cleanup_vudc_hw(udc);
+ 	kfree(udc);
+--- a/drivers/usb/usbip/vudc_transfer.c
++++ b/drivers/usb/usbip/vudc_transfer.c
+@@ -490,7 +490,8 @@ void v_stop_timer(struct vudc *udc)
+ {
+ 	struct transfer_timer *t = &udc->tr_timer;
+ 
+-	/* timer itself will take care of stopping */
++	/* Delete the timer synchronously before teardown frees udc. */
+ 	dev_dbg(&udc->pdev->dev, "timer stop");
++	timer_delete_sync(&t->timer);
+ 	t->state = VUDC_TR_STOPPED;
  }
- 
--unsigned int inet_frag_rbtree_purge(struct rb_root *root,
--				    enum skb_drop_reason reason)
-+static unsigned int
-+inet_frag_rbtree_purge(struct rb_root *root, enum skb_drop_reason reason)
- {
- 	struct rb_node *p = rb_first(root);
- 	unsigned int sum = 0;
-@@ -285,7 +285,16 @@ unsigned int inet_frag_rbtree_purge(struct rb_root *root,
- 	}
- 	return sum;
- }
--EXPORT_SYMBOL(inet_frag_rbtree_purge);
-+
-+void inet_frag_queue_flush(struct inet_frag_queue *q,
-+			   enum skb_drop_reason reason)
-+{
-+	unsigned int sum;
-+
-+	sum = inet_frag_rbtree_purge(&q->rb_fragments, reason);
-+	sub_frag_mem_limit(q->fqdir, sum);
-+}
-+EXPORT_SYMBOL(inet_frag_queue_flush);
- 
- void inet_frag_destroy(struct inet_frag_queue *q)
- {
-diff --git a/net/ipv4/ip_fragment.c b/net/ipv4/ip_fragment.c
-index 484edc8513e4b7..7214d5bcc647e5 100644
---- a/net/ipv4/ip_fragment.c
-+++ b/net/ipv4/ip_fragment.c
-@@ -253,16 +253,12 @@ static int ip_frag_too_far(struct ipq *qp)
- 
- static int ip_frag_reinit(struct ipq *qp)
- {
--	unsigned int sum_truesize = 0;
--
- 	if (!mod_timer(&qp->q.timer, jiffies + qp->q.fqdir->timeout)) {
- 		refcount_inc(&qp->q.refcnt);
- 		return -ETIMEDOUT;
- 	}
- 
--	sum_truesize = inet_frag_rbtree_purge(&qp->q.rb_fragments,
--					      SKB_DROP_REASON_FRAG_TOO_FAR);
--	sub_frag_mem_limit(qp->q.fqdir, sum_truesize);
-+	inet_frag_queue_flush(&qp->q, SKB_DROP_REASON_FRAG_TOO_FAR);
- 
- 	qp->q.flags = 0;
- 	qp->q.len = 0;
--- 
-2.53.0
-
 
 
 
