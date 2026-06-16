@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-265237-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265760-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id GJvSNeaEMWrvlQUAu9opvQ
-	(envelope-from <stable+bounces-265237-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:16:22 +0200
+	id DbP/KICPMWr0mgUAu9opvQ
+	(envelope-from <stable+bounces-265760-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:01:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82ECC692F18
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:16:22 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CEEE693BC1
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:01:35 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="O/2tQ04B";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265237-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265237-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=D9ajvpre;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265760-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265760-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id EE3D130039AB
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:16:21 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E050B307BFE7
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:00:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DBA047A0CD;
-	Tue, 16 Jun 2026 17:16:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A90343C5842;
+	Tue, 16 Jun 2026 18:00:44 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2471747A0D1;
-	Tue, 16 Jun 2026 17:16:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB8FF3CC324;
+	Tue, 16 Jun 2026 18:00:42 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781630180; cv=none; b=F3M42pyBLtlRb5NMPEaz4Pv8zpbkZSe6x3QGwvXJ1GH/2sRj3vi3Dusx1qrYj0Q/XTaz2o9AAjrrM21CktgHLqoCUwhkEcK4V8QtKep8Di4gEe40rjfAVsTyisnWDJcjLz7idqFD8TUvICLGPqdJLrj3nlg2+0HY8fzf61GwIk8=
+	t=1781632844; cv=none; b=RVb8ub2r33hdDwEb/Y3DGtwzHiSw0DtqEv4s7PFhYFBci1C0VVHwAC+yBZNZIUwckhG9o/UG9x1JwJJKX0pX9VP0L4wxEA4l0C3rLfEZ15pnRB/NgQmzB+MBmy6jrEklTjQBiZtwNvjoQssd8T4tHG48O5Fv3R5Eex2apqpgDKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781630180; c=relaxed/simple;
-	bh=JQ9gRxgCrp4JCLCC6IwttvaWwTQupPX2HIDhyygM5kA=;
+	s=arc-20240116; t=1781632844; c=relaxed/simple;
+	bh=wyQHNICXIN8XLovEp3jUUAmF7so9rViP+uGyDLrgrtk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RhuCjbDb/E2xzIkHETakV9GjCYLhe1Y/zGGev+2R/b7g98xaF4rIbU+iUPhlvi6RVsw5zfGeeEj4iX3KupwmesgMGX27teXMUPGYZsS9LIpcQGe41y4z8ve+Hi2/+RZ08kx4712+c3RJFXxSd8lT4FOFLRMDm4jzfKaPm3YTf2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O/2tQ04B; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B729F1F00A3A;
-	Tue, 16 Jun 2026 17:16:16 +0000 (UTC)
+	 MIME-Version; b=hWBEDpbPfGM8NqtvjTB9ra/u0UtS1jWc5+1jd0qLFRMvkPY+7kvD40lLfVs7laf/vPzFPtM4zfGzfo5HLK/MHzGJG+1Llqhq8s4yYWNtNI9nxe6ko3jl5RMMXWiX+HC8pDxrsx3+mXappBnJX1pIB4+hVOkmJZRa6zsUJFg/wMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D9ajvpre; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6BBF1F000E9;
+	Tue, 16 Jun 2026 18:00:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781630177;
-	bh=EJ7TXhR+XzxIGqXqlqimI61bIxL+EIHatdCiFqR7Klo=;
+	s=korg; t=1781632842;
+	bh=OPmLn1lLvj/+ky4bxBI8dmEJCPM35n/ZciR/VO2GM9o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=O/2tQ04BJv2Ql2jMYgZo2Hntg3D1vdOAcwBAXKw6jj7Q+Elnjdd7e35QV4bJ1Lf5S
-	 zTOZonOKrYbdPBWwXI9nAv6DcxxI3WAA8Ru9cJYiiPREjY+OdKyDHEVaJy6KknxH7E
-	 oLD75IAZfaI5ZEaTWIENMlBwLaUVUjXSTuA2NW/8=
+	b=D9ajvpre0G4VzuzsStFDm+/Bh3+kbk6PjhPkrehB0L4lu7GHY1sAv0xrWHSf38cw4
+	 abQa4rxkKlnOIvrEXiYgATOsnYMqhqV2IJEIa4D4rHHr/40x6hkzANRkMG4mNWVRWA
+	 kDlh2LgVUXcj8Yt4CWGLgqOp4aUlAgR/iNA16qXU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Leon Romanovsky <leonro@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 408/452] mptcp: handle first subflow closing consistently
+Subject: [PATCH 6.1 488/522] RDMA: Move DMA block iterator logic into dedicated files
 Date: Tue, 16 Jun 2026 20:30:35 +0530
-Message-ID: <20260616145138.232951797@linuxfoundation.org>
+Message-ID: <20260616145148.638936774@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,138 +68,532 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265237-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265760-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:pabeni@redhat.com,m:martineau@kernel.org,m:matttbe@kernel.org,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:leonro@nvidia.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,nvidia.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 82ECC692F18
+X-Rspamd-Queue-Id: 8CEEE693BC1
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Leon Romanovsky <leonro@nvidia.com>
 
-[ Upstream commit 0eeb372deebce6c25b9afc09e35d6c75a744299a ]
+[ Upstream commit 6094ea64c69520ed1e770e7c79c43412de202bfa ]
 
-Currently, as soon as the PM closes a subflow, the msk stops accepting
-data from it, even if the TCP socket could be still formally open in the
-incoming direction, with the notable exception of the first subflow.
+The DMA iterator logic was mixed into verbs and umem-specific code,
+forcing all users to include rdma/ib_umem.h. Move the block iterator
+logic into iter.c and rdma/iter.h so that rdma/ib_umem.h and
+rdma/ib_verbs.h can be separated in a follow-up patch.
 
-The root cause of such behavior is that code currently piggy back two
-separate semantic on the subflow->disposable bit: the subflow context
-must be released and that the subflow must stop accepting incoming
-data.
-
-The first subflow is never disposed, so it also never stop accepting
-incoming data. Use a separate bit to mark the latter status and set such
-bit in __mptcp_close_ssk() for all subflows.
-
-Beyond making per subflow behaviour more consistent this will also
-simplify the next patch.
-
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20251121-net-next-mptcp-memcg-backlog-imp-v1-11-1f34b6c1e0b1@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 50c2d91c5dfa ("mptcp: do not drop partial packets")
+Link: https://patch.msgid.link/20260213-refactor-umem-v1-1-f3be85847922@nvidia.com
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Stable-dep-of: 15fe76e23615 ("RDMA/umem: Fix truncation for block sizes >= 4G")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/protocol.c |   14 +++++++++-----
- net/mptcp/protocol.h |    3 ++-
- 2 files changed, 11 insertions(+), 6 deletions(-)
+ drivers/infiniband/core/Makefile             |    2 
+ drivers/infiniband/core/iter.c               |   43 +++++++++++++
+ drivers/infiniband/core/verbs.c              |   38 -----------
+ drivers/infiniband/hw/bnxt_re/qplib_res.c    |    2 
+ drivers/infiniband/hw/cxgb4/mem.c            |    2 
+ drivers/infiniband/hw/efa/efa_verbs.c        |    2 
+ drivers/infiniband/hw/erdma/erdma_verbs.c    |    2 
+ drivers/infiniband/hw/hns/hns_roce_alloc.c   |    2 
+ drivers/infiniband/hw/irdma/main.h           |    2 
+ drivers/infiniband/hw/mlx4/mr.c              |    1 
+ drivers/infiniband/hw/mlx5/mem.c             |    1 
+ drivers/infiniband/hw/mlx5/umr.c             |    1 
+ drivers/infiniband/hw/mthca/mthca_provider.c |    2 
+ drivers/infiniband/hw/ocrdma/ocrdma_verbs.c  |    2 
+ drivers/infiniband/hw/qedr/verbs.c           |    2 
+ drivers/infiniband/hw/vmw_pvrdma/pvrdma.h    |    2 
+ include/rdma/ib_umem.h                       |   32 ---------
+ include/rdma/ib_verbs.h                      |   48 --------------
+ include/rdma/iter.h                          |   88 +++++++++++++++++++++++++++
+ 19 files changed, 145 insertions(+), 129 deletions(-)
+ create mode 100644 drivers/infiniband/core/iter.c
+ create mode 100644 include/rdma/iter.h
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -889,10 +889,10 @@ void mptcp_data_ready(struct sock *sk, s
- 	int sk_rbuf, ssk_rbuf;
+--- a/drivers/infiniband/core/Makefile
++++ b/drivers/infiniband/core/Makefile
+@@ -12,7 +12,7 @@ ib_core-y :=			packer.o ud_header.o verb
+ 				roce_gid_mgmt.o mr_pool.o addr.o sa_query.o \
+ 				multicast.o mad.o smi.o agent.o mad_rmpp.o \
+ 				nldev.o restrack.o counters.o ib_core_uverbs.o \
+-				trace.o lag.o
++				trace.o lag.o iter.o
  
- 	/* The peer can send data while we are shutting down this
--	 * subflow at msk destruction time, but we must avoid enqueuing
-+	 * subflow at subflow destruction time, but we must avoid enqueuing
- 	 * more data to the msk receive queue
- 	 */
--	if (unlikely(subflow->disposable))
-+	if (unlikely(subflow->closing))
- 		return;
- 
- 	ssk_rbuf = READ_ONCE(ssk->sk_rcvbuf);
-@@ -2491,6 +2491,13 @@ static void __mptcp_close_ssk(struct soc
- 	struct mptcp_sock *msk = mptcp_sk(sk);
- 	bool dispose_it, need_push = false;
- 
-+	/* Do not pass RX data to the msk, even if the subflow socket is not
-+	 * going to be freed (i.e. even for the first subflow on graceful
-+	 * subflow close.
-+	 */
-+	lock_sock_nested(ssk, SINGLE_DEPTH_NESTING);
-+	subflow->closing = 1;
+ ib_core-$(CONFIG_SECURITY_INFINIBAND) += security.o
+ ib_core-$(CONFIG_CGROUP_RDMA) += cgroup.o
+--- /dev/null
++++ b/drivers/infiniband/core/iter.c
+@@ -0,0 +1,43 @@
++// SPDX-License-Identifier: GPL-2.0 OR Linux-OpenIB
++/* Copyright (c) 2026, NVIDIA CORPORATION & AFFILIATES. */
 +
- 	/* If the first subflow moved to a close state before accept, e.g. due
- 	 * to an incoming reset or listener shutdown, the subflow socket is
- 	 * already deleted by inet_child_forget() and the mptcp socket can't
-@@ -2501,7 +2508,6 @@ static void __mptcp_close_ssk(struct soc
- 		/* ensure later check in mptcp_worker() will dispose the msk */
- 		mptcp_set_close_tout(sk, tcp_jiffies32 - (TCP_TIMEWAIT_LEN + 1));
- 		sock_set_flag(sk, SOCK_DEAD);
--		lock_sock_nested(ssk, SINGLE_DEPTH_NESTING);
- 		mptcp_subflow_drop_ctx(ssk);
- 		goto out_release;
- 	}
-@@ -2510,8 +2516,6 @@ static void __mptcp_close_ssk(struct soc
- 	if (dispose_it)
- 		list_del(&subflow->node);
++#include <linux/export.h>
++#include <rdma/iter.h>
++
++void __rdma_block_iter_start(struct ib_block_iter *biter,
++			     struct scatterlist *sglist, unsigned int nents,
++			     unsigned long pgsz)
++{
++	memset(biter, 0, sizeof(struct ib_block_iter));
++	biter->__sg = sglist;
++	biter->__sg_nents = nents;
++
++	/* Driver provides best block size to use */
++	biter->__pg_bit = __fls(pgsz);
++}
++EXPORT_SYMBOL(__rdma_block_iter_start);
++
++bool __rdma_block_iter_next(struct ib_block_iter *biter)
++{
++	unsigned int block_offset;
++	unsigned int delta;
++
++	if (!biter->__sg_nents || !biter->__sg)
++		return false;
++
++	biter->__dma_addr = sg_dma_address(biter->__sg) + biter->__sg_advance;
++	block_offset = biter->__dma_addr & (BIT_ULL(biter->__pg_bit) - 1);
++	delta = BIT_ULL(biter->__pg_bit) - block_offset;
++
++	while (biter->__sg_nents && biter->__sg &&
++	       sg_dma_len(biter->__sg) - biter->__sg_advance <= delta) {
++		delta -= sg_dma_len(biter->__sg) - biter->__sg_advance;
++		biter->__sg_advance = 0;
++		biter->__sg = sg_next(biter->__sg);
++		biter->__sg_nents--;
++	}
++	biter->__sg_advance += delta;
++
++	return true;
++}
++EXPORT_SYMBOL(__rdma_block_iter_next);
+--- a/drivers/infiniband/core/verbs.c
++++ b/drivers/infiniband/core/verbs.c
+@@ -2943,44 +2943,6 @@ int rdma_init_netdev(struct ib_device *d
+ }
+ EXPORT_SYMBOL(rdma_init_netdev);
  
--	lock_sock_nested(ssk, SINGLE_DEPTH_NESTING);
+-void __rdma_block_iter_start(struct ib_block_iter *biter,
+-			     struct scatterlist *sglist, unsigned int nents,
+-			     unsigned long pgsz)
+-{
+-	memset(biter, 0, sizeof(struct ib_block_iter));
+-	biter->__sg = sglist;
+-	biter->__sg_nents = nents;
 -
- 	if (subflow->send_fastclose && ssk->sk_state != TCP_CLOSE)
- 		tcp_set_state(ssk, TCP_CLOSE);
+-	/* Driver provides best block size to use */
+-	biter->__pg_bit = __fls(pgsz);
+-}
+-EXPORT_SYMBOL(__rdma_block_iter_start);
+-
+-bool __rdma_block_iter_next(struct ib_block_iter *biter)
+-{
+-	unsigned int block_offset;
+-	unsigned int delta;
+-
+-	if (!biter->__sg_nents || !biter->__sg)
+-		return false;
+-
+-	biter->__dma_addr = sg_dma_address(biter->__sg) + biter->__sg_advance;
+-	block_offset = biter->__dma_addr & (BIT_ULL(biter->__pg_bit) - 1);
+-	delta = BIT_ULL(biter->__pg_bit) - block_offset;
+-
+-	while (biter->__sg_nents && biter->__sg &&
+-	       sg_dma_len(biter->__sg) - biter->__sg_advance <= delta) {
+-		delta -= sg_dma_len(biter->__sg) - biter->__sg_advance;
+-		biter->__sg_advance = 0;
+-		biter->__sg = sg_next(biter->__sg);
+-		biter->__sg_nents--;
+-	}
+-	biter->__sg_advance += delta;
+-
+-	return true;
+-}
+-EXPORT_SYMBOL(__rdma_block_iter_next);
+-
+ /**
+  * rdma_alloc_hw_stats_struct - Helper function to allocate dynamic struct
+  *   for the drivers.
+--- a/drivers/infiniband/hw/bnxt_re/qplib_res.c
++++ b/drivers/infiniband/hw/bnxt_re/qplib_res.c
+@@ -46,7 +46,7 @@
+ #include <linux/if_vlan.h>
+ #include <linux/vmalloc.h>
+ #include <rdma/ib_verbs.h>
+-#include <rdma/ib_umem.h>
++#include <rdma/iter.h>
  
---- a/net/mptcp/protocol.h
-+++ b/net/mptcp/protocol.h
-@@ -503,11 +503,12 @@ struct mptcp_subflow_context {
- 		send_infinite_map : 1,
- 		remote_key_valid : 1,        /* received the peer key from */
- 		disposable : 1,	    /* ctx can be free at ulp release time */
-+		closing : 1,	    /* must not pass rx data to msk anymore */
- 		stale : 1,	    /* unable to snd/rcv data, do not use for xmit */
- 		valid_csum_seen : 1,        /* at least one csum validated */
- 		is_mptfo : 1,	    /* subflow is doing TFO */
- 		close_event_done : 1,       /* has done the post-closed part */
--		__unused : 9;
-+		__unused : 8;
- 	bool	data_avail;
- 	bool	scheduled;
- 	bool	pm_listener;	    /* a listener managed by the kernel PM? */
+ #include "roce_hsi.h"
+ #include "qplib_res.h"
+--- a/drivers/infiniband/hw/cxgb4/mem.c
++++ b/drivers/infiniband/hw/cxgb4/mem.c
+@@ -32,9 +32,9 @@
+ 
+ #include <linux/module.h>
+ #include <linux/moduleparam.h>
+-#include <rdma/ib_umem.h>
+ #include <linux/atomic.h>
+ #include <rdma/ib_user_verbs.h>
++#include <rdma/iter.h>
+ 
+ #include "iw_cxgb4.h"
+ 
+--- a/drivers/infiniband/hw/efa/efa_verbs.c
++++ b/drivers/infiniband/hw/efa/efa_verbs.c
+@@ -9,9 +9,9 @@
+ #include <linux/log2.h>
+ 
+ #include <rdma/ib_addr.h>
+-#include <rdma/ib_umem.h>
+ #include <rdma/ib_user_verbs.h>
+ #include <rdma/ib_verbs.h>
++#include <rdma/iter.h>
+ #include <rdma/uverbs_ioctl.h>
+ 
+ #include "efa.h"
+--- a/drivers/infiniband/hw/erdma/erdma_verbs.c
++++ b/drivers/infiniband/hw/erdma/erdma_verbs.c
+@@ -12,7 +12,7 @@
+ #include <linux/vmalloc.h>
+ #include <net/addrconf.h>
+ #include <rdma/erdma-abi.h>
+-#include <rdma/ib_umem.h>
++#include <rdma/iter.h>
+ #include <rdma/uverbs_ioctl.h>
+ 
+ #include "erdma.h"
+--- a/drivers/infiniband/hw/hns/hns_roce_alloc.c
++++ b/drivers/infiniband/hw/hns/hns_roce_alloc.c
+@@ -32,7 +32,7 @@
+  */
+ 
+ #include <linux/vmalloc.h>
+-#include <rdma/ib_umem.h>
++#include <rdma/iter.h>
+ #include "hns_roce_device.h"
+ 
+ void hns_roce_buf_free(struct hns_roce_dev *hr_dev, struct hns_roce_buf *buf)
+--- a/drivers/infiniband/hw/irdma/main.h
++++ b/drivers/infiniband/hw/irdma/main.h
+@@ -37,8 +37,8 @@
+ #include <rdma/rdma_cm.h>
+ #include <rdma/iw_cm.h>
+ #include <rdma/ib_user_verbs.h>
+-#include <rdma/ib_umem.h>
+ #include <rdma/ib_cache.h>
++#include <rdma/iter.h>
+ #include <rdma/uverbs_ioctl.h>
+ #include "osdep.h"
+ #include "defs.h"
+--- a/drivers/infiniband/hw/mlx4/mr.c
++++ b/drivers/infiniband/hw/mlx4/mr.c
+@@ -33,6 +33,7 @@
+ 
+ #include <linux/slab.h>
+ #include <rdma/ib_user_verbs.h>
++#include <rdma/iter.h>
+ 
+ #include "mlx4_ib.h"
+ 
+--- a/drivers/infiniband/hw/mlx5/mem.c
++++ b/drivers/infiniband/hw/mlx5/mem.c
+@@ -32,6 +32,7 @@
+ 
+ #include <linux/io.h>
+ #include <rdma/ib_umem_odp.h>
++#include <rdma/iter.h>
+ #include "mlx5_ib.h"
+ #include <linux/jiffies.h>
+ 
+--- a/drivers/infiniband/hw/mlx5/umr.c
++++ b/drivers/infiniband/hw/mlx5/umr.c
+@@ -2,6 +2,7 @@
+ /* Copyright (c) 2022, NVIDIA CORPORATION & AFFILIATES. */
+ 
+ #include <rdma/ib_umem_odp.h>
++#include <rdma/iter.h>
+ #include "mlx5_ib.h"
+ #include "umr.h"
+ #include "wr.h"
+--- a/drivers/infiniband/hw/mthca/mthca_provider.c
++++ b/drivers/infiniband/hw/mthca/mthca_provider.c
+@@ -35,8 +35,8 @@
+  */
+ 
+ #include <rdma/ib_smi.h>
+-#include <rdma/ib_umem.h>
+ #include <rdma/ib_user_verbs.h>
++#include <rdma/iter.h>
+ #include <rdma/uverbs_ioctl.h>
+ 
+ #include <linux/sched.h>
+--- a/drivers/infiniband/hw/ocrdma/ocrdma_verbs.c
++++ b/drivers/infiniband/hw/ocrdma/ocrdma_verbs.c
+@@ -45,9 +45,9 @@
+ #include <rdma/ib_verbs.h>
+ #include <rdma/ib_user_verbs.h>
+ #include <rdma/iw_cm.h>
+-#include <rdma/ib_umem.h>
+ #include <rdma/ib_addr.h>
+ #include <rdma/ib_cache.h>
++#include <rdma/iter.h>
+ #include <rdma/uverbs_ioctl.h>
+ 
+ #include "ocrdma.h"
+--- a/drivers/infiniband/hw/qedr/verbs.c
++++ b/drivers/infiniband/hw/qedr/verbs.c
+@@ -39,9 +39,9 @@
+ #include <rdma/ib_verbs.h>
+ #include <rdma/ib_user_verbs.h>
+ #include <rdma/iw_cm.h>
+-#include <rdma/ib_umem.h>
+ #include <rdma/ib_addr.h>
+ #include <rdma/ib_cache.h>
++#include <rdma/iter.h>
+ #include <rdma/uverbs_ioctl.h>
+ 
+ #include <linux/qed/common_hsi.h>
+--- a/drivers/infiniband/hw/vmw_pvrdma/pvrdma.h
++++ b/drivers/infiniband/hw/vmw_pvrdma/pvrdma.h
+@@ -53,8 +53,8 @@
+ #include <linux/pci.h>
+ #include <linux/semaphore.h>
+ #include <linux/workqueue.h>
+-#include <rdma/ib_umem.h>
+ #include <rdma/ib_verbs.h>
++#include <rdma/iter.h>
+ #include <rdma/vmw_pvrdma-abi.h>
+ 
+ #include "pvrdma_ring.h"
+--- a/include/rdma/ib_umem.h
++++ b/include/rdma/ib_umem.h
+@@ -71,38 +71,6 @@ static inline size_t ib_umem_num_pages(s
+ {
+ 	return ib_umem_num_dma_blocks(umem, PAGE_SIZE);
+ }
+-
+-static inline void __rdma_umem_block_iter_start(struct ib_block_iter *biter,
+-						struct ib_umem *umem,
+-						unsigned long pgsz)
+-{
+-	__rdma_block_iter_start(biter, umem->sgt_append.sgt.sgl,
+-				umem->sgt_append.sgt.nents, pgsz);
+-	biter->__sg_advance = ib_umem_offset(umem) & ~(pgsz - 1);
+-	biter->__sg_numblocks = ib_umem_num_dma_blocks(umem, pgsz);
+-}
+-
+-static inline bool __rdma_umem_block_iter_next(struct ib_block_iter *biter)
+-{
+-	return __rdma_block_iter_next(biter) && biter->__sg_numblocks--;
+-}
+-
+-/**
+- * rdma_umem_for_each_dma_block - iterate over contiguous DMA blocks of the umem
+- * @umem: umem to iterate over
+- * @biter: block iterator variable
+- * @pgsz: Page size to split the list into
+- *
+- * pgsz must be <= PAGE_SIZE or computed by ib_umem_find_best_pgsz(). The
+- * returned DMA blocks will be aligned to pgsz and span the range:
+- * ALIGN_DOWN(umem->address, pgsz) to ALIGN(umem->address + umem->length, pgsz)
+- *
+- * Performs exactly ib_umem_num_dma_blocks() iterations.
+- */
+-#define rdma_umem_for_each_dma_block(umem, biter, pgsz)                        \
+-	for (__rdma_umem_block_iter_start(biter, umem, pgsz);                  \
+-	     __rdma_umem_block_iter_next(biter);)
+-
+ #ifdef CONFIG_INFINIBAND_USER_MEM
+ 
+ struct ib_umem *ib_umem_get(struct ib_device *device, unsigned long addr,
+--- a/include/rdma/ib_verbs.h
++++ b/include/rdma/ib_verbs.h
+@@ -2826,22 +2826,6 @@ struct ib_client {
+ 	u8 no_kverbs_req:1;
+ };
+ 
+-/*
+- * IB block DMA iterator
+- *
+- * Iterates the DMA-mapped SGL in contiguous memory blocks aligned
+- * to a HW supported page size.
+- */
+-struct ib_block_iter {
+-	/* internal states */
+-	struct scatterlist *__sg;	/* sg holding the current aligned block */
+-	dma_addr_t __dma_addr;		/* unaligned DMA address of this block */
+-	size_t __sg_numblocks;		/* ib_umem_num_dma_blocks() */
+-	unsigned int __sg_nents;	/* number of SG entries */
+-	unsigned int __sg_advance;	/* number of bytes to advance in sg in next step */
+-	unsigned int __pg_bit;		/* alignment of current block */
+-};
+-
+ struct ib_device *_ib_alloc_device(size_t size);
+ #define ib_alloc_device(drv_struct, member)                                    \
+ 	container_of(_ib_alloc_device(sizeof(struct drv_struct) +              \
+@@ -2863,38 +2847,6 @@ void ib_unregister_device_queued(struct
+ int ib_register_client   (struct ib_client *client);
+ void ib_unregister_client(struct ib_client *client);
+ 
+-void __rdma_block_iter_start(struct ib_block_iter *biter,
+-			     struct scatterlist *sglist,
+-			     unsigned int nents,
+-			     unsigned long pgsz);
+-bool __rdma_block_iter_next(struct ib_block_iter *biter);
+-
+-/**
+- * rdma_block_iter_dma_address - get the aligned dma address of the current
+- * block held by the block iterator.
+- * @biter: block iterator holding the memory block
+- */
+-static inline dma_addr_t
+-rdma_block_iter_dma_address(struct ib_block_iter *biter)
+-{
+-	return biter->__dma_addr & ~(BIT_ULL(biter->__pg_bit) - 1);
+-}
+-
+-/**
+- * rdma_for_each_block - iterate over contiguous memory blocks of the sg list
+- * @sglist: sglist to iterate over
+- * @biter: block iterator holding the memory block
+- * @nents: maximum number of sg entries to iterate over
+- * @pgsz: best HW supported page size to use
+- *
+- * Callers may use rdma_block_iter_dma_address() to get each
+- * blocks aligned DMA address.
+- */
+-#define rdma_for_each_block(sglist, biter, nents, pgsz)		\
+-	for (__rdma_block_iter_start(biter, sglist, nents,	\
+-				     pgsz);			\
+-	     __rdma_block_iter_next(biter);)
+-
+ /**
+  * ib_get_client_data - Get IB client context
+  * @device:Device to get context for
+--- /dev/null
++++ b/include/rdma/iter.h
+@@ -0,0 +1,88 @@
++/* SPDX-License-Identifier: GPL-2.0 OR Linux-OpenIB */
++/* Copyright (c) 2026, NVIDIA CORPORATION & AFFILIATES. */
++
++#ifndef _RDMA_ITER_H_
++#define _RDMA_ITER_H_
++
++#include <linux/scatterlist.h>
++#include <rdma/ib_umem.h>
++
++/**
++ * IB block DMA iterator
++ *
++ * Iterates the DMA-mapped SGL in contiguous memory blocks aligned
++ * to a HW supported page size.
++ */
++struct ib_block_iter {
++	/* internal states */
++	struct scatterlist *__sg;	/* sg holding the current aligned block */
++	dma_addr_t __dma_addr;		/* unaligned DMA address of this block */
++	size_t __sg_numblocks;		/* ib_umem_num_dma_blocks() */
++	unsigned int __sg_nents;	/* number of SG entries */
++	unsigned int __sg_advance;	/* number of bytes to advance in sg in next step */
++	unsigned int __pg_bit;		/* alignment of current block */
++};
++
++void __rdma_block_iter_start(struct ib_block_iter *biter,
++			     struct scatterlist *sglist,
++			     unsigned int nents,
++			     unsigned long pgsz);
++bool __rdma_block_iter_next(struct ib_block_iter *biter);
++
++/**
++ * rdma_block_iter_dma_address - get the aligned dma address of the current
++ * block held by the block iterator.
++ * @biter: block iterator holding the memory block
++ */
++static inline dma_addr_t
++rdma_block_iter_dma_address(struct ib_block_iter *biter)
++{
++	return biter->__dma_addr & ~(BIT_ULL(biter->__pg_bit) - 1);
++}
++
++/**
++ * rdma_for_each_block - iterate over contiguous memory blocks of the sg list
++ * @sglist: sglist to iterate over
++ * @biter: block iterator holding the memory block
++ * @nents: maximum number of sg entries to iterate over
++ * @pgsz: best HW supported page size to use
++ *
++ * Callers may use rdma_block_iter_dma_address() to get each
++ * blocks aligned DMA address.
++ */
++#define rdma_for_each_block(sglist, biter, nents, pgsz)		\
++	for (__rdma_block_iter_start(biter, sglist, nents,	\
++				     pgsz);			\
++	     __rdma_block_iter_next(biter);)
++
++static inline void __rdma_umem_block_iter_start(struct ib_block_iter *biter,
++						struct ib_umem *umem,
++						unsigned long pgsz)
++{
++	__rdma_block_iter_start(biter, umem->sgt_append.sgt.sgl,
++				umem->sgt_append.sgt.nents, pgsz);
++	biter->__sg_advance = ib_umem_offset(umem) & ~(pgsz - 1);
++	biter->__sg_numblocks = ib_umem_num_dma_blocks(umem, pgsz);
++}
++
++static inline bool __rdma_umem_block_iter_next(struct ib_block_iter *biter)
++{
++	return __rdma_block_iter_next(biter) && biter->__sg_numblocks--;
++}
++
++/**
++ * rdma_umem_for_each_dma_block - iterate over contiguous DMA blocks of the umem
++ * @umem: umem to iterate over
++ * @pgsz: Page size to split the list into
++ *
++ * pgsz must be <= PAGE_SIZE or computed by ib_umem_find_best_pgsz(). The
++ * returned DMA blocks will be aligned to pgsz and span the range:
++ * ALIGN_DOWN(umem->address, pgsz) to ALIGN(umem->address + umem->length, pgsz)
++ *
++ * Performs exactly ib_umem_num_dma_blocks() iterations.
++ */
++#define rdma_umem_for_each_dma_block(umem, biter, pgsz)                        \
++	for (__rdma_umem_block_iter_start(biter, umem, pgsz);                  \
++	     __rdma_umem_block_iter_next(biter);)
++
++#endif /* _RDMA_ITER_H_ */
 
 
 
