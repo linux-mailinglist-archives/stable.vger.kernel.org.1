@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-266009-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266368-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id qGc8KIeUMWpXnQUAu9opvQ
-	(envelope-from <stable+bounces-266009-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:23:03 +0200
+	id IZwLFAedMWr/oAUAu9opvQ
+	(envelope-from <stable+bounces-266368-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:59:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42BED694159
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:23:03 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94465694A2C
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:59:18 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=LwGHjSou;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266009-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-266009-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=rmoZdcXF;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266368-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266368-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B2EBC302FA5E
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:23:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D1C8E3216384
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:54:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CADF3D8105;
-	Tue, 16 Jun 2026 18:23:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A7344779BF;
+	Tue, 16 Jun 2026 18:54:16 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B709A3BFE5A;
-	Tue, 16 Jun 2026 18:22:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 368673CC303;
+	Tue, 16 Jun 2026 18:54:15 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781634180; cv=none; b=j7HCItM6dmSTXC77azUrDBetFUk6p/2OxSPcKChCBmbLbmOOnkw89gk2XBkwMlbXLQxkdoQfLkcBCFh6pnu80pnnpCTPR5I6S0newSnj2Gr4fVGcrQTWiWNbYIi81x5Q3DHUXHEuv5PCZ3zuOZ0IEBFOw1g+8TzNTOXfahuWM5s=
+	t=1781636056; cv=none; b=CDt1fDTC8PE9ke5+p6uhUA/iVUGO71hkqqQ0nwulFi76OsytMuVErmk3utMpz/FuTf7Kr7O71Ousb/DoxsQQOE9VjPw6+JvzTeXVWIsLrXhAk4XspxDpr/wICwvqYebIENs4l7y1ff3PfCpa6qbl2h5mg3f6XfvzncObFknF+4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781634180; c=relaxed/simple;
-	bh=B8X0RYN0zkwEH8DaJ5KPBXqZPIKXoMc6c3Hye/NgSsk=;
+	s=arc-20240116; t=1781636056; c=relaxed/simple;
+	bh=GRWylYvlFUZkv0ub7mYLaUfCvvrmniunbvVXumjKssI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AdhTOT4RyDXhn1siWx39fGYwDRHN7PGIV225PWtwvzs/+u9XY9SlezoMmpOPvv9gQ3XFxGm8zc9AO+1HZwf2W1AXX6mcYJrNPXvH9LS9Qwb5tXqUWRamUWDHz2fTcXrpZR/zX4Pz4Z5LyoQtIeZ3+5ea9vKs077ae40L4cPOI0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LwGHjSou; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C37B41F000E9;
-	Tue, 16 Jun 2026 18:22:58 +0000 (UTC)
+	 MIME-Version; b=MOHuiMiTk48xnyJ3OZKXVWZWHBwEyFDeCtYv/vVB5F6WIa2LLrwkEevbvD4MYrqe7AbPYEMQDfqOMysdm1GmXFPD2kXRhuzuQ53PenD8VZTTLL8qYcOdh7CeeUPVMK2Vu3kG4PHwsqi5PHZANGrOYpeip3Y4QcQiN7ZWro7DmAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rmoZdcXF; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10B9D1F000E9;
+	Tue, 16 Jun 2026 18:54:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781634179;
-	bh=9KE3xr4d5/hcbPE5ebiZwvFAbNq/02uyvrqOnRQAnbw=;
+	s=korg; t=1781636055;
+	bh=A4vCo12Q0BJF9BNQiKFz4fA9Y2fjF274nA3aYDlfWKU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=LwGHjSouzBrjKCOwG78OCEAdlJ7iojAu+V4oyvhgzWXJBbx0kyV6Ai0mECDucFmtx
-	 BbXUGT8GlgjhnDfJ2elVVsL7LY8/va0HteDl+H2Q1whPKCfmi9v0ZuvzAHGpxNNFhx
-	 3dmuGLYuTcPxEcS9yggwJjsXAPE1F3kq1pTNL/hI=
+	b=rmoZdcXFywZD/0DtprRyOkyjU1oPGnlYzHdQGpU1h+7fVuAK8DlwllWgZmvWi9tBT
+	 WySEkrXmNlvQracVvuAAHy5d5LKD6FLGlqs0O6ThiW5yJ4gZGx5mIAE0Pw0YVilCiV
+	 sQ+cezzqCFgZAktRG75MPnP59+/i7nXpOSD2y66g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kyle Meyer <kyle.meyer@hpe.com>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 217/411] bnxt_en: Fix NULL pointer dereference
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Li Zetao <lizetao1@huawei.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Alexey Panov <apanov@astralinux.ru>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 159/342] io_uring: prevent opcode speculation
 Date: Tue, 16 Jun 2026 20:27:35 +0530
-Message-ID: <20260616145112.315965493@linuxfoundation.org>
+Message-ID: <20260616145055.575398048@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,85 +69,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266009-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,huawei.com,kernel.dk,astralinux.ru,kernel.org];
+	TAGGED_FROM(0.00)[bounces-266368-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kyle.meyer@hpe.com,m:pavan.chebbi@broadcom.com,m:kuba@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:asml.silence@gmail.com,m:lizetao1@huawei.com,m:axboe@kernel.dk,m:apanov@astralinux.ru,m:sashal@kernel.org,m:asmlsilence@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,kernel.dk:email,vger.kernel.org:from_smtp,astralinux.ru:email,huawei.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 42BED694159
+X-Rspamd-Queue-Id: 94465694A2C
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kyle Meyer <kyle.meyer@hpe.com>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-commit d930276f2cddd0b7294cac7a8fe7b877f6d9e08d upstream.
+commit 1e988c3fe1264708f4f92109203ac5b1d65de50b upstream.
 
-PCIe errors detected by a Root Port or Downstream Port cause error
-recovery services to run on all subordinate devices regardless of
-administrative state.
+sqe->opcode is used for different tables, make sure we santitise it
+against speculations.
 
-The .error_detected() callback, bnxt_io_error_detected(), disables
-and synchronizes IRQs via bnxt_disable_int_sync(), which calls
-bnxt_cp_num_to_irq_num() to map completion rings to IRQs using
-bp->bnapi.
-
-Since bp->bnapi is allocated on NIC open and freed on NIC close, PCIe
-error recovery on a closed NIC can dereference a NULL pointer.
-
-Check if bp->bnapi is NULL before disabling and synchronizing IRQs.
-
-Fixes: e5811b8c09df ("bnxt_en: Add IRQ remapping logic.")
 Cc: stable@vger.kernel.org
-Signed-off-by: Kyle Meyer <kyle.meyer@hpe.com>
-Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
-Link: https://patch.msgid.link/aiNM1CY2-StPilxW@hpe.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d3656344fea03 ("io_uring: add lookup table for various opcode needs")
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Reviewed-by: Li Zetao <lizetao1@huawei.com>
+Link: https://lore.kernel.org/r/7eddbf31c8ca0a3947f8ed98271acc2b4349c016.1739568408.git.asml.silence@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+[ Alexey: Sanitize req->opcode directly because io_init_req() in
+  linux-5.10.y has no local opcode variable and subsequent lookups use it. ]
+Signed-off-by: Alexey Panov <apanov@astralinux.ru>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ io_uring/io_uring.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -4552,7 +4552,7 @@ static void bnxt_disable_int_sync(struct
- {
- 	int i;
+diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
+index 2ca09e2dbd3d4a..51262d48a4a11b 100644
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -7193,6 +7193,8 @@ static int io_init_req(struct io_ring_ctx *ctx, struct io_kiocb *req,
+ 		return -EINVAL;
+ 	if (unlikely(req->opcode >= IORING_OP_LAST))
+ 		return -EINVAL;
++	req->opcode = array_index_nospec(req->opcode, IORING_OP_LAST);
++
+ 	if (!io_check_restriction(ctx, req, sqe_flags))
+ 		return -EACCES;
  
--	if (!bp->irq_tbl)
-+	if (!bp->irq_tbl || !bp->bnapi)
- 		return;
- 
- 	atomic_inc(&bp->intr_sem);
+-- 
+2.53.0
+
 
 
 
