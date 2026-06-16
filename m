@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-265903-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263935-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id nXswA16SMWo3nAUAu9opvQ
-	(envelope-from <stable+bounces-265903-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:13:50 +0200
+	id aEi6HKVrMWqTiwUAu9opvQ
+	(envelope-from <stable+bounces-263935-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:28:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA877693EC0
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:13:49 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68EC16910EF
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:28:36 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="BV/TKYs0";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265903-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-265903-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=uIVu77tR;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263935-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263935-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4C8EF303A95B
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:13:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 232AA31AEDBA
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:21:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E5D03D566F;
-	Tue, 16 Jun 2026 18:13:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51AEE3A8746;
+	Tue, 16 Jun 2026 15:21:08 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BBC23CEBBD;
-	Tue, 16 Jun 2026 18:13:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CA1C1E8320;
+	Tue, 16 Jun 2026 15:21:07 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781633605; cv=none; b=TGbY+2Faec/A2n2RxJ4pQO+sxKU0lIsDiBJsSim8/8Ac1qXJSCdlxbWORDt6X94CdsQM18p+J+wo8pTKou8/UO7CaLoP4K/jIh5PwQxsWHRyewk8L+hvvpXfbHYpdF/uCwJkgjGEbQKX4xKyec4D3UsIxSwI3ACUTf9hyVXWciE=
+	t=1781623268; cv=none; b=Iggavn444p1Dr4RoBwRwhtvgimEm7GnnbCSMIymrmyJCfKFTVbIa/s3NPpchlTc7bGhbaoEgMyctZH4Qb1QCL1mZ8YIyNer756fWzh0OCXsq6J4Zqbfra3ueXiwJKjkLxrtAnktAh4nXcjaLdGt3siiLz57ekxFAormNN4+CGwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781633605; c=relaxed/simple;
-	bh=7kMny/NvN2EfDdK/+J5Xpz6tVCX/qNTIkj4Hkn5eJjI=;
+	s=arc-20240116; t=1781623268; c=relaxed/simple;
+	bh=f9GZ5TXmd7yq5LRzPsPYcieJKi1mTyDo7YI81C39MdY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gH2hFqPfMFkb8vSGaKmzYEPIDVZeMJJsIr2P+spdEkymETOTizk40LhoesWxi73a3Cguf7XyYVYwVfKy13IxJl6fL2yOASRjwls76+nIxTPmv/upvtW7YbJLAznm1vbgEbQFhC7BgeM5kcFbEa9fHiRW2tSY9ruv5TKn7Ecp0dI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BV/TKYs0; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E5D61F00A3A;
-	Tue, 16 Jun 2026 18:13:22 +0000 (UTC)
+	 MIME-Version; b=o6EHYeVRl77LEIzNrUo/nxhgEZJZyEj9YHxUhzknXc+f0ySNc8nV3GKwFLnnQrib3F5zhI08CMWCYzD5HgkSrN3eU1XSyX36MEF8O/H5QgpRnhvCcLB9vT76ArVMC7yD+EHLVaEqN6sw9wM7enJXOuVoisWKH1IywT13jT4jG5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uIVu77tR; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 123271F00A3A;
+	Tue, 16 Jun 2026 15:21:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781633604;
-	bh=TCf39xTwGu37qIAZbb8PmI4qhh9BW9k0ClWYZzUIGLA=;
+	s=korg; t=1781623267;
+	bh=LwocWUZtF9WQd6lilcQLs1SRa7aWEvnUsYXqv68/cXA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=BV/TKYs0XHPTM3/DDHh63VaZYbTivthMJuNEe67ETl9V7oCias8MtRDzw9lx8qB9O
-	 XHZaG6Xpg5tERw4tzcm5v4+L/oxHKxmyhlYYclpytCcMii28lZsO5ZMfH20fFCA1sq
-	 EaiX+FOTJEfcKxC8jAau/MyHitj3dV7MuHi+zZ2g=
+	b=uIVu77tR4MXOMw7nKQKpxm2GhrLksnw2b0/z53OoDajnlbfC+H0d2Re6EXocUtAaP
+	 skWsF/SkbQCLc5dAUwVZv1ZZjvFJIYiZoSgrI5428T0okZG69kRjaLQ3ahe6ALAIIv
+	 rhSNp+dEAmyiiixyQ17aVcai/JR843yPdT5/TQeE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sam Burkels <sam@1a38.nl>,
-	Oliver Neukum <oneukum@suse.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH 5.15 110/411] usb: storage: Add quirks for PNY Elite Portable SSD
+	Nicolai Buchwitz <nb@tipi-net.de>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 117/378] net: phy: dont try to setup PHY-driven SFP cages when using genphy
 Date: Tue, 16 Jun 2026 20:25:48 +0530
-Message-ID: <20260616145106.119575449@linuxfoundation.org>
+Message-ID: <20260616145116.518982775@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,107 +70,97 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265903-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:sam@1a38.nl,m:oneukum@suse.com,m:stable@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-263935-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:nb@tipi-net.de,m:maxime.chevallier@bootlin.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,synopsys.com:email,suse.com:email,1a38.nl:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tipi-net.de:email,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: AA877693EC0
+X-Rspamd-Queue-Id: 68EC16910EF
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sam Burkels <sam@1a38.nl>
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
 
-commit b53ebb811e00be50a779ce4e7aee604178b4a825 upstream.
+[ Upstream commit 5a0082ec20a05ef2378410323a5089a8f1786f4a ]
 
-The PNY Elite Portable SSD (USB ID 154b:f009) is a sibling of the
-already-quirked PNY Pro Elite SSDs (154b:f00b and 154b:f00d). Like its
-siblings, it uses a Phison-based USB-SATA bridge that exhibits
-firmware bugs when bound to the uas driver.
+We don't have support for PHY-driver SFP cages with the genphy code.
 
-Without quirks, the device fails to complete READ CAPACITY commands
-when accessed over UAS on a SuperSpeed (USB 3) port. The device
-enumerates and reports as a SCSI direct-access device, but reports
-zero logical blocks and never finishes spin-up:
+On top of that, it was found by sashiko that running
+sfp_bus_add_upstream() for genphy deadlocks, as for genphy the PHY
+probing runs under RTNL, which isn't the case for non-genphy drivers.
 
-    usb 2-3: new SuperSpeed USB device number 8 using xhci_hcd
-    usb 2-3: New USB device found, idVendor=154b, idProduct=f009
-    usb 2-3: Product: PNY ELITE PSSD
-    usb 2-3: Manufacturer: PNY
-    scsi host0: uas
-    scsi 0:0:0:0: Direct-Access     PNY      PNY ELITE PSSD   0
-    sd 0:0:0:0: [sda] Spinning up disk...
-    [...10+ seconds of polling, no progress...]
-    sd 0:0:0:0: [sda] Read Capacity(16) failed: hostbyte=DID_ERROR
-    sd 0:0:0:0: [sda] Read Capacity(10) failed: hostbyte=DID_ERROR
-    sd 0:0:0:0: [sda] 0 512-byte logical blocks: (0 B/0 B)
+This problem was reproduced, and does lead to a deadlock on RTNL.
 
-Tested each individual quirk to find the minimum that fixes this:
-  - US_FL_NO_ATA_1X alone: device hangs on spin-up
-  - US_FL_NO_REPORT_OPCODES alone: works on USB 2.0, hangs on USB 3.0
-  - US_FL_NO_ATA_1X | US_FL_NO_REPORT_OPCODES: works on both
+Before the blamed commit, the phy_sfp_probe() call was made by
+individual PHY drivers, so there was no way to get to the SFP probing
+path when using genphy.
 
-With both quirks the device enumerates correctly while still using
-the uas driver, and delivers full UAS throughput (~281 MB/s
-sequential read on a USB 3.0 Gen 1 port).
+Let's therefore only run phy_sfp_probe when not using genphy.
 
-The existing PNY Pro Elite entries (f00b, f00d) only set NO_ATA_1X,
-but this device additionally chokes on REPORT OPCODES under
-SuperSpeed.
-
-Signed-off-by: Sam Burkels <sam@1a38.nl>
-Acked-by: Oliver Neukum <oneukum@suse.com>
-Cc: stable <stable@kernel.org>
-Link: https://patch.msgid.link/20260501132346.86572-1-sam@1a38.nl
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
+Fixes: bad869b5e41a ("net: phy: Only rely on phy_port for PHY-driven SFP")
+Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Link: https://patch.msgid.link/20260604092819.723505-5-maxime.chevallier@bootlin.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/storage/unusual_uas.h |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/net/phy/phy_device.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
---- a/drivers/usb/storage/unusual_uas.h
-+++ b/drivers/usb/storage/unusual_uas.h
-@@ -132,6 +132,13 @@ UNUSUAL_DEV(0x152d, 0x0583, 0x0000, 0x99
- 		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
- 		US_FL_NO_REPORT_OPCODES),
+diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
+index 8b7e2789047694..830d6fb36c6409 100644
+--- a/drivers/net/phy/phy_device.c
++++ b/drivers/net/phy/phy_device.c
+@@ -3528,9 +3528,15 @@ static int phy_setup_ports(struct phy_device *phydev)
+ 	if (ret)
+ 		return ret;
  
-+/* Reported-by: Sam Burkels <sam@1a38.nl> */
-+UNUSUAL_DEV(0x154b, 0xf009, 0x0000, 0x9999,
-+		"PNY",
-+		"PNY ELITE PSSD",
-+		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
-+		US_FL_NO_ATA_1X | US_FL_NO_REPORT_OPCODES),
-+
- /* Reported-by: Thinh Nguyen <thinhn@synopsys.com> */
- UNUSUAL_DEV(0x154b, 0xf00b, 0x0000, 0x9999,
- 		"PNY",
+-	ret = phy_sfp_probe(phydev);
+-	if (ret)
+-		goto out;
++	/* We don't support SFP with genphy drivers. Also, genphy driver
++	 * binding occurs with RTNL help, which will deadlock the call to
++	 * sfp_bus_add_upstream().
++	 */
++	if (!phydev->is_genphy_driven) {
++		ret = phy_sfp_probe(phydev);
++		if (ret)
++			goto out;
++	}
+ 
+ 	if (phydev->n_ports < phydev->max_n_ports) {
+ 		ret = phy_default_setup_single_port(phydev);
+-- 
+2.53.0
+
 
 
 
