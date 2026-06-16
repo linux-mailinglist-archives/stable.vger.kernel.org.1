@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-263776-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266104-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id BuKOKyxlMWrViQUAu9opvQ
-	(envelope-from <stable+bounces-263776-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:01:00 +0200
+	id Y63dIImWMWpGngUAu9opvQ
+	(envelope-from <stable+bounces-266104-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:31:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88EAC690B96
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:00:55 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E2CE69434D
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:31:37 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=quDhgxlm;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263776-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-263776-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=iOkfipKV;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266104-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-266104-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 009583022E71
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:00:55 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 24CB8307281E
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:31:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECBA826CE05;
-	Tue, 16 Jun 2026 15:00:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B9AF3D8902;
+	Tue, 16 Jun 2026 18:31:21 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B641840DFC5;
-	Tue, 16 Jun 2026 15:00:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48E1935AC3E;
+	Tue, 16 Jun 2026 18:31:20 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781622051; cv=none; b=uD6w7gyviKSGxt6mP6BC2w61uMzJqv6v2gCtgrf/O9yvpRXYEwTvdZz7hnEJWEjXSCxqzwt6GH6gk8P7u6P5qvwCmxPchLf7S5vHdXQrJri51pDjoFGZ4X/KfrxWcN8rC95gVDNx6K+WfM2Sbq3coMza+6zs6jONzKN3tdaxp90=
+	t=1781634681; cv=none; b=SdCEdm4ALq683fsA5Fe91Hj9EveziNJK5yhi1a8g70qO9ELQLEkovsvXbmf5GnGf/D9rdH/rXCUfyFNCn59ps/DyG4FBstiKRDbpNxG4IsR1TEo57vvZcQB0R7L28uCkdBtKhF1BtNLL1auxdcwCyUD0wkwpKGDc0J8YH18Y7+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781622051; c=relaxed/simple;
-	bh=vumr9g0aNbfpz5hgHijuoQyAJETBRqzPw/j4X9tNIEA=;
+	s=arc-20240116; t=1781634681; c=relaxed/simple;
+	bh=qK+6Ku89tSQ06ucObwoYulDz0SHRUI6djXr/I4VhRzI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nERML/d9zudX6Fg5x44m0BLXQ8GjbgE6KAPnqWAoXZfe9AbhWy9zPUzR4ASW2E4DXdTfPPTOdNocjlyXMdNvk29PKVYxceW7ve1H2US52LDLV2G9nOtpelEi9cn0D2Yzg2YzdvBJlF6ZHsoZebNPo6+zGdACw6scgRvcc7gVCgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=quDhgxlm; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EE401F000E9;
-	Tue, 16 Jun 2026 15:00:49 +0000 (UTC)
+	 MIME-Version; b=H8meI3VbshDfLG4HZgjraBSwZOtxSB3dwKzH/Y3oJCHWzHwGlIWs26/hHPKOOjr3S0L/+ZUE/HXwo3cfcdCSkTIyzfU9zgS/xpJMwJmfei24QYJMfJ2yoK2HG/vUSqsU1W2e8bamhkwOU/mRsoieLjMOt7sZ5jAmQAHHOUKjw3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iOkfipKV; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AFBC1F000E9;
+	Tue, 16 Jun 2026 18:31:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781622050;
-	bh=GyvVHZhzghSQOKEdN/01p8Unf9HMUkrMUd6tT9HJLEw=;
+	s=korg; t=1781634680;
+	bh=NBJH3fu17zdBxZnkJkdKYOLM4tC/Fp/pQSYJFU1Y/PY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=quDhgxlmX2jlfdaa6RgkyMcAjdLOj9wUtxZGtiFjfQ3/D52yEw8N+u0eSi5V3YODh
-	 ia2KSY8WQpAMoIIJ99cBNHJMrl2rO0v2lNkGnlxU5ZHHGBGnQHlKhs9VOV/BVx7uxW
-	 2y5TZ3arDGaf5KBRKtmQGQcaDU/StJoZpyr6T2PY=
+	b=iOkfipKVmQEdypZweeOXuC8qdxzPUSwQA8ZWG92276aS5TdoYsvFtjOyFktIsmdf3
+	 xwpmvCpxqvIV3kzqjbOOc4luYJ4AtkEdHk8if6g9mZQ0W5uqWtEZvFxzpRyQptYnR6
+	 DNdC42za1nwWHuuWElpVYzwJak7nHqrwU24H92oQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shanker Donthineni <sdonthineni@nvidia.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>
-Subject: [PATCH 7.1 7/8] arm64: errata: Mitigate TLBI errata on NVIDIA Olympus CPU
+	Max Kellermann <max.kellermann@ionos.com>,
+	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
+	Ilya Dryomov <idryomov@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 294/411] ceph: only d_add() negative dentries when they are unhashed
 Date: Tue, 16 Jun 2026 20:28:52 +0530
-Message-ID: <20260616145523.556104993@linuxfoundation.org>
+Message-ID: <20260616145116.780766186@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145523.335696673@linuxfoundation.org>
-References: <20260616145523.335696673@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,21 +73,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-263776-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,ionos.com,ibm.com,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-266104-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:sdonthineni@nvidia.com,m:catalin.marinas@arm.com,m:will@kernel.org,m:mark.rutland@arm.com,s:lists@lfdr.de];
-	RSPAMD_URIBL_FAIL(0.00)[arm.com:query timed out];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:max.kellermann@ionos.com,m:Slava.Dubeyko@ibm.com,m:idryomov@gmail.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -100,83 +100,119 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,nvidia.com:email,arm.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,ionos.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 88EAC690B96
+X-Rspamd-Queue-Id: 1E2CE69434D
 
-7.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shanker Donthineni <sdonthineni@nvidia.com>
+From: Max Kellermann <max.kellermann@ionos.com>
 
-commit ec7216f92e4ebd485b1c6dc6aa3f6064b71a5768 upstream.
+[ Upstream commit 803447f93d75ab6e40c85e6d12b5630d281d70d6 ]
 
-NVIDIA Olympus cores are affected by the TLBI completion issue tracked as
-CVE-2025-10263. The existing ARM64_ERRATUM_4118414 handling already uses
-ARM64_WORKAROUND_REPEAT_TLBI to issue an additional broadcast TLBI;DSB
-sequence and ensure affected memory write effects are globally observed.
+Ceph can call d_add(dentry, NULL) on a negative dentry that is already
+present in the primary dcache hash.
 
-Add MIDR_NVIDIA_OLYMPUS to the repeat-TLBI match list so the same
-mitigation is enabled on affected Olympus systems. Also document the
-NVIDIA Olympus erratum in the arm64 silicon errata table and list it in
-the Kconfig help text.
+In the current VFS that is not safe.  d_add() goes through __d_add()
+to __d_rehash(), which unconditionally reinserts dentry->d_hash into
+the hlist_bl bucket.  If the dentry is already hashed, reinserting the
+same node can corrupt the bucket, including creating a self-loop.
+Once that happens, __d_lookup() can spin forever in the hlist_bl walk,
+typically looping only on the d_name.hash mismatch check and
+eventually triggering RCU stall reports like this one:
 
-Signed-off-by: Shanker Donthineni <sdonthineni@nvidia.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Acked-by: Mark Rutland <mark.rutland@arm.com>
-Signed-off-by: Will Deacon <will@kernel.org>
-[Mark: backport to v7.1.y]
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+ rcu: INFO: rcu_sched self-detected stall on CPU
+ rcu:         87-....: (2100 ticks this GP) idle=3a4c/1/0x4000000000000000 softirq=25003319/25003319 fqs=829
+ rcu:         (t=2101 jiffies g=79058445 q=698988 ncpus=192)
+ CPU: 87 UID: 2952868916 PID: 3933303 Comm: php-cgi8.3 Not tainted 6.18.17-i1-amd #950 NONE
+ Hardware name: Dell Inc. PowerEdge R7615/0G9DHV, BIOS 1.6.6 09/22/2023
+ RIP: 0010:__d_lookup+0x46/0xb0
+ Code: c1 e8 07 48 8d 04 c2 48 8b 00 49 89 fc 49 89 f5 48 89 c3 48 83 e3 fe 48 83 f8 01 77 0f eb 2d 0f 1f 44 00 00 48 8b 1b 48 85 db <74> 20 39 6b 18 75 f3 48 8d 7b 78 e8 ba 85 d0 00 4c 39 63 10 74 1f
+ RSP: 0018:ff745a70c8253898 EFLAGS: 00000282
+ RAX: ff26e470054cb208 RBX: ff26e470054cb208 RCX: 000000006e958966
+ RDX: ff26e48267340000 RSI: ff745a70c82539b0 RDI: ff26e458f74655c0
+ RBP: 000000006e958966 R08: 0000000000000180 R09: 9cd08d909b919a89
+ R10: ff26e458f74655c0 R11: 0000000000000000 R12: ff26e458f74655c0
+ R13: ff745a70c82539b0 R14: d0d0d0d0d0d0d0d0 R15: 2f2f2f2f2f2f2f2f
+ FS:  00007f5770896980(0000) GS:ff26e482c5d88000(0000) knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 00007f5764de50c0 CR3: 000000a72abb5001 CR4: 0000000000771ef0
+ PKRU: 55555554
+ Call Trace:
+  <TASK>
+  lookup_fast+0x9f/0x100
+  walk_component+0x1f/0x150
+  link_path_walk+0x20e/0x3d0
+  path_lookupat+0x68/0x180
+  filename_lookup+0xdc/0x1e0
+  vfs_statx+0x6c/0x140
+  vfs_fstatat+0x67/0xa0
+  __do_sys_newfstatat+0x24/0x60
+  do_syscall_64+0x6a/0x230
+  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+This is reachable with reused cached negative dentries.  A Ceph lookup
+or atomic_open can be handed a negative dentry that is already hashed,
+and fs/ceph/dir.c then hits one of two paths that incorrectly assume
+"negative" also means "unhashed":
+
+  - ceph_finish_lookup():
+      MDS reply is -ENOENT with no trace
+      -> d_add(dentry, NULL)
+
+  - ceph_lookup():
+      local ENOENT fast path for a complete directory with shared caps
+      -> d_add(dentry, NULL)
+
+Both paths can therefore re-add an already-hashed negative dentry.
+
+Ceph already uses the correct pattern elsewhere: ceph_fill_trace() only
+calls d_add(dn, NULL) for a negative null-dentry reply when d_unhashed(dn)
+is true.
+
+Fix both fs/ceph/dir.c sites the same way: only call d_add() for a
+negative dentry when it is actually unhashed.  If the negative dentry
+is already hashed, leave it in place and reuse it as-is.
+
+This preserves the existing behavior for unhashed dentries while
+avoiding d_hash list corruption for reused hashed negatives.
+
+Cc: stable@vger.kernel.org
+Fixes: 2817b000b02c ("ceph: directory operations")
+Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
+Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+[ kept existing dout() debug call instead of upstream's doutc() form when adding the d_unhashed() guard around d_add() ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/arch/arm64/silicon-errata.rst |    2 ++
- arch/arm64/Kconfig                          |    3 ++-
- arch/arm64/kernel/cpu_errata.c              |    1 +
- 3 files changed, 5 insertions(+), 1 deletion(-)
+ fs/ceph/dir.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/Documentation/arch/arm64/silicon-errata.rst
-+++ b/Documentation/arch/arm64/silicon-errata.rst
-@@ -298,6 +298,8 @@ stable kernels.
- +----------------+-----------------+-----------------+-----------------------------+
- | NVIDIA         | Carmel Core     | N/A             | NVIDIA_CARMEL_CNP_ERRATUM   |
- +----------------+-----------------+-----------------+-----------------------------+
-+| NVIDIA         | Olympus core    | T410-OLY-1029   | ARM64_ERRATUM_4118414       |
-++----------------+-----------------+-----------------+-----------------------------+
- | NVIDIA         | T241 GICv3/4.x  | T241-FABRIC-4   | N/A                         |
- +----------------+-----------------+-----------------+-----------------------------+
- | NVIDIA         | T241 MPAM       | T241-MPAM-1     | N/A                         |
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -1155,7 +1155,7 @@ config ARM64_ERRATUM_4193714
- 	  If unsure, say Y.
- 
- config ARM64_ERRATUM_4118414
--	bool "Cortex-*/Neoverse-*/C1-*: Completion of affected memory accesses might not be guaranteed by completion of a TLBI"
-+	bool "Various: Completion of affected memory accesses might not be guaranteed by completion of a TLBI"
- 	default y
- 	select ARM64_WORKAROUND_REPEAT_TLBI
- 	help
-@@ -1182,6 +1182,7 @@ config ARM64_ERRATUM_4118414
- 	  * ARM Neoverse-V2 erratum 4193787
- 	  * ARM Neoverse-V3 erratum 4193784
- 	  * ARM Neoverse-V3AE erratum 4193784
-+	  * NVIDIA Olympus erratum T410-OLY-1029
- 
- 	  On affected cores, some memory accesses might not be completed by
- 	  broadcast TLB invalidation.
---- a/arch/arm64/kernel/cpu_errata.c
-+++ b/arch/arm64/kernel/cpu_errata.c
-@@ -364,6 +364,7 @@ static const struct arm64_cpu_capabiliti
- 			MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V2),
- 			MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V3),
- 			MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V3AE),
-+			MIDR_ALL_VERSIONS(MIDR_NVIDIA_OLYMPUS),
- 			{}
- 		})),
- 	},
+--- a/fs/ceph/dir.c
++++ b/fs/ceph/dir.c
+@@ -721,7 +721,8 @@ struct dentry *ceph_finish_lookup(struct
+ 				d_drop(dentry);
+ 				err = -ENOENT;
+ 			} else {
+-				d_add(dentry, NULL);
++				if (d_unhashed(dentry))
++					d_add(dentry, NULL);
+ 			}
+ 		}
+ 	}
+@@ -777,7 +778,8 @@ static struct dentry *ceph_lookup(struct
+ 			__ceph_touch_fmode(ci, mdsc, CEPH_FILE_MODE_RD);
+ 			spin_unlock(&ci->i_ceph_lock);
+ 			dout(" dir %p complete, -ENOENT\n", dir);
+-			d_add(dentry, NULL);
++			if (d_unhashed(dentry))
++				d_add(dentry, NULL);
+ 			di->lease_shared_gen = atomic_read(&ci->i_shared_gen);
+ 			return NULL;
+ 		}
 
 
 
