@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-263896-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264879-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id tWHYH6JpMWruigUAu9opvQ
-	(envelope-from <stable+bounces-263896-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:20:02 +0200
+	id I8ReK45/MWqekwUAu9opvQ
+	(envelope-from <stable+bounces-264879-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:53:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85363690EC3
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:20:01 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EDD16928CF
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:53:34 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=0p6qt28r;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263896-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-263896-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="G8KWAom/";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264879-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264879-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 3E2C9303675D
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:17:30 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0A6433027333
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:46:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F333843E49F;
-	Tue, 16 Jun 2026 15:17:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 650353AA4E0;
+	Tue, 16 Jun 2026 16:46:11 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B062543E4B4;
-	Tue, 16 Jun 2026 15:17:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 291473C3439;
+	Tue, 16 Jun 2026 16:46:10 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781623044; cv=none; b=JcIoLdm27QPcgytgeMxIpPLxfV4Ox1BvsQ/EXpQuVLLOMgi5tEPz0w9Zg2McvrEH9avXwL5D2c8POzeV6m4CN5PtI/vMkYpHryl/e0Is7lm4R/EG3Dl3usxZREthHngUuTRcU2uT/ewLBwuoeh3CTAwprWfoxUVrXZsbVnu/ll8=
+	t=1781628371; cv=none; b=ic2l86uQjVvfAKdMeo2/KzkacSTSr6DVwNBusP66bwsu0u8bhadgAZ1mx+fwGUEUDDQPc76rkUyjArltZpDQSZNW34/ribvvZ2PzhXRoexa3LNQ3xSD7n6O3CB7M8dYbRXgK93w0Ktd4ES2Ycil7WtVe8oGR/GlgJaDM5wLwahY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781623044; c=relaxed/simple;
-	bh=TJI57fZ+4EfDq/nF7kNQta449fR/Z+91k9rVojlPhS4=;
+	s=arc-20240116; t=1781628371; c=relaxed/simple;
+	bh=XfJRR+yrOgKxL8b9K3qHVBnm9ZEvxqHmBtk7xhVGfPU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=INyEMCHWmoaQ+TwdpiQyBAZUu/P4J9A9lB/F69LV38zOcRV3c7AAilU99rPC6mroYXSIDHxhvai5OE9p1wJVfO9a2A1Kt6ajpK+7iDI/yo1a9XYXJw+RCBDds6HhjqXJEqzRIZeHaim9WvmbQKDpzZxpKCZ28u2QbqGOXbprmZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0p6qt28r; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73C9B1F000E9;
-	Tue, 16 Jun 2026 15:17:22 +0000 (UTC)
+	 MIME-Version; b=j2ngt2UCfbFfqExkQfSAqxM4sEt5bEJd5spdsuKq+DH0XG4+PJzrQ8vefVSr9Mjx/co/wxAW+n8pSenNVMJHDw3tDJlA1mScYrBT9mbZ1rwMuCNBkjKmMuxmG03l0jGyw8qp6XYI2qRE28K4BSj3W4u/Rvn7JI77aBjZ9u8Afvw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G8KWAom/; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C3331F000E9;
+	Tue, 16 Jun 2026 16:46:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781623043;
-	bh=Me28Zuw3CjkFOIDJTUhPg73qHYNBc2WcHe0KHBQxtBE=;
+	s=korg; t=1781628370;
+	bh=y8Hp64Xp8H1W6tg9N1NI/KTslYfBkuoRMDHctT5HpVo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=0p6qt28rfwrpz4EsPTp5VpJaz/mibtUYJgvL/j+go5RUcma2845SbycCM9j8ugebG
-	 WDr+2HzTb9XwLT2HWnbeSabWuKebw46Hwj1FSWJ8dm8Ejj5HhZ4s9Upzv+bj1fCzQ7
-	 z6nBk29ZB18szBsMndXuzCLMu8o1S8Vo+vLx+q2I=
+	b=G8KWAom/0Z8QcWO9VuR4fTmKtlcrvAwiM9uy4jaCaGNqqXr87OOdSzmARPPZOw3Sx
+	 uz7C9iJyrtRvjIdVXPrQQ06OIfxdnWJ3x9qthc4diXFvGtz/FSHXLl/kzca1Z+O7jm
+	 kJfhj+3whc0hHSI1LAfLkuK2zmov769EuMDu4+r4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 070/378] bonding: annotate data-races arcound churn variables
-Date: Tue, 16 Jun 2026 20:25:01 +0530
-Message-ID: <20260616145113.806438793@linuxfoundation.org>
+Subject: [PATCH 6.6 075/452] phy: mscc: Use PHY_ID_MATCH_EXACT for VSC8584, VSC8582, VSC8575, VSC856X
+Date: Tue, 16 Jun 2026 20:25:02 +0530
+Message-ID: <20260616145121.845221933@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,155 +70,160 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-263896-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:edumazet@google.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264879-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:maxime.chevallier@bootlin.com,m:horatiu.vultur@microchip.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,bootlin.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 85363690EC3
+X-Rspamd-Queue-Id: 1EDD16928CF
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Horatiu Vultur <horatiu.vultur@microchip.com>
 
-[ Upstream commit b47ff80f280e18ad2310f44293cc057d9b64ff11 ]
+[ Upstream commit 1bc80d673087e5704adbb3ee8e4b785c14899cce ]
 
-These fields are updated asynchronously by the bonding state machine
-in ad_churn_machine() while holding bond->mode_lock.
+As the PHYs VSC8584, VSC8582, VSC8575 and VSC856X exists only as rev B,
+we can use PHY_ID_MATCH_EXACT to match exactly on revision B of the PHY.
+Because of this change then there is not need the check if it is a
+different revision than rev B in the function vsc8584_probe() as we
+already know that this will never happen.
+These changes are a preparation for the next patch because in that patch
+we will make the PHYs VSC8574 and VSC8572 to use vsc8584_probe() and
+these PHYs have multiple revision.
 
-bond_info_show_slave() and bond_fill_slave_info() read them without
-bond->mode_lock being held, we need to add READ_ONCE() and
-WRITE_ONCE() annotations.
-
-Note that AD_CHURN_MONITOR, AD_CHURN, and AD_NO_CHURN are defined
-exclusively in (kernel private) include/net/bond_3ad.h header.
-
-They should be moved to include/uapi/linux/if_bonding.h or userspace
-tools will have to hardcode their values.
-
-Fixes: 4916f2e2f3fc ("bonding: print churn state via netlink")
-Fixes: 14c9551a32eb ("bonding: Implement port churn-machine (AD standard 43.4.17).")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260603123514.388226-1-edumazet@google.com
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
+Link: https://patch.msgid.link/20251023191350.190940-2-horatiu.vultur@microchip.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/bonding/bond_3ad.c     | 18 ++++++++++--------
- drivers/net/bonding/bond_netlink.c |  4 ++--
- drivers/net/bonding/bond_procfs.c  |  8 ++++----
- 3 files changed, 16 insertions(+), 14 deletions(-)
+ drivers/net/phy/mscc/mscc.h      |  8 ++++----
+ drivers/net/phy/mscc/mscc_main.c | 23 ++++-------------------
+ 2 files changed, 8 insertions(+), 23 deletions(-)
 
-diff --git a/drivers/net/bonding/bond_3ad.c b/drivers/net/bonding/bond_3ad.c
-index f0aa7d2f21717a..985ef66dc3331e 100644
---- a/drivers/net/bonding/bond_3ad.c
-+++ b/drivers/net/bonding/bond_3ad.c
-@@ -1386,8 +1386,8 @@ static void ad_churn_machine(struct port *port)
+diff --git a/drivers/net/phy/mscc/mscc.h b/drivers/net/phy/mscc/mscc.h
+index 4ba6e32cf6d8d1..c7aaf2c1ee52f1 100644
+--- a/drivers/net/phy/mscc/mscc.h
++++ b/drivers/net/phy/mscc/mscc.h
+@@ -286,12 +286,12 @@ enum rgmii_clock_delay {
+ #define PHY_ID_VSC8540			  0x00070760
+ #define PHY_ID_VSC8541			  0x00070770
+ #define PHY_ID_VSC8552			  0x000704e0
+-#define PHY_ID_VSC856X			  0x000707e0
++#define PHY_ID_VSC856X			  0x000707e1
+ #define PHY_ID_VSC8572			  0x000704d0
+ #define PHY_ID_VSC8574			  0x000704a0
+-#define PHY_ID_VSC8575			  0x000707d0
+-#define PHY_ID_VSC8582			  0x000707b0
+-#define PHY_ID_VSC8584			  0x000707c0
++#define PHY_ID_VSC8575			  0x000707d1
++#define PHY_ID_VSC8582			  0x000707b1
++#define PHY_ID_VSC8584			  0x000707c1
+ #define PHY_VENDOR_MSCC			0x00070400
+ 
+ #define MSCC_VDDMAC_1500		  1500
+diff --git a/drivers/net/phy/mscc/mscc_main.c b/drivers/net/phy/mscc/mscc_main.c
+index 0a4aa8e08827aa..bce7ff8555c2e9 100644
+--- a/drivers/net/phy/mscc/mscc_main.c
++++ b/drivers/net/phy/mscc/mscc_main.c
+@@ -1724,12 +1724,6 @@ static int vsc8584_config_init(struct phy_device *phydev)
+ 	 * in this pre-init function.
+ 	 */
+ 	if (phy_package_init_once(phydev)) {
+-		/* The following switch statement assumes that the lowest
+-		 * nibble of the phy_id_mask is always 0. This works because
+-		 * the lowest nibble of the PHY_ID's below are also 0.
+-		 */
+-		WARN_ON(phydev->drv->phy_id_mask & 0xf);
+-
+ 		switch (phydev->phy_id & phydev->drv->phy_id_mask) {
+ 		case PHY_ID_VSC8504:
+ 		case PHY_ID_VSC8552:
+@@ -2268,11 +2262,6 @@ static int vsc8584_probe(struct phy_device *phydev)
+ 	   VSC8531_DUPLEX_COLLISION};
+ 	int ret;
+ 
+-	if ((phydev->phy_id & MSCC_DEV_REV_MASK) != VSC8584_REVB) {
+-		dev_err(&phydev->mdio.dev, "Only VSC8584 revB is supported.\n");
+-		return -ENOTSUPP;
+-	}
+-
+ 	vsc8531 = devm_kzalloc(&phydev->mdio.dev, sizeof(*vsc8531), GFP_KERNEL);
+ 	if (!vsc8531)
+ 		return -ENOMEM;
+@@ -2559,9 +2548,8 @@ static struct phy_driver vsc85xx_driver[] = {
+ 	.get_stats      = &vsc85xx_get_stats,
+ },
  {
- 	if (port->sm_vars & AD_PORT_CHURNED) {
- 		port->sm_vars &= ~AD_PORT_CHURNED;
--		port->sm_churn_actor_state = AD_CHURN_MONITOR;
--		port->sm_churn_partner_state = AD_CHURN_MONITOR;
-+		WRITE_ONCE(port->sm_churn_actor_state, AD_CHURN_MONITOR);
-+		WRITE_ONCE(port->sm_churn_partner_state, AD_CHURN_MONITOR);
- 		port->sm_churn_actor_timer_counter =
- 			__ad_timer_to_ticks(AD_ACTOR_CHURN_TIMER, 0);
- 		port->sm_churn_partner_timer_counter =
-@@ -1398,20 +1398,22 @@ static void ad_churn_machine(struct port *port)
- 	    !(--port->sm_churn_actor_timer_counter) &&
- 	    port->sm_churn_actor_state == AD_CHURN_MONITOR) {
- 		if (port->actor_oper_port_state & LACP_STATE_SYNCHRONIZATION) {
--			port->sm_churn_actor_state = AD_NO_CHURN;
-+			WRITE_ONCE(port->sm_churn_actor_state, AD_NO_CHURN);
- 		} else {
--			port->churn_actor_count++;
--			port->sm_churn_actor_state = AD_CHURN;
-+			WRITE_ONCE(port->churn_actor_count,
-+				   port->churn_actor_count + 1);
-+			WRITE_ONCE(port->sm_churn_actor_state, AD_CHURN);
- 		}
- 	}
- 	if (port->sm_churn_partner_timer_counter &&
- 	    !(--port->sm_churn_partner_timer_counter) &&
- 	    port->sm_churn_partner_state == AD_CHURN_MONITOR) {
- 		if (port->partner_oper.port_state & LACP_STATE_SYNCHRONIZATION) {
--			port->sm_churn_partner_state = AD_NO_CHURN;
-+			WRITE_ONCE(port->sm_churn_partner_state, AD_NO_CHURN);
- 		} else {
--			port->churn_partner_count++;
--			port->sm_churn_partner_state = AD_CHURN;
-+			WRITE_ONCE(port->churn_partner_count,
-+				   port->churn_partner_count + 1);
-+			WRITE_ONCE(port->sm_churn_partner_state, AD_CHURN);
- 		}
- 	}
- }
-diff --git a/drivers/net/bonding/bond_netlink.c b/drivers/net/bonding/bond_netlink.c
-index c7d3e0602c831d..90365d3f7ebff7 100644
---- a/drivers/net/bonding/bond_netlink.c
-+++ b/drivers/net/bonding/bond_netlink.c
-@@ -82,10 +82,10 @@ static int bond_fill_slave_info(struct sk_buff *skb,
- 				goto nla_put_failure_rcu;
- 
- 			if (nla_put_u8(skb, IFLA_BOND_SLAVE_AD_CHURN_ACTOR_STATE,
--				       ad_port->sm_churn_actor_state))
-+				       READ_ONCE(ad_port->sm_churn_actor_state)))
- 				goto nla_put_failure_rcu;
- 			if (nla_put_u8(skb, IFLA_BOND_SLAVE_AD_CHURN_PARTNER_STATE,
--				       ad_port->sm_churn_partner_state))
-+				       READ_ONCE(ad_port->sm_churn_partner_state)))
- 				goto nla_put_failure_rcu;
- 		}
- 		rcu_read_unlock();
-diff --git a/drivers/net/bonding/bond_procfs.c b/drivers/net/bonding/bond_procfs.c
-index 0c0146b7617721..62a5b40b43a28e 100644
---- a/drivers/net/bonding/bond_procfs.c
-+++ b/drivers/net/bonding/bond_procfs.c
-@@ -220,13 +220,13 @@ static void bond_info_show_slave(struct seq_file *seq,
- 			seq_printf(seq, "Aggregator ID: %d\n",
- 				   agg->aggregator_identifier);
- 			seq_printf(seq, "Actor Churn State: %s\n",
--				   bond_3ad_churn_desc(port->sm_churn_actor_state));
-+				   bond_3ad_churn_desc(READ_ONCE(port->sm_churn_actor_state)));
- 			seq_printf(seq, "Partner Churn State: %s\n",
--				   bond_3ad_churn_desc(port->sm_churn_partner_state));
-+				   bond_3ad_churn_desc(READ_ONCE(port->sm_churn_partner_state)));
- 			seq_printf(seq, "Actor Churned Count: %d\n",
--				   port->churn_actor_count);
-+				   READ_ONCE(port->churn_actor_count));
- 			seq_printf(seq, "Partner Churned Count: %d\n",
--				   port->churn_partner_count);
-+				   READ_ONCE(port->churn_partner_count));
- 
- 			if (capable(CAP_NET_ADMIN)) {
- 				seq_puts(seq, "details actor lacp pdu:\n");
+-	.phy_id		= PHY_ID_VSC856X,
++	PHY_ID_MATCH_EXACT(PHY_ID_VSC856X),
+ 	.name		= "Microsemi GE VSC856X SyncE",
+-	.phy_id_mask	= 0xfffffff0,
+ 	/* PHY_GBIT_FEATURES */
+ 	.soft_reset	= &genphy_soft_reset,
+ 	.config_init    = &vsc8584_config_init,
+@@ -2633,9 +2621,8 @@ static struct phy_driver vsc85xx_driver[] = {
+ 	.get_stats      = &vsc85xx_get_stats,
+ },
+ {
+-	.phy_id		= PHY_ID_VSC8575,
++	PHY_ID_MATCH_EXACT(PHY_ID_VSC8575),
+ 	.name		= "Microsemi GE VSC8575 SyncE",
+-	.phy_id_mask	= 0xfffffff0,
+ 	/* PHY_GBIT_FEATURES */
+ 	.soft_reset	= &genphy_soft_reset,
+ 	.config_init    = &vsc8584_config_init,
+@@ -2657,9 +2644,8 @@ static struct phy_driver vsc85xx_driver[] = {
+ 	.get_stats      = &vsc85xx_get_stats,
+ },
+ {
+-	.phy_id		= PHY_ID_VSC8582,
++	PHY_ID_MATCH_EXACT(PHY_ID_VSC8582),
+ 	.name		= "Microsemi GE VSC8582 SyncE",
+-	.phy_id_mask	= 0xfffffff0,
+ 	/* PHY_GBIT_FEATURES */
+ 	.soft_reset	= &genphy_soft_reset,
+ 	.config_init    = &vsc8584_config_init,
+@@ -2681,9 +2667,8 @@ static struct phy_driver vsc85xx_driver[] = {
+ 	.get_stats      = &vsc85xx_get_stats,
+ },
+ {
+-	.phy_id		= PHY_ID_VSC8584,
++	PHY_ID_MATCH_EXACT(PHY_ID_VSC8584),
+ 	.name		= "Microsemi GE VSC8584 SyncE",
+-	.phy_id_mask	= 0xfffffff0,
+ 	/* PHY_GBIT_FEATURES */
+ 	.soft_reset	= &genphy_soft_reset,
+ 	.config_init    = &vsc8584_config_init,
 -- 
 2.53.0
 
