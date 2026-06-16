@@ -1,67 +1,61 @@
-Return-Path: <stable+bounces-266041-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265641-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 2nwXBjuVMWqXnQUAu9opvQ
-	(envelope-from <stable+bounces-266041-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:26:03 +0200
+	id lZ2MKOmMMWqbmQUAu9opvQ
+	(envelope-from <stable+bounces-265641-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:50:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CBB46941EC
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:26:02 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 539F2693883
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:50:33 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=15Mmnhv2;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266041-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266041-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=eR0wA84j;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265641-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-265641-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1EEB8307B1BD
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:25:52 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C24A23024AB4
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:50:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B715472798;
-	Tue, 16 Jun 2026 18:25:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B373466B4B;
+	Tue, 16 Jun 2026 17:50:30 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DB8E3BFE5A;
-	Tue, 16 Jun 2026 18:25:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00B7332A3C9;
+	Tue, 16 Jun 2026 17:50:29 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781634349; cv=none; b=rnhHfGxv0v2DrJ2+NufpE/WjyA+zu/MhPaiKF/U4J662zPZpZRgoCeeXgU7NjmjKeLj9alAAZ4QtAF5ZXIbja8FpNfXcpEfc1vVdYQjJ0eYUDzIJdBFns8ghwDtHOLYffo0p6vHa4yhCCaSgHqmEbl2KZxcF2/ZHgofoH85q6ak=
+	t=1781632230; cv=none; b=iKGxN0Hv3hzG2+Zc4yh6ALs/O3Ee9Zg3ey2l/3X6LYOqpDDoqNmz3//n8f1gr8BxZSEPNX6J+GX1i3blHe65lpa6ct38kmHbt9cZhglX+k2agRGfRcgTHjKuIUKb4PHxUPS2BmK36waD9OJjQZouTuoVmdG2d6xdMAru6d9spjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781634349; c=relaxed/simple;
-	bh=6E9iCTEtH/9E2Gxyg2vNUm8QCZBU5rU9AHqCtONeknU=;
+	s=arc-20240116; t=1781632230; c=relaxed/simple;
+	bh=xsaW54Fx45M+8gpVd3aIUKcnjMWfkflIUgAKrmDKl3I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aBWSUZKnesUn03jr2ZdKoIsHQVxTxZj6QMQ+BMv0EFCM67neyjj1iOlr9FxzJFaVOncIq3rzSA6UTNew0klAIStoDzapSbQ1O3v0GLRu33oeZ0/cOZKCNXGGUAnDHKp4REYLqyALOj4DJo82SZrp9mVT8eWMWh0uu5ELhop76U4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=15Mmnhv2; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E15F1F000E9;
-	Tue, 16 Jun 2026 18:25:47 +0000 (UTC)
+	 MIME-Version; b=LvFSc9tN1nFaMTrdkkF7QPpHPmVMpKH34VVriVtWSm/XEeA9SC0wgRNG+o0yRbPUoClyN0pOqd9vK/AgNCQz/GsTprTK/vKok5/NJmUKPBK60ze2R5LjKca3uVN4n2HEX/pUhTRfzyql0LSaDQ1wcsHpIHEWn7jtODXSlYGfILg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eR0wA84j; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01B471F000E9;
+	Tue, 16 Jun 2026 17:50:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781634348;
-	bh=fhS7qOStPcb1WRPk58Hvny8de9AdAkN4dCtTKBvqoHs=;
+	s=korg; t=1781632228;
+	bh=zLbhvf9guCj9PNtGWs1SDYV0xr1PDhB2GBjSgI0K7Lc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=15Mmnhv2jRM7pKaHmictf6rfAkeIdEIrX/i1HGg5kKGPVque+Xos3EtiqU3A0f8jR
-	 DpxjTzhALWED85DHUuGYlahLcRD3YEpct61fzLxLpjOPvp8yQA4vHDChwegdz1xu0O
-	 jCug1X9ba/Sw9AnrTKA6lBttUcEhf8t5kTbsTBBo=
+	b=eR0wA84jzDhCD/3eKLS45ZsM2S+lft9JEA+HmzAHP1pEFkhKkKautip8caNweMqzr
+	 /A2NI/nr0+CqV5cr3qzlS6uXBv81h6Aa8Ttuw4o+X9rr99WBWO3bDHNMWvaetUi4IF
+	 fkYxxztB6OoF2alZ1BnmXerii6KyP4CDQonYxktE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Yuan Tan <yuantan098@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Zhengchuan Liang <zcliangcn@gmail.com>,
-	Longxuan Yu <ylong030@ucr.edu>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 5.15 248/411] io_uring/poll: fix signed comparison in io_poll_get_ownership()
+	Daniel Hodges <git@danielhodges.dev>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 339/522] wifi: mwifiex: fix use-after-free in mwifiex_adapter_cleanup()
 Date: Tue, 16 Jun 2026 20:28:06 +0530
-Message-ID: <20260616145114.133411006@linuxfoundation.org>
+Message-ID: <20260616145141.676569700@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,94 +67,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266041-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:yifanwucs@gmail.com,m:tomapufckgml@gmail.com,m:yuantan098@gmail.com,m:bird@lzu.edu.cn,m:zcliangcn@gmail.com,m:ylong030@ucr.edu,m:n05ec@lzu.edu.cn,m:asml.silence@gmail.com,m:axboe@kernel.dk,m:asmlsilence@gmail.com,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,ucr.edu,kernel.dk];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-265641-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:git@danielhodges.dev,m:johannes.berg@intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,msgid.link:url,lzu.edu.cn:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,intel.com:email,danielhodges.dev:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7CBB46941EC
+X-Rspamd-Queue-Id: 539F2693883
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Longxuan Yu <ylong030@ucr.edu>
+From: Daniel Hodges <git@danielhodges.dev>
 
-Commit 326941b22806cbf2df1fbfe902b7908b368cce42 usptream.
+[ Upstream commit ae5e95d4157481693be2317e3ffcd84e36010cbb ]
 
-io_poll_get_ownership() uses a signed comparison to check whether
-poll_refs has reached the threshold for the slowpath:
+The mwifiex_adapter_cleanup() function uses timer_delete()
+(non-synchronous) for the wakeup_timer before the adapter structure is
+freed. This is incorrect because timer_delete() does not wait for any
+running timer callback to complete.
 
-    if (unlikely(atomic_read(&req->poll_refs) >= IO_POLL_REF_BIAS))
+If the wakeup_timer callback (wakeup_timer_fn) is executing when
+mwifiex_adapter_cleanup() is called, the callback will continue to
+access adapter fields (adapter->hw_status, adapter->if_ops.card_reset,
+etc.) which may be freed by mwifiex_free_adapter() called later in the
+mwifiex_remove_card() path.
 
-atomic_read() returns int (signed). When IO_POLL_CANCEL_FLAG
-(BIT(31)) is set in poll_refs, the value becomes negative in
-signed arithmetic, so the >= 128 comparison always evaluates to
-false and the slowpath is never taken.
+Use timer_delete_sync() instead to ensure any running timer callback has
+completed before returning.
 
-Fix this by casting the atomic_read() result to unsigned int
-before the comparison, so that the cancel flag is treated as a
-large positive value and correctly triggers the slowpath.
-
-Fixes: a26a35e9019f ("io_uring: make poll refs more robust")
+Fixes: 4636187da60b ("mwifiex: add wakeup timer based recovery mechanism")
 Cc: stable@vger.kernel.org
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Co-developed-by: Yuan Tan <yuantan098@gmail.com>
-Signed-off-by: Yuan Tan <yuantan098@gmail.com>
-Suggested-by: Xin Liu <bird@lzu.edu.cn>
-Tested-by: Zhengchuan Liang <zcliangcn@gmail.com>
-Signed-off-by: Longxuan Yu <ylong030@ucr.edu>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Reviewed-by: Pavel Begunkov <asml.silence@gmail.com>
-Link: https://patch.msgid.link/3a3508b08bcd7f1bc3beff848ae6e1d73d355043.1775965597.git.ylong030@ucr.edu
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Daniel Hodges <git@danielhodges.dev>
+Link: https://patch.msgid.link/20260206194401.2346-1-git@danielhodges.dev
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+[ changed `timer_delete_sync()` to `del_timer_sync()` ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/io_uring.c |    2 +-
+ drivers/net/wireless/marvell/mwifiex/init.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -5525,7 +5525,7 @@ static bool io_poll_get_ownership_slowpa
-  */
- static inline bool io_poll_get_ownership(struct io_kiocb *req)
+--- a/drivers/net/wireless/marvell/mwifiex/init.c
++++ b/drivers/net/wireless/marvell/mwifiex/init.c
+@@ -388,7 +388,7 @@ static void mwifiex_invalidate_lists(str
+ static void
+ mwifiex_adapter_cleanup(struct mwifiex_adapter *adapter)
  {
--	if (unlikely(atomic_read(&req->poll_refs) >= IO_POLL_REF_BIAS))
-+	if (unlikely((unsigned int)atomic_read(&req->poll_refs) >= IO_POLL_REF_BIAS))
- 		return io_poll_get_ownership_slowpath(req);
- 	return !(atomic_fetch_inc(&req->poll_refs) & IO_POLL_REF_MASK);
- }
+-	del_timer(&adapter->wakeup_timer);
++	del_timer_sync(&adapter->wakeup_timer);
+ 	cancel_delayed_work_sync(&adapter->devdump_work);
+ 	mwifiex_cancel_all_pending_cmd(adapter);
+ 	wake_up_interruptible(&adapter->cmd_wait_q.wait);
 
 
 
