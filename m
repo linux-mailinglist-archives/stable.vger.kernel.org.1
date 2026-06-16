@@ -1,63 +1,63 @@
-Return-Path: <stable+bounces-265994-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263793-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id nuv7B0OUMWoznQUAu9opvQ
-	(envelope-from <stable+bounces-265994-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:21:55 +0200
+	id jAtZIi9mMWr9iQUAu9opvQ
+	(envelope-from <stable+bounces-263793-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:05:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A314694108
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:21:54 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1F98690BF9
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:05:18 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=kfAMwIrQ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265994-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265994-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="Y/3hRQMA";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263793-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263793-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 37D033116C79
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:21:43 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 35306302F77F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:04:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E84E466B64;
-	Tue, 16 Jun 2026 18:21:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E00933BFAEA;
+	Tue, 16 Jun 2026 15:04:46 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF119478E3E;
-	Tue, 16 Jun 2026 18:21:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 608163AA9F3;
+	Tue, 16 Jun 2026 15:04:45 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781634101; cv=none; b=IJtRUWup7FJYig7GOyTrXasDY/TUfINdPYfeghMV7BHAMNjLC7mCazA7auX2YjwhvoXqxtL9qyGyL4ilzSyEppASHLjCIVX1TWV2T9FNeGQyDiERh9ZxVCG/WVf9abNA80qXZZdlONwsPz5rfVzh3DsC8Rhk+gi3iSuoFHKcxfo=
+	t=1781622286; cv=none; b=J3ZZDPwYrcR+rVnoD7f+lcZGkSBLf7qpS4amIbguPPjKxvihwCenlTa+ry7+IgNxx05WfAC0gFljkiYGL/vGDLuaAYKZoLCXTQbdm4f99J1g4szjtHz/8MeZePxhUfWWn+X8Hj3CqZxBViDIzK35m8EUiDiucNJoedQ+Kb3pKHE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781634101; c=relaxed/simple;
-	bh=EMrPMx+/Uqh1qd1t306NDT88Kfq5Vdmpk4g6vKWka9A=;
+	s=arc-20240116; t=1781622286; c=relaxed/simple;
+	bh=dEl2+JV/8Bnw8YeNTDxHr/yqr3WCyQNdCxFe8r3VDcc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SZTOanD3Z8KSZZ2DWMUoqVVQHAZ/jFiWvhRjldpJfypEJDp816scr87cm/ElZJQ/sBWX3LygcdL4HSIhbplZhIseBOsZpZqepO0KW/ufLbzBijPjBNEHyODpaFuWk913wB6ebzyYvR24mZUuyCRaqIPCyo1gH/qmPLB16HHOKnI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kfAMwIrQ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E613B1F000E9;
-	Tue, 16 Jun 2026 18:21:38 +0000 (UTC)
+	 MIME-Version; b=cgqWKiEvHcAIDyrM2ttOp66T0BWcYKruQg+NXX9Km4glXKGobEj7JcFbHX3dRfJwyfNl0CmOBZg4VMtac4mmD36EG0HMtH7Vhq+x/hJkjbmIO8T0k+geCkwxTiyrhDFpH4iGdc7vtvvSlwpadvYF8fczlrSUER+Y9mtIx/z57wA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y/3hRQMA; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2493C1F000E9;
+	Tue, 16 Jun 2026 15:04:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781634099;
-	bh=Yoe+kIhY8NS/fdv4lPp6OhMRwRi1P1gt707ezv/1HbA=;
+	s=korg; t=1781622285;
+	bh=s0KPl2621vEWbju6TnHqL1DtUbcEViyHbkdhj4OAXW4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=kfAMwIrQkjfqkX4eqDOxdyfMqDa/n2LIZ8oQ7FpA4rEbwsVYtGF5kw2Hw/X/C0urP
-	 B0nRLVkUfjy83Ck1QUhXb24EruRXHNLVDY43XE0tc253zqV9o7IFCEtDIiQNkDAace
-	 OqQEjwmfddAKi6ll1nnvkr97R7YnPpVpqJ7qTr78=
+	b=Y/3hRQMAMsdy2TwGN8YPXiULKjFmirdNMOpPEX8BmgG1gTRgQCytFR3y5+vu5YQlv
+	 6ylEr38e9rp/hTjIIL401jh6msFGGtkQ5S+G6MuoVl9iwH7Om9weyC+oSzSGDMy2+U
+	 uHWJGT2f7aThUpYtFc1NqwehN3ihtI0j7+oAt8G0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Lunn <andrew@lunn.ch>,
-	Oscar Maes <oscmaes92@gmail.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Eulgyu Kim <eulgyukim@snu.ac.kr>,
+	Taeyang Lee <0wn@theori.io>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 159/411] pcnet32: stop holding device spin lock during napi_complete_done
+Subject: [PATCH 6.18 001/325] bpf: Free reuseport cBPF prog after RCU grace period.
 Date: Tue, 16 Jun 2026 20:26:37 +0530
-Message-ID: <20260616145108.940199509@linuxfoundation.org>
+Message-ID: <20260616145057.898856127@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,94 +71,174 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,lunn.ch,gmail.com,intel.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-265994-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:andrew@lunn.ch,m:oscmaes92@gmail.com,m:aleksander.lobakin@intel.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-263793-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:eulgyukim@snu.ac.kr,m:0wn@theori.io,m:kuniyu@google.com,m:daniel@iogearbox.net,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,lunn.ch:email,msgid.link:url,intel.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,snu.ac.kr:email,iogearbox.net:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,theori.io:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8A314694108
+X-Rspamd-Queue-Id: F1F98690BF9
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oscar Maes <oscmaes92@gmail.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-[ Upstream commit 73bf3cca7de6a73f53b6a52dc3b1c82ae5667a4d ]
+[ Upstream commit 18fc650ccd7fe3376eca89203668cfb8268f60df ]
 
-napi_complete_done may call gro_flush_normal (though not currently, as GRO
-is unsupported at the moment), which may result in packet TX. This will
-eventually result in calling pcnet32_start_xmit - resulting in a deadlock
-while trying to re-acquire the already locked spin lock.
+Eulgyu Kim reported the splat below with a repro. [0]
 
-It is safe to split the spinlock block into two, because the hardware
-registers are still protected from concurrent access, and the two blocks
-perform unrelated operations that don't need to happen atomically.
+The repro sets up a UDP reuseport group with a cBPF prog and
+replaces it with a new one while another thread is sending
+a UDP packet to the group.
 
-Fixes: 5b2ec6f2be51 ("pcnet32: use napi_complete_done()")
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Oscar Maes <oscmaes92@gmail.com>
-Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-Link: https://patch.msgid.link/20260528140320.5556-1-oscmaes92@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+The reuseport prog is freed by sk_reuseport_prog_free().
+bpf_prog_put() is called for "e"BPF prog to destruct through
+multiple stages while cBPF prog is freed immediately by
+bpf_release_orig_filter() and bpf_prog_free().
+
+If a reuseport prog is detached from the setsockopt() path
+(reuseport_attach_prog() or reuseport_detach_prog()),
+sk_reuseport_prog_free() is called without waiting for RCU
+readers to complete, resulting in various bugs.
+
+Let's defer freeing the reuseport cBPF prog after one RCU
+grace period.
+
+Note "e"BPF prog is safe as is unless the fast path starts
+to touch fields destroyed in bpf_prog_put_deferred() and
+__bpf_prog_put_noref().
+
+[0]:
+BUG: KASAN: vmalloc-out-of-bounds in reuseport_select_sock+0xedc/0x1220 net/core/sock_reuseport.c:596
+Read of size 4 at addr ffffc9000051e004 by task slowme/10208
+CPU: 6 UID: 1000 PID: 10208 Comm: slowme Not tainted 7.0.0-geb7ac95ff75e #32 PREEMPT(full)
+Hardware name: QEMU Ubuntu 24.04 PC v2 (i440FX + PIIX, arch_caps fix, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+Call Trace:
+ <IRQ>
+ dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:378 [inline]
+ print_report+0xca/0x240 mm/kasan/report.c:482
+ kasan_report+0x118/0x150 mm/kasan/report.c:595
+ reuseport_select_sock+0xedc/0x1220 net/core/sock_reuseport.c:596
+ udp4_lib_lookup2+0x3bc/0x950 net/ipv4/udp.c:495
+ __udp4_lib_lookup+0x768/0xe20 net/ipv4/udp.c:723
+ __udp4_lib_lookup_skb+0x297/0x390 net/ipv4/udp.c:752
+ __udp4_lib_rcv+0x1312/0x2620 net/ipv4/udp.c:2752
+ ip_protocol_deliver_rcu+0x282/0x440 net/ipv4/ip_input.c:207
+ ip_local_deliver_finish+0x3bb/0x6f0 net/ipv4/ip_input.c:241
+ NF_HOOK+0x30c/0x3a0 include/linux/netfilter.h:318
+ NF_HOOK+0x30c/0x3a0 include/linux/netfilter.h:318
+ __netif_receive_skb_one_core net/core/dev.c:6181 [inline]
+ __netif_receive_skb net/core/dev.c:6294 [inline]
+ process_backlog+0xaa4/0x1960 net/core/dev.c:6645
+ __napi_poll+0xae/0x340 net/core/dev.c:7709
+ napi_poll net/core/dev.c:7772 [inline]
+ net_rx_action+0x5d7/0xf50 net/core/dev.c:7929
+ handle_softirqs+0x22b/0x870 kernel/softirq.c:622
+ do_softirq+0x76/0xd0 kernel/softirq.c:523
+ </IRQ>
+ <TASK>
+ __local_bh_enable_ip+0xf8/0x130 kernel/softirq.c:450
+ local_bh_enable include/linux/bottom_half.h:33 [inline]
+ rcu_read_unlock_bh include/linux/rcupdate.h:924 [inline]
+ __dev_queue_xmit+0x1dd7/0x3710 net/core/dev.c:4890
+ neigh_output include/net/neighbour.h:556 [inline]
+ ip_finish_output2+0xca9/0x1070 net/ipv4/ip_output.c:237
+ NF_HOOK_COND include/linux/netfilter.h:307 [inline]
+ ip_output+0x29f/0x450 net/ipv4/ip_output.c:438
+ ip_send_skb+0x45/0xc0 net/ipv4/ip_output.c:1508
+ udp_send_skb+0xb04/0x1510 net/ipv4/udp.c:1195
+ udp_sendmsg+0x1a71/0x2350 net/ipv4/udp.c:1485
+ sock_sendmsg_nosec net/socket.c:727 [inline]
+ __sock_sendmsg net/socket.c:742 [inline]
+ __sys_sendto+0x554/0x680 net/socket.c:2206
+ __do_sys_sendto net/socket.c:2213 [inline]
+ __se_sys_sendto net/socket.c:2209 [inline]
+ __x64_sys_sendto+0xde/0x100 net/socket.c:2209
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x160/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x415a2d
+Code: b3 66 2e 0f 1f 84 00 00 00 00 00 66 90 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f6bc31e41e8 EFLAGS: 00000212 ORIG_RAX: 000000000000002c
+RAX: ffffffffffffffda RBX: 00007f6bc31e4cdc RCX: 0000000000415a2d
+RDX: 0000000000000001 RSI: 00007f6bc31e421f RDI: 0000000000000003
+RBP: 00007f6bc31e4240 R08: 00007f6bc31e4220 R09: 0000000000000010
+R10: 0000000000000000 R11: 0000000000000212 R12: 00007f6bc31e46c0
+R13: ffffffffffffffb8 R14: 0000000000000000 R15: 00007ffc9b0d70b0
+ </TASK>
+
+Fixes: 538950a1b752 ("soreuseport: setsockopt SO_ATTACH_REUSEPORT_[CE]BPF")
+Reported-by: Eulgyu Kim <eulgyukim@snu.ac.kr>
+Reported-by: Taeyang Lee <0wn@theori.io>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/bpf/20260426012647.3233119-1-kuniyu@google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/amd/pcnet32.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/core/filter.c | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/amd/pcnet32.c b/drivers/net/ethernet/amd/pcnet32.c
-index 70d76fdb9f569d..58a59b2d70cf2b 100644
---- a/drivers/net/ethernet/amd/pcnet32.c
-+++ b/drivers/net/ethernet/amd/pcnet32.c
-@@ -1399,8 +1399,10 @@ static int pcnet32_poll(struct napi_struct *napi, int budget)
- 		pcnet32_restart(dev, CSR0_START);
- 		netif_wake_queue(dev);
- 	}
-+	spin_unlock_irqrestore(&lp->lock, flags);
- 
- 	if (work_done < budget && napi_complete_done(napi, work_done)) {
-+		spin_lock_irqsave(&lp->lock, flags);
- 		/* clear interrupt masks */
- 		val = lp->a->read_csr(ioaddr, CSR3);
- 		val &= 0x00ff;
-@@ -1408,9 +1410,9 @@ static int pcnet32_poll(struct napi_struct *napi, int budget)
- 
- 		/* Set interrupt enable. */
- 		lp->a->write_csr(ioaddr, CSR0, CSR0_INTEN);
-+		spin_unlock_irqrestore(&lp->lock, flags);
- 	}
- 
--	spin_unlock_irqrestore(&lp->lock, flags);
- 	return work_done;
+diff --git a/net/core/filter.c b/net/core/filter.c
+index e6dd40e0276ed1..0b61945491054b 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -1660,15 +1660,24 @@ int sk_reuseport_attach_bpf(u32 ufd, struct sock *sk)
+ 	return err;
  }
  
++static void sk_reuseport_prog_free_rcu(struct rcu_head *rcu)
++{
++	struct bpf_prog_aux *aux = container_of(rcu, struct bpf_prog_aux, rcu);
++	struct bpf_prog *prog = aux->prog;
++
++	bpf_release_orig_filter(prog);
++	bpf_prog_free(prog);
++}
++
+ void sk_reuseport_prog_free(struct bpf_prog *prog)
+ {
+ 	if (!prog)
+ 		return;
+ 
+-	if (prog->type == BPF_PROG_TYPE_SK_REUSEPORT)
+-		bpf_prog_put(prog);
++	if (bpf_prog_was_classic(prog))
++		call_rcu(&prog->aux->rcu, sk_reuseport_prog_free_rcu);
+ 	else
+-		bpf_prog_destroy(prog);
++		bpf_prog_put(prog);
+ }
+ 
+ static inline int __bpf_try_make_writable(struct sk_buff *skb,
 -- 
 2.53.0
 
