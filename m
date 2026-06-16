@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-265578-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266011-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id pk9xMKOLMWoGmQUAu9opvQ
-	(envelope-from <stable+bounces-265578-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:45:07 +0200
+	id DZP0OZ6UMWpdnQUAu9opvQ
+	(envelope-from <stable+bounces-266011-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:23:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65FF869370C
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:45:07 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DF1769416F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:23:26 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=wEye7asD;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265578-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265578-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=U8gYO+RD;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266011-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266011-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6D1AF304B90C
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:45:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7B450317BE3F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:23:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC69043E4BE;
-	Tue, 16 Jun 2026 17:45:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37203466B64;
+	Tue, 16 Jun 2026 18:23:11 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6AFA466B5B;
-	Tue, 16 Jun 2026 17:45:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B8B93D8105;
+	Tue, 16 Jun 2026 18:23:10 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781631905; cv=none; b=cyn6LwmSR741mk1L5GaFBk+BMogCqVRC7toEpme+SYCnozuORpOCccrG3vuZPHYKSoHGtMXYcAFFzXsdh4UEbu2/ZuDkxOGtVl1QJT8wSWLrPkeh5AdqLJADcUyrVgjRR3ZOQ9ioCdw1ZKUyaz68g8mSUpy8IKtAl+M+BgKt7qM=
+	t=1781634191; cv=none; b=A9kY5I0tLsAAn3Z+TtlLF7IKucA9zrZ12EAszJF+x5U2UfZRLhViK2tyhM4Y/k3237+3bSrh3hT3mN9pbra6Cm2BIQD1YWFZXG4D6XFdxeeStsXY73uqj2Dp25Gjssk+3xMqU4D2w/xOYaiDXpNzijugdC3vxc6W+mnmKxPUkPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781631905; c=relaxed/simple;
-	bh=wSszrKdZryiwIT7NQhJ3/NOjMA0Z28C3weooqg8qIxU=;
+	s=arc-20240116; t=1781634191; c=relaxed/simple;
+	bh=Vmq4zf1SI4/HIwvnSUTypp7OY8lm2hT7Z7c1YvpMRas=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gkztd4mS6jWBVPwpk9dFGNg1A7thjjeGxyId2UdgUVX7FyhBA0Eo0UgAb07NgxectoVLYQEJfTEu4W1dcemKfk8ca1myJV+g7kLMeMOgFtSOcFXl/O3DWv4UM80F8tx4zgFyYklt0OCixm5kr0DinJ+ViY8NsWDzbcsJAKxwsoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wEye7asD; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0CFD1F000E9;
-	Tue, 16 Jun 2026 17:45:03 +0000 (UTC)
+	 MIME-Version; b=RYcXScC2BRI/bmni5jAPbKXKdO8p5RSTB73Rnw8irIld7XO02GHY3QwoOQm7AYR3rlS5LMPf2kIcGREwQMf+A5NK4QMvtDp06ww3oBon+1wd8/BWVUfchCSbzFyl0hbZqTCmalwSQBPi2nQNnqGzaw3WiebgZ0FfL6qyz5KeODA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U8gYO+RD; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A3E61F000E9;
+	Tue, 16 Jun 2026 18:23:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781631904;
-	bh=qWBoClFF0JxwMchntC96/YS48UBR9Y/sVBF71+wkNhc=;
+	s=korg; t=1781634190;
+	bh=JLbNuH9bvx9coV8ir4pcg4M8aAuqYOBNr7zHNsK4pY0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=wEye7asDKdO995T394L9IkvPFJANNZaT7Gjzo1gqAOrUQbANT+e+G8RC1AgVxupuD
-	 hz01m5sT2hhXdUaQtsTPRIfwWG+P0lYY6qcZsOwp+dFUxuNl/xUbBJyu/LlLEzOkT/
-	 HBwCihn0EAOjoh7ZjEZYlksVpWllChjrc3GXoAhE=
+	b=U8gYO+RDnGQ3HeSoNI9BeWYkZl6G/d5LRqt+qt2mgJSp3+7cvKTQ2cWvICY77vbbC
+	 5Oep0LpS6UTiIQAMVCQqLhf7KyEhVavrBliAz9ZxsH2GNFx6y+MfzmNu7MnpKJ9K8I
+	 HCcJTQIpLhv0+waCwezxAii4X/IuQdG3y0axH8jM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Inochi Amaoto <inochiama@gmail.com>,
-	Gabriel Somlo <gsomlo@gmail.com>,
-	Ulf Hansson <ulfh@kernel.org>
-Subject: [PATCH 6.1 310/522] mmc: litex_mmc: Set mandatory idle clocks before CMD0
+	"Christian Brauner (Amutable)" <brauner@kernel.org>
+Subject: [PATCH 5.15 219/411] pidfd: refuse access to tasks that have started exiting harder
 Date: Tue, 16 Jun 2026 20:27:37 +0530
-Message-ID: <20260616145140.373368316@linuxfoundation.org>
+Message-ID: <20260616145112.425957126@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,99 +70,81 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-265578-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:inochiama@gmail.com,m:gsomlo@gmail.com,m:ulfh@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-266011-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:brauner@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCPT_COUNT_THREE(0.00)[4];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 65FF869370C
+X-Rspamd-Queue-Id: 3DF1769416F
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Inochi Amaoto <inochiama@gmail.com>
+From: Christian Brauner <brauner@kernel.org>
 
-commit 99982b743e5ba72bd1f5de0e03e3b96ae70b1e51 upstream.
+commit 62c4d31d78294bd61cf3403626b789e854357177 upstream.
 
-The litex_mmc driver assumes the card is already probed in the BIOS
-and skip the phy initialization. This will cause the command fail
-like the following when the old card is unplugged and then insert
-a new card:
+The recent ptrace fix closed a hole where someone could rely on task->mm
+becoming NULL during do_exit() to bypass dumpability checks. This api
+here leans on on the very same check and so inherits the fix.
 
-[   62.923593] litex-mmc f0004000.mmc: Command (cmd 8) error, status -110
-[   62.949717] litex-mmc f0004000.mmc: Command (cmd 55) error, status -110
-[   62.976606] litex-mmc f0004000.mmc: Command (cmd 55) error, status -110
-[   63.002516] litex-mmc f0004000.mmc: Command (cmd 55) error, status -110
-[   63.028442] litex-mmc f0004000.mmc: Command (cmd 55) error, status -110
+But there is no good reason to let it succeed at all once the target has
+entered do_exit(). PF_EXITING is set by exit_signals() at the very top
+of do_exit(), before exit_mm() and exit_files() run. Once we observe it,
+the task is committed to dying and exit_files() will release the fdtable
+shortly.
 
-Add required clock settings and initialization for the CMD 0, so it can
-probe the new card.
-
-Fixes: 92e099104729 ("mmc: Add driver for LiteX's LiteSDCard interface")
-Signed-off-by: Inochi Amaoto <inochiama@gmail.com>
-Reviewed-by: Gabriel Somlo <gsomlo@gmail.com>
+Fixes: 8649c322f75c ("pid: Implement pidfd_getfd syscall")
 Cc: stable@vger.kernel.org
-Signed-off-by: Ulf Hansson <ulfh@kernel.org>
+Link: https://patch.msgid.link/20260518-obgleich-petersilie-2d77ccccf9b9@brauner
+Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/litex_mmc.c |   14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ kernel/pid.c |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/drivers/mmc/host/litex_mmc.c
-+++ b/drivers/mmc/host/litex_mmc.c
-@@ -69,6 +69,9 @@
- #define SD_SLEEP_US       5
- #define SD_TIMEOUT_US 20000
+--- a/kernel/pid.c
++++ b/kernel/pid.c
+@@ -637,10 +637,12 @@ static struct file *__pidfd_fget(struct
+ 	if (ret)
+ 		return ERR_PTR(ret);
  
-+#define SD_INIT_DELAY_US  1000
-+#define SD_INIT_CLK_HZ    400000
-+
- #define SDIRQ_CARD_DETECT    1
- #define SDIRQ_SD_TO_MEM_DONE 2
- #define SDIRQ_MEM_TO_SD_DONE 4
-@@ -450,6 +453,17 @@ static void litex_mmc_set_ios(struct mmc
- 	struct litex_mmc_host *host = mmc_priv(mmc);
+-	if (ptrace_may_access(task, PTRACE_MODE_ATTACH_REALCREDS))
+-		file = fget_task(task, fd);
+-	else
++	if (!ptrace_may_access(task, PTRACE_MODE_ATTACH_REALCREDS))
+ 		file = ERR_PTR(-EPERM);
++	else if (task->flags & PF_EXITING)
++		file = ERR_PTR(-ESRCH);
++	else
++		file = fget_task(task, fd);
  
- 	/*
-+	 * The SD specification requires at least 74 idle clocks before CMD0.
-+	 * These dummy cycles is generated by writing LITEX_PHY_INITIALIZE.
-+	 */
-+	if (ios->chip_select == MMC_CS_HIGH) {
-+		litex_mmc_setclk(host, SD_INIT_CLK_HZ);
-+		litex_write8(host->sdphy + LITEX_PHY_INITIALIZE, 1);
-+		fsleep(SD_INIT_DELAY_US);
-+		return;
-+	}
-+
-+	/*
- 	 * NOTE: Ignore any ios->bus_width updates; they occur right after
- 	 * the mmc core sends its own acmd6 bus-width change notification,
- 	 * which is redundant since we snoop on the command flow and inject
+ 	up_read(&task->signal->exec_update_lock);
+ 
 
 
 
