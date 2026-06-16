@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-264366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265113-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id YqrTDYR0MWoIjwUAu9opvQ
-	(envelope-from <stable+bounces-264366-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:06:28 +0200
+	id 8/G2EdCEMWralQUAu9opvQ
+	(envelope-from <stable+bounces-265113-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:16:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF7FC691B06
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:06:27 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA732692EE8
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:15:59 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=HdeOFwzB;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264366-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264366-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ObbMWhDq;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265113-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265113-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 34A153211249
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:59:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5A6C730E6919
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:05:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06A31477995;
-	Tue, 16 Jun 2026 15:58:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C84BD376A19;
+	Tue, 16 Jun 2026 17:05:33 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D566746AEEA;
-	Tue, 16 Jun 2026 15:58:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CCD743E4BC;
+	Tue, 16 Jun 2026 17:05:32 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781625499; cv=none; b=IZMbNU84v7ZGe3OuA/XyqNzmOlOa2eN+GphF6D4vcb5TwkVmAgofPuVbXzAotXBN4SNYsx093U77wTOQGhrq6I+vhaSSs7zY4k8U/rDwvv7neTdAjYqoSAf/sTgxiO0fZASYPKN13AF9nMP7WkJD3VnXV61igbKhcUDUhZYkCvI=
+	t=1781629533; cv=none; b=D/8F5l//gVawjfigB6f3kzy4DcTbjAR+7WQPDiatuPWoGCjfo8GHCnUw9IOdRl+mZmMNMrFdwkm9pHfhQ0qxjBJYo0epbwCXEbjass+WzSCBU65Ee9GKvbHb4aYw8UTPOvzXxm4Sc2CmBtyzC3LHqpytEofevnkzEFRMQkAqEt8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781625499; c=relaxed/simple;
-	bh=z2FpGc6HSgOHksXJnQWgnpB633a0eTE3+Gw48EnOasU=;
+	s=arc-20240116; t=1781629533; c=relaxed/simple;
+	bh=wj81f2oU60DddLlmVQoGI8sceuYYAHayymcz7uyyWRQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YEHA1Bdhh6TWvlcnXt7joFXJ6A6+1fUlqpMbytz8zdXNFACkVeRN916+M4GTgelbtGqtB5ChAsno1OPKIWz3Fzg9qAxPAJ/zd1iiD5r8pWoKF0RYqmPM5aeEJ4H4/+tkoQeGRthMNnLA+7L3P2WUx38hM2urNyxY6XsDugV8944=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HdeOFwzB; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 887541F00A3D;
-	Tue, 16 Jun 2026 15:58:17 +0000 (UTC)
+	 MIME-Version; b=O4YYUaKPba9o61FzY7JKfMT0XJx2a/1AMHyzukyR/0LzblNsiXYUQKDJ1Yxk5EYtyB6PcE6SrugL+aMGRAYJvrnqq9Gsns3Pd3EcsSYLBZVJKGlBqvs+kfZVxGfMMjHBEI/xf3dv24XbJUsWw7tlBhoBPqPD3JgJkhO+5vWIctQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ObbMWhDq; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A88F31F000E9;
+	Tue, 16 Jun 2026 17:05:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781625498;
-	bh=G6eqeqWvMX8hx13b5PKmhg0tgWkNgnSk3ppVWYTXUtQ=;
+	s=korg; t=1781629532;
+	bh=0WN9SxrZqgi7TmMZI941yhGlD10SwdW9+Un7+/dHRoE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=HdeOFwzBGEhUSv2qzJ6ShIKqRKqgub+BRU5L2IAOAtzArU/T0thpkbtUaiaKa7moW
-	 3BzDrJe1x0XrMf7JMsle8EYroPtkcimm90ecsWYC4TBpXIQgev3H6KU/RMkxMjw86B
-	 KGj9AbauKYGq1X7jXxnUpC8hF6bUg2mRw1nRyx4A=
+	b=ObbMWhDqD/gNTR6I78HIpx5cZXob2lIMW7Bun0nmkv0RVy03SJ5dSIEHpo27TKbRQ
+	 YncpnH7voq/BR//J00N9EG68VVigrqY16yL3zYzSVKPnjbQckARMR/z7orwA9EG0Zf
+	 b4VGghYoS+CVsCYquGE7ib+HQnUR3bnu4FzUS+1g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Allison Henderson <achender@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 122/325] rds: mark snapshot pages dirty in rds_info_getsockopt()
+	Tristan Madani <tristan@talencesecurity.com>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 6.6 291/452] netfilter: nft_tunnel: fix use-after-free on object destroy
 Date: Tue, 16 Jun 2026 20:28:38 +0530
-Message-ID: <20260616145103.791167509@linuxfoundation.org>
+Message-ID: <20260616145132.852126441@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,22 +72,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264366-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265113-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:leitao@debian.org,m:achender@kernel.org,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:tristan@talencesecurity.com,m:fmancera@suse.de,m:fw@strlen.de,m:pablo@netfilter.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -99,54 +99,52 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,suse.de:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,netfilter.org:email,strlen.de:email,vger.kernel.org:from_smtp,talencesecurity.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: AF7FC691B06
+X-Rspamd-Queue-Id: AA732692EE8
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Tristan Madani <tristan@talencesecurity.com>
 
-[ Upstream commit 512db8267b73a220a64180d95ab5eebe7c4964a8 ]
+commit c32b26aaa2f9216520a38b3f4bfeec846eb3eb8a upstream.
 
-rds_info_getsockopt() pins the destination user pages with FOLL_WRITE and
-the RDS_INFO_* producers memcpy the snapshot into them through
-kmap_atomic(). Because that copy goes through the kernel direct map, the
-dirty bit on the user PTE is never set, so unpin_user_pages() releases the
-pages without marking them dirty. A file-backed destination page can then
-be reclaimed without writeback, silently discarding the copied data.
+nft_tunnel_obj_destroy() calls metadata_dst_free() which directly
+kfree()s the metadata_dst, ignoring the dst_entry refcount. Packets
+that took a reference via dst_hold() in nft_tunnel_obj_eval() and
+are still queued (e.g. in a netem qdisc) are left with a dangling
+pointer. When these packets are eventually dequeued, dst_release()
+operates on freed memory.
 
-Use unpin_user_pages_dirty_lock() with make_dirty=true so the modified
-pages are marked dirty before they are unpinned.
+Replace metadata_dst_free() with dst_release() so the metadata_dst
+is freed only after all references are dropped. The dst subsystem
+already handles metadata_dst cleanup in dst_destroy() when
+DST_METADATA is set.
 
-Fixes: a8c879a7ee98 ("RDS: Info and stats")
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Reviewed-by: Allison Henderson <achender@kernel.org>
-Link: https://patch.msgid.link/20260608-rds_fix-v1-1-006c88543408@debian.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: af308b94a2a4 ("netfilter: nf_tables: add tunnel support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
+Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rds/info.c | 2 +-
+ net/netfilter/nft_tunnel.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/rds/info.c b/net/rds/info.c
-index b6b46a8214a0a5..b3ee5f8238c44d 100644
---- a/net/rds/info.c
-+++ b/net/rds/info.c
-@@ -235,7 +235,7 @@ int rds_info_getsockopt(struct socket *sock, int optname, char __user *optval,
+--- a/net/netfilter/nft_tunnel.c
++++ b/net/netfilter/nft_tunnel.c
+@@ -699,7 +699,7 @@ static void nft_tunnel_obj_destroy(const
+ {
+ 	struct nft_tunnel_obj *priv = nft_obj_data(obj);
  
- out:
- 	if (pages)
--		unpin_user_pages(pages, nr_pages);
-+		unpin_user_pages_dirty_lock(pages, nr_pages, true);
- 	kfree(pages);
+-	metadata_dst_free(priv->md);
++	dst_release(&priv->md->dst);
+ }
  
- 	return ret;
--- 
-2.53.0
-
+ static struct nft_object_type nft_tunnel_obj_type;
 
 
 
