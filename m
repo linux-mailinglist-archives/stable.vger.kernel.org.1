@@ -1,61 +1,67 @@
-Return-Path: <stable+bounces-266133-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266536-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id dUAVB26YMWoDnwUAu9opvQ
-	(envelope-from <stable+bounces-266133-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:39:42 +0200
+	id BtkXByufMWrsoQUAu9opvQ
+	(envelope-from <stable+bounces-266536-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:08:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93B896944E4
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:39:41 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13A17694C5E
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:08:26 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=2EGxiknK;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266133-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266133-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="kfgR/r9V";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266536-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-266536-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C3A4A31FEC7D
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:33:55 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 37117300106B
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:08:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 882953DF007;
-	Tue, 16 Jun 2026 18:33:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0B8E3DE422;
+	Tue, 16 Jun 2026 19:08:19 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C8794779B0;
-	Tue, 16 Jun 2026 18:33:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADE5F318EDA;
+	Tue, 16 Jun 2026 19:08:18 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781634835; cv=none; b=m5sBTUxpUnRjufUR7SDySk7Uy78MwSX3zMYYEDR00aMGqXc/3QNDSj2A55R7BlYD7PURQa2QIPu78o8lJfy4Tswv6QzfoNwFuDzC8zYJfEO4dKOw1UNhn0nL9UTHuop/mGktMDLaMqxDxqjm5IJZ7DpSLtBEsR23uwGzTFhQKdQ=
+	t=1781636899; cv=none; b=t3Ubd4fzEZAjfrDXwQNQRjwLdN5AdonvzS+bkLvJQvrLyrwSBsCofRk6zjGwWKr9cQeXrptzw3hDSHIC+V4dQ+QmXssupNqMAPCD58IdXWSIrNMJngM/HdfNdzV9eKBO25Dk+EIMkOJG1HLmD+mHgneuICkKKcR5NucT8efyIuY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781634835; c=relaxed/simple;
-	bh=x8Zaoi5E3XtgYfeP6u4lwq12UcoAlE/Oijr7tNXYEgk=;
+	s=arc-20240116; t=1781636899; c=relaxed/simple;
+	bh=HUnxP8iUaktYB1wQU18cn0+E4URcBVEh/US5rSK9rM4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MqT1eIA40NOY1tdhM2xCiJ1rxnBOB6jigxLupllISLhbVUF5TZRoSqtMm4qx0nrhcgGXh+zZBDT6JC7KDCVOzSWitXloHtHubgpf7kxnDjnDqO3aN4E+1a7ZcqTXDXG/g+Pm6TQpcKc2fF0rOyRzMECDjRamiPDk8J7WZSg6HCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2EGxiknK; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DF631F000E9;
-	Tue, 16 Jun 2026 18:33:52 +0000 (UTC)
+	 MIME-Version; b=dFfQjlL2iduvvZJRvrkm/SKxXkbzUIG8Gt641rHrHxmbnJQ9K0bKEuqJ6e4UI3dG3ZNab+sk/EqRUiPNoYlNSnb/qaA7EASBT/znhKDdreNYzgCyPo2NOeWKUAhX8Ok/TCxe+76X+Of4VeFifyDYbuTmYIrAv4ujOqBX6XhJbs8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kfgR/r9V; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87A571F000E9;
+	Tue, 16 Jun 2026 19:08:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781634833;
-	bh=NrWuLocZNUhD2KB36gt/OCGZ50KEYHtKgkqQqbr5sNQ=;
+	s=korg; t=1781636898;
+	bh=NCAGIAnLauLQoYg8miGCUskyg1mo0582fgKwHbZVu64=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=2EGxiknKdzIw70Es9PvaxViG6DC5LM3VVbazk9x8CduFo0PU1ffzwk8UoHyn1uJ02
-	 LNkm+5Nw9deVhhipV+ehMKFShbcnYCqvXa68qxZIwWKlVgHyLKq6PP9PBCcwIFj0JQ
-	 8SwGmV81l2GsW962Eudex8kXUC2SJC0GtC7XkT8A=
+	b=kfgR/r9VZ9Yi4VnnKVhXEBN8zTaI4PTQImCtPgmdSZPuCVFAOaYKNpLcPMPDa5/0l
+	 TEvHJAH+OGO0OaqDjffdMordBpYrjg+rS3Dr9jM3ATZ6IF4vC5Agj8iS4Q0qgaABoS
+	 y2z1ksS6gbhukxABzgtef3lROMfI9E4H8zNeMo1c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Marcel Holtmann <marcel@holtmann.org>,
+	stable@kernel.org,
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Haoze Xie <royenheart@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 341/411] Bluetooth: hci_sync: Make use of hci_cmd_sync_queue set 2
+Subject: [PATCH 5.10 283/342] netfilter: nf_queue: hold bridge skb->dev while queued
 Date: Tue, 16 Jun 2026 20:29:39 +0530
-Message-ID: <20260616145119.364314584@linuxfoundation.org>
+Message-ID: <20260616145101.591137757@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,162 +78,127 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266133-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	TAGGED_FROM(0.00)[bounces-266536-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:yuantan098@gmail.com,m:yifanwucs@gmail.com,m:tomapufckgml@gmail.com,m:bird@lzu.edu.cn,m:royenheart@gmail.com,m:n05ec@lzu.edu.cn,m:pablo@netfilter.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:luiz.von.dentz@intel.com,m:marcel@holtmann.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,netfilter.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,holtmann.org:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,lzu.edu.cn:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,netfilter.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 93B896944E4
+X-Rspamd-Queue-Id: 13A17694C5E
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Haoze Xie <royenheart@gmail.com>
 
-[ Upstream commit cba6b758711cab946c787f7c15be92cc749b8e1f ]
+[ Upstream commit e196115ec330a18de415bdb9f5071aa9f08e53ce ]
 
-This make use of hci_cmd_sync_queue for the following MGMT commands:
+br_pass_frame_up() rewrites skb->dev from the ingress port to the bridge
+master before queueing bridge LOCAL_IN packets. NFQUEUE only holds
+references on state.in/out and bridge physdevs, so a queued bridge
+packet can retain a freed bridge master in skb->dev until reinjection.
 
-Add Advertising
-Remove Advertising
-Add Extended Advertising Parameters
-Add Extended Advertising Data
+When the verdict is reinjected later, br_netif_receive_skb() re-enters
+the receive path with skb->dev still pointing at the freed bridge master,
+triggering a use-after-free.
 
-mgmt-tester -s "Add Advertising"
+Store skb->dev in the queue entry, hold a reference on it for the queue
+lifetime, and use the saved device when dropping queued packets during
+NETDEV_DOWN handling.
 
-Test Summary
-------------
-Add Advertising - Failure: LE off                    Passed
-Add Advertising - Invalid Params 1 (AD too long)     Passed
-Add Advertising - Invalid Params 2 (Malformed len)   Passed
-Add Advertising - Invalid Params 3 (Malformed len)   Passed
-Add Advertising - Invalid Params 4 (Malformed len)   Passed
-Add Advertising - Invalid Params 5 (AD too long)     Passed
-Add Advertising - Invalid Params 6 (ScRsp too long)  Passed
-Add Advertising - Invalid Params 7 (Malformed len)   Passed
-Add Advertising - Invalid Params 8 (Malformed len)   Passed
-Add Advertising - Invalid Params 9 (Malformed len)   Passed
-Add Advertising - Invalid Params 10 (ScRsp too long) Passed
-Add Advertising - Rejected (Timeout, !Powered)       Passed
-Add Advertising - Success 1 (Powered, Add Adv Inst)  Passed
-Add Advertising - Success 2 (!Powered, Add Adv Inst) Passed
-Add Advertising - Success 3 (!Powered, Adv Enable)   Passed
-Add Advertising - Success 4 (Set Adv on override)    Passed
-Add Advertising - Success 5 (Set Adv off override)   Passed
-Add Advertising - Success 6 (Scan Rsp Dta, Adv ok)   Passed
-Add Advertising - Success 7 (Scan Rsp Dta, Scan ok)  Passed
-Add Advertising - Success 8 (Connectable Flag)       Passed
-Add Advertising - Success 9 (General Discov Flag)    Passed
-Add Advertising - Success 10 (Limited Discov Flag)   Passed
-Add Advertising - Success 11 (Managed Flags)         Passed
-Add Advertising - Success 12 (TX Power Flag)         Passed
-Add Advertising - Success 13 (ADV_SCAN_IND)          Passed
-Add Advertising - Success 14 (ADV_NONCONN_IND)       Passed
-Add Advertising - Success 15 (ADV_IND)               Passed
-Add Advertising - Success 16 (Connectable -> on)     Passed
-Add Advertising - Success 17 (Connectable -> off)    Passed
-Add Advertising - Success 18 (Power -> off, Remove)  Passed
-Add Advertising - Success 19 (Power -> off, Keep)    Passed
-Add Advertising - Success 20 (Add Adv override)      Passed
-Add Advertising - Success 21 (Timeout expires)       Passed
-Add Advertising - Success 22 (LE -> off, Remove)     Passed
-Add Advertising - Success (Empty ScRsp)              Passed
-Add Advertising - Success (ScRsp only)               Passed
-Add Advertising - Invalid Params (ScRsp too long)    Passed
-Add Advertising - Success (ScRsp appear)             Passed
-Add Advertising - Invalid Params (ScRsp appear long) Passed
-Add Advertising - Success (Appear is null)           Passed
-Add Advertising - Success (Name is null)             Passed
-Add Advertising - Success (Complete name)            Passed
-Add Advertising - Success (Shortened name)           Passed
-Add Advertising - Success (Short name)               Passed
-Add Advertising - Success (Name + data)              Passed
-Add Advertising - Invalid Params (Name + data)       Passed
-Add Advertising - Success (Name+data+appear)         Passed
-Total: 47, Passed: 47 (100.0%), Failed: 0, Not Run: 0
-Overall execution time: 2.17 seconds
-
-mgmt-tester -s "Remove Advertising"
-
-Test Summary
-------------
-Remove Advertising - Invalid Params 1                Passed
-Remove Advertising - Success 1                       Passed
-Remove Advertising - Success 2                       Passed
-Total: 3, Passed: 3 (100.0%), Failed: 0, Not Run: 0
-Overall execution time: 0.0585 seconds
-
-mgmt-tester -s "Ext Adv MGMT Params"
-
-Test Summary:
-------------
-Ext Adv MGMT Params - Unpowered                      Passed
-Ext Adv MGMT Params - Invalid parameters             Passed
-Ext Adv MGMT Params - Success                        Passed
-Ext Adv MGMT Params - (5.0) Success                  Passed
-Total: 4, Passed: 4 (100.0%), Failed: 0, Not Run: 0
-Overall execution time: 0.0746 seconds
-
-mgmt-tester -s "Ext Adv MGMT -"
-
-Test Summary
-------------
-Ext Adv MGMT - Data set without Params               Passed
-Ext Adv MGMT - AD Data (5.0) Invalid parameters      Passed
-Ext Adv MGMT - AD Data (5.0) Success                 Passed
-Ext Adv MGMT - AD Scan Response (5.0) Success        Passed
-Total: 4, Passed: 4 (100.0%), Failed: 0, Not Run: 0
-Overall execution time: 0.0805 seconds
-
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Marcel Holtmann <marcel@holtmann.org>
-Stable-dep-of: d3f7d17960ed ("Bluetooth: MGMT: validate Add Extended Advertising Data length")
+Fixes: ac2863445686 ("netfilter: bridge: add nf_afinfo to enable queuing to userspace")
+Cc: stable@kernel.org
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Haoze Xie <royenheart@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/mgmt.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/net/netfilter/nf_queue.h |    1 +
+ net/netfilter/nf_queue.c         |    4 +++-
+ net/netfilter/nfnetlink_queue.c  |    2 ++
+ 3 files changed, 6 insertions(+), 1 deletion(-)
 
---- a/net/bluetooth/mgmt.c
-+++ b/net/bluetooth/mgmt.c
-@@ -8078,12 +8078,12 @@ static int add_ext_adv_data(struct sock
- {
- 	struct mgmt_cp_add_ext_adv_data *cp = data;
- 	struct mgmt_rp_add_ext_adv_data rp;
-+	struct hci_request req;
- 	u8 schedule_instance = 0;
- 	struct adv_info *next_instance;
- 	struct adv_info *adv_instance;
- 	int err = 0;
- 	struct mgmt_pending_cmd *cmd;
--	struct hci_request req;
+--- a/include/net/netfilter/nf_queue.h
++++ b/include/net/netfilter/nf_queue.h
+@@ -12,6 +12,7 @@
+ struct nf_queue_entry {
+ 	struct list_head	list;
+ 	struct sk_buff		*skb;
++	struct net_device	*skb_dev;
+ 	unsigned int		id;
+ 	unsigned int		hook_index;	/* index in hook_entries->hook[] */
+ #if IS_ENABLED(CONFIG_BRIDGE_NETFILTER)
+--- a/net/netfilter/nf_queue.c
++++ b/net/netfilter/nf_queue.c
+@@ -60,6 +60,7 @@ static void nf_queue_entry_release_refs(
+ 	struct nf_hook_state *state = &entry->state;
  
- 	BT_DBG("%s", hdev->name);
+ 	/* Release those devices we held, or Alexey will kill me. */
++	dev_put(entry->skb_dev);
+ 	dev_put(state->in);
+ 	dev_put(state->out);
+ 	if (state->sk)
+@@ -103,6 +104,7 @@ bool nf_queue_entry_get_refs(struct nf_q
+ 	if (state->sk && !refcount_inc_not_zero(&state->sk->sk_refcnt))
+ 		return false;
  
++	dev_hold(entry->skb_dev);
+ 	dev_hold(state->in);
+ 	dev_hold(state->out);
+ 
+@@ -204,11 +206,11 @@ static int __nf_queue(struct sk_buff *sk
+ 
+ 	*entry = (struct nf_queue_entry) {
+ 		.skb	= skb,
++		.skb_dev = skb->dev,
+ 		.state	= *state,
+ 		.hook_index = index,
+ 		.size	= sizeof(*entry) + route_key_size,
+ 	};
+-
+ 	__nf_queue_entry_init_physdevs(entry);
+ 
+ 	if (!nf_queue_entry_get_refs(entry)) {
+--- a/net/netfilter/nfnetlink_queue.c
++++ b/net/netfilter/nfnetlink_queue.c
+@@ -911,6 +911,8 @@ dev_cmp(struct nf_queue_entry *entry, un
+ 	if (physinif == ifindex || physoutif == ifindex)
+ 		return 1;
+ #endif
++	if (entry->skb_dev && entry->skb_dev->ifindex == ifindex)
++		return 1;
+ 	if (entry->state.in)
+ 		if (entry->state.in->ifindex == ifindex)
+ 			return 1;
 
 
 
