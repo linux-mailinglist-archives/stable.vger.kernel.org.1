@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-264368-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266064-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id l++ANH92MWrYjwUAu9opvQ
-	(envelope-from <stable+bounces-264368-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:14:55 +0200
+	id VpqONLKVMWrMnQUAu9opvQ
+	(envelope-from <stable+bounces-266064-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:28:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67B37691D9D
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:14:55 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA13069424C
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:28:01 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=pQsTwUgw;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264368-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264368-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=pWHplQnh;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266064-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266064-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5E0B7317D0BC
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:00:02 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C3AF8300BC7B
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:27:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 420EB47A0CD;
-	Tue, 16 Jun 2026 15:58:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B40DC466B5E;
+	Tue, 16 Jun 2026 18:27:53 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 071E847A0BC;
-	Tue, 16 Jun 2026 15:58:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 898B7478868;
+	Tue, 16 Jun 2026 18:27:52 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781625510; cv=none; b=fMeXabGoIJwRJPew6c6e/W+etUV26G1qVKsac2/1YbD5UQbBdKKrT/9A6996cQapYsGwn6wdkzZkXvlp0E7Ag5vlbztLXn6sZH35W6xiH6g68A1vWkHLz+h5mVDvlmhfSLzEFT8hihco2Zdl8/uD07v+WJ+RukD10iP0loT4bkk=
+	t=1781634473; cv=none; b=ddSmyEfzb4tWrPnZbI9BSwbUcJ3zLwQiYfFsteE5zgePlDSW7k1XvIVDFR8GR0caNCwkkiCRjPZA7sacSviLRED3JXRxRK6vKFFghjL92E7qZmIj9Vi0mPUMctsXqwLlmftn3SFWiTA4Zec/6xZuh21H6LO01DU99rFvowKoqUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781625510; c=relaxed/simple;
-	bh=Ei9A7othE+TsRKMuh6FwLehDk4NugdBMTracOWiIB/E=;
+	s=arc-20240116; t=1781634473; c=relaxed/simple;
+	bh=sAGtwj/sBi4hj+NjnOOeM2Fq6SmQusyxSAEt5hxpH0w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iO3j/Tl/Yi+BjFxffGHPH4q3hFrPqmtT9SJmeAGB8yC0+M5JiA1gnyNWSBgbHat5zquD6kzUTuH2f/as2MUGq3nYcqcaH53KlqYZO7zYH1lCTFtkFqRYzY7ugjibDsP+WhNUCVtG59wKzzFqoGQTtoC94sJUBHFUprPNCj7XW7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pQsTwUgw; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13B031F00A3A;
-	Tue, 16 Jun 2026 15:58:27 +0000 (UTC)
+	 MIME-Version; b=Kq7SPiRSCDky/q5cfx/OUKBmxdG9FSG886XlDQ8+IP1RNw23159s0szg/f1fXUA1iyccgV9S77G+v8OypxCh03g8Lh32D4mSFOot9eBUCvSmtHBvePXoWvWlMTZi3oDkvGcbRbL0vz+n87lRt0BFy8XY4yw2sEY/rTitIIsPCCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pWHplQnh; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C2351F000E9;
+	Tue, 16 Jun 2026 18:27:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781625508;
-	bh=VLRnb9cSn4bqPh4afu2vFZ7NgbW1wdG2XCWLt4yRpEE=;
+	s=korg; t=1781634472;
+	bh=PMOR+ckDacYYisFD8oInA3mvodMVehQByRuvg8nKDE8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=pQsTwUgwmc0BYhFAEDtZsjl9eVFU6V2qzo1ni+K3z+OGHGYaB89/Um49r6PU+ytUO
-	 xg5rCSpqyET+wUPQEmWFaqtutpNwfOwV+PlEBSU7mK5ERo5WwP0HysmkPJcucVX8n0
-	 gOkRTbU67nb3ByYjUmj0busGZyJm5JIJhY7dNbjw=
+	b=pWHplQnhugS5lgalB9V2u9y0zOJ/N6FizEKuJ1ukQFW/ipst3C+I6f+XSgSBOKB1D
+	 HRvTOIvTWTLvLldMO8s5OSzfrixlV/ICQsU2LZ9axULGlQIV1d8hrQ6EGULogt7O0t
+	 QfZG0x3t3hMYoNBnBJ2yaTZv3WHv8vwthRlNJ1O4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
-	Umang Jain <uajain@igalia.com>,
-	Mark Brown <broonie@kernel.org>,
+	Joseph Salisbury <joseph.salisbury@oracle.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 114/325] ASoC: SOF: amd: fix for ipc flags check
+Subject: [PATCH 5.15 272/411] sched: Use u64 for bandwidth ratio calculations
 Date: Tue, 16 Jun 2026 20:28:30 +0530
-Message-ID: <20260616145103.378936346@linuxfoundation.org>
+Message-ID: <20260616145115.575178814@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,106 +69,109 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264368-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-266064-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:Vijendar.Mukunda@amd.com,m:uajain@igalia.com,m:broonie@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:joseph.salisbury@oracle.com,m:peterz@infradead.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,amd.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,igalia.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 67B37691D9D
+X-Rspamd-Queue-Id: CA13069424C
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
+From: Joseph Salisbury <joseph.salisbury@oracle.com>
 
-[ Upstream commit 6042c91df60e825625bc7d5c5c3b5a87b91d5805 ]
+[ Upstream commit c6e80201e057dfb7253385e60bf541121bf5dc33 ]
 
-Firmware will set dsp_ack to 1 when firmware sends response for the IPC
-command issued by host. Similarly dsp_msg flag will be updated to 1.
+to_ratio() computes BW_SHIFT-scaled bandwidth ratios from u64 period and
+runtime values, but it returns unsigned long.  tg_rt_schedulable() also
+stores the current group limit and the accumulated child sum in unsigned
+long.
 
-During ACP D0 entry, the value read from the sof_dsp_ack_write scratch
-flag can be uninitialized. A non-zero garbage value is treated as a
-pending DSP IPC ack before SOF_FW_BOOT_COMPLETE, causing a spurious
-"IPC reply before FW_BOOT_COMPLETE" log.
+On 32-bit builds, large bandwidth ratios can be truncated and the RT
+group sum can wrap when enough siblings are present.  That can let an
+overcommitted RT hierarchy pass the schedulability check, and it also
+narrows the helper result for other callers.
 
-Fix the condition checks for ipc flags.
+Return u64 from to_ratio() and use u64 for the RT group totals so
+bandwidth ratios are preserved and compared at full width on both 32-bit
+and 64-bit builds.
 
-Fixes: 738a2b5e2cc9 ("ASoC: SOF: amd: Add IPC support for ACP IP block")
-Link: https://github.com/thesofproject/linux/pull/5642
-Signed-off-by: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
-Tested-by: Umang Jain <uajain@igalia.com>
-Link: https://patch.msgid.link/20260609160938.3717513-1-Vijendar.Mukunda@amd.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: b40b2e8eb521 ("sched: rt: multi level group constraints")
+Assisted-by: Codex:GPT-5
+Signed-off-by: Joseph Salisbury <joseph.salisbury@oracle.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20260403210014.2713404-1-joseph.salisbury@oracle.com
+[ dropped `extern` keyword from `to_ratio()` declaration ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/sof/amd/acp-ipc.c | 4 ++--
- sound/soc/sof/amd/acp.h     | 2 ++
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ kernel/sched/core.c  |    2 +-
+ kernel/sched/rt.c    |    2 +-
+ kernel/sched/sched.h |    2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/sound/soc/sof/amd/acp-ipc.c b/sound/soc/sof/amd/acp-ipc.c
-index 22d4b807e1bb75..1c3f7601a8c4ce 100644
---- a/sound/soc/sof/amd/acp-ipc.c
-+++ b/sound/soc/sof/amd/acp-ipc.c
-@@ -181,14 +181,14 @@ irqreturn_t acp_sof_ipc_irq_thread(int irq, void *context)
- 	}
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -4491,7 +4491,7 @@ void sched_post_fork(struct task_struct
+ 	uclamp_post_fork(p);
+ }
  
- 	dsp_msg = snd_sof_dsp_read(sdev, ACP_DSP_BAR, ACP_SCRATCH_REG_0 + dsp_msg_write);
--	if (dsp_msg) {
-+	if (dsp_msg == ACP_DSP_MSG_SET) {
- 		snd_sof_ipc_msgs_rx(sdev);
- 		acp_dsp_ipc_host_done(sdev);
- 		ipc_irq = true;
- 	}
+-unsigned long to_ratio(u64 period, u64 runtime)
++u64 to_ratio(u64 period, u64 runtime)
+ {
+ 	if (runtime == RUNTIME_INF)
+ 		return BW_UNIT;
+--- a/kernel/sched/rt.c
++++ b/kernel/sched/rt.c
+@@ -2606,7 +2606,7 @@ static int tg_rt_schedulable(struct task
+ {
+ 	struct rt_schedulable_data *d = data;
+ 	struct task_group *child;
+-	unsigned long total, sum = 0;
++	u64 total, sum = 0;
+ 	u64 period, runtime;
  
- 	dsp_ack = snd_sof_dsp_read(sdev, ACP_DSP_BAR, ACP_SCRATCH_REG_0 + dsp_ack_write);
--	if (dsp_ack) {
-+	if (dsp_ack == ACP_DSP_ACK_SET) {
- 		if (likely(sdev->fw_state == SOF_FW_BOOT_COMPLETE)) {
- 			spin_lock_irq(&sdev->ipc_lock);
+ 	period = ktime_to_ns(tg->rt_bandwidth.rt_period);
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -2340,7 +2340,7 @@ extern void init_dl_inactive_task_timer(
+ #define RATIO_SHIFT		8
+ #define MAX_BW_BITS		(64 - BW_SHIFT)
+ #define MAX_BW			((1ULL << MAX_BW_BITS) - 1)
+-unsigned long to_ratio(u64 period, u64 runtime);
++u64 to_ratio(u64 period, u64 runtime);
  
-diff --git a/sound/soc/sof/amd/acp.h b/sound/soc/sof/amd/acp.h
-index 2b7ea8c6410602..7bcb76676a984a 100644
---- a/sound/soc/sof/amd/acp.h
-+++ b/sound/soc/sof/amd/acp.h
-@@ -116,6 +116,8 @@
- #define ACP_SRAM_PAGE_COUNT			128
- #define ACP6X_SDW_MAX_MANAGER_COUNT		2
- #define ACP70_SDW_MAX_MANAGER_COUNT		ACP6X_SDW_MAX_MANAGER_COUNT
-+#define ACP_DSP_MSG_SET				1
-+#define ACP_DSP_ACK_SET				1
- 
- enum clock_source {
- 	ACP_CLOCK_96M = 0,
--- 
-2.53.0
-
+ extern void init_entity_runnable_average(struct sched_entity *se);
+ extern void post_init_entity_util_avg(struct task_struct *p);
 
 
 
