@@ -1,61 +1,73 @@
-Return-Path: <stable+bounces-265804-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265244-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id tpq0FTaQMWpGmwUAu9opvQ
-	(envelope-from <stable+bounces-265804-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:04:38 +0200
+	id aVmgBO6GMWrVlgUAu9opvQ
+	(envelope-from <stable+bounces-265244-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:25:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0FCC693C7E
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:04:37 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25A626931A8
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:25:01 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=bCLg7RLs;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265804-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-265804-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=GyJATd45;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265244-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265244-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C8494306406A
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:04:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B2BCC31F2B35
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:17:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12BEE3CF97E;
-	Tue, 16 Jun 2026 18:04:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78F6147AF4D;
+	Tue, 16 Jun 2026 17:16:56 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA0B03C09E1;
-	Tue, 16 Jun 2026 18:04:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB33947CC69;
+	Tue, 16 Jun 2026 17:16:53 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781633073; cv=none; b=FybwJpR5SDiYAzg/yV5sblFJnm/HY7v+4+qR8+3R0x+FcDRKE6YjTo0tYZ6M0CYThxWrAP9gSa3i4Npw8fSd3Ge4Ogvr2N5/XP22IyzDzTKds/rYccuuZNYXaI+LdxGFUMPu3CWHLMuDojBewqF4NKOBkqx8O7zvhIxfzE9XPVY=
+	t=1781630216; cv=none; b=VJLRn/ikZkPFJSOyx25frepUnBLr3oZEs/3KwxotF5qQupJyHSZopBJ02ANwNdS1p//rL6O8NEL2X/WlIFuqZ87fzyKWh34imMw74Krkd3EYACogqgxqf0pJP0VyJMxjgOLbT/SN1a3hq3Wnw8pF9ad+GRGDXWdEVlOUtF4QdKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781633073; c=relaxed/simple;
-	bh=EACEtypqy9ly9EpS4ZxR5xO3K8Xdx2LTiqYnLfj5SBU=;
+	s=arc-20240116; t=1781630216; c=relaxed/simple;
+	bh=THFaM/AZI4EY4c33zoEb+FEYkwPmGBA2X0XYqlOTTSw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fmZ8r9cKxFQwIUCFGFA4R+T9P628Vq3wa1k7qXo2nw24r+UM4xQwTdypE+ZJrGKw6V2gZzuZhJip8o10ddg+XlkhQxwFvFlbpGm+IbWkP2GLsqFF0YDbtE5UkfqhaKD20/5T9SQtfJPkkWGaSU+4PFxhpMuwfA9fRKIIgwnt6U4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bCLg7RLs; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAF2D1F000E9;
-	Tue, 16 Jun 2026 18:04:31 +0000 (UTC)
+	 MIME-Version; b=S7kRrMOymeMbWvkggoY/qDELqw/I+RtonRrDRrMHAFRIW5WH64D391wNZyM0gt1VzOormiCTbr0diXUMZzh4QY0294WjhyOon+FvJ9YUqzlAqcT9xqfqii+MXZOQ2nnH0r6f7xIxBvgcOjxSqhfJl+ACBT2d1GY26xyJeeOWbwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GyJATd45; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 511D11F000E9;
+	Tue, 16 Jun 2026 17:16:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781633072;
-	bh=jqDIh5Q2Q3ljcDWIE7B5H+Sm1j55PpN5CxwEy+a+HAI=;
+	s=korg; t=1781630213;
+	bh=PmScjDgS3PyJb8QbNRxm7OAUuXL/dc2kIQuNX8U7Jws=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=bCLg7RLsE4KKDa52PR07PZxSxvZLParBbLH9+hFbXrErD0tBaqbvshg3R2OFtiMYh
-	 26gYvq0ahysb7anrW9YBekfeyuo16L2dKq77goPG0bOI8MTNSRx3LfiC3cHoml6Y9L
-	 ct6ePi3xZaVFf1Owo/ezFv7lbPIEN4f6sr/txYuY=
+	b=GyJATd45TOI83izDrnutNaEh5GdGis+HoS9m/WVV2dq8oMhKKF/sHWnUwRSKHRfOT
+	 u8ttA2kqHW13jZhppJ8o3C+qRkV2jRKQZg9deNYOPr52rPc1XvU7zDNehaNuMPxmEw
+	 Po4Q94a8k3I51XWo0wGD41ZPm9sujEOgWaPeIUQ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liew Rui Yan <aethernet65535@gmail.com>,
-	SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 511/522] mm/damon/reclaim: detect and use fresh enabled and kdamond_pid values
-Date: Tue, 16 Jun 2026 20:30:58 +0530
-Message-ID: <20260616145149.645860070@linuxfoundation.org>
+	Wupeng Ma <mawupeng1@huawei.com>,
+	"Oscar Salvador (SUSE)" <osalvador@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	David Hildenbrand <david@kernel.org>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 432/452] mm/memory-failure: fix hugetlb_lock AA deadlock in get_huge_page_for_hwpoison
+Date: Tue, 16 Jun 2026 20:30:59 +0530
+Message-ID: <20260616145139.349800237@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,27 +79,28 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-265804-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:aethernet65535@gmail.com,m:sj@kernel.org,m:akpm@linux-foundation.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[18];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,linux-foundation.org];
+	TAGGED_FROM(0.00)[bounces-265244-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,huawei.com,kernel.org,linux.dev,oracle.com,suse.com,gmail.com,google.com,linux-foundation.org];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mawupeng1@huawei.com,m:osalvador@kernel.org,m:muchun.song@linux.dev,m:wangkefeng.wang@huawei.com,m:linmiaohe@huawei.com,m:david@kernel.org,m:liam.howlett@oracle.com,m:ljs@kernel.org,m:mhocko@suse.com,m:rppt@kernel.org,m:nao.horiguchi@gmail.com,m:surenb@google.com,m:vbabka@kernel.org,m:akpm@linux-foundation.org,m:sashal@kernel.org,m:naohoriguchi@gmail.com,s:lists@lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -95,246 +108,209 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linux-foundation.org:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C0FCC693C7E
+X-Rspamd-Queue-Id: 25A626931A8
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Wupeng Ma <mawupeng1@huawei.com>
 
-commit 64a140afa5ed1c6f5ba6d451512cbdbbab1ba339 upstream.
+[ Upstream commit 3c2d42b8ee345b17a4ba56b0f6492d1ff4c1178e ]
 
-Patch series "mm/damon/modules: detect and use fresh status", v3.
+Two concurrent madvise(MADV_HWPOISON) calls on the same hugetlb page can
+trigger a recursive spinlock self-deadlock (AA deadlock) on hugetlb_lock
+when racing with a concurrent unmap:
 
-DAMON modules including DAMON_RECLAIM, DAMON_LRU_SORT and DAMON_STAT
-commonly expose the kdamond running status via their parameters.  Under
-certain scenarios including wrong user inputs and memory allocation
-failures, those parameter values can be stale.  It can confuse users.  For
-DAMON_RECLAIM and DAMON_LRU_SORT, it even makes the kdamond unable to be
-restarted before the system reboot.
+  thread#0                              thread#1
+  --------                              --------
+  madvise(folio, MADV_HWPOISON)
+    -> poisons the folio successfully
+  madvise(folio, MADV_HWPOISON)         unmap(folio)
+    try_memory_failure_hugetlb
+      get_huge_page_for_hwpoison
+        spin_lock_irq(&hugetlb_lock)    <- held
+        __get_huge_page_for_hwpoison
+          hugetlb_update_hwpoison()
+            -> MF_HUGETLB_FOLIO_PRE_POISONED
+          goto out:
+            folio_put()
+              refcount: 1 -> 0
+              free_huge_folio()
+                spin_lock_irqsave(&hugetlb_lock)
+                  -> AA DEADLOCK!
 
-The problem comes from the fact that there are multiple events for the
-status changes and it is difficult to follow up all the scenarios.  Fix
-the issue by detecting and using the status on demand, instead of using a
-cached status that is difficult to be updated.
+The out: path in __get_huge_page_for_hwpoison() calls folio_put() to drop
+the GUP reference while the hugetlb_lock is still held by the hugetlb.c
+wrapper get_huge_page_for_hwpoison().  If concurrent unmap has released
+the page table mapping reference, folio_put() drops the folio refcount to
+zero, triggering free_huge_folio() which attempts to re-acquire the
+non-recursive hugetlb_lock.
 
-Patches 1-3 fix the bugs in DAMON_RECLAIM, DAMON_LRU_SORT and DAMON_STAT
-in the order.
+Fix this by moving hugetlb_lock acquisition from the hugetlb.c wrapper
+into get_huge_page_for_hwpoison().  Place spin_unlock_irq() before the
+folio_put() at the out: label so the folio is always released outside the
+lock.
 
-
-This patch (of 3):
-
-DAMON_RECLAIM updates 'enabled' and 'kdamond_pid' parameter values, which
-represents the running status of its kdamond, when the user explicitly
-requests start/stop of the kdamond.  The kdamond can, however, be stopped
-in events other than the explicit user request in the following three
-events.
-
-1. ctx->regions_score_histogram allocation failure at beginning of the
-   execution,
-2. damon_commit_ctx() failure due to invalid user input, and
-3. damon_commit_ctx() failure due to its internal allocation failures.
-
-Hence, if the kdamond is stopped by the above three events, the values of
-the status parameters can be stale.  Users could show the stale values and
-be confused.  This is already bad, but the real consequence is worse.
-DAMON_RECLAIM avoids unnecessary damon_start() and damon_stop() calls
-based on the 'enabled' parameter value.  And the update of 'enabled'
-parameter value depends on the damon_start() and damon_stop() call
-results.  Hence, once the kdamond has stopped by the unintentional events,
-the user cannot restart the kdamond before the system reboot.  For
-example, the issue can be reproduced via below steps.
-
-    # cd /sys/module/damon_reclaim/parameters
-    #
-    # # start DAMON_RECLAIM
-    # echo Y > enabled
-    # ps -ef | grep kdamond
-    root         806       2  0 17:53 ?        00:00:00 [kdamond.0]
-    root         808     803  0 17:53 pts/4    00:00:00 grep kdamond
-    #
-    # # commit wrong input to stop kdamond withou explicit stop request
-    # echo 3 > addr_unit
-    # echo Y > commit_inputs
-    bash: echo: write error: Invalid argument
-    #
-    # # confirm kdamond is stopped
-    # ps -ef | grep kdamond
-    root         811     803  0 17:53 pts/4    00:00:00 grep kdamond
-    #
-    # # users casn now show stable status
-    # cat enabled
-    Y
-    # cat kdamond_pid
-    806
-    #
-    # # even after fixing the wrong parameter,
-    # # kdamond cannot be restarted.
-    # echo 1 > addr_unit
-    # echo Y > enabled
-    # ps -ef | grep kdamond
-    root         815     803  0 17:54 pts/4    00:00:00 grep kdamond
-
-The problem will only rarely happen in real and common setups for the
-following reasons.  The allocation failures are unlikely in such setups
-since those allocations are arguably too small to fail.  Also sane users
-on real production environments may not commit wrong input parameters.
-But once it happens, the consequence is quite bad.  And the bug is a bug.
-
-The issue stems from the fact that there are multiple events that can
-change the status, and following all the events is challenging.
-Dynamically detect and use the fresh status for the parameters when those
-are requested.
-
-Link: https://lore.kernel.org/20260419161003.79176-1-sj@kernel.org
-Link: https://lore.kernel.org/20260419161003.79176-2-sj@kernel.org
-Fixes: e035c280f6df ("mm/damon/reclaim: support online inputs update")
-Co-developed-by: Liew Rui Yan <aethernet65535@gmail.com>
-Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org> # 5.19.x
+[akpm@linux-foundation.org: fix race, rename label per Miaohe]
+  Link: https://sashiko.dev/#/patchset/20260522010305.4099834-1-mawupeng1@huawei.com
+  Link: https://lore.kernel.org/f39f405e-4b4b-8f79-70fe-a2b5b62114eb@huawei.com
+Link: https://lore.kernel.org/20260522010305.4099834-1-mawupeng1@huawei.com
+Fixes: 405ce051236c ("mm/hwpoison: fix race between hugetlb free/demotion and memory_failure_hugetlb()")
+Signed-off-by: Wupeng Ma <mawupeng1@huawei.com>
+Acked-by: Oscar Salvador (SUSE) <osalvador@kernel.org>
+Acked-by: Muchun Song <muchun.song@linux.dev>
+Reviewed-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+Acked-by: Miaohe Lin <linmiaohe@huawei.com>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@kernel.org>
+Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: SeongJae Park <sj@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/damon/reclaim.c |   84 +++++++++++++++++++++++++++++++++++------------------
- 1 file changed, 56 insertions(+), 28 deletions(-)
+ include/linux/hugetlb.h |    8 --------
+ include/linux/mm.h      |    8 --------
+ mm/hugetlb.c            |   11 -----------
+ mm/memory-failure.c     |   19 ++++++++++---------
+ 4 files changed, 10 insertions(+), 36 deletions(-)
 
---- a/mm/damon/reclaim.c
-+++ b/mm/damon/reclaim.c
-@@ -100,15 +100,6 @@ module_param(monitor_region_start, ulong
- static unsigned long monitor_region_end __read_mostly;
- module_param(monitor_region_end, ulong, 0600);
- 
--/*
-- * PID of the DAMON thread
-- *
-- * If DAMON_RECLAIM is enabled, this becomes the PID of the worker thread.
-- * Else, -1.
-- */
--static int kdamond_pid __read_mostly = -1;
--module_param(kdamond_pid, int, 0400);
--
- static struct damos_stat damon_reclaim_stat;
- DEFINE_DAMON_MODULES_DAMOS_STATS_PARAMS(damon_reclaim_stat,
- 		reclaim_tried_regions, reclaimed_regions, quota_exceeds);
-@@ -184,37 +175,32 @@ static int damon_reclaim_turn(bool on)
+--- a/include/linux/hugetlb.h
++++ b/include/linux/hugetlb.h
+@@ -164,8 +164,6 @@ long hugetlb_unreserve_pages(struct inod
+ 						long freed);
+ bool folio_isolate_hugetlb(struct folio *folio, struct list_head *list);
+ int get_hwpoison_hugetlb_folio(struct folio *folio, bool *hugetlb, bool unpoison);
+-int get_huge_page_for_hwpoison(unsigned long pfn, int flags,
+-				bool *migratable_cleared);
+ void folio_putback_hugetlb(struct folio *folio);
+ void move_hugetlb_state(struct folio *old_folio, struct folio *new_folio, int reason);
+ void hugetlb_fix_reserve_counts(struct inode *inode);
+@@ -455,12 +453,6 @@ static inline int get_hwpoison_hugetlb_f
  {
- 	int err;
- 
--	if (!on) {
--		err = damon_stop(&ctx, 1);
--		if (!err)
--			kdamond_pid = -1;
--		return err;
--	}
-+	if (!on)
-+		return damon_stop(&ctx, 1);
- 
- 	err = damon_reclaim_apply_parameters();
- 	if (err)
- 		return err;
- 
--	err = damon_start(&ctx, 1, true);
--	if (err)
--		return err;
--	kdamond_pid = ctx->kdamond->pid;
--	return 0;
-+	return damon_start(&ctx, 1, true);
-+}
-+
-+static bool damon_reclaim_enabled(void)
-+{
-+	if (!ctx)
-+		return false;
-+	return damon_is_running(ctx);
- }
- 
- static struct delayed_work damon_reclaim_timer;
- static void damon_reclaim_timer_fn(struct work_struct *work)
- {
--	static bool last_enabled;
- 	bool now_enabled;
- 
- 	now_enabled = enabled;
--	if (last_enabled != now_enabled) {
--		if (!damon_reclaim_turn(now_enabled))
--			last_enabled = now_enabled;
--		else
--			enabled = last_enabled;
--	}
-+	if (damon_reclaim_enabled() != now_enabled)
-+		return;
-+	damon_reclaim_turn(now_enabled);
- }
- static DECLARE_DELAYED_WORK(damon_reclaim_timer, damon_reclaim_timer_fn);
- 
-@@ -236,15 +222,57 @@ static int damon_reclaim_enabled_store(c
  	return 0;
  }
+-
+-static inline int get_huge_page_for_hwpoison(unsigned long pfn, int flags,
+-					bool *migratable_cleared)
+-{
+-	return 0;
+-}
  
-+static int damon_reclaim_enabled_load(char *buffer,
-+		const struct kernel_param *kp)
-+{
-+	return sprintf(buffer, "%c\n", damon_reclaim_enabled() ? 'Y' : 'N');
-+}
-+
- static const struct kernel_param_ops enabled_param_ops = {
- 	.set = damon_reclaim_enabled_store,
--	.get = param_get_bool,
-+	.get = damon_reclaim_enabled_load,
- };
- 
- module_param_cb(enabled, &enabled_param_ops, &enabled, 0600);
- MODULE_PARM_DESC(enabled,
- 	"Enable or disable DAMON_RECLAIM (default: disabled)");
- 
-+static int damon_reclaim_kdamond_pid_store(const char *val,
-+		const struct kernel_param *kp)
-+{
-+	/*
-+	 * kdamond_pid is read-only, but kernel command line could write it.
-+	 * Do nothing here.
-+	 */
-+	return 0;
-+}
-+
-+static int damon_reclaim_kdamond_pid_load(char *buffer,
-+		const struct kernel_param *kp)
-+{
-+	int kdamond_pid = -1;
-+
-+	if (ctx) {
-+		kdamond_pid = damon_kdamond_pid(ctx);
-+		if (kdamond_pid < 0)
-+			kdamond_pid = -1;
-+	}
-+	return sprintf(buffer, "%d\n", kdamond_pid);
-+}
-+
-+static const struct kernel_param_ops kdamond_pid_param_ops = {
-+	.set = damon_reclaim_kdamond_pid_store,
-+	.get = damon_reclaim_kdamond_pid_load,
-+};
-+
-+/*
-+ * PID of the DAMON thread
-+ *
-+ * If DAMON_RECLAIM is enabled, this becomes the PID of the worker thread.
-+ * Else, -1.
-+ */
-+module_param_cb(kdamond_pid, &kdamond_pid_param_ops, NULL, 0400);
-+
- static int damon_reclaim_handle_commit_inputs(void)
+ static inline void folio_putback_hugetlb(struct folio *folio)
  {
- 	int err;
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -3924,8 +3924,6 @@ extern int soft_offline_page(unsigned lo
+  */
+ extern const struct attribute_group memory_failure_attr_group;
+ extern void memory_failure_queue(unsigned long pfn, int flags);
+-extern int __get_huge_page_for_hwpoison(unsigned long pfn, int flags,
+-					bool *migratable_cleared);
+ void num_poisoned_pages_inc(unsigned long pfn);
+ void num_poisoned_pages_sub(unsigned long pfn, long i);
+ struct task_struct *task_early_kill(struct task_struct *tsk, int force_early);
+@@ -3934,12 +3932,6 @@ static inline void memory_failure_queue(
+ {
+ }
+ 
+-static inline int __get_huge_page_for_hwpoison(unsigned long pfn, int flags,
+-					bool *migratable_cleared)
+-{
+-	return 0;
+-}
+-
+ static inline void num_poisoned_pages_inc(unsigned long pfn)
+ {
+ }
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -7300,17 +7300,6 @@ int get_hwpoison_hugetlb_folio(struct fo
+ 	return ret;
+ }
+ 
+-int get_huge_page_for_hwpoison(unsigned long pfn, int flags,
+-				bool *migratable_cleared)
+-{
+-	int ret;
+-
+-	spin_lock_irq(&hugetlb_lock);
+-	ret = __get_huge_page_for_hwpoison(pfn, flags, migratable_cleared);
+-	spin_unlock_irq(&hugetlb_lock);
+-	return ret;
+-}
+-
+ /**
+  * folio_putback_hugetlb - unisolate a hugetlb folio
+  * @folio: the isolated hugetlb folio
+--- a/mm/memory-failure.c
++++ b/mm/memory-failure.c
+@@ -1994,20 +1994,19 @@ void folio_clear_hugetlb_hwpoison(struct
+ 	folio_free_raw_hwp(folio, true);
+ }
+ 
+-/*
+- * Called from hugetlb code with hugetlb_lock held.
+- */
+-int __get_huge_page_for_hwpoison(unsigned long pfn, int flags,
++static int get_huge_page_for_hwpoison(unsigned long pfn, int flags,
+ 				 bool *migratable_cleared)
+ {
+ 	struct page *page = pfn_to_page(pfn);
+-	struct folio *folio = page_folio(page);
++	struct folio *folio;
+ 	bool count_increased = false;
+ 	int ret, rc;
+ 
++	spin_lock_irq(&hugetlb_lock);
++	folio = page_folio(page);
+ 	if (!folio_test_hugetlb(folio)) {
+ 		ret = MF_HUGETLB_NON_HUGEPAGE;
+-		goto out;
++		goto out_unlock;
+ 	} else if (flags & MF_COUNT_INCREASED) {
+ 		ret = MF_HUGETLB_IN_USED;
+ 		count_increased = true;
+@@ -2023,13 +2022,13 @@ int __get_huge_page_for_hwpoison(unsigne
+ 	} else {
+ 		ret = MF_HUGETLB_RETRY;
+ 		if (!(flags & MF_NO_RETRY))
+-			goto out;
++			goto out_unlock;
+ 	}
+ 
+ 	rc = hugetlb_update_hwpoison(folio, page);
+ 	if (rc >= MF_HUGETLB_FOLIO_PRE_POISONED) {
+ 		ret = rc;
+-		goto out;
++		goto out_unlock;
+ 	}
+ 
+ 	/*
+@@ -2041,8 +2040,10 @@ int __get_huge_page_for_hwpoison(unsigne
+ 		*migratable_cleared = true;
+ 	}
+ 
++	spin_unlock_irq(&hugetlb_lock);
+ 	return ret;
+-out:
++out_unlock:
++	spin_unlock_irq(&hugetlb_lock);
+ 	if (count_increased)
+ 		folio_put(folio);
+ 	return ret;
 
 
 
