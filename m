@@ -1,61 +1,64 @@
-Return-Path: <stable+bounces-264586-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266046-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id gtQhBF93MWoykAUAu9opvQ
-	(envelope-from <stable+bounces-264586-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:18:39 +0200
+	id 5JfzLniVMWqrnQUAu9opvQ
+	(envelope-from <stable+bounces-266046-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:27:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8019691EBA
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:18:38 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C053E694213
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:27:03 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=mw6pyPy9;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264586-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264586-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=yDS547TP;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266046-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266046-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7CFEF301E5B6
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:18:21 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3CDB0301B509
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:26:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF83C45BD6F;
-	Tue, 16 Jun 2026 16:18:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBAF3477986;
+	Tue, 16 Jun 2026 18:26:16 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8367835AC1E;
-	Tue, 16 Jun 2026 16:18:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89C18477E33;
+	Tue, 16 Jun 2026 18:26:15 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781626699; cv=none; b=HKt8x/0XrkXVIWfFkbjxvuULr1CQzDIqzK8Cpat6zXcShPdshL0SQa1u65NRoI37rtlkVDR78WcRREwhVBK4P1j/W1uqjbgJ+0GqtlhmypaI4F4g/IlTDm9XMNB+Yj31Rk5MXStV3d37aFf1tOydQxpb7PhE9eFG7M9ZjEaR9SY=
+	t=1781634376; cv=none; b=MQiRUrgvN/S83SwKRlpPJRHhbvj16B00ItQBJMTryz9p0u11Fe95Bmd4SgEsnpZ0oE57JOKII/St1TSvP8JnbLbCWQ5eFN9Evmew8NNRRrSZqDQZRhdS1E9L/RhtV+9M5SJuIjRxLy+lMZJhkTtatQG4ZFAwuXitcdQnEbhbC0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781626699; c=relaxed/simple;
-	bh=CLzp+df0c+LHtZoemPP6IQSkxPolwWJ9o5cyBm1LQXw=;
+	s=arc-20240116; t=1781634376; c=relaxed/simple;
+	bh=AL4vWMi92ZDakokQTDL2jpOdJL0JuF3eSPqiMeRmMmY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P6/4ovbLbOxqbnO8GlVB7ffXrvT227O14aphW5cvepOxIYjGJiGpD3gF072jdIr9UKFIEOTFSH49178zUKMM963ET5jlvQlRe+AV+60cL0IBbFBZ/9ljQE3jlmIUhFxhRnebDyFAm/JOIUInbWXALa/kckBxq5b+F7nUFJkLaF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mw6pyPy9; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 967671F000E9;
-	Tue, 16 Jun 2026 16:18:17 +0000 (UTC)
+	 MIME-Version; b=pQ1Yt4gFpitEABt8YvVOt7vhkE8KO6+nCJ0YxgqHYJkc68Z/hBrzua3wkwmxq5axpwVBOmCzwJaEzOJliYS3lax0j9VLB/6f2IniHreRwUdm+ZxoQ2F9VTyobDsnjeM0URm+UjAXNrAzKGz2f7BibYIFD+c3pWYbUUwmQy6PSG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yDS547TP; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8347E1F000E9;
+	Tue, 16 Jun 2026 18:26:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781626698;
-	bh=AlOvCY2ICeezt5JPs4/O7KjP8XlQ7pjoNVmF7/V3sWo=;
+	s=korg; t=1781634375;
+	bh=75M0BV8WtNiYCQQulGvQpyNpTpfQc1aKhFOWxVvxivs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=mw6pyPy9LZOeUoXz/hnAXXBTIq8G2aukrrKfpSJcV8/DhN0h9zzAo51IRjGiklzyG
-	 qaf8lhb9TCqKROWd7GXwwqfU6siWPnfJROqA7PEoXRiiHZ5UVE8loxDAaEwHn42GWf
-	 AuKxQAmI8b5djOqOzFpCGOJBoNNNTl0IAEofRmJg=
+	b=yDS547TPSUfY0JsCC6lY2vdWQdEG2BBbh9+0EMZ13iMscDNkjH4033ViLytxC5S0l
+	 Z+0Vlr80/slYZl/zSdTOP3lAhU2VwiPx7QPv4rZZVOqZBEpH//lZPAVesWmqzuNRIh
+	 gUu5wovGHXwud9H//PRE7acnrByzDit+Kv/6kaDo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	stable@kernel.org,
+	syzbot+6e4cb1cac5efc96ea0ca@syzkaller.appspotmail.com,
+	Yongpeng Yang <yangyongpeng@xiaomi.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 052/261] net_sched: act_pedit: use RCU in tcf_pedit_dump()
+Subject: [PATCH 5.15 252/411] f2fs: fix UAF caused by decrementing sbi->nr_pages[] in f2fs_write_end_io()
 Date: Tue, 16 Jun 2026 20:28:10 +0530
-Message-ID: <20260616145047.561651539@linuxfoundation.org>
+Message-ID: <20260616145114.387704917@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
-References: <20260616145044.869532709@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,149 +70,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264586-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-266046-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:edumazet@google.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:syzbot+6e4cb1cac5efc96ea0ca@syzkaller.appspotmail.com,m:yangyongpeng@xiaomi.com,m:chao@kernel.org,m:jaegeuk@kernel.org,m:sashal@kernel.org,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	TAGGED_RCPT(0.00)[stable,6e4cb1cac5efc96ea0ca];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,xiaomi.com:email,appspotmail.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A8019691EBA
+X-Rspamd-Queue-Id: C053E694213
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Yongpeng Yang <yangyongpeng@xiaomi.com>
 
-[ Upstream commit 9d096746572616a50cac4906f528a1959c0ee1c2 ]
+[ Upstream commit 2d9c4a4ed4eef1f82c5b16b037aee8bad819fd53 ]
 
-Also storing tcf_action into struct tcf_pedit_params
-makes sure there is no discrepancy in tcf_pedit_act().
+The xfstests case "generic/107" and syzbot have both reported a NULL
+pointer dereference.
 
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250709090204.797558-10-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 899ee91156e5 ("net/sched: fix pedit partial COW leading to page cache corruption")
+The concurrent scenario that triggers the panic is as follows:
+
+F2FS_WB_CP_DATA write callback          umount
+                                        - f2fs_write_checkpoint
+                                         - f2fs_wait_on_all_pages(sbi, F2FS_WB_CP_DATA)
+- blk_mq_end_request
+ - bio_endio
+  - f2fs_write_end_io
+   : dec_page_count(sbi, F2FS_WB_CP_DATA)
+   : wake_up(&sbi->cp_wait)
+                                        - kill_f2fs_super
+                                         - kill_block_super
+                                          - f2fs_put_super
+                                           : iput(sbi->node_inode)
+                                           : sbi->node_inode = NULL
+   : f2fs_in_warm_node_list
+    - is_node_folio // sbi->node_inode is NULL and panic
+
+The root cause is that f2fs_put_super() calls iput(sbi->node_inode) and
+sets sbi->node_inode to NULL after sbi->nr_pages[F2FS_WB_CP_DATA] is
+decremented to zero. As a result, f2fs_in_warm_node_list() may
+dereference a NULL node_inode when checking whether a folio belongs to
+the node inode, leading to a panic.
+
+This patch fixes the issue by calling f2fs_in_warm_node_list() before
+decrementing sbi->nr_pages[F2FS_WB_CP_DATA], thus preventing the
+use-after-free condition.
+
+Cc: stable@kernel.org
+Fixes: 50fa53eccf9f ("f2fs: fix to avoid broken of dnode block list")
+Reported-by: syzbot+6e4cb1cac5efc96ea0ca@syzkaller.appspotmail.com
+Signed-off-by: Yongpeng Yang <yangyongpeng@xiaomi.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+[ folio => page ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/tc_act/tc_pedit.h |  1 +
- net/sched/act_pedit.c         | 20 ++++++++++----------
- 2 files changed, 11 insertions(+), 10 deletions(-)
+ fs/f2fs/data.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/net/tc_act/tc_pedit.h b/include/net/tc_act/tc_pedit.h
-index 83fe3993178180..f58ee15cd858cf 100644
---- a/include/net/tc_act/tc_pedit.h
-+++ b/include/net/tc_act/tc_pedit.h
-@@ -14,6 +14,7 @@ struct tcf_pedit_key_ex {
- struct tcf_pedit_parms {
- 	struct tc_pedit_key	*tcfp_keys;
- 	struct tcf_pedit_key_ex	*tcfp_keys_ex;
-+	int action;
- 	u32 tcfp_off_max_hint;
- 	unsigned char tcfp_nkeys;
- 	unsigned char tcfp_flags;
-diff --git a/net/sched/act_pedit.c b/net/sched/act_pedit.c
-index fc0a35a7b62ac7..4b65901397a888 100644
---- a/net/sched/act_pedit.c
-+++ b/net/sched/act_pedit.c
-@@ -279,7 +279,7 @@ static int tcf_pedit_init(struct net *net, struct nlattr *nla,
+--- a/fs/f2fs/data.c
++++ b/fs/f2fs/data.c
+@@ -339,6 +339,8 @@ static void f2fs_write_end_io(struct bio
+ 
+ 		f2fs_bug_on(sbi, page->mapping == NODE_MAPPING(sbi) &&
+ 					page->index != nid_of_node(page));
++		if (f2fs_in_warm_node_list(sbi, page))
++			f2fs_del_fsync_node_entry(sbi, page);
+ 
+ 		dec_page_count(sbi, type);
+ 
+@@ -350,8 +352,6 @@ static void f2fs_write_end_io(struct bio
+ 				wq_has_sleeper(&sbi->cp_wait))
+ 			wake_up(&sbi->cp_wait);
+ 
+-		if (f2fs_in_warm_node_list(sbi, page))
+-			f2fs_del_fsync_node_entry(sbi, page);
+ 		clear_page_private_gcing(page);
+ 		end_page_writeback(page);
  	}
- 
- 	p = to_pedit(*a);
--
-+	nparms->action = parm->action;
- 	spin_lock_bh(&p->tcf_lock);
- 	goto_ch = tcf_action_set_ctrlact(*a, parm->action, goto_ch);
- 	oparms = rcu_replace_pointer(p->parms, nparms, 1);
-@@ -483,7 +483,7 @@ TC_INDIRECT_SCOPE int tcf_pedit_act(struct sk_buff *skb,
- bad:
- 	tcf_action_inc_overlimit_qstats(&p->common);
- done:
--	return p->tcf_action;
-+	return parms->action;
- }
- 
- static void tcf_pedit_stats_update(struct tc_action *a, u64 bytes, u64 packets,
-@@ -500,19 +500,19 @@ static int tcf_pedit_dump(struct sk_buff *skb, struct tc_action *a,
- 			  int bind, int ref)
- {
- 	unsigned char *b = skb_tail_pointer(skb);
--	struct tcf_pedit *p = to_pedit(a);
--	struct tcf_pedit_parms *parms;
-+	const struct tcf_pedit *p = to_pedit(a);
-+	const struct tcf_pedit_parms *parms;
- 	struct tc_pedit *opt;
- 	struct tcf_t t;
- 	int s;
- 
--	spin_lock_bh(&p->tcf_lock);
--	parms = rcu_dereference_protected(p->parms, 1);
-+	rcu_read_lock();
-+	parms = rcu_dereference(p->parms);
- 	s = struct_size(opt, keys, parms->tcfp_nkeys);
- 
- 	opt = kzalloc(s, GFP_ATOMIC);
- 	if (unlikely(!opt)) {
--		spin_unlock_bh(&p->tcf_lock);
-+		rcu_read_unlock();
- 		return -ENOBUFS;
- 	}
- 	opt->nkeys = parms->tcfp_nkeys;
-@@ -521,7 +521,7 @@ static int tcf_pedit_dump(struct sk_buff *skb, struct tc_action *a,
- 	       flex_array_size(opt, keys, parms->tcfp_nkeys));
- 	opt->index = p->tcf_index;
- 	opt->flags = parms->tcfp_flags;
--	opt->action = p->tcf_action;
-+	opt->action = parms->action;
- 	opt->refcnt = refcount_read(&p->tcf_refcnt) - ref;
- 	opt->bindcnt = atomic_read(&p->tcf_bindcnt) - bind;
- 
-@@ -540,13 +540,13 @@ static int tcf_pedit_dump(struct sk_buff *skb, struct tc_action *a,
- 	tcf_tm_dump(&t, &p->tcf_tm);
- 	if (nla_put_64bit(skb, TCA_PEDIT_TM, sizeof(t), &t, TCA_PEDIT_PAD))
- 		goto nla_put_failure;
--	spin_unlock_bh(&p->tcf_lock);
-+	rcu_read_unlock();
- 
- 	kfree(opt);
- 	return skb->len;
- 
- nla_put_failure:
--	spin_unlock_bh(&p->tcf_lock);
-+	rcu_read_unlock();
- 	nlmsg_trim(skb, b);
- 	kfree(opt);
- 	return -1;
--- 
-2.53.0
-
 
 
 
