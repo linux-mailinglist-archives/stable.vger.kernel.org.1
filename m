@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-266158-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264676-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id bWR9KJyXMWqsngUAu9opvQ
-	(envelope-from <stable+bounces-266158-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:36:12 +0200
+	id VzXKN8F7MWoQkgUAu9opvQ
+	(envelope-from <stable+bounces-264676-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:37:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99CF1694439
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:36:11 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FEA7692448
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:37:21 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=g1irMErG;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266158-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266158-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="y/BPNEXt";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264676-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264676-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C3F553002901
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:36:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AD9B43130CDF
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:27:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 991C04418D7;
-	Tue, 16 Jun 2026 18:36:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D53146AF14;
+	Tue, 16 Jun 2026 16:27:09 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 782592C0261;
-	Tue, 16 Jun 2026 18:36:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11F6D466B57;
+	Tue, 16 Jun 2026 16:27:08 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781634967; cv=none; b=HlBm8MgXccMWRaTq+LNdslPo37fe4l+TgR1T5UBvCbbqhVLwCTYTWQrwI8BUn0inj7PsLBmOGru9Rdwi/KNwpUkuiGs6fbB6saHWKe4DxYcHB01NSHCUIBQq9TSLx4CF+JxwVDhTsfOtv8NDpfjUSDpBuFgeLMwJoRM9DSl8gvc=
+	t=1781627229; cv=none; b=BiT/wbO5jTnEzZlYrnxk4XQbWW/ZGZomUrv2jPbhkTcSFdf0i3v5J3CrvIpodf8CPIezoGz/5Af0EfdZ2lW/SZ0AtAYk84/wSHNIoD4m9l/yTolfkDS17i/wJswVK56/QQs5jgyZvDZJR8tpxnGNwFwr4HPBtt34tFimiLpoNF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781634967; c=relaxed/simple;
-	bh=EFAs9H4yzlnxMj9/By1HTaUBLl4E1Qo+eQlDhdtKwPg=;
+	s=arc-20240116; t=1781627229; c=relaxed/simple;
+	bh=afuxj9xmIGU11/RpdHHaFbwk0n8g/ukNEddWSJzKZJU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VbWvVwUU7d6PubK+K+sO3AlpEhhB6kn0tyXzCrCIWCNz1VH+Qsg/fU0jbo6UCW8Fpf6sX/c2xdt4CDcWMwcO/PEhhk9RNWhuAVaUVD3MSFbVALioEwkEJtaqSkFdZRjTCOnKH1OzMuj6Qt89TtVFakWNpcJvbKybXu8jzBBnilI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g1irMErG; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82B771F000E9;
-	Tue, 16 Jun 2026 18:36:05 +0000 (UTC)
+	 MIME-Version; b=rPHHG7TMTUxFIDHFANE0q8p3AkzqcLocw7+pQqYNP0aUzNneD+KtttCULT69iHEDm61vZiFLZQ6Tt7iMuVBPysDyEmLo/WLlJX6Vg8S48jjEKh9JiIUjLiMXh/AQ2H8pMj/x6k/osI4hjjwqEp354GZJlSxmaRXRGsY9QM2yQ+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y/BPNEXt; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1397C1F000E9;
+	Tue, 16 Jun 2026 16:27:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781634966;
-	bh=0Jy3kKh0jko5JMrbAJYAKi+jCwdNElGMcBCA5uaocZY=;
+	s=korg; t=1781627228;
+	bh=NJMOrXGpahDMMiQqafdUlQ37HKwqdLpnU68Np6RyqYo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=g1irMErGOdyHZpsg21Ez6l5cX1gHgOpTaeOO4fUQfSymqtI37T/25fFQNodiY7ZmS
-	 3fHE90nd2khTmrlwcaAIXzhosWitCcFC0j/U1DfrSVq2qClt4FqncwL2Gn/OxFbeqN
-	 qU5jGGWLvI6q/Pxla7xve8cDoj0X3wxaysoiWZo0=
+	b=y/BPNEXtlDyJUniM4k4WT//MIlsCNuA8LPzy/9TYeSsAhZi7B5UnSug5DS2IEyhJa
+	 jkpbRBKXcTkqg1FWeS0rM5QmUKRE1tOY/i/NMPBf7fn/fb4oqybp+x/voE3jpQc8cn
+	 47zwOGwnhP+lOJc6gKQ/u0JglW2+AbAUgBgV+VMk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 332/411] mptcp: pm: ADD_ADDR rtx: resched blocked ADD_ADDR quicker
+	Inochi Amaoto <inochiama@gmail.com>,
+	Gabriel Somlo <gsomlo@gmail.com>,
+	Ulf Hansson <ulfh@kernel.org>
+Subject: [PATCH 6.12 132/261] mmc: litex_mmc: Use DIV_ROUND_UP for more accurate clock calculation
 Date: Tue, 16 Jun 2026 20:29:30 +0530
-Message-ID: <20260616145118.800259585@linuxfoundation.org>
+Message-ID: <20260616145051.205165938@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,88 +69,88 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-264676-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:inochiama@gmail.com,m:gsomlo@gmail.com,m:ulfh@kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266158-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:martineau@kernel.org,m:matttbe@kernel.org,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 99CF1694439
+X-Rspamd-Queue-Id: 2FEA7692448
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+From: Inochi Amaoto <inochiama@gmail.com>
 
-[ Upstream commit 3cf12492891c4b5ff54dda404a2de4ec54c9e1b5 ]
+commit b837e38c255dd9f8b53511d52e87f1fda32b3dfe upstream.
 
-When an ADD_ADDR needs to be retransmitted and another one has already
-been prepared -- e.g. multiple ADD_ADDRs have been sent in a row and
-need to be retransmitted later -- this additional retransmission will
-need to wait.
+The previous clock uses roundup_pow_of_two() to calculate the core
+clock frequency. It does not meet the actual hardware meaning.
+The actual frequency is calculated by "ref_clk / ((div >> 1) << 1)".
 
-In this case, the timer was reset to TCP_RTO_MAX / 8, which is ~15
-seconds. This delay is unnecessary long: it should just be rescheduled
-at the next opportunity, e.g. after the retransmission timeout.
+Fix the clock divider calculation.
 
-Without this modification, some issues can be seen from time to time in
-the selftests when multiple ADD_ADDRs are sent, and the host takes time
-to process them, e.g. the "signal addresses, ADD_ADDR timeout" MPTCP
-Join selftest, especially with a debug kernel config.
-
-Note that on older kernels, 'timeout' is not available. It should be
-enough to replace it by one second (HZ).
-
-Fixes: 00cfd77b9063 ("mptcp: retransmit ADD_ADDR when timeout")
+Fixes: 92e099104729 ("mmc: Add driver for LiteX's LiteSDCard interface")
+Signed-off-by: Inochi Amaoto <inochiama@gmail.com>
+Reviewed-by: Gabriel Somlo <gsomlo@gmail.com>
 Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260505-net-mptcp-pm-fixes-7-1-rc3-v1-6-fca8091060a4@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ replaced `TCP_RTO_MAX / 8` with `HZ` ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Ulf Hansson <ulfh@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/pm_netlink.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mmc/host/litex_mmc.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -338,7 +338,7 @@ static void mptcp_pm_add_timer(struct ti
- 	}
+--- a/drivers/mmc/host/litex_mmc.c
++++ b/drivers/mmc/host/litex_mmc.c
+@@ -16,6 +16,7 @@
+ #include <linux/interrupt.h>
+ #include <linux/iopoll.h>
+ #include <linux/litex.h>
++#include <linux/math.h>
+ #include <linux/mod_devicetable.h>
+ #include <linux/module.h>
+ #include <linux/platform_device.h>
+@@ -436,11 +437,10 @@ static void litex_mmc_setclk(struct lite
+ 	struct device *dev = mmc_dev(host->mmc);
+ 	u32 div;
  
- 	if (mptcp_pm_should_add_signal_addr(msk)) {
--		sk_reset_timer(sk, timer, jiffies + TCP_RTO_MAX / 8);
-+		sk_reset_timer(sk, timer, jiffies + HZ);
- 		goto out;
- 	}
- 
+-	div = freq ? host->ref_clk / freq : 256U;
+-	div = roundup_pow_of_two(div);
++	div = freq ? DIV_ROUND_UP(host->ref_clk, freq) : 256U;
+ 	div = clamp(div, 2U, 256U);
+ 	dev_dbg(dev, "sd_clk_freq=%d: set to %d via div=%d\n",
+-		freq, host->ref_clk / div, div);
++		freq, host->ref_clk / ((div + 1) & ~1U), div);
+ 	litex_write16(host->sdphy + LITEX_PHY_CLOCKERDIV, div);
+ 	host->sd_clk = freq;
+ }
 
 
 
