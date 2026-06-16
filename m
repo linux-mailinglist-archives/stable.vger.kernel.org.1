@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-265546-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266300-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id qjsFJQmLMWqjmAUAu9opvQ
-	(envelope-from <stable+bounces-265546-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:42:33 +0200
+	id LZgpInWaMWoMoAUAu9opvQ
+	(envelope-from <stable+bounces-266300-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:48:21 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D9D269363F
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:42:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AB476947BB
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:48:21 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Ii4zhIzB;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265546-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265546-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="bK3L/ohw";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266300-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266300-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id AA8923035783
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:42:32 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 87108303C28B
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:48:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53A5F477E2B;
-	Tue, 16 Jun 2026 17:42:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31F2047AF43;
+	Tue, 16 Jun 2026 18:48:20 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46DB147AF5F;
-	Tue, 16 Jun 2026 17:42:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0592143D4E8;
+	Tue, 16 Jun 2026 18:48:19 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781631748; cv=none; b=Z9wMlVg5PJVRESxugzAOzw2y28E0PO3VL9xSywG5jBDNQ2G8a9XR6nAm8wwlR4IqnQHHtSIhN6PDZw/UpB3KPaGddmURsSXrnJOGD88AeikWNjI6YIHfsipluKL3yLNU5LuWpuF7SMUc86kVmKT23CNDs7WcEH3ifhlj/V1LAbU=
+	t=1781635700; cv=none; b=fpv+YG+pHGe18N9oVcXF1YR650YVfHD2cc3f2XQQaP+rT5uSPI0aot+DWTynNo2aO97Amny2d61pf4a5weQ9osPjXYXfHhQKatyxGSnZTdkEEwYTMHmv0CWo4T6ASh2omLVGYzM1owi7ILL6SkluJgn6H+wkj5EeIa4i42XJzxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781631748; c=relaxed/simple;
-	bh=UFwP3mlYe1ZYNbbDf6a6wz9hfA5o1Co8GdZ+TbT5gdk=;
+	s=arc-20240116; t=1781635700; c=relaxed/simple;
+	bh=L5v5wTHXHDq6huDMzcbZj5af4OABR4peBxI8x85CakU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZecwmKBUAmmih12ZUCK1ABebanwSpUlsJjfVZjnW+kZgPqfYnuut4yywMiu9plqoJ3/RDY2LPqPvzmp+IjC7hshqNPLAgAPKyrPnlQK4Q0PpVaPSSsGPizdqTW3IqdnNjmTiIqNZFTWHPvf1Yj2Ee532FiF2BNGOQ0UsElGYEgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ii4zhIzB; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C35A11F000E9;
-	Tue, 16 Jun 2026 17:42:25 +0000 (UTC)
+	 MIME-Version; b=LwUbJyZS1cXU9g8eguyGie+RBckuTTfEJBHUAHxyQUjh/8NpapZZ79FbhTQGB3Jv8t7dMH4DVhsPNuNQe7txB/cOs9Su67vZlckkSR7tImWMED905PcMReaa0LIeqkSmQnKQewxFKNCMhmGX2P8F4NHrYo1yVHtVELbEEDuLNgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bK3L/ohw; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E30E41F000E9;
+	Tue, 16 Jun 2026 18:48:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781631746;
-	bh=62LwnqkX0doEhsLMBHZA58g8AkVU/jvVpMTjBREpz50=;
+	s=korg; t=1781635698;
+	bh=cZkbi8S5bAx18jOM6iIGsb2pnR01OxOxCgfwTXj/kRY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Ii4zhIzBXkVALmAVAV/COXhg+I+c9Vs+lB6Ze2CcBbYbnrnx6AjevZMv+PRhti45U
-	 j3Eb5fsGUTmgnrIJb16Gm4w2g8uI4JEuejql11cqM68GHFrDRsQJnmvBX2d6FFlYNx
-	 4UEbO7ckWl+SuCUiDz8p6bxzKKYk0glsK/EFl6OM=
+	b=bK3L/ohw64TLuZPjZ1DJTsPu/df3RawrD7L/rXbjHE16llmlePj+bvMu3yPg1y2Us
+	 oRxhbQLTEZ7ShHHs6pPAlb75DFfR1Ob31pobQLGyG5SH1q05p16jA89xak1NLH8Ldh
+	 ELk04WPJIeDZ6pii65rGN6KkFPj05oLl9bK3r5OI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hayes Wang <hayeswang@realtek.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 248/522] r8152: reduce the control transfer of rtl8152_get_version()
+	Zhang Cen <rollkingzzc@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.10 099/342] USB: serial: belkin_sa: validate interrupt status length
 Date: Tue, 16 Jun 2026 20:26:35 +0530
-Message-ID: <20260616145137.578229688@linuxfoundation.org>
+Message-ID: <20260616145052.843945098@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,88 +75,82 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265546-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-266300-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:rollkingzzc@gmail.com,m:johan@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:hayeswang@realtek.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
 	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,realtek.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3D9D269363F
+X-Rspamd-Queue-Id: 1AB476947BB
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hayes Wang <hayeswang@realtek.com>
+From: Zhang Cen <rollkingzzc@gmail.com>
 
-[ Upstream commit 02767440e1dda9861a11ca1dbe0f19a760b1d5c2 ]
+commit 4ce058df2ee02cc2a0f0fd5cd64ce6f1482a0b65 upstream.
 
-Reduce the control transfer by moving calling rtl8152_get_version() in
-rtl8152_probe(). This could prevent from calling rtl8152_get_version()
-for unnecessary situations. For example, after setting config #2 for the
-device, there are two interfaces and rtl8152_probe() may be called
-twice. However, we don't need to call rtl8152_get_version() for this
-situation.
+The Belkin interrupt callback treats interrupt data as a four-byte
+status report and reads LSR/MSR fields at offsets 2 and 3. The
+interrupt-in buffer length is derived from endpoint wMaxPacketSize, and
+short interrupt transfers may complete successfully with a smaller
+actual_length.
 
-Signed-off-by: Hayes Wang <hayeswang@realtek.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 19440600e729 ("r8152: handle the return value of usb_reset_device()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Check the completed interrupt packet length before parsing status
+fields so short interrupt endpoints and short successful packets are
+ignored instead of causing out-of-bounds or stale status-byte reads.
+
+KASAN report as below:
+
+BUG: KASAN: slab-out-of-bounds in belkin_sa_read_int_callback()
+Read of size 1
+Call trace:
+  belkin_sa_read_int_callback() (drivers/usb/serial/belkin_sa.c:202)
+  __usb_hcd_giveback_urb() (drivers/usb/core/hcd.c:1630)
+  dummy_timer() (?:?)
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Assisted-by: Codex:gpt-5.5
+Signed-off-by: Zhang Cen <rollkingzzc@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/r8152.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/usb/serial/belkin_sa.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
-index 98e30291b0500b..f730f6a797e767 100644
---- a/drivers/net/usb/r8152.c
-+++ b/drivers/net/usb/r8152.c
-@@ -9640,20 +9640,21 @@ static int rtl8152_probe(struct usb_interface *intf,
- 			 const struct usb_device_id *id)
- {
- 	struct usb_device *udev = interface_to_usbdev(intf);
--	u8 version = rtl8152_get_version(intf);
- 	struct r8152 *tp;
- 	struct net_device *netdev;
-+	u8 version;
- 	int ret;
+--- a/drivers/usb/serial/belkin_sa.c
++++ b/drivers/usb/serial/belkin_sa.c
+@@ -196,6 +196,9 @@ static void belkin_sa_read_int_callback(
  
--	if (version == RTL_VER_UNKNOWN)
--		return -ENODEV;
--
- 	if (intf->cur_altsetting->desc.bInterfaceClass != USB_CLASS_VENDOR_SPEC)
- 		return -ENODEV;
+ 	usb_serial_debug_data(&port->dev, __func__, urb->actual_length, data);
  
- 	if (!rtl_check_vendor_ok(intf))
- 		return -ENODEV;
- 
-+	version = rtl8152_get_version(intf);
-+	if (version == RTL_VER_UNKNOWN)
-+		return -ENODEV;
++	if (urb->actual_length < BELKIN_SA_MSR_INDEX + 1)
++		goto exit;
 +
- 	usb_reset_device(udev);
- 	netdev = alloc_etherdev(sizeof(struct r8152));
- 	if (!netdev) {
--- 
-2.53.0
-
+ 	/* Handle known interrupt data */
+ 	/* ignore data[0] and data[1] */
+ 
 
 
 
