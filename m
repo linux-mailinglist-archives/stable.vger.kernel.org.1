@@ -1,63 +1,61 @@
-Return-Path: <stable+bounces-265595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266378-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id lxGxCgeMMWowmQUAu9opvQ
-	(envelope-from <stable+bounces-265595-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:46:47 +0200
+	id qCweDhGcMWqWoAUAu9opvQ
+	(envelope-from <stable+bounces-266378-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:55:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0CE869377D
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:46:46 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC962694924
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:55:12 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Oxc01+jH;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265595-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-265595-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=2lrJPgSD;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266378-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266378-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E531E303D77C
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:46:36 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3A692303DB44
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:55:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6B983C65F2;
-	Tue, 16 Jun 2026 17:46:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EE6647CC96;
+	Tue, 16 Jun 2026 18:55:09 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C5F43D669A;
-	Tue, 16 Jun 2026 17:46:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14AAD472798;
+	Tue, 16 Jun 2026 18:55:08 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781631995; cv=none; b=mgWWyVn/CMZaseGy7eaubXtcPT5xhiKeYPO2ktC8yoXRvlluXbYIGuwKtsz7Xnly26iwUUGQBedBVWrN+TRmL53grCCrMcJanwwNmxvsZjGqHDEBUMRvcSfcWLvRf8dh2wnjmSO38d3+N47coQNnzwXjcZutEOnvG/qvsf2XrI8=
+	t=1781636109; cv=none; b=T5sFNXLW642u82JdE94t10cqSoQKrHThYCke3U2NRBMqqDy9C2QKW1SK85csLoZu8QlBz0Y1+2fK5ouZjkCgl9R6v9EYw9IsPUmrIA5eQxzw0Nn1lTzdJ1sCgFOua64oSnsGOs1csr6Jc/n56HC0i7SZhRlKXWupVIIwXCGDImA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781631995; c=relaxed/simple;
-	bh=sLjmNT2Gi6YBLaLnQhUTA9Yiqt7t4jMWyWKuyushADc=;
+	s=arc-20240116; t=1781636109; c=relaxed/simple;
+	bh=3tKCncAm767M4+3oO4t4ZxBl+Qs5zUrINgrQ5O5WGKA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LSQBDjdnJEhdTE8CyPOy8FpZUTyTrBnZNWdDkjq8l+Ka2mi6W90+jITBcoIN41RkR6F/qdRkkINU9lM57GNmOLHh8Ok6gk+UTtEuG+VMFvL01g+4FWLMN8qouAGErhEJm0gjRI5tEWk1BrVyXKLnKX/98YyrRCmKSFPvf7zClRY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Oxc01+jH; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E5631F000E9;
-	Tue, 16 Jun 2026 17:46:33 +0000 (UTC)
+	 MIME-Version; b=FBqZLvHg0R0z4wx0i3/uH3hQyiynJblLqAx0MgYnLfFvgaVIUrLO08VBYGptjGzOwE/xSHnCJiptJGzltHIaDviOl205rneF1dZlhNyTzzUTh3WO08XdhnqqsgUimqj4Ktx3ITwUgLrCfufsNYt5py8rp85wit7xJL42Q4tq/0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2lrJPgSD; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14D591F000E9;
+	Tue, 16 Jun 2026 18:55:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781631994;
-	bh=A8P2IXjlRMsv+dJXBujhUTGkUuRvMypyxoaipb1qzgs=;
+	s=korg; t=1781636108;
+	bh=7CI9ayqbIvlIGc8aXhcjA7fTIDItIPf6PKDA7s0vIIw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Oxc01+jH1MUYMHZmR6S3kXgfKXc3bCzQWkS1eKR/+A4cRMwAdxUWzjyAl6WNDnrfy
-	 L9UUaRpm5lHFjYStFbMgRfnA9t0/1fpnGY698Pm8N7QJP0bVxzlTgh4Smd6WPJPy+V
-	 rmAOJt40leoJ9vDTbj4rExROGUlWEtmTdi8ftXuY=
+	b=2lrJPgSDaM04uwM/wFpOpdVe2hvC7FXC1sT8c1dD4CC0sYBTTjKUVZmhUe2FzYcTW
+	 B0HMed++hy5PUBcsADOkSIJM0numMZ4JwyrAywJII/Ot2HJRig2ps1ueLEyQwTiud/
+	 nnE6TtCYjBK7EyYVMs/puVb6VSLGHxHv8qbSgE0g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Hung <alex.hung@amd.com>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Ray Wu <ray.wu@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.1 326/522] drm/amd/display: Use krealloc_array() in dal_vector_reserve()
+	Til Kaiser <mail@tk154.de>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 177/342] net: mvpp2: sync RX data at the hardware packet offset
 Date: Tue, 16 Jun 2026 20:27:53 +0530
-Message-ID: <20260616145141.088507460@linuxfoundation.org>
+Message-ID: <20260616145056.450977277@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,84 +69,89 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265595-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-266378-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:alex.hung@amd.com,m:harry.wentland@amd.com,m:ray.wu@amd.com,m:daniel.wheeler@amd.com,m:alexander.deucher@amd.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mail@tk154.de,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,amd.com:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tk154.de:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B0CE869377D
+X-Rspamd-Queue-Id: BC962694924
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harry Wentland <harry.wentland@amd.com>
+From: Til Kaiser <mail@tk154.de>
 
-commit da48bc4461b8a5ebfb9264c9b191a701d8e99009 upstream.
+[ Upstream commit 180235600934bef6add3be637c296d6cf3272e67 ]
 
-[Why & How]
-dal_vector_reserve() computes the allocation size as
-"capacity * vector->struct_size" using uint32_t arithmetic, which can
-silently wrap to a small value on overflow. This would cause krealloc to
-return a smaller buffer than expected, leading to heap overflows on
-subsequent vector appends.
+mvpp2 programs the RX queue packet offset, so hardware writes received
+data at dma_addr + MVPP2_SKB_HEADROOM. The current CPU sync starts at
+dma_addr and only covers rx_bytes + MVPP2_MH_SIZE bytes, which syncs the
+unused headroom and misses the same number of bytes at the packet tail.
 
-Replace krealloc() with krealloc_array() which performs an internal
-overflow check and returns NULL on wrap, preventing the issue.
+On non-coherent DMA systems this can leave the CPU reading stale cache
+contents for the end of the received frame.
 
-Fixes: 2004f45ef83f ("drm/amd/display: Use kernel alloc/free")
-Assisted-by: Copilot:claude-opus-4.6
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Ray Wu <ray.wu@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 37668568641ccc4cc1dbca4923d0a16609dd5707)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Use dma_sync_single_range_for_cpu() with MVPP2_SKB_HEADROOM as the range
+offset so the sync covers the Marvell header and packet data actually
+written by hardware.
+
+Fixes: e1921168bbd4 ("mvpp2: sync only the received frame")
+Signed-off-by: Til Kaiser <mail@tk154.de>
+Link: https://patch.msgid.link/20260607134943.21996-2-mail@tk154.de
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/basics/vector.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/basics/vector.c
-+++ b/drivers/gpu/drm/amd/display/dc/basics/vector.c
-@@ -289,8 +289,8 @@ bool dal_vector_reserve(struct vector *v
- 	if (capacity <= vector->capacity)
- 		return true;
+diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
+index e4e80c2b1ce400..6d672afc73d500 100644
+--- a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
++++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
+@@ -3588,9 +3588,10 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
+ 			dma_dir = DMA_FROM_DEVICE;
+ 		}
  
--	new_container = krealloc(vector->container,
--				 capacity * vector->struct_size, GFP_KERNEL);
-+	new_container = krealloc_array(vector->container,
-+				       capacity, vector->struct_size, GFP_KERNEL);
+-		dma_sync_single_for_cpu(dev->dev.parent, dma_addr,
+-					rx_bytes + MVPP2_MH_SIZE,
+-					dma_dir);
++		dma_sync_single_range_for_cpu(dev->dev.parent, dma_addr,
++					      MVPP2_SKB_HEADROOM,
++					      rx_bytes + MVPP2_MH_SIZE,
++					      dma_dir);
  
- 	if (new_container) {
- 		vector->container = new_container;
+ 		/* Buffer header not supported */
+ 		if (rx_status & MVPP2_RXD_BUF_HDR)
+-- 
+2.53.0
+
 
 
 
