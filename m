@@ -1,60 +1,64 @@
-Return-Path: <stable+bounces-264966-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263986-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Yhr5EVaAMWoZlAUAu9opvQ
-	(envelope-from <stable+bounces-264966-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:56:54 +0200
+	id ZqooEYlsMWrhiwUAu9opvQ
+	(envelope-from <stable+bounces-263986-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:32:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB2F46929B1
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:56:53 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9860C6911D6
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:32:24 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=GSNYmr4w;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264966-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264966-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=XXliIbri;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263986-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263986-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 312A83039552
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:53:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0E738305D5E3
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:25:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EBFA449EC3;
-	Tue, 16 Jun 2026 16:53:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB58E38B135;
+	Tue, 16 Jun 2026 15:25:33 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFD9644CAF5;
-	Tue, 16 Jun 2026 16:53:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88FE943E9F5;
+	Tue, 16 Jun 2026 15:25:32 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781628827; cv=none; b=JsGzLL0uCcMjXftpapKfF5PpNSyqOHey7aRfQWD/rfIP3PMlotMnRq6pjOYCjAppQqBycvWmDIWFPVZGv7MY+tDoztYU8m8bdCpcvEQSYXPDz6axFlcNSFMS/p+a08doMNXe5/CirXgdOyxkIwyy+ln36+liSuPfPn6+wPSjNdQ=
+	t=1781623533; cv=none; b=oi2/pJ/wliiZHzfjRh66AkLBM6c2ndtNG9DzQaTIJRkiruU3BhP4sTzYCjb3mPyCOj7iCOSOBM0dOeW4swqluCJOFGwGNCR5jTKJC3AdBo4/Y8oaHTulI1dtlDmD6Js5FgJcSulWBlfhpHAzK/1gOK1xFMlFNRUPr4dSnMfFtrw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781628827; c=relaxed/simple;
-	bh=EjStsMT/SU7I584dmWr1ZYF2bBOIbCkM6zkP2pDuoBI=;
+	s=arc-20240116; t=1781623533; c=relaxed/simple;
+	bh=ELYaz4fr2uJ1QEfavz3w6FAKmMg6B2OHZwHIv9NiChs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I6XiuKMLCBKs4+Abld7xcCBNhygWpbVVy7TTEb24EdUz82Jh2SJlo568wI9bWDSnADYauRHfXOjSFLsKDmhCIrb9u+4If+k+Qd7jlPHdd0NpPKFQc9j8Mow7aEvpzz2sK9IoueOx6/Gw5OFaTrAZ+AXkva8lNBavMp8Ig02v0QQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GSNYmr4w; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B7B41F000E9;
-	Tue, 16 Jun 2026 16:53:44 +0000 (UTC)
+	 MIME-Version; b=tTKyEWs27E0RLhyweXFpmc1Og8WA8PLVGj8YCyRULArrA9LKb0Upw71kvuH46iHPA6/8t/XEDveD0pw6Dd91L0aAR/Mo7Q92MT8NclGC921Fft8Rgn3WgkldPyu74Vg/3AtOq3V0ETcXTKpirQMtpNy0zYKApgYgIVDIZh4Unv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XXliIbri; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AD061F000E9;
+	Tue, 16 Jun 2026 15:25:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781628825;
-	bh=e2Ud/psixndJZ/bRS0cBa+oIMlz/x/QelEmBdF18dhQ=;
+	s=korg; t=1781623532;
+	bh=6kXWMbeacxCyOUzREh4+Y/w28GuAf8uHEw5FWHxoWq8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=GSNYmr4w7hwf8gtWJ5HLHFltWR8r4MHKl2iH6STBWDksWo8XWR3cgiXhQfA2exbsj
-	 OiGGx9ws7+iGWXLkN1EMFEDVCNExnLIzz1Nv61YN889XXMigbZezU6ZRBbE5Pd+cwv
-	 UNvwgtk3utrx+4/N3Wb12i7Y2WoM9JrzdZHqcNZo=
+	b=XXliIbrina5UcNzubWy9fuZ4twusmuoGpAxDJV5FiySNHxkESbAk7M7Iwj1vCMtvc
+	 mINkT2y3MNRr3vjHV6bUyAbR3CLbin6ExvW+mIj9bzEllY2kDU8JWw1qIFBtEuvrHj
+	 cPIx8kcrpndcbP/gJVYPSbe8MRPIud8fghlUXUmw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Michael Bommarito <michael.bommarito@gmail.com>
-Subject: [PATCH 6.6 169/452] usb: gadget: f_fs: copy only received bytes on short ep0 read
-Date: Tue, 16 Jun 2026 20:26:36 +0530
-Message-ID: <20260616145126.764321078@linuxfoundation.org>
+	Matthew Auld <matthew.auld@intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Sanjay Yadav <sanjay.kumar.yadav@intel.com>,
+	Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 166/378] drm/xe: fix job timeout recovery for unstarted jobs and kernel queues
+Date: Tue, 16 Jun 2026 20:26:37 +0530
+Message-ID: <20260616145119.033195126@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,121 +70,181 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264966-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:michael.bommarito@gmail.com,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-263986-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:matthew.auld@intel.com,m:matthew.brost@intel.com,m:sanjay.kumar.yadav@intel.com,m:himal.prasad.ghimiray@intel.com,m:rodrigo.vivi@intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com];
 	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,intel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: EB2F46929B1
+X-Rspamd-Queue-Id: 9860C6911D6
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Rodrigo Vivi <rodrigo.vivi@intel.com>
 
-commit 4e036c10e7f4df5d951c69cc3697bc8e209c6d02 upstream.
+[ Upstream commit 347ccc0453fca2c669e8dc8a72000e76ca4adf10 ]
 
-ffs_ep0_read() allocates its control-OUT data buffer with
-kmalloc() (not kzalloc) at the Length value from the Setup
-packet, then copies that full len to userspace regardless of
-how many bytes were actually received:
+A job that GuC never scheduled (never started) indicates a GuC
+scheduling failure; previously such jobs were silently errored out
+instead of triggering a GT reset to recover. Trigger a GT reset and
+resubmit them, but only when the queue was not already killed or banned:
+an unstarted job on an already banned queue is the ban working as
+intended and must neither clear the ban nor kick off a reset, otherwise
+a banned userspace queue could be resurrected and spam GT resets.
 
-    data = kmalloc(len, GFP_KERNEL);
-    ...
-    ret = __ffs_ep0_queue_wait(ffs, data, len);
-    if ((ret > 0) && (copy_to_user(buf, data, len)))
-            ret = -EFAULT;
+Kernel queues are always recovered this way and wedge the device once
+recovery attempts are exhausted, since kernel work must not silently
+fail. A started job that times out on a userspace VM bind queue stays
+banned rather than being reset and retried.
 
-__ffs_ep0_queue_wait() returns req->actual, which on a short
-control OUT transfer is strictly less than len.  The
-copy_to_user() call still copies len bytes, so on a short OUT
-the last (len - ret) bytes of the kmalloc() buffer --
-uninitialised slab residue -- are delivered to the FunctionFS
-daemon.
+The queue is banned early in the timeout handler to signal the G2H
+scheduling-done handler so it wakes the disable-scheduling waiter;
+without it the waiter sleeps the full 5s timeout. When a reset is
+warranted the ban is cleared before rearming so that
+guc_exec_queue_start() can resubmit jobs after the GT reset - a
+still-banned queue would block resubmission and cause an infinite TDR
+loop. The already-banned case is gated out before this point via
+skip_timeout_check, so it is unaffected.
 
-Short ep0 OUT completions are specified USB control-transfer
-behavior and are produced by in-tree UDCs:
+v2: (Himal) Do it for any queue type, not just kernel/migration
+v3: - (Sashiko and Sanjay): don't clear the ban / GT reset for already
+      killed/banned queues on unstarted-job timeout
+    - Update commit message
+    - (Matt) Add Fixes tag
 
-  * dwc2 continues on req->actual < req->length for ep0 DATA OUT
-    (short-not-ok is the only ep0-OUT stall path).
-  * aspeed_udc ends ep0 OUT on rx_len < ep->ep.maxpacket.
-  * renesas_usbf logs "ep0 short packet" and completes the
-    request.
-  * dwc3 stalls on short IN but not on short OUT.
-
-A short ep0 OUT is therefore not evidence of a broken UDC; it is
-a normal condition f_fs has to cope with.  The sibling gadgetfs
-implementation in drivers/usb/gadget/legacy/inode.c already does
-this correctly via min(len, dev->req->actual) before
-copy_to_user().  This patch brings f_fs.c to the same safe
-pattern rather than trimming at a defensive layer.
-
-The bug is reached from the FunctionFS device node, which in
-real deployments is owned by the privileged gadget daemon
-(adbd, UMS, composite gadget services, etc.); it is not
-reachable from unprivileged userspace.  Linux host stacks
-normally reject short-wLength control OUTs before they reach
-the gadget, so reproducing this required a build that
-bypasses that host-side check.  With the bypass in place, a
-1-byte payload on a 64-byte Setup produces 63 bytes of
-non-canary slab residue in the daemon's read buffer.
-
-Fix by copying only ret (actually received) bytes to
-userspace.
-
-Fixes: ddf8abd25994 ("USB: f_fs: the FunctionFS driver")
-Cc: stable <stable@kernel.org>
-Assisted-by: Claude:claude-opus-4-7
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Link: https://patch.msgid.link/20260419160359.1577270-1-michael.bommarito@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: fe05cee4d953 ("drm/xe: Don't short circuit TDR on jobs not started")
+Cc: Matthew Auld <matthew.auld@intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Sanjay Yadav <sanjay.kumar.yadav@intel.com>
+Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+Assisted-by: GitHub-Copilot:claude-sonnet-4.6
+Assisted-by: GitHub-Copilot:claude-opus-4.8
+Tested-by: Sanjay Yadav <sanjay.kumar.yadav@intel.com>
+Reviewed-by: Sanjay Yadav <sanjay.kumar.yadav@intel.com>
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+Reviewed-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+Link: https://patch.msgid.link/20260610152548.404575-3-rodrigo.vivi@intel.com
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+(cherry picked from commit b1107d085e7e8ed15ba6f80c102528a9c8a6cb0e)
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/f_fs.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/xe/xe_guc_submit.c | 49 +++++++++++++++++++++---------
+ 1 file changed, 35 insertions(+), 14 deletions(-)
 
---- a/drivers/usb/gadget/function/f_fs.c
-+++ b/drivers/usb/gadget/function/f_fs.c
-@@ -588,7 +588,7 @@ static ssize_t ffs_ep0_read(struct file
+diff --git a/drivers/gpu/drm/xe/xe_guc_submit.c b/drivers/gpu/drm/xe/xe_guc_submit.c
+index e948f40fa17896..6365eca9816092 100644
+--- a/drivers/gpu/drm/xe/xe_guc_submit.c
++++ b/drivers/gpu/drm/xe/xe_guc_submit.c
+@@ -159,6 +159,11 @@ static void set_exec_queue_banned(struct xe_exec_queue *q)
+ 	atomic_or(EXEC_QUEUE_STATE_BANNED, &q->guc->state);
+ }
  
- 		/* unlocks spinlock */
- 		ret = __ffs_ep0_queue_wait(ffs, data, len);
--		if ((ret > 0) && (copy_to_user(buf, data, len)))
-+		if ((ret > 0) && (copy_to_user(buf, data, ret)))
- 			ret = -EFAULT;
- 		goto done_mutex;
++static void clear_exec_queue_banned(struct xe_exec_queue *q)
++{
++	atomic_andnot(EXEC_QUEUE_STATE_BANNED, &q->guc->state);
++}
++
+ static bool exec_queue_suspended(struct xe_exec_queue *q)
+ {
+ 	return atomic_read(&q->guc->state) & EXEC_QUEUE_STATE_SUSPENDED;
+@@ -1326,7 +1331,8 @@ static bool check_timeout(struct xe_exec_queue *q, struct xe_sched_job *job)
+ 			   xe_sched_job_seqno(job), xe_sched_job_lrc_seqno(job),
+ 			   q->guc->id);
  
+-		return xe_sched_invalidate_job(job, 2);
++		/* GuC never scheduled this job - let the caller trigger a GT reset. */
++		return true;
+ 	}
+ 
+ 	ctx_timestamp = lower_32_bits(xe_lrc_timestamp(q->lrc[0]));
+@@ -1423,6 +1429,21 @@ static void disable_scheduling(struct xe_exec_queue *q, bool immediate)
+ 			       G2H_LEN_DW_SCHED_CONTEXT_MODE_SET, 1);
+ }
+ 
++/*
++ * Recover via GT reset for a kernel queue, or for a GuC scheduling failure (job
++ * never started) on a queue that was not already killed or banned. An already
++ * banned queue must stay banned, so its unstarted jobs do not clear the ban or
++ * trigger a reset.
++ */
++static bool timeout_needs_gt_reset(struct xe_exec_queue *q, struct xe_sched_job *job,
++				   bool skip_timeout_check)
++{
++	if (q->flags & EXEC_QUEUE_FLAG_KERNEL)
++		return true;
++
++	return !skip_timeout_check && !xe_sched_job_started(job);
++}
++
+ static enum drm_gpu_sched_stat
+ guc_exec_queue_timedout_job(struct drm_sched_job *drm_job)
+ {
+@@ -1573,19 +1594,19 @@ guc_exec_queue_timedout_job(struct drm_sched_job *drm_job)
+ 			       xe_sched_job_seqno(job), xe_sched_job_lrc_seqno(job),
+ 			       q->guc->id, q->flags);
+ 
+-	/*
+-	 * Kernel jobs should never fail, nor should VM jobs if they do
+-	 * somethings has gone wrong and the GT needs a reset
+-	 */
+-	xe_gt_WARN(q->gt, q->flags & EXEC_QUEUE_FLAG_KERNEL,
+-		   "Kernel-submitted job timed out\n");
+-	xe_gt_WARN(q->gt, q->flags & EXEC_QUEUE_FLAG_VM && !exec_queue_killed(q),
+-		   "VM job timed out on non-killed execqueue\n");
+-	if (!wedged && (q->flags & EXEC_QUEUE_FLAG_KERNEL ||
+-			(q->flags & EXEC_QUEUE_FLAG_VM && !exec_queue_killed(q)))) {
+-		if (!xe_sched_invalidate_job(job, 2)) {
+-			xe_gt_reset_async(q->gt);
+-			goto rearm;
++	if (!wedged) {
++		if (timeout_needs_gt_reset(q, job, skip_timeout_check)) {
++			if (!xe_sched_invalidate_job(job, 2)) {
++				clear_exec_queue_banned(q);
++				xe_gt_reset_async(q->gt);
++				goto rearm;
++			}
++			if (q->flags & EXEC_QUEUE_FLAG_KERNEL) {
++				xe_gt_WARN(q->gt, true, "Kernel-submitted job timed out\n");
++				xe_device_declare_wedged(gt_to_xe(q->gt));
++			}
++		} else if (q->flags & EXEC_QUEUE_FLAG_VM && !exec_queue_killed(q)) {
++			xe_gt_WARN(q->gt, true, "VM job timed out on non-killed execqueue\n");
+ 		}
+ 	}
+ 
+-- 
+2.53.0
+
 
 
 
