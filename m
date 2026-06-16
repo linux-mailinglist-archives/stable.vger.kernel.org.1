@@ -1,67 +1,61 @@
-Return-Path: <stable+bounces-266191-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264450-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id uI85HC6ZMWpUnwUAu9opvQ
-	(envelope-from <stable+bounces-266191-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:42:54 +0200
+	id 1k+GOml3MWo2kAUAu9opvQ
+	(envelope-from <stable+bounces-264450-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:18:49 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED4C46945D1
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:42:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69C75691EC0
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:18:49 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=fwpI4c6g;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266191-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266191-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=GIEcvc5T;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264450-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264450-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 99CFE31BDC22
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:38:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 559AC31E6B8E
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:05:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1630746AF3C;
-	Tue, 16 Jun 2026 18:38:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 052414534B3;
+	Tue, 16 Jun 2026 16:05:47 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADFCE3D669D;
-	Tue, 16 Jun 2026 18:38:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0E4944DB64;
+	Tue, 16 Jun 2026 16:05:45 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781635132; cv=none; b=WxAApNlnQSafI0mPz2pfrI+grx6DwiBSD1dbfCJicax5iB7oEOhvpZJJcJk95zwAZ1xRv9zxKI1Urtk5fT3ANo80HxemGp8YnqUYXLswEYnHiX/UtpunH0R+Pu4OCGj+caX5GGO+AXcaxnR2oFpB3HJfM6DmhE/6OyRNCem9MNU=
+	t=1781625946; cv=none; b=Iava4e7WnZ4ae/0jgJQOx+0g3FKFHGN6jOGplEOuf+HUcuJxdgiE25TAAaep3ETUtBS66BgAPPyhTHorKoSV6+HuuQpg9Go17J8LVUVBOEP6BiDdTD951oVOja+qShCt0Lr4NwFnnRnk8j3hHf4drhx6DMT0ODSIaqdXcyJbBG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781635132; c=relaxed/simple;
-	bh=+M17a7hWJJdNXmeqj6psGU5B780j211whhSxjO0WpZs=;
+	s=arc-20240116; t=1781625946; c=relaxed/simple;
+	bh=jjO9CmCvtNU1MSA4DCeLq8b8Bw+xM2HazA2PFRxXLxg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PC6z9qtgaw0j9e90EPH5XXl6lyOoVMD2xiFLJkS7NIXpui74GfLK43m9KNLf21qLXxeLrGgug4a0ebOjyHQLtHBw00YT9OArNUlIsABMSi88RG9L0KePGYLVCoOcUQAXXsL5go4ffMqczWke4p3rJHfXIlQ2fLZQvujBchbOxWo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fwpI4c6g; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B211D1F000E9;
-	Tue, 16 Jun 2026 18:38:50 +0000 (UTC)
+	 MIME-Version; b=h+twrtZTMzXe7WMAQv35K0FfKh/DHUfwNZzEJn+f5STwYegPwVpIiVooJ/gKqJO0ywHgI9cD6w/K1wSxzNFULFOnjQTg65zLGFkJLtEw0q4ifaTNEbtF7St1fT/Pe1cDL+iiaqYv+l5ENKQBHBm874CZqByZvRXRoWvZBCpQxWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GIEcvc5T; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4C671F000E9;
+	Tue, 16 Jun 2026 16:05:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781635131;
-	bh=rWj140825eOyL3JdcqyNw+QGHZ/jIJYGRp1D0GrNvP0=;
+	s=korg; t=1781625945;
+	bh=5S7Q+4Da8HjvmwIr/P4dKtc5KkSpTiLuIn+PmB5utsw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fwpI4c6g8lTQU/Gy6rPKKmfkDR4FRcPJJJDtmQ0f9qkrlV9816hN37vzoRCT+LiXX
-	 /yGqfAWrJrepxeESAO9B9LBP7gIFM1y2L4N/4nQ+W4pIVdUM4C++ox/3z0b72FV39Y
-	 ykFNhl2sKoaFIkbRytzXAXqULiIL/mFqnguwcXt4=
+	b=GIEcvc5TNe0a/TAs/MPqdJbOZzRWrLEe1PYdxbJcMc7FQFdBjJhWnQc87VZtnPmlb
+	 qvaP9RgGNhMRroaPTeJ/Rtlj1CHGyokZOfsV4m2WAoLkalp4QROtdZLYgxIjlgBdtj
+	 7kATyB4Z6XtXKUlrD6l3t8akvBuMYfIeSxsMUexw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Luxing Yin <tr0jan@lzu.edu.cn>,
-	Jiexun Wang <wangjiexun2025@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Sven Eckelmann <sven@narfation.org>
-Subject: [PATCH 5.15 395/411] batman-adv: stop tp_meter sessions during mesh teardown
+	ZhaoJinming <zhaojinming@uniontech.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.18 237/325] net: airoha: Add NULL check for of_reserved_mem_lookup() in airoha_qdma_init_hfwd_queues()
 Date: Tue, 16 Jun 2026 20:30:33 +0530
-Message-ID: <20260616145122.208581383@linuxfoundation.org>
+Message-ID: <20260616145110.247801033@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -82,267 +76,76 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	TAGGED_FROM(0.00)[bounces-266191-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:yuantan098@gmail.com,m:yifanwucs@gmail.com,m:tomapufckgml@gmail.com,m:bird@lzu.edu.cn,m:tr0jan@lzu.edu.cn,m:wangjiexun2025@gmail.com,m:n05ec@lzu.edu.cn,m:sven@narfation.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,narfation.org];
+	TAGGED_FROM(0.00)[bounces-264450-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:zhaojinming@uniontech.com,m:lorenzo@kernel.org,m:kuba@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,narfation.org:email,lzu.edu.cn:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: ED4C46945D1
+X-Rspamd-Queue-Id: 69C75691EC0
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiexun Wang <wangjiexun2025@gmail.com>
+From: ZhaoJinming <zhaojinming@uniontech.com>
 
-commit 3d3cf6a7314aca4df0a6dde28ce784a2a30d0166 upstream.
+commit f9f25118faa4dd2b6e3d14a03d123bbdbd59925d upstream.
 
-TP meter sessions remain linked on bat_priv->tp_list after the netlink
-request has already finished. When the mesh interface is removed,
-batadv_mesh_free() currently tears down the mesh without first draining
-these sessions.
+of_reserved_mem_lookup() may return NULL if the reserved memory region
+referenced by the "memory-region" phandle is not found in the reserved
+memory table (e.g. due to a misconfigured DTS or a removed
+memory-region node).  The current code dereferences the returned
+pointer without checking for NULL, leading to a kernel NULL pointer
+dereference at the following lines:
 
-A running sender thread or a late incoming tp_meter packet can then keep
-processing against a mesh instance which is already shutting down.
-Synchronize tp_meter with the mesh lifetime by stopping all active
-sessions from batadv_mesh_free() and waiting for sender threads to exit
-before teardown continues.
+    dma_addr = rmem->base;                          // line 1156
+    num_desc = div_u64(rmem->size, buf_size);       // line 1160
 
-Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
-Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Co-developed-by: Luxing Yin <tr0jan@lzu.edu.cn>
-Signed-off-by: Luxing Yin <tr0jan@lzu.edu.cn>
-Signed-off-by: Jiexun Wang <wangjiexun2025@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-[ Context ]
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Add a NULL check after of_reserved_mem_lookup() and return -ENODEV if
+the lookup fails, which is consistent with the existing error handling
+for of_parse_phandle() failure in the same code block.
+
+Fixes: 3a1ce9e3d01b ("net: airoha: Add the capability to allocate hwfd buffers via reserved-memory")
+Cc: stable@vger.kernel.org
+Signed-off-by: ZhaoJinming <zhaojinming@uniontech.com>
+Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/main.c     |    1 
- net/batman-adv/tp_meter.c |   94 +++++++++++++++++++++++++++++++++++++---------
- net/batman-adv/tp_meter.h |    1 
- net/batman-adv/types.h    |    4 +
- 4 files changed, 82 insertions(+), 18 deletions(-)
+ drivers/net/ethernet/airoha/airoha_eth.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/net/batman-adv/main.c
-+++ b/net/batman-adv/main.c
-@@ -262,6 +262,7 @@ void batadv_mesh_free(struct net_device
- 	atomic_set(&bat_priv->mesh_state, BATADV_MESH_DEACTIVATING);
+--- a/drivers/net/ethernet/airoha/airoha_eth.c
++++ b/drivers/net/ethernet/airoha/airoha_eth.c
+@@ -1172,6 +1172,9 @@ static int airoha_qdma_init_hfwd_queues(
  
- 	batadv_purge_outstanding_packets(bat_priv, NULL);
-+	batadv_tp_stop_all(bat_priv);
- 
- 	batadv_gw_node_free(bat_priv);
- 
---- a/net/batman-adv/tp_meter.c
-+++ b/net/batman-adv/tp_meter.c
-@@ -12,6 +12,7 @@
- #include <linux/byteorder/generic.h>
- #include <linux/cache.h>
- #include <linux/compiler.h>
-+#include <linux/completion.h>
- #include <linux/err.h>
- #include <linux/etherdevice.h>
- #include <linux/gfp.h>
-@@ -365,23 +366,38 @@ static void batadv_tp_vars_put(struct ba
- }
- 
- /**
-- * batadv_tp_sender_cleanup() - cleanup sender data and drop and timer
-- * @bat_priv: the bat priv with all the soft interface information
-- * @tp_vars: the private data of the current TP meter session to cleanup
-+ * batadv_tp_list_detach() - remove tp session from mesh session list once
-+ * @tp_vars: the private data of the current TP meter session
-  */
--static void batadv_tp_sender_cleanup(struct batadv_priv *bat_priv,
--				     struct batadv_tp_vars *tp_vars)
-+static void batadv_tp_list_detach(struct batadv_tp_vars *tp_vars)
- {
--	cancel_delayed_work(&tp_vars->finish_work);
-+	bool detached = false;
- 
- 	spin_lock_bh(&tp_vars->bat_priv->tp_list_lock);
--	hlist_del_rcu(&tp_vars->list);
-+	if (!hlist_unhashed(&tp_vars->list)) {
-+		hlist_del_init_rcu(&tp_vars->list);
-+		detached = true;
-+	}
- 	spin_unlock_bh(&tp_vars->bat_priv->tp_list_lock);
- 
-+	if (!detached)
-+		return;
+ 		rmem = of_reserved_mem_lookup(np);
+ 		of_node_put(np);
++		if (!rmem)
++			return -ENODEV;
 +
-+	atomic_dec(&tp_vars->bat_priv->tp_num);
-+
- 	/* drop list reference */
- 	batadv_tp_vars_put(tp_vars);
-+}
- 
--	atomic_dec(&tp_vars->bat_priv->tp_num);
-+/**
-+ * batadv_tp_sender_cleanup() - cleanup sender data and drop and timer
-+ * @tp_vars: the private data of the current TP meter session to cleanup
-+ */
-+static void batadv_tp_sender_cleanup(struct batadv_tp_vars *tp_vars)
-+{
-+	cancel_delayed_work_sync(&tp_vars->finish_work);
-+
-+	batadv_tp_list_detach(tp_vars);
- 
- 	/* kill the timer and remove its reference */
- 	timer_shutdown_sync(&tp_vars->timer);
-@@ -883,7 +899,8 @@ out:
- 	batadv_orig_node_put(orig_node);
- 
- 	batadv_tp_sender_end(bat_priv, tp_vars);
--	batadv_tp_sender_cleanup(bat_priv, tp_vars);
-+	batadv_tp_sender_cleanup(tp_vars);
-+	complete(&tp_vars->finished);
- 
- 	batadv_tp_vars_put(tp_vars);
- 
-@@ -915,7 +932,8 @@ static void batadv_tp_start_kthread(stru
- 		batadv_tp_vars_put(tp_vars);
- 
- 		/* cleanup of failed tp meter variables */
--		batadv_tp_sender_cleanup(bat_priv, tp_vars);
-+		batadv_tp_sender_cleanup(tp_vars);
-+		complete(&tp_vars->finished);
- 		return;
- 	}
- 
-@@ -1021,6 +1039,7 @@ void batadv_tp_start(struct batadv_priv
- 	tp_vars->start_time = jiffies;
- 
- 	init_waitqueue_head(&tp_vars->more_bytes);
-+	init_completion(&tp_vars->finished);
- 
- 	spin_lock_init(&tp_vars->unacked_lock);
- 	INIT_LIST_HEAD(&tp_vars->unacked_list);
-@@ -1127,14 +1146,7 @@ static void batadv_tp_receiver_shutdown(
- 		   "Shutting down for inactivity (more than %dms) from %pM\n",
- 		   BATADV_TP_RECV_TIMEOUT, tp_vars->other_end);
- 
--	spin_lock_bh(&tp_vars->bat_priv->tp_list_lock);
--	hlist_del_rcu(&tp_vars->list);
--	spin_unlock_bh(&tp_vars->bat_priv->tp_list_lock);
--
--	/* drop list reference */
--	batadv_tp_vars_put(tp_vars);
--
--	atomic_dec(&bat_priv->tp_num);
-+	batadv_tp_list_detach(tp_vars);
- 
- 	spin_lock_bh(&tp_vars->unacked_lock);
- 	list_for_each_entry_safe(un, safe, &tp_vars->unacked_list, list) {
-@@ -1498,6 +1510,52 @@ out:
- }
- 
- /**
-+ * batadv_tp_stop_all() - stop all currently running tp meter sessions
-+ * @bat_priv: the bat priv with all the mesh interface information
-+ */
-+void batadv_tp_stop_all(struct batadv_priv *bat_priv)
-+{
-+	struct batadv_tp_vars *tp_vars[BATADV_TP_MAX_NUM];
-+	struct batadv_tp_vars *tp_var;
-+	size_t count = 0;
-+	size_t i;
-+
-+	spin_lock_bh(&bat_priv->tp_list_lock);
-+	hlist_for_each_entry(tp_var, &bat_priv->tp_list, list) {
-+		if (WARN_ON_ONCE(count >= BATADV_TP_MAX_NUM))
-+			break;
-+
-+		if (!kref_get_unless_zero(&tp_var->refcount))
-+			continue;
-+
-+		tp_vars[count++] = tp_var;
-+	}
-+	spin_unlock_bh(&bat_priv->tp_list_lock);
-+
-+	for (i = 0; i < count; i++) {
-+		tp_var = tp_vars[i];
-+
-+		switch (tp_var->role) {
-+		case BATADV_TP_SENDER:
-+			batadv_tp_sender_shutdown(tp_var,
-+						  BATADV_TP_REASON_CANCEL);
-+			wake_up(&tp_var->more_bytes);
-+			wait_for_completion(&tp_var->finished);
-+			break;
-+		case BATADV_TP_RECEIVER:
-+			batadv_tp_list_detach(tp_var);
-+			if (timer_shutdown_sync(&tp_var->timer))
-+				batadv_tp_vars_put(tp_var);
-+			break;
-+		}
-+
-+		batadv_tp_vars_put(tp_var);
-+	}
-+
-+	synchronize_net();
-+}
-+
-+/**
-  * batadv_tp_meter_init() - initialize global tp_meter structures
-  */
- void __init batadv_tp_meter_init(void)
---- a/net/batman-adv/tp_meter.h
-+++ b/net/batman-adv/tp_meter.h
-@@ -17,6 +17,7 @@ void batadv_tp_start(struct batadv_priv
- 		     u32 test_length, u32 *cookie);
- void batadv_tp_stop(struct batadv_priv *bat_priv, const u8 *dst,
- 		    u8 return_value);
-+void batadv_tp_stop_all(struct batadv_priv *bat_priv);
- void batadv_tp_meter_recv(struct batadv_priv *bat_priv, struct sk_buff *skb);
- 
- #endif /* _NET_BATMAN_ADV_TP_METER_H_ */
---- a/net/batman-adv/types.h
-+++ b/net/batman-adv/types.h
-@@ -14,6 +14,7 @@
- #include <linux/average.h>
- #include <linux/bitops.h>
- #include <linux/compiler.h>
-+#include <linux/completion.h>
- #include <linux/if.h>
- #include <linux/if_ether.h>
- #include <linux/kref.h>
-@@ -1405,6 +1406,9 @@ struct batadv_tp_vars {
- 	/** @finish_work: work item for the finishing procedure */
- 	struct delayed_work finish_work;
- 
-+	/** @finished: completion signaled when a sender thread exits */
-+	struct completion finished;
-+
- 	/** @test_length: test length in milliseconds */
- 	u32 test_length;
- 
+ 		dma_addr = rmem->base;
+ 		/* Compute the number of hw descriptors according to the
+ 		 * reserved memory size and the payload buffer size
 
 
 
