@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-266108-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264146-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ky0CApSWMWpOngUAu9opvQ
-	(envelope-from <stable+bounces-266108-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:31:48 +0200
+	id BnOSMTtwMWpQjQUAu9opvQ
+	(envelope-from <stable+bounces-264146-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:48:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24639694366
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:31:47 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 408ED69165A
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:48:11 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=V8FI17ka;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266108-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266108-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=us81mIXR;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264146-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264146-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 38CE83002B72
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:31:45 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 33E2D312AC6A
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:39:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 534DA3DC86D;
-	Tue, 16 Jun 2026 18:31:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D33B144CF22;
+	Tue, 16 Jun 2026 15:39:26 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DF5E47CC7E;
-	Tue, 16 Jun 2026 18:31:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1F4F449EAB;
+	Tue, 16 Jun 2026 15:39:25 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781634704; cv=none; b=mmHURZTXjggqvS2pQsgaf+6IT1sKMpX5Xiz7kNeMdFYxBI98v6V9Wt+p3GOTKpzvhVomRyzNuCBd4xOprcHsJR7xk1n8Akc0wstPYGN/76MPG4BOEr6GqFXKlTUnA2+W65K64EpzFRsiurP5grp5IsT5jY/SAZedQGJCYTmmnBk=
+	t=1781624366; cv=none; b=dBB9VKMLU6WL2KI6CejNDE2baUnEHFsp9RWtVoTAna/LSv2SAutLsceRcgk/hlU9eStH/eDFpkv/374Zx3TQg0kefCWV4Bln28980DoAk4UNMCziXbDI5/gfr/oqXFcZ9IzPyRl2pe8c5pjNhWtKxQXYRirqPN0U/cqjvKBL92Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781634704; c=relaxed/simple;
-	bh=fH0TQkwwahMTQLXi7ddvuJm1fKZ+SxfNyY/pNzLh8oE=;
+	s=arc-20240116; t=1781624366; c=relaxed/simple;
+	bh=cpwM6MAZ3WWOekl/nJvDPbZ4tWgsMBv3zbkSLKzX4Kc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l2hG1P4GL2seiwWDRj0swD6CN9WBMciV1DVxN+tRujL07nduC9RbMN/tKvwrShU8pkE2ScrBJKDX9VZd6Eu9F7GcctTd46pjCdMEkStQDUvl5NrZlwLUQjH6gVGbfimDzVeuN9nGKWMC8sJfzFpPxOqDaHSKjwYpFGOavXvkdRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V8FI17ka; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E3181F000E9;
-	Tue, 16 Jun 2026 18:31:40 +0000 (UTC)
+	 MIME-Version; b=UxRqmeCpdNGYWW+DaNl+mK5SeXGkkAR9hit/JBiObG0nXI6Vj5Bz28XZx7wyfI+P32oTyvPWGbmqKkcZL572ay0RZHwMVR0sK3KWV5LVihymNhYfNerIIgl2crIgxZ5wTJJ8/Id3IeMJkuuHoxHss9AoHmGw6cbNvXbiMwvn0Fk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=us81mIXR; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BC151F00A3A;
+	Tue, 16 Jun 2026 15:39:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781634702;
-	bh=22T+FMyj7IoVVnFhSTcmyj6FwfOUQpS4XXLkRgOds7o=;
+	s=korg; t=1781624365;
+	bh=ISihV/U/GtU278nsJgPeCipUBFKz/E+4pHStPaAhKzA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=V8FI17ka8MIuffmrM69lvP1EEZ89688QWTcjBi/KxHjeVkKrTFcwLn323jPsnhamU
-	 O4K1vnRT9Y8J+xawd4gNQ2BzOUTmLcNsmI9w6p/MCz8MuA5sddY0r32+gZ2LLyjGmk
-	 TGaG48v8/e8F9aapeLxfMS0qyInGit65bbAr8GrI=
+	b=us81mIXRqsCBSzJZMObvHaVgIx1L/0pLJN+inqrGzGuGxaYxd8/RBJDoEunKC/yeg
+	 0G9NODnE1PULTlcQtWrhcO0tOaYYRspWxJgbQFbuQRUNn4+9fvAYoZz6KF/KtkIvr6
+	 g7xHQHXFR8jgvxex69CW2vZTROnshqcmjf5eKsD0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 315/411] spi: zynq-qspi: fix controller deregistration
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: [PATCH 7.0 322/378] thunderbolt: Clamp XDomain response data copy to allocation size
 Date: Tue, 16 Jun 2026 20:29:13 +0530
-Message-ID: <20260616145117.886684326@linuxfoundation.org>
+Message-ID: <20260616145127.189961627@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,115 +66,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266108-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:naga.sureshkumar.relli@xilinx.com,m:johan@kernel.org,m:broonie@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264146-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:mika.westerberg@linux.intel.com,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.intel.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,xilinx.com:email,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,intel.com:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 24639694366
+X-Rspamd-Queue-Id: 408ED69165A
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-[ Upstream commit c9c012706c9fa8ca6d129a9161caf92ab625a3fd ]
+commit 322e93448d908434ae5545660fcbe8f5a7a8e141 upstream.
 
-Make sure to deregister the controller before disabling it during driver
-unbind.
+tb_xdp_properties_request() derives the per-packet copy length from
+the response header without checking that it fits in the previously
+allocated data buffer.  A malicious peer can set its length field
+larger than the declared data_length, causing memcpy to write past
+the kcalloc allocation.
 
-Note that clocks were also disabled before the recent commit
-1f8fd9490e31 ("spi: zynq-qspi: Simplify clock handling with
-devm_clk_get_enabled()").
+Clamp the per-packet copy length so that the cumulative offset
+never exceeds data_len.
 
-Fixes: 67dca5e580f1 ("spi: spi-mem: Add support for Zynq QSPI controller")
-Cc: stable@vger.kernel.org	# 5.2: 8eb2fd00f65a
-Cc: stable@vger.kernel.org	# 5.2
-Cc: Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260410081757.503099-27-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-[ kept int-returning remove() with manual clk_disable_unprepare() calls and routed probe error through existing clk_dis_all cascade instead of upstream's remove_ctlr label ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: cdae7c07e3e3 ("thunderbolt: Add support for XDomain properties")
+Cc: stable@vger.kernel.org
+Assisted-by: Claude:claude-opus-4-7
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-zynq-qspi.c |   15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+ drivers/thunderbolt/xdomain.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/spi/spi-zynq-qspi.c
-+++ b/drivers/spi/spi-zynq-qspi.c
-@@ -652,7 +652,7 @@ static int zynq_qspi_probe(struct platfo
+--- a/drivers/thunderbolt/xdomain.c
++++ b/drivers/thunderbolt/xdomain.c
+@@ -393,6 +393,8 @@ static int tb_xdp_properties_request(str
+ 			}
+ 		}
  
- 	xqspi = spi_controller_get_devdata(ctlr);
- 	xqspi->dev = dev;
--	platform_set_drvdata(pdev, xqspi);
-+	platform_set_drvdata(pdev, ctlr);
- 	xqspi->regs = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(xqspi->regs)) {
- 		ret = PTR_ERR(xqspi->regs);
-@@ -722,9 +722,9 @@ static int zynq_qspi_probe(struct platfo
- 	/* QSPI controller initializations */
- 	zynq_qspi_init_hw(xqspi, ctlr->num_chipselect);
- 
--	ret = devm_spi_register_controller(&pdev->dev, ctlr);
-+	ret = spi_register_controller(ctlr);
- 	if (ret) {
--		dev_err(&pdev->dev, "spi_register_master failed\n");
-+		dev_err(&pdev->dev, "failed to register controller\n");
- 		goto clk_dis_all;
- 	}
- 
-@@ -752,13 +752,20 @@ remove_master:
-  */
- static int zynq_qspi_remove(struct platform_device *pdev)
- {
--	struct zynq_qspi *xqspi = platform_get_drvdata(pdev);
-+	struct spi_controller *ctlr = platform_get_drvdata(pdev);
-+	struct zynq_qspi *xqspi = spi_controller_get_devdata(ctlr);
-+
-+	spi_controller_get(ctlr);
-+
-+	spi_unregister_controller(ctlr);
- 
- 	zynq_qspi_write(xqspi, ZYNQ_QSPI_ENABLE_OFFSET, 0);
- 
- 	clk_disable_unprepare(xqspi->refclk);
- 	clk_disable_unprepare(xqspi->pclk);
- 
-+	spi_controller_put(ctlr);
-+
- 	return 0;
- }
- 
++		if (req.offset + len > data_len)
++			len = data_len - req.offset;
+ 		memcpy(data + req.offset, res->data, len * 4);
+ 		req.offset += len;
+ 	} while (!data_len || req.offset < data_len);
 
 
 
