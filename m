@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-265736-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264462-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id MtxgAtuOMWqamgUAu9opvQ
-	(envelope-from <stable+bounces-265736-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:58:51 +0200
+	id Ir6bMrJ3MWpUkAUAu9opvQ
+	(envelope-from <stable+bounces-264462-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:20:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E4C9693ACB
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:58:50 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B0A6691F29
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:20:02 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=bGlp9Glp;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265736-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265736-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=SUGfEW74;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264462-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264462-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 99F7B3070B09
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:58:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A322F321DA67
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:06:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBB2547A0B2;
-	Tue, 16 Jun 2026 17:58:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3393C45BD4B;
+	Tue, 16 Jun 2026 16:06:51 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD877477E51;
-	Tue, 16 Jun 2026 17:58:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07CB245349C;
+	Tue, 16 Jun 2026 16:06:49 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781632726; cv=none; b=hEyaQ+USr6v9ZCgyGAh6VFeM5twhWh7ViPIQWnfWLPVjJjTbm2O14UgLddvGr0JbtTXalcJlROWkrEu+d9wlan/gGr86ALpVFxUN1aiYnWWtL0AS100GYxpfMxstU0Sj1NCBRB7koTW3I5B3aLofhj1o7jmvrP/Cc8rZSb+pUTE=
+	t=1781626011; cv=none; b=oVKuTFKQMDZxtBGXO/JqhJjiJeXtBpagGl4zXBMiKWuxhuVaG8bHZgFilpWQguKmCi+VsbVXjVhHFVSVXaRCKHNuelYnyd9Z9RMtuTBNKyPLffbJ0SwzS/RHDi7aI2Wg3kNwetTK0EaX1dhBtskm0xKuXzCbfjcNXi7mm6iZ5j4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781632726; c=relaxed/simple;
-	bh=QX78Yz8i+NYLcpGwU1pzlfEb12JBUXhsLFGzxU1YL20=;
+	s=arc-20240116; t=1781626011; c=relaxed/simple;
+	bh=zfRPIsFnak2uaAS0aNza/aN8bAEu+64fERY/3C8S+d0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tW3kcTBr9dbmjY62M3rUEIvcgEFoGudEKaXSscXnJrYPpKDEQDU6IafkGKAJ8Yt6NyPuTnU0NXIseSuTTu5ysDJSgstP/Pacsxi+A8Jz4zbYRtti3p95Ed2FEtFoSh9jULhThmyKcdmWqAkouyk/pux/ZViJxMp7zVHIA2Au+yo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bGlp9Glp; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 955EE1F000E9;
-	Tue, 16 Jun 2026 17:58:44 +0000 (UTC)
+	 MIME-Version; b=ueAa+AoqN/QrkErrl3O/B4zMMm0d5poA93N5Ccz3BbrfOtz8msRdJNWNKfc39Jx++e5FRhjm/O+dSHz3hYwFqs4/GvsfN4D8we3POohAX6YrhRlLO8ru5SmJvR1ZBxjvFJYJ3WLmLwlYneB7I1q849SZtHHMDRnEOcaZvLSwMiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SUGfEW74; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA9EE1F000E9;
+	Tue, 16 Jun 2026 16:06:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781632725;
-	bh=B8PieQh1ALl9Z9VUyb+SbY72qmHnE7c690JE0EkQP7Q=;
+	s=korg; t=1781626009;
+	bh=8oFjORXxv0IKKLiRd43nSBwz6dQqZ8hM6voPJ4H6gW4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=bGlp9GlptQu1e4FpHOWV2iQM9z82FGKWXoBbE5v5YVcsP/cTPZFQ3opKWW8aV1P0u
-	 rhzjonHtp8YoHtuatFbaOEhtgRdsz8ZIzjgC/WzglFZJXkpf2zCYA6Hfu8PUyZ77rw
-	 evymMiwWI7pM7ABRIB9AvAEBOXfeAA3OvwCcsqNw=
+	b=SUGfEW74oOZC3K5+36sbGbD99/Vq1T/sq15WC6ifj2MknhWGy08FkSsM0QVBRbMKg
+	 0hWCBeXzYaWYQC7osjs4k/N0g5XG7xX1sG6ExqtbJoDCzUgXyqvnkcNkiOhUzG44it
+	 CLKqZatZt39Ri97ZiM+Mwv30AufDkA690rwkG9tM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
-	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 465/522] ALSA: firewire-motu: Protect register DSP event queue positions
+	Arpith Kalaginanavoor <arpithk@nvidia.com>,
+	"Christian Brauner (Amutable)" <brauner@kernel.org>
+Subject: [PATCH 6.18 216/325] fs/qnx6: fix pointer arithmetic in directory iteration
 Date: Tue, 16 Jun 2026 20:30:12 +0530
-Message-ID: <20260616145147.629077281@linuxfoundation.org>
+Message-ID: <20260616145108.924747964@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,114 +64,100 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,sakamocchi.jp,suse.de,kernel.org];
-	TAGGED_FROM(0.00)[bounces-265736-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:cassiogabrielcontato@gmail.com,m:o-takashi@sakamocchi.jp,m:tiwai@suse.de,m:sashal@kernel.org,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264462-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:arpithk@nvidia.com,m:brauner@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	TAGGED_RCPT(0.00)[stable];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sakamocchi.jp:email,msgid.link:url]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,nvidia.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8E4C9693ACB
+X-Rspamd-Queue-Id: 2B0A6691F29
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+From: Arpith Kalaginanavoor <arpithk@nvidia.com>
 
-[ Upstream commit 98fb1c1bb11e29eb609b7200a25e136e05aa4498 ]
+commit 89c4a1167f3a0a0efd2ec3e1801036d2eb65ae1a upstream.
 
-The register DSP event queue is updated under parser->lock, but
-snd_motu_register_dsp_message_parser_count_event() reads pull_pos and
-push_pos without the lock.
-snd_motu_register_dsp_message_parser_copy_event() also reads both queue
-positions before taking the lock.
+The conversion to qnx6_get_folio() in commit b2aa61556fcf
+("qnx6: Convert qnx6_get_page() to qnx6_get_folio()")
+introduced a regression in directory iteration. The pointer 'de'
+and the 'limit' address were calculated using byte offsets from
+a char pointer without scaling by the size of a QNX6 directory
+entry.
 
-Protect these accesses with parser->lock as well. This keeps the hwdep
-poll/read path consistent with the producer side and with the cached
-meter/parameter accessors.
+This causes the driver to read from incorrect memory offsets,
+leading to "invalid direntry size" errors and premature
+termination of directory scans.
 
-Fixes: 634ec0b2906e ("ALSA: firewire-motu: notify event for parameter change in register DSP model")
+Fix this by casting 'kaddr' to 'struct qnx6_dir_entry *' before
+applying the offset and last_entry(...) increments. This allows the
+compiler to correctly scale the pointer arithmetic by the 32-byte
+stride of the directory entry structure.
+
+Fixes: b2aa61556fcf ("qnx6: Convert qnx6_get_page() to qnx6_get_folio()")
 Cc: stable@vger.kernel.org
-Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
-Reviewed-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20260521-alsa-firewire-motu-event-locking-v1-1-708e1c2b5e56@gmail.com
-[ converted copy_event() from manual spin_lock_irqsave/spin_unlock_irqrestore to guard(spinlock_irqsave) ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Arpith Kalaginanavoor <arpithk@nvidia.com>
+Link: https://patch.msgid.link/20260526123858.1683035-1-arpithk@nvidia.com
+Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/firewire/motu/motu-register-dsp-message-parser.c |   14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ fs/qnx6/dir.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/sound/firewire/motu/motu-register-dsp-message-parser.c
-+++ b/sound/firewire/motu/motu-register-dsp-message-parser.c
-@@ -390,6 +390,8 @@ unsigned int snd_motu_register_dsp_messa
- {
- 	struct msg_parser *parser = motu->message_parser;
+--- a/fs/qnx6/dir.c
++++ b/fs/qnx6/dir.c
+@@ -131,16 +131,16 @@ static int qnx6_readdir(struct file *fil
+ 		struct qnx6_dir_entry *de;
+ 		struct folio *folio;
+ 		char *kaddr = qnx6_get_folio(inode, n, &folio);
+-		char *limit;
++		struct qnx6_dir_entry *limit;
  
-+	guard(spinlock_irqsave)(&parser->lock);
-+
- 	if (parser->pull_pos > parser->push_pos)
- 		return EVENT_QUEUE_SIZE - parser->pull_pos + parser->push_pos;
- 	else
-@@ -399,14 +401,14 @@ unsigned int snd_motu_register_dsp_messa
- bool snd_motu_register_dsp_message_parser_copy_event(struct snd_motu *motu, u32 *event)
- {
- 	struct msg_parser *parser = motu->message_parser;
--	unsigned int pos = parser->pull_pos;
--	unsigned long flags;
-+	unsigned int pos;
+ 		if (IS_ERR(kaddr)) {
+ 			pr_err("%s(): read failed\n", __func__);
+ 			ctx->pos = (n + 1) << PAGE_SHIFT;
+ 			return PTR_ERR(kaddr);
+ 		}
+-		de = (struct qnx6_dir_entry *)(kaddr + offset);
+-		limit = kaddr + last_entry(inode, n);
+-		for (; (char *)de < limit; de++, ctx->pos += QNX6_DIR_ENTRY_SIZE) {
++		de = (struct qnx6_dir_entry *)kaddr + offset;
++		limit = (struct qnx6_dir_entry *)kaddr + last_entry(inode, n);
++		for (; de < limit; de++, ctx->pos += QNX6_DIR_ENTRY_SIZE) {
+ 			int size = de->de_size;
+ 			u32 no_inode = fs32_to_cpu(sbi, de->de_inode);
  
--	if (pos == parser->push_pos)
--		return false;
-+	guard(spinlock_irqsave)(&parser->lock);
- 
--	spin_lock_irqsave(&parser->lock, flags);
-+	if (parser->pull_pos == parser->push_pos)
-+		return false;
- 
-+	pos = parser->pull_pos;
- 	*event = parser->event_queue[pos];
- 
- 	++pos;
-@@ -414,7 +416,5 @@ bool snd_motu_register_dsp_message_parse
- 		pos = 0;
- 	parser->pull_pos = pos;
- 
--	spin_unlock_irqrestore(&parser->lock, flags);
--
- 	return true;
- }
 
 
 
