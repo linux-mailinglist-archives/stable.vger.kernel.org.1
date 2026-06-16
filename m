@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-264437-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265748-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id SP9KBYR0MWoHjwUAu9opvQ
-	(envelope-from <stable+bounces-264437-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:06:28 +0200
+	id TRrFFzCPMWrVmgUAu9opvQ
+	(envelope-from <stable+bounces-265748-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:00:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4224691B07
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:06:27 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5F7B693B70
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:00:15 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=zY50jjDf;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264437-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-264437-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=12cNa+ru;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265748-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265748-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0F08D304CA8C
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:04:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8CBAF3016C93
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:59:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 509644611C1;
-	Tue, 16 Jun 2026 16:04:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23E6430B535;
+	Tue, 16 Jun 2026 17:59:41 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B7A8453498;
-	Tue, 16 Jun 2026 16:04:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDAF8356766;
+	Tue, 16 Jun 2026 17:59:39 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781625879; cv=none; b=Ux3EJiR2ef3p3cpH4o05ZdO3471PyWWYmGhsGAYiW2vkhaovwaLR9T6xHaKpA05UM85TV+Oqp53sheXD6LbuDQrtTs4retIfwKGbIi2qmprQFW3n9ah1q/Zukv4puiO0U0o9LF18UG924/6ch+gCccgQlk1HZkOLwDdC0zuEb64=
+	t=1781632780; cv=none; b=Ifi3Ue2Yo8twR6UGz/wDd7t5o0p68AMXYlTur6nQz5VdHN8Xd3OQMkRJQvBXaA2qfVpH+MhvfgzwJ1FO/Ep/m5GXjJVWVsw4T+6pOhSWap/NKmiuT+NVyU/PsR/FkoDnot91UT7ZTADS2q+0LmeOyZunlkMDkS6SeKNJBiZmeO8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781625879; c=relaxed/simple;
-	bh=+BXmkhU312P4O8q3jdgVRJT4cvMZPq8wqD0ILQWUuYo=;
+	s=arc-20240116; t=1781632780; c=relaxed/simple;
+	bh=nRidaJgMxDwUyNNlyRYJ0cRnWg2bjP2eO3vydgRc6bA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cX8fsn1JJ708tymN4O70rT9s5KtaDw2qeyuiJBD3vUzgE1c+yTj6/iD593VR7G4NlJ/fheBhHTRm1IQZJz0pyILh/uJj8S6VANLtsChsYcXinDwKuG43ZNuxw1XadocJHiSa0CpXkmRF7jfPG3l0SB7x5VRMHrW/EPdUh/6BUCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zY50jjDf; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D39B1F00A3A;
-	Tue, 16 Jun 2026 16:04:36 +0000 (UTC)
+	 MIME-Version; b=FqEs4yb80r4eisG/tYbpjmcx7INP5nYFrsNpSG+FD9j3+p+P1yBbXOrF40uvfIm6bT22PloPtK0jE7DJHc6uzvIoDUBcwGLOAMiC3WSZOOwrxenMsMHxIygLkj7xduualhQWLh76nQhj3owiScND3bIu+tEUlb7CHR/cs2I4wXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=12cNa+ru; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E210D1F000E9;
+	Tue, 16 Jun 2026 17:59:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781625878;
-	bh=rb78q51MqzMd0jbVapoRrB68x+bqdjQJito7Wlr14uQ=;
+	s=korg; t=1781632779;
+	bh=g3O31h3puF+sM3+RqUl4Owljatd4MDnKVLxoLv4ZSlY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=zY50jjDfX1O5hAevcjYKS2z/qqPh4Hh9l9Nv1BWTZhPCgOyIsITgBp0dXCydZYyOu
-	 BdT7N8XTTaGbsKBpAiccnHtkZNQa0W6pJ63i2PDPKPKEQ3rX8AwCuYuaPRDXp3yLIB
-	 bJpOIermlO3VR7LnMNLEC6gOZrfA2U8mgcxm6dyQ=
+	b=12cNa+ru+J27ypnoTryb+tiH3u/TrPXNcX6TbgdFlVpm3Rw0SQokpAIajRPk0b4K4
+	 v0XBIEnl7HQKdu3M+9x9CvCn1vhKdM3qMtqDBLtpyFoHzpMNAWp0n2IPohBlHCaa9F
+	 xrw2Z/mFtCLMlGQpgUeIfkOXUuKb3pGyTs+9FYxY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zeyu WANG <zeyu.thomas.wang@gmail.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.18 225/325] Input: atkbd - add DMI quirk for Lenovo Yoga Air 14 (83QK)
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 474/522] thunderbolt: property: Cap recursion depth in __tb_property_parse_dir()
 Date: Tue, 16 Jun 2026 20:30:21 +0530
-Message-ID: <20260616145109.584875857@linuxfoundation.org>
+Message-ID: <20260616145148.017637209@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,22 +73,22 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264437-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265748-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:zeyu.thomas.wang@gmail.com,m:dmitry.torokhov@gmail.com,m:zeyuthomaswang@gmail.com,m:dmitrytorokhov@gmail.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:mika.westerberg@linux.intel.com,m:sashal@kernel.org,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.intel.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -95,65 +96,122 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,intel.com:email,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C4224691B07
+X-Rspamd-Queue-Id: B5F7B693B70
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zeyu WANG <zeyu.thomas.wang@gmail.com>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-commit ad0979fe053e9f2db82da82188256ef6eb41095a upstream.
+[ Upstream commit 928abe19fbf0127003abcb1ea69cabc1c897d0ab ]
 
-The Lenovo Yoga Air 14 (83QK) laptop keyboard becomes unresponsive
-after the standard atkbd init sequence. Controlled testing on the
-actual hardware shows the F5 (ATKBD_CMD_RESET_DIS / deactivate)
-command specifically corrupts the EC state, causing zero IRQ1
-interrupts after init.
+A DIRECTORY entry's value field is used as the dir_offset for a
+recursive call into __tb_property_parse_dir() with no depth counter.
+A crafted peer that chains DIRECTORY entries into a back-reference
+loop drives the parser until the kernel stack is exhausted and the
+guard page fires.  Any untrusted XDomain peer (cable, dock, in-line
+inspector, adjacent host) that reaches the PROPERTIES_REQUEST
+control-plane exchange can trigger this without authentication.
 
-Skipping only the deactivate command (while keeping F4 ENABLE)
-resolves the issue completely: both keystroke input and CapsLock
-LED toggle work correctly. The reverse test - skipping only F4
-while keeping F5 - makes the problem worse (zero keystroke
-interrupts), confirming F5 is the sole culprit.
+Thread a depth counter through tb_property_parse() and
+__tb_property_parse_dir(), and reject blocks that exceed
+TB_PROPERTY_MAX_DEPTH = 8.  That is comfortably larger than any
+observed legitimate XDomain layout.
 
-Add a DMI quirk entry for LENOVO/83QK using the existing
-atkbd_deactivate_fixup callback, consistent with the existing
-entries for LG Electronics and HONOR FMB-P that address the
-same EC F5 deactivate issue.
+Operators who do not need XDomain host-to-host discovery can disable
+the path entirely with thunderbolt.xdomain=0 on the kernel command
+line.
 
-Signed-off-by: Zeyu WANG <zeyu.thomas.wang@gmail.com>
-Link: https://patch.msgid.link/20260602170909.14725-1-zeyu.thomas.wang@gmail.com
+Fixes: cdae7c07e3e3 ("thunderbolt: Add support for XDomain properties")
 Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Assisted-by: Claude:claude-opus-4-6
+Assisted-by: Codex:gpt-5-4
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/keyboard/atkbd.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/thunderbolt/property.c |   18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
---- a/drivers/input/keyboard/atkbd.c
-+++ b/drivers/input/keyboard/atkbd.c
-@@ -1937,6 +1937,14 @@ static const struct dmi_system_id atkbd_
- 		},
- 		.callback = atkbd_deactivate_fixup,
- 	},
-+	{
-+		/* Lenovo Yoga Air 14 (83QK) */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "83QK"),
-+		},
-+		.callback = atkbd_deactivate_fixup,
-+	},
- 	{ }
+--- a/drivers/thunderbolt/property.c
++++ b/drivers/thunderbolt/property.c
+@@ -35,10 +35,11 @@ struct tb_property_dir_entry {
  };
  
+ #define TB_PROPERTY_ROOTDIR_MAGIC	0x55584401
++#define TB_PROPERTY_MAX_DEPTH		8
+ 
+ static struct tb_property_dir *__tb_property_parse_dir(const u32 *block,
+ 	size_t block_len, unsigned int dir_offset, size_t dir_len,
+-	bool is_root);
++	bool is_root, unsigned int depth);
+ 
+ static inline void parse_dwdata(void *dst, const void *src, size_t dwords)
+ {
+@@ -99,7 +100,8 @@ tb_property_alloc(const char *key, enum
+ }
+ 
+ static struct tb_property *tb_property_parse(const u32 *block, size_t block_len,
+-					const struct tb_property_entry *entry)
++					const struct tb_property_entry *entry,
++					unsigned int depth)
+ {
+ 	char key[TB_PROPERTY_KEY_SIZE + 1];
+ 	struct tb_property *property;
+@@ -120,7 +122,7 @@ static struct tb_property *tb_property_p
+ 	switch (property->type) {
+ 	case TB_PROPERTY_TYPE_DIRECTORY:
+ 		dir = __tb_property_parse_dir(block, block_len, entry->value,
+-					      entry->length, false);
++					      entry->length, false, depth + 1);
+ 		if (!dir) {
+ 			kfree(property);
+ 			return NULL;
+@@ -165,13 +167,17 @@ static struct tb_property *tb_property_p
+ }
+ 
+ static struct tb_property_dir *__tb_property_parse_dir(const u32 *block,
+-	size_t block_len, unsigned int dir_offset, size_t dir_len, bool is_root)
++	size_t block_len, unsigned int dir_offset, size_t dir_len, bool is_root,
++	unsigned int depth)
+ {
+ 	const struct tb_property_entry *entries;
+ 	size_t i, content_len, nentries;
+ 	unsigned int content_offset;
+ 	struct tb_property_dir *dir;
+ 
++	if (depth > TB_PROPERTY_MAX_DEPTH)
++		return NULL;
++
+ 	dir = kzalloc(sizeof(*dir), GFP_KERNEL);
+ 	if (!dir)
+ 		return NULL;
+@@ -206,7 +212,7 @@ static struct tb_property_dir *__tb_prop
+ 	for (i = 0; i < nentries; i++) {
+ 		struct tb_property *property;
+ 
+-		property = tb_property_parse(block, block_len, &entries[i]);
++		property = tb_property_parse(block, block_len, &entries[i], depth);
+ 		if (!property) {
+ 			tb_property_free_dir(dir);
+ 			return NULL;
+@@ -243,7 +249,7 @@ struct tb_property_dir *tb_property_pars
+ 		return NULL;
+ 
+ 	return __tb_property_parse_dir(block, block_len, 0, rootdir->length,
+-				       true);
++				       true, 0);
+ }
+ 
+ /**
 
 
 
