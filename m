@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-265235-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264788-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id HiS/HKeGMWqqlgUAu9opvQ
-	(envelope-from <stable+bounces-265235-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:23:51 +0200
+	id jxmmHYV8MWpjkgUAu9opvQ
+	(envelope-from <stable+bounces-264788-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:40:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF40D693137
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:23:50 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B404692536
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:40:37 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=XNMl8KcU;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265235-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265235-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=erRkvarT;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264788-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264788-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BAA9530760B1
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:16:10 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 174B53024893
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:38:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E56C4657D0;
-	Tue, 16 Jun 2026 17:16:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44CD4477995;
+	Tue, 16 Jun 2026 16:38:13 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E83DC357CEC;
-	Tue, 16 Jun 2026 17:16:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1804944E045;
+	Tue, 16 Jun 2026 16:38:12 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781630169; cv=none; b=sa3pLtBxPkXY9tKZijWt51jiyIGet3WJwK6g3emoEE+LK0SEewUCDtcElGEOndaeUDqRQt0Cfv62s3Ig/QmpTbKrqrD1J0/XK/nqkrd84NwgMv33/VKIb7Z6bwpRZEV+JB6eqb5MoS/tYRPdK+URVxJmO9RH4goDAe31X9vimjo=
+	t=1781627893; cv=none; b=sReQBPZvtvw01GcTnWJZZecLPw5kSU+BCUllXF1U9pwhyircuUjDaYXv/mF3MQJhO3GaMbAVGJcN3dkCbhyOJtZYNhQbWOyPD8UBGUuan6I2brSWw+6wTg6nyVoo4Rr8+Brf/9WJ0ZLBIbrsU0+uVGBgqlFPi2jiBPNS7E28fIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781630169; c=relaxed/simple;
-	bh=7v5T40q8eFdhzQIjvuZnjVbE1Px3VXEdna78aOL9nhc=;
+	s=arc-20240116; t=1781627893; c=relaxed/simple;
+	bh=AjB3u7d67bnzwNXT4xzFlpQ+LP2cFmzNWhaSYEBpD3A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VHEoVakAPpGi0+Dff0qrP+Xuyc0Kj3Yl9+eSwR27SrbYk9kwxI1ZoS8a6eOmstOofOMwK9e4Yzd8bqIu4lA8vdRDyKIvAWrcri+KALa32YFDgtpgbVa1/kQRz3lZEqOfrW4MJwKR48UsTJ/sEVslU/zADumIQOcebwjH6Z2ekR8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XNMl8KcU; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B6F31F000E9;
-	Tue, 16 Jun 2026 17:16:06 +0000 (UTC)
+	 MIME-Version; b=UKIGTLYF/llgkA2NliGqrUF5XQLIKMMpJUQTfujOY53zI0KdF1BXCfft4akXjnnLxFSeULX3xjpYl3okCethebl2m+2bhQfy3Q8DkFyMHfE3KiOG/TX18p/WrtMXEyyZN5LNK+QhDbQ/YR0BsNognwScMWGyCeH6OO6gBvxCNqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=erRkvarT; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19AED1F000E9;
+	Tue, 16 Jun 2026 16:38:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781630167;
-	bh=RKRTEwPZst3v5WVW5cA4s1TjR8djCp4guPSmEF5flnY=;
+	s=korg; t=1781627892;
+	bh=dp/4VjO1cYdbygV0RZ2CtUzHyQj9eZ+TiTKwi3j3xJw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=XNMl8KcU/rBiLC7bO5A0f3oq30D8z7m6qb2SGlLPNc0z4K21MJQgMDd5NJ2qLo8rw
-	 eTjFxeDtE3icKFCi9HhnVgWUZnQfXw2lk0piQsuAKosp+BmXHJZYDaGQR5NkrtHICx
-	 W0yoq/4knE7TPovziAf8Q8QAidJffQ4wmrhnXhHA=
+	b=erRkvarTEHKx9pauoZ7TF9mf6L1ldeeAeYC1hP2NDdXgyngHjPSkAsAbptFoNBs3n
+	 zLWWaHr2F5omm6e5500h7ErTzZHAspM/5Rke7J/TEUY3krkOJ+BlJgyeakXI5VgJBa
+	 dkSOXFz9KmcH6oByOorrYUv4ghbfIhAMANYfhW5M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	John Garry <john.g.garry@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 424/452] scsi: target: iscsi: Fix CRC overread and double-free in iscsit_handle_text_cmd()
-Date: Tue, 16 Jun 2026 20:30:51 +0530
-Message-ID: <20260616145138.990393315@linuxfoundation.org>
+	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
+	Srinivas Kandagatla <srini@kernel.org>
+Subject: [PATCH 6.12 214/261] slimbus: qcom-ngd-ctrl: Avoid ABBA on tx_lock/ctrl->lock
+Date: Tue, 16 Jun 2026 20:30:52 +0530
+Message-ID: <20260616145054.949815886@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,163 +66,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oracle.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-265235-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:john.g.garry@oracle.com,m:martin.petersen@oracle.com,m:sashal@kernel.org,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-264788-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bjorn.andersson@oss.qualcomm.com,m:srini@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,oracle.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,qualcomm.com:email,vger.kernel.org:from_smtp,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: DF40D693137
+X-Rspamd-Queue-Id: 1B404692536
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
 
-[ Upstream commit 778c2ab142c625a8a8afa570e0f9b7873f445d99 ]
+commit 55f2ea9ff83cc27a85526b14bc9b32f96a08d6ec upstream.
 
-Two latent bugs in the Text-phase handler, both present since the
-original LIO integration in commit e48354ce078c ("iscsi-target: Add
-iSCSI fabric support for target v4.1"):
+During the SSR/PDR down notification the tx_lock is taken with the
+intent to provide synchronization with active DMA transfers.
 
-1) DataDigest CRC buffer overread (4 bytes past text_in).
+But during this period qcom_slim_ngd_down() is invoked, which ends up in
+slim_report_absent(), which takes the slim_controller lock. In multiple
+other codepaths these two locks are taken in the opposite order (i.e.
+slim_controller then tx_lock).
 
-   text_in is kzalloc()'d at ALIGN(payload_length, 4).  rx_size is then
-   incremented by ISCSI_CRC_LEN to make room for the received DataDigest
-   in the iovec, but the same (now-bumped) rx_size is passed as the
-   buffer length to iscsit_crc_buf():
+The result is a lockdep splat, and a possible deadlock:
 
-       if (conn->conn_ops->DataDigest) {
-               ...
-               rx_size += ISCSI_CRC_LEN;
-       }
-       ...
-       if (conn->conn_ops->DataDigest) {
-               data_crc = iscsit_crc_buf(text_in, rx_size, 0, NULL);
+  rprocctl/449 is trying to acquire lock:
+  ffff00009793e620 (&ctrl->lock){+.+.}-{4:4}, at: slim_report_absent (drivers/slimbus/core.c:322) slimbus
 
-   iscsit_crc_buf() walks rx_size bytes of text_in with crc32c(), so
-   when DataDigest is negotiated it reads 4 bytes past the end of the
-   text_in allocation.  KASAN reproduces this directly on the unpatched
-   mainline tree as slab-out-of-bounds in crc32c() called from the Text
-   PDU path.  The OOB bytes feed crc32c() and are then compared against
-   the initiator-supplied checksum, so the value does not flow back to
-   the attacker, but the kernel does read past the buffer on every Text
-   PDU with DataDigest=CRC32C.
+  but task is already holding lock:
+  ffff00009793fb50 (&ctrl->tx_lock){+.+.}-{4:4}, at: qcom_slim_ngd_ssr_pdr_notify (drivers/slimbus/qcom-ngd-ctrl.c:1475) slim_qcom_ngd_ctrl
 
-   Fix by passing the actual padded payload length
-   (ALIGN(payload_length, 4)) that was used for the kzalloc().
+  which lock already depends on the new lock.
 
-2) Stale cmd->text_in_ptr re-free (double-free) on ERL>0 bad DataDigest
-   drop.
+  Possible unsafe locking scenario:
 
-   On DataDigest mismatch with ErrorRecoveryLevel > 0 the handler
-   silently drops the PDU and lets the initiator plug the CmdSN gap:
+        CPU0                    CPU1
+        ----                    ----
+   lock(&ctrl->tx_lock);
+                                lock(&ctrl->lock);
+                                lock(&ctrl->tx_lock);
+   lock(&ctrl->lock);
 
-               kfree(text_in);
-               return 0;
+The assumption is that the comment refers to the desire to not call
+qcom_slim_ngd_exit_dma() while we have an ongoing DMA TX transaction.
+But any such transaction is initiated and completed within a single
+qcom_slim_ngd_xfer_msg().
 
-   cmd->text_in_ptr still points at the freed buffer.  The next Text
-   Request on the same ITT re-enters iscsit_setup_text_cmd(), which
-   unconditionally does
+Prior to calling qcom_slim_ngd_exit_dma() the slim_controller is torn
+down, all child devices are notified that the slimbus is gone and the
+child devices are removed.
 
-       kfree(cmd->text_in_ptr);
-       cmd->text_in_ptr = NULL;
+Stop taking the tx_lock in qcom_slim_ngd_ssr_pdr_notify() to avoid the
+deadlock.
 
-   freeing the same pointer a second time.  Session teardown via
-   iscsit_release_cmd() has the same shape and hits the same double-free
-   if the connection is dropped before a second Text Request arrives.
-
-   On an unmodified mainline tree the bug-1 CRC overread fires first on
-   the initial valid Text Request and perturbs the subsequent state, so
-   #4 was isolated by building a kernel with only the bug-1 hunk of this
-   patch applied plus temporary printk() observability around the three
-   relevant kfree() sites.  The observability prints are not part of
-   this patch.  On that build, a three-PDU Text Request sequence after
-   login produces two back-to-back splats:
-
-       BUG: KASAN: double-free in iscsit_setup_text_cmd+0x??
-       BUG: KASAN: double-free in iscsit_release_cmd+0x??
-
-   showing the same pointer freed in the ERL>0 drop path and again in
-   iscsit_setup_text_cmd() (next Text Request on the same ITT) and once
-   more in iscsit_release_cmd() (session teardown).  On distro kernels
-   with CONFIG_SLAB_FREELIST_HARDENED=y (default) the double-free
-   becomes a remote kernel BUG(); on non-hardened kernels it corrupts
-   the slab freelist.
-
-   Fix by clearing cmd->text_in_ptr after the kfree() in the ERL>0 drop
-   path.  With both hunks applied #4 is directly observable on the stock
-   tree without observability printks; fixing bug-1 alone would mask #4
-   less, not more, so the hunks are submitted together.
-
-Both fixes are one-liners.  The Text PDU state machine is unchanged and
-the wire protocol is unaffected.
-
-Fixes: e48354ce078c ("iscsi-target: Add iSCSI fabric support for target v4.1")
+Fixes: a899d324863a ("slimbus: qcom-ngd-ctrl: add Sub System Restart support")
 Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-7
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Tested-by: John Garry <john.g.garry@oracle.com>
-Reviewed-by: John Garry <john.g.garry@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
+Link: https://patch.msgid.link/20260530204421.116824-9-srini@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/target/iscsi/iscsi_target.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/slimbus/qcom-ngd-ctrl.c |    3 ---
+ 1 file changed, 3 deletions(-)
 
---- a/drivers/target/iscsi/iscsi_target.c
-+++ b/drivers/target/iscsi/iscsi_target.c
-@@ -2335,8 +2335,9 @@ iscsit_handle_text_cmd(struct iscsit_con
- 
- 		if (conn->conn_ops->DataDigest) {
- 			iscsit_do_crypto_hash_buf(conn->conn_rx_hash,
--						  text_in, rx_size, 0, NULL,
--						  &data_crc);
-+						  text_in,
-+						  ALIGN(payload_length, 4),
-+						  0, NULL, &data_crc);
- 
- 			if (checksum != data_crc) {
- 				pr_err("Text data CRC32C DataDigest"
-@@ -2356,6 +2357,7 @@ iscsit_handle_text_cmd(struct iscsit_con
- 					" Command CmdSN: 0x%08x due to"
- 					" DataCRC error.\n", hdr->cmdsn);
- 					kfree(text_in);
-+					cmd->text_in_ptr = NULL;
- 					return 0;
- 				}
- 			} else {
+--- a/drivers/slimbus/qcom-ngd-ctrl.c
++++ b/drivers/slimbus/qcom-ngd-ctrl.c
+@@ -1471,15 +1471,12 @@ static int qcom_slim_ngd_ssr_pdr_notify(
+ 	switch (action) {
+ 	case QCOM_SSR_BEFORE_SHUTDOWN:
+ 	case SERVREG_SERVICE_STATE_DOWN:
+-		/* Make sure the last dma xfer is finished */
+-		mutex_lock(&ctrl->tx_lock);
+ 		if (ctrl->state != QCOM_SLIM_NGD_CTRL_DOWN) {
+ 			pm_runtime_get_noresume(ctrl->ctrl.dev);
+ 			ctrl->state = QCOM_SLIM_NGD_CTRL_DOWN;
+ 			qcom_slim_ngd_down(ctrl);
+ 			qcom_slim_ngd_exit_dma(ctrl);
+ 		}
+-		mutex_unlock(&ctrl->tx_lock);
+ 		break;
+ 	case QCOM_SSR_AFTER_POWERUP:
+ 	case SERVREG_SERVICE_STATE_UP:
 
 
 
