@@ -1,62 +1,63 @@
-Return-Path: <stable+bounces-265625-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264304-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id aqs3A5aMMWpimQUAu9opvQ
-	(envelope-from <stable+bounces-265625-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:49:10 +0200
+	id EpH9HzZ1MWpKjwUAu9opvQ
+	(envelope-from <stable+bounces-264304-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:09:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96B86693813
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:49:09 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0465B691BDB
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:09:26 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ZzeFNGGL;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265625-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265625-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=oF96E9Pl;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264304-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264304-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0D3553031307
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:49:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E44FB30C82EC
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:54:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E302F3D669A;
-	Tue, 16 Jun 2026 17:49:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8F5644CF44;
+	Tue, 16 Jun 2026 15:54:13 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2A96169AD2;
-	Tue, 16 Jun 2026 17:49:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B96D044CAE6;
+	Tue, 16 Jun 2026 15:54:12 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781632145; cv=none; b=NUnHBioVw0nHmM8wxwhtphNUPOdsFzBkUfQsLj2PXAQzl4FNoLIWdPs9Wqi0MiJFQi6XIemKXdNR+h7QqHbT59IFj1JKQKcT47X65aS2Itfrib6gB07n37XSCNOy5GbSe6bD45x+DyVbelYtHWrcxVUfguxPa8xtupmbd7K3D4s=
+	t=1781625253; cv=none; b=l8XTEnS2ieqm745/l03wB+N2STlgO1aZnafbSmgfSPu50rIJqhe4/F+6zmTei8ZQesMXmBL9F2g0cUX5mQN0dONK0IQcHY7QpiCm/viVJERfl/7+vlrRz5ZI+G+PBLFyMsyWc3rCtljT6EoBavvhxtVrSAuGPjzWG/3Nuwdg8wM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781632145; c=relaxed/simple;
-	bh=IhRsPUVwviKF+5p8jNedPIGt1yGTukTFnRqz0WUxC/A=;
+	s=arc-20240116; t=1781625253; c=relaxed/simple;
+	bh=QeQvugYOFZqrYB6+jUSGdnwYPOQytznt9pFVKmY1Hdk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dxs7lzxmP5qU8Rt8vs6qh3vLpXVFyCJDi7l00O7gGMajYK2hlqzPQjQpMcmuifjndYJpbgQxQct7h5/TEonHJ0fsc5l1m9wepLKQzQxY9dIToS22V+CmLDlYlcOVvxoSMf9PiHXe6nwldlZC6K3GBuUc+zAO9N6P0nJPKEzqR84=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZzeFNGGL; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88E9E1F000E9;
-	Tue, 16 Jun 2026 17:49:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=evA1oSnlUV7v6CFAnROoERXdRPvfeDE8+Vsrs8/6Ieqr42DiCP43G9HJN70G8RPCyl9AZbVARZxmcGddZRfVBM6PjlJg1GRANh8UsaaEQJyPDDcpfie16jQvkfMQ0ec1NSEMdGsNq6g7OBQmGjKSTehd4hAdBQLZkQjtedbLOPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oF96E9Pl; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAC5E1F000E9;
+	Tue, 16 Jun 2026 15:54:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781632144;
-	bh=rOirTYkx8r0HGiVFykdHjI1fkf9SEmeNqL06dwH4S/I=;
+	s=korg; t=1781625252;
+	bh=0I+hgkfjNdD5Svl1zGzfPf+1CEoTBoFWSZa8tS199Mw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ZzeFNGGLO3EDw6LGPuEFImmXj/hscTkBpYkgBUbKW1j6dyrSq2iBNhKTeWwO+SRHJ
-	 bvBAT6V4Duz/wn9E+6KcNXQJpBKdEcRltcIf5emy5J9VEUNgjuKzMTZx/wxGHrPQR2
-	 9866OGvWTLgEV4jA0t0EhPFu9vfV8DzHWZ6TyJOg=
+	b=oF96E9PlcpBkubCg6HIKzqq+fZ0yg4Wdi6L5oomX2qbicW/noXiI1vvsaGzEYsS19
+	 KImEc9GninIzdGvo9XhYpE5+1r7mGH95cw69HQZBxdicaarzOvZF52nhhHBuvUrL2a
+	 3EYqDYEKi2rj6tRDl4L+TlsucwunV7B/O2aMr3cw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Saravana Kannan <saravanak@kernel.org>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
+	Shay Drory <shayd@nvidia.com>,
+	Fushuai Wang <wangfushuai@baidu.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 355/522] spi: fix resource leaks on device setup failure
+Subject: [PATCH 6.18 106/325] net/mlx5: Use effective affinity mask for IRQ selection
 Date: Tue, 16 Jun 2026 20:28:22 +0530
-Message-ID: <20260616145142.402155913@linuxfoundation.org>
+Message-ID: <20260616145102.965530941@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,173 +67,110 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265625-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264304-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:saravanak@kernel.org,m:johan@kernel.org,m:broonie@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:shayd@nvidia.com,m:wangfushuai@baidu.com,m:tariqt@nvidia.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,msgid.link:url]
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,vger.kernel.org:from_smtp,nvidia.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 96B86693813
+X-Rspamd-Queue-Id: 0465B691BDB
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Fushuai Wang <wangfushuai@baidu.com>
 
-[ Upstream commit db357034f7e0cf23f233f414a8508312dfe8fbbe ]
+[ Upstream commit a7767290e77ca2e926b49f8bfa29daa12262c612 ]
 
-Make sure to call controller cleanup() if spi_setup() fails while
-registering a device to avoid leaking any resources allocated by
-setup().
+When a sf is created after a CPU has been taken offline, the IRQ pool may
+contain IRQs with affinity masks that include the offline CPU. Since only
+online CPUs should be considered for IRQ placement, cpumask_subset() check
+would fail because the iter_mask contains offline CPUs that are not present
+in req_mask, causing sf creation to fail.
 
-Fixes: c7299fea6769 ("spi: Fix spi device unregister flow")
-Cc: stable@vger.kernel.org	# 5.13
-Cc: Saravana Kannan <saravanak@kernel.org>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260410154907.129248-2-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-[ adjusted context ]
+This is an example:
+  1. When mlx5 driver loads, it initializes the IRQ pools.
+     For sf_ctrl_pool with ≤64 sf:
+     - xa_num_irqs = {N, N} (There is only one slot)
+  2. When the first SF is created:
+     - The ctrl IRQ is allocated with mask=cpu_online_mask={0-191}
+  2. We take CPU 20 offline
+  3. Existing ctl irq still have mask={0-191}
+  4. Create a new SF:
+     - req_mask={0-19,21-191}
+     - iter_mask={0-191}
+     - {0-191} is NOT a subset of {0-19,21-191}
+     - least_loaded_irq=NULL
+  5. Try to allocate a new irq via irq_pool_request_irq()
+  6. xa_alloc() fails because the pool is full(There is only one slot)
+  7. sf creation fails with error
+
+Use irq_get_effective_affinity_mask() instead, which returns the IRQ's
+actual effective affinity that already excludes offline CPUs.
+
+Fixes: 061f5b23588a ("net/mlx5: SF, Use all available cpu for setting cpu affinity")
+Suggested-by: Shay Drory <shayd@nvidia.com>
+Signed-off-by: Fushuai Wang <wangfushuai@baidu.com>
+Reviewed-by: Shay Drory <shayd@nvidia.com>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20260605102112.91772-1-fushuai.wang@linux.dev
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi.c |   61 ++++++++++++++++++++++++++++++++----------------------
- 1 file changed, 37 insertions(+), 24 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/irq_affinity.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -42,6 +42,8 @@ EXPORT_TRACEPOINT_SYMBOL(spi_transfer_st
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/irq_affinity.c b/drivers/net/ethernet/mellanox/mlx5/core/irq_affinity.c
+index 14d339eceb92d5..cc63b091b70e8a 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/irq_affinity.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/irq_affinity.c
+@@ -105,9 +105,12 @@ irq_pool_find_least_loaded(struct mlx5_irq_pool *pool, const struct cpumask *req
  
- #include "internals.h"
+ 	lockdep_assert_held(&pool->lock);
+ 	xa_for_each_range(&pool->irqs, index, iter, start, end) {
+-		struct cpumask *iter_mask = mlx5_irq_get_affinity_mask(iter);
+ 		int iter_refcount = mlx5_irq_read_locked(iter);
++		const struct cpumask *iter_mask;
  
-+static int __spi_setup(struct spi_device *spi, bool initial_setup);
-+
- static DEFINE_IDR(spi_master_idr);
- 
- static void spidev_release(struct device *dev)
-@@ -666,7 +668,7 @@ static int __spi_add_device(struct spi_d
- 	 * normally rely on the device being setup.  Devices
- 	 * using SPI_CS_HIGH can't coexist well otherwise...
- 	 */
--	status = spi_setup(spi);
-+	status = __spi_setup(spi, true);
- 	if (status < 0) {
- 		dev_err(dev, "can't setup %s, status %d\n",
- 				dev_name(&spi->dev), status);
-@@ -3688,27 +3690,7 @@ static int spi_set_cs_timing(struct spi_
- 	return status;
- }
- 
--/**
-- * spi_setup - setup SPI mode and clock rate
-- * @spi: the device whose settings are being modified
-- * Context: can sleep, and no requests are queued to the device
-- *
-- * SPI protocol drivers may need to update the transfer mode if the
-- * device doesn't work with its default.  They may likewise need
-- * to update clock rates or word sizes from initial values.  This function
-- * changes those settings, and must be called from a context that can sleep.
-- * Except for SPI_CS_HIGH, which takes effect immediately, the changes take
-- * effect the next time the device is selected and data is transferred to
-- * or from it.  When this function returns, the spi device is deselected.
-- *
-- * Note that this call will fail if the protocol driver specifies an option
-- * that the underlying controller or its driver does not support.  For
-- * example, not all hardware supports wire transfers using nine bit words,
-- * LSB-first wire encoding, or active-high chipselects.
-- *
-- * Return: zero on success, else a negative error code.
-- */
--int spi_setup(struct spi_device *spi)
-+static int __spi_setup(struct spi_device *spi, bool initial_setup)
- {
- 	unsigned	bad_bits, ugly_bits;
- 	int		status = 0;
-@@ -3787,7 +3769,7 @@ int spi_setup(struct spi_device *spi)
- 	status = spi_set_cs_timing(spi);
- 	if (status) {
- 		mutex_unlock(&spi->controller->io_mutex);
--		return status;
-+		goto err_cleanup;
- 	}
- 
- 	if (spi->controller->auto_runtime_pm && spi->controller->set_cs) {
-@@ -3796,7 +3778,7 @@ int spi_setup(struct spi_device *spi)
- 			mutex_unlock(&spi->controller->io_mutex);
- 			dev_err(&spi->controller->dev, "Failed to power device: %d\n",
- 				status);
--			return status;
-+			goto err_cleanup;
- 		}
- 
- 		/*
-@@ -3833,6 +3815,37 @@ int spi_setup(struct spi_device *spi)
- 			status);
- 
- 	return status;
-+
-+err_cleanup:
-+	if (initial_setup)
-+		spi_cleanup(spi);
-+
-+	return status;
-+}
-+
-+/**
-+ * spi_setup - setup SPI mode and clock rate
-+ * @spi: the device whose settings are being modified
-+ * Context: can sleep, and no requests are queued to the device
-+ *
-+ * SPI protocol drivers may need to update the transfer mode if the
-+ * device doesn't work with its default.  They may likewise need
-+ * to update clock rates or word sizes from initial values.  This function
-+ * changes those settings, and must be called from a context that can sleep.
-+ * Except for SPI_CS_HIGH, which takes effect immediately, the changes take
-+ * effect the next time the device is selected and data is transferred to
-+ * or from it.  When this function returns, the SPI device is deselected.
-+ *
-+ * Note that this call will fail if the protocol driver specifies an option
-+ * that the underlying controller or its driver does not support.  For
-+ * example, not all hardware supports wire transfers using nine bit words,
-+ * LSB-first wire encoding, or active-high chipselects.
-+ *
-+ * Return: zero on success, else a negative error code.
-+ */
-+int spi_setup(struct spi_device *spi)
-+{
-+	return __spi_setup(spi, false);
- }
- EXPORT_SYMBOL_GPL(spi_setup);
- 
++		iter_mask = irq_get_effective_affinity_mask(mlx5_irq_get_irq(iter));
++		if (!iter_mask)
++			continue;
+ 		if (!cpumask_subset(iter_mask, req_mask))
+ 			/* skip IRQs with a mask which is not subset of req_mask */
+ 			continue;
+-- 
+2.53.0
+
 
 
 
