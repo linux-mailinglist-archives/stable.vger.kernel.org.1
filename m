@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-263980-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266279-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id O8xKKwpsMWq7iwUAu9opvQ
-	(envelope-from <stable+bounces-263980-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:30:18 +0200
+	id ICufNgyaMWrmnwUAu9opvQ
+	(envelope-from <stable+bounces-266279-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:46:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26264691158
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:30:18 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50BFD694751
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:46:36 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=t2dcoAoQ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263980-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263980-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=2lrA0NWj;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266279-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-266279-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D31B8305748F
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:25:24 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 56939306AD0B
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:46:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5A3F44BC97;
-	Tue, 16 Jun 2026 15:25:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEEA83ACF15;
+	Tue, 16 Jun 2026 18:46:34 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A30343E9F5;
-	Tue, 16 Jun 2026 15:25:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E0663AE1A2;
+	Tue, 16 Jun 2026 18:46:33 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781623503; cv=none; b=BQj9WZPnKKwhSTqbmCpNbMtmYV1uW7ELThetWAxu30Zbcr3kqcmiJ+zNAKUmzPRjs3v/ZHD70Q9RQZ8+OiUDcsK4xq+LW0vzBtIkck8F4hpVcnaRDjYgmx1QhiKgIPXzlGok6JtIrkUrG2AuETDihVlWw1YKg3EFSLxK8SO/OQ0=
+	t=1781635594; cv=none; b=Irpy070Acabsp3OzMOs+oYpW6BJYRjI6dzwFPBCrYdMGx7JofCiOa6b8tTzfFWTNiozC2Y10Uisf59Kugmz60H+BiE/7x3cYNRTHanZGtfW44ItkPPGl1yS2kVCEOXp+RthV4taYe9tMaulcoJ84BdKLM384zBdu4Zu2QzbirWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781623503; c=relaxed/simple;
-	bh=FyzYTMN0ViQXz0SBlxENVdogUfRBIfuy1uWbBVKzJ4M=;
+	s=arc-20240116; t=1781635594; c=relaxed/simple;
+	bh=RGo9jXh3UyWWvSbTRpoPCYXhRPMizaHxo/1QSGnMqGs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BvbID9ucAto5NWyoUgmwua/z76zNGwRSzDhsyuhErhuUggAJFQxxdWrMR3rrXUgtAokxwzTo2CBEQDz4wU092xETqQ0TGpKMkGG+iQcPsF3MSfrb0SkAZlreDid6VUmgZ6t07pTSFTxjrXnLOuOuMTMvTG3MUrzom34EyyjNL3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t2dcoAoQ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 244251F000E9;
-	Tue, 16 Jun 2026 15:25:00 +0000 (UTC)
+	 MIME-Version; b=AZwUuD4mC+VVqnUTktUDdnEDqM3OK94JjwJEDwnbCT0To5opci9mdm81xi2nVcv720j6s2vZlr+JcIvssHscZC+HJd61dkjq4jy3HCT8NBlSuuycRLvEz1JCUmtZ8gZR/2nyjfS1DPw+pnw6NGgYHRtw1Adm48BnnBLi0cLc2wM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2lrA0NWj; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 834861F000E9;
+	Tue, 16 Jun 2026 18:46:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781623502;
-	bh=0+AhksaUa1y/xr5bv/gQtVwhYdX0/xABSm/CrUhvPX8=;
+	s=korg; t=1781635593;
+	bh=NQeG+mrgm4OknUyPVIaZ3ZhYC2nWzhmET19jDcWMzvg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=t2dcoAoQHExxFdiCroimelGTVqJRaciNpAnNUgWSm4h/ykMmQeZFiz2yqkbjIErtG
-	 SfT61j1Y95KHrXeXJHK7V52TMDZvLX/EnXsoLULStfP7st56xUDajFM8rA0Jgy/lID
-	 FW3DhsYSWjIRx3FoVqdGe7JASZvzqNm932J26Xbw=
+	b=2lrA0NWjhTEnqHOxlggwSfSjX88X3CcAtdvDVibHa2bgOZazTcaKr+Xpf5fnXMB5/
+	 uyGsfjFCxNU0FL6r/JG5D22u28GLdnoVI+buUWxlMKvh4S16ioz/pwOUBY9uo5Uf89
+	 pCUKnlflc2QDNTOqsSbH8zTh+gzP5vaeoPxwcI8U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kyle Zeng <kylebot@openai.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 143/378] netfilter: x_tables: avoid leaking percpu counter pointers
+	Simon Horman <horms@kernel.org>,
+	Ashutosh Desai <ashutoshdesai993@gmail.com>,
+	David Heidelberg <david@ixit.cz>
+Subject: [PATCH 5.10 078/342] nfc: hci: fix out-of-bounds read in HCP header parsing
 Date: Tue, 16 Jun 2026 20:26:14 +0530
-Message-ID: <20260616145117.796556251@linuxfoundation.org>
+Message-ID: <20260616145051.878161808@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,178 +72,125 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-263980-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-266279-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:horms@kernel.org,m:ashutoshdesai993@gmail.com,m:david@ixit.cz,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kylebot@openai.com,m:pablo@netfilter.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,ixit.cz];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,openai.com:email,netfilter.org:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,ixit.cz:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 26264691158
+X-Rspamd-Queue-Id: 50BFD694751
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kyle Zeng <kylebot@openai.com>
+From: Ashutosh Desai <ashutoshdesai993@gmail.com>
 
-[ Upstream commit f7f2fbb0e893a0238dc464f8d8c0f5609bec584f ]
+commit f040e590c035bfd9553fe79ee9585caf1b14d67b upstream.
 
-The native and compat get-entries paths copy the fixed rule entry header
-from the kernelized rule blob to userspace before overwriting the entry's
-counter fields with a sanitized counter snapshot.
+Both nfc_hci_recv_from_llc() and nci_hci_data_received_cb() read
+packet->header from skb->data at function entry without first checking
+that the buffer holds at least one byte. A malicious NFC peer can send
+a 0-byte HCP frame that passes through the SHDLC layer and reaches
+these functions, causing an out-of-bounds heap read of packet->header.
+The same 0-byte frame, if queued as a non-final fragment, also causes
+the reassembly loop to underflow msg_len to UINT_MAX, triggering
+skb_over_panic() when the reassembled skb is written.
 
-On SMP kernels, entry->counters.pcnt contains the percpu allocation
-address used by x_tables rule counters. A caller can provide a userspace
-buffer that faults during the initial fixed-header copy after pcnt has
-been copied but before the later sanitized counter copy runs. The syscall
-then returns -EFAULT while leaving the raw percpu pointer in userspace.
+Fix this by adding a pskb_may_pull() check at the entry of each
+function before packet->header is first accessed. The existing
+pskb_may_pull() checks before the reassembled hcp_skb is cast to
+struct hcp_packet remain in place to guard the 2-byte HCP message
+header.
 
-Copy only the fixed entry prefix before counters from the kernelized rule
-blob, then copy the sanitized counter snapshot into the counter field.
-Apply this ordering to the IPv4, IPv6, and ARP native and compat
-get-entries implementations so a fault cannot expose the internal percpu
-counter pointer.
-
-Fixes: 71ae0dff02d7 ("netfilter: xtables: use percpu rule counters")
-Signed-off-by: Kyle Zeng <kylebot@openai.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 8b8d2e08bf0d ("NFC: HCI support")
+Fixes: 11f54f228643 ("NFC: nci: Add HCI over NCI protocol support")
+Cc: stable@vger.kernel.org
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Ashutosh Desai <ashutoshdesai993@gmail.com>
+Link: https://patch.msgid.link/20260505170712.96560-1-ashutoshdesai993@gmail.com
+Signed-off-by: David Heidelberg <david@ixit.cz>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/netfilter/arp_tables.c | 15 ++++++---------
- net/ipv4/netfilter/ip_tables.c  | 15 ++++++---------
- net/ipv6/netfilter/ip6_tables.c | 15 ++++++---------
- 3 files changed, 18 insertions(+), 27 deletions(-)
+ net/nfc/hci/core.c |   10 ++++++++++
+ net/nfc/nci/hci.c  |   10 ++++++++++
+ 2 files changed, 20 insertions(+)
 
-diff --git a/net/ipv4/netfilter/arp_tables.c b/net/ipv4/netfilter/arp_tables.c
-index ad2259678c7854..0ea513bf77fb6a 100644
---- a/net/ipv4/netfilter/arp_tables.c
-+++ b/net/ipv4/netfilter/arp_tables.c
-@@ -702,14 +702,12 @@ static int copy_entries_to_user(unsigned int total_size,
- 		const struct xt_entry_target *t;
+--- a/net/nfc/hci/core.c
++++ b/net/nfc/hci/core.c
+@@ -861,6 +861,11 @@ static void nfc_hci_recv_from_llc(struct
+ 	struct sk_buff *frag_skb;
+ 	int msg_len;
  
- 		e = loc_cpu_entry + off;
--		if (copy_to_user(userptr + off, e, sizeof(*e))) {
--			ret = -EFAULT;
--			goto free_counters;
--		}
--		if (copy_to_user(userptr + off
-+		if (copy_to_user(userptr + off, e,
-+				 offsetof(struct arpt_entry, counters)) ||
-+		    copy_to_user(userptr + off
- 				 + offsetof(struct arpt_entry, counters),
- 				 &counters[num],
--				 sizeof(counters[num])) != 0) {
-+				 sizeof(counters[num]))) {
- 			ret = -EFAULT;
- 			goto free_counters;
- 		}
-@@ -1327,9 +1325,8 @@ static int compat_copy_entry_to_user(struct arpt_entry *e, void __user **dstptr,
++	if (!pskb_may_pull(skb, NFC_HCI_HCP_PACKET_HEADER_LEN)) {
++		kfree_skb(skb);
++		return;
++	}
++
+ 	packet = (struct hcp_packet *)skb->data;
+ 	if ((packet->header & ~NFC_HCI_FRAGMENT) == 0) {
+ 		skb_queue_tail(&hdev->rx_hcp_frags, skb);
+@@ -904,6 +909,11 @@ static void nfc_hci_recv_from_llc(struct
+ 	 * unblock waiting cmd context. Otherwise, enqueue to dispatch
+ 	 * in separate context where handler can also execute command.
+ 	 */
++	if (!pskb_may_pull(hcp_skb, NFC_HCI_HCP_HEADER_LEN)) {
++		kfree_skb(hcp_skb);
++		return;
++	}
++
+ 	packet = (struct hcp_packet *)hcp_skb->data;
+ 	type = HCP_MSG_GET_TYPE(packet->message.header);
+ 	if (type == NFC_HCI_HCP_RESPONSE) {
+--- a/net/nfc/nci/hci.c
++++ b/net/nfc/nci/hci.c
+@@ -444,6 +444,11 @@ void nci_hci_data_received_cb(void *cont
+ 		return;
+ 	}
  
- 	origsize = *size;
- 	ce = *dstptr;
--	if (copy_to_user(ce, e, sizeof(struct arpt_entry)) != 0 ||
--	    copy_to_user(&ce->counters, &counters[i],
--	    sizeof(counters[i])) != 0)
-+	if (copy_to_user(ce, e, offsetof(struct compat_arpt_entry, counters)) ||
-+	    copy_to_user(&ce->counters, &counters[i], sizeof(counters[i])))
- 		return -EFAULT;
- 
- 	*dstptr += sizeof(struct compat_arpt_entry);
-diff --git a/net/ipv4/netfilter/ip_tables.c b/net/ipv4/netfilter/ip_tables.c
-index 5cbdb0815857f4..ca8ff0ae6cdb9f 100644
---- a/net/ipv4/netfilter/ip_tables.c
-+++ b/net/ipv4/netfilter/ip_tables.c
-@@ -832,14 +832,12 @@ copy_entries_to_user(unsigned int total_size,
- 		const struct xt_entry_target *t;
- 
- 		e = loc_cpu_entry + off;
--		if (copy_to_user(userptr + off, e, sizeof(*e))) {
--			ret = -EFAULT;
--			goto free_counters;
--		}
--		if (copy_to_user(userptr + off
-+		if (copy_to_user(userptr + off, e,
-+				 offsetof(struct ipt_entry, counters)) ||
-+		    copy_to_user(userptr + off
- 				 + offsetof(struct ipt_entry, counters),
- 				 &counters[num],
--				 sizeof(counters[num])) != 0) {
-+				 sizeof(counters[num]))) {
- 			ret = -EFAULT;
- 			goto free_counters;
- 		}
-@@ -1228,9 +1226,8 @@ compat_copy_entry_to_user(struct ipt_entry *e, void __user **dstptr,
- 
- 	origsize = *size;
- 	ce = *dstptr;
--	if (copy_to_user(ce, e, sizeof(struct ipt_entry)) != 0 ||
--	    copy_to_user(&ce->counters, &counters[i],
--	    sizeof(counters[i])) != 0)
-+	if (copy_to_user(ce, e, offsetof(struct compat_ipt_entry, counters)) ||
-+	    copy_to_user(&ce->counters, &counters[i], sizeof(counters[i])))
- 		return -EFAULT;
- 
- 	*dstptr += sizeof(struct compat_ipt_entry);
-diff --git a/net/ipv6/netfilter/ip6_tables.c b/net/ipv6/netfilter/ip6_tables.c
-index 9d9c3763f2f5e9..e34d5ba1460ca7 100644
---- a/net/ipv6/netfilter/ip6_tables.c
-+++ b/net/ipv6/netfilter/ip6_tables.c
-@@ -848,14 +848,12 @@ copy_entries_to_user(unsigned int total_size,
- 		const struct xt_entry_target *t;
- 
- 		e = loc_cpu_entry + off;
--		if (copy_to_user(userptr + off, e, sizeof(*e))) {
--			ret = -EFAULT;
--			goto free_counters;
--		}
--		if (copy_to_user(userptr + off
-+		if (copy_to_user(userptr + off, e,
-+				 offsetof(struct ip6t_entry, counters)) ||
-+		    copy_to_user(userptr + off
- 				 + offsetof(struct ip6t_entry, counters),
- 				 &counters[num],
--				 sizeof(counters[num])) != 0) {
-+				 sizeof(counters[num]))) {
- 			ret = -EFAULT;
- 			goto free_counters;
- 		}
-@@ -1244,9 +1242,8 @@ compat_copy_entry_to_user(struct ip6t_entry *e, void __user **dstptr,
- 
- 	origsize = *size;
- 	ce = *dstptr;
--	if (copy_to_user(ce, e, sizeof(struct ip6t_entry)) != 0 ||
--	    copy_to_user(&ce->counters, &counters[i],
--	    sizeof(counters[i])) != 0)
-+	if (copy_to_user(ce, e, offsetof(struct compat_ip6t_entry, counters)) ||
-+	    copy_to_user(&ce->counters, &counters[i], sizeof(counters[i])))
- 		return -EFAULT;
- 
- 	*dstptr += sizeof(struct compat_ip6t_entry);
--- 
-2.53.0
-
++	if (!pskb_may_pull(skb, NCI_HCI_HCP_PACKET_HEADER_LEN)) {
++		kfree_skb(skb);
++		return;
++	}
++
+ 	packet = (struct nci_hcp_packet *)skb->data;
+ 	if ((packet->header & ~NCI_HCI_FRAGMENT) == 0) {
+ 		skb_queue_tail(&ndev->hci_dev->rx_hcp_frags, skb);
+@@ -487,6 +492,11 @@ void nci_hci_data_received_cb(void *cont
+ 	 * unblock waiting cmd context. Otherwise, enqueue to dispatch
+ 	 * in separate context where handler can also execute command.
+ 	 */
++	if (!pskb_may_pull(hcp_skb, NCI_HCI_HCP_HEADER_LEN)) {
++		kfree_skb(hcp_skb);
++		return;
++	}
++
+ 	packet = (struct nci_hcp_packet *)hcp_skb->data;
+ 	type = NCI_HCP_MSG_GET_TYPE(packet->message.header);
+ 	if (type == NCI_HCI_HCP_RESPONSE) {
 
 
 
