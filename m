@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-265220-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264421-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Pk9pGlWGMWqClgUAu9opvQ
-	(envelope-from <stable+bounces-265220-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:22:29 +0200
+	id d65mKNpzMWrXjgUAu9opvQ
+	(envelope-from <stable+bounces-264421-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:03:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D31FA6930C3
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:22:28 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DB07691A63
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:03:38 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=oEl7b2Kh;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265220-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265220-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=roO1RkdX;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264421-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-264421-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B9E2A31AC26A
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:14:53 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3D45F3028DFF
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:03:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0CE53BFE5B;
-	Tue, 16 Jun 2026 17:14:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6653A451060;
+	Tue, 16 Jun 2026 16:03:15 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BDC832B138;
-	Tue, 16 Jun 2026 17:14:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3980844DB64;
+	Tue, 16 Jun 2026 16:03:13 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781630092; cv=none; b=uUPPKiZlmSh+Q0TgBR2FJWu90c2yVhMpk0NzznkL0dp5cwjOq0gnTLs3F4n7d7+8Gn6PpF1nPAmh/+fAlEQFxY5BI3X2J65cHToB8y9u8eznup4LFXbOnVMsHfZr2wjkgCNUrnSHWR3y0yr/WzAxdPxPRPeed3RdZhH9MLbw70M=
+	t=1781625795; cv=none; b=LbZy4xEHFlL1qW05K5IGg/axTqZnkrKtmy44JTBDeFw10VGWkdyIhZctBJKpqPP0GKhAEB2aZav4ULHUB+Ye3BDHYm7nD4HqQ/mLuVIkyo4a3QcQh6+TBnE4QwEtsTQq8Q/UFRSkLvz18BcsXLOeO4KtBcZbfY5luckVmMZMm8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781630092; c=relaxed/simple;
-	bh=Xf6c8Pr1YbTuk6wyyCuzkmLQy8ufxuwduOTHF0JQHdo=;
+	s=arc-20240116; t=1781625795; c=relaxed/simple;
+	bh=FYHeUcGVAIC6O7EKDq9WaYr/R1XGDqNWm2KQCIOAdJA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FoV8NdUIoRxMxsEKyK5PuuWJuzV7X1AJYL76/nT833aD2LeZD9/HBxrsot1+Z3mHgEJ3PyPtW7hRVbu6GGd8Q76uZD+myIjbryuHXAbl+ZuHyKDk8S+8OdMBhGZobd4Vdy2EVxqQGO1Dyt8brJuQddytI3fweE6WUYL+W96BFp0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oEl7b2Kh; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DCCD1F00A3A;
-	Tue, 16 Jun 2026 17:14:50 +0000 (UTC)
+	 MIME-Version; b=P11Bh4IXm5Wqip7ChQiQ+QZ2WoegXQmMf830B6l3ARtRkAd7cvfYvWcEfdTurCM1lZ2gVnIFE85NYj8DlUUTu6ldzm9bJBei9XYb1MfRykvHeEagXr2nxDNVMoX/uENbCMikfeLqeaz/btZXqj9rCq9pZERmY5aKyVhhvuWhFHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=roO1RkdX; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECF5A1F000E9;
+	Tue, 16 Jun 2026 16:03:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781630091;
-	bh=wpc2J20mdgFCidsiM15BJql6B+KG/Qvz4pmvaGkJ/9k=;
+	s=korg; t=1781625793;
+	bh=3+0G6J88I84LXdz4zoSgCPzqGvux6W1CP/vocIb/2DI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=oEl7b2Khl7Tg9etytZNKmYrubiNdlGpCSWsnXZ+6GQ9iRbKuSIPJgvzdTVHq80jVJ
-	 7bT7N+IOi41VCdXmFobLB4mypmXcZJx7JIyiZT+jJB7nlHiMYD8a3MeeAsKTRmYTom
-	 IdtX3mY4UqtFGT/etssyiw7R6vw8e3V0yuqT48i4=
+	b=roO1RkdXWmarDPTAxJGTU5u2e05nj/PnuTIARP+0cN2Jgwr8RFR0HLvEgaj+WSWqC
+	 WcjWNdzZr+mCUabfMsC/PxGFHcf8GRn34RtSuxbfqqZJTfLgj/Th3qIIVikMN8Axal
+	 wcjTI8lxM8GUAmjIdkQpQfK2CoETBvu3NOOr+37A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Asim Viladi Oglu Manizada <manizada@pm.me>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	Alva Lan <alvalan9@foxmail.com>
-Subject: [PATCH 6.6 376/452] ksmbd: fix OOB write in QUERY_INFO for compound requests
+	Raf Dickson <rafdog35@gmail.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.18 207/325] vsock/vmci: fix sk_ack_backlog leak on failed handshake
 Date: Tue, 16 Jun 2026 20:30:03 +0530
-Message-ID: <20260616145136.739048382@linuxfoundation.org>
+Message-ID: <20260616145108.374856288@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,367 +72,89 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,pm.me,kernel.org,microsoft.com,foxmail.com];
-	TAGGED_FROM(0.00)[bounces-265220-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:manizada@pm.me,m:linkinjeon@kernel.org,m:stfrench@microsoft.com,m:alvalan9@foxmail.com,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-264421-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:rafdog35@gmail.com,m:sgarzare@redhat.com,m:pabeni@redhat.com,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,foxmail.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D31FA6930C3
+X-Rspamd-Queue-Id: 1DB07691A63
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Asim Viladi Oglu Manizada <manizada@pm.me>
+From: Raf Dickson <rafdog35@gmail.com>
 
-commit fda9522ed6afaec45cabc198d8492270c394c7bc upstream.
+commit c05fa14db43ebef3bd862ca9d073981c0358b3f0 upstream.
 
-When a compound request such as READ + QUERY_INFO(Security) is received,
-and the first command (READ) consumes most of the response buffer,
-ksmbd could write beyond the allocated buffer while building a security
-descriptor.
+When vmci_transport_recv_connecting_server() returns an error,
+vmci_transport_recv_listen() calls vsock_remove_pending() but never
+calls sk_acceptq_removed(). This leaves sk_ack_backlog incremented
+permanently.
 
-The root cause was that smb2_get_info_sec() checked buffer space using
-ppntsd_size from xattr, while build_sec_desc() often synthesized a
-significantly larger descriptor from POSIX ACLs.
+Repeated handshake failures (malformed packets, queue pair alloc
+failure, event subscribe failure) cause sk_ack_backlog to climb
+toward sk_max_ack_backlog. Once it reaches the limit the listener
+permanently refuses all new connections with -ECONNREFUSED, a
+silent denial of service requiring a process restart to recover.
 
-This patch introduces smb_acl_sec_desc_scratch_len() to accurately
-compute the final descriptor size beforehand, performs proper buffer
-checking with smb2_calc_max_out_buf_len(), and uses exact-sized
-allocation + iov pinning.
+The two existing sk_acceptq_removed() calls in af_vsock.c do not
+cover this path: line 764 checks vsock_is_pending() which returns
+false after vsock_remove_pending(), and line 1889 is only reached
+on successful accept().
 
+Fix by balancing sk_acceptq_added() with sk_acceptq_removed() on
+the error path.
+
+Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
 Cc: stable@vger.kernel.org
-Fixes: e2b76ab8b5c9 ("ksmbd: add support for read compound")
-Signed-off-by: Asim Viladi Oglu Manizada <manizada@pm.me>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-[ In v6.6, replace KSMBD_DEFAULT_GFP with GFP_KERNEL per
-commit 0066f623bce8 ("ksmbd: use __GFP_RETRY_MAYFAIL"). ]
-Signed-off-by: Alva Lan <alvalan9@foxmail.com>
+Signed-off-by: Raf Dickson <rafdog35@gmail.com>
+Acked-by: Stefano Garzarella <sgarzare@redhat.com>
+Link: https://patch.msgid.link/20260526104356.469928-1-rafdog35@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/smb2pdu.c |  121 +++++++++++++++++++++++++++++++++++-------------
- fs/smb/server/smbacl.c  |   43 +++++++++++++++++
- fs/smb/server/smbacl.h  |    2 
- 3 files changed, 134 insertions(+), 32 deletions(-)
+ net/vmw_vsock/vmci_transport.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -3385,20 +3385,24 @@ int smb2_open(struct ksmbd_work *work)
- 							   KSMBD_SHARE_FLAG_ACL_XATTR)) {
- 					struct smb_fattr fattr;
- 					struct smb_ntsd *pntsd;
--					int pntsd_size, ace_num = 0;
-+					int pntsd_size;
-+					size_t scratch_len;
+--- a/net/vmw_vsock/vmci_transport.c
++++ b/net/vmw_vsock/vmci_transport.c
+@@ -972,8 +972,10 @@ static int vmci_transport_recv_listen(st
+ 			err = -EINVAL;
+ 		}
  
- 					ksmbd_acls_fattr(&fattr, idmap, inode);
--					if (fattr.cf_acls)
--						ace_num = fattr.cf_acls->a_count;
--					if (fattr.cf_dacls)
--						ace_num += fattr.cf_dacls->a_count;
--
--					pntsd = kmalloc(sizeof(struct smb_ntsd) +
--							sizeof(struct smb_sid) * 3 +
--							sizeof(struct smb_acl) +
--							sizeof(struct smb_ace) * ace_num * 2,
--							GFP_KERNEL);
-+					scratch_len = smb_acl_sec_desc_scratch_len(&fattr,
-+							NULL, 0,
-+							OWNER_SECINFO | GROUP_SECINFO |
-+							DACL_SECINFO);
-+					if (!scratch_len || scratch_len == SIZE_MAX) {
-+						rc = -EFBIG;
-+						posix_acl_release(fattr.cf_acls);
-+						posix_acl_release(fattr.cf_dacls);
-+						goto err_out;
-+					}
-+
-+					pntsd = kvzalloc(scratch_len, GFP_KERNEL);
- 					if (!pntsd) {
-+						rc = -ENOMEM;
- 						posix_acl_release(fattr.cf_acls);
- 						posix_acl_release(fattr.cf_dacls);
- 						goto err_out;
-@@ -3413,7 +3417,7 @@ int smb2_open(struct ksmbd_work *work)
- 					posix_acl_release(fattr.cf_acls);
- 					posix_acl_release(fattr.cf_dacls);
- 					if (rc) {
--						kfree(pntsd);
-+						kvfree(pntsd);
- 						goto err_out;
- 					}
+-		if (err < 0)
++		if (err < 0) {
+ 			vsock_remove_pending(sk, pending);
++			sk_acceptq_removed(sk);
++		}
  
-@@ -3423,7 +3427,7 @@ int smb2_open(struct ksmbd_work *work)
- 								    pntsd,
- 								    pntsd_size,
- 								    false);
--					kfree(pntsd);
-+					kvfree(pntsd);
- 					if (rc)
- 						pr_err("failed to store ntacl in xattr : %d\n",
- 						       rc);
-@@ -5345,8 +5349,9 @@ static int smb2_get_info_file(struct ksm
- 	if (test_share_config_flag(work->tcon->share_conf,
- 				   KSMBD_SHARE_FLAG_PIPE)) {
- 		/* smb2 info file called for pipe */
--		return smb2_get_info_file_pipe(work->sess, req, rsp,
-+		rc = smb2_get_info_file_pipe(work->sess, req, rsp,
- 					       work->response_buf);
-+		goto iov_pin_out;
- 	}
- 
- 	if (work->next_smb2_rcv_hdr_off) {
-@@ -5446,6 +5451,12 @@ static int smb2_get_info_file(struct ksm
- 		rc = buffer_check_err(le32_to_cpu(req->OutputBufferLength),
- 				      rsp, work->response_buf);
- 	ksmbd_fd_put(work, fp);
-+
-+iov_pin_out:
-+	if (!rc)
-+		rc = ksmbd_iov_pin_rsp(work, (void *)rsp,
-+				offsetof(struct smb2_query_info_rsp, Buffer) +
-+				le32_to_cpu(rsp->OutputBufferLength));
- 	return rc;
- }
- 
-@@ -5665,6 +5676,11 @@ static int smb2_get_info_filesystem(stru
- 	rc = buffer_check_err(le32_to_cpu(req->OutputBufferLength),
- 			      rsp, work->response_buf);
- 	path_put(&path);
-+
-+	if (!rc)
-+		rc = ksmbd_iov_pin_rsp(work, (void *)rsp,
-+				offsetof(struct smb2_query_info_rsp, Buffer) +
-+				le32_to_cpu(rsp->OutputBufferLength));
- 	return rc;
- }
- 
-@@ -5674,13 +5690,14 @@ static int smb2_get_info_sec(struct ksmb
- {
- 	struct ksmbd_file *fp;
- 	struct mnt_idmap *idmap;
--	struct smb_ntsd *pntsd = (struct smb_ntsd *)rsp->Buffer, *ppntsd = NULL;
-+	struct smb_ntsd *pntsd = NULL, *ppntsd = NULL;
- 	struct smb_fattr fattr = {{0}};
- 	struct inode *inode;
- 	__u32 secdesclen = 0;
- 	unsigned int id = KSMBD_NO_FID, pid = KSMBD_NO_FID;
- 	int addition_info = le32_to_cpu(req->AdditionalInformation);
--	int rc = 0, ppntsd_size = 0;
-+	int rc = 0, ppntsd_size = 0, max_len;
-+	size_t scratch_len = 0;
- 
- 	if (addition_info & ~(OWNER_SECINFO | GROUP_SECINFO | DACL_SECINFO |
- 			      PROTECTED_DACL_SECINFO |
-@@ -5688,6 +5705,11 @@ static int smb2_get_info_sec(struct ksmb
- 		ksmbd_debug(SMB, "Unsupported addition info: 0x%x)\n",
- 		       addition_info);
- 
-+		pntsd = kzalloc(ALIGN(sizeof(struct smb_ntsd), 8),
-+				GFP_KERNEL);
-+		if (!pntsd)
-+			return -ENOMEM;
-+
- 		pntsd->revision = cpu_to_le16(1);
- 		pntsd->type = cpu_to_le16(SELF_RELATIVE | DACL_PROTECTED);
- 		pntsd->osidoffset = 0;
-@@ -5696,9 +5718,7 @@ static int smb2_get_info_sec(struct ksmb
- 		pntsd->dacloffset = 0;
- 
- 		secdesclen = sizeof(struct smb_ntsd);
--		rsp->OutputBufferLength = cpu_to_le32(secdesclen);
--
--		return 0;
-+		goto iov_pin;
- 	}
- 
- 	if (work->next_smb2_rcv_hdr_off) {
-@@ -5730,18 +5750,58 @@ static int smb2_get_info_sec(struct ksmb
- 						     &ppntsd);
- 
- 	/* Check if sd buffer size exceeds response buffer size */
--	if (smb2_resp_buf_len(work, 8) > ppntsd_size)
--		rc = build_sec_desc(idmap, pntsd, ppntsd, ppntsd_size,
--				    addition_info, &secdesclen, &fattr);
-+	max_len = smb2_calc_max_out_buf_len(work,
-+			offsetof(struct smb2_query_info_rsp, Buffer),
-+			le32_to_cpu(req->OutputBufferLength));
-+	if (max_len < 0) {
-+		rc = -EINVAL;
-+		goto release_acl;
-+	}
-+
-+	scratch_len = smb_acl_sec_desc_scratch_len(&fattr, ppntsd,
-+			ppntsd_size, addition_info);
-+	if (!scratch_len || scratch_len == SIZE_MAX) {
-+		rc = -EFBIG;
-+		goto release_acl;
-+	}
-+
-+	pntsd = kvzalloc(scratch_len, GFP_KERNEL);
-+	if (!pntsd) {
-+		rc = -ENOMEM;
-+		goto release_acl;
-+	}
-+
-+	rc = build_sec_desc(idmap, pntsd, ppntsd, ppntsd_size,
-+			addition_info, &secdesclen, &fattr);
-+
-+release_acl:
- 	posix_acl_release(fattr.cf_acls);
- 	posix_acl_release(fattr.cf_dacls);
- 	kfree(ppntsd);
- 	ksmbd_fd_put(work, fp);
-+
-+	if (!rc && ALIGN(secdesclen, 8) > scratch_len)
-+		rc = -EFBIG;
- 	if (rc)
--		return rc;
-+		goto err_out;
- 
-+iov_pin:
- 	rsp->OutputBufferLength = cpu_to_le32(secdesclen);
--	return 0;
-+	rc = buffer_check_err(le32_to_cpu(req->OutputBufferLength),
-+			      rsp, work->response_buf);
-+	if (rc)
-+		goto err_out;
-+
-+	rc = ksmbd_iov_pin_rsp_read(work, (void *)rsp,
-+			offsetof(struct smb2_query_info_rsp, Buffer),
-+			pntsd, secdesclen);
-+err_out:
-+	if (rc) {
-+		rsp->OutputBufferLength = 0;
-+		kvfree(pntsd);
-+	}
-+
-+	return rc;
- }
- 
- /**
-@@ -5765,6 +5825,9 @@ int smb2_query_info(struct ksmbd_work *w
- 		goto err_out;
- 	}
- 
-+	rsp->StructureSize = cpu_to_le16(9);
-+	rsp->OutputBufferOffset = cpu_to_le16(72);
-+
- 	switch (req->InfoType) {
- 	case SMB2_O_INFO_FILE:
- 		ksmbd_debug(SMB, "GOT SMB2_O_INFO_FILE\n");
-@@ -5785,14 +5848,6 @@ int smb2_query_info(struct ksmbd_work *w
- 	}
- 	ksmbd_revert_fsids(work);
- 
--	if (!rc) {
--		rsp->StructureSize = cpu_to_le16(9);
--		rsp->OutputBufferOffset = cpu_to_le16(72);
--		rc = ksmbd_iov_pin_rsp(work, (void *)rsp,
--				       offsetof(struct smb2_query_info_rsp, Buffer) +
--					le32_to_cpu(rsp->OutputBufferLength));
--	}
--
- err_out:
- 	if (rc < 0) {
- 		if (rc == -EACCES)
-@@ -5803,6 +5858,8 @@ err_out:
- 			rsp->hdr.Status = STATUS_UNEXPECTED_IO_ERROR;
- 		else if (rc == -ENOMEM)
- 			rsp->hdr.Status = STATUS_INSUFFICIENT_RESOURCES;
-+		else if (rc == -EINVAL && rsp->hdr.Status == 0)
-+			rsp->hdr.Status = STATUS_INVALID_PARAMETER;
- 		else if (rc == -EOPNOTSUPP || rsp->hdr.Status == 0)
- 			rsp->hdr.Status = STATUS_INVALID_INFO_CLASS;
- 		smb2_set_err_rsp(work);
---- a/fs/smb/server/smbacl.c
-+++ b/fs/smb/server/smbacl.c
-@@ -930,6 +930,49 @@ int parse_sec_desc(struct mnt_idmap *idm
- 	return 0;
- }
- 
-+size_t smb_acl_sec_desc_scratch_len(struct smb_fattr *fattr,
-+		struct smb_ntsd *ppntsd, int ppntsd_size, int addition_info)
-+{
-+	size_t len = sizeof(struct smb_ntsd);
-+	size_t tmp;
-+
-+	if (addition_info & OWNER_SECINFO)
-+		len += sizeof(struct smb_sid);
-+	if (addition_info & GROUP_SECINFO)
-+		len += sizeof(struct smb_sid);
-+	if (!(addition_info & DACL_SECINFO))
-+		return len;
-+
-+	len += sizeof(struct smb_acl);
-+	if (ppntsd && ppntsd_size > 0) {
-+		unsigned int dacl_offset = le32_to_cpu(ppntsd->dacloffset);
-+
-+		if (dacl_offset < ppntsd_size &&
-+		    check_add_overflow(len, ppntsd_size - dacl_offset, &len))
-+			return 0;
-+	}
-+
-+	if (fattr->cf_acls) {
-+		if (check_mul_overflow((size_t)fattr->cf_acls->a_count,
-+					2 * sizeof(struct smb_ace), &tmp) ||
-+		    check_add_overflow(len, tmp, &len))
-+			return 0;
-+	} else {
-+		/* default/minimum DACL */
-+		if (check_add_overflow(len, 5 * sizeof(struct smb_ace), &len))
-+			return 0;
-+	}
-+
-+	if (fattr->cf_dacls) {
-+		if (check_mul_overflow((size_t)fattr->cf_dacls->a_count,
-+					sizeof(struct smb_ace), &tmp) ||
-+		    check_add_overflow(len, tmp, &len))
-+			return 0;
-+	}
-+
-+	return len;
-+}
-+
- /* Convert permission bits from mode to equivalent CIFS ACL */
- int build_sec_desc(struct mnt_idmap *idmap,
- 		   struct smb_ntsd *pntsd, struct smb_ntsd *ppntsd,
---- a/fs/smb/server/smbacl.h
-+++ b/fs/smb/server/smbacl.h
-@@ -101,6 +101,8 @@ int set_info_sec(struct ksmbd_conn *conn
- 		 bool type_check, bool get_write);
- void id_to_sid(unsigned int cid, uint sidtype, struct smb_sid *ssid);
- void ksmbd_init_domain(u32 *sub_auth);
-+size_t smb_acl_sec_desc_scratch_len(struct smb_fattr *fattr,
-+		struct smb_ntsd *ppntsd, int ppntsd_size, int addition_info);
- 
- static inline uid_t posix_acl_uid_translate(struct mnt_idmap *idmap,
- 					    struct posix_acl_entry *pace)
+ 		release_sock(pending);
+ 		vmci_transport_release_pending(pending);
 
 
 
