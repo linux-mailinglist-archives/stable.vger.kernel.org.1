@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-265985-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264229-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id MrtbNRmUMWoknQUAu9opvQ
-	(envelope-from <stable+bounces-265985-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:21:13 +0200
+	id IdaKJhtyMWoKjgUAu9opvQ
+	(envelope-from <stable+bounces-264229-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:56:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 442D66940E5
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:21:13 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35B6D69186D
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:56:11 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=CHkDs8xB;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265985-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265985-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Ueq9EuOM;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264229-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264229-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A6BDD3095468
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:20:56 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A247C305D892
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:47:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 481E83D8114;
-	Tue, 16 Jun 2026 18:20:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 378BA451068;
+	Tue, 16 Jun 2026 15:46:51 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EAFF36A36C;
-	Tue, 16 Jun 2026 18:20:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D446344D6AB;
+	Tue, 16 Jun 2026 15:46:49 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781634054; cv=none; b=Idj2IYIBX6NQu37y1iEh3lVPMnUOqJfvBkeoYhknTWQr6fzJUwNFO5kK/rxH2z76S/QRFPI6kmhUYmcIZddqUoi6v+rPiKhTA/Kfs3Ux0RkD0SzUyoKNJ1owFtKbfRqUURFPM8hu+7ntt+mwVe3OBTi3kFUk+FNM7NNuE5kYcOk=
+	t=1781624811; cv=none; b=f0uNF/ZstHHdHfJlHZFaFlqo1ACaEx+pAhYxpjh7XF/QvWgCIAtkuyby9a0cvo/mjx0kj/3zssEtcyTGRDx0QkC2WIs8WCusYuXJYzVHZrU/y6qpHjrOiTvmo+RepFx5r1gcY7lM78lUVtmqwAZNo7biw3AVXEiyrnzToBguVYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781634054; c=relaxed/simple;
-	bh=pdDuz5x3/Zi/P6Gh678DmFEa51RwhxApvPyfxqBjjjc=;
+	s=arc-20240116; t=1781624811; c=relaxed/simple;
+	bh=c8/GbM0hxmKk0phuGbvQyM7H281b1WaxteSkUtR7vXw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=amAr3UPla7ADT0CsTsxVOCsbkOXP4drWk5cXSr6sCXGY9lsG1xn3CuOWAWIWIyyZZneXfX5bnWEe3dYW47HgF8dfmqNkiSYFpa+XAGu/SMW6WG11+qSMAfr80Wqlc+kw4izESbywUI46/sm1sPn8h7UacA3uz2u/Lx9xoOJEVMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CHkDs8xB; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13B251F00A3A;
-	Tue, 16 Jun 2026 18:20:51 +0000 (UTC)
+	 MIME-Version; b=CLHwZsCT0v4ty4OwcGnh4KHJvtgqZRws/uP03g8kgee+9vvvZlldr+dNvlLoOaqlwUum/GydZ2KsSQGKKBPQt3rztNFdf8eAQ5HYe6kNccIiJTYa3JB6Ap04tRgZwQ+Yn/E0qXn7z0Ph1V/RqC3BPJazHRAyXbNW9hxlIsc0l/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ueq9EuOM; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 657511F000E9;
+	Tue, 16 Jun 2026 15:46:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781634053;
-	bh=7aJZtCloKiiTD6jk+rNzKfD1Ajamr9swigPeNZWr2pQ=;
+	s=korg; t=1781624809;
+	bh=l4yS1LN2hFoVJTeWf4WqidpZMc0CnwZolf5WH1OI+kc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=CHkDs8xBT7G1wN3un51UEigkEAlrZmaNgc6dwCIX88CA3eZh/Q+2skKUb0YD+aMUr
-	 bO9ojZyqVlOM3OsKgY/pq+IdcjYDYukC6fFKQiqbdtTJ0WQ9fJBVO3N4x46IO9Nr8K
-	 MBwunNXSOajtBkay3vEQpvQaHYCiR+uV9SkbEwDE=
+	b=Ueq9EuOMU61Ij4i/4sMDXni6NPA/i5tKzue13WR3Xc4WZ//P7yP0K2jN/unwSS1mS
+	 vzu1T4zXes38By+j7YimJJYbMg/pje59AniN8JPI6IlwxTXejypUA3a9mE+/65TV/S
+	 ty6/CBAxdBg9q1eB94rrcUc0k+B0zgv1xZfRj11g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Allison Henderson <achender@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	syzbot+8e0622f6d9446420271f@syzkaller.appspotmail.com,
+	Deepanshu Kartikey <kartikey406@gmail.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 191/411] rds: mark snapshot pages dirty in rds_info_getsockopt()
+Subject: [PATCH 6.18 033/325] wifi: mac80211: limit injected antenna index in ieee80211_parse_tx_radiotap
 Date: Tue, 16 Jun 2026 20:27:09 +0530
-Message-ID: <20260616145110.861896051@linuxfoundation.org>
+Message-ID: <20260616145059.401737918@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,82 +68,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265985-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,intel.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-264229-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:leitao@debian.org,m:achender@kernel.org,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:syzbot+8e0622f6d9446420271f@syzkaller.appspotmail.com,m:kartikey406@gmail.com,m:johannes.berg@intel.com,m:sashal@kernel.org,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,vger.kernel.org:from_smtp]
+	TAGGED_RCPT(0.00)[stable,8e0622f6d9446420271f];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,syzkaller.appspot.com:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,intel.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 442D66940E5
+X-Rspamd-Queue-Id: 35B6D69186D
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Deepanshu Kartikey <kartikey406@gmail.com>
 
-[ Upstream commit 512db8267b73a220a64180d95ab5eebe7c4964a8 ]
+[ Upstream commit 6c0cf89f36ac0c0fd8687a4ccdce2efb23a9c663 ]
 
-rds_info_getsockopt() pins the destination user pages with FOLL_WRITE and
-the RDS_INFO_* producers memcpy the snapshot into them through
-kmap_atomic(). Because that copy goes through the kernel direct map, the
-dirty bit on the user PTE is never set, so unpin_user_pages() releases the
-pages without marking them dirty. A file-backed destination page can then
-be reclaimed without writeback, silently discarding the copied data.
+When parsing the radiotap header of an injected frame,
+ieee80211_parse_tx_radiotap() uses the IEEE80211_RADIOTAP_ANTENNA value
+directly as a shift count:
 
-Use unpin_user_pages_dirty_lock() with make_dirty=true so the modified
-pages are marked dirty before they are unpinned.
+	info->control.antennas |= BIT(*iterator.this_arg);
 
-Fixes: a8c879a7ee98 ("RDS: Info and stats")
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Reviewed-by: Allison Henderson <achender@kernel.org>
-Link: https://patch.msgid.link/20260608-rds_fix-v1-1-006c88543408@debian.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+*iterator.this_arg is an 8-bit value taken straight from the frame
+supplied by userspace, so BIT() can be asked to shift by up to 255. That
+is undefined behaviour on the unsigned long and is reported by UBSAN:
+
+  UBSAN: shift-out-of-bounds in net/mac80211/tx.c:2174:30
+  shift exponent 235 is too large for 64-bit type 'unsigned long'
+  Call Trace:
+   ieee80211_parse_tx_radiotap+0xadb/0x1950 net/mac80211/tx.c:2174
+   ieee80211_monitor_start_xmit+0xb1f/0x1250 net/mac80211/tx.c:2451
+   ...
+   packet_sendmsg+0x3eb6/0x50f0 net/packet/af_packet.c:3109
+
+info->control.antennas is a 2-bit bitmap (u8 antennas:2), so only antenna
+indices 0 and 1 can ever be represented. Ignore any larger value instead
+of shifting out of bounds.
+
+Reported-by: syzbot+8e0622f6d9446420271f@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=8e0622f6d9446420271f
+Fixes: ef246a1480cc ("wifi: mac80211: support antenna control in injection")
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+Link: https://patch.msgid.link/20260531011721.102941-1-kartikey406@gmail.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rds/info.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mac80211/tx.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/rds/info.c b/net/rds/info.c
-index b6b46a8214a0a5..b3ee5f8238c44d 100644
---- a/net/rds/info.c
-+++ b/net/rds/info.c
-@@ -235,7 +235,7 @@ int rds_info_getsockopt(struct socket *sock, int optname, char __user *optval,
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index 2f830001b0cd6d..98f0a275b60c3a 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -2169,7 +2169,9 @@ bool ieee80211_parse_tx_radiotap(struct sk_buff *skb,
  
- out:
- 	if (pages)
--		unpin_user_pages(pages, nr_pages);
-+		unpin_user_pages_dirty_lock(pages, nr_pages, true);
- 	kfree(pages);
+ 		case IEEE80211_RADIOTAP_ANTENNA:
+ 			/* this can appear multiple times, keep a bitmap */
+-			info->control.antennas |= BIT(*iterator.this_arg);
++			/* control.antennas is only a 2-bit bitmap */
++			if (*iterator.this_arg < 2)
++				info->control.antennas |= BIT(*iterator.this_arg);
+ 			break;
  
- 	return ret;
+ 		case IEEE80211_RADIOTAP_DATA_RETRIES:
 -- 
 2.53.0
 
