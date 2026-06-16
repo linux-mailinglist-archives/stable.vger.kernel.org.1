@@ -1,60 +1,66 @@
-Return-Path: <stable+bounces-264152-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266115-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id brrFB0lyMWogjgUAu9opvQ
-	(envelope-from <stable+bounces-264152-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:56:57 +0200
+	id GT0VGLuWMWpcngUAu9opvQ
+	(envelope-from <stable+bounces-266115-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:32:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92FF8691896
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:56:56 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DF40694387
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:32:26 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=OWdFSlgb;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264152-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264152-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ktdKWLq3;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266115-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-266115-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 78A6731E3F16
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:41:08 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9515D300186B
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:32:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72A38466B65;
-	Tue, 16 Jun 2026 15:39:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C4F33DA7E1;
+	Tue, 16 Jun 2026 18:32:22 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DE14466B5F;
-	Tue, 16 Jun 2026 15:39:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E96034FF79;
+	Tue, 16 Jun 2026 18:32:20 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781624398; cv=none; b=V7thnveQ5E25LWqwaTmUTsnhoFLO6cFft2lVLRiq7jJVAxc0aD/WpFMHVDpY5qzJapPJZWEUAzLaviIBFKYRBqKCfNK3YrxBUBjNSGK3KcYmsbjLLuEZJpDRGDpoH7Z+By/gYJscZcbyj67uNYNOIuXzF8QaVNQ3ty+9tlOhbxs=
+	t=1781634742; cv=none; b=iWBmw9OPnNOQXx1Sv6Dnt4zLJgpsvsTTqifPKswlfONF8XmdNx9BA1wyWbzs0xw05uAlZkTbM3yYrwcv761lY1o75DEgF244T5865tsW7I9dJw9IGduV+tSDqCR/6Z+JfDGueTkSSjmjipP38o4PFnSVDFFV0kNsUR0OC4wg0cI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781624398; c=relaxed/simple;
-	bh=xpO8+ixLwp087x/MB23ZflzTRZGCU15DyRWucfVi3yg=;
+	s=arc-20240116; t=1781634742; c=relaxed/simple;
+	bh=zEp4Vi8GYM3IC5uSy6HozzG6wyUWloGOTIFWx5vYVqw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A5O0w6/d/EN2qAbQMF+YM+/CJazv7EQDHmROCWK1LbEwuT11+4Tx9oBvcS3PVApKzizjlbmnL1K82MMo73/r9yJ7WoMM2XKsECastQQzmG+EloPwTCpll2zsVPI+CvCQ5Af/pZ/yYusvnLx1HtSYbaHKbv/tJT+pQxnSvwummk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OWdFSlgb; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CDB51F00A3A;
-	Tue, 16 Jun 2026 15:39:55 +0000 (UTC)
+	 MIME-Version; b=pxvDZx389uuH7v9uyAqBPvvnzWHnusTpmJlz9ORL1n80jgoAd9Ve19qLUnUfYRoaRpTQHUCWI/cp3YtU3e78POdsypPxh3upPU+tiClwjLPHDF2Z8eOToqVo4I8rXcla8RNUXpiucCX+wHKK1Tc8HM05l5kF/9tdfMXUWKFYYcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ktdKWLq3; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9EE61F000E9;
+	Tue, 16 Jun 2026 18:32:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781624397;
-	bh=NqKCTrunp9G3sgjzZ6jfKb+8pXyE+KBJggmHuklBQd8=;
+	s=korg; t=1781634740;
+	bh=8u01nJXvxOmJLppazeOvg4sG/iFXY9nXN8+5MZbnjCU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OWdFSlgbdoKZ4G94sUSu+eqOgKgUuBndoKkgm9Gj1+sCSFr2UiRpd2jfyjbYAw/2y
-	 Bricdvup+x9KlctpTCj7i1x4S44m497sUom6GYG/BTwMBRHIHAvML3WIO26sVo45ve
-	 n2WmXADSvGCiTgMqN2bl1vTpam2vPs2GRggFbPAA=
+	b=ktdKWLq3a4fJb7B8rx9jywxGTRsJsFKIoIztQ6o8sbH3JLh/eqY9LFY/H8bf7/g6B
+	 fPD1Gf+HU48tTi+ENOYUbQJ7vlFeAt2aB/GnZeK3IODJO2FGml4Ks9Dadfkync0fyX
+	 X6+04JHCYLBCqwzRQBRWvUR89uM9/ItdNBhOQ8GM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 7.0 301/378] mm/damon/reclaim: handle ctx allocation failure
-Date: Tue, 16 Jun 2026 20:28:52 +0530
-Message-ID: <20260616145125.946640619@linuxfoundation.org>
+	Alan Stern <stern@rowland.harvard.edu>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Hannes Reinecke <hare@suse.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Martin Kepplinger <martin.kepplinger@puri.sm>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 295/411] scsi: core: pm: Rely on the device driver core for async power management
+Date: Tue, 16 Jun 2026 20:28:53 +0530
+Message-ID: <20260616145116.832924351@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,91 +74,236 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264152-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:sj@kernel.org,m:akpm@linux-foundation.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-266115-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stern@rowland.harvard.edu,m:dan.j.williams@intel.com,m:hare@suse.com,m:adrian.hunter@intel.com,m:martin.kepplinger@puri.sm,m:bvanassche@acm.org,m:martin.petersen@oracle.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,oracle.com:email,harvard.edu:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,intel.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 92FF8691896
+X-Rspamd-Queue-Id: 5DF40694387
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Bart Van Assche <bvanassche@acm.org>
 
-commit 7e2ed8a29427af534bf2cb9b8bc51762b8b6e654 upstream.
+[ Upstream commit a19a93e4c6a98c9c0f2f5a6db76846f10d7d1f85 ]
 
-Patch series "mm/damon/{reclaim,lru_sort}: handle ctx allocation failures".
+Instead of implementing asynchronous resume support in the SCSI core, rely
+on the device driver core for resuming SCSI devices asynchronously.
+Instead of only supporting asynchronous resumes, also support asynchronous
+suspends.
 
-DAMON_RECLAIM and DAMON_LRU_SORT could dereference NULL pointers if their
-damon_ctx object allocations fail.  The bugs are expected to happen
-infrequently because the allocations are arguably too small to fail on
-common setups.  But theoretically they are possible and the consequences
-are bad.  Fix those.
-
-The issues were discovered [1] by Sashiko.
-
-
-This patch (of 2):
-
-DAMON_RECLAIM allocates the damon_ctx object for its kdamond in its init
-function.  damon_reclaim_enabled_store() wrongly assumes the allocation
-will always succeed once tried.  If the damon_ctx allocation was failed,
-therefore, code execution reaches to damon_commit_ctx() while 'ctx' is
-NULL.  As a result, it dereferences the NULL 'ctx' pointer.  Avoid the
-NULL dereference by returning -ENOMEM if 'ctx' is NULL.
-
-Link: https://lore.kernel.org/20260529000104.7006-2-sj@kernel.org
-Link: https://lore.kernel.org/20260419014800.877-1-sj@kernel.org [1]
-Fixes: 3f7a914ab9a5 ("mm/damon/reclaim: use damon_initialized()")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org> # 6.18.x
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Link: https://lore.kernel.org/r/20211006215453.3318929-2-bvanassche@acm.org
+Cc: Alan Stern <stern@rowland.harvard.edu>
+Cc: Dan Williams <dan.j.williams@intel.com>
+Cc: Hannes Reinecke <hare@suse.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Martin Kepplinger <martin.kepplinger@puri.sm>
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Stable-dep-of: 1e111c4b3a72 ("scsi: sd: fix missing put_disk() when device_add(&disk_dev) fails")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/damon/reclaim.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/scsi/hosts.c      |    1 +
+ drivers/scsi/scsi.c       |    8 --------
+ drivers/scsi/scsi_pm.c    |   44 ++------------------------------------------
+ drivers/scsi/scsi_priv.h  |    4 +---
+ drivers/scsi/scsi_scan.c  |   17 +++++++++++++++++
+ drivers/scsi/scsi_sysfs.c |    1 +
+ drivers/scsi/sd.c         |    1 -
+ 7 files changed, 22 insertions(+), 54 deletions(-)
 
---- a/mm/damon/reclaim.c
-+++ b/mm/damon/reclaim.c
-@@ -344,6 +344,10 @@ static int damon_reclaim_enabled_store(c
- 	if (!damon_initialized())
- 		return 0;
+--- a/drivers/scsi/hosts.c
++++ b/drivers/scsi/hosts.c
+@@ -487,6 +487,7 @@ struct Scsi_Host *scsi_host_alloc(struct
+ 	dev_set_name(&shost->shost_gendev, "host%d", shost->host_no);
+ 	shost->shost_gendev.bus = &scsi_bus_type;
+ 	shost->shost_gendev.type = &scsi_host_type;
++	scsi_enable_async_suspend(&shost->shost_gendev);
  
-+	/* damon_modules_new_paddr_ctx_target() in the init function failed. */
-+	if (!ctx)
-+		return -ENOMEM;
-+
- 	return damon_reclaim_turn(enabled);
+ 	device_initialize(&shost->shost_dev);
+ 	shost->shost_dev.parent = &shost->shost_gendev;
+--- a/drivers/scsi/scsi.c
++++ b/drivers/scsi/scsi.c
+@@ -86,14 +86,6 @@ unsigned int scsi_logging_level;
+ EXPORT_SYMBOL(scsi_logging_level);
+ #endif
+ 
+-/*
+- * Domain for asynchronous system resume operations.  It is marked 'exclusive'
+- * to avoid being included in the async_synchronize_full() that is invoked by
+- * dpm_resume().
+- */
+-ASYNC_DOMAIN_EXCLUSIVE(scsi_sd_pm_domain);
+-EXPORT_SYMBOL(scsi_sd_pm_domain);
+-
+ #ifdef CONFIG_SCSI_LOGGING
+ void scsi_log_send(struct scsi_cmnd *cmd)
+ {
+--- a/drivers/scsi/scsi_pm.c
++++ b/drivers/scsi/scsi_pm.c
+@@ -56,9 +56,6 @@ static int scsi_dev_type_suspend(struct
+ 	const struct dev_pm_ops *pm = dev->driver ? dev->driver->pm : NULL;
+ 	int err;
+ 
+-	/* flush pending in-flight resume operations, suspend is synchronous */
+-	async_synchronize_full_domain(&scsi_sd_pm_domain);
+-
+ 	err = scsi_device_quiesce(to_scsi_device(dev));
+ 	if (err == 0) {
+ 		err = cb(dev, pm);
+@@ -123,48 +120,11 @@ scsi_bus_suspend_common(struct device *d
+ 	return err;
  }
  
+-static void async_sdev_resume(void *dev, async_cookie_t cookie)
+-{
+-	scsi_dev_type_resume(dev, do_scsi_resume);
+-}
+-
+-static void async_sdev_thaw(void *dev, async_cookie_t cookie)
+-{
+-	scsi_dev_type_resume(dev, do_scsi_thaw);
+-}
+-
+-static void async_sdev_restore(void *dev, async_cookie_t cookie)
+-{
+-	scsi_dev_type_resume(dev, do_scsi_restore);
+-}
+-
+ static int scsi_bus_resume_common(struct device *dev,
+ 		int (*cb)(struct device *, const struct dev_pm_ops *))
+ {
+-	async_func_t fn;
+-
+-	if (!scsi_is_sdev_device(dev))
+-		fn = NULL;
+-	else if (cb == do_scsi_resume)
+-		fn = async_sdev_resume;
+-	else if (cb == do_scsi_thaw)
+-		fn = async_sdev_thaw;
+-	else if (cb == do_scsi_restore)
+-		fn = async_sdev_restore;
+-	else
+-		fn = NULL;
+-
+-	if (fn) {
+-		async_schedule_domain(fn, dev, &scsi_sd_pm_domain);
+-
+-		/*
+-		 * If a user has disabled async probing a likely reason
+-		 * is due to a storage enclosure that does not inject
+-		 * staggered spin-ups.  For safety, make resume
+-		 * synchronous as well in that case.
+-		 */
+-		if (strncmp(scsi_scan_type, "async", 5) != 0)
+-			async_synchronize_full_domain(&scsi_sd_pm_domain);
++	if (scsi_is_sdev_device(dev)) {
++		scsi_dev_type_resume(dev, cb);
+ 	} else {
+ 		pm_runtime_disable(dev);
+ 		pm_runtime_set_active(dev);
+--- a/drivers/scsi/scsi_priv.h
++++ b/drivers/scsi/scsi_priv.h
+@@ -117,7 +117,7 @@ extern void scsi_exit_procfs(void);
+ #endif /* CONFIG_PROC_FS */
+ 
+ /* scsi_scan.c */
+-extern char scsi_scan_type[];
++void scsi_enable_async_suspend(struct device *dev);
+ extern int scsi_complete_async_scans(void);
+ extern int scsi_scan_host_selected(struct Scsi_Host *, unsigned int,
+ 				   unsigned int, u64, enum scsi_scan_mode);
+@@ -171,8 +171,6 @@ static inline int scsi_autopm_get_host(s
+ static inline void scsi_autopm_put_host(struct Scsi_Host *h) {}
+ #endif /* CONFIG_PM */
+ 
+-extern struct async_domain scsi_sd_pm_domain;
+-
+ /* scsi_dh.c */
+ #ifdef CONFIG_SCSI_DH
+ void scsi_dh_add_device(struct scsi_device *sdev);
+--- a/drivers/scsi/scsi_scan.c
++++ b/drivers/scsi/scsi_scan.c
+@@ -123,6 +123,22 @@ struct async_scan_data {
+ };
+ 
+ /**
++ * scsi_enable_async_suspend - Enable async suspend and resume
++ */
++void scsi_enable_async_suspend(struct device *dev)
++{
++	/*
++	 * If a user has disabled async probing a likely reason is due to a
++	 * storage enclosure that does not inject staggered spin-ups. For
++	 * safety, make resume synchronous as well in that case.
++	 */
++	if (strncmp(scsi_scan_type, "async", 5) != 0)
++		return;
++	/* Enable asynchronous suspend and resume. */
++	device_enable_async_suspend(dev);
++}
++
++/**
+  * scsi_complete_async_scans - Wait for asynchronous scans to complete
+  *
+  * When this function returns, any host which started scanning before
+@@ -499,6 +515,7 @@ static struct scsi_target *scsi_alloc_ta
+ 	dev_set_name(dev, "target%d:%d:%d", shost->host_no, channel, id);
+ 	dev->bus = &scsi_bus_type;
+ 	dev->type = &scsi_target_type;
++	scsi_enable_async_suspend(dev);
+ 	starget->id = id;
+ 	starget->channel = channel;
+ 	starget->can_queue = 0;
+--- a/drivers/scsi/scsi_sysfs.c
++++ b/drivers/scsi/scsi_sysfs.c
+@@ -1643,6 +1643,7 @@ void scsi_sysfs_device_initialize(struct
+ 	device_initialize(&sdev->sdev_gendev);
+ 	sdev->sdev_gendev.bus = &scsi_bus_type;
+ 	sdev->sdev_gendev.type = &scsi_dev_type;
++	scsi_enable_async_suspend(&sdev->sdev_gendev);
+ 	dev_set_name(&sdev->sdev_gendev, "%d:%d:%d:%llu",
+ 		     sdev->host->host_no, sdev->channel, sdev->id, sdev->lun);
+ 
+--- a/drivers/scsi/sd.c
++++ b/drivers/scsi/sd.c
+@@ -3505,7 +3505,6 @@ static int sd_remove(struct device *dev)
+ 	sdkp = dev_get_drvdata(dev);
+ 	scsi_autopm_get_device(sdkp->device);
+ 
+-	async_synchronize_full_domain(&scsi_sd_pm_domain);
+ 	device_del(&sdkp->dev);
+ 	del_gendisk(sdkp->disk);
+ 	sd_shutdown(dev);
 
 
 
