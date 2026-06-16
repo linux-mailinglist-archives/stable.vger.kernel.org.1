@@ -1,67 +1,60 @@
-Return-Path: <stable+bounces-264840-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265355-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id WZsgKlh9MWrLkgUAu9opvQ
-	(envelope-from <stable+bounces-264840-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:44:08 +0200
+	id LAZ0BUCHMWrulgUAu9opvQ
+	(envelope-from <stable+bounces-265355-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:26:24 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DA2969265B
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:44:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8C6C6931FC
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:26:23 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=cviYj3zZ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264840-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-264840-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="sg/D1cag";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265355-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-265355-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3E84430398B4
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:42:49 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 269883032E48
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:26:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9690F4779B1;
-	Tue, 16 Jun 2026 16:42:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B302466B5E;
+	Tue, 16 Jun 2026 17:26:22 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5264B328610;
-	Tue, 16 Jun 2026 16:42:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1648D449EA8;
+	Tue, 16 Jun 2026 17:26:21 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781628166; cv=none; b=R1jOY+tckoE6cGGFoW3q6iM5+ANXmNryxLk5rE4eFOkZAMdGxXioRiCda5cDa8UP9Ly86LmznuFHyvWuEXHsQquEeii8pb9t00qLPxyzYi4I7NuzMql+fosfErJz2g+u+MVbExESWS8RDmwEInbNAq5Njh2qAxhwWPQ6zkqzVew=
+	t=1781630782; cv=none; b=Sk5VrQCNkJS/xfx9l6MIEZtCVRJkEmaf4jOtjYDkeP0YboMnMX0jXHaCBxrfR0OHh3kmoBGIqQfWq96uw0jW7LA+ZKLTmRyyI7UC8zU+w4ADZlywpgCTxeS7FKZq/+m12/RbDtmHIRNfYXL+v625RvNsSGbUqYYehcdOzKidcFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781628166; c=relaxed/simple;
-	bh=q3VXbqYUTV4wqTcmC1q+VcubCCRMRAOfG1Vf+qW6tRE=;
+	s=arc-20240116; t=1781630782; c=relaxed/simple;
+	bh=/SYzOVX1ZpL1uahSHBiZXX1bJD9+fVbXfqccCW4KpBQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bqoqn4i1hmH3+QHHZYJp9yUic35xpUzuyKWHV8sl7OcHSUlAiZ25MIGWqd5JT+ToOLXPWi+YG6Jrj/9ObHQKN02xzrmUGaE+MvvqMhqhzQE5q1n0cWXa9Po0sqSzenE+jqkTUUXjHZ/NA/EQ3+wGvZyVwCrOL4uOBNRhFJ9p7xE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cviYj3zZ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5464C1F00A3A;
-	Tue, 16 Jun 2026 16:42:43 +0000 (UTC)
+	 MIME-Version; b=dkZlhg4zSNm2H99AY71wAXYhWSKRv/ee7dQX7S3oxcrkGoXiNIyfj2p8H0m1ntqYep2ksYqirolNMBdhBl3QZzjLwrr9Fl/56hl3H6Jjf7LdpYFu19D0AcWY/TzO9Ib1fWGovtoOHyOKbDggRsWnQDZ4SQlFN2kD4yiXS7O8BTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sg/D1cag; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01D8C1F000E9;
+	Tue, 16 Jun 2026 17:26:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781628165;
-	bh=neEJK5SDAORcQ2JA6KX9XHpmxQh4xYbCtjX7lrPpa3c=;
+	s=korg; t=1781630781;
+	bh=w2T0GHtgpOkaFo8hN4Y5bMIs8sP9QMk2jhxc/DKq1vg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=cviYj3zZtn8ACuTkisjo++cZ+OvyK//22yaNyqoDv06Uc/a6bjrQiCs6atcnKet5P
-	 zCJ+eJvbEqMafJ38LEIhqX6rHSC2O09wssN0395FVUIZIP0yTnb4PHT8YgbIXpjWjP
-	 9N9iGHH+HJfAYKOUiiM1alVCdIt9HU2iRyvsuDT8=
+	b=sg/D1cagkR1I02ostwjBGYZYWcTbk209CbguS7A1hhm1YO3dg6rdg+Kr8KpFcpJ72
+	 RXNGgwE5J1qH4zWegsm4yvmHlkPVuUU2o6RpWVNtbDvlAwcSW7ac3wMysLyMKy5+hm
+	 EOVzSWSCuHbr4vGve6trlP45SvlMEkwQYiQksWcI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Luxiao Xu <rakukuip@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Florian Westphal <fw@strlen.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 014/452] netfilter: ebtables: fix OOB read in compat_mtw_from_user
+	Stepan Ionichev <sozdayvek@gmail.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: [PATCH 6.1 094/522] auxdisplay: line-display: fix OOB read on zero-length message_store()
 Date: Tue, 16 Jun 2026 20:24:01 +0530
-Message-ID: <20260616145118.555665929@linuxfoundation.org>
+Message-ID: <20260616145130.294673748@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -83,14 +76,14 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	TAGGED_FROM(0.00)[bounces-264840-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:yuantan098@gmail.com,m:yifanwucs@gmail.com,m:tomapufckgml@gmail.com,m:bird@lzu.edu.cn,m:rakukuip@gmail.com,m:n05ec@lzu.edu.cn,m:fmancera@suse.de,m:fw@strlen.de,m:sashal@kernel.org,s:lists@lfdr.de];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-265355-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:sozdayvek@gmail.com,m:andriy.shevchenko@linux.intel.com,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,suse.de,strlen.de,kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.intel.com];
 	FORWARDED(0.00)[lists@lfdr.de];
 	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -101,120 +94,75 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,strlen.de:email,vger.kernel.org:from_smtp,lzu.edu.cn:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,intel.com:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3DA2969265B
+X-Rspamd-Queue-Id: A8C6C6931FC
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Stepan Ionichev <sozdayvek@gmail.com>
 
-[ Upstream commit f438d1786d657d57790c5d138d6db3fc9fdac392 ]
+commit a7511dcd9dd4bc55d123f9b800c8a4ed2662e5c6 upstream.
 
-Luxiao Xu says:
+linedisp_display() unconditionally reads msg[count - 1] before
+checking whether count is zero, so a write of zero bytes to the
+message sysfs attribute hits msg[-1]:
 
- The function compat_mtw_from_user() converts ebtables extensions from
- 32-bit user structures to kernel native structures. However, it lacks
- proper validation of the user-supplied match_size/target_size.
+	write(fd, "", 0);
 
- When certain extensions are processed, the kernel-side translation
- logic may perform memory accesses based on the extension's expected
- size. If the user provides a size smaller than what the extension
- requires, it results in an out-of-bounds read as reported by KASAN.
+	-> message_store(..., buf, count=0)
+	   -> linedisp_display(linedisp, buf, count=0)
+	      -> msg[count - 1] == '\n'  ; OOB read
 
- This fix introduces a check to ensure match_size is at least as large
- as the extension's required compatsize. This covers matches, watchers,
- and targets, while maintaining compatibility with standard targets.
+The kernfs write buffer for that store is a 1-byte allocation
+(kernfs_fop_write_iter() does kmalloc(len + 1) with len == 0),
+so msg[-1] is a 1-byte read before the slab object. On a
+KASAN-enabled kernel this trips an out-of-bounds report and
+panics; on stock kernels it silently reads adjacent slab data
+and, if that byte happens to be '\n', the following count--
+wraps ssize_t 0 to -1 and is then passed to kmemdup_nul().
 
-AFAIU this is relevant for matches that need to go though
-match->compat_from_user() call.  Those that use plain memcpy with the
-user-provided size are ok because the caller checks that size vs the
-start of the next rule entry offset (which itself is checked vs. total
-size copied from userspace).
+linedisp_display() is reached from the message_store() sysfs
+callback (drivers/auxdisplay/line-display.c message attribute,
+mode 0644) and from the in-tree initial-message setup with
+count == -1, so the OOB path is only userspace-triggerable via
+zero-byte writes; vfs_write() does not short-circuit on
+count == 0 and kernfs_fop_write_iter() dispatches the store
+callback regardless.
 
-The ->compat_from_user() callbacks assume they can read compatsize bytes,
-so they need this extra check.
+Guard the trailing-newline trim with a count check. The
+existing if (!count) block then takes the clear-display path
+unchanged.
 
-Based on an earlier patch from Luxiao Xu.
+Affects every auxdisplay driver that registers via
+linedisp_register() / linedisp_attach(): ht16k33, max6959,
+img-ascii-lcd, seg-led-gpio.
 
-Fixes: 81e675c227ec ("netfilter: ebtables: add CONFIG_COMPAT support")
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Luxiao Xu <rakukuip@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 7e76aece6f03 ("auxdisplay: Extract character line display core support")
+Signed-off-by: Stepan Ionichev <sozdayvek@gmail.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bridge/netfilter/ebtables.c | 30 ++++++++++++++++++++++++++++++
- 1 file changed, 30 insertions(+)
+ drivers/auxdisplay/line-display.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/bridge/netfilter/ebtables.c b/net/bridge/netfilter/ebtables.c
-index f99e348c8f37fa..bc69406d103df6 100644
---- a/net/bridge/netfilter/ebtables.c
-+++ b/net/bridge/netfilter/ebtables.c
-@@ -1952,6 +1952,25 @@ enum compat_mwt {
- 	EBT_COMPAT_TARGET,
- };
+--- a/drivers/auxdisplay/line-display.c
++++ b/drivers/auxdisplay/line-display.c
+@@ -80,7 +80,7 @@ static int linedisp_display(struct lined
+ 		count = strlen(msg);
  
-+static bool match_size_ok(const struct xt_match *match, unsigned int match_size)
-+{
-+	u16 csize;
-+
-+	if (match->matchsize == -1) /* cannot validate ebt_among */
-+		return true;
-+
-+	csize = match->compatsize ? : match->matchsize;
-+
-+	return match_size >= csize;
-+}
-+
-+static bool tgt_size_ok(const struct xt_target *tgt, unsigned int tgt_size)
-+{
-+	u16 csize = tgt->compatsize ? : tgt->targetsize;
-+
-+	return tgt_size >= csize;
-+}
-+
- static int compat_mtw_from_user(const struct compat_ebt_entry_mwt *mwt,
- 				enum compat_mwt compat_mwt,
- 				struct ebt_entries_buf_state *state,
-@@ -1977,6 +1996,11 @@ static int compat_mtw_from_user(const struct compat_ebt_entry_mwt *mwt,
- 		if (IS_ERR(match))
- 			return PTR_ERR(match);
+ 	/* if the string ends with a newline, trim it */
+-	if (msg[count - 1] == '\n')
++	if (count && msg[count - 1] == '\n')
+ 		count--;
  
-+		if (!match_size_ok(match, match_size)) {
-+			module_put(match->me);
-+			return -EINVAL;
-+		}
-+
- 		off = ebt_compat_match_offset(match, match_size);
- 		if (dst) {
- 			if (match->compat_from_user)
-@@ -1996,6 +2020,12 @@ static int compat_mtw_from_user(const struct compat_ebt_entry_mwt *mwt,
- 					    mwt->u.revision);
- 		if (IS_ERR(wt))
- 			return PTR_ERR(wt);
-+
-+		if (!tgt_size_ok(wt, match_size)) {
-+			module_put(wt->me);
-+			return -EINVAL;
-+		}
-+
- 		off = xt_compat_target_offset(wt);
- 
- 		if (dst) {
--- 
-2.53.0
-
+ 	if (!count) {
 
 
 
