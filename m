@@ -1,61 +1,65 @@
-Return-Path: <stable+bounces-264700-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264420-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ZvAbHm59MWrYkgUAu9opvQ
-	(envelope-from <stable+bounces-264700-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:44:30 +0200
+	id vUzyGAt2MWqojwUAu9opvQ
+	(envelope-from <stable+bounces-264420-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:12:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73D7B692686
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:44:29 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A601A691D13
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:12:58 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=mAl6VybA;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264700-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-264700-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=viG5SQkd;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264420-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264420-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1AECB306E7A9
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:29:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 139E73184F0F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:03:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C5C9472771;
-	Tue, 16 Jun 2026 16:29:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7EFB450917;
+	Tue, 16 Jun 2026 16:03:09 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E30164534B9;
-	Tue, 16 Jun 2026 16:29:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90BA644DB6D;
+	Tue, 16 Jun 2026 16:03:08 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781627379; cv=none; b=FbV4fH1i/5Stge/Tf6bRtoqIDpbuljESjqlo6j0PyFKCrrceMGGKO/CJ90fId17ziv+LJEN5iXYx6xUhUMkR5o45aG89f+MNO/OQjh0hTOFoaNH3s1mJw/5ituhn4q8ggbvwZMtAXUJOpfGpD+s/b3ZkSzBeDo4yfiAxazVBo7o=
+	t=1781625789; cv=none; b=CMWE34HwGGEb7uW9Y8DqIWXxpQ6jkSWUM9D4mNBR0E1BpWA14cPRIgOEqxME/555AFjMQO7ncIfxxRYcKJwUd/4iBMVgnWLK8+L/spWqdjTVWPCszZGnS8I7RdxX9MJS1Rohm2Wpafh6Ffi8Zl+4yMcT4AB+/ymvYHIIE3Ip0/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781627379; c=relaxed/simple;
-	bh=zwBuQHcn9Xe6FfiDAIduVlOuDIE7hKjJqZ/cXCPkSDY=;
+	s=arc-20240116; t=1781625789; c=relaxed/simple;
+	bh=AIfPuUfrrz0E/iSL0E7tmd4j0c1FM2d5zWDpKkKKHQE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bz3Dbys8BQlnao7Zmbg6Fs9xAMXkyhkGxbjTRoLvpj1bM/pfZS/Y5LaTGstqOkjRpwvoVGYvZbUWAK0nqfaLVUzBzgcdIy6lD4Cu8I68WW8KpZTiKc9WRirx+tl6p9ARmvR7Aj5XOdB6qAu6xpJzn5fe/gLLL0VbWmQwaYX90CY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mAl6VybA; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9292D1F000E9;
-	Tue, 16 Jun 2026 16:29:34 +0000 (UTC)
+	 MIME-Version; b=XZDjQp7kwVLdkxqQFyWsq09K6iIcM+Spiya/vtpkL11YBnlCrKc36iKPqJlAeBtJtM/YxA8CI1eFMXlXjY3kMF/tBXpDEQteH1a0rP0E4pSz0ZcjwWHCfO3sHinfSNCVtdMYuvsD85VMMlIPqKLg2j3O6VoW2j+MGyknaqSNgf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=viG5SQkd; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C9E41F000E9;
+	Tue, 16 Jun 2026 16:03:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781627378;
-	bh=NwOlaPCrHiipU6YoHpRAB1p/5bKT/qoDuTotWpwcDis=;
+	s=korg; t=1781625788;
+	bh=kjr9ur1lYIdjDOlQ5meoCQJdMCYBg6et8mbP4rwcaqM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=mAl6VybAmvUybl0/J06gQRoXsDvCQfvzoa+DF/PUE+zSq5jDKbpuGd9hVMJeBEU5Z
-	 7SlGKHFRqIHTQFf93Vv2Xt5ObuZZ1Hk9qYsvGwyCgE8cwFDLgDfxwG1ayhsff5vzXf
-	 OAFZnWHQ+wVjBBkwVaxFUqgdHmaKppN4PEuwnMk0=
+	b=viG5SQkdEOslgamgFH34Poi/N3bDvkI8O3qGpAxTpER5yWSgFNjhWioRQK3J14lrm
+	 kppaf6NTm2h6bHzDVppJyE9SHXDmPWT2nneaamm6rjy3nnvwxyeLhOrcLBqYRFEFl0
+	 BaC3YYgyuavpGXmcsgln4uUG/lDwMF+AuIcL0/+I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alon Kariv <alonka@amazon.com>,
-	Amit Matityahu <amitmat@amazon.com>,
-	Thomas Gleixner <tglx@kernel.org>
-Subject: [PATCH 6.12 164/261] timers/migration: Fix livelock in tmigr_handle_remote_up()
+	stable@kernel.org,
+	Yuan Tan <yuantan098@gmail.com>,
+	Zhengchuan Liang <zcliangcn@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Yuqi Xu <xuyuqiabc@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.18 206/325] wifi: nl80211: reject oversized EMA RNR lists
 Date: Tue, 16 Jun 2026 20:30:02 +0530
-Message-ID: <20260616145052.672081984@linuxfoundation.org>
+Message-ID: <20260616145108.310926026@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
-References: <20260616145044.869532709@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,94 +76,81 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264700-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:alonka@amazon.com,m:amitmat@amazon.com,m:tglx@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,intel.com];
+	TAGGED_FROM(0.00)[bounces-264420-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:yuantan098@gmail.com,m:zcliangcn@gmail.com,m:bird@lzu.edu.cn,m:xuyuqiabc@gmail.com,m:n05ec@lzu.edu.cn,m:johannes.berg@intel.com,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,lzu.edu.cn:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 73D7B692686
+X-Rspamd-Queue-Id: A601A691D13
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amit Matityahu <amitmat@amazon.com>
+From: Yuqi Xu <xuyuqiabc@gmail.com>
 
-commit d486b4934a8e504376b85cdb3766f306d57aff5b upstream.
+commit 4cd92957e8f8cc4ebfe8a5d4203c14c592fde6b1 upstream.
 
-tmigr_handle_remote_cpu() skips timer_expire_remote() when cpu ==
-smp_processor_id(), assuming the local softirq path already handled this
-CPU's timers.
+nl80211_parse_rnr_elems() stores the parsed element count in a
+u8-backed cfg80211_rnr_elems::cnt field and uses that count to size
+the flexible array allocation.
 
-This assumption is wrong because jiffies can advance after the handling of
-the CPU's global timers in run_timer_base(BASE_GLOBAL) and before
-tmigr_handle_remote() evaluates the expiry times.
+Reject nested NL80211_ATTR_EMA_RNR_ELEMS input once the count reaches
+255, before incrementing it again. This keeps the parser aligned with
+the data structure it fills and matches the existing bound check used
+by nl80211_parse_mbssid_elems().
 
-As a consequence a timer which expires after the CPU local timer wheel
-advanced and becomes expired in the remote handling is ignored and the
-callback is never invoked and removed from the timer wheel.
-
-What's worse is that fetch_next_timer_interrupt_remote() keeps reporting it
-as expired, and the event is re-queued with expires == now on each
-iteration.  The goto-again loop spins indefinitely.
-
-Fix this by calling timer_expire_remote() unconditionally. That's minimal
-overhead for the common case as __run_timer_base() returns immediately if
-there is nothing to expire in the local wheel.
-
-[ tglx: Amend change log and add a comment ]
-
-Fixes: 7ee988770326 ("timers: Implement the hierarchical pull model")
-Reported-by: Alon Kariv <alonka@amazon.com>
-Signed-off-by: Amit Matityahu <amitmat@amazon.com>
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260603170139.33628-1-amitmat@amazon.com
+Fixes: dbbb27e183b1 ("cfg80211: support RNR for EMA AP")
+Cc: stable@kernel.org
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Zhengchuan Liang <zcliangcn@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Assisted-by: Codex:gpt-5.4
+Signed-off-by: Yuqi Xu <xuyuqiabc@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Link: https://patch.msgid.link/20260529152542.1412734-1-n05ec@lzu.edu.cn
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/time/timer_migration.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ net/wireless/nl80211.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/kernel/time/timer_migration.c
-+++ b/kernel/time/timer_migration.c
-@@ -931,8 +931,12 @@ static void tmigr_handle_remote_cpu(unsi
- 	/* Drop the lock to allow the remote CPU to exit idle */
- 	raw_spin_unlock_irq(&tmc->lock);
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -6079,6 +6079,9 @@ nl80211_parse_rnr_elems(struct wiphy *wi
+ 		if (ret)
+ 			return ERR_PTR(ret);
  
--	if (cpu != smp_processor_id())
--		timer_expire_remote(cpu);
-+	/*
-+	 * This can't exclude the local CPU because jiffies might have advanced
-+	 * after the timer softirq invoked run_timer_base(BASE_GLOBAL) and the
-+	 * point where the jiffies snapshot @jif was taken in tmigr_handle_remote().
-+	 */
-+	timer_expire_remote(cpu);
++		if (num_elems >= 255)
++			return ERR_PTR(-EINVAL);
++
+ 		num_elems++;
+ 	}
  
- 	/*
- 	 * Lock ordering needs to be preserved - timer_base locks before tmigr
 
 
 
