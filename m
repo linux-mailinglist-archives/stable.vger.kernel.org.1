@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-266448-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265662-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id bpcOONKdMWpIoQUAu9opvQ
-	(envelope-from <stable+bounces-266448-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:02:42 +0200
+	id H3PaK2CNMWrgmQUAu9opvQ
+	(envelope-from <stable+bounces-265662-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:52:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E6D2694AEE
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:02:42 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE7E2693926
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:52:31 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=tL1myVX3;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266448-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-266448-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ePbo34HF;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265662-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265662-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D22DE30C275F
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:01:09 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 08E113001199
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:52:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 865EA3DD51C;
-	Tue, 16 Jun 2026 19:01:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FB6E47A0A9;
+	Tue, 16 Jun 2026 17:52:25 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E34D349CF0;
-	Tue, 16 Jun 2026 19:01:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADB1D45BD78;
+	Tue, 16 Jun 2026 17:52:21 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781636468; cv=none; b=TzudmwrDfyknecDC+0pwhDv7jAsrjy400cDyrKGBH9cnExC607w/0VAIXtcmxvV7zII6JhulJMCa9+HKDPCLo5o6N4mLSDq3/eiXu9/nTe2RMBOGyESQ1LM9qgja+u0ftstpuaw+z3N12DIFZHAe/6+df/Tb1f3h1Uxq3eto5Sg=
+	t=1781632344; cv=none; b=H0nL+pWodj8Ex/GOdElp2Cg5OKbYCV7Zt35gM74K043n3jg7G4+C7nSgyIZUnjk+76EWco4ya7mP4v0q0V2UO4MCkUWda/kN8zHzx2/0HT+yWCa9FT5jFkze820Rhna1A6blki8e7/LBKn/LtEC22qhvnfH1NHPbH/t20GCxn8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781636468; c=relaxed/simple;
-	bh=OUBSuenhVX3Tmb7+hSoi9yUKcZhabuyUkcCBLg+WUtI=;
+	s=arc-20240116; t=1781632344; c=relaxed/simple;
+	bh=m86AibhHYY/2ti/KV0rbQDtAI7awSBgm0SzsFdpZHzc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N13P2UGb1d9H02yeU3o7LdvH8x66wxTRiA65UUD549FXhzWinKgVefqWcfmGKYEJqB+8HIcj/ud5mRY3r27dVAFFtzJDMrKh2whM6Vc2cEXlOjjjOVA7OlrUqZ49rYNTXcUzSXmsSAQDvfeSE9548vckaPYHlUvj7XwIMxTNZrs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tL1myVX3; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E31E1F000E9;
-	Tue, 16 Jun 2026 19:01:05 +0000 (UTC)
+	 MIME-Version; b=hdDBaVXqY9tjyL+1+6FKYN9jGpTnv6b4ayFn5ei7ydsGIryaI9ZSmlS4qYn9MSEvL1bmJ7QbAaFnkAtdQByH3rV3S29M1ocNP9fXqUThWNG0Tn2cDwoVrLBxHt9XBX6ZTCjOq2RfnIt44MGqZ+67ttQNlQ89qm4KtqWC97t6QqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ePbo34HF; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 481651F000E9;
+	Tue, 16 Jun 2026 17:52:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781636467;
-	bh=Yllhu6vPvMe4/azqmps06OdcNIpnfdMd2/pcr2y/1m8=;
+	s=korg; t=1781632341;
+	bh=gtbHPRg96AYk48B5h8Kost19nkS0GqN5jS94AIwsTY0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=tL1myVX3m/Cqd/2h3frkjOQWtPHhTNZah/lTBIyEHUM9qf+UQzGGSeBAO9rnumFRk
-	 rtoOa7C54511m0Vt8jfAiCy4nXkR5NqjWfCBVMxzZvMNrxM3unFZbHnt+lELjs5pnH
-	 iGjtsBqqrM/wcOFeL3JjALJaV/rVAsO+etb9M9eQ=
+	b=ePbo34HFosO6vz0r8TIm7fizUSWuId2sbmEXd5AG4IjLf2R9Ya7cA8VRUcM2770qe
+	 iGOWSxLn8bQ7xvQyt9hRR0eOHcXNz9cPrdeAmNKM2RHSE1pMgMveKJvJWfrj7uhL+w
+	 zaTlpGo4BcGN7UAypnzj+Msxu24nLTcpwaT1DPtA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuvam Pandey <shuvampandey1@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Pei Xiao <xiaopei01@kylinos.cn>,
+	Michal Simek <michal.simek@amd.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 243/342] Bluetooth: hci_event: fix potential UAF in SSP passkey handlers
+Subject: [PATCH 6.1 392/522] spi: zynq-qspi: Simplify clock handling with devm_clk_get_enabled()
 Date: Tue, 16 Jun 2026 20:28:59 +0530
-Message-ID: <20260616145059.533735001@linuxfoundation.org>
+Message-ID: <20260616145144.147028794@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,130 +70,177 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-266448-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:shuvampandey1@gmail.com,m:luiz.von.dentz@intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-265662-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:xiaopei01@kylinos.cn,m:michal.simek@amd.com,m:broonie@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,kylinos.cn:email,amd.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5E6D2694AEE
+X-Rspamd-Queue-Id: AE7E2693926
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuvam Pandey <shuvampandey1@gmail.com>
+From: Pei Xiao <xiaopei01@kylinos.cn>
 
-[ Upstream commit 85fa3512048793076eef658f66489112dcc91993 ]
+[ Upstream commit 1f8fd9490e3184e9a2394df2e682901a1d57ce71 ]
 
-hci_conn lookup and field access must be covered by hdev lock in
-hci_user_passkey_notify_evt() and hci_keypress_notify_evt(), otherwise
-the connection can be freed concurrently.
+Replace devm_clk_get() followed by clk_prepare_enable() with
+devm_clk_get_enabled() for both "pclk" and "ref_clk". This removes
+the need for explicit clock enable and disable calls, as the managed
+API automatically disables the clocks on device removal or probe
+failure.
 
-Extend the hci_dev_lock critical section to cover all conn usage in both
-handlers.
+Remove the now-unnecessary clk_disable_unprepare() calls from the
+probe error paths and the remove callback. Simplify error handling
+by jumping directly to the remove_ctlr label.
 
-Keep the existing keypress notification behavior unchanged by routing
-the early exits through a common unlock path.
-
-Fixes: 92a25256f142 ("Bluetooth: mgmt: Implement support for passkey notification")
-Cc: stable@vger.kernel.org
-Signed-off-by: Shuvam Pandey <shuvampandey1@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
+Acked-by: Michal Simek <michal.simek@amd.com>
+Link: https://patch.msgid.link/24043625f89376da36feca2408f990a85be7ab36.1775555500.git.xiaopei01@kylinos.cn
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: c9c012706c9f ("spi: zynq-qspi: fix controller deregistration")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/hci_event.c |   18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
+ drivers/spi/spi-zynq-qspi.c |   42 ++++++------------------------------------
+ 1 file changed, 6 insertions(+), 36 deletions(-)
 
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -4842,9 +4842,11 @@ static void hci_user_passkey_notify_evt(
+--- a/drivers/spi/spi-zynq-qspi.c
++++ b/drivers/spi/spi-zynq-qspi.c
+@@ -379,21 +379,10 @@ static int zynq_qspi_setup_op(struct spi
+ {
+ 	struct spi_controller *ctlr = spi->controller;
+ 	struct zynq_qspi *qspi = spi_controller_get_devdata(ctlr);
+-	int ret;
  
- 	BT_DBG("%s", hdev->name);
+ 	if (ctlr->busy)
+ 		return -EBUSY;
  
-+	hci_dev_lock(hdev);
-+
- 	conn = hci_conn_hash_lookup_ba(hdev, ACL_LINK, &ev->bdaddr);
- 	if (!conn)
--		return;
-+		goto unlock;
+-	ret = clk_enable(qspi->refclk);
+-	if (ret)
+-		return ret;
+-
+-	ret = clk_enable(qspi->pclk);
+-	if (ret) {
+-		clk_disable(qspi->refclk);
+-		return ret;
+-	}
+-
+ 	zynq_qspi_write(qspi, ZYNQ_QSPI_ENABLE_OFFSET,
+ 			ZYNQ_QSPI_ENABLE_ENABLE_MASK);
  
- 	conn->passkey_notify = __le32_to_cpu(ev->passkey);
- 	conn->passkey_entered = 0;
-@@ -4853,6 +4855,9 @@ static void hci_user_passkey_notify_evt(
- 		mgmt_user_passkey_notify(hdev, &conn->dst, conn->type,
- 					 conn->dst_type, conn->passkey_notify,
- 					 conn->passkey_entered);
-+
-+unlock:
-+	hci_dev_unlock(hdev);
- }
- 
- static void hci_keypress_notify_evt(struct hci_dev *hdev, struct sk_buff *skb)
-@@ -4862,14 +4867,16 @@ static void hci_keypress_notify_evt(stru
- 
- 	BT_DBG("%s", hdev->name);
- 
-+	hci_dev_lock(hdev);
-+
- 	conn = hci_conn_hash_lookup_ba(hdev, ACL_LINK, &ev->bdaddr);
- 	if (!conn)
--		return;
-+		goto unlock;
- 
- 	switch (ev->type) {
- 	case HCI_KEYPRESS_STARTED:
- 		conn->passkey_entered = 0;
--		return;
-+		goto unlock;
- 
- 	case HCI_KEYPRESS_ENTERED:
- 		conn->passkey_entered++;
-@@ -4884,13 +4891,16 @@ static void hci_keypress_notify_evt(stru
- 		break;
- 
- 	case HCI_KEYPRESS_COMPLETED:
--		return;
-+		goto unlock;
+@@ -659,7 +648,7 @@ static int zynq_qspi_probe(struct platfo
+ 		goto remove_ctlr;
  	}
  
- 	if (hci_dev_test_flag(hdev, HCI_MGMT))
- 		mgmt_user_passkey_notify(hdev, &conn->dst, conn->type,
- 					 conn->dst_type, conn->passkey_notify,
- 					 conn->passkey_entered);
-+
-+unlock:
-+	hci_dev_unlock(hdev);
+-	xqspi->pclk = devm_clk_get(&pdev->dev, "pclk");
++	xqspi->pclk = devm_clk_get_enabled(&pdev->dev, "pclk");
+ 	if (IS_ERR(xqspi->pclk)) {
+ 		dev_err(&pdev->dev, "pclk clock not found.\n");
+ 		ret = PTR_ERR(xqspi->pclk);
+@@ -668,36 +657,24 @@ static int zynq_qspi_probe(struct platfo
+ 
+ 	init_completion(&xqspi->data_completion);
+ 
+-	xqspi->refclk = devm_clk_get(&pdev->dev, "ref_clk");
++	xqspi->refclk = devm_clk_get_enabled(&pdev->dev, "ref_clk");
+ 	if (IS_ERR(xqspi->refclk)) {
+ 		dev_err(&pdev->dev, "ref_clk clock not found.\n");
+ 		ret = PTR_ERR(xqspi->refclk);
+ 		goto remove_ctlr;
+ 	}
+ 
+-	ret = clk_prepare_enable(xqspi->pclk);
+-	if (ret) {
+-		dev_err(&pdev->dev, "Unable to enable APB clock.\n");
+-		goto remove_ctlr;
+-	}
+-
+-	ret = clk_prepare_enable(xqspi->refclk);
+-	if (ret) {
+-		dev_err(&pdev->dev, "Unable to enable device clock.\n");
+-		goto clk_dis_pclk;
+-	}
+-
+ 	xqspi->irq = platform_get_irq(pdev, 0);
+ 	if (xqspi->irq < 0) {
+ 		ret = xqspi->irq;
+-		goto clk_dis_all;
++		goto remove_ctlr;
+ 	}
+ 	ret = devm_request_irq(&pdev->dev, xqspi->irq, zynq_qspi_irq,
+ 			       0, pdev->name, xqspi);
+ 	if (ret != 0) {
+ 		ret = -ENXIO;
+ 		dev_err(&pdev->dev, "request_irq failed\n");
+-		goto clk_dis_all;
++		goto remove_ctlr;
+ 	}
+ 
+ 	ret = of_property_read_u32(np, "num-cs",
+@@ -707,7 +684,7 @@ static int zynq_qspi_probe(struct platfo
+ 	} else if (num_cs > ZYNQ_QSPI_MAX_NUM_CS) {
+ 		ret = -EINVAL;
+ 		dev_err(&pdev->dev, "only 2 chip selects are available\n");
+-		goto clk_dis_all;
++		goto remove_ctlr;
+ 	} else {
+ 		ctlr->num_chipselect = num_cs;
+ 	}
+@@ -725,15 +702,11 @@ static int zynq_qspi_probe(struct platfo
+ 	ret = devm_spi_register_controller(&pdev->dev, ctlr);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "devm_spi_register_controller failed\n");
+-		goto clk_dis_all;
++		goto remove_ctlr;
+ 	}
+ 
+ 	return ret;
+ 
+-clk_dis_all:
+-	clk_disable_unprepare(xqspi->refclk);
+-clk_dis_pclk:
+-	clk_disable_unprepare(xqspi->pclk);
+ remove_ctlr:
+ 	spi_controller_put(ctlr);
+ 
+@@ -755,9 +728,6 @@ static void zynq_qspi_remove(struct plat
+ 	struct zynq_qspi *xqspi = platform_get_drvdata(pdev);
+ 
+ 	zynq_qspi_write(xqspi, ZYNQ_QSPI_ENABLE_OFFSET, 0);
+-
+-	clk_disable_unprepare(xqspi->refclk);
+-	clk_disable_unprepare(xqspi->pclk);
  }
  
- static void hci_simple_pair_complete_evt(struct hci_dev *hdev,
+ static const struct of_device_id zynq_qspi_of_match[] = {
 
 
 
