@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-265887-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265449-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 1pTPHvuRMWr/mwUAu9opvQ
-	(envelope-from <stable+bounces-265887-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:12:11 +0200
+	id SNRSE32KMWpjmAUAu9opvQ
+	(envelope-from <stable+bounces-265449-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:40:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 189D4693E20
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:12:11 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BFA769359C
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:40:12 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=xe5BlAov;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265887-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-265887-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=gbqBQ3to;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265449-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-265449-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7DE71302F322
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:12:10 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 41EF6302CB62
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:34:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F07603D7D70;
-	Tue, 16 Jun 2026 18:12:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D497B46AF1E;
+	Tue, 16 Jun 2026 17:34:17 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A28DD3CEBBD;
-	Tue, 16 Jun 2026 18:12:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 919074502F;
+	Tue, 16 Jun 2026 17:34:16 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781633526; cv=none; b=Yg4lVxWRt3+H69y/gWUI2BPW7S4LA6wL8J9MkJtDcllo/SKTAgWOiiLlviXgDM3vM9n5uQ6bbDB8snUbLYD2JbGBJ2KPA8ejO486UTEhRWmpr1B/9W0os8hUMk6uXXdE0zQZpQQcrXGDqMkr0ZdyqWka/g3qisi1wvpsR4Yzusw=
+	t=1781631257; cv=none; b=Dq5cRQx16o0/NqdGXbD2P0Ri4AUrnXzLJgTXAOo0lh8IQR+pczHAZ/hw2QmbK8WxTYx4YveKnZX9dsyJ/i1lyjVoFUonbMEHBggD3C3eg6O7rIDL+DyIJMh5paRxslZRzK5qe3Y6WD8Z2eWnwgls1FRCYTTVIvSMgPAxBqxUmTk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781633526; c=relaxed/simple;
-	bh=jW8W8SwdjN/CyQIEpqfEgWZ/GdAn13/N81r0uod8WMQ=;
+	s=arc-20240116; t=1781631257; c=relaxed/simple;
+	bh=bNoojzieyQ4uVp5NWNNi01dXIJyh2uWbDaF5tpWDahs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d+UHpR6UVfWMvwFtoDHLdZLI8xrZsiWBC5puT7WCpRPT1TMCrquNyqPzZCLtLkPnPQ9jyy3CLyZqNZM71ZbZM8dJHT9jFnVzbxSFAvy/NCTBdtGZ8Y2QYBtxbB7HMS70Kpu+WkZ6LUK53QhD0PSP7qVRM/gtwzb2Rsza2HyJv98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xe5BlAov; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B21CD1F000E9;
-	Tue, 16 Jun 2026 18:12:04 +0000 (UTC)
+	 MIME-Version; b=i3QYZlJOvEuf187FU4d6xtUh9Y0sKreNx+WQOEitwopo3Tc8TYd1SK/U349h+0X+p1DAR4TJgX0JY0TfUtfivuyYCIC/fBV3Ht8QSStv64kmWCqv3MUz/+LItOfs+Y0e2XCLI3p23D20qrcEV49ULBf9WgjtWlWAFthtg0ApzoE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gbqBQ3to; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 919701F000E9;
+	Tue, 16 Jun 2026 17:34:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781633525;
-	bh=zolF99Ds+ExHFJ9FCYoHYCJkj4Nn0F0jEdxbJG66D/k=;
+	s=korg; t=1781631256;
+	bh=/+aDcqJBXXwwPnooYg/WyXyt5O6fim8bOt89eazf6DQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=xe5BlAovLVMn1fsYxLZPFbOo4dpD3UXd7w3M+f9Fz5LqEoX3+Z2sZZy1IuejcvXME
-	 elS5L+grcO4/JoTJ0XE44itEt8u18EgFkOYZeqAeJO2jDvDte7eNMMnHQpen5QKF0i
-	 4KSFJVozUoFqO0dl8eCIsNy9zf20UBHiexhyCf6o=
+	b=gbqBQ3tovwsSTJHI2BcksccVTY/HAq+GItvt3cUs+OxinGPiKram62XPWPH841pla
+	 ZSSX05JeBDa1SyimAQtmo4imA4pwnVZLgUW35H/8ojSoLyy3oouzidEsg11y2t+Wyv
+	 jOqlQeb3KcolNfVs9bE05G6vCmdlDh35ztJ0fkcQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maoyi Xie <maoyi.xie@ntu.edu.sg>,
-	Steffen Klassert <steffen.klassert@secunet.com>
-Subject: [PATCH 5.15 096/411] xfrm: route MIGRATE notifications to callers netns
+	"Maciej W. Rozycki" <macro@orcam.me.uk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 187/522] serial: dz: Fix bootconsole handover lockup
 Date: Tue, 16 Jun 2026 20:25:34 +0530
-Message-ID: <20260616145105.319261653@linuxfoundation.org>
+Message-ID: <20260616145134.862824309@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,21 +71,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265887-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265449-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:maoyi.xie@ntu.edu.sg,m:steffen.klassert@secunet.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:macro@orcam.me.uk,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -97,170 +97,113 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,secunet.com:email,ntu.edu.sg:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,orcam.me.uk:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 189D4693E20
+X-Rspamd-Queue-Id: 5BFA769359C
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maoyi Xie <maoyixie.tju@gmail.com>
+From: Maciej W. Rozycki <macro@orcam.me.uk>
 
-commit 7e2a4f7ca0952820731ef7bdadfc9a9e9d3571b4 upstream.
+commit 7f127b2208e5e2b817243cad41fe4211a6d5a7a3 upstream.
 
-xfrm_send_migrate() in net/xfrm/xfrm_user.c and pfkey_send_migrate()
-in net/key/af_key.c both hardcode &init_net for the multicast that
-announces a successful XFRM_MSG_MIGRATE / SADB_X_MIGRATE.
+Calling dz_reset() in the course of setting up the serial device causes
+line parameters to be reset and the transmitter disabled.  We've been
+lucky in that no message is usually produced to the kernel log between
+this call and the later call to uart_set_options() in the course of
+console setup done by dz_serial_console_init(), or the system would hang
+as the console output handler in the firmware tried to access a port the
+transmitter of which has been disabled and line parameters messed up.
 
-XFRM_MSG_MIGRATE arrives on a per-netns NETLINK_XFRM socket, and the
-rest of the xfrm/af_key netlink path was made netns-aware in 2008.
-The other 14 multicast paths in xfrm_user.c route their event using
-xs_net(x), xp_net(xp) or sock_net(skb->sk); only the migrate path
-was missed.
+This will change with the next change to the driver, so fix dz_reset()
+such that line parameters are set for 9600n8 console operation as with
+the system firmware and the transmitter re-enabled after reset.  This
+also means dz_pm() serves no purpose anymore, so drop it.
 
-Two consequences of the init_net hardcoding:
-
-  1. The notification (selector, old/new endpoint addresses, and the
-     km_address) is delivered to listeners on init_net's
-     XFRMNLGRP_MIGRATE / pfkey BROADCAST_ALL groups rather than on
-     the issuing netns. An IKE daemon running in init_net therefore
-     receives migration notifications originating from any other
-     netns on the host.
-
-  2. An IKE daemon running inside a non-init netns and subscribed
-     to its own XFRMNLGRP_MIGRATE / pfkey groups never receives the
-     notification of its own migration. IKEv2 MOBIKE / address-update
-     handling inside a netns is silently broken.
-
-Thread struct net through km_migrate() and the xfrm_mgr.migrate
-function pointer, drop the &init_net override in xfrm_send_migrate()
-and pfkey_send_migrate(), and pass the caller's net (already in
-scope in xfrm_migrate() via sock_net(skb->sk)) all the way down.
-struct xfrm_mgr is in-tree only and not exported as a stable API,
-so the function-pointer signature change is internal.
-
-pfkey_broadcast() is already netns-aware via net_generic(net,
-pfkey_net_id) since the pernet conversion. The five other
-pfkey_broadcast() callers in af_key.c already pass xs_net(x),
-sock_net(sk) or a per-netns net, so this only removes the
-&init_net outlier.
-
-Fixes: 5c79de6e79cd ("[XFRM]: User interface for handling XFRM_MSG_MIGRATE")
-Cc: stable@vger.kernel.org # v5.15+
-Signed-off-by: Maoyi Xie <maoyi.xie@ntu.edu.sg>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Fixes: e6ee512f5a77 ("dz.c: Resource management")
+Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Cc: stable@vger.kernel.org # v2.6.25+
+Link: https://patch.msgid.link/alpine.DEB.2.21.2605062302010.46195@angie.orcam.me.uk
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/xfrm.h     |    3 ++-
- net/key/af_key.c       |    6 +++---
- net/xfrm/xfrm_policy.c |    2 +-
- net/xfrm/xfrm_state.c  |    4 ++--
- net/xfrm/xfrm_user.c   |    5 ++---
- 5 files changed, 10 insertions(+), 10 deletions(-)
+ drivers/tty/serial/dz.c | 36 ++++++++++++------------------------
+ 1 file changed, 12 insertions(+), 24 deletions(-)
 
---- a/include/net/xfrm.h
-+++ b/include/net/xfrm.h
-@@ -584,6 +584,7 @@ struct xfrm_mgr {
- 					   const struct xfrm_migrate *m,
- 					   int num_bundles,
- 					   const struct xfrm_kmaddress *k,
-+					   struct net *net,
- 					   const struct xfrm_encap_tmpl *encap);
- 	bool			(*is_alive)(const struct km_event *c);
- };
-@@ -1684,7 +1685,7 @@ int xfrm_sk_policy_insert(struct sock *s
- #ifdef CONFIG_XFRM_MIGRATE
- int km_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
- 	       const struct xfrm_migrate *m, int num_bundles,
--	       const struct xfrm_kmaddress *k,
-+	       const struct xfrm_kmaddress *k, struct net *net,
- 	       const struct xfrm_encap_tmpl *encap);
- struct xfrm_state *xfrm_migrate_state_find(struct xfrm_migrate *m, struct net *net,
- 						u32 if_id);
---- a/net/key/af_key.c
-+++ b/net/key/af_key.c
-@@ -3548,7 +3548,7 @@ static int set_ipsecrequest(struct sk_bu
- #ifdef CONFIG_NET_KEY_MIGRATE
- static int pfkey_send_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
- 			      const struct xfrm_migrate *m, int num_bundles,
--			      const struct xfrm_kmaddress *k,
-+			      const struct xfrm_kmaddress *k, struct net *net,
- 			      const struct xfrm_encap_tmpl *encap)
+diff --git a/drivers/tty/serial/dz.c b/drivers/tty/serial/dz.c
+index a16738799418ca..d80bbd95a7f786 100644
+--- a/drivers/tty/serial/dz.c
++++ b/drivers/tty/serial/dz.c
+@@ -573,6 +573,18 @@ static void dz_reset(struct dz_port *dport)
+ 	while (dz_in(dport, DZ_CSR) & DZ_CLR);
+ 	iob();
+ 
++	/*
++	 * Set parameters across all lines such as not to interfere
++	 * with the initial PROM-based console.  Otherwise any output
++	 * produced before the console handover would cause the system
++	 * firmware to produce rubbish.
++	 */
++	for (int line = 0; line < DZ_NB_PORT; line++)
++		dz_out(dport, DZ_LPR, DZ_B9600 | DZ_CS8 | line);
++
++	/* Re-enable transmission for the initial PROM-based console.  */
++	dz_out(dport, DZ_TCR, tcr);
++
+ 	/* Enable scanning.  */
+ 	dz_out(dport, DZ_CSR, DZ_MSE);
+ 
+@@ -656,26 +668,6 @@ static void dz_set_termios(struct uart_port *uport, struct ktermios *termios,
+ 	spin_unlock_irqrestore(&dport->port.lock, flags);
+ }
+ 
+-/*
+- * Hack alert!
+- * Required solely so that the initial PROM-based console
+- * works undisturbed in parallel with this one.
+- */
+-static void dz_pm(struct uart_port *uport, unsigned int state,
+-		  unsigned int oldstate)
+-{
+-	struct dz_port *dport = to_dport(uport);
+-	unsigned long flags;
+-
+-	spin_lock_irqsave(&dport->port.lock, flags);
+-	if (state < 3)
+-		dz_start_tx(&dport->port);
+-	else
+-		dz_stop_tx(&dport->port);
+-	spin_unlock_irqrestore(&dport->port.lock, flags);
+-}
+-
+-
+ static const char *dz_type(struct uart_port *uport)
  {
- 	int i;
-@@ -3653,7 +3653,7 @@ static int pfkey_send_migrate(const stru
- 	}
+ 	return "DZ";
+@@ -771,7 +763,6 @@ static const struct uart_ops dz_ops = {
+ 	.startup	= dz_startup,
+ 	.shutdown	= dz_shutdown,
+ 	.set_termios	= dz_set_termios,
+-	.pm		= dz_pm,
+ 	.type		= dz_type,
+ 	.release_port	= dz_release_port,
+ 	.request_port	= dz_request_port,
+@@ -896,10 +887,7 @@ static int __init dz_console_setup(struct console *co, char *options)
+ 	if (ret)
+ 		return ret;
  
- 	/* broadcast migrate message to sockets */
--	pfkey_broadcast(skb, GFP_ATOMIC, BROADCAST_ALL, NULL, &init_net);
-+	pfkey_broadcast(skb, GFP_ATOMIC, BROADCAST_ALL, NULL, net);
+-	spin_lock_init(&dport->port.lock);	/* For dz_pm().  */
+-
+ 	dz_reset(dport);
+-	dz_pm(uport, 0, -1);
  
- 	return 0;
- 
-@@ -3664,7 +3664,7 @@ err:
- #else
- static int pfkey_send_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
- 			      const struct xfrm_migrate *m, int num_bundles,
--			      const struct xfrm_kmaddress *k,
-+			      const struct xfrm_kmaddress *k, struct net *net,
- 			      const struct xfrm_encap_tmpl *encap)
- {
- 	return -ENOPROTOOPT;
---- a/net/xfrm/xfrm_policy.c
-+++ b/net/xfrm/xfrm_policy.c
-@@ -4488,7 +4488,7 @@ int xfrm_migrate(const struct xfrm_selec
- 	}
- 
- 	/* Stage 5 - announce */
--	km_migrate(sel, dir, type, m, num_migrate, k, encap);
-+	km_migrate(sel, dir, type, m, num_migrate, k, net, encap);
- 
- 	xfrm_pol_put(pol);
- 
---- a/net/xfrm/xfrm_state.c
-+++ b/net/xfrm/xfrm_state.c
-@@ -2302,7 +2302,7 @@ EXPORT_SYMBOL(km_policy_expired);
- #ifdef CONFIG_XFRM_MIGRATE
- int km_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
- 	       const struct xfrm_migrate *m, int num_migrate,
--	       const struct xfrm_kmaddress *k,
-+	       const struct xfrm_kmaddress *k, struct net *net,
- 	       const struct xfrm_encap_tmpl *encap)
- {
- 	int err = -EINVAL;
-@@ -2313,7 +2313,7 @@ int km_migrate(const struct xfrm_selecto
- 	list_for_each_entry_rcu(km, &xfrm_km_list, list) {
- 		if (km->migrate) {
- 			ret = km->migrate(sel, dir, type, m, num_migrate, k,
--					  encap);
-+					  net, encap);
- 			if (!ret)
- 				err = ret;
- 		}
---- a/net/xfrm/xfrm_user.c
-+++ b/net/xfrm/xfrm_user.c
-@@ -2774,10 +2774,9 @@ out_cancel:
- 
- static int xfrm_send_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
- 			     const struct xfrm_migrate *m, int num_migrate,
--			     const struct xfrm_kmaddress *k,
-+			     const struct xfrm_kmaddress *k, struct net *net,
- 			     const struct xfrm_encap_tmpl *encap)
- {
--	struct net *net = &init_net;
- 	struct sk_buff *skb;
- 	int err;
- 
-@@ -2795,7 +2794,7 @@ static int xfrm_send_migrate(const struc
- #else
- static int xfrm_send_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
- 			     const struct xfrm_migrate *m, int num_migrate,
--			     const struct xfrm_kmaddress *k,
-+			     const struct xfrm_kmaddress *k, struct net *net,
- 			     const struct xfrm_encap_tmpl *encap)
- {
- 	return -ENOPROTOOPT;
+ 	if (options)
+ 		uart_parse_options(options, &baud, &parity, &bits, &flow);
+-- 
+2.53.0
+
 
 
 
