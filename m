@@ -1,62 +1,63 @@
-Return-Path: <stable+bounces-264172-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264427-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id i1XIJBBxMWqojQUAu9opvQ
-	(envelope-from <stable+bounces-264172-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:51:44 +0200
+	id wvKKCu92MWr9jwUAu9opvQ
+	(envelope-from <stable+bounces-264427-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:16:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C743691723
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:51:44 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81C28691E13
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:16:46 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=cS9GuvQk;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264172-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264172-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="eSwq4/vG";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264427-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264427-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C605E30BB20B
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:42:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 083FB337B479
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:04:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 108D1450906;
-	Tue, 16 Jun 2026 15:41:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A123545BD6F;
+	Tue, 16 Jun 2026 16:03:45 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0FC744CAE6;
-	Tue, 16 Jun 2026 15:41:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F9FB47799B;
+	Tue, 16 Jun 2026 16:03:44 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781624499; cv=none; b=o1FaBtkR5YOojVRuGeqgYhpyG1C3gdjIo9gZ3LgZ0dm8ZdKN7bHih2URya8tOkppdv4rrEK4xB6kzBC7L1DBRICZr7ARH5tVdXdZ/EXd7pmwO/K2RzPe6H69p+lF/I4PrERHJ8AlMA4lY/eATc5AjDLEzCHusyqBWBBf2sgmDQ4=
+	t=1781625825; cv=none; b=u0KEcCKFhmofmGvTGB/kdRxlN4UEg1L3M+j3+gd3MnznPmm/sUmWEnp3BW54ROIomhG4ZWDd/aIt+Em5PZ03Fv/GuyRXjAg5roIZEPC/PaikriMiO1E1aQCxqdJ+R7el2TZpdnXwt9Yin0C2t6xPEGYVZEqVC2F5BqEVj/mPjdA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781624499; c=relaxed/simple;
-	bh=6k5aH+CectJLyXBRxCeiwEliTTuXrI9Ac8zWRq9l9uE=;
+	s=arc-20240116; t=1781625825; c=relaxed/simple;
+	bh=XYR14RqGd9hYjbLlJvHEiPsGgq4TQMNIfvTIGYBUClg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bp/pOEftyGW0ZdXahJX7BUVtfkIrhkNjKgLeYIeliiQNTuIwHzXYZQ4Pkd5sZ3P3mFJKvQv9p8kL0pMb442gLWDPqEEHlnN213qpe2zMtCiaUzw2qyP0krHAqmjqcxWyrmO/yBgfBy1mSydcMijUzkQRqAT1DsNucM7gna0Ayyw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cS9GuvQk; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98FD31F000E9;
-	Tue, 16 Jun 2026 15:41:37 +0000 (UTC)
+	 MIME-Version; b=h1BLLojNwKn09cYhb2ndGZChFCGL/1NnUuRao0/ykoAoRpY1lMGXtahLG9zD9Aksnxe5zpNr1TjpWABCy6dS8HMUy1yvDzM8sM6OJxOGtWr+95fWf3gJsd3j8X2APt7iaIh0Ens5qmFwoc2+Nrpq7zPTJfoHBPnZYcfT6SMzfzw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eSwq4/vG; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23F391F000E9;
+	Tue, 16 Jun 2026 16:03:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781624498;
-	bh=7A/fxWakC8gFUVepft9cgOmvORmXSXMSaBTPFriRTkM=;
+	s=korg; t=1781625824;
+	bh=AwGpj3tXZdTf1drTq5BOXIUMkcoOhI2UIZKqihn/Yug=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=cS9GuvQkmExzhkuyU8be4s0TfZyI4QyMobqVrHPM6JSIQWrqE7UovehkPWrMIwB0T
-	 SNSt37ftzoVEpIWoHUAhBYdSVmXkqY1B3oB6tPh+HleVH8Zm8xCT5Bo1Wt6xDxlya/
-	 LAlyKGmdQmUz4jNPU3lc4RSpi4v0VF/jDH/X1Kck=
+	b=eSwq4/vGUd4IWdwiCvlH1htCDe9jK5ep60E/Zz4ILHRhTOXMq3gkl+IBJfLOLbk3Z
+	 Dhf7qrU+0GC2+59TiG/9q4dUhIM9hHRmW0/b3Ib5y14BGJHIxhthgTnJWn/WZu9/qQ
+	 nuRceDDrFdkLnLkiktPpum3eHrROR2PCNwfsw5WA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Wang <kevinyang.wang@amd.com>,
-	Kenneth Feng <kenneth.feng@amd.com>,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 7.0 349/378] drm/amd/pm: fix smu13 power limit default/cap calculation
+	SeongJae Park <sj@kernel.org>,
+	Fernand Sieber <sieberf@amazon.com>,
+	Leonard Foerster <foersleo@amazon.de>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.18 184/325] mm/damon/ops-common: call folio_test_lru() after folio_get()
 Date: Tue, 16 Jun 2026 20:29:40 +0530
-Message-ID: <20260616145128.528573099@linuxfoundation.org>
+Message-ID: <20260616145107.056842127@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,22 +73,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264172-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264427-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kevinyang.wang@amd.com,m:kenneth.feng@amd.com,m:lijo.lazar@amd.com,m:alexander.deucher@amd.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:sj@kernel.org,m:sieberf@amazon.com,m:foersleo@amazon.de,m:shakeel.butt@linux.dev,m:akpm@linux-foundation.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -96,174 +97,69 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gitlab.freedesktop.org:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,amd.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux.dev:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,amazon.de:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 0C743691723
+X-Rspamd-Queue-Id: 81C28691E13
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Wang <kevinyang.wang@amd.com>
+From: SeongJae Park <sj@kernel.org>
 
-commit bb204f19e4a115f094a6a3c4d82fcf48862d0766 upstream.
+commit d6b8b02a27b3dd09ec12144322b3dac46d9bc9ef upstream.
 
-smu_v13_0_0_get_power_limit() and smu_v13_0_7_get_power_limit() mix
-runtime power_limit with PP table limits when reporting default/min/max.
+damon_get_folio() speculatively calls folio_test_lru() before
+folio_try_get().  The folio can get freed and reallocated to a tail page.
+In the case, VM_BUG_ON_PGFLAGS() in const_folio_flags() can be triggered.
+Remove the speculative call.
 
-When current power limit query succeeds, default_power_limit was set to the
-runtime value instead of the PP table default, and min/max could be derived
-from inconsistent bases (MsgLimits/runtime), leading to incorrect cap info.
+Also mark folio_test_lru() check right after folio_try_get() success as no
+more unlikely.
 
-Use SocketPowerLimitAc/Dc as the PP default base (pp_limit), keep
-current_power_limit as runtime value, and derive min/max from pp_limit with
-OD percentages.
+The race should be rare.  Also the problem can happen only if the kernel
+has enabled CONFIG_DEBUG_VM_PGFLAGS.  No real world report of this issue
+has been made so far.  This fix is based on only theoretical analysis.
+That said, a bug is a bug.  A similar issue was also fixed via commit
+3203b3ab0fcf ("mm/filemap: don't call folio_test_locked() without a
+reference in next_uptodate_folio()").  I don't expect this change will
+make a meaningful impact to DAMON performance in the real world, though I
+will be happy to be corrected from the real world reports.
 
-Closes: https://gitlab.freedesktop.org/drm/amd/-/work_items/5227
-Signed-off-by: Yang Wang <kevinyang.wang@amd.com>
-Reviewed-by: Kenneth Feng <kenneth.feng@amd.com>
-Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 1eaf26db95901ca70737503a89b831dd763c8453)
-Cc: stable@vger.kernel.org
+The issue was discovered [1] by Sashiko.
+
+
+Link: https://lore.kernel.org/20260525162256.8317-1-sj@kernel.org
+Link: https://lore.kernel.org/20260517234112.89245-1-sj@kernel.org [1]
+Fixes: 3f49584b262c ("mm/damon: implement primitives for the virtual memory address spaces")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: Fernand Sieber <sieberf@amazon.com>
+Cc: Leonard Foerster <foersleo@amazon.de>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: <stable@vger.kernel.org> # 5.15.x
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c |   32 ++++++++++---------
- drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c |   32 ++++++++++---------
- 2 files changed, 35 insertions(+), 29 deletions(-)
+ mm/damon/ops-common.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
-@@ -2390,28 +2390,30 @@ static int smu_v13_0_0_enable_mgpu_fan_b
- }
+--- a/mm/damon/ops-common.c
++++ b/mm/damon/ops-common.c
+@@ -32,9 +32,9 @@ struct folio *damon_get_folio(unsigned l
+ 		return NULL;
  
- static int smu_v13_0_0_get_power_limit(struct smu_context *smu,
--						uint32_t *current_power_limit,
--						uint32_t *default_power_limit,
--						uint32_t *max_power_limit,
--						uint32_t *min_power_limit)
-+				       uint32_t *current_power_limit,
-+				       uint32_t *default_power_limit,
-+				       uint32_t *max_power_limit,
-+				       uint32_t *min_power_limit)
- {
- 	struct smu_table_context *table_context = &smu->smu_table;
- 	struct smu_13_0_0_powerplay_table *powerplay_table =
- 		(struct smu_13_0_0_powerplay_table *)table_context->power_play_table;
- 	PPTable_t *pptable = table_context->driver_pptable;
- 	SkuTable_t *skutable = &pptable->SkuTable;
--	uint32_t power_limit, od_percent_upper = 0, od_percent_lower = 0;
--	uint32_t msg_limit = skutable->MsgLimits.Power[PPT_THROTTLER_PPT0][POWER_SOURCE_AC];
--
--	if (smu_v13_0_get_current_power_limit(smu, &power_limit))
--		power_limit = smu->adev->pm.ac_power ?
-+	uint32_t pp_limit = smu->adev->pm.ac_power ?
- 			      skutable->SocketPowerLimitAc[PPT_THROTTLER_PPT0] :
- 			      skutable->SocketPowerLimitDc[PPT_THROTTLER_PPT0];
-+	uint32_t power_limit = 0, od_percent_upper = 0, od_percent_lower = 0;
-+	int ret;
-+
-+	if (current_power_limit) {
-+		ret = smu_v13_0_get_current_power_limit(smu, &power_limit);
-+		if (ret)
-+			*current_power_limit = pp_limit;
-+	}
- 
--	if (current_power_limit)
--		*current_power_limit = power_limit;
- 	if (default_power_limit)
--		*default_power_limit = power_limit;
-+		*default_power_limit = pp_limit;
- 
- 	if (powerplay_table) {
- 		if (smu->od_enabled &&
-@@ -2425,15 +2427,15 @@ static int smu_v13_0_0_get_power_limit(s
+ 	folio = page_folio(page);
+-	if (!folio_test_lru(folio) || !folio_try_get(folio))
++	if (!folio_try_get(folio))
+ 		return NULL;
+-	if (unlikely(page_folio(page) != folio || !folio_test_lru(folio))) {
++	if (unlikely(page_folio(page) != folio) || !folio_test_lru(folio)) {
+ 		folio_put(folio);
+ 		folio = NULL;
  	}
- 
- 	dev_dbg(smu->adev->dev, "od percent upper:%d, od percent lower:%d (default power: %d)\n",
--					od_percent_upper, od_percent_lower, power_limit);
-+		od_percent_upper, od_percent_lower, pp_limit);
- 
- 	if (max_power_limit) {
--		*max_power_limit = msg_limit * (100 + od_percent_upper);
-+		*max_power_limit = pp_limit * (100 + od_percent_upper);
- 		*max_power_limit /= 100;
- 	}
- 
- 	if (min_power_limit) {
--		*min_power_limit = power_limit * (100 - od_percent_lower);
-+		*min_power_limit = pp_limit * (100 - od_percent_lower);
- 		*min_power_limit /= 100;
- 	}
- 
---- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c
-@@ -2372,28 +2372,32 @@ static int smu_v13_0_7_enable_mgpu_fan_b
- }
- 
- static int smu_v13_0_7_get_power_limit(struct smu_context *smu,
--						uint32_t *current_power_limit,
--						uint32_t *default_power_limit,
--						uint32_t *max_power_limit,
--						uint32_t *min_power_limit)
-+				       uint32_t *current_power_limit,
-+				       uint32_t *default_power_limit,
-+				       uint32_t *max_power_limit,
-+				       uint32_t *min_power_limit)
- {
- 	struct smu_table_context *table_context = &smu->smu_table;
- 	struct smu_13_0_7_powerplay_table *powerplay_table =
- 		(struct smu_13_0_7_powerplay_table *)table_context->power_play_table;
- 	PPTable_t *pptable = table_context->driver_pptable;
- 	SkuTable_t *skutable = &pptable->SkuTable;
--	uint32_t power_limit, od_percent_upper = 0, od_percent_lower = 0;
--	uint32_t msg_limit = skutable->MsgLimits.Power[PPT_THROTTLER_PPT0][POWER_SOURCE_AC];
--
--	if (smu_v13_0_get_current_power_limit(smu, &power_limit))
--		power_limit = smu->adev->pm.ac_power ?
-+	uint32_t pp_limit = smu->adev->pm.ac_power ?
- 			      skutable->SocketPowerLimitAc[PPT_THROTTLER_PPT0] :
- 			      skutable->SocketPowerLimitDc[PPT_THROTTLER_PPT0];
-+	uint32_t power_limit = 0, od_percent_upper = 0, od_percent_lower = 0;
-+	int ret;
-+
-+	if (current_power_limit) {
-+		ret = smu_v13_0_get_current_power_limit(smu, &power_limit);
-+		if (ret)
-+			power_limit = pp_limit;
- 
--	if (current_power_limit)
- 		*current_power_limit = power_limit;
-+	}
-+
- 	if (default_power_limit)
--		*default_power_limit = power_limit;
-+		*default_power_limit = pp_limit;
- 
- 	if (powerplay_table) {
- 		if (smu->od_enabled &&
-@@ -2407,15 +2411,15 @@ static int smu_v13_0_7_get_power_limit(s
- 	}
- 
- 	dev_dbg(smu->adev->dev, "od percent upper:%d, od percent lower:%d (default power: %d)\n",
--					od_percent_upper, od_percent_lower, power_limit);
-+		od_percent_upper, od_percent_lower, pp_limit);
- 
- 	if (max_power_limit) {
--		*max_power_limit = msg_limit * (100 + od_percent_upper);
-+		*max_power_limit = pp_limit * (100 + od_percent_upper);
- 		*max_power_limit /= 100;
- 	}
- 
- 	if (min_power_limit) {
--		*min_power_limit = power_limit * (100 - od_percent_lower);
-+		*min_power_limit = pp_limit * (100 - od_percent_lower);
- 		*min_power_limit /= 100;
- 	}
- 
 
 
 
