@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-264843-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265818-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id qCgZK1t9MWrNkgUAu9opvQ
-	(envelope-from <stable+bounces-264843-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:44:11 +0200
+	id ZAsvB4SQMWpumwUAu9opvQ
+	(envelope-from <stable+bounces-265818-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:05:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52D7F692664
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:44:11 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BC28693CCE
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:05:55 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=HdGhVNef;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264843-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264843-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=I69L7EqK;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265818-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265818-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2A9673005581
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:43:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 29F043045019
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:05:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 744763D890D;
-	Tue, 16 Jun 2026 16:43:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C57D33CFF4A;
+	Tue, 16 Jun 2026 18:05:52 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C3CF3C063F;
-	Tue, 16 Jun 2026 16:43:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A39C52F12AE;
+	Tue, 16 Jun 2026 18:05:51 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781628182; cv=none; b=l/4dnP0Hf0kBtwZwqjjAnS4EYxuID8TXx0k3mKYYRyBMtnhgyVEOSwDtYnvFY9d77YGU6bVPdLjZx5FPnsqaR5FsLgBBFw3yhXcIztYXU3QpOhjQeVn6L3YKefIJPZxna6hQtx5rjrxRc3Ou4s6SCr3Wn+rJGD9e604p8VSWmnA=
+	t=1781633152; cv=none; b=jwJlLH16FYS7KIINFQgwdlan/xSYDnUrXDe7Ze0jM4YxBynnUwS1pVNzxFYBIrOhbCMWPU1MmRG5ThybKPvKYnUc7l86PTRmoumcBOOjAOQHxjrImsbT8BXF6ChxGeTyOV/VfQK0g2lMHxdICMNcwiLtePl9auz5uB6sBykIqjA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781628182; c=relaxed/simple;
-	bh=hbeGpTEbNmpDpAA3nLRylJsi/QxJ7Utl+Mak28fI0Lg=;
+	s=arc-20240116; t=1781633152; c=relaxed/simple;
+	bh=/b6PconIU+qefdXDhUgR7R/Q77ogb0MFmxl05gkZ2WQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H/M1lQro9+26Dputxt+/XJUFmmqiBmDS5Bj+GnWpFcLbkSWcYoBwsZBBIG4qSuO1HIYIsuQTfeJ7O4wbAFrZh8T5dpY1g+VNd9ooqNLXz2je4EA8JCcjUDpU0w3tta9ipOyX4lkflNU4PbMXa87QKzV5GylJFHOx4m2iKDzjxWA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HdGhVNef; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D593D1F000E9;
-	Tue, 16 Jun 2026 16:42:59 +0000 (UTC)
+	 MIME-Version; b=AaDvwvbMJN6+eTXYeLleMZLb7XKNSmqBHJ7Se4X8mIQb7UktqfSyDPIVDLvdoEWfO/0/mtYDQUvHWwOtrgdKlTwfR7G1qeAJWbVTWLWX6SEk8d4+CyYWledSP23ad8K5SFQkOI1/6dBurRDYiwxae/oS56T1zr177oGULhABaSI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I69L7EqK; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6F4C1F000E9;
+	Tue, 16 Jun 2026 18:05:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781628180;
-	bh=RW0GbpfrIhD0kCIqkh9DFvCSo4HeTe8agFrLd66u6xQ=;
+	s=korg; t=1781633151;
+	bh=5Epfd0AIGvHYJpActe6QZlsCHEJJ/VIXRgBQ8RAYmXI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=HdGhVNefO9txE0k6RZ90ozON7SBmSUrlB740M/Jh6Wd2uo4oASsS6u8dJFjS/KKtM
-	 5qEcVL0E8Yv+mxuSsDWlZi9Pet/edT9i9WjTwoympdHbqx1m5f6Px1v62BdGockuM7
-	 mhy+YSMDhmq5fPaZLnxyvaUHXsoXsbRu2Iiao6FU=
+	b=I69L7EqKfQUAHWzrSuoxXSbx74NEZKsPPQEdtr9rpmRZ8D6NieT3nfCNOo63RATJk
+	 gmYof6Ii/ImeLxl0s6Gkj8jxedkNqocDIY7lqQSG8Ak1Fp8maGVJ5TsWl7ghMS+hlz
+	 LfIARxw+M9gxTlKit1o26LHZND9W/flzfMcXB5Xo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rahul Chandelkar <rc@rexion.ai>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 039/452] ipv6: rpl: fix hdrlen overflow in ipv6_rpl_srh_decompress()
+Subject: [PATCH 5.15 028/411] ethtool: eeprom: add more safeties to EEPROM Netlink fallback
 Date: Tue, 16 Jun 2026 20:24:26 +0530
-Message-ID: <20260616145119.992905368@linuxfoundation.org>
+Message-ID: <20260616145101.849581289@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,21 +72,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264843-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265818-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:rc@rexion.ai,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:maxime.chevallier@bootlin.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -98,68 +98,68 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,bootlin.com:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 52D7F692664
+X-Rspamd-Queue-Id: 7BC28693CCE
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rahul Chandelkar <rc@rexion.ai>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 9d5e7a46a9f6d8f503b41bfefef70659845f1679 ]
+[ Upstream commit 67cfdd9210b99f260b3e0afeb9525e0acc7be31e ]
 
-ipv6_rpl_srh_decompress() computes:
+The Netlink fallback path for reading module EEPROM
+(fallback_set_params()) validates that offset < eeprom_len,
+but does not check that offset + length stays within eeprom_len.
+The ioctl equivalent (ethtool_get_any_eeprom() in ioctl.c) has
+always enforced both bounds:
 
-    outhdr->hdrlen = (((n + 1) * sizeof(struct in6_addr)) >> 3);
+  if (eeprom.offset + eeprom.len > total_len)
+      return -EINVAL;
 
-hdrlen is __u8. For n >= 127 the result exceeds 255 and silently
-truncates. With n=127 (cmpri=15, cmpre=15, pad=0, hdrlen=16):
+This could lead to surprises in both drivers and device FW.
+Add the missing offset + length validation to fallback_set_params(),
+mirroring the ioctl.
 
-    (128 * 16) >> 3 = 256, truncated to 0 as __u8
+Similarly - ethtool core in general, and ethtool_get_any_eeprom()
+in particular tries to zero-init all buffers passed to the drivers
+to avoid any extra work of zeroing things out. eeprom_fallback()
+uses a plain kmalloc(), change it to zalloc.
 
-The caller in ipv6_rpl_srh_rcv() then places the compressed header
-at buf + ((ohdr->hdrlen + 1) << 3). With hdrlen=0 this is buf + 8,
-but the decompressed region occupies buf[0..2055] (8-byte header
-plus 128 full addresses). The compressed header overlaps the
-decompressed data, and ipv6_rpl_srh_compress() writes into this
-overlap, corrupting the routing header of the forwarded packet.
-
-The existing guard at exthdrs.c:546 checks (n + 1) > 255, which
-prevents n+1 from overflowing unsigned char (the segments_left
-field), but does not prevent the computed hdrlen from overflowing
-__u8. n=127 passes because 128 <= 255, yet hdrlen=256 does not
-fit.
-
-Tighten the bound to (n + 1) > 127. This caps n at 126, giving
-hdrlen = (127 * 16) >> 3 = 254, which fits in __u8. The compressed
-header then lands at buf + ((254 + 1) << 3) = buf + 2040, exactly
-past the decompressed region (buf[0..2039]). No overlap. 127
-segments is well beyond any realistic RPL deployment.
-
-Fixes: 8610c7c6e3bd ("net: ipv6: add support for rpl sr exthdr")
-Signed-off-by: Rahul Chandelkar <rc@rexion.ai>
-Link: https://patch.msgid.link/20260525154031.2290876-1-rc@rexion.ai
+Fixes: 96d971e307cc ("ethtool: Add fallback to get_module_eeprom from netlink command")
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Link: https://patch.msgid.link/20260526153533.2779187-11-kuba@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/exthdrs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ethtool/eeprom.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv6/exthdrs.c b/net/ipv6/exthdrs.c
-index 54e71623aac9cc..e1d632c12cc46a 100644
---- a/net/ipv6/exthdrs.c
-+++ b/net/ipv6/exthdrs.c
-@@ -546,7 +546,7 @@ static int ipv6_rpl_srh_rcv(struct sk_buff *skb)
- 	 * unsigned char which is segments_left field. Should not be
- 	 * higher than that.
- 	 */
--	if (r || (n + 1) > 255) {
-+	if (r || (n + 1) > 127) {
- 		kfree_skb(skb);
- 		return -1;
- 	}
+diff --git a/net/ethtool/eeprom.c b/net/ethtool/eeprom.c
+index 49c0a2a77f02de..6ce40f95d8aba5 100644
+--- a/net/ethtool/eeprom.c
++++ b/net/ethtool/eeprom.c
+@@ -43,6 +43,9 @@ static int fallback_set_params(struct eeprom_req_info *request,
+ 	if (offset >= modinfo->eeprom_len)
+ 		return -EINVAL;
+ 
++	if (length > modinfo->eeprom_len - offset)
++		return -EINVAL;
++
+ 	eeprom->cmd = ETHTOOL_GMODULEEEPROM;
+ 	eeprom->len = length;
+ 	eeprom->offset = offset;
+@@ -69,7 +72,7 @@ static int eeprom_fallback(struct eeprom_req_info *request,
+ 	if (err < 0)
+ 		return err;
+ 
+-	data = kmalloc(eeprom.len, GFP_KERNEL);
++	data = kzalloc(eeprom.len, GFP_KERNEL);
+ 	if (!data)
+ 		return -ENOMEM;
+ 	err = ethtool_get_module_eeprom_call(dev, &eeprom, data);
 -- 
 2.53.0
 
