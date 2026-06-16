@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-265527-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264243-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id J7XYCSeMMWo+mQUAu9opvQ
-	(envelope-from <stable+bounces-265527-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:47:19 +0200
+	id q53IGyJzMWqcjgUAu9opvQ
+	(envelope-from <stable+bounces-264243-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:00:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9559C6937AD
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:47:18 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6371E6919DB
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:00:33 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="lNPmx2x/";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265527-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265527-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=CnZVzfQU;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264243-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264243-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8F59D306F535
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:41:05 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id CB4FC303C77B
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:48:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3336A47AF5D;
-	Tue, 16 Jun 2026 17:41:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CB2F43D4F7;
+	Tue, 16 Jun 2026 15:48:12 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C72B13101A7;
-	Tue, 16 Jun 2026 17:41:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10BDD2EEE68;
+	Tue, 16 Jun 2026 15:48:10 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781631665; cv=none; b=PS6/3L2eNg141IZ4oOkwLdhUxk/29qXKCnHKXtGKFO6RmMUTJqvkvs61Hr0EIXK0ZV2+Y+0KbtlTW18h74VB87zLauMp5xhoGB5dGWzz1NjFQj5hlvEyFxvQHqzTqkQLqqMfGJGs3jDr57PoPAleuLYLliCwV2r/ifX4bwlZ5Qw=
+	t=1781624892; cv=none; b=oCVcYXqqMHqyHfFKIQtAVs8Ih81qvoOrXnDKMrSQHACTyulT0GiqFDI44vaCw5ucrUSLqutTZO3XS9/f6V1KufPgtjaS9pZek5+tq8LYC0ZYtvzbSRqHHCbUeivWfRZBKmzx9Ri1SlDNwTF2QFgxzIMPHUgbiLVFvsKywshpWS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781631665; c=relaxed/simple;
-	bh=YpHJXZz0LNhdl5Q4/psBhDM3CrynDCzWIQHM/eXttLw=;
+	s=arc-20240116; t=1781624892; c=relaxed/simple;
+	bh=3RXR54x5P7dvzk5PmtAmU+LSkPAa0M3BYimzFvZFdgc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QS3xxBim9pG7FYl33S7oQGqC2Q0/vOl9ZVP777Ie93/tXWQbGDOUr8iYgvCewVVkSalnzxLg1diD7bfKlAtKJYjBHhTBdbELYA0kwfBgXZ8F6vlvCll6zlxpbhP2BmeoJhNP/kbqdu1ZvQzTOe+6NvA3tPgwfxicSqx5EyOccTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lNPmx2x/; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8F9B1F000E9;
-	Tue, 16 Jun 2026 17:41:02 +0000 (UTC)
+	 MIME-Version; b=N+NDHyM66PvnMpjT9QSFrcvKMPtdHEi8AaP7EHpJMz/fB4mS9T/lljdedRhFTkDvZkUBVZGBDKV4MO0Rdqjfst6QxVzk2VYAoSmLJ9Zc5sLx+PArLftppBSeNUwZcek6riAz0bOg48KvM+NLFY5kqDHDg/0hAsAPnXaFcrGWXvs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CnZVzfQU; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 917A41F000E9;
+	Tue, 16 Jun 2026 15:48:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781631663;
-	bh=0AI1zpyTtRkNzkoGjfwbGg0vgM+HS83j4XUac2mJO5Y=;
+	s=korg; t=1781624890;
+	bh=WPUAHUfoFmAGbVZaYjlapZtpOJc0z0uQ7bXTEcQxUhc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=lNPmx2x/Xe59Uy7VYs59/srsRvdMukQXZBOf6hp/Vzc2s8kOYjp2NVEMd4HVbqrgW
-	 AKnAOB+7QG1NbCZaFIxsImbRuf/Tx8uoKKhrQsS68TQ+X/KellLHVPMvfyCHXb6zm3
-	 gyxJ+pNJQwRT+a+jm7SwfP9RYLSwaCSe5ZX67/10=
+	b=CnZVzfQUoaNL8HRcN5PXhqZXGP/yPzwfG1u7fBwA13FLFxFAtZiaaEOBBzCTE/1FQ
+	 OvxIfB8wK+mK6741RnrnF1g/v4sJWnVtZURV9GM/11E/Irl08m2YVSvVKc28Nc+yFl
+	 +rXWDNS0SnRoLAGEuLtUgjJqiLuW0Ki8YrZVNUDA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Til Kaiser <mail@tk154.de>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Sumit Garg <sumit.garg@oss.qualcomm.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 263/522] net: mvpp2: refill RX buffers before XDP or skb use
+Subject: [PATCH 6.18 014/325] soc: qcom: ice: Return -ENODEV if the ICE platform device is not found
 Date: Tue, 16 Jun 2026 20:26:50 +0530
-Message-ID: <20260616145138.245215436@linuxfoundation.org>
+Message-ID: <20260616145058.516250656@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,161 +70,78 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265527-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mail@tk154.de,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264243-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:sumit.garg@oss.qualcomm.com,m:manivannan.sadhasivam@oss.qualcomm.com,m:andersson@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tk154.de:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,qualcomm.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9559C6937AD
+X-Rspamd-Queue-Id: 6371E6919DB
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Til Kaiser <mail@tk154.de>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
 
-[ Upstream commit 5e8e2a9624df72fca7c736b2966b2cbf6c9c3ff6 ]
+[ Upstream commit 5a4dc805a80e6fe303d6a4748cd451ea15987ffd ]
 
-The RX error path returns the current descriptor buffer to the hardware
-BM pool. That is only valid while the driver still owns the buffer.
+By the time the consumer driver calls devm_of_qcom_ice_get(), all the
+platform devices for ICE nodes would've been created by
+of_platform_default_populate().
 
-mvpp2_rx_refill() can fail after the current buffer has been handed to
-XDP or attached to an skb. In those cases mvpp2_run_xdp() may have
-recycled, redirected, or queued the page for XDP_TX, and an skb free also
-retires the data buffer. Returning such a buffer to BM lets hardware DMA
-into memory that is no longer owned by the RX ring.
+So for the absence of any platform device, -ENODEV should not returned, not
+-EPROBE_DEFER.
 
-Refill the BM pool before handing the current buffer to XDP or to the
-skb. If the allocation fails there, drop the packet and return the
-still-owned current buffer to BM, preserving the pool depth. Once the
-refill succeeds, later local drops retire/free the current buffer instead
-of returning it to BM.
-
-Fixes: 07dd0a7aae7f ("mvpp2: add basic XDP support")
-Fixes: d6526926de73 ("net: mvpp2: fix memory leak in mvpp2_rx")
-Signed-off-by: Til Kaiser <mail@tk154.de>
-Link: https://patch.msgid.link/20260607134943.21996-4-mail@tk154.de
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Stable-dep-of: 77a6b90ce56b ("net: mvpp2: build skb from XDP-adjusted data on XDP_PASS")
+Fixes: 2afbf43a4aec ("soc: qcom: Make the Qualcomm UFS/SDCC ICE a dedicated driver")
+Tested-by: Sumit Garg <sumit.garg@oss.qualcomm.com> # OP-TEE as TZ
+Acked-by: Sumit Garg <sumit.garg@oss.qualcomm.com>
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20260518-qcom-ice-fix-v7-2-2a595382185b@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/marvell/mvpp2/mvpp2_main.c   | 43 +++++++++++--------
- 1 file changed, 24 insertions(+), 19 deletions(-)
+ drivers/soc/qcom/ice.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-index 4c299d8bb2392c..fc16e577a10376 100644
---- a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-+++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-@@ -3973,6 +3973,12 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
- 		else
- 			frag_size = bm_pool->frag_size;
- 
-+		err = mvpp2_rx_refill(port, bm_pool, pp, pool);
-+		if (err) {
-+			netdev_err(port->dev, "failed to refill BM pools\n");
-+			goto err_drop_frame;
-+		}
-+
- 		if (xdp_prog) {
- 			struct xdp_rxq_info *xdp_rxq;
- 
-@@ -3990,12 +3996,6 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
- 
- 			if (ret) {
- 				xdp_ret |= ret;
--				err = mvpp2_rx_refill(port, bm_pool, pp, pool);
--				if (err) {
--					netdev_err(port->dev, "failed to refill BM pools\n");
--					goto err_drop_frame;
--				}
--
- 				ps.rx_packets++;
- 				ps.rx_bytes += rx_bytes;
- 				continue;
-@@ -4007,8 +4007,21 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
- 		skb = build_skb(data, frag_size);
- 		if (!skb) {
- 			netdev_warn(port->dev, "skb build failed\n");
--			goto err_drop_frame;
-+			if (pp) {
-+				page_pool_put_page(pp, virt_to_head_page(data),
-+						   rx_bytes + MVPP2_MH_SIZE,
-+						   true);
-+			} else {
-+				dma_unmap_single_attrs(dev->dev.parent, dma_addr,
-+						       bm_pool->buf_size,
-+						       DMA_FROM_DEVICE,
-+						       DMA_ATTR_SKIP_CPU_SYNC);
-+				mvpp2_frag_free(bm_pool, pp, data);
-+			}
-+			goto err_drop_frame_retired;
- 		}
-+		if (pp)
-+			skb_mark_for_recycle(skb);
- 
- 		/* If we have RX hardware timestamping enabled, grab the
- 		 * timestamp from the queue and convert.
-@@ -4019,16 +4032,7 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
- 					 skb_hwtstamps(skb));
- 		}
- 
--		err = mvpp2_rx_refill(port, bm_pool, pp, pool);
--		if (err) {
--			netdev_err(port->dev, "failed to refill BM pools\n");
--			dev_kfree_skb_any(skb);
--			goto err_drop_frame;
--		}
--
--		if (pp)
--			skb_mark_for_recycle(skb);
--		else
-+		if (!pp)
- 			dma_unmap_single_attrs(dev->dev.parent, dma_addr,
- 					       bm_pool->buf_size, DMA_FROM_DEVICE,
- 					       DMA_ATTR_SKIP_CPU_SYNC);
-@@ -4047,13 +4051,14 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
- 		continue;
- 
- err_drop_frame:
--		dev->stats.rx_errors++;
--		mvpp2_rx_error(port, rx_desc);
- 		/* Return the buffer to the pool */
- 		if (rx_status & MVPP2_RXD_BUF_HDR)
- 			mvpp2_buff_hdr_pool_put(port, rx_desc, pool, rx_status);
- 		else
- 			mvpp2_bm_pool_put(port, pool, dma_addr, phys_addr);
-+err_drop_frame_retired:
-+		dev->stats.rx_errors++;
-+		mvpp2_rx_error(port, rx_desc);
+diff --git a/drivers/soc/qcom/ice.c b/drivers/soc/qcom/ice.c
+index 05055e097ff8fb..ba53aea828ba76 100644
+--- a/drivers/soc/qcom/ice.c
++++ b/drivers/soc/qcom/ice.c
+@@ -622,7 +622,7 @@ static struct qcom_ice *of_qcom_ice_get(struct device *dev)
+ 	pdev = of_find_device_by_node(node);
+ 	if (!pdev) {
+ 		dev_err(dev, "Cannot find device node %s\n", node->name);
+-		return ERR_PTR(-EPROBE_DEFER);
++		return ERR_PTR(-ENODEV);
  	}
  
- 	if (xdp_ret & MVPP2_XDP_REDIR)
+ 	ice = platform_get_drvdata(pdev);
 -- 
 2.53.0
 
