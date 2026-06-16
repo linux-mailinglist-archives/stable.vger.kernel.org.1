@@ -1,60 +1,65 @@
-Return-Path: <stable+bounces-266186-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265788-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id NBV/MySYMWringUAu9opvQ
-	(envelope-from <stable+bounces-266186-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:38:28 +0200
+	id lD4MASaQMWo8mwUAu9opvQ
+	(envelope-from <stable+bounces-265788-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:04:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74B2F6944A1
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:38:28 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61E9A693C67
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:04:21 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Sb2bh2+g;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266186-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-266186-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Pyxap7yH;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265788-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265788-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 808FA3092C06
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:38:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 60738314A020
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:03:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27F1746AF3C;
-	Tue, 16 Jun 2026 18:38:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 952113CF97E;
+	Tue, 16 Jun 2026 18:03:06 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0823F169AD2;
-	Tue, 16 Jun 2026 18:38:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4828D169AD2;
+	Tue, 16 Jun 2026 18:03:05 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781635105; cv=none; b=YP7bphREpons3uQtD0XZIOJEJUG7j3JIQKRLmgak6sfXWy0GyP8E47zbuQB8Ec6n0u+UreXEnHPM3FPRjfFrZzD2TcJuKiyQMCGwUkzXiZ2LMHwz89Y4ypoo0dcp7R5pjo5Nck/EF1QxcwgpmmSFFpVVcdJ7szsdnKhND7lto18=
+	t=1781632986; cv=none; b=Ond9I3xvWeloX69qHNmaQdOvF/WiDhrOajb8iJDB/HqnJ7kqCno7sn8FHRNxSCC+x/rHRGYr2mtq3Q0JpAgd2QtBVvs1HkRzv4zmmE+XP3bh4Ks2hKAkzEw9MH6hMY3VBd/yvO1QdcSCGw+kbKr00P1AT5ey0ptbYCsbGFY/hc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781635105; c=relaxed/simple;
-	bh=w92bNZWeM0ut3gghqjW7bImH+i9H8ZG5RAPXdRJftRw=;
+	s=arc-20240116; t=1781632986; c=relaxed/simple;
+	bh=2As2Js8C5v4wbyj4P2Rt+k3nwjVLEwC7ZNsFyFyeCNM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SZrhKzvRWTG0HL01/ywq2exqMYQy+VJPhVshSZzO4Xp/GMh6i9HLDh3xs30Gy6P8sqn+6xtMhNv762uhGKOvZq9vuVdZR+RZGKeXp4BF5a29b3y9iItRU0fpr03klwwiuMY9WRdE2rVj5bRzyXGcLmiMTDEdYdxWPkTi8YMy4Q0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sb2bh2+g; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E46D11F000E9;
-	Tue, 16 Jun 2026 18:38:23 +0000 (UTC)
+	 MIME-Version; b=U0njdSfl5k07wRAZMNfzTrni3P+MFtqNivt1sbj7RAVewSGPswcF2DmCu8jLqgggIEWQ+AvRhMcCz0N/pgX3gZvv93iChLQx7V9v82YTsgld8wVKv3bEhjls1z8Pn/Up3thLmG6Zd7+UFBx1bPpPBbwmy7FPM7disHl3JETnte0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pyxap7yH; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E2C21F000E9;
+	Tue, 16 Jun 2026 18:03:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781635104;
-	bh=ZI3Q4FGEsIRH91Ee122uGTVdIzzUqBTXdiueANJlCgE=;
+	s=korg; t=1781632985;
+	bh=FziLQ/y9piXVvvJj6qUmatNHOd9gGj1LQcWdkwddcu8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Sb2bh2+g6Crh/DicM834dRIYdphq+X9Sv1XWyG8WfgF4m5lilS+jU0QBvK/HQ8ULW
-	 EuP1P5a4b40GpfuAVsFZAfMHkqvERVvWZJJCHZJ7OPhmTUZZbPhf6YCFbVWGaAQ9+N
-	 896PLnKbsbexV7e5nG33wmzuDGVIKkJ7bijb+E0I=
+	b=Pyxap7yHFoTzsQchhg1/pi8k8VSO0LpCQZUiV10xZ5rxtYU7uC/vSGNFBJdJFMjPM
+	 NdavhtZ8Ma1E4g1Upf7IAUEVHLIduZPKDFqECw5LpIC+rmrKodFytP6zoy7BgPENNO
+	 3Y7qhytvf2MwNBwRY32bHdd4O076hDFOAHWRWCiI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Gunthorpe <jgg@nvidia.com>,
+	David Hildenbrand <david@redhat.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Sidhartha Kumar <sidhartha.kumar@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 391/411] RDMA/umem: Fix truncation for block sizes >= 4G
+Subject: [PATCH 6.1 482/522] mm/hugetlb: rename isolate_hugetlb() to folio_isolate_hugetlb()
 Date: Tue, 16 Jun 2026 20:30:29 +0530
-Message-ID: <20260616145122.015546304@linuxfoundation.org>
+Message-ID: <20260616145148.373150969@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,79 +73,200 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266186-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jgg@nvidia.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265788-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:david@redhat.com,m:willy@infradead.org,m:baolin.wang@linux.alibaba.com,m:muchun.song@linux.dev,m:sidhartha.kumar@oracle.com,m:akpm@linux-foundation.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,nvidia.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,linux-foundation.org:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,infradead.org:email,alibaba.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux.dev:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 74B2F6944A1
+X-Rspamd-Queue-Id: 61E9A693C67
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Gunthorpe <jgg@nvidia.com>
+From: David Hildenbrand <david@redhat.com>
 
-[ Upstream commit 15fe76e23615f502d051ef0768f86babaf08746c ]
+[ Upstream commit 4c640f128074e0d4459ecf072595a44df5c2ae18 ]
 
-When the iommu is used the linearization of the mapping can give a single
-block that is very large split across multiple SG entries.
+Let's make the function name match "folio_isolate_lru()", and add some
+kernel doc.
 
-When __rdma_block_iter_next() reassembles the split SG entries it is
-overflowing the 32 bit stack values and computed the wrong DMA addresses
-for blocks after the truncation.
-
-Use the right types to hold DMA addresses.
-
-Link: https://patch.msgid.link/r/1-v1-88303e9e509f+f7-ib_umem_types_jgg@nvidia.com
-Cc: stable@vger.kernel.org
-Fixes: a808273a495c ("RDMA/verbs: Add a DMA iterator to return aligned contiguous memory blocks")
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Link: https://lkml.kernel.org/r/20250113131611.2554758-3-david@redhat.com
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Sidhartha Kumar <sidhartha.kumar@oracle.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: 3c2d42b8ee34 ("mm/memory-failure: fix hugetlb_lock AA deadlock in get_huge_page_for_hwpoison")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/core/iter.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/linux/hugetlb.h |    4 ++--
+ mm/gup.c                |    2 +-
+ mm/hugetlb.c            |   23 ++++++++++++++++++++---
+ mm/memory-failure.c     |    2 +-
+ mm/memory_hotplug.c     |    2 +-
+ mm/mempolicy.c          |    2 +-
+ mm/migrate.c            |    4 ++--
+ 7 files changed, 28 insertions(+), 11 deletions(-)
 
---- a/drivers/infiniband/core/iter.c
-+++ b/drivers/infiniband/core/iter.c
-@@ -19,8 +19,8 @@ EXPORT_SYMBOL(__rdma_block_iter_start);
+--- a/include/linux/hugetlb.h
++++ b/include/linux/hugetlb.h
+@@ -182,7 +182,7 @@ bool hugetlb_reserve_pages(struct inode
+ 						vm_flags_t vm_flags);
+ long hugetlb_unreserve_pages(struct inode *inode, long start, long end,
+ 						long freed);
+-int isolate_hugetlb(struct page *page, struct list_head *list);
++int folio_isolate_hugetlb(struct page *page, struct list_head *list);
+ int get_hwpoison_huge_page(struct page *page, bool *hugetlb);
+ int get_huge_page_for_hwpoison(unsigned long pfn, int flags);
+ void putback_active_hugepage(struct page *page);
+@@ -428,7 +428,7 @@ static inline pte_t *huge_pte_offset(str
+ 	return NULL;
+ }
  
- bool __rdma_block_iter_next(struct ib_block_iter *biter)
+-static inline int isolate_hugetlb(struct page *page, struct list_head *list)
++static inline int folio_isolate_hugetlb(struct page *page, struct list_head *list)
  {
--	unsigned int block_offset;
--	unsigned int delta;
-+	dma_addr_t block_offset;
-+	dma_addr_t delta;
+ 	return -EBUSY;
+ }
+--- a/mm/gup.c
++++ b/mm/gup.c
+@@ -1986,7 +1986,7 @@ static unsigned long collect_longterm_un
+ 			continue;
  
- 	if (!biter->__sg_nents || !biter->__sg)
- 		return false;
+ 		if (folio_test_hugetlb(folio)) {
+-			isolate_hugetlb(&folio->page, movable_page_list);
++			folio_isolate_hugetlb(&folio->page, movable_page_list);
+ 			continue;
+ 		}
+ 
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -2994,7 +2994,7 @@ retry:
+ 		 * Fail with -EBUSY if not possible.
+ 		 */
+ 		spin_unlock_irq(&hugetlb_lock);
+-		ret = isolate_hugetlb(old_page, list);
++		ret = folio_isolate_hugetlb(old_page, list);
+ 		spin_lock_irq(&hugetlb_lock);
+ 		goto free_new;
+ 	} else if (!HPageFreed(old_page)) {
+@@ -3070,7 +3070,7 @@ int isolate_or_dissolve_huge_page(struct
+ 	if (hstate_is_gigantic(h))
+ 		return -ENOMEM;
+ 
+-	if (page_count(head) && !isolate_hugetlb(head, list))
++	if (page_count(head) && !folio_isolate_hugetlb(head, list))
+ 		ret = 0;
+ 	else if (!page_count(head))
+ 		ret = alloc_and_dissolve_huge_page(h, head, list);
+@@ -7445,7 +7445,24 @@ follow_huge_pgd(struct mm_struct *mm, un
+ 	return pte_page(*(pte_t *)pgd) + ((address & ~PGDIR_MASK) >> PAGE_SHIFT);
+ }
+ 
+-int isolate_hugetlb(struct page *page, struct list_head *list)
++/**
++ * folio_isolate_hugetlb - try to isolate an allocated hugetlb page
++ * @page: the page to isolate
++ * @list: the list to add the page to on success
++ *
++ * Isolate an allocated (refcount > 0) hugetlb page, marking it as
++ * isolated/non-migratable, and moving it from the active list to the
++ * given list.
++ *
++ * Isolation will fail if @page is not an allocated hugetlb page, or if
++ * it is already isolated/non-migratable.
++ *
++ * On success, an additional page reference is taken that must be dropped
++ * using putback_active_hugepage() to undo the isolation.
++ *
++ * Return: 0 if isolation worked, otherwise -EBUSY.
++ */
++int folio_isolate_hugetlb(struct page *page, struct list_head *list)
+ {
+ 	int ret = 0;
+ 
+--- a/mm/memory-failure.c
++++ b/mm/memory-failure.c
+@@ -2444,7 +2444,7 @@ static bool isolate_page(struct page *pa
+ 	bool isolated = false;
+ 
+ 	if (PageHuge(page)) {
+-		isolated = !isolate_hugetlb(page, pagelist);
++		isolated = !folio_isolate_hugetlb(page, pagelist);
+ 	} else {
+ 		bool lru = !__PageMovable(page);
+ 
+--- a/mm/memory_hotplug.c
++++ b/mm/memory_hotplug.c
+@@ -1641,7 +1641,7 @@ do_migrate_range(unsigned long start_pfn
+ 
+ 		if (PageHuge(page)) {
+ 			pfn = page_to_pfn(head) + compound_nr(head) - 1;
+-			isolate_hugetlb(head, &source);
++			folio_isolate_hugetlb(head, &source);
+ 			continue;
+ 		} else if (PageTransHuge(page))
+ 			pfn = page_to_pfn(head) + thp_nr_pages(page) - 1;
+--- a/mm/mempolicy.c
++++ b/mm/mempolicy.c
+@@ -598,7 +598,7 @@ static int queue_pages_hugetlb(pte_t *pt
+ 	if (flags & (MPOL_MF_MOVE_ALL) ||
+ 	    (flags & MPOL_MF_MOVE && page_mapcount(page) == 1 &&
+ 	     !hugetlb_pmd_shared(pte))) {
+-		if (isolate_hugetlb(page, qp->pagelist) &&
++		if (folio_isolate_hugetlb(page, qp->pagelist) &&
+ 			(flags & MPOL_MF_STRICT))
+ 			/*
+ 			 * Failed to isolate page but allow migrating pages
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -133,7 +133,7 @@ static void putback_movable_page(struct
+  *
+  * This function shall be used whenever the isolated pageset has been
+  * built from lru, balloon, hugetlbfs page. See isolate_migratepages_range()
+- * and isolate_hugetlb().
++ * and folio_isolate_hugetlb().
+  */
+ void putback_movable_pages(struct list_head *l)
+ {
+@@ -1995,7 +1995,7 @@ static int add_page_for_migration(struct
+ 
+ 	if (PageHuge(page)) {
+ 		if (PageHead(page)) {
+-			err = isolate_hugetlb(page, pagelist);
++			err = folio_isolate_hugetlb(page, pagelist);
+ 			if (!err)
+ 				err = 1;
+ 		}
 
 
 
