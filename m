@@ -1,65 +1,94 @@
-Return-Path: <stable+bounces-264546-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263784-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id HKc3CI95MWolkQUAu9opvQ
-	(envelope-from <stable+bounces-264546-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:27:59 +0200
+	id MU91MTlmMWr+iQUAu9opvQ
+	(envelope-from <stable+bounces-263784-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:05:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7388C6921A4
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:27:58 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B13A690BFE
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:05:29 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Lk8SaYyf;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264546-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264546-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=linuxfoundation.org;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=RxuxQKYj;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263784-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263784-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A585C31E9698
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:14:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9030831698FD
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:03:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 718AE4657FD;
-	Tue, 16 Jun 2026 16:14:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 541123AA9F3;
+	Tue, 16 Jun 2026 15:03:58 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28B19379EFC;
-	Tue, 16 Jun 2026 16:14:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 927183BFAEA
+	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 15:03:56 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781626495; cv=none; b=cdacV4l+pfrI+QEjnxHm1xRxGrtwsiH6Wxgi+SnlC7/qmHYiL+OhT8iWVQhXSB3fjdG21x9/o/+/6YEUrVgnoz11cbKiqRemL9L4nfiEFf6pBtHhXlaOKk57zlmEB6Ft9Yqo5AHM6okE7VVlWTJtEfpD5wTLi+cPGREfZEgOLmk=
+	t=1781622238; cv=none; b=fjf9rn28eq6rDxSu4vt1b2Y97Gbr32txv4adHj3lx1hKEMjbo5iizj2CJPLze+PB9Sq9r3omeS8Awcj/p7oNR+IMCCYyiYGuH+N5onhIDIPsyyIomUAQORCeVWgVkvjxe7WbfzPXpV6BS5U0RtRTrXWq9iaHVdZQJay6Q2lzHag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781626495; c=relaxed/simple;
-	bh=M5p68jTHfuQmztPgWNG8xu43ymUkYc7gRHrk0W5RqPE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q1P4ukqtVeytl2CttiOvIFfx0P3pCBrNnG4Y3fAqGYJEYd/YV7cFI/nU4vlN3bI6LRK1cZveGGwjcVVjuGnev7nDkN6o6bPpprClC47xJ7kMV1bP+jqQdaE/+Itz2Wf1khzrg98KUhRANk2KqheYbvWqK1mGtqZMIOHwZMSJvqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lk8SaYyf; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 395881F000E9;
-	Tue, 16 Jun 2026 16:14:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781626494;
-	bh=zXhGIW3PqgIZqNo6C8CO5ObtzS/HJgWteijtUTt13Y0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Lk8SaYyfRrOxCbUsqL4E0X8YUj3JeQZ8eedQa5NIPCo0uYX2dyujCDB/3WiwvpAMX
-	 G6EJ9nvQP3K+HfFDFfEWFxco2JCwK4ptEaHhdyiQOXC+9lPpt2rP1P//os9W2Poaci
-	 hH7r6x2X+LnvxqQsZblGexUTLiKHUEUvjVKo/r/I=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>,
-	Gyokhan Kochmarla <gyokhan@amazon.de>
-Subject: [PATCH 6.18 325/325] block: fix handling of dead zone write plugs
-Date: Tue, 16 Jun 2026 20:32:01 +0530
-Message-ID: <20260616145115.311447041@linuxfoundation.org>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
-User-Agent: quilt/0.69
-X-stable: review
-X-Patchwork-Hint: ignore
+	s=arc-20240116; t=1781622238; c=relaxed/simple;
+	bh=zmckEySf1bnjvXLe1y8S3JJ1K511ztr3Ub59I4P4nRI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FAKdrHfFpOyCVsaF1qwb7Xg95gmgdYUrfOWsDRAc+rh1mFBUfRonSAeCg7WSgVu8BKoYOBeuHlIlZpsYLtbqJ8SPY4A0g0KSBJs31mOHulcAi9PSW6Iao4DqDmSvkmKMytkFc8tk4LPG842Ue3J8mw8U/XGAC/w6whgfO5Rl4ws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RxuxQKYj; arc=none smtp.client-ip=209.85.167.41
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-5aa5ce4904eso4683410e87.3
+        for <stable@vger.kernel.org>; Tue, 16 Jun 2026 08:03:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781622235; x=1782227035; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ArrqTfPT5xZYsqejdLAgeANpi6axW0WX5h4i9zN84Ks=;
+        b=RxuxQKYjpx2PZ24jBuUopI2SIHSL5Yr9F6fN0fRfKXKF2ucR0eyPIF9P5kBnUkLdWC
+         hCHBIoXM3OBHGbTiYBOaKr+ApndzERiqsX3JZCwMEzKoSVeoDsTNp0EeGBFYvJL77yUS
+         LK+jFwI2pehPaM6Ooo0tNo7xNOyHTMDmc57vJXFvua3V+iwSTfISC5VvP7QLbWb3yymi
+         R92LuGeNEOPEn9oE78uAOly7qwA/2TdohghpL/xbqYIBZxDGJQia82Vorp+kBAPZY6T1
+         TNSGBlnkwNbTbEKBtXhK6oJcVjri9tuGESoju2d387mdDXFsOcyV1dMePXhw3AvhRE/G
+         Q3cA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781622235; x=1782227035;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ArrqTfPT5xZYsqejdLAgeANpi6axW0WX5h4i9zN84Ks=;
+        b=rYXi/1orgvo3iEqgWZAsswL7rMByzJcGUP3qSMa6t7sEwcsBoaPQEEdPiMibbSi+CQ
+         dfZrgQiS5T1SnlDfzQzV3j08ziSqUpa3FdGPf4fDGwOND4Qp0LpSHZdZaXSDOxL+UUok
+         9zVZ01GcDddaPAtQpsxX1iUuhRZQ5PCCtayX9gGWGS5mvrRQCqilWi3AfDW3Ru4yIKKr
+         dSi2zfC9G0fayd3n33CBbbG/OXWjWLZDXEj3hkb9L39Zc/Iztx5E4RlQcqrlrz7aATnk
+         EK7b4Ql6oj2j3SopFdQ5PsDuCJr0bn+yySUT4jYQkbIxo855rmfte0HAl945aPsi2iEl
+         Ck6Q==
+X-Gm-Message-State: AOJu0Yx4n2HO6YJO1Bw9FZgxUfw4ZMsqAI4escoOMVV2G1RjKZDkibrm
+	NyyOmhVh/GvaY3ILj/QBtKnGqWVhlaTEF7lx3VcFBq7joPOF1TzWbNvFBTxU1M4dibM=
+X-Gm-Gg: Acq92OFV40h5TOKTD6Cxcuckv+RqYzWHLI7hjKPopWCelZsaOu+uwKdxloZQ3NeZJla
+	z2aGxkIK4vjI6C5HO3NFqgs5+sTRntLLpU+TTeyt7nprfWskgh4/49onDfoXvRfcpZpfUI8UquP
+	Az2hnzrj2wUnn5CoQA8Nrqc8QWz8xbmt9fIzIXgs8vTIJxFimSiO6ZIMdmrKs8QspSg4CiAIpcg
+	IPO1GJKYogSOBI7sjJ4SMg/OenyE8XM+mERHF+ylZ62FMeYrCjP/KmKIInPiYYMmpMG4YmPriKO
+	mW2WmxfrIPP5+qyZBVVeK/R0RY8AsFjWbhWaDPfpp5IoW0prUD5sWtxfsPQ6DGbXNfKhffzUJAO
+	aAxmLlVDprgRcSn+tP0NBqfKrW2MX6AbSR1qK9BmAljuyAkrztIMCCaY2wDNbsH0PrKwM0mio+N
+	N92aaWaL8S1SLP9Zlh15tMAmdTWcOQp8xg7xPc92RKE7eYzhQ98dj7wDc59EprhyIeCls=
+X-Received: by 2002:ac2:5fca:0:b0:5ad:3035:c2be with SMTP id 2adb3069b0e04-5ad43759ce2mr1020836e87.51.1781622234324;
+        Tue, 16 Jun 2026 08:03:54 -0700 (PDT)
+Received: from cherrypc.astra-academy.ru (109-252-17-231.nat.spd-mgts.ru. [109.252.17.231])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5ad2e1adae5sm3650988e87.56.2026.06.16.08.03.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 16 Jun 2026 08:03:53 -0700 (PDT)
+From: Nazar Kalashnikov <nazarkalashnikov0@gmail.com>
+To: stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Nazar Kalashnikov <nazarkalashnikov0@gmail.com>,
+	Christine Caulfield <ccaulfie@redhat.com>,
+	David Teigland <teigland@redhat.com>,
+	cluster-devel@redhat.com,
+	linux-kernel@vger.kernel.org,
+	Alexander Aring <aahringo@redhat.com>,
+	gfs2@lists.linux.dev,
+	lvc-project@linuxtesting.org,
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Subject: [PATCH 5.10/5.15] dlm: prevent NPD when writing a positive value to event_done
+Date: Tue, 16 Jun 2026 18:04:05 +0300
+Message-ID: <20260616150407.810370-1-nazarkalashnikov0@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,142 +97,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264546-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:shinichiro.kawasaki@wdc.com,m:dlemoal@kernel.org,m:axboe@kernel.dk,m:gyokhan@amazon.de,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,redhat.com,vger.kernel.org,lists.linux.dev,linuxtesting.org,igalia.com];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-263784-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:nazarkalashnikov0@gmail.com,m:ccaulfie@redhat.com,m:teigland@redhat.com,m:cluster-devel@redhat.com,m:linux-kernel@vger.kernel.org,m:aahringo@redhat.com,m:gfs2@lists.linux.dev,m:lvc-project@linuxtesting.org,m:cascardo@igalia.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[nazarkalashnikov0@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[nazarkalashnikov0@gmail.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,amazon.de:email,vger.kernel.org:from_smtp,kernel.dk:email]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,igalia.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7388C6921A4
+X-Rspamd-Queue-Id: 3B13A690BFE
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 
-------------------
+commit 8e2bad543eca5c25cd02cbc63d72557934d45f13 upstream.
 
-From: Damien Le Moal <dlemoal@kernel.org>
+do_uevent returns the value written to event_done. In case it is a
+positive value, new_lockspace would undo all the work, and lockspace
+would not be set. __dlm_new_lockspace, however, would treat that
+positive value as a success due to commit 8511a2728ab8 ("dlm: fix use
+count with multiple joins").
 
-commit 836efd35c472d89c838d7b17ef339ddb3286ffc5 upstream.
+Down the line, device_create_lockspace would pass that NULL lockspace to
+dlm_find_lockspace_local, leading to a NULL pointer dereference.
 
-Shin'ichiro reported hard to reproduce unaligned write errors with zoned
-block devices. Under normal operation conditions (e.g. running XFS on an
-SMR disk), these errors are nearly impossible to trigger. But using a
-"slow" kernel with many debug options enables and some specific use
-cases (e.g. fio zbd test case 46), the errors can be reproduced fairly
-easily.
+Treating such positive values as successes prevents the problem. Given
+this has been broken for so long, this is unlikely to break userspace
+expectations.
 
-The unaligned write errors come from mishandling a valid reference
-counting pattern of zone write plugs. Such pattern triggers for instance
-if a process A writes a zone (not necessarilly to the full state),
-another process B immediately resets the zone and immediately following
-the completion of the zone reset, starts issuing writes to the zone.
-With such pattern, in some cases, the zone write plugs worker thread of
-the device may still be holding a reference to the zone write plug of
-the zone taken when process A was writing to the zone. The following
-zone reset from process B marks the zone as dead but does not remove the
-zone write plug from the device hash table as a reference to the plug
-still exist. Once process B starts issuing new writes, the zone write
-plug is seen as dead and the writes from process B are immediately
-failed, despite this write pattern being perfectly legal.
-
-Fix this by allowing restoring a dead zone write plug to a live state if
-a write is issued to the zone when the zone is: marked as dead, empty
-and the write sector corresponds to the first sector of the zone (that
-is, the write is aligned to the zone write pointer). This is done with
-the new helper function disk_check_zone_wplug_dead(), which restores a
-dead zone write plug to a live state by clearing the BLK_ZONE_WPLUG_DEAD
-flag and restoring the initial reference to the zone write plug taken
-when the plug was added to the device hash table.
-
-Reported-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-Fixes: b7d4ffb51037 ("block: fix zone write plug removal")
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Tested-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-Link: https://patch.msgid.link/20260513111129.108809-1-dlemoal@kernel.org
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-[ context conflict due to different line offsets in blk-zoned.c ]
-Signed-off-by: Gyokhan Kochmarla <gyokhan@amazon.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
+Fixes: 8511a2728ab8 ("dlm: fix use count with multiple joins")
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Signed-off-by: David Teigland <teigland@redhat.com>
+Signed-off-by: Nazar Kalashnikov <nazarkalashnikov0@gmail.com>
 ---
- block/blk-zoned.c |   32 +++++++++++++++++++++++++++-----
- 1 file changed, 27 insertions(+), 5 deletions(-)
+Backport fix for CVE-2025-23131
+ fs/dlm/lockspace.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/block/blk-zoned.c
-+++ b/block/blk-zoned.c
-@@ -505,6 +505,28 @@ static void disk_mark_zone_wplug_dead(st
- 	}
- }
+diff --git a/fs/dlm/lockspace.c b/fs/dlm/lockspace.c
+index 5394c5713975..5072e81603ed 100644
+--- a/fs/dlm/lockspace.c
++++ b/fs/dlm/lockspace.c
+@@ -638,7 +638,7 @@ static int new_lockspace(const char *name, const char *cluster,
+ 	   lockspace to start running (via sysfs) in dlm_ls_start(). */
  
-+static inline bool disk_check_zone_wplug_dead(struct blk_zone_wplug *zwplug)
-+{
-+	if (!(zwplug->flags & BLK_ZONE_WPLUG_DEAD))
-+		return false;
-+
-+	/*
-+	 * If a new write is received right after a zone reset completes and
-+	 * while the disk_zone_wplugs_worker() thread has not yet released the
-+	 * reference on the zone write plug after processing the last write to
-+	 * the zone, then the new write BIO will see the zone write plug marked
-+	 * as dead. This case is however a false positive and a perfectly valid
-+	 * pattern. In such case, restore the zone write plug to a live one.
-+	 */
-+	if (!zwplug->wp_offset && bio_list_empty(&zwplug->bio_list)) {
-+		zwplug->flags &= ~BLK_ZONE_WPLUG_DEAD;
-+		refcount_inc(&zwplug->ref);
-+		return false;
-+	}
-+
-+	return true;
-+}
-+
- static void blk_zone_wplug_bio_work(struct work_struct *work);
+ 	error = do_uevent(ls, 1);
+-	if (error)
++	if (error < 0)
+ 		goto out_recoverd;
  
- /*
-@@ -1027,12 +1049,12 @@ static bool blk_zone_wplug_handle_write(
- 	}
- 
- 	/*
--	 * If we got a zone write plug marked as dead, then the user is issuing
--	 * writes to a full zone, or without synchronizing with zone reset or
--	 * zone finish operations. In such case, fail the BIO to signal this
--	 * invalid usage.
-+	 * Check if we got a zone write plug marked as dead. If yes, then the
-+	 * user is likely issuing writes to a full zone, or without
-+	 * synchronizing with zone reset or zone finish operations. In such
-+	 * case, fail the BIO to signal this invalid usage.
- 	 */
--	if (zwplug->flags & BLK_ZONE_WPLUG_DEAD) {
-+	if (disk_check_zone_wplug_dead(zwplug)) {
- 		spin_unlock_irqrestore(&zwplug->lock, flags);
- 		disk_put_zone_wplug(zwplug);
- 		bio_io_error(bio);
-
-
+ 	wait_for_completion(&ls->ls_members_done);
+-- 
+2.47.3
 
