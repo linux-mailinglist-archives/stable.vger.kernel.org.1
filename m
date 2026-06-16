@@ -1,64 +1,62 @@
-Return-Path: <stable+bounces-266222-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263897-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id T0KBKeWYMWoynwUAu9opvQ
-	(envelope-from <stable+bounces-266222-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:41:41 +0200
+	id CtWpNF5pMWrVigUAu9opvQ
+	(envelope-from <stable+bounces-263897-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:18:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33D28694573
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:41:41 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C07B690E71
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:18:54 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=H9Rg8Z54;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266222-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266222-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=bSZl83UW;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263897-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263897-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1BA173023316
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:41:39 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0DC0E3041C78
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:17:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25FFA47B406;
-	Tue, 16 Jun 2026 18:41:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3AD143E484;
+	Tue, 16 Jun 2026 15:17:29 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9F1243D4E8;
-	Tue, 16 Jun 2026 18:41:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 867C943C05C;
+	Tue, 16 Jun 2026 15:17:28 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781635295; cv=none; b=MmA9bVsHwKuftO3Jo0d2uRW6V8rdbu/xmNXuUAB6H7+2CuRMfRnrIFb1FFGPhkC5n6NSO2OOPgH/bweULspGo00d+ygZ9cNBi27biow2wyCZa5WAIq/1Xlcuhzk3wRRO8uwvRPezQelbYNfluUR0fwKIaPSXOBVJFGHc9Gshnz8=
+	t=1781623049; cv=none; b=UjDl36kdpAmpTTxe0of441OOFbT947Mjebaue/QAmZk3/MvdNg8oiqnauSLrcBXEW/p+TittyjMKf4VXry9JNVovYK3JfJNrHruwZ+JAtab1VosQZ+CW/GwYoFphq4jPFDbq/xEy/KcSHzyj/6nxmb+msog2XJWvVLOoy6OBU+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781635295; c=relaxed/simple;
-	bh=mUXFtCsNJPTwbv9jPirN9phJQQ168ffK3TBVLzwSl3Q=;
+	s=arc-20240116; t=1781623049; c=relaxed/simple;
+	bh=FWkqqoWo0gElHk4GxkNALTY1Squ9eKQuSXpo0DKta8I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gK8tgyoH6AXAWPCTxMf0tUh75zGEBLK7hLDue8sToeP82CLlam+qNsIgHpS7GCoJbak7ujH7dF8rlhmaqCRcQ60WLK3mkiicnpIlZf/mbf30nZVFKUaRvZXnrm81tYo9OFEluLzWkMUqlLlZnjKlJrzXImuBkYIfOTPWMt3fc6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H9Rg8Z54; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DE271F000E9;
-	Tue, 16 Jun 2026 18:41:33 +0000 (UTC)
+	 MIME-Version; b=kU1k4eAOyWH8CNaoSwd0PCsGBCWpX/dxYnHvAQb2CdFrWDrlQtiM6ZFCNSc41g6CNV7lPEXB7OxUjio9WbRb3HlL//BJ+v41LeBtOM8YDjOADGlq3E1ep0msvfp7fk04Z7SbJp+c+7P5nN/GLrzso+ppkO8o0drOcjrRh375Wyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bSZl83UW; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C4621F000E9;
+	Tue, 16 Jun 2026 15:17:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781635294;
-	bh=t7nc+OFlJMNRYU89ds9JhCtaJba7AUOXYyzDi0Nb5SE=;
+	s=korg; t=1781623048;
+	bh=n0dSZhOiKHv8XPsO6p3Cues02+DVwwO/9EaMDcC+FXk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=H9Rg8Z54jjLpIveidjFfmC7mEHCa1N06FD7hDIEmlcXg1nCCL7GEUUrAVy6Te9id+
-	 3CmYlXcuStO2M4xICXJF4gmkbwzW65QvArFAaDYC3xuDOpfH1DlpXiDIWpLotvUWcg
-	 wFvm6cWSXHwMSqzDDgNTBmwe6zG9Oa8j/AWoGsBA=
+	b=bSZl83UW/lPJ5Zu1a9BGUQpzNmelkb+AKWYbi/kq1WGb3oUZzFEos5My9w3pgkzY1
+	 8rmVIcDWpV3gIzTWt6TlAk5bqR9S+5GF4zvVSrvRo+NrnK31TxzTkWcqAbE7eM++iT
+	 VOcsp4tqVSPXSUZRaRpoWH6SfhGOs7yDL0njz+wM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang Mei <xmei5@asu.edu>,
-	Weiming Shi <bestswngs@gmail.com>,
-	Dongli Zhang <dongli.zhang@oracle.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 014/342] tun: free page on short-frame rejection in tun_xdp_one()
+Subject: [PATCH 7.0 079/378] regulator: mt6363: select CONFIG_IRQ_DOMAIN
 Date: Tue, 16 Jun 2026 20:25:10 +0530
-Message-ID: <20260616145048.958691317@linuxfoundation.org>
+Message-ID: <20260616145114.347899439@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,90 +70,91 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,oracle.com,google.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-266222-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:xmei5@asu.edu,m:bestswngs@gmail.com,m:dongli.zhang@oracle.com,m:willemb@google.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-263897-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:arnd@arndb.de,m:angelogioacchino.delregno@collabora.com,m:broonie@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[asu.edu:email,oracle.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,arndb.de:email,collabora.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 33D28694573
+X-Rspamd-Queue-Id: 9C07B690E71
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weiming Shi <bestswngs@gmail.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit f4feb1e20058e407cb00f45aff47f5b7e19a6bbf ]
+[ Upstream commit 29d87434cb91b7689de2917830ca82acfd2770f5 ]
 
-tun_xdp_one() returns -EINVAL on a frame shorter than ETH_HLEN without
-freeing the page that vhost_net_build_xdp() allocated for it.
-tun_sendmsg() discards that -EINVAL and still returns total_len, so
-vhost_tx_batch() takes the success path and never frees the page; each
-short frame in a batch leaks one page-frag chunk.
+When build-testing this driver without CONFIG_IRQ_DOMAIN causes
+a compile-time error:
 
-A local process that can open /dev/net/tun and /dev/vhost-net can hit
-this path: it attaches a tun/tap device as the vhost-net backend and
-feeds TX descriptors whose length minus the virtio-net header is below
-ETH_HLEN. Each kick leaks the page-frag chunks for that batch, and a
-tight submission loop exhausts host memory and triggers an OOM panic.
-Free the page before returning -EINVAL, matching the XDP-program error
-path in the same function.
+drivers/regulator/mt6363-regulator.c: In function 'mt6363_regulator_probe':
+drivers/regulator/mt6363-regulator.c:884:18: error: implicit declaration of function 'irq_find_host' [-Wimplicit-function-declaration]
+  884 |         domain = irq_find_host(interrupt_parent);
+      |                  ^~~~~~~~~~~~~
+drivers/regulator/mt6363-regulator.c:884:16: error: assignment to 'struct irq_domain *' from 'int' makes pointer from integer without a cast [-Wint-conversion]
+  884 |         domain = irq_find_host(interrupt_parent);
+      |                ^
+drivers/regulator/mt6363-regulator.c:896:30: error: implicit declaration of function 'irq_create_fwspec_mapping'; did you mean 'irq_create_of_mapping'? [-Wimplicit-function-declaration]
+  896 |                 info->virq = irq_create_fwspec_mapping(&fwspec);
+      |                              ^~~~~~~~~~~~~~~~~~~~~~~~~
+      |                              irq_create_of_mapping
 
-Fixes: 049584807f1d ("tun: add missing verification for short frame")
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
-Reviewed-by: Dongli Zhang <dongli.zhang@oracle.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20260520160020.375349-2-bestswngs@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+This is rather hard to trigger because so many other drivers
+enable IRQ_DOMAIN already, but I ran into this on an s390
+randconfig build.
+
+Ensure this is always enabled using a Kconfig 'select IRQ_DOMAIN'
+entry, as we do for all other users of this.
+
+Fixes: 3c36965df808 ("regulator: Add support for MediaTek MT6363 SPMI PMIC Regulators")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://patch.msgid.link/20260526102003.2527570-1-arnd@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/tun.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/regulator/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/tun.c b/drivers/net/tun.c
-index 3a89f9457fa242..930086d79f97c8 100644
---- a/drivers/net/tun.c
-+++ b/drivers/net/tun.c
-@@ -2472,8 +2472,10 @@ static int tun_xdp_one(struct tun_struct *tun,
- 	bool skb_xdp = false;
- 	struct page *page;
- 
--	if (unlikely(datasize < ETH_HLEN))
-+	if (unlikely(datasize < ETH_HLEN)) {
-+		put_page(virt_to_head_page(xdp->data));
- 		return -EINVAL;
-+	}
- 
- 	xdp_prog = rcu_dereference(tun->xdp_prog);
- 	if (xdp_prog) {
+diff --git a/drivers/regulator/Kconfig b/drivers/regulator/Kconfig
+index d10b6f9243d515..426642d7a02c0c 100644
+--- a/drivers/regulator/Kconfig
++++ b/drivers/regulator/Kconfig
+@@ -977,6 +977,7 @@ config REGULATOR_MT6363
+ 	tristate "MT6363 SPMI PMIC regulator driver"
+ 	depends on SPMI
+ 	select REGMAP_SPMI
++	select IRQ_DOMAIN
+ 	help
+ 	  Say Y here to enable support for regulators found in the MediaTek
+ 	  MT6363 SPMI PMIC.
 -- 
 2.53.0
 
