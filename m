@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-266436-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264344-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id xBPfL0CdMWocoQUAu9opvQ
-	(envelope-from <stable+bounces-266436-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:00:16 +0200
+	id J4IDNOB2MWr3jwUAu9opvQ
+	(envelope-from <stable+bounces-264344-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:16:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DE21694A69
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:00:16 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF167691E08
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:16:31 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=KxpfgL9q;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266436-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266436-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=UuD7TP66;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264344-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264344-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 55670304966D
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:00:15 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id CB15A302B639
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:56:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D96AB3DDDC3;
-	Tue, 16 Jun 2026 19:00:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BD9844DB64;
+	Tue, 16 Jun 2026 15:56:39 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A35D63DDDA0;
-	Tue, 16 Jun 2026 19:00:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCB7A43D4F7;
+	Tue, 16 Jun 2026 15:56:37 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781636414; cv=none; b=OlaSfjnXRwETHTHSgL6Jr9nKWK6X06jccI6nkELUaI81rZB4VVDU+JumXjLvs+tD+NTXE6lYQe9Yk8bIgDrgoukS8GXkdbtIcJGYfLHQ9/xzzHQQmM/Qd+iy79G2BB3qT9mg6o9M12MKRTo03Vv3u3BUEir5IlLF6cJs0FNt+28=
+	t=1781625398; cv=none; b=GXju+AxTZtOMnOG8HLDunCeI52gqlC1/3IN7mDpwAtYrGz6F9Her1JC6qlwgQFzaUa1jSSTjyYWYx6fqrVlP0bfZDcJFjH1kYEUlF+KUt1zeAh0h+6Bfy2x21hyC27xFLhIBeJ8MdSIVEgawUX0EQDGvnrTX0cfoF5rtnwcjP98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781636414; c=relaxed/simple;
-	bh=CpMeTqx4jGE/nVzUNGtw44QB40V/twVUn8+SEHEgr48=;
+	s=arc-20240116; t=1781625398; c=relaxed/simple;
+	bh=oOyOCSXG+HeMjU4YIQyJW1y2SQx8UV8GYSiH7fCruXs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jBYdAsb0kM9DXCUDAnOTk5wcH23qPVui5SUF6tAzxoeTOnk+gGJHwruQjr112MG3Oj+9uAYKwGaaB/6ZoQZVld8xio4Yc6eOABaYjsiBdTC+vRIZ3hKoQge7P9BgO7S3NEZOy9An+yDQJUmDvPVhmYVRGBtzI6ViybflYinE+Io=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KxpfgL9q; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB9891F000E9;
-	Tue, 16 Jun 2026 19:00:12 +0000 (UTC)
+	 MIME-Version; b=fAwgoc17Eq/la1svNaFsT0B6Ci2EbJDOZWGU8YZLcrPItr5OxGN6+/omum+n4lnRIY1QgHW9y0SQXQEThdk6FlWM5e+JyGP8cxLUviDMaZGAcYARVQyS0iZNGniGpAAchnBH4RuCXzuKJ7QiY1utjdoabz0VgPQpZvyR01SpcaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UuD7TP66; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B55481F000E9;
+	Tue, 16 Jun 2026 15:56:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781636413;
-	bh=srlf/+/ix78n/uiu51HatcIJL3WRoKbFuM82kG6/BOM=;
+	s=korg; t=1781625397;
+	bh=8OTTVRgOe6EzsNHJ66/UjCKjpHo/kQsdjjfrDOJ6B38=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=KxpfgL9qHIy1KHvdcdnIIV54W7C6EXBeClBe+wGEgkSjGSK4kVwA0UOykIaxM8F30
-	 VdXZE0fBdqniBYPFXhq+s4pwH+Dmy9mAyVutKymx5XoditWg7Kha6kJv+60UiRKL6s
-	 wYX4q9q6XjGShjWyrMv5g2A+L1HsJ/MJKyvs9DZE=
+	b=UuD7TP66nvp1//CsHw2eQCvgbjv8dmNzwvlx+WlHTh2EgFHSRx6nilbeBbooETDIK
+	 bZ8erwXCFKoZKh3cDtF7+12xP1ew+gkqeVQHOMclB2Su2YeuzAQPxZJjMXadDRkOUM
+	 iyrrfqVlAe2gF6VUQUXlDOn5o1z3hEzWSqbby8Bk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jiawen Wu <jiawenwu@trustnetic.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 234/342] net: qrtr: ns: Limit the maximum number of lookups
+Subject: [PATCH 6.18 134/325] net: txgbe: support CR modules for AML devices
 Date: Tue, 16 Jun 2026 20:28:50 +0530
-Message-ID: <20260616145059.100980140@linuxfoundation.org>
+Message-ID: <20260616145104.409082077@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,21 +72,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266436-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264344-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:manivannan.sadhasivam@oss.qualcomm.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jiawenwu@trustnetic.com,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -98,101 +98,149 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4DE21694A69
+X-Rspamd-Queue-Id: CF167691E08
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+From: Jiawen Wu <jiawenwu@trustnetic.com>
 
-[ Upstream commit 5640227d9a21c6a8be249a10677b832e7f40dc55 ]
+[ Upstream commit 354d128aa7212c53ffc7127877953264a445f5af ]
 
-Current code does no bound checking on the number of lookups a client can
-perform. Though the code restricts the lookups to local clients, there is
-still a possibility of a malicious local client sending a flood of
-NEW_LOOKUP messages over the same socket.
+Support to identify 25G/10G CR modules for AML devices. Autoneg is
+enbaled by default in CR mode.
 
-Fix this issue by limiting the maximum number of lookups to 64 globally.
-Since the nameserver allows only atmost one local observer, this global
-lookup count will ensure that the lookups stay within the limit.
-
-Note that, limit of 64 is chosen based on the current platform
-requirements. If requirement changes in the future, this limit can be
-increased.
-
-Cc: stable@vger.kernel.org
-Fixes: 0c2204a4ad71 ("net: qrtr: Migrate nameservice to kernel from userspace")
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260409-qrtr-fix-v3-2-00a8a5ff2b51@oss.qualcomm.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ adapted comment block to only mention QRTR_NS_MAX_LOOKUPS and kept kzalloc() instead of kzalloc_obj() due to missing prerequisite commits ]
+Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+Link: https://patch.msgid.link/20251118080259.24676-2-jiawenwu@trustnetic.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Stable-dep-of: 0487cfca4651 ("net: txgbe: initialize module info buffer")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/qrtr/ns.c |   14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ .../net/ethernet/wangxun/txgbe/txgbe_aml.c    | 59 +++++++++++++------
+ .../ethernet/wangxun/txgbe/txgbe_ethtool.c    |  3 +-
+ 2 files changed, 44 insertions(+), 18 deletions(-)
 
---- a/net/qrtr/ns.c
-+++ b/net/qrtr/ns.c
-@@ -21,6 +21,7 @@ static struct {
- 	struct socket *sock;
- 	struct sockaddr_qrtr bcast_sq;
- 	struct list_head lookups;
-+	u32 lookup_count;
- 	struct workqueue_struct *workqueue;
- 	struct work_struct work;
- 	void (*saved_data_ready)(struct sock *sk);
-@@ -69,6 +70,11 @@ struct qrtr_node {
- 	struct radix_tree_root servers;
- };
- 
-+/* Max lookup limit is chosen based on the current platform requirements. If the
-+ * requirement changes in the future, this value can be increased.
-+ */
-+#define QRTR_NS_MAX_LOOKUPS 64
-+
- static struct qrtr_node *node_get(unsigned int node_id)
- {
- 	struct qrtr_node *node;
-@@ -457,6 +463,7 @@ static int ctrl_cmd_del_client(struct so
- 
- 		list_del(&lookup->li);
- 		kfree(lookup);
-+		qrtr_ns.lookup_count--;
- 	}
- 
- 	/* Remove the server belonging to this port but don't broadcast
-@@ -598,6 +605,11 @@ static int ctrl_cmd_new_lookup(struct so
- 	if (from->sq_node != qrtr_ns.local_node)
- 		return -EINVAL;
- 
-+	if (qrtr_ns.lookup_count >= QRTR_NS_MAX_LOOKUPS) {
-+		pr_err_ratelimited("QRTR client node exceeds max lookup limit!\n");
-+		return -ENOSPC;
-+	}
-+
- 	lookup = kzalloc(sizeof(*lookup), GFP_KERNEL);
- 	if (!lookup)
- 		return -ENOMEM;
-@@ -606,6 +618,7 @@ static int ctrl_cmd_new_lookup(struct so
- 	lookup->service = service;
- 	lookup->instance = instance;
- 	list_add_tail(&lookup->li, &qrtr_ns.lookups);
-+	qrtr_ns.lookup_count++;
- 
- 	memset(&filter, 0, sizeof(filter));
- 	filter.service = service;
-@@ -672,6 +685,7 @@ static void ctrl_cmd_del_lookup(struct s
- 
- 		list_del(&lookup->li);
- 		kfree(lookup);
-+		qrtr_ns.lookup_count--;
- 	}
+diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c
+index 80413504e4bc86..05f852e31e6e52 100644
+--- a/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c
++++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c
+@@ -104,7 +104,8 @@ static int txgbe_set_phy_link_hostif(struct wx *wx, int speed, int autoneg, int
+ 					 WX_HI_COMMAND_TIMEOUT, false);
  }
  
+-static void txgbe_get_link_capabilities(struct wx *wx, int *speed, int *duplex)
++static void txgbe_get_link_capabilities(struct wx *wx, int *speed,
++					int *autoneg, int *duplex)
+ {
+ 	struct txgbe *txgbe = wx->priv;
+ 
+@@ -115,6 +116,7 @@ static void txgbe_get_link_capabilities(struct wx *wx, int *speed, int *duplex)
+ 	else
+ 		*speed = SPEED_UNKNOWN;
+ 
++	*autoneg = phylink_test(txgbe->advertising, Autoneg);
+ 	*duplex = *speed == SPEED_UNKNOWN ? DUPLEX_HALF : DUPLEX_FULL;
+ }
+ 
+@@ -135,11 +137,11 @@ static void txgbe_get_phy_link(struct wx *wx, int *speed)
+ 
+ int txgbe_set_phy_link(struct wx *wx)
+ {
+-	int speed, duplex, err;
++	int speed, autoneg, duplex, err;
+ 
+-	txgbe_get_link_capabilities(wx, &speed, &duplex);
++	txgbe_get_link_capabilities(wx, &speed, &autoneg, &duplex);
+ 
+-	err = txgbe_set_phy_link_hostif(wx, speed, 0, duplex);
++	err = txgbe_set_phy_link_hostif(wx, speed, autoneg, duplex);
+ 	if (err) {
+ 		wx_err(wx, "Failed to setup link\n");
+ 		return err;
+@@ -154,19 +156,43 @@ static int txgbe_sfp_to_linkmodes(struct wx *wx, struct txgbe_sfp_id *id)
+ 	DECLARE_PHY_INTERFACE_MASK(interfaces);
+ 	struct txgbe *txgbe = wx->priv;
+ 
+-	if (id->com_25g_code & (TXGBE_SFF_25GBASESR_CAPABLE |
+-				TXGBE_SFF_25GBASEER_CAPABLE |
+-				TXGBE_SFF_25GBASELR_CAPABLE)) {
+-		phylink_set(modes, 25000baseSR_Full);
++	if (id->cable_tech & TXGBE_SFF_DA_PASSIVE_CABLE) {
++		txgbe->link_port = PORT_DA;
++		phylink_set(modes, Autoneg);
++		if (id->com_25g_code == TXGBE_SFF_25GBASECR_91FEC ||
++		    id->com_25g_code == TXGBE_SFF_25GBASECR_74FEC ||
++		    id->com_25g_code == TXGBE_SFF_25GBASECR_NOFEC) {
++			phylink_set(modes, 25000baseCR_Full);
++			phylink_set(modes, 10000baseCR_Full);
++			__set_bit(PHY_INTERFACE_MODE_25GBASER, interfaces);
++			__set_bit(PHY_INTERFACE_MODE_10GBASER, interfaces);
++		} else {
++			phylink_set(modes, 10000baseCR_Full);
++			__set_bit(PHY_INTERFACE_MODE_10GBASER, interfaces);
++		}
++	} else if (id->cable_tech & TXGBE_SFF_DA_ACTIVE_CABLE) {
++		txgbe->link_port = PORT_DA;
++		phylink_set(modes, Autoneg);
++		phylink_set(modes, 25000baseCR_Full);
+ 		__set_bit(PHY_INTERFACE_MODE_25GBASER, interfaces);
+-	}
+-	if (id->com_10g_code & TXGBE_SFF_10GBASESR_CAPABLE) {
+-		phylink_set(modes, 10000baseSR_Full);
+-		__set_bit(PHY_INTERFACE_MODE_10GBASER, interfaces);
+-	}
+-	if (id->com_10g_code & TXGBE_SFF_10GBASELR_CAPABLE) {
+-		phylink_set(modes, 10000baseLR_Full);
+-		__set_bit(PHY_INTERFACE_MODE_10GBASER, interfaces);
++	} else {
++		if (id->com_25g_code == TXGBE_SFF_25GBASESR_CAPABLE ||
++		    id->com_25g_code == TXGBE_SFF_25GBASEER_CAPABLE ||
++		    id->com_25g_code == TXGBE_SFF_25GBASELR_CAPABLE) {
++			txgbe->link_port = PORT_FIBRE;
++			phylink_set(modes, 25000baseSR_Full);
++			__set_bit(PHY_INTERFACE_MODE_25GBASER, interfaces);
++		}
++		if (id->com_10g_code & TXGBE_SFF_10GBASESR_CAPABLE) {
++			txgbe->link_port = PORT_FIBRE;
++			phylink_set(modes, 10000baseSR_Full);
++			__set_bit(PHY_INTERFACE_MODE_10GBASER, interfaces);
++		}
++		if (id->com_10g_code & TXGBE_SFF_10GBASELR_CAPABLE) {
++			txgbe->link_port = PORT_FIBRE;
++			phylink_set(modes, 10000baseLR_Full);
++			__set_bit(PHY_INTERFACE_MODE_10GBASER, interfaces);
++		}
+ 	}
+ 
+ 	if (phy_interface_empty(interfaces)) {
+@@ -177,7 +203,6 @@ static int txgbe_sfp_to_linkmodes(struct wx *wx, struct txgbe_sfp_id *id)
+ 	phylink_set(modes, Pause);
+ 	phylink_set(modes, Asym_Pause);
+ 	phylink_set(modes, FIBRE);
+-	txgbe->link_port = PORT_FIBRE;
+ 
+ 	if (!linkmode_equal(txgbe->sfp_support, modes)) {
+ 		linkmode_copy(txgbe->sfp_support, modes);
+diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_ethtool.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_ethtool.c
+index e285b088c7b267..e8dd277a35c7a4 100644
+--- a/drivers/net/ethernet/wangxun/txgbe/txgbe_ethtool.c
++++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_ethtool.c
+@@ -30,7 +30,8 @@ int txgbe_get_link_ksettings(struct net_device *netdev,
+ 		return 0;
+ 
+ 	cmd->base.port = txgbe->link_port;
+-	cmd->base.autoneg = AUTONEG_DISABLE;
++	cmd->base.autoneg = phylink_test(txgbe->advertising, Autoneg) ?
++			    AUTONEG_ENABLE : AUTONEG_DISABLE;
+ 	linkmode_copy(cmd->link_modes.supported, txgbe->sfp_support);
+ 	linkmode_copy(cmd->link_modes.advertising, txgbe->advertising);
+ 
+-- 
+2.53.0
+
 
 
 
