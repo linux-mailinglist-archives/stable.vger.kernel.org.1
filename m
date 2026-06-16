@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-264838-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265352-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ytRtB+h9MWr+kgUAu9opvQ
-	(envelope-from <stable+bounces-264838-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:46:32 +0200
+	id RFaJLMWIMWqYlwUAu9opvQ
+	(envelope-from <stable+bounces-265352-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:32:53 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7165069270A
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:46:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 266BC6933D5
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:32:53 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=b4dhK5nv;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264838-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264838-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=crvx1ghZ;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265352-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265352-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 60FAD31467DF
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:42:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 279A43156411
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:26:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9C5946AF1B;
-	Tue, 16 Jun 2026 16:42:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B188D44BCBE;
+	Tue, 16 Jun 2026 17:26:07 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0950478864;
-	Tue, 16 Jun 2026 16:42:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9655047A0A9;
+	Tue, 16 Jun 2026 17:26:06 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781628155; cv=none; b=iafmkLOMKEjLexCHkKZrSlxgf2iO2MMR4bAi42zfqIoYQ4xHtrTzmU6DTh+L/OFO8NGPBJJo/DUMOntjrb9F7PweI/XUnhEYLwbs6x/dV9SPwy8qQA72tG1xv1w7G7apReBkzoViH9nB4RuFdhfHsxzXvAwWju7bxqaGK246Bew=
+	t=1781630767; cv=none; b=PcvQWRxEs1YFe812IhxiUE8vVNyFnIjzlgV87GnP2M8MuHuoybLwZhSIP4MCHKUv3+4a5Avys29rS7YRagPN0EiZv15ZVpec+w59FCsdeYeUkcE5Hpxs1uJAtNP7WIJEcuqm1s7PxX+kXwgOoLRk52NV1mz0FnHUvAN9MORuKCI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781628155; c=relaxed/simple;
-	bh=KcGQGMIsjFjevofc6nu81omylDENer1iWCv2UdeG7VE=;
+	s=arc-20240116; t=1781630767; c=relaxed/simple;
+	bh=EfiI3CCEsmPBE7OqgKxFXhv1RylZZXkSezccGdOq0ps=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YP6qCX5Du8U4Ngvj3GZ65hc86kVkwg3CLQSakAn9mHWmgpC0F8QaKFMV1keRkTdpksj485n6i4Y+4hFTRXfgYV00XckbJ5SplR/0SoeVX8BpW/GuE2/gRZABee/lae1seeuFJpQTqC43c4vDcxulNZAxbOh5w72JhTHQaQxcWAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b4dhK5nv; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95E441F000E9;
-	Tue, 16 Jun 2026 16:42:33 +0000 (UTC)
+	 MIME-Version; b=nYGa23K7DvzNE+X/+P+XuxvlTRX+r8fMOAmpOGKk+z5xf0/HOjINWFmMtP6hKtUzZSG83wE1PMVndAOSuglxchoXnMhBUAGkVSRctRvYg8XD8md1NajJD5B2yPeJVx7G4YQhI3B83GlJqNxEAJ9xOifTQt3Hq8rqeQoFbhWrXqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=crvx1ghZ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B2B41F000E9;
+	Tue, 16 Jun 2026 17:26:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781628154;
-	bh=MglUFf5Wgg16dmeCUJKUGURRTT/YeZD3WOxLIJrzV90=;
+	s=korg; t=1781630766;
+	bh=0arqabB24sUwym8N2HsZb79al4T4h2zv/Tj4lZMp4Dc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=b4dhK5nvY1/K41ff5fMxfmKV6cPzSRJRos9aaJJekxfWOG9yrLm3BKgKPzWXu+p+y
-	 HMbQrOftox2ptVARL+pzV03qWOr1CfqWiBFPeDFn8D1LKZ19y/NRCz/tB/RmnGV2bO
-	 brUPkcdnZKCAudW+JD2LxwM9qna79UT09anqQR5k=
+	b=crvx1ghZyE2G1fNtWnQL/lg5aGhWkpq3qYIKxT5nNjBGH0RT8y5GdiahWjeYzDUKF
+	 Dop6cSaT5dV4mtoUxtek2vFTWGkzrwiqS5bsNdMOsg8vCFLJsuJVDkHAkhnIlOjBiQ
+	 SXLDqOLJjl0bgVM4G+s4PQkLbzMybWCC8EnOIhuA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Mason <clm@meta.com>,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Florian Westphal <fw@strlen.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 012/452] netfilter: synproxy: refresh tcphdr after skb_ensure_writable
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Farhad Alemi <farhad.alemi@berkeley.edu>
+Subject: [PATCH 6.1 092/522] hpfs: fix a crash if hpfs_map_dnode_bitmap fails
 Date: Tue, 16 Jun 2026 20:23:59 +0530
-Message-ID: <20260616145118.446586143@linuxfoundation.org>
+Message-ID: <20260616145130.197128599@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,106 +68,70 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264838-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265352-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:clm@meta.com,m:fmancera@suse.de,m:fw@strlen.de,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mpatocka@redhat.com,m:farhad.alemi@berkeley.edu,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,suse.de:email,strlen.de:email,meta.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7165069270A
+X-Rspamd-Queue-Id: 266BC6933D5
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chris Mason <clm@meta.com>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-[ Upstream commit 92170e6afe927ab2792a3f71902845789c8e31b1 ]
+commit 974820a59efde7c1a7e1260bcfe9bb81f833cc9f upstream.
 
-synproxy_tstamp_adjust() rewrites the TCP timestamp option in place
-and then patches the TCP checksum via inet_proto_csum_replace4() on
-the caller-supplied tcphdr pointer.  Both ipv4_synproxy_hook() and
-ipv6_synproxy_hook() obtain that pointer with skb_header_pointer()
-before calling in, so it may either alias skb->head directly or
-point at the caller's on-stack _tcph buffer.
+If hpfs_map_dnode_bitmap fails, the code would call hpfs_brelse4 on
+uninitialized quad buffer head, causing a crash.
 
-Between obtaining the pointer and using it, the function calls
-skb_ensure_writable(skb, optend), which on a cloned or non-linear
-skb invokes pskb_expand_head() and frees the old skb->head.  After
-that point the cached th is stale:
-
-    caller (ipv[46]_synproxy_hook)
-      th = skb_header_pointer(skb, ..., &_tcph)
-      synproxy_tstamp_adjust(skb, protoff, th, ...)
-        skb_ensure_writable(skb, optend)
-          pskb_expand_head()        /* kfree(old skb->head) */
-        ...
-        inet_proto_csum_replace4(&th->check, ...)
-                                    /* writes into freed head, or
-                                       into the caller's stack copy
-                                       leaving the on-wire checksum
-                                       stale */
-
-The option bytes are written through skb->data and are fine; only
-the checksum update goes through th and so lands in the wrong
-place.  The result is either a write into freed slab memory or a
-packet leaving with a checksum that does not match its payload.
-
-Fix by re-deriving th from skb->data + protoff immediately after
-skb_ensure_writable() succeeds, so the subsequent checksum update
-targets the linear, writable header.
-
-Fixes: 48b1de4c110a ("netfilter: add SYNPROXY core/target")
-Assisted-by: kres (claude-opus-4-7)
-Signed-off-by: Chris Mason <clm@meta.com>
-Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Reported-by: Farhad Alemi <farhad.alemi@berkeley.edu>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_synproxy_core.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/hpfs/alloc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nf_synproxy_core.c b/net/netfilter/nf_synproxy_core.c
-index 16915f8eef2b16..f5a52075691faa 100644
---- a/net/netfilter/nf_synproxy_core.c
-+++ b/net/netfilter/nf_synproxy_core.c
-@@ -199,6 +199,8 @@ synproxy_tstamp_adjust(struct sk_buff *skb, unsigned int protoff,
- 	if (skb_ensure_writable(skb, optend))
- 		return 0;
- 
-+	th = (struct tcphdr *)(skb->data + protoff);
-+
- 	while (optoff < optend) {
- 		unsigned char *op = skb->data + optoff;
- 
--- 
-2.53.0
-
+--- a/fs/hpfs/alloc.c
++++ b/fs/hpfs/alloc.c
+@@ -372,8 +372,8 @@ int hpfs_check_free_dnodes(struct super_
+ 				return 0;
+ 			}
+ 		}
++		hpfs_brelse4(&qbh);
+ 	}
+-	hpfs_brelse4(&qbh);
+ 	i = 0;
+ 	if (hpfs_sb(s)->sb_c_bitmap != -1) {
+ 		bmp = hpfs_map_bitmap(s, b, &qbh, "chkdn1");
 
 
 
