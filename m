@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-264987-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264026-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id bttGILmAMWpKlAUAu9opvQ
-	(envelope-from <stable+bounces-264987-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:58:33 +0200
+	id JHgsJnptMWpKjAUAu9opvQ
+	(envelope-from <stable+bounces-264026-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:36:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 164866929FA
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:58:33 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AFB7691334
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:36:26 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=oP9llEhI;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264987-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264987-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=npxzUAuT;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264026-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264026-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id EEAC4304E178
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:55:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D667B304BBD8
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:28:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B49B633A9EB;
-	Tue, 16 Jun 2026 16:55:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8912A36C0CE;
+	Tue, 16 Jun 2026 15:28:56 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52D85169AD2;
-	Tue, 16 Jun 2026 16:55:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 948BC1A6803;
+	Tue, 16 Jun 2026 15:28:53 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781628934; cv=none; b=myUvJo16wGNnAbOilJVHBM/6r5t0ZO0xeyON7bSlmrQxFzaSV1OWnfgouUhBFimQ855wJjJ1xnTbgbL8cfLYTo5HVerosKBreBoXQ5weRZdYNzEmSjgxmqicLQH2uEQnOr/5OhOfnY1Qv/ra4s0mVTYeQyVNGFgIH8OcOeyd29o=
+	t=1781623735; cv=none; b=daKwCugcTg8mimsbl+38Q4wrxgszH0VFrjRuuCLci4nV+b+epO0klRIJ1SedLD3v2QnRapP+bBiIFp50yS7oG1SmAqtOVTq45cL2gAz8Y4iLyf2Id3m/TZVGXDS9ptDHnF/5+lnhCligPBdxVQ+noI2wau/zCGGcqWB/773VHFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781628934; c=relaxed/simple;
-	bh=f0eBdeCD8HlxBgDCqojFOc1OBcEb5TrlAMFR7I/3QCQ=;
+	s=arc-20240116; t=1781623735; c=relaxed/simple;
+	bh=dE81CNlwl+aIpShqf3U2O/NRdS4hmPCzPMF0DUypy6w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q09zJ7I+4okho20We6z/nz5OM1w3h1KBL7JJdXcPDRJzBI+IcVhE/MBZi5k/v2eIatoed+ath+q51zKuyyauJaM/kdHNmEvuZbE7GWeCOFtoW0CNMUHaxHv/2FYnOySzRQAz/zfJxag0P/XpriA2Y0k7w8JXQKYUfeQsqQfnTJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oP9llEhI; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58E241F000E9;
-	Tue, 16 Jun 2026 16:55:31 +0000 (UTC)
+	 MIME-Version; b=b/OaAKoXF8mIuUz/hGyTb3aIaCDOhWzsBvqQndJgttEeePYuKhHevDXhRR7XlEB3UfqC3sy3wm1HMSOsT3SlwcFIV1h5r75/6XNa0t8F3gURAkphWD6dpt4dhJ4Ov6Nh8hSowQKti0qh2+tsUQuvmTEDFAhSZMpaXIqdfDQ4cUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=npxzUAuT; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0386F1F000E9;
+	Tue, 16 Jun 2026 15:28:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781628933;
-	bh=H3987/hhCYqTif3i6ClDkrkKPePcttRL0i65CtYBTQo=;
+	s=korg; t=1781623733;
+	bh=Cnj8XdyETqbvYzRlpy9d1CRq6kXmQ9Qc95IkJUPzlPk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=oP9llEhIXDRfsduJogS4E0/+xwVNlmwkl5i0ZhuNsGg3eoyK8QRcO/NEzTY+feyZc
-	 /1qUL2RgKnk2HfigDXZGybAyaX2mCk4wlI2u6uBqCWDQ8bSudDVwu1Ztyw6yzitdxe
-	 nOPhjiQeCvj0X/ITzZ29vt2erQ7B+wpamUgYrb/k=
+	b=npxzUAuTAs8acGJxKjNUivlWMhEiJ0BCdbZcDS5pPki9Iz6RIgAl1lSGWrYGR1Hqv
+	 byfxYttoEboFekZ2ZMr9fswgvUIEngsf8gm8iXXADIHFpFQ72I/Pizj3TthpNLDiVU
+	 k0qhhtEVNEfVXYYtdpUEbMDnxSLfer8GEg2jL+9g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>
-Subject: [PATCH 6.6 190/452] serial: zs: Switch to using channel reset
+	Zhang Guopeng <zhangguopeng@kylinos.cn>,
+	Sun Shaojie <sunshaojie@kylinos.cn>,
+	Waiman Long <longman@redhat.com>,
+	Tejun Heo <tj@kernel.org>
+Subject: [PATCH 7.0 186/378] cgroup/cpuset: Use effective_xcpus in partcmd_update add/del mask calculation
 Date: Tue, 16 Jun 2026 20:26:57 +0530
-Message-ID: <20260616145127.817911269@linuxfoundation.org>
+Message-ID: <20260616145120.169512940@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,127 +70,158 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-264987-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:macro@orcam.me.uk,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264026-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:zhangguopeng@kylinos.cn,m:sunshaojie@kylinos.cn,m:longman@redhat.com,m:tj@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,orcam.me.uk:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,kylinos.cn:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 164866929FA
+X-Rspamd-Queue-Id: 1AFB7691334
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej W. Rozycki <macro@orcam.me.uk>
+From: Sun Shaojie <sunshaojie@kylinos.cn>
 
-commit 8572955630f30948837088aa98bcbe0532d1ceac upstream.
+commit 0a68853de27b522bca2b9934127277185374a24f upstream.
 
-Switch the driver to using the channel reset rather than hardware reset,
-simplifying handling by removing an interference between channels that
-causes the other channel to become uninitialised afterwards.
+When sibling CPU exclusion occurs, a partition's user_xcpus may contain
+CPUs that were never actually granted to it. These CPUs are present in
+user_xcpus(cs) but not in cs->effective_xcpus.
 
-There is little difference between the two kinds of reset in terms of
-register settings that result, and we initialise the whole register set
-right away anyway.  However this prevents a hang from happening should
-the console output handler in the firmware try to access the other port
-whose transmitter has been disabled and line parameters messed up.
+The partcmd_update path in update_parent_effective_cpumask() uses
+user_xcpus(cs) (via the local variable xcpus) to compute the addmask
+(CPUs to return to parent) and delmask (CPUs to request from parent).
+This is incorrect:
 
-For example this will happen if the keyboard port (port A) is chosen for
-the system console, unusually but not insanely for a headless system, as
-the port is wired to a standard DA-15 connector and an adapter can be
-easily made.  Or with the next change in place this would happen for the
-regular console port (port B), since the keyboard port (port A) will be
-initialised first.
+ 1) When newmask removes a CPU that was previously excluded by a
+    sibling, addmask incorrectly includes that CPU and tries to return
+    it to the parent even though the partition never actually owned it,
+    causing CPU overlap with sibling partitions and triggering warnings
+    in generate_sched_domains().
 
-Just remove the unnecessary complication then, a channel reset is good
-enough.  We still need the initialisation marker, now per channel rather
-than per SCC, as for the console port zs_reset() will be called twice:
-once early on via zs_serial_console_init() for the console setup only,
-and then again via zs_config_port() as the port is associated with a TTY
-device.
+ 2) When newmask adds a previously excluded CPU that is now available,
+    delmask fails to request it from the parent because user_xcpus(cs)
+    already includes it.
 
-Fixes: 8b4a40809e53 ("zs: move to the serial subsystem")
-Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Cc: stable@vger.kernel.org # v2.6.23+
-Link: https://patch.msgid.link/alpine.DEB.2.21.2605062323430.46195@angie.orcam.me.uk
+Fix this by using cs->effective_xcpus instead of user_xcpus(cs) in all
+partcmd_update paths that calculate addmask or delmask, including the
+PERR_NOCPUS error handling paths.
+
+Reproducers:
+
+  Example 1 - Removing a sibling-excluded CPU incorrectly returns it:
+
+    # cd /sys/fs/cgroup
+    # echo "0-1" > a1/cpuset.cpus
+    # echo "root" > a1/cpuset.cpus.partition
+    # echo "0-2" > b1/cpuset.cpus
+    # echo "root" > b1/cpuset.cpus.partition
+    # echo "2" > b1/cpuset.cpus
+    # cat cpuset.cpus.effective
+    # Actual: 0-1,3    Expected: 3
+
+  Example 2 - Expanding to a previously excluded CPU fails to request it:
+
+    # cd /sys/fs/cgroup
+    # echo "0-1" > a1/cpuset.cpus
+    # echo "root" > a1/cpuset.cpus.partition
+    # echo "0-2" > b1/cpuset.cpus
+    # echo "root" > b1/cpuset.cpus.partition
+    # echo "member" > a1/cpuset.cpus.partition
+    # echo "1-2" > b1/cpuset.cpus
+    # cat cpuset.cpus.effective
+    # Actual: 0-1,3    Expected: 0,3
+
+Fixes: 2a3602030d80 ("cgroup/cpuset: Don't invalidate sibling partitions on cpuset.cpus conflict")
+Cc: stable@vger.kernel.org # v7.0+
+Suggested-by: Zhang Guopeng <zhangguopeng@kylinos.cn>
+Signed-off-by: Sun Shaojie <sunshaojie@kylinos.cn>
+Reviewed-by: Waiman Long <longman@redhat.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/zs.c |    7 ++++---
- drivers/tty/serial/zs.h |    2 +-
- 2 files changed, 5 insertions(+), 4 deletions(-)
+ kernel/cgroup/cpuset.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
---- a/drivers/tty/serial/zs.c
-+++ b/drivers/tty/serial/zs.c
-@@ -831,21 +831,22 @@ static void zs_shutdown(struct uart_port
+diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
+index 5c33ab20cc20..c9e14fda3d6f 100644
+--- a/kernel/cgroup/cpuset.c
++++ b/kernel/cgroup/cpuset.c
+@@ -1811,9 +1811,9 @@ static int update_parent_effective_cpumask(struct cpuset *cs, int cmd,
+ 		 * Compute add/delete mask to/from effective_cpus
+ 		 *
+ 		 * For valid partition:
+-		 *   addmask = exclusive_cpus & ~newmask
++		 *   addmask = effective_xcpus & ~newmask
+ 		 *			      & parent->effective_xcpus
+-		 *   delmask = newmask & ~exclusive_cpus
++		 *   delmask = newmask & ~effective_xcpus
+ 		 *		       & parent->effective_xcpus
+ 		 *
+ 		 * For invalid partition:
+@@ -1825,11 +1825,11 @@ static int update_parent_effective_cpumask(struct cpuset *cs, int cmd,
+ 			deleting = cpumask_and(tmp->delmask,
+ 					newmask, parent->effective_xcpus);
+ 		} else {
+-			cpumask_andnot(tmp->addmask, xcpus, newmask);
++			cpumask_andnot(tmp->addmask, cs->effective_xcpus, newmask);
+ 			adding = cpumask_and(tmp->addmask, tmp->addmask,
+ 					     parent->effective_xcpus);
  
- static void zs_reset(struct zs_port *zport)
- {
-+	struct zs_port *zport_a = &zport->scc->zport[ZS_CHAN_A];
- 	struct zs_scc *scc = zport->scc;
- 	int irq;
- 	unsigned long flags;
- 
- 	spin_lock_irqsave(&scc->zlock, flags);
- 	irq = !irqs_disabled_flags(flags);
--	if (!scc->initialised) {
-+	if (!zport->initialised) {
- 		/* Reset the pointer first, just in case...  */
- 		read_zsreg(zport, R0);
- 		/* And let the current transmission finish.  */
- 		zs_line_drain(zport, irq);
--		write_zsreg(zport, R9, FHWRES);
-+		write_zsreg(zport, R9, zport == zport_a ? CHRA : CHRB);
- 		udelay(10);
- 		write_zsreg(zport, R9, 0);
--		scc->initialised = 1;
-+		zport->initialised = 1;
- 	}
- 	load_zsregs(zport, zport->regs, irq);
- 	spin_unlock_irqrestore(&scc->zlock, flags);
---- a/drivers/tty/serial/zs.h
-+++ b/drivers/tty/serial/zs.h
-@@ -22,6 +22,7 @@
- struct zs_port {
- 	struct zs_scc	*scc;			/* Containing SCC.  */
- 	struct uart_port port;			/* Underlying UART.  */
-+	int		initialised;		/* For the console port.  */
- 
- 	int		clk_mode;		/* May be 1, 16, 32, or 64.  */
- 
-@@ -41,7 +42,6 @@ struct zs_scc {
- 	struct zs_port	zport[2];
- 	spinlock_t	zlock;
- 	atomic_t	irq_guard;
--	int		initialised;
- };
- 
- #endif /* __KERNEL__ */
+-			cpumask_andnot(tmp->delmask, newmask, xcpus);
++			cpumask_andnot(tmp->delmask, newmask, cs->effective_xcpus);
+ 			deleting = cpumask_and(tmp->delmask, tmp->delmask,
+ 					       parent->effective_xcpus);
+ 		}
+@@ -1868,7 +1868,7 @@ static int update_parent_effective_cpumask(struct cpuset *cs, int cmd,
+ 			part_error = PERR_NOCPUS;
+ 			deleting = false;
+ 			adding = cpumask_and(tmp->addmask,
+-					     xcpus, parent->effective_xcpus);
++					     cs->effective_xcpus, parent->effective_xcpus);
+ 		}
+ 	} else {
+ 		/*
+@@ -1890,7 +1890,8 @@ static int update_parent_effective_cpumask(struct cpuset *cs, int cmd,
+ 			part_error = PERR_NOCPUS;
+ 			if (is_partition_valid(cs))
+ 				adding = cpumask_and(tmp->addmask,
+-						xcpus, parent->effective_xcpus);
++						     cs->effective_xcpus,
++						     parent->effective_xcpus);
+ 		} else if (is_partition_invalid(cs) && !cpumask_empty(xcpus) &&
+ 			   cpumask_subset(xcpus, parent->effective_xcpus)) {
+ 			struct cgroup_subsys_state *css;
+-- 
+2.54.0
+
 
 
 
