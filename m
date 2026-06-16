@@ -1,63 +1,61 @@
-Return-Path: <stable+bounces-266393-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264043-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id gBDbNmGcMWqwoAUAu9opvQ
-	(envelope-from <stable+bounces-266393-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:56:33 +0200
+	id BfUoKjFuMWqNjAUAu9opvQ
+	(envelope-from <stable+bounces-264043-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:39:29 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D02F8694971
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:56:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A22856913EB
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:39:28 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=2D8apAK6;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266393-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266393-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=1TK2736n;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264043-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264043-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E17963004CA6
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:56:29 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9BD9A306AA52
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:30:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCAE93EB0F5;
-	Tue, 16 Jun 2026 18:56:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B4E344CF4F;
+	Tue, 16 Jun 2026 15:30:24 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0C993CC303;
-	Tue, 16 Jun 2026 18:56:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CBE044CAE0;
+	Tue, 16 Jun 2026 15:30:23 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781636188; cv=none; b=ialn5FZBR1FayoseM2WSlSUuV09bmX8srtEsJsuItmX218MYewTIh/K78nO09DQXB6zaVWH/oRLmhtAfAqH2CVNtKkF+eSDfuuDrXvZ/ufQ8zfZHGjSzwFxCKe2Cn/q3rZ5fObIoJb19tVCnI/jx91ib8W805IXPFceY3JXkRDY=
+	t=1781623824; cv=none; b=KATBqcoiguiXyOONzuN8NZyHdYt347lAG6ekYm4oE4F+h3cM58xP5ikX8S8zRu1qkIc13CXDYVEEoHEyhWSAC4c32pTn7yniL4yRb42z7DfXn48QIQyD5bpIX78BWzWOVZcjXl+Hq9uE/MZQ7ybFy6g07W6sI3Hl/e24nT2mieQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781636188; c=relaxed/simple;
-	bh=EjOehb+S9t9/iv9djwFa9q9jdpkceqmPKRwmWjeKXGk=;
+	s=arc-20240116; t=1781623824; c=relaxed/simple;
+	bh=Jxmk+2GXcIRayubfuEd/L6WI5v4F4S6WueRfFbCaf/U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hccx87VSGftDPRQ/iG0itX3qFpJmYYjnR7f7JyeCsDh9i1fxLy2h4gnrC3HtTvxbnpqL030cfJeonb2FGUhxTG8qtpOF1QyidekjohDKdtkh1kFbnp/eRGOimaFgquvXt2ivWED8FUwbK5sv+ryRJMH6MFknabfHCBxrzJWXLYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2D8apAK6; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 845F01F00A3A;
-	Tue, 16 Jun 2026 18:56:26 +0000 (UTC)
+	 MIME-Version; b=XhnFPfGoxE8Uux5CNWelqexzyASlWivzlnax258W8XCFcr9VzkW7Jon+1a8qhcAKJSF1OYs4n6B1rjDXkTSkK+pKlX8iaKvMOV9oVsWNZC+BF0QK1nGtJOoFpBOOo+tiOGUpMU551ytQql3+WkutgsFXiitwONQQsolhpgE3tRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1TK2736n; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ABB81F000E9;
+	Tue, 16 Jun 2026 15:30:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781636187;
-	bh=zGzzLjN8wwUXt0158I3e7kU54WBYR/8YKGdgfo6jU8A=;
+	s=korg; t=1781623823;
+	bh=pqXJNm5PiNPt/kDMJc2EmcdrxFp9DtEqv8M3SENkTMs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=2D8apAK6nTR8GBXGjQMnjZINjqjlmzXYsOabKI6ba8aBAB4bsss3UnEHE0+W5NxjC
-	 470uB0nh4beeoyTHtT3zxjvqmpew7J881Ab9nf6spfVxBWraxY0DWpZ4ERUmmB+rM0
-	 RE0USNp2LP30X7KEXIfzN5BiYpLiLuRZvHYg5vsA=
+	b=1TK2736nHiDfnRByKbBf47kBOM2ldKVnyAYSqdFGu+kSRQjvZ7SQnwIEtgF+yaRPc
+	 rUCSF4trDsk3odTp78sD1x21R3iFn2lWDY/hXL+XCtAYjTgWWHAXRSoyIp9LeW4FXn
+	 iFrYagnKVPGjYQxBQttanmv/dnPpyDaLoAQLa+rQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Gu <ustc.gu@gmail.com>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	Alexey Panov <apanov@astralinux.ru>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 158/342] spi: meson-spicc: Fix double-put in remove path
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Jason Gunthorpe <jgg@nvidia.com>
+Subject: [PATCH 7.0 223/378] RDMA/srp: bound SRP_RSP sense copy by the received length
 Date: Tue, 16 Jun 2026 20:27:34 +0530
-Message-ID: <20260616145055.530154728@linuxfoundation.org>
+Message-ID: <20260616145122.041137406@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,82 +72,130 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,astralinux.ru];
-	TAGGED_FROM(0.00)[bounces-266393-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:ustc.gu@gmail.com,m:johan@kernel.org,m:broonie@kernel.org,m:apanov@astralinux.ru,m:sashal@kernel.org,m:ustcgu@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264043-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:bvanassche@acm.org,m:jgg@nvidia.com,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,acm.org,nvidia.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[acm.org:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,msgid.link:url,nvidia.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D02F8694971
+X-Rspamd-Queue-Id: A22856913EB
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Gu <ustc.gu@gmail.com>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-commit 63542bb402b7013171c9f621c28b609eda4dbf1f upstream.
+commit 13e91fd076306f5d0cdfa14f53d69e37274723c4 upstream.
 
-meson_spicc_probe() registers the controller with
-devm_spi_register_controller(), so teardown already drops the
-controller reference via devm cleanup.
+srp_process_rsp() copies sense data from rsp->data + resp_data_len,
+where resp_data_len is the full 32-bit value supplied by the SRP target
+and is never checked against the number of bytes actually received
+(wc->byte_len). The copy length is bounded to SCSI_SENSE_BUFFERSIZE, so
+at most 96 bytes are copied, but the source offset is not bounded.
 
-Calling spi_controller_put() again in meson_spicc_remove()
-causes a double-put.
+A malicious or compromised SRP target on the InfiniBand/RoCE fabric that
+the initiator has logged into can return an SRP_RSP with
+SRP_RSP_FLAG_SNSVALID set and a large resp_data_len. The receive buffer
+is allocated at the target-chosen max_ti_iu_len, so the source of the
+sense copy lands past the bytes actually received; with resp_data_len
+near 0xFFFFFFFF it is gigabytes past the buffer and the read faults.
 
-Fixes: 8311ee2164c5 ("spi: meson-spicc: fix memory leak in meson_spicc_remove")
-Signed-off-by: Felix Gu <ustc.gu@gmail.com>
-Reviewed-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260322-rockchip-v1-1-fac3f0c6dad8@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-[ Alexey: Remove the equivalent legacy spi_master_put() call used in
-  linux-5.10.y. ]
-Signed-off-by: Alexey Panov <apanov@astralinux.ru>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Copy the sense data only if it has not been truncated, that is, only if
+the response header, the response data, and the sense region fit within
+the bytes actually received; otherwise drop the sense and log. The
+in-tree iSER and NVMe-RDMA receive paths already bound their parse by
+wc->byte_len; this brings ib_srp into line with them.
+
+Fixes: aef9ec39c47f ("IB: Add SCSI RDMA Protocol (SRP) initiator")
+Link: https://patch.msgid.link/r/20260602220457.2542840-1-michael.bommarito@gmail.com
+Cc: stable@vger.kernel.org
+Assisted-by: Claude:claude-opus-4-8
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-meson-spicc.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/infiniband/ulp/srp/ib_srp.c |   30 ++++++++++++++++++++++++------
+ 1 file changed, 24 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/spi/spi-meson-spicc.c b/drivers/spi/spi-meson-spicc.c
-index 6974a1c947aad6..ae818e7df79198 100644
---- a/drivers/spi/spi-meson-spicc.c
-+++ b/drivers/spi/spi-meson-spicc.c
-@@ -863,8 +863,6 @@ static int meson_spicc_remove(struct platform_device *pdev)
- 	clk_disable_unprepare(spicc->core);
- 	clk_disable_unprepare(spicc->pclk);
- 
--	spi_master_put(spicc->master);
--
- 	return 0;
+--- a/drivers/infiniband/ulp/srp/ib_srp.c
++++ b/drivers/infiniband/ulp/srp/ib_srp.c
+@@ -1932,7 +1932,8 @@ static int srp_post_recv(struct srp_rdma
+ 	return ib_post_recv(ch->qp, &wr, NULL);
  }
  
--- 
-2.53.0
-
+-static void srp_process_rsp(struct srp_rdma_ch *ch, struct srp_rsp *rsp)
++static void srp_process_rsp(struct srp_rdma_ch *ch, struct srp_rsp *rsp,
++			    u32 byte_len)
+ {
+ 	struct srp_target_port *target = ch->target;
+ 	struct srp_request *req;
+@@ -1973,10 +1974,27 @@ static void srp_process_rsp(struct srp_r
+ 		scmnd->result = rsp->status;
+ 
+ 		if (rsp->flags & SRP_RSP_FLAG_SNSVALID) {
+-			memcpy(scmnd->sense_buffer, rsp->data +
+-			       be32_to_cpu(rsp->resp_data_len),
+-			       min_t(int, be32_to_cpu(rsp->sense_data_len),
+-				     SCSI_SENSE_BUFFERSIZE));
++			u32 resp_len = be32_to_cpu(rsp->resp_data_len);
++			u32 sense_len = be32_to_cpu(rsp->sense_data_len);
++
++			/*
++			 * The sense data starts resp_data_len bytes past the
++			 * response data area; both lengths come from the
++			 * target-controlled response.  Copy the sense data
++			 * only if it has not been truncated, that is, only if
++			 * the full sense region fits within the bytes actually
++			 * received.  Otherwise the copy source would run past
++			 * the receive buffer (sized to the target-chosen
++			 * max_ti_iu_len), reading out of bounds.
++			 */
++			if (sizeof(*rsp) + (u64)resp_len + sense_len <= byte_len)
++				memcpy(scmnd->sense_buffer,
++				       rsp->data + resp_len,
++				       min(sense_len, SCSI_SENSE_BUFFERSIZE));
++			else
++				shost_printk(KERN_ERR, target->scsi_host,
++					     "dropping truncated sense data (resp_data_len %u sense_data_len %u, %u bytes received)\n",
++					     resp_len, sense_len, byte_len);
+ 		}
+ 
+ 		if (unlikely(rsp->flags & SRP_RSP_FLAG_DIUNDER))
+@@ -2086,7 +2104,7 @@ static void srp_recv_done(struct ib_cq *
+ 
+ 	switch (opcode) {
+ 	case SRP_RSP:
+-		srp_process_rsp(ch, iu->buf);
++		srp_process_rsp(ch, iu->buf, wc->byte_len);
+ 		break;
+ 
+ 	case SRP_CRED_REQ:
 
 
 
