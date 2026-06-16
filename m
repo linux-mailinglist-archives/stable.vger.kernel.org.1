@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-265504-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263974-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id D6n+MMGLMWoPmQUAu9opvQ
-	(envelope-from <stable+bounces-265504-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:45:37 +0200
+	id F1kNH6RsMWrxiwUAu9opvQ
+	(envelope-from <stable+bounces-263974-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:32:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 446AB693725
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:45:37 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F41F691206
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:32:51 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="xi0l/qm/";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265504-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265504-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="en5opRh/";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263974-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263974-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 622183217CE8
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:39:04 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9265830C416D
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:24:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0037A47AF67;
-	Tue, 16 Jun 2026 17:39:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADFB42E612E;
+	Tue, 16 Jun 2026 15:24:32 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C897A47AF5F;
-	Tue, 16 Jun 2026 17:39:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 886C934889F;
+	Tue, 16 Jun 2026 15:24:31 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781631543; cv=none; b=m4kCwsIoM/KByh8vAvfKBBUzbhE6anLw8E22jFIIEa2cc929RqdQxOcQN39IAXdFocu9t8QGoKT0WtChiPJ/8vwrGg945VfNf4nYkICEHxcF5i49tg2gifI5T6f5yPrGzao3DLmpLCqcM5WsLGTJOjQEQFxPgK2hi6syJQPE+rE=
+	t=1781623472; cv=none; b=GM8DiJUdsSALiRSi1wsOTnvFK5xaxF9QSbnC6IF7ktZgDfDgn+O2NLcdVap97lNhqKGhYEsEJM99e0SkeMs60YIVc72NBkUGqOjrs37RUTh5DeKB6zbc/hHbaeXN1Ct6qpkM3IA1bX/9mluM/7eMXIBQj5xz4C3VerSHw2hbDqQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781631543; c=relaxed/simple;
-	bh=GSwWbXs8P9R8aWIxeKY1MnfnSsRq3rtWHxJK7DZDwGs=;
+	s=arc-20240116; t=1781623472; c=relaxed/simple;
+	bh=ByHqWkuFRjSLjzMZofxIjRPekGdynBwGCcr3RbhWg4o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I1NyAkrIO5ersT7C/QwmRn1KXnj5sfhNJjS5xV6//+kis2BSDV6g07IRzCAN37sGaYgvzY9aayIYbPt6eGWcbU/g/C/w5/85nYWhjLSzo3kCVUKCT9u3GXj1YA/Y5AIBTx0nDsR2Yxgt4gFgkrUlycFNHqUNFPTYKogPZ8dG84c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xi0l/qm/; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8A641F000E9;
-	Tue, 16 Jun 2026 17:39:01 +0000 (UTC)
+	 MIME-Version; b=ZLtcaRgIRcRjfdNVNt+7YlioGS6d1iUVfVJ1x0/MpWVUWpusta3G3InZw10MpmTkw3n1tuoSmQ+KfbJe1Lfp8Qea3xZJ/oZROIhdOcQ3wrRGmE7J57RKadbgJGAdHZ85//bj1V4F84XLRDR4TfYHR8UGA9Qq/O4BmT+POepSsRE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=en5opRh/; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30FF41F000E9;
+	Tue, 16 Jun 2026 15:24:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781631542;
-	bh=39hU1MKv8G6nhGDWAoKnP/UQINX41V15RWRmLufg2l0=;
+	s=korg; t=1781623471;
+	bh=b1Mg1AbJqZEfjIrE3qloEK5J9eRDwr25EL+wqHG4Lnk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=xi0l/qm/6NYrSuUCgMBlL6BDUGxi5PaYoR7+EpmjwF+hj/nyT3n+tOZSd9q9ENEaM
-	 RHzU24sLdKYCI5395jcOBndoGHLU2PfstTXarHbvpsXgIw8aO+jmmzzsi9153yvFOt
-	 NTXT2J32bZj+ldF0j7GhtjXysaT0EYB8D7GCyH7U=
+	b=en5opRh/cD+GubPtIenO94Qedfx/uQ0sCdBj/kpsu2LqGbfm8qPLRc45sUKrmlSz0
+	 3/ovJBN53XdQGS4iWOzo6g0SHjemt1aj71mlmyptrZXynhSdv3tJda/s1c3FwNv3kR
+	 FvhP0wt3UFQcrFDocEJASVjoTBTcGbVAegQiL1h0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gregg Leventhal <gleventhal@janestreet.com>,
-	Eric Hagberg <ehagberg@janestreet.com>,
-	Brian Foster <bfoster@redhat.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Hans de Goede <johannes.goede@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 239/522] iomap: dont revert iov_iter on partially completed buffered writes
+Subject: [PATCH 7.0 155/378] clk: qcom: x1e80100-dispcc: Stop disp_cc_mdss_mdp_clk_src from getting parked
 Date: Tue, 16 Jun 2026 20:26:26 +0530
-Message-ID: <20260616145137.165861985@linuxfoundation.org>
+Message-ID: <20260616145118.409211072@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,22 +72,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265504-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-263974-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:gleventhal@janestreet.com,m:ehagberg@janestreet.com,m:bfoster@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:dmitry.baryshkov@oss.qualcomm.com,m:johannes.goede@oss.qualcomm.com,m:andersson@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -99,66 +99,49 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,janestreet.com:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,qualcomm.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 446AB693725
+X-Rspamd-Queue-Id: 7F41F691206
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brian Foster <bfoster@redhat.com>
+From: Hans de Goede <johannes.goede@oss.qualcomm.com>
 
-Gregg reports that the iomap retry behavior for nonblocking (nowait)
-append writes is broken. The problem occurs when an append write is
-first submitted in non-blocking mode (i.e. via io_uring), partially
-completes before hitting -EAGAIN, and then is resubmitted from
-blocking context.
+[ Upstream commit bc27dbefae6ed11376d991a2921eff806ffef67c ]
 
-The specific problem is that at least one iteration of the loop in
-iomap_write_iter() completes in non-blocking context and thus has
-bumped i_size. The next iteration hits -EAGAIN, reverts the iov_iter
-and returns. io_uring retries the entire append write from blocking
-context, but since i_size has already been increased, the data that
-was partially written on the first attempt is rewritten at the new
-i_size. This is essentially an intra-write data corruption since the
-data written to the file does not reflect the write from userspace.
+Parking disp_cc_mdss_mdp_clk_src at 19.2MHz causing the EFI GOP framebuffer
+to stop functioning. The EFI GOP framebuffer should keep working until
+the msm display driver loads, to help with boot debugging and to ensure
+display output when the msm module is not in the initramfs.
 
-This problem is already fixed on master as of commit 1a1a3b574b97
-("iomap: advance the iter directly on buffered writes"). That commit
-was primarily intended to clean up iomap iter state tracking, but it
-also happened to remove the iov_iter revert and thus accidentally
-fix this problem as well. Without the revert, iomap will commit
-partial progress internally and loop once more before it more than
-likely hits -EAGAIN and returns partial progress consistent with the
-inode updates. This means the blocking retry from io_uring will pick
-up where the first attempt left off at the current i_size and
-perform the remainder of the write correctly.
+Switch disp_cc_mdss_mdp_clk_src over to clk_rcg2_shared_no_init_park_ops
+to keep the EFI GOP working after binding the x1e80100-dispcc driver.
 
-Cc: <stable@vger.kernel.org>
-Fixes: 18e419f6e80a ("iomap: Return -EAGAIN from iomap_write_iter()")
-Reported-by: Gregg Leventhal <gleventhal@janestreet.com>
-Reported-by: Eric Hagberg <ehagberg@janestreet.com>
-Signed-off-by: Brian Foster <bfoster@redhat.com>
+Suggested-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Fixes: 01a0a6cc8cfd ("clk: qcom: Park shared RCGs upon registration")
+Link: https://lore.kernel.org/r/20260425123351.6292-1-johannes.goede@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/iomap/buffered-io.c | 4 ----
- 1 file changed, 4 deletions(-)
+ drivers/clk/qcom/dispcc-x1e80100.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
-index c3408ba636632a..243cb2ec76ed2e 100644
---- a/fs/iomap/buffered-io.c
-+++ b/fs/iomap/buffered-io.c
-@@ -821,10 +821,6 @@ static loff_t iomap_write_iter(struct iomap_iter *iter, struct iov_iter *i)
- 		length -= status;
- 	} while (iov_iter_count(i) && length);
- 
--	if (status == -EAGAIN) {
--		iov_iter_revert(i, written);
--		return -EAGAIN;
--	}
- 	return written ? written : status;
- }
+diff --git a/drivers/clk/qcom/dispcc-x1e80100.c b/drivers/clk/qcom/dispcc-x1e80100.c
+index aa7fd43969f9c8..cd45bedf26494c 100644
+--- a/drivers/clk/qcom/dispcc-x1e80100.c
++++ b/drivers/clk/qcom/dispcc-x1e80100.c
+@@ -580,7 +580,7 @@ static struct clk_rcg2 disp_cc_mdss_mdp_clk_src = {
+ 		.parent_data = disp_cc_parent_data_6,
+ 		.num_parents = ARRAY_SIZE(disp_cc_parent_data_6),
+ 		.flags = CLK_SET_RATE_PARENT,
+-		.ops = &clk_rcg2_shared_ops,
++		.ops = &clk_rcg2_shared_no_init_park_ops,
+ 	},
+ };
  
 -- 
 2.53.0
