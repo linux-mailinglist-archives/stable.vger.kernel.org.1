@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-264716-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264402-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id q6uPHUl8MWpIkgUAu9opvQ
-	(envelope-from <stable+bounces-264716-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:39:37 +0200
+	id qmULDSF1MWpBjwUAu9opvQ
+	(envelope-from <stable+bounces-264402-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:09:05 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED2196924F9
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:39:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B9BC0691BB8
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:09:04 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=T11zBWzh;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264716-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264716-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=kPTRJj9W;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264402-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264402-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8095C31D7EEB
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:31:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 884C732F0B30
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:01:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09AFF477986;
-	Tue, 16 Jun 2026 16:31:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4ED44611EE;
+	Tue, 16 Jun 2026 16:01:39 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6447472777;
-	Tue, 16 Jun 2026 16:31:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2156D45BD71;
+	Tue, 16 Jun 2026 16:01:38 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781627485; cv=none; b=VtdLfjWJIbuvHMm0A9wNWQ32wLSpzHnk0M/H4/l65Jugc5nEGh+X3p00OnMSoVf87oXPFNbRt6f6Wg6vaYmWPatFpon+w+3uuab8mAG39jzZbGXzwstEENCuiiR+G7108XmbxzZQ/WsVeF4sIm+bB6T0bu/BicEZMCf3t0e7Fb8=
+	t=1781625699; cv=none; b=BsB7Ld3zLXpE/g59pMa6jHTA/Sur8LZD9IM/H4Hy/x3K+iNApFF2GVT5NdtfZQN6r5TjNAkj0BnBYwWpZ80HUnsKk+WMzXSuc2EWG8Xlb0KQVdheRtOmHFRF96qmZE7TZfgSF/n5S78mwocP2lk2e5jTle6DDizXMFiuQCLlnY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781627485; c=relaxed/simple;
-	bh=/AKUgPaP2s7IEiFmxdjVG5KSEVo0AsHZ41u2Pq55EiM=;
+	s=arc-20240116; t=1781625699; c=relaxed/simple;
+	bh=YuAJH/B29+0G2YnO64mWtJvSIxZG+mivTct80BiywPQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cRe8DRXVdqLRFFSvqaHGzqUHWLWrsQgC8vySjjEIYrpD6I3oUHHcQ7VGCGxb9Fm7+UkwONb0JoAJ1Jge/yEngSj86gRpe9uUZR8xRnKysBA7Elo1mAZQ5MwIYwxXh6QVEG8jrqIHlA3aFt02k9B4rC5z9YbWPHmnxJ9iHzfCu3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T11zBWzh; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D674B1F000E9;
-	Tue, 16 Jun 2026 16:31:23 +0000 (UTC)
+	 MIME-Version; b=Q4cO+hcylppdj9+5pGtoT1YvBkvXK+QE4D4oUsV9avrzcIrAuA7EzHUjmsVpH0T7YGnatn4f7ahMhxu3FoOchoDq16d67b7S97eCsuNw5ltiEE1c5WJB2wxISAk+q+b2nqvDHRoRw9AGoHjJ/CWLJDXy1Jb7tys1p674hD7sBRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kPTRJj9W; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D931B1F000E9;
+	Tue, 16 Jun 2026 16:01:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781627484;
-	bh=dBzXC8xCXxmrbwSAO6Xsg+LSckZjSnTiHHCk1mwvRAc=;
+	s=korg; t=1781625697;
+	bh=CP+X8Y5hwgdUNG/8fNM9UeeeUcuv2zwgO3tKPqEJKCc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=T11zBWzhWXh3gI+9AybnpYPXDvT+K8PMyTl6zTkTlRsazIjv8M4/Vzfw7CR9EV8pS
-	 IKtGRk5Irg+RLo4+zKnZ3V7vCdTCSfA/xpazZMea+BHVxCfg4IqM/9esSE/UGPCegl
-	 dXKDmCr1qF3FCsEFLhZ1HfCalXsom1vddwwXDQnA=
+	b=kPTRJj9WbibICcr8u+4/HhCllRr0/0f4wFLtKu+Dv5toPBthy5Zb+1rv3CQp5ufjL
+	 Z6tigz5tPbiLG0YowUjQmkSEsXg1Vq0FDDlc1kFmpHI2YTZG4Pke+HapJfhrYhA/RP
+	 jWIYZIv6KFbGUg+I1hR1TW/uH1eHWIxrwt6bLcX4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	Fernand Sieber <sieberf@amazon.com>,
-	Leonard Foerster <foersleo@amazon.de>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 149/261] mm/damon/ops-common: call folio_test_lru() after folio_get()
+	Yuho Choi <dbgh9129@gmail.com>,
+	Dinh Nguyen <dinguyen@kernel.org>
+Subject: [PATCH 6.18 191/325] ARM: socfpga: Fix OF node refcount leak in SMP setup
 Date: Tue, 16 Jun 2026 20:29:47 +0530
-Message-ID: <20260616145051.981258779@linuxfoundation.org>
+Message-ID: <20260616145107.445025681@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
-References: <20260616145044.869532709@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,95 +68,78 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-264402-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:dbgh9129@gmail.com,m:dinguyen@kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264716-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:sj@kernel.org,m:sieberf@amazon.com,m:foersleo@amazon.de,m:shakeel.butt@linux.dev,m:akpm@linux-foundation.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amazon.de:email,linux-foundation.org:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux.dev:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: ED2196924F9
+X-Rspamd-Queue-Id: B9BC0691BB8
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Yuho Choi <dbgh9129@gmail.com>
 
-commit d6b8b02a27b3dd09ec12144322b3dac46d9bc9ef upstream.
+commit 63838c323924fe4a78b2323bd45aa1030f72ca60 upstream.
 
-damon_get_folio() speculatively calls folio_test_lru() before
-folio_try_get().  The folio can get freed and reallocated to a tail page.
-In the case, VM_BUG_ON_PGFLAGS() in const_folio_flags() can be triggered.
-Remove the speculative call.
+socfpga_smp_prepare_cpus() looks up the Cortex-A9 SCU node with
+of_find_compatible_node(), which returns a node reference that must be
+released with of_node_put().
 
-Also mark folio_test_lru() check right after folio_try_get() success as no
-more unlikely.
+The function maps the SCU registers and then returns without dropping
+that reference, leaking the node on both the success path and the
+of_iomap() failure path.
 
-The race should be rare.  Also the problem can happen only if the kernel
-has enabled CONFIG_DEBUG_VM_PGFLAGS.  No real world report of this issue
-has been made so far.  This fix is based on only theoretical analysis.
-That said, a bug is a bug.  A similar issue was also fixed via commit
-3203b3ab0fcf ("mm/filemap: don't call folio_test_locked() without a
-reference in next_uptodate_folio()").  I don't expect this change will
-make a meaningful impact to DAMON performance in the real world, though I
-will be happy to be corrected from the real world reports.
+Drop the reference once the mapping attempt is complete. The returned
+MMIO mapping does not depend on keeping the device node reference held.
 
-The issue was discovered [1] by Sashiko.
-
-
-Link: https://lore.kernel.org/20260525162256.8317-1-sj@kernel.org
-Link: https://lore.kernel.org/20260517234112.89245-1-sj@kernel.org [1]
-Fixes: 3f49584b262c ("mm/damon: implement primitives for the virtual memory address spaces")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: Fernand Sieber <sieberf@amazon.com>
-Cc: Leonard Foerster <foersleo@amazon.de>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: <stable@vger.kernel.org> # 5.15.x
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 122694a0c712 ("ARM: socfpga: use of_iomap to map the SCU")
+Cc: stable@vger.kernel.org
+Signed-off-by: Yuho Choi <dbgh9129@gmail.com>
+Signed-off-by: Dinh Nguyen <dinguyen@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/damon/ops-common.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm/mach-socfpga/platsmp.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/mm/damon/ops-common.c
-+++ b/mm/damon/ops-common.c
-@@ -28,9 +28,9 @@ struct folio *damon_get_folio(unsigned l
- 		return NULL;
- 
- 	folio = page_folio(page);
--	if (!folio_test_lru(folio) || !folio_try_get(folio))
-+	if (!folio_try_get(folio))
- 		return NULL;
--	if (unlikely(page_folio(page) != folio || !folio_test_lru(folio))) {
-+	if (unlikely(page_folio(page) != folio) || !folio_test_lru(folio)) {
- 		folio_put(folio);
- 		folio = NULL;
+--- a/arch/arm/mach-socfpga/platsmp.c
++++ b/arch/arm/mach-socfpga/platsmp.c
+@@ -78,6 +78,7 @@ static void __init socfpga_smp_prepare_c
  	}
+ 
+ 	socfpga_scu_base_addr = of_iomap(np, 0);
++	of_node_put(np);
+ 	if (!socfpga_scu_base_addr)
+ 		return;
+ 	scu_enable(socfpga_scu_base_addr);
 
 
 
