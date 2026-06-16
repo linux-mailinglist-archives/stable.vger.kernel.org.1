@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-264997-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266362-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 3LYeNEeDMWowlQUAu9opvQ
-	(envelope-from <stable+bounces-264997-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:09:27 +0200
+	id VBgDFr6bMWp6oAUAu9opvQ
+	(envelope-from <stable+bounces-266362-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:53:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31403692C9E
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:09:27 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59E4B6948D9
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:53:49 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=c7HlGWZc;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264997-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264997-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=gGsQZn1E;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266362-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266362-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A4D583222B2F
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:56:15 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 96088300B289
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:53:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D331466B4B;
-	Tue, 16 Jun 2026 16:56:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1ECB4779BF;
+	Tue, 16 Jun 2026 18:53:44 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AF7B478E53;
-	Tue, 16 Jun 2026 16:56:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94C6C3CC303;
+	Tue, 16 Jun 2026 18:53:43 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781628966; cv=none; b=E/jVzcW46GFpGisOkZ+Llobsn2XC4Wf/hMjMxH808iRYGxm1deksJY40nZaK64kWe908aLNvWXi7GNFaXs4Z7f+L+6FOlaQaGYJx0LCI1vmyHJxNVHOckcK0FAVU4MACHKnEms7x8Y7aLDcn1/NIFvPBA4ADzbp01nAK0WaycuU=
+	t=1781636024; cv=none; b=WwXnswZn4WwnQ9aIMzzC9ojFN/ctoz1IPBGQvD4/aREq7BcC9CoKbXDGbDUxoyjIohkwX3k+6Iircnjo6KAKiRRHIRRnZ8j1meKZfewKJvR+txRrpGTBfTbecLmG2QnIr0r8LXVqdVKduQO8qdXXOstoGaVK2zlXbcjQM4/Yn2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781628966; c=relaxed/simple;
-	bh=3SiIdjqIA1AUlYVIHObTe4TycR1sSIQLvP7+Axt9nSs=;
+	s=arc-20240116; t=1781636024; c=relaxed/simple;
+	bh=P+TrZzb077Y/ZOaprXqTIjVt5J2QDt8sdoNStaH0acE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A47XvCTbndEGekMR9Gb7Ei78qOnXCdFDf3edgcib+BPnTeGPcsYQydcK7qDHUnM4ujmAt286Zl/rntrqDgElCr5qfllkVC3Ys7ejxub2or8n6nijoowBlf0G0lRDYor+PgY1clKg9caBqtoawIPXY+SyHAlRtO84Auy9KMKvgHQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c7HlGWZc; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C785B1F00A3A;
-	Tue, 16 Jun 2026 16:56:03 +0000 (UTC)
+	 MIME-Version; b=rVseHX97+IiAgafl+mWc4E3w8+Kzro7nvQChktS+v2FbLtPhqqYtXUVgV2WAZB6anb2z6mFICTF3o0FJrOP1g7BOJxgoAaZQ1W3+S317dLaDWfqqs1I7QRAW3I2TZ3+5tmrEZ/hFvlS9Pfvf2rpmRXaczmdZyxnbBnwWAGYybLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gGsQZn1E; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 938DD1F000E9;
+	Tue, 16 Jun 2026 18:53:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781628964;
-	bh=Y4kwhRSN4t8xY4SOtFeVE8xOs3WjclirCtSaXmwnnm0=;
+	s=korg; t=1781636023;
+	bh=08V0cZY+Shg41dVzLDrEuPPpemiWsDLhGKszlXQnWBc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=c7HlGWZcnmDBbZX8/fv2Vrjg4bS/YXP05ZNTulmm+WwGjDGY7tKGrdPR3t8zCSzRT
-	 FEAPcVC0SGH0SFo7m5Emi8hqymxRPGCWoHm5c6ZchL47nYworrmF0ZFlxLicetz86m
-	 2KTF45sz0Cg30Gs/DRt0noZvPjAr9SdGN9w9jLWQ=
+	b=gGsQZn1EUbwW0z0CU8aLIGJnfD2/M410InQxz85KyT/Ey9Ucd08BZN7QEk4alqO+B
+	 tZk00ltw9suN8t/SxE3ek/83Oj6tn0ImnZ/beFRDUELI5dBrjmiMUUr2wt0jZN522s
+	 5zqtUKxJ5h9XuAA0zae3utxuzJdIPWGFl66g4F+o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei-Cheng Chen <weichengc@nvidia.com>,
+	Johan Hovold <johan@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 196/452] xhci: tegra: Fix ghost USB device on dual-role port unplug
+Subject: [PATCH 5.10 127/342] USB: serial: mct_u232: fix memory corruption with small endpoint
 Date: Tue, 16 Jun 2026 20:27:03 +0530
-Message-ID: <20260616145128.123261530@linuxfoundation.org>
+Message-ID: <20260616145054.120010702@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,21 +71,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264997-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-266362-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:weichengc@nvidia.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:johan@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -97,203 +97,87 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,msgid.link:url,nvidia.com:email,msg.data:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 31403692C9E
+X-Rspamd-Queue-Id: 59E4B6948D9
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei-Cheng Chen <weichengc@nvidia.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 5a4c828b8b29b47534814ade26d9aee09d5101fc ]
+commit 915b36d701950503c4ea0f6e314b10868e59fce3 upstream.
 
-When a USB device is unplugged from the dual-role port, the device-mode
-path in tegra_xhci_id_work() explicitly clears both SS and HS port power
-via direct hub_control ClearPortFeature(POWER) calls. This preempts the
-xHCI controller's normal disconnect processing -- PORT_CSC is never
-generated, the USB core never sees the disconnect, and the device remains
-in its internal tree as a ghost visible in lsusb.
+The driver overrides the maximum transfer size for a specific device
+which only accepts 16 byte packets for its 32 byte bulk-out endpoint.
 
-Add an otg_set_port_power flag to control whether the dual-role switch
-path performs explicit port power management. SoCs that need it
-(Tegra124 / Tegra210 / Tegra186) set the flag; later SoCs (Tegra194 and
-beyond) rely on the PHY mode change to handle disconnect naturally and
-skip all port power calls.
+Make sure to never increase the maximum transfer size to prevent slab
+corruption should a malicious device report a smaller endpoint max
+packet size than expected.
 
-Within the port power path, otg_reset_sspi additionally gates the SSPI
-reset sequence on host-mode entry for SoCs that require it.
-
-Flags set per SoC:
-  Tegra124, Tegra186  -> otg_set_port_power
-  Tegra210            -> otg_set_port_power, otg_reset_sspi
-  Tegra194 and later  -> (none)
-
-[ Backport to 6.6.y: keep the host-mode snapshot in the existing
-  tegra->lock section, retain pm_runtime_mark_last_busy() in the host
-  port-power path, and resolve context around the SoC ops/Tegra234
-  entries. ]
-
-Fixes: f836e7843036 ("usb: xhci-tegra: Add OTG support")
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Cc: stable@vger.kernel.org
-Signed-off-by: Wei-Cheng Chen <weichengc@nvidia.com>
-Link: https://patch.msgid.link/20260505112630.217704-1-weichengc@nvidia.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-tegra.c | 79 ++++++++++++++++++++---------------
- 1 file changed, 45 insertions(+), 34 deletions(-)
+ drivers/usb/serial/mct_u232.c | 21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/usb/host/xhci-tegra.c b/drivers/usb/host/xhci-tegra.c
-index 89b3079194d7b3..2eb1aa25be1d37 100644
---- a/drivers/usb/host/xhci-tegra.c
-+++ b/drivers/usb/host/xhci-tegra.c
-@@ -243,6 +243,7 @@ struct tegra_xusb_soc {
- 	bool has_ipfs;
- 	bool lpm_support;
- 	bool otg_reset_sspi;
-+	bool otg_set_port_power;
+diff --git a/drivers/usb/serial/mct_u232.c b/drivers/usb/serial/mct_u232.c
+index 04f16d4a0a68ad..8842a1db72b396 100644
+--- a/drivers/usb/serial/mct_u232.c
++++ b/drivers/usb/serial/mct_u232.c
+@@ -378,6 +378,7 @@ static int mct_u232_port_probe(struct usb_serial_port *port)
+ {
+ 	struct usb_serial *serial = port->serial;
+ 	struct mct_u232_private *priv;
++	u16 pid;
  
- 	bool has_bar2;
- };
-@@ -1346,14 +1347,17 @@ static void tegra_xhci_id_work(struct work_struct *work)
- 	struct tegra_xusb_mbox_msg msg;
- 	struct phy *phy = tegra_xusb_get_phy(tegra, "usb2",
- 						    tegra->otg_usb2_port);
-+	bool host_mode;
- 	u32 status;
- 	int ret;
- 
--	dev_dbg(tegra->dev, "host mode %s\n", tegra->host_mode ? "on" : "off");
--
- 	mutex_lock(&tegra->lock);
- 
--	if (tegra->host_mode)
-+	host_mode = tegra->host_mode;
-+
-+	dev_dbg(tegra->dev, "host mode %s\n", host_mode ? "on" : "off");
-+
-+	if (host_mode)
- 		phy_set_mode_ext(phy, PHY_MODE_USB_OTG, USB_ROLE_HOST);
- 	else
- 		phy_set_mode_ext(phy, PHY_MODE_USB_OTG, USB_ROLE_NONE);
-@@ -1364,42 +1368,44 @@ static void tegra_xhci_id_work(struct work_struct *work)
- 								    tegra->otg_usb2_port);
- 
- 	pm_runtime_get_sync(tegra->dev);
--	if (tegra->host_mode) {
--		/* switch to host mode */
--		if (tegra->otg_usb3_port >= 0) {
--			if (tegra->soc->otg_reset_sspi) {
--				/* set PP=0 */
--				tegra_xhci_hc_driver.hub_control(
--					xhci->shared_hcd, GetPortStatus,
--					0, tegra->otg_usb3_port+1,
--					(char *) &status, sizeof(status));
--				if (status & USB_SS_PORT_STAT_POWER)
--					tegra_xhci_set_port_power(tegra, false,
--								  false);
--
--				/* reset OTG port SSPI */
--				msg.cmd = MBOX_CMD_RESET_SSPI;
--				msg.data = tegra->otg_usb3_port+1;
--
--				ret = tegra_xusb_mbox_send(tegra, &msg);
--				if (ret < 0) {
--					dev_info(tegra->dev,
--						"failed to RESET_SSPI %d\n",
--						ret);
-+	if (tegra->soc->otg_set_port_power) {
-+		if (host_mode) {
-+			/* switch to host mode */
-+			if (tegra->otg_usb3_port >= 0) {
-+				if (tegra->soc->otg_reset_sspi) {
-+					/* set PP=0 */
-+					tegra_xhci_hc_driver.hub_control(
-+						xhci->shared_hcd, GetPortStatus,
-+						0, tegra->otg_usb3_port+1,
-+						(char *) &status, sizeof(status));
-+					if (status & USB_SS_PORT_STAT_POWER)
-+						tegra_xhci_set_port_power(tegra, false,
-+									  false);
-+
-+					/* reset OTG port SSPI */
-+					msg.cmd = MBOX_CMD_RESET_SSPI;
-+					msg.data = tegra->otg_usb3_port+1;
-+
-+					ret = tegra_xusb_mbox_send(tegra, &msg);
-+					if (ret < 0) {
-+						dev_info(tegra->dev,
-+							"failed to RESET_SSPI %d\n",
-+							ret);
-+					}
- 				}
--			}
- 
--			tegra_xhci_set_port_power(tegra, false, true);
--		}
-+				tegra_xhci_set_port_power(tegra, false, true);
-+			}
- 
--		tegra_xhci_set_port_power(tegra, true, true);
--		pm_runtime_mark_last_busy(tegra->dev);
-+			tegra_xhci_set_port_power(tegra, true, true);
-+			pm_runtime_mark_last_busy(tegra->dev);
- 
--	} else {
--		if (tegra->otg_usb3_port >= 0)
--			tegra_xhci_set_port_power(tegra, false, false);
-+		} else {
-+			if (tegra->otg_usb3_port >= 0)
-+				tegra_xhci_set_port_power(tegra, false, false);
- 
--		tegra_xhci_set_port_power(tegra, true, false);
-+			tegra_xhci_set_port_power(tegra, true, false);
-+		}
+ 	/* check first to simplify error handling */
+ 	if (!serial->port[1] || !serial->port[1]->interrupt_in_urb) {
+@@ -385,6 +386,16 @@ static int mct_u232_port_probe(struct usb_serial_port *port)
+ 		return -ENODEV;
  	}
- 	pm_runtime_put_autosuspend(tegra->dev);
- }
-@@ -2497,6 +2503,7 @@ static const struct tegra_xusb_soc tegra124_soc = {
- 	.scale_ss_clock = true,
- 	.has_ipfs = true,
- 	.otg_reset_sspi = false,
-+	.otg_set_port_power = true,
- 	.ops = &tegra124_ops,
- 	.mbox = {
- 		.cmd = 0xe4,
-@@ -2535,6 +2542,7 @@ static const struct tegra_xusb_soc tegra210_soc = {
- 	.scale_ss_clock = false,
- 	.has_ipfs = true,
- 	.otg_reset_sspi = true,
-+	.otg_set_port_power = true,
- 	.ops = &tegra124_ops,
- 	.mbox = {
- 		.cmd = 0xe4,
-@@ -2578,6 +2586,7 @@ static const struct tegra_xusb_soc tegra186_soc = {
- 	.scale_ss_clock = false,
- 	.has_ipfs = false,
- 	.otg_reset_sspi = false,
-+	.otg_set_port_power = true,
- 	.ops = &tegra124_ops,
- 	.mbox = {
- 		.cmd = 0xe4,
-@@ -2611,6 +2620,7 @@ static const struct tegra_xusb_soc tegra194_soc = {
- 	.scale_ss_clock = false,
- 	.has_ipfs = false,
- 	.otg_reset_sspi = false,
-+	.otg_set_port_power = false,
- 	.ops = &tegra124_ops,
- 	.mbox = {
- 		.cmd = 0x68,
-@@ -2643,6 +2653,7 @@ static const struct tegra_xusb_soc tegra234_soc = {
- 	.scale_ss_clock = false,
- 	.has_ipfs = false,
- 	.otg_reset_sspi = false,
-+	.otg_set_port_power = false,
- 	.ops = &tegra234_ops,
- 	.mbox = {
- 		.cmd = XUSB_BAR2_ARU_MBOX_CMD,
+ 
++	/*
++	 * Compensate for a hardware bug: although the Sitecom U232-P25
++	 * device reports a maximum output packet size of 32 bytes,
++	 * it seems to be able to accept only 16 bytes (and that's what
++	 * SniffUSB says too...)
++	 */
++	pid = le16_to_cpu(serial->dev->descriptor.idProduct);
++	if (pid == MCT_U232_SITECOM_PID)
++		port->bulk_out_size = min(16, port->bulk_out_size);
++
+ 	priv = kzalloc(sizeof(*priv), GFP_KERNEL);
+ 	if (!priv)
+ 		return -ENOMEM;
+@@ -412,7 +423,6 @@ static int mct_u232_port_remove(struct usb_serial_port *port)
+ 
+ static int  mct_u232_open(struct tty_struct *tty, struct usb_serial_port *port)
+ {
+-	struct usb_serial *serial = port->serial;
+ 	struct mct_u232_private *priv = usb_get_serial_port_data(port);
+ 	int retval = 0;
+ 	unsigned int control_state;
+@@ -420,15 +430,6 @@ static int  mct_u232_open(struct tty_struct *tty, struct usb_serial_port *port)
+ 	unsigned char last_lcr;
+ 	unsigned char last_msr;
+ 
+-	/* Compensate for a hardware bug: although the Sitecom U232-P25
+-	 * device reports a maximum output packet size of 32 bytes,
+-	 * it seems to be able to accept only 16 bytes (and that's what
+-	 * SniffUSB says too...)
+-	 */
+-	if (le16_to_cpu(serial->dev->descriptor.idProduct)
+-						== MCT_U232_SITECOM_PID)
+-		port->bulk_out_size = 16;
+-
+ 	/* Do a defined restart: the normal serial device seems to
+ 	 * always turn on DTR and RTS here, so do the same. I'm not
+ 	 * sure if this is really necessary. But it should not harm
 -- 
 2.53.0
 
