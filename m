@@ -1,62 +1,63 @@
-Return-Path: <stable+bounces-265005-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265984-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 3nznNG2DMWpClQUAu9opvQ
-	(envelope-from <stable+bounces-265005-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:10:05 +0200
+	id 2xlfBgSUMWoXnQUAu9opvQ
+	(envelope-from <stable+bounces-265984-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:20:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id D507D692CDD
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:10:04 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id C64096940CF
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:20:51 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=NgFBGOMf;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265005-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-265005-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=P5+Mms66;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265984-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-265984-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B65CE301CF46
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:56:38 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 619E93028DF4
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:20:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E457E169AD2;
-	Tue, 16 Jun 2026 16:56:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 542113D091A;
+	Tue, 16 Jun 2026 18:20:49 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47C2D477E57;
-	Tue, 16 Jun 2026 16:56:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3153935292A;
+	Tue, 16 Jun 2026 18:20:48 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781628997; cv=none; b=HSqwpvQMYEB2IEFBTwIW2bnL4yXkddW+mcCTva6qw/13+pJ3k3VqIBuD8/H6aFxKsG1B4jUDTBCXGzxHiwbI9NlFZj0pFiSV0CFcRZp/G7SyHCSgcwMduoOea+o2nhzaV8Ol23Vf/iVGmWapmZoIaiF+xPNEfvA/YK+HteOR0Pw=
+	t=1781634049; cv=none; b=vGOv7Exut+uaA1YF5OjnRES2i3gHAa392fHvkdWreS9Z2++GgiljrRfXNG1e18Sr5Vs+xyKZJAkN6xKoXbE0u7qdE+tystJOomaI3HMwGqwhXDcwQx91ffCRg8traaakLgeG7YAluPsbxflW4GJEFdFPP+qjJbQLtWaPV6v036k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781628997; c=relaxed/simple;
-	bh=OhqfCET0gLICBP1wtvDDy6BHyZ+opgjARu/h3LszaJE=;
+	s=arc-20240116; t=1781634049; c=relaxed/simple;
+	bh=7/XV1tIBY8w1MrUFj0BAZsXsXmDaHzlxPcv9+ljI7kk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MffIcagGid2tfdAFlHUF+0+4GezzXxhbs6bPaEu2zQ2s7XdLB3Xipg6paS66eaNI6GNfrVbAdf8VPFISCUFs8tLK93TvuRLLzsS1z37rNcsSb1gb1gtFv29VHyMOEhKEqvp5Qu9JUToCG84wrS1C2mOEofBZGLLooKkKReM/ZE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NgFBGOMf; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F4E91F000E9;
-	Tue, 16 Jun 2026 16:56:35 +0000 (UTC)
+	 MIME-Version; b=cOqbw1F5FHGz/eFiX8SyCUD0xc4WxeNo2/Bv3oZxon5VCvYKj5tSqpLf+aPNvTcEJZkSwtoxkF2rifJxjZ3wA1pfNRqkIcQfg77ElLulV6YXeb/by+Uc7ONVaGJbq5tEZNro9Gc9kAGuunoFL/nxbBrnRmWL05bjTtxd8nEzhu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P5+Mms66; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32FD71F000E9;
+	Tue, 16 Jun 2026 18:20:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781628996;
-	bh=GybYLS7jDQB/LgciKsrtuwPxYglCy8Bu8y239eK93tE=;
+	s=korg; t=1781634048;
+	bh=kluWo6FEPJzpAtWxNyePsS5USJH9NFi3kYSPOR7qwAc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=NgFBGOMfoMGn1HwB0uWUcX/mDvY19cUGK7eAx79wh3vL6phPNz08DaCnk967v26e3
-	 xFRPG3wJlvDBtq88sdgtxaId7n3vCyGhgzWO+zUoS0Kl1TEBPlqPtWTboyRAL1ka3f
-	 aHoxDBWc1s64nsmcZfsvI8a6N9gG97h6ibeGYRUo=
+	b=P5+Mms66E3y6nWrF0wc9cBtdVWB70OskpNMuksvEnY92rAIhlq2TN1GKebu+2gBam
+	 av4mDrGZox5vy4oEcYYvMhnaSVhwAQwPJw3iVP8KJ5VqCm5yVF+k3DGPbzxT/68k3m
+	 S4D4m3wPv+CLPxVrd1pTpw+mB/udQY0sLV7H5FBk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Tissoires <bentiss@kernel.org>,
-	Johan Hovold <johan@kernel.org>,
-	Jiri Kosina <jkosina@suse.com>,
-	Lee Jones <lee@kernel.org>
-Subject: [PATCH 6.6 201/452] HID: pass the buffer size to hid_report_raw_event
+	Eric Dumazet <edumazet@google.com>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
+	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 190/411] ip6_vti: fix incorrect tunnel matching in vti6_tnl_lookup()
 Date: Tue, 16 Jun 2026 20:27:08 +0530
-Message-ID: <20260616145128.381536464@linuxfoundation.org>
+Message-ID: <20260616145110.804165879@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,22 +73,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265005-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265984-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bentiss@kernel.org,m:johan@kernel.org,m:jkosina@suse.com,m:lee@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:edumazet@google.com,m:steffen.klassert@secunet.com,m:nicolas.dichtel@6wind.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -96,316 +97,71 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,secunet.com:email,msgid.link:url,6wind.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D507D692CDD
+X-Rspamd-Queue-Id: C64096940CF
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Tissoires <bentiss@kernel.org>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 2c85c61d1332e1e16f020d76951baf167dcb6f7a upstream.
+[ Upstream commit a5c0359f5cbc51a2e2b114d6041e0f3c73f903e9 ]
 
-commit 0a3fe972a7cb ("HID: core: Mitigate potential OOB by removing
-bogus memset()") enforced the provided data to be at least the size of
-the declared buffer in the report descriptor to prevent a buffer
-overflow. However, we can try to be smarter by providing both the buffer
-size and the data size, meaning that hid_report_raw_event() can make
-better decision whether we should plaining reject the buffer (buffer
-overflow attempt) or if we can safely memset it to 0 and pass it to the
-rest of the stack.
+In vti6_tnl_lookup(), when an exact match for a tunnel fails,
+the code falls back to searching for wildcard tunnels:
 
-Fixes: 0a3fe972a7cb ("HID: core: Mitigate potential OOB by removing bogus memset()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
-Acked-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-[Lee: Backported to linux-6.12.y and beyond]
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+- Tunnels matching the packet's local address, with any remote address
+  wildcard remote).
+
+- Tunnels matching the packet's remote address, with any local address
+  (wildcard local).
+
+However, vti6 stores all these different types of tunnels in the same
+hash table (ip6n->tnls_r_l) prone to hash collisions.
+
+The bug is that the fallback search loops in vti6_tnl_lookup() were
+missing checks to ensure that the candidate tunnel actually has
+a wildcard address.
+
+Fixes: fbe68ee87522 ("vti6: Add a lookup method for tunnels with wildcard endpoints.")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Steffen Klassert <steffen.klassert@secunet.com>
+Reviewed-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Link: https://patch.msgid.link/20260608164613.933023-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/bpf/hid_bpf_dispatch.c |    3 ++-
- drivers/hid/hid-core.c             |   35 +++++++++++++++++++++++++----------
- drivers/hid/hid-gfrm.c             |    4 ++--
- drivers/hid/hid-logitech-hidpp.c   |    2 +-
- drivers/hid/hid-multitouch.c       |    2 +-
- drivers/hid/hid-primax.c           |    2 +-
- drivers/hid/hid-vivaldi-common.c   |    2 +-
- drivers/hid/wacom_sys.c            |    6 +++---
- drivers/staging/greybus/hid.c      |    2 +-
- include/linux/hid.h                |    4 ++--
- include/linux/hid_bpf.h            |    4 ++--
- 11 files changed, 41 insertions(+), 25 deletions(-)
+ net/ipv6/ip6_vti.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/hid/bpf/hid_bpf_dispatch.c
-+++ b/drivers/hid/bpf/hid_bpf_dispatch.c
-@@ -47,7 +47,7 @@ __weak noinline int hid_bpf_device_event
- 
- u8 *
- dispatch_hid_bpf_device_event(struct hid_device *hdev, enum hid_report_type type, u8 *data,
--			      u32 *size, int interrupt)
-+			      size_t *buf_size, u32 *size, int interrupt)
- {
- 	struct hid_bpf_ctx_kern ctx_kern = {
- 		.ctx = {
-@@ -81,6 +81,7 @@ dispatch_hid_bpf_device_event(struct hid
- 		*size = ret;
+diff --git a/net/ipv6/ip6_vti.c b/net/ipv6/ip6_vti.c
+index 4f5093b36b3e36..077aae4b1bb332 100644
+--- a/net/ipv6/ip6_vti.c
++++ b/net/ipv6/ip6_vti.c
+@@ -105,6 +105,7 @@ vti6_tnl_lookup(struct net *net, const struct in6_addr *remote,
+ 	hash = HASH(&any, local);
+ 	for_each_vti6_tunnel_rcu(ip6n->tnls_r_l[hash]) {
+ 		if (ipv6_addr_equal(local, &t->parms.laddr) &&
++		    ipv6_addr_any(&t->parms.raddr) &&
+ 		    (t->dev->flags & IFF_UP))
+ 			return t;
  	}
- 
-+	*buf_size = ctx_kern.ctx.allocated_size;
- 	return ctx_kern.data;
- }
- EXPORT_SYMBOL_GPL(dispatch_hid_bpf_device_event);
---- a/drivers/hid/hid-core.c
-+++ b/drivers/hid/hid-core.c
-@@ -1986,24 +1986,32 @@ out:
- }
- EXPORT_SYMBOL_GPL(__hid_request);
- 
--int hid_report_raw_event(struct hid_device *hid, enum hid_report_type type, u8 *data, u32 size,
--			 int interrupt)
-+int hid_report_raw_event(struct hid_device *hid, enum hid_report_type type, u8 *data,
-+			 size_t bufsize, u32 size, int interrupt)
- {
- 	struct hid_report_enum *report_enum = hid->report_enum + type;
- 	struct hid_report *report;
- 	struct hid_driver *hdrv;
- 	int max_buffer_size = HID_MAX_BUFFER_SIZE;
- 	u32 rsize, csize = size;
-+	size_t bsize = bufsize;
- 	u8 *cdata = data;
- 	int ret = 0;
- 
- 	report = hid_get_report(report_enum, data);
- 	if (!report)
--		goto out;
-+		return 0;
-+
-+	if (unlikely(bsize < csize)) {
-+		hid_warn_ratelimited(hid, "Event data for report %d is incorrect (%d vs %ld)\n",
-+				     report->id, csize, bsize);
-+		return -EINVAL;
-+	}
- 
- 	if (report_enum->numbered) {
- 		cdata++;
- 		csize--;
-+		bsize--;
+@@ -112,6 +113,7 @@ vti6_tnl_lookup(struct net *net, const struct in6_addr *remote,
+ 	hash = HASH(remote, &any);
+ 	for_each_vti6_tunnel_rcu(ip6n->tnls_r_l[hash]) {
+ 		if (ipv6_addr_equal(remote, &t->parms.raddr) &&
++		    ipv6_addr_any(&t->parms.laddr) &&
+ 		    (t->dev->flags & IFF_UP))
+ 			return t;
  	}
- 
- 	rsize = hid_compute_report_size(report);
-@@ -2016,9 +2024,15 @@ int hid_report_raw_event(struct hid_devi
- 	else if (rsize > max_buffer_size)
- 		rsize = max_buffer_size;
- 
-+	if (bsize < rsize) {
-+		hid_warn_ratelimited(hid, "Event data for report %d was too short (%d vs %ld)\n",
-+				     report->id, rsize, bsize);
-+		return -EINVAL;
-+	}
-+
- 	if (csize < rsize) {
- 		dbg_hid("report %d is too short, (%d < %d)\n", report->id,
--				csize, rsize);
-+			csize, rsize);
- 		memset(cdata + csize, 0, rsize - csize);
- 	}
- 
-@@ -2027,7 +2041,7 @@ int hid_report_raw_event(struct hid_devi
- 	if (hid->claimed & HID_CLAIMED_HIDRAW) {
- 		ret = hidraw_report_event(hid, data, size);
- 		if (ret)
--			goto out;
-+			return ret;
- 	}
- 
- 	if (hid->claimed != HID_CLAIMED_HIDRAW && report->maxfield) {
-@@ -2039,7 +2053,7 @@ int hid_report_raw_event(struct hid_devi
- 
- 	if (hid->claimed & HID_CLAIMED_INPUT)
- 		hidinput_report_event(hid, report);
--out:
-+
- 	return ret;
- }
- EXPORT_SYMBOL_GPL(hid_report_raw_event);
-@@ -2055,12 +2069,13 @@ EXPORT_SYMBOL_GPL(hid_report_raw_event);
-  *
-  * This is data entry for lower layers.
-  */
--int hid_input_report(struct hid_device *hid, enum hid_report_type type, u8 *data, u32 size,
--		     int interrupt)
-+int hid_input_report(struct hid_device *hid, enum hid_report_type type, u8 *data,
-+		     u32 size, int interrupt)
- {
- 	struct hid_report_enum *report_enum;
- 	struct hid_driver *hdrv;
- 	struct hid_report *report;
-+	size_t bufsize = size;
- 	int ret = 0;
- 
- 	if (!hid)
-@@ -2076,7 +2091,7 @@ int hid_input_report(struct hid_device *
- 	report_enum = hid->report_enum + type;
- 	hdrv = hid->driver;
- 
--	data = dispatch_hid_bpf_device_event(hid, type, data, &size, interrupt);
-+	data = dispatch_hid_bpf_device_event(hid, type, data, &bufsize, &size, interrupt);
- 	if (IS_ERR(data)) {
- 		ret = PTR_ERR(data);
- 		goto unlock;
-@@ -2105,7 +2120,7 @@ int hid_input_report(struct hid_device *
- 			goto unlock;
- 	}
- 
--	ret = hid_report_raw_event(hid, type, data, size, interrupt);
-+	ret = hid_report_raw_event(hid, type, data, bufsize, size, interrupt);
- 
- unlock:
- 	up(&hid->driver_input_lock);
---- a/drivers/hid/hid-gfrm.c
-+++ b/drivers/hid/hid-gfrm.c
-@@ -66,7 +66,7 @@ static int gfrm_raw_event(struct hid_dev
- 	switch (data[1]) {
- 	case GFRM100_SEARCH_KEY_DOWN:
- 		ret = hid_report_raw_event(hdev, HID_INPUT_REPORT, search_key_dn,
--					   sizeof(search_key_dn), 1);
-+					   sizeof(search_key_dn), sizeof(search_key_dn), 1);
- 		break;
- 
- 	case GFRM100_SEARCH_KEY_AUDIO_DATA:
-@@ -74,7 +74,7 @@ static int gfrm_raw_event(struct hid_dev
- 
- 	case GFRM100_SEARCH_KEY_UP:
- 		ret = hid_report_raw_event(hdev, HID_INPUT_REPORT, search_key_up,
--					   sizeof(search_key_up), 1);
-+					   sizeof(search_key_up), sizeof(search_key_up), 1);
- 		break;
- 
- 	default:
---- a/drivers/hid/hid-logitech-hidpp.c
-+++ b/drivers/hid/hid-logitech-hidpp.c
-@@ -3692,7 +3692,7 @@ static int hidpp10_consumer_keys_raw_eve
- 	memcpy(&consumer_report[1], &data[3], 4);
- 	/* We are called from atomic context */
- 	hid_report_raw_event(hidpp->hid_dev, HID_INPUT_REPORT,
--			     consumer_report, 5, 1);
-+			     consumer_report, sizeof(consumer_report), 5, 1);
- 
- 	return 1;
- }
---- a/drivers/hid/hid-multitouch.c
-+++ b/drivers/hid/hid-multitouch.c
-@@ -479,7 +479,7 @@ static void mt_get_feature(struct hid_de
- 		}
- 
- 		ret = hid_report_raw_event(hdev, HID_FEATURE_REPORT, buf,
--					   size, 0);
-+					   size, size, 0);
- 		if (ret)
- 			dev_warn(&hdev->dev, "failed to report feature\n");
- 	}
---- a/drivers/hid/hid-primax.c
-+++ b/drivers/hid/hid-primax.c
-@@ -44,7 +44,7 @@ static int px_raw_event(struct hid_devic
- 			data[0] |= (1 << (data[idx] - 0xE0));
- 			data[idx] = 0;
- 		}
--		hid_report_raw_event(hid, HID_INPUT_REPORT, data, size, 0);
-+		hid_report_raw_event(hid, HID_INPUT_REPORT, data, size, size, 0);
- 		return 1;
- 
- 	default:	/* unknown report */
---- a/drivers/hid/hid-vivaldi-common.c
-+++ b/drivers/hid/hid-vivaldi-common.c
-@@ -85,7 +85,7 @@ void vivaldi_feature_mapping(struct hid_
- 	}
- 
- 	ret = hid_report_raw_event(hdev, HID_FEATURE_REPORT, report_data,
--				   report_len, 0);
-+				   report_len, report_len, 0);
- 	if (ret) {
- 		dev_warn(&hdev->dev, "failed to report feature %d\n",
- 			 field->report->id);
---- a/drivers/hid/wacom_sys.c
-+++ b/drivers/hid/wacom_sys.c
-@@ -74,7 +74,7 @@ static void wacom_wac_queue_flush(struct
- 		int err;
- 
- 		size = kfifo_out(fifo, buf, sizeof(buf));
--		err = hid_report_raw_event(hdev, HID_INPUT_REPORT, buf, size, false);
-+		err = hid_report_raw_event(hdev, HID_INPUT_REPORT, buf, size, size, false);
- 		if (err) {
- 			hid_warn(hdev, "%s: unable to flush event due to error %d\n",
- 				 __func__, err);
-@@ -319,7 +319,7 @@ static void wacom_feature_mapping(struct
- 					       data, n, WAC_CMD_RETRIES);
- 			if (ret == n && features->type == HID_GENERIC) {
- 				ret = hid_report_raw_event(hdev,
--					HID_FEATURE_REPORT, data, n, 0);
-+					HID_FEATURE_REPORT, data, n, n, 0);
- 			} else if (ret == 2 && features->type != HID_GENERIC) {
- 				features->touch_max = data[1];
- 			} else {
-@@ -381,7 +381,7 @@ static void wacom_feature_mapping(struct
- 					data, n, WAC_CMD_RETRIES);
- 		if (ret == n) {
- 			ret = hid_report_raw_event(hdev, HID_FEATURE_REPORT,
--						   data, n, 0);
-+						   data, n, n, 0);
- 		} else {
- 			hid_warn(hdev, "%s: could not retrieve sensor offsets\n",
- 				 __func__);
---- a/drivers/staging/greybus/hid.c
-+++ b/drivers/staging/greybus/hid.c
-@@ -201,7 +201,7 @@ static void gb_hid_init_report(struct gb
- 	 * we just need to setup the input fields, so using
- 	 * hid_report_raw_event is safe.
- 	 */
--	hid_report_raw_event(ghid->hid, report->type, ghid->inbuf, size, 1);
-+	hid_report_raw_event(ghid->hid, report->type, ghid->inbuf, ghid->bufsize, size, 1);
- }
- 
- static void gb_hid_init_reports(struct gb_hid *ghid)
---- a/include/linux/hid.h
-+++ b/include/linux/hid.h
-@@ -1205,8 +1205,8 @@ static inline u32 hid_report_len(struct
- 	return DIV_ROUND_UP(report->size, 8) + (report->id > 0);
- }
- 
--int hid_report_raw_event(struct hid_device *hid, enum hid_report_type type, u8 *data, u32 size,
--			 int interrupt);
-+int hid_report_raw_event(struct hid_device *hid, enum hid_report_type type, u8 *data,
-+			 size_t bufsize, u32 size, int interrupt);
- 
- /* HID quirks API */
- unsigned long hid_lookup_quirk(const struct hid_device *hdev);
---- a/include/linux/hid_bpf.h
-+++ b/include/linux/hid_bpf.h
-@@ -147,7 +147,7 @@ struct hid_bpf_link {
- 
- #ifdef CONFIG_HID_BPF
- u8 *dispatch_hid_bpf_device_event(struct hid_device *hid, enum hid_report_type type, u8 *data,
--				  u32 *size, int interrupt);
-+				  size_t *buf_size, u32 *size, int interrupt);
- int hid_bpf_connect_device(struct hid_device *hdev);
- void hid_bpf_disconnect_device(struct hid_device *hdev);
- void hid_bpf_destroy_device(struct hid_device *hid);
-@@ -155,7 +155,7 @@ void hid_bpf_device_init(struct hid_devi
- u8 *call_hid_bpf_rdesc_fixup(struct hid_device *hdev, u8 *rdesc, unsigned int *size);
- #else /* CONFIG_HID_BPF */
- static inline u8 *dispatch_hid_bpf_device_event(struct hid_device *hid, enum hid_report_type type,
--						u8 *data, u32 *size, int interrupt) { return data; }
-+						u8 *data, size_t *buf_size, u32 *size, int interrupt) { return data; }
- static inline int hid_bpf_connect_device(struct hid_device *hdev) { return 0; }
- static inline void hid_bpf_disconnect_device(struct hid_device *hdev) {}
- static inline void hid_bpf_destroy_device(struct hid_device *hid) {}
+-- 
+2.53.0
+
 
 
 
