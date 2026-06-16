@@ -1,62 +1,63 @@
-Return-Path: <stable+bounces-265755-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266505-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id xFisK0ePMWrcmgUAu9opvQ
-	(envelope-from <stable+bounces-265755-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:00:39 +0200
+	id qFlgObGeMWrEoQUAu9opvQ
+	(envelope-from <stable+bounces-266505-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:06:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C124693B8B
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:00:38 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72C62694BF6
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:06:25 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=phHe7iaY;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265755-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-265755-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=APx0ZfjK;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266505-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266505-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D156D3018637
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:00:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 54964306641E
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:06:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BBB43C5842;
-	Tue, 16 Jun 2026 18:00:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C619B3DDDA1;
+	Tue, 16 Jun 2026 19:05:57 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF3873D45E5;
-	Tue, 16 Jun 2026 18:00:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84E4C3DD51C;
+	Tue, 16 Jun 2026 19:05:56 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781632819; cv=none; b=i64DwtPo9Ni7jXDsx2gs2NXbjEA/MeiAqEKuzE47Cvjf5OUopC5G44siG1UUcJDcp7Sfq5GB0mxIl7FzaotppFuW0X2Jr0YG0l/m/Q5fv/JlhnYq7VjA05lUul7Lg3EXjNc8POHjWlQaVLXRXk8R7JJ0AYV/We0Ag7SUIlSY/gA=
+	t=1781636757; cv=none; b=qP/TVVuCZ8QZh6HI6ldFWb5MHs/Om3hcJHeBcwBGlKAqzmj0J1VaFK96f8I3z+yCvN6Q31ZmrZXVW1E6zHaHQ94GAiWPJoAKuaiUcXiqooNEV3bpDIrSV4ybm4jm5LY7dnFBtSAlINUFsR1A1+lW2hvuaPaqm7OVM4LkSTfcQAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781632819; c=relaxed/simple;
-	bh=eQDddtEZrh7UQEFJ/fP46Y0FQ6QPCoUrJKvIvcCbhdQ=;
+	s=arc-20240116; t=1781636757; c=relaxed/simple;
+	bh=wXzzLAbWFLdLShVNfaSkTM1bQCgR8qUhUtlL6aQSv4Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TIuqK0IHZMCd4meivj1eAb/akZfAToj7qb2pJBmcni1LUg1vC7DxMuNpz69mdliiSZ04UFpEPIXEaJaE4AtsxZLkhQVhhawT6l2AZff5GT3UuZFabRmGHV/waNgRaEKnFWGgruRsWUkO74LEvXOt1ZKH3JQAC8SdA8BV3375pk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=phHe7iaY; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47FAF1F00A3A;
-	Tue, 16 Jun 2026 18:00:15 +0000 (UTC)
+	 MIME-Version; b=EnvfEOC1yE39jju3uWCyVbyhbc4xsNEJ7S3Bo71x2q+Gm+afH1rKlxPG7H0E+D9uVCC+j6YeGNbcvcQAMQPfj54QZbXGE7VItrdqlYT6z++J27zj846SaVuixDvwc1/mLBFDXi+QRvWGilj7Sjr2f7eItz8+rbfi0Xa+0DEjoH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=APx0ZfjK; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7360C1F000E9;
+	Tue, 16 Jun 2026 19:05:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781632817;
-	bh=amu7NAi03w8UUTxilBvdCUWhIdy12dxA3M0jXYueicE=;
+	s=korg; t=1781636756;
+	bh=OFWKOv1mU9PiytBb6L6Y1depqJmzWSLl9qCNMF8waJY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=phHe7iaY9WjVsUT9VlKVqqNWw3HzCtQrXKaRlLwIBlfod4sgE0aasYcO/GgzgwKao
-	 FE6wN92CRx0av0eFXEeFn1k4PzXe7I+2ssdWC+c5PYLa1+Gact58dBmZm02MFO+t3H
-	 QNZ5nSjfVlJrzT8BXM47dNK4i1bjQLVYluNRFXkI=
+	b=APx0ZfjKMN+iy6qNmNLT1hhlF8v+vYdTN7XsIL470h4XZAHrs4zRg5rV/Xeorm3m7
+	 3h8Bd4JNEmlptHDHmxd9ewe8uCkvZpW2Q2THcf3BZXXBZU8QRegWJsEqAjIG02WJzV
+	 AhOnEbZg5YmoqNm+HQuzolao+uw5aoe/ZsAFbED8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"David E. Box" <david.e.box@linux.intel.com>,
-	"Michael J. Ruhl" <michael.j.ruhl@intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Wayne Chang <waynec@nvidia.com>,
+	Wei-Cheng Chen <weichengc@nvidia.com>,
+	Jon Hunter <jonathanh@nvidia.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 449/522] platform/x86/intel/vsec: Make driver_data info const
+Subject: [PATCH 5.10 300/342] phy: tegra: xusb: Fix per-pad high-speed termination calibration
 Date: Tue, 16 Jun 2026 20:29:56 +0530
-Message-ID: <20260616145146.926597147@linuxfoundation.org>
+Message-ID: <20260616145102.409164909@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,158 +67,183 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-265755-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:david.e.box@linux.intel.com,m:michael.j.ruhl@intel.com,m:ilpo.jarvinen@linux.intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-266505-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:waynec@nvidia.com,m:weichengc@nvidia.com,m:jonathanh@nvidia.com,m:vkoul@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,nvidia.com:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 1C124693B8B
+X-Rspamd-Queue-Id: 72C62694BF6
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "David E. Box" <david.e.box@linux.intel.com>
+From: Wayne Chang <waynec@nvidia.com>
 
-[ Upstream commit 9577c74c96f88d807d1ba005adbf5952e7127e55 ]
+[ Upstream commit da110228b54f2e2143d97ea7151e0dc22e539d67 ]
 
-Treat PCI id->driver_data (intel_vsec_platform_info) as read-only by making
-vsec_priv->info a const pointer and updating all function signatures to
-accept const intel_vsec_platform_info *.
+The existing code reads a single hs_term_range_adj value from bit field
+[10:7] of FUSE_SKU_CALIB_0 and applies it to all USB2 pads uniformly.
+However, on SoCs that support per-pad termination, each pad has its own
+hs_term_range_adj field: pad 0 in FUSE_SKU_CALIB_0[10:7], and pads 1-3
+in FUSE_USB_CALIB_EXT_0 at bit offsets [8:5], [12:9], and [16:13]
+respectively.
 
-This improves const-correctness and clarifies that the platform info data
-from the driver_data table is not meant to be modified at runtime.
+Fix the calibration by reading per-pad values from the appropriate fuse
+registers. For SoCs that do not support per-pad termination, replicate
+pad 0's value to all pads to maintain existing behavior.
 
-No functional changes intended.
+Add a has_per_pad_term flag to the SoC data to indicate whether per-pad
+termination values are available in FUSE_USB_CALIB_EXT_0.
 
-Signed-off-by: David E. Box <david.e.box@linux.intel.com>
-Reviewed-by: Michael J. Ruhl <michael.j.ruhl@intel.com>
-Link: https://patch.msgid.link/20260313015202.3660072-3-david.e.box@linux.intel.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Stable-dep-of: 348ccc754d89 ("platform/x86/intel/vsec: Fix enable_cnt imbalance on PCIe error recovery")
+Fixes: 1ef535c6ba8e ("phy: tegra: xusb: Add Tegra194 support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Wayne Chang <waynec@nvidia.com>
+Signed-off-by: Wei-Cheng Chen <weichengc@nvidia.com>
+Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
+Link: https://patch.msgid.link/20260504033305.2283145-1-weichengc@nvidia.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/intel/vsec.c |   16 ++++++++--------
- drivers/platform/x86/intel/vsec.h |    2 +-
- 2 files changed, 9 insertions(+), 9 deletions(-)
+ drivers/phy/tegra/xusb-tegra186.c |   32 +++++++++++++++++++++++++-------
+ drivers/phy/tegra/xusb.h          |    1 +
+ 2 files changed, 26 insertions(+), 7 deletions(-)
 
---- a/drivers/platform/x86/intel/vsec.c
-+++ b/drivers/platform/x86/intel/vsec.c
-@@ -74,7 +74,7 @@ static enum intel_vsec_id intel_vsec_all
+--- a/drivers/phy/tegra/xusb-tegra186.c
++++ b/drivers/phy/tegra/xusb-tegra186.c
+@@ -20,8 +20,8 @@
+ /* FUSE USB_CALIB registers */
+ #define HS_CURR_LEVEL_PADX_SHIFT(x)	((x) ? (11 + (x - 1) * 6) : 0)
+ #define HS_CURR_LEVEL_PAD_MASK		0x3f
+-#define HS_TERM_RANGE_ADJ_SHIFT		7
+-#define HS_TERM_RANGE_ADJ_MASK		0xf
++#define HS_TERM_RANGE_ADJ_PADX_SHIFT(x)	((x) ? (5 + (x - 1) * 4) : 7)
++#define HS_TERM_RANGE_ADJ_PAD_MASK	0xf
+ #define HS_SQUELCH_SHIFT		29
+ #define HS_SQUELCH_MASK			0x7
+ 
+@@ -127,7 +127,7 @@
+ struct tegra_xusb_fuse_calibration {
+ 	u32 *hs_curr_level;
+ 	u32 hs_squelch;
+-	u32 hs_term_range_adj;
++	u32 *hs_term_range_adj;
+ 	u32 rpd_ctrl;
  };
  
- struct vsec_priv {
--	struct intel_vsec_platform_info *info;
-+	const struct intel_vsec_platform_info *info;
+@@ -477,7 +477,7 @@ static int tegra186_utmi_phy_power_on(st
+ 
+ 	value = padctl_readl(padctl, XUSB_PADCTL_USB2_OTG_PADX_CTL1(index));
+ 	value &= ~TERM_RANGE_ADJ(~0);
+-	value |= TERM_RANGE_ADJ(priv->calib.hs_term_range_adj);
++	value |= TERM_RANGE_ADJ(priv->calib.hs_term_range_adj[index]);
+ 	value &= ~RPD_CTRL(~0);
+ 	value |= RPD_CTRL(priv->calib.rpd_ctrl);
+ 	padctl_writel(padctl, value, XUSB_PADCTL_USB2_OTG_PADX_CTL1(index));
+@@ -895,17 +895,23 @@ static const char * const tegra186_usb3_
+ static int
+ tegra186_xusb_read_fuse_calibration(struct tegra186_xusb_padctl *padctl)
+ {
++	const struct tegra_xusb_padctl_soc *soc = padctl->base.soc;
+ 	struct device *dev = padctl->base.dev;
+ 	unsigned int i, count;
+ 	u32 value, *level;
++	u32 *hs_term_range_adj;
+ 	int err;
+ 
+-	count = padctl->base.soc->ports.usb2.count;
++	count = soc->ports.usb2.count;
+ 
+ 	level = devm_kcalloc(dev, count, sizeof(u32), GFP_KERNEL);
+ 	if (!level)
+ 		return -ENOMEM;
+ 
++	hs_term_range_adj = devm_kcalloc(dev, count, sizeof(u32), GFP_KERNEL);
++	if (!hs_term_range_adj)
++		return -ENOMEM;
++
+ 	err = tegra_fuse_readl(TEGRA_FUSE_SKU_CALIB_0, &value);
+ 	if (err) {
+ 		if (err != -EPROBE_DEFER)
+@@ -924,8 +930,8 @@ tegra186_xusb_read_fuse_calibration(stru
+ 
+ 	padctl->calib.hs_squelch = (value >> HS_SQUELCH_SHIFT) &
+ 					HS_SQUELCH_MASK;
+-	padctl->calib.hs_term_range_adj = (value >> HS_TERM_RANGE_ADJ_SHIFT) &
+-						HS_TERM_RANGE_ADJ_MASK;
++	hs_term_range_adj[0] = (value >> HS_TERM_RANGE_ADJ_PADX_SHIFT(0)) &
++				HS_TERM_RANGE_ADJ_PAD_MASK;
+ 
+ 	err = tegra_fuse_readl(TEGRA_FUSE_USB_CALIB_EXT_0, &value);
+ 	if (err) {
+@@ -937,6 +943,17 @@ tegra186_xusb_read_fuse_calibration(stru
+ 
+ 	padctl->calib.rpd_ctrl = (value >> RPD_CTRL_SHIFT) & RPD_CTRL_MASK;
+ 
++	for (i = 1; i < count; i++) {
++		if (soc->has_per_pad_term)
++			hs_term_range_adj[i] =
++				(value >> HS_TERM_RANGE_ADJ_PADX_SHIFT(i)) &
++				HS_TERM_RANGE_ADJ_PAD_MASK;
++		else
++			hs_term_range_adj[i] = hs_term_range_adj[0];
++	}
++
++	padctl->calib.hs_term_range_adj = hs_term_range_adj;
++
+ 	return 0;
+ }
+ 
+@@ -1095,6 +1112,7 @@ const struct tegra_xusb_padctl_soc tegra
+ 	.supply_names = tegra194_xusb_padctl_supply_names,
+ 	.num_supplies = ARRAY_SIZE(tegra194_xusb_padctl_supply_names),
+ 	.supports_gen2 = true,
++	.has_per_pad_term = true,
+ };
+ EXPORT_SYMBOL_GPL(tegra194_xusb_padctl_soc);
+ #endif
+--- a/drivers/phy/tegra/xusb.h
++++ b/drivers/phy/tegra/xusb.h
+@@ -415,6 +415,7 @@ struct tegra_xusb_padctl_soc {
+ 	unsigned int num_supplies;
+ 	bool supports_gen2;
+ 	bool need_fake_usb3_port;
++	bool has_per_pad_term;
  };
  
- static const char *intel_vsec_name(enum intel_vsec_id id)
-@@ -203,7 +203,7 @@ int intel_vsec_add_aux(struct pci_dev *p
- EXPORT_SYMBOL_NS_GPL(intel_vsec_add_aux, INTEL_VSEC);
- 
- static int intel_vsec_add_dev(struct pci_dev *pdev, struct intel_vsec_header *header,
--			      struct intel_vsec_platform_info *info)
-+			      const struct intel_vsec_platform_info *info)
- {
- 	struct intel_vsec_device *intel_vsec_dev;
- 	struct resource *res, *tmp;
-@@ -263,7 +263,7 @@ static int intel_vsec_add_dev(struct pci
- }
- 
- static bool intel_vsec_walk_header(struct pci_dev *pdev,
--				   struct intel_vsec_platform_info *info)
-+				   const struct intel_vsec_platform_info *info)
- {
- 	struct intel_vsec_header **header = info->capabilities;
- 	bool have_devices = false;
-@@ -282,7 +282,7 @@ static bool intel_vsec_walk_header(struc
- }
- 
- static bool intel_vsec_walk_dvsec(struct pci_dev *pdev,
--				  struct intel_vsec_platform_info *info)
-+				  const struct intel_vsec_platform_info *info)
- {
- 	bool have_devices = false;
- 	int pos = 0;
-@@ -332,7 +332,7 @@ static bool intel_vsec_walk_dvsec(struct
- }
- 
- static bool intel_vsec_walk_vsec(struct pci_dev *pdev,
--				 struct intel_vsec_platform_info *info)
-+				 const struct intel_vsec_platform_info *info)
- {
- 	bool have_devices = false;
- 	int pos = 0;
-@@ -377,7 +377,7 @@ static bool intel_vsec_walk_vsec(struct
- }
- 
- static bool intel_vsec_get_features(struct pci_dev *pdev,
--				    struct intel_vsec_platform_info *info)
-+				    const struct intel_vsec_platform_info *info)
- {
- 	bool found = false;
- 
-@@ -403,7 +403,7 @@ static bool intel_vsec_get_features(stru
- 
- static int intel_vsec_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- {
--	struct intel_vsec_platform_info *info;
-+	const struct intel_vsec_platform_info *info;
- 	struct vsec_priv *priv;
- 	int ret;
- 
-@@ -412,7 +412,7 @@ static int intel_vsec_pci_probe(struct p
- 		return ret;
- 
- 	pci_save_state(pdev);
--	info = (struct intel_vsec_platform_info *)id->driver_data;
-+	info = (const struct intel_vsec_platform_info *)id->driver_data;
- 	if (!info)
- 		return -EINVAL;
- 
---- a/drivers/platform/x86/intel/vsec.h
-+++ b/drivers/platform/x86/intel/vsec.h
-@@ -36,7 +36,7 @@ struct intel_vsec_device {
- 	struct pci_dev *pcidev;
- 	struct resource *resource;
- 	struct ida *ida;
--	struct intel_vsec_platform_info *info;
-+	const struct intel_vsec_platform_info *info;
- 	int num_resources;
- 	int id; /* xa */
- 	void *priv_data;
+ struct tegra_xusb_padctl {
 
 
 
