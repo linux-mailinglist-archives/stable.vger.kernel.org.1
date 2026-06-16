@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-265706-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264654-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id NP6aF0mOMWpbmgUAu9opvQ
-	(envelope-from <stable+bounces-265706-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:56:25 +0200
+	id j+SZClV7MWrjkQUAu9opvQ
+	(envelope-from <stable+bounces-264654-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:35:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70952693A46
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:56:24 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 955D96923CA
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:35:32 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=N7awLs+D;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265706-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-265706-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=fLl2smHz;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264654-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264654-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 90B983010DE8
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:56:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EC97C325464B
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:24:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECB9E47CC80;
-	Tue, 16 Jun 2026 17:56:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31F3C46AF1B;
+	Tue, 16 Jun 2026 16:24:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5683647B406;
-	Tue, 16 Jun 2026 17:56:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1081E31D367;
+	Tue, 16 Jun 2026 16:24:49 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781632567; cv=none; b=m6+q6bPwhG9sSB3S9iiGCPnpRle7V+hAmU3hn1A4t+pxyiukNi2s0bJ2iFKLfSN6SIL2d/4GOABlkHxox5d9fmIlfUioYmsSBM6wg7JRbpQIflGXiuO7APLNisKfhUlFQcAAYZ+y9oVgCBe6nu7ihXDUoJE73JusZnoQW/2xhUM=
+	t=1781627090; cv=none; b=bgRWByZ/ikbi/6JbkTtqYv7BzP+kXNXiZ7K09y27/8Tc4qzmHw30JZc2i41urCB2NW8KmvL5pnQ7X22vXXyWTfRgXd85Grn0xz5VepeEA5takqjV8E8qK7VZVl5hYfINhsPeZwuBlrZnszAh0cPEZdyeMjC6wI+j6D8RWc2RS0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781632567; c=relaxed/simple;
-	bh=0Z+EPv99my3YAW6ATM8aMN9xcqngFILcVJCzgrkBrlQ=;
+	s=arc-20240116; t=1781627090; c=relaxed/simple;
+	bh=L4cPo9vhpVhkNvFQ8u0wketqJlZ2F+OsCFD5C/3vjvg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Df5MaRwtW66kiGdJG2mOLhVetC88UfUlMB5INdiAC+4k+ljPqMGW9oyIrw9++bMHcxZ652J0ddSNuECi1vjQ6y7aTx32r9hxiSWLo03uzvTcHddM89XMOFMyeqwHu9mwUCFFBKkEXtALcpVHNvq7pNf9KPWqbODq0BgkDX0eXWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N7awLs+D; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E49D1F000E9;
-	Tue, 16 Jun 2026 17:56:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SNq+1lBkzxmN2DfiFEZvlSbUM3wdxY5fRs/LJkAvayYcOE5NjGyxtmFFk+SvCylkyRWmo1rrS0r0DPg19K/6sXovG2vuukhAJ5mZuavmego0YVJ28mphnQeY7MFPbAjK/TRdXGODSF8BSUUG+8G8TKiLyp4nTBzzJ1BjdnK3k6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fLl2smHz; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 131661F000E9;
+	Tue, 16 Jun 2026 16:24:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781632565;
-	bh=XEBGD4sOqYbeSFsDT9ObPGE78/f5Yd7o09cWVdhLaKo=;
+	s=korg; t=1781627089;
+	bh=s48YGyFtp+KZhsq1jxH9lKFMGy1ZD7ORW2C+m7CB5Hc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=N7awLs+D8qT3EBrT3l+dM3/JpbOpamkYIaJepnvL5tG20ysBxYiFNCJDDAHzaNo4o
-	 wSPN3NL17KtuAVy0AlJ1F3mVj3q1CU/c4PplTJjprLbEomFLz7Pq9frpX7Zno7vQ1Y
-	 e3bfUPjpRBbPtgcxyL1QFNjbqJiDpJIxO2wuBAdY=
+	b=fLl2smHzweh7zBmDRpvbgWWxqfFasxspTPkwVFStocT7ns8D3jUKcC91bW3DgYr7C
+	 S5AI2L3N62WDYh+qdZq5EwoM51Tzsxy0L2icpDSdcrQAaEKfJo3ZK04tEU15GbasbT
+	 GRZtP1nv33h0h34VbUodvnzHZmUt9SnTd/P7+ojI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Li Zetao <lizetao1@huawei.com>,
-	Mark Brown <broonie@kernel.org>,
+	"Alexander A. Klimov" <grandmaster@al2klimov.de>,
+	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 408/522] spi: microchip-core-qspi: Use helper function devm_clk_get_enabled()
-Date: Tue, 16 Jun 2026 20:29:15 +0530
-Message-ID: <20260616145145.148672160@linuxfoundation.org>
+Subject: [PATCH 6.12 118/261] drm/vc4: fix krealloc() memory leak
+Date: Tue, 16 Jun 2026 20:29:16 +0530
+Message-ID: <20260616145050.525408385@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,135 +65,106 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265706-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:Jonathan.Cameron@huawei.com,m:lizetao1@huawei.com,m:broonie@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:grandmaster@al2klimov.de,m:mcanal@igalia.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-264654-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,huawei.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,igalia.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 70952693A46
+X-Rspamd-Queue-Id: 955D96923CA
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Zetao <lizetao1@huawei.com>
+From: Alexander A. Klimov <grandmaster@al2klimov.de>
 
-[ Upstream commit e922f3fff21445117e9196bd8e940ad8e15ca8c7 ]
+[ Upstream commit 5d563a5da8717629ae72f9eadf1e0e340bd1658b ]
 
-Since commit 7ef9651e9792 ("clk: Provide new devm_clk helpers for prepared
-and enabled clocks"), devm_clk_get() and clk_prepare_enable() can now be
-replaced by devm_clk_get_enabled() when driver enables (and possibly
-prepares) the clocks for the whole lifetime of the device. Moreover, it is
-no longer necessary to unprepare and disable the clocks explicitly.
+Don't just overwrite the original pointer passed to krealloc()
+with its return value without checking latter:
 
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Li Zetao <lizetao1@huawei.com>
-Link: https://lore.kernel.org/r/20230823133938.1359106-18-lizetao1@huawei.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: e6464140d439 ("spi: microchip-core-qspi: fix controller deregistration")
+    MEM = krealloc(MEM, SZ, GFP);
+
+If krealloc() returns NULL, that erases the pointer
+to the still allocated memory, hence leaks this memory.
+Instead, use a temporary variable, check it's not NULL
+and only then assign it to the original pointer:
+
+    TMP = krealloc(MEM, SZ, GFP);
+    if (!TMP) return;
+    MEM = TMP;
+
+While on it, use krealloc_array().
+
+Fixes: 6d45c81d229d ("drm/vc4: Add support for branching in shader validation.")
+Signed-off-by: Alexander A. Klimov <grandmaster@al2klimov.de>
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
+Link: https://patch.msgid.link/20260606123817.37222-1-grandmaster@al2klimov.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-microchip-core-qspi.c |   29 +++++++----------------------
- 1 file changed, 7 insertions(+), 22 deletions(-)
+ drivers/gpu/drm/vc4/vc4_validate_shaders.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
---- a/drivers/spi/spi-microchip-core-qspi.c
-+++ b/drivers/spi/spi-microchip-core-qspi.c
-@@ -519,30 +519,23 @@ static int mchp_coreqspi_probe(struct pl
- 		return dev_err_probe(&pdev->dev, PTR_ERR(qspi->regs),
- 				     "failed to map registers\n");
+diff --git a/drivers/gpu/drm/vc4/vc4_validate_shaders.c b/drivers/gpu/drm/vc4/vc4_validate_shaders.c
+index afb1a4d8268465..792e2d90aecf10 100644
+--- a/drivers/gpu/drm/vc4/vc4_validate_shaders.c
++++ b/drivers/gpu/drm/vc4/vc4_validate_shaders.c
+@@ -288,15 +288,16 @@ static bool require_uniform_address_uniform(struct vc4_validated_shader_info *va
+ {
+ 	uint32_t o = validated_shader->num_uniform_addr_offsets;
+ 	uint32_t num_uniforms = validated_shader->uniforms_size / 4;
++	u32 *offsets;
  
--	qspi->clk = devm_clk_get(&pdev->dev, NULL);
-+	qspi->clk = devm_clk_get_enabled(&pdev->dev, NULL);
- 	if (IS_ERR(qspi->clk))
- 		return dev_err_probe(&pdev->dev, PTR_ERR(qspi->clk),
- 				     "could not get clock\n");
+-	validated_shader->uniform_addr_offsets =
+-		krealloc(validated_shader->uniform_addr_offsets,
+-			 (o + 1) *
+-			 sizeof(*validated_shader->uniform_addr_offsets),
+-			 GFP_KERNEL);
+-	if (!validated_shader->uniform_addr_offsets)
++	offsets = krealloc_array(validated_shader->uniform_addr_offsets,
++				 o + 1,
++				 sizeof(*validated_shader->uniform_addr_offsets),
++				 GFP_KERNEL);
++	if (!offsets)
+ 		return false;
  
--	ret = clk_prepare_enable(qspi->clk);
--	if (ret)
--		return dev_err_probe(&pdev->dev, ret,
--				     "failed to enable clock\n");
--
- 	init_completion(&qspi->data_completion);
- 	mutex_init(&qspi->op_lock);
++	validated_shader->uniform_addr_offsets = offsets;
+ 	validated_shader->uniform_addr_offsets[o] = num_uniforms;
+ 	validated_shader->num_uniform_addr_offsets++;
  
- 	qspi->irq = platform_get_irq(pdev, 0);
--	if (qspi->irq < 0) {
--		ret = qspi->irq;
--		goto out;
--	}
-+	if (qspi->irq < 0)
-+		return qspi->irq;
- 
- 	ret = devm_request_irq(&pdev->dev, qspi->irq, mchp_coreqspi_isr,
- 			       IRQF_SHARED, pdev->name, qspi);
- 	if (ret) {
- 		dev_err(&pdev->dev, "request_irq failed %d\n", ret);
--		goto out;
-+		return ret;
- 	}
- 
- 	ctlr->bits_per_word_mask = SPI_BPW_MASK(8);
-@@ -553,18 +546,11 @@ static int mchp_coreqspi_probe(struct pl
- 	ctlr->dev.of_node = np;
- 
- 	ret = devm_spi_register_controller(&pdev->dev, ctlr);
--	if (ret) {
--		dev_err_probe(&pdev->dev, ret,
--			      "spi_register_controller failed\n");
--		goto out;
--	}
-+	if (ret)
-+		return dev_err_probe(&pdev->dev, ret,
-+				     "spi_register_controller failed\n");
- 
- 	return 0;
--
--out:
--	clk_disable_unprepare(qspi->clk);
--
--	return ret;
- }
- 
- static void mchp_coreqspi_remove(struct platform_device *pdev)
-@@ -575,7 +561,6 @@ static void mchp_coreqspi_remove(struct
- 	mchp_coreqspi_disable_ints(qspi);
- 	control &= ~CONTROL_ENABLE;
- 	writel_relaxed(control, qspi->regs + REG_CONTROL);
--	clk_disable_unprepare(qspi->clk);
- }
- 
- static const struct of_device_id mchp_coreqspi_of_match[] = {
+-- 
+2.53.0
+
 
 
 
