@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-263915-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266231-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 7YBlDbVpMWr4igUAu9opvQ
-	(envelope-from <stable+bounces-263915-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:20:21 +0200
+	id DHF2DRWZMWpJnwUAu9opvQ
+	(envelope-from <stable+bounces-266231-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:42:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B813B690EE1
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:20:20 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 635286945AF
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:42:28 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=qoRHoZ2W;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263915-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263915-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=p2btmRTw;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266231-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-266231-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 010F8302FA76
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:19:12 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8CCAF300BD57
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:42:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E2F843E49D;
-	Tue, 16 Jun 2026 15:19:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D3DA46AEE1;
+	Tue, 16 Jun 2026 18:42:22 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8FD643DA3C;
-	Tue, 16 Jun 2026 15:19:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE42613777E;
+	Tue, 16 Jun 2026 18:42:20 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781623150; cv=none; b=VsdoR7clqn7ytuKddWYlxDlrAj37Hw+zU71MwN1MFaZ4V/ooAkuXeuoO7nxb+57klReB5cAGXf7NW1EolOI4fcO4pPKqBTgP78p/hdQQ5YWudTAhhlPB/GNJECYVuTolicGrNlOunWBLTWtIQzuMkbvGgj/AD+GII6MymDIBoLc=
+	t=1781635342; cv=none; b=J5OXqT7tBvz8doeq0duoW6WEIvdIJmn95yLMhKlVDsBjLgHx8znThyoDOTG83irR+UP0CNqZbWBFmr24SDvgDbeXNetzTadd6ng4+OgaIEdLzjb0Z9pTMY2+8w6+/Vo8oQqBBZ2UidN8wyp3GyaRiC+RwUoBlDxmUks3+BCGUGY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781623150; c=relaxed/simple;
-	bh=wA8FVcVmbQGFOlNWDBg9rUmvC8sNOLRRgKT3hy1B15Q=;
+	s=arc-20240116; t=1781635342; c=relaxed/simple;
+	bh=9SJiVoqQplwtuYln/FoI3g6yuWubXThiYj+YJd8uG+A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a3PWBYLJwO/1Io9mzwGOWaQAaWmBwgQVrGKaugw4KhqAzjIDWmFdsMi/+FnRA9RWfZm4/GjQ/7UPbQkODvyVO4RVC1mEv63bpI0kzRQ2bEH1R5VTk8W11TD5APIwsizgvkrSRzcPyqHPtFzKS9htf1xfDb+ebrv/h0T+roAR2gc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qoRHoZ2W; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 952451F00A3A;
-	Tue, 16 Jun 2026 15:19:08 +0000 (UTC)
+	 MIME-Version; b=gN8Q8AfM/BlNBHXrJi0b49QH6aKh0WdBdyZZ7Onif6uJ67Pci/WR307IS4QHugq2qIPxWfR3yY/XEaaYH4qLIykb1wPLbATwKor4NRRUBpVnzWqkHdku3+31MYkkD7LER+YNkvOEwwInXKcokJj6D0v4WQ5Bi/SfZDWe1+NvrIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p2btmRTw; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E18251F000E9;
+	Tue, 16 Jun 2026 18:42:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781623149;
-	bh=6Vjs3TFUVp/WjwDX45cBawOFKnVV49PDQ2WfrMCQbrc=;
+	s=korg; t=1781635340;
+	bh=WmnFcoPN/A6RDcRZA5CYzIdHME14+QjMUb8fu06gEzg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=qoRHoZ2WSWuU9ujfzJ+0WGI+CuSX3+sVgUTIWWDOkB+qN0Z9QsQF/adzCgK1Y6wcU
-	 R3YenvicxsVQXtBqj8/OLzwEBJPKrTO0q2DqmukJwA0688wFzqH8h53um+LHluWl5t
-	 rqT3zmrYT1OhE9BowfTVZay0o6a80/+o+uqMIbzc=
+	b=p2btmRTwEP8Vuya+gqpfUcunBWDfgUZ4Jp73xNC42ZRjgvFGFe+shBEloEDGG4Rxb
+	 QUKVp2YvdKiCazIl2kYZCNjuEHXdyP550Vam1nCtye/ImVvtGZVFUcXr3Fq4Cck8rU
+	 6Md59+r73JueGvfNiNmcvXAl2ueorshhNGnTBEls=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Schwab <schwab@suse.de>,
-	Paul Walmsley <pjw@kernel.org>,
+	stable@kernel.org,
+	Sven Eckelmann <sven@narfation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 096/378] riscv/ptrace: Use USER_REGSET_NOTE_TYPE for REGSET_CFI
+Subject: [PATCH 5.10 031/342] batman-adv: tvlv: abort OGM send on tvlv append failure
 Date: Tue, 16 Jun 2026 20:25:27 +0530
-Message-ID: <20260616145115.346808449@linuxfoundation.org>
+Message-ID: <20260616145049.705164541@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,21 +72,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-263915-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-266231-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:schwab@suse.de,m:pjw@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:sven@narfation.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -98,44 +98,202 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,suse.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,narfation.org:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B813B690EE1
+X-Rspamd-Queue-Id: 635286945AF
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Schwab <schwab@suse.de>
+From: Sven Eckelmann <sven@narfation.org>
 
-[ Upstream commit e3573f739e3dadab57ec80488d07e05c8f6e82d3 ]
+commit 501368506563e151b322c8c3f228b796e615b90d upstream.
 
-Fixes a warning while dumping core:
+batadv_tvlv_container_ogm_append() could fail in two ways: a memory
+allocation failure when resizing the packet buffer, or the tvlv data
+exceeding U16_MAX bytes. In both cases the function previously returned the
+old (now stale) tvlv_value_len rather than signalling an error, causing the
+OGM/OGM2 send path to transmit a packet whose TVLV length field no longer
+matched the actual buffer contents. And because it also didn't fill in the
+new TVLV data, sending either uninitialized or corrupted data on the wire.
 
-[54983.546369][    C7] WARNING: [!note_name] fs/binfmt_elf.c:1771 at elf_core_dump+0x910/0xf68, CPU#7: abort01/31982
+All errors in batadv_tvlv_container_ogm_append() must be forwarded to the
+caller. And the caller must abort the send of the OGM2. For B.A.T.M.A.N.
+IV, it is currently not allowed to abort the send. The non-TVLV part of the
+OGM must be queued up instead.
 
-Fixes: 2af7c9cf021c ("riscv/ptrace: expose riscv CFI status and state via ptrace and in core files")
-Signed-off-by: Andreas Schwab <schwab@suse.de>
-Link: https://patch.msgid.link/87y0hcxuh5.fsf@igel.home
-Signed-off-by: Paul Walmsley <pjw@kernel.org>
+Cc: stable@kernel.org
+Fixes: ef26157747d4 ("batman-adv: tvlv - basic infrastructure")
+[ Context ]
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/ptrace.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/batman-adv/bat_iv_ogm.c | 16 +++++++++++++---
+ net/batman-adv/bat_v_ogm.c  | 26 ++++++++++++++------------
+ net/batman-adv/tvlv.c       | 17 ++++++++++++-----
+ net/batman-adv/tvlv.h       |  2 +-
+ 4 files changed, 40 insertions(+), 21 deletions(-)
 
-diff --git a/arch/riscv/kernel/ptrace.c b/arch/riscv/kernel/ptrace.c
-index 793bcee4618282..f336a183667eb8 100644
---- a/arch/riscv/kernel/ptrace.c
-+++ b/arch/riscv/kernel/ptrace.c
-@@ -413,7 +413,7 @@ static struct user_regset riscv_user_regset[] __ro_after_init = {
- #endif
- #ifdef CONFIG_RISCV_USER_CFI
- 	[REGSET_CFI] = {
--		.core_note_type = NT_RISCV_USER_CFI,
-+		USER_REGSET_NOTE_TYPE(RISCV_USER_CFI),
- 		.align = sizeof(__u64),
- 		.n = sizeof(struct user_cfi_state) / sizeof(__u64),
- 		.size = sizeof(__u64),
+diff --git a/net/batman-adv/bat_iv_ogm.c b/net/batman-adv/bat_iv_ogm.c
+index f35665a4045123..9cd2fa751c21ef 100644
+--- a/net/batman-adv/bat_iv_ogm.c
++++ b/net/batman-adv/bat_iv_ogm.c
+@@ -784,6 +784,7 @@ static void batadv_iv_ogm_schedule_buff(struct batadv_hard_iface *hard_iface)
+ 	u32 seqno;
+ 	u16 tvlv_len = 0;
+ 	unsigned long send_time;
++	int ret;
+ 
+ 	lockdep_assert_held(&hard_iface->bat_iv.ogm_buff_mutex);
+ 
+@@ -807,9 +808,18 @@ static void batadv_iv_ogm_schedule_buff(struct batadv_hard_iface *hard_iface)
+ 		 * appended as it may alter the tt tvlv container
+ 		 */
+ 		batadv_tt_local_commit_changes(bat_priv);
+-		tvlv_len = batadv_tvlv_container_ogm_append(bat_priv, ogm_buff,
+-							    ogm_buff_len,
+-							    BATADV_OGM_HLEN);
++		ret = batadv_tvlv_container_ogm_append(bat_priv, ogm_buff,
++						       ogm_buff_len,
++						       BATADV_OGM_HLEN);
++		if (ret < 0) {
++			/* OGMs must be queued even when the buffer allocation for
++			 * TVLVs failed. just fall back to the non-TVLV version
++			 */
++			ret = 0;
++			*ogm_buff_len = BATADV_OGM_HLEN;
++		}
++
++		tvlv_len = ret;
+ 	}
+ 
+ 	batadv_ogm_packet = (struct batadv_ogm_packet *)(*ogm_buff);
+diff --git a/net/batman-adv/bat_v_ogm.c b/net/batman-adv/bat_v_ogm.c
+index 5f75bcf64ae56c..939aa4b303ad98 100644
+--- a/net/batman-adv/bat_v_ogm.c
++++ b/net/batman-adv/bat_v_ogm.c
+@@ -272,9 +272,9 @@ static void batadv_v_ogm_send_softif(struct batadv_priv *bat_priv)
+ 	struct batadv_hard_iface *hard_iface;
+ 	struct batadv_ogm2_packet *ogm_packet;
+ 	struct sk_buff *skb, *skb_tmp;
+-	unsigned char *ogm_buff;
+-	int ogm_buff_len;
+-	u16 tvlv_len = 0;
++	unsigned char **ogm_buff;
++	int *ogm_buff_len;
++	u16 tvlv_len;
+ 	int ret;
+ 
+ 	lockdep_assert_held(&bat_priv->bat_v.ogm_buff_mutex);
+@@ -282,25 +282,27 @@ static void batadv_v_ogm_send_softif(struct batadv_priv *bat_priv)
+ 	if (atomic_read(&bat_priv->mesh_state) == BATADV_MESH_DEACTIVATING)
+ 		goto out;
+ 
+-	ogm_buff = bat_priv->bat_v.ogm_buff;
+-	ogm_buff_len = bat_priv->bat_v.ogm_buff_len;
++	ogm_buff = &bat_priv->bat_v.ogm_buff;
++	ogm_buff_len = &bat_priv->bat_v.ogm_buff_len;
++
+ 	/* tt changes have to be committed before the tvlv data is
+ 	 * appended as it may alter the tt tvlv container
+ 	 */
+ 	batadv_tt_local_commit_changes(bat_priv);
+-	tvlv_len = batadv_tvlv_container_ogm_append(bat_priv, &ogm_buff,
+-						    &ogm_buff_len,
+-						    BATADV_OGM2_HLEN);
++	ret = batadv_tvlv_container_ogm_append(bat_priv, ogm_buff,
++					       ogm_buff_len,
++					       BATADV_OGM2_HLEN);
++	if (ret < 0)
++		goto reschedule;
+ 
+-	bat_priv->bat_v.ogm_buff = ogm_buff;
+-	bat_priv->bat_v.ogm_buff_len = ogm_buff_len;
++	tvlv_len = ret;
+ 
+-	skb = netdev_alloc_skb_ip_align(NULL, ETH_HLEN + ogm_buff_len);
++	skb = netdev_alloc_skb_ip_align(NULL, ETH_HLEN + *ogm_buff_len);
+ 	if (!skb)
+ 		goto reschedule;
+ 
+ 	skb_reserve(skb, ETH_HLEN);
+-	skb_put_data(skb, ogm_buff, ogm_buff_len);
++	skb_put_data(skb, *ogm_buff, *ogm_buff_len);
+ 
+ 	ogm_packet = (struct batadv_ogm2_packet *)skb->data;
+ 	ogm_packet->seqno = htonl(atomic_read(&bat_priv->bat_v.ogm_seqno));
+diff --git a/net/batman-adv/tvlv.c b/net/batman-adv/tvlv.c
+index 99fc48efde5431..75f7ea827ed9dd 100644
+--- a/net/batman-adv/tvlv.c
++++ b/net/batman-adv/tvlv.c
+@@ -7,6 +7,7 @@
+ #include "main.h"
+ 
+ #include <linux/byteorder/generic.h>
++#include <linux/errno.h>
+ #include <linux/etherdevice.h>
+ #include <linux/gfp.h>
+ #include <linux/if_ether.h>
+@@ -306,9 +307,10 @@ static bool batadv_tvlv_realloc_packet_buff(unsigned char **packet_buff,
+  * The ogm packet might be enlarged or shrunk depending on the current size
+  * and the size of the to-be-appended tvlv containers.
+  *
+- * Return: size of all appended tvlv containers in bytes.
++ * Return: size of all appended tvlv containers in bytes (max U16_MAX), negative
++ *  if operation failed
+  */
+-u16 batadv_tvlv_container_ogm_append(struct batadv_priv *bat_priv,
++int batadv_tvlv_container_ogm_append(struct batadv_priv *bat_priv,
+ 				     unsigned char **packet_buff,
+ 				     int *packet_buff_len, int packet_min_len)
+ {
+@@ -316,6 +318,7 @@ u16 batadv_tvlv_container_ogm_append(struct batadv_priv *bat_priv,
+ 	struct batadv_tvlv_hdr *tvlv_hdr;
+ 	u16 tvlv_value_len;
+ 	void *tvlv_value;
++	int tvlv_len_ret;
+ 	bool ret;
+ 
+ 	spin_lock_bh(&bat_priv->tvlv.container_list_lock);
+@@ -323,9 +326,12 @@ u16 batadv_tvlv_container_ogm_append(struct batadv_priv *bat_priv,
+ 
+ 	ret = batadv_tvlv_realloc_packet_buff(packet_buff, packet_buff_len,
+ 					      packet_min_len, tvlv_value_len);
+-
+-	if (!ret)
++	if (!ret) {
++		tvlv_len_ret = -ENOMEM;
+ 		goto end;
++	}
++
++	tvlv_len_ret = tvlv_value_len;
+ 
+ 	if (!tvlv_value_len)
+ 		goto end;
+@@ -344,7 +350,8 @@ u16 batadv_tvlv_container_ogm_append(struct batadv_priv *bat_priv,
+ 
+ end:
+ 	spin_unlock_bh(&bat_priv->tvlv.container_list_lock);
+-	return tvlv_value_len;
++
++	return tvlv_len_ret;
+ }
+ 
+ /**
+diff --git a/net/batman-adv/tvlv.h b/net/batman-adv/tvlv.h
+index d509d00c7a23e6..4823f4963df5bd 100644
+--- a/net/batman-adv/tvlv.h
++++ b/net/batman-adv/tvlv.h
+@@ -15,7 +15,7 @@
+ void batadv_tvlv_container_register(struct batadv_priv *bat_priv,
+ 				    u8 type, u8 version,
+ 				    void *tvlv_value, u16 tvlv_value_len);
+-u16 batadv_tvlv_container_ogm_append(struct batadv_priv *bat_priv,
++int batadv_tvlv_container_ogm_append(struct batadv_priv *bat_priv,
+ 				     unsigned char **packet_buff,
+ 				     int *packet_buff_len, int packet_min_len);
+ void batadv_tvlv_ogm_receive(struct batadv_priv *bat_priv,
 -- 
 2.53.0
 
