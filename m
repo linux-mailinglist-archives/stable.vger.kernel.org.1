@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-265676-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266425-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id gfl9AbeNMWohmgUAu9opvQ
-	(envelope-from <stable+bounces-265676-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:53:59 +0200
+	id FEpaNR2dMWoJoQUAu9opvQ
+	(envelope-from <stable+bounces-266425-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:59:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87FC66939B7
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:53:58 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0C04694A3A
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:59:40 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=qp2CI0Er;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265676-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265676-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=JtG0r09r;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266425-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266425-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 78BA33079942
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:53:37 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id AECD23017CE5
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:59:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82F44477982;
-	Tue, 16 Jun 2026 17:53:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93E6A47D929;
+	Tue, 16 Jun 2026 18:59:17 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 516474418E3;
-	Tue, 16 Jun 2026 17:53:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6279247CC96;
+	Tue, 16 Jun 2026 18:59:16 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781632414; cv=none; b=qpmTcZt0G2hVeIa9IiGRCu0tUDfcH8H4Y9REEPFIBigcpL87c0d/GJTznle2ebBPNkMHH7vZBbPckL0PjW0Ou/YQ4bD8JkCi1u/5ppIbAGPouv7RkKg90DPrudHUDoIlOfokwaAYpExcVRSx1q9rmYgzYTMMap+TP3ZzMTfpnOc=
+	t=1781636357; cv=none; b=udwLMnbHf3gJjV2PqXmkijSI8f1le3PP6x/V0ktBonTCX7UnzRTv/vFGJjqFVXqkOBSVH9w+E3HBhTkkY4FeKBUvxYegZxDXb2a6+CFydE8Q31qaNtpON4HEzpL7QPrNeaO+bPDWB7RTWr+13hvU+lSnwt3NcA6p1Vgq1hDuNwk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781632414; c=relaxed/simple;
-	bh=g97H1G170FYJ8GXoG/OBxZ3emP6iWQHCgfVjrqK2nY0=;
+	s=arc-20240116; t=1781636357; c=relaxed/simple;
+	bh=WU+vBU2kgOYwCRxtg+dx++jny3PIg4ycVNyA3DzMSi0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b7y/mh5PR0Pnz8D3V4n/RwUi/w/Wl/jAJvveCMc2VVGihrXJ9C6m+c8KkcNO+kopbIfhr0UYN/8I02JqinuJhAill68GBJzDxzyWlLwr/z+k7aTEOGzdP8kbsjuGsjNRUnHs5hQtAYGPPOw1xaLDnInlm9ohTiIQy+HJT6BX9JM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qp2CI0Er; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60A581F000E9;
-	Tue, 16 Jun 2026 17:53:32 +0000 (UTC)
+	 MIME-Version; b=i+7tR1FOgxjntPHS1iHQ2ee3tjHzJ//vpmxiC0XBR08B2cBLJBQP9c+ZkePq4OM5QBGe4bqmodgdZQQPF3MW/K/VkYJQCSo0XddHONmjdMDlQA5yO/RDueXkRNQtleBYIHz6IXrQNSWK22wOQ3ylQx50VgmKLikOCo5BXYxifm4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JtG0r09r; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43AFC1F000E9;
+	Tue, 16 Jun 2026 18:59:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781632413;
-	bh=3Eyy/rGemLtEIChY4se8PzFatth6D6MBMJGMGLl9Tjg=;
+	s=korg; t=1781636356;
+	bh=x+NqU4jW1fFQVLLnyLVP6CuGXTBeOSEY2FZ7M/jvUM4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=qp2CI0Er6UgocWZpZgnrUyPnJFtBl9NHz889HVWcIheAjHaF9qV8Q6KU2rrPstiKL
-	 TqawHjobViPQWCs9EUMW4PQm5C+40/CQOfddujDnvVIo6Vs+juS69Q4QM51sYik8ng
-	 7/sRUmUbW1CKtgkA5jdnOGgiHDirQCJ9cDwKGe98=
+	b=JtG0r09r88mHmQ0GQxWEWKuFW0Xwqm0663huaIxqVZrYH98e+OGtnihbNmAIF+BS+
+	 KjdxhO3aIFg+2Z0oo7aTuu5hvgfjft8Hb9cjY6GlpL/3FAWgALKPOFSMmJ1kKfbe01
+	 67NeXhlA28x4Bt1LIV7q1r1AE7Hs2kLWvMp6j12M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Arend van Spriel <arend.vanspriel@broadcom.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 373/522] wifi: brcmfmac: Fix potential use-after-free issue when stopping watchdog task
+Subject: [PATCH 5.10 224/342] thermal: core: Fix thermal zone governor cleanup issues
 Date: Tue, 16 Jun 2026 20:28:40 +0530
-Message-ID: <20260616145143.224247198@linuxfoundation.org>
+Message-ID: <20260616145058.635809566@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,90 +68,104 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265676-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-266425-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:m.szyprowski@samsung.com,m:arend.vanspriel@broadcom.com,m:johannes.berg@intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:rafael.j.wysocki@intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,samsung.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,intel.com:email,msgid.link:url,broadcom.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,intel.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 87FC66939B7
+X-Rspamd-Queue-Id: D0C04694A3A
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Szyprowski <m.szyprowski@samsung.com>
+From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
 
-[ Upstream commit c623b63580880cc742255eaed3d79804c1b91143 ]
+[ Upstream commit 41ff66baf81c6541f4f985dd7eac4494d03d9440 ]
 
-Watchdog task might end between send_sig() and kthread_stop() calls, what
-results in the use-after-free issue. Fix this by increasing watchdog task
-reference count before calling send_sig() and dropping it by switching to
-kthread_stop_put().
+If thermal_zone_device_register_with_trips() fails after adding
+a thermal governor to the thermal zone being registered, the
+governor is not removed from it as appropriate which may lead to
+a memory leak.
 
-Cc: stable@vger.kernel.org
-Fixes: 373c83a801f1 ("brcmfmac: stop watchdog before detach and free everything")
-Fixes: a9ffda88be74 ("brcm80211: fmac: abstract bus_stop interface function pointer")
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-Link: https://patch.msgid.link/20260416093339.2066829-1-m.szyprowski@samsung.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-[ replaced kthread_stop_put() with open-coded kthread_stop() + put_task_struct() ]
+In turn, thermal_zone_device_unregister() calls thermal_set_governor()
+without acquiring the thermal zone lock beforehand which may race with
+a governor update via sysfs and may lead to a use-after-free in that
+case.
+
+Address these issues by adding two thermal_set_governor() calls, one to
+thermal_release() to remove the governor from the given thermal zone,
+and one to the thermal zone registration error path to cover failures
+preceding the thermal zone device registration.
+
+Fixes: e33df1d2f3a0 ("thermal: let governors have private data for each thermal zone")
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Link: https://patch.msgid.link/5092923.31r3eYUQgx@rafael.j.wysocki
+[ adapted context for missing mutex_destroy/complete ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/thermal/thermal_core.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-@@ -2477,8 +2477,10 @@ static void brcmf_sdio_bus_stop(struct d
- 	brcmf_dbg(TRACE, "Enter\n");
+--- a/drivers/thermal/thermal_core.c
++++ b/drivers/thermal/thermal_core.c
+@@ -986,6 +986,7 @@ static void thermal_release(struct devic
+ 		     sizeof("thermal_zone") - 1)) {
+ 		tz = to_thermal_zone(dev);
+ 		thermal_zone_destroy_device_groups(tz);
++		thermal_set_governor(tz, NULL);
+ 		kfree(tz);
+ 	} else if (!strncmp(dev_name(dev), "cooling_device",
+ 			    sizeof("cooling_device") - 1)) {
+@@ -1447,8 +1448,10 @@ thermal_zone_device_register(const char
+ 	/* sys I/F */
+ 	/* Add nodes that are always present via .groups */
+ 	result = thermal_zone_create_device_groups(tz, mask);
+-	if (result)
++	if (result) {
++		thermal_set_governor(tz, NULL);
+ 		goto remove_id;
++	}
  
- 	if (bus->watchdog_tsk) {
-+		get_task_struct(bus->watchdog_tsk);
- 		send_sig(SIGTERM, bus->watchdog_tsk, 1);
- 		kthread_stop(bus->watchdog_tsk);
-+		put_task_struct(bus->watchdog_tsk);
- 		bus->watchdog_tsk = NULL;
- 	}
+ 	/* A new thermal zone needs to be updated anyway. */
+ 	atomic_set(&tz->need_update, 1);
+@@ -1571,8 +1574,6 @@ void thermal_zone_device_unregister(stru
  
-@@ -4549,8 +4551,10 @@ void brcmf_sdio_remove(struct brcmf_sdio
- 	if (bus) {
- 		/* Stop watchdog task */
- 		if (bus->watchdog_tsk) {
-+			get_task_struct(bus->watchdog_tsk);
- 			send_sig(SIGTERM, bus->watchdog_tsk, 1);
- 			kthread_stop(bus->watchdog_tsk);
-+			put_task_struct(bus->watchdog_tsk);
- 			bus->watchdog_tsk = NULL;
- 		}
+ 	cancel_delayed_work_sync(&tz->poll_queue);
  
+-	thermal_set_governor(tz, NULL);
+-
+ 	thermal_remove_hwmon_sysfs(tz);
+ 	ida_simple_remove(&thermal_tz_ida, tz->id);
+ 	ida_destroy(&tz->ida);
 
 
 
