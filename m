@@ -1,201 +1,273 @@
-Return-Path: <stable+bounces-263662-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263640-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id qaRvDykpMWq3cwUAu9opvQ
-	(envelope-from <stable+bounces-263662-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 12:44:57 +0200
+	id Dq6HGj4UMWo6bQUAu9opvQ
+	(envelope-from <stable+bounces-263640-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 11:15:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9058568E684
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 12:44:56 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEAD268D6EC
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 11:15:41 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=SODLkC8E;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263662-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263662-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=mbhUY4X0;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263640-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-263640-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=linux.dev;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 64AD7300B13C
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 10:44:55 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AC30D30027BB
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 09:15:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9896C42847F;
-	Tue, 16 Jun 2026 10:44:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4190730677B;
+	Tue, 16 Jun 2026 09:15:37 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f65.google.com (mail-ej1-f65.google.com [209.85.218.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04DC63D75BF
-	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 10:44:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11B0227456
+	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 09:15:34 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781606694; cv=none; b=HfPkEjI1Ab5YSsVC1qk4UK1FDGJRWuQ2npX0yvsWSOrw/nQ2FyzYAHbsVLk+E5lmV5NKy5So44lh4I+7TRYn5RGiLU0+tppZvt//T4g34sDh7LvPNNEiMyQBcpAUHw7yeRew5JSoVgEBFtO0PtiFdZvKYOpOiEVmVTssPs1SDIM=
+	t=1781601337; cv=none; b=ewqMfiLGhrngGjYKYs0cPzCOsrtlLd3rI7M+Ewhm1pVCVcBe/cdkfsdrXeovS8Tm4YFvqGEulLBVEZacsiHBX9w/bC36s4QI0ltCAZSonP/zoBYsc80mCNwgd1XVwm0C7xaM5OLnW99kbrI/2VMJip/NamNZQJLxWPBRMooUL0k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781606694; c=relaxed/simple;
-	bh=BYiitEcXHhRh6eR+a46Lb8G8JNceCCN8CajnI0gLC0Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=faz8raMaKKjVBZVONeT08IE7lsMwLbVbT7HM4jhsOsaEkRCQtxaAPeA/Ycqszy559beD9MXGuqgcFTllNQ/XcFBJvGeV1VcIZ5gi4XyUO//uYs8/vjegZWYiyH2s/6cSI5EtD3dgDaChGBPBXnd+rMkVS2OlQ8FN0upvevRI/8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SODLkC8E; arc=none smtp.client-ip=209.85.218.65
-Received: by mail-ej1-f65.google.com with SMTP id a640c23a62f3a-beb7f26ed62so514648366b.0
-        for <stable@vger.kernel.org>; Tue, 16 Jun 2026 03:44:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781606691; x=1782211491; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=cBInyREsNJJq2tfrHgYP7popCDV3FF08GB9ZJkZM/f8=;
-        b=SODLkC8ExCxdSeOM4CHON0mknsnQhBl3MYJxfH7jkyyns9ovC3gvqqm/B3dEHY0Fb1
-         DUx2MbGPpKz8LH3GRoA8JwfZpVF6cDyvTcVvJnhh4PsUmCNG2J6U5+PegpOXPL8C4vI5
-         wDb1Q7aTUztwq3hF5TK/TXuup3wjTsRjvdo5F8hiSG17IuHC/OH0kWzee9Uuk3JJl1XD
-         SleN5VW4n0ckIuRiT6E766i9F3O549JFS6GJzNjzBK3mGq544Q2gJVWu2xxeSJ7GGOlw
-         DWADagJ6EMH62idj3qmNSUu3qoNkS+4NomczkS5mcHIdInICirMsBTH0aAckWTc0ak+B
-         idkQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781606691; x=1782211491;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cBInyREsNJJq2tfrHgYP7popCDV3FF08GB9ZJkZM/f8=;
-        b=gMBtrY0GgG7F4c0vuB7cVvXjtRMhg3Ry7LEJsyTzL7W1jlIwyDGBfodr4cLYPRweP1
-         D71aK6YuD+LPny2Oh4EgwvLACK5bArRiEsdkDYV5kmbYYYa7MwQNuiteBuIKpzAwK7gX
-         QaQhqkZS2/nWGRWdu6m+76a0i/e8qtk2ITsFQ6SGtQNpFrmk97kh2uN+mhkcYyV+I/XD
-         zGnO7mH0NbQ/EYc0z+I+ErZntGHtPoMuZ1DbZRP9bSGeeygphAKOGA84OxAztDYI8l2l
-         LkKoH0LjBt2LGROxLdkcqnfSaw0oSx3mcuaiDZhn4IhjH+4xB5S7QHdzIWWgQkK1F/Dw
-         ddBA==
-X-Gm-Message-State: AOJu0YwXWoZT85cKPEpm22yTrukRoMI1v8QqMVUtDv80ngew4GUVAT1P
-	QgGeP/cgy/7b/uiN9nOnapJ7HzANtlApTN+7p4GJ12nlC29Ttxy2Ar98BqLWDPQiDg/VvQ==
-X-Gm-Gg: Acq92OHQt3I4SL5OucTAeW2gpRH4fRe8VZu0QKCECR37IEJQvOqsIOJvIx4X0adSM9s
-	nMYC+4K0SMInPZzKTtaEK2RUbVOaxbP7XQqPaYMcP8z1IYHav0CC6K3aj2aQiQlq9NCSiYtqOxo
-	EYj7/ObW9c/mFkcxCs+aFKdHv+C5kLCxHFchWnqRzZFgULoq6j611bmEjrvSbP8raCrsFyEA7KH
-	OYdoUI5wQhHPXQBlRHmitbuVMIbwJ9ka0dmEr1ONJG0qGOXn43fEvB4UH3MGsD/r6z5/xFP4qqY
-	sP0jJBcj3FVYMaCrkuYgQSlFJPxRQk7YI7x25wVww9Oq9CkHTTB2Qofg8g0oM+PL0gS8q2R8XqS
-	IduNpUpyRTkK2la4k9qRKds+ujoK3Lsdr7EiRFGfRtrqiYBLam0PAIXpktEUb6LKWVM+Ky+XNM2
-	cbhDiIwd5uJOf+a8q/OK+1vHiJqj3mBPg5foBrosu+SVoJCRDeDKnXDTunYiKBqjvp0BQQ
-X-Received: by 2002:ac2:59cf:0:b0:5aa:6c2f:2a20 with SMTP id 2adb3069b0e04-5ad427a8bf2mr621532e87.30.1781600513392;
-        Tue, 16 Jun 2026 02:01:53 -0700 (PDT)
-Received: from cherrypc.astra-academy.ru (109-252-17-231.nat.spd-mgts.ru. [109.252.17.231])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5ad2e1715d4sm3301048e87.34.2026.06.16.02.01.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Jun 2026 02:01:52 -0700 (PDT)
-From: Nazar Kalashnikov <nazarkalashnikov0@gmail.com>
-To: stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Nazar Kalashnikov <nazarkalashnikov0@gmail.com>,
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Dongli Zhang <dongli.zhang@oracle.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	bpf@vger.kernel.org,
-	Si-Wei Liu <si-wei.liu@oracle.com>,
-	Willem de Bruijn <willemb@google.com>,
-	lvc-project@linuxtesting.org,
-	Xiang Mei <xmei5@asu.edu>,
-	Weiming Shi <bestswngs@gmail.com>
-Subject: [PATCH 5.10/5.15/6.1/6.6/6.12/6.18] tap: free page on error paths in tap_get_user_xdp()
-Date: Tue, 16 Jun 2026 12:02:01 +0300
-Message-ID: <20260616090202.693916-1-nazarkalashnikov0@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1781601337; c=relaxed/simple;
+	bh=9rOwkV9QgHXXFWQINk1wFiDvCLMF4fWHf7XAKv8LCdM=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=fZ2je/orSbtPJLOYcmYOvjUXUZY4dcOwbg3wdpyMPjjW9exRD9WJ7n9n1M5zyqkOcV1j88BqFMB83kCIm7/8vaBXqJnJwMe4Z+miqgNYmtCnDXirSOjs1aGtD6aEqBheCk0HddAAR7kvvt9CgSxY9jN2MUJlvrgt1TAo1C/sLBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=mbhUY4X0; arc=none smtp.client-ip=91.218.175.180
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1781601333;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=mWz7TCTy5BS+umTJteSAoLHr5Sx4WoMlxOW/yrqh7/E=;
+	b=mbhUY4X0+dvUd/P+I4HklcbK2XloTs3O0XsQNEfyXzqirpxAIH5srCGFuZhwUm+urkYmJl
+	SIt1RTZYCMnBaxCMx1kprVzNaP/bzSEEmxaPasE3XJ5BrAtF6ddxXz4sYrJginAwE8pQCM
+	xTZ9nF+OlcX03ZQsB1lLpy59nVdgZDo=
+From: Lance Yang <lance.yang@linux.dev>
+To: david@kernel.org,
+	richard.weiyang@gmail.com
+Cc: balbirs@nvidia.com,
+	akpm@linux-foundation.org,
+	ljs@kernel.org,
+	riel@surriel.com,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	harry@kernel.org,
+	jannh@google.com,
+	sj@kernel.org,
+	ziy@nvidia.com,
+	linux-mm@kvack.org,
+	lorenzo.stoakes@oracle.com,
+	stable@vger.kernel.org,
+	Lance Yang <lance.yang@linux.dev>
+Subject: Re: [PATCH] mm/page_vma_mapped: revalidate and do proper check before return device-private pmd
+Date: Tue, 16 Jun 2026 17:15:22 +0800
+Message-Id: <20260616091522.83765-1-lance.yang@linux.dev>
+In-Reply-To: <2d48ef0d-1110-4a9d-adcb-f701a1ce2cfa@kernel.org>
+References: <2d48ef0d-1110-4a9d-adcb-f701a1ce2cfa@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.84 / 15.00];
+X-Spamd-Result: default: False [0.34 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
+	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-263662-lists,stable=lfdr.de];
-	FORGED_SENDER(0.00)[nazarkalashnikov0@gmail.com,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[gmail.com,redhat.com,lunn.ch,davemloft.net,google.com,kernel.org,iogearbox.net,fomichev.me,oracle.com,vger.kernel.org,linuxtesting.org,asu.edu];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[24];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:nazarkalashnikov0@gmail.com,m:willemdebruijn.kernel@gmail.com,m:jasowang@redhat.com,m:andrew+netdev@lunn.ch,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:ast@kernel.org,m:daniel@iogearbox.net,m:hawk@kernel.org,m:john.fastabend@gmail.com,m:sdf@fomichev.me,m:dongli.zhang@oracle.com,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:bpf@vger.kernel.org,m:si-wei.liu@oracle.com,m:willemb@google.com,m:lvc-project@linuxtesting.org,m:xmei5@asu.edu,m:bestswngs@gmail.com,m:willemdebruijnkernel@gmail.com,m:andrew@lunn.ch,m:johnfastabend@gmail.com,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[nazarkalashnikov0@gmail.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	FORGED_RECIPIENTS(0.00)[m:david@kernel.org,m:richard.weiyang@gmail.com,m:balbirs@nvidia.com,m:akpm@linux-foundation.org,m:ljs@kernel.org,m:riel@surriel.com,m:liam@infradead.org,m:vbabka@kernel.org,m:harry@kernel.org,m:jannh@google.com,m:sj@kernel.org,m:ziy@nvidia.com,m:linux-mm@kvack.org,m:lorenzo.stoakes@oracle.com,m:stable@vger.kernel.org,m:lance.yang@linux.dev,m:richardweiyang@gmail.com,s:lists@lfdr.de];
+	FREEMAIL_TO(0.00)[kernel.org,gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	FORGED_SENDER(0.00)[lance.yang@linux.dev,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-263640-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[linux.dev:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lance.yang@linux.dev,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,linux.dev:dkim,linux.dev:mid,linux.dev:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9058568E684
+X-Rspamd-Queue-Id: AEAD268D6EC
 
-From: Weiming Shi <bestswngs@gmail.com>
 
-commit 3bcf7aec6a9d16438f2cec29f5d7c8d5b8edf9b2 upstream.
+On Mon, Jun 15, 2026 at 01:58:15PM +0200, David Hildenbrand (Arm) wrote:
+>On 6/12/26 04:48, Wei Yang wrote:
+>> On Tue, May 12, 2026 at 08:55:47PM +0200, David Hildenbrand (Arm) wrote:
+>>> On 5/12/26 16:35, Wei Yang wrote:
+>>>>
+>>>> I tried to compress above logic like this, hope it could look cleaner.
 
-tap_get_user_xdp() rejects a frame shorter than ETH_HLEN with -EINVAL,
-and returns -ENOMEM when build_skb() fails. Both paths jump to the err
-label without freeing the page that vhost_net_build_xdp() allocated for
-the frame. tap_sendmsg() discards the per-buffer return value and always
-returns 0, so vhost_tx_batch() takes the success path and never frees
-the page; each rejected frame in a batch leaks one page-frag chunk.
+Emm ... spelling out the present/migration/device-private cases makes
+this easier to review, and avoids hiding future softleaf types behind
+pmd_is_valid_softleaf(), IMHO.
 
-Free the page on both error paths, before the skb is built. This is the
-tap counterpart of the same leak in tun_xdp_one().
+So I'd prefer David's explicit version[1].
 
-Fixes: 0efac27791ee ("tap: accept an array of XDP buffs through sendmsg()")
-Fixes: ed7f2afdd0e0 ("tap: add missing verification for short frame")
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
-Reviewed-by: Dongli Zhang <dongli.zhang@oracle.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20260521163230.1478627-2-bestswngs@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Nazar Kalashnikov <nazarkalashnikov0@gmail.com>
+>>>>
+>>>> 	if (pmd_trans_huge(pmde) || pmd_is_valid_softleaf(pmde)) {
+>>>> 		unsigned long pfn;
+>>>> 		bool is_migration = pmd_is_migration_entry(pmde);
+>>>> 		bool for_migration = !!(pvmw->flags & PVMW_MIGRATION);
+>>>>
+>>>> 		if (is_migration != for_migration)
+>>>> 			return not_found(pvmw);
+>>>>
+>>>> 		if (pmd_trans_huge(pmde))
+>>>> 			pfn = pmd_pfn(pmde);
+>>>> 		else
+>>>> 			pfn = softleaf_to_pfn(softleaf_from_pmd(pmde));
+>>>>
+>>>> 		if (!check_pmd(pfn, pvmw))
+>>>> 			return not_found(pvmw);
+>>>> 	} else if (!pmd_present(pmde)) {
+>>>
+>>> It's more compact, but not necessarily cleaner. In particular, I detest
+>>> pmd_trans_huge(), we should phase it out.
+>>>
+>>> if (pmd_present(pmde) && !pmd_leaf(pmde)) {
+>>> 	goto pte_table;
+>>> } else if (pmd_present(pmde) || pmd_is_valid_softleaf(pmde))
+>>>
+>>> ...
+>>>
+>>> Might work as well. But once we add support for other softleaf types, we'll have
+>>> to touch it again. So I'd rather just list what we actually expect.
+>>>
+>> 
+>> Hi, David
+>
+>Hi,
+>
+>> 
+>> I may not follow you. Just want to confirm whether you prefer this goes as a
+>> fix first, or you prefer it goes as what you suggested here as a cleanup?
+>
+>I guess we should just do it properly when we're touching the code already.
+
++1 to that ;)
+
+>Does that answer your question? Will you send a proper patch?
+
+Copied the diff from [1] below, with a couple of tiny nits inline. Feel
+free to grab any of this if it looks sane :)
+
+---8<---
+diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
+index a4d52fdb3056..de6a255cc847 100644
+--- a/mm/page_vma_mapped.c
++++ b/mm/page_vma_mapped.c
+@@ -242,40 +242,28 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
+                 */
+                pmde = pmdp_get_lockless(pvmw->pmd);
+ 
+-               if (pmd_trans_huge(pmde) || pmd_is_migration_entry(pmde)) {
+-                       pvmw->ptl = pmd_lock(mm, pvmw->pmd);
+-                       pmde = *pvmw->pmd;
+-                       if (!pmd_present(pmde)) {
+-                               softleaf_t entry;
+-
+-                               if (!thp_migration_supported() ||
+-                                   !(pvmw->flags & PVMW_MIGRATION))
+-                                       return not_found(pvmw);
+-                               entry = softleaf_from_pmd(pmde);
+-
+-                               if (!softleaf_is_migration(entry) ||
+-                                   !check_pmd(softleaf_to_pfn(entry), pvmw))
+-                                       return not_found(pvmw);
+-                               return true;
+-                       }
+-                       if (likely(pmd_trans_huge(pmde))) {
+-                               if (pvmw->flags & PVMW_MIGRATION)
+-                                       return not_found(pvmw);
+-                               if (!check_pmd(pmd_pfn(pmde), pvmw))
+-                                       return not_found(pvmw);
+-                               return true;
+-                       }
+-                       /* THP pmd was split under us: handle on pte level */
+-                       spin_unlock(pvmw->ptl);
+-                       pvmw->ptl = NULL;
+-               } else if (!pmd_present(pmde)) {
+-                       const softleaf_t entry = softleaf_from_pmd(pmde);
+-
+-                       if (softleaf_is_device_private(entry)) {
+-                               pvmw->ptl = pmd_lock(mm, pvmw->pmd);
+-                               return true;
+-                       }
++               if (pmd_present(pmde)) {
++                       if (!pmd_leaf(pmde))
++                               goto pte_table;
++                       if (pvmw->flags & PVMW_MIGRATION)
++                               return not_found(pvmw);
++                       if (!check_pmd(pmd_pfn(pmde), pvmw))
++                               return not_found(pvmw);
++               } else if (pmd_is_migration_entry(pmde)) {
++                       softleaf_t entry = softleaf_from_pmd(pmde);
+
+Could be const.
+
++
++                       if (!(pvmw->flags & PVMW_MIGRATION))
++                               return not_found(pvmw);
++                       if (!check_pmd(softleaf_to_pfn(entry), pvmw))
++                               return not_found(pvmw);
++               } else if (pmd_is_device_private_entry(pmde)) {
++                       softleaf_t entry = softleaf_from_pmd(pmde);
+
+Ditto.
+ 
++                       if (pvmw->flags & PVMW_MIGRATION)
++                               return not_found(pvmw);
++                       if (!check_pmd(softleaf_to_pfn(entry), pvmw))
++                               return not_found(pvmw);
++               } else {
+                        if ((pvmw->flags & PVMW_SYNC) &&
+                            thp_vma_suitable_order(vma, pvmw->address,
+                                                   PMD_ORDER) &&
+@@ -285,6 +273,15 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
+                        step_forward(pvmw, PMD_SIZE);
+                        continue;
+                }
++
++               /* Double-check under PTL that the PMD didn't change. */
++               pvmw->ptl = pmd_lock(mm, pvmw->pmd);
++               if (pmd_same(pmde, pmdp_get(pvmw->pmd)))
+
+Maybe worth a likely() here? The PMD normally shouldn't change under us.
+
++                       return true;
++               spin_unlock(pvmw->ptl);
++               pvmw->ptl = NULL;
++               goto restart;
++pte_table:
+                if (!map_pte(pvmw, &pmde, &ptl)) {
+                        if (!pvmw->pte)
 ---
-Backport fix for CVE-2026-46320
- drivers/net/tap.c | 2 ++
- 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/tap.c b/drivers/net/tap.c
-index 6fd3b14273b3..b51ce7af1b20 100644
---- a/drivers/net/tap.c
-+++ b/drivers/net/tap.c
-@@ -1052,6 +1052,7 @@ static int tap_get_user_xdp(struct tap_queue *q, struct xdp_buff *xdp)
- 	int err, depth;
- 
- 	if (unlikely(xdp->data_end - xdp->data < ETH_HLEN)) {
-+		put_page(virt_to_head_page(xdp->data));
- 		err = -EINVAL;
- 		goto err;
- 	}
-@@ -1061,6 +1062,7 @@ static int tap_get_user_xdp(struct tap_queue *q, struct xdp_buff *xdp)
- 
- 	skb = build_skb(xdp->data_hard_start, buflen);
- 	if (!skb) {
-+		put_page(virt_to_head_page(xdp->data));
- 		err = -ENOMEM;
- 		goto err;
- 	}
--- 
-2.47.3
+[1] https://lore.kernel.org/linux-mm/0aab59b8-71c5-4059-8281-5dd876946528@kernel.org/
+
+Cheers, Lance
 
