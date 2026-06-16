@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-264981-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265494-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id rGwdHQmDMWoIlQUAu9opvQ
-	(envelope-from <stable+bounces-264981-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:08:25 +0200
+	id 60fyI3GLMWrzmAUAu9opvQ
+	(envelope-from <stable+bounces-265494-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:44:17 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C35FD692C34
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:08:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E97F16936D8
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:44:16 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=xOhwhP+L;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264981-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264981-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=XkLzbaYT;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265494-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265494-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4BE13335673B
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:55:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C09BE31F184B
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:38:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2E13478E45;
-	Tue, 16 Jun 2026 16:55:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59B924611CF;
+	Tue, 16 Jun 2026 17:38:09 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D9D8472769;
-	Tue, 16 Jun 2026 16:55:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D409477E57;
+	Tue, 16 Jun 2026 17:38:08 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781628903; cv=none; b=WXN1LxC6xG3AAt2KYcTQdiFRuFp3LeA//LOVuYiivUig1JXdkUJq71Dmm7k7F2CXl5pmAiyNcBWGVGSHJUcr9/c90ioZ4Wk0acjOpaes79rWY9R9ql9vOAc/2nW/G0b3BS9i9s2Y6IrySnpdPkdYbSCAZobmgX4cLwJyaS4V6zo=
+	t=1781631489; cv=none; b=JKF/uty8xkqixLtxC4ZqxeEzNWDhLnIwS5jVN4WpkaF2L2iUXcEk/NzoE4TXS/ONKlOlLYz+GQcvSxYZDCc9wDiPnGP6UBacb1zGXapdpVghmYAZAfTTBgGaWc2w3DM0IY04llI1pyUwrZQ671bw2DTzSt1+KjxMrz2KTkoLdGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781628903; c=relaxed/simple;
-	bh=F/hway9+p0Vmu9/lfLp0I0rSF489eoAR5oLQbVH9VfI=;
+	s=arc-20240116; t=1781631489; c=relaxed/simple;
+	bh=q8cv5hlTHUHfxjehT52Dcsgn1VR2Z85PvTH6x3n7BQc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sR0O1kzi1uByaA32LRBSFLVYlT/ivrtyjq0qWvPhYUz/nRmmUSo5Jvhg0C9NP8iqicqtimYdb1jPpdFzfil42hExiQCr/yBHyP/qWaNfWElEaG+7Bc45DhlKLSfp8e4pHq+JWHiD3uHjMw2ZA5BH8dINLvrlErUILy1Awvmtt0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xOhwhP+L; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 219921F000E9;
-	Tue, 16 Jun 2026 16:55:00 +0000 (UTC)
+	 MIME-Version; b=twYEoIsSzXVziHh5dbNyMOAfFSsoI9bO9cRVQ3FUujciXP+fXy2pcinm38wokwVWE2szTdLk4HDIcEIf8rk0RPRiwy1ExY+libzKAEuLRw8HvaLgkXD4eDO+Q3Ahw4FSH2XalfIDUifTho+rISIRE2llQxQV/QIDkHIjlf+Hx8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XkLzbaYT; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46E861F000E9;
+	Tue, 16 Jun 2026 17:38:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781628902;
-	bh=RR0UchwkYrzMgVI1f9r5IrCwhDFJRmlc6pNdj93OWbo=;
+	s=korg; t=1781631488;
+	bh=sDjKQP31WqEyUZkZyRr7RA4esweLiyqaBAYRv7pVgss=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=xOhwhP+L9WleB7fQdfnvTTJxPQAIHQMgPjXMO6L4vTQ+9GBkQGdjNrokJ66uTILsY
-	 bMgVYOGEMZpsNCMgH9TMH3V21AvjlxeJ5r8qD9kx6gPD4tEhB33b5nqw5QoD05l2l1
-	 xm22v9G/vDu0XLQ9dPfI8lfQgjybMdmP6/CZLP20=
+	b=XkLzbaYTa7qi2OnDFclQGJocnjkapPUMSvLNttckn/SdutVVZqSpnQhG90xKvOlAB
+	 NUpShQyp+SXbtnGzgyZJD+RkF6k/DBViBjo717ULdFQPHioAXC9nlvdT4V+Gu4mh6F
+	 pK6Hc6KUvzaYGmGKtAScDhrR/1pvQlQJyUAf9jjE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Zhaoyang Yu <2426767509@qq.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH 6.6 150/452] tty: serial: pch_uart: add check for dma_alloc_coherent()
+	Jian Zhou <eilaimemedsnaimel@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 230/522] ALSA: PCM: Fix wait queue list corruption in snd_pcm_drain() on linked streams
 Date: Tue, 16 Jun 2026 20:26:17 +0530
-Message-ID: <20260616145125.582936852@linuxfoundation.org>
+Message-ID: <20260616145136.758365781@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,13 +78,13 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-264981-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:2426767509@qq.com,m:andriy.shevchenko@linux.intel.com,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265494-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:eilaimemedsnaimel@gmail.com,m:tiwai@suse.de,m:sashal@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,qq.com,linux.intel.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de,kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -99,77 +99,74 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qq.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:email,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,suse.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C35FD692C34
+X-Rspamd-Queue-Id: E97F16936D8
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhaoyang Yu <2426767509@qq.com>
+From: Ji'an Zhou <eilaimemedsnaimel@gmail.com>
 
-commit 6fe472c1bbbe238e91141f7cabc1226e96a60d43 upstream.
+[ Upstream commit 88fe2e3658726cb21ff2dcf9770bf672f9b9d31b ]
 
-Add a check for dma_alloc_coherent() failure to prevent a potential
-NULL pointer dereference in dma_handle_rx(). Properly release DMA
-channels and the PCI device reference using a goto ladder if the
-allocation fails.
+snd_pcm_drain() uses init_waitqueue_entry which does not clear
+entry.prev/next, and add_wait_queue with a conditional
+remove_wait_queue that is skipped when to_check is no longer
+in the group after concurrent UNLINK.  The orphaned wait entry
+remains on the unlinked substream sleep queue.  On the next
+drain iteration, add_wait_queue adds the entry to a new queue
+while still linked on the old one, corrupting both lists.  A
+subsequent wake_up dereferences NULL at the func pointer
+(mapped from the spinlock at offset 0 of the misinterpreted
+wait_queue_head_t), causing a kernel panic.
 
-Fixes: 3c6a483275f4 ("Serial: EG20T: add PCH_UART driver")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Zhaoyang Yu <2426767509@qq.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://patch.msgid.link/tencent_E328416B7CFD436F6029F2DF02AD7ED89C08@qq.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Replace init_waitqueue_entry/add_wait_queue/conditional
+remove_wait_queue with init_wait_entry/prepare_to_wait/
+finish_wait.  init_wait_entry clears prev/next via
+INIT_LIST_HEAD on each iteration and sets
+autoremove_wake_function which auto-removes the entry on
+wake-up.  finish_wait safely handles both the already-removed
+and still-queued cases.
+
+Fixes: 9b1dbd69ba6f ("ALSA: pcm: fix use-after-free on linked stream runtime in snd_pcm_drain")
+Signed-off-by: Ji'an Zhou <eilaimemedsnaimel@gmail.com>
+Link: https://patch.msgid.link/20260604142559.3840881-1-eilaimemedsnaimel@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/pch_uart.c |   19 +++++++++++++------
- 1 file changed, 13 insertions(+), 6 deletions(-)
+ sound/core/pcm_native.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
---- a/drivers/tty/serial/pch_uart.c
-+++ b/drivers/tty/serial/pch_uart.c
-@@ -694,8 +694,7 @@ static void pch_request_dma(struct uart_
- 	if (!chan) {
- 		dev_err(priv->port.dev, "%s:dma_request_channel FAILS(Tx)\n",
- 			__func__);
--		pci_dev_put(dma_dev);
--		return;
-+		goto err_pci_get;
- 	}
- 	priv->chan_tx = chan;
- 
-@@ -709,18 +708,26 @@ static void pch_request_dma(struct uart_
- 	if (!chan) {
- 		dev_err(priv->port.dev, "%s:dma_request_channel FAILS(Rx)\n",
- 			__func__);
--		dma_release_channel(priv->chan_tx);
--		priv->chan_tx = NULL;
--		pci_dev_put(dma_dev);
--		return;
-+		goto err_req_tx;
- 	}
- 
- 	/* Get Consistent memory for DMA */
- 	priv->rx_buf_virt = dma_alloc_coherent(port->dev, port->fifosize,
- 				    &priv->rx_buf_dma, GFP_KERNEL);
-+	if (!priv->rx_buf_virt)
-+		goto err_req_rx;
- 	priv->chan_rx = chan;
- 
- 	pci_dev_put(dma_dev);
-+	return;
-+
-+err_req_rx:
-+	dma_release_channel(chan);
-+err_req_tx:
-+	dma_release_channel(priv->chan_tx);
-+	priv->chan_tx = NULL;
-+err_pci_get:
-+	pci_dev_put(dma_dev);
- }
- 
- static void pch_dma_rx_complete(void *arg)
+diff --git a/sound/core/pcm_native.c b/sound/core/pcm_native.c
+index 7be5f25612b954..2ed9abb911a7aa 100644
+--- a/sound/core/pcm_native.c
++++ b/sound/core/pcm_native.c
+@@ -2178,9 +2178,8 @@ static int snd_pcm_drain(struct snd_pcm_substream *substream,
+ 		drain_no_period_wakeup = to_check->no_period_wakeup;
+ 		drain_rate = to_check->rate;
+ 		drain_bufsz = to_check->buffer_size;
+-		init_waitqueue_entry(&wait, current);
+-		set_current_state(TASK_INTERRUPTIBLE);
+-		add_wait_queue(&to_check->sleep, &wait);
++		init_wait_entry(&wait, 0);
++		prepare_to_wait(&to_check->sleep, &wait, TASK_INTERRUPTIBLE);
+ 		snd_pcm_stream_unlock_irq(substream);
+ 		if (drain_no_period_wakeup)
+ 			tout = MAX_SCHEDULE_TIMEOUT;
+@@ -2198,7 +2197,7 @@ static int snd_pcm_drain(struct snd_pcm_substream *substream,
+ 		group = snd_pcm_stream_group_ref(substream);
+ 		snd_pcm_group_for_each_entry(s, substream) {
+ 			if (s->runtime == to_check) {
+-				remove_wait_queue(&to_check->sleep, &wait);
++				finish_wait(&to_check->sleep, &wait);
+ 				break;
+ 			}
+ 		}
+-- 
+2.53.0
+
 
 
 
