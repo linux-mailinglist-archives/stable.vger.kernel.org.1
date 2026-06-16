@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-265888-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265450-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 4b0CCACSMWoAnAUAu9opvQ
-	(envelope-from <stable+bounces-265888-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:12:16 +0200
+	id 6LbRF9aKMWqDmAUAu9opvQ
+	(envelope-from <stable+bounces-265450-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:41:42 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBD3C693E23
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:12:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F33616935FF
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:41:41 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=r7VMmrCF;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265888-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-265888-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=YcV72xx0;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265450-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-265450-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 661A130302F2
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:12:15 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id AA7A73030EF9
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:34:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55D793D566F;
-	Tue, 16 Jun 2026 18:12:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFC7D47A0DA;
+	Tue, 16 Jun 2026 17:34:22 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DCF33CEBBD;
-	Tue, 16 Jun 2026 18:12:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 639BE3A3E78;
+	Tue, 16 Jun 2026 17:34:21 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781633532; cv=none; b=pX1kxZUj8ULHIMXhnwzPvsV7Cfj77fW/k04Nf+vf65KjDy/GC/d9SHUli8SukFOgS5+ewOdql0Kj4f/SARFD3Gm+YJKruN4u23j53dfiMXCiPF1t8HOA8+mAqUzz81XYEw39wvCopUc6SOa7s0KjtwEDnr4h4mpYLxvPcv0UDJA=
+	t=1781631262; cv=none; b=uJjYnWIhSdhVCuv7sVTi+CTPxuswWagiy3dVGrM7GW5eZzn9K1t1PAwfZLADIGtZiJhhwglCrMvYxxaXosoPghSiKpw9t4mAHOZPETpcBpz78sXbKKg6c4cSj+pateuRv4rUq8K1ddEd73jRLDWFy8KJrMGIjxJL5FOxW8iOROc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781633532; c=relaxed/simple;
-	bh=ue2GyJG7qZ2We+hZkzCfsqo1X+cgMllWZjQRakYaQjU=;
+	s=arc-20240116; t=1781631262; c=relaxed/simple;
+	bh=v6cBPOvQK5jQt4e+Jagy6EUMQ7fkFapoABTw4ZF0YAo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jytl5Nb8sXsKWI8UvwSPf3OTrpn1YhctLAGA+LhQy92U3NuuWLB1w6mCQIeqeBhCJhXpZN3/T/62tJq5wsb92szCChu961dqf+E5UOaarjjpbEgArOpUc9BoVmJlLFLDulFC0q5cJCcChm8vuAEbD5ZYXylmyRVgcy4Yr50ciSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r7VMmrCF; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 038811F000E9;
-	Tue, 16 Jun 2026 18:12:09 +0000 (UTC)
+	 MIME-Version; b=TGHA/U71LAy4m774UzSZ8a/9ckJJ5ApLS2hHPgUuSHDT3xT/opIGrkQbZ5D6IOcmI8JPc+BtBTyNN/ky9i684v+If5KiD4V3R7uhLibzocKQX3NyzEW5KN3lvbXMQF88fXPjizRrQwyMxPsEJGKZmOva7Xh6reLU6PLj+uN8peo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YcV72xx0; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6698A1F000E9;
+	Tue, 16 Jun 2026 17:34:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781633531;
-	bh=BNySIJ9LOqA+Ek0entKRUDoTrvK22ot1O3csWm/xGL0=;
+	s=korg; t=1781631261;
+	bh=Fp9h+OyYmjGCQ41VXzU0OaZdnS5RvngGIi+iKP5ZEGQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=r7VMmrCFJ6uW/ZAd60Uw6tTPupcTttavLEfY31yfevYb2URILcqrvUguDZpmqTa4i
-	 mxwG5lqTF9STYyVcJEpOyktzdK5oBQWTNzXYJzDBO/hyD/81mt1iyiZMPBMiACJG9y
-	 PxwfsMSNV5IYf1xqQZdkLQ53Sw/StiP5hEadgZ8g=
+	b=YcV72xx0RJE5PIt+soLtBtwBtcmyiDI/tuvz+L14dRWPpbjokvJcWH4FLayeCwEB+
+	 9V3+o5PDdUnZ1ODpj3UBHOPXYEjiVA6P3wK76wEebyysCcShvH0uAE2Ll1MjiDP+6B
+	 aluexORuzeQjIQZ2+5siHrNzUEhKIUgjTJofZ94o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Steffen Klassert <steffen.klassert@secunet.com>
-Subject: [PATCH 5.15 097/411] xfrm: ah: use skb_to_full_sk in async output callbacks
+	syzbot+5a287bcdc08104bc3132@syzkaller.appspotmail.com,
+	Jiayuan Chen <jiayuan.chen@shopee.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Rajani Kantha <681739313@139.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 188/522] bpf/bonding: reject vlan+srcmac xmit_hash_policy change when XDP is loaded
 Date: Tue, 16 Jun 2026 20:25:35 +0530
-Message-ID: <20260616145105.373624637@linuxfoundation.org>
+Message-ID: <20260616145134.908960480@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,128 +69,165 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
+X-Spamd-Result: default: False [5.34 / 15.00];
+	SEM_URIBL(3.50)[139.com:email];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
+	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265888-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:steffen.klassert@secunet.com,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,secunet.com];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
+	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
+	TAGGED_FROM(0.00)[bounces-265450-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:syzbot+5a287bcdc08104bc3132@syzkaller.appspotmail.com,m:jiayuan.chen@shopee.com,m:pabeni@redhat.com,m:681739313@139.com,m:sashal@kernel.org,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,shopee.com,redhat.com,139.com,kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	GREYLIST(0.00)[pass,body];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	TAGGED_RCPT(0.00)[stable,5a287bcdc08104bc3132];
 	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_SPF_ALLOW(0.00)[+ip4:172.232.135.74:c];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,secunet.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,appspotmail.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,shopee.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,139.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: EBD3C693E23
+X-Rspamd-Queue-Id: F33616935FF
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Jiayuan Chen <jiayuan.chen@shopee.com>
 
-commit 79d8be262377f7112cfa3088dfc4142d5a2533f3 upstream.
+[ Upstream commit 479d589b40b836442bbdadc3fdb37f001bb67f26 ]
 
-When AH output is offloaded to an asynchronous crypto provider
-(hardware accelerators such as AMD CCP, or a forced-async software
-shim used for testing), the digest completion fires
-ah_output_done() / ah6_output_done() on a workqueue.  The egress
-skb at that point may have been originated by a TCP listener
-sending a SYN-ACK, which sets skb->sk to a request_sock via
-skb_set_owner_edemux(); it may also have been originated by an
-inet_timewait_sock retransmit.  Neither is a full struct sock, and
-passing the raw skb->sk to xfrm_output_resume() then forwards a
-non-full socket through the rest of the xfrm output chain.
+bond_option_mode_set() already rejects mode changes that would make a
+loaded XDP program incompatible via bond_xdp_check().  However,
+bond_option_xmit_hash_policy_set() has no such guard.
 
-xfrm_output_resume() and its downstream consumers expect a full
-sk where they dereference at all.  The natural egress path
-through ah_output_done() does not crash today because the
-consumers that read past sock_common are either gated by
-sk_fullsock() or short-circuit on flags that are clear on a fresh
-request_sock; an exhaustive walk of the 50 most plausible
-consumers under sch_fq, dev_queue_xmit, netfilter, tc-egress and
-cgroup-egress BPF found no current unguarded deref.  The bug is
-still a real type confusion that future consumer changes could
-turn into a memory-corruption primitive.
+For 802.3ad and balance-xor modes, bond_xdp_check() returns false when
+xmit_hash_policy is vlan+srcmac, because the 802.1q payload is usually
+absent due to hardware offload.  This means a user can:
 
-This is the same bug class fixed for ESP in commit 1620c88887b1
-("xfrm: Fix the usage of skb->sk").  Apply the analogous fix to
-AH: convert skb->sk to a full socket pointer (or NULL) via
-skb_to_full_sk() before handing it to xfrm_output_resume().
+1. Attach a native XDP program to a bond in 802.3ad/balance-xor mode
+   with a compatible xmit_hash_policy (e.g. layer2+3).
+2. Change xmit_hash_policy to vlan+srcmac while XDP remains loaded.
 
-The same async AH callbacks were touched recently for an
-independent ESN-related ICV layout bug in commit ec54093e6a8f
-("xfrm: ah: account for ESN high bits in async callbacks"); the
-sk type-confusion addressed here is orthogonal.  This patch is
-part of an ongoing audit of the AH callback paths; an ah_output
-ihl-validation hardening series is also currently under review on
-netdev.
+This leaves bond->xdp_prog set but bond_xdp_check() now returning false
+for the same device.  When the bond is later destroyed, dev_xdp_uninstall()
+calls bond_xdp_set(dev, NULL, NULL) to remove the program, which hits
+the bond_xdp_check() guard and returns -EOPNOTSUPP, triggering:
 
-Reproduced under UML + KASAN + lockdep with a forced-async
-hmac(sha1) shim that registers at priority 9999 and wraps the
-sync in-tree hmac-sha1-lib.  With the shim loaded, ah_output_done
-runs on every SYN-ACK egress through a transport-mode AH SA and
-skb->sk arrives as a request_sock (TCP_NEW_SYN_RECV); after this
-patch, xfrm_output_resume() receives the listener (the result of
-sk_to_full_sk()) and consumer derefs land on full-sock fields as
-intended.
+WARN_ON(dev_xdp_install(dev, mode, bpf_op, NULL, 0, NULL))
 
-Fixes: 9ab1265d5231 ("xfrm: Use actual socket sk instead of skb socket for xfrm_output_resume")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-7
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix this by rejecting xmit_hash_policy changes to vlan+srcmac when an
+XDP program is loaded on a bond in 802.3ad or balance-xor mode.
+
+commit 39a0876d595b ("net, bonding: Disallow vlan+srcmac with XDP")
+introduced bond_xdp_check() which returns false for 802.3ad/balance-xor
+modes when xmit_hash_policy is vlan+srcmac.  The check was wired into
+bond_xdp_set() to reject XDP attachment with an incompatible policy, but
+the symmetric path -- preventing xmit_hash_policy from being changed to an
+incompatible value after XDP is already loaded -- was left unguarded in
+bond_option_xmit_hash_policy_set().
+
+Note:
+commit 094ee6017ea0 ("bonding: check xdp prog when set bond mode")
+later added a similar guard to bond_option_mode_set(), but
+bond_option_xmit_hash_policy_set() remained unprotected.
+
+Reported-by: syzbot+5a287bcdc08104bc3132@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/6995aff6.050a0220.2eeac1.014e.GAE@google.com/T/
+Fixes: 39a0876d595b ("net, bonding: Disallow vlan+srcmac with XDP")
+Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
+Link: https://patch.msgid.link/20260226080306.98766-2-jiayuan.chen@linux.dev
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Rajani Kantha <681739313@139.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/ah4.c |    2 +-
- net/ipv6/ah6.c |    2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/bonding/bond_main.c    | 9 +++++++--
+ drivers/net/bonding/bond_options.c | 2 ++
+ include/net/bonding.h              | 1 +
+ 3 files changed, 10 insertions(+), 2 deletions(-)
 
---- a/net/ipv4/ah4.c
-+++ b/net/ipv4/ah4.c
-@@ -141,7 +141,7 @@ static void ah_output_done(struct crypto
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index 0e078252b52a98..f2e97f640467de 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -322,7 +322,7 @@ bool bond_sk_check(struct bonding *bond)
  	}
- 
- 	kfree(AH_SKB_CB(skb)->tmp);
--	xfrm_output_resume(skb->sk, skb, err);
-+	xfrm_output_resume(skb_to_full_sk(skb), skb, err);
  }
  
- static int ah_output(struct xfrm_state *x, struct sk_buff *skb)
---- a/net/ipv6/ah6.c
-+++ b/net/ipv6/ah6.c
-@@ -338,7 +338,7 @@ static void ah6_output_done(struct crypt
- 	ah6_restore_hdrs(top_iph, iph_ext, extlen);
- 
- 	kfree(AH_SKB_CB(skb)->tmp);
--	xfrm_output_resume(skb->sk, skb, err);
-+	xfrm_output_resume(skb_to_full_sk(skb), skb, err);
+-bool bond_xdp_check(struct bonding *bond, int mode)
++bool __bond_xdp_check(int mode, int xmit_policy)
+ {
+ 	switch (mode) {
+ 	case BOND_MODE_ROUNDROBIN:
+@@ -333,7 +333,7 @@ bool bond_xdp_check(struct bonding *bond, int mode)
+ 		/* vlan+srcmac is not supported with XDP as in most cases the 802.1q
+ 		 * payload is not in the packet due to hardware offload.
+ 		 */
+-		if (bond->params.xmit_policy != BOND_XMIT_POLICY_VLAN_SRCMAC)
++		if (xmit_policy != BOND_XMIT_POLICY_VLAN_SRCMAC)
+ 			return true;
+ 		fallthrough;
+ 	default:
+@@ -341,6 +341,11 @@ bool bond_xdp_check(struct bonding *bond, int mode)
+ 	}
  }
  
- static int ah6_output(struct xfrm_state *x, struct sk_buff *skb)
++bool bond_xdp_check(struct bonding *bond, int mode)
++{
++	return __bond_xdp_check(mode, bond->params.xmit_policy);
++}
++
+ /*---------------------------------- VLAN -----------------------------------*/
+ 
+ /* In the following 2 functions, bond_vlan_rx_add_vid and bond_vlan_rx_kill_vid,
+diff --git a/drivers/net/bonding/bond_options.c b/drivers/net/bonding/bond_options.c
+index 40731d180bb505..3d15b340b5c939 100644
+--- a/drivers/net/bonding/bond_options.c
++++ b/drivers/net/bonding/bond_options.c
+@@ -1590,6 +1590,8 @@ static int bond_option_fail_over_mac_set(struct bonding *bond,
+ static int bond_option_xmit_hash_policy_set(struct bonding *bond,
+ 					    const struct bond_opt_value *newval)
+ {
++	if (bond->xdp_prog && !__bond_xdp_check(BOND_MODE(bond), newval->value))
++		return -EOPNOTSUPP;
+ 	netdev_dbg(bond->dev, "Setting xmit hash policy to %s (%llu)\n",
+ 		   newval->string, newval->value);
+ 	bond->params.xmit_policy = newval->value;
+diff --git a/include/net/bonding.h b/include/net/bonding.h
+index 06a048d716b19f..f2dee8cefa1963 100644
+--- a/include/net/bonding.h
++++ b/include/net/bonding.h
+@@ -704,6 +704,7 @@ void bond_debug_register(struct bonding *bond);
+ void bond_debug_unregister(struct bonding *bond);
+ void bond_debug_reregister(struct bonding *bond);
+ const char *bond_mode_name(int mode);
++bool __bond_xdp_check(int mode, int xmit_policy);
+ bool bond_xdp_check(struct bonding *bond, int mode);
+ void bond_setup(struct net_device *bond_dev);
+ unsigned int bond_get_num_tx_queues(void);
+-- 
+2.53.0
+
 
 
 
