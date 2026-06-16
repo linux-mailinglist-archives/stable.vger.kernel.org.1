@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-263852-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263817-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 8VDtNlZoMWqPigUAu9opvQ
-	(envelope-from <stable+bounces-263852-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:14:30 +0200
+	id kivOCwFnMWovigUAu9opvQ
+	(envelope-from <stable+bounces-263817-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:08:49 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 788FD690D9A
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:14:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 862E8690C91
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:08:48 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=nk6VDIbQ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263852-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263852-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="Oqo1/2Rd";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263817-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263817-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C72A5303B6F2
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:13:34 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D016830158A4
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:08:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40EE343CEC7;
-	Tue, 16 Jun 2026 15:13:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 044643A8FE6;
+	Tue, 16 Jun 2026 15:08:47 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9518F43D504;
-	Tue, 16 Jun 2026 15:13:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB9D433067F;
+	Tue, 16 Jun 2026 15:08:45 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781622813; cv=none; b=Yr0pgOCdYvyBoBB3teMUm7mgjSqriCuDFAQLhsHBtQgpPCx3cSPkgE9oYl+LpXV06rwzrZJkqqUJ1Ux7OmUPaGsfqDAw75v05nyAgwZi7fWfWL5KDhU+MjHTybq+2lxNrZQgff1FnhSkB+ddrzAkD0vh+jDIYjQLxmqY07zbbgA=
+	t=1781622526; cv=none; b=VS5QM4nsG+yK2AgTywxy6SnBuIJoqeUPx0Af92sugVbIIzhUGKl8fHSGsx3ibKQhL8FNnYbkIRwnqxhdiBn8krvtRXb1X6lkSk2GrtZ2GEH0TFPX+jtXUr6qukt11u65RZQvxK1h2LEmWU8GY17fKYXiRtu1+ELl4vhthj+Wbfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781622813; c=relaxed/simple;
-	bh=zED4gQP4LQZabVXQSeBmFAwbTjZcjhfVF0tyWczA68Y=;
+	s=arc-20240116; t=1781622526; c=relaxed/simple;
+	bh=G9m3G1P/pt13S0PGMPUBfgteaBgmjiJIvfjwr3HV/Jk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a1AOjPA6i454vKB8HITD7EDZs2+YQfjDDii0dZ0j1QmnNd2UV9jazLaLtHuzi1AleWFhxuBaz/2L0Eqt1MXylsrKK6zdKJIP7ZSUH2KzgEqnICxGDBrPWa3f0QxDmr7YyTgch0+wqk/xaG4sZlB/vb5zdPQvHvb2xRjuqlzljv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nk6VDIbQ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61B771F000E9;
-	Tue, 16 Jun 2026 15:13:30 +0000 (UTC)
+	 MIME-Version; b=IcRHoCytrUYXACC4s6YQ/upjtPovgUYSgp390rDRV0HKzazJf9NAzyNKXvLNS8+ZSb0jItxD22uG6eMdIZFptsqQaCeFYYn0+GFbWdQTP0SOIu7jqtMdvg0izCBFeaJuwySlO35yGjQYBGM54HD6a2DEACBfP/3zCKObhJjfV5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Oqo1/2Rd; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCC321F000E9;
+	Tue, 16 Jun 2026 15:08:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781622811;
-	bh=7SQghOQRWnLLwOKnTexFVqoiTZkUKJ4d7tGYe9AmifA=;
+	s=korg; t=1781622525;
+	bh=CxC/rV7mJH66yu/t9Buq3vpMtukKGZfo2nK7x7SGhUc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=nk6VDIbQBYLysHSoS//MUFGRETDf9kabLQvM0E4wv+fRHjhPBQ2rn808I1HZrnNIw
-	 2UHDHUOwROSo28fNK9IlOkWZQcLQFnI73eQCI4wvB3EaMOM2ZJGyv/2ggakU9abxXd
-	 ieyNh20lb0kiHX0qgRghuNQRK1dalkDr57Xrhkz8=
+	b=Oqo1/2RdbK7L55TNV5H2ozLpUhOVSHOJ4xNEHpAGiT8yB8s2BoBeKGntJfYRy7IME
+	 raUo2MKyJRyi3Dlx3zu+iyLlLdpZjnfPxk+UcJP/nvkVBcsdjPlimJ66nCRiGdaRIr
+	 geWx22GI1ye8jbSNLqOpO47vE2m5BGwe4OQF9x6U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mihai Sain <mihai.sain@microchip.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Jeremy Kerr <jk@codeconstruct.com.au>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Li hongliang <1468888505@139.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 010/378] ARM: dts: microchip: sam9x7: fix GMAC clock configuration
+Subject: [PATCH 5.15 003/411] net: mctp: ensure our nlmsg responses are initialised
 Date: Tue, 16 Jun 2026 20:24:01 +0530
-Message-ID: <20260616145110.331382326@linuxfoundation.org>
+Message-ID: <20260616145100.549718597@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,93 +69,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [3.84 / 15.00];
+	SEM_URIBL(3.50)[139.com:email];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	BAD_REP_POLICIES(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-263852-lists,stable=lfdr.de];
+	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-263817-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jk@codeconstruct.com.au,m:horms@kernel.org,m:kuba@kernel.org,m:1468888505@139.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mihai.sain@microchip.com,m:claudiu.beznea@tuxon.dev,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,codeconstruct.com.au,kernel.org,139.com];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,microchip.com:email]
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	R_SPF_ALLOW(0.00)[+ip6:2600:3c09:e001:a7::/64:c];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 788FD690D9A
+X-Rspamd-Queue-Id: 862E8690C91
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mihai Sain <mihai.sain@microchip.com>
+From: Jeremy Kerr <jk@codeconstruct.com.au>
 
-[ Upstream commit 765aaba18413a66f6c8fe8416336ca9b3dd98a79 ]
+[ Upstream commit a6a9bc544b675d8b5180f2718ec985ad267b5cbf ]
 
-The GMAC node incorrectly listed four clocks, including a separate tx_clk
-and a TSU GCK clock sourced from ID 67. According to the SAM9X7 clocking
-scheme, the GMAC uses only three clocks: HCLK, PCLK, and the TSU GCK
-derived from the GMAC peripheral clock (ID 24).
+Syed Faraz Abrar (@farazsth98) from Zellic, and Pumpkin (@u1f383) from
+DEVCORE Research Team working with Trend Micro Zero Day Initiative
+report that a RTM_GETNEIGH will return uninitalised data in the pad
+bytes of the ndmsg data.
 
-Remove the unused tx_clk, update the clock-names accordingly, and correct
-the assigned clock to use GCK 24 instead of GCK 67. This aligns the device
-tree with the actual hardware clock topology and prevents misconfiguration
-of the GMAC clock tree.
+Ensure we're initialising the netlink data to zero, in the link, addr
+and neigh response messages.
 
-[root@SAM9X75 ~]$ cat /sys/kernel/debug/clk/clk_summary | grep gmac
-
-gmac_gclk      1       1        1        266666666   0          0     50000      Y         f802c000.ethernet           tsu_clk
-                                                                                           f802c000.ethernet           tsu_clk
-gmac_clk       2       2        0        266666666   0          0     50000      Y         f802c000.ethernet           hclk
-                                                                                           f802c000.ethernet           pclk
-
-Fixes: 41af45af8bc3 ("ARM: dts: at91: sam9x7: add device tree for SoC")
-Signed-off-by: Mihai Sain <mihai.sain@microchip.com>
-Link: https://lore.kernel.org/r/20260309075329.1528-5-mihai.sain@microchip.com
-[claudiu.beznea: massaged the patch description]
-Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+Fixes: 831119f88781 ("mctp: Add neighbour netlink interface")
+Fixes: 06d2f4c583a7 ("mctp: Add netlink route management")
+Fixes: 583be982d934 ("mctp: Add device handling and netlink interface")
+Signed-off-by: Jeremy Kerr <jk@codeconstruct.com.au>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260209-dev-mctp-nlmsg-v1-1-f1e30c346a43@codeconstruct.com.au
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Li hongliang <1468888505@139.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/microchip/sam9x7.dtsi | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/mctp/device.c | 1 +
+ net/mctp/neigh.c  | 1 +
+ net/mctp/route.c  | 1 +
+ 3 files changed, 3 insertions(+)
 
-diff --git a/arch/arm/boot/dts/microchip/sam9x7.dtsi b/arch/arm/boot/dts/microchip/sam9x7.dtsi
-index d242d7a934d0fa..c680a5033b6b4e 100644
---- a/arch/arm/boot/dts/microchip/sam9x7.dtsi
-+++ b/arch/arm/boot/dts/microchip/sam9x7.dtsi
-@@ -990,9 +990,9 @@ gmac: ethernet@f802c000 {
- 				     <62 IRQ_TYPE_LEVEL_HIGH 3>,	/* Queue 3 */
- 				     <63 IRQ_TYPE_LEVEL_HIGH 3>,	/* Queue 4 */
- 				     <64 IRQ_TYPE_LEVEL_HIGH 3>;	/* Queue 5 */
--			clocks = <&pmc PMC_TYPE_PERIPHERAL 24>, <&pmc PMC_TYPE_PERIPHERAL 24>, <&pmc PMC_TYPE_GCK 24>, <&pmc PMC_TYPE_GCK 67>;
--			clock-names = "hclk", "pclk", "tx_clk", "tsu_clk";
--			assigned-clocks = <&pmc PMC_TYPE_GCK 67>;
-+			clocks = <&pmc PMC_TYPE_PERIPHERAL 24>, <&pmc PMC_TYPE_PERIPHERAL 24>, <&pmc PMC_TYPE_GCK 24>;
-+			clock-names = "hclk", "pclk", "tsu_clk";
-+			assigned-clocks = <&pmc PMC_TYPE_GCK 24>;
- 			assigned-clock-rates = <266666666>;
- 			status = "disabled";
- 		};
+diff --git a/net/mctp/device.c b/net/mctp/device.c
+index aec7ffad2666ab..a11d5aca201c27 100644
+--- a/net/mctp/device.c
++++ b/net/mctp/device.c
+@@ -55,6 +55,7 @@ static int mctp_fill_addrinfo(struct sk_buff *skb, struct netlink_callback *cb,
+ 		return -EMSGSIZE;
+ 
+ 	hdr = nlmsg_data(nlh);
++	memset(hdr, 0, sizeof(*hdr));
+ 	hdr->ifa_family = AF_MCTP;
+ 	hdr->ifa_prefixlen = 0;
+ 	hdr->ifa_flags = 0;
+diff --git a/net/mctp/neigh.c b/net/mctp/neigh.c
+index bc75a263719c77..18a6be38f17211 100644
+--- a/net/mctp/neigh.c
++++ b/net/mctp/neigh.c
+@@ -217,6 +217,7 @@ static int mctp_fill_neigh(struct sk_buff *skb, u32 portid, u32 seq, int event,
+ 		return -EMSGSIZE;
+ 
+ 	hdr = nlmsg_data(nlh);
++	memset(hdr, 0, sizeof(*hdr));
+ 	hdr->ndm_family = AF_MCTP;
+ 	hdr->ndm_ifindex = dev->ifindex;
+ 	hdr->ndm_state = 0; // TODO other state bits?
+diff --git a/net/mctp/route.c b/net/mctp/route.c
+index 48d32bfd386363..a93796eb0a092c 100644
+--- a/net/mctp/route.c
++++ b/net/mctp/route.c
+@@ -1031,6 +1031,7 @@ static int mctp_fill_rtinfo(struct sk_buff *skb, struct mctp_route *rt,
+ 		return -EMSGSIZE;
+ 
+ 	hdr = nlmsg_data(nlh);
++	memset(hdr, 0, sizeof(*hdr));
+ 	hdr->rtm_family = AF_MCTP;
+ 
+ 	/* we use the _len fields as a number of EIDs, rather than
 -- 
 2.53.0
 
