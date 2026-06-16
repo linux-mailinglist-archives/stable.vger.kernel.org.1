@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-265508-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263948-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 42r/C86LMWoYmQUAu9opvQ
-	(envelope-from <stable+bounces-265508-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:45:50 +0200
+	id bmXLIJZqMWo/iwUAu9opvQ
+	(envelope-from <stable+bounces-263948-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:24:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5C7269373F
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:45:49 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E530690FCE
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:24:05 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=LwxUMN23;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265508-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265508-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=OuK09b4B;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263948-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263948-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 900E73217CE1
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:39:26 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E232A300F60C
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:22:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FD7C47AF75;
-	Tue, 16 Jun 2026 17:39:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6E1E3A8746;
+	Tue, 16 Jun 2026 15:22:19 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02E6547AF5F;
-	Tue, 16 Jun 2026 17:39:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73A4D26B0A9;
+	Tue, 16 Jun 2026 15:22:18 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781631566; cv=none; b=fE3VC1X7oBaVCxVIBbbqjWJtIiPYmEQ1TjzKQTfSrNHSzyAD8XWOWuazymj/30bAO5fBbmJQTcw/4LI146MUFNC7QVqgsvgmhrbCFl9rSI7U/rCRe9afis/gNb0tWevMEkkHUaZAhZtxgnsYFyfen6Wp6fpZyWo4whoYbQm5qEQ=
+	t=1781623339; cv=none; b=KehpEyeJnue5ukthmjQFer5hlogfHU6YMT4w6FpAIHxU87SWm3rFF4yQF4/e+LuL28JJZBQr22NDZXp53Htel+Rh1YY3NzLWUaTwmPj9kUP04jSDTTNtynelTxPpofCCn6VXYEIQh2s28IElfvMlU3xi7o4+B7a7rC/SFw6Eyg0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781631566; c=relaxed/simple;
-	bh=KN9ah7mvsKMfMNkgvzzde4T5L7ayWlpPfUNIjJg0tYE=;
+	s=arc-20240116; t=1781623339; c=relaxed/simple;
+	bh=DukH3FfDqjsXZYdcM0AkxLAkQ1juPXyXeBn8024xfH4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J2eBDtYUiavvJKdA7b4aS+KvCibqpwVOdSo0vO6yupENgiCsONUf/BgLUrl44zwJmBbmTmggjAD31BjPD8HYUJSO0h26j8cGBUL1rmnazoJp0oSUJhfXs226cu9fiDAQLJBxcXshIP6E39vt7ts121NYIAgLVMK1UBseMr3Hh+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LwxUMN23; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A40F1F000E9;
-	Tue, 16 Jun 2026 17:39:23 +0000 (UTC)
+	 MIME-Version; b=fphwbXFH2zk0JSkhqcPrFbQF07TrmHmQE543f9s54ESx4jndU0yW9TkEMr7ahR2Fv1Eco/qaZmyyJ+hjyFGcdGW4sR6+1abh3rzEcLfFJAyoXMBnfmxYESj8AGpqzeBb8TjtJULC128xiu1E9qgUZdP9djFM15GBJP+6CE0nKGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OuK09b4B; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7511E1F000E9;
+	Tue, 16 Jun 2026 15:22:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781631564;
-	bh=wT+CYkDKyfQDzcudA8eDnhZDWc/Q+IRFhlZ+MnEwuBA=;
+	s=korg; t=1781623338;
+	bh=2HsvlnynqSey3w5jDpO/q3ALvuscg06VbHDahAP+rLo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=LwxUMN23C6CHZU49+FMzx7fJDMR1uUofUGj4nhDPBnQ1T+OqgeTOFr0KvCxNdpfce
-	 Z/a6iBDpgpnN6zSunDJ64zyVsnEUcuYzR2noKQba6XrfvrGrb8KjAQYRkL2KU2pgF8
-	 +2xX2iElvMwzaHr0WzbID1ry58Hsiq3calQFIOgA=
+	b=OuK09b4B1xcUsm4HexFzTx9GslPkc5CEcosKRfFYhoSxU+j1pdvqudbs7oSyAyiZ4
+	 riHJAPMSZ2BsqvKwsVBvBIIdFBMnJXtVEJaVQbeF3YIJXzRLfULJtlEPSIhhMW4Kxj
+	 yQgEQb88JsEJwR5apgLhkTlHWCn+ty+5WMauYiik=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Cen <rollkingzzc@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Alessandro Schino <7991aleschino@gmail.com>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 212/522] Bluetooth: RFCOMM: hold listener socket in rfcomm_connect_ind()
-Date: Tue, 16 Jun 2026 20:25:59 +0530
-Message-ID: <20260616145135.967815166@linuxfoundation.org>
+Subject: [PATCH 7.0 129/378] esp: fix page frag reference leak on skb_to_sgvec failure
+Date: Tue, 16 Jun 2026 20:26:00 +0530
+Message-ID: <20260616145117.113400641@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,21 +72,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-265508-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:rollkingzzc@gmail.com,m:luiz.von.dentz@intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-263948-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:7991aleschino@gmail.com,m:steffen.klassert@secunet.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,secunet.com,kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -99,132 +99,173 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,secunet.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C5C7269373F
+X-Rspamd-Queue-Id: 9E530690FCE
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Cen <rollkingzzc@gmail.com>
+From: Alessandro Schino <7991aleschino@gmail.com>
 
-[ Upstream commit 43c441edacf953b39517a44f5e5e10a93618b226 ]
+[ Upstream commit 2982e599fff6faa21c8df147d96fc7af6c1a2f24 ]
 
-rfcomm_get_sock_by_channel() scans rfcomm_sk_list under the list lock,
-but returns the selected listener after dropping that lock without
-taking a reference. rfcomm_connect_ind() then locks the listener,
-queues a child socket on it, and may notify it after unlocking it.
+In esp_output_tail(), when esp->inplace is false, the old skb page frags
+are replaced with a new page from the xfrm page_frag cache. The source
+scatterlist (sg) is built from the old frags before the replacement, and
+esp_ssg_unref() is responsible for releasing the old page references
+after the crypto operation completes.
 
-The buggy scenario involves two paths, with each column showing the
-order within that path:
+However, if the second skb_to_sgvec() call (which builds the destination
+scatterlist from the new page) fails, the code jumps to error_free which
+only calls kfree(tmp). The old page frag references captured in the
+source scatterlist are never released:
 
-rfcomm_connect_ind():            listener close:
-  1. Find parent in              1. close() enters
-     rfcomm_get_sock_by_channel()   rfcomm_sock_release().
-  2. Drop rfcomm_sk_list.lock    2. rfcomm_sock_shutdown()
-     without pinning parent.        closes the listener.
-  3. Call lock_sock(parent) and  3. rfcomm_sock_kill()
-     bt_accept_enqueue(parent,      unlinks and puts parent.
-     sk, true).
-  4. Read parent flags and may   4. parent can be freed.
-     call sk_state_change().
+  1. sg[] is built from old frags via skb_to_sgvec() (no extra get_page)
+  2. nr_frags is set to 1 and frag[0] is replaced with the new page
+  3. Second skb_to_sgvec() fails -> goto error_free
+  4. kfree(tmp) frees the sg[] memory but old frags are not unref'd
+  5. kfree_skb() only releases frag[0] (the new page), not the old ones
 
-If close wins the race, parent can be freed before
-rfcomm_connect_ind() reaches lock_sock(), bt_accept_enqueue(), or the
-deferred-setup callback.
+Fix this by adding a bool parameter to esp_ssg_unref() that, when true,
+unconditionally unrefs the source scatterlist frags without checking
+req->src and req->dst, since those fields are not yet initialized by
+aead_request_set_crypt() at the point of the error. Existing callers
+pass false to preserve the original behavior.
 
-Take a reference on the listener before leaving rfcomm_sk_list.lock.
-After lock_sock() succeeds, recheck that it is still in BT_LISTEN
-before queueing a child, cache the deferred-setup bit while the parent
-is locked, and drop the reference after the last parent use.
+The same issue exists in both esp4 and esp6 as the code is identical.
 
-KASAN reported a slab-use-after-free in lock_sock_nested() from
-rfcomm_connect_ind(), with the freeing stack going through
-rfcomm_sock_kill() and rfcomm_sock_release().
+Fixes: cac2661c53f3 ("esp4: Avoid skb_cow_data whenever possible")
+Fixes: 03e2a30f6a27 ("esp6: Avoid skb_cow_data whenever possible")
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Zhang Cen <rollkingzzc@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Alessandro Schino <7991aleschino@gmail.com>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Stable-dep-of: 26aad08a9289 ("esp: fix page frag reference leak on skb_to_sgvec failure")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/rfcomm/sock.c | 26 ++++++++++++++++++++++----
- 1 file changed, 22 insertions(+), 4 deletions(-)
+ net/ipv4/esp4.c | 17 +++++++++++------
+ net/ipv6/esp6.c | 17 +++++++++++------
+ 2 files changed, 22 insertions(+), 12 deletions(-)
 
-diff --git a/net/bluetooth/rfcomm/sock.c b/net/bluetooth/rfcomm/sock.c
-index bc2b22c2b3aec7..d72cdcd2e2bb11 100644
---- a/net/bluetooth/rfcomm/sock.c
-+++ b/net/bluetooth/rfcomm/sock.c
-@@ -122,7 +122,7 @@ static struct sock *__rfcomm_get_listen_sock_by_addr(u8 channel, bdaddr_t *src)
+diff --git a/net/ipv4/esp4.c b/net/ipv4/esp4.c
+index 513c8215c947f1..dfc81ee969ae03 100644
+--- a/net/ipv4/esp4.c
++++ b/net/ipv4/esp4.c
+@@ -96,7 +96,7 @@ static inline struct scatterlist *esp_req_sg(struct crypto_aead *aead,
+ 			     __alignof__(struct scatterlist));
  }
  
- /* Find socket with channel and source bdaddr.
-- * Returns closest match.
-+ * Returns closest match with an extra reference held.
-  */
- static struct sock *rfcomm_get_sock_by_channel(int state, u8 channel, bdaddr_t *src)
+-static void esp_ssg_unref(struct xfrm_state *x, void *tmp, struct sk_buff *skb)
++static void esp_ssg_unref(struct xfrm_state *x, void *tmp, struct sk_buff *skb, bool already_unref)
  {
-@@ -136,15 +136,25 @@ static struct sock *rfcomm_get_sock_by_channel(int state, u8 channel, bdaddr_t *
- 
- 		if (rfcomm_pi(sk)->channel == channel) {
- 			/* Exact match. */
--			if (!bacmp(&rfcomm_pi(sk)->src, src))
-+			if (!bacmp(&rfcomm_pi(sk)->src, src)) {
-+				sock_hold(sk);
- 				break;
-+			}
- 
- 			/* Closest match */
--			if (!bacmp(&rfcomm_pi(sk)->src, BDADDR_ANY))
-+			if (!bacmp(&rfcomm_pi(sk)->src, BDADDR_ANY)) {
-+				if (sk1)
-+					sock_put(sk1);
+ 	struct crypto_aead *aead = x->data;
+ 	int extralen = 0;
+@@ -113,10 +113,13 @@ static void esp_ssg_unref(struct xfrm_state *x, void *tmp, struct sk_buff *skb)
+ 	/* Unref skb_frag_pages in the src scatterlist if necessary.
+ 	 * Skip the first sg which comes from skb->data.
+ 	 */
+-	if (req->src != req->dst)
+-		for (sg = sg_next(req->src); sg; sg = sg_next(sg))
++	if (already_unref || req->src != req->dst) {
++		struct scatterlist *src = already_unref ? esp_req_sg(aead, req) : req->src;
 +
- 				sk1 = sk;
-+				sock_hold(sk1);
-+			}
- 		}
++		for (sg = sg_next(src); sg; sg = sg_next(sg))
+ 			skb_page_unref(page_to_netmem(sg_page(sg)),
+ 				       skb->pp_recycle);
++	}
+ }
+ 
+ #ifdef CONFIG_INET_ESPINTCP
+@@ -220,7 +223,7 @@ static void esp_output_done(void *data, int err)
  	}
  
-+	if (sk && sk1)
-+		sock_put(sk1);
-+
- 	read_unlock(&rfcomm_sk_list.lock);
+ 	tmp = ESP_SKB_CB(skb)->tmp;
+-	esp_ssg_unref(x, tmp, skb);
++	esp_ssg_unref(x, tmp, skb, false);
+ 	kfree(tmp);
  
- 	return sk ? sk : sk1;
-@@ -941,6 +951,7 @@ int rfcomm_connect_ind(struct rfcomm_session *s, u8 channel, struct rfcomm_dlc *
- {
- 	struct sock *sk, *parent;
- 	bdaddr_t src, dst;
-+	bool defer_setup = false;
- 	int result = 0;
+ 	if (xo && (xo->flags & XFRM_DEV_RESUME)) {
+@@ -569,8 +572,10 @@ int esp_output_tail(struct xfrm_state *x, struct sk_buff *skb, struct esp_info *
+ 		err = skb_to_sgvec(skb, dsg,
+ 			           (unsigned char *)esph - skb->data,
+ 			           assoclen + ivlen + esp->clen + alen);
+-		if (unlikely(err < 0))
++		if (unlikely(err < 0)) {
++			esp_ssg_unref(x, tmp, skb, true);
+ 			goto error_free;
++		}
+ 	}
  
- 	BT_DBG("session %p channel %d", s, channel);
-@@ -954,6 +965,11 @@ int rfcomm_connect_ind(struct rfcomm_session *s, u8 channel, struct rfcomm_dlc *
+ 	if ((x->props.flags & XFRM_STATE_ESN))
+@@ -602,7 +607,7 @@ int esp_output_tail(struct xfrm_state *x, struct sk_buff *skb, struct esp_info *
+ 	}
  
- 	lock_sock(parent);
+ 	if (sg != dsg)
+-		esp_ssg_unref(x, tmp, skb);
++		esp_ssg_unref(x, tmp, skb, false);
  
-+	if (parent->sk_state != BT_LISTEN)
-+		goto done;
-+
-+	defer_setup = test_bit(BT_SK_DEFER_SETUP, &bt_sk(parent)->flags);
-+
- 	/* Check for backlog size */
- 	if (sk_acceptq_is_full(parent)) {
- 		BT_DBG("backlog full %d", parent->sk_ack_backlog);
-@@ -981,9 +997,11 @@ int rfcomm_connect_ind(struct rfcomm_session *s, u8 channel, struct rfcomm_dlc *
- done:
- 	release_sock(parent);
- 
--	if (test_bit(BT_SK_DEFER_SETUP, &bt_sk(parent)->flags))
-+	if (defer_setup)
- 		parent->sk_state_change(parent);
- 
-+	sock_put(parent);
-+
- 	return result;
+ 	if (!err && x->encap && x->encap->encap_type == TCP_ENCAP_ESPINTCP)
+ 		err = esp_output_tail_tcp(x, skb);
+diff --git a/net/ipv6/esp6.c b/net/ipv6/esp6.c
+index 57481e423e59e6..296b57926abb98 100644
+--- a/net/ipv6/esp6.c
++++ b/net/ipv6/esp6.c
+@@ -113,7 +113,7 @@ static inline struct scatterlist *esp_req_sg(struct crypto_aead *aead,
+ 			     __alignof__(struct scatterlist));
  }
  
+-static void esp_ssg_unref(struct xfrm_state *x, void *tmp, struct sk_buff *skb)
++static void esp_ssg_unref(struct xfrm_state *x, void *tmp, struct sk_buff *skb, bool already_unref)
+ {
+ 	struct crypto_aead *aead = x->data;
+ 	int extralen = 0;
+@@ -130,10 +130,13 @@ static void esp_ssg_unref(struct xfrm_state *x, void *tmp, struct sk_buff *skb)
+ 	/* Unref skb_frag_pages in the src scatterlist if necessary.
+ 	 * Skip the first sg which comes from skb->data.
+ 	 */
+-	if (req->src != req->dst)
+-		for (sg = sg_next(req->src); sg; sg = sg_next(sg))
++	if (already_unref || req->src != req->dst) {
++		struct scatterlist *src = already_unref ? esp_req_sg(aead, req) : req->src;
++
++		for (sg = sg_next(src); sg; sg = sg_next(sg))
+ 			skb_page_unref(page_to_netmem(sg_page(sg)),
+ 				       skb->pp_recycle);
++	}
+ }
+ 
+ #ifdef CONFIG_INET6_ESPINTCP
+@@ -254,7 +257,7 @@ static void esp_output_done(void *data, int err)
+ 	}
+ 
+ 	tmp = ESP_SKB_CB(skb)->tmp;
+-	esp_ssg_unref(x, tmp, skb);
++	esp_ssg_unref(x, tmp, skb, false);
+ 	kfree(tmp);
+ 
+ 	esp_output_encap_csum(skb);
+@@ -600,8 +603,10 @@ int esp6_output_tail(struct xfrm_state *x, struct sk_buff *skb, struct esp_info
+ 		err = skb_to_sgvec(skb, dsg,
+ 			           (unsigned char *)esph - skb->data,
+ 			           assoclen + ivlen + esp->clen + alen);
+-		if (unlikely(err < 0))
++		if (unlikely(err < 0)) {
++			esp_ssg_unref(x, tmp, skb, true);
+ 			goto error_free;
++		}
+ 	}
+ 
+ 	if ((x->props.flags & XFRM_STATE_ESN))
+@@ -634,7 +639,7 @@ int esp6_output_tail(struct xfrm_state *x, struct sk_buff *skb, struct esp_info
+ 	}
+ 
+ 	if (sg != dsg)
+-		esp_ssg_unref(x, tmp, skb);
++		esp_ssg_unref(x, tmp, skb, false);
+ 
+ 	if (!err && x->encap && x->encap->encap_type == TCP_ENCAP_ESPINTCP)
+ 		err = esp_output_tail_tcp(x, skb);
 -- 
 2.53.0
 
