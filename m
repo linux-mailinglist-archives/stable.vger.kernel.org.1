@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-264885-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263903-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ziWAMfl9MWoFkwUAu9opvQ
-	(envelope-from <stable+bounces-264885-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:46:49 +0200
+	id 7T+UL3dpMWriigUAu9opvQ
+	(envelope-from <stable+bounces-263903-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:19:19 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id A190069271D
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:46:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80CE9690E94
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:19:19 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=IxPoFN1R;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264885-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-264885-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=AU6GWwUt;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263903-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-263903-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 64BAB303097E
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:46:46 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B99743037882
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:18:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DCA33AE71F;
-	Tue, 16 Jun 2026 16:46:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBF5744102A;
+	Tue, 16 Jun 2026 15:18:03 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AFEB43E4BF;
-	Tue, 16 Jun 2026 16:46:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75B6643E4BB;
+	Tue, 16 Jun 2026 15:18:02 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781628403; cv=none; b=ArqxiGFiETlzSLvyemuxwQ3QVNZbJX4wVgcIrEjHScChcQ29HPlMhDeQo6c3MOLg7Wp4SQTHQx24l4wmcnePFWFlmpPZ3HAXpdBxeL9gTIdlEqM16EAVNcFE0mpyHEP4tY682zdzkFd5Xhn0PmDwf47XMqUufesIZgGLI6ZhpCk=
+	t=1781623083; cv=none; b=WC93oGkshQlltA2vy/xODJraodusM3nnQLxUEe9tPLM3zHIPs2zAlVKPclDVK4u2qJWuz9WCwvmbL9mTT0qRtE0sXq/gxrcIfhq9sNHo3f4RIFctW92QLDA7VdMNdaivKCxYZNWsIY1m2O7skA2Qg1dJBbn9Ql4BBlTIaTqoa/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781628403; c=relaxed/simple;
-	bh=9ycPJHPlNYNmH452lEMd64FViwXFZz1BdyLhv6jB0bk=;
+	s=arc-20240116; t=1781623083; c=relaxed/simple;
+	bh=RAE7hLRjDGIUq8mnTGDdMGQ+RX84hDpdqalzj10o8sU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ufED1V0IlPz9qtIQ4QeA1XLawhQBj92H9KFH1kd/M2ub4xBXTbYCaHAZebKuD+nUui6gQ0zrBMLzDHGn4bkseThjnVCxHRXiU4LwbxcSXQq32eeoAp1gc6+MhBE5NjJdAoP8zqq90pQP9S7QeIHwEaqFgwr+slpzEHBY6VTIn6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IxPoFN1R; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8407E1F000E9;
-	Tue, 16 Jun 2026 16:46:41 +0000 (UTC)
+	 MIME-Version; b=Iy0/yxgW+2xBKXaHXrWTPhXzpNh8wM4dE50kpDhULXfCZiUeGWMCS+t6CYmuPYvey9QRRV8EdL+Gj5nQ3cSrDcJpjj5VSNaKqnfJtFbBU2JjvLGzv/CK/eXpp0yVKCrU2CF9s4U8SJdW2WsBCtRqKc5gmBi9Wk+TOyoNGdkpAS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AU6GWwUt; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B75C1F000E9;
+	Tue, 16 Jun 2026 15:18:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781628402;
-	bh=DvqkWgMm4noFiWIDsjm5mUIeE9Yi91PT1I6jMVcDj4o=;
+	s=korg; t=1781623082;
+	bh=QFs1Rd7VpFbdFe9cvwD4zKdaH56/RgG1kDFFvxnoKKI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=IxPoFN1RLaXu4ZSeys4BFCe6bu5TLRFXqMx/X9pYiQRFVwls0Mt89JC50p8vbBzau
-	 LTVBUIRlKemEzkmrAEm6WRiY+6u4EvMAWWXM4Wf6ITJhPHRPsJ6g6HGPoAtCduSzIY
-	 wzIwe65Uas4p6pkcuDchNQnbBKiE5Uo3ACQJ++wg=
+	b=AU6GWwUt1Oh2TQ+bEs0BDNOiFsZeK/VAOon8SnJqAKVltnjz/Fc1ufeMONtIZZY0l
+	 jy/KNSUeVtV0zgMCa7+21yntFDRntu97f3tALWbS6axifsFnrJlbGyi09E0ZZCe9Fa
+	 DZ50QW0Rzmjp+k/V1yv6gIq47GX6CFglHbVcenJQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.6 089/452] USB: serial: safe_serial: fix memory corruption with small endpoint
+	Jian Zhou <eilaimemedsnaimel@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 085/378] ALSA: PCM: Fix wait queue list corruption in snd_pcm_drain() on linked streams
 Date: Tue, 16 Jun 2026 20:25:16 +0530
-Message-ID: <20260616145122.517455555@linuxfoundation.org>
+Message-ID: <20260616145114.722843392@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,80 +76,97 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-264885-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:johan@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-263903-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:eilaimemedsnaimel@gmail.com,m:tiwai@suse.de,m:sashal@kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de,kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,msgid.link:url,vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A190069271D
+X-Rspamd-Queue-Id: 80CE9690E94
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Ji'an Zhou <eilaimemedsnaimel@gmail.com>
 
-commit 438061ed1ad85e6743e2dce826671772d81089ec upstream.
+[ Upstream commit 88fe2e3658726cb21ff2dcf9770bf672f9b9d31b ]
 
-Make sure that the bulk-out buffer size is at least eight bytes to avoid
-user-controlled slab corruption in "safe" mode should a malicious device
-report a smaller size.
+snd_pcm_drain() uses init_waitqueue_entry which does not clear
+entry.prev/next, and add_wait_queue with a conditional
+remove_wait_queue that is skipped when to_check is no longer
+in the group after concurrent UNLINK.  The orphaned wait entry
+remains on the unlinked substream sleep queue.  On the next
+drain iteration, add_wait_queue adds the entry to a new queue
+while still linked on the old one, corrupting both lists.  A
+subsequent wake_up dereferences NULL at the func pointer
+(mapped from the spinlock at offset 0 of the misinterpreted
+wait_queue_head_t), causing a kernel panic.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Replace init_waitqueue_entry/add_wait_queue/conditional
+remove_wait_queue with init_wait_entry/prepare_to_wait/
+finish_wait.  init_wait_entry clears prev/next via
+INIT_LIST_HEAD on each iteration and sets
+autoremove_wake_function which auto-removes the entry on
+wake-up.  finish_wait safely handles both the already-removed
+and still-queued cases.
+
+Fixes: 9b1dbd69ba6f ("ALSA: pcm: fix use-after-free on linked stream runtime in snd_pcm_drain")
+Signed-off-by: Ji'an Zhou <eilaimemedsnaimel@gmail.com>
+Link: https://patch.msgid.link/20260604142559.3840881-1-eilaimemedsnaimel@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/safe_serial.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ sound/core/pcm_native.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
---- a/drivers/usb/serial/safe_serial.c
-+++ b/drivers/usb/serial/safe_serial.c
-@@ -259,6 +259,7 @@ static int safe_prepare_write_buffer(str
- static int safe_startup(struct usb_serial *serial)
- {
- 	struct usb_interface_descriptor	*desc;
-+	int bulk_out_size;
- 
- 	if (serial->dev->descriptor.bDeviceClass != CDC_DEVICE_CLASS)
- 		return -ENODEV;
-@@ -279,6 +280,16 @@ static int safe_startup(struct usb_seria
- 	default:
- 		return -EINVAL;
- 	}
-+
-+	/*
-+	 * The bulk-out buffer needs to be large enough for the two-byte
-+	 * trailer in safe mode, but assume anything smaller than eight bytes
-+	 * is broken.
-+	 */
-+	bulk_out_size = serial->port[0]->bulk_out_size;
-+	if (bulk_out_size > 0 && bulk_out_size < 8)
-+		return -EINVAL;
-+
- 	return 0;
- }
- 
+diff --git a/sound/core/pcm_native.c b/sound/core/pcm_native.c
+index 5a64453da7283a..6fd479d135a4d1 100644
+--- a/sound/core/pcm_native.c
++++ b/sound/core/pcm_native.c
+@@ -2176,9 +2176,8 @@ static int snd_pcm_drain(struct snd_pcm_substream *substream,
+ 		drain_no_period_wakeup = to_check->no_period_wakeup;
+ 		drain_rate = to_check->rate;
+ 		drain_bufsz = to_check->buffer_size;
+-		init_waitqueue_entry(&wait, current);
+-		set_current_state(TASK_INTERRUPTIBLE);
+-		add_wait_queue(&to_check->sleep, &wait);
++		init_wait_entry(&wait, 0);
++		prepare_to_wait(&to_check->sleep, &wait, TASK_INTERRUPTIBLE);
+ 		snd_pcm_stream_unlock_irq(substream);
+ 		if (drain_no_period_wakeup)
+ 			tout = MAX_SCHEDULE_TIMEOUT;
+@@ -2196,7 +2195,7 @@ static int snd_pcm_drain(struct snd_pcm_substream *substream,
+ 		group = snd_pcm_stream_group_ref(substream);
+ 		snd_pcm_group_for_each_entry(s, substream) {
+ 			if (s->runtime == to_check) {
+-				remove_wait_queue(&to_check->sleep, &wait);
++				finish_wait(&to_check->sleep, &wait);
+ 				break;
+ 			}
+ 		}
+-- 
+2.53.0
+
 
 
 
