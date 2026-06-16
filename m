@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-264919-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265467-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id IdCFDsqAMWpQlAUAu9opvQ
-	(envelope-from <stable+bounces-264919-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:58:50 +0200
+	id DCkUAM+KMWqBmAUAu9opvQ
+	(envelope-from <stable+bounces-265467-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:41:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9F58692A0B
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:58:49 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FB106935F7
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:41:34 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=1h5nHYuE;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264919-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264919-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=InSyps6O;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265467-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265467-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6F39031C81A2
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:50:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DD71230D59D8
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:35:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4880447A0B2;
-	Tue, 16 Jun 2026 16:49:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 175C24779B9;
+	Tue, 16 Jun 2026 17:35:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 274883876CF;
-	Tue, 16 Jun 2026 16:49:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCBF3335081;
+	Tue, 16 Jun 2026 17:35:48 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781628580; cv=none; b=lR1Mdt8Sb9hFovJUBguqfTk48u0iPWO+LJsu9EdqL/4tywocKI3nZ/jvHcyark1rlrnU5DrfYr8fX6ZN4lqLsTIsUn+6TmuYNOwDhuqZF9Exci/H3WwdiwLpE3hfiPaTm8Ur56n61OmkaIFZJUFjkIEFVpv2fdd2DR9p5in6AEU=
+	t=1781631349; cv=none; b=WAjQUMTfE3uSMSr6S22zDqs0+mlsPJYXwfdNQuaZUp4dO+SCzJ0vCTZU/Lp68vVZGp1LyhFsDhX5mT5O3/VE2CkrVNPuDJWyw/DdKcDDpBeO1R+Sq7GA4YEAzYp34UBJ74sF4+3s0gAMI16uDQmfEThAQhGbMoNyA/90IASOo5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781628580; c=relaxed/simple;
-	bh=+/+gI1QhQKC95tbkCpGRkIB7OD0Z8lWbtIZe1dDZ2Po=;
+	s=arc-20240116; t=1781631349; c=relaxed/simple;
+	bh=6Oix1n8M6TrjsRkU3lr8rdJrG0CwVKtYVb3OhUQtLmU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YVBWCrBl1iq8Pkcd6T0f/kiTcBqE4qQDSsFpt0TobcXg/Var7iX1zdtx8gmWlD31g6J0xAy0PXjzxzdwfch+IqW33x8yuTOvjZ63l9WYak1RVx/DaEmsgcPmc+8w5GMYsx0KSkPJNEb7W4MrDcjtgfGzNC4MFHQvP1YBe5ZejCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1h5nHYuE; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B6D91F000E9;
-	Tue, 16 Jun 2026 16:49:37 +0000 (UTC)
+	 MIME-Version; b=E3I5Lay3F0YNMPyUwwpihwlx+zKrGNdTh2+KfON00szrrcr8rMiChkdcO3iB9MCW6SIE03TyxwF2C6zLFJxyvhr4hF+ev1FTP93Q4FPSvcklFrTlHf0Nx6WbIOdez9xFFjWfszpJCHwqtXthHL/DAOfopkyNJVu35ePCIXNNGuM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=InSyps6O; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B1701F000E9;
+	Tue, 16 Jun 2026 17:35:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781628579;
-	bh=pb21t1ZOrcrd2cvEuoTJmBV2kMoG1BsaMCoZ9hRQaew=;
+	s=korg; t=1781631348;
+	bh=c3DGczNgkDFH8laobuQmIhNZBQEEO/fotqVghpQBE7c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=1h5nHYuEH6f5lHeVCL3t5OktscjKG5/oSeZok6Ed5KmFLzRHlN6J9LYeW5WH3XWeL
-	 F3cYtr5KEDWQ1TIdT1oqaIZ5Ue1JMcM4bWrQh3sC2q6BYAumOvS3gJ57+7I3q/aUuR
-	 o9aU4Qd4DczjqDCyF4UJyxlxnJ6BrL5R8l1mPIJk=
+	b=InSyps6OXGrm+KRPm+QSrUL7FLCPqj8ktVwY2GgfTyX+J7Xcnz3AL+sQ/vSPoBQST
+	 jPB2u1jTs5gI/w6aWPR1Nij3WQNKidmH1cc3e8FhVT54W1PYLeEEYoh7GMaHEHuSpE
+	 PB8O55YnkDmM5wTVpjyslbZqEOEdNy1b7g2Vri9c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.6 123/452] Input: elan_i2c - validate firmware size before use
+	Guangshuo Li <lgs201920130244@gmail.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 203/522] dm cache policy smq: check allocation under invalidate lock
 Date: Tue, 16 Jun 2026 20:25:50 +0530
-Message-ID: <20260616145124.205510112@linuxfoundation.org>
+Message-ID: <20260616145135.572231161@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,28 +67,27 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264919-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:dmitry.torokhov@gmail.com,m:dmitrytorokhov@gmail.com,s:lists@lfdr.de];
-	RCPT_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-265467-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:lgs201920130244@gmail.com,m:mpatocka@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com,kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -94,49 +95,84 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B9F58692A0B
+X-Rspamd-Queue-Id: 4FB106935F7
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+From: Guangshuo Li <lgs201920130244@gmail.com>
 
-commit 76b0d0baa9ae9c60e726bbe1b6ff0bec2c993634 upstream.
+[ Upstream commit d3f0a606b9f278ece8a0df626ded9c4044071235 ]
 
-Ensure that the firmware file is large enough to contain the expected
-number of pages and the signature (which resides at the end of the
-firmware blob) before accessing them to prevent potential out-of-bounds
-reads.
+commit 2d1f7b65f5de ("dm cache policy smq: fix missing locks in
+invalidating cache blocks") added mq->lock around the destructive part of
+smq_invalidate_mapping(), but left the e->allocated check outside the
+critical section.
 
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/ae2dOgiFvXRm4BHo@google.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+That leaves a check-then-act race. Two concurrent invalidators can both
+observe e->allocated as true before either of them takes mq->lock. The
+first invalidator that acquires the lock removes the entry from the
+queues and hash table and then calls free_entry(), which clears
+e->allocated and puts the entry back on the free list. The second
+invalidator can then acquire mq->lock and continue with the stale result
+of the unlocked check.
+
+This can corrupt the SMQ queues or hash table by deleting an entry that
+is no longer on those structures. It can also hit the allocation check in
+free_entry() when the same entry is freed again.
+
+Move the allocation check under mq->lock so the predicate and the
+destructive operations are serialized by the same lock.
+
+Fixes: 2d1f7b65f5de ("dm cache policy smq: fix missing locks in invalidating cache blocks")
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/mouse/elan_i2c_core.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/md/dm-cache-policy-smq.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
---- a/drivers/input/mouse/elan_i2c_core.c
-+++ b/drivers/input/mouse/elan_i2c_core.c
-@@ -645,6 +645,11 @@ static ssize_t elan_sysfs_update_fw(stru
- 		return error;
- 	}
+diff --git a/drivers/md/dm-cache-policy-smq.c b/drivers/md/dm-cache-policy-smq.c
+index d4c2bc5c0ef457..38fe5c31699bc1 100644
+--- a/drivers/md/dm-cache-policy-smq.c
++++ b/drivers/md/dm-cache-policy-smq.c
+@@ -1588,18 +1588,22 @@ static int smq_invalidate_mapping(struct dm_cache_policy *p, dm_cblock_t cblock)
+ 	struct smq_policy *mq = to_smq_policy(p);
+ 	struct entry *e = get_entry(&mq->cache_alloc, from_cblock(cblock));
+ 	unsigned long flags;
+-
+-	if (!e->allocated)
+-		return -ENODATA;
++	int r = 0;
  
-+	if (fw->size < data->fw_signature_address + sizeof(signature)) {
-+		dev_err(dev, "firmware file too small\n");
-+		return -EBADF;
+ 	spin_lock_irqsave(&mq->lock, flags);
++	if (!e->allocated) {
++		r = -ENODATA;
++		goto out;
 +	}
+ 	// FIXME: what if this block has pending background work?
+ 	del_queue(mq, e);
+ 	h_remove(&mq->table, e);
+ 	free_entry(&mq->cache_alloc, e);
 +
- 	/* Firmware file must match signature data */
- 	fw_signature = &fw->data[data->fw_signature_address];
- 	if (memcmp(fw_signature, signature, sizeof(signature)) != 0) {
++out:
+ 	spin_unlock_irqrestore(&mq->lock, flags);
+ 
+-	return 0;
++	return r;
+ }
+ 
+ static uint32_t smq_get_hint(struct dm_cache_policy *p, dm_cblock_t cblock)
+-- 
+2.53.0
+
 
 
 
