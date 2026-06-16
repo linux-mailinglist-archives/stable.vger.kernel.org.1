@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-265017-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264247-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 5NHdLouDMWpSlQUAu9opvQ
-	(envelope-from <stable+bounces-265017-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:10:35 +0200
+	id 5n9hNFByMWoyjgUAu9opvQ
+	(envelope-from <stable+bounces-264247-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:57:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 196BE692D06
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:10:35 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 715086918C0
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:57:04 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=iNcXykLu;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265017-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265017-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=XyVAd8+7;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264247-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-264247-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 127B8313F705
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:57:41 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8B531308B8DE
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:48:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87590466B5E;
-	Tue, 16 Jun 2026 16:57:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C581361651;
+	Tue, 16 Jun 2026 15:48:38 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8764E47884C;
-	Tue, 16 Jun 2026 16:57:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AF371A682B;
+	Tue, 16 Jun 2026 15:48:37 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781629060; cv=none; b=GdcZDnMSHccsrUBn5z55L+1V01U5IMYVEkYDeCOmqgt787VAH2arOvPmpVdwyGdU8H0BGCZSEF41TIu8KuU+2ucNWCs7WLLTreWwbYLOe6mb5ddv75j7+Re/SCRJ0ofz0DT868FE5cnYnnKhZ8nB8QFcRV3qqPdoS9LFUjnvO7s=
+	t=1781624918; cv=none; b=JGdXq9DNWVgeMOQopIPXy7sgGttFXRAnq6oG05wQf5xBrRNhKlsYzJBv12Fj9jXG//xS/tk8QkBiZjK8OQrhTfWoYnKQ+YAGJzAF9uc7yDPlZyhd2TpN21qQeKO49f2tA0HjAxj37O7CodLBuK+uhTGzuYs8cidYl5g1FqfBzss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781629060; c=relaxed/simple;
-	bh=WcLyp31VBuy6k77ub3m6NzHTN5jBUQC6cqM4t7kT/4o=;
+	s=arc-20240116; t=1781624918; c=relaxed/simple;
+	bh=b5pRp4JNxB44ZSif1Vy7ipw5c8T553NqpZ5j5RynqXM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CGpQeUGDm82IZOG6dmxnlKqoggRHp0bgWWR4ztr03E2IGEKZUL37A4dwAlKmxpCyrQ2sjJr88BzoA8Y3HyEriHflla93Ij+LMj2WUtPsSWqBdHGRO+IyRvRpZ6FlrtIQ7pipgabG/4GrRyA1lsmqQYNs9UCBWxbIBD4Z681q3nQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iNcXykLu; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F80A1F000E9;
-	Tue, 16 Jun 2026 16:57:37 +0000 (UTC)
+	 MIME-Version; b=BO9K8g/RJFcclWus1f/7ewTpyDAYQoz9rrS2cS2BFwuKk/87nGDpd88M7/7ahcQ976TOrf04vZLKSuTFPSKTXKwtlz+zF8OIVa9WDybSRqtkWVFbxbx0PMhfy7xvH1A9nblAaILyXGzjx17WB1TpYb2i4n1UvProwZUjJSxr5KE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XyVAd8+7; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 180911F000E9;
+	Tue, 16 Jun 2026 15:48:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781629058;
-	bh=6RclnDSf596z6JPKyMh6iDO23O2gejo4Es3LO5Cd6+I=;
+	s=korg; t=1781624917;
+	bh=r/s3ujU0zloMeGYcCPnXCvwdKg3YAaMgJXuF58gRiJE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=iNcXykLuTxqLyo7IVzPynJIN439eXCsRd68wpZAmB02nTIKL4kqqiMBCVRVrS0aQo
-	 dl0yJh3vNznYjiy7VeRXa0it8FIv9XL/ioP0JFM8MoX2wjVzoy/aUkZXfS7ikVXmaE
-	 msagPH0SM8zSK2f+X5nbf2XGc2mcfDyZu/2JdwSI=
+	b=XyVAd8+7O+0aOcH5EAFGMYmBDMpHDO6ddOCBDEVm2GiKDLrw1a+R41YpP0/eSdEgf
+	 Z4vYSgtF510j/K2Kc4VCxMl3ZqftkS/A/OuLuxu1rwfYFLMUAgBXR79x166+9u9dGL
+	 Q1ExmCnc2swfOVg1yQG9AuyHqMk03Rp/ycjMh+ps=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Nicol=C3=B2=20Coccia?= <n.coccia96@gmail.com>,
-	Dust Li <dust.li@linux.alibaba.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 212/452] net/smc: fix sleep-inside-lock in __smc_setsockopt() causing local DoS
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Zhang Cen <rollkingzzc@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 043/325] Bluetooth: MGMT: validate advertising TLV before type checks
 Date: Tue, 16 Jun 2026 20:27:19 +0530
-Message-ID: <20260616145128.938061595@linuxfoundation.org>
+Message-ID: <20260616145059.875636346@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,112 +66,116 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,molgen.mpg.de,gmail.com,intel.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-264247-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-265017-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:pmenzel@molgen.mpg.de,m:rollkingzzc@gmail.com,m:luiz.von.dentz@intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:n.coccia96@gmail.com,m:dust.li@linux.alibaba.com,m:kuba@kernel.org,m:ncoccia96@gmail.com,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.alibaba.com,kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,alibaba.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,intel.com:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 196BE692D06
+X-Rspamd-Queue-Id: 715086918C0
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolò Coccia <n.coccia96@gmail.com>
+From: Zhang Cen <rollkingzzc@gmail.com>
 
-commit a3fdd924d88c30b9f488636ce0e4696012cf5511 upstream.
+[ Upstream commit de23fb62259aa01d294f77238ae3b835eb674413 ]
 
-A logic flaw in __smc_setsockopt() allows a local unprivileged user to
-cause a Denial of Service (DoS) by holding the socket lock indefinitely.
+tlv_data_is_valid() reads each advertising data field length from
+data[i], then inspects data[i + 1] for managed EIR types before
+checking that the current field still fits inside the supplied buffer.
 
-The function __smc_setsockopt() calls copy_from_sockptr() while holding
-lock_sock(sk). By passing a userfaultfd-monitored memory page (or
-FUSE-backed memory on systems where unprivileged userfaultfd is disabled)
-as the optval, an attacker can halt execution during the copy operation,
-keeping the lock held.
+A malformed field whose length byte is the last byte of the buffer can
+therefore make the parser read one byte past the advertising data.
 
-Combined with asynchronous tear-down operations like shutdown(), this
-exhausts the kernel wq (kworkers) and triggers the hung task watchdog.
+KASAN reported the following when a malformed MGMT_OP_ADD_ADVERTISING
+request reached that path:
 
-[  240.123456] INFO: task kworker/u8:2 blocked for more than 120 seconds.
-[  240.123489] Call Trace:
-[  240.123501]  smc_shutdown+...
-[  240.123512]  lock_sock_nested+...
+  BUG: KASAN: vmalloc-out-of-bounds in tlv_data_is_valid()
+  Read of size 1
+  Call trace:
+    tlv_data_is_valid()
+    add_advertising()
+    hci_mgmt_cmd()
+    hci_sock_sendmsg()
 
-This patch moves the user-space copy outside the lock_sock() critical
-section to prevent the issue.
+Move the existing element-length check before any type-octet inspection
+so each non-empty element is proven to contain its type byte before the
+parser looks at data[i + 1].
 
-Fixes: a6a6fe27bab4 ("net/smc: Dynamic control handshake limitation by socket options")
-Signed-off-by: Nicolò Coccia <n.coccia96@gmail.com>
-Reviewed-by: Dust Li <dust.li@linux.alibaba.com>
-Tested-by: Dust Li <dust.li@linux.alibaba.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2bb36870e8cb ("Bluetooth: Unify advertising instance flags check")
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Signed-off-by: Zhang Cen <rollkingzzc@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/smc/af_smc.c |   17 ++++++++---------
- 1 file changed, 8 insertions(+), 9 deletions(-)
+ net/bluetooth/mgmt.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/net/smc/af_smc.c
-+++ b/net/smc/af_smc.c
-@@ -3048,18 +3048,17 @@ static int __smc_setsockopt(struct socke
+diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
+index 91d1c0d132f9e1..9bb82d1fdc3cad 100644
+--- a/net/bluetooth/mgmt.c
++++ b/net/bluetooth/mgmt.c
+@@ -8622,6 +8622,12 @@ static bool tlv_data_is_valid(struct hci_dev *hdev, u32 adv_flags, u8 *data,
+ 		if (!cur_len)
+ 			continue;
  
- 	smc = smc_sk(sk);
- 
-+	/* pre-fetch user data outside the lock */
-+	if (optname == SMC_LIMIT_HS) {
-+		if (optlen < sizeof(int))
-+			return -EINVAL;
-+		if (copy_from_sockptr(&val, optval, sizeof(int)))
-+			return -EFAULT;
-+	}
++		/* If the current field length would exceed the total data
++		 * length, then it's invalid.
++		 */
++		if (i + cur_len >= len)
++			return false;
 +
- 	lock_sock(sk);
- 	switch (optname) {
- 	case SMC_LIMIT_HS:
--		if (optlen < sizeof(int)) {
--			rc = -EINVAL;
--			break;
--		}
--		if (copy_from_sockptr(&val, optval, sizeof(int))) {
--			rc = -EFAULT;
--			break;
--		}
+ 		if (data[i + 1] == EIR_FLAGS &&
+ 		    (!is_adv_data || flags_managed(adv_flags)))
+ 			return false;
+@@ -8638,12 +8644,6 @@ static bool tlv_data_is_valid(struct hci_dev *hdev, u32 adv_flags, u8 *data,
+ 		if (data[i + 1] == EIR_APPEARANCE &&
+ 		    appearance_managed(adv_flags))
+ 			return false;
 -
- 		smc->limit_smc_hs = !!val;
- 		rc = 0;
- 		break;
+-		/* If the current field length would exceed the total data
+-		 * length, then it's invalid.
+-		 */
+-		if (i + cur_len >= len)
+-			return false;
+ 	}
+ 
+ 	return true;
+-- 
+2.53.0
+
 
 
 
