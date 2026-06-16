@@ -1,65 +1,65 @@
-Return-Path: <stable+bounces-265917-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266234-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ak3SKJSSMWpbnAUAu9opvQ
-	(envelope-from <stable+bounces-265917-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:14:44 +0200
+	id 9HutLyGZMWpQnwUAu9opvQ
+	(envelope-from <stable+bounces-266234-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:42:41 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41076693F1B
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:14:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A0A16945C0
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:42:41 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="MWG4Qw/7";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265917-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-265917-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=yFtki9dz;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266234-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-266234-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id AA32330357AD
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:14:43 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 01FC4302F486
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:42:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50E894657C2;
-	Tue, 16 Jun 2026 18:14:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB75D46AEE1;
+	Tue, 16 Jun 2026 18:42:37 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98EFE3D45CB;
-	Tue, 16 Jun 2026 18:14:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB4ED13777E;
+	Tue, 16 Jun 2026 18:42:36 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781633679; cv=none; b=DgXruEaUuuMIqAaOvvG7gDETdaxY7Dzqfz58NwqlJvmuQRl0AIbqTLXUQL9scXOVP2BxsCPyT3/Qj7wm+QvYssb78pjAhEBtZ89KCHGr+xlnW4wbgFONO00/HzjF1gTU56ad1/pZYx/buYbtl8Puyk0jclpOcfwa2KSmBlEEzFc=
+	t=1781635357; cv=none; b=ESlB3RP4mb0Mx217gvBEbp4j66YiOaj/RZz1ZkJ9wdUADwt2HvOpheoAH+m1sY2zbfJ5lwTotgt+9KekqUVdEOsQVBXILRfzT3BKymgXYbvnrckyGJxZD6ZRvIDGX56aI8eppp6i914yZjOJMiPU31qZnqkQNQosTPZYEi8+8vg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781633679; c=relaxed/simple;
-	bh=Q5anU0VdRhBOOI8KsHqlUvV9SnaHnEjG+0/K+OnOhsQ=;
+	s=arc-20240116; t=1781635357; c=relaxed/simple;
+	bh=jyCzQbCRrPfi9LTFtc7yCT2773H2bczZjN1EmwFH81A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rvZ1nIy96Ilqrq0+NTwl0krbOO9yGwacftNzL4A2z/ok8f//crw9kCi+vWW3ecHWp3kYQ8vGSRUjOO9VC46zuRYBgeLf0ZZGN9qAd/nb2G6XFrhjo+YQLnhqJc19lXgtOdeDv98fn0P/5yc+CmP02PC2I8AvI4tryhQIAItT/54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MWG4Qw/7; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39CBE1F000E9;
-	Tue, 16 Jun 2026 18:14:35 +0000 (UTC)
+	 MIME-Version; b=gQwABRrZKDpII2YMUc58tF9I3vMuMWUT111LzxTh3UCMKmxtvNbaumq7i9nOtECWZougjPMjX1gXlvIEm1VF4Q89G4qYP/T8kIohmCoyc1pXoqOQm8pLJWwR3nAkf00RwpeA/SD4VtA/vdN5xK8TcK3eTem8SHvl/ZJq75dIPw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yFtki9dz; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 942141F000E9;
+	Tue, 16 Jun 2026 18:42:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781633677;
-	bh=1pEdfZjf/dKl2iTH1oygF2mK7HTtOJUmXiTOliClzjs=;
+	s=korg; t=1781635356;
+	bh=rdQUSzBIpN0pAJz/IaBW9JuIYROtMr6kRwvN6PVsIRY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=MWG4Qw/7xEZVpqawjNOq54DKTSAOSiMfQjcTg+1az4jTd9eKkW9cQ6FUFDobZAz9p
-	 miPPRgjqg5lhAgdx7eA8ti/fuLFyhJbXXxx0Yyk8mjs4bmbx/3+LiakVjQZpxroz2/
-	 ppWQgDmueQuagvXGg4V1Ni7DwsSg9wh6t3nevsaU=
+	b=yFtki9dzfnqrQVR20E7HJUcBwISmQQDxOa4FOESxfPTwlFER587ZMnLWcLAg71EjW
+	 l5lC1lGAiazEoNb68sFIbO34cK+bK2Mi0bcBSrWkK46R1mUgp4uko+8NJp3bJw3acd
+	 0hBd1zoSc9+MdrcNI51EAKTD7U7U7t/ohDL5pYpg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	stable@kernel.org,
 	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
 	Xin Liu <bird@lzu.edu.cn>,
-	Luxing Yin <tr0jan@lzu.edu.cn>,
-	Zhengchuan Liang <zcliangcn@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Steffen Klassert <steffen.klassert@secunet.com>
-Subject: [PATCH 5.15 091/411] xfrm: input: hold netns during deferred transport reinjection
+	Sven Eckelmann <sven@narfation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 033/342] batman-adv: tvlv: reject oversized TVLV packets
 Date: Tue, 16 Jun 2026 20:25:29 +0530
-Message-ID: <20260616145105.063509734@linuxfoundation.org>
+Message-ID: <20260616145049.795165575@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -81,11 +81,11 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,secunet.com];
-	TAGGED_FROM(0.00)[bounces-265917-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,narfation.org];
+	TAGGED_FROM(0.00)[bounces-266234-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:yuantan098@gmail.com,m:bird@lzu.edu.cn,m:tr0jan@lzu.edu.cn,m:zcliangcn@gmail.com,m:n05ec@lzu.edu.cn,m:steffen.klassert@secunet.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:yuantan098@gmail.com,m:yifanwucs@gmail.com,m:tomapufckgml@gmail.com,m:bird@lzu.edu.cn,m:sven@narfation.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -103,84 +103,94 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,lzu.edu.cn:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,secunet.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,lzu.edu.cn:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,narfation.org:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 41076693F1B
+X-Rspamd-Queue-Id: 8A0A16945C0
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhengchuan Liang <zcliangcn@gmail.com>
+From: Sven Eckelmann <sven@narfation.org>
 
-commit c16f74dc1d75d0e2e7670076d5375deda110ebeb upstream.
+commit f50487e3566358b2b982b7801945e858c78ad9ab upstream.
 
-Transport-mode reinjection stores a struct net pointer in skb->cb and
-uses it later from xfrm_trans_reinject(). That pointer must stay valid
-until the deferred callback runs.
+batadv_tvlv_container_ogm_append() builds a TVLV packet section from
+the tvlv.container_list. The total size of this section is computed by
+batadv_tvlv_container_list_size(), which sums the sizes of all registered
+containers.
 
-Take a netns reference when queueing deferred reinjection work and drop
-it after the callback completes. Use maybe_get_net() so the queueing
-path does not revive a namespace that is already being torn down.
+The return type and accumulator in batadv_tvlv_container_list_size() were
+u16. If the accumulated size exceeds U16_MAX, the value wraps around,
+causing the subsequent allocation in batadv_tvlv_container_ogm_append()
+to be undersized. The memcpy-style copy that follows would then write
+beyond the end of the allocated buffer, corrupting kernel memory.
 
-This keeps the existing workqueue design and fixes the netns lifetime
-handling in one place for all users of xfrm_trans_queue_net().
+Fix this by widening the return type of batadv_tvlv_container_list_size()
+to size_t. In batadv_tvlv_container_ogm_append(), check the computed length
+against U16_MAX before proceeding, and bail out as if the allocation had
+failed when the limit is exceeded.
 
-Fixes: 7b3801927e52 ("xfrm: introduce xfrm_trans_queue_net")
 Cc: stable@kernel.org
+Fixes: ef26157747d4 ("batman-adv: tvlv - basic infrastructure")
 Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
 Reported-by: Xin Liu <bird@lzu.edu.cn>
-Co-developed-by: Luxing Yin <tr0jan@lzu.edu.cn>
-Signed-off-by: Luxing Yin <tr0jan@lzu.edu.cn>
-Signed-off-by: Zhengchuan Liang <zcliangcn@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Assisted-by: Codex:gpt-5.4
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Yuan Tan <yuantan098@gmail.com>
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/xfrm/xfrm_input.c |   16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ net/batman-adv/tvlv.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
---- a/net/xfrm/xfrm_input.c
-+++ b/net/xfrm/xfrm_input.c
-@@ -781,9 +781,12 @@ static void xfrm_trans_reinject(struct w
- 	spin_unlock_bh(&trans->queue_lock);
- 
- 	local_bh_disable();
--	while ((skb = __skb_dequeue(&queue)))
--		XFRM_TRANS_SKB_CB(skb)->finish(XFRM_TRANS_SKB_CB(skb)->net,
--					       NULL, skb);
-+	while ((skb = __skb_dequeue(&queue))) {
-+		struct net *net = XFRM_TRANS_SKB_CB(skb)->net;
-+
-+		XFRM_TRANS_SKB_CB(skb)->finish(net, NULL, skb);
-+		put_net(net);
-+	}
- 	local_bh_enable();
- }
- 
-@@ -792,6 +795,7 @@ int xfrm_trans_queue_net(struct net *net
- 				       struct sk_buff *))
+diff --git a/net/batman-adv/tvlv.c b/net/batman-adv/tvlv.c
+index 75f7ea827ed9dd..8da8184a2ebdfc 100644
+--- a/net/batman-adv/tvlv.c
++++ b/net/batman-adv/tvlv.c
+@@ -13,6 +13,7 @@
+ #include <linux/if_ether.h>
+ #include <linux/kernel.h>
+ #include <linux/kref.h>
++#include <linux/limits.h>
+ #include <linux/list.h>
+ #include <linux/lockdep.h>
+ #include <linux/netdevice.h>
+@@ -160,10 +161,10 @@ batadv_tvlv_container_get(struct batadv_priv *bat_priv, u8 type, u8 version)
+  *
+  * Return: size of all currently registered tvlv containers in bytes.
+  */
+-static u16 batadv_tvlv_container_list_size(struct batadv_priv *bat_priv)
++static size_t batadv_tvlv_container_list_size(struct batadv_priv *bat_priv)
  {
- 	struct xfrm_trans_tasklet *trans;
-+	struct net *hold_net;
+ 	struct batadv_tvlv_container *tvlv;
+-	u16 tvlv_len = 0;
++	size_t tvlv_len = 0;
  
- 	trans = this_cpu_ptr(&xfrm_trans_tasklet);
+ 	lockdep_assert_held(&bat_priv->tvlv.container_list_lock);
  
-@@ -800,8 +804,12 @@ int xfrm_trans_queue_net(struct net *net
+@@ -316,13 +317,17 @@ int batadv_tvlv_container_ogm_append(struct batadv_priv *bat_priv,
+ {
+ 	struct batadv_tvlv_container *tvlv;
+ 	struct batadv_tvlv_hdr *tvlv_hdr;
+-	u16 tvlv_value_len;
++	size_t tvlv_value_len;
+ 	void *tvlv_value;
+ 	int tvlv_len_ret;
+ 	bool ret;
  
- 	BUILD_BUG_ON(sizeof(struct xfrm_trans_cb) > sizeof(skb->cb));
+ 	spin_lock_bh(&bat_priv->tvlv.container_list_lock);
+ 	tvlv_value_len = batadv_tvlv_container_list_size(bat_priv);
++	if (tvlv_value_len > U16_MAX) {
++		tvlv_len_ret = -E2BIG;
++		goto end;
++	}
  
-+	hold_net = maybe_get_net(net);
-+	if (!hold_net)
-+		return -ENODEV;
-+
- 	XFRM_TRANS_SKB_CB(skb)->finish = finish;
--	XFRM_TRANS_SKB_CB(skb)->net = net;
-+	XFRM_TRANS_SKB_CB(skb)->net = hold_net;
- 	spin_lock_bh(&trans->queue_lock);
- 	__skb_queue_tail(&trans->queue, skb);
- 	spin_unlock_bh(&trans->queue_lock);
+ 	ret = batadv_tvlv_realloc_packet_buff(packet_buff, packet_buff_len,
+ 					      packet_min_len, tvlv_value_len);
+-- 
+2.53.0
+
 
 
 
