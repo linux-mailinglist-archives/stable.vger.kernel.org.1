@@ -1,64 +1,62 @@
-Return-Path: <stable+bounces-265402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265834-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id /YaWFW6JMWrwlwUAu9opvQ
-	(envelope-from <stable+bounces-265402-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:35:42 +0200
+	id LckeEumQMWqLmwUAu9opvQ
+	(envelope-from <stable+bounces-265834-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:07:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAE1B6934A0
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:35:41 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9707D693D1B
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:07:36 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=PW84jy0T;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265402-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265402-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=1MSrm9Ap;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265834-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265834-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5FAA130A2D41
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:30:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0EBD131315A3
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:07:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A9AC47AF67;
-	Tue, 16 Jun 2026 17:30:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 604E83D45CB;
+	Tue, 16 Jun 2026 18:07:33 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 079F2355F5F;
-	Tue, 16 Jun 2026 17:30:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EEFF2F12AE;
+	Tue, 16 Jun 2026 18:07:32 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781631017; cv=none; b=RdfFFG3R+/4BPkDf81C6Zkx54Z9MSET6PMZf+L+qAUdrNSKBI1/7Lbxvr3C3HyxAyhm/4KHwZ0kMKdhgoZo9PT2FZhDap2CR5VibYv83xDOrxXcBRkOeZZobjiy2+cQIXvosa2x2BHRpwmr6qOqUHybUXJ40J5En9CFVe92M+Bs=
+	t=1781633253; cv=none; b=fFkg35is4qLiYRN0nZ77DiWiZM0h7KWm1c3Xyec9E/LI23B/prrV0TCmrGxEnyjSXBjPzygyXZ6ZjbNFOFOOjYMqFiHNCaRLSzLK/Cb1omFNYfSBVMCF275dDqASjZHgzuEIS5ccCJjGzicoaGt7Dvxe38IMq0+ZxghzPuouueQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781631017; c=relaxed/simple;
-	bh=MC0sudR9Bx4yf0t7bPZwF+21bR/q9Q6y7oVBFmbIIjo=;
+	s=arc-20240116; t=1781633253; c=relaxed/simple;
+	bh=AU1wAzPX6LMP4r8kvnq4sh1oo2+c3G+69QQOZn2RNNM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ipcZERsiCmHT5PAxFWjKoun6PyZLCcvojDShjlpw2l+bCpSTdLT5HD6MsnROms/hi+aDftekEFwTWvg03KPufGoAz50JtxzA7tf3BPhzM1vYxvs8S8/2TADcrWZ+AsieDOKXj1lqTj2xLNzkp1W/aVM1Q44a0QQImw3KegF7/C4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PW84jy0T; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16A631F000E9;
-	Tue, 16 Jun 2026 17:30:15 +0000 (UTC)
+	 MIME-Version; b=WAUBulE3hWX/GtdGWpFK0auEAB7nhe0QOU/OIC6QMaXytkfb+C8XtB2SCV93reVCJXhszUA6D3RslPHjpWxpTpEXR+3D/vsoH9MmmX1wEYgVuc7JXBHeyNttWdRc1/f7FBOYU3+BfS59ZFZdJt/mX6EJFxOuI0O2e3TWVz1d2NU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1MSrm9Ap; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14AAE1F000E9;
+	Tue, 16 Jun 2026 18:07:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781631016;
-	bh=v0hcNhSOOJ5W/8POYL7jlcsFM2gu9LetXaGNfiLhM/8=;
+	s=korg; t=1781633252;
+	bh=1QQNInBB+UzOaQ/sMfaXaxWwBouSPdcRx14WC55fh8c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=PW84jy0Ti8NMPnEsJerko8R0Q2uNm1cVxhGQNAG6HHhGeZhbu9xxuPXajkeP3ESrj
-	 N6ZpRYTVS2m+vsKwVuhD49WwJAycvJlnNvm1AZf5+vpx2l3EBFELmzMJLIBFosHccG
-	 4hZ2kPB5/qg/qR202VKsJTo8x0G9eGGGPKx9HRIE=
+	b=1MSrm9ApBj9fWeGPL0k+UVoKKwuN31E/G8UFwXfv6k9QZzc+20AHJ01Cfr5m/ePu1
+	 Hz1cDgEgkwkiuUt0rzCUwjLLdXIo0E8efYEvFZZIjWTX85K91exgAxeQqsUz7gOl3X
+	 wef83e+PAHnM8BMkodKQE6MNcyNHSiRDBu1FAl54=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Salah Triki <salah.triki@gmail.com>,
-	Joshua Crofts <joshua.crofts1@gmail.com>,
-	Maxwell Doose <m32285159@gmail.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <jic23@kernel.org>
-Subject: [PATCH 6.1 107/522] iio: adc: viperboard: Fix error handling in vprbrd_iio_read_raw
+	Ilya Maximets <i.maximets@ovn.org>,
+	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 016/411] net: netlink: fix sending unassigned nsid after assigned one
 Date: Tue, 16 Jun 2026 20:24:14 +0530
-Message-ID: <20260616145130.947838117@linuxfoundation.org>
+Message-ID: <20260616145101.246978164@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,85 +66,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-265402-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,analog.com,vger.kernel.org,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:salah.triki@gmail.com,m:joshua.crofts1@gmail.com,m:m32285159@gmail.com,m:nuno.sa@analog.com,m:Stable@vger.kernel.org,m:jic23@kernel.org,m:salahtriki@gmail.com,m:joshuacrofts1@gmail.com,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265834-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:i.maximets@ovn.org,m:nicolas.dichtel@6wind.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,analog.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,6wind.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: BAE1B6934A0
+X-Rspamd-Queue-Id: 9707D693D1B
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Salah Triki <salah.triki@gmail.com>
+From: Ilya Maximets <i.maximets@ovn.org>
 
-commit 422b5bbf333f75fb486855ad0eedc23cf21f3277 upstream.
+[ Upstream commit 70f8592ee90585272018a725054b6eb2ab7e99ca ]
 
-The driver proceeds to the reception phase even if the preceding
-transmission fails.
+If the current skb is not shared, it is re-used directly for all the
+sockets subscribed to the notification.  If we have remote all-nsid
+socket receiving a message first, then the 'nsid_is_set' will be
+set to 'true'.  If the nsid is NOT_ASSIGNED for the next socket in
+the list, the 'nsid_is_set' will remain 'true' and the negative value
+is be delivered to the user space.  All subsequent nsid values will be
+delivered as well, since there is no code path that sets the flag
+back to 'false'.
 
-This uses a goto error label for an early bail out and ensures the mutex is
-properly unlocked in case of failure.
+Fix that by always dropping the flag to 'false' first.
 
-Fixes: ffd8a6e7a778 ("iio: adc: Add viperboard adc driver")
-Signed-off-by: Salah Triki <salah.triki@gmail.com>
-Reviewed-by: Joshua Crofts <joshua.crofts1@gmail.com>
-Reviewed-by: Maxwell Doose <m32285159@gmail.com>
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <jic23@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7212462fa6fd ("netlink: don't send unknown nsid")
+Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
+Acked-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Link: https://patch.msgid.link/20260520172317.175168-2-i.maximets@ovn.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/viperboard_adc.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/netlink/af_netlink.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/iio/adc/viperboard_adc.c
-+++ b/drivers/iio/adc/viperboard_adc.c
-@@ -70,8 +70,10 @@ static int vprbrd_iio_read_raw(struct ii
- 			VPRBRD_USB_TYPE_OUT, 0x0000, 0x0000, admsg,
- 			sizeof(struct vprbrd_adc_msg), VPRBRD_USB_TIMEOUT_MS);
- 		if (ret != sizeof(struct vprbrd_adc_msg)) {
--			dev_err(&iio_dev->dev, "usb send error on adc read\n");
-+			mutex_unlock(&vb->lock);
- 			error = -EREMOTEIO;
-+			dev_err(&iio_dev->dev, "usb send error on adc read\n");
-+			goto error;
- 		}
- 
- 		ret = usb_control_msg(vb->usb_dev,
+diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
+index 65eb164d00c40d..12e765fcbd747d 100644
+--- a/net/netlink/af_netlink.c
++++ b/net/netlink/af_netlink.c
+@@ -1482,6 +1482,7 @@ static void do_one_broadcast(struct sock *sk,
+ 		p->skb2 = NULL;
+ 		goto out;
+ 	}
++	NETLINK_CB(p->skb2).nsid_is_set = false;
+ 	NETLINK_CB(p->skb2).nsid = peernet2id(sock_net(sk), p->net);
+ 	if (NETLINK_CB(p->skb2).nsid != NETNSA_NSID_NOT_ASSIGNED)
+ 		NETLINK_CB(p->skb2).nsid_is_set = true;
+-- 
+2.53.0
+
 
 
 
