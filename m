@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-264778-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264494-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id nKQ4Dt59MWr6kgUAu9opvQ
-	(envelope-from <stable+bounces-264778-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:46:22 +0200
+	id u71gCot4MWrCkAUAu9opvQ
+	(envelope-from <stable+bounces-264494-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:23:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B13016926FA
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:46:21 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA0D569207B
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:23:38 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=bkl15EEN;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264778-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264778-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=m2UUveVK;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264494-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264494-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2F4E0304920E
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:37:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 97E6A32414B8
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:09:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B01F47798F;
-	Tue, 16 Jun 2026 16:37:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 050FF451052;
+	Tue, 16 Jun 2026 16:09:49 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7DB02F745E;
-	Tue, 16 Jun 2026 16:37:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D27E33C6A2B;
+	Tue, 16 Jun 2026 16:09:47 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781627840; cv=none; b=QdjNkmiHvLcxM5bNEiHg0V+3dMANOuahvWhg969IW1mVdaWKaYuSlpLcB+L8bVgLacnpdfQ9rhz7gysZ3OjGLnewN0Zcre39DQqepkbQB0EQKsz1n5ZY5pLaMD0icsLAOBR+UmXFOj6mpLpTgL2j7Kn9PKU/c62V8N5jo0ubZBM=
+	t=1781626188; cv=none; b=Di9c1a3SNMDKK7HBcW0E5VjwoBmS1eoQqAcGvk45UVZS6043+okSEcBu+CYsuLgtGv3bUqy6YzTR3PbcpKH+8pwJz2/iwX++/oxguXQ2BLlCKBntr8HQgIQ30dSTu6+RzzGA51ODOln9G7cZvFNpJ9pwgdJYXWo4giskFCDtdLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781627840; c=relaxed/simple;
-	bh=Ty5b+v+B6KyxFfDsn2y8bshQ2A6/vcBM3NxiBV6IrIo=;
+	s=arc-20240116; t=1781626188; c=relaxed/simple;
+	bh=SodjGpHo3xxHfi2jW0ZnZ2VnaegiqSyr4Efh78Rtj0E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tEsa7Fr2al7dp6/Xs0P/rN2hym/cv7wjWr6us62pb+8N3IdxkZGLH/pXgGDaO8P9nr8b6SuIXJ8Zxr1WO8h8MLyP3FTXhMM9wrErUscoQGHEx20aWo5VGM1YHL8XsqpmE4oTJZEFZV5BbD6A6E/AEbdOppXmwSJTbY/l0DQOiT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bkl15EEN; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8BF31F000E9;
-	Tue, 16 Jun 2026 16:37:18 +0000 (UTC)
+	 MIME-Version; b=rqHnZOsX6Cj4i+XPguCtFqoFf9XPtfu+aJzgdfoZzwU6Bb4/iTZI958Q4N/i+6OqAD5jHaACfsoynNEWCY6W+qfEdsGXOrYlozbZBesiA3rB/bFlSZR5w05wde6GkjJ1G1oJVKfnbjzFBM0F2cAWDOXJWlZb+EB++xDWEmOrgtU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m2UUveVK; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 801C31F000E9;
+	Tue, 16 Jun 2026 16:09:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781627839;
-	bh=MtuQXm9SIbwzgbGhWKH6+TezxsYd7n4apDlVaKQJdyU=;
+	s=korg; t=1781626187;
+	bh=DTfj8eHXyjx0mKTSYe8uXPnBSXq4630pYLIMYr/gN+A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=bkl15EENywhOq10gJLLUIRTwGBtfnMIdjnmJLaCoShRqSnerEcqST1MAFUq32kEyl
-	 7fvYVMGOp4azBjsYV2H+m47e6tQKqZ/ANfEd0EIVnEGjrn3AEmuUYkJRrvltcIATbZ
-	 puUnEIeEP4cyZ+Yo0i+7VLxA5sUgRHLqaRvhX8iI=
+	b=m2UUveVKiiYiw656/v9emLMuIKX+KX3He8+KIbVkj1Ay2LyiM888wveS7dabUOvFS
+	 yDYu8HQSVZdiOB8qiFekeRnshpFTB0KOWZw9+1ImQu8z+/kgSzqKmXhCrNwryh0iS3
+	 ObMp/nSKaq1anSGXM3gdR47nrk6e0JMLkHo0Mk0M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacob Moroni <jmoroni@google.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 237/261] RDMA/umem: Move umem dmabuf revoke logic into helper function
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>,
+	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
+	Srinivas Kandagatla <srini@kernel.org>
+Subject: [PATCH 6.18 279/325] slimbus: qcom-ngd-ctrl: Correct PDR and SSR cleanup ownership
 Date: Tue, 16 Jun 2026 20:31:15 +0530
-Message-ID: <20260616145056.050169143@linuxfoundation.org>
+Message-ID: <20260616145112.629135323@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
-References: <20260616145044.869532709@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,103 +70,87 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264778-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jmoroni@google.com,m:leon@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264494-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:dmitry.baryshkov@oss.qualcomm.com,m:mukesh.ojha@oss.qualcomm.com,m:bjorn.andersson@oss.qualcomm.com,m:srini@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,vger.kernel.org:from_smtp,qualcomm.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B13016926FA
+X-Rspamd-Queue-Id: AA0D569207B
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacob Moroni <jmoroni@google.com>
+From: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
 
-[ Upstream commit 797291a66ce346c96114b72222fc290d402da005 ]
+commit 960b53a3f76fa214c2fc493734ae7b3c5e713bbf upstream.
 
-This same logic will eventually be reused from within the
-invalidate_mappings callback which already has the dma_resv_lock
-held, so break it out into a separate function so it can be reused.
+PDR and SSR callbacks are registred from the controller probe function,
+but currently released from the child device's remove function.
 
-Signed-off-by: Jacob Moroni <jmoroni@google.com>
-Link: https://patch.msgid.link/20260305170826.3803155-3-jmoroni@google.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Stable-dep-of: badad6fad60d ("RDMA: During rereg_mr ensure that REREG_ACCESS is compatible")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The remove() function should only be unwinding what was done in the
+same device's probe() function.
+
+Fixes: 917809e2280b ("slimbus: ngd: Add qcom SLIMBus NGD driver")
+Cc: stable@vger.kernel.org
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
+Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
+Link: https://patch.msgid.link/20260530204421.116824-5-srini@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/core/umem_dmabuf.c |   26 +++++++++++++++++---------
- 1 file changed, 17 insertions(+), 9 deletions(-)
+ drivers/slimbus/qcom-ngd-ctrl.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/infiniband/core/umem_dmabuf.c
-+++ b/drivers/infiniband/core/umem_dmabuf.c
-@@ -198,6 +198,22 @@ static struct dma_buf_attach_ops ib_umem
- 	.move_notify = ib_umem_dmabuf_unsupported_move_notify,
- };
+--- a/drivers/slimbus/qcom-ngd-ctrl.c
++++ b/drivers/slimbus/qcom-ngd-ctrl.c
+@@ -1690,6 +1690,9 @@ static void qcom_slim_ngd_ctrl_remove(st
+ {
+ 	struct qcom_slim_ngd_ctrl *ctrl = platform_get_drvdata(pdev);
  
-+static void ib_umem_dmabuf_revoke_locked(struct dma_buf_attachment *attach)
-+{
-+	struct ib_umem_dmabuf *umem_dmabuf = attach->importer_priv;
++	pdr_handle_release(ctrl->pdr);
++	qcom_unregister_ssr_notifier(ctrl->notifier, &ctrl->nb);
 +
-+	dma_resv_assert_held(attach->dmabuf->resv);
-+
-+	if (umem_dmabuf->revoked)
-+		return;
-+	ib_umem_dmabuf_unmap_pages(umem_dmabuf);
-+	if (umem_dmabuf->pinned) {
-+		dma_buf_unpin(umem_dmabuf->attach);
-+		umem_dmabuf->pinned = 0;
-+	}
-+	umem_dmabuf->revoked = 1;
-+}
-+
- static struct ib_umem_dmabuf *
- ib_umem_dmabuf_get_pinned_and_lock(struct ib_device *device,
- 				   struct device *dma_device,
-@@ -265,15 +281,7 @@ void ib_umem_dmabuf_revoke(struct ib_ume
- 	struct dma_buf *dmabuf = umem_dmabuf->attach->dmabuf;
+ 	qcom_slim_ngd_unregister(ctrl);
  
- 	dma_resv_lock(dmabuf->resv, NULL);
--	if (umem_dmabuf->revoked)
--		goto end;
--	ib_umem_dmabuf_unmap_pages(umem_dmabuf);
--	if (umem_dmabuf->pinned) {
--		dma_buf_unpin(umem_dmabuf->attach);
--		umem_dmabuf->pinned = 0;
--	}
--	umem_dmabuf->revoked = 1;
--end:
-+	ib_umem_dmabuf_revoke_locked(umem_dmabuf->attach);
- 	dma_resv_unlock(dmabuf->resv);
- }
- EXPORT_SYMBOL(ib_umem_dmabuf_revoke);
+ 	destroy_workqueue(ctrl->mwq);
+@@ -1700,8 +1703,6 @@ static void qcom_slim_ngd_remove(struct
+ 	struct qcom_slim_ngd_ctrl *ctrl = platform_get_drvdata(pdev);
+ 
+ 	pm_runtime_disable(&pdev->dev);
+-	pdr_handle_release(ctrl->pdr);
+-	qcom_unregister_ssr_notifier(ctrl->notifier, &ctrl->nb);
+ 	qcom_slim_ngd_enable(ctrl, false);
+ 	qcom_slim_ngd_exit_dma(ctrl);
+ 	qcom_slim_ngd_qmi_svc_event_deinit(&ctrl->qmi);
 
 
 
