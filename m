@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-265568-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266333-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id u0epB5mMMWpkmQUAu9opvQ
-	(envelope-from <stable+bounces-265568-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:49:13 +0200
+	id 3V/ABSebMWpLoAUAu9opvQ
+	(envelope-from <stable+bounces-266333-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:51:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B44769381A
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:49:12 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A3F1694854
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:51:18 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=uax9mqL9;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265568-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265568-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=QvwTh5Rk;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266333-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266333-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 799FA3099317
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:44:24 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 220F3300BC5C
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:51:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ECC0478E5B;
-	Tue, 16 Jun 2026 17:44:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 308B147CC7A;
+	Tue, 16 Jun 2026 18:51:13 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 005174657D0;
-	Tue, 16 Jun 2026 17:44:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08E4A43D4E8;
+	Tue, 16 Jun 2026 18:51:12 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781631862; cv=none; b=CO8ShA86rpO311+dump60iF+Mh/r2RI8kkFMBdPpfO55VOTToiY8Ub4HSXRcFp3TRaPv3NS95dc7Rjy33EptJEMZZaWKMmetQh1QuqP1yN50O90g3Mq3uCchL2kFVPs/ltso4xOAziOphQkHsUa5MrplrrvxDWR82nj6KJlWubI=
+	t=1781635873; cv=none; b=hlBVLT9xIAtxbDiy4+mK2+Vu0equMeoor1QEvX+XOKoP8YecglgelllRTtKEIMUOgzZwZrTUEPg3/c30RQ2WeZWetTja/O2ZNfd1PiKgeSaa/+md04p+sxtUfAPsqQniYwn0Yg/MROyupOdvZUm8qXJnskwyrMXFAkp6j479IOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781631862; c=relaxed/simple;
-	bh=hhaOiJKEZ8zORl8i8aKQlpcQfF4EmqiYWGh9VHITs4w=;
+	s=arc-20240116; t=1781635873; c=relaxed/simple;
+	bh=QqQUArD9C4NxzZP4uuAz8Djq+E07nzWF1PeuW99vNy4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=izwC7l50LCWie0HC0RB0AZjggna1u0CwW82iDSc94fwOd/3YA8TUt7wx1TF633JpELuQjq1+R8in1fR6lF3QK2TNiH+s5JClXbQMXwSm0wMFbmRWoESAMOJE9+iCyigFu+s99RSJ0eOk9KxtAZs+AOETGXPZuwC7X8qrkwX4YVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uax9mqL9; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 626261F000E9;
-	Tue, 16 Jun 2026 17:44:18 +0000 (UTC)
+	 MIME-Version; b=RGdzDjANp5m3FiZjFhzy+WVJ01sKAGJ1xdwRqeDRiaRSnwHOnUUFnTVXKNXHA+62XWrSgTWzIJCxYWXW++vwF2ve96PX8VPBZkRWpMx50AMshzu8XVu8mPvGHnryCoPxRSgp51KOkYk/TV8zjaCD3wo0NFWrLuDqVN5cDYx36xM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QvwTh5Rk; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C7A11F000E9;
+	Tue, 16 Jun 2026 18:51:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781631859;
-	bh=l1xXpDIci8ZAEmQe3x/djtByt6jN0XMrmM8VBTwJ1Tg=;
+	s=korg; t=1781635871;
+	bh=RDZl7FwlaZo+Be1woS3i8G4fcm0JGZx1zD4B5nd3ERA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=uax9mqL9IIEgjReNJlmRDYRka2bC4UCUDUkWnoQ11yVstsamzodrC4hx78Q9SB9Ur
-	 jC2X22QB+hkiw5Q5udKpZZnkiiyiYlV1Vki8ZEpCoApNHEmhFijtmaYQJbaGBh1PlQ
-	 Y0pax6jsHTXVewiEKxEPf8EFdTg865fPl7qEyQz4=
+	b=QvwTh5RkM8825EcGuO8UAjP2vf3xWGm70eCjsA3FpOZAJBXMYrWJF5yAxiDOrqIej
+	 m31dczoe7t8wVLiPZSFNdtFzipve9eGpIrjobGhOUc1ghlSc0k/WYE3esaRA1eblxQ
+	 TIOID4d6K+9oxYkIp15GGB4gQNqMWwDkWGQJ5uig=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sechang Lim <rhkrqnwk98@gmail.com>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 281/522] udp: clear skb->dev before running a sockmap verdict
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 132/342] netfilter: xt_NFQUEUE: prefer raw_smp_processor_id
 Date: Tue, 16 Jun 2026 20:27:08 +0530
-Message-ID: <20260616145139.086513702@linuxfoundation.org>
+Message-ID: <20260616145054.346251048@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,126 +70,79 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.dev,google.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-265568-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:rhkrqnwk98@gmail.com,m:jiayuan.chen@linux.dev,m:edumazet@google.com,m:kuba@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-266333-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:fmancera@suse.de,m:fw@strlen.de,m:pablo@netfilter.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linux.dev:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,netfilter.org:email,strlen.de:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 6B44769381A
+X-Rspamd-Queue-Id: 0A3F1694854
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sechang Lim <rhkrqnwk98@gmail.com>
+From: Fernando Fernandez Mancera <fmancera@suse.de>
 
-commit 3c94f241f776562c489876ff506f366224565c21 upstream.
+[ Upstream commit c6c5327dd18bec1e1bbf139b2cf5ae53608a9d30 ]
 
-On the UDP receive path skb->dev is repurposed as dev_scratch (the
-truesize/state cache set by udp_set_dev_scratch()), through the
-union { struct net_device *dev; unsigned long dev_scratch; } in sk_buff.
+With PREEMPT_RCU this triggers a splat because smp_processor_id() can be
+preempted while inside a RCU critical section. If xt_NFQUEUE target is
+invoked via nft_compat_eval() path, we are inside a RCU critical
+section.
 
-When a UDP socket is in a sockmap, sk_data_ready is
-sk_psock_verdict_data_ready(), which calls udp_read_skb() -> recv_actor()
-(sk_psock_verdict_recv) to run the attached SK_SKB verdict program in softirq.
-If that program calls a socket-lookup helper (bpf_sk_lookup_tcp/udp,
-bpf_skc_lookup_tcp), bpf_skc_lookup() does:
+Just use the raw version instead.
 
-	if (skb->dev)
-		caller_net = dev_net(skb->dev);
-
-skb->dev still holds the dev_scratch value (a non-NULL integer), so dev_net()
-dereferences it as a struct net_device * and the kernel takes a general
-protection fault on a non-canonical address in softirq:
-
-  Oops: general protection fault, probably for non-canonical address 0x1010000800004a0
-  CPU: 1 UID: 0 PID: 1406 Comm: syz.2.19 Not tainted 7.1.0-rc6 #1 PREEMPT(full)
-  RIP: 0010:bpf_skc_lookup net/core/filter.c:7033 [inline]
-  RIP: 0010:bpf_sk_lookup+0x45/0x160 net/core/filter.c:7047
-  Call Trace:
-   <IRQ>
-   bpf_prog_4675cb904b7071f8+0x12e/0x14e
-   bpf_prog_run_pin_on_cpu+0xc6/0x1f0
-   sk_psock_verdict_recv+0x1ba/0x350
-   udp_read_skb+0x31a/0x370
-   sk_psock_verdict_data_ready+0x2e3/0x600
-   __udp_enqueue_schedule_skb+0x4c8/0x650
-   udpv6_queue_rcv_one_skb+0x3ec/0x740
-   udp6_unicast_rcv_skb+0x11d/0x140
-   ip6_protocol_deliver_rcu+0x61e/0x950
-   ip6_input_finish+0xa9/0x150
-   NF_HOOK+0x286/0x2f0
-   ip6_input+0x117/0x220
-   NF_HOOK+0x286/0x2f0
-   __netif_receive_skb+0x85/0x200
-   process_backlog+0x374/0x9a0
-   __napi_poll+0x4f/0x1c0
-   net_rx_action+0x3b0/0x770
-   handle_softirqs+0x15a/0x460
-   do_softirq+0x57/0x80
-   </IRQ>
-
-The rmem charge that dev_scratch accounted for is released by skb_recv_udp() on
-dequeue, just above, so the scratch is dead by the time recv_actor() runs. Clear
-skb->dev so bpf_skc_lookup() falls back to sock_net(skb->sk), which
-skb_set_owner_sk_safe() set just above.
-
-Fixes: 965b57b469a5 ("net: Introduce a new proto_ops ->read_skb()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sechang Lim <rhkrqnwk98@gmail.com>
-Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260603162737.697215-1-rhkrqnwk98@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0ca743a55991 ("netfilter: nf_tables: add compatibility layer for x_tables")
+Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/udp.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ net/netfilter/xt_NFQUEUE.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/ipv4/udp.c
-+++ b/net/ipv4/udp.c
-@@ -1822,6 +1822,14 @@ try_again:
- 	}
+diff --git a/net/netfilter/xt_NFQUEUE.c b/net/netfilter/xt_NFQUEUE.c
+index 466da23e36ff47..b32d153e3a1862 100644
+--- a/net/netfilter/xt_NFQUEUE.c
++++ b/net/netfilter/xt_NFQUEUE.c
+@@ -91,7 +91,7 @@ nfqueue_tg_v3(struct sk_buff *skb, const struct xt_action_param *par)
  
- 	WARN_ON_ONCE(!skb_set_owner_sk_safe(skb, sk));
-+
-+	/*
-+	 * skb->dev still aliases the UDP rx dev_scratch (its charge was freed
-+	 * on dequeue above); a sockmap verdict program may deref it via
-+	 * bpf_sk_lookup_*(), so clear it -> bpf_skc_lookup() uses skb->sk
-+	 */
-+	skb->dev = NULL;
-+
- 	return recv_actor(sk, skb);
- }
- EXPORT_SYMBOL(udp_read_skb);
+ 	if (info->queues_total > 1) {
+ 		if (info->flags & NFQ_FLAG_CPU_FANOUT) {
+-			int cpu = smp_processor_id();
++			int cpu = raw_smp_processor_id();
+ 
+ 			queue = info->queuenum + cpu % info->queues_total;
+ 		} else {
+-- 
+2.53.0
+
 
 
 
