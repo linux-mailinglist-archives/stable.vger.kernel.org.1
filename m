@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-266227-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265473-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id +5NrAwGZMWo8nwUAu9opvQ
-	(envelope-from <stable+bounces-266227-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:42:09 +0200
+	id xlugMqSKMWptmAUAu9opvQ
+	(envelope-from <stable+bounces-265473-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:40:52 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3E65694594
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:42:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA3916935C0
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:40:51 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="Y/fNQWbw";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266227-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266227-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=CZSn7E8u;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265473-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265473-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id EECDE300C7EB
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:42:04 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 685C230355EA
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:36:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6E5447CC62;
-	Tue, 16 Jun 2026 18:42:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A38B4779B9;
+	Tue, 16 Jun 2026 17:36:17 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE9AE38C437;
-	Tue, 16 Jun 2026 18:42:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D05132E728;
+	Tue, 16 Jun 2026 17:36:16 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781635321; cv=none; b=XgnYJfVTEfoSnQKv3hKhIROU1jPEZPWjth47An556AQNj6kYUg4PCbGB+IcOv2/EswfQJ7z6ulT+OaEKEu4lQv0BT66O2X9eNR6xjtzZMAY9lmHf6s2ZDXjtQRduxX8YCzw9LRegNwDjK48LUtgd70Y2h7pATxtfgRCtxhD7aWc=
+	t=1781631377; cv=none; b=cseiqrNmpY1N3O5aRJ405ANYXezoIlRodcqA8uHgkyaqiWY0aFcp6nmSvXlKgdDoJVne/TwFXEyAJk+2xgTXp+0fj/Tws0oFLt6weRJdCLVj294YzkMYPjxk2pWqOjDbHQReamq8DbMHklS0Mh9SZ/QYHc7sHCD6DzFGqzhIQ3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781635321; c=relaxed/simple;
-	bh=NDoxrjUdxl8CrAZtDfZFDpoi5ExozlaDRYMdp+rqkVo=;
+	s=arc-20240116; t=1781631377; c=relaxed/simple;
+	bh=jYoznuLXUYnvswTsSUIl9amYrWS9HDcn3o5wBpxkSm0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g3UhJ8EJfE8ZILz4DYZ0ZIL2C8kJnBquQWQvKnrNgVb1POFoTaO7VpQ8v8eQboXoIUWLhXkKMnqBArjztdgy3kN+K4m5ka3mszkUPrljktbTIi1W+wbnYQTRRMaXUSjpg7VpX+er7bPskpJ381vmSAZHqR/j944GZ6/jpoiVyYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y/fNQWbw; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 710A71F000E9;
-	Tue, 16 Jun 2026 18:41:59 +0000 (UTC)
+	 MIME-Version; b=eHLyj9aSgD2btNKvoksD28z42uJAImPyNuL+eYYFEiIqRkYilW06aMUUOByIYVy4wYuXAxTa7aN4wBFi0zzfxuwJIrdZNOb9o+XcF6VDjeLjpkcoS6i234Glw5jDZTTAVFAWpc7B8RbsGuST8kixN+fuT1szjLRLoJ/owC5puCA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CZSn7E8u; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6E201F000E9;
+	Tue, 16 Jun 2026 17:36:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781635320;
-	bh=wlcS3djamP12kdvyruNFLq0RywAwJE2DQSIilur/u9g=;
+	s=korg; t=1781631376;
+	bh=Rb0I/7upC2fhuEphtpCufEORASGJMh0EfKBxq4XpO7I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Y/fNQWbwOk5WvQ4lwzayq75Z1ivm0LOiFGpwXLPUoKQZoBM7qKbGsvIMMw+2mJxMz
-	 daifFUHq18gkwxNy/DNHsuyuBMA3AMCMCl8rCEx9gQKhc7rovz4Eo9JQ5PEM3b9qyf
-	 NiEZTniSW5N3hSdr14DKKfDA00mkARLdDSrvq0dM=
+	b=CZSn7E8uQxaeCVjw/SrBTEM7hia5tZNuZWEUn2lWrQZyZifytPvhkTBFlSf1bMg95
+	 TWJ1LY57E2lEhEF2OzlprZ4rybN6WT82xvPfHWiQnsj62OeJvlwD8cBdb2wKDN1+Q4
+	 ww2k/ElOV50RiW84L3DiP1q+YbpOx9RDLYjaYQmM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhenghang Xiao <kipreyyy@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 027/342] Bluetooth: l2cap: clear chan->ident on ECRED reconfiguration success
+	"Maciej W. Rozycki" <macro@orcam.me.uk>
+Subject: [PATCH 6.1 176/522] serial: dz: Fix bootconsole message clobbering at chip reset
 Date: Tue, 16 Jun 2026 20:25:23 +0530
-Message-ID: <20260616145049.523585737@linuxfoundation.org>
+Message-ID: <20260616145134.375292094@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,94 +74,102 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-266227-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kipreyyy@gmail.com,m:luiz.von.dentz@intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-265473-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:macro@orcam.me.uk,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCPT_COUNT_THREE(0.00)[4];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,intel.com:email,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,vger.kernel.org:from_smtp,orcam.me.uk:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: F3E65694594
+X-Rspamd-Queue-Id: CA3916935C0
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhenghang Xiao <kipreyyy@gmail.com>
+From: Maciej W. Rozycki <macro@orcam.me.uk>
 
-[ Upstream commit 00e1950716c6ed67d74777b2db286b0fa23b4be9 ]
+commit ca904f4b42355287bc5ce8b7550ebe909cda4c2c upstream.
 
-l2cap_ecred_reconf_rsp() returns early on success without clearing
-chan->ident. Every other L2CAP response handler (l2cap_ecred_conn_rsp,
-l2cap_le_connect_rsp, l2cap_config_rsp) clears chan->ident after a
-successful transaction to prevent the channel from matching subsequent
-responses with the recycled ident value.
+In the DZ interface as implemented by the DC7085 gate array the serial
+transmitters are double buffered, meaning that at the time a transmitter
+is ready to accept the next character there is one in the transmit shift
+register still being sent to the line.  Issuing a master clear at this
+time causes this character to be lost, so wait an extra amount of time
+sufficient for the transmit shift register to drain at 9600bps, which is
+the baud rate setting used by the firmware console.
 
-A remote attacker that completed a reconfiguration as the peer can
-replay a failure response with the stale ident, causing the kernel to
-match and destroy the already-established channel via
-l2cap_chan_del(chan, ECONNRESET).
+Mind the specified 1.4us TRDY recovery time in the course and continue
+using iob() as the completion barrier, since the platforms involved use
+a write buffer that can delay and combine writes, and reorder them with
+respect to reads regardless of the MMIO locations accessed and we still
+lack a platform-independent handler for that.
 
-Clear chan->ident for all matching channels on success, and harden the
-failure path by using l2cap_chan_hold_unless_zero() consistent with
-other L2CAP handlers (l2cap_le_command_rej, __l2cap_get_chan_by_ident).
+When called from dz_serial_console_init() this is too early for fsleep()
+to work and even before lpj has been calculated and therefore the delay
+is actually not sufficient for the transmitter to drain and is merely a
+placeholder now.  This will be addressed in a follow-up change.
 
-Fixes: 15f02b910562 ("Bluetooth: L2CAP: Add initial code for Enhanced Credit Based Mode")
-Signed-off-by: Zhenghang Xiao <kipreyyy@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e6ee512f5a77 ("dz.c: Resource management")
+Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Cc: stable@vger.kernel.org # v2.6.25+
+Link: https://patch.msgid.link/alpine.DEB.2.21.2605062259080.46195@angie.orcam.me.uk
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/l2cap_core.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/tty/serial/dz.c |   21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
-diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
-index 45e1e8192e3b63..f30624d20bb09c 100644
---- a/net/bluetooth/l2cap_core.c
-+++ b/net/bluetooth/l2cap_core.c
-@@ -6432,14 +6432,20 @@ static inline int l2cap_ecred_reconf_rsp(struct l2cap_conn *conn,
+--- a/drivers/tty/serial/dz.c
++++ b/drivers/tty/serial/dz.c
+@@ -544,10 +544,31 @@ static int dz_encode_baud_rate(unsigned
+ static void dz_reset(struct dz_port *dport)
+ {
+ 	struct dz_mux *mux = dport->mux;
++	unsigned short tcr;
++	int loops = 10000;
  
- 	BT_DBG("result 0x%4.4x", result);
+ 	if (mux->initialised)
+ 		return;
  
--	if (!result)
-+	if (!result) {
-+		list_for_each_entry(chan, &conn->chan_l, list) {
-+			if (chan->ident == cmd->ident)
-+				chan->ident = 0;
++	tcr = dz_in(dport, DZ_TCR);
++
++	/* Do not disturb any ongoing transmissions.  */
++	if (dz_in(dport, DZ_CSR) & DZ_MSE) {
++		unsigned short csr, mask;
++
++		mask = tcr;
++		while ((mask & DZ_LNENB) && loops--) {
++			csr = dz_in(dport, DZ_CSR);
++			if (!(csr & DZ_TRDY))
++				continue;
++			mask &= ~(1 << ((csr & DZ_TLINE) >> 8));
++			dz_out(dport, DZ_TCR, mask);
++			iob();
++			udelay(2);		/* 1.4us TRDY recovery.  */
 +		}
- 		return 0;
++		udelay(1200);			/* Transmitter drain.  */
 +	}
- 
- 	list_for_each_entry_safe(chan, tmp, &conn->chan_l, list) {
- 		if (chan->ident != cmd->ident)
- 			continue;
- 
--		l2cap_chan_hold(chan);
-+		if (!l2cap_chan_hold_unless_zero(chan))
-+			continue;
- 		l2cap_chan_lock(chan);
- 
- 		l2cap_chan_del(chan, ECONNRESET);
--- 
-2.53.0
-
++
+ 	dz_out(dport, DZ_CSR, DZ_CLR);
+ 	while (dz_in(dport, DZ_CSR) & DZ_CLR);
+ 	iob();
 
 
 
