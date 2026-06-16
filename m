@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-266497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264687-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 3rpyInqeMWqwoQUAu9opvQ
-	(envelope-from <stable+bounces-266497-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:05:30 +0200
+	id 7hkEMkx7MWrdkQUAu9opvQ
+	(envelope-from <stable+bounces-264687-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:35:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 278A7694BB2
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:05:30 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4233D6923B8
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:35:24 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=znbiHwWP;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266497-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266497-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=WV2G9bkf;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264687-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264687-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 95FDE303BAA8
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:05:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A52EC30BEA88
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:28:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F9E33DD539;
-	Tue, 16 Jun 2026 19:05:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 691234508F2;
+	Tue, 16 Jun 2026 16:28:25 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 610A13D810C;
-	Tue, 16 Jun 2026 19:05:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A9F8425CEE;
+	Tue, 16 Jun 2026 16:28:24 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781636726; cv=none; b=or18Y3J+6gYxojkKcwHR8yhZ6yMYuRJty73e1t5T5prpcVALwMS+8Ut99iPPDwj4/bNZZg1F19YO+1HYxTAkHmWGkfFg9OHjBMoNHbx8r4rOXVx+iEzSsp28ugWG8DZ0tcL5+yZadvRVL8/hcYd7L7jyjwnM8senswmKE9j+adE=
+	t=1781627305; cv=none; b=AmOsteGOWl2TF5Agfx6ZXmi+NhBD2StBcd8G34s1uso1ISg7Xhqi5K3tifuPSKb8b6fogPBkqvqtcqP55ha/oIHbqlG0fWVzfJ0ekQN9soj3W38CopOQ9QgBYR+GvatHRlL1EXDhRnmYBCkT/UPICb7d3BblDfoCPK20jhBInjM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781636726; c=relaxed/simple;
-	bh=m7QMBbzOrnjrmrFnVZN1Y+sqT4r2cg3WOrQgmSi6ftE=;
+	s=arc-20240116; t=1781627305; c=relaxed/simple;
+	bh=4DIXU3gXHLp8BwZlc1mVwrdVe8PvCFc+JmGqNO2m8XA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eHM7Z5ca/AmV5lfD4bs6BU1KfqWMI/DHpgzUP3FLJMQZYY4sy5V1dJAwFBb5s3iN70WqS8oDT0CxNjO1tBl9oZYiI9wIqOjKhH5I7LHUH21BwchFI9Xw8AT3kDtPum0zBjpJkk3q4M6rbUdfPqBWQaHO0gizmYjxt1LtabttKbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=znbiHwWP; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C8301F000E9;
-	Tue, 16 Jun 2026 19:05:24 +0000 (UTC)
+	 MIME-Version; b=mCkuMtNDDE8TI3qEUwaWz/8/6E+cYA4QvAa9/LgIziO+jXfgWCE3zgRWA/wOXCTHZUPh4hiVsYg91sfs2FJwgOLlAw4jPI9nuOK55c0RNvxaDnQS+eFrkrp0SdCLlGFYZeCIODDICWxH7n439farTisDz2QQCeghQNwOGHs9Q6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WV2G9bkf; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44D751F000E9;
+	Tue, 16 Jun 2026 16:28:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781636725;
-	bh=puSijuDd4gWG63WhNxwgrn1sYjV2V89r9frWhYZxbNA=;
+	s=korg; t=1781627304;
+	bh=gTSHBNzSDqO1mWyBDcoZt5YA2aExopYasdZQXo4Q/As=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=znbiHwWPR/AWMiee55vHqrR37VhuG1OD6H3cop5YbzZLFOXvmiudRWhel6ZlO9zEH
-	 pFKCQdJ8XFD/9zvm5N8xgo9CLmT8iZTCLpiTzza9T1cEDF7zQBh3A96ZUAMAwT+nyD
-	 p79IINueEmJ7Yih8KfCexrdf+5iAmshEwJtdtapc=
+	b=WV2G9bkfaJC+yIQ/dqmk07QjIA7O4yNLxJLj2IhcOJEeJBStB3Pj27bnLn6cNsJCV
+	 udR4Ts6VogWyMFdcaiVHMCMVNZzYXvEeTA20US7KGdYikW6cAPlzsmKdGqpXUk5k0G
+	 ItkaZuwkV9AsfsmNAtwfpS0KzzIpYO/7s/f89rWA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Stitt <justinstitt@google.com>,
-	Kees Cook <keescook@chromium.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 294/342] octeontx2-af: replace deprecated strncpy with strscpy
+	Sechang Lim <rhkrqnwk98@gmail.com>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 152/261] udp: clear skb->dev before running a sockmap verdict
 Date: Tue, 16 Jun 2026 20:29:50 +0530
-Message-ID: <20260616145102.122220199@linuxfoundation.org>
+Message-ID: <20260616145052.120631381@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,94 +70,126 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266497-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.dev,google.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-264687-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:justinstitt@google.com,m:keescook@chromium.org,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:rhkrqnwk98@gmail.com,m:jiayuan.chen@linux.dev,m:edumazet@google.com,m:kuba@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linux.dev:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 278A7694BB2
+X-Rspamd-Queue-Id: 4233D6923B8
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Stitt <justinstitt@google.com>
+From: Sechang Lim <rhkrqnwk98@gmail.com>
 
-[ Upstream commit 473f8f2d1bfe1103f20140fdc80cad406b4d68c0 ]
+commit 3c94f241f776562c489876ff506f366224565c21 upstream.
 
-`strncpy` is deprecated for use on NUL-terminated destination strings
-[1] and as such we should prefer more robust and less ambiguous string
-interfaces.
+On the UDP receive path skb->dev is repurposed as dev_scratch (the
+truesize/state cache set by udp_set_dev_scratch()), through the
+union { struct net_device *dev; unsigned long dev_scratch; } in sk_buff.
 
-We can see that linfo->lmac_type is expected to be NUL-terminated based
-on the `... - 1`'s present in the current code. Presumably making room
-for a NUL-byte at the end of the buffer.
+When a UDP socket is in a sockmap, sk_data_ready is
+sk_psock_verdict_data_ready(), which calls udp_read_skb() -> recv_actor()
+(sk_psock_verdict_recv) to run the attached SK_SKB verdict program in softirq.
+If that program calls a socket-lookup helper (bpf_sk_lookup_tcp/udp,
+bpf_skc_lookup_tcp), bpf_skc_lookup() does:
 
-Considering the above, a suitable replacement is `strscpy` [2] due to
-the fact that it guarantees NUL-termination on the destination buffer
-without unnecessarily NUL-padding.
+	if (skb->dev)
+		caller_net = dev_net(skb->dev);
 
-Let's also prefer the more idiomatic strscpy usage of (dest, src,
-sizeof(dest)) rather than (dest, src, SOME_LEN).
+skb->dev still holds the dev_scratch value (a non-NULL integer), so dev_net()
+dereferences it as a struct net_device * and the kernel takes a general
+protection fault on a non-canonical address in softirq:
 
-Link: https://www.kernel.org/doc/html/latest/process/deprecated.html#strncpy-on-nul-terminated-strings [1]
-Link: https://manpages.debian.org/testing/linux-manual-4.8/strscpy.9.en.html [2]
-Link: https://github.com/KSPP/linux/issues/90
-Signed-off-by: Justin Stitt <justinstitt@google.com>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Link: https://lore.kernel.org/r/20231010-strncpy-drivers-net-ethernet-marvell-octeontx2-af-cgx-c-v1-1-a443e18f9de8@google.com
+  Oops: general protection fault, probably for non-canonical address 0x1010000800004a0
+  CPU: 1 UID: 0 PID: 1406 Comm: syz.2.19 Not tainted 7.1.0-rc6 #1 PREEMPT(full)
+  RIP: 0010:bpf_skc_lookup net/core/filter.c:7033 [inline]
+  RIP: 0010:bpf_sk_lookup+0x45/0x160 net/core/filter.c:7047
+  Call Trace:
+   <IRQ>
+   bpf_prog_4675cb904b7071f8+0x12e/0x14e
+   bpf_prog_run_pin_on_cpu+0xc6/0x1f0
+   sk_psock_verdict_recv+0x1ba/0x350
+   udp_read_skb+0x31a/0x370
+   sk_psock_verdict_data_ready+0x2e3/0x600
+   __udp_enqueue_schedule_skb+0x4c8/0x650
+   udpv6_queue_rcv_one_skb+0x3ec/0x740
+   udp6_unicast_rcv_skb+0x11d/0x140
+   ip6_protocol_deliver_rcu+0x61e/0x950
+   ip6_input_finish+0xa9/0x150
+   NF_HOOK+0x286/0x2f0
+   ip6_input+0x117/0x220
+   NF_HOOK+0x286/0x2f0
+   __netif_receive_skb+0x85/0x200
+   process_backlog+0x374/0x9a0
+   __napi_poll+0x4f/0x1c0
+   net_rx_action+0x3b0/0x770
+   handle_softirqs+0x15a/0x460
+   do_softirq+0x57/0x80
+   </IRQ>
+
+The rmem charge that dev_scratch accounted for is released by skb_recv_udp() on
+dequeue, just above, so the scratch is dead by the time recv_actor() runs. Clear
+skb->dev so bpf_skc_lookup() falls back to sock_net(skb->sk), which
+skb_set_owner_sk_safe() set just above.
+
+Fixes: 965b57b469a5 ("net: Introduce a new proto_ops ->read_skb()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sechang Lim <rhkrqnwk98@gmail.com>
+Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260603162737.697215-1-rhkrqnwk98@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: c0bf0a4f3f1f ("octeontx2-af: CGX: add bounds check to cgx_speed_mbps index")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/cgx.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/ipv4/udp.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
-@@ -679,12 +679,12 @@ static inline void link_status_user_form
- 	if (linfo->lmac_type_id >= LMAC_MODE_MAX) {
- 		dev_err(&cgx->pdev->dev, "Unknown lmac_type_id %d reported by firmware on cgx port%d:%d",
- 			linfo->lmac_type_id, cgx->cgx_id, lmac_id);
--		strncpy(linfo->lmac_type, "Unknown", LMACTYPE_STR_LEN - 1);
-+		strscpy(linfo->lmac_type, "Unknown", sizeof(linfo->lmac_type));
- 		return;
+--- a/net/ipv4/udp.c
++++ b/net/ipv4/udp.c
+@@ -1859,6 +1859,14 @@ try_again:
  	}
  
--	strncpy(linfo->lmac_type, cgx_lmactype_string[linfo->lmac_type_id],
--		LMACTYPE_STR_LEN - 1);
-+	strscpy(linfo->lmac_type, cgx_lmactype_string[linfo->lmac_type_id],
-+		sizeof(linfo->lmac_type));
+ 	WARN_ON_ONCE(!skb_set_owner_sk_safe(skb, sk));
++
++	/*
++	 * skb->dev still aliases the UDP rx dev_scratch (its charge was freed
++	 * on dequeue above); a sockmap verdict program may deref it via
++	 * bpf_sk_lookup_*(), so clear it -> bpf_skc_lookup() uses skb->sk
++	 */
++	skb->dev = NULL;
++
+ 	return recv_actor(sk, skb);
  }
- 
- /* Hardware event handlers */
+ EXPORT_SYMBOL(udp_read_skb);
 
 
 
