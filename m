@@ -1,63 +1,61 @@
-Return-Path: <stable+bounces-265258-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266207-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ItaaCW6FMWonlgUAu9opvQ
-	(envelope-from <stable+bounces-265258-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:18:38 +0200
+	id 2RQdBWiZMWqHnwUAu9opvQ
+	(envelope-from <stable+bounces-266207-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:43:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D285C692FAC
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:18:37 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88895694652
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:43:51 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=RYDQ9y58;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265258-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265258-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=OA0lvGX2;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266207-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266207-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B069B3040B7D
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:18:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A3744303DA91
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:40:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81E0847A0A9;
-	Tue, 16 Jun 2026 17:18:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 219FB47CC62;
+	Tue, 16 Jun 2026 18:40:16 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 565F8478E26;
-	Tue, 16 Jun 2026 17:18:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEBBD3D669D;
+	Tue, 16 Jun 2026 18:40:14 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781630287; cv=none; b=Runk6+HXTRh/S83wBil1n5YUmtIxaZKHnphUdqMVWjv6Zu/kYhbsdZOTWOJuX+Ld8Eliieen1iXF5kjARSuSEcezGkcM1/wP6KdhlGP6/klMGa7RwNZCXfnlvmP/LZP3NCYjwQsuM2KuvwfjTQtUmhJEafXXG0ceX2jxPQQI1Wc=
+	t=1781635215; cv=none; b=VcHYxeF8ItTKxmLkevuPqXYjC0jWgPwddCxc3/L0UjGwpZOqUv/QoGxvdOF4F6ZXheyLkbetmaW1tkMHy3sbtFa14IvErJD5BXK9OPY18cqKWQSetUub6MAaAm/8LRxVIPLQmnSM6oUPGmMroaMCQVr8fPhdyMSlFxa0FVyAowQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781630287; c=relaxed/simple;
-	bh=XS2tOolMX9TStf7mNPTAeMfu575DklSxdb0XnXQX9/s=;
+	s=arc-20240116; t=1781635215; c=relaxed/simple;
+	bh=TOTyKVEsMaQ8KF8AYxcDvrQ6U3nEJuZ6oItZ4YehWYE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KWr6CBFk0qX7Agr7RTdHvKo1Q8WOmd7eGgR+zNSlLaZqD+dSGivNPvuitrSXrtePaSwpJADHjWvSMFKSkeg8C9PX5ZBYoQtuLInaO7FUh3BvqRFSXmcCiEf/MCh9PTGL7ciGrnoj38T3RT4qRBc3nFzYHqFXXwvqTSB17HVbqeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RYDQ9y58; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AA1F1F000E9;
-	Tue, 16 Jun 2026 17:18:04 +0000 (UTC)
+	 MIME-Version; b=X4c6kL6ch1ykA3ZsM6ODQAXgGnODYaraLzQziA3TAPSKE9YphaqIMc+AemJmcHIRADYVksUuGYVZ9O/Q11OEl5NrjteruZvihY5pylj7uz/0LhMWKCGOPZD/oyD8AzRbOQh7n3fB94VEjDIYPQtqx6JxurrZy4HxbdQcejAHxDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OA0lvGX2; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFFDE1F000E9;
+	Tue, 16 Jun 2026 18:40:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781630286;
-	bh=IB13Oh8qjHUOLRdxTPc9QBrMahqnZs4fOjEbPR00tts=;
+	s=korg; t=1781635214;
+	bh=SaAq0ByqDeG39gI7XuPgtEhIWwz6N+g6RkKLxqgopYs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=RYDQ9y58lUIE2TZQprm30RCMcAfcO9Y4nkVCXVXFdjxI5Tln9rCCWPjA1m1pto+PJ
-	 Gtcm5n1dFjIF6ziN/PXCY19puQ5NulstBSVbjH1hOFOTTxEnlIx+3Yg+687PipYeEA
-	 ir5/pTc9ogKBj02dkbhnxRsyPYZg3Ox0FuJRbiaw=
+	b=OA0lvGX24s2zuXEMiuonwnheta3wSTIVZnqKfALrEB0JVjFCgF4SV4XqZqO02xYWz
+	 yvMGtEBpMp9YmselC/+H0cHutfLLaShMqYi1j/p9Y80RrfJcgyGRT1LT9JLA28BHIX
+	 rrwdp4bny2sndmcoD698oBjsQbKCjPkShHBt/zw0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@intel.com>,
-	Rodrigo Alencar <rodrigo.alencar@analog.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <jic23@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 413/452] iio: dac: ad5686: fix ref bit initialization for single-channel parts
+	Shanker Donthineni <sdonthineni@nvidia.com>,
+	Will Deacon <will@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>
+Subject: [PATCH 5.15 402/411] arm64: cputype: Add NVIDIA Olympus definitions
 Date: Tue, 16 Jun 2026 20:30:40 +0530
-Message-ID: <20260616145138.479909371@linuxfoundation.org>
+Message-ID: <20260616145122.541481793@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,100 +69,76 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265258-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-266207-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:andriy.shevchenko@intel.com,m:rodrigo.alencar@analog.com,m:Stable@vger.kernel.org,m:jic23@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:sdonthineni@nvidia.com,m:will@kernel.org,m:mark.rutland@arm.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,intel.com:email,analog.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,arm.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D285C692FAC
+X-Rspamd-Queue-Id: 88895694652
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rodrigo Alencar <rodrigo.alencar@analog.com>
+From: Shanker Donthineni <sdonthineni@nvidia.com>
 
-[ Upstream commit ecae2ae606d493cf11457946436335bd0e726663 ]
+commit e185c8a0d84236d14af61faff8147c953a878a77 upstream.
 
-The reference bit position was ignored when writing the register at the
-probe() function (!!val was used). When such bit is 1, internal voltage
-reference is disabled so that an external one can be used. For
-multi-channel devices, bit 0 of the Internal Reference Setup command
-behaves the same way, so AD5686_REF_BIT_MSK is created. The issue exists
-since support for single-channel devices were first introduced.
+Add cpu part and model macro definitions for NVIDIA Olympus core.
 
-Fixes: be1b24d24541 ("iio:dac:ad5686: Add AD5691R/AD5692R/AD5693/AD5693R support")
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Signed-off-by: Rodrigo Alencar <rodrigo.alencar@analog.com>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <jic23@kernel.org>
-[ adapted `has_external_vref` to the in-tree equivalent `voltage_uv` variable in the `val =` computation ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Shanker Donthineni <sdonthineni@nvidia.com>
+Signed-off-by: Will Deacon <will@kernel.org>
+[Mark: backport to v5.15.y]
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/dac/ad5686.c |    6 +++---
- drivers/iio/dac/ad5686.h |    1 +
- 2 files changed, 4 insertions(+), 3 deletions(-)
+ arch/arm64/include/asm/cputype.h |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/iio/dac/ad5686.c
-+++ b/drivers/iio/dac/ad5686.c
-@@ -528,7 +528,7 @@ int ad5686_probe(struct device *dev,
- 		break;
- 	case AD5686_REGMAP:
- 		cmd = AD5686_CMD_INTERNAL_REFER_SETUP;
--		ref_bit_msk = 0;
-+		ref_bit_msk = AD5686_REF_BIT_MSK;
- 		break;
- 	case AD5693_REGMAP:
- 		cmd = AD5686_CMD_CONTROL_REG;
-@@ -540,9 +540,9 @@ int ad5686_probe(struct device *dev,
- 		goto error_disable_reg;
- 	}
+--- a/arch/arm64/include/asm/cputype.h
++++ b/arch/arm64/include/asm/cputype.h
+@@ -121,6 +121,7 @@
  
--	val = (voltage_uv | ref_bit_msk);
-+	val = voltage_uv ? ref_bit_msk : 0;
+ #define NVIDIA_CPU_PART_DENVER		0x003
+ #define NVIDIA_CPU_PART_CARMEL		0x004
++#define NVIDIA_CPU_PART_OLYMPUS		0x010
  
--	ret = st->write(st, cmd, 0, !!val);
-+	ret = st->write(st, cmd, 0, val);
- 	if (ret)
- 		goto error_disable_reg;
+ #define FUJITSU_CPU_PART_A64FX		0x001
  
---- a/drivers/iio/dac/ad5686.h
-+++ b/drivers/iio/dac/ad5686.h
-@@ -46,6 +46,7 @@
- 
- #define AD5310_REF_BIT_MSK			BIT(8)
- #define AD5683_REF_BIT_MSK			BIT(12)
-+#define AD5686_REF_BIT_MSK			BIT(0)
- #define AD5693_REF_BIT_MSK			BIT(12)
- 
- /**
+@@ -183,6 +184,7 @@
+ #define MIDR_QCOM_KRYO_4XX_SILVER MIDR_CPU_MODEL(ARM_CPU_IMP_QCOM, QCOM_CPU_PART_KRYO_4XX_SILVER)
+ #define MIDR_NVIDIA_DENVER MIDR_CPU_MODEL(ARM_CPU_IMP_NVIDIA, NVIDIA_CPU_PART_DENVER)
+ #define MIDR_NVIDIA_CARMEL MIDR_CPU_MODEL(ARM_CPU_IMP_NVIDIA, NVIDIA_CPU_PART_CARMEL)
++#define MIDR_NVIDIA_OLYMPUS MIDR_CPU_MODEL(ARM_CPU_IMP_NVIDIA, NVIDIA_CPU_PART_OLYMPUS)
+ #define MIDR_FUJITSU_A64FX MIDR_CPU_MODEL(ARM_CPU_IMP_FUJITSU, FUJITSU_CPU_PART_A64FX)
+ #define MIDR_HISI_TSV110 MIDR_CPU_MODEL(ARM_CPU_IMP_HISI, HISI_CPU_PART_TSV110)
+ #define MIDR_APPLE_M1_ICESTORM MIDR_CPU_MODEL(ARM_CPU_IMP_APPLE, APPLE_CPU_PART_M1_ICESTORM)
 
 
 
