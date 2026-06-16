@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-266330-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265946-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 9Lu8KBObMWpFoAUAu9opvQ
-	(envelope-from <stable+bounces-266330-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:50:59 +0200
+	id Vl2WGCuTMWqrnAUAu9opvQ
+	(envelope-from <stable+bounces-265946-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:17:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74FDF694847
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:50:59 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FB9B693FD0
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:17:15 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=nRVN3JZ6;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266330-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-266330-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=vylqmvok;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265946-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-265946-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E6C08303DB78
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:50:58 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AE8533046EFD
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:17:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 249CC4657F8;
-	Tue, 16 Jun 2026 18:50:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 104A33D45CB;
+	Tue, 16 Jun 2026 18:17:10 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E979D34FF79;
-	Tue, 16 Jun 2026 18:50:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C03C435292A;
+	Tue, 16 Jun 2026 18:17:08 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781635856; cv=none; b=BEjTB6QCpTKWbP8/hXsc0UeZu55yWSfL4MwoxtMnCxpLBnIUgF4fZ+6ZD/on4yzoySU/2Rou5KzWMZkuS07FVoyqOOwCOMLXHUzsAJx9m+bhy0U6CESM7OFqnABVX4tOXlosvkGTc/uGe3tpGd5KDWKaQgonzH7St+ZScdI76Ww=
+	t=1781633829; cv=none; b=iN3IuxjHHQPLWySU36DGhA2uTZwZiOm4jULmp+lLILMujBnhGRcxCBGH6s/0FLzqW+IgiNxTx3cuaOvp2+QtLmxnnjRlEySu6NTjv2S3TZC972vjWmPBgU61ezcP/Xd5FB/4FeRyfI2mBdLMC0m+Hn/UjqD3ln2if1TpP10DmCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781635856; c=relaxed/simple;
-	bh=2RaIrOQ2lTgsbQZXwJPqs+IufcoV7SwSpTcR6V/AF9Y=;
+	s=arc-20240116; t=1781633829; c=relaxed/simple;
+	bh=JGGYCrR3oSAyHNZVvFGqKqdKYIWK/I28dP5bLVaCPZc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sGl//2Kn/LaMHLGbhOLvuaKJgtztRobYjRkLwg3bub+iKpL7JXAlp2LJqOaAX8/ri7iR7JzOqaLKQMhiJSust/jx5IJEPRcBy9J8e1zOV4FvkR58NmHY/48VLY08yOSGxkwEqsl0cHI1W/7NP+dtFJ3w8iVqoKOnKGTG0EZVrZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nRVN3JZ6; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E77CF1F000E9;
-	Tue, 16 Jun 2026 18:50:54 +0000 (UTC)
+	 MIME-Version; b=fALESnCRDIJXOsAXAufYHQNM8h0tHrPuHhMV9ZzOXD9T7p1WW2xTvBoi0CdpX+oDa7+D6m5A84PSrvmAJpIbGp4PyHumLU9bO1Nfp0xKVgrsgdohUIhp4jx1o9iiLdzS42vMSlPZKXTNxSPVFFsyt2l3+ZodhMz/zYlgOy80XJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vylqmvok; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A58581F000E9;
+	Tue, 16 Jun 2026 18:17:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781635855;
-	bh=siAkvKNCoaMiDPk5u+ZiLM0r/wzZkvbcwYfDYrPEK+k=;
+	s=korg; t=1781633828;
+	bh=QuWsqJYTTJQUr7wsHs8DB+xC1DlHxHuLUE+Uy+bsQmw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=nRVN3JZ6DrnMRlFFn9rMHgMnzR4n6rF/nXXX+3kWp8+eUpP91UkLyCffi744eniKQ
-	 CEW6c90XrZjEBmT57DNFhSWZOHyf51XtkCVjyUsJuWp88JrsFviq7UIxWlO/cMYpjW
-	 jsCK8G60d/WbvWT957K4MCUKMrTiWtv9iPo544LU=
+	b=vylqmvok6IB1gPsQ3Pt9jccHgE1KFhI+MwkyUdairlFKNFq9FO5HqcCpzOxCYz/3c
+	 i77bfIUVDm8k1F8YLRMLwwSsxO9LwHRfAer2B8DHqAlinUI5to+3+b0W9N9aMyWJfQ
+	 zsFjFBDd9FEV87U2RgnteDtI/B/QJp+RWBV6w2zs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Zheng Wang <zyytlz.wz@163.com>,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Shuah Khan <skhan@linuxfoundation.org>
-Subject: [PATCH 5.10 094/342] usbip: vudc: Fix use after free bug in vudc_remove due to race condition
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 152/411] netfilter: synproxy: add mutex to guard hook reference counting
 Date: Tue, 16 Jun 2026 20:26:30 +0530
-Message-ID: <20260616145052.610413532@linuxfoundation.org>
+Message-ID: <20260616145108.509357391@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,119 +68,153 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,163.com,gmail.com];
-	TAGGED_FROM(0.00)[bounces-266330-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:zyytlz.wz@163.com,m:michael.bommarito@gmail.com,m:skhan@linuxfoundation.org,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265946-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:fmancera@suse.de,m:fw@strlen.de,m:pablo@netfilter.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,netfilter.org:email,vger.kernel.org:from_smtp,strlen.de:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 74FDF694847
+X-Rspamd-Queue-Id: 1FB9B693FD0
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Fernando Fernandez Mancera <fmancera@suse.de>
 
-commit d96209626a29ea64666be98c30b30ac82e5f1be6 upstream.
+[ Upstream commit 2fcba19caaeb2a33017459d3430f057967bb91b6 ]
 
-This patch follows up Zheng Wang's 2023 report of a use-after-free in
-vudc_remove(). The original thread stalled on Shuah Khan's request for
-runtime testing of the unplug/unbind path. This patch supplies that
-testing and keeps Zheng's original fix shape.
+As the synproxy infrastructure register netfilter hooks on-demand when a
+user adds the first iptables target or nftables expression, if done
+concurrently they can race each other.
 
-In vudc_probe(), v_init_timer() binds udc->tr_timer.timer to v_timer().
-usbip_sockfd_store() starts the timer via v_start_timer()/v_kick_timer().
-vudc_remove() can then free the containing struct vudc while the timer is
-still pending or executing.
+Introduce a mutex to serialize the refcount control blocks access from
+both frontends. While a per namespace mutex might be more efficient, it
+is not needed for target/expression like SYNPROXY.
 
-KASAN confirms the race on an unpatched x86_64 QEMU guest with
-CONFIG_KASAN=y, CONFIG_USBIP_VUDC=y, CONFIG_USB_ZERO=y, and a tight loop
-that repeatedly writes a socket fd to usbip_sockfd, closes the socket
-pair, and unbinds/rebinds usbip-vudc.0:
-
-  BUG: KASAN: slab-use-after-free in __run_timer_base.part.0+0x8ba/0x8e0
-  Write of size 8 at addr ffff888001b80740 by task trigger_and_unb/239
-  Allocated by task 239:
-    vudc_probe+0x4d/0xaa0
-  Freed by task 239:
-    kfree+0x18f/0x520
-    device_release_driver_internal+0x388/0x540
-    unbind_store+0xd9/0x100
-
-This lands in the timer core rather than v_timer() itself because the
-embedded timer_list is being walked after its containing struct vudc has
-already been freed. The underlying lifetime bug is the same one Zheng
-reported.
-
-With v_stop_timer() called from vudc_remove() and the timer deleted
-synchronously, the same harness completed 5000 bind/unbind iterations
-with no KASAN report.
-
-Fixes: b6a0ca111867 ("usbip: vudc: Add UDC specific ops")
-Cc: stable <stable@kernel.org>
-Reported-by: Zheng Wang <zyytlz.wz@163.com>
-Closes: https://lore.kernel.org/linux-usb/20230317100954.2626573-1-zyytlz.wz@163.com/
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Acked-by: Shuah Khan <skhan@linuxfoundation.org>
-Link: https://patch.msgid.link/20260417163552.807548-1-michael.bommarito@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ad49d86e07a4 ("netfilter: nf_tables: Add synproxy support")
+Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/usbip/vudc_dev.c      |    1 +
- drivers/usb/usbip/vudc_transfer.c |    3 ++-
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ net/netfilter/nf_synproxy_core.c | 24 ++++++++++++++++++------
+ 1 file changed, 18 insertions(+), 6 deletions(-)
 
---- a/drivers/usb/usbip/vudc_dev.c
-+++ b/drivers/usb/usbip/vudc_dev.c
-@@ -633,6 +633,7 @@ int vudc_remove(struct platform_device *
- {
- 	struct vudc *udc = platform_get_drvdata(pdev);
+diff --git a/net/netfilter/nf_synproxy_core.c b/net/netfilter/nf_synproxy_core.c
+index cdb2c3e23af7ee..91d3e3eea1be0b 100644
+--- a/net/netfilter/nf_synproxy_core.c
++++ b/net/netfilter/nf_synproxy_core.c
+@@ -21,6 +21,8 @@
+ #include <net/netfilter/nf_conntrack_zones.h>
+ #include <net/netfilter/nf_synproxy.h>
  
-+	v_stop_timer(udc);
- 	usb_del_gadget_udc(&udc->gadget);
- 	cleanup_vudc_hw(udc);
- 	kfree(udc);
---- a/drivers/usb/usbip/vudc_transfer.c
-+++ b/drivers/usb/usbip/vudc_transfer.c
-@@ -490,7 +490,8 @@ void v_stop_timer(struct vudc *udc)
- {
- 	struct transfer_timer *t = &udc->tr_timer;
++static DEFINE_MUTEX(synproxy_mutex);
++
+ unsigned int synproxy_net_id;
+ EXPORT_SYMBOL_GPL(synproxy_net_id);
  
--	/* timer itself will take care of stopping */
-+	/* Delete the timer synchronously before teardown frees udc. */
- 	dev_dbg(&udc->pdev->dev, "timer stop");
-+	timer_delete_sync(&t->timer);
- 	t->state = VUDC_TR_STOPPED;
+@@ -790,26 +792,31 @@ static const struct nf_hook_ops ipv4_synproxy_ops[] = {
+ 
+ int nf_synproxy_ipv4_init(struct synproxy_net *snet, struct net *net)
+ {
+-	int err;
++	int err = 0;
+ 
++	mutex_lock(&synproxy_mutex);
+ 	if (snet->hook_ref4 == 0) {
+ 		err = nf_register_net_hooks(net, ipv4_synproxy_ops,
+ 					    ARRAY_SIZE(ipv4_synproxy_ops));
+ 		if (err)
+-			return err;
++			goto out;
+ 	}
+ 
+ 	snet->hook_ref4++;
+-	return 0;
++out:
++	mutex_unlock(&synproxy_mutex);
++	return err;
  }
+ EXPORT_SYMBOL_GPL(nf_synproxy_ipv4_init);
+ 
+ void nf_synproxy_ipv4_fini(struct synproxy_net *snet, struct net *net)
+ {
++	mutex_lock(&synproxy_mutex);
+ 	snet->hook_ref4--;
+ 	if (snet->hook_ref4 == 0)
+ 		nf_unregister_net_hooks(net, ipv4_synproxy_ops,
+ 					ARRAY_SIZE(ipv4_synproxy_ops));
++	mutex_unlock(&synproxy_mutex);
+ }
+ EXPORT_SYMBOL_GPL(nf_synproxy_ipv4_fini);
+ 
+@@ -1214,27 +1221,32 @@ static const struct nf_hook_ops ipv6_synproxy_ops[] = {
+ int
+ nf_synproxy_ipv6_init(struct synproxy_net *snet, struct net *net)
+ {
+-	int err;
++	int err = 0;
+ 
++	mutex_lock(&synproxy_mutex);
+ 	if (snet->hook_ref6 == 0) {
+ 		err = nf_register_net_hooks(net, ipv6_synproxy_ops,
+ 					    ARRAY_SIZE(ipv6_synproxy_ops));
+ 		if (err)
+-			return err;
++			goto out;
+ 	}
+ 
+ 	snet->hook_ref6++;
+-	return 0;
++out:
++	mutex_unlock(&synproxy_mutex);
++	return err;
+ }
+ EXPORT_SYMBOL_GPL(nf_synproxy_ipv6_init);
+ 
+ void
+ nf_synproxy_ipv6_fini(struct synproxy_net *snet, struct net *net)
+ {
++	mutex_lock(&synproxy_mutex);
+ 	snet->hook_ref6--;
+ 	if (snet->hook_ref6 == 0)
+ 		nf_unregister_net_hooks(net, ipv6_synproxy_ops,
+ 					ARRAY_SIZE(ipv6_synproxy_ops));
++	mutex_unlock(&synproxy_mutex);
+ }
+ EXPORT_SYMBOL_GPL(nf_synproxy_ipv6_fini);
+ #endif /* CONFIG_IPV6 */
+-- 
+2.53.0
+
 
 
 
