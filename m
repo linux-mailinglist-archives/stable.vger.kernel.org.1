@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-264358-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266451-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id dc0UKc91MWqIjwUAu9opvQ
-	(envelope-from <stable+bounces-264358-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:11:59 +0200
+	id XiV9J9qdMWpKoQUAu9opvQ
+	(envelope-from <stable+bounces-266451-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:02:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4746B691CAE
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:11:59 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15A9B694AFB
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:02:50 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="qf+b1sr/";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264358-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264358-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=t35JHd46;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266451-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266451-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6848A312CF67
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:58:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6966730C4F3C
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:01:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF76E451062;
-	Tue, 16 Jun 2026 15:57:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B20183D668F;
+	Tue, 16 Jun 2026 19:01:24 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5F894657CF;
-	Tue, 16 Jun 2026 15:57:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E4E23191BA;
+	Tue, 16 Jun 2026 19:01:23 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781625463; cv=none; b=ukj+iZQ7nxYRi3sIPYs3PLwTf/Di6gb1Xbo3DWk6X+L3OD/CYIdZN2ut1QiagBtl0SSbnq6ZKAtGBQl7gYuX+ryyb9XOFrNTjjP6/tbHVTlMUo8a06S7u6SLhA/Gem/IooBtplEaZau82gpu5asoOWcz/YEyioPbqj7jMcWG8Zs=
+	t=1781636484; cv=none; b=pMPx/w9hbuEahN0VR4sBmP1Jro7yCZHFUrBbiCE9E9Aj6MB2G1q6tXyeo6QCFBm3n8xHpMdseoRf+R/mdaaK3gddl6jftiTIyuGvHj4vboBSkfA9wjZZO1/WjwaTVIFtLcgBv5yyAUimu3yI0fFZ1P4ioq7IgM2a6Zt5U1FFuyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781625463; c=relaxed/simple;
-	bh=Zp1Etvp3Jzn0crWdVoLBZg+ZC7eDMMQJC2OXeYS03PA=;
+	s=arc-20240116; t=1781636484; c=relaxed/simple;
+	bh=6+X4UanlLPV7ZIvgTqyytZHqzX1t7Eqz+WfqMGQOtt0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CyWwp+hOQ3mONVXTWCDmoq6gk2H802XAwhf9XziBgMFuLPHKnzxxlW6oFii0L/Dqzn3Q0QKEXIdDkKkujc0C9R5Ef1jBxDbEs02PZyHhBLOSVC7xvLuELac/ztkq6wsMgmNjDYXRUQQw9BDCdLc9abtt98rs5XeOT4iTOjXIETA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qf+b1sr/; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77DBF1F00A3D;
-	Tue, 16 Jun 2026 15:57:41 +0000 (UTC)
+	 MIME-Version; b=P2reNMgx7Y7TNbfH83Nmkk7tif6G2YJT3Y4pxcrjlLg0bf8qKTVSHIP8RU4dVIQyl2/UpZS4qo4X25ji0pRs+eLh3gFmfK7//sHK+CCJxqnspDSMRYUZ5n7yUOkroi4pFNYVDVXEkdgipmfP0XwFRasPMXBQtz2MuFC2NXZE3v4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t35JHd46; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A77B1F000E9;
+	Tue, 16 Jun 2026 19:01:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781625462;
-	bh=QJ7RSujnJkIqaUQG9kNZUOPtXmix6uMYGopnAqzsmZg=;
+	s=korg; t=1781636483;
+	bh=AOPbcYEUaqGo2qLiqldeQp8s11Km9L/cm6P/6Af/+0c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=qf+b1sr/hHaf3+kD9S4d/7HgCWTQFNlYcR7vfQKsyvwItvnmT7SDsHr/wGKK2841S
-	 dCwBGjmAkcopjeZktLPvq4xAgF6fIpBKHURl8XqkajXvwzKhBOiOWYzhn2rBYGo/rB
-	 zjxPByzaSwBnMPL2PSYzG5KvrUufTyUc9yiBbFQU=
+	b=t35JHd46/wkD44aXe9Qi4/y3EJC9PmEFR07TFRGv0eqefX6+BT0ZJWnK8vsjpHlG0
+	 C1F/e5X0PidoRM3PGkMhCzLRzJ4JAC8qzKvVVvNstK2cjfJAQQv87nxWJRgB7gQ6b5
+	 jJpaEGutFQ5gxjknzkmH1A0Qbw5ET+c2PQkzKTY8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Mario Limonciello (AMD)" <superm1@kernel.org>,
-	Lizhi Hou <lizhi.hou@amd.com>,
+	"John Warthog9 Hawley (VMware)" <warthog9@eaglescrag.net>,
+	"Steven Rostedt (VMware)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 146/325] accel/amdxdna: Fix mm_struct reference leak in aie2_populate_range()
+Subject: [PATCH 5.10 246/342] ktest: Fixing indentation to match expected pattern
 Date: Tue, 16 Jun 2026 20:29:02 +0530
-Message-ID: <20260616145105.001175206@linuxfoundation.org>
+Message-ID: <20260616145059.683381325@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,21 +72,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264358-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-266451-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:superm1@kernel.org,m:lizhi.hou@amd.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:warthog9@eaglescrag.net,m:rostedt@goodmis.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -98,61 +98,378 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,vger.kernel.org:from_smtp,amd.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,goodmis.org:email,eaglescrag.net:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4746B691CAE
+X-Rspamd-Queue-Id: 15A9B694AFB
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lizhi Hou <lizhi.hou@amd.com>
+From: "John 'Warthog9' Hawley (VMware)" <warthog9@eaglescrag.net>
 
-[ Upstream commit 2f41af638c92bac6f1f9275ea2d1901baef578f3 ]
+[ Upstream commit 12d4cddda2043466a5af8fc0c49e49f24f1d4c59 ]
 
-aie2_populate_range() jumps back to the again label without calling
-mmput(mm), leaking a reference to the mm_struct.
+This is a followup to "ktest: Adding editor hints to improve
+consistency" to actually adjust the existing indentation to match
+the, now, expected pattern (first column 4 spaces, 2nd tab, 3rd
+tab + 4 spaces, etc).  This should, at least help, keep things
+consistent going forward now.
 
-Add the missing mmput() before jumping to again.
-
-Fixes: e486147c912f ("accel/amdxdna: Add BO import and export")
-Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
-Signed-off-by: Lizhi Hou <lizhi.hou@amd.com>
-Link: https://patch.msgid.link/20260610151127.2994185-1-lizhi.hou@amd.com
+Signed-off-by: John 'Warthog9' Hawley (VMware) <warthog9@eaglescrag.net>
+Signed-off-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
+Stable-dep-of: 768059ede35f ("ktest: Fix the month in the name of the failure directory")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/accel/amdxdna/aie2_ctx.c | 3 +++
- 1 file changed, 3 insertions(+)
+ tools/testing/ktest/ktest.pl |  188 +++++++++++++++++++++----------------------
+ 1 file changed, 93 insertions(+), 95 deletions(-)
 
-diff --git a/drivers/accel/amdxdna/aie2_ctx.c b/drivers/accel/amdxdna/aie2_ctx.c
-index 4610f491f0881c..80de2906a26fcb 100644
---- a/drivers/accel/amdxdna/aie2_ctx.c
-+++ b/drivers/accel/amdxdna/aie2_ctx.c
-@@ -828,6 +828,7 @@ static int aie2_populate_range(struct amdxdna_gem_obj *abo)
+--- a/tools/testing/ktest/ktest.pl
++++ b/tools/testing/ktest/ktest.pl
+@@ -763,7 +763,7 @@ sub process_variables {
+     # remove the space added in the beginning
+     $retval =~ s/ //;
  
- 		if (ret == -EBUSY) {
- 			amdxdna_umap_put(mapp);
-+			mmput(mm);
- 			goto again;
+-    return "$retval"
++    return "$retval";
+ }
+ 
+ sub set_value {
+@@ -1099,7 +1099,7 @@ sub __read_config {
+ 		    }
  		}
+ 	    }
+-		
++
+ 	    if ( ! -r $file ) {
+ 		die "$name: $.: Can't read file $file\n$_";
+ 	    }
+@@ -1190,13 +1190,13 @@ sub __read_config {
+ }
  
-@@ -838,11 +839,13 @@ static int aie2_populate_range(struct amdxdna_gem_obj *abo)
- 	if (mmu_interval_read_retry(&mapp->notifier, mapp->range.notifier_seq)) {
- 		up_write(&xdna->notifier_lock);
- 		amdxdna_umap_put(mapp);
-+		mmput(mm);
- 		goto again;
+ sub get_test_case {
+-	print "What test case would you like to run?\n";
+-	print " (build, install or boot)\n";
+-	print " Other tests are available but require editing ktest.conf\n";
+-	print " (see tools/testing/ktest/sample.conf)\n";
+-	my $ans = <STDIN>;
+-	chomp $ans;
+-	$default{"TEST_TYPE"} = $ans;
++    print "What test case would you like to run?\n";
++    print " (build, install or boot)\n";
++    print " Other tests are available but require editing ktest.conf\n";
++    print " (see tools/testing/ktest/sample.conf)\n";
++    my $ans = <STDIN>;
++    chomp $ans;
++    $default{"TEST_TYPE"} = $ans;
+ }
+ 
+ sub read_config {
+@@ -1545,13 +1545,13 @@ sub dodie {
+ 	    close O;
+ 	    close L;
  	}
- 	mapp->invalid = false;
- 	up_write(&xdna->notifier_lock);
- 	amdxdna_umap_put(mapp);
-+	mmput(mm);
- 	goto again;
+-        send_email("KTEST: critical failure for test $i [$name]",
+-                "Your test started at $script_start_time has failed with:\n@_\n", $log_file);
++	send_email("KTEST: critical failure for test $i [$name]",
++	        "Your test started at $script_start_time has failed with:\n@_\n", $log_file);
+     }
  
- put_mm:
--- 
-2.53.0
-
+     if ($monitor_cnt) {
+-	    # restore terminal settings
+-	    system("stty $stty_orig");
++	# restore terminal settings
++	system("stty $stty_orig");
+     }
+ 
+     if (defined($post_test)) {
+@@ -1736,81 +1736,81 @@ sub wait_for_monitor {
+ }
+ 
+ sub save_logs {
+-	my ($result, $basedir) = @_;
+-	my @t = localtime;
+-	my $date = sprintf "%04d%02d%02d%02d%02d%02d",
+-		1900+$t[5],$t[4],$t[3],$t[2],$t[1],$t[0];
++    my ($result, $basedir) = @_;
++    my @t = localtime;
++    my $date = sprintf "%04d%02d%02d%02d%02d%02d",
++	1900+$t[5],$t[4],$t[3],$t[2],$t[1],$t[0];
+ 
+-	my $type = $build_type;
+-	if ($type =~ /useconfig/) {
+-	    $type = "useconfig";
+-	}
++    my $type = $build_type;
++    if ($type =~ /useconfig/) {
++	$type = "useconfig";
++    }
+ 
+-	my $dir = "$machine-$test_type-$type-$result-$date";
++    my $dir = "$machine-$test_type-$type-$result-$date";
+ 
+-	$dir = "$basedir/$dir";
++    $dir = "$basedir/$dir";
+ 
+-	if (!-d $dir) {
+-	    mkpath($dir) or
+-		dodie "can't create $dir";
+-	}
++    if (!-d $dir) {
++	mkpath($dir) or
++	    dodie "can't create $dir";
++    }
+ 
+-	my %files = (
+-		"config" => $output_config,
+-		"buildlog" => $buildlog,
+-		"dmesg" => $dmesg,
+-		"testlog" => $testlog,
+-	);
++    my %files = (
++	"config" => $output_config,
++	"buildlog" => $buildlog,
++	"dmesg" => $dmesg,
++	"testlog" => $testlog,
++    );
+ 
+-	while (my ($name, $source) = each(%files)) {
+-		if (-f "$source") {
+-			cp "$source", "$dir/$name" or
+-				dodie "failed to copy $source";
+-		}
++    while (my ($name, $source) = each(%files)) {
++	if (-f "$source") {
++	    cp "$source", "$dir/$name" or
++		dodie "failed to copy $source";
+ 	}
++    }
+ 
+-	doprint "*** Saved info to $dir ***\n";
++    doprint "*** Saved info to $dir ***\n";
+ }
+ 
+ sub fail {
+ 
+-	if ($die_on_failure) {
+-		dodie @_;
+-	}
++    if ($die_on_failure) {
++	dodie @_;
++    }
+ 
+-	doprint "FAILED\n";
++    doprint "FAILED\n";
+ 
+-	my $i = $iteration;
++    my $i = $iteration;
+ 
+-	# no need to reboot for just building.
+-	if (!do_not_reboot) {
+-	    doprint "REBOOTING\n";
+-	    reboot_to_good $sleep_time;
+-	}
++    # no need to reboot for just building.
++    if (!do_not_reboot) {
++	doprint "REBOOTING\n";
++	reboot_to_good $sleep_time;
++    }
+ 
+-	my $name = "";
++    my $name = "";
+ 
+-	if (defined($test_name)) {
+-	    $name = " ($test_name)";
+-	}
++    if (defined($test_name)) {
++	$name = " ($test_name)";
++    }
+ 
+-	print_times;
++    print_times;
+ 
+-	doprint "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n";
+-	doprint "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n";
+-	doprint "KTEST RESULT: TEST $i$name Failed: ", @_, "\n";
+-	doprint "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n";
+-	doprint "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n";
+-
+-	if (defined($store_failures)) {
+-	    save_logs "fail", $store_failures;
+-        }
++    doprint "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n";
++    doprint "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n";
++    doprint "KTEST RESULT: TEST $i$name Failed: ", @_, "\n";
++    doprint "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n";
++    doprint "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n";
+ 
+-	if (defined($post_test)) {
+-		run_command $post_test;
+-	}
++    if (defined($store_failures)) {
++	save_logs "fail", $store_failures;
++    }
+ 
+-	return 1;
++    if (defined($post_test)) {
++	run_command $post_test;
++    }
++
++    return 1;
+ }
+ 
+ sub run_command {
+@@ -2011,9 +2011,9 @@ sub get_grub_index {
+ 	$skip = '^\s*menuentry\s';
+ 	$submenu = '^\s*submenu\s';
+     } elsif ($reboot_type eq "grub2bls") {
+-        $command = $grub_bls_get;
+-        $target = '^title=.*' . $grub_menu_qt;
+-        $skip = '^title=';
++	$command = $grub_bls_get;
++	$target = '^title=.*' . $grub_menu_qt;
++	$skip = '^title=';
+     } else {
+ 	return;
+     }
+@@ -2446,7 +2446,7 @@ sub check_buildlog {
+ 	while (<IN>) {
+ 	    if (/$check_build_re/) {
+ 		my $warning = process_warning_line $_;
+-		
++
+ 		$warnings_list{$warning} = 1;
+ 	    }
+ 	}
+@@ -2708,7 +2708,7 @@ sub success {
+     doprint     "*******************************************\n";
+ 
+     if (defined($store_successes)) {
+-        save_logs "success", $store_successes;
++	save_logs "success", $store_successes;
+     }
+ 
+     if ($i != $opt{"NUM_TESTS"} && !do_not_reboot) {
+@@ -3293,13 +3293,13 @@ sub run_config_bisect {
+ 
+     $ret = run_config_bisect_test $config_bisect_type;
+     if ($ret) {
+-        doprint "NEW GOOD CONFIG ($pass)\n";
++	doprint "NEW GOOD CONFIG ($pass)\n";
+ 	system("cp $output_config $tmpdir/good_config.tmp.$pass");
+ 	$pass++;
+ 	# Return 3 for good config
+ 	return 3;
+     } else {
+-        doprint "NEW BAD CONFIG ($pass)\n";
++	doprint "NEW BAD CONFIG ($pass)\n";
+ 	system("cp $output_config $tmpdir/bad_config.tmp.$pass");
+ 	$pass++;
+ 	# Return 4 for bad config
+@@ -3418,7 +3418,7 @@ sub config_bisect {
+     } while ($ret == 3 || $ret == 4);
+ 
+     if ($ret == 2) {
+-        config_bisect_end "$good_config.tmp", "$bad_config.tmp";
++	config_bisect_end "$good_config.tmp", "$bad_config.tmp";
+     }
+ 
+     return $ret if ($ret < 0);
+@@ -3598,7 +3598,6 @@ sub read_kconfig {
+     my $cont = 0;
+     my $line;
+ 
+-
+     if (! -f $kconfig) {
+ 	doprint "file $kconfig does not exist, skipping\n";
+ 	return;
+@@ -3707,7 +3706,7 @@ sub read_depends {
+ 
+     if (! -f $kconfig && $arch =~ /\d$/) {
+ 	my $orig = $arch;
+- 	# some subarchs have numbers, truncate them
++	# some subarchs have numbers, truncate them
+ 	$arch =~ s/\d*$//;
+ 	$kconfig = "$builddir/arch/$arch/Kconfig";
+ 	if (! -f $kconfig) {
+@@ -3903,7 +3902,7 @@ sub make_min_config {
+     foreach my $config (@config_keys) {
+ 	my $kconfig = chomp_config $config;
+ 	if (!defined $depcount{$kconfig}) {
+-		$depcount{$kconfig} = 0;
++	    $depcount{$kconfig} = 0;
+ 	}
+     }
+ 
+@@ -4005,13 +4004,13 @@ sub make_min_config {
+ 	my $failed = 0;
+ 	build "oldconfig" or $failed = 1;
+ 	if (!$failed) {
+-		start_monitor_and_install or $failed = 1;
++	    start_monitor_and_install or $failed = 1;
+ 
+-		if ($type eq "test" && !$failed) {
+-		    do_run_test or $failed = 1;
+-		}
++	    if ($type eq "test" && !$failed) {
++		do_run_test or $failed = 1;
++	    }
+ 
+-		end_monitor;
++	    end_monitor;
+ 	}
+ 
+ 	$in_bisect = 0;
+@@ -4330,8 +4329,8 @@ sub cancel_test {
+     }
+     if ($email_when_canceled) {
+ 	my $name = get_test_name;
+-        send_email("KTEST: Your [$name] test was cancelled",
+-                "Your test started at $script_start_time was cancelled: sig int");
++	send_email("KTEST: Your [$name] test was cancelled",
++	        "Your test started at $script_start_time was cancelled: sig int");
+     }
+     run_post_ktest;
+     die "\nCaught Sig Int, test interrupted: $!\n"
+@@ -4380,15 +4379,15 @@ for (my $i = 1; $i <= $opt{"NUM_TESTS"};
+ 
+     # The first test may override the PRE_KTEST option
+     if ($i == 1) {
+-        if (defined($pre_ktest)) {
+-            doprint "\n";
+-            run_command $pre_ktest;
+-        }
+-        if ($email_when_started) {
++	if (defined($pre_ktest)) {
++	    doprint "\n";
++	    run_command $pre_ktest;
++	}
++	if ($email_when_started) {
+ 	    my $name = get_test_name;
+-            send_email("KTEST: Your [$name] test was started",
+-                "Your test was started on $script_start_time");
+-        }
++	    send_email("KTEST: Your [$name] test was started",
++	        "Your test was started on $script_start_time");
++	}
+     }
+ 
+     # Any test can override the POST_KTEST option
+@@ -4556,12 +4555,11 @@ if ($opt{"POWEROFF_ON_SUCCESS"}) {
+     run_command $switch_to_good;
+ }
+ 
+-
+ doprint "\n    $successes of $opt{NUM_TESTS} tests were successful\n\n";
+ 
+ if ($email_when_finished) {
+     send_email("KTEST: Your test has finished!",
+-            "$successes of $opt{NUM_TESTS} tests started at $script_start_time were successful!");
++	    "$successes of $opt{NUM_TESTS} tests started at $script_start_time were successful!");
+ }
+ 
+ if (defined($opt{"LOG_FILE"})) {
 
 
 
