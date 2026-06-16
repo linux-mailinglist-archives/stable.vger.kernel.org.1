@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-264731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266529-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id sg/BImJ8MWpXkgUAu9opvQ
-	(envelope-from <stable+bounces-264731-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:40:02 +0200
+	id vhGQEgGfMWrfoQUAu9opvQ
+	(envelope-from <stable+bounces-266529-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:07:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22ACE692511
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:40:02 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE248694C3A
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:07:44 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Sy9u49fz;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264731-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264731-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=VamNrb+B;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266529-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-266529-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D2C5B3017FB0
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:32:52 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5B458302CE30
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:07:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38CB3477995;
-	Tue, 16 Jun 2026 16:32:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B6AE3DDDAE;
+	Tue, 16 Jun 2026 19:07:42 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FCFF477994;
-	Tue, 16 Jun 2026 16:32:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D3903DDDD5;
+	Tue, 16 Jun 2026 19:07:41 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781627572; cv=none; b=ZyhAbP5AUp50MPa4u7EFWsSuUHKkG9lI8U3Omxf+pJb88Cae9GgfZPEJlZi5oRTk9NbpDCxDE/2FRZ7e36TyR4YHFHmCm8MXE3KgFBefyGBsOchxtBrELxtKCgCRLZ9aOoZVKs0eHsp5DeyFhYwIxCUwukovpLZ+h3Y4Ozbszo0=
+	t=1781636862; cv=none; b=ZYpDVPvG3PpmMT95PIajAoxOvofzdD92qjlN9/Azdyq6oWR41muukwxLRagyYW8RWLW0idG7KShz0P1Bj5L5EAhG0Fv4TCBD3IhWTpKpXXbvN1IcW6DeEbxspxIPF+7/D/xANYl020ZA0GosMTc6fBtxOh5AFspM5GmJSA+yJZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781627572; c=relaxed/simple;
-	bh=js95/L1PRUzd7Qk9VgZtAY9v1DzxeyZ0Bqn8gDdB9VQ=;
+	s=arc-20240116; t=1781636862; c=relaxed/simple;
+	bh=I8L0CPy12vKmV098ZQQETW4KljdHIVm5bl7/ADQBF2Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cHnv/VpVfeZW6/P+zAbNZ6PeYplEg5hUsRI9tL8I4QYwLXzFUvICj6EewjxHiMuv5fMSJgyyXLLT6f9Ifu4XsBHmH3ek48o7guV1iS+ESbOjgIm0uqrGup5yOydVn5DNOaKpQkdq3NcyHTCZqbDssI3vnVxJkTELS+USrrK+/6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sy9u49fz; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFC5D1F000E9;
-	Tue, 16 Jun 2026 16:32:48 +0000 (UTC)
+	 MIME-Version; b=cc85okrxA7PUSRcWBFXv6XlvMPDjZfFvd1qQ83MHQKd8lroGbMc0hlDW/ACbNDSrqTHUMcqW+yqEn9eBzEy3JdW6SO7vlMPSgF5pvhUCr77CephrAP2nABBEYXq/cRmY3rmCUIdDomdmo4UcrmyHQHZFN9LRSlGoA4AErMLaa1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VamNrb+B; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6226C1F000E9;
+	Tue, 16 Jun 2026 19:07:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781627570;
-	bh=sPzk5KUu+KnTQqDxBvtSAIjN837FnV67xqNDf+dRu1A=;
+	s=korg; t=1781636861;
+	bh=63RvxcQaUVvo4LhNBnpIjbrOhaAPTOWcvSxma8sk4Rg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Sy9u49fzRa3Ez2MHg99osn4+Rt4d7SGikk2+8zmVZun2ZaW5M962uRf7KUbX6FzMZ
-	 THIzfMsmDCTmG4qhJ6dh6xHVUheCTnSCuWlEO2pulG7i9GBJQ4O2jdw4/prA9bSNJB
-	 ++AuY+yfg5scvanS9sJiBGvyQ1jIgCQJHBzjK6sE=
+	b=VamNrb+Byel7XPBwQtcNGl1uYf+QEV5k7emzQ8/31JR7wRGhNtFQEve5kRArA2aap
+	 oAPBB4ssvdRFcTYTW16xIkFqszpG6CHNCj2QG07wr1WSlEeGXAr1jivnAPiHfLKw9M
+	 63imonsAGdhsszOAuf+FUVBvZLU+JzU3QlaFx7og=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hongfei Ren <lcrhf@outlook.com>,
-	stable@kernel.org,
-	Cryolitia PukNgae <cryolitia.pukngae@linux.dev>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.12 176/261] Input: atkbd - skip deactivate for HONOR BCC-Ns internal keyboard
+	Aaron Erhardt <aer@tuxedocomputers.com>,
+	Werner Sembach <wse@tuxedocomputers.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.10 318/342] ALSA: hda/hdmi: Add quirk for TUXEDO IBS14G6
 Date: Tue, 16 Jun 2026 20:30:14 +0530
-Message-ID: <20260616145053.237178247@linuxfoundation.org>
+Message-ID: <20260616145103.350856660@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
-References: <20260616145044.869532709@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,87 +67,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,outlook.com,kernel.org,linux.dev,gmail.com];
-	TAGGED_FROM(0.00)[bounces-264731-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:lcrhf@outlook.com,m:stable@kernel.org,m:cryolitia.pukngae@linux.dev,m:dmitry.torokhov@gmail.com,m:dmitrytorokhov@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-266529-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:aer@tuxedocomputers.com,m:wse@tuxedocomputers.com,m:tiwai@suse.de,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,outlook.com:email,vger.kernel.org:from_smtp,linux.dev:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,vger.kernel.org:from_smtp,tuxedocomputers.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 22ACE692511
+X-Rspamd-Queue-Id: DE248694C3A
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cryolitia PukNgae <cryolitia.pukngae@linux.dev>
+From: Aaron Erhardt <aer@tuxedocomputers.com>
 
-commit fb402386af4cdce108ff991a796386de55439735 upstream.
+commit d649c58bcad8fb9b749e3837136a201632fa109d upstream.
 
-After commit 9cf6e24c9fbf17e52de9fff07f12be7565ea6d61 ("Input: atkbd -
-do not skip atkbd_deactivate() when skipping ATKBD_CMD_GETID"), HONOR
-BCC-N, aka HONOR MagicBook 14 2026's internal keyboard stops
-working. Adding the atkbd_deactivate_fixup quirk fixes it.
+Depending on the timing during boot, the BIOS might report wrong pin
+capabilities, which can lead to HDMI audio being disabled. Therefore,
+force HDMI audio connection on TUXEDO InfinityBook S 14 Gen6.
 
-DMI: HONOR BCC-N/BCC-N-PCB, BIOS 1.04 04/07/2026
-
-Fixes: 9cf6e24c9fbf17e52de9fff07f12be7565ea6d61 ("Input: atkbd - do not skip atkbd_deactivate() when skipping ATKBD_CMD_GETID")
-Reported-by: Hongfei Ren <lcrhf@outlook.com>
-Link: https://github.com/colorcube/Linux-on-Honor-Magicbook-14-Pro/issues/1#issuecomment-4562679891
-Tested-by: Hongfei Ren <lcrhf@outlook.com>
-Cc: stable@kernel.org
-Signed-off-by: Cryolitia PukNgae <cryolitia.pukngae@linux.dev>
-Link: https://patch.msgid.link/20260605-honor-v1-1-78e05e491193@linux.dev
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Aaron Erhardt <aer@tuxedocomputers.com>
+Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
+Link: https://patch.msgid.link/20260218213234.429686-1-wse@tuxedocomputers.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/keyboard/atkbd.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ sound/pci/hda/patch_hdmi.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/input/keyboard/atkbd.c
-+++ b/drivers/input/keyboard/atkbd.c
-@@ -1945,6 +1945,13 @@ static const struct dmi_system_id atkbd_
- 		},
- 		.callback = atkbd_deactivate_fixup,
- 	},
-+	{
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "HONOR"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "BCC-N"),
-+		},
-+		.callback = atkbd_deactivate_fixup,
-+	},
- 	{ }
- };
- 
+--- a/sound/pci/hda/patch_hdmi.c
++++ b/sound/pci/hda/patch_hdmi.c
+@@ -1973,6 +1973,7 @@ static const struct snd_pci_quirk force_
+ 	SND_PCI_QUIRK(0x1043, 0x86ae, "ASUS", 1),  /* Z170 PRO */
+ 	SND_PCI_QUIRK(0x1043, 0x86c7, "ASUS", 1),  /* Z170M PLUS */
+ 	SND_PCI_QUIRK(0x1462, 0xec94, "MS-7C94", 1),
++	SND_PCI_QUIRK(0x1558, 0x14a1, "TUXEDO InfinityBook S 14 Gen6", 1),
+ 	SND_PCI_QUIRK(0x8086, 0x2060, "Intel NUC5CPYB", 1),
+ 	SND_PCI_QUIRK(0x8086, 0x2081, "Intel NUC 10", 1),
+ 	{}
 
 
 
