@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-266219-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263928-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id zecBGryZMWrGnwUAu9opvQ
-	(envelope-from <stable+bounces-266219-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:45:16 +0200
+	id z9SBGpBrMWqLiwUAu9opvQ
+	(envelope-from <stable+bounces-263928-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:28:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD0756946FE
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:45:15 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4C4D6910D8
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:28:15 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="ASL5mS/G";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266219-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266219-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=MkdQNmw9;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263928-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-263928-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6BF9531F4C36
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:41:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E894C3223A42
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:20:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E444C3DF007;
-	Tue, 16 Jun 2026 18:41:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85BE343E4BF;
+	Tue, 16 Jun 2026 15:20:28 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B115243D4E8;
-	Tue, 16 Jun 2026 18:41:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A4D62E612E;
+	Tue, 16 Jun 2026 15:20:26 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781635279; cv=none; b=Fubs/H7UepLAfMHhG00ChTAWxV+3/fCudtaqEnd4NBt/UdVMnOGMtWAREr2DZDd2r7JSC6wZI3r6/SIwBSfDVj1nP1f7MfMnG2EllZj1ftIv2AdE8Gt/lXZi1V2aFSUnmtSJIGd33WWBSSRLEtTj8gBFw7pFH9JLAC/sELQZHQQ=
+	t=1781623228; cv=none; b=mQLXXSUg3uvRXqDuCrEmbEnUEimJPUA+tz56nEAe9qYezN0X0gyGxd7L6GdRxNdFZA22W1LKKSwgh1AjjSqfR1rLX2wJ0+yS3hyTCNAFM0P3vQMbQpu/bxBCLwstGB3HVt8BjyyEcj5VKxqeukB67haU1EZCvLm0yoNytmkVxxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781635279; c=relaxed/simple;
-	bh=bqFqZm5fJlGjrRneRDWC7pz5UUUXcpJiC00DeMVLeLc=;
+	s=arc-20240116; t=1781623228; c=relaxed/simple;
+	bh=bPF8PP4nUW4YY5xqKQJvi+qNiab/PY2IxJsiLmsFYbw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iR6NBDAOBt1QH+ufoUi1d9SwT8kK0UMhgpt53zqpKbc817eO8Xd8aCLpKJmwBGgVqi2aKuGR+08vDxwIrDzvAXH9aQydq+sSxFZy2Jw7ZXOh+l6oc/JxiuoACZx5HlOgSMqy3Cgsqycbg7+QLeVotnOrhwgZbAjgCI/fHqMZTwk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ASL5mS/G; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70C561F000E9;
-	Tue, 16 Jun 2026 18:41:17 +0000 (UTC)
+	 MIME-Version; b=nZjYSd8CbUF6rsy5e22E3ZJQ841MA5J9tZkDxvQlChddgeFNcrVy6VbhnxZ2765KXe++pzX2m2qmsNRjuPQBQkgrUGCMFQANpFGMfl6Dw/xGg6Kj+h96sby0b3Set3q59SkVcHAjMC+1CHGPNgvIPF97ptWKMIW/ImbI9XR1IFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MkdQNmw9; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF9A51F000E9;
+	Tue, 16 Jun 2026 15:20:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781635278;
-	bh=iwhPl6ItE0GytUbc8ConOvq+GK7wlhvmhs38hhN+Vzc=;
+	s=korg; t=1781623226;
+	bh=m7L5COqtBekIbpGe1j5xqQUO/eLG6vcGeDswLeQtD+A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ASL5mS/G0WckNP/iGnmuQVAaxCSox4xJzcVh+GsU7eSFYmhiKVhnfq4s6gnxiIFvQ
-	 BxwdaxKYw8ATGLdF3JyGU1ppbqDAP2rpasNCbRNoQceHN352JzdaiRTJxfezlu4RB2
-	 +g11hF11zIRh7U1sIbinv6KRHQJRkfGrLr6H854Q=
+	b=MkdQNmw9r6+yzTZi+4NSmCJXd7x1LXiDVlPpL2KAyQePqHj0/2TgtZQow+gXGPNKh
+	 0vt0SYzGZULLVFLPBM8H10fjwO4LVMSuaPFAP+Qzo+6+Gc6z3jOssyp3CtC95ykTna
+	 cqTf1mpghGacASgxSRppmJaWuBeB4BmcGKwlL6qM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Mason <clm@meta.com>,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Florian Westphal <fw@strlen.de>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Jocelyn Falempe <jfalempe@redhat.com>,
+	Wei Liu <wei.liu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 011/342] netfilter: synproxy: refresh tcphdr after skb_ensure_writable
+Subject: [PATCH 7.0 076/378] drm/hyperv: During panic do VMBus unload after frame buffer is flushed
 Date: Tue, 16 Jun 2026 20:25:07 +0530
-Message-ID: <20260616145048.836075104@linuxfoundation.org>
+Message-ID: <20260616145114.164673848@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,103 +70,133 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266219-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,outlook.com,redhat.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-263928-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:clm@meta.com,m:fmancera@suse.de,m:fw@strlen.de,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mhklinux@outlook.com,m:jfalempe@redhat.com,m:wei.liu@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,meta.com:email,strlen.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,suse.de:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,outlook.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: BD0756946FE
+X-Rspamd-Queue-Id: D4C4D6910D8
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chris Mason <clm@meta.com>
+From: Michael Kelley <mhklinux@outlook.com>
 
-[ Upstream commit 92170e6afe927ab2792a3f71902845789c8e31b1 ]
+[ Upstream commit 8b35874f56ded0cc1a90a25b87411249a86246cd ]
 
-synproxy_tstamp_adjust() rewrites the TCP timestamp option in place
-and then patches the TCP checksum via inet_proto_csum_replace4() on
-the caller-supplied tcphdr pointer.  Both ipv4_synproxy_hook() and
-ipv6_synproxy_hook() obtain that pointer with skb_header_pointer()
-before calling in, so it may either alias skb->head directly or
-point at the caller's on-stack _tcph buffer.
+In a VM, Linux panic information (reason for the panic, stack trace,
+etc.) may be written to a serial console and/or a virtual frame buffer
+for a graphics console. The latter may need to be flushed back to the
+host hypervisor for display.
 
-Between obtaining the pointer and using it, the function calls
-skb_ensure_writable(skb, optend), which on a cloned or non-linear
-skb invokes pskb_expand_head() and frees the old skb->head.  After
-that point the cached th is stale:
+The current Hyper-V DRM driver for the frame buffer does the flushing
+*after* the VMBus connection has been unloaded, such that panic messages
+are not displayed on the graphics console. A user with a Hyper-V graphics
+console is left with just a hung empty screen after a panic. The enhanced
+control that DRM provides over the panic display in the graphics console
+is similarly non-functional.
 
-    caller (ipv[46]_synproxy_hook)
-      th = skb_header_pointer(skb, ..., &_tcph)
-      synproxy_tstamp_adjust(skb, protoff, th, ...)
-        skb_ensure_writable(skb, optend)
-          pskb_expand_head()        /* kfree(old skb->head) */
-        ...
-        inet_proto_csum_replace4(&th->check, ...)
-                                    /* writes into freed head, or
-                                       into the caller's stack copy
-                                       leaving the on-wire checksum
-                                       stale */
+Commit 3671f3777758 ("drm/hyperv: Add support for drm_panic") added
+the Hyper-V DRM driver support to flush the virtual frame buffer. It
+provided necessary functionality but did not handle the sequencing
+problem with VMBus unload.
 
-The option bytes are written through skb->data and are fine; only
-the checksum update goes through th and so lands in the wrong
-place.  The result is either a write into freed slab memory or a
-packet leaving with a checksum that does not match its payload.
+Fix the full problem by using VMBus functions to suppress the VMBus
+unload that is normally done by the VMBus driver in the panic path. Then
+after the frame buffer has been flushed, do the VMBus unload so that a
+kdump kernel can start cleanly. As expected, CONFIG_DRM_PANIC must be
+selected for these changes to have effect. As a side benefit, the
+enhanced features of the DRM panic path are also functional.
 
-Fix by re-deriving th from skb->data + protoff immediately after
-skb_ensure_writable() succeeds, so the subsequent checksum update
-targets the linear, writable header.
-
-Fixes: 48b1de4c110a ("netfilter: add SYNPROXY core/target")
-Assisted-by: kres (claude-opus-4-7)
-Signed-off-by: Chris Mason <clm@meta.com>
-Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Fixes: 3671f3777758 ("drm/hyperv: Add support for drm_panic")
+Signed-off-by: Michael Kelley <mhklinux@outlook.com>
+Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_synproxy_core.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/hyperv/hyperv_drm_drv.c     |  5 +++++
+ drivers/gpu/drm/hyperv/hyperv_drm_modeset.c | 15 ++++++++-------
+ 2 files changed, 13 insertions(+), 7 deletions(-)
 
-diff --git a/net/netfilter/nf_synproxy_core.c b/net/netfilter/nf_synproxy_core.c
-index 2dfc5dae065638..0a97b1a0f53e45 100644
---- a/net/netfilter/nf_synproxy_core.c
-+++ b/net/netfilter/nf_synproxy_core.c
-@@ -199,6 +199,8 @@ synproxy_tstamp_adjust(struct sk_buff *skb, unsigned int protoff,
- 	if (skb_ensure_writable(skb, optend))
- 		return 0;
+diff --git a/drivers/gpu/drm/hyperv/hyperv_drm_drv.c b/drivers/gpu/drm/hyperv/hyperv_drm_drv.c
+index 06b5d96e6eaf6b..b6bf6412ae34ac 100644
+--- a/drivers/gpu/drm/hyperv/hyperv_drm_drv.c
++++ b/drivers/gpu/drm/hyperv/hyperv_drm_drv.c
+@@ -150,6 +150,10 @@ static int hyperv_vmbus_probe(struct hv_device *hdev,
+ 		goto err_free_mmio;
+ 	}
  
-+	th = (struct tcphdr *)(skb->data + protoff);
++	/* If DRM panic path is stubbed out VMBus code must do the unload */
++	if (IS_ENABLED(CONFIG_DRM_PANIC))
++		vmbus_set_skip_unload(true);
 +
- 	while (optoff < optend) {
- 		unsigned char *op = skb->data + optoff;
+ 	drm_client_setup(dev, NULL);
  
+ 	return 0;
+@@ -169,6 +173,7 @@ static void hyperv_vmbus_remove(struct hv_device *hdev)
+ 	struct drm_device *dev = hv_get_drvdata(hdev);
+ 	struct hyperv_drm_device *hv = to_hv(dev);
+ 
++	vmbus_set_skip_unload(false);
+ 	drm_dev_unplug(dev);
+ 	drm_atomic_helper_shutdown(dev);
+ 	vmbus_close(hdev->channel);
+diff --git a/drivers/gpu/drm/hyperv/hyperv_drm_modeset.c b/drivers/gpu/drm/hyperv/hyperv_drm_modeset.c
+index 7978f8c8108c23..d48ca6c23b7c5e 100644
+--- a/drivers/gpu/drm/hyperv/hyperv_drm_modeset.c
++++ b/drivers/gpu/drm/hyperv/hyperv_drm_modeset.c
+@@ -212,15 +212,16 @@ static void hyperv_plane_panic_flush(struct drm_plane *plane)
+ 	struct hyperv_drm_device *hv = to_hv(plane->dev);
+ 	struct drm_rect rect;
+ 
+-	if (!plane->state || !plane->state->fb)
+-		return;
++	if (plane->state && plane->state->fb) {
++		rect.x1 = 0;
++		rect.y1 = 0;
++		rect.x2 = plane->state->fb->width;
++		rect.y2 = plane->state->fb->height;
+ 
+-	rect.x1 = 0;
+-	rect.y1 = 0;
+-	rect.x2 = plane->state->fb->width;
+-	rect.y2 = plane->state->fb->height;
++		hyperv_update_dirt(hv->hdev, &rect);
++	}
+ 
+-	hyperv_update_dirt(hv->hdev, &rect);
++	vmbus_initiate_unload(true);
+ }
+ 
+ static const struct drm_plane_helper_funcs hyperv_plane_helper_funcs = {
 -- 
 2.53.0
 
