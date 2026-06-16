@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-264898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263916-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ZuTbIjh+MWohkwUAu9opvQ
-	(envelope-from <stable+bounces-264898-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:47:52 +0200
+	id 8PYXL9VqMWpTiwUAu9opvQ
+	(envelope-from <stable+bounces-263916-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:25:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D2BD692752
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:47:52 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C012691017
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:25:09 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=FunFqjF8;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264898-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264898-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Y1f36262;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263916-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263916-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8C1523028266
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:47:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 510633125256
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:19:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3864E477E36;
-	Tue, 16 Jun 2026 16:47:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D69DE43E49F;
+	Tue, 16 Jun 2026 15:19:17 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04477449EC3;
-	Tue, 16 Jun 2026 16:47:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6D0D43E49D;
+	Tue, 16 Jun 2026 15:19:16 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781628470; cv=none; b=aP24BQso6hVkyRnsjh7JQvWNdJrdmm/Bdk4NAodZSUm1wMLT/TK42oBCr37dFe7zZSFuHNHU+r7++F+vZBYgP+zyf0fYpiuNaPg3oDQJdD8yUnTSDHREN2A6aFN17cmaeUnpOOYVMDoIqlHX9iqXo4efb3vND4fz13MpGuiqreQ=
+	t=1781623157; cv=none; b=WVCk8CshzfUKIEnMVn5tU1UigrtO6tkfJ4TnvwHCm41TsQP4Qwyr8wCJUCkMivD6MSPlC5mQJlTpTYt+8W2Dh7A9jcczuZEmUlY6sMMGYEpIibR29SgVt32EKeNxILcC3uAguHTbf9Blo+2VCQz7L7WlaZZoKSZHkNHUqkU3KfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781628470; c=relaxed/simple;
-	bh=Nn4+LfHQ6DaeYZlJCnd5zmnMT/DvhHxTAYBFqu52wpY=;
+	s=arc-20240116; t=1781623157; c=relaxed/simple;
+	bh=p3sZAr/SyrMs3Y9Zg6GT+7tgEP6TWYNkZ2ZkKxRlAE4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LQQC7Vi1LcRUqTIyOYyvOecvhG+3MY3rawIyoe67KC+DqDoqj3wP8ypZsaV4m/aWS2Iwk6rGHG85XGpKR/30QEoyW67nwyX/rLjgL3SqHy6CZ0lj1ihBTYuMIMUUb02VJuA1KigKeW2ferBbsFdx0dAP7AwB1ULuBfcfb1IJDR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FunFqjF8; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1D521F000E9;
-	Tue, 16 Jun 2026 16:47:47 +0000 (UTC)
+	 MIME-Version; b=YfsLqAUFwn9OHAhhE1K9KOPnOhfafSC/5TQR1/mZvkBSJsUQFtZNgs0kZPpuB0TygfxG6cQuQqGeQFS2B2toHZNCFXlllFseM1P6T61f8c9mbL9QxkEz3inCyLf0DfxzlFCk6rl92jlsKfBlh+h5pQaAoG6cKZgZKCceg0DUTXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y1f36262; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BBB81F000E9;
+	Tue, 16 Jun 2026 15:19:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781628468;
-	bh=Hn6puAYzvB4PACiNrYZSkpLQ78qFVI9rwiOV2mzNpXE=;
+	s=korg; t=1781623156;
+	bh=AeRLlcAGl0vs1ujdhh33h03sMlj+PVFoMKpWPv2N/WA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=FunFqjF8ZkvKS/TyYt+PuB1AqHtDViIFsua3WCzfVLtdrwTBfCNcu7IWdn2fyupCF
-	 I0ia/Ir5yVjw/D4s0ThmverzowwlACGAz6eSaNdsbzHB/MRgwHNm/A9SKx40pwjH8r
-	 bmZH72JG8RqXeeHcZ+qMQEiPBRREshrEZ7kP7bws=
+	b=Y1f36262pXNwmOnU4ikhgmjBfF85iCsNDhyQZx3vm8Qdl93oiZgpj1xVqfUzTXfe4
+	 buO+Mbv9juEhMRxNuHdiHyy5bNhzITYIn1vJFn6MxAWGg5w5sMbcn/yFj+sHf7QOTJ
+	 SI1lXBQfmNpPRnSKqCg7b6ecoA9L/wPD253AyMfU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Muhammad Bilal <meatuni001@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.6 101/452] Bluetooth: ISO: serialize iso_sock_clear_timer with socket lock
+	Richard Patel <ripatel@wii.dev>,
+	Paul Walmsley <pjw@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 097/378] riscv: cfi: reject unknown flags in PR_SET_CFI
 Date: Tue, 16 Jun 2026 20:25:28 +0530
-Message-ID: <20260616145123.091353285@linuxfoundation.org>
+Message-ID: <20260616145115.399443909@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,95 +72,109 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-263916-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-264898-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:meatuni001@gmail.com,m:luiz.von.dentz@intel.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:ripatel@wii.dev,m:pjw@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,intel.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,wii.dev:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 1D2BD692752
+X-Rspamd-Queue-Id: 1C012691017
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Muhammad Bilal <meatuni001@gmail.com>
+From: Richard Patel <ripatel@wii.dev>
 
-commit 4b5f8e608749b7e8fa386c6e4301cf9272595859 upstream.
+[ Upstream commit 15b4155138505669d3d43d7692459ee8ea2a86e7 ]
 
-iso_sock_close() calls iso_sock_clear_timer() before acquiring
-lock_sock(sk).
+prctl(PR_SET_CFI,PR_CFI_BRANCH_LANDING_PADS) silently ignored
+unknown control values. Only PR_CFI_{ENABLE,DISABLE,LOCK} should
+be permitted.
 
-iso_sock_clear_timer() reads iso_pi(sk)->conn twice without the
-socket lock held:
+This changes the behavior of the uABI (fails previously accepted bits
+with EINVAL).
 
-    if (!iso_pi(sk)->conn)
-        return;
-    cancel_delayed_work(&iso_pi(sk)->conn->timeout_work);
-
-Concurrently, iso_conn_del() executes under lock_sock(sk) and calls
-iso_chan_del(), which sets iso_pi(sk)->conn to NULL and may result in
-the final reference to the connection being dropped:
-
-    CPU0                         CPU1
-    ----                         ----
-    iso_sock_clear_timer()
-      if (conn != NULL) ...      lock_sock(sk)
-                                   iso_chan_del()
-                                   iso_pi(sk)->conn = NULL
-      cancel_delayed_work(conn)  /* NULL deref or UAF */
-
-iso_pi(sk)->conn is not stable across the unlock window, causing a
-NULL pointer dereference or use-after-free.
-
-Serialize iso_sock_clear_timer() with the socket lock by moving it
-inside lock_sock()/release_sock(), matching the pattern used in
-iso_conn_del() and all other call sites.
-
-Fixes: ccf74f2390d60a2f9a75ef496d2564abb478f46a ("Bluetooth: Add BTPROTO_ISO socket type")
-Cc: stable@vger.kernel.org
-Signed-off-by: Muhammad Bilal <meatuni001@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 08ee1559052b ("prctl: cfi: change the branch landing pad prctl()s to be more descriptive")
+Signed-off-by: Richard Patel <ripatel@wii.dev>
+Link: https://patch.msgid.link/20260518183918.322545-1-ripatel@wii.dev
+[pjw@kernel.org: change the patch description to note that although this is a uABI change, it does not break the uABI]
+Signed-off-by: Paul Walmsley <pjw@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/iso.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/riscv/include/asm/usercfi.h             | 1 +
+ arch/riscv/kernel/usercfi.c                  | 3 +++
+ tools/testing/selftests/riscv/cfi/cfitests.c | 6 ++++++
+ 3 files changed, 10 insertions(+)
 
---- a/net/bluetooth/iso.c
-+++ b/net/bluetooth/iso.c
-@@ -808,8 +808,8 @@ static void __iso_sock_close(struct sock
- /* Must be called on unlocked socket. */
- static void iso_sock_close(struct sock *sk)
- {
--	iso_sock_clear_timer(sk);
- 	lock_sock(sk);
-+	iso_sock_clear_timer(sk);
- 	__iso_sock_close(sk);
- 	release_sock(sk);
- 	iso_sock_kill(sk);
+diff --git a/arch/riscv/include/asm/usercfi.h b/arch/riscv/include/asm/usercfi.h
+index f56966edbf5c62..61ee02cee29720 100644
+--- a/arch/riscv/include/asm/usercfi.h
++++ b/arch/riscv/include/asm/usercfi.h
+@@ -50,6 +50,7 @@ void set_indir_lp_status(struct task_struct *task, bool enable);
+ void set_indir_lp_lock(struct task_struct *task, bool lock);
+ 
+ #define PR_SHADOW_STACK_SUPPORTED_STATUS_MASK (PR_SHADOW_STACK_ENABLE)
++#define PR_CFI_SUPPORTED_STATUS_MASK (PR_CFI_ENABLE | PR_CFI_DISABLE | PR_CFI_LOCK)
+ 
+ #else
+ 
+diff --git a/arch/riscv/kernel/usercfi.c b/arch/riscv/kernel/usercfi.c
+index 2c535737511dce..1ea86f21fbfa61 100644
+--- a/arch/riscv/kernel/usercfi.c
++++ b/arch/riscv/kernel/usercfi.c
+@@ -476,6 +476,9 @@ int arch_prctl_set_branch_landing_pad_state(struct task_struct *t, unsigned long
+ 	if (!is_user_lpad_enabled())
+ 		return -EINVAL;
+ 
++	if (state & ~PR_CFI_SUPPORTED_STATUS_MASK)
++		return -EINVAL;
++
+ 	/* indirect branch tracking is locked and further can't be modified by user */
+ 	if (is_indir_lp_locked(t))
+ 		return -EINVAL;
+diff --git a/tools/testing/selftests/riscv/cfi/cfitests.c b/tools/testing/selftests/riscv/cfi/cfitests.c
+index 39d097b6881ff2..0e3943461e7d83 100644
+--- a/tools/testing/selftests/riscv/cfi/cfitests.c
++++ b/tools/testing/selftests/riscv/cfi/cfitests.c
+@@ -141,6 +141,12 @@ int main(int argc, char *argv[])
+ 
+ 	ksft_print_msg("Starting risc-v tests\n");
+ 
++	/* Test unknown PR_CFI bits */
++	ret = my_syscall5(__NR_prctl, PR_SET_CFI, PR_CFI_BRANCH_LANDING_PADS,
++			  PR_CFI_ENABLE | 0xffff0, 0, 0);
++	if (!ret)
++		ksft_exit_fail_msg("PR_SET_CFI accepted reserved branch landing pad bits\n");
++
+ 	/*
+ 	 * Landing pad test. Not a lot of kernel changes to support landing
+ 	 * pads for user mode except lighting up a bit in senvcfg via a prctl.
+-- 
+2.53.0
+
 
 
 
