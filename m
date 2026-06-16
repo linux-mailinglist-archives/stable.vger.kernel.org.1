@@ -1,77 +1,62 @@
-Return-Path: <stable+bounces-265215-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264446-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id zN0BMzWGMWpxlgUAu9opvQ
-	(envelope-from <stable+bounces-265215-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:21:57 +0200
+	id 4gRYCUZ3MWolkAUAu9opvQ
+	(envelope-from <stable+bounces-264446-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:18:14 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 440F869308C
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:21:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 91826691E92
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:18:13 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ywhrPJ9W;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265215-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265215-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=MzA35dlh;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264446-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264446-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A9F7130F165D
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:14:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 16E2731C5023
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:05:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B13E03AE71F;
-	Tue, 16 Jun 2026 17:14:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A83244508F2;
+	Tue, 16 Jun 2026 16:05:26 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FC5235AC3E;
-	Tue, 16 Jun 2026 17:14:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8332944BCB8;
+	Tue, 16 Jun 2026 16:05:25 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781630064; cv=none; b=Ult69nS06HG2K9TxPIA3Qz4/SOkGaSOWt2tXhqv6LT1g5LnozK+mcA7Yj7PvBCT4TlTrR+8uAv6Q7dHzj4pV7k4wI8dRtbGg0m7HHiE/P1DmPPgcj8fs+Chct2nH1s16ojuA0rYKi8EORTSjrzf7bpUtcSh2MsuVRO2rqAruPCU=
+	t=1781625926; cv=none; b=O7JltJnzYuJfav/EZb/1BL8SiQQxcU0JwcjeYPdTJt4xkUUGV7cB0E0Gy1MoL2ecYEkhdD36Fqszdm7YYn1QSLm7P5p/m8AnB/G/M5T6KfiTU86Z610GlX62w04ELVjbnV7OOir52wfkSBXlKqD5uXII553E2YsD9ksRD6DHSzQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781630064; c=relaxed/simple;
-	bh=S7HHOHdXm+4lrpFK5czwgdAcusAB0LNFicK0d4uxwhQ=;
+	s=arc-20240116; t=1781625926; c=relaxed/simple;
+	bh=R2HIA9a2dB27zUcpqQpqvwdS6kHcDcKoaB013gUwF7Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SorH1Lz/bD6yq/WPlb9k6/uUFFo0mI/gLFoWiaBl8sB/ORoB68Ziw50lVgJI90ZrfaoGgKElOd5+Kx++lWWDE5Z1xBg57VGHrYMqkCX1WhpNRxEZj+m1s5jrYia7nPShxn0lmFB2ZkJ1zjKtBhB70kt/IZK+uqgq1r90sPFB1tc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ywhrPJ9W; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74A001F000E9;
-	Tue, 16 Jun 2026 17:14:21 +0000 (UTC)
+	 MIME-Version; b=t92CL71nRnFiSgmmV4TSLmHOsSThXIb7AQzaQfdTozUMnTdj96C8+pG5QbybcQfBNRZXdDJjlpWqh3mzGaXNXljp3XQKg1hI5b0zLx+G3/7Tw1RgnWTqleQZn7EcH3gDkLZvi5HHkqOQ1Bx69fQTfSGRiTOP0UzsmIVAuQ4RAT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MzA35dlh; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F0F51F000E9;
+	Tue, 16 Jun 2026 16:05:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781630062;
-	bh=qIgzxSb0/2bARQomPvE91khTyMWkhl8aNtRAoAHPKnk=;
+	s=korg; t=1781625925;
+	bh=cvVek8RAajBF6mC6+H4yJmH7AB31YA8HjMf/2s6fSck=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ywhrPJ9WACHIaOuEJeK8EpEXZctWyZmpwBsRE3Uq70Ap0WWKPxZnnU1/N4ifl8AJG
-	 9TNzmK5mmTJ1hw84xiTyMy0AZMqpDrTolXl0cBHpszNOdsyFfAS12IB7dGfuljdsb5
-	 w7bDCOGFRzVHkvm/o3XRAXrKiuDkrWY0aZJYGStc=
+	b=MzA35dlhAntglJpghTd4VvEcvI48AOAUyAmFzZ9IDAx0epakuM23/Hu4qdqEjkBeB
+	 ws7WdVkM39KkHOlo9jXuzgbosDfcpAZGvkGs4VGuh00VHMNNKyP5IJwg6rpZbWHC6J
+	 F/q9QInrNCq7CCi9BXshl/Wu/Spg+ZYdjTuRE0V8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alistair Popple <apopple@nvidia.com>,
-	=?UTF-8?q?Arsen=20Arsenovi=C4=87?= <aarsenovic@baylibre.com>,
-	Balbir Singh <balbirs@nvidia.com>,
-	David Hildenbrand <david@kernel.org>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Peter Xu <peterx@redhat.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 402/452] mm/memory: fix spurious warning when unmapping device-private/exclusive pages
+	Yuhao Jiang <danisjiang@gmail.com>,
+	Junrui Luo <moonafterrain@outlook.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Srinivas Kandagatla <srini@kernel.org>
+Subject: [PATCH 6.18 233/325] misc: fastrpc: fix DMA address corruption due to find_vma misuse
 Date: Tue, 16 Jun 2026 20:30:29 +0530
-Message-ID: <20260616145137.958417952@linuxfoundation.org>
+Message-ID: <20260616145110.014945042@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -81,231 +66,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,outlook.com,oss.qualcomm.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-264446-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:apopple@nvidia.com,m:aarsenovic@baylibre.com,m:balbirs@nvidia.com,m:david@kernel.org,m:jgg@ziepe.ca,m:jhubbard@nvidia.com,m:leon@kernel.org,m:liam@infradead.org,m:ljs@kernel.org,m:peterx@redhat.com,m:matthew.brost@intel.com,m:mhocko@suse.com,m:rppt@kernel.org,m:shuah@kernel.org,m:surenb@google.com,m:thomas.hellstrom@linux.intel.com,m:vbabka@kernel.org,m:akpm@linux-foundation.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:danisjiang@gmail.com,m:moonafterrain@outlook.com,m:dmitry.baryshkov@oss.qualcomm.com,m:srini@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[22];
-	TAGGED_FROM(0.00)[bounces-265215-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,qualcomm.com:email,outlook.com:email,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 440F869308C
+X-Rspamd-Queue-Id: 91826691E92
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alistair Popple <apopple@nvidia.com>
+From: Junrui Luo <moonafterrain@outlook.com>
 
-[ Upstream commit be3f38d05cc5a7c3f13e51994c5dd043ab604d28 ]
+commit 464c6ad2aa16e1e1df9d559289199356493d1e00 upstream.
 
-Device private and exclusive entries are only supported for anonymous
-folios.  This condition is tested in __migrate_device_pages() and
-make_device_exclusive() using folio_test_anon().  However the unmap path
-tests this assumption using vma_is_anonymous().
+fastrpc_get_args() uses find_vma() to look up the VMA for a user-provided
+pointer and compute a DMA address offset. When the address falls in a gap
+before the returned VMA, (ptr & PAGE_MASK) - vma->vm_start underflows,
+corrupting the DMA address sent to the DSP.
 
-This is wrong because whilst anonymous VMAs can only contain folios where
-folio_test_anon() is true the opposite relation does not hold.  A folio
-for which folio_test_anon() is true does not imply vma_is_anonymous() is
-true.  Such a condition can occur if for example a folio is part of a
-private filebacked mapping.
+Replace find_vma() with vma_lookup(), which returns NULL when the address
+is not contained within any VMA.
 
-In this case vma_is_anonymous() is false as the mapping is filebacked, but
-folio_test_anon() may be true, thus permitting devices to migrate the
-folio to device private memory.  This can lead to the following spurious
-warnings during process teardown:
-
-[  772.737706] ------------[ cut here ]------------
-[  772.739201] WARNING: mm/memory.c:1754 at unmap_page_range.cold+0x26/0x18a, CPU#17: hmm-tests/2041
-[  772.742050] Modules linked in: test_hmm nvidia_uvm(O) nvidia(O)
-[  772.743959] CPU: 17 UID: 0 PID: 2041 Comm: hmm-tests Tainted: G        W  O        7.0.0+ #387 PREEMPT(full)
-[  772.747104] Tainted: [W]=WARN, [O]=OOT_MODULE
-[  772.748509] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.17.0-0-gb52ca86e094d-prebuilt.qemu.org 04/01/2014
-[  772.752117] RIP: 0010:unmap_page_range.cold+0x26/0x18a
-[  772.753780] Code: 7e fe ff ff 48 89 4c 24 78 4c 89 44 24 38 e8 f2 ff b1 00 48 8b 4c 24 78 4c 8b 44 24 38 48 8b 44 24 18 48 83 78 48 00 74 04 90 <0f> 0b 90 48 89 ca b8 ff ff 37 00 48 c1 ea 03 48 c1 e0 2a 80 3c 02
-[  772.759602] RSP: 0018:ffff888112607550 EFLAGS: 00010286
-[  772.761310] RAX: ffff88811bbf4dc0 RBX: dffffc0000000000 RCX: ffffea03e9bfffd8
-[  772.763583] RDX: 1ffff1102377e9c1 RSI: 0000000000000008 RDI: ffff88811bbf4e08
-[  772.765914] RBP: 0000000000000006 R08: ffff8881059f7448 R09: ffffed10224c0e68
-[  772.768184] R10: ffff888112607347 R11: 0000000000000001 R12: 0000000000000001
-[  772.770461] R13: ffffea03e9bfffc0 R14: ffff888112607908 R15: ffffea03e9bfffc0
-[  772.772782] FS:  00007f327caa2780(0000) GS:ffff888427b7d000(0000) knlGS:0000000000000000
-[  772.775328] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[  772.777187] CR2: 00007f327ca89000 CR3: 00000001994d5000 CR4: 00000000000006f0
-[  772.779135] Call Trace:
-[  772.779792]  <TASK>
-[  772.780317]  ? dmirror_interval_invalidate+0x1a3/0x290 [test_hmm]
-[  772.781873]  ? vm_normal_page_pud+0x2b0/0x2b0
-[  772.782992]  ? __rwlock_init+0x150/0x150
-[  772.784006]  ? lock_release+0x216/0x2b0
-[  772.785008]  ? __mmu_notifier_invalidate_range_start+0x505/0x6e0
-[  772.786522]  ? lock_release+0x216/0x2b0
-[  772.787498]  ? unmap_single_vma+0xb6/0x210
-[  772.788573]  unmap_vmas+0x27d/0x520
-[  772.789506]  ? unmap_single_vma+0x210/0x210
-[  772.790607]  ? mas_update_gap.part.0+0x620/0x620
-[  772.791834]  unmap_region+0x19e/0x350
-[  772.792769]  ? remove_vma+0x130/0x130
-[  772.793684]  ? mas_alloc_nodes+0x1f2/0x300
-[  772.794730]  vms_complete_munmap_vmas+0x8c1/0xe20
-[  772.795926]  ? unmap_region+0x350/0x350
-[  772.796917]  do_vmi_align_munmap+0x36a/0x4e0
-[  772.798018]  ? lock_release+0x216/0x2b0
-[  772.799024]  ? vma_shrink+0x620/0x620
-[  772.799983]  do_vmi_munmap+0x150/0x2c0
-[  772.800939]  __vm_munmap+0x161/0x2c0
-[  772.801872]  ? expand_downwards+0xd60/0xd60
-[  772.802948]  ? clockevents_program_event+0x1ef/0x540
-[  772.804217]  ? lock_release+0x216/0x2b0
-[  772.805158]  __x64_sys_munmap+0x59/0x80
-[  772.805776]  do_syscall_64+0xfc/0x670
-[  772.806336]  ? irqentry_exit+0xda/0x580
-[  772.806976]  entry_SYSCALL_64_after_hwframe+0x4b/0x53
-[  772.807772] RIP: 0033:0x7f327cbb2717
-[  772.808323] Code: 73 01 c3 48 8b 0d f9 76 0d 00 f7 d8 64 89 01 48 83 c8 ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 b8 0b 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d c9 76 0d 00 f7 d8 64 89 01 48
-[  772.811337] RSP: 002b:00007ffde7f57d38 EFLAGS: 00000202 ORIG_RAX: 000000000000000b
-[  772.812564] RAX: ffffffffffffffda RBX: 00007f327cc9c000 RCX: 00007f327cbb2717
-[  772.813733] RDX: 0000000000000000 RSI: 0000000000400000 RDI: 00007f327c289000
-[  772.814867] RBP: 0000000000421360 R08: 000000000000001a R09: 0000000000000000
-[  772.815991] R10: 0000000000000003 R11: 0000000000000202 R12: 00007ffde7f57d74
-[  772.817121] R13: 00007f327c689010 R14: 0000000000100000 R15: 00007f327c289000
-[  772.818272]  </TASK>
-[  772.818614] irq event stamp: 0
-[  772.819159] hardirqs last  enabled at (0): [<0000000000000000>] 0x0
-[  772.820174] hardirqs last disabled at (0): [<ffffffff82a57ab3>] copy_process+0x19f3/0x6440
-[  772.821511] softirqs last  enabled at (0): [<ffffffff82a57b00>] copy_process+0x1a40/0x6440
-[  772.822869] softirqs last disabled at (0): [<0000000000000000>] 0x0
-[  772.823871] ---[ end trace 0000000000000000 ]---
-
-Fix this by using the same check for folio_test_anon() in
-zap_nonpresent_ptes(). Also add a hmm-test case for this.
-
-Link: https://lore.kernel.org/20260501065116.2057242-1-apopple@nvidia.com
-Fixes: 999dad824c39 ("mm/shmem: persist uffd-wp bit across zapping for file-backed")
-Signed-off-by: Alistair Popple <apopple@nvidia.com>
-Reported-by: Arsen Arsenović <aarsenovic@baylibre.com>
-Reviewed-by: Balbir Singh <balbirs@nvidia.com>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: John Hubbard <jhubbard@nvidia.com>
-Cc: Leon Romanovsky <leon@kernel.org>
-Cc: Liam R. Howlett <liam@infradead.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[ adapted `folio_test_anon(folio)` to `PageAnon(page)` ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 80f3afd72bd4 ("misc: fastrpc: consider address offset before sending to DSP")
+Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
+Link: https://patch.msgid.link/20260530204528.116920-3-srini@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/memory.c                            |    2 -
- tools/testing/selftests/mm/hmm-tests.c |   50 +++++++++++++++++++++++++++++++++
- 2 files changed, 51 insertions(+), 1 deletion(-)
+ drivers/misc/fastrpc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -1475,7 +1475,7 @@ static unsigned long zap_pte_range(struc
- 			 * consider uffd-wp bit when zap. For more information,
- 			 * see zap_install_uffd_wp_if_needed().
- 			 */
--			WARN_ON_ONCE(!vma_is_anonymous(vma));
-+			WARN_ON_ONCE(!PageAnon(page));
- 			rss[mm_counter(page)]--;
- 			if (is_device_private_entry(entry))
- 				page_remove_rmap(page, vma, false);
---- a/tools/testing/selftests/mm/hmm-tests.c
-+++ b/tools/testing/selftests/mm/hmm-tests.c
-@@ -999,6 +999,56 @@ TEST_F(hmm, migrate)
- }
+--- a/drivers/misc/fastrpc.c
++++ b/drivers/misc/fastrpc.c
+@@ -1058,7 +1058,7 @@ static int fastrpc_get_args(u32 kernel,
+ 			pages[i].addr = ctx->maps[i]->phys;
  
- /*
-+ * Migrate private file memory to device private memory.
-+ */
-+TEST_F(hmm, migrate_file_private)
-+{
-+	struct hmm_buffer *buffer;
-+	unsigned long npages;
-+	unsigned long size;
-+	unsigned long i;
-+	int *ptr;
-+	int ret;
-+	int fd;
-+
-+	npages = ALIGN(HMM_BUFFER_SIZE, self->page_size) >> self->page_shift;
-+	ASSERT_NE(npages, 0);
-+	size = npages << self->page_shift;
-+
-+	fd = hmm_create_file(size);
-+	ASSERT_GE(fd, 0);
-+
-+	buffer = malloc(sizeof(*buffer));
-+	ASSERT_NE(buffer, NULL);
-+
-+	buffer->fd = fd;
-+	buffer->size = size;
-+	buffer->mirror = malloc(size);
-+	ASSERT_NE(buffer->mirror, NULL);
-+
-+	buffer->ptr = mmap(NULL, size,
-+			   PROT_READ | PROT_WRITE,
-+			   MAP_PRIVATE,
-+			   buffer->fd, 0);
-+	ASSERT_NE(buffer->ptr, MAP_FAILED);
-+
-+	/* Initialize buffer in system memory. */
-+	for (i = 0, ptr = buffer->ptr; i < size / sizeof(*ptr); ++i)
-+		ptr[i] = i;
-+
-+	/* Migrate memory to device. */
-+	ret = hmm_migrate_sys_to_dev(self->fd, buffer, npages);
-+	ASSERT_EQ(ret, 0);
-+	ASSERT_EQ(buffer->cpages, npages);
-+
-+	/* Check what the device read. */
-+	for (i = 0, ptr = buffer->mirror; i < size / sizeof(*ptr); ++i)
-+		ASSERT_EQ(ptr[i], i);
-+
-+	hmm_buffer_free(buffer);
-+}
-+
-+/*
-  * Migrate anonymous memory to device private memory and fault some of it back
-  * to system memory, then try migrating the resulting mix of system and device
-  * private memory to the device.
+ 			mmap_read_lock(current->mm);
+-			vma = find_vma(current->mm, ctx->args[i].ptr);
++			vma = vma_lookup(current->mm, ctx->args[i].ptr);
+ 			if (vma)
+ 				pages[i].addr += (ctx->args[i].ptr & PAGE_MASK) -
+ 						 vma->vm_start;
 
 
 
