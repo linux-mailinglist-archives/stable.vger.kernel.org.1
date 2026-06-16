@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-264108-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266457-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 9c8KDtFuMWrSjAUAu9opvQ
-	(envelope-from <stable+bounces-264108-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:42:09 +0200
+	id M6srFzCfMWruoQUAu9opvQ
+	(envelope-from <stable+bounces-266457-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:08:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD0FF6914E6
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:42:08 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6040694C66
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:08:31 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="tddgi4/y";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264108-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264108-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=vnGyE0YD;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266457-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266457-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E0837306744A
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:36:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C783631759C1
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:01:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D5BF44CAF5;
-	Tue, 16 Jun 2026 15:36:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C2B23DBD76;
+	Tue, 16 Jun 2026 19:01:55 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20FF644CF2C;
-	Tue, 16 Jun 2026 15:36:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A2713191BA;
+	Tue, 16 Jun 2026 19:01:54 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781624167; cv=none; b=VFsvV9nYA9XR6jokoYHC3syF0JhK6ZS4mEIq5wpgzMTizbhk8jbIjeJuX0FnoyikSu/bU2m29YORXrXCuJXxeOmYzlCw3tpFHg5Jgvh+q6Yy6N0zfBUKHBgS4Mb8Bu4Jqx+Y+dotud8/EqnmSK3xieJ6rwP3WQRoffdPs9AUwyM=
+	t=1781636515; cv=none; b=n3j+lQyB65ZenV96JqtHm05mSPMj0CrGKRSMiV2K6WPLHriecxfDqwBa/M/L1bm+d6TiBim3xJEs/87+LjL3XuXdI33Pjp9xlwcJB9+bZqTFv2l/m8dCeF+nEo3tDXG5jNFXyW/sRxVD+RQKZuLGE96T/NN6ECzadqm/36JRPkM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781624167; c=relaxed/simple;
-	bh=xI9BLdQ6fsClbuPngs8BLtRStnCYp23NDigsCZDSoyo=;
+	s=arc-20240116; t=1781636515; c=relaxed/simple;
+	bh=0V6uTzDJZBx9DXlwOM9VZByI362vScaTW+Mx3KkChE0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GabXXfiy7TcKq2QyV1CBTwshvmZ7EQnyt818icY+ldexcVcDh3f9e1H+3ABsxYSIuxiHpGg041ZnsV2V3mNNZaGYwXPeF9oozYR1Q+in2NVyjWscBZ/D/pMlk/wqxpR5Hw1irpJPVfaXBmybRg4EjT3WGtwplt94zIKV5z8JYvA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tddgi4/y; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1A301F00A3A;
-	Tue, 16 Jun 2026 15:36:04 +0000 (UTC)
+	 MIME-Version; b=Unzw9cdgh8DvtKz3D0THSW3LL8LZIhm7CFxoNgbNtEnje+Gcs1ZfFUHWFqMxDSas/qTYTMNXgi1VRkgcmp+sZ3QW35Y1a6gNoAxsFD6BuXnWgCHTt+26CpPlBhvJVvm2R8GrwBqyPg8Q2fngNLS+ikDNNaeEc7traVTO7tTHPT4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vnGyE0YD; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F119D1F000E9;
+	Tue, 16 Jun 2026 19:01:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781624165;
-	bh=1IW5GmocuVl1xLArrQqktzZ81V5eUoW/OL7Ql3/aGso=;
+	s=korg; t=1781636513;
+	bh=cIVcAvv6cFwz5KEI8hicO1mKZdXiJkK4KtlCEbkJv8k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=tddgi4/yx9c25jjPeQC5HTizXj3CMb389wbOT932CipcpJUkD4hApD6jJKnOQsEE0
-	 qWbg9W6/zal3+YDEjwCK4SnYLyT66lzx10U7jfZV2pWmqVtWHnm423XTbcxpFF49E+
-	 JTjwBAOKRoPG7hH8Lg3vIgdTsTOXcegLtE+6TNCA=
+	b=vnGyE0YDi/0ZLMsroCGnIt98oVmjdNR6TIRgxOlZ3aQC0U+HM9a5tIJ6EsXGdwBtz
+	 5BEFPI1otbywlSbD96NY8kQ0HJ3HXRRCI3Ur44H/E1W8CdIphJY3WW29Pq6fdGC043
+	 7todUSQehglYd+/UH3E3lFda/gtpDECs1jyo9g04=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Srinivas Kandagatla <srini@kernel.org>
-Subject: [PATCH 7.0 285/378] misc: fastrpc: Fix NULL pointer dereference in rpmsg callback
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 220/342] smb: client: fix OOB read in smb2_ioctl_query_info QUERY_INFO path
 Date: Tue, 16 Jun 2026 20:28:36 +0530
-Message-ID: <20260616145125.098123559@linuxfoundation.org>
+Message-ID: <20260616145058.444065085@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,119 +67,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264108-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mukesh.ojha@oss.qualcomm.com,m:andersson@kernel.org,m:srini@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-266457-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:stfrench@microsoft.com,m:sashal@kernel.org,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,microsoft.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,qualcomm.com:email,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: DD0FF6914E6
+X-Rspamd-Queue-Id: C6040694C66
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-commit 5401fb4fe10fac6134c308495df18ed74aebb9c4 upstream.
+[ Upstream commit a58c5af19ff0d6f44f6e9fe31e33a2c92223f77e ]
 
-A NULL pointer dereference was observed on Hawi at boot when the DSP
-sends a glink message before fastrpc_rpmsg_probe() has completed
-initialization:
+smb2_ioctl_query_info() has two response-copy branches: PASSTHRU_FSCTL
+and the default QUERY_INFO path.  The QUERY_INFO branch clamps
+qi.input_buffer_length to the server-reported OutputBufferLength and then
+copies qi.input_buffer_length bytes from qi_rsp->Buffer to userspace, but
+it never verifies that the flexible-array payload actually fits within
+rsp_iov[1].iov_len.
 
-  Unable to handle kernel NULL pointer dereference at virtual address 0000000000000178
-  pc : _raw_spin_lock_irqsave+0x34/0x8c
-  lr : fastrpc_rpmsg_callback+0x3c/0xcc [fastrpc]
-  ...
-  Call trace:
-   _raw_spin_lock_irqsave+0x34/0x8c (P)
-   fastrpc_rpmsg_callback+0x3c/0xcc [fastrpc]
-   qcom_glink_native_rx+0x538/0x6a4
-   qcom_glink_smem_intr+0x14/0x24 [qcom_glink_smem]
+A malicious server can return OutputBufferLength larger than the actual
+QUERY_INFO response, causing copy_to_user() to walk past the response
+buffer and expose adjacent kernel heap to userspace.
 
-The faulting address 0x178 corresponds to the lock variable inside
-struct fastrpc_channel_ctx, confirming that cctx is NULL when
-fastrpc_rpmsg_callback() attempts to take the spinlock.
+Guard the QUERY_INFO copy with a bounds check on the actual Buffer
+payload.  Use struct_size(qi_rsp, Buffer, qi.input_buffer_length)
+rather than an open-coded addition so the guard cannot overflow on
+32-bit builds.
 
-There are two issues here. First, dev_set_drvdata() is called before
-spin_lock_init() and idr_init(), leaving a window where the callback
-can retrieve a valid cctx pointer but operate on an uninitialized
-spinlock. Second, the rpmsg channel becomes live as soon as the driver
-is bound, so fastrpc_rpmsg_callback() can fire before dev_set_drvdata()
-is called at all, resulting in dev_get_drvdata() returning NULL.
-
-Fix both issues by moving all cctx initialization ahead of
-dev_set_drvdata() so the structure is fully initialized before it
-becomes visible to the callback, and add a NULL check in
-fastrpc_rpmsg_callback() as a guard against any remaining window.
-
-Fixes: f6f9279f2bf0 ("misc: fastrpc: Add Qualcomm fastrpc basic driver model")
+Fixes: f5778c398713 ("SMB3: Allow SMB3 FSCTL queries to be sent to server from tools")
 Cc: stable@vger.kernel.org
-Signed-off-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
-Reviewed-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
-Link: https://patch.msgid.link/20260530204528.116920-4-srini@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Assisted-by: Claude:claude-opus-4-6
+Assisted-by: Codex:gpt-5-4
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/fastrpc.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ fs/cifs/smb2ops.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/misc/fastrpc.c
-+++ b/drivers/misc/fastrpc.c
-@@ -2457,7 +2457,6 @@ static int fastrpc_rpmsg_probe(struct rp
- 
- 	kref_init(&data->refcount);
- 
--	dev_set_drvdata(&rpdev->dev, data);
- 	rdev->dma_mask = &data->dma_mask;
- 	dma_set_mask_and_coherent(rdev, DMA_BIT_MASK(32));
- 	INIT_LIST_HEAD(&data->users);
-@@ -2466,6 +2465,7 @@ static int fastrpc_rpmsg_probe(struct rp
- 	idr_init(&data->ctx_idr);
- 	data->domain_id = domain_id;
- 	data->rpdev = rpdev;
-+	dev_set_drvdata(&rpdev->dev, data);
- 
- 	err = of_platform_populate(rdev->of_node, NULL, NULL, rdev);
- 	if (err)
-@@ -2539,6 +2539,9 @@ static int fastrpc_rpmsg_callback(struct
- 	if (len < sizeof(*rsp))
- 		return -EINVAL;
- 
-+	if (!cctx)
-+		return -ENODEV;
-+
- 	ctxid = ((rsp->ctx & FASTRPC_CTXID_MASK) >> 4);
- 
- 	spin_lock_irqsave(&cctx->lock, flags);
+--- a/fs/cifs/smb2ops.c
++++ b/fs/cifs/smb2ops.c
+@@ -1720,6 +1720,12 @@ smb2_ioctl_query_info(const unsigned int
+ 		qi_rsp = (struct smb2_query_info_rsp *)rsp_iov[1].iov_base;
+ 		if (le32_to_cpu(qi_rsp->OutputBufferLength) < qi.input_buffer_length)
+ 			qi.input_buffer_length = le32_to_cpu(qi_rsp->OutputBufferLength);
++		if (qi.input_buffer_length > 0 &&
++		    struct_size(qi_rsp, Buffer, qi.input_buffer_length) >
++		    rsp_iov[1].iov_len) {
++			rc = -EFAULT;
++			goto out;
++		}
+ 		if (copy_to_user(&pqi->input_buffer_length,
+ 				 &qi.input_buffer_length,
+ 				 sizeof(qi.input_buffer_length))) {
 
 
 
