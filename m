@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-265428-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266244-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id DTa6NOOJMWoqmAUAu9opvQ
-	(envelope-from <stable+bounces-265428-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:37:39 +0200
+	id iW2ZEViZMWp6nwUAu9opvQ
+	(envelope-from <stable+bounces-266244-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:43:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5534B693524
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:37:39 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 638F2694628
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:43:35 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=sv17WP4e;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265428-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265428-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Pwpg9RYl;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266244-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-266244-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A44B431F4436
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:32:34 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 90CA830028D7
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:43:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 569DD47AF66;
-	Tue, 16 Jun 2026 17:32:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97E4046AF17;
+	Tue, 16 Jun 2026 18:43:29 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 176E447AF5D;
-	Tue, 16 Jun 2026 17:32:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 621744418D7;
+	Tue, 16 Jun 2026 18:43:28 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781631153; cv=none; b=se1ElVDgIQVC0OxTw6f4lx10xSETZbxkiyMiQoVXrLWKV9mrFEfj963TIATs1uqWYxZfm+74ArgGAsAhJvdzafdHIrs8uSYcA0Lf2hz86N84Lgj4FRT4qnYBhLTB61Ty6DzjrXTxeeqVXxjnrBBz47RffitvUvefFFmQuCStCtg=
+	t=1781635409; cv=none; b=CNBtR1zHfOW6KtJGYVra1gg2rEmZdOVd3VxPunL7GxYujPIsfBOpBr1PDPEjxo75a3xuyVs2tOpIGex7m2/GV5QRMIPy0hw8N4/Wf0dbkgElyEX/0iI+ovZzp2+78EnAkW0vilukJHejSdzmTb/9qoM/JSYQbg3jPjKQs++fPQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781631153; c=relaxed/simple;
-	bh=c8WAOo+rckvJj+qCmqP+TJeMQhvad4eAcoXmdxs0cDE=;
+	s=arc-20240116; t=1781635409; c=relaxed/simple;
+	bh=40rRIIGcUkFrCA46Z2VY8mGvus+l0H5vGPVOCt3Aees=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UkKuh1wJx8JL/CeFCo3zaq6JUKtNTSWKOoU6ikXFLNeAFwxdt0rhcSkoVPGVu6/fA+Ff56Nf2n1dQos+rKYzMG88tPrUd9uQGmTgiTGPY74onrwmmsS8lxgb4rwFlUwkeTRfAXwWXpyPiblE+8PF8Pso+bsphyu7q9C/UqvlHI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sv17WP4e; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18B161F000E9;
-	Tue, 16 Jun 2026 17:32:30 +0000 (UTC)
+	 MIME-Version; b=fhzRaJftos/VNKGoUnH/nAopH8x+enM6S1Rc/ralEGOkwEd4ZprKDZF3YSyt0KuI1Nlbq1VEh5FzTjSfhwVeirZY/ETLwkYKocUK17ZU9viYr8Sp8Ih9o1ucvj/Ua97kXU5K4/1DO1Br3dsy3mwnA7XF4R0NVwZp8oOFYPxWTZ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pwpg9RYl; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DDAA1F000E9;
+	Tue, 16 Jun 2026 18:43:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781631152;
-	bh=gBq0TpikPU0lZHX3+mTfFuJ1Eq38R9s3VmwxI2nhfgQ=;
+	s=korg; t=1781635408;
+	bh=36Z3n0KePFz3B5JW0QziBzfdGdGHRlk3JwuZpvNB1zo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=sv17WP4e1ZV/RpUeOy9adgbFM6P9GKLNg8f046QvmHqjfYSC9Y4XBq4PL25Qq54s4
-	 UpKd6jEMfLJNxk4gO8/6gYMrtBgpIt/dF/oIAXqZCMz1KhcpS+4ogt9bcbLZ1+pwvp
-	 Kl+wwrfBZGe4AQt+uJDBl4ZknXUzYagPEB7prnKE=
+	b=Pwpg9RYl+cfov9Z/0+i2qc3uoBtO3JxXTcmYZnx0c7Gd9t8+2zMaqgipr7PbmOUK+
+	 kYLJ1ZFb9jSw3agThn6ZTWPV6VknQzZPUumuVXrgIzbq1B2yCkGAoesd2k6jdFWQKg
+	 FD8BzRNBNhhmtd2KTZl7m8+XqaEfVfkIcoj4kUsE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandru Hossu <hossu.alexandru@gmail.com>,
-	David Disseldorp <ddiss@suse.de>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.1 165/522] scsi: target: iscsi: Validate CHAP_R length before base64 decode
+	Matteo Perin <matteo.perin@canonical.com>,
+	Ilya Maximets <i.maximets@ovn.org>,
+	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 016/342] net: netlink: dont set nsid on local notifications
 Date: Tue, 16 Jun 2026 20:25:12 +0530
-Message-ID: <20260616145133.878147485@linuxfoundation.org>
+Message-ID: <20260616145049.042082641@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,134 +69,122 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265428-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:hossu.alexandru@gmail.com,m:ddiss@suse.de,m:martin.petersen@oracle.com,m:hossualexandru@gmail.com,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-266244-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:matteo.perin@canonical.com,m:i.maximets@ovn.org,m:nicolas.dichtel@6wind.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de,oracle.com];
 	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,suse.de:email,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,6wind.com:email,canonical.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5534B693524
+X-Rspamd-Queue-Id: 638F2694628
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandru Hossu <hossu.alexandru@gmail.com>
+From: Ilya Maximets <i.maximets@ovn.org>
 
-commit 85db7391310b1304d2dc8ae3b0b12105a9567147 upstream.
+[ Upstream commit 88b126b39f9757e9debc322d4679239e9af089c7 ]
 
-chap_server_compute_hash() allocates client_digest as
-kzalloc(chap->digest_size) and then, for BASE64-encoded responses,
-passes chap_r directly to chap_base64_decode() without checking whether
-the input length could produce more than digest_size bytes of output.
+In most cases, notifications on sockets with NETLINK_LISTEN_ALL_NSID
+do not contain NSID in their ancillary data in case the event is local
+to the listener.
 
-chap_base64_decode() writes to the destination unconditionally as long
-as there is input to consume. With MAX_RESPONSE_LENGTH set to 128 and
-the "0b" prefix stripped by extract_param(), up to 127 base64 characters
-can reach the decoder. 127 characters decode to 95 bytes. For SHA-256
-(digest_size=32) this overflows client_digest by 63 bytes; for MD5
-(digest_size=16) the overflow is 79 bytes.
+However, when a self-referential NSID is allocated for a namespace,
+every local notification starts sending this ID to the user space.
 
-The length check at line 344 fires after the write has already happened.
+This is problematic, because the listener cannot tell if those
+notifications are local or not anymore without making extra requests
+to figure out if the provided NSID is local or not.  The listener
+can also not figure out the local NSID beforehand as it can be
+allocated at any point in time by other processes, changing the
+structure of the future notifications for everyone.
 
-The HEX branch in the same switch statement already validates the length
-up front. Apply the same approach to the BASE64 branch: strip trailing
-base64 padding characters, then reject any input whose data length
-exceeds DIV_ROUND_UP(digest_size * 4, 3) before calling the decoder.
+The value is practically not useful, since it's the namespace's own
+ID that the application has to obtain from other sources in order to
+figure out if it's the same or not.  So, for the application it's
+just an extra busy work with no benefits.  Moreover, applications
+that do not know about this quirk may be mishandling notifications
+with NSID set as notifications from remote namespaces.  This is the
+case for ovs-vswitchd and the iproute2's 'ip monitor' that stops
+printing 'current' and starts printing the nsid number mid-session.
 
-Stripping trailing '=' before the comparison handles both padded and
-unpadded encodings. chap_base64_decode() already returns early on '=',
-so the full original string is still passed to the decoder unchanged.
+Lack of clear documentation for this behavior is also not helping.
 
-The mutual CHAP path decodes CHAP_C into initiatorchg_binhex, which is
-kzalloc(CHAP_CHALLENGE_STR_LEN). extract_param() caps initiatorchg at
-CHAP_CHALLENGE_STR_LEN characters, so at most CHAP_CHALLENGE_STR_LEN-1
-base64 characters reach the decoder. The maximum decoded size,
-DIV_ROUND_UP((CHAP_CHALLENGE_STR_LEN-1) * 3, 4), is less than
-CHAP_CHALLENGE_STR_LEN, so no overflow is possible there. A comment is
-added at the call site to document this.
+A search though open-source projects doesn't reveal any projects
+that use NETNSA_NSID_NOT_ASSIGNED and rely on metadata to contain
+self-referential NSIDs (expected, since the value is not useful).
+Quite the opposite, as already mentioned, there are few applications
+that rely on NSID to not be present in local events.
 
-Fixes: 1e5733883421 ("scsi: target: iscsi: Support base64 in CHAP")
-Cc: stable@vger.kernel.org
-Signed-off-by: Alexandru Hossu <hossu.alexandru@gmail.com>
-Reviewed-by: David Disseldorp <ddiss@suse.de>
-Link: https://patch.msgid.link/20260521151121.808477-1-hossu.alexandru@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Since the value is not useful and actively harmful in some cases,
+let's not report it for local events, making the notifications more
+consistent.
+
+Also adding some blank lines for readability.
+
+Fixes: 59324cf35aba ("netlink: allow to listen "all" netns")
+Reported-by: Matteo Perin <matteo.perin@canonical.com>
+Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
+Acked-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Link: https://patch.msgid.link/20260520172317.175168-3-i.maximets@ovn.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/target/iscsi/iscsi_target_auth.c |   19 ++++++++++++++++++-
- 1 file changed, 18 insertions(+), 1 deletion(-)
+ net/netlink/af_netlink.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
---- a/drivers/target/iscsi/iscsi_target_auth.c
-+++ b/drivers/target/iscsi/iscsi_target_auth.c
-@@ -339,13 +339,22 @@ static int chap_server_compute_hash(
- 			goto out;
- 		}
- 		break;
--	case BASE64:
-+	case BASE64: {
-+		size_t r_len = strlen(chap_r);
-+
-+		while (r_len > 0 && chap_r[r_len - 1] == '=')
-+			r_len--;
-+		if (r_len > DIV_ROUND_UP(chap->digest_size * 4, 3)) {
-+			pr_err("Malformed CHAP_R: base64 payload too long\n");
-+			goto out;
-+		}
- 		if (chap_base64_decode(client_digest, chap_r, strlen(chap_r)) !=
- 		    chap->digest_size) {
- 			pr_err("Malformed CHAP_R: invalid BASE64\n");
- 			goto out;
- 		}
- 		break;
-+	}
- 	default:
- 		pr_err("Could not find CHAP_R\n");
+diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
+index e8301a36926275..e091b65c9d2b8c 100644
+--- a/net/netlink/af_netlink.c
++++ b/net/netlink/af_netlink.c
+@@ -1478,10 +1478,14 @@ static void do_one_broadcast(struct sock *sk,
+ 		p->skb2 = NULL;
  		goto out;
-@@ -472,6 +481,14 @@ static int chap_server_compute_hash(
- 		}
- 		break;
- 	case BASE64:
-+		/*
-+		 * No overflow check needed: initiatorchg_binhex is
-+		 * CHAP_CHALLENGE_STR_LEN bytes and extract_param() caps
-+		 * initiatorchg at CHAP_CHALLENGE_STR_LEN characters, so
-+		 * the decoded output is at most DIV_ROUND_UP(
-+		 * (CHAP_CHALLENGE_STR_LEN - 1) * 3, 4) bytes, which is
-+		 * less than CHAP_CHALLENGE_STR_LEN.
-+		 */
- 		initiatorchg_len = chap_base64_decode(initiatorchg_binhex,
- 						      initiatorchg,
- 						      strlen(initiatorchg));
+ 	}
++
+ 	NETLINK_CB(p->skb2).nsid_is_set = false;
+-	NETLINK_CB(p->skb2).nsid = peernet2id(sock_net(sk), p->net);
+-	if (NETLINK_CB(p->skb2).nsid != NETNSA_NSID_NOT_ASSIGNED)
+-		NETLINK_CB(p->skb2).nsid_is_set = true;
++	if (!net_eq(sock_net(sk), p->net)) {
++		NETLINK_CB(p->skb2).nsid = peernet2id(sock_net(sk), p->net);
++		if (NETLINK_CB(p->skb2).nsid != NETNSA_NSID_NOT_ASSIGNED)
++			NETLINK_CB(p->skb2).nsid_is_set = true;
++	}
++
+ 	val = netlink_broadcast_deliver(sk, p->skb2);
+ 	if (val < 0) {
+ 		netlink_overrun(sk);
+-- 
+2.53.0
+
 
 
 
