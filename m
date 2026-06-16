@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-263987-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265549-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id bXdiMo1sMWrkiwUAu9opvQ
-	(envelope-from <stable+bounces-263987-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:32:29 +0200
+	id f3PQHBmLMWqomAUAu9opvQ
+	(envelope-from <stable+bounces-265549-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:42:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FD326911E3
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:32:29 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FBBE69364A
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:42:49 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=mMrMLQh9;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263987-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-263987-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=VmliKXpV;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265549-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-265549-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4CDE731ED11A
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:25:57 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2B171301706F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:42:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAEB1449ED6;
-	Tue, 16 Jun 2026 15:25:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 610774779B9;
+	Tue, 16 Jun 2026 17:42:45 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91D8544A71C;
-	Tue, 16 Jun 2026 15:25:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA16F477E57;
+	Tue, 16 Jun 2026 17:42:42 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781623538; cv=none; b=pthB94SuxBCpHSLpsgv7poOLtzYxDK24WCS87lhT2AsgAVtESpgudkuLCI5uhjATSB/5DwF/+VVWky+M5ZLh/opKFeBuIxEzRBD6lv5B6ISd6+oqdZwE+wkl4bt/pQIFC+p9XNDNmFc43leKHUktrFs+IeZxlUETrYUaK7x+lcY=
+	t=1781631765; cv=none; b=be4stMm6HDfCQbyZOXTFg8y9lWeKiLh8/Jxd5wdqou3vEJTYrCn8VRhjM5Ws8/frL8iPnNYp5UPXZUXEmVfMMPyjS14WXZVu9ZV46DKYBupKVDVNCJGqHjmQNMbiLcaMRs4vD2xUwm9/JpcQvTBIPyJI1IOAYIS9A5yrDFESigU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781623538; c=relaxed/simple;
-	bh=OnRxLllq0+gAUr1YnzgjYwzACeX6y20C8UIqexUC244=;
+	s=arc-20240116; t=1781631765; c=relaxed/simple;
+	bh=D51MsWQstVpPJESnld4qTgpXhBm/dAe9YptY4S16+2s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q/q1wKNd/0z8ysfgA0NURVUih46u8MqzbXVgfC1qOt8VtiSY2P01hUwIDlkMobdX9BLB4z55BUDex66az0sBKVd+ESKu8o9nZLyHQ6662PI9zr0L+axQ8h/UAbEdcFQvs7vGljFHaW7qOwl+5hL7su7i1VZ3nwlZdBe0M1hcv8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mMrMLQh9; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98A3D1F00A3A;
-	Tue, 16 Jun 2026 15:25:36 +0000 (UTC)
+	 MIME-Version; b=Z0IXYcD6hnc8BIPHKA0hXiwcskQGOJjWnoUS/6XViDYbP4rTHabx5qCCCMDE4zPr0Q6o6BDKFPrNyi6srYvqCPd4k8wA3hkV4eX9sZvj4JWnil/gZTlA5oDHLeQVyy69iCA51LUaeqb9VTer8SRqr5ldFTeokBUwORsG1Zwn/NA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VmliKXpV; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA2D41F000E9;
+	Tue, 16 Jun 2026 17:42:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781623537;
-	bh=VhJd4H6MAnXiBrM02q07Di5Xc85Rj3vvMDzknZ2aq/8=;
+	s=korg; t=1781631762;
+	bh=3RZ2SB1hXUxdATIQd3R5TCbYyPVC1dSvI9MPBFEidxY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=mMrMLQh9h6Fr39UVKk5NDuj4hRG6+36yOnGr1kZGYQ4V22OWwtX6JfxXYTJndPOk+
-	 pnFgIRh3E33PomRx3TYuJS8rWVooBQT+0XQIZFHxbCumlBPA9PQ11I6JlzSBccEs+Q
-	 2v2+TbfoTIoW8FKs5QPeSy6OwQ6WAjJqks193vzE=
+	b=VmliKXpVSmStKHzRcaNMuBwuOz5QGO5EqxvsfSloEs31H+vqQIiFDWfJZge5/wQQD
+	 rQC38+cM+RCitoFpvekSwJMAcHMh20l38SmcUAtT+2ZHsCgkUPJ9Vt7exkOyCd4gmF
+	 VBcUs8JURXgMoHsO6ivuhxE1jjcR155+QTCNgDC0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Mario Limonciello (AMD)" <superm1@kernel.org>,
-	Lizhi Hou <lizhi.hou@amd.com>,
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 167/378] accel/amdxdna: Fix mm_struct reference leak in aie2_populate_range()
+Subject: [PATCH 6.1 251/522] sctp: fix uninit-value in __sctp_rcv_asconf_lookup()
 Date: Tue, 16 Jun 2026 20:26:38 +0530
-Message-ID: <20260616145119.096948480@linuxfoundation.org>
+Message-ID: <20260616145137.712469584@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,89 +68,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-263987-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-265549-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:superm1@kernel.org,m:lizhi.hou@amd.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:lucien.xin@gmail.com,m:kuba@kernel.org,m:sashal@kernel.org,m:michaelbommarito@gmail.com,m:lucienxin@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,amd.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4FD326911E3
+X-Rspamd-Queue-Id: 1FBBE69364A
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lizhi Hou <lizhi.hou@amd.com>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-[ Upstream commit 2f41af638c92bac6f1f9275ea2d1901baef578f3 ]
+[ Upstream commit f8373d7090b745728de66308deeecc67e8d319ce ]
 
-aie2_populate_range() jumps back to the again label without calling
-mmput(mm), leaking a reference to the mm_struct.
+__sctp_rcv_asconf_lookup() in net/sctp/input.c only checks that the ASCONF
+chunk can hold the ADDIP header and a parameter header, then calls
+af->from_addr_param(), which reads the full address (16 bytes for IPv6)
+trusting the parameter's declared length.
 
-Add the missing mmput() before jumping to again.
+An unauthenticated peer can send a truncated trailing ASCONF chunk that
+declares an IPv6 address parameter but stops after the 4-byte parameter
+header; reached from the no-association lookup path, from_addr_param() then
+reads uninitialized bytes past the parameter.
 
-Fixes: e486147c912f ("accel/amdxdna: Add BO import and export")
-Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
-Signed-off-by: Lizhi Hou <lizhi.hou@amd.com>
-Link: https://patch.msgid.link/20260610151127.2994185-1-lizhi.hou@amd.com
+Impact: an unauthenticated SCTP peer makes the receive path read up to 16
+bytes of uninitialized memory past a truncated ASCONF address parameter.
+
+The sibling __sctp_rcv_init_lookup() bounds parameters with
+sctp_walk_params(); this path open-codes the fetch and omits the bound.
+Verify the whole address parameter lies within the chunk before
+from_addr_param() reads it, the same class of fix as commit 51e5ad549c43
+("net: sctp: fix KMSAN uninit-value in sctp_inq_pop").
+
+Fixes: df2185771439 ("[SCTP]: Update association lookup to look at ASCONF chunks as well")
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Acked-by: Xin Long <lucien.xin@gmail.com>
+Link: https://patch.msgid.link/20260608122234.459098-1-michael.bommarito@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/accel/amdxdna/aie2_ctx.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/sctp/input.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/accel/amdxdna/aie2_ctx.c b/drivers/accel/amdxdna/aie2_ctx.c
-index c0d348884f7494..4c7264c6e6e76f 100644
---- a/drivers/accel/amdxdna/aie2_ctx.c
-+++ b/drivers/accel/amdxdna/aie2_ctx.c
-@@ -928,6 +928,7 @@ static int aie2_populate_range(struct amdxdna_gem_obj *abo)
+diff --git a/net/sctp/input.c b/net/sctp/input.c
+index 182898cb754a52..70530cbe57d0a7 100644
+--- a/net/sctp/input.c
++++ b/net/sctp/input.c
+@@ -1197,6 +1197,14 @@ static struct sctp_association *__sctp_rcv_asconf_lookup(
+ 	/* Skip over the ADDIP header and find the Address parameter */
+ 	param = (union sctp_addr_param *)(asconf + 1);
  
- 		if (ret == -EBUSY) {
- 			amdxdna_umap_put(mapp);
-+			mmput(mm);
- 			goto again;
- 		}
- 
-@@ -938,11 +939,13 @@ static int aie2_populate_range(struct amdxdna_gem_obj *abo)
- 	if (mmu_interval_read_retry(&mapp->notifier, mapp->range.notifier_seq)) {
- 		up_write(&xdna->notifier_lock);
- 		amdxdna_umap_put(mapp);
-+		mmput(mm);
- 		goto again;
- 	}
- 	mapp->invalid = false;
- 	up_write(&xdna->notifier_lock);
- 	amdxdna_umap_put(mapp);
-+	mmput(mm);
- 	goto again;
- 
- put_mm:
++	/* The whole address parameter must lie within the chunk before
++	 * af->from_addr_param() reads the variable-length address; otherwise a
++	 * truncated trailing ASCONF chunk lets it read uninitialized bytes past
++	 * the parameter.
++	 */
++	if (sizeof(*asconf) + ntohs(param->p.length) > ntohs(ch->length))
++		return NULL;
++
+ 	af = sctp_get_af_specific(param_type2af(param->p.type));
+ 	if (unlikely(!af))
+ 		return NULL;
 -- 
 2.53.0
 
