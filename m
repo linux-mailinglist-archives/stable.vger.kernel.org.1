@@ -1,49 +1,48 @@
-Return-Path: <stable+bounces-263574-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263576-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Ucq0OMDcMGpEYAUAu9opvQ
-	(envelope-from <stable+bounces-263574-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 07:18:56 +0200
+	id obfyMkjdMGplYAUAu9opvQ
+	(envelope-from <stable+bounces-263576-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 07:21:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBCAC68C165
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 07:18:56 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42F3168C1CC
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 07:21:12 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=arm.com header.s=foss header.b=nwAlZ0Jf;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263574-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-263574-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=arm.com header.s=foss header.b=WWNmMMum;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263576-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-263576-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=arm.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4AF7C301436E
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 05:18:56 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 795443027370
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 05:20:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B5223CF03F;
-	Tue, 16 Jun 2026 05:18:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7017C3CF1EA;
+	Tue, 16 Jun 2026 05:20:57 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FCD53CF02F
-	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 05:18:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 224803CF1FD
+	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 05:20:56 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781587134; cv=none; b=PVd2fawkwbzDFuZxh/rbOvUPO7n8/YVRh3jbfQA0syfjK4gw9ZqtUca//yKagZZTIDqdLaz3R3H01EFy4MgXMBoPxaumFW74A/jhSthrXoxNIj2nPHuaO7aab0id7z7mzZrkYPGV0oYwnJoQv7wlW07TxesDa6Z+B6SLai/uH4E=
+	t=1781587257; cv=none; b=Gy8S3LgPiHa6VuVdJJvqmOlIP6TP1h9NDL5aDqt0vmf6ao2RKtq5ANR+49iXkzBj3kkhVsRWUSI6m5o3FLSq13nVvt0/SFQkBG518nvkMODiD+i5gJSY6HkVk6ZEzOup373R7Xobjzm016B2TxZ3ysw8cONRZ/qqXO3ur0F+o0w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781587134; c=relaxed/simple;
-	bh=te2oDMPmAbFmShsgk4SIslr+cCRN6cAEZGFLf8QhykM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ow6ZUBDHd4ypvC/+1M6gxohXmGWeBNo4GZU48+SASzzyPcPfjXXX4c0U2EQr4/ZSH+VtIFEw9gaevAw146GyESDpulCIfduJ60C9A20slmPhW+eK++KsPvrjk8LTKtAgQa2GB0wQDu5XPvsBAJ1JkSjz9Gb9F4C1XoQkKZzgqNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=nwAlZ0Jf; arc=none smtp.client-ip=217.140.110.172
+	s=arc-20240116; t=1781587257; c=relaxed/simple;
+	bh=F8GMh151XZEH1IJGS4i2ScY6FZVvBKPAxosRptMbit4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=uSZq1UcSZdFSyrLDj+4O/MKtnFWS82sHFkPBcBAVC520oHJ6pBHEWTc9JWUtPt9FZ8xG8XRywE0JK4G5HqpGILLfM9MbnmnhnoeT2V/vawLIcWPZkcJxAneUL+lsf7ZAoqyY2mYApZIbQItJV7RDMG7rB7JV05rRDtfAERth7FA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=WWNmMMum; arc=none smtp.client-ip=217.140.110.172
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id EE1FD3D4B;
-	Mon, 15 Jun 2026 22:18:47 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 080833D4B;
+	Mon, 15 Jun 2026 22:20:49 -0700 (PDT)
 Received: from lakrids.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id E191F3F763;
-	Mon, 15 Jun 2026 22:18:50 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id EEFA33F763;
+	Mon, 15 Jun 2026 22:20:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1781587132; bh=te2oDMPmAbFmShsgk4SIslr+cCRN6cAEZGFLf8QhykM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nwAlZ0Jf5eWfBfdBN0ywaYRCyjKRGberJRSCo9ut3saAEl4xacxmNEdglndGbZ2GV
-	 8Sh25mAW/sXRbnlNi+ON2/BgE1V+bGhIUHtZEwussQaEQZivdGp59s0PNiR04apD/Z
-	 yXnKRwAHo7c+LhIzcPFwAVY6vpMK5QMGcTmQXxLA=
+	t=1781587253; bh=F8GMh151XZEH1IJGS4i2ScY6FZVvBKPAxosRptMbit4=;
+	h=From:To:Cc:Subject:Date:From;
+	b=WWNmMMumCoFvz54ZcA6C83G6nEVL8s0D/LA+2RyNczgokBvLm7ul7aFD6Uw9ItiNW
+	 N2jy+DGV4JxjRkGhlfwNjeV3sYFxJeB2KT+rwO+TzQhRKoI1xYAnOsKVW/jMQ3PJcP
+	 ldl8ioDe55JJvlMcRUVqaLyWFtJlP+l5oeQFkicY=
 From: Mark Rutland <mark.rutland@arm.com>
 To: stable@vger.kernel.org
 Cc: anshuman.khandual@arm.com,
@@ -57,12 +56,10 @@ Cc: anshuman.khandual@arm.com,
 	sdonthineni@nvidia.com,
 	will@kernel.org,
 	yuzenghui@huawei.com
-Subject: [PATCH 6.6.y 9/9] arm64: errata: Mitigate TLBI errata on Microsoft Azure Cobalt 100 CPU
-Date: Tue, 16 Jun 2026 06:18:22 +0100
-Message-Id: <20260616051822.111870-10-mark.rutland@arm.com>
+Subject: [PATCH 6.1.y 0/9] arm64: errata: Mitigate TLBI errata on various Arm CPUs
+Date: Tue, 16 Jun 2026 06:20:37 +0100
+Message-Id: <20260616052046.112003-1-mark.rutland@arm.com>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20260616051822.111870-1-mark.rutland@arm.com>
-References: <20260616051822.111870-1-mark.rutland@arm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -76,13 +73,13 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[arm.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[arm.com:s=foss];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	TAGGED_FROM(0.00)[bounces-263574-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-263576-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:anshuman.khandual@arm.com,m:catalin.marinas@arm.com,m:gregkh@linuxfoundation.org,m:lee@kernel.org,m:mark.rutland@arm.com,m:maz@kernel.org,m:oupton@kernel.org,m:ryan.roberts@arm.com,m:sdonthineni@nvidia.com,m:will@kernel.org,m:yuzenghui@huawei.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[mark.rutland@arm.com,stable@vger.kernel.org];
@@ -100,67 +97,64 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCPT_COUNT_TWELVE(0.00)[12];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,arm.com:dkim,arm.com:email,arm.com:mid,arm.com:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,arm.com:dkim,arm.com:mid,arm.com:url,arm.com:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: CBCAC68C165
+X-Rspamd-Queue-Id: 42F3168C1CC
 
-From: Will Deacon <will@kernel.org>
+This is a v6.1-only backport of a workaround for a TLB invalidation
+issue affecting several CPUs. The final patches landed in mainline
+yesterday:
 
-commit 1940e70a8144bf75e6df26bf6f600862ea7f7ea1 upstream.
+  https://lore.kernel.org/linux-arm-kernel/178157002783.358810.8206806281627742561.pr-tracker-bot@kernel.org/
+  https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=80476f22b8b7e193b26f285a7c9f9e4b63abca16
 
-Commit fb091ff39479 ("arm64: Subscribe Microsoft Azure Cobalt 100 to ARM
-Neoverse N2 errata") states that Microsoft Azure Cobalt 100 CPU "is a
-Microsoft implemented CPU based on r0p0 of the ARM Neoverse N2 CPU, and
-therefore suffers from all the same errata.".
+This issue has been assigned CVE ID CVE-2025-10263, and Arm have
+published a security bulletin:
 
-So enable the workaround for the latest broadcast TLB invalidation bug
-on these parts.
+  https://developer.arm.com/documentation/112137/latest/
 
-Signed-off-by: Will Deacon <will@kernel.org>
-[Mark: backport to v6.6.y]
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
----
- Documentation/arch/arm64/silicon-errata.rst | 2 ++
- arch/arm64/Kconfig                          | 1 +
- arch/arm64/kernel/cpu_errata.c              | 1 +
- 3 files changed, 4 insertions(+)
+This backport includes prerequisite patches which were previously sent
+on their own (unchanged since that posting):
 
-diff --git a/Documentation/arch/arm64/silicon-errata.rst b/Documentation/arch/arm64/silicon-errata.rst
-index 2a76d613a105e..b5b46b6ab2778 100644
---- a/Documentation/arch/arm64/silicon-errata.rst
-+++ b/Documentation/arch/arm64/silicon-errata.rst
-@@ -335,3 +335,5 @@ stable kernels.
- +----------------+-----------------+-----------------+-----------------------------+
- | Microsoft      | Azure Cobalt 100| #3324339        | ARM64_ERRATUM_3194386       |
- +----------------+-----------------+-----------------+-----------------------------+
-+| Microsoft      | Azure Cobalt 100| #4193789        | ARM64_ERRATUM_4118414       |
-++----------------+-----------------+-----------------+-----------------------------+
-diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-index 1f61fa06f3457..9e04e4b336656 100644
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -1148,6 +1148,7 @@ config ARM64_ERRATUM_4118414
- 	  * ARM Neoverse-V2 erratum 4193787
- 	  * ARM Neoverse-V3 erratum 4193784
- 	  * ARM Neoverse-V3AE erratum 4193784
-+	  * Microsoft Azure Cobalt 100 4193789
- 	  * NVIDIA Olympus erratum T410-OLY-1029
- 
- 	  On affected cores, some memory accesses might not be completed by
-diff --git a/arch/arm64/kernel/cpu_errata.c b/arch/arm64/kernel/cpu_errata.c
-index bb40764196d0d..03a4382799091 100644
---- a/arch/arm64/kernel/cpu_errata.c
-+++ b/arch/arm64/kernel/cpu_errata.c
-@@ -266,6 +266,7 @@ static const struct arm64_cpu_capabilities arm64_repeat_tlbi_list[] = {
- 			MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V3),
- 			MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V3AE),
- 			MIDR_ALL_VERSIONS(MIDR_NVIDIA_OLYMPUS),
-+			MIDR_ALL_VERSIONS(MIDR_MICROSOFT_AZURE_COBALT_100),
- 			{}
- 		})),
- 	},
+  https://lore.kernel.org/stable/20260611134451.1700637-1-mark.rutland@arm.com/
+
+I've pushed a copy of this backport to my kernel.org repo:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/mark/linux.git/log/?h=stable-6.1/arm-4118414/backport
+
+Mark.
+
+Marc Zyngier (1):
+  KVM: arm64: Remove VPIPT I-cache handling
+
+Mark Rutland (5):
+  arm64: tlb: Allow XZR argument to TLBI ops
+  arm64: tlb: Optimize ARM64_WORKAROUND_REPEAT_TLBI
+  arm64: cputype: Add C1-Ultra definitions
+  arm64: cputype: Add C1-Premium definitions
+  arm64: errata: Mitigate TLBI errata on various Arm CPUs
+
+Shanker Donthineni (2):
+  arm64: cputype: Add NVIDIA Olympus definitions
+  arm64: errata: Mitigate TLBI errata on NVIDIA Olympus CPU
+
+Will Deacon (1):
+  arm64: errata: Mitigate TLBI errata on Microsoft Azure Cobalt 100 CPU
+
+ Documentation/arm64/silicon-errata.rst | 46 +++++++++++++++++++++++
+ arch/arm64/Kconfig                     | 50 +++++++++++++++++++++++++
+ arch/arm64/include/asm/cputype.h       |  6 +++
+ arch/arm64/include/asm/kvm_mmu.h       |  4 +-
+ arch/arm64/include/asm/tlbflush.h      | 52 ++++++++++++++++++--------
+ arch/arm64/kernel/cpu_errata.c         | 34 ++++++++++++++++-
+ arch/arm64/kernel/sys_compat.c         |  2 +-
+ arch/arm64/kvm/hyp/nvhe/tlb.c          | 41 ++------------------
+ arch/arm64/kvm/hyp/pgtable.c           |  2 +-
+ arch/arm64/kvm/hyp/vhe/tlb.c           | 19 ++--------
+ 10 files changed, 180 insertions(+), 76 deletions(-)
+
 -- 
 2.30.2
 
