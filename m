@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-266466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264657-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 9HTVD1afMWoBogUAu9opvQ
-	(envelope-from <stable+bounces-266466-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:09:10 +0200
+	id 3tHhCGN7MWrokQUAu9opvQ
+	(envelope-from <stable+bounces-264657-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:35:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9430B694CA3
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:09:09 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83AC06923D3
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:35:46 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=DKVC1tWk;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266466-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266466-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=cI++N0fw;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264657-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264657-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 342F1322DA3A
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:02:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 976BA325F716
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:25:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A29C73DD509;
-	Tue, 16 Jun 2026 19:02:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B841466B57;
+	Tue, 16 Jun 2026 16:25:07 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79B3B34751B;
-	Tue, 16 Jun 2026 19:02:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59B2146AF14;
+	Tue, 16 Jun 2026 16:25:05 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781636560; cv=none; b=kj7terqpdel/8rd88v3mFCHMnYp+utqOTOm1sy+sKaNk0SY2Wi7uWHJt66DLEXs9Yu3eKwGD6kqFz0ktj+mvGPhU20NPgg0fbHpY7EEcbSxuQKAygvZuTDPrBhlnTpfJVwQ27mFDoAu8nQsn9DQputHNsh/JHSVuTWc0/j1qxt0=
+	t=1781627107; cv=none; b=Knt3FdId18i72krCwWqHYtpQFMGvNHM2+MqS4x5eTtHqk4y55hZuiVFuv9TfP2I/A0u9rc2E0d/B7uXQ8d52YXypYTV6cHeR7GRMAB19pFfvr1O/nlD6kUmuv9FLCCKOzogD7siPbcYllKQ2B9kOhWBmHgWdgFHwQ6DrVUeFbNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781636560; c=relaxed/simple;
-	bh=0bvZKuRaNu+M44H7sp9BQcczf0q0qGHqoF10usMXYIM=;
+	s=arc-20240116; t=1781627107; c=relaxed/simple;
+	bh=uSqWB07I/yVd0s0IwXFb5tmmEtb6M/Q48H8nG6WDGo8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PUtkHAEV17zcheL9Q5Zdy/rHDLB+lqYBEbk7OePzkxqseQcLHiZEWKbTjy/RCcMXnp2uKnRsiJqbLam57PJcJGmozXHHranE+Hl4FDa5maOxnZpa4HTGQahoeXdR7IBY/wJ1LX4UOM52LkyAYZvmt4ccjPBw/a/R3xNbtaUJXyw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DKVC1tWk; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87E8E1F000E9;
-	Tue, 16 Jun 2026 19:02:38 +0000 (UTC)
+	 MIME-Version; b=s0B14wiyaolS8fxqCGmIwOret//KDWccMMWeUzGA4DrmFmumhBFECFGcv+UKhMb8+cLxZggdnZk82DoDUvbzxYa5PCN7UBZetA85MOz6fGyL5Ib+9CRJNvBrUb+X1ZhBLmIEmpau9T5t2i0wO9pDKGyOKVC7sJA3jme0D6aWsuA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cI++N0fw; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B6BB1F000E9;
+	Tue, 16 Jun 2026 16:25:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781636559;
-	bh=Nw1h7g65ohoaiU2vYmSbNkWS959sGvuXEmEAFBQ5MyY=;
+	s=korg; t=1781627105;
+	bh=uzSO8i2yHqbP1FFF37eL9VgZvdms1hODCIsgaHFKSeM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=DKVC1tWkEYcotDeYopNaHgCSEbRUA0RBu7H+ca4PnEej4Zvb/FfJkKCBXEUDNAHqt
-	 cm1DMtxB3nr+ltSO6f37tpNUDIOfBtEdefyb/uYhX+UnAgRhes0b2qfa4i66Fa00Cj
-	 XlI7TwNKyhLGdzeqpG2jZXUcnquFiigm8udetwZM=
+	b=cI++N0fwQsP79E6zPWcsPB8ZXze3TmanFevj3i4x84L+G72bPXwDPoSG8h4mtxfJS
+	 XO7dMpKm0+UNah92XzRijzjbhQd6fakWEucNipB1aa5RLhOf9xG71Bvo2b5F8ygHrR
+	 m7Ay23zf8yc09VzvLLNhXR/iBSrWahf9A7uP2eZg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Keiji Hayashibara <hayashibara.keiji@socionext.com>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 263/342] spi: uniphier: fix controller deregistration
+	lvc-project@linuxtesting.org,
+	Georgiy Osokin <g.osokin@auroraos.dev>,
+	Sumit Garg <sumit.garg@oss.qualcomm.com>,
+	Jens Wiklander <jens.wiklander@linaro.org>
+Subject: [PATCH 6.12 121/261] tee: shm: fix shm leak in register_shm_helper()
 Date: Tue, 16 Jun 2026 20:29:19 +0530
-Message-ID: <20260616145100.518008142@linuxfoundation.org>
+Message-ID: <20260616145050.656377265@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,22 +72,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266466-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264657-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:hayashibara.keiji@socionext.com,m:johan@kernel.org,m:broonie@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:lvc-project@linuxtesting.org,m:g.osokin@auroraos.dev,m:sumit.garg@oss.qualcomm.com,m:jens.wiklander@linaro.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -99,69 +99,49 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,socionext.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,auroraos.dev:email,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,qualcomm.com:email,linaro.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9430B694CA3
+X-Rspamd-Queue-Id: 83AC06923D3
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Georgiy Osokin <g.osokin@auroraos.dev>
 
-[ Upstream commit 0245435f777264ac45945ed2f325dd095a41d1af ]
+commit 26682f5efc276e3ad96d102019472bfbf03833b2 upstream.
 
-Make sure to deregister the controller before releasing underlying
-resources like DMA during driver unbind.
+register_shm_helper() allocates shm before calling
+iov_iter_npages(). If iov_iter_npages() returns 0, the function
+jumps to err_ctx_put and leaks shm.
 
-Note that clocks were also disabled before the recent commit
-fdca270f8f87 ("spi: uniphier: Simplify clock handling with
-devm_clk_get_enabled()").
+This can be triggered by TEE_IOC_SHM_REGISTER with
+struct tee_ioctl_shm_register_data where length is 0.
 
-Fixes: 5ba155a4d4cc ("spi: add SPI controller driver for UniPhier SoC")
-Cc: stable@vger.kernel.org	# 4.19
-Cc: Keiji Hayashibara <hayashibara.keiji@socionext.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260410081757.503099-25-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-[ renamed spi_*_controller/host APIs to spi_*_master/master aliases and kept the pre-existing clk_disable_unprepare() after unregister ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Jump to err_free_shm instead.
+
+Fixes: 7bdee4157591 ("tee: Use iov_iter to better support shared buffer registration")
+Cc: stable@vger.kernel.org
+Cc: lvc-project@linuxtesting.org
+Signed-off-by: Georgiy Osokin <g.osokin@auroraos.dev>
+Reviewed-by: Sumit Garg <sumit.garg@oss.qualcomm.com>
+Signed-off-by: Jens Wiklander <jens.wiklander@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-uniphier.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/tee/tee_shm.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/spi/spi-uniphier.c
-+++ b/drivers/spi/spi-uniphier.c
-@@ -751,7 +751,7 @@ static int uniphier_spi_probe(struct pla
+--- a/drivers/tee/tee_shm.c
++++ b/drivers/tee/tee_shm.c
+@@ -307,7 +307,7 @@ register_shm_helper(struct tee_context *
+ 	num_pages = iov_iter_npages(iter, INT_MAX);
+ 	if (!num_pages) {
+ 		ret = ERR_PTR(-ENOMEM);
+-		goto err_ctx_put;
++		goto err_free_shm;
+ 	}
  
- 	master->max_dma_len = min(dma_tx_burst, dma_rx_burst);
- 
--	ret = devm_spi_register_master(&pdev->dev, master);
-+	ret = spi_register_master(master);
- 	if (ret)
- 		goto out_release_dma;
- 
-@@ -780,6 +780,10 @@ static int uniphier_spi_remove(struct pl
- 	struct spi_master *master = platform_get_drvdata(pdev);
- 	struct uniphier_spi_priv *priv = spi_master_get_devdata(master);
- 
-+	spi_master_get(master);
-+
-+	spi_unregister_master(master);
-+
- 	if (master->dma_tx)
- 		dma_release_channel(master->dma_tx);
- 	if (master->dma_rx)
-@@ -787,6 +791,8 @@ static int uniphier_spi_remove(struct pl
- 
- 	clk_disable_unprepare(priv->clk);
- 
-+	spi_master_put(master);
-+
- 	return 0;
- }
- 
+ 	shm->pages = kcalloc(num_pages, sizeof(*shm->pages), GFP_KERNEL);
 
 
 
