@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-265654-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264347-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id KNjKDVONMWrUmQUAu9opvQ
-	(envelope-from <stable+bounces-265654-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:52:19 +0200
+	id 8CZWNuR1MWqWjwUAu9opvQ
+	(envelope-from <stable+bounces-264347-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:12:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E5A969390A
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:52:18 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72B5C691CDD
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:12:20 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=hoi1xLRp;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265654-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265654-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=iuMRQUfv;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264347-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264347-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B2E36308A33D
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:51:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CD445304E413
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:56:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89EBE3C65F2;
-	Tue, 16 Jun 2026 17:51:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E569B44D686;
+	Tue, 16 Jun 2026 15:56:48 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42A9C47CC62;
-	Tue, 16 Jun 2026 17:51:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C497844CAF9;
+	Tue, 16 Jun 2026 15:56:47 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781632302; cv=none; b=FN2iSoI0cyYqK9EZSwiAD6QFSYU3wo6derZDxzZx+qRC6wiJ4dpxG6Z/8UoAEQwCmalooxvuLXctBxu7tVat3PS9e9wNu5mgIxQIqOpYk7wm+OuEY54sxP3dY0qKK6a3fyojUbEZ/E6lImmvLsEY6nriopitLVgTLd4JPfMbqZU=
+	t=1781625408; cv=none; b=SHSkv3lh3DVRLdHPd5bbKQURPVkYO9Mfjkcg34TSg7ol/4Tl9YGtKHnUZR3r1Lkk0bOoetv+5HdVoupLmG4ebfFvBRTGeSM/NB7Gk4bPo7q9TwrDx2y9jgn7PKNUcBsRECnqMV3ojGWK2PfVKA5vXYPaHMsHZNI1v/ceKbWKxFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781632302; c=relaxed/simple;
-	bh=9LS/TpZ09f7adFiBBIY9Uib824e2HzVxOcZ/mhl70Ag=;
+	s=arc-20240116; t=1781625408; c=relaxed/simple;
+	bh=p5M9+AihdxCyyc91Xd3cSdC0PlvWav17CT12RF/cZss=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mlugspgmk4Xr0WnLS/gfQYGRC/gNrGF2iqMncsNxacLxhH68okea3zf11RhIPoodVOizYb3ktYftEASSYitTonSwjjXkR8/sIQg4SQVoBec8jxX0b+YLo4pUJ3N9RXO9oA/ttG25n3Gvu5u7SGdqvnq1sm4lghHvTp1dlMju3vo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hoi1xLRp; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 188651F000E9;
-	Tue, 16 Jun 2026 17:51:38 +0000 (UTC)
+	 MIME-Version; b=byaks3HDKqb2DFWji0v47SIrwnj27FtY3e3QqXG7nIbTyxYDOpawwswLAd/CMEbE9WzzueViPWVp+JSjvnbJWzI/3OjCMAWY+RWsw7TCH13tsW4mE5rrP2JiF+gC+t26fXkRYEXn7EMGIKyGGNpkpTNxAfzxgufMv6g8fOm0f84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iuMRQUfv; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D52AA1F00A3A;
+	Tue, 16 Jun 2026 15:56:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781632299;
-	bh=oxYOFaXhLoQeGnEpFsB5Vf8yFPVZnTHnBe9swgsiFtU=;
+	s=korg; t=1781625407;
+	bh=IK9a6aAdeOlqqkez7szO8hX8cu91fMickjzlyLb7dGw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hoi1xLRpusp6rPPqbjU3M9Vbix8z+E/JCVNqwQG7GVfi5VXEM/LHeO14YTaLiGjj+
-	 SXWBoIkfRxv8Xo3WY5Zfv2RerbyykwMr3h8TZKfKCB1QEMh6R0dk2VvSyIbGJuSnBr
-	 US7YoPE65/d1G/jTBOGxojkGbDKYuEMcaEqqPZ+U=
+	b=iuMRQUfv6zzbCfxjnX6aNqegdXZKEPWkD7yhwRIzEl4p1EqF+OOnZdfkTIFEqcfDc
+	 Ih/HNdSic8gO10yA5IR6iKYJAyTiCRQCzBvTCWG/GXavSHYROb1z3nXQkFO5n3G7r3
+	 YrMyz2qPMW7zvEqJwnxXn2HPMOAg3kBNlXsTePR8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Jiawen Wu <jiawenwu@trustnetic.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 385/522] spi: Convert to SPI_CONTROLLER_HALF_DUPLEX
+Subject: [PATCH 6.18 136/325] net: txgbe: initialize module info buffer
 Date: Tue, 16 Jun 2026 20:28:52 +0530
-Message-ID: <20260616145143.797421861@linuxfoundation.org>
+Message-ID: <20260616145104.509850750@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,21 +72,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265654-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264347-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jiawenwu@trustnetic.com,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:andriy.shevchenko@linux.intel.com,m:broonie@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -98,173 +98,47 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,intel.com:email,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9E5A969390A
+X-Rspamd-Queue-Id: 72B5C691CDD
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Jiawen Wu <jiawenwu@trustnetic.com>
 
-[ Upstream commit 7a2b552c8e0e5bb280558f6c120140f5f06323bc ]
+[ Upstream commit 0487cfca46517ff6699c72dc1a8872b0af3c31a9 ]
 
-Convert the users under SPI subsystem to SPI_CONTROLLER_HALF_DUPLEX.
+The module info buffer should be initialized to 0 before the firmware
+returns information. Otherwise, there is a risk that the buffer field
+not filled by the firmware is random value.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20230710154932.68377-15-andriy.shevchenko@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 0c18a1bacbb1 ("spi: ti-qspi: fix controller deregistration")
+Fixes: 343929799ace ("net: txgbe: Support to handle GPIO IRQs for AML devices")
+Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+Link: https://patch.msgid.link/20260608070842.36504-2-jiawenwu@trustnetic.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-amd.c             |    2 +-
- drivers/spi/spi-cavium-thunderx.c |    2 +-
- drivers/spi/spi-falcon.c          |    2 +-
- drivers/spi/spi-lp8841-rtc.c      |    2 +-
- drivers/spi/spi-mxs.c             |    2 +-
- drivers/spi/spi-omap-uwire.c      |    2 +-
- drivers/spi/spi-pic32-sqi.c       |    2 +-
- drivers/spi/spi-qcom-qspi.c       |    2 +-
- drivers/spi/spi-rockchip-sfc.c    |    2 +-
- drivers/spi/spi-sprd-adi.c        |    2 +-
- drivers/spi/spi-ti-qspi.c         |    2 +-
- drivers/spi/spi-xcomm.c           |    2 +-
- 12 files changed, 12 insertions(+), 12 deletions(-)
+ drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/spi/spi-amd.c
-+++ b/drivers/spi/spi-amd.c
-@@ -404,7 +404,7 @@ static int amd_spi_probe(struct platform
- 	master->bus_num = 0;
- 	master->num_chipselect = 4;
- 	master->mode_bits = 0;
--	master->flags = SPI_MASTER_HALF_DUPLEX;
-+	master->flags = SPI_CONTROLLER_HALF_DUPLEX;
- 	master->max_speed_hz = AMD_SPI_MAX_HZ;
- 	master->min_speed_hz = AMD_SPI_MIN_HZ;
- 	master->setup = amd_spi_master_setup;
---- a/drivers/spi/spi-cavium-thunderx.c
-+++ b/drivers/spi/spi-cavium-thunderx.c
-@@ -64,7 +64,7 @@ static int thunderx_spi_probe(struct pci
- 		p->sys_freq = SYS_FREQ_DEFAULT;
- 	dev_info(dev, "Set system clock to %u\n", p->sys_freq);
+diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c
+index 0bc59431d43343..07ae491e3bc9b9 100644
+--- a/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c
++++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c
+@@ -220,7 +220,7 @@ static int txgbe_sfp_to_linkmodes(struct wx *wx, struct txgbe_sff_id *id)
  
--	master->flags = SPI_MASTER_HALF_DUPLEX;
-+	master->flags = SPI_CONTROLLER_HALF_DUPLEX;
- 	master->num_chipselect = 4;
- 	master->mode_bits = SPI_CPHA | SPI_CPOL | SPI_CS_HIGH |
- 			    SPI_LSB_FIRST | SPI_3WIRE;
---- a/drivers/spi/spi-falcon.c
-+++ b/drivers/spi/spi-falcon.c
-@@ -401,7 +401,7 @@ static int falcon_sflash_probe(struct pl
- 	priv->master = master;
- 
- 	master->mode_bits = SPI_MODE_3;
--	master->flags = SPI_MASTER_HALF_DUPLEX;
-+	master->flags = SPI_CONTROLLER_HALF_DUPLEX;
- 	master->setup = falcon_sflash_setup;
- 	master->transfer_one_message = falcon_sflash_xfer_one;
- 	master->dev.of_node = pdev->dev.of_node;
---- a/drivers/spi/spi-lp8841-rtc.c
-+++ b/drivers/spi/spi-lp8841-rtc.c
-@@ -191,7 +191,7 @@ spi_lp8841_rtc_probe(struct platform_dev
- 		return -ENOMEM;
- 	platform_set_drvdata(pdev, master);
- 
--	master->flags = SPI_MASTER_HALF_DUPLEX;
-+	master->flags = SPI_CONTROLLER_HALF_DUPLEX;
- 	master->mode_bits = SPI_CS_HIGH | SPI_3WIRE | SPI_LSB_FIRST;
- 
- 	master->bus_num = pdev->id;
---- a/drivers/spi/spi-mxs.c
-+++ b/drivers/spi/spi-mxs.c
-@@ -573,7 +573,7 @@ static int mxs_spi_probe(struct platform
- 	master->mode_bits = SPI_CPOL | SPI_CPHA;
- 	master->num_chipselect = 3;
- 	master->dev.of_node = np;
--	master->flags = SPI_MASTER_HALF_DUPLEX;
-+	master->flags = SPI_CONTROLLER_HALF_DUPLEX;
- 	master->auto_runtime_pm = true;
- 
- 	spi = spi_master_get_devdata(master);
---- a/drivers/spi/spi-omap-uwire.c
-+++ b/drivers/spi/spi-omap-uwire.c
-@@ -491,7 +491,7 @@ static int uwire_probe(struct platform_d
- 	/* the spi->mode bits understood by this driver: */
- 	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
- 	master->bits_per_word_mask = SPI_BPW_RANGE_MASK(1, 16);
--	master->flags = SPI_MASTER_HALF_DUPLEX;
-+	master->flags = SPI_CONTROLLER_HALF_DUPLEX;
- 
- 	master->bus_num = 2;	/* "official" */
- 	master->num_chipselect = 4;
---- a/drivers/spi/spi-pic32-sqi.c
-+++ b/drivers/spi/spi-pic32-sqi.c
-@@ -648,7 +648,7 @@ static int pic32_sqi_probe(struct platfo
- 	master->dev.of_node	= pdev->dev.of_node;
- 	master->mode_bits	= SPI_MODE_3 | SPI_MODE_0 | SPI_TX_DUAL |
- 				  SPI_RX_DUAL | SPI_TX_QUAD | SPI_RX_QUAD;
--	master->flags		= SPI_MASTER_HALF_DUPLEX;
-+	master->flags		= SPI_CONTROLLER_HALF_DUPLEX;
- 	master->can_dma		= pic32_sqi_can_dma;
- 	master->bits_per_word_mask	= SPI_BPW_RANGE_MASK(8, 32);
- 	master->transfer_one_message	= pic32_sqi_one_message;
---- a/drivers/spi/spi-qcom-qspi.c
-+++ b/drivers/spi/spi-qcom-qspi.c
-@@ -523,7 +523,7 @@ static int qcom_qspi_probe(struct platfo
- 	master->mode_bits = SPI_MODE_0 |
- 			    SPI_TX_DUAL | SPI_RX_DUAL |
- 			    SPI_TX_QUAD | SPI_RX_QUAD;
--	master->flags = SPI_MASTER_HALF_DUPLEX;
-+	master->flags = SPI_CONTROLLER_HALF_DUPLEX;
- 	master->prepare_message = qcom_qspi_prepare_message;
- 	master->transfer_one = qcom_qspi_transfer_one;
- 	master->handle_err = qcom_qspi_handle_err;
---- a/drivers/spi/spi-rockchip-sfc.c
-+++ b/drivers/spi/spi-rockchip-sfc.c
-@@ -566,7 +566,7 @@ static int rockchip_sfc_probe(struct pla
- 	if (!master)
- 		return -ENOMEM;
- 
--	master->flags = SPI_MASTER_HALF_DUPLEX;
-+	master->flags = SPI_CONTROLLER_HALF_DUPLEX;
- 	master->mem_ops = &rockchip_sfc_mem_ops;
- 	master->dev.of_node = pdev->dev.of_node;
- 	master->mode_bits = SPI_TX_QUAD | SPI_TX_DUAL | SPI_RX_QUAD | SPI_RX_DUAL;
---- a/drivers/spi/spi-sprd-adi.c
-+++ b/drivers/spi/spi-sprd-adi.c
-@@ -570,7 +570,7 @@ static int sprd_adi_probe(struct platfor
- 	ctlr->dev.of_node = pdev->dev.of_node;
- 	ctlr->bus_num = pdev->id;
- 	ctlr->num_chipselect = num_chipselect;
--	ctlr->flags = SPI_MASTER_HALF_DUPLEX;
-+	ctlr->flags = SPI_CONTROLLER_HALF_DUPLEX;
- 	ctlr->bits_per_word_mask = 0;
- 	ctlr->transfer_one = sprd_adi_transfer_one;
- 
---- a/drivers/spi/spi-ti-qspi.c
-+++ b/drivers/spi/spi-ti-qspi.c
-@@ -770,7 +770,7 @@ static int ti_qspi_probe(struct platform
- 
- 	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_RX_DUAL | SPI_RX_QUAD;
- 
--	master->flags = SPI_MASTER_HALF_DUPLEX;
-+	master->flags = SPI_CONTROLLER_HALF_DUPLEX;
- 	master->setup = ti_qspi_setup;
- 	master->auto_runtime_pm = true;
- 	master->transfer_one_message = ti_qspi_start_transfer_one;
---- a/drivers/spi/spi-xcomm.c
-+++ b/drivers/spi/spi-xcomm.c
-@@ -219,7 +219,7 @@ static int spi_xcomm_probe(struct i2c_cl
- 	master->num_chipselect = 16;
- 	master->mode_bits = SPI_CPHA | SPI_CPOL | SPI_3WIRE;
- 	master->bits_per_word_mask = SPI_BPW_MASK(8);
--	master->flags = SPI_MASTER_HALF_DUPLEX;
-+	master->flags = SPI_CONTROLLER_HALF_DUPLEX;
- 	master->transfer_one_message = spi_xcomm_transfer_one;
- 	master->dev.of_node = i2c->dev.of_node;
- 	i2c_set_clientdata(i2c, master);
+ int txgbe_identify_module(struct wx *wx)
+ {
+-	struct txgbe_hic_get_module_info buffer;
++	struct txgbe_hic_get_module_info buffer = { 0 };
+ 	struct txgbe_sff_id *id;
+ 	int err = 0;
+ 	u32 gpio;
+-- 
+2.53.0
+
 
 
 
