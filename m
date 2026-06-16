@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-265871-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265440-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Qv+bFqSRMWrbmwUAu9opvQ
-	(envelope-from <stable+bounces-265871-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:10:44 +0200
+	id 4HaDKPmIMWq4lwUAu9opvQ
+	(envelope-from <stable+bounces-265440-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:33:45 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2A9C693DCC
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:10:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C3DF69341A
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:33:45 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=U5JU+6Tj;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265871-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-265871-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=U7CIU4bd;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265440-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-265440-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6E1E130359C9
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:10:43 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C3B70303F3E9
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:33:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90F793D45D0;
-	Tue, 16 Jun 2026 18:10:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 496CD47CC62;
+	Tue, 16 Jun 2026 17:33:30 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 694F23CC324;
-	Tue, 16 Jun 2026 18:10:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 090453AA1A8;
+	Tue, 16 Jun 2026 17:33:29 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781633440; cv=none; b=dWX4p1zjnRLQi8YQuSzQ3xTBIGq7BwsAVFIPUelnIhuHXO3Po2bredeXe+omnsr/8xKtnyre36VfOZkR8npu1SxSPoZTW2RdxdxSN9HJTOz7JqPjc4n/4X0B1fBU4HRzC0nuZ8oLfjdDRsPQaEb1dfe0EyrXcO0BW9Y0r1JrJnA=
+	t=1781631210; cv=none; b=fnpT5IjHZdQqjyNtLCf0pIooJxEDYtQI/+8M1Em0Pa/s0F3Op99P9SAuiROWL5kC+zZo7oxORZYhWsT6zqT2a0IwbYK89DaF9NlMvx7RGEvC0Qlp1LFQmI2v+nObCQFEKU4T5mgWRyDkr/WOJd+5jKbE3uFSTHt449oPygM6MFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781633440; c=relaxed/simple;
-	bh=xQKueE7G+y7uDaOIIwnr/tspvu3/zVUG5SAtHgTFshU=;
+	s=arc-20240116; t=1781631210; c=relaxed/simple;
+	bh=trCLTPSN15QvXSXYfBfsmeAHZanNtC+86rBefy5ME90=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bC9yyvon0MdFr/TvQj5gAMGJh8MNDyLrDKuEl1dWjRNNe5jRwKfvSC0CTsE0t09D8/Zk08DXUN7yJUVMfeiiZ44k/l1vs8kdhCzTXfYzBUn0+mKEYWkxc9IUkgRBd73podxR6EVWBw27rDrZOnKHTvrvpWjm5s0KHrfj0xczBtk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U5JU+6Tj; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EBEC1F000E9;
-	Tue, 16 Jun 2026 18:10:38 +0000 (UTC)
+	 MIME-Version; b=XqnK5XRwvy8CxHRoAQE0H/4dm00ipSdGxhPhKyh27MjhEx+XwP+YKH2tP9z8oqqpr1APiYXAJuuMNRYxVGpy8mh3HE6JbcyNPp3QIa3DKstQF29S+rFFwi0antqX49S3PIvT9lsRD84KhHOWS25eOMPBRX5LtR96t9g48tc6zwg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U7CIU4bd; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19D271F00A3A;
+	Tue, 16 Jun 2026 17:33:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781633439;
-	bh=ZlsXvBlXee97jWErTmGOI6MRNoEyZCGnX3AJKW0O2R8=;
+	s=korg; t=1781631208;
+	bh=VApkQKRUafh3HH9kw7Q4z7yTg29Gg5g2cr1bqU540Ao=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=U5JU+6Tj0JEXYYP8TlX7QmmJi2N4OE2e+QMn2koLrkCBtI/u6O+XELq270ccgP7CT
-	 NhG++wljvj5TkdVLsJhsJgOENp8sVX3HQYbuHKNnmSCLEQ4Ugku70JZ+orE7j9fUMm
-	 SadQ49ctpj5AWv6z8GLqL9r622pxVR4xcdFO8Ec0=
+	b=U7CIU4bdDT6/6YR9VAPfTGZhlkzi8I1fwsixCATcQssA1CsXfnQWttLhCiStBwXZ5
+	 RIZ06LlHotzXpUgpvsrg4Wm0dlaomuJxX+6T9QpFEIHCPqhrtc+5Z4du0zPTV7N3KV
+	 jgBXaGc2dGkAGyVQId3MzEIp1rD91rFZx0dDvaRY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harini Katakam <harini.katakam@amd.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 052/411] phy: mscc: Use PHY_ID_MATCH_VENDOR to minimize PHY ID table
-Date: Tue, 16 Jun 2026 20:24:50 +0530
-Message-ID: <20260616145103.048205136@linuxfoundation.org>
+	Michal Pecio <michal.pecio@gmail.com>,
+	Tao Xue <xuetao09@huawei.com>
+Subject: [PATCH 6.1 144/522] usb: core: Fix up Interrupt IN endpoints with bogus wBytesPerInterval
+Date: Tue, 16 Jun 2026 20:24:51 +0530
+Message-ID: <20260616145132.825523758@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,105 +66,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265871-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:harini.katakam@amd.com,m:andrew@lunn.ch,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265440-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michal.pecio@gmail.com,m:xuetao09@huawei.com,m:michalpecio@gmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,huawei.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,amd.com:email,lunn.ch:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,huawei.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: F2A9C693DCC
+X-Rspamd-Queue-Id: 6C3DF69341A
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harini Katakam <harini.katakam@amd.com>
+From: Michal Pecio <michal.pecio@gmail.com>
 
-[ Upstream commit 31605c01fb242806f5b8c9d08abe11328d514206 ]
+commit 727d045d064b7c9a24db3bce9c0485a382cb768b upstream.
 
-All the PHY devices variants specified have the same mask and
-hence can be simplified to one vendor look up for 0x00070400.
-Any individual config can be identified by PHY_ID_MATCH_EXACT
-in the respective structure.
+Tao Xue found that some common devices violate USB 3.x section 9.6.7
+by reporting wBytesPerInterval lower than the size of packets they
+actually send. I confirmed that AX88179 may set it to 0 and RTL8153
+CDC configuration sets it to 8 but sends both 8 and 16 byte packets:
 
-Signed-off-by: Harini Katakam <harini.katakam@amd.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 1bc80d673087 ("phy: mscc: Use PHY_ID_MATCH_EXACT for VSC8584, VSC8582, VSC8575, VSC856X")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+S Ii:11:007:3 -115:128 16 <
+C Ii:11:007:3 0:128 8 = a1000000 01000000
+S Ii:11:007:3 -115:128 16 <
+C Ii:11:007:3 0:128 16 = a12a0000 01000800 00000000 00000000
+
+Most xHCI host controllers neglect interrupt bandwidth reservations
+and let such devices exceed theirs, some fail the URB with EOVERFLOW.
+
+Assume that wBytesPerInterval lower than wMaxPacketSize is bogus and
+increase it to the worst case maximum on interrupt IN endpoints. This
+solves xHCI problems and appears to have no other effect. Interrupt
+transfers are not limited to one interval and drivers submit URBs of
+class defined size without looking at wBytesPerInterval. Any multi-
+interval transfer is considered terminated by a packet shorter than
+wMaxPacketSize regardless of wBytesPerInterval - see USB3 8.10.3.
+
+Stay in spec on OUT endpoints and isochronous. No buggy devices are
+known and we don't want to risk sending more data than the device
+is prepared to handle or confusing isoc drivers regarding altsetting
+capacities guaranteed by the device itself. And don't complain when
+wMaxPacketSize <= wBytesPerInterval < wMaxPacketSize * (bMaxBurst+1)
+because enabling this seems to be the exact goal of the spec.
+
+Reported-and-tested-by: Tao Xue <xuetao09@huawei.com>
+Closes: https://lore.kernel.org/linux-usb/20260402021400.28853-1-xuetao09@huawei.com/
+Cc: stable@vger.kernel.org
+Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
+Link: https://patch.msgid.link/20260518073207.5b7d26e7.michal.pecio@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/phy/mscc/mscc.h      |  1 +
- drivers/net/phy/mscc/mscc_main.c | 15 +--------------
- 2 files changed, 2 insertions(+), 14 deletions(-)
+ drivers/usb/core/config.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/phy/mscc/mscc.h b/drivers/net/phy/mscc/mscc.h
-index fcfbff691b3c6b..4a9c12516f2057 100644
---- a/drivers/net/phy/mscc/mscc.h
-+++ b/drivers/net/phy/mscc/mscc.h
-@@ -291,6 +291,7 @@ enum rgmii_clock_delay {
- #define PHY_ID_VSC8575			  0x000707d0
- #define PHY_ID_VSC8582			  0x000707b0
- #define PHY_ID_VSC8584			  0x000707c0
-+#define PHY_VENDOR_MSCC			0x00070400
- 
- #define MSCC_VDDMAC_1500		  1500
- #define MSCC_VDDMAC_1800		  1800
-diff --git a/drivers/net/phy/mscc/mscc_main.c b/drivers/net/phy/mscc/mscc_main.c
-index acc9e1a2663143..a33e877a4cd151 100644
---- a/drivers/net/phy/mscc/mscc_main.c
-+++ b/drivers/net/phy/mscc/mscc_main.c
-@@ -2676,20 +2676,7 @@ static struct phy_driver vsc85xx_driver[] = {
- module_phy_driver(vsc85xx_driver);
- 
- static struct mdio_device_id __maybe_unused vsc85xx_tbl[] = {
--	{ PHY_ID_VSC8502, 0xfffffff0, },
--	{ PHY_ID_VSC8504, 0xfffffff0, },
--	{ PHY_ID_VSC8514, 0xfffffff0, },
--	{ PHY_ID_VSC8530, 0xfffffff0, },
--	{ PHY_ID_VSC8531, 0xfffffff0, },
--	{ PHY_ID_VSC8540, 0xfffffff0, },
--	{ PHY_ID_VSC8541, 0xfffffff0, },
--	{ PHY_ID_VSC8552, 0xfffffff0, },
--	{ PHY_ID_VSC856X, 0xfffffff0, },
--	{ PHY_ID_VSC8572, 0xfffffff0, },
--	{ PHY_ID_VSC8574, 0xfffffff0, },
--	{ PHY_ID_VSC8575, 0xfffffff0, },
--	{ PHY_ID_VSC8582, 0xfffffff0, },
--	{ PHY_ID_VSC8584, 0xfffffff0, },
-+	{ PHY_ID_MATCH_VENDOR(PHY_VENDOR_MSCC) },
- 	{ }
- };
- 
--- 
-2.53.0
-
+--- a/drivers/usb/core/config.c
++++ b/drivers/usb/core/config.c
+@@ -165,7 +165,14 @@ static void usb_parse_ss_endpoint_compan
+ 			(desc->bMaxBurst + 1);
+ 	else
+ 		max_tx = 999999;
+-	if (le16_to_cpu(desc->wBytesPerInterval) > max_tx) {
++	/*
++	 * wBytesPerInterval > max_tx is bogus, but USB3 spec doesn't forbid the opposite.
++	 * Experience shows that wBytesPerInterval < wMaxPacketSize on common interrupt IN
++	 * endpoints is usually bogus too, and recent HCs enforce interrupt BW limits.
++	 */
++	if (le16_to_cpu(desc->wBytesPerInterval) > max_tx ||
++	    (le16_to_cpu(desc->wBytesPerInterval) < usb_endpoint_maxp(&ep->desc) &&
++	     usb_endpoint_is_int_in(&ep->desc))) {
+ 		dev_notice(ddev, "%s endpoint with wBytesPerInterval of %d in "
+ 				"config %d interface %d altsetting %d ep %d: "
+ 				"setting to %d\n",
 
 
 
