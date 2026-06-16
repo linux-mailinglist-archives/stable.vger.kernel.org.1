@@ -1,217 +1,117 @@
-Return-Path: <stable+bounces-264980-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265187-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id CUZSApWAMWo8lAUAu9opvQ
-	(envelope-from <stable+bounces-264980-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:57:57 +0200
+	id f+gRHXeEMWqylQUAu9opvQ
+	(envelope-from <stable+bounces-265187-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:14:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAB2E6929EA
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:57:56 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D184692E5D
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:14:31 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=cnJTTwrj;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264980-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264980-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265187-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-265187-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 064EE304D139
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:55:00 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 46D663056655
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:12:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CBDD477995;
-	Tue, 16 Jun 2026 16:54:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E7DA47276B;
+	Tue, 16 Jun 2026 17:11:57 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bregans-1.gladserv.net (bregans-1.gladserv.net [185.128.211.58])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA312477E2D
-	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 16:54:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D34703AE71F;
+	Tue, 16 Jun 2026 17:11:55 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781628899; cv=none; b=pneT2yN1FCoGurRd73oZP3XaVKZE2MenvWQF8ls2TAQDnPYXMfysFCTyL4+n/8FUYxnxr+PLxEY46R57wZN23/6TYs7xaLofe1kUiAlF1K4+WGw5HfJUv/aK/9Jv4wJTI6/vbMhO3TV2HIDGBAxB3ady34mCwXfrVWkao9ohCVw=
+	t=1781629917; cv=none; b=ukKYViavlhCAOifPIQvmXudcqTgjm7h/eIBI6J3kxG4u7nxT1DZcT8Oc0f4AeGH8mDyOOJ5bMIOMAmpX96mwUP8eZb8pMasqnaK9DTQEFLZyxJKpzqfC3A1GL4gXHjGs1CFvxGVIr+Efzq/5vB1SddMuswhwAEbRu6L8ZuHeoJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781628899; c=relaxed/simple;
-	bh=6hat5+8vR6sH5hwpRtclSnvBpCW++LLkr0Bw3mrJ7YE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=B62XxKVWuUfornxWkJ6h+NJpdl5CwRZnzJhuC/YaKiJuUODFH6RzeD4iICpOdwFoO3DtkTy/TCYeA9NaXRB2G3RtMdd3xln4u5T/D6jUDX2i0qha8FLM6XmFKZZkPQiPbYDDlW7kc3cXk5AVllogOy1UemoZM1FQWRjqhRxtjuA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cnJTTwrj; arc=none smtp.client-ip=209.85.214.179
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2c0c2d792c8so31292065ad.1
-        for <stable@vger.kernel.org>; Tue, 16 Jun 2026 09:54:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781628897; x=1782233697; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=pJhUJyY1o94pDseZLihc3mmdqQnwkfgxQLMjsWZTRYA=;
-        b=cnJTTwrjBqHkTIfF882c6M0EH3YcLdV9TtokEvxlXgLlnTTFiLp9Qx8kWryHDrCEaA
-         U6lWLYiy9dilJgdNLOob827YOnJnxbQtm4yXZywrg5mLgb0yiKHyyz5xSL2dMYrkTeNC
-         p91cH1zPl4JSPrZXpn+ARCMA0CgWgQ1jqXh9bXljGJsMCqdPhERqcVhB5jhiKZHVTpqj
-         HLniqlNN2IhPFjCXiKwKqOXp3619lQOmZe+TKUeHQz2F1WSIg6pC+9HzYpfPl0iJwzkc
-         QLzDcSu/UDU3bsxNuYJvxE3InK39OGC8CEln80+MAG0SBIukU7E4Z6pSLnWFdvB1ICVO
-         FaKg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781628897; x=1782233697;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pJhUJyY1o94pDseZLihc3mmdqQnwkfgxQLMjsWZTRYA=;
-        b=cqaDCqttHz5uN6Nn04VAB3LIxCASlhnCFOWjDNPXkIW+HmJFyBd8RwswKydxnZchd3
-         nJ0W6JCdOeMusFJuFnJSOwQl0geE9Jq9Yh0foDGZyu/f6X4LUatS17QkNViOxZuGIKBu
-         nxOIFtTieKoESFG+GPwX7rAWyPUtc2cp4a2ep3Swuh9ubtvVbCDj84IEX+79SnRbwfuf
-         BYOzt8/kVm4j915Nh36gl9ayrbDKL/H/EXF14vhx6iGlubKQ7wXgqYt2rz8NeI0YFCx2
-         Fg/QDWFw/htkGyLrw29tA/Z4kmFi1EFu1NILXSvPa+1i9GdxToSmTBnb3XcpkEKY2R9H
-         aaYA==
-X-Forwarded-Encrypted: i=1; AFNElJ/3DTcnS0M7oRaCbSFe2XfInmL/+pd4tEOJZU6nuCrNw0L/J23kx+szZXi8pcS92rtt99/Vrq4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YykXqv48IVtrKJhWF5vOnztjFEwxpNCXzGGxIZjtb1jO/2gl4/4
-	7s/n1258Po/lH2/BWTOUriv7wpUD1/7t4z3FaLsu563UXdf2fU3R/n1/
-X-Gm-Gg: Acq92OHIqq+6l1AZbQdeeZo6UM7e5OmU6YpIwYDuuVFCh2Fz0I8cpK9xh5GfCzASz65
-	G2liIH5cTnab1HPEIAGVzA/e94dTJ1trBk7llmjItSnlbY2EJtccldy62ZNeg3l3IfFoFut73t+
-	LDxHyZzt2eZcGT4JYQup3mDEdNOQ1FXVzD+dEQN9lZtf9RpdzsGm0qcykzHIzbEk0uKjdPpGV2B
-	qRHDiKFecGxV4PyRiQARJJBa/EfTWFh6nEoUnMtb4hZVPuI9VwLOhCXEnYcDuopNh7yuyvxK7Eu
-	v6qVDGT9XO4UP8Xqp6LbwIKnS/0+Bx06uXQjWic0Gl8Xr6JCh3Sl+9P+MRyU5hNJpknT+Q9v5fT
-	CqRAiqyP0r8QNTSFfGdvvA407HJeM2KrtUkDTj4vA1tQKMpov60nlFvi6xUm9hZc6VQGvzUdFs2
-	ZIiLe/EJP7eSGs+htrbSNw/Ye2QjfzX/ba2SGdM8c=
-X-Received: by 2002:a17:903:1448:b0:2c6:a99a:52b5 with SMTP id d9443c01a7336-2c6a99a54b8mr20399395ad.12.1781628897049;
-        Tue, 16 Jun 2026 09:54:57 -0700 (PDT)
-Received: from LAPTOP-N3B6U5LC.localdomain ([36.21.199.25])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c432c8dd4bsm144760795ad.60.2026.06.16.09.54.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Jun 2026 09:54:56 -0700 (PDT)
-From: Zhenhao Wan <whi4ed0g@gmail.com>
-Date: Wed, 17 Jun 2026 00:52:00 +0800
-Subject: [PATCH] RDMA/rtrs-srv: Reject usr_len larger than off in
- process_{read,write}
+	s=arc-20240116; t=1781629917; c=relaxed/simple;
+	bh=6xXVXsa5tPoPweq0yFfahG9vVnsLP6UQMzduiih7XOs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ZlDNTp45hXKy/ZVDy5KdGPdCkwl+EUwxzq7xOOu5QRRVc7d1+keGeWZvOOR8fa9HTi/GYWdf+nQqKBxTAf0r6BLvVpaeEPTYQTK160AdqdYry6Lm/J6P+1xbw1sSEQdZgnVx+TdeWlxQR6jIrGmTWL/OaEpPrdoC1L/q+oVfjxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net; spf=pass smtp.mailfrom=librecast.net; arc=none smtp.client-ip=185.128.211.58
+From: Brett A C Sheffield <bacs@librecast.net>
+To: gregkh@linuxfoundation.org
+Cc: stable@vger.kernel.org,
+	patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org,
+	akpm@linux-foundation.org,
+	linux@roeck-us.net,
+	shuah@kernel.org,
+	patches@kernelci.org,
+	lkft-triage@lists.linaro.org,
+	pavel@nabladev.com,
+	jonathanh@nvidia.com,
+	f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com,
+	rwarsow@gmx.de,
+	conor@kernel.org,
+	hargar@microsoft.com,
+	broonie@kernel.org,
+	achill@achill.org,
+	sr@sladewatkins.com,
+	Brett A C Sheffield <bacs@librecast.net>
+Subject: Re: [PATCH 5.10 000/342] 5.10.259-rc1 review
+Date: Tue, 16 Jun 2026 16:55:20 +0000
+Message-ID: <20260616165527.26538-1-bacs@librecast.net>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260617-rtrs-srv-usr-len-underflow-v1-1-942e6414150a@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAC9/MWoC/yXMwQqDMAwA0F+RnBdoC7ZuvzJ22DTViNSRWDcQ/
- 926Hd/lbaAkTAq3agOhlZXnVGAvFbTDM/WE3BWDM84bbwPKIooqK2YVnChhTh1JnOYPUm1NcDH
- 4a1NDCd5Ckb+//P74W/NrpHY5R9j3A9lCw15+AAAA
-X-Change-ID: 20260617-rtrs-srv-usr-len-underflow-e51072f76985
-To: "Md. Haris Iqbal" <haris.iqbal@ionos.com>, 
- Jack Wang <jinpu.wang@ionos.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
- Leon Romanovsky <leon@kernel.org>, 
- Danil Kipnis <danil.kipnis@cloud.ionos.com>
-Cc: Jack Wang <jinpu.wang@cloud.ionos.com>, linux-rdma@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Yuhao Jiang <danisjiang@gmail.com>, 
- stable@vger.kernel.org, Zhenhao Wan <whi4ed0g@gmail.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1781628889; l=2659;
- i=whi4ed0g@gmail.com; h=from:subject:message-id;
- bh=6hat5+8vR6sH5hwpRtclSnvBpCW++LLkr0Bw3mrJ7YE=;
- b=I8094tBOYajXXPZzC8+1/pMMZbaGFlrDenRIxKdBWd0C2vZYoxSpKP1mNCIbI6fvxZiN/QbOn
- lAYI0xZ5xY7BlItEoc25kudLN+Rnk39imls5jdM7lhZc86C35DWMjyr
-X-Developer-Key: i=whi4ed0g@gmail.com; a=ed25519;
- pk=zRTKlstE0LmilshGwJsFYEVjiT6RiXMBXK8Og6VmuVQ=
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [1.54 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-264980-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[cloud.ionos.com,vger.kernel.org,gmail.com];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER(0.00)[whi4ed0g@gmail.com,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:haris.iqbal@ionos.com,m:jinpu.wang@ionos.com,m:jgg@ziepe.ca,m:leon@kernel.org,m:danil.kipnis@cloud.ionos.com,m:jinpu.wang@cloud.ionos.com,m:linux-rdma@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:danisjiang@gmail.com,m:stable@vger.kernel.org,m:whi4ed0g@gmail.com,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
+	DMARC_NA(0.00)[librecast.net];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-265187-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[21];
+	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,m:patches@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:torvalds@linux-foundation.org,m:akpm@linux-foundation.org,m:linux@roeck-us.net,m:shuah@kernel.org,m:patches@kernelci.org,m:lkft-triage@lists.linaro.org,m:pavel@nabladev.com,m:jonathanh@nvidia.com,m:f.fainelli@gmail.com,m:sudipm.mukherjee@gmail.com,m:rwarsow@gmx.de,m:conor@kernel.org,m:hargar@microsoft.com,m:broonie@kernel.org,m:achill@achill.org,m:sr@sladewatkins.com,m:bacs@librecast.net,m:ffainelli@gmail.com,m:sudipmmukherjee@gmail.com,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[lists@lfdr.de];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[whi4ed0g@gmail.com,stable@vger.kernel.org];
+	FORGED_SENDER(0.00)[bacs@librecast.net,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[3];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[bacs@librecast.net,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com,librecast.net];
 	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	R_DKIM_NA(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[librecast.net:email,librecast.net:mid,librecast.net:from_mime,vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: AAB2E6929EA
+X-Rspamd-Queue-Id: 3D184692E5D
 
-process_read() and process_write() derive the data length of an I/O
-request as:
+# Librecast Test Results
 
-	usr_len = le16_to_cpu(req->usr_len);
-	data_len = off - usr_len;
+020/020 [ OK ] liblcrq
+010/010 [ OK ] libmld
+120/120 [ OK ] liblibrecast
 
-off comes from the RDMA-Write-with-imm immediate and is only bounded
-above (off < max_chunk_size) in rtrs_srv_rdma_done(). usr_len is read
-from the chunk buffer the remote peer fills over RDMA, so it is peer
-controlled over the full u16 range and is not checked against off.
+CPU/kernel: Linux auntie 5.10.259-rc1-00934-gb93100fe2cc0 #1 SMP Tue Jun 16 15:41:40 -00 2026 x86_64 AMD Ryzen 9 9950X 16-Core Processor AuthenticAMD GNU/Linux
 
-If a peer sends usr_len > off, the size_t subtraction underflows and
-the pointer data + data_len passed to the ->rdma_ev() callback points
-before the chunk. The in-tree consumer rnbd_srv_rdma_ev() dereferences
-it as the message header (le16_to_cpu(hdr->type)) before validating it;
-this is an out-of-bounds read reachable from a remote peer.
-
-Reject usr_len > off before computing data_len in both paths, via the
-existing send_err_msg path. For a well-formed request off is the total
-length data_len + usr_len, so usr_len <= off holds and valid requests
-are unaffected.
-
-Fixes: 9cb837480424 ("RDMA/rtrs: server: main functionality")
-Reported-by: Yuhao Jiang <danisjiang@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Zhenhao Wan <whi4ed0g@gmail.com>
----
- drivers/infiniband/ulp/rtrs/rtrs-srv.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
-
-diff --git a/drivers/infiniband/ulp/rtrs/rtrs-srv.c b/drivers/infiniband/ulp/rtrs/rtrs-srv.c
-index 6482ad859bd1..ec3f6c2fb0b9 100644
---- a/drivers/infiniband/ulp/rtrs/rtrs-srv.c
-+++ b/drivers/infiniband/ulp/rtrs/rtrs-srv.c
-@@ -1067,6 +1067,13 @@ static void process_read(struct rtrs_srv_con *con,
- 	id->msg_id	= buf_id;
- 	id->rd_msg	= msg;
- 	usr_len = le16_to_cpu(msg->usr_len);
-+	if (usr_len > off) {
-+		rtrs_err_rl(s,
-+			    "Processing read request failed, invalid usr_len %zu > off %u\n",
-+			    usr_len, off);
-+		ret = -EINVAL;
-+		goto send_err_msg;
-+	}
- 	data_len = off - usr_len;
- 	data = page_address(srv->chunks[buf_id]);
- 	ret = ctx->ops.rdma_ev(srv->priv, id, data, data_len,
-@@ -1120,6 +1127,13 @@ static void process_write(struct rtrs_srv_con *con,
- 	id->msg_id = buf_id;
- 
- 	usr_len = le16_to_cpu(req->usr_len);
-+	if (usr_len > off) {
-+		rtrs_err_rl(s,
-+			    "Processing write request failed, invalid usr_len %zu > off %u\n",
-+			    usr_len, off);
-+		ret = -EINVAL;
-+		goto send_err_msg;
-+	}
- 	data_len = off - usr_len;
- 	data = page_address(srv->chunks[buf_id]);
- 	ret = ctx->ops.rdma_ev(srv->priv, id, data, data_len,
-
----
-base-commit: a48671671df5158a0b8e564cd509e04a090a941b
-change-id: 20260617-rtrs-srv-usr-len-underflow-e51072f76985
-
-Best regards,
---  
-Zhenhao Wan <whi4ed0g@gmail.com>
-
+Tested-by: Brett A C Sheffield <bacs@librecast.net>
 
