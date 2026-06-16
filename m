@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-266163-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265175-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Wmt0KdqYMWopnwUAu9opvQ
-	(envelope-from <stable+bounces-266163-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:41:30 +0200
+	id phSfI3SFMWoslgUAu9opvQ
+	(envelope-from <stable+bounces-265175-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:18:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AB78694559
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:41:30 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F16A3692FB8
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:18:43 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=y55I4y8e;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266163-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266163-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=sSxAsKlL;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265175-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265175-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AAAB631B6FE8
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:36:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4FAB1306408F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:10:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D85846AF3C;
-	Tue, 16 Jun 2026 18:36:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA76B35AC3E;
+	Tue, 16 Jun 2026 17:10:58 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14A772C0261;
-	Tue, 16 Jun 2026 18:36:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8317F43E490;
+	Tue, 16 Jun 2026 17:10:57 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781634994; cv=none; b=u2ini0oBhy/BQO/gRCQ90Rhk3nF8H5zvx+aHTI1barWaM/RfnZwuQnLi1RO7ARWJAwlig6u8uCNEhgyFINyFdUPjN891iWG5UlrzNspxxraRBbZBfpLC02+eE7dzwfCCXJ9XmC52xkwgObf3sdN/2FvraTxq9UnLf5SkgEwrOt4=
+	t=1781629858; cv=none; b=In4I2roQmGpUrxcdLDjp1RNm4ws85slJ+TM3AA61HhdParUchkfzAwQbYPmUd9/dQD4/58TiGNp5d8kOL5w8yF+27nAY/dq2jSovfDAC7ZswjPkVSnJ76g3qw2SP+lP/pGYzcxDWcQ+16OB1QqSIqW1FmxX04GM/Ig1K5ZPDMds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781634994; c=relaxed/simple;
-	bh=NyxUKl+pI15EizYiqQOmxouX2mMlv1y6NMykbdEQLwI=;
+	s=arc-20240116; t=1781629858; c=relaxed/simple;
+	bh=/j4TshATX2sy/4sBNqxXpFjbFXvEAnSIzfK9zdyR7+I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fN7BjvPK2kvVpWXkFLX1LDwxTgwp37PZiqh5caFN9nS8zRabCiL67gSSwLQRhYjuUPcasg3NO+P4mYsAZCtw1na3AenDuUc2vF+zHfQgEmQE7+xBOzM0Y5VX6qlDI35P7cSkfnMrb1wE+4WxocENgOYpUqIQqU2V4ghzKDBr4T4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y55I4y8e; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23EC21F000E9;
-	Tue, 16 Jun 2026 18:36:31 +0000 (UTC)
+	 MIME-Version; b=c5J4inhietF7KzHUBQaRI2jlCU07de7ivIZ10SxU8iVsqVIdYO8/YpVWIRob+oF/KYQ5Df6HPtV4W13P8oPJISTsn1YNYq3A+qsBuLKhAaLqJuR5auJJ/nB+l8cjeNrAo/3In3UVUF0xRmzGT3dM8ToPsD2upO3CY+oUdhrfPL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sSxAsKlL; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F3131F000E9;
+	Tue, 16 Jun 2026 17:10:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781634993;
-	bh=hTzMNVrgtfO5UIoOufLF3II4STRmofoEb+E6qIS0qjk=;
+	s=korg; t=1781629857;
+	bh=Rv8Gc3sq9tB3f+6nWv8EzXKyJvDaMnf8JZg54he3zKo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=y55I4y8eOz+zwumI+ZdfYU+JIl2ctBM6gqJ9ekT4cvnC2XMRJosB0/JYsE7T/O76B
-	 aPtrLNoj3Y7XzK9n63NQDASHuJ3+n1RkcqVOi5GgvMAxTW46GEZaLBaauVayKuuJx8
-	 0pRxMj1XQVxC5lH5zOD8EHch+31s9TzkhM4IL7Io=
+	b=sSxAsKlLqc7XVc97KKXSASHfAa4y0z2/l92qUP+sUypRrgOWN6J2XplwjRV5yJwNn
+	 zT7caQhPbxvKBrzuvAE/Dd784aKmmsMt3AB5BgFWDDBCz0KgZQ784qzA+EUIkx/mJ/
+	 AgnY1BEAbl9ihlWPnnvjnhchtODsKYSvNzLRWFJs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 327/411] smb: client: validate dacloffset before building DACL pointers
+	ZhaoJinming <zhaojinming@uniontech.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.6 338/452] net: bonding: fix NULL pointer dereference in bond_do_ioctl()
 Date: Tue, 16 Jun 2026 20:29:25 +0530
-Message-ID: <20260616145118.540398416@linuxfoundation.org>
+Message-ID: <20260616145135.073151250@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,159 +66,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265175-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266163-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:stfrench@microsoft.com,m:sashal@kernel.org,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,microsoft.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:zhaojinming@uniontech.com,m:pabeni@redhat.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,uniontech.com:email,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3AB78694559
+X-Rspamd-Queue-Id: F16A3692FB8
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: ZhaoJinming <zhaojinming@uniontech.com>
 
-[ Upstream commit f98b48151cc502ada59d9778f0112d21f2586ca3 ]
+commit a764b0e8317a863006e05732e1aefe821b9d8c2d upstream.
 
-parse_sec_desc(), build_sec_desc(), and the chown path in
-id_mode_to_cifs_acl() all add the server-supplied dacloffset to pntsd
-before proving a DACL header fits inside the returned security
-descriptor.
+In bond_do_ioctl(), slave_dev is obtained via __dev_get_by_name() which
+can return NULL if the requested interface name does not exist. However,
+the subsequent slave_dbg() call is placed before the NULL check:
 
-On 32-bit builds a malicious server can return dacloffset near
-U32_MAX, wrap the derived DACL pointer below end_of_acl, and then slip
-past the later pointer-based bounds checks. build_sec_desc() and
-id_mode_to_cifs_acl() can then dereference DACL fields from the wrapped
-pointer in the chmod/chown rewrite paths.
+    slave_dev = __dev_get_by_name(net, ifr->ifr_slave);
+    slave_dbg(bond_dev, slave_dev, "slave_dev=%p:\n", slave_dev); //here
+    if (!slave_dev)
+        return -ENODEV;
 
-Validate dacloffset numerically before building any DACL pointer and
-reuse the same helper at the three DACL entry points.
+The slave_dbg() macro expands to netdev_dbg(bond_dev, "(slave %s): " fmt,
+(slave_dev)->name, ...) which unconditionally dereferences slave_dev->name
+before the NULL check is performed. This results in a NULL pointer
+dereference kernel oops when a user calls bonding ioctl (e.g.
+SIOCBONDENSLAVE, SIOCBONDRELEASE, etc.) with a non-existent slave
+interface name.
 
-Fixes: bc3e9dd9d104 ("cifs: Change SIDs in ACEs while transferring file ownership.")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-6
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-[ renamed smb_ntsd/smb_acl structs to cifs_ntsd/cifs_acl and kept existing inline ACL size check instead of using missing validate_dacl() helper ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This is reachable from userspace via the bonding ioctl interface with
+CAP_NET_ADMIN capability, making it a potential local denial-of-service
+vector.
+
+Fix by moving the slave_dbg() call after the NULL check.
+
+Fixes: e2a7420df2e0 ("bonding/main: convert to using slave printk macros")
+Cc: stable@vger.kernel.org # v5.2+
+Signed-off-by: ZhaoJinming <zhaojinming@uniontech.com>
+Link: https://patch.msgid.link/20260601085649.4029067-1-zhaojinming@uniontech.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/cifs/cifsacl.c |   35 ++++++++++++++++++++++++++++++++---
- 1 file changed, 32 insertions(+), 3 deletions(-)
+ drivers/net/bonding/bond_main.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/cifs/cifsacl.c
-+++ b/fs/cifs/cifsacl.c
-@@ -1254,6 +1254,17 @@ static int parse_sid(struct cifs_sid *ps
- 	return 0;
- }
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -4640,11 +4640,11 @@ static int bond_do_ioctl(struct net_devi
  
-+static bool dacl_offset_valid(unsigned int acl_len, __u32 dacloffset)
-+{
-+	if (acl_len < sizeof(struct cifs_acl))
-+		return false;
-+
-+	if (dacloffset < sizeof(struct cifs_ntsd))
-+		return false;
-+
-+	return dacloffset <= acl_len - sizeof(struct cifs_acl);
-+}
-+
+ 	slave_dev = __dev_get_by_name(net, ifr->ifr_slave);
  
- /* Convert CIFS ACL to POSIX form */
- static int parse_sec_desc(struct cifs_sb_info *cifs_sb,
-@@ -1274,7 +1285,6 @@ static int parse_sec_desc(struct cifs_sb
- 	group_sid_ptr = (struct cifs_sid *)((char *)pntsd +
- 				le32_to_cpu(pntsd->gsidoffset));
- 	dacloffset = le32_to_cpu(pntsd->dacloffset);
--	dacl_ptr = (struct cifs_acl *)((char *)pntsd + dacloffset);
- 	cifs_dbg(NOISY, "revision %d type 0x%x ooffset 0x%x goffset 0x%x sacloffset 0x%x dacloffset 0x%x\n",
- 		 pntsd->revision, pntsd->type, le32_to_cpu(pntsd->osidoffset),
- 		 le32_to_cpu(pntsd->gsidoffset),
-@@ -1305,11 +1315,18 @@ static int parse_sec_desc(struct cifs_sb
- 		return rc;
- 	}
+-	slave_dbg(bond_dev, slave_dev, "slave_dev=%p:\n", slave_dev);
+-
+ 	if (!slave_dev)
+ 		return -ENODEV;
  
--	if (dacloffset)
-+	if (dacloffset) {
-+		if (!dacl_offset_valid(acl_len, dacloffset)) {
-+			cifs_dbg(VFS, "Server returned illegal DACL offset\n");
-+			return -EINVAL;
-+		}
++	slave_dbg(bond_dev, slave_dev, "slave_dev=%p:\n", slave_dev);
 +
-+		dacl_ptr = (struct cifs_acl *)((char *)pntsd + dacloffset);
- 		parse_dacl(dacl_ptr, end_of_acl, owner_sid_ptr,
- 			   group_sid_ptr, fattr, get_mode_from_special_sid);
--	else
-+	} else {
- 		cifs_dbg(FYI, "no ACL\n"); /* BB grant all or default perms? */
-+	}
- 
- 	return rc;
- }
-@@ -1332,6 +1349,11 @@ static int build_sec_desc(struct cifs_nt
- 
- 	dacloffset = le32_to_cpu(pntsd->dacloffset);
- 	if (dacloffset) {
-+		if (!dacl_offset_valid(secdesclen, dacloffset)) {
-+			cifs_dbg(VFS, "Server returned illegal DACL offset\n");
-+			return -EINVAL;
-+		}
-+
- 		dacl_ptr = (struct cifs_acl *)((char *)pntsd + dacloffset);
- 		rc = validate_dacl(dacl_ptr, end_of_acl);
- 		if (rc)
-@@ -1694,6 +1716,12 @@ id_mode_to_cifs_acl(struct inode *inode,
- 		nsecdesclen = sizeof(struct cifs_ntsd) + (sizeof(struct cifs_sid) * 2);
- 		dacloffset = le32_to_cpu(pntsd->dacloffset);
- 		if (dacloffset) {
-+			if (!dacl_offset_valid(secdesclen, dacloffset)) {
-+				cifs_dbg(VFS, "Server returned illegal DACL offset\n");
-+				rc = -EINVAL;
-+				goto id_mode_to_cifs_acl_exit;
-+			}
-+
- 			dacl_ptr = (struct cifs_acl *)((char *)pntsd + dacloffset);
- 			rc = validate_dacl(dacl_ptr, (char *)pntsd + secdesclen);
- 			if (rc) {
-@@ -1736,6 +1764,7 @@ id_mode_to_cifs_acl(struct inode *inode,
- 		rc = ops->set_acl(pnntsd, nsecdesclen, inode, path, aclflag);
- 		cifs_dbg(NOISY, "set_cifs_acl rc: %d\n", rc);
- 	}
-+id_mode_to_cifs_acl_exit:
- 	cifs_put_tlink(tlink);
- 
- 	kfree(pnntsd);
+ 	switch (cmd) {
+ 	case SIOCBONDENSLAVE:
+ 		res = bond_enslave(bond_dev, slave_dev, NULL);
 
 
 
