@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-264985-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265925-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 8mXrEk2DMWo0lQUAu9opvQ
-	(envelope-from <stable+bounces-264985-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:09:33 +0200
+	id YKBLGciSMWp2nAUAu9opvQ
+	(envelope-from <stable+bounces-265925-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:15:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69497692CAE
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:09:32 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9B7F693F6A
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:15:35 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=hfjTw6U8;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264985-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-264985-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=n7qCaZ6Q;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265925-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265925-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 28859302E9D5
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:55:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2581C318229E
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:15:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66496478E53;
-	Tue, 16 Jun 2026 16:55:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE02347A0CD;
+	Tue, 16 Jun 2026 18:15:20 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D6A8169AD2;
-	Tue, 16 Jun 2026 16:55:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78A2347A0A9;
+	Tue, 16 Jun 2026 18:15:19 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781628924; cv=none; b=WC3msuQNWLPZYYwQvEd3ksGMoMHQNHiSP1nJUefvidFcgPwldG6w9kSn++nH+4Qd/JebeUI0R8W5sliVqTwIZg95xLMLQFBGYeViIt2F+bcJ9hKPXVXFYHNqaWMiTNiTlU3l0Jmqz3EkJaqQGvcL+vzOlcA1RhZJIK9u3TrDg/Y=
+	t=1781633720; cv=none; b=e+uw2OQ9mA1m3/Hf+2vdlmbCMZif4PRWj+DxZxnczlrUaG8p3KC6+QHzl5q5DGXJ+AvKUEH4sqYhexTJoNGohBgdXphG0oGawb+MUyKkmMgaRtDZK3kCxbqXZW7VOyXRh3tidoO3YRUknEaYg70Vwyistv9dud8AYUDxb1bq27M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781628924; c=relaxed/simple;
-	bh=4tqMiqRu5kJIfNM6QK+s2jkF8z8lmj/UZjFDXLByw+k=;
+	s=arc-20240116; t=1781633720; c=relaxed/simple;
+	bh=BlYDcyWB8Lkef9dxKeTALnqGN/yAH7oeWln5zgJUAh8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KW7/G+zp8oHMP0KSI1HZdogUh9b//1FTEEe4iL6oVWwgKKD8qucd1kkmAKbGqT12eCUU3A61prHxSk7oQISBV4Ev72/B64/HBxhxZNeazkwZO0ZdFW3j6qmH1OYVuOkupkihMBNSMLV9HGI00rWVr2CVXnw1BAj3+b4s8y0/Y8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hfjTw6U8; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10A8C1F000E9;
-	Tue, 16 Jun 2026 16:55:21 +0000 (UTC)
+	 MIME-Version; b=m8bF8fR9iARykKVjyZwA3hjQzoOnzFHs87AaBfcc+kiwQxOB33vETrZ2t9iU9nz9jg6fQFMU3yaMR6nbOr+Vabgz49AZQH6uZyn/dnEnJkNPI4yfDK0cegBNuLQxaOj8EJwPmmc0Skf9tlTX5J5jKRiywKHda5v4wWppEh7g3f4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n7qCaZ6Q; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BF8E1F000E9;
+	Tue, 16 Jun 2026 18:15:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781628923;
-	bh=GNtCtP90g+5j46e+ZnNkcIzJWPP+zKQ6Yo8DSvLxqdk=;
+	s=korg; t=1781633719;
+	bh=I5h7AwfcMrfFaDRgTbPOnhelQVeaGDMHlH2K03IfnfE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hfjTw6U80v4N+AlMip8QBi7ur8CLBZZcJgKWtf5JotLR818HxT9IvpUhfkSLQ6BDD
-	 zg1THxEdy4cpOvTWkwLT1h3kdhCunKBXD0vrleJZ5B0UKxt8b5ikcSSOtljLKnA+dG
-	 fHe3j7n54Oc1JFpWyUNvCGqQcAFB6qM24BXWUxfg=
+	b=n7qCaZ6QC/yyYIvoU0clpLmLucKFkpVAg2pWB9BKK/+mrzePCha+YI19DVtQ8xzgX
+	 ka1miuFPXp9zRiaOLyudbNSu1xUh2MCxLmXVwfE9OvSM4BUstA31eEB2umdHnNC5rt
+	 WQFGkRrCb7q/YPT0+zkoQ0m+bp4s8YEdzlNp68PU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ali Ganiyev <ali.qaniyev@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 144/452] ksmbd: OOB read regression in smb_check_perm_dacl() ACE-walk loops
+	"Maciej W. Rozycki" <macro@orcam.me.uk>
+Subject: [PATCH 5.15 133/411] serial: zs: Fix bootconsole handover lockup
 Date: Tue, 16 Jun 2026 20:26:11 +0530
-Message-ID: <20260616145125.267591885@linuxfoundation.org>
+Message-ID: <20260616145107.413697537@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,103 +65,140 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264985-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:ali.qaniyev@gmail.com,m:linkinjeon@kernel.org,m:stfrench@microsoft.com,m:aliqaniyev@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_FROM(0.00)[bounces-265925-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:macro@orcam.me.uk,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCPT_COUNT_THREE(0.00)[4];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[orcam.me.uk:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 69497692CAE
+X-Rspamd-Queue-Id: B9B7F693F6A
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ali Ganiyev <ali.qaniyev@gmail.com>
+From: Maciej W. Rozycki <macro@orcam.me.uk>
 
-commit 0e60dafe97eca61721f3db456f97d97a80c6c8ae upstream.
+commit 6c05cf72e13314ce9b770b5951695dc5a2152920 upstream.
 
-Commit d07b26f39246 ("ksmbd: require minimum ACE size in
-smb_check_perm_dacl()") introduced a transposed bounds check:
+Calling zs_reset() in the course of setting up the serial device causes
+line parameters to be reset and the transmitter disabled.  We've been
+lucky in that no message is usually produced to the kernel log between
+this call and the later call to uart_set_options() in the course of
+console setup done by zs_serial_console_init(), or the system would hang
+as the console output handler in the firmware tried to access a port the
+transmitter of which has been disabled and line parameters messed up.
 
-    if (offsetof(struct smb_ace, sid) + aces_size < CIFS_SID_BASE_SIZE)
+This will change with the next change to the driver, so fix zs_reset()
+such that line parameters are set for 9600n8 console operation as with
+the system firmware and the transmitter re-enabled after reset.  This
+also means zs_pm() serves no purpose anymore, so drop it.
 
-Since offsetof(..sid) is 8 and CIFS_SID_BASE_SIZE is 8, this evaluates
-to `aces_size < 0`. Because `aces_size` is always non-negative, this
-check becomes dead code and never breaks the loop.
-
-Worse, that commit removed the old 4-byte guard, meaning the loop now
-reads `ace->size` (offset 2) even when `aces_size` is 0-3 bytes. This
-re-opens a 2-byte heap out-of-bounds (OOB) read past the pntsd allocation
-during subsequent SMB2_CREATE operations.
-
-Fix this by properly transposing the comparison to require at least
-16 bytes (8-byte offset + 8-byte SID base), matching the correct form
-used in smb_inherit_dacl().
-
-Fixes: d07b26f39246 ("ksmbd: require minimum ACE size in smb_check_perm_dacl()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ali Ganiyev <ali.qaniyev@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 8b4a40809e53 ("zs: move to the serial subsystem")
+Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Cc: stable@vger.kernel.org # v2.6.23+
+Link: https://patch.msgid.link/alpine.DEB.2.21.2605062308040.46195@angie.orcam.me.uk
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/smbacl.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/tty/serial/zs.c |   29 ++++++++---------------------
+ 1 file changed, 8 insertions(+), 21 deletions(-)
 
---- a/fs/smb/server/smbacl.c
-+++ b/fs/smb/server/smbacl.c
-@@ -1342,8 +1342,8 @@ int smb_check_perm_dacl(struct ksmbd_con
- 		ace = (struct smb_ace *)((char *)pdacl + sizeof(struct smb_acl));
- 		aces_size = acl_size - sizeof(struct smb_acl);
- 		for (i = 0; i < le16_to_cpu(pdacl->num_aces); i++) {
--			if (offsetof(struct smb_ace, sid) +
--			    aces_size < CIFS_SID_BASE_SIZE)
-+			if (aces_size < offsetof(struct smb_ace, sid) +
-+			    CIFS_SID_BASE_SIZE)
- 				break;
- 			ace_size = le16_to_cpu(ace->size);
- 			if (ace_size > aces_size ||
-@@ -1366,8 +1366,8 @@ int smb_check_perm_dacl(struct ksmbd_con
- 	ace = (struct smb_ace *)((char *)pdacl + sizeof(struct smb_acl));
- 	aces_size = acl_size - sizeof(struct smb_acl);
- 	for (i = 0; i < le16_to_cpu(pdacl->num_aces); i++) {
--		if (offsetof(struct smb_ace, sid) +
--		    aces_size < CIFS_SID_BASE_SIZE)
-+		if (aces_size < offsetof(struct smb_ace, sid) +
-+		    CIFS_SID_BASE_SIZE)
- 			break;
- 		ace_size = le16_to_cpu(ace->size);
- 		if (ace_size > aces_size ||
+--- a/drivers/tty/serial/zs.c
++++ b/drivers/tty/serial/zs.c
+@@ -105,18 +105,24 @@ struct zs_parms {
+ 
+ static struct zs_scc zs_sccs[ZS_NUM_SCCS];
+ 
++/*
++ * Set parameters in WR5, WR12, WR13 such as not to interfere
++ * with the initial PROM-based console.  Otherwise any output
++ * produced before the console handover would cause the system
++ * firmware to hang (TxENAB) or produce rubbish (Tx8, B9600).
++ */
+ static u8 zs_init_regs[ZS_NUM_REGS] __initdata = {
+ 	0,				/* write 0 */
+ 	PAR_SPEC,			/* write 1 */
+ 	0,				/* write 2 */
+ 	0,				/* write 3 */
+ 	X16CLK | SB1,			/* write 4 */
+-	0,				/* write 5 */
++	Tx8 | TxENAB,			/* write 5 */
+ 	0, 0, 0,			/* write 6, 7, 8 */
+ 	MIE | DLC | NV,			/* write 9 */
+ 	NRZ,				/* write 10 */
+ 	TCBR | RCBR,			/* write 11 */
+-	0, 0,				/* BRG time constant, write 12 + 13 */
++	0x16, 0x00,			/* BRG time constant, write 12 + 13 */
+ 	BRSRC | BRENABL,		/* write 14 */
+ 	0,				/* write 15 */
+ };
+@@ -955,23 +961,6 @@ static void zs_set_termios(struct uart_p
+ 	spin_unlock_irqrestore(&scc->zlock, flags);
+ }
+ 
+-/*
+- * Hack alert!
+- * Required solely so that the initial PROM-based console
+- * works undisturbed in parallel with this one.
+- */
+-static void zs_pm(struct uart_port *uport, unsigned int state,
+-		  unsigned int oldstate)
+-{
+-	struct zs_port *zport = to_zport(uport);
+-
+-	if (state < 3)
+-		zport->regs[5] |= TxENAB;
+-	else
+-		zport->regs[5] &= ~TxENAB;
+-	write_zsreg(zport, R5, zport->regs[5]);
+-}
+-
+ 
+ static const char *zs_type(struct uart_port *uport)
+ {
+@@ -1054,7 +1043,6 @@ static const struct uart_ops zs_ops = {
+ 	.startup	= zs_startup,
+ 	.shutdown	= zs_shutdown,
+ 	.set_termios	= zs_set_termios,
+-	.pm		= zs_pm,
+ 	.type		= zs_type,
+ 	.release_port	= zs_release_port,
+ 	.request_port	= zs_request_port,
+@@ -1209,7 +1197,6 @@ static int __init zs_console_setup(struc
+ 		return ret;
+ 
+ 	zs_reset(zport);
+-	zs_pm(uport, 0, -1);
+ 
+ 	if (options)
+ 		uart_parse_options(options, &baud, &parity, &bits, &flow);
 
 
 
