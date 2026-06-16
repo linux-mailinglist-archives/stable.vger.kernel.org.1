@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-264322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266385-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id QKXSDnx1MWpsjwUAu9opvQ
-	(envelope-from <stable+bounces-264322-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:10:36 +0200
+	id 8nj0OFucMWqsoAUAu9opvQ
+	(envelope-from <stable+bounces-266385-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:56:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0E18691C4C
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:10:35 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73B0F69496B
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:56:27 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ogF1pp1j;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264322-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264322-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=KGlvnYr9;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266385-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-266385-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 311B030F0CBE
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:55:07 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3663F306823A
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:55:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BD9C44CF4E;
-	Tue, 16 Jun 2026 15:55:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02412472798;
+	Tue, 16 Jun 2026 18:55:46 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1DE037C912;
-	Tue, 16 Jun 2026 15:55:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA49947D929;
+	Tue, 16 Jun 2026 18:55:44 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781625305; cv=none; b=lxAlkY11+/G3D0Gba7LeG5fBQNnGYd15p1OQBA29ftn6meo+2EXWswt5oi0zyaGDFMyA4TWzMnPAb9JsW3wkaLwxYSnD99kxeHKXr2cJ80dNpqSZg9UKpedIw4vTGTJ0ZtedNU2WuKtpFbt72SzPvNql5cLwbuwIRoTCyZq9qSQ=
+	t=1781636145; cv=none; b=ZatnOcSH3r4AjpFCL4TlyR+PSX+Oyxw6niBXd8Zky5LG3fVmFugccuQolgKvZvafC2uXiykt9C//yLsfdsxrqwTrfNS6epUA9jy+hJW1ZwZRLjgpL5hUMN8aAUNuqBF24wUWyKErn/958hbkIN0yKcqfZmXrqcsbeVUmjhzgFXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781625305; c=relaxed/simple;
-	bh=kAeOEBYvVXb62aVo3sQgJYLwdXHR7+0jdUXe30wPztc=;
+	s=arc-20240116; t=1781636145; c=relaxed/simple;
+	bh=XPRFjkaFulIe6nEVW6ZqIH6/bjW9FWYr4IPzt8iafeI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ELzm4gcgeM/w2UaAliQQ8Ez8eX+AAiKdVCQSkCuazOB2Nu3dhLIz1IHrk+TH+qUF6Y0sScibgy0RiSNQaGSzKoWdFMI0Ro9aGa4TNdQdfNvFdwmF3hx9o3QT0MpIzTM8DNna61DsTQGjVXW8UMlg+ouJTJtPgO7qGbtZSogQYqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ogF1pp1j; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5BF51F000E9;
-	Tue, 16 Jun 2026 15:55:03 +0000 (UTC)
+	 MIME-Version; b=X1KOQBB/1LnTqXRt45iyPYfdX2Sqcji5PdPw17siM0+aGDejw7AQYrkP+baSNMHvavGCDMFlrCi+KzlmmO8/1V5ORKTO4j7C/UFVnsC+llrmgWS4iKRptqrrk7AgiKJD1cuu2+x09mE6OYQumihYT6ZAOA4H2DVFzATdbRjhTD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KGlvnYr9; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D14911F000E9;
+	Tue, 16 Jun 2026 18:55:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781625304;
-	bh=SRkwHiEVfjLsjecPXfdDfytRuU7XH7WxddISMMoUitY=;
+	s=korg; t=1781636144;
+	bh=BQsjxERG2JtFgs+1YTfHrCvn1tR1NfcZOt8snWMTURQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ogF1pp1j+rmR3NO7ccwFu4J9EAf1BhOcZvYTw+j/iZAWd4WBqYqlWWtQZmlxel8ch
-	 EsoV/q1U88EBJX+fob8ERx2FJ2fwEn7FTBeVMmVCZVsmlCT97LudQ8v9K3z4lt6Xne
-	 buxlankPnkGvK6Zym3XGRhJLqeHDhg3pJJbyvu9c=
+	b=KGlvnYr94vNcbTP9ZIIF83fpc4NjGqRxecIAYj0s9Y8iNfmRsxd3fzgIP4o72CFcX
+	 ZtWGC5P7F+GM38KhAv7xoxhvadooaeMt3zGiPcE4E+J7rt4PWrXNAJS2X1BN5uo64g
+	 uhCKRoLg9PGMKSoz+dp+vt0+3KZVMAkETL3jU49k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nam Cao <namcao@linutronix.de>,
-	Gabriele Monaco <gmonaco@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 083/325] verification/rvgen: Fix options shared among commands
+	Adrian Korwel <adriank20047@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.10 183/342] USB: serial: io_ti: fix heap overflow in build_i2c_fw_hdr()
 Date: Tue, 16 Jun 2026 20:27:59 +0530
-Message-ID: <20260616145101.855256591@linuxfoundation.org>
+Message-ID: <20260616145056.715466548@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,101 +71,81 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264322-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-266385-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:adriank20047@gmail.com,m:johan@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:namcao@linutronix.de,m:gmonaco@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linutronix.de:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A0E18691C4C
+X-Rspamd-Queue-Id: 73B0F69496B
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabriele Monaco <gmonaco@redhat.com>
+From: Adrian Korwel <adriank20047@gmail.com>
 
-[ Upstream commit 5f845ad706c0b394ae274e9a930044f78bef782e ]
+commit 0fd2b00b2d3d05e3eaa13342b3dfb0fa85c226ae upstream.
 
-After rvgen was refactored to use subparsers, the common options (-a and
--D) were left in the main parser. This meant that they needed to be
-called /before/ the subcommand and using them without subcommand was
-allowed. This is not the original intent.
+build_i2c_fw_hdr() allocates a fixed-size buffer of
+(16*1024 - 512) + sizeof(struct ti_i2c_firmware_rec) bytes, then
+copies le16_to_cpu(img_header->Length) bytes into it without
+validating that Length fits within the available space after the
+firmware record header.
 
-  rvgen -D "some description" container -n name
+img_header->Length is a __le16 from the firmware file and can be
+up to 65535. check_fw_sanity() validates the total firmware size
+but not img_header->Length specifically.
 
-Define the options as parent in the subparsers to allow them to be used
-from both subcommands together with other options.
+Fix by rejecting images where img_header->Length exceeds the
+available destination space.
 
-  rvgen container -n name -D "some description"
-
-Fixes: 5270a0e3041c ("verification/dot2k: Replace is_container() hack with subparsers")
-Reviewed-by: Nam Cao <namcao@linutronix.de>
-Link: https://lore.kernel.org/r/20260514152055.229162-7-gmonaco@redhat.com
-Signed-off-by: Gabriele Monaco <gmonaco@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Adrian Korwel <adriank20047@gmail.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/verification/rvgen/__main__.py | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/usb/serial/io_ti.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/tools/verification/rvgen/__main__.py b/tools/verification/rvgen/__main__.py
-index fa6fc1f4de2f7e..5198bccccd107b 100644
---- a/tools/verification/rvgen/__main__.py
-+++ b/tools/verification/rvgen/__main__.py
-@@ -17,14 +17,16 @@ if __name__ == '__main__':
-     import sys
+--- a/drivers/usb/serial/io_ti.c
++++ b/drivers/usb/serial/io_ti.c
+@@ -847,6 +847,11 @@ static int build_i2c_fw_hdr(u8 *header,
+ 	/* Pointer to fw_down memory image */
+ 	img_header = (struct ti_i2c_image_header *)&fw->data[4];
  
-     parser = argparse.ArgumentParser(description='Generate kernel rv monitor')
--    parser.add_argument("-D", "--description", dest="description", required=False)
--    parser.add_argument("-a", "--auto_patch", dest="auto_patch",
-+
-+    parent_parser = argparse.ArgumentParser(add_help=False)
-+    parent_parser.add_argument("-D", "--description", dest="description", required=False)
-+    parent_parser.add_argument("-a", "--auto_patch", dest="auto_patch",
-                         action="store_true", required=False,
-                         help="Patch the kernel in place")
- 
-     subparsers = parser.add_subparsers(dest="subcmd", required=True)
- 
--    monitor_parser = subparsers.add_parser("monitor")
-+    monitor_parser = subparsers.add_parser("monitor", parents=[parent_parser])
-     monitor_parser.add_argument('-n', "--model_name", dest="model_name")
-     monitor_parser.add_argument("-p", "--parent", dest="parent",
-                                 required=False, help="Create a monitor nested to parent")
-@@ -34,7 +36,7 @@ if __name__ == '__main__':
-     monitor_parser.add_argument('-t', "--monitor_type", dest="monitor_type",
-                                 help=f"Available options: {', '.join(Monitor.monitor_types.keys())}")
- 
--    container_parser = subparsers.add_parser("container")
-+    container_parser = subparsers.add_parser("container", parents=[parent_parser])
-     container_parser.add_argument('-n', "--model_name", dest="model_name", required=True)
- 
-     params = parser.parse_args()
--- 
-2.53.0
-
++	if (le16_to_cpu(img_header->Length) >
++			buffer_size - sizeof(struct ti_i2c_firmware_rec)) {
++		kfree(buffer);
++		return -EINVAL;
++	}
+ 	memcpy(buffer + sizeof(struct ti_i2c_firmware_rec),
+ 		&fw->data[4 + sizeof(struct ti_i2c_image_header)],
+ 		le16_to_cpu(img_header->Length));
 
 
 
