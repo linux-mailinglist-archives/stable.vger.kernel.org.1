@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-264444-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265786-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id UNGGHLx3MWpakAUAu9opvQ
-	(envelope-from <stable+bounces-264444-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:20:12 +0200
+	id sp8UJB6QMWo1mwUAu9opvQ
+	(envelope-from <stable+bounces-265786-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:04:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBD51691F41
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:20:11 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3321693C5E
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:04:13 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ZB3SoWN3;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264444-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264444-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="QN/p3w1H";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265786-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265786-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CA262313263C
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:05:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 47C5D317B898
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:02:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F19C453498;
-	Tue, 16 Jun 2026 16:05:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E71C23CFF55;
+	Tue, 16 Jun 2026 18:02:55 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2F9044BCB8;
-	Tue, 16 Jun 2026 16:05:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B761B3C5842;
+	Tue, 16 Jun 2026 18:02:54 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781625914; cv=none; b=jukYE3k1iBaOTfmRad3TZbWnEUdIHZO95KuHrKN6m0kPHHyYAvo+3Vz0y0AF8ElxjiVrXBqplh7dNXTZk4ltRzRKiB9AVyQxxwvodJyf0N08OVTWxKiptRaf+L2pGfsU1yWZBe5fwrC9OtB3Ljt6DtchMpHvmFcdq0nJYSra2BE=
+	t=1781632975; cv=none; b=ml2DVF7o+W9TXxZ97fK6Vq55EMR740PVzXgG1AXHuTYtOZL92xLP5rC1StqOmDta265iPxQ3y/CHgvu2L7kVbnhArPpto49DLnTy8BUOkSOh5AbL0XtEaAZjIToQ/oDA1+oGkfJlnwq7q+GmtWy2RJ26oeZovFTy7gE1hKOvkPA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781625914; c=relaxed/simple;
-	bh=sbCduKEt5+PUKfClRJmeU4Pay5KsYKtT2iOkbctm0xc=;
+	s=arc-20240116; t=1781632975; c=relaxed/simple;
+	bh=IeZijJ6DWBgowb4caEOEV24Zo8WI9dRqbgWcZN5ZMjI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=usH01st4p5AVOFImyQ89yBG0/rxnlui08VDGJ/522Y9pnpHcPIkezM9rLXrc+/LJi+c2OKr0WiRemjtAlxU+3S+YTp0KPpUU4U0lndkMnFBe0kVDVge7kcN7fSUUk0N/G92RXc5ZWkq79z0QwNOsxUcy5oDElPBuyye9uj7Q4yM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZB3SoWN3; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EEAD1F000E9;
-	Tue, 16 Jun 2026 16:05:12 +0000 (UTC)
+	 MIME-Version; b=M9opUhlNA/Kfrk0HBI2TuLw5zbT0OJdie2DovXjXFZJMHuVemzJooOvq7zTYzCp6eA2yRxbfsmOUDsMxYfyTn1YiOEBincmal159LqNyhN7diwEZq6nt6QQu9ykwhiFkUHv1zQsMDOcr410mCGwII+rgRKE8Zcy6Pat/v9PEYts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QN/p3w1H; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 914B21F000E9;
+	Tue, 16 Jun 2026 18:02:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781625913;
-	bh=JwFo5yt8GLdFE44SJhxpWkBYYu/nMTzxo4HHEqUSmiU=;
+	s=korg; t=1781632974;
+	bh=2g7vtNLDLt9hIpwKlCyxa2miV/aNVxKGlA9BbIcgtJo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ZB3SoWN3ICWyPuD6rQUgejPxbTr+xyfpzyeasec3xITIxc7XM2wCYUsFsrB0VktMr
-	 6oHO5ZFmaigOgWxEh4QBQ3vUrrEaHZTwXQiGHvhP1LWJ3VReM1NgAvo6JXIPna6rb7
-	 5Rl/xDNLjg8TDv8KMy5k0o62m9fOA0qSrsL4U2MI=
+	b=QN/p3w1H0cKkgSUHBmNHAenNIoJcEsuRbqKIMTCnwEMrRGHMq8//nRYAP3B8olhxM
+	 8cPnrayXP660/BpqX2fE/DKAW1iD2qXXKQP9b15dOaL1rFZUtX91M0vslIh/xy8sXI
+	 EocsLiWJPyObp5fKaNs9k9MfECSNBiJPiZFkUzCY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Anandu Krishnan E <anandu.e@oss.qualcomm.com>,
-	Srinivas Kandagatla <srini@kernel.org>
-Subject: [PATCH 6.18 231/325] misc: fastrpc: fix use-after-free of fastrpc_user in workqueue context
+	Florian Westphal <fw@strlen.de>,
+	Davide Ornaghi <d.ornaghi97@gmail.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 480/522] netfilter: nft_fib: fix stale stack leak via the OIFNAME register
 Date: Tue, 16 Jun 2026 20:30:27 +0530
-Message-ID: <20260616145109.907808870@linuxfoundation.org>
+Message-ID: <20260616145148.278338988@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,246 +66,127 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,strlen.de,gmail.com,netfilter.org,kernel.org];
+	TAGGED_FROM(0.00)[bounces-265786-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:anandu.e@oss.qualcomm.com,m:srini@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:fw@strlen.de,m:d.ornaghi97@gmail.com,m:pablo@netfilter.org,m:sashal@kernel.org,m:dornaghi97@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-264444-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,qualcomm.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,strlen.de:email,netfilter.org:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: EBD51691F41
+X-Rspamd-Queue-Id: E3321693C5E
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anandu Krishnan E <anandu.e@oss.qualcomm.com>
+From: Davide Ornaghi <d.ornaghi97@gmail.com>
 
-commit e85eb5feca8e254905ffa6c57a3c99c89a674a0f upstream.
+[ Upstream commit ab185e0c4fb82dfba6fb86f8271e06f931d9c64c ]
 
-There is a race between fastrpc_device_release() and the workqueue
-that processes DSP responses. When the user closes the file descriptor,
-fastrpc_device_release() frees the fastrpc_user structure. Concurrently,
-an in-flight DSP invocation can complete and fastrpc_rpmsg_callback()
-schedules context cleanup via schedule_work(&ctx->put_work). If the
-workqueue runs fastrpc_context_free() in parallel with or after
-fastrpc_device_release() has freed the user structure, it dereferences
-the freed fastrpc_user. Depending on the state of the context at the
-time of the race, any one of the following accesses can be hit:
+For NFT_FIB_RESULT_OIFNAME the destination register is declared with
+len = IFNAMSIZ (four 32-bit registers), but on the lookup-fail,
+RTN_LOCAL and oif-mismatch paths nft_fib{4,6}_eval() only writes one
+register via "*dest = 0". The remaining three registers are left as
+whatever was on the stack in nft_do_chain()'s struct nft_regs, and a
+downstream expression that loads the register span can leak that
+uninitialised kernel stack to userspace.
 
- 1. fastrpc_buf_free() calls fastrpc_ipa_to_dma_addr(buf->fl->cctx, ...)
-    to strip the SID bits from the stored IOVA before passing the
-    physical address to dma_free_coherent().
+The NFTA_FIB_F_PRESENT existence check has the same shape: it is only
+meaningful for NFT_FIB_RESULT_OIF, yet it was accepted for any result type
+while the eval stores a single byte via nft_reg_store8(), leaving the rest
+of the declared span stale.
 
- 2. fastrpc_free_map() reads map->fl->cctx->vmperms[0].vmid to
-    reconstruct the source permission bitmask needed for the
-    qcom_scm_assign_mem() call that returns memory from the DSP VM
-    back to HLOS.
+Fix both:
 
- 3. fastrpc_free_map() acquires map->fl->lock to safely remove the
-    map node from the fl->maps list.
+ - replace the bare "*dest = 0" in the eval with nft_fib_store_result(),
+   which strscpy_pad()s the whole IFNAMSIZ for OIFNAME (and is already
+   used on the other early-return path), and
 
-The resulting use-after-free manifests as:
+ - restrict NFTA_FIB_F_PRESENT to NFT_FIB_RESULT_OIF and declare its
+   destination as a single u8, so the marked span matches the one byte
+   the eval writes.
 
-  pc : fastrpc_buf_free+0x38/0x80 [fastrpc]
-  lr : fastrpc_context_free+0xa8/0x1b0 [fastrpc]
-  fastrpc_context_free+0xa8/0x1b0 [fastrpc]
-  fastrpc_context_put_wq+0x78/0xa0 [fastrpc]
-  process_one_work+0x180/0x450
-  worker_thread+0x26c/0x388
-
-Add kref-based reference counting to fastrpc_user. Have each invoke
-context take a reference on the user at allocation time and release it
-when the context is freed. Release the initial reference in
-fastrpc_device_release() at file close. Move the teardown of the user
-structure — freeing pending contexts, maps, mmaps, and the channel
-context reference — into the kref release callback fastrpc_user_free(),
-so that it runs only when the last reference is dropped, regardless of
-whether that happens at device close or after the final in-flight
-context completes.
-
-Fixes: 6cffd79504ce ("misc: fastrpc: Add support for dmabuf exporter")
-Cc: stable@kernel.org
-Signed-off-by: Anandu Krishnan E <anandu.e@oss.qualcomm.com>
-Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
-Link: https://patch.msgid.link/20260530204528.116920-2-srini@kernel.org
+Fixes: f6d0cbcf09c5 ("netfilter: nf_tables: add fib expression")
+Suggested-by: Florian Westphal <fw@strlen.de>
+Cc: stable@vger.kernel.org
+Signed-off-by: Davide Ornaghi <d.ornaghi97@gmail.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+[ kept the tree's existing `ip6_route_lookup`/`rt6_info` machinery (missing `fib6_lookup` refactor) and changed only `*dest = 0;` to `nft_fib_store_result(dest, priv, NULL)` ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/fastrpc.c |   75 +++++++++++++++++++++++++++++++++----------------
- 1 file changed, 52 insertions(+), 23 deletions(-)
+ net/ipv4/netfilter/nft_fib_ipv4.c |    2 +-
+ net/ipv6/netfilter/nft_fib_ipv6.c |    2 +-
+ net/netfilter/nft_fib.c           |    6 ++++++
+ 3 files changed, 8 insertions(+), 2 deletions(-)
 
---- a/drivers/misc/fastrpc.c
-+++ b/drivers/misc/fastrpc.c
-@@ -303,6 +303,8 @@ struct fastrpc_user {
- 	spinlock_t lock;
- 	/* lock for allocations */
- 	struct mutex mutex;
-+	/* Reference count */
-+	struct kref refcount;
- };
+--- a/net/ipv4/netfilter/nft_fib_ipv4.c
++++ b/net/ipv4/netfilter/nft_fib_ipv4.c
+@@ -122,7 +122,7 @@ void nft_fib4_eval(const struct nft_expr
+ 		fl4.saddr = get_saddr(iph->daddr);
+ 	}
  
- static void fastrpc_free_map(struct kref *ref)
-@@ -471,15 +473,57 @@ static void fastrpc_channel_ctx_put(stru
- 	kref_put(&cctx->refcount, fastrpc_channel_ctx_free);
- }
+-	*dest = 0;
++	nft_fib_store_result(dest, priv, NULL);
  
-+static void fastrpc_context_put(struct fastrpc_invoke_ctx *ctx);
-+
-+static void fastrpc_user_free(struct kref *ref)
-+{
-+	struct fastrpc_user *fl = container_of(ref, struct fastrpc_user, refcount);
-+	struct fastrpc_invoke_ctx *ctx, *n;
-+	struct fastrpc_map *map, *m;
-+	struct fastrpc_buf *buf, *b;
-+
-+	if (fl->init_mem)
-+		fastrpc_buf_free(fl->init_mem);
-+
-+	list_for_each_entry_safe(ctx, n, &fl->pending, node) {
-+		list_del(&ctx->node);
-+		fastrpc_context_put(ctx);
+ 	if (fib_lookup(nft_net(pkt), &fl4, &res, FIB_LOOKUP_IGNORE_LINKSTATE))
+ 		return;
+--- a/net/ipv6/netfilter/nft_fib_ipv6.c
++++ b/net/ipv6/netfilter/nft_fib_ipv6.c
+@@ -193,7 +193,7 @@ void nft_fib6_eval(const struct nft_expr
+ 		}
+ 	}
+ 
+-	*dest = 0;
++	nft_fib_store_result(dest, priv, NULL);
+ 	rt = (void *)ip6_route_lookup(nft_net(pkt), &fl6, pkt->skb,
+ 				      lookup_flags);
+ 	if (rt->dst.error)
+--- a/net/netfilter/nft_fib.c
++++ b/net/netfilter/nft_fib.c
+@@ -107,6 +107,12 @@ int nft_fib_init(const struct nft_ctx *c
+ 		return -EINVAL;
+ 	}
+ 
++	if (priv->flags & NFTA_FIB_F_PRESENT) {
++		if (priv->result != NFT_FIB_RESULT_OIF)
++			return -EINVAL;
++		len = sizeof(u8);
 +	}
 +
-+	list_for_each_entry_safe(map, m, &fl->maps, node)
-+		fastrpc_map_put(map);
-+
-+	list_for_each_entry_safe(buf, b, &fl->mmaps, node) {
-+		list_del(&buf->node);
-+		fastrpc_buf_free(buf);
-+	}
-+
-+	fastrpc_channel_ctx_put(fl->cctx);
-+	mutex_destroy(&fl->mutex);
-+	kfree(fl);
-+}
-+
-+static void fastrpc_user_get(struct fastrpc_user *fl)
-+{
-+	kref_get(&fl->refcount);
-+}
-+
-+static void fastrpc_user_put(struct fastrpc_user *fl)
-+{
-+	kref_put(&fl->refcount, fastrpc_user_free);
-+}
-+
- static void fastrpc_context_free(struct kref *ref)
- {
- 	struct fastrpc_invoke_ctx *ctx;
- 	struct fastrpc_channel_ctx *cctx;
-+	struct fastrpc_user *fl;
- 	unsigned long flags;
- 	int i;
- 
- 	ctx = container_of(ref, struct fastrpc_invoke_ctx, refcount);
- 	cctx = ctx->cctx;
-+	fl = ctx->fl;
- 
- 	for (i = 0; i < ctx->nbufs; i++)
- 		fastrpc_map_put(ctx->maps[i]);
-@@ -495,6 +539,8 @@ static void fastrpc_context_free(struct
- 	kfree(ctx->olaps);
- 	kfree(ctx);
- 
-+	/* Release the reference taken in fastrpc_context_alloc() */
-+	fastrpc_user_put(fl);
- 	fastrpc_channel_ctx_put(cctx);
- }
- 
-@@ -604,6 +650,8 @@ static struct fastrpc_invoke_ctx *fastrp
- 
- 	/* Released in fastrpc_context_put() */
- 	fastrpc_channel_ctx_get(cctx);
-+	/* Take a reference to user, released in fastrpc_context_free() */
-+	fastrpc_user_get(user);
- 
- 	ctx->sc = sc;
- 	ctx->retval = -1;
-@@ -634,6 +682,7 @@ err_idr:
- 	spin_lock(&user->lock);
- 	list_del(&ctx->node);
- 	spin_unlock(&user->lock);
-+	fastrpc_user_put(user);
- 	fastrpc_channel_ctx_put(cctx);
- 	kfree(ctx->maps);
- 	kfree(ctx->olaps);
-@@ -1548,9 +1597,6 @@ static int fastrpc_device_release(struct
- {
- 	struct fastrpc_user *fl = (struct fastrpc_user *)file->private_data;
- 	struct fastrpc_channel_ctx *cctx = fl->cctx;
--	struct fastrpc_invoke_ctx *ctx, *n;
--	struct fastrpc_map *map, *m;
--	struct fastrpc_buf *buf, *b;
- 	unsigned long flags;
- 
- 	fastrpc_release_current_dsp_process(fl);
-@@ -1559,28 +1605,10 @@ static int fastrpc_device_release(struct
- 	list_del(&fl->user);
- 	spin_unlock_irqrestore(&cctx->lock, flags);
- 
--	if (fl->init_mem)
--		fastrpc_buf_free(fl->init_mem);
--
--	list_for_each_entry_safe(ctx, n, &fl->pending, node) {
--		list_del(&ctx->node);
--		fastrpc_context_put(ctx);
--	}
--
--	list_for_each_entry_safe(map, m, &fl->maps, node)
--		fastrpc_map_put(map);
--
--	list_for_each_entry_safe(buf, b, &fl->mmaps, node) {
--		list_del(&buf->node);
--		fastrpc_buf_free(buf);
--	}
--
- 	fastrpc_session_free(cctx, fl->sctx);
--	fastrpc_channel_ctx_put(cctx);
--
--	mutex_destroy(&fl->mutex);
--	kfree(fl);
- 	file->private_data = NULL;
-+	/* Release the reference taken in fastrpc_device_open */
-+	fastrpc_user_put(fl);
- 
- 	return 0;
- }
-@@ -1624,6 +1652,7 @@ static int fastrpc_device_open(struct in
- 	spin_lock_irqsave(&cctx->lock, flags);
- 	list_add_tail(&fl->user, &cctx->users);
- 	spin_unlock_irqrestore(&cctx->lock, flags);
-+	kref_init(&fl->refcount);
- 
- 	return 0;
- }
+ 	err = nft_parse_register_store(ctx, tb[NFTA_FIB_DREG], &priv->dreg,
+ 				       NULL, NFT_DATA_VALUE, len);
+ 	if (err < 0)
 
 
 
