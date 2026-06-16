@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-265867-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266252-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id IbfgFo2RMWrRmwUAu9opvQ
-	(envelope-from <stable+bounces-265867-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:10:21 +0200
+	id 8qe3JJKZMWqrnwUAu9opvQ
+	(envelope-from <stable+bounces-266252-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:44:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7DC4693DB9
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:10:20 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 101D76946A2
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:44:34 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=KwtQKLwb;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265867-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265867-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=CK+P9V2H;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266252-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-266252-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 521243032E77
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:10:20 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3E3D330A89CB
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:44:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F4353D45D0;
-	Tue, 16 Jun 2026 18:10:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB4AE478E5E;
+	Tue, 16 Jun 2026 18:44:11 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 515133CC324;
-	Tue, 16 Jun 2026 18:10:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81B1638C437;
+	Tue, 16 Jun 2026 18:44:10 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781633419; cv=none; b=q40hs8yLiZ/6CeP/E909T3AM7sOWX+Ihgk/2lxLEo4/tG6++z9xQiY31h67BN/+s1gOlWdR19NoJStvfB/lPrKDjfkp074mq9FYVjLSd2VUmlgKugeC5vryE+L/yGf3ScXviGnDzktbA8ihlS6ehb1uvtuDudOpRSNLRZFIwHVs=
+	t=1781635451; cv=none; b=hnfkV5wgD1gif6fm3jhWjOTGiJ5VaZ30XDbNPNuyBn/yuGr6/6KRqWBKBYdLjKbgrGyi6o24TAE3jvFwQ7jPX7E8kZtbtJLyq9Xsqitkh+GosAmhgTny1bHI2GXCwChCC+YKOP99MmWR/IsUIa4N16Mp2A7deZQYuTrH1zCOnK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781633419; c=relaxed/simple;
-	bh=8RATmtimUNz0U2uJjKEQ8WHDpOwxh9YXo6jN5KUc9Oc=;
+	s=arc-20240116; t=1781635451; c=relaxed/simple;
+	bh=Bdoq9BWkdVKFSJJeoU0mG0w8v0M02a7nb6F+b+Mg1U0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FWOnb52RjA+v/wDr425BXrlXOeDQhm7tNSxJoykqWkjC7/NVZUnjuxdx3NY0HBlLgF2N+Yin0+peCeduOAnmQRjiWVp7ZUS0pZydrDiW9Ko8lEe+cFRJoG4Of3W0enc+HAsrh7a7KIT+zAPGqPK9TNOsgYCsVBz5efy4OfMOYhM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KwtQKLwb; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59BCE1F000E9;
-	Tue, 16 Jun 2026 18:10:17 +0000 (UTC)
+	 MIME-Version; b=GSjaFgBodJyvr51jKLnX/h+WlHBU0+JLRl2it7v/JfTAsU55HgR7c7dIM/EfVuP8Ca3f6FM4rjXHr1G4BXNhi6N59IL9yX2tnSOdDML2z43o2zpnX1eLgtq9hgKPfJ2LIKBrSnrswoXKu6bHiSmA5CD1lqXeko2ROQvZ8D6f5aE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CK+P9V2H; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 835A31F000E9;
+	Tue, 16 Jun 2026 18:44:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781633418;
-	bh=XTnCm4eCP65i7xvp221Oq7+XadSVCfU1HcsTKrREIMI=;
+	s=korg; t=1781635450;
+	bh=2sPQAMDj4dl9eIlPSxukx0VUBh4e6q5+ymPjP6RdgbA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=KwtQKLwbQBx7xdl1mZibc2u2IqkJLRHmWxYhK2u++l4KTQ683FiMqTzuRzqYrx9Ma
-	 QIKhZC+AyCzcO8AUWwCHFxDnZGW9ZOSWFJ0ks+Z6Twqwr8XhTBEyhMGGeycGAJggms
-	 OcivhZqjS8W5qWr2W2uuCAVQHUxZyHmTfBiDY348=
+	b=CK+P9V2HQZG8DwpERycp4JLInBcwdsadYTYTO5cDaBvhaWBKHN/JPz6eqqbhmyQh+
+	 9+dprM+5bkOOvQth/OS98NG48cP4DjqJiWZGcHv0pKfBkVV1DLUINhpKzfVa+apalq
+	 ebj4LNY6rdv3QMLfETMSFeR4Zve78AVlyRnC0upc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Salah Triki <salah.triki@gmail.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <jic23@kernel.org>
-Subject: [PATCH 5.15 075/411] iio: temperature: tsys01: fix broken PROM checksum validation
-Date: Tue, 16 Jun 2026 20:25:13 +0530
-Message-ID: <20260616145104.259794318@linuxfoundation.org>
+	Stanislav Fomichev <sdf.kernel@gmail.com>,
+	Breno Leitao <leitao@debian.org>,
+	Alexandra Winter <wintera@linux.ibm.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 018/342] net/iucv: fix locking in .getsockopt
+Date: Tue, 16 Jun 2026 20:25:14 +0530
+Message-ID: <20260616145049.122137648@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,78 +74,124 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,debian.org,linux.ibm.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-266252-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265867-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:salah.triki@gmail.com,m:Stable@vger.kernel.org,m:jic23@kernel.org,m:salahtriki@gmail.com,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:sdf.kernel@gmail.com,m:leitao@debian.org,m:wintera@linux.ibm.com,m:kuba@kernel.org,m:sashal@kernel.org,m:sdfkernel@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,vger.kernel.org,kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D7DC4693DB9
+X-Rspamd-Queue-Id: 101D76946A2
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Salah Triki <salah.triki@gmail.com>
+From: Breno Leitao <leitao@debian.org>
 
-commit 4701e471c16866e7aa8f5e6a3a6b0d31e097e2c9 upstream.
+[ Upstream commit 3589d20a666caf30ad100c960a2de7de390fce88 ]
 
-The current implementation of tsys01_crc_valid() incorrectly sums the
-first word (n_prom[0]) repeatedly instead of iterating over the 8 words
-retrieved from the PROM. This leads to a checksum mismatch and probe
-failure on hardware.
+Mirror iucv_sock_setsockopt() and wrap the whole switch in
+lock_sock()/release_sock(). The pre-existing SO_MSGLIMIT-only lock
+becomes redundant and is removed.
 
-According to the TSYS01 datasheet, the PROM consists of 8 words. A valid
-check must iterate through all 8 words to verify the integrity of the
-calibration data. The current driver only checks the first word 8 times.
+Any AF_IUCV HIPER user can potentially crash the kernel by racing
+recvmsg() with getsockopt(SO_MSGSIZE): the SO_MSGSIZE arm dereferences
+iucv->hs_dev->mtu after iucv_sock_close() (called from the racing
+recvmsg()) has set hs_dev to NULL, producing a NULL pointer dereference
+oops.
 
-Note: This fix was identified during a code audit and is based on
-datasheet specifications. It has not been tested on real hardware.
-
-Fixes: 43e53407f680 ("Add tsys01 meas-spec driver support")
-Signed-off-by: Salah Triki <salah.triki@gmail.com>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <jic23@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: Stanislav Fomichev <sdf.kernel@gmail.com>
+Fixes: 51363b8751a6 ("af_iucv: allow retrieval of maximum message size")
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Alexandra Winter <wintera@linux.ibm.com>
+Tested-by: Alexandra Winter <wintera@linux.ibm.com>
+Link: https://patch.msgid.link/20260521-af_iucv_fix2-v1-1-f16b1c510aa9@debian.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/temperature/tsys01.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/iucv/af_iucv.c | 20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
---- a/drivers/iio/temperature/tsys01.c
-+++ b/drivers/iio/temperature/tsys01.c
-@@ -119,7 +119,7 @@ static bool tsys01_crc_valid(u16 *n_prom
- 	u8 sum = 0;
+diff --git a/net/iucv/af_iucv.c b/net/iucv/af_iucv.c
+index 3d0424e4ae6c9c..8c08f07ce46551 100644
+--- a/net/iucv/af_iucv.c
++++ b/net/iucv/af_iucv.c
+@@ -1550,7 +1550,7 @@ static int iucv_sock_getsockopt(struct socket *sock, int level, int optname,
+ 	struct sock *sk = sock->sk;
+ 	struct iucv_sock *iucv = iucv_sk(sk);
+ 	unsigned int val;
+-	int len;
++	int len, rc;
  
- 	for (cnt = 0; cnt < TSYS01_PROM_WORDS_NB; cnt++)
--		sum += ((n_prom[0] >> 8) + (n_prom[0] & 0xFF));
-+		sum += ((n_prom[cnt] >> 8) + (n_prom[cnt] & 0xFF));
+ 	if (level != SOL_IUCV)
+ 		return -ENOPROTOOPT;
+@@ -1563,26 +1563,34 @@ static int iucv_sock_getsockopt(struct socket *sock, int level, int optname,
  
- 	return (sum == 0);
- }
+ 	len = min_t(unsigned int, len, sizeof(int));
+ 
++	rc = 0;
++
++	lock_sock(sk);
+ 	switch (optname) {
+ 	case SO_IPRMDATA_MSG:
+ 		val = (iucv->flags & IUCV_IPRMDATA) ? 1 : 0;
+ 		break;
+ 	case SO_MSGLIMIT:
+-		lock_sock(sk);
+ 		val = (iucv->path != NULL) ? iucv->path->msglim	/* connected */
+ 					   : iucv->msglimit;	/* default */
+-		release_sock(sk);
+ 		break;
+ 	case SO_MSGSIZE:
+-		if (sk->sk_state == IUCV_OPEN)
+-			return -EBADFD;
++		if (sk->sk_state == IUCV_OPEN) {
++			rc = -EBADFD;
++			break;
++		}
+ 		val = (iucv->hs_dev) ? iucv->hs_dev->mtu -
+ 				sizeof(struct af_iucv_trans_hdr) - ETH_HLEN :
+ 				0x7fffffff;
+ 		break;
+ 	default:
+-		return -ENOPROTOOPT;
++		rc = -ENOPROTOOPT;
++		break;
+ 	}
++	release_sock(sk);
++
++	if (rc)
++		return rc;
+ 
+ 	if (put_user(len, optlen))
+ 		return -EFAULT;
+-- 
+2.53.0
+
 
 
 
