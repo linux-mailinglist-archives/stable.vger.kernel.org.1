@@ -1,63 +1,61 @@
-Return-Path: <stable+bounces-266078-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265680-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Yqd5HvOVMWrynQUAu9opvQ
-	(envelope-from <stable+bounces-266078-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:29:07 +0200
+	id qsCEALmNMWoimgUAu9opvQ
+	(envelope-from <stable+bounces-265680-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:54:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDFE56942B2
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:29:06 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6524F6939BC
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:54:00 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="z/WpLSQ+";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266078-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266078-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Zn6DAmiq;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265680-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265680-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A275F315812A
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:29:05 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D3355302A3AA
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:53:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 382ED477E33;
-	Tue, 16 Jun 2026 18:29:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7726D4779B9;
+	Tue, 16 Jun 2026 17:53:56 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D167E43CEC7;
-	Tue, 16 Jun 2026 18:29:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F8AE45BD78;
+	Tue, 16 Jun 2026 17:53:54 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781634545; cv=none; b=Wildgjmi8VIBmzDxls8ZnvblqnuOetLf6/5yMUktzE1iCQaTjMSyZNK910oNJasJGpuDZGkgAp/t2mbUcKLv/vX+93SdX/lwvFxzJJXMh32asBUzf2yW61q94jvpIB4UssRfPhLSoVwPpyiN7r/EDFs5YXQcYkOYPMkIUdsJ7zE=
+	t=1781632436; cv=none; b=JvNK6EuxY22d4MjnBQqrqeZvHyd8Xq1cuXoGs6W5ALArCy5L2RLyd+QLcVERuDXdE1+dGKumfwefTF7A/6jWtIy6qhgC3fiHm340y80ygqiHTFjNFsdFYhwZ8njBkr0zuewT0O/jIoG0pcP7QQJBAUEpNxRkr/A0zyWRALR2/Rk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781634545; c=relaxed/simple;
-	bh=sDzYeqI6wGXxfmac8HkJ941LTLWBUP+1a2ZNGKi9UUQ=;
+	s=arc-20240116; t=1781632436; c=relaxed/simple;
+	bh=a8E1YIky8+RbRbuSQUn7pCSDRRJ+PgIFtIm98CrKfMg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FgdP/H3gkMMjYtkqTExm7OvrmeiB+2eravUTERsa5BpCLvjnByo8o9ZoiIZp7rvwGFOXE1owsimreuiYaKaYoFwCqCnti3gQQhIrJGYjQMPeXaInXoyJ7jHyH3WVnblMjz9PAfJVN0Ox4ouumuGiQ5J/6+ziHvUvAlxoe/bHMrU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z/WpLSQ+; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A661C1F000E9;
-	Tue, 16 Jun 2026 18:29:02 +0000 (UTC)
+	 MIME-Version; b=hJmkQTromQqPhQlMb6lDEsp16R1bdlrdV7V0QaAyja/kpaMbe7XSJqgJRIub5GfOFM6V687LVxp/HHK7Wgu9PuKcsgivrQkVXSscSKfSUfM1jM78XuIrVTeJZFofO6PhTQCnyS5LIeuNhbVJRvHqsRO8ufEzfz8Q5UR0i8CSwBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zn6DAmiq; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B79741F000E9;
+	Tue, 16 Jun 2026 17:53:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781634543;
-	bh=vzVBhQbdHIPJWkwwg5DM/chiteG8MWi/Gczm69PD7RA=;
+	s=korg; t=1781632434;
+	bh=pXLrwakNIDo+Fe6w2JRE4ennN92xP4usmk0ZcDFo+xM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=z/WpLSQ+4slWAyZjy8OqCufiSoA27OhgDEsG8e4TrOVQPWUnNMxJ3klmz4yR2/qa2
-	 NpzjuiNFGGCi3eFR+KZa9f7wnes8lkjwgk90s7pF3O5IQ47PDeheZD4PEw3kkpIYR9
-	 V//ABNe/FkP/Ic51HIoD4fpYNLXNUIZeeLLBOz3o=
+	b=Zn6DAmiqUQ1wn+MciZhnVXtOo5335Zz1DTj+l9OGXOZW6aA1BbVqnnYIefMelyUHQ
+	 ESyNr9uqg1tANHwWpbbBKPsf7U0o7+UzIDFUnClYX9BkvXPLTb9a+8Zm+j68b/U82p
+	 WMtbNH2aec7IfFF6m+edOP7aj8kmWWxlVkbvUDW0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+d80abb5b890d39261e72@syzkaller.appspotmail.com,
-	Viacheslav Dubeyko <slava@dubeyko.com>,
-	Charalampos Mitrodimas <charmitro@posteo.net>,
-	Deepanshu Kartikey <kartikey406@gmail.com>,
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 285/411] hfsplus: fix uninit-value by validating catalog record size
-Date: Tue, 16 Jun 2026 20:28:43 +0530
-Message-ID: <20260616145116.308476551@linuxfoundation.org>
+Subject: [PATCH 6.1 377/522] xfrm: ah: account for ESN high bits in async callbacks
+Date: Tue, 16 Jun 2026 20:28:44 +0530
+Message-ID: <20260616145143.419502531@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,223 +72,166 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,dubeyko.com,posteo.net,gmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-266078-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:syzbot+d80abb5b890d39261e72@syzkaller.appspotmail.com,m:slava@dubeyko.com,m:charmitro@posteo.net,m:kartikey406@gmail.com,m:sashal@kernel.org,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265680-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:steffen.klassert@secunet.com,m:sashal@kernel.org,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,secunet.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,d80abb5b890d39261e72];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,posteo.net:email,syzkaller.appspot.com:url,appspotmail.com:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,secunet.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: CDFE56942B2
+X-Rspamd-Queue-Id: 6524F6939BC
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Deepanshu Kartikey <kartikey406@gmail.com>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-[ Upstream commit b6b592275aeff184aa82fcf6abccd833fb71b393 ]
+[ Upstream commit ec54093e6a8f87e800bb6aa15eb7fc1e33faa524 ]
 
-Syzbot reported a KMSAN uninit-value issue in hfsplus_strcasecmp(). The
-root cause is that hfs_brec_read() doesn't validate that the on-disk
-record size matches the expected size for the record type being read.
+AH allocates its temporary auth/ICV layout differently when ESN is enabled:
+the async ahash setup appends a 4-byte seqhi slot before the ICV or
+auth_data area, but the async completion callbacks still reconstruct the
+temporary layout as if seqhi were absent.
 
-When mounting a corrupted filesystem, hfs_brec_read() may read less data
-than expected. For example, when reading a catalog thread record, the
-debug output showed:
+With an async AH implementation selected, that makes AH copy or compare
+the wrong bytes on both the IPv4 and IPv6 paths. In UML repro on IPv4 AH
+with ESN and forced async hmac(sha1), ping fails with 100% packet loss,
+and the callback logs show the pre-fix drift:
 
-  HFSPLUS_BREC_READ: rec_len=520, fd->entrylength=26
-  HFSPLUS_BREC_READ: WARNING - entrylength (26) < rec_len (520) - PARTIAL READ!
+  ah4 output_done: esn=1 err=0 icv_off=20 expected_off=24
+  ah4 input_done: esn=1 auth_off=20 expected_auth_off=24 icv_off=32 expected_icv_off=36
 
-hfs_brec_read() only validates that entrylength is not greater than the
-buffer size, but doesn't check if it's less than expected. It successfully
-reads 26 bytes into a 520-byte structure and returns success, leaving 494
-bytes uninitialized.
+Reconstruct the callback-side layout the same way the setup path built it
+by skipping the ESN seqhi slot before locating the saved auth_data or ICV.
+Per RFC 4302, the ESN high-order 32 bits participate in the AH ICV
+computation, so the async callbacks must account for the seqhi slot.
 
-This uninitialized data in tmp.thread.nodeName then gets copied by
-hfsplus_cat_build_key_uni() and used by hfsplus_strcasecmp(), triggering
-the KMSAN warning when the uninitialized bytes are used as array indices
-in case_fold().
+Post-fix, the same IPv4 AH+ESN+forced-async-hmac(sha1) UML repro shows
+the corrected offset (ah4 output_done: esn=1 err=0 icv_off=24
+expected_off=24) and ping succeeds; net/ipv4/ah4.o and net/ipv6/ah6.o
+build clean at W=1. IPv6 AH+ESN was not exercised at runtime, and the
+change has not been tested against a real async hardware AH engine.
 
-Fix by introducing hfsplus_brec_read_cat() wrapper that:
-1. Calls hfs_brec_read() to read the data
-2. Validates the record size based on the type field:
-   - Fixed size for folder and file records
-   - Variable size for thread records (depends on string length)
-3. Returns -EIO if size doesn't match expected
-
-For thread records, check against HFSPLUS_MIN_THREAD_SZ before reading
-nodeName.length to avoid reading uninitialized data at call sites that
-don't zero-initialize the entry structure.
-
-Also initialize the tmp variable in hfsplus_find_cat() as defensive
-programming to ensure no uninitialized data even if validation is
-bypassed.
-
-Reported-by: syzbot+d80abb5b890d39261e72@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=d80abb5b890d39261e72
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Tested-by: syzbot+d80abb5b890d39261e72@syzkaller.appspotmail.com
-Reviewed-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Tested-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Suggested-by: Charalampos Mitrodimas <charmitro@posteo.net>
-Link: https://lore.kernel.org/all/20260120051114.1281285-1-kartikey406@gmail.com/ [v1]
-Link: https://lore.kernel.org/all/20260121063109.1830263-1-kartikey406@gmail.com/ [v2]
-Link: https://lore.kernel.org/all/20260212014233.2422046-1-kartikey406@gmail.com/ [v3]
-Link: https://lore.kernel.org/all/20260214002100.436125-1-kartikey406@gmail.com/T/ [v4]
-Link: https://lore.kernel.org/all/20260221061626.15853-1-kartikey406@gmail.com/T/ [v5]
-Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Link: https://lore.kernel.org/r/20260307010302.41547-1-kartikey406@gmail.com
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Stable-dep-of: 90c500e4fd83 ("hfsplus: fix held lock freed on hfsplus_fill_super()")
+Fixes: d4d573d0334d ("{IPv4,xfrm} Add ESN support for AH egress part")
+Fixes: d8b2a8600b0e ("{IPv4,xfrm} Add ESN support for AH ingress part")
+Fixes: 26dd70c3fad3 ("{IPv6,xfrm} Add ESN support for AH egress part")
+Fixes: 8d6da6f32557 ("{IPv6,xfrm} Add ESN support for AH ingress part")
+Cc: stable@vger.kernel.org
+Assisted-by: Codex:gpt-5-4
+Assisted-by: Claude:claude-opus-4-7
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/hfsplus/bfind.c      |   51 ++++++++++++++++++++++++++++++++++++++++++++++++
- fs/hfsplus/catalog.c    |    4 +--
- fs/hfsplus/dir.c        |    2 -
- fs/hfsplus/hfsplus_fs.h |    9 ++++++++
- fs/hfsplus/super.c      |    2 -
- 5 files changed, 64 insertions(+), 4 deletions(-)
+ net/ipv4/ah4.c |   14 ++++++++++++--
+ net/ipv6/ah6.c |   14 ++++++++++++--
+ 2 files changed, 24 insertions(+), 4 deletions(-)
 
---- a/fs/hfsplus/bfind.c
-+++ b/fs/hfsplus/bfind.c
-@@ -287,3 +287,54 @@ out:
- 	fd->bnode = bnode;
- 	return res;
- }
-+
-+/**
-+ * hfsplus_brec_read_cat - read and validate a catalog record
-+ * @fd: find data structure
-+ * @entry: pointer to catalog entry to read into
-+ *
-+ * Reads a catalog record and validates its size matches the expected
-+ * size based on the record type.
-+ *
-+ * Returns 0 on success, or negative error code on failure.
-+ */
-+int hfsplus_brec_read_cat(struct hfs_find_data *fd, hfsplus_cat_entry *entry)
-+{
-+	int res;
-+	u32 expected_size;
-+
-+	res = hfs_brec_read(fd, entry, sizeof(hfsplus_cat_entry));
-+	if (res)
-+		return res;
-+
-+	/* Validate catalog record size based on type */
-+	switch (be16_to_cpu(entry->type)) {
-+	case HFSPLUS_FOLDER:
-+		expected_size = sizeof(struct hfsplus_cat_folder);
-+		break;
-+	case HFSPLUS_FILE:
-+		expected_size = sizeof(struct hfsplus_cat_file);
-+		break;
-+	case HFSPLUS_FOLDER_THREAD:
-+	case HFSPLUS_FILE_THREAD:
-+		/* Ensure we have at least the fixed fields before reading nodeName.length */
-+		if (fd->entrylength < HFSPLUS_MIN_THREAD_SZ) {
-+			pr_err("thread record too short (got %u)\n", fd->entrylength);
-+			return -EIO;
-+		}
-+		expected_size = hfsplus_cat_thread_size(&entry->thread);
-+		break;
-+	default:
-+		pr_err("unknown catalog record type %d\n",
-+		       be16_to_cpu(entry->type));
-+		return -EIO;
-+	}
-+
-+	if (fd->entrylength != expected_size) {
-+		pr_err("catalog record size mismatch (type %d, got %u, expected %u)\n",
-+		       be16_to_cpu(entry->type), fd->entrylength, expected_size);
-+		return -EIO;
-+	}
-+
-+	return 0;
-+}
---- a/fs/hfsplus/catalog.c
-+++ b/fs/hfsplus/catalog.c
-@@ -194,12 +194,12 @@ static int hfsplus_fill_cat_thread(struc
- int hfsplus_find_cat(struct super_block *sb, u32 cnid,
- 		     struct hfs_find_data *fd)
- {
--	hfsplus_cat_entry tmp;
-+	hfsplus_cat_entry tmp = {0};
- 	int err;
- 	u16 type;
+--- a/net/ipv4/ah4.c
++++ b/net/ipv4/ah4.c
+@@ -124,9 +124,14 @@ static void ah_output_done(struct crypto
+ 	struct iphdr *top_iph = ip_hdr(skb);
+ 	struct ip_auth_hdr *ah = ip_auth_hdr(skb);
+ 	int ihl = ip_hdrlen(skb);
++	int seqhi_len = 0;
++	__be32 *seqhi;
  
- 	hfsplus_cat_build_key_with_cnid(sb, fd->search_key, cnid);
--	err = hfs_brec_read(fd, &tmp, sizeof(hfsplus_cat_entry));
-+	err = hfsplus_brec_read_cat(fd, &tmp);
++	if (x->props.flags & XFRM_STATE_ESN)
++		seqhi_len = sizeof(*seqhi);
+ 	iph = AH_SKB_CB(skb)->tmp;
+-	icv = ah_tmp_icv(iph, ihl);
++	seqhi = (__be32 *)((char *)iph + ihl);
++	icv = ah_tmp_icv(seqhi, seqhi_len);
+ 	memcpy(ah->auth_data, icv, ahp->icv_trunc_len);
+ 
+ 	top_iph->tos = iph->tos;
+@@ -270,12 +275,17 @@ static void ah_input_done(struct crypto_
+ 	struct ip_auth_hdr *ah = ip_auth_hdr(skb);
+ 	int ihl = ip_hdrlen(skb);
+ 	int ah_hlen = (ah->hdrlen + 2) << 2;
++	int seqhi_len = 0;
++	__be32 *seqhi;
+ 
  	if (err)
- 		return err;
+ 		goto out;
  
---- a/fs/hfsplus/dir.c
-+++ b/fs/hfsplus/dir.c
-@@ -49,7 +49,7 @@ static struct dentry *hfsplus_lookup(str
- 	if (unlikely(err < 0))
- 		goto fail;
- again:
--	err = hfs_brec_read(&fd, &entry, sizeof(entry));
-+	err = hfsplus_brec_read_cat(&fd, &entry);
- 	if (err) {
- 		if (err == -ENOENT) {
- 			hfs_find_exit(&fd);
---- a/fs/hfsplus/hfsplus_fs.h
-+++ b/fs/hfsplus/hfsplus_fs.h
-@@ -533,6 +533,15 @@ int hfsplus_submit_bio(struct super_bloc
- 		       void **data, int op, int op_flags);
- int hfsplus_read_wrapper(struct super_block *sb);
++	if (x->props.flags & XFRM_STATE_ESN)
++		seqhi_len = sizeof(*seqhi);
+ 	work_iph = AH_SKB_CB(skb)->tmp;
+-	auth_data = ah_tmp_auth(work_iph, ihl);
++	seqhi = (__be32 *)((char *)work_iph + ihl);
++	auth_data = ah_tmp_auth(seqhi, seqhi_len);
+ 	icv = ah_tmp_icv(auth_data, ahp->icv_trunc_len);
  
-+static inline u32 hfsplus_cat_thread_size(const struct hfsplus_cat_thread *thread)
-+{
-+	return offsetof(struct hfsplus_cat_thread, nodeName) +
-+	       offsetof(struct hfsplus_unistr, unicode) +
-+	       be16_to_cpu(thread->nodeName.length) * sizeof(hfsplus_unichr);
-+}
-+
-+int hfsplus_brec_read_cat(struct hfs_find_data *fd, hfsplus_cat_entry *entry);
-+
- /*
-  * time helpers: convert between 1904-base and 1970-base timestamps
-  *
---- a/fs/hfsplus/super.c
-+++ b/fs/hfsplus/super.c
-@@ -541,7 +541,7 @@ static int hfsplus_fill_super(struct sup
- 	err = hfsplus_cat_build_key(sb, fd.search_key, HFSPLUS_ROOT_CNID, &str);
- 	if (unlikely(err < 0))
- 		goto out_put_root;
--	if (!hfs_brec_read(&fd, &entry, sizeof(entry))) {
-+	if (!hfsplus_brec_read_cat(&fd, &entry)) {
- 		hfs_find_exit(&fd);
- 		if (entry.type != cpu_to_be16(HFSPLUS_FOLDER)) {
- 			err = -EIO;
+ 	err = crypto_memneq(icv, auth_data, ahp->icv_trunc_len) ? -EBADMSG : 0;
+--- a/net/ipv6/ah6.c
++++ b/net/ipv6/ah6.c
+@@ -317,14 +317,19 @@ static void ah6_output_done(struct crypt
+ 	struct ipv6hdr *top_iph = ipv6_hdr(skb);
+ 	struct ip_auth_hdr *ah = ip_auth_hdr(skb);
+ 	struct tmp_ext *iph_ext;
++	int seqhi_len = 0;
++	__be32 *seqhi;
+ 
+ 	extlen = skb_network_header_len(skb) - sizeof(struct ipv6hdr);
+ 	if (extlen)
+ 		extlen += sizeof(*iph_ext);
+ 
++	if (x->props.flags & XFRM_STATE_ESN)
++		seqhi_len = sizeof(*seqhi);
+ 	iph_base = AH_SKB_CB(skb)->tmp;
+ 	iph_ext = ah_tmp_ext(iph_base);
+-	icv = ah_tmp_icv(iph_ext, extlen);
++	seqhi = (__be32 *)((char *)iph_ext + extlen);
++	icv = ah_tmp_icv(seqhi, seqhi_len);
+ 
+ 	memcpy(ah->auth_data, icv, ahp->icv_trunc_len);
+ 	memcpy(top_iph, iph_base, IPV6HDR_BASELEN);
+@@ -471,13 +476,18 @@ static void ah6_input_done(struct crypto
+ 	struct ip_auth_hdr *ah = ip_auth_hdr(skb);
+ 	int hdr_len = skb_network_header_len(skb);
+ 	int ah_hlen = ipv6_authlen(ah);
++	int seqhi_len = 0;
++	__be32 *seqhi;
+ 
+ 	if (err)
+ 		goto out;
+ 
++	if (x->props.flags & XFRM_STATE_ESN)
++		seqhi_len = sizeof(*seqhi);
+ 	work_iph = AH_SKB_CB(skb)->tmp;
+ 	auth_data = ah_tmp_auth(work_iph, hdr_len);
+-	icv = ah_tmp_icv(auth_data, ahp->icv_trunc_len);
++	seqhi = (__be32 *)(auth_data + ahp->icv_trunc_len);
++	icv = ah_tmp_icv(seqhi, seqhi_len);
+ 
+ 	err = crypto_memneq(icv, auth_data, ahp->icv_trunc_len) ? -EBADMSG : 0;
+ 	if (err)
 
 
 
