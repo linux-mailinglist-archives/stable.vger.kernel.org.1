@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-265629-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266412-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Sa4/KquMMWp4mQUAu9opvQ
-	(envelope-from <stable+bounces-265629-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:49:31 +0200
+	id jdNFCC2eMWqXoQUAu9opvQ
+	(envelope-from <stable+bounces-266412-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:04:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E40E69383D
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:49:31 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A13D7694B66
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:04:12 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=NF7DEywv;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265629-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265629-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=dFOlxK5Q;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266412-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266412-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2651D306C98C
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:49:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9ED14325F436
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:58:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8A553D669A;
-	Tue, 16 Jun 2026 17:49:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D75273EB0F5;
+	Tue, 16 Jun 2026 18:58:09 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68C88169AD2;
-	Tue, 16 Jun 2026 17:49:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1C943CEBBD;
+	Tue, 16 Jun 2026 18:58:08 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781632167; cv=none; b=vGHewqDAPG6LyPTwuMSLXhd+PV+x0HN6p0AThgx2Um2oqBL/ZAoZYBOwaA50akHCcB/Ybn/7rlWwuRka2eQdX3H1Tzf+Ovt2bRX0EzuPMtTkecw0inLHgMz/INUoiddBrcNIqPxG7K6GStdnpTWvBCjqu/x0D5jjos5hDZFw4Oo=
+	t=1781636289; cv=none; b=rXnAntN954ISWkV4jyjqvkytp/I0YZyGlXfUX+Ylz8PnzH5nRXiXIgbSfSJlr7m7jQmFrG3t7aJNH7oBYtG5M+iIfQErA7XCM0v6n7lpTiqXv6ClKSwtCUhdR0pS13bQGA7R9ClNIwDGcReLMxF7WTM1nVmQ8yOy9x+V4rP9PlI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781632167; c=relaxed/simple;
-	bh=+Ti3V6iMTg6WiMsAcH8GTqZD7rBw5B0XxBj7tXMvGts=;
+	s=arc-20240116; t=1781636289; c=relaxed/simple;
+	bh=qHIyqINDzfjL3S5ey6477VHaVNB3UNg+9XWrZdjahf8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Oj9/RIUZPNOlTDOamiCqHHBN166Vg4fWdT/oTs77Ot5nOGv2Mv6n2od/iBn1KOiJcHNgxAOMhV9y4mjPqERNuVxgzsol0Yr8l2KTLoLqcJyPU/1rLbZHISMQAfsabvf4bqMq1xDV1IiTe4iMpq6eQPgIRnglL9fSFu2GMAogwbQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NF7DEywv; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E8E11F000E9;
-	Tue, 16 Jun 2026 17:49:24 +0000 (UTC)
+	 MIME-Version; b=QuYI8CD1/Br/cSSQa9Rjl1HTb0yvG+3V88Zo4lPeM2isvXZyVetSYnbeG8UBh3owLUu5s/3hqrSqk/4EJYmH/CtKH1gSarq497AWtrOcbqANUFZ+AqfggGpcmnS59QiJ/CtR91vPaSw7o61qDrybSwMJRfxzOn6wqeuKejFFovI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dFOlxK5Q; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B50BC1F000E9;
+	Tue, 16 Jun 2026 18:58:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781632166;
-	bh=/5dVrAT7uhjJwp/3ziRkQhobDp9+5nETBa4W5ShB3sY=;
+	s=korg; t=1781636288;
+	bh=H3JAv/3ckKYmTjrsahzGe1vhsKrWIi1qnxVEdiky6N0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=NF7DEywvl4RU1s1WftfRN9cdC0voTANZTbW3weysKIZxl0KDXhzvJbsexlVcbARmt
-	 JiSxDLtsIchR1DxbZefPGbednEmVX2giemj5m+DPkjSGF9BTwix2/i5lkVX0NSVnjZ
-	 1AmPHjJwb+nZO8jZvefu9ICyTfy8Og1ndAfUTZXo=
+	b=dFOlxK5Qa0bR0J6R3HWlHdq4DK7ZcF19CyCaV+7nD56I8I3f+yPYu1R8DByePE416
+	 LWI/mq5E64U+OsAbs1NRl8fLpeVGPI6rBO7Pm16vdEUsJQ572owIA5s7jepqun7ol1
+	 FEEf/S7KPiXEbjw4Rg+TrzKzznRo3+yaR8DToiLI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+d80abb5b890d39261e72@syzkaller.appspotmail.com,
-	Viacheslav Dubeyko <slava@dubeyko.com>,
-	Charalampos Mitrodimas <charmitro@posteo.net>,
-	Deepanshu Kartikey <kartikey406@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 359/522] hfsplus: fix uninit-value by validating catalog record size
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: [PATCH 5.10 210/342] thunderbolt: Limit XDomain response copy to actual frame size
 Date: Tue, 16 Jun 2026 20:28:26 +0530
-Message-ID: <20260616145142.588558724@linuxfoundation.org>
+Message-ID: <20260616145057.957511207@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,223 +71,77 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,dubeyko.com,posteo.net,gmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-265629-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:syzbot+d80abb5b890d39261e72@syzkaller.appspotmail.com,m:slava@dubeyko.com,m:charmitro@posteo.net,m:kartikey406@gmail.com,m:sashal@kernel.org,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-266412-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:mika.westerberg@linux.intel.com,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.intel.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,d80abb5b890d39261e72];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,syzkaller.appspot.com:url,posteo.net:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,intel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 1E40E69383D
+X-Rspamd-Queue-Id: A13D7694B66
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Deepanshu Kartikey <kartikey406@gmail.com>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-[ Upstream commit b6b592275aeff184aa82fcf6abccd833fb71b393 ]
+commit 4db2bd2ed4785dbadaeeab9f4e346b21ac5fb8eb upstream.
 
-Syzbot reported a KMSAN uninit-value issue in hfsplus_strcasecmp(). The
-root cause is that hfs_brec_read() doesn't validate that the on-disk
-record size matches the expected size for the record type being read.
+tb_xdomain_copy() copies req->response_size bytes from the received
+packet buffer regardless of the actual frame size.  When a short
+response arrives, this reads past the valid frame data in the DMA
+pool buffer into stale contents from previous transactions.
 
-When mounting a corrupted filesystem, hfs_brec_read() may read less data
-than expected. For example, when reading a catalog thread record, the
-debug output showed:
+Use the minimum of frame size and expected response size for the
+copy length.
 
-  HFSPLUS_BREC_READ: rec_len=520, fd->entrylength=26
-  HFSPLUS_BREC_READ: WARNING - entrylength (26) < rec_len (520) - PARTIAL READ!
-
-hfs_brec_read() only validates that entrylength is not greater than the
-buffer size, but doesn't check if it's less than expected. It successfully
-reads 26 bytes into a 520-byte structure and returns success, leaving 494
-bytes uninitialized.
-
-This uninitialized data in tmp.thread.nodeName then gets copied by
-hfsplus_cat_build_key_uni() and used by hfsplus_strcasecmp(), triggering
-the KMSAN warning when the uninitialized bytes are used as array indices
-in case_fold().
-
-Fix by introducing hfsplus_brec_read_cat() wrapper that:
-1. Calls hfs_brec_read() to read the data
-2. Validates the record size based on the type field:
-   - Fixed size for folder and file records
-   - Variable size for thread records (depends on string length)
-3. Returns -EIO if size doesn't match expected
-
-For thread records, check against HFSPLUS_MIN_THREAD_SZ before reading
-nodeName.length to avoid reading uninitialized data at call sites that
-don't zero-initialize the entry structure.
-
-Also initialize the tmp variable in hfsplus_find_cat() as defensive
-programming to ensure no uninitialized data even if validation is
-bypassed.
-
-Reported-by: syzbot+d80abb5b890d39261e72@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=d80abb5b890d39261e72
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Tested-by: syzbot+d80abb5b890d39261e72@syzkaller.appspotmail.com
-Reviewed-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Tested-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Suggested-by: Charalampos Mitrodimas <charmitro@posteo.net>
-Link: https://lore.kernel.org/all/20260120051114.1281285-1-kartikey406@gmail.com/ [v1]
-Link: https://lore.kernel.org/all/20260121063109.1830263-1-kartikey406@gmail.com/ [v2]
-Link: https://lore.kernel.org/all/20260212014233.2422046-1-kartikey406@gmail.com/ [v3]
-Link: https://lore.kernel.org/all/20260214002100.436125-1-kartikey406@gmail.com/T/ [v4]
-Link: https://lore.kernel.org/all/20260221061626.15853-1-kartikey406@gmail.com/T/ [v5]
-Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Link: https://lore.kernel.org/r/20260307010302.41547-1-kartikey406@gmail.com
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Stable-dep-of: 90c500e4fd83 ("hfsplus: fix held lock freed on hfsplus_fill_super()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: cdae7c07e3e3 ("thunderbolt: Add support for XDomain properties")
+Cc: stable@vger.kernel.org
+Assisted-by: Claude:claude-opus-4-7
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/hfsplus/bfind.c      |   51 ++++++++++++++++++++++++++++++++++++++++++++++++
- fs/hfsplus/catalog.c    |    4 +--
- fs/hfsplus/dir.c        |    2 -
- fs/hfsplus/hfsplus_fs.h |    9 ++++++++
- fs/hfsplus/super.c      |    2 -
- 5 files changed, 64 insertions(+), 4 deletions(-)
+ drivers/thunderbolt/xdomain.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/fs/hfsplus/bfind.c
-+++ b/fs/hfsplus/bfind.c
-@@ -287,3 +287,54 @@ out:
- 	fd->bnode = bnode;
- 	return res;
- }
-+
-+/**
-+ * hfsplus_brec_read_cat - read and validate a catalog record
-+ * @fd: find data structure
-+ * @entry: pointer to catalog entry to read into
-+ *
-+ * Reads a catalog record and validates its size matches the expected
-+ * size based on the record type.
-+ *
-+ * Returns 0 on success, or negative error code on failure.
-+ */
-+int hfsplus_brec_read_cat(struct hfs_find_data *fd, hfsplus_cat_entry *entry)
-+{
-+	int res;
-+	u32 expected_size;
-+
-+	res = hfs_brec_read(fd, entry, sizeof(hfsplus_cat_entry));
-+	if (res)
-+		return res;
-+
-+	/* Validate catalog record size based on type */
-+	switch (be16_to_cpu(entry->type)) {
-+	case HFSPLUS_FOLDER:
-+		expected_size = sizeof(struct hfsplus_cat_folder);
-+		break;
-+	case HFSPLUS_FILE:
-+		expected_size = sizeof(struct hfsplus_cat_file);
-+		break;
-+	case HFSPLUS_FOLDER_THREAD:
-+	case HFSPLUS_FILE_THREAD:
-+		/* Ensure we have at least the fixed fields before reading nodeName.length */
-+		if (fd->entrylength < HFSPLUS_MIN_THREAD_SZ) {
-+			pr_err("thread record too short (got %u)\n", fd->entrylength);
-+			return -EIO;
-+		}
-+		expected_size = hfsplus_cat_thread_size(&entry->thread);
-+		break;
-+	default:
-+		pr_err("unknown catalog record type %d\n",
-+		       be16_to_cpu(entry->type));
-+		return -EIO;
-+	}
-+
-+	if (fd->entrylength != expected_size) {
-+		pr_err("catalog record size mismatch (type %d, got %u, expected %u)\n",
-+		       be16_to_cpu(entry->type), fd->entrylength, expected_size);
-+		return -EIO;
-+	}
-+
-+	return 0;
-+}
---- a/fs/hfsplus/catalog.c
-+++ b/fs/hfsplus/catalog.c
-@@ -194,12 +194,12 @@ static int hfsplus_fill_cat_thread(struc
- int hfsplus_find_cat(struct super_block *sb, u32 cnid,
- 		     struct hfs_find_data *fd)
+--- a/drivers/thunderbolt/xdomain.c
++++ b/drivers/thunderbolt/xdomain.c
+@@ -81,7 +81,9 @@ static bool tb_xdomain_match(const struc
+ static bool tb_xdomain_copy(struct tb_cfg_request *req,
+ 			    const struct ctl_pkg *pkg)
  {
--	hfsplus_cat_entry tmp;
-+	hfsplus_cat_entry tmp = {0};
- 	int err;
- 	u16 type;
- 
- 	hfsplus_cat_build_key_with_cnid(sb, fd->search_key, cnid);
--	err = hfs_brec_read(fd, &tmp, sizeof(hfsplus_cat_entry));
-+	err = hfsplus_brec_read_cat(fd, &tmp);
- 	if (err)
- 		return err;
- 
---- a/fs/hfsplus/dir.c
-+++ b/fs/hfsplus/dir.c
-@@ -49,7 +49,7 @@ static struct dentry *hfsplus_lookup(str
- 	if (unlikely(err < 0))
- 		goto fail;
- again:
--	err = hfs_brec_read(&fd, &entry, sizeof(entry));
-+	err = hfsplus_brec_read_cat(&fd, &entry);
- 	if (err) {
- 		if (err == -ENOENT) {
- 			hfs_find_exit(&fd);
---- a/fs/hfsplus/hfsplus_fs.h
-+++ b/fs/hfsplus/hfsplus_fs.h
-@@ -535,6 +535,15 @@ int hfsplus_submit_bio(struct super_bloc
- 		       void **data, blk_opf_t opf);
- int hfsplus_read_wrapper(struct super_block *sb);
- 
-+static inline u32 hfsplus_cat_thread_size(const struct hfsplus_cat_thread *thread)
-+{
-+	return offsetof(struct hfsplus_cat_thread, nodeName) +
-+	       offsetof(struct hfsplus_unistr, unicode) +
-+	       be16_to_cpu(thread->nodeName.length) * sizeof(hfsplus_unichr);
-+}
+-	memcpy(req->response, pkg->buffer, req->response_size);
++	size_t len = min_t(size_t, pkg->frame.size, req->response_size);
 +
-+int hfsplus_brec_read_cat(struct hfs_find_data *fd, hfsplus_cat_entry *entry);
-+
- /*
-  * time helpers: convert between 1904-base and 1970-base timestamps
-  *
---- a/fs/hfsplus/super.c
-+++ b/fs/hfsplus/super.c
-@@ -541,7 +541,7 @@ static int hfsplus_fill_super(struct sup
- 	err = hfsplus_cat_build_key(sb, fd.search_key, HFSPLUS_ROOT_CNID, &str);
- 	if (unlikely(err < 0))
- 		goto out_put_root;
--	if (!hfs_brec_read(&fd, &entry, sizeof(entry))) {
-+	if (!hfsplus_brec_read_cat(&fd, &entry)) {
- 		hfs_find_exit(&fd);
- 		if (entry.type != cpu_to_be16(HFSPLUS_FOLDER)) {
- 			err = -EIO;
++	memcpy(req->response, pkg->buffer, len);
+ 	req->result.err = 0;
+ 	return true;
+ }
 
 
 
