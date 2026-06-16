@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-265448-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266238-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id TsX/ExiJMWrFlwUAu9opvQ
-	(envelope-from <stable+bounces-265448-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:34:16 +0200
+	id 2vkEITaZMWpcnwUAu9opvQ
+	(envelope-from <stable+bounces-266238-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:43:02 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B36DD693441
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:34:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D770B6945E0
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:43:01 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=CB7Q5RNr;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265448-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265448-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=QU2ZG0J4;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266238-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266238-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C1AAB303318F
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:34:14 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9EDF23098636
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:43:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08F8647AF57;
-	Tue, 16 Jun 2026 17:34:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D8BC477982;
+	Tue, 16 Jun 2026 18:42:58 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD1C632E728;
-	Tue, 16 Jun 2026 17:34:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5180413777E;
+	Tue, 16 Jun 2026 18:42:57 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781631251; cv=none; b=R1zA6mCf6mnXNnfi1ZtnWyLViQ6F2szspr4aXAmvYU16k51tqftbpEjEKJC/hnesENW0j8P65EDdAFuMkGq5Ly3UflYub9UHCdscNovBxpnxxnW30gDzZh+FbcssiEvUjhmW0azGGaAOgmIi55qrB68z8uoccXdXQKlR4OChOsw=
+	t=1781635378; cv=none; b=T7J9tW5d4TIDVgC1Ls1ywFE+dVww17ICG9EHjQwBPEfcWQaYRh8Rzm2UFyjBL1v39zBCF5gtaGTFohxt9QU0OZdAA1Wnm2iLmvhfbwZDHCkxZ2Xj74ewqQdkNlqyDgpPm7+mwQNN17buxVGGbIgQ2Nxx+qeAaT1atMlE5UGZQcY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781631251; c=relaxed/simple;
-	bh=1SkdFKfAlCeGK1TrQocwYu3BVK1rqo2H1Pim8n+YrYY=;
+	s=arc-20240116; t=1781635378; c=relaxed/simple;
+	bh=LtD4QOhxZmSC/xYLVNqaPaDNJDDqoqOVAiQrdJLp/5c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pxBE6XrrkUxKbmbTffB/fqI97y+qQTc33MJtMSXZKpZpq2qTtgtvNH98rridrOm/Q5KQLDgcHLHBu7dRP3dj/Z55qM8B4PIq2Q+foV0CQvDec/xu1Ccc+E9PiMkb+pGIuh6AsIE5EQ2MzA/7VwGmIHyzPrU1glUu8ObyKZ7IffM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CB7Q5RNr; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0EF31F000E9;
-	Tue, 16 Jun 2026 17:34:09 +0000 (UTC)
+	 MIME-Version; b=O3/lpIdc/0yARERLGPhhQiJ3gLGdx+po1VeYyo3aiszKtotqTLrUK22+m1UGRqlGk3VlloqAHZD/ah2FXgOMQPrJQQAOlTLktdRrzDaD2+CMNnwQbxxsbZAozwr5RcBOJ1rM+RreZfcPFOqUDTcmE2OHWIh3aPpb2i2YUuSUzlc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QU2ZG0J4; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04C6E1F000E9;
+	Tue, 16 Jun 2026 18:42:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781631250;
-	bh=aYuSC2ykn2oEAZjfrVl332FEc/qhisQjTX+eVxGeZSM=;
+	s=korg; t=1781635376;
+	bh=UZan8uSFREe3XjJDkCuhoh5iumsXhvp2KAezoyJJ2Ds=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=CB7Q5RNrfscPSb49aVppOH2Mv6s9Ag0Z/GhIDVISSWzsFp/00XBTVJxc1E/0v6Nyt
-	 aVst0f+dtsCWpi7qIXBrTz9s/elA3I1ESKqrLMvQJfRYlv/9vnlB7BkpYiobs4o6Wl
-	 y/8HLKZJZ+CYisZpnjSQX1gOpuOl8SvcJBxZ58jA=
+	b=QU2ZG0J48ALkUUS3c62zTKxeEZenmdgIDVHJtjcpaSG2yMluHfjYbYPQPWNRdTfgP
+	 5+naU7YLv4vWwhmEVHyPCnyZRI5ocJw1EgVH0akWeESKnRYv1oLI6MzjN/KmJgo8a9
+	 SxjygINJ3cvVKzDnGKfq5rUJP4tYuh/vWHdhcFOg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>,
+	Petr Machata <petrm@nvidia.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Ben Hutchings <benh@debian.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 186/522] USB: serial: cypress_m8: fix memory corruption with small endpoint
+Subject: [PATCH 5.10 037/342] selftests: forwarding: lib: Add helpers for checksum handling
 Date: Tue, 16 Jun 2026 20:25:33 +0530
-Message-ID: <20260616145134.816000690@linuxfoundation.org>
+Message-ID: <20260616145049.982981275@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,81 +71,143 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265448-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:johan@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-266238-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:petrm@nvidia.com,m:razor@blackwall.org,m:davem@davemloft.net,m:benh@debian.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,davemloft.net:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,blackwall.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B36DD693441
+X-Rspamd-Queue-Id: D770B6945E0
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Petr Machata <petrm@nvidia.com>
 
-commit e1a9d791fd66ab2431b9e6f6f835823809869047 upstream.
+commit 952e0ee38c7215c45192d8c899acd1830873f28b upstream.
 
-Make sure that the interrupt-out endpoint max packet size is at least
-eight bytes to avoid user-controlled slab corruption or NULL-pointer
-dereference should a malicious device report a smaller size.
+In order to generate IGMPv3 and MLDv2 packets on the fly, we will need
+helpers to calculate the packet checksum.
 
-Fixes: 3416eaa1f8f8 ("USB: cypress_m8: Packet format is separate from characteristic size")
-Cc: stable@vger.kernel.org	# 2.6.26
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-[ johan: adjust context for 6.18 ]
-Signed-off-by: Johan Hovold <johan@kernel.org>
+The approach presented in this patch revolves around payload templates
+for mausezahn. These are mausezahn-like payload strings (01:23:45:...)
+with possibly one 2-byte sequence replaced with the word PAYLOAD. The
+main function is payload_template_calc_checksum(), which calculates
+RFC 1071 checksum of the message. There are further helpers to then
+convert the checksum to the payload format, and to expand it.
+
+For IPv6, MLDv2 message checksum is computed using a pseudoheader that
+differs from the header used in the payload itself. The fact that the
+two messages are different means that the checksum needs to be
+returned as a separate quantity, instead of being expanded in-place in
+the payload itself. Furthermore, the pseudoheader includes a length of
+the message. Much like the checksum, this needs to be expanded in
+mausezahn format. And likewise for number of addresses for (S,G)
+entries. Thus we have several places where a computed quantity needs
+to be presented in the payload format. Add a helper u16_to_bytes(),
+which will be used in all these cases.
+
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 02cb2e6bacbb ("selftests: forwarding: vxlan_bridge_1d: fix test failure with br_netfilter enabled")
+[bwh: Backported to 5.10: adjust context]
+Signed-off-by: Ben Hutchings <benh@debian.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/cypress_m8.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ tools/testing/selftests/net/forwarding/lib.sh | 56 +++++++++++++++++++
+ 1 file changed, 56 insertions(+)
 
-diff --git a/drivers/usb/serial/cypress_m8.c b/drivers/usb/serial/cypress_m8.c
-index 4c625e77da3a8f..f567617c8f2314 100644
---- a/drivers/usb/serial/cypress_m8.c
-+++ b/drivers/usb/serial/cypress_m8.c
-@@ -448,6 +448,14 @@ static int cypress_generic_port_probe(struct usb_serial_port *port)
- 		return -ENODEV;
- 	}
- 
-+	/*
-+	 * The buffer must be large enough for the one or two-byte header (and
-+	 * following data), but assume anything smaller than eight bytes is
-+	 * broken.
-+	 */
-+	if (port->interrupt_out_size < 8)
-+		return -EINVAL;
+diff --git a/tools/testing/selftests/net/forwarding/lib.sh b/tools/testing/selftests/net/forwarding/lib.sh
+index dfb41db7fbe481..2825c779ef30e0 100644
+--- a/tools/testing/selftests/net/forwarding/lib.sh
++++ b/tools/testing/selftests/net/forwarding/lib.sh
+@@ -1298,3 +1298,59 @@ tcpdump_show()
+ {
+ 	tcpdump -e -n -r $capfile 2>&1
+ }
 +
- 	priv = kzalloc(sizeof(struct cypress_private), GFP_KERNEL);
- 	if (!priv)
- 		return -ENOMEM;
++u16_to_bytes()
++{
++	local u16=$1; shift
++
++	printf "%04x" $u16 | sed 's/^/000/;s/^.*\(..\)\(..\)$/\1:\2/'
++}
++
++# Given a mausezahn-formatted payload (colon-separated bytes given as %02x),
++# possibly with a keyword CHECKSUM stashed where a 16-bit checksum should be,
++# calculate checksum as per RFC 1071, assuming the CHECKSUM field (if any)
++# stands for 00:00.
++payload_template_calc_checksum()
++{
++	local payload=$1; shift
++
++	(
++	    # Set input radix.
++	    echo "16i"
++	    # Push zero for the initial checksum.
++	    echo 0
++
++	    # Pad the payload with a terminating 00: in case we get an odd
++	    # number of bytes.
++	    echo "${payload%:}:00:" |
++		sed 's/CHECKSUM/00:00/g' |
++		tr '[:lower:]' '[:upper:]' |
++		# Add the word to the checksum.
++		sed 's/\(..\):\(..\):/\1\2+\n/g' |
++		# Strip the extra odd byte we pushed if left unconverted.
++		sed 's/\(..\):$//'
++
++	    echo "10000 ~ +"	# Calculate and add carry.
++	    echo "FFFF r - p"	# Bit-flip and print.
++	) |
++	    dc |
++	    tr '[:upper:]' '[:lower:]'
++}
++
++payload_template_expand_checksum()
++{
++	local payload=$1; shift
++	local checksum=$1; shift
++
++	local ckbytes=$(u16_to_bytes $checksum)
++
++	echo "$payload" | sed "s/CHECKSUM/$ckbytes/g"
++}
++
++payload_template_nbytes()
++{
++	local payload=$1; shift
++
++	payload_template_expand_checksum "${payload%:}" 0 |
++		sed 's/:/\n/g' | wc -l
++}
 -- 
 2.53.0
 
