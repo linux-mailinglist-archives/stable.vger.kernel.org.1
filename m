@@ -1,65 +1,55 @@
-Return-Path: <stable+bounces-266575-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266577-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id XTSWNaXEMWp1pwUAu9opvQ
-	(envelope-from <stable+bounces-266575-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 23:48:21 +0200
+	id eVBxAH3HMWosqAUAu9opvQ
+	(envelope-from <stable+bounces-266577-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 00:00:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3697D695774
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 23:48:21 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E656695826
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 00:00:28 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="S8YE/eZA";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266575-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266575-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TtNwvbPU;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266577-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266577-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0BCC131E73D8
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:47:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 21DCC31784EA
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 22:00:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51AB43AE187;
-	Tue, 16 Jun 2026 21:47:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 625942877F4;
+	Tue, 16 Jun 2026 22:00:13 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10C28394461;
-	Tue, 16 Jun 2026 21:47:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53D983AA1BB;
+	Tue, 16 Jun 2026 22:00:11 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781646421; cv=none; b=a+bu5jTCbSnQtb3ECDUTo5ECb6EfjOd6jIu2iHfRuBFtZjoTdoVFEhgiWcJLME6Z7SJgNEQMwaoZ5Xm/WIIYwlBD1x0h4CDJV1aIE4xxXjh3Rju930l3N4FYoCTdS+OvnMJtx1+z/qqACumexZQhe0ShVpFRWrjn756mcHc6MOY=
+	t=1781647213; cv=none; b=C0F8gAjsTFC8JQmI1OaqTVNaIV35ogDL4dEO0Iv/4g+dnpUsqeXoZxdVCWVLTEQ4+4j9N1jESFB5UIumMlAkKgYJSA59deYbLcj7dBHGPDKJsMyVt+PX6aqLYts75z1oo7Wx0NtgdPFnurVMUtWHqWN2cA+HQW2SIjgdPTZmyEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781646421; c=relaxed/simple;
-	bh=r1mRsYzVClLW2T530ELFv2S9rVUpk3vhh7beYsOl8OE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lqJ8n5Zt4u8AmhWA7pw/TC8qkbZHoba60wFVpX19x4L5VfmuAmeHvaWLQH3KLJ3uH3hrctkTn02Pc3/fM+skIQsR1yzsfnO5BqFYFHMONzpVB3UJQ+X1x/+gqAlKC7b57DteI5EPRLGPLPTKMt7siua/j/U02LWARa1+J06CviE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S8YE/eZA; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CE291F00A3F;
-	Tue, 16 Jun 2026 21:46:59 +0000 (UTC)
+	s=arc-20240116; t=1781647213; c=relaxed/simple;
+	bh=kSovyPQf1u2/+wpyT4dQZ1O7R+GwVZMm10TSoSuDU04=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=YSzBMIbwkJ99NF4PgRb5oM/CMsrWRqGec3eMIoE9LzwJqC76SbKhqWU3IN2OooCvaIHMwO5lty8LuwtELEFaEqzY43oQl7PX7C946daM3FORAuxgcqRfyiKpJu6UsT08Sbh68jTwOcTDKGO/8VKFaJ/lRMBFfwJpsvPkVtjfGg0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TtNwvbPU; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2EA21F000E9;
+	Tue, 16 Jun 2026 22:00:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781646419;
-	bh=l/r31zGMCNRuDbLJ0uSZLAA320e2CSZ/fbO2hf1oLhY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=S8YE/eZAFnaaLTPjLl7kbju24xU99lJLih8ffwE3UjM2o/tlyZkXBWJHUAGLu3afr
-	 jRmkW6xXlG+3jKdzkoSMAulk1IVW0R1Q1895syMlH9BeIXm8x5tCWH5SPeKvDYAHbi
-	 9rIYj4kD/kC+sSjFkuBBpdsIN1by5FqMv8pCyaIwn8OlPcVBUxM7XzTPekey5rx3W3
-	 62hFXnA/3PgpvkXjJkmE4cRPXTTnnVcANikhdpwiOPj4YoTPvgLOCCWgrNx4m93Zdz
-	 e+K1iCa3z15L6Vsh2DXrFqszrEEl+aZ5IeCTfon3CGnAm+9cO4pNn7KtElFKSDjred
-	 cX5C2f7N2O6Jw==
-From: Yosry Ahmed <yosry@kernel.org>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
-	Jim Mattson <jmattson@google.com>,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Yosry Ahmed <yosry@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH 3/3] KVM: nVM: Ensure INVVPID is emulated on the correct physical CPU
-Date: Tue, 16 Jun 2026 21:46:52 +0000
-Message-ID: <20260616214652.2157032-4-yosry@kernel.org>
-X-Mailer: git-send-email 2.54.0.1136.gdb2ca164c4-goog
-In-Reply-To: <20260616214652.2157032-1-yosry@kernel.org>
-References: <20260616214652.2157032-1-yosry@kernel.org>
+	s=k20260515; t=1781647210;
+	bh=QX+gVE0CESSzoDMopJzLLtkh0bSG3nJdRekHMwjNQJA=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=TtNwvbPUrr3/Ys4kJsn4oXYtTJdt5toBBhhuCa28ouxp/5yV3IUpohtwf63BP0mfv
+	 mw4cz5J0gwJF+gpfEUEeajUmenuw4PrE+lrF8XqdIGYX5juI255CSeZ4HQQhJnmsWu
+	 xaflEccirz9LQuM7g2TeX/gCaoH7Qahf4TdYVpjtCL6get8kH8AWA1+24dFB7MsLGe
+	 kmYIQrktAr6/Q1+vKWTyDZNi/cRwd085xqq59gii+ZETGDEUYpcjnJ8AAbIC6wWUgk
+	 v/vXYKFB8bbsLST362F0SozlIYrSb+hlAmmqFWK7WDljlxXLWFY1CxhCsSRGXMK95M
+	 4PlSl0i++NwEw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93B393930C2B;
+	Tue, 16 Jun 2026 22:00:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -67,104 +57,87 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v2] net: skmsg: preserve sg.copy across SG transforms
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178164720514.1257010.17974091199123614376.git-patchwork-notify@kernel.org>
+Date: Tue, 16 Jun 2026 22:00:05 +0000
+References: <20260610062137.49075-1-yimingqian591@gmail.com>
+In-Reply-To: <20260610062137.49075-1-yimingqian591@gmail.com>
+To: Yiming Qian <yimingqian591@gmail.com>
+Cc: security@kernel.org, john.fastabend@gmail.com, jakub@cloudflare.com,
+ kuba@kernel.org, sd@queasysnail.net, davem@davemloft.net,
+ edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
+ keenanat2000@gmail.com, netdev@vger.kernel.org, bpf@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-3.66 / 15.00];
 	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	MID_CONTAINS_FROM(1.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:seanjc@google.com,m:pbonzini@redhat.com,m:jmattson@google.com,m:kvm@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:yosry@kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266575-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[kernel.org,gmail.com,cloudflare.com,queasysnail.net,davemloft.net,google.com,redhat.com,vger.kernel.org];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER(0.00)[yosry@kernel.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-266577-lists,stable=lfdr.de,netdevbpf];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	FORGED_SENDER(0.00)[patchwork-bot@kernel.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:yimingqian591@gmail.com,m:security@kernel.org,m:john.fastabend@gmail.com,m:jakub@cloudflare.com,m:kuba@kernel.org,m:sd@queasysnail.net,m:davem@davemloft.net,m:edumazet@google.com,m:pabeni@redhat.com,m:horms@kernel.org,m:keenanat2000@gmail.com,m:netdev@vger.kernel.org,m:bpf@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:johnfastabend@gmail.com,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_TO(0.00)[gmail.com];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[patchwork-bot@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[yosry@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
+	FROM_NO_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3697D695774
+X-Rspamd-Queue-Id: 3E656695826
 
-When emulating INVVPID, KVM executes INVVPID on the physical CPU using
-vpid02 (instead of the L1 assigned VPID), after doing some validations
-on the operands. However, it is possible that the physical CPU KVM
-executes INVVPID on is different from the CPU L2 is running on.
+Hello:
 
-For example, in the following scenario:
-- L2 runs on CPU #1 and exits to L1 (vmx->nested.vmcs02.cpu=1)
-- L1 migrates to CPU #2 and executes INVVPID
-- KVM executes INVVPID on CPU #2
-- L1 migrates back to CPU #1 and runs L2 (vmx->nested.vmcs02.cpu=1)
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-The TLB entries on CPU #1 are never invalidated, because INVVPID was
-executed on CPU #2, and vmcs02 never ran on a different pCPU (i.e.
-vmx_vcpu_load_vmcs() will *not* request KVM_REQ_TLB_FLUSH).
+On Wed, 10 Jun 2026 06:21:36 +0000 you wrote:
+> The sk_msg sg.copy bitmap is part of the scatterlist entry ownership
+> state. A set bit tells sk_msg_compute_data_pointers() not to expose the
+> entry through writable BPF ctx->data. This protects entries backed by
+> pages that are not private to the sk_msg, such as splice-backed file
+> page-cache pages.
+> 
+> Several sk_msg transform paths move, copy, split, or compact
+> msg->sg.data[] entries without moving the matching sg.copy bit. This can
+> make an externally backed entry arrive at a new slot with a clear copy
+> bit. A later SK_MSG verdict can then expose sg_virt(sge) as writable
+> ctx->data and BPF stores can modify the original page cache.
+> 
+> [...]
 
-Ensure that INVVPID is being executed on the same pCPU that L2 last ran
-on, and if not, fallback to clearing last_vpid=0 to trigger a full VPID
-flush on the next nested VM-Enter (as KVM will detect L1 using a
-different VPID for L2). If L2 ends up running on a different pCPU, KVM
-will flush the TLB anyway through vmx_vcpu_load_vmcs().
+Here is the summary with links:
+  - [net,v2] net: skmsg: preserve sg.copy across SG transforms
+    https://git.kernel.org/netdev/net/c/406e8a651a7b
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Yosry Ahmed <yosry@kernel.org>
----
- arch/x86/kvm/vmx/nested.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
-
-diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-index 596dec7ba2b78..2d1cd2c2a46d7 100644
---- a/arch/x86/kvm/vmx/nested.c
-+++ b/arch/x86/kvm/vmx/nested.c
-@@ -6085,6 +6085,7 @@ static int handle_invvpid(struct kvm_vcpu *vcpu)
- 		u64 gla;
- 	} operand;
- 	int r, gpr_index;
-+	int cpu;
- 
- 	if (!(vmx->nested.msrs.secondary_ctls_high &
- 	      SECONDARY_EXEC_ENABLE_VPID) ||
-@@ -6133,11 +6134,19 @@ static int handle_invvpid(struct kvm_vcpu *vcpu)
- 	 * and never explicitly flush vpid01.  INVVPID targets a VPID, not a
- 	 * VMCS, and so whether or not the current vmcs12 has VPID enabled is
- 	 * irrelevant (and there may not be a loaded vmcs12).
-+	 *
-+	 * If vmcs02 was last loaded on a different pCPU, then defer the flush
-+	 * by invalidating the nested VPID tracking to ensure that KVM performs
-+	 * the invalidation on the correct pCPU.
- 	 */
--	if (type == VMX_VPID_EXTENT_INDIVIDUAL_ADDR)
-+	cpu = get_cpu();
-+	if (cpu != vmx->nested.vmcs02.cpu)
-+		vmx->nested.last_vpid = 0;
-+	else if (type == VMX_VPID_EXTENT_INDIVIDUAL_ADDR)
- 		vpid_sync_vcpu_addr(nested_get_vpid02(vcpu), operand.gla);
- 	else
- 		vpid_sync_context(nested_get_vpid02(vcpu));
-+	put_cpu();
- 
- 	/*
- 	 * Sync the shadow page tables if EPT is disabled, L1 is invalidating
+You are awesome, thank you!
 -- 
-2.54.0.1136.gdb2ca164c4-goog
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
 
