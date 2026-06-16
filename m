@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-265875-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263908-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id g4DvGkaSMWovnAUAu9opvQ
-	(envelope-from <stable+bounces-265875-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:13:26 +0200
+	id d3ADIsNqMWpNiwUAu9opvQ
+	(envelope-from <stable+bounces-263908-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:24:51 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC49C693EA6
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:13:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 116FD691004
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:24:51 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=vR7zD8QL;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265875-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265875-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=HdAbgaD7;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263908-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-263908-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 92A3F31B433F
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:11:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7251531F5D27
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:18:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BDBD3D47CE;
-	Tue, 16 Jun 2026 18:11:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED38F43E486;
+	Tue, 16 Jun 2026 15:18:30 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E85853D091A;
-	Tue, 16 Jun 2026 18:11:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60BD643E4A1;
+	Tue, 16 Jun 2026 15:18:29 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781633462; cv=none; b=IZYZkT8mAw3pXerkiiVd2nRbROzOHx86bNepgf/uvLf5EoZd6wjqkmdWkzs++DmVHaTUhc9GXNA+IxBZf262760fSed657n/dFmp0KffK4knOnrFIA86jWXkrM0sYETisULxMftU2vdW5yoCSAHGozVtNqCsOlhA3AdiL9y9s2E=
+	t=1781623110; cv=none; b=neZKd/RDiLovzcCL9bz/3eNqibDkpDPSrGFdnijqT/RaSrxdHFKIoAryiT4i9RwpPKjPfIV9BrO747VCS7t03M++iR2Ksr7FAv9z9uQf2R3DAWudPRBSJxEDNn5X+unyPdLSol9oDeYwe3eYsyKdj5ysY13jHHhSR7+LK8hTnYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781633462; c=relaxed/simple;
-	bh=M5f7B3alaj4cMNEfpjwti3LNWEQB62w7BFIs/2pZrGQ=;
+	s=arc-20240116; t=1781623110; c=relaxed/simple;
+	bh=yT4G5Ciwrov4YPAJjotMdzFOY/XpcsTp1v+4U0QaUMY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FoyvQcYpvxBl/awhbi4rs7pUKLIkvMHL1IWGwtQudryfWveyOgZBEEw4ElmJ66CTV5K67GG09OV3kQ+JAMLoHtyo5jKqo74FEd+3KKUitar9uKZwHo77hs4dB9V5wPBTBmWP/gWHa05ePKDjGU1/XU/EojvthG8AKZtJae5RLv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vR7zD8QL; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBCD11F000E9;
-	Tue, 16 Jun 2026 18:10:59 +0000 (UTC)
+	 MIME-Version; b=TqyT4MCUxTs/i2XtGjv1XayE5+1MfjFOFiyUY6RKP3WWLw6A/jE+UqUok/E3ilTPdU3CPO429KJsp7vwu7op15htzeJepLtKqSkmamN4z8TXYxWx2ncVAdqtV4TWlXGo0fXmiObcZR28cK2hDzEE8OJIlw+zb418tSMiZT6T0a8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HdAbgaD7; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A41E1F000E9;
+	Tue, 16 Jun 2026 15:18:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781633460;
-	bh=VgJ6uDIHhZpdZTB+zFa5LL6NdyDr2TD4ks9YFmkcqG0=;
+	s=korg; t=1781623109;
+	bh=diQc9+U4wrcwZwo694zEt86ZxOHDIeQRXDwDTM0RDJY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=vR7zD8QLRPeyzdnTAY9Aii+MzIOVFUxe1Y3L8WVmiCkCSMughObe2nnz2MerLuoUn
-	 fjimZccliHIv6Vf/WWoT5O2rb7qjqI48TR6zxIrqd8zLE8P8IuOtopJOzcBioBr2s9
-	 rVzZzDqxWQ9umMT2AhR0+beRZHcTCiPD30uofeX8=
+	b=HdAbgaD7cXnhAUVJzAZwowSQtarLFQeUkD/GXZN3VgFof5rPBNGYOEN11i9Yvv0B1
+	 tcT/htG/1rvc/9D1MmO4Osw70g72r4xs7b96zFtyn/7aFKxJWG1eVVnl86KkHmKJad
+	 9k6tXxF+Wt6o2fluPH5o1bjGi30jsupbQvSBuHrc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Dan Carpenter <error27@gmail.com>
-Subject: [PATCH 5.15 082/411] usb: dwc2: Fix use after free in debug code
+	John Kacur <jkacur@redhat.com>,
+	Tomas Glozar <tglozar@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 089/378] rtla: Fix parsing of multi-character short options
 Date: Tue, 16 Jun 2026 20:25:20 +0530
-Message-ID: <20260616145104.624522726@linuxfoundation.org>
+Message-ID: <20260616145114.947575865@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,78 +76,293 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-263908-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-265875-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:error27@gmail.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jkacur@redhat.com,m:tglozar@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: BC49C693EA6
+X-Rspamd-Queue-Id: 116FD691004
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <error27@gmail.com>
+From: Tomas Glozar <tglozar@redhat.com>
 
-commit 9ea06a3fbf9f16e0d98c52cb3b99642be15ec281 upstream.
+[ Upstream commit e9e41d3035032ed6053d8bad7b7077e1cb3a6540 ]
 
-We're not allowed to dereference "urb" after calling
-usb_hcd_giveback_urb() so save the urb->status ahead of time.
+A bug was reported where the parsing of multi-character short options,
+be it a short option with an argument specified without space (e.g.
+"-p100") or multiple short options in one argument (e.g. -un), ignores
+options specific to individual tools.
 
-Fixes: 7359d482eb4d ("staging: HCD files for the DWC2 driver")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Dan Carpenter <error27@gmail.com>
-Link: https://patch.msgid.link/ag1NwBpqT4IEQcdJ@stanley.mountain
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Furthermore, if the rest of the option is supposed to be an argument, it
+gets reinterpreted as a string of options. For example, -p100 gets
+interpreted as -100, which is due to hackish implementation read as
+--no-thread --no-irq --no-irq with timerlat hist, causing rtla to error
+out:
+
+$ rtla timerlat hist -p100
+no-irq and no-thread set, there is nothing to do here
+
+This behavior is caused by getopt_long() being called twice on each
+argument, once in common_parse_options(), once in [tool]_parse_args():
+
+- common_parse_options() calls getopt_long() with an array of options
+  common for all rtla tools, while suppressing errors (opterr = 0).
+- If the option fails to parse, common_parse_options() returns 0.
+- If 0 is returned from common_parse_options(), [tool]_parse_args()
+  calls getopt_long() again, with its own set of options.
+
+* [tool] means one of {osnoise,timerlat}_{top,hist}
+
+At least in glibc, getopt_long() increments its internal nextchar
+variable even if the option is not recognized. That means that in the
+case of "-p100", common_parse_options() sets nextchar pointing to '1',
+and timerlat_hist_parse_args() sees '1', not 'p'; the same then repeats
+for the first and second '0'.
+
+As there is no way to restore the correct internal state of
+getopt_long() reliably, fix the issue by merging the common options back
+to the longopt array and option string of the [tool]_parse_args()
+functions using a macro; only the switch part is left in the original
+function, which is renamed to set_common_option().
+
+Fixes: 850cd24cb6d6 ("tools/rtla: Add common_parse_options()")
+Reported-by: John Kacur <jkacur@redhat.com>
+Tested-by: John Kacur <jkacur@redhat.com>
+Link: https://lore.kernel.org/r/20260602125506.3325345-1-tglozar@redhat.com
+Signed-off-by: Tomas Glozar <tglozar@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc2/hcd.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ tools/tracing/rtla/src/common.c        | 28 +++++---------------------
+ tools/tracing/rtla/src/common.h        | 12 ++++++++++-
+ tools/tracing/rtla/src/osnoise_hist.c  |  7 ++++---
+ tools/tracing/rtla/src/osnoise_top.c   |  7 ++++---
+ tools/tracing/rtla/src/timerlat_hist.c |  7 ++++---
+ tools/tracing/rtla/src/timerlat_top.c  |  7 ++++---
+ 6 files changed, 32 insertions(+), 36 deletions(-)
 
---- a/drivers/usb/dwc2/hcd.c
-+++ b/drivers/usb/dwc2/hcd.c
-@@ -4837,6 +4837,7 @@ static int _dwc2_hcd_urb_dequeue(struct
- 	struct dwc2_hsotg *hsotg = dwc2_hcd_to_hsotg(hcd);
- 	int rc;
- 	unsigned long flags;
-+	int urb_status;
+diff --git a/tools/tracing/rtla/src/common.c b/tools/tracing/rtla/src/common.c
+index 839c78c065e12f..01d5b8d5aeaf2e 100644
+--- a/tools/tracing/rtla/src/common.c
++++ b/tools/tracing/rtla/src/common.c
+@@ -82,37 +82,20 @@ int getopt_auto(int argc, char **argv, const struct option *long_opts)
+ }
  
- 	dev_dbg(hsotg->dev, "DWC OTG HCD URB Dequeue\n");
- 	dwc2_dump_urb_info(hcd, urb, "urb_dequeue");
-@@ -4861,11 +4862,12 @@ static int _dwc2_hcd_urb_dequeue(struct
+ /*
+- * common_parse_options - parse common command line options
++ * set_common_option - set common options
+  *
++ * @c: option character
+  * @argc: argument count
+  * @argv: argument vector
+  * @common: common parameters structure
+  *
+  * Parse command line options that are common to all rtla tools.
+  *
+- * Returns: non zero if a common option was parsed, or 0
+- * if the option should be handled by tool-specific parsing.
++ * Returns: 1 if the option was set, 0 otherwise.
+  */
+-int common_parse_options(int argc, char **argv, struct common_params *common)
++int set_common_option(int c, int argc, char **argv, struct common_params *common)
+ {
+ 	struct trace_events *tevent;
+-	int saved_state = optind;
+-	int c;
+-
+-	static struct option long_options[] = {
+-		{"cpus",                required_argument,      0, 'c'},
+-		{"cgroup",              optional_argument,      0, 'C'},
+-		{"debug",               no_argument,            0, 'D'},
+-		{"duration",            required_argument,      0, 'd'},
+-		{"event",               required_argument,      0, 'e'},
+-		{"house-keeping",       required_argument,      0, 'H'},
+-		{"priority",            required_argument,      0, 'P'},
+-		{0, 0, 0, 0}
+-	};
+-
+-	opterr = 0;
+-	c = getopt_auto(argc, argv, long_options);
+-	opterr = 1;
  
- 	/* Higher layer software sets URB status */
- 	spin_unlock(&hsotg->lock);
-+	urb_status = urb->status;
- 	usb_hcd_giveback_urb(hcd, urb, status);
- 	spin_lock(&hsotg->lock);
+ 	switch (c) {
+ 	case 'c':
+@@ -152,11 +135,10 @@ int common_parse_options(int argc, char **argv, struct common_params *common)
+ 		common->set_sched = 1;
+ 		break;
+ 	default:
+-		optind = saved_state;
+ 		return 0;
+ 	}
  
- 	dev_dbg(hsotg->dev, "Called usb_hcd_giveback_urb()\n");
--	dev_dbg(hsotg->dev, "  urb->status = %d\n", urb->status);
-+	dev_dbg(hsotg->dev, "  urb->status = %d\n", urb_status);
- out:
- 	spin_unlock_irqrestore(&hsotg->lock, flags);
+-	return c;
++	return 1;
+ }
  
+ /*
+diff --git a/tools/tracing/rtla/src/common.h b/tools/tracing/rtla/src/common.h
+index d4b3715700be73..e00e3930ddb0b5 100644
+--- a/tools/tracing/rtla/src/common.h
++++ b/tools/tracing/rtla/src/common.h
+@@ -158,7 +158,17 @@ int osnoise_set_stop_total_us(struct osnoise_context *context,
+ 			      long long stop_total_us);
+ 
+ int getopt_auto(int argc, char **argv, const struct option *long_opts);
+-int common_parse_options(int argc, char **argv, struct common_params *common);
++
++#define COMMON_OPTIONS \
++	{"cpus",                required_argument,      0, 'c'},\
++	{"cgroup",              optional_argument,      0, 'C'},\
++	{"debug",               no_argument,            0, 'D'},\
++	{"duration",            required_argument,      0, 'd'},\
++	{"event",               required_argument,      0, 'e'},\
++	{"house-keeping",       required_argument,      0, 'H'},\
++	{"priority",            required_argument,      0, 'P'}
++int set_common_option(int c, int argc, char **argv, struct common_params *common);
++
+ int common_apply_config(struct osnoise_tool *tool, struct common_params *params);
+ int top_main_loop(struct osnoise_tool *tool);
+ int hist_main_loop(struct osnoise_tool *tool);
+diff --git a/tools/tracing/rtla/src/osnoise_hist.c b/tools/tracing/rtla/src/osnoise_hist.c
+index 5c863e7aad28b4..5dd1d4ba0b887d 100644
+--- a/tools/tracing/rtla/src/osnoise_hist.c
++++ b/tools/tracing/rtla/src/osnoise_hist.c
+@@ -480,6 +480,7 @@ static struct common_params
+ 
+ 	while (1) {
+ 		static struct option long_options[] = {
++			COMMON_OPTIONS,
+ 			{"auto",		required_argument,	0, 'a'},
+ 			{"bucket-size",		required_argument,	0, 'b'},
+ 			{"entries",		required_argument,	0, 'E'},
+@@ -503,15 +504,15 @@ static struct common_params
+ 			{0, 0, 0, 0}
+ 		};
+ 
+-		if (common_parse_options(argc, argv, &params->common))
+-			continue;
+-
+ 		c = getopt_auto(argc, argv, long_options);
+ 
+ 		/* detect the end of the options. */
+ 		if (c == -1)
+ 			break;
+ 
++		if (set_common_option(c, argc, argv, &params->common))
++			continue;
++
+ 		switch (c) {
+ 		case 'a':
+ 			/* set sample stop to auto_thresh */
+diff --git a/tools/tracing/rtla/src/osnoise_top.c b/tools/tracing/rtla/src/osnoise_top.c
+index b7aed40fd2164f..5c278c68b1a2c8 100644
+--- a/tools/tracing/rtla/src/osnoise_top.c
++++ b/tools/tracing/rtla/src/osnoise_top.c
+@@ -337,6 +337,7 @@ struct common_params *osnoise_top_parse_args(int argc, char **argv)
+ 
+ 	while (1) {
+ 		static struct option long_options[] = {
++			COMMON_OPTIONS,
+ 			{"auto",		required_argument,	0, 'a'},
+ 			{"help",		no_argument,		0, 'h'},
+ 			{"period",		required_argument,	0, 'p'},
+@@ -355,15 +356,15 @@ struct common_params *osnoise_top_parse_args(int argc, char **argv)
+ 			{0, 0, 0, 0}
+ 		};
+ 
+-		if (common_parse_options(argc, argv, &params->common))
+-			continue;
+-
+ 		c = getopt_auto(argc, argv, long_options);
+ 
+ 		/* Detect the end of the options. */
+ 		if (c == -1)
+ 			break;
+ 
++		if (set_common_option(c, argc, argv, &params->common))
++			continue;
++
+ 		switch (c) {
+ 		case 'a':
+ 			/* set sample stop to auto_thresh */
+diff --git a/tools/tracing/rtla/src/timerlat_hist.c b/tools/tracing/rtla/src/timerlat_hist.c
+index 096de8ba3efbb6..5089b72c7a9439 100644
+--- a/tools/tracing/rtla/src/timerlat_hist.c
++++ b/tools/tracing/rtla/src/timerlat_hist.c
+@@ -789,6 +789,7 @@ static struct common_params
+ 
+ 	while (1) {
+ 		static struct option long_options[] = {
++			COMMON_OPTIONS,
+ 			{"auto",		required_argument,	0, 'a'},
+ 			{"bucket-size",		required_argument,	0, 'b'},
+ 			{"entries",		required_argument,	0, 'E'},
+@@ -822,11 +823,11 @@ static struct common_params
+ 			{0, 0, 0, 0}
+ 		};
+ 
+-		if (common_parse_options(argc, argv, &params->common))
+-			continue;
+-
+ 		c = getopt_auto(argc, argv, long_options);
+ 
++		if (set_common_option(c, argc, argv, &params->common))
++			continue;
++
+ 		/* detect the end of the options. */
+ 		if (c == -1)
+ 			break;
+diff --git a/tools/tracing/rtla/src/timerlat_top.c b/tools/tracing/rtla/src/timerlat_top.c
+index 27c14aa71a8bc8..1311afc981e24c 100644
+--- a/tools/tracing/rtla/src/timerlat_top.c
++++ b/tools/tracing/rtla/src/timerlat_top.c
+@@ -558,6 +558,7 @@ static struct common_params
+ 
+ 	while (1) {
+ 		static struct option long_options[] = {
++			COMMON_OPTIONS,
+ 			{"auto",		required_argument,	0, 'a'},
+ 			{"help",		no_argument,		0, 'h'},
+ 			{"irq",			required_argument,	0, 'i'},
+@@ -585,11 +586,11 @@ static struct common_params
+ 			{0, 0, 0, 0}
+ 		};
+ 
+-		if (common_parse_options(argc, argv, &params->common))
+-			continue;
+-
+ 		c = getopt_auto(argc, argv, long_options);
+ 
++		if (set_common_option(c, argc, argv, &params->common))
++			continue;
++
+ 		/* detect the end of the options. */
+ 		if (c == -1)
+ 			break;
+-- 
+2.53.0
+
 
 
 
