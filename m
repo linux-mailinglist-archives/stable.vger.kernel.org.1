@@ -1,70 +1,61 @@
-Return-Path: <stable+bounces-264496-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265230-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id pnBwGHl1MWpqjwUAu9opvQ
-	(envelope-from <stable+bounces-264496-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:10:33 +0200
+	id gwZfOYqGMWqdlgUAu9opvQ
+	(envelope-from <stable+bounces-265230-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:23:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27590691C44
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:10:33 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48A1369310A
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:23:22 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=qXhOV4BG;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264496-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-264496-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=twVIafn+;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265230-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265230-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BBE9A302D910
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:10:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BA8AD31E8D88
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:15:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 524B244E045;
-	Tue, 16 Jun 2026 16:09:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C688478E2B;
+	Tue, 16 Jun 2026 17:15:43 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 169A43A16AC;
-	Tue, 16 Jun 2026 16:09:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D6B7478E26;
+	Tue, 16 Jun 2026 17:15:42 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781626199; cv=none; b=mzlmNT1ih+ywWH2ZA51ZZoqceQv6EomIyNLrgfusvneKVOzsiu9ukIcybZH5jeMAV9zm9LbielpFnt2Q5xllPpz2GveMY3AtohK+NvQoAxGZ1zPSq/4xymYYJvFFBDAE1MM0kAGTB/7iHJ760jxu4vIoHkq7Ys9jFwpIgFmq1GE=
+	t=1781630143; cv=none; b=lc6zKVR+f1NQNcvh97XubrgwjzwP7JJux4/BU2RFZj2D6Hw28G86EgJmPMymhnudM8dIYwjGykUUv/07aIStxKFmL8OqsoSBF3xdYE1a2dvSkldaU/pMdFSic/b0Tmvhphx5ZHqYYAOWWU6W2JIRFr6eKoZ689QdcjQqlMHhWB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781626199; c=relaxed/simple;
-	bh=MJYlD7DFYEngLdIGmfj53VhW/ksP9Wi4FyjzCtbkAvA=;
+	s=arc-20240116; t=1781630143; c=relaxed/simple;
+	bh=xulDoHhpD6gbQeQ4oB+1zL7jAP32REA6GRFsID7OYlU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DnboCNM2Fcc6DNigQXro0vmECqvbyKPOxuXtYx/vaa3aGCPX1IaRWxnp32rAa13a+4O75zvkrhkpipfKUZDAJ4tp5LSNv1J/d/0rQO3fYWudNFdtWnIkWFHMzHa9iJBn7HLh/R6yW8chblinNZsb0wt/RCuzFoTfEkOvKxciOtI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qXhOV4BG; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F2221F000E9;
-	Tue, 16 Jun 2026 16:09:57 +0000 (UTC)
+	 MIME-Version; b=iUVt5UXjmNEbDeRRZ5C/TMUYRkmzyebneYwHS6jWSAhhL66m4bBP27J9rQpwCUsjH0+zSc374pEqL+blHXSE2I/3MDeuzlZOzCsS+AojgYqPkm18ENC8BBQqVl4uPbmTahIuC7Hj2lLRNqYzj6C3r5PtQx9q2xIax+voqymfwn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=twVIafn+; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 171AC1F000E9;
+	Tue, 16 Jun 2026 17:15:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781626198;
-	bh=GlRnMTyI3l5/c60c+CTDBM9Cq+CqVHmbwSYybDcMOQ0=;
+	s=korg; t=1781630141;
+	bh=2p2FfoLUxeADZ9l6S3HULSxBl2H7Gaf7KrhvnQKKVAc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=qXhOV4BGZgk7ojFazYDgR5/eCATo8Zf6VL53VfPpnquscexalAnmn0rdR/LKKnwiR
-	 dRNt20OMLO8zzoAZqkStuMEy5GYwxX14xoeZZP6bdoOLPx2bALktSgSpG5RXkoeYsp
-	 TyRABjRbu1aIwuds2pJ14sjjZg6HSkaBTP84WetA=
+	b=twVIafn+2b0AkvlrDdOzf63bfCg+0OWWv1EiowtoMGTqK9aMnilbJT4ZE3fKw+/qN
+	 aOyFp0l90+BHGcP3nDDkmOqdzICBSUorAiYxW9c7iDF9p4lPSWLi0rT7tJ1L44Hn2/
+	 wyfZ4d6LTsbiGvwJTJ+OF1I0koR/I0FoKDxgEE5Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Muchun Song <songmuchun@bytedance.com>,
-	"Oscar Salvador (SUSE)" <osalvador@kernel.org>,
-	Usama Arif <usama.arif@linux.dev>,
-	David Hildenbrand <david@kernel.org>,
-	Frank van der Linden <fvdl@google.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.18 249/325] mm/cma: fix reserved page leak on activation failure
-Date: Tue, 16 Jun 2026 20:30:45 +0530
-Message-ID: <20260616145110.912787365@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Wentao Liang <vulab@iscas.ac.cn>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 419/452] usb: musb: omap2430: Fix use-after-free in omap2430_probe()
+Date: Tue, 16 Jun 2026 20:30:46 +0530
+Message-ID: <20260616145138.774543046@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -81,22 +72,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264496-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265230-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
+	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:songmuchun@bytedance.com,m:osalvador@kernel.org,m:usama.arif@linux.dev,m:david@kernel.org,m:fvdl@google.com,m:liam@infradead.org,m:ljs@kernel.org,m:mhocko@suse.com,m:rppt@kernel.org,m:surenb@google.com,m:vbabka@kernel.org,m:akpm@linux-foundation.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:vulab@iscas.ac.cn,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -107,77 +98,60 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,infradead.org:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 27590691C44
+X-Rspamd-Queue-Id: 48A1369310A
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Muchun Song <songmuchun@bytedance.com>
+From: Wentao Liang <vulab@iscas.ac.cn>
 
-commit 00739e4dd46dde2b39dd9dd19a27e3c8af4ca0d0 upstream.
+[ Upstream commit e194ce048f5a6c549b3a23a8c568c6470f40f772 ]
 
-If cma_activate_area() fails after allocating only part of the range
-bitmaps, the cleanup path still has to release the reserved pages when
-CMA_RESERVE_PAGES_ON_ERROR is clear.
+In omap2430_probe(), of_node_put(np) is called prematurely before the
+last access to np, leading to a use-after-free if the node's reference
+count drops to zero. Move the of_node_put() calls after the last use of
+np in both the success and error paths.
 
-That is still worth doing even in this __init path.  A bitmap_zalloc()
-failure does not necessarily mean the system cannot make further progress:
-freeing the reserved CMA pages can return a substantial amount of memory
-to the buddy allocator and may relieve the temporary memory shortage that
-caused the allocation failure in the first place.
-
-However, the cleanup path currently uses the bitmap-freeing bound for page
-release as well.  That is only correct for ranges whose bitmap allocation
-already succeeded.  The failed range and all later ranges still keep their
-reserved pages, so a partial bitmap allocation failure can permanently
-leak them.
-
-Fix this by releasing reserved pages for all ranges.  Use the saved
-early_pfn[] value for ranges whose bitmap allocation already succeeded and
-for the failed range, and use cmr->early_pfn for later ranges whose bitmap
-allocation was never attempted.
-
-Link: https://lore.kernel.org/20260523060123.2207992-1-songmuchun@bytedance.com
-Fixes: c009da4258f9 ("mm, cma: support multiple contiguous ranges, if requested")
-Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-Reviewed-by: Oscar Salvador (SUSE) <osalvador@kernel.org>
-Acked-by: Usama Arif <usama.arif@linux.dev>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Frank van der Linden <fvdl@google.com>
-Cc: Liam R. Howlett <liam@infradead.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: ffbe2feac59b ("usb: musb: omap2430: Fix probe regression for missing resources")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Link: https://patch.msgid.link/20260409101104.480623-1-vulab@iscas.ac.cn
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/cma.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/usb/musb/omap2430.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/mm/cma.c
-+++ b/mm/cma.c
-@@ -186,10 +186,13 @@ cleanup:
- 
- 	/* Expose all pages to the buddy, they are useless for CMA. */
- 	if (!test_bit(CMA_RESERVE_PAGES_ON_ERROR, &cma->flags)) {
--		for (r = 0; r < allocrange; r++) {
-+		for (r = 0; r < cma->nranges; r++) {
-+			unsigned long start_pfn;
-+
- 			cmr = &cma->ranges[r];
-+			start_pfn = r <= allocrange ? early_pfn[r] : cmr->early_pfn;
- 			end_pfn = cmr->base_pfn + cmr->count;
--			for (pfn = early_pfn[r]; pfn < end_pfn; pfn++)
-+			for (pfn = start_pfn; pfn < end_pfn; pfn++)
- 				free_reserved_page(pfn_to_page(pfn));
- 		}
+--- a/drivers/usb/musb/omap2430.c
++++ b/drivers/usb/musb/omap2430.c
+@@ -340,7 +340,6 @@ static int omap2430_probe(struct platfor
+ 	} else {
+ 		device_set_of_node_from_dev(&musb->dev, &pdev->dev);
  	}
+-	of_node_put(np);
+ 
+ 	glue->dev			= &pdev->dev;
+ 	glue->musb			= musb;
+@@ -458,6 +457,7 @@ static int omap2430_probe(struct platfor
+ 		dev_err(&pdev->dev, "failed to register musb device\n");
+ 		goto err3;
+ 	}
++	of_node_put(np);
+ 
+ 	return 0;
+ 
+@@ -467,6 +467,7 @@ err_put_control_otghs:
+ 	if (!IS_ERR(glue->control_otghs))
+ 		put_device(glue->control_otghs);
+ err2:
++	of_node_put(np);
+ 	platform_device_put(musb);
+ 
+ err0:
 
 
 
