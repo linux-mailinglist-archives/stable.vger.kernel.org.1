@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-264909-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265861-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id u7ekA2KCMWrSlAUAu9opvQ
-	(envelope-from <stable+bounces-264909-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:05:38 +0200
+	id 0VxdD3aRMWrBmwUAu9opvQ
+	(envelope-from <stable+bounces-265861-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:09:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 008AE692B61
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:05:36 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDBAD693DA2
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:09:57 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=GxNls97d;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264909-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264909-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=CoQH35LG;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265861-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-265861-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id ABAA4307489C
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:49:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id EC35B308F91D
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:09:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32FAE47DD7C;
-	Tue, 16 Jun 2026 16:48:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AF993D7D9F;
+	Tue, 16 Jun 2026 18:09:48 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0BCA47D94E;
-	Tue, 16 Jun 2026 16:48:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39D1B3D091A;
+	Tue, 16 Jun 2026 18:09:47 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781628528; cv=none; b=n9Nx/mlnOcFIXL9Ji3rxw6Bz1M+SVu4Byf4d4iYLiB7f3hFUzvgK2xsYYXx9FEyUuXzSfH9t1/41nfF3wG33pzYd6JKVzzRHaxxJrBRz+ypG/bagZre1x8lkHgCEtAnZOICAAPWGQgnqS/PglP8kfBiEtWI0coxWB9IrG3TpEh0=
+	t=1781633388; cv=none; b=LKpiA6SPoqqKYH9bBJGYI0pqOHXI/GcG8XilxGbRWDFfJvGu8hHzoLTgvSJS2sRnTAGbk6aEkgQvLUWfnDNUzM3O1z6GuvBT8N0INE+GLIYFXBeuo9vshI5MadaTmIlrJCTn7wzxatfvFrkKwvJQhU7H+f/SxEFJUznMdUWioWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781628528; c=relaxed/simple;
-	bh=WvsaMewOPvqh6sgcKmFbVSqaLzKz07P1TX9S2kVewK4=;
+	s=arc-20240116; t=1781633388; c=relaxed/simple;
+	bh=nCUmfZWyBM8ntZgoG/95lQ5QCTNHifVPm+W1uLHp26E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G+37xiugjkDLYop3C+HFTh8IkEg2ADlncB7tK1DguFdZxKmVPIlY0xILmX6VoXuylGTKaAKKnw8iS3XCUsRqvykKbtBRiqw1OytsDRb0tBeE1DXKzwSV6x51OaBaAnGP1EctB4UoWK692PiKo8eSp9UZMkxyltNDS7xE51qDJYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GxNls97d; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0341F1F000E9;
-	Tue, 16 Jun 2026 16:48:45 +0000 (UTC)
+	 MIME-Version; b=XOo1YiEd8mg9XCTYzTKu18Bfrlr9gg8QbaqGEXAdVHRyV0ba6TPHvtccEhUiiqBGinZMjP5J/M9u5B33ADLB3X7kws+4XxGUpO0ljFISeo31A4WkvGTIiezqx5OFCosU194vEFUdssOZE6/EwGzlaWTMnqqI0qFXJQU1x3WmTVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CoQH35LG; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 263E01F000E9;
+	Tue, 16 Jun 2026 18:09:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781628526;
-	bh=o8nLHBjlmMRUXzuAgVpJ/rkuaCV9JF7CF/LWGzMEDrs=;
+	s=korg; t=1781633387;
+	bh=henLNC7xkL9XQyMLLrXpQe/XEEAwOw2QLqAw8gFM23w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=GxNls97dtHcI82q0dkLHo0NGNf0+ZXgSvQdkyEV3GI0Jcc62QothObztRqLa1jmbE
-	 y5F53FRCxkONPET3wim24aMMqlYTM/r5mNGK+nqWqvULeHL2RZ1ZynKsq6oThPxKMP
-	 p70NCZ1P6O3GsCzuvVa/kox0uShBe3VldKbNvtRU=
+	b=CoQH35LGIBCQqBKZ40g6FTVNj8BQtSjVkjNREqhstr+Q139TIe7OyfIsQqnP2j69+
+	 Xf9J6fbrueeswpVhGd9O23cAag6DFw9+srKfO9a8evhiAlyTS6njOHGlyLprd2LnAN
+	 MbfVtlHRD+SUbgVSo11NIaoF6xCyKF+44tkhrnaY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdurrahman Hussain <abdurrahman@nexthop.ai>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 080/452] hwmon: (pmbus/adm1266) serialize NVMEM blackbox read with pmbus_lock
+	Salah Triki <salah.triki@gmail.com>,
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <jic23@kernel.org>
+Subject: [PATCH 5.15 069/411] iio: dac: max5821: fix return value check in powerdown sync
 Date: Tue, 16 Jun 2026 20:25:07 +0530
-Message-ID: <20260616145122.086283367@linuxfoundation.org>
+Message-ID: <20260616145103.950605511@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,121 +68,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264909-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,vger.kernel.org,kernel.org];
+	TAGGED_FROM(0.00)[bounces-265861-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:abdurrahman@nexthop.ai,m:linux@roeck-us.net,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:salah.triki@gmail.com,m:andriy.shevchenko@intel.com,m:Stable@vger.kernel.org,m:jic23@kernel.org,m:salahtriki@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,nexthop.ai:email,roeck-us.net:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,intel.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 008AE692B61
+X-Rspamd-Queue-Id: BDBAD693DA2
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+From: Salah Triki <salah.triki@gmail.com>
 
-[ Upstream commit 9f1dd8f9491eb840cbea7ffdf4cad031e25f8ae0 ]
+commit d0a228d903425e653f18a4341e60c0538afb6d41 upstream.
 
-adm1266_nvmem_read() is the reg_read callback the NVMEM core invokes
-when userspace reads /sys/bus/nvmem/devices/.../nvmem on this chip.
-On the first byte of every read it does a memset of data->dev_mem,
-walks the device blackbox through adm1266_nvmem_read_blackbox()
-(which issues a chain of PMBus block transactions), and then memcpys
-the refreshed buffer out to userspace.  None of that runs under
-pmbus_lock today.
+The function max5821_sync_powerdown_mode() returned the result of
+i2c_master_send() directly. If a partial transfer occurred, it would
+be incorrectly treated as a success by the caller.
 
-Two consequences:
+While the caller currently handles the positive return value of 2 as
+success, this patch refactors the function to return 0 on full success
+and -EIO on short writes. This ensures robust error handling for
+incomplete transfers and improves code maintainability by using
+sizeof(outbuf).
 
-  - The PMBus traffic the refresh issues is not serialised against
-    pmbus_core's own multi-step PAGE+register sequences.  A paged
-    hwmon attribute read from another thread can land between a
-    PAGE write and the paged read in either direction and corrupt
-    one side's view of the device state machine.
-
-  - The NVMEM core does not serialise concurrent reg_read calls, so
-    two userspace readers racing at offset 0 can interleave the
-    memset of data->dev_mem with another reader's
-    adm1266_nvmem_read_blackbox() refill or memcpy out, returning
-    torn data to userspace.
-
-Take pmbus_lock at the top of adm1266_nvmem_read() via the
-scope-based guard().  Patch 5 of this series moves
-adm1266_config_nvmem() past pmbus_do_probe() so the lock is
-guaranteed to be live before the callback is reachable from
-userspace.
-
-Fixes: 15609d189302 ("hwmon: (pmbus/adm1266) read blackbox")
-Cc: stable@vger.kernel.org
-Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
-Link: https://lore.kernel.org/r/20260518-adm1266-gpio-fixes-v3-7-e425e4f88139@nexthop.ai
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-[ adapted `guard(pmbus_lock)(data->client)` to manual `pmbus_lock_interruptible()`/`pmbus_unlock()` ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 472988972737 ("iio: add support of the max5821")
+Signed-off-by: Salah Triki <salah.triki@gmail.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <jic23@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/pmbus/adm1266.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/iio/dac/max5821.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hwmon/pmbus/adm1266.c b/drivers/hwmon/pmbus/adm1266.c
-index 518eaf07a123de..432846ef0cf45d 100644
---- a/drivers/hwmon/pmbus/adm1266.c
-+++ b/drivers/hwmon/pmbus/adm1266.c
-@@ -421,18 +421,25 @@ static int adm1266_nvmem_read(void *priv, unsigned int offset, void *val, size_t
- 	if (offset + bytes > data->nvmem_config.size)
- 		return -EINVAL;
+--- a/drivers/iio/dac/max5821.c
++++ b/drivers/iio/dac/max5821.c
+@@ -91,6 +91,7 @@ static int max5821_sync_powerdown_mode(s
+ 				       const struct iio_chan_spec *chan)
+ {
+ 	u8 outbuf[2];
++	int ret;
  
-+	ret = pmbus_lock_interruptible(data->client);
-+	if (ret)
+ 	outbuf[0] = MAX5821_EXTENDED_COMMAND_MODE;
+ 
+@@ -104,7 +105,13 @@ static int max5821_sync_powerdown_mode(s
+ 	else
+ 		outbuf[1] |= MAX5821_EXTENDED_POWER_UP;
+ 
+-	return i2c_master_send(data->client, outbuf, 2);
++	ret = i2c_master_send(data->client, outbuf, sizeof(outbuf));
++	if (ret < 0)
 +		return ret;
++	if (ret != sizeof(outbuf))
++		return -EIO;
 +
- 	if (offset == 0) {
- 		memset(data->dev_mem, 0, data->nvmem_config.size);
- 
- 		ret = adm1266_nvmem_read_blackbox(data, data->dev_mem);
- 		if (ret) {
- 			dev_err(&data->client->dev, "Could not read blackbox!");
-+			pmbus_unlock(data->client);
- 			return ret;
- 		}
- 	}
- 
- 	memcpy(val, data->dev_mem + offset, bytes);
- 
-+	pmbus_unlock(data->client);
-+
- 	return 0;
++	return 0;
  }
  
--- 
-2.53.0
-
+ static ssize_t max5821_write_dac_powerdown(struct iio_dev *indio_dev,
 
 
 
