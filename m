@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-265158-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265700-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id g7ZpHemEMWrwlQUAu9opvQ
-	(envelope-from <stable+bounces-265158-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:16:25 +0200
+	id Mx9MGzGOMWpKmgUAu9opvQ
+	(envelope-from <stable+bounces-265700-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:56:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14EDE692F1B
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:16:25 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60E21693A2A
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:56:00 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=QTrx57MV;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265158-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265158-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ZBlnvoPi;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265700-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265700-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7446330DFA0E
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:09:31 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B2AFC300C7E9
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:55:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F11A47799B;
-	Tue, 16 Jun 2026 17:09:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D0EE477982;
+	Tue, 16 Jun 2026 17:55:36 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 216B944BCBE;
-	Tue, 16 Jun 2026 17:09:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C8043A5E89;
+	Tue, 16 Jun 2026 17:55:35 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781629769; cv=none; b=FNjabUGyCyqDjvekYZmNgQETjl1bq6DwqMsk3zug1m94pHceuyASJZCUyaUauNrRc6boyhRxEsPxlIay98uajnm3WAW8l9FM/Q0TaISyhi/Bv7A/wsLCjb42q5ZGYhpFB33Q9Pq2QXuPMW7tws81WP1Y6FDGbzIIBMCJgB1hqUI=
+	t=1781632536; cv=none; b=MvBItR4T0A8GXsCr1jPbkRtIqD9nY+vIbHcCarydn3YmMuEKUibLYJ7V5ph1AxUaK5YaeKjuReudI5qjBC725QPypWHyO/lnn/ME409lPzKggZ7SLHBUgJrOORqnrrmcNH6MRT1MXAkWkXK/lrhTaKk5iyezOEPwgMOWRyCyRoI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781629769; c=relaxed/simple;
-	bh=/PBpSJJtBb5HRcNftDk/pzQIdPPHHYgeZ5SlVmrGzbA=;
+	s=arc-20240116; t=1781632536; c=relaxed/simple;
+	bh=LJvgyHKq6IyKxyuYWT/tvUSjYNMgf+CHQHdU0huAs9Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZW/aKDO4GweSaMUEzbWIglD2hmjqUNiMNGZPkDmqxMosjk5RV0XvweKxd0A3umIFRsqgNyxihpc/J/xKgJNs50yUN2FrE8wfk0nmg5mXcoAJfOYMfrjlBPBFUp/lhB6Nm5Xb8UGzVM9eKBm2nAEWvYTZeRx5rv1UkNGowaztlig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QTrx57MV; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97CFB1F000E9;
-	Tue, 16 Jun 2026 17:09:26 +0000 (UTC)
+	 MIME-Version; b=kCxy1rSNa97j2msHCuZ/Fguud+fifi5Zo9Edtt4rxvFZiYLfl9jG3mrX7KWrwmMMU2Nvrla+W7lUEDJLYFK3Io3PA0J2R61TnNrFD/XrkHObgDDqSm1CEpywkp6MytJeREHb8mPDyDK8lIQsYmIQ8rLHB3caVur4/UcIXUYUj7Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZBlnvoPi; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40C9C1F000E9;
+	Tue, 16 Jun 2026 17:55:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781629767;
-	bh=BDZ6IB7opPKwwTTraxjU5lGoLTOMZ+I7hNRuco+59fk=;
+	s=korg; t=1781632535;
+	bh=PT02Z23TxmDnVxop2VvHkQM4vnu/ym/2gmcjro2SGjw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QTrx57MVoLqPIKJywB4a2wuqJWVcNHbt/cz0+apXXwnCoogaXpdX2MOO+UOwX40bD
-	 fslFL7uAQhYJxIorSIIHK5QlDn4FN4x/Vvo6QxYlPylYn5rRWOinCdjF/FPWswWRAK
-	 v1MW5Hpwr1JyHDiN7j3gshKj4zUxnsA9ZP+l9Gko=
+	b=ZBlnvoPiqt5BJHKWLMhkhh1ZdK6bmRxBegmxAvTCB4oPFGJN8cDMMsnctDZPqxGYn
+	 Srx8lW/EIZ+2RN1FF9tw35sQdo5KVyp2F/ksiE8lwR5eSYjUn4g3NfID4vUfQgvqSa
+	 8Ko+s2SN9RZeSlWAN+zHK1u/3QZwPZ3dLhVySVM4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Inochi Amaoto <inochiama@gmail.com>,
-	Gabriel Somlo <gsomlo@gmail.com>,
-	Ulf Hansson <ulfh@kernel.org>
-Subject: [PATCH 6.6 349/452] mmc: litex_mmc: Set mandatory idle clocks before CMD0
+	Lee Jones <lee@kernel.org>,
+	Johan Hovold <johan@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 429/522] spi: st-ssc4: fix controller deregistration
 Date: Tue, 16 Jun 2026 20:29:36 +0530
-Message-ID: <20260616145135.551111437@linuxfoundation.org>
+Message-ID: <20260616145146.044499632@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,102 +70,90 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-265158-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:inochiama@gmail.com,m:gsomlo@gmail.com,m:ulfh@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-265700-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:lee@kernel.org,m:johan@kernel.org,m:broonie@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 14EDE692F1B
+X-Rspamd-Queue-Id: 60E21693A2A
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Inochi Amaoto <inochiama@gmail.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit 99982b743e5ba72bd1f5de0e03e3b96ae70b1e51 upstream.
+[ Upstream commit 19857374010d06ca6a2f7c2c53464122eb804df0 ]
 
-The litex_mmc driver assumes the card is already probed in the BIOS
-and skip the phy initialization. This will cause the command fail
-like the following when the old card is unplugged and then insert
-a new card:
+Make sure to deregister the controller before disabling underlying
+resources like clocks during driver unbind.
 
-[   62.923593] litex-mmc f0004000.mmc: Command (cmd 8) error, status -110
-[   62.949717] litex-mmc f0004000.mmc: Command (cmd 55) error, status -110
-[   62.976606] litex-mmc f0004000.mmc: Command (cmd 55) error, status -110
-[   63.002516] litex-mmc f0004000.mmc: Command (cmd 55) error, status -110
-[   63.028442] litex-mmc f0004000.mmc: Command (cmd 55) error, status -110
-
-Add required clock settings and initialization for the CMD 0, so it can
-probe the new card.
-
-Fixes: 92e099104729 ("mmc: Add driver for LiteX's LiteSDCard interface")
-Signed-off-by: Inochi Amaoto <inochiama@gmail.com>
-Reviewed-by: Gabriel Somlo <gsomlo@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Ulf Hansson <ulfh@kernel.org>
+Fixes: 9e862375c542 ("spi: Add new driver for STMicroelectronics' SPI Controller")
+Cc: stable@vger.kernel.org	# 4.0
+Cc: Lee Jones <lee@kernel.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260410081757.503099-18-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/litex_mmc.c |   14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/spi/spi-st-ssc4.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/drivers/mmc/host/litex_mmc.c
-+++ b/drivers/mmc/host/litex_mmc.c
-@@ -69,6 +69,9 @@
- #define SD_SLEEP_US       5
- #define SD_TIMEOUT_US 20000
+--- a/drivers/spi/spi-st-ssc4.c
++++ b/drivers/spi/spi-st-ssc4.c
+@@ -349,7 +349,7 @@ static int spi_st_probe(struct platform_
  
-+#define SD_INIT_DELAY_US  1000
-+#define SD_INIT_CLK_HZ    400000
-+
- #define SDIRQ_CARD_DETECT    1
- #define SDIRQ_SD_TO_MEM_DONE 2
- #define SDIRQ_MEM_TO_SD_DONE 4
-@@ -450,6 +453,17 @@ static void litex_mmc_set_ios(struct mmc
- 	struct litex_mmc_host *host = mmc_priv(mmc);
+ 	platform_set_drvdata(pdev, host);
  
- 	/*
-+	 * The SD specification requires at least 74 idle clocks before CMD0.
-+	 * These dummy cycles is generated by writing LITEX_PHY_INITIALIZE.
-+	 */
-+	if (ios->chip_select == MMC_CS_HIGH) {
-+		litex_mmc_setclk(host, SD_INIT_CLK_HZ);
-+		litex_write8(host->sdphy + LITEX_PHY_INITIALIZE, 1);
-+		fsleep(SD_INIT_DELAY_US);
-+		return;
-+	}
+-	ret = devm_spi_register_controller(&pdev->dev, host);
++	ret = spi_register_controller(host);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "Failed to register host\n");
+ 		goto rpm_disable;
+@@ -371,10 +371,16 @@ static int spi_st_remove(struct platform
+ 	struct spi_controller *host = platform_get_drvdata(pdev);
+ 	struct spi_st *spi_st = spi_controller_get_devdata(host);
+ 
++	spi_controller_get(host);
 +
-+	/*
- 	 * NOTE: Ignore any ios->bus_width updates; they occur right after
- 	 * the mmc core sends its own acmd6 bus-width change notification,
- 	 * which is redundant since we snoop on the command flow and inject
++	spi_unregister_controller(host);
++
+ 	pm_runtime_disable(&pdev->dev);
+ 
+ 	clk_disable_unprepare(spi_st->clk);
+ 
++	spi_controller_put(host);
++
+ 	pinctrl_pm_select_sleep_state(&pdev->dev);
+ 
+ 	return 0;
 
 
 
