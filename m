@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-264667-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266124-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 48ZHAuJ6MWqxkQUAu9opvQ
-	(envelope-from <stable+bounces-264667-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:33:38 +0200
+	id DT1oNjWYMWrongUAu9opvQ
+	(envelope-from <stable+bounces-266124-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:38:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89E22692354
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:33:37 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4481C6944BA
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:38:45 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Ip0Xs3hS;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264667-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264667-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=s79Nhqrd;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266124-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266124-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1006B30A3FD3
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:26:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E698131D8B94
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:33:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDBB146AF1D;
-	Tue, 16 Jun 2026 16:26:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E28C93DC86D;
+	Tue, 16 Jun 2026 18:33:09 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC2E746AF14;
-	Tue, 16 Jun 2026 16:26:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E9AF3D8902;
+	Tue, 16 Jun 2026 18:33:08 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781627177; cv=none; b=tUj+eXrUMyrAhQGZq4KDZ64zGNPiHF6v/R+qR7MnKxBkxTU/WswryPr7TKdycqTWEZCu70+Vn79FiiGNGS1bly9tvHh34ounWBonHZVtl9W3ebVpA7vQPlBmGLr8s+Zf7lShIwLfFXBKT6Z25H9HMWnzrORieW3le0KiNO6NQcA=
+	t=1781634789; cv=none; b=BXO9FWuPy9xOJAn6D43aY9Kjzd0io8AQOifYzFAZU2W2hGufMtKln2p3pBQIyrOpXcB0AvJIuuXlQq1Q7cXIEBlDWWxL9GT/Oo31vT2Jma8HovtvBNCo6nU9X+CQrhT3NJ09++ExE/beYr9VOYvpUkYgNkNHwFa2d3Pj6zJZlYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781627177; c=relaxed/simple;
-	bh=HNQZm17WUxqAF2DEMg9qeskWPl73jJTWw7cZClDNP1k=;
+	s=arc-20240116; t=1781634789; c=relaxed/simple;
+	bh=ZlXKqMB3kC87YUG6+pV/bwWrbYf96a5BVCgfuBfF2m8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BrJ1udrxDzqaKfI7ip2ZuWyFRT7b47NRkQe38Zak2ec/SLzEjn7Tu1rZjP+R4vjpq+QTe12CtxY3aPP6Ts24kiDLIkataUKxabSlT7NpTq9TG8GvFobT9mr66Tw5bY/AE+Xs4oUMvwyhalXXO1nIWihxDwihZoIeqcRkC6okSiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ip0Xs3hS; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70EE51F000E9;
-	Tue, 16 Jun 2026 16:26:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FgO3YLJtMCYokz+7nIOMIgeG5G2nlLAHIoJ1DkENUuys7lhd0ZudgFbCl+L8bfzY18NZHxOHUjlARvD2ObCtFkYPEFTO/AXy1HY0ZMluHgqcGAsjeKoClAKf1vOooFGAG3ycavgpfqEn/tSOqATDmMYi5dwLN24zJDoyHq1bU1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s79Nhqrd; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A5231F000E9;
+	Tue, 16 Jun 2026 18:33:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781627176;
-	bh=9e44sXUogFdfMjGNoefho8kSV6a7ZIhDWQVBFJObtCU=;
+	s=korg; t=1781634788;
+	bh=18mNAn/EVkT4ItDaosZLLiIG1Du0xG+2vq/o297TKf0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Ip0Xs3hShX4WLg28gDgmNy8gMkE047OK2n6zfRmgOS685MpYTiv/UZSLb0It7k8tW
-	 pR6tIvTiFFDXMLWoourN7H3Dy62OprxgLeITLmaDVCX4VsKui3iuD4ffLRksV6VKTF
-	 14SVspwDxNr/2m5V0+KhYBxvfWxk6k8Aj4OjiFTI=
+	b=s79Nhqrd0AIZCnohSalbOPxEit7JV43douj8CCGu/rthUYadufwuPlOKuNmvwFQRt
+	 rPUBimhFG6jYeuc3cdak722JL11vqjIW97HdNPEyeSX8TusqztPWGR9oiI69zgPVqg
+	 GH9itkjzj24b5ND3STXz51br/Rl7MxeN5LLNxJSM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kyle Zeng <kylebot@openai.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	syzbot+8fa95c41eafbc9d2ff6f@syzkaller.appspotmail.com,
+	Takashi Iwai <tiwai@suse.com>,
+	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 099/261] netfilter: x_tables: avoid leaking percpu counter pointers
+Subject: [PATCH 5.15 299/411] ALSA: aloop: Fix peer runtime UAF during format-change stop
 Date: Tue, 16 Jun 2026 20:28:57 +0530
-Message-ID: <20260616145049.625248449@linuxfoundation.org>
+Message-ID: <20260616145117.047717921@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
-References: <20260616145044.869532709@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,185 +67,160 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264667-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-266124-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kylebot@openai.com,m:pablo@netfilter.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,suse.com,gmail.com,suse.de,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:syzbot+8fa95c41eafbc9d2ff6f@syzkaller.appspotmail.com,m:tiwai@suse.com,m:cassiogabrielcontato@gmail.com,m:tiwai@suse.de,m:sashal@kernel.org,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	TAGGED_RCPT(0.00)[stable,8fa95c41eafbc9d2ff6f];
+	TO_DN_SOME(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,netfilter.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,openai.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,vger.kernel.org:from_smtp,msgid.link:url,suse.de:email,syzkaller.appspot.com:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,suse.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 89E22692354
+X-Rspamd-Queue-Id: 4481C6944BA
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kyle Zeng <kylebot@openai.com>
+From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
 
-[ Upstream commit f7f2fbb0e893a0238dc464f8d8c0f5609bec584f ]
+[ Upstream commit e5c33cdc6f402eab8abd36ecf436b22c9d3a8aff ]
 
-The native and compat get-entries paths copy the fixed rule entry header
-from the kernelized rule blob to userspace before overwriting the entry's
-counter fields with a sanitized counter snapshot.
+loopback_check_format() may stop the capture side when playback starts
+with parameters that no longer match a running capture stream. Commit
+826af7fa62e3 ("ALSA: aloop: Fix racy access at PCM trigger") moved
+the peer lookup under cable->lock, but the actual snd_pcm_stop() still
+runs after dropping that lock.
 
-On SMP kernels, entry->counters.pcnt contains the percpu allocation
-address used by x_tables rule counters. A caller can provide a userspace
-buffer that faults during the initial fixed-header copy after pcnt has
-been copied but before the later sanitized counter copy runs. The syscall
-then returns -EFAULT while leaving the raw percpu pointer in userspace.
+A concurrent close can clear the capture entry from cable->streams[] and
+detach or free its runtime while the playback trigger path still holds a
+stale peer substream pointer.
 
-Copy only the fixed entry prefix before counters from the kernelized rule
-blob, then copy the sanitized counter snapshot into the counter field.
-Apply this ordering to the IPv4, IPv6, and ARP native and compat
-get-entries implementations so a fault cannot expose the internal percpu
-counter pointer.
+Keep a per-cable count of in-flight peer stops before dropping
+cable->lock, and make free_cable() wait for those stops before
+detaching the runtime. This preserves the existing behavior while
+making the peer runtime lifetime explicit.
 
-Fixes: 71ae0dff02d7 ("netfilter: xtables: use percpu rule counters")
-Signed-off-by: Kyle Zeng <kylebot@openai.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Reported-by: syzbot+8fa95c41eafbc9d2ff6f@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=8fa95c41eafbc9d2ff6f
+Fixes: 597603d615d2 ("ALSA: introduce the snd-aloop module for the PCM loopback")
+Cc: stable@vger.kernel.org
+Suggested-by: Takashi Iwai <tiwai@suse.com>
+Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+Link: https://patch.msgid.link/20260424-alsa-aloop-peer-stop-uaf-v2-1-94e68101db8a@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+[ collapsed inc/snd_pcm_stop/dec into the existing inline call site and used spin_lock_irq/unlock_irq instead of scoped_guard ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/netfilter/arp_tables.c | 15 ++++++---------
- net/ipv4/netfilter/ip_tables.c  | 15 ++++++---------
- net/ipv6/netfilter/ip6_tables.c | 15 ++++++---------
- 3 files changed, 18 insertions(+), 27 deletions(-)
+ sound/drivers/aloop.c |   40 +++++++++++++++++++++++++++-------------
+ 1 file changed, 27 insertions(+), 13 deletions(-)
 
-diff --git a/net/ipv4/netfilter/arp_tables.c b/net/ipv4/netfilter/arp_tables.c
-index 97ead883e4a13b..b752c9eac998e4 100644
---- a/net/ipv4/netfilter/arp_tables.c
-+++ b/net/ipv4/netfilter/arp_tables.c
-@@ -702,14 +702,12 @@ static int copy_entries_to_user(unsigned int total_size,
- 		const struct xt_entry_target *t;
+--- a/sound/drivers/aloop.c
++++ b/sound/drivers/aloop.c
+@@ -98,6 +98,9 @@ struct loopback_ops {
+ struct loopback_cable {
+ 	spinlock_t lock;
+ 	struct loopback_pcm *streams[2];
++	/* in-flight peer stops running outside cable->lock */
++	atomic_t stop_count;
++	wait_queue_head_t stop_wait;
+ 	struct snd_pcm_hardware hw;
+ 	/* flags */
+ 	unsigned int valid;
+@@ -341,8 +344,12 @@ static int loopback_check_format(struct
+ 	if (stream == SNDRV_PCM_STREAM_CAPTURE) {
+ 		return -EIO;
+ 	} else {
++		/* close must not free the peer runtime below */
++		atomic_inc(&cable->stop_count);
+ 		snd_pcm_stop(cable->streams[SNDRV_PCM_STREAM_CAPTURE]->
+ 					substream, SNDRV_PCM_STATE_DRAINING);
++		if (atomic_dec_and_test(&cable->stop_count))
++			wake_up(&cable->stop_wait);
+ 	      __notify:
+ 		runtime = cable->streams[SNDRV_PCM_STREAM_PLAYBACK]->
+ 							substream->runtime;
+@@ -994,24 +1001,29 @@ static void free_cable(struct snd_pcm_su
+ 	struct loopback *loopback = substream->private_data;
+ 	int dev = get_cable_index(substream);
+ 	struct loopback_cable *cable;
++	struct loopback_pcm *dpcm;
++	bool other_alive;
  
- 		e = loc_cpu_entry + off;
--		if (copy_to_user(userptr + off, e, sizeof(*e))) {
--			ret = -EFAULT;
--			goto free_counters;
--		}
--		if (copy_to_user(userptr + off
-+		if (copy_to_user(userptr + off, e,
-+				 offsetof(struct arpt_entry, counters)) ||
-+		    copy_to_user(userptr + off
- 				 + offsetof(struct arpt_entry, counters),
- 				 &counters[num],
--				 sizeof(counters[num])) != 0) {
-+				 sizeof(counters[num]))) {
- 			ret = -EFAULT;
- 			goto free_counters;
+ 	cable = loopback->cables[substream->number][dev];
+ 	if (!cable)
+ 		return;
+-	if (cable->streams[!substream->stream]) {
+-		/* other stream is still alive */
+-		spin_lock_irq(&cable->lock);
+-		cable->streams[substream->stream] = NULL;
+-		spin_unlock_irq(&cable->lock);
+-	} else {
+-		struct loopback_pcm *dpcm = substream->runtime->private_data;
+ 
+-		if (cable->ops && cable->ops->close_cable && dpcm)
+-			cable->ops->close_cable(dpcm);
+-		/* free the cable */
+-		loopback->cables[substream->number][dev] = NULL;
+-		kfree(cable);
+-	}
++	spin_lock_irq(&cable->lock);
++	cable->streams[substream->stream] = NULL;
++	other_alive = cable->streams[!substream->stream] != NULL;
++	spin_unlock_irq(&cable->lock);
++
++	/* Pair with the stop_count increment in loopback_check_format(). */
++	wait_event(cable->stop_wait, !atomic_read(&cable->stop_count));
++	if (other_alive)
++		return;
++
++	dpcm = substream->runtime->private_data;
++	if (cable->ops && cable->ops->close_cable && dpcm)
++		cable->ops->close_cable(dpcm);
++	/* free the cable */
++	loopback->cables[substream->number][dev] = NULL;
++	kfree(cable);
+ }
+ 
+ static int loopback_jiffies_timer_open(struct loopback_pcm *dpcm)
+@@ -1206,6 +1218,8 @@ static int loopback_open(struct snd_pcm_
+ 			goto unlock;
  		}
-@@ -1327,9 +1325,8 @@ static int compat_copy_entry_to_user(struct arpt_entry *e, void __user **dstptr,
- 
- 	origsize = *size;
- 	ce = *dstptr;
--	if (copy_to_user(ce, e, sizeof(struct arpt_entry)) != 0 ||
--	    copy_to_user(&ce->counters, &counters[i],
--	    sizeof(counters[i])) != 0)
-+	if (copy_to_user(ce, e, offsetof(struct compat_arpt_entry, counters)) ||
-+	    copy_to_user(&ce->counters, &counters[i], sizeof(counters[i])))
- 		return -EFAULT;
- 
- 	*dstptr += sizeof(struct compat_arpt_entry);
-diff --git a/net/ipv4/netfilter/ip_tables.c b/net/ipv4/netfilter/ip_tables.c
-index 3d101613f27fa5..0ba456c4c63416 100644
---- a/net/ipv4/netfilter/ip_tables.c
-+++ b/net/ipv4/netfilter/ip_tables.c
-@@ -832,14 +832,12 @@ copy_entries_to_user(unsigned int total_size,
- 		const struct xt_entry_target *t;
- 
- 		e = loc_cpu_entry + off;
--		if (copy_to_user(userptr + off, e, sizeof(*e))) {
--			ret = -EFAULT;
--			goto free_counters;
--		}
--		if (copy_to_user(userptr + off
-+		if (copy_to_user(userptr + off, e,
-+				 offsetof(struct ipt_entry, counters)) ||
-+		    copy_to_user(userptr + off
- 				 + offsetof(struct ipt_entry, counters),
- 				 &counters[num],
--				 sizeof(counters[num])) != 0) {
-+				 sizeof(counters[num]))) {
- 			ret = -EFAULT;
- 			goto free_counters;
- 		}
-@@ -1228,9 +1226,8 @@ compat_copy_entry_to_user(struct ipt_entry *e, void __user **dstptr,
- 
- 	origsize = *size;
- 	ce = *dstptr;
--	if (copy_to_user(ce, e, sizeof(struct ipt_entry)) != 0 ||
--	    copy_to_user(&ce->counters, &counters[i],
--	    sizeof(counters[i])) != 0)
-+	if (copy_to_user(ce, e, offsetof(struct compat_ipt_entry, counters)) ||
-+	    copy_to_user(&ce->counters, &counters[i], sizeof(counters[i])))
- 		return -EFAULT;
- 
- 	*dstptr += sizeof(struct compat_ipt_entry);
-diff --git a/net/ipv6/netfilter/ip6_tables.c b/net/ipv6/netfilter/ip6_tables.c
-index 7d5602950ae72a..6c5022242cf0b0 100644
---- a/net/ipv6/netfilter/ip6_tables.c
-+++ b/net/ipv6/netfilter/ip6_tables.c
-@@ -848,14 +848,12 @@ copy_entries_to_user(unsigned int total_size,
- 		const struct xt_entry_target *t;
- 
- 		e = loc_cpu_entry + off;
--		if (copy_to_user(userptr + off, e, sizeof(*e))) {
--			ret = -EFAULT;
--			goto free_counters;
--		}
--		if (copy_to_user(userptr + off
-+		if (copy_to_user(userptr + off, e,
-+				 offsetof(struct ip6t_entry, counters)) ||
-+		    copy_to_user(userptr + off
- 				 + offsetof(struct ip6t_entry, counters),
- 				 &counters[num],
--				 sizeof(counters[num])) != 0) {
-+				 sizeof(counters[num]))) {
- 			ret = -EFAULT;
- 			goto free_counters;
- 		}
-@@ -1244,9 +1242,8 @@ compat_copy_entry_to_user(struct ip6t_entry *e, void __user **dstptr,
- 
- 	origsize = *size;
- 	ce = *dstptr;
--	if (copy_to_user(ce, e, sizeof(struct ip6t_entry)) != 0 ||
--	    copy_to_user(&ce->counters, &counters[i],
--	    sizeof(counters[i])) != 0)
-+	if (copy_to_user(ce, e, offsetof(struct compat_ip6t_entry, counters)) ||
-+	    copy_to_user(&ce->counters, &counters[i], sizeof(counters[i])))
- 		return -EFAULT;
- 
- 	*dstptr += sizeof(struct compat_ip6t_entry);
--- 
-2.53.0
-
+ 		spin_lock_init(&cable->lock);
++		atomic_set(&cable->stop_count, 0);
++		init_waitqueue_head(&cable->stop_wait);
+ 		cable->hw = loopback_pcm_hardware;
+ 		if (loopback->timer_source)
+ 			cable->ops = &loopback_snd_timer_ops;
 
 
 
