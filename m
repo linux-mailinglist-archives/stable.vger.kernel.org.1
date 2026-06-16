@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-264754-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265746-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id JkvuFWl7MWrpkQUAu9opvQ
-	(envelope-from <stable+bounces-264754-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:35:53 +0200
+	id oGX+BBqPMWq4mgUAu9opvQ
+	(envelope-from <stable+bounces-265746-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:59:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF5E56923DA
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:35:52 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E345693B24
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:59:53 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=fIOUENLR;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264754-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264754-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=OTsOB0yp;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265746-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-265746-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3CEB830302CD
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:35:22 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 72C7C30135D4
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:59:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2744A477995;
-	Tue, 16 Jun 2026 16:35:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14D06477E51;
+	Tue, 16 Jun 2026 17:59:31 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D71DA4779A8;
-	Tue, 16 Jun 2026 16:35:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF4C147A0B0;
+	Tue, 16 Jun 2026 17:59:29 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781627718; cv=none; b=ORnfQPzA7uk+ESHp8WVCtSmZD9SyGTMxM6oiuBhShxPFT+scSNaiZIXBlbv+zcVv64m/Oa30xK98V/LaiTxhbbOwXnROhfMpy0Gtw1xs7jsxg1Y20V4Ifog4qE6MQQMwjTUXiaMAfX5VjOVvP8ZR2+luOXTvZfPe4Clm/vX3p1U=
+	t=1781632770; cv=none; b=DT32N5VXLTBdjRShunPTs2PuxU2Z3uyZ5x07yc6RncRQG9ocTyjR4F+VINs1QqxU3y/C2URcomu0FTucjJLI/H8cF/YdVtUwi6P8xK63HaxoVkHoBSjXLwStOzB+Q9HbWPEmbWLPLPwBao+RuRUwLKwEvOx0mu4RZmlrzzS4low=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781627718; c=relaxed/simple;
-	bh=qQ2x6Yhp05/Aw5hxOTDxTuvi1OFcIfxvyuahOc/yI88=;
+	s=arc-20240116; t=1781632770; c=relaxed/simple;
+	bh=pPzWN6h0r4yndroGzhEPqP/FFJP+TGKn7rPPmETcWBk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=azQJSi1kWTyP/hXB1N+P6VYySzB+xbtEqf4kpzfDBm7oy1DLDGEnl9HdxMeiJTo7rQwbnXf/K98JKs2UNn7hSf/3snd958wcQRCFj1hCaO7/Q9LeeBWva9KOLbN2VU8EhoAbkCfIxW5+/8pvzYiOtIkPv3Dn3q8ABWQxyCkIrLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fIOUENLR; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B3BC1F000E9;
-	Tue, 16 Jun 2026 16:35:16 +0000 (UTC)
+	 MIME-Version; b=XoJZMepZ7KlfDc/g3n+eoCWkssQSUNqse5D7h4Z1xMhKzOVUEVzd+o3Pun/qH6xm6PSwU1XFzK+/RyOdXZljf4HiusFyRTfCSvfqUKBEPYfxrWqpMuMeaZ///MzCSuoxoRhePJ/DvREwVrM4D3Fb99IMZExpRvb6T/h6Aah4LW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OTsOB0yp; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9BFE1F000E9;
+	Tue, 16 Jun 2026 17:59:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781627717;
-	bh=88CRewZCd6daaZvgxEc5dms2turIC7ImojHTSZCE/dQ=;
+	s=korg; t=1781632769;
+	bh=UTPT5jYvsau9bM3u6bWtSGB5mcLhnwFSTr9fIzNE5dA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fIOUENLR1IKLB9EWSFuy7JpCvi8NLWkdoJBOKAvw/uRVXX5Rqq96xxqI+myiQ7L5g
-	 hMbGPO2emAG9wBHmXSKNxVYwjSzS2WdyAxnksF2lfoWdKJ7M2RWbFafWNDQA58hkHp
-	 xo60qaH+QWhBu338+1n3PVS6M25PWNen+Ej25iAw=
+	b=OTsOB0yphZiGaBgRUISklpxVHBt4h0wq0JZaQUMUUgj5XILRkTjD8+qzkYOb1nziO
+	 IOZcqZEftB8ytMouDPEy6Hqjf8uKvBaSUkrH5TZBAua5g4gQ5gMIsMvNTpRJuNVUsG
+	 g4/gGFvuDC9AKo2aGo73Shd8Lj+53dGgVoixCM0o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Srinivas Kandagatla <srini@kernel.org>
-Subject: [PATCH 6.12 181/261] misc: fastrpc: Fix NULL pointer dereference in rpmsg callback
+	stable <stable@kernel.org>,
+	Johan Hovold <johan@kernel.org>,
+	Guangshuo Li <lgs201920130244@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 472/522] usb: gadget: f_hid: fix device reference leak in hidg_alloc()
 Date: Tue, 16 Jun 2026 20:30:19 +0530
-Message-ID: <20260616145053.462998288@linuxfoundation.org>
+Message-ID: <20260616145147.930358659@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
-References: <20260616145044.869532709@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,114 +73,91 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264754-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mukesh.ojha@oss.qualcomm.com,m:andersson@kernel.org,m:srini@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-265746-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:johan@kernel.org,m:lgs201920130244@gmail.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,vger.kernel.org:from_smtp,qualcomm.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: EF5E56923DA
+X-Rspamd-Queue-Id: 0E345693B24
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
+From: Guangshuo Li <lgs201920130244@gmail.com>
 
-commit 5401fb4fe10fac6134c308495df18ed74aebb9c4 upstream.
+[ Upstream commit 4f88d65def6f3c90121601b4f62a4c967f3063a6 ]
 
-A NULL pointer dereference was observed on Hawi at boot when the DSP
-sends a glink message before fastrpc_rpmsg_probe() has completed
-initialization:
+hidg_alloc() initializes hidg->dev with device_initialize() before
+calling dev_set_name(). If dev_set_name() fails, the function currently
+jumps to err_unlock and returns without calling put_device().
 
-  Unable to handle kernel NULL pointer dereference at virtual address 0000000000000178
-  pc : _raw_spin_lock_irqsave+0x34/0x8c
-  lr : fastrpc_rpmsg_callback+0x3c/0xcc [fastrpc]
-  ...
-  Call trace:
-   _raw_spin_lock_irqsave+0x34/0x8c (P)
-   fastrpc_rpmsg_callback+0x3c/0xcc [fastrpc]
-   qcom_glink_native_rx+0x538/0x6a4
-   qcom_glink_smem_intr+0x14/0x24 [qcom_glink_smem]
+This leaves the device reference unbalanced and prevents hidg_release()
+from being called. Calling put_device() here is also safe, since
+hidg_release() only frees resources owned by hidg.
 
-The faulting address 0x178 corresponds to the lock variable inside
-struct fastrpc_channel_ctx, confirming that cctx is NULL when
-fastrpc_rpmsg_callback() attempts to take the spinlock.
+The issue was identified by a static analysis tool I developed and
+confirmed by manual review.
 
-There are two issues here. First, dev_set_drvdata() is called before
-spin_lock_init() and idr_init(), leaving a window where the callback
-can retrieve a valid cctx pointer but operate on an uninitialized
-spinlock. Second, the rpmsg channel becomes live as soon as the driver
-is bound, so fastrpc_rpmsg_callback() can fire before dev_set_drvdata()
-is called at all, resulting in dev_get_drvdata() returning NULL.
+Route the dev_set_name() failure path through err_put_device so the
+device reference is dropped properly.
 
-Fix both issues by moving all cctx initialization ahead of
-dev_set_drvdata() so the structure is fully initialized before it
-becomes visible to the callback, and add a NULL check in
-fastrpc_rpmsg_callback() as a guard against any remaining window.
-
-Fixes: f6f9279f2bf0 ("misc: fastrpc: Add Qualcomm fastrpc basic driver model")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
-Reviewed-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
-Link: https://patch.msgid.link/20260530204528.116920-4-srini@kernel.org
+Fixes: 89ff3dfac604 ("usb: gadget: f_hid: fix f_hidg lifetime vs cdev")
+Cc: stable <stable@kernel.org>
+Reviewed-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+Reviewed-by: Johan Hovold johan@kernel.org
+Link: https://patch.msgid.link/20260413142119.2977716-1-lgs201920130244@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/fastrpc.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/usb/gadget/function/f_hid.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/misc/fastrpc.c
-+++ b/drivers/misc/fastrpc.c
-@@ -2411,7 +2411,6 @@ static int fastrpc_rpmsg_probe(struct rp
+--- a/drivers/usb/gadget/function/f_hid.c
++++ b/drivers/usb/gadget/function/f_hid.c
+@@ -1278,7 +1278,7 @@ static struct usb_function *hidg_alloc(s
+ 	hidg->dev.devt = MKDEV(major, opts->minor);
+ 	ret = dev_set_name(&hidg->dev, "hidg%d", opts->minor);
+ 	if (ret)
+-		goto err_unlock;
++		goto err_put_device;
  
- 	kref_init(&data->refcount);
+ 	hidg->bInterfaceSubClass = opts->subclass;
+ 	hidg->bInterfaceProtocol = opts->protocol;
+@@ -1313,7 +1313,6 @@ static struct usb_function *hidg_alloc(s
  
--	dev_set_drvdata(&rpdev->dev, data);
- 	rdev->dma_mask = &data->dma_mask;
- 	dma_set_mask_and_coherent(rdev, DMA_BIT_MASK(32));
- 	INIT_LIST_HEAD(&data->users);
-@@ -2420,6 +2419,7 @@ static int fastrpc_rpmsg_probe(struct rp
- 	idr_init(&data->ctx_idr);
- 	data->domain_id = domain_id;
- 	data->rpdev = rpdev;
-+	dev_set_drvdata(&rpdev->dev, data);
- 
- 	err = of_platform_populate(rdev->of_node, NULL, NULL, rdev);
- 	if (err)
-@@ -2493,6 +2493,9 @@ static int fastrpc_rpmsg_callback(struct
- 	if (len < sizeof(*rsp))
- 		return -EINVAL;
- 
-+	if (!cctx)
-+		return -ENODEV;
-+
- 	ctxid = ((rsp->ctx & FASTRPC_CTXID_MASK) >> 4);
- 
- 	spin_lock_irqsave(&cctx->lock, flags);
+ err_put_device:
+ 	put_device(&hidg->dev);
+-err_unlock:
+ 	mutex_unlock(&opts->lock);
+ 	return ERR_PTR(ret);
+ }
 
 
 
