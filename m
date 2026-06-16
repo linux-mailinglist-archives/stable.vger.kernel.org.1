@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-264200-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264680-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id AI8wAGRxMWq8jQUAu9opvQ
-	(envelope-from <stable+bounces-264200-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:53:08 +0200
+	id xLO+LbB7MWoHkgUAu9opvQ
+	(envelope-from <stable+bounces-264680-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:37:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD915691772
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:53:07 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07EE3692436
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:37:04 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="tz/uxdxR";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264200-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264200-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="vl/7cl5t";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264680-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264680-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 97E6A30A57BB
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:45:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 17143318EA59
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:27:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ABAF44E053;
-	Tue, 16 Jun 2026 15:44:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A47546AF11;
+	Tue, 16 Jun 2026 16:27:32 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66B2244CAF9;
-	Tue, 16 Jun 2026 15:44:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7242146AF21;
+	Tue, 16 Jun 2026 16:27:31 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781624658; cv=none; b=aTSBDcXEXnBjWw+DsR7qYwz7W/wIt80LUr7uOPqEtEQt94yFW1vShXVQwchYqDYiaBgBHGPYs/0sy1LedrMqvFExT1As8sfvrd6t+1ujA0jp9OcRsmbGGlxjifpsNC6+uV364KuibY8bk/sCKXe7StV9aJN0JTLEfxRuwAvOVBs=
+	t=1781627252; cv=none; b=hfhf0BGnQiSJmfSXb3LLBSX7GJahMjJexCFN/0j8znfSDZw1hoeO6iePez08RxtXYUzWcND4VoIAi4xIGukLcsLjtBPS3qsfUek1aTtf3N0/3skH8EhmwS5eMA1iYywJB2k1+MFbp+5Mhikrcj8FxNSzSfHZ5VTUfhrvXuCM0ww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781624658; c=relaxed/simple;
-	bh=9YhiUTzNabBq38bqVCdPLxmsnG/fbT9eGKQqnH/f2lI=;
+	s=arc-20240116; t=1781627252; c=relaxed/simple;
+	bh=afdMyJ2DnpReYAfMAekQBQ5ixNZ/UC78Hcm7vfd3PGk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Pu54/+mFEdPiRADYK+WBF01KGPeMCC08kg0FpSuFBg8kVgU/VOTsVrLlCRC98kEWGfHgkcv63bCGPycd4ZPC/a4praPIM3ZE/QsTu3T5+5z3N0AbncF+N+xWCBTelMKImof1AmTnE6wUWhcnuWyHBjgaGiogg44sprSIYsk63EM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tz/uxdxR; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 079831F00A3A;
-	Tue, 16 Jun 2026 15:44:15 +0000 (UTC)
+	 MIME-Version; b=T7wS2PjKDZIGlNkqZpFGedNh1YhxMndinA201HT9Q+6YBZxqNklR8d33waR0c4MsQDutMivb3yjtk7SVzVRtCjaOgYh0z9TnCMyXzjqw/s0rX8oucnwz5Owya7om+vL1kVvmpNbfHd70pL+U2+BNhdieL/pK2dlJBe7monlLg+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vl/7cl5t; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35B3B1F000E9;
+	Tue, 16 Jun 2026 16:27:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781624657;
-	bh=1eOwyxhXxzXYj9tZORPAN9u9VJ0Uz8h73HxhojrwEME=;
+	s=korg; t=1781627251;
+	bh=7KPEWd/AsL6yo8MX+ds3jkyPcIkyRjfz/j0awT5rbSA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=tz/uxdxRNZPAr1SHoVBgDjCmST3LZrmOJQBA8BFo3jUkrW90HAe9eRabPZJWUFYsp
-	 BxZUbRQzhDVXET5mo8THGayJ5oN1BjZOiTVGm61L28BmsEaebixKcFV/L82h1n1NP5
-	 ioPoU61AXTBUO8wJme0C+Df69prlYch6Wmn1Pjd4=
+	b=vl/7cl5tRkCR4SULGKCqSHNUjOkxhDKo8d47aIcfO9qmisj4mkjLpmgkGvkw9zI4Q
+	 B2ZnFxeV6KLlH+VJV9f+SeIUMJFXXZgdnNyntvPqDinXYvUzW8237KBkIFUst3wlPh
+	 Zl2nheRm2Zd/dXiAXer3Oya83q47TgqjEnIBdZoA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jose Maria Casanova Crespo <jmcasanova@igalia.com>,
-	Iago Toral Quiroga <itoral@igalia.com>,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
-Subject: [PATCH 7.0 343/378] drm/v3d: Skip CSD when it has zeroed workgroups
+	Judith Mendez <jm@ti.com>,
+	Linus Walleij <linusw@kernel.org>
+Subject: [PATCH 6.12 136/261] pinctrl: mcp23s08: Initialize mcp->dev and mcp->addr before regmap init
 Date: Tue, 16 Jun 2026 20:29:34 +0530
-Message-ID: <20260616145128.238600770@linuxfoundation.org>
+Message-ID: <20260616145051.386200958@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,114 +64,99 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264680-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jmcasanova@igalia.com,m:itoral@igalia.com,m:mcanal@igalia.com,s:lists@lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jm@ti.com,m:linusw@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-264200-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[igalia.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,msgid.link:url]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,ti.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: AD915691772
+X-Rspamd-Queue-Id: 07EE3692436
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maíra Canal <mcanal@igalia.com>
+From: Judith Mendez <jm@ti.com>
 
-commit 7f93fad5ea0affc9e1505dd0f7596c0fdb496213 upstream.
+commit 8473c3a197b57ff01396f7a2ec6ddf65383820d4 upstream.
 
-A compute shader dispatch encodes its workgroup counts in the CFG0..CFG2
-registers. Kicking off a dispatch with a zero count in any of the three
-dimensions is invalid. First, the hardware will process 0 as 65536,
-while the user-space driver exposes a maximum of 65535. Over that, a
-submission with a zeroed workgroup dimension should be a no-op.
+Regmap initialization triggers regcache_maple_populate() which attempts
+SPI read to populate cache. SPI read requires mcp->dev and mcp->addr to
+be set, without them, NULL pointer dereference occurs during probe.
 
-These zeroed counts can reach the dispatch path through an indirect CSD
-job, whose workgroup counts are only known once the indirect buffer is
-read and may legitimately be zero, but such scenario should only result in
-a no-op.
-
-Overwrite the indirect CSD job workgroup counts with the indirect BO
-ones, even if they are zeroed, and don't submit the job to the hardware
-when any of the workgroup counts is zero, so the job completes immediately
-instead of running the shader.
+Move initialization before mcp23s08_spi_regmap_init() call.
 
 Cc: stable@vger.kernel.org
-Fixes: d223f98f0209 ("drm/v3d: Add support for compute shader dispatch.")
-Suggested-by: Jose Maria Casanova Crespo <jmcasanova@igalia.com>
-Reviewed-by: Iago Toral Quiroga <itoral@igalia.com>
-Link: https://patch.msgid.link/20260602-v3d-fix-indirect-csd-v4-2-654309e32bc0@igalia.com
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
+Fixes: f9f4fda15e72 ("pinctrl: mcp23s08: init reg_defaults from HW at probe and switch cache type")
+Signed-off-by: Judith Mendez <jm@ti.com>
+Signed-off-by: Linus Walleij <linusw@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/v3d/v3d_sched.c |   16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ drivers/pinctrl/pinctrl-mcp23s08_spi.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/v3d/v3d_sched.c
-+++ b/drivers/gpu/drm/v3d/v3d_sched.c
-@@ -378,6 +378,16 @@ v3d_csd_job_run(struct drm_sched_job *sc
- 		return NULL;
- 	}
+diff --git a/drivers/pinctrl/pinctrl-mcp23s08_spi.c b/drivers/pinctrl/pinctrl-mcp23s08_spi.c
+index 54f61c8cb1c0..5ed368772adb 100644
+--- a/drivers/pinctrl/pinctrl-mcp23s08_spi.c
++++ b/drivers/pinctrl/pinctrl-mcp23s08_spi.c
+@@ -10,6 +10,7 @@
+ #include "pinctrl-mcp23s08.h"
  
-+	/* The HW interprets a workgroup size of 0 as 65536; however, the
-+	 * user-space driver exposes a maximum of 65535. Therefore, a 0 in
-+	 * any dimension means that we have no workgroups and the compute
-+	 * shader should not be dispatched.
-+	 */
-+	if (!V3D_GET_FIELD(job->args.cfg[0], V3D_CSD_QUEUED_CFG0_NUM_WGS_X) ||
-+	    !V3D_GET_FIELD(job->args.cfg[1], V3D_CSD_QUEUED_CFG1_NUM_WGS_Y) ||
-+	    !V3D_GET_FIELD(job->args.cfg[2], V3D_CSD_QUEUED_CFG2_NUM_WGS_Z))
-+		return NULL;
-+
- 	v3d->queue[V3D_CSD].active_job = &job->base;
+ #define MCP_MAX_DEV_PER_CS	8
++#define MCP23S08_SPI_BASE	0x40
  
- 	v3d_invalidate_caches(v3d);
-@@ -428,13 +438,13 @@ v3d_rewrite_csd_job_wg_counts_from_indir
+ /*
+  * A given spi_device can represent up to eight mcp23sxx chips
+@@ -173,6 +174,8 @@ static int mcp23s08_probe(struct spi_device *spi)
+ 	for_each_set_bit(addr, &spi_present_mask, MCP_MAX_DEV_PER_CS) {
+ 		data->mcp[addr] = &data->chip[--chips];
+ 		data->mcp[addr]->irq = spi->irq;
++		data->mcp[addr]->dev = dev;
++		data->mcp[addr]->addr = MCP23S08_SPI_BASE | (addr << 1);
  
- 	wg_counts = (uint32_t *)(bo->vaddr + indirect_csd->offset);
+ 		ret = mcp23s08_spi_regmap_init(data->mcp[addr], dev, addr, info);
+ 		if (ret)
+@@ -184,7 +187,7 @@ static int mcp23s08_probe(struct spi_device *spi)
+ 		if (!data->mcp[addr]->pinctrl_desc.name)
+ 			return -ENOMEM;
  
--	if (wg_counts[0] == 0 || wg_counts[1] == 0 || wg_counts[2] == 0)
--		goto unmap_bo;
--
- 	args->cfg[0] = wg_counts[0] << V3D_CSD_CFG012_WG_COUNT_SHIFT;
- 	args->cfg[1] = wg_counts[1] << V3D_CSD_CFG012_WG_COUNT_SHIFT;
- 	args->cfg[2] = wg_counts[2] << V3D_CSD_CFG012_WG_COUNT_SHIFT;
- 
-+	if (wg_counts[0] == 0 || wg_counts[1] == 0 || wg_counts[2] == 0)
-+		goto unmap_bo;
-+
- 	num_batches = DIV_ROUND_UP(indirect_csd->wg_size, 16) *
- 		      (wg_counts[0] * wg_counts[1] * wg_counts[2]);
- 
+-		ret = mcp23s08_probe_one(data->mcp[addr], dev, 0x40 | (addr << 1),
++		ret = mcp23s08_probe_one(data->mcp[addr], dev, MCP23S08_SPI_BASE | (addr << 1),
+ 					 info->type, -1);
+ 		if (ret < 0)
+ 			return ret;
+-- 
+2.54.0
+
 
 
 
