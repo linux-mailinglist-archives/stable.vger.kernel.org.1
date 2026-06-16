@@ -1,60 +1,64 @@
-Return-Path: <stable+bounces-265349-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263803-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id NKuhNiKHMWrklgUAu9opvQ
-	(envelope-from <stable+bounces-265349-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:25:54 +0200
+	id BS7JHOBmMWojigUAu9opvQ
+	(envelope-from <stable+bounces-263803-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:08:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79F456931DC
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:25:54 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0429E690C74
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:08:16 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=h8v3rJD2;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265349-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-265349-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=a+5Fb81F;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263803-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-263803-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E652330320B4
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:25:53 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D27433015898
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:07:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DC1847A0D4;
-	Tue, 16 Jun 2026 17:25:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35AFF36E46F;
+	Tue, 16 Jun 2026 15:07:31 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1A004502F;
-	Tue, 16 Jun 2026 17:25:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8E8B3F65FB;
+	Tue, 16 Jun 2026 15:07:29 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781630750; cv=none; b=EeWS2fhSWWXfztPe3AAkVo2hT3sdj4H1+3sMc+H8JNyLkBViPumInxiSHBB6D7CO1C7bCcusC2OAh1WShYf7qAj5In9iMnOmNcQF7gJKeTJEMumrVhktoxECah/SA7gAXy3q+oAwwwJroa0IyXQOIyLzn4wpVgcQDNGfWVT78fk=
+	t=1781622451; cv=none; b=ZCCkxfa7FzaVvLPYpcAexcTjDTN9Wh++svymAytbuuvIBD1ZnHhnoEmKGcJeGUuT07jZ8JLt9d/IzeoOFVmRXiMniF+N+pSEgkXqZP3hPsXI/x6fP04r6Yr8HeSlq16LTiVLX8yW9+DN38C/sg21mjL5KjEuFo8RE76vysVCOCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781630750; c=relaxed/simple;
-	bh=Dp7JtqENOIb/rKDj7tCZOiQKC415Ng9u5Cy1Wl9Et/c=;
+	s=arc-20240116; t=1781622451; c=relaxed/simple;
+	bh=VgxE+PdmA30vJ2mOWyXFMsNffb1v64/HYdHZjlPHZqg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qzHSoG5AjUlc3nIp5H+Tb21HEoKdXFW7h0rC/2btOtCfxYikLGwmUIRQaCvLELEJ3QmWhxzdoeHeB3DZwFzEcyfglBkPH2rE7Rt4fPJLmHZ6xNs51HR4NH+g8l9wkRaTY+lgb81q4WXhwEQiEgVmDXox232IgPwy8En0XZ0kOLs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h8v3rJD2; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E370F1F000E9;
-	Tue, 16 Jun 2026 17:25:48 +0000 (UTC)
+	 MIME-Version; b=IdWRdMJfiO6eYqCtt5fKL6XS8GXEmDsOYmG8O6vUB/SXgH+RuG3fxvK7HGJmwPBeQdjnwlB6WWS3PEziJ42UJ9CuoCpe4UoDOBJEHDkXXvw+q/esZ85tP1eCfeA2oZxA/d9OYSWzdsdsIXnjnpsTW4xixA5GpKiDY4IeFXzXCx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a+5Fb81F; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4A681F000E9;
+	Tue, 16 Jun 2026 15:07:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781630749;
-	bh=+wWlJbW/ymf7to7MXFBbvUlVyryqHro/xEUreDVOCIE=;
+	s=korg; t=1781622449;
+	bh=WrnMIxAtwiypOr8qrbnDncoUl/KhJxlz6yRKhHZ3bt0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=h8v3rJD28K4bzaTGkystk/cucfYlL4peqnfb9WxnFfnhPmtSI1X8v+bjEZKU1LW1m
-	 TPRckbWcrPI/CV6VXNNy9OtA9c2ZV1bLuHB9Q3IuhQMiiCf1KFl8W7u9ypBFouIAtr
-	 q6BXEAlRYu0NGNAxUCZ00z68lupPZ21dLz10aL2g=
+	b=a+5Fb81F+k8ObeMslgl1Lzyk1rtqvv2EACjipa/2zSvMnbylDI9bTr47p2iqQIx1B
+	 /gCH8Tj7gV/I9HI6GR5rwinRtdLggnRUn4I/pO+IjI/iAAuuWJi5MFGzGIOtvlnqRz
+	 KEeTWn9lyuthNTLKGd3MpKC6BFduWGe+WTsaB+Z0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.1 089/522] Input: ims-pcu - fix usb_free_coherent() size in ims_pcu_buffers_free()
+	Leo Lin <leo@depthfirst.com>,
+	David Ahern <dahern@nvidia.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 7.0 005/378] ipv6: mcast: Fix use-after-free when processing MLD queries
 Date: Tue, 16 Jun 2026 20:23:56 +0530
-Message-ID: <20260616145130.039628274@linuxfoundation.org>
+Message-ID: <20260616145110.054767142@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,77 +70,142 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265349-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:fourier.thomas@gmail.com,m:dmitry.torokhov@gmail.com,m:fourierthomas@gmail.com,m:dmitrytorokhov@gmail.com,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-263803-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:leo@depthfirst.com,m:dahern@nvidia.com,m:idosch@nvidia.com,m:edumazet@google.com,m:jiayuan.chen@linux.dev,m:kuba@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com];
 	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,nvidia.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 79F456931DC
+X-Rspamd-Queue-Id: 0429E690C74
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-commit dab48a7e74e6a394f3aa0461a2b1fb0c7b38fcb8 upstream.
+commit 791c91dc7a9dfb2457d5e29b8216a6484b9c4b40 upstream.
 
-The input buffer size is pcu->max_in_size, but pcu->max_out_size is
-passed to usb_free_coherent().
+When processing an MLD query, a pointer to the multicast group address
+is retrieved when initially parsing the packet. This pointer is later
+dereferenced without being reloaded despite the fact that the skb header
+might have been reallocated following the pskb_may_pull() calls, leading
+to a use-after-free [1].
 
-Change size to match the allocation size.
+Fix by copying the multicast group address when the packet is initially
+parsed.
 
-Fixes: 628329d52474 ("Input: add IMS Passenger Control Unit driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Link: https://patch.msgid.link/20260522085412.45430-2-fourier.thomas@gmail.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+[1]
+BUG: KASAN: slab-use-after-free in __mld_query_work (net/ipv6/mcast.c:1512)
+Read of size 8 at addr ffff8881154b8e90 by task kworker/4:1/118
+
+Workqueue: mld mld_query_work
+Call Trace:
+<TASK>
+dump_stack_lvl (lib/dump_stack.c:94 lib/dump_stack.c:120)
+print_address_description.constprop.0 (mm/kasan/report.c:378)
+print_report (mm/kasan/report.c:482)
+kasan_report (mm/kasan/report.c:595)
+__mld_query_work (net/ipv6/mcast.c:1512)
+mld_query_work (net/ipv6/mcast.c:1563)
+process_one_work (kernel/workqueue.c:3314)
+worker_thread (kernel/workqueue.c:3397 kernel/workqueue.c:3478)
+kthread (kernel/kthread.c:436)
+ret_from_fork (arch/x86/kernel/process.c:158)
+ret_from_fork_asm (arch/x86/entry/entry_64.S:245)
+</TASK>
+
+[...]
+
+Freed by task 118:
+kasan_save_stack (mm/kasan/common.c:57)
+kasan_save_track (mm/kasan/common.c:78)
+kasan_save_free_info (mm/kasan/generic.c:584)
+__kasan_slab_free (mm/kasan/common.c:253 mm/kasan/common.c:285)
+kfree (./include/linux/kasan.h:235 mm/slub.c:2689 mm/slub.c:6251 mm/slub.c:6566)
+pskb_expand_head (net/core/skbuff.c:2335)
+__pskb_pull_tail (net/core/skbuff.c:2878 (discriminator 4))
+__mld_query_work (net/ipv6/mcast.c:1495 (discriminator 1))
+mld_query_work (net/ipv6/mcast.c:1563)
+process_one_work (kernel/workqueue.c:3314)
+worker_thread (kernel/workqueue.c:3397 kernel/workqueue.c:3478)
+kthread (kernel/kthread.c:436)
+ret_from_fork (arch/x86/kernel/process.c:158)
+ret_from_fork_asm (arch/x86/entry/entry_64.S:245)
+
+Fixes: 97300b5fdfe2 ("[MCAST] IPv6: Check packet size when process Multicast")
+Reported-by: Leo Lin <leo@depthfirst.com>
+Reviewed-by: David Ahern <dahern@nvidia.com>
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Link: https://patch.msgid.link/20260603101811.612594-1-idosch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/misc/ims-pcu.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv6/mcast.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/input/misc/ims-pcu.c
-+++ b/drivers/input/misc/ims-pcu.c
-@@ -1598,7 +1598,7 @@ static void ims_pcu_buffers_free(struct
- 	usb_kill_urb(pcu->urb_in);
- 	usb_free_urb(pcu->urb_in);
+--- a/net/ipv6/mcast.c
++++ b/net/ipv6/mcast.c
+@@ -1424,9 +1424,9 @@ out:
+ static void __mld_query_work(struct sk_buff *skb)
+ {
+ 	struct mld2_query *mlh2 = NULL;
+-	const struct in6_addr *group;
+ 	unsigned long max_delay;
+ 	struct inet6_dev *idev;
++	struct in6_addr group;
+ 	struct ifmcaddr6 *ma;
+ 	struct mld_msg *mld;
+ 	int group_type;
+@@ -1458,8 +1458,8 @@ static void __mld_query_work(struct sk_b
+ 		goto kfree_skb;
  
--	usb_free_coherent(pcu->udev, pcu->max_out_size,
-+	usb_free_coherent(pcu->udev, pcu->max_in_size,
- 			  pcu->urb_in_buf, pcu->read_dma);
+ 	mld = (struct mld_msg *)icmp6_hdr(skb);
+-	group = &mld->mld_mca;
+-	group_type = ipv6_addr_type(group);
++	group = mld->mld_mca;
++	group_type = ipv6_addr_type(&group);
  
- 	kfree(pcu->urb_out_buf);
+ 	if (group_type != IPV6_ADDR_ANY &&
+ 	    !(group_type&IPV6_ADDR_MULTICAST))
+@@ -1509,7 +1509,7 @@ static void __mld_query_work(struct sk_b
+ 		}
+ 	} else {
+ 		for_each_mc_mclock(idev, ma) {
+-			if (!ipv6_addr_equal(group, &ma->mca_addr))
++			if (!ipv6_addr_equal(&group, &ma->mca_addr))
+ 				continue;
+ 			if (ma->mca_flags & MAF_TIMER_RUNNING) {
+ 				/* gsquery <- gsquery && mark */
 
 
 
