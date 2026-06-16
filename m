@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-265650-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265110-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id dZPFBMONMWonmgUAu9opvQ
-	(envelope-from <stable+bounces-265650-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:54:11 +0200
+	id C8dLN6+DMWprlQUAu9opvQ
+	(envelope-from <stable+bounces-265110-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:11:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54CA06939C9
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:54:10 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 490BB692D4E
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:11:11 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=OFrHOkB0;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265650-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265650-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Lff8iDdL;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265110-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265110-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A4B4B3002F86
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:51:20 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1BE403086C84
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:05:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EC32477982;
-	Tue, 16 Jun 2026 17:51:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2E2A472767;
+	Tue, 16 Jun 2026 17:05:18 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36F4A3D669A;
-	Tue, 16 Jun 2026 17:51:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1954328610;
+	Tue, 16 Jun 2026 17:05:17 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781632279; cv=none; b=usLpKk0pm4FtNfgqotq/Lxt4wZAsBj7vlSiaBXECtSMJItXVLCXN5Ubx4d/FUrmvYMiguzCryOgGGSPssNviY0KGREA5M1RmQ5rAxIc51vc9+npLUB0c3BarjZMkaG51/qF6OCXqa6DVuod30SYpPWzrMZP/EiC67SQZ7mZFA+4=
+	t=1781629518; cv=none; b=mYEWmvd+uBUaOPfR1squb2s0/Gvy30Wgctb7xotrufq3VVrOGYH9zSwbFcV4ZaygisPduCYcIi6G/LhhFMuE5I/JN7X3tH15Ho3lxYEFJ/A0bGY55nqGwVN8IEXCPtuRl2s1zHFZxOTuiNJOeZchqUXOth/ZpQtIygaFuf9v9Mc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781632279; c=relaxed/simple;
-	bh=Yq0GyMjThH8fyZEp7M0sUv7xDEnyQIQ7H0CN54Kce8I=;
+	s=arc-20240116; t=1781629518; c=relaxed/simple;
+	bh=C/ce/y3ePRfbqEUVOiWKqHMq1Ixjly/Q0+ODLYFxM8A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=urKbNdn+/aDB526a2rtnoJzhGfGKLmnMnoiwDNLpb0KlIY1Wteya6/wn/qteOtGgYn9v2lPDXuEjuOUe6TRcjEFACY+EmO3kD81471Iso/JJsqc1RcnAOlXcVBnT1SjcQQwxojl3CTdwpG8w4relyZinStM43xGDi/3nQRe5ekk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OFrHOkB0; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 107A81F000E9;
-	Tue, 16 Jun 2026 17:51:16 +0000 (UTC)
+	 MIME-Version; b=mO/jfnc+PQxDm4hHXE77lzUOMFndnEbFpJTZNFWd9ig3GElYpxS8+7De/fpaqbxS8haIkmnOnA2drk3PdKfRORgXpn0CvZ5pcZxvb/ADkJf1pvbPyw/XHxIMxaRq+pdGpc9gxBxIZS9aascjusAd4RVpr1VUdz8TMxzm6EV2iOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lff8iDdL; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC1811F000E9;
+	Tue, 16 Jun 2026 17:05:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781632278;
-	bh=du+LYkAMb3JmJYOikrWDBk56ceWoSEERpvv+tc+GVIQ=;
+	s=korg; t=1781629517;
+	bh=iJydEXHTU/xdU3/XmJsMeSkItJ3m22VCfItmTAU+rNs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OFrHOkB0XcghEKNjxHbMe/fMR7jkBYBD5gfCYnaakqyoJ8KD4WUL0mM0mbT62fIrW
-	 LswChFYXS0EUFY9DMuYYysEt3/5IAZ1wm92BojmDvuAoekHkirFPJk1QfLDlNhxzoY
-	 dZLFNM5ZVEPE83n7NAZaDkMQXKktjS7w98wCNcno=
+	b=Lff8iDdLhoy15ivvsl6ovJyn6wMmxT/j9VAXEaZza26WN3hLJ0qIKzMP5oOWAbeZf
+	 j5+asdO8lUAS5g/jen1AsrdKyWRqb6eCuSHa8hNtUVKIpC/x6oeLe/S+FcpYbg8Bc7
+	 rRTmmACVgZBPwuEM9mVeZwimqZxl/0byyh9yvhlw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahisa Kojima <masahisa.kojima@linaro.org>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 381/522] spi: syncuacer: fix controller deregistration
+	Adrian Korwel <adriank20047@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.6 301/452] USB: serial: io_ti: fix heap overflow in build_i2c_fw_hdr()
 Date: Tue, 16 Jun 2026 20:28:48 +0530
-Message-ID: <20260616145143.600431881@linuxfoundation.org>
+Message-ID: <20260616145133.326669574@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,89 +68,84 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-265110-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:adriank20047@gmail.com,m:johan@kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265650-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:masahisa.kojima@linaro.org,m:johan@kernel.org,m:broonie@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linaro.org:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 54CA06939C9
+X-Rspamd-Queue-Id: 490BB692D4E
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Adrian Korwel <adriank20047@gmail.com>
 
-[ Upstream commit 75d849c3452e9611de031db45b3149ba9a99035f ]
+commit 0fd2b00b2d3d05e3eaa13342b3dfb0fa85c226ae upstream.
 
-Make sure to deregister the controller before disabling underlying
-resources like clocks during driver unbind.
+build_i2c_fw_hdr() allocates a fixed-size buffer of
+(16*1024 - 512) + sizeof(struct ti_i2c_firmware_rec) bytes, then
+copies le16_to_cpu(img_header->Length) bytes into it without
+validating that Length fits within the available space after the
+firmware record header.
 
-Fixes: b0823ee35cf9 ("spi: Add spi driver for Socionext SynQuacer platform")
-Cc: stable@vger.kernel.org	# 5.3
-Cc: Masahisa Kojima <masahisa.kojima@linaro.org>
+img_header->Length is a __le16 from the firmware file and can be
+up to 65535. check_fw_sanity() validates the total firmware size
+but not img_header->Length specifically.
+
+Fix by rejecting images where img_header->Length exceeds the
+available destination space.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Adrian Korwel <adriank20047@gmail.com>
 Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260410081757.503099-21-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-synquacer.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/usb/serial/io_ti.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/spi/spi-synquacer.c
-+++ b/drivers/spi/spi-synquacer.c
-@@ -719,7 +719,7 @@ static int synquacer_spi_probe(struct pl
- 	pm_runtime_set_active(sspi->dev);
- 	pm_runtime_enable(sspi->dev);
+--- a/drivers/usb/serial/io_ti.c
++++ b/drivers/usb/serial/io_ti.c
+@@ -844,6 +844,11 @@ static int build_i2c_fw_hdr(u8 *header,
+ 	/* Pointer to fw_down memory image */
+ 	img_header = (struct ti_i2c_image_header *)&fw->data[4];
  
--	ret = devm_spi_register_controller(sspi->dev, host);
-+	ret = spi_register_controller(host);
- 	if (ret)
- 		goto disable_pm;
- 
-@@ -740,9 +740,15 @@ static void synquacer_spi_remove(struct
- 	struct spi_controller *host = platform_get_drvdata(pdev);
- 	struct synquacer_spi *sspi = spi_controller_get_devdata(host);
- 
-+	spi_controller_get(host);
-+
-+	spi_unregister_controller(host);
-+
- 	pm_runtime_disable(sspi->dev);
- 
- 	clk_disable_unprepare(sspi->clk);
-+
-+	spi_controller_put(host);
- }
- 
- static int __maybe_unused synquacer_spi_suspend(struct device *dev)
++	if (le16_to_cpu(img_header->Length) >
++			buffer_size - sizeof(struct ti_i2c_firmware_rec)) {
++		kfree(buffer);
++		return -EINVAL;
++	}
+ 	memcpy(buffer + sizeof(struct ti_i2c_firmware_rec),
+ 		&fw->data[4 + sizeof(struct ti_i2c_image_header)],
+ 		le16_to_cpu(img_header->Length));
 
 
 
