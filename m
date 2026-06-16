@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-264300-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266406-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id vndjFAVyMWoEjgUAu9opvQ
-	(envelope-from <stable+bounces-264300-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:55:49 +0200
+	id U8BjB6WcMWrPoAUAu9opvQ
+	(envelope-from <stable+bounces-266406-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:57:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FE6D691854
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:55:48 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C353D6949BE
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:57:40 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=C10FWn1u;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264300-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264300-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=NoX5y2ke;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266406-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266406-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6D5063059FEA
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:53:59 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3EA7A300825F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:57:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A64FF44CF44;
-	Tue, 16 Jun 2026 15:53:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28F7C47CC7E;
+	Tue, 16 Jun 2026 18:57:39 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7369215B998;
-	Tue, 16 Jun 2026 15:53:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC1563CEBBD;
+	Tue, 16 Jun 2026 18:57:37 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781625238; cv=none; b=SFHOu8YaCsIFaDOjRKIl0V5GYZbAzwFEzm+J5ET1/6M4U23E8GqTwLapSNOvTlbGtsm+NLjlrGOtn7RNju4oMDe2xCgVqBzKl+MIHtEr2+94MpsJLKLw0jnUuuox3aj7GXePiHKpQp+5PolffF70Zf1O06TfRe3nth9gyz6SnLQ=
+	t=1781636259; cv=none; b=Sn2PPu670XSoRyBaH+/YFGrBU2o26/a4f4xYo3hP/4H6BJeM5N4YpP4x92mmlj2RCy6onLpSDeK4ml8ivUh2KT3T8WeHLcaTA9hTIi/fRuzUay/MD5hhDrZcYIP0orddvP1i1z5l84BbSz0mvzIplYRRog8ErfEAlzIC6z+hGJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781625238; c=relaxed/simple;
-	bh=cpbzTHJsrzbGYI+nSBOcyvFqLGtaS4RfnpxG8AKH7xA=;
+	s=arc-20240116; t=1781636259; c=relaxed/simple;
+	bh=oOzCkgKYgj6TCIScV5m+ej3kTFF5CcCLYxOJ/+4pq84=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gdhMgJgD2K1Btza90FXDz6o1qisoyEfsP3DNw2xnQ1DTW/Yb4GzcnUz1wNenyeS7VC+VmmTudTYO9kz41x50iwB5b331WLJ3Lgjkd5HTeVYy4JrNe/YC4tA607gk/sqa9mcZsVgsRsj5koCQnPfF5KVN671TneCPnvgxKbPOFMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C10FWn1u; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C8C11F000E9;
-	Tue, 16 Jun 2026 15:53:55 +0000 (UTC)
+	 MIME-Version; b=F68GMt1g9k0YXsbB7RCJOYPlXc+gsPJ06eL+psALAcvZ3iN4VrRBVZIWcaVd8DHB21Ek1IncN/EDz3InTLhq1yVA6Z+ysxnr2AfCn7nSOO3bjbg7+amojyLwH4iJ27s0PEk/F22v6yQbJynE2yXTqlXIbr9TZwkB0KEU8++oC9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NoX5y2ke; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A41031F000E9;
+	Tue, 16 Jun 2026 18:57:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781625237;
-	bh=JvkztUMJAJmtHU24vZRJFXCXw0+3Ezh0hpSwIGyVifw=;
+	s=korg; t=1781636257;
+	bh=uEndllCSgNh8aeop4dXKhAonfkCUPHJbfEt7Gpq4gP4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=C10FWn1uILA0kUXV0vbWGRKCOob3OUHrcUmREftiWK8Zqg7s29CLB3fzlu6Cyn9zW
-	 qLqjxkAHvUfbumQjx5YddwUp2jNl06ORrdG6u2P8t652hCqKe7Fu4JoSccZ62+agsD
-	 TdZyaxcEl6FU3Pi5BH135+5iYoORUrUUUJZohJhk=
+	b=NoX5y2keXVO3AKCY+AnaRYiGsTcY4KSwhAJEkjRdoOceZY4QGaA6vLCbiMWHk+Zvb
+	 s0jJs+wMuPu3LDYoHoyuXEaDa1+AQoF3ymMblcO/Z5Nebl3Gk0CUekWhjwZmiih8Q3
+	 A8nmLovSLeE3q9jAAZ0RuDRN/cb/FVoMQhGA28Xg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mingyu Wang <25181214217@stu.xidian.edu.cn>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 103/325] net: qrtr: fix refcount saturation and potential UAF in qrtr_port_remove
-Date: Tue, 16 Jun 2026 20:28:19 +0530
-Message-ID: <20260616145102.812762014@linuxfoundation.org>
+	Jisheng Zhang <jszhang@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulfh@kernel.org>
+Subject: [PATCH 5.10 204/342] mmc: sdhci: add signal voltage switch in sdhci_resume_host
+Date: Tue, 16 Jun 2026 20:28:20 +0530
+Message-ID: <20260616145057.681360258@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,117 +69,85 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264300-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-266406-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:25181214217@stu.xidian.edu.cn,m:horms@kernel.org,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jszhang@kernel.org,m:adrian.hunter@intel.com,m:ulfh@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,xidian.edu.cn:email,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9FE6D691854
+X-Rspamd-Queue-Id: C353D6949BE
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mingyu Wang <25181214217@stu.xidian.edu.cn>
+From: Jisheng Zhang <jszhang@kernel.org>
 
-[ Upstream commit a2171131ecda1ed61a594a1eb715e75fdad0fef5 ]
+commit f595e8e77a51eee35e331f69321766593a845ef2 upstream.
 
-In qrtr_port_remove(), the socket reference count is decremented via
-__sock_put() before the port is removed from the qrtr_ports XArray and
-before the RCU grace period elapses.
+I met one suspend/resume issue with sdr104 capable sdio wifi card (with
+"keep-power-in-suspend" set in DT property):
+After resuming from suspend to ram, the sdio wifi card stops working.
+Further debug shows that although ios shows the sdio card is at sdr104
+mode, the voltage is still at 3V3. This is due to missing the calling
+of ->start_signal_voltage_switch() in sdhci_resume_host().
 
-This breaks the fundamental RCU update paradigm. It exposes a race
-window where a concurrent RCU reader (such as qrtr_reset_ports() or
-qrtr_port_lookup()) can obtain a pointer to the socket from the XArray,
-and attempt to call sock_hold() on a socket whose reference count has
-already dropped to zero.
+Fix this issue by adding ->start_signal_voltage_switch() in
+sdhci_resume_host(). This also matches what we do for
+sdhci_runtime_resume_host().
 
-This exact race condition was hit during syzkaller fuzzing, leading to
-the following refcount saturation warning and a potential Use-After-Free:
+Then the question is: why this issue hasn't reported and fixed for so
+long time. IMHO, several reasons: Some host controllers just kick off
+the runtime resume for system resume, so they benefit from the well
+supported runtime pm code; Some platforms just use the old sdio wifi
+card which doesn't need signal voltage switch at all, the default
+voltage is 3v3 after resuming.
 
-  refcount_t: saturated; leaking memory.
-  WARNING: CPU: 3 PID: 1273 at lib/refcount.c:22 refcount_warn_saturate+0xae/0x1d0
-  Modules linked in: qrtr(+) bochs drm_shmem_helper ...
-  Call Trace:
-   <TASK>
-   qrtr_reset_ports net/qrtr/af_qrtr.c:768 [inline] [qrtr]
-   __qrtr_bind.isra.0+0x48b/0x570 net/qrtr/af_qrtr.c:805 [qrtr]
-   qrtr_bind+0x17d/0x210 net/qrtr/af_qrtr.c:901 [qrtr]
-   kernel_bind+0xe4/0x120 net/socket.c:3592
-   qrtr_ns_init+0x1a6/0x380 net/qrtr/ns.c:715 [qrtr]
-   qrtr_proto_init+0x3b/0xff0 net/qrtr/af_qrtr.c:169 [qrtr]
-   do_one_initcall+0xf5/0x5e0 init/main.c:1283
-   ...
-   </TASK>
-
-Fix this by deferring the reference count decrement until after the
-xa_erase() and the synchronize_rcu() complete.
-
-(Note: The v1 of this patch incorrectly replaced __sock_put() with
-sock_put(). As Simon Horman pointed out, the callers of qrtr_port_remove()
-still hold a reference to the socket, so freeing the socket memory here
-would lead to a subsequent UAF in the caller. Thus, the __sock_put() is
-kept, but only repositioned to close the RCU race.)
-
-Fixes: bdabad3e363d ("net: Add Qualcomm IPC router")
-Signed-off-by: Mingyu Wang <25181214217@stu.xidian.edu.cn>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260604064801.1180388-1-w15303746062@163.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 6308d2905bd3 ("mmc: sdhci: add quirk for keeping card power during suspend")
+Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Ulf Hansson <ulfh@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/qrtr/af_qrtr.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/mmc/host/sdhci.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/qrtr/af_qrtr.c b/net/qrtr/af_qrtr.c
-index b703e4c6458532..2c009793f1931d 100644
---- a/net/qrtr/af_qrtr.c
-+++ b/net/qrtr/af_qrtr.c
-@@ -707,13 +707,13 @@ static void qrtr_port_remove(struct qrtr_sock *ipc)
- 	if (port == QRTR_PORT_CTRL)
- 		port = 0;
- 
--	__sock_put(&ipc->sk);
--
- 	xa_erase(&qrtr_ports, port);
- 
- 	/* Ensure that if qrtr_port_lookup() did enter the RCU read section we
- 	 * wait for it to up increment the refcount */
- 	synchronize_rcu();
-+
-+	__sock_put(&ipc->sk);
- }
- 
- /* Assign port number to socket.
--- 
-2.53.0
-
+--- a/drivers/mmc/host/sdhci.c
++++ b/drivers/mmc/host/sdhci.c
+@@ -3756,6 +3756,7 @@ int sdhci_resume_host(struct sdhci_host
+ 		host->pwr = 0;
+ 		host->clock = 0;
+ 		host->reinit_uhs = true;
++		mmc->ops->start_signal_voltage_switch(mmc, &mmc->ios);
+ 		mmc->ops->set_ios(mmc, &mmc->ios);
+ 	} else {
+ 		sdhci_init(host, (host->mmc->pm_flags & MMC_PM_KEEP_POWER));
 
 
 
