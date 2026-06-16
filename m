@@ -1,63 +1,62 @@
-Return-Path: <stable+bounces-266489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266103-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ld4zIKGfMWouogUAu9opvQ
-	(envelope-from <stable+bounces-266489-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:10:25 +0200
+	id fvFLGZSWMWpPngUAu9opvQ
+	(envelope-from <stable+bounces-266103-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:31:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3CA8694D42
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:10:24 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 154EC694369
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:31:48 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=wZyCby59;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266489-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266489-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=bcYwT8pB;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266103-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266103-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E20083094FA8
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:04:45 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 73FC3304CA8D
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:31:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 430E13D810C;
-	Tue, 16 Jun 2026 19:04:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4AF53D8902;
+	Tue, 16 Jun 2026 18:31:16 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12360349CF0;
-	Tue, 16 Jun 2026 19:04:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AB5632E13B;
+	Tue, 16 Jun 2026 18:31:15 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781636685; cv=none; b=NSVD1sm1VDZPFG0lVFkYBqleye0h2RshKcMBd4BDasrVO/KSOKLXeellWZBU+2E+ANIDYgwwdWv7b76S7X/BpP7rSvTSfGJkMNIZMvXb+y+mDDpry0uPu3nQqL+4+6+GJrXZEedr3kJqAfaEUFXnWeXMybL3IWwCIndIZO4Xy6o=
+	t=1781634676; cv=none; b=eTK8wESTxqS5qS3uOMUOIkhtREaFr2il/2cBOJni0Zx4jxGy31REryv1bYKWOiwhDf4gszUfHor0mnTiri7c3a4YZxLBw8uIlg+tTNCg7oCA9hai0HLBMUJQ/Fz7RD5Yut7RY6Z97eJFV7eakN7tBTIeCOYIdrjvRWS37Z41PPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781636685; c=relaxed/simple;
-	bh=Ip7lHBBJsHtN+Fe/Yj+l/robd0BdjS7P4HFHfLXOCt0=;
+	s=arc-20240116; t=1781634676; c=relaxed/simple;
+	bh=YteqI0JdaJUbsmTpg6C6ixOiCHUkRFqjSGrIQGyuafw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Brgx7eAgV1surVsCKDLeiMRnmKy//Ta8+upHcHO9Q0/uIKzU8NyslMtH24XQ3oQMomc17u4RML9jLlXYYhYFfaruAyaW9jDeDMKrjRltn+SsuP2sDB1ge8rCpCJLnNzyagxC9qXKHD4ohxCofPBrQYtxJoYN1cVHwaPLGyeLLkE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wZyCby59; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C11F1F000E9;
-	Tue, 16 Jun 2026 19:04:42 +0000 (UTC)
+	 MIME-Version; b=Bu+4dR1sMRvrZnRZjZKuv6PKio/kXEeHsmNnRu/b0zdKMJ+GKaPgF6GB+WrZp/rdB3spkU76LlaO7X0uf5efXxkCLvJbLPV41bKbBVFTJePtwPRmsQyharbYqLyIRYxsTxq6L5LiGM9XzZ0+LgibV6nEIoZ4EsE5HoY9y6C0Duk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bcYwT8pB; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69D451F000E9;
+	Tue, 16 Jun 2026 18:31:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781636684;
-	bh=mERrk5RzYIi4lrooZI9OE2tTrPA8cyu0hhXiWyLKHeA=;
+	s=korg; t=1781634675;
+	bh=YRcWNpYq/sxw+4RB6bNMmOPx4WPQkI8IVa0joWGzlkE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=wZyCby59Kj/Bx/IpPtlbWb9FhiVP+5D6O48xVOjSV4gGAgmFZo4uPGlYQnDfhSGiV
-	 byn1/Q4w9SeL4bUOFLppazO+xLZndlf6t1r/4ARPSoFu+pypvowlaEpZrWEfPuNLce
-	 E87zdManf0JcvghVHg2FlIyHsSeKcxLEHZV8pxmQ=
+	b=bcYwT8pBbHFYesKrViPW7WEUaUzqWETE73OZIf74CKwUbLTHNTc/BQtf42AZiEGk7
+	 l02YD8nD4ri4HMLuYuF/XYNH8FH0EI5gb0hzbvoOtNHFCytOZ/0a8rXuHLHgz0BFuB
+	 YuN7Z6FS/Vsas20tL2qr7fyMkl6IdYZh8xLT3YLo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	David Carlier <devnexen@gmail.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Masahisa Kojima <masahisa.kojima@linaro.org>,
+	Johan Hovold <johan@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 253/342] tracepoint: balance regfunc() on func_add() failure in tracepoint_add_func()
+Subject: [PATCH 5.15 311/411] spi: syncuacer: fix controller deregistration
 Date: Tue, 16 Jun 2026 20:29:09 +0530
-Message-ID: <20260616145100.029593762@linuxfoundation.org>
+Message-ID: <20260616145117.677652732@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,92 +70,91 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,efficios.com,gmail.com,goodmis.org];
-	TAGGED_FROM(0.00)[bounces-266489-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mhiramat@kernel.org,m:mathieu.desnoyers@efficios.com,m:devnexen@gmail.com,m:rostedt@goodmis.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-266103-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:masahisa.kojima@linaro.org,m:johan@kernel.org,m:broonie@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,goodmis.org:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,msgid.link:url,efficios.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,linaro.org:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D3CA8694D42
+X-Rspamd-Queue-Id: 154EC694369
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Carlier <devnexen@gmail.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit fad217e16fded7f3c09f8637b0f6a224d58b5f2e ]
+[ Upstream commit 75d849c3452e9611de031db45b3149ba9a99035f ]
 
-When a tracepoint goes through the 0 -> 1 transition, tracepoint_add_func()
-invokes the subsystem's ext->regfunc() before attempting to install the
-new probe via func_add(). If func_add() then fails (for example, when
-allocate_probes() cannot allocate a new probe array under memory pressure
-and returns -ENOMEM), the function returns the error without calling the
-matching ext->unregfunc(), leaving the side effects of regfunc() behind
-with no installed probe to justify them.
+Make sure to deregister the controller before disabling underlying
+resources like clocks during driver unbind.
 
-For syscall tracepoints this is particularly unpleasant: syscall_regfunc()
-bumps sys_tracepoint_refcount and sets SYSCALL_TRACEPOINT on every task.
-After a leaked failure, the refcount is stuck at a non-zero value with no
-consumer, and every task continues paying the syscall trace entry/exit
-overhead until reboot. Other subsystems providing regfunc()/unregfunc()
-pairs exhibit similarly scoped persistent state.
-
-Mirror the existing 1 -> 0 cleanup and call ext->unregfunc() in the
-func_add() error path, gated on the same condition used there so the
-unwind is symmetric with the registration.
-
-Fixes: 8cf868affdc4 ("tracing: Have the reg function allow to fail")
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Link: https://patch.msgid.link/20260413190601.21993-1-devnexen@gmail.com
-Signed-off-by: David Carlier <devnexen@gmail.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-[ changed `tp->ext->unregfunc` to `tp->unregfunc` to match older struct layout ]
+Fixes: b0823ee35cf9 ("spi: Add spi driver for Socionext SynQuacer platform")
+Cc: stable@vger.kernel.org	# 5.3
+Cc: Masahisa Kojima <masahisa.kojima@linaro.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260410081757.503099-21-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+[ renamed spi_controller/host to spi_master/master and kept int return type with `return 0;` ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/tracepoint.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/spi/spi-synquacer.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/kernel/tracepoint.c
-+++ b/kernel/tracepoint.c
-@@ -358,6 +358,8 @@ static int tracepoint_add_func(struct tr
- 			lockdep_is_held(&tracepoints_mutex));
- 	old = func_add(&tp_funcs, func, prio);
- 	if (IS_ERR(old)) {
-+		if (tp->unregfunc && !static_key_enabled(&tp->key))
-+			tp->unregfunc();
- 		WARN_ON_ONCE(warn && PTR_ERR(old) != -ENOMEM);
- 		return PTR_ERR(old);
- 	}
+--- a/drivers/spi/spi-synquacer.c
++++ b/drivers/spi/spi-synquacer.c
+@@ -719,7 +719,7 @@ static int synquacer_spi_probe(struct pl
+ 	pm_runtime_set_active(sspi->dev);
+ 	pm_runtime_enable(sspi->dev);
+ 
+-	ret = devm_spi_register_master(sspi->dev, master);
++	ret = spi_register_master(master);
+ 	if (ret)
+ 		goto disable_pm;
+ 
+@@ -740,10 +740,16 @@ static int synquacer_spi_remove(struct p
+ 	struct spi_master *master = platform_get_drvdata(pdev);
+ 	struct synquacer_spi *sspi = spi_master_get_devdata(master);
+ 
++	spi_master_get(master);
++
++	spi_unregister_master(master);
++
+ 	pm_runtime_disable(sspi->dev);
+ 
+ 	clk_disable_unprepare(sspi->clk);
+ 
++	spi_master_put(master);
++
+ 	return 0;
+ }
+ 
 
 
 
