@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-266487-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264170-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 52phA5ufMWorogUAu9opvQ
-	(envelope-from <stable+bounces-266487-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:10:19 +0200
+	id LZo0HAFxMWqRjQUAu9opvQ
+	(envelope-from <stable+bounces-264170-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:51:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F145694D37
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:10:18 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9A66691715
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:51:28 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=YWLIfmj+;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266487-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266487-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=0bTGzFJh;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264170-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264170-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 021933044C22
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:04:36 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5CE0F30B7588
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:42:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A9303DDDA0;
-	Tue, 16 Jun 2026 19:04:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E04E44CF2E;
+	Tue, 16 Jun 2026 15:41:29 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A71593DA5A8;
-	Tue, 16 Jun 2026 19:04:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27F8D44E021;
+	Tue, 16 Jun 2026 15:41:28 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781636675; cv=none; b=hRSZmDm46uZaqWMP5Go2ca81Tr2J7vBxqDNAxH0o/SS7Q6TYu3ioPOUJJopElbcReJiXJHSslXmxJZJVmjK5v0I7XQyZrGRVoyijaPG6H4XUyv5LxmH+vMVinFOzDWyYdLRKHa6klCCu9M564OJ4IQKI2P+Cb05xOnCuWOEUw4Q=
+	t=1781624489; cv=none; b=lAIYU7AmBlPRa9rbGb+h2UXM1s7mj29CZQlXFHBQq/fRsHGDVVS0K8VlG/Vgx+APYnp8RCb5B7dHHg+yoYzvxV84sywwvndkljKn8oS/dD0EDY1JYIAC5hvw1D9n/Qgld9lNpn2Db4SkeUE9Uv07XEdUmfzMxkqu66zKBJwsAv0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781636675; c=relaxed/simple;
-	bh=P12hNzqBJkUhzwPwXNsoWlSrHnCrGMCB6xp1FzTSB+w=;
+	s=arc-20240116; t=1781624489; c=relaxed/simple;
+	bh=AjksXOS2H0DdijgZbpkH7GoAO3wwhnv0xKk80J5nqOM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XTmURo0jcVWt0s+7IpSTjWqBD0wK877NFT9QB0nE93GgC5nkfATMRaiH2xgjvdlTrKJOpmy/0yO9LZUfvzb5Xc4q+bOLg8E4b2I0Ph3B3gZPgD4sjlS6j3h8ulk0etXDDCOr0wQARb2gnUL46o1NEwKhbXLCfooIQMpM24oV63U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YWLIfmj+; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E9221F000E9;
-	Tue, 16 Jun 2026 19:04:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=aoCvSozREBCD8j77iZsCddaDWIkfehLYSmc5/1ygh+Manom7a0Uo5dASlGQ3CHyE2xyaRQywUfWhyJ+uub9DSyInQFkB2Azxm6IQR9PLCruGTrQ15rilCWqaTgJFkywaw4GIYc5bivCFB8hpDgOiXl4G0EtfFvdYSa7KSd0kokQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0bTGzFJh; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FF081F000E9;
+	Tue, 16 Jun 2026 15:41:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781636673;
-	bh=lEdfHlOuZoCmGOcBsLEBhmnJNXRk31dBIKE3fOj98aA=;
+	s=korg; t=1781624488;
+	bh=9+d7yA6Wpo6n/h1x2ScXz8N+gnBuxlEXz8ItrPMRj+M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=YWLIfmj+G9pS0y5eeIS4XsovF/FTFmP9f+hVbe2KGr5cCp6VidBnIzGUmQ3ek6i6/
-	 33urt4hhwyAxXhiZab+1YVvXYZ89/HA8hKnIVb5hvU2Jssu6WkDAOXjlMgRpojauJE
-	 s3GyOKnJlDwFV8pFOSm3Va5A2gWvsyDYCUFMSnIU=
+	b=0bTGzFJhtnCP+XZoSCtmtHeiem6OsPYahaOEMqbEnTAcaafvsiFjbaz7GQRAxLjIi
+	 M3LYgzw13eq9a2qeiyUHs1bjgVcZiuwewsjcmfyCr9bNqLpo7TG0Y6Zueb3KCj2bzW
+	 6kO8yZ4L6s2uHLAZwzB5cGzJ1NvUocvqSvEjWj6Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yajun Deng <yajun.deng@linux.dev>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 282/342] net: Remove redundant if statements
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Donet Tom <donettom@linux.ibm.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 7.0 347/378] drm/amdgpu: Fix incorrect VRAM GART mappings on non-4K page size systems
 Date: Tue, 16 Jun 2026 20:29:38 +0530
-Message-ID: <20260616145101.544026812@linuxfoundation.org>
+Message-ID: <20260616145128.432529886@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,791 +66,104 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266487-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264170-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:yajun.deng@linux.dev,m:davem@davemloft.net,m:sashal@kernel.org,s:lists@lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,linux.ibm.com];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:timur.kristof@gmail.com,m:christian.koenig@amd.com,m:donettom@linux.ibm.com,m:alexander.deucher@amd.com,m:timurkristof@gmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,davemloft.net:email,vger.kernel.org:from_smtp,linux.dev:email]
+	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 6F145694D37
+X-Rspamd-Queue-Id: B9A66691715
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yajun Deng <yajun.deng@linux.dev>
+From: Donet Tom <donettom@linux.ibm.com>
 
-[ Upstream commit 1160dfa178eb848327e9dec39960a735f4dc1685 ]
+commit ec4c462e2d8161b32038e21e7187f4a15fe1661d upstream.
 
-The 'if (dev)' statement already move into dev_{put , hold}, so remove
-redundant if statements.
+When mapping VRAM pages into the GART page table,
+amdgpu_gart_map_vram_range() assumes that the system page size is the
+same as the GPU page size.
 
-Signed-off-by: Yajun Deng <yajun.deng@linux.dev>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: e196115ec330 ("netfilter: nf_queue: hold bridge skb->dev while queued")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+On systems with non-4K page sizes, multiple GPU pages can exist within
+a single CPU page. As a result, the mappings are created incorrectly
+because fewer page table entries are programmed than required.
+
+Fix this by programming the mappings correctly for non-4K page size
+systems.
+
+Fixes: 237d623ae659 ("drm/amdgpu/gart: Add helper to bind VRAM pages (v2)")
+Reviewed-by: Timur Kristóf <timur.kristof@gmail.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Donet Tom <donettom@linux.ibm.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit a8f0bc22388f74e0cf4ed8b7d1846c580eaf44cc)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/bridge_loop_avoidance.c |    6 ++----
- net/batman-adv/distributed-arp-table.c |    3 +--
- net/batman-adv/gateway_client.c        |    3 +--
- net/batman-adv/multicast.c             |    9 +++------
- net/batman-adv/originator.c            |   12 ++++--------
- net/batman-adv/translation-table.c     |    9 +++------
- net/can/raw.c                          |    8 ++------
- net/core/dev.c                         |    6 ++----
- net/core/drop_monitor.c                |    6 ++----
- net/core/dst.c                         |    6 ++----
- net/core/neighbour.c                   |   15 +++++----------
- net/ethtool/netlink.c                  |    6 ++----
- net/ieee802154/nl-phy.c                |    3 +--
- net/ieee802154/nl802154.c              |    3 +--
- net/ieee802154/socket.c                |    3 +--
- net/ipv4/fib_semantics.c               |    4 +---
- net/ipv4/route.c                       |    3 +--
- net/ipv6/addrconf.c                    |    6 ++----
- net/ipv6/ip6mr.c                       |    3 +--
- net/ipv6/route.c                       |    3 +--
- net/netfilter/nf_queue.c               |   24 ++++++++----------------
- net/netlabel/netlabel_unlabeled.c      |    6 ++----
- net/netrom/nr_loopback.c               |    3 +--
- net/netrom/nr_route.c                  |    3 +--
- net/packet/af_packet.c                 |   15 +++++----------
- net/phonet/af_phonet.c                 |    3 +--
- net/phonet/pn_dev.c                    |    6 ++----
- net/phonet/socket.c                    |    3 +--
- net/sched/act_mirred.c                 |    6 ++----
- net/smc/smc_pnet.c                     |    3 +--
- net/wireless/nl80211.c                 |   16 +++++-----------
- net/wireless/scan.c                    |    3 +--
- 32 files changed, 68 insertions(+), 140 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_gart.c |   12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
---- a/net/batman-adv/bridge_loop_avoidance.c
-+++ b/net/batman-adv/bridge_loop_avoidance.c
-@@ -2402,8 +2402,7 @@ out:
- 	if (primary_if)
- 		batadv_hardif_put(primary_if);
- 
--	if (soft_iface)
--		dev_put(soft_iface);
-+	dev_put(soft_iface);
- 
- 	return ret;
- }
-@@ -2640,8 +2639,7 @@ out:
- 	if (primary_if)
- 		batadv_hardif_put(primary_if);
- 
--	if (soft_iface)
--		dev_put(soft_iface);
-+	dev_put(soft_iface);
- 
- 	return ret;
- }
---- a/net/batman-adv/distributed-arp-table.c
-+++ b/net/batman-adv/distributed-arp-table.c
-@@ -1045,8 +1045,7 @@ out:
- 	if (primary_if)
- 		batadv_hardif_put(primary_if);
- 
--	if (soft_iface)
--		dev_put(soft_iface);
-+	dev_put(soft_iface);
- 
- 	return ret;
- }
---- a/net/batman-adv/gateway_client.c
-+++ b/net/batman-adv/gateway_client.c
-@@ -590,8 +590,7 @@ int batadv_gw_dump(struct sk_buff *msg,
- out:
- 	if (primary_if)
- 		batadv_hardif_put(primary_if);
--	if (soft_iface)
--		dev_put(soft_iface);
-+	dev_put(soft_iface);
- 
- 	return ret;
- }
---- a/net/batman-adv/multicast.c
-+++ b/net/batman-adv/multicast.c
-@@ -92,8 +92,7 @@ static struct net_device *batadv_mcast_g
- 		upper = netdev_master_upper_dev_get_rcu(upper);
- 	} while (upper && !(upper->priv_flags & IFF_EBRIDGE));
- 
--	if (upper)
--		dev_hold(upper);
-+	dev_hold(upper);
- 	rcu_read_unlock();
- 
- 	return upper;
-@@ -541,8 +540,7 @@ batadv_mcast_mla_softif_get(struct net_d
- 	}
- 
- out:
--	if (bridge)
--		dev_put(bridge);
-+	dev_put(bridge);
- 
- 	return ret4 + ret6;
- }
-@@ -2386,8 +2384,7 @@ batadv_mcast_netlink_get_primary(struct
- 	}
- 
- out:
--	if (soft_iface)
--		dev_put(soft_iface);
-+	dev_put(soft_iface);
- 
- 	if (!ret && primary_if)
- 		*primary_if = hard_iface;
---- a/net/batman-adv/originator.c
-+++ b/net/batman-adv/originator.c
-@@ -823,12 +823,10 @@ int batadv_hardif_neigh_dump(struct sk_b
-  out:
- 	if (hardif)
- 		batadv_hardif_put(hardif);
--	if (hard_iface)
--		dev_put(hard_iface);
-+	dev_put(hard_iface);
- 	if (primary_if)
- 		batadv_hardif_put(primary_if);
--	if (soft_iface)
--		dev_put(soft_iface);
-+	dev_put(soft_iface);
- 
- 	return ret;
- }
-@@ -1502,12 +1500,10 @@ int batadv_orig_dump(struct sk_buff *msg
-  out:
- 	if (hardif)
- 		batadv_hardif_put(hardif);
--	if (hard_iface)
--		dev_put(hard_iface);
-+	dev_put(hard_iface);
- 	if (primary_if)
- 		batadv_hardif_put(primary_if);
--	if (soft_iface)
--		dev_put(soft_iface);
-+	dev_put(soft_iface);
- 
- 	return ret;
- }
---- a/net/batman-adv/translation-table.c
-+++ b/net/batman-adv/translation-table.c
-@@ -815,8 +815,7 @@ check_roaming:
- out:
- 	if (in_hardif)
- 		batadv_hardif_put(in_hardif);
--	if (in_dev)
--		dev_put(in_dev);
-+	dev_put(in_dev);
- 	if (tt_local)
- 		batadv_tt_local_entry_put(tt_local);
- 	if (tt_global)
-@@ -1331,8 +1330,7 @@ int batadv_tt_local_dump(struct sk_buff
-  out:
- 	if (primary_if)
- 		batadv_hardif_put(primary_if);
--	if (soft_iface)
--		dev_put(soft_iface);
-+	dev_put(soft_iface);
- 
- 	cb->args[0] = bucket;
- 	cb->args[1] = idx;
-@@ -2252,8 +2250,7 @@ int batadv_tt_global_dump(struct sk_buff
-  out:
- 	if (primary_if)
- 		batadv_hardif_put(primary_if);
--	if (soft_iface)
--		dev_put(soft_iface);
-+	dev_put(soft_iface);
- 
- 	cb->args[0] = bucket;
- 	cb->args[1] = idx;
---- a/net/can/raw.c
-+++ b/net/can/raw.c
-@@ -601,9 +601,7 @@ static int raw_setsockopt(struct socket
- 		ro->count  = count;
- 
-  out_fil:
--		if (dev)
--			dev_put(dev);
--
-+		dev_put(dev);
- 		release_sock(sk);
- 		rtnl_unlock();
- 
-@@ -647,9 +645,7 @@ static int raw_setsockopt(struct socket
- 		ro->err_mask = err_mask;
- 
-  out_err:
--		if (dev)
--			dev_put(dev);
--
-+		dev_put(dev);
- 		release_sock(sk);
- 		rtnl_unlock();
- 
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -906,8 +906,7 @@ struct net_device *dev_get_by_name(struc
- 
- 	rcu_read_lock();
- 	dev = dev_get_by_name_rcu(net, name);
--	if (dev)
--		dev_hold(dev);
-+	dev_hold(dev);
- 	rcu_read_unlock();
- 	return dev;
- }
-@@ -980,8 +979,7 @@ struct net_device *dev_get_by_index(stru
- 
- 	rcu_read_lock();
- 	dev = dev_get_by_index_rcu(net, ifindex);
--	if (dev)
--		dev_hold(dev);
-+	dev_hold(dev);
- 	rcu_read_unlock();
- 	return dev;
- }
---- a/net/core/drop_monitor.c
-+++ b/net/core/drop_monitor.c
-@@ -854,8 +854,7 @@ net_dm_hw_metadata_copy(const struct dev
- 	}
- 
- 	hw_metadata->input_dev = metadata->input_dev;
--	if (hw_metadata->input_dev)
--		dev_hold(hw_metadata->input_dev);
-+	dev_hold(hw_metadata->input_dev);
- 
- 	return hw_metadata;
- 
-@@ -871,8 +870,7 @@ free_hw_metadata:
- static void
- net_dm_hw_metadata_free(const struct devlink_trap_metadata *hw_metadata)
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_gart.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_gart.c
+@@ -394,7 +394,8 @@ void amdgpu_gart_map_vram_range(struct a
+ 				uint64_t start_page, uint64_t num_pages,
+ 				uint64_t flags, void *dst)
  {
--	if (hw_metadata->input_dev)
--		dev_put(hw_metadata->input_dev);
-+	dev_put(hw_metadata->input_dev);
- 	kfree(hw_metadata->fa_cookie);
- 	kfree(hw_metadata->trap_name);
- 	kfree(hw_metadata->trap_group_name);
---- a/net/core/dst.c
-+++ b/net/core/dst.c
-@@ -49,8 +49,7 @@ void dst_init(struct dst_entry *dst, str
- 	      unsigned short flags)
- {
- 	dst->dev = dev;
--	if (dev)
--		dev_hold(dev);
-+	dev_hold(dev);
- 	dst->ops = ops;
- 	dst_init_metrics(dst, dst_default_metrics.metrics, true);
- 	dst->expires = 0UL;
-@@ -111,8 +110,7 @@ struct dst_entry *dst_destroy(struct dst
- #endif
- 	if (dst->ops->destroy)
- 		dst->ops->destroy(dst);
--	if (dst->dev)
--		dev_put(dst->dev);
-+	dev_put(dst->dev);
+-	u32 i, idx;
++	u32 i, j, t, idx;
++	u64 page_base;
  
- 	lwtstate_put(dst->lwtstate);
+ 	/* The SYSTEM flag indicates the pages aren't in VRAM. */
+ 	WARN_ON_ONCE(flags & AMDGPU_PTE_SYSTEM);
+@@ -402,9 +403,12 @@ void amdgpu_gart_map_vram_range(struct a
+ 	if (!drm_dev_enter(adev_to_drm(adev), &idx))
+ 		return;
  
---- a/net/core/neighbour.c
-+++ b/net/core/neighbour.c
-@@ -743,12 +743,10 @@ struct pneigh_entry * pneigh_lookup(stru
- 	write_pnet(&n->net, net);
- 	memcpy(n->key, pkey, key_len);
- 	n->dev = dev;
--	if (dev)
--		dev_hold(dev);
-+	dev_hold(dev);
- 
- 	if (tbl->pconstructor && tbl->pconstructor(n)) {
--		if (dev)
--			dev_put(dev);
-+		dev_put(dev);
- 		kfree(n);
- 		n = NULL;
- 		goto out;
-@@ -780,8 +778,7 @@ int pneigh_delete(struct neigh_table *tb
- 			write_unlock_bh(&tbl->lock);
- 			if (tbl->pdestructor)
- 				tbl->pdestructor(n);
--			if (n->dev)
--				dev_put(n->dev);
-+			dev_put(n->dev);
- 			kfree(n);
- 			return 0;
- 		}
-@@ -814,8 +811,7 @@ static int pneigh_ifdown_and_unlock(stru
- 		n->next = NULL;
- 		if (tbl->pdestructor)
- 			tbl->pdestructor(n);
--		if (n->dev)
--			dev_put(n->dev);
-+		dev_put(n->dev);
- 		kfree(n);
- 	}
- 	return -ENOENT;
-@@ -1677,8 +1673,7 @@ void neigh_parms_release(struct neigh_ta
- 	list_del(&parms->list);
- 	parms->dead = 1;
- 	write_unlock_bh(&tbl->lock);
--	if (parms->dev)
--		dev_put(parms->dev);
-+	dev_put(parms->dev);
- 	call_rcu(&parms->rcu_head, neigh_rcu_free_parms);
- }
- EXPORT_SYMBOL(neigh_parms_release);
---- a/net/ethtool/netlink.c
-+++ b/net/ethtool/netlink.c
-@@ -356,8 +356,7 @@ static int ethnl_default_doit(struct sk_
- 		ops->cleanup_data(reply_data);
- 
- 	genlmsg_end(rskb, reply_payload);
--	if (req_info->dev)
--		dev_put(req_info->dev);
-+	dev_put(req_info->dev);
- 	kfree(reply_data);
- 	kfree(req_info);
- 	return genlmsg_reply(rskb, info);
-@@ -369,8 +368,7 @@ err_cleanup:
- 	if (ops->cleanup_data)
- 		ops->cleanup_data(reply_data);
- err_dev:
--	if (req_info->dev)
--		dev_put(req_info->dev);
-+	dev_put(req_info->dev);
- 	kfree(reply_data);
- 	kfree(req_info);
- 	return ret;
---- a/net/ieee802154/nl-phy.c
-+++ b/net/ieee802154/nl-phy.c
-@@ -340,8 +340,7 @@ nla_put_failure:
- out_dev:
- 	wpan_phy_put(phy);
- out:
--	if (dev)
--		dev_put(dev);
-+	dev_put(dev);
- 
- 	return rc;
- }
---- a/net/ieee802154/nl802154.c
-+++ b/net/ieee802154/nl802154.c
-@@ -2230,8 +2230,7 @@ static void nl802154_post_doit(const str
- 		if (ops->internal_flags & NL802154_FLAG_NEED_WPAN_DEV) {
- 			struct wpan_dev *wpan_dev = info->user_ptr[1];
- 
--			if (wpan_dev->netdev)
--				dev_put(wpan_dev->netdev);
-+			dev_put(wpan_dev->netdev);
- 		} else {
- 			dev_put(info->user_ptr[1]);
- 		}
---- a/net/ieee802154/socket.c
-+++ b/net/ieee802154/socket.c
-@@ -41,8 +41,7 @@ ieee802154_get_dev(struct net *net, cons
- 		ieee802154_devaddr_to_raw(hwaddr, addr->extended_addr);
- 		rcu_read_lock();
- 		dev = dev_getbyhwaddr_rcu(net, ARPHRD_IEEE802154, hwaddr);
--		if (dev)
--			dev_hold(dev);
-+		dev_hold(dev);
- 		rcu_read_unlock();
- 		break;
- 	case IEEE802154_ADDR_SHORT:
---- a/net/ipv4/fib_semantics.c
-+++ b/net/ipv4/fib_semantics.c
-@@ -210,9 +210,7 @@ static void rt_fibinfo_free_cpus(struct
- 
- void fib_nh_common_release(struct fib_nh_common *nhc)
- {
--	if (nhc->nhc_dev)
--		dev_put(nhc->nhc_dev);
--
-+	dev_put(nhc->nhc_dev);
- 	lwtstate_put(nhc->nhc_lwtstate);
- 	rt_fibinfo_free_cpus(nhc->nhc_pcpu_rth_output);
- 	rt_fibinfo_free(&nhc->nhc_rth_input);
---- a/net/ipv4/route.c
-+++ b/net/ipv4/route.c
-@@ -2782,8 +2782,7 @@ struct dst_entry *ipv4_blackhole_route(s
- 		new->output = dst_discard_out;
- 
- 		new->dev = net->loopback_dev;
--		if (new->dev)
--			dev_hold(new->dev);
-+		dev_hold(new->dev);
- 
- 		rt->rt_is_input = ort->rt_is_input;
- 		rt->rt_iif = ort->rt_iif;
---- a/net/ipv6/addrconf.c
-+++ b/net/ipv6/addrconf.c
-@@ -693,8 +693,7 @@ static int inet6_netconf_get_devconf(str
- errout:
- 	if (in6_dev)
- 		in6_dev_put(in6_dev);
--	if (dev)
--		dev_put(dev);
-+	dev_put(dev);
- 	return err;
- }
- 
-@@ -5469,8 +5468,7 @@ static int inet6_rtm_getaddr(struct sk_b
- errout_ifa:
- 	in6_ifa_put(ifa);
- errout:
--	if (dev)
--		dev_put(dev);
-+	dev_put(dev);
- 	if (fillargs.netnsid >= 0)
- 		put_net(tgt_net);
- 
---- a/net/ipv6/ip6mr.c
-+++ b/net/ipv6/ip6mr.c
-@@ -561,8 +561,7 @@ static int pim6_rcv(struct sk_buff *skb)
- 	read_lock(&mrt_lock);
- 	if (reg_vif_num >= 0)
- 		reg_dev = mrt->vif_table[reg_vif_num].dev;
--	if (reg_dev)
--		dev_hold(reg_dev);
-+	dev_hold(reg_dev);
- 	read_unlock(&mrt_lock);
- 
- 	if (!reg_dev)
---- a/net/ipv6/route.c
-+++ b/net/ipv6/route.c
-@@ -3521,8 +3521,7 @@ out:
- 		fib_nh_common_release(&fib6_nh->nh_common);
- 		fib6_nh->nh_common.nhc_pcpu_rth_output = NULL;
- 		fib6_nh->fib_nh_lws = NULL;
--		if (dev)
--			dev_put(dev);
-+		dev_put(dev);
+-	for (i = 0; i < num_pages; ++i) {
+-		amdgpu_gmc_set_pte_pde(adev, dst,
+-			start_page + i, pa + AMDGPU_GPU_PAGE_SIZE * i, flags);
++	page_base = pa;
++	for (i = 0, t = 0; i < num_pages; i++) {
++		for (j = 0; j < AMDGPU_GPU_PAGES_IN_CPU_PAGE; j++, t++) {
++			amdgpu_gmc_set_pte_pde(adev, dst, start_page + t, page_base, flags);
++			page_base += AMDGPU_GPU_PAGE_SIZE;
++		}
  	}
  
- 	return err;
---- a/net/netfilter/nf_queue.c
-+++ b/net/netfilter/nf_queue.c
-@@ -60,18 +60,14 @@ static void nf_queue_entry_release_refs(
- 	struct nf_hook_state *state = &entry->state;
- 
- 	/* Release those devices we held, or Alexey will kill me. */
--	if (state->in)
--		dev_put(state->in);
--	if (state->out)
--		dev_put(state->out);
-+	dev_put(state->in);
-+	dev_put(state->out);
- 	if (state->sk)
- 		nf_queue_sock_put(state->sk);
- 
- #if IS_ENABLED(CONFIG_BRIDGE_NETFILTER)
--	if (entry->physin)
--		dev_put(entry->physin);
--	if (entry->physout)
--		dev_put(entry->physout);
-+	dev_put(entry->physin);
-+	dev_put(entry->physout);
- #endif
- }
- 
-@@ -107,16 +103,12 @@ bool nf_queue_entry_get_refs(struct nf_q
- 	if (state->sk && !refcount_inc_not_zero(&state->sk->sk_refcnt))
- 		return false;
- 
--	if (state->in)
--		dev_hold(state->in);
--	if (state->out)
--		dev_hold(state->out);
-+	dev_hold(state->in);
-+	dev_hold(state->out);
- 
- #if IS_ENABLED(CONFIG_BRIDGE_NETFILTER)
--	if (entry->physin)
--		dev_hold(entry->physin);
--	if (entry->physout)
--		dev_hold(entry->physout);
-+	dev_hold(entry->physin);
-+	dev_hold(entry->physout);
- #endif
- 	return true;
- }
---- a/net/netlabel/netlabel_unlabeled.c
-+++ b/net/netlabel/netlabel_unlabeled.c
-@@ -492,8 +492,7 @@ static int netlbl_unlhsh_remove_addr4(st
- 		netlbl_af4list_audit_addr(audit_buf, 1,
- 					  (dev != NULL ? dev->name : NULL),
- 					  addr->s_addr, mask->s_addr);
--		if (dev != NULL)
--			dev_put(dev);
-+		dev_put(dev);
- 		if (entry != NULL &&
- 		    security_secid_to_secctx(entry->secid,
- 					     &secctx, &secctx_len) == 0) {
-@@ -553,8 +552,7 @@ static int netlbl_unlhsh_remove_addr6(st
- 		netlbl_af6list_audit_addr(audit_buf, 1,
- 					  (dev != NULL ? dev->name : NULL),
- 					  addr, mask);
--		if (dev != NULL)
--			dev_put(dev);
-+		dev_put(dev);
- 		if (entry != NULL &&
- 		    security_secid_to_secctx(entry->secid,
- 					     &secctx, &secctx_len) == 0) {
---- a/net/netrom/nr_loopback.c
-+++ b/net/netrom/nr_loopback.c
-@@ -59,8 +59,7 @@ static void nr_loopback_timer(struct tim
- 		if (dev == NULL || nr_rx_frame(skb, dev) == 0)
- 			kfree_skb(skb);
- 
--		if (dev != NULL)
--			dev_put(dev);
-+		dev_put(dev);
- 
- 		if (!skb_queue_empty(&loopback_queue) && !nr_loopback_running())
- 			mod_timer(&loopback_timer, jiffies + 10);
---- a/net/netrom/nr_route.c
-+++ b/net/netrom/nr_route.c
-@@ -573,8 +573,7 @@ struct net_device *nr_dev_first(void)
- 			if (first == NULL || strncmp(dev->name, first->name, 3) < 0)
- 				first = dev;
- 	}
--	if (first)
--		dev_hold(first);
-+	dev_hold(first);
- 	rcu_read_unlock();
- 
- 	return first;
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -249,8 +249,7 @@ static struct net_device *packet_cached_
- 
- 	rcu_read_lock();
- 	dev = rcu_dereference(po->cached_dev);
--	if (likely(dev))
--		dev_hold(dev);
-+	dev_hold(dev);
- 	rcu_read_unlock();
- 
- 	return dev;
-@@ -3103,8 +3102,7 @@ static int packet_snd(struct socket *soc
- out_free:
- 	kfree_skb(skb);
- out_unlock:
--	if (dev)
--		dev_put(dev);
-+	dev_put(dev);
- out:
- 	return err;
- }
-@@ -3241,8 +3239,7 @@ static int packet_do_bind(struct sock *s
- 		}
- 	}
- 
--	if (dev)
--		dev_hold(dev);
-+	dev_hold(dev);
- 
- 	proto_curr = po->prot_hook.type;
- 	dev_curr = po->prot_hook.dev;
-@@ -3279,8 +3276,7 @@ static int packet_do_bind(struct sock *s
- 			packet_cached_dev_assign(po, dev);
- 		}
- 	}
--	if (dev_curr)
--		dev_put(dev_curr);
-+	dev_put(dev_curr);
- 
- 	if (proto == 0 || !need_rehook)
- 		goto out_unlock;
-@@ -4216,8 +4212,7 @@ static int packet_notifier(struct notifi
- 				if (msg == NETDEV_UNREGISTER) {
- 					packet_cached_dev_reset(po);
- 					WRITE_ONCE(po->ifindex, -1);
--					if (po->prot_hook.dev)
--						dev_put(po->prot_hook.dev);
-+					dev_put(po->prot_hook.dev);
- 					po->prot_hook.dev = NULL;
- 				}
- 				spin_unlock(&po->bind_lock);
---- a/net/phonet/af_phonet.c
-+++ b/net/phonet/af_phonet.c
-@@ -275,8 +275,7 @@ int pn_skb_send(struct sock *sk, struct
- 
- drop:
- 	kfree_skb(skb);
--	if (dev)
--		dev_put(dev);
-+	dev_put(dev);
- 	return err;
- }
- EXPORT_SYMBOL(pn_skb_send);
---- a/net/phonet/pn_dev.c
-+++ b/net/phonet/pn_dev.c
-@@ -122,8 +122,7 @@ struct net_device *phonet_device_get(str
- 			break;
- 		dev = NULL;
- 	}
--	if (dev)
--		dev_hold(dev);
-+	dev_hold(dev);
- 	rcu_read_unlock();
- 	return dev;
- }
-@@ -411,8 +410,7 @@ struct net_device *phonet_route_output(s
- 	daddr >>= 2;
- 	rcu_read_lock();
- 	dev = rcu_dereference(routes->table[daddr]);
--	if (dev)
--		dev_hold(dev);
-+	dev_hold(dev);
- 	rcu_read_unlock();
- 
- 	if (!dev)
---- a/net/phonet/socket.c
-+++ b/net/phonet/socket.c
-@@ -379,8 +379,7 @@ static int pn_socket_ioctl(struct socket
- 			saddr = PN_NO_ADDR;
- 		release_sock(sk);
- 
--		if (dev)
--			dev_put(dev);
-+		dev_put(dev);
- 		if (saddr == PN_NO_ADDR)
- 			return -EHOSTUNREACH;
- 
---- a/net/sched/act_mirred.c
-+++ b/net/sched/act_mirred.c
-@@ -79,8 +79,7 @@ static void tcf_mirred_release(struct tc
- 
- 	/* last reference to action, no need to lock */
- 	dev = rcu_dereference_protected(m->tcfm_dev, 1);
--	if (dev)
--		dev_put(dev);
-+	dev_put(dev);
- }
- 
- static const struct nla_policy mirred_policy[TCA_MIRRED_MAX + 1] = {
-@@ -181,8 +180,7 @@ static int tcf_mirred_init(struct net *n
- 		mac_header_xmit = dev_is_mac_header_xmit(dev);
- 		dev = rcu_replace_pointer(m->tcfm_dev, dev,
- 					  lockdep_is_held(&m->tcf_lock));
--		if (dev)
--			dev_put(dev);
-+		dev_put(dev);
- 		m->tcfm_mac_header_xmit = mac_header_xmit;
- 	}
- 	goto_ch = tcf_action_set_ctrlact(*a, parm->action, goto_ch);
---- a/net/smc/smc_pnet.c
-+++ b/net/smc/smc_pnet.c
-@@ -395,8 +395,7 @@ static int smc_pnet_add_eth(struct smc_p
- 	return 0;
- 
- out_put:
--	if (ndev)
--		dev_put(ndev);
-+	dev_put(ndev);
- 	return rc;
- }
- 
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -6356,8 +6356,7 @@ static int nl80211_set_station(struct sk
- 	err = rdev_change_station(rdev, dev, mac_addr, &params);
- 
-  out_put_vlan:
--	if (params.vlan)
--		dev_put(params.vlan);
-+	dev_put(params.vlan);
- 
- 	return err;
- }
-@@ -6592,8 +6591,7 @@ static int nl80211_new_station(struct sk
- 
- 	err = rdev_add_station(rdev, dev, mac_addr, &params);
- 
--	if (params.vlan)
--		dev_put(params.vlan);
-+	dev_put(params.vlan);
- 	return err;
- }
- 
-@@ -8308,8 +8306,7 @@ static int nl80211_trigger_scan(struct s
- 		goto out_free;
- 
- 	nl80211_send_scan_start(rdev, wdev);
--	if (wdev->netdev)
--		dev_hold(wdev->netdev);
-+	dev_hold(wdev->netdev);
- 
- 	return 0;
- 
-@@ -14661,9 +14658,7 @@ static int nl80211_pre_doit(const struct
- 			return -ENETDOWN;
- 		}
- 
--		if (dev)
--			dev_hold(dev);
--
-+		dev_hold(dev);
- 		info->user_ptr[0] = rdev;
- 	}
- 
-@@ -14677,8 +14672,7 @@ static void nl80211_post_doit(const stru
- 		if (ops->internal_flags & NL80211_FLAG_NEED_WDEV) {
- 			struct wireless_dev *wdev = info->user_ptr[1];
- 
--			if (wdev->netdev)
--				dev_put(wdev->netdev);
-+			dev_put(wdev->netdev);
- 		} else {
- 			dev_put(info->user_ptr[1]);
- 		}
---- a/net/wireless/scan.c
-+++ b/net/wireless/scan.c
-@@ -1057,8 +1057,7 @@ void ___cfg80211_scan_done(struct cfg802
- 	}
- #endif
- 
--	if (wdev->netdev)
--		dev_put(wdev->netdev);
-+	dev_put(wdev->netdev);
- 
- 	kfree(rdev->int_scan_req);
- 	rdev->int_scan_req = NULL;
+ 	drm_dev_exit(idx);
 
 
 
