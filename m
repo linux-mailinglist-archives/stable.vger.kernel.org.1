@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-264284-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266039-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id uATJKJ5xMWrbjQUAu9opvQ
-	(envelope-from <stable+bounces-264284-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:54:06 +0200
+	id 6xbILi6VMWqVnQUAu9opvQ
+	(envelope-from <stable+bounces-266039-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:25:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5C9F6917CA
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:54:05 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D9FB6941E4
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:25:50 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=0Z5oAAIR;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264284-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264284-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=aKIOTTrC;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266039-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-266039-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 826F030AE710
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:52:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B01BA300F7A1
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:25:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05F7744CF40;
-	Tue, 16 Jun 2026 15:52:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CF4C477986;
+	Tue, 16 Jun 2026 18:25:38 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C89FA44B69C;
-	Tue, 16 Jun 2026 15:52:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E32F3BFE5A;
+	Tue, 16 Jun 2026 18:25:37 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781625153; cv=none; b=t06qPaQ9hcYXCZiYZdEZJEKmbfjmlWu1orD6gEWLDve/YGLmaFGKWQ0J3jBJWx5ziuPD3WhM6Agb8zJ4QrYsg2uhDkfT/8S4y3LneGv+lMKh+FT3vILdyszh3IKrQFgOIg18Wd9QqfKzwV8rdt5zWwTIAh+O5L5P+R0S93ov/Ug=
+	t=1781634338; cv=none; b=RkTcNq6Ab+TnN9s//bgicjytlw0XENirF7XoiaWpn94L2ZCTeVWe5mNWtDLThu+RNO9XJjZd2x0XbTc6urD0rE9M25UQN4oGj+AIykyRUI/UU9XOj1LvEOcAmMiYBdJoadXpLFdDFoTYBuM/s4Cml103G8GybafrorF9qwdNP/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781625153; c=relaxed/simple;
-	bh=nDZXqIHA2yRZ9d1fd1rn/yim4nX9+s2bAGDfxTE8PG4=;
+	s=arc-20240116; t=1781634338; c=relaxed/simple;
+	bh=eir/PPOMxwPYXl38KXzhsi6X6Zgi/OGIXVs5pdgPhh8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l8bJSUE6rOgYHdeHerkAf36F+TUW3PH605JEbEF+/SNpKwnnfxhEhVtehBh5ThdcI9YjbCKHHUIxYRg1YavatSBm3R+pjcok02EIwujXzuNJVcr7yJngt9nlzclzsyMCi5na3uSKWK7Uy+Qcl13u5+8FwFVWOekxiydk9ZuiHPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Z5oAAIR; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD14C1F00A3A;
-	Tue, 16 Jun 2026 15:52:31 +0000 (UTC)
+	 MIME-Version; b=KIBF1my/pJyhFYdRkrqoUdmCPKKXbSsT9SpMJOCLEAZaWSWqL5Sdqood29FwP0PoEvnFrVAqEHR3yC97rXPm5ZOPO2H52EOejsXekc/S8qrqlZ7IY/gQ4qrwv9ZyIGvqS/Gl6KJo/dyCPcIwoNuMdRsAXofkEEXgh1TQeXecYSg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aKIOTTrC; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 183D31F000E9;
+	Tue, 16 Jun 2026 18:25:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781625152;
-	bh=4OlQFSGs20+NGHxHTIBjMKOBDgJSna5z7MBS1RuP//E=;
+	s=korg; t=1781634337;
+	bh=vqPvO0rFebo6RyduTZl9Ba1bGXiirFi6e+bEZyh8y6M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=0Z5oAAIR3kmfFubvc0GVsKrkxNop30epZrYfVMAdwncFC90S4qVZbl47uqSaIAdi6
-	 SWYwvTQeThbvq37JTbF5g9J4wvzI9nuiqBycBk5scleauwIQNinhrM6r/1QyPEzLW7
-	 jnU/s6yVf6H1to49avkt77VCHXDZLHQmhsAQO+aQ=
+	b=aKIOTTrCyXuaSl7wAeelfCHgT+GwwDIDFyHEtEhyaeZPhq90T9eUR7ftUaWhBWMHU
+	 wHpwfPMOSgDcUTbC2P//ht/6hg7N+TQGgbQTZTKDTB/p4YtpkBzjJN3Psc6SzQoeeE
+	 kYB/iOVFhLKj3yOybQXC2XtQKVpHKwNGAtiN5Wp8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li RongQing <lirongqing@baidu.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 088/325] dma-debug: fix physical address retrieval in debug_dma_sync_sg_for_device
+	Jeff Layton <jlayton@kernel.org>,
+	Mingyu Wang <25181214217@stu.xidian.edu.cn>,
+	"Christian Brauner (Amutable)" <brauner@kernel.org>
+Subject: [PATCH 5.15 246/411] fs/fcntl: fix SOFTIRQ-unsafe lock order in fasync signaling
 Date: Tue, 16 Jun 2026 20:28:04 +0530
-Message-ID: <20260616145102.094944316@linuxfoundation.org>
+Message-ID: <20260616145114.030355589@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,21 +72,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264284-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-266039-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:lirongqing@baidu.com,m:m.szyprowski@samsung.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jlayton@kernel.org,m:25181214217@stu.xidian.edu.cn,m:brauner@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -98,53 +98,100 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[samsung.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,xidian.edu.cn:email,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E5C9F6917CA
+X-Rspamd-Queue-Id: 4D9FB6941E4
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li RongQing <lirongqing@baidu.com>
+From: Mingyu Wang <25181214217@stu.xidian.edu.cn>
 
-[ Upstream commit 9bfaa86b405381326c971984fd6da184c289713f ]
+commit 00633c4683828acd5256fa8d5163f440d74bbe71 upstream.
 
-In debug_dma_sync_sg_for_device(), when iterating over a scatterlist,
-the debug entry population mistakenly uses the head of the scatterlist
-'sg' to fetch the physical address via sg_phys(), instead of using the
-current iterator variable 's'.
+A SOFTIRQ-safe to SOFTIRQ-unsafe lock order deadlock can occur in
+send_sigio() and send_sigurg() when a process group receives a signal.
 
-This causes dma-debug to track the physical address of the very first
-scatterlist entry for all subsequent entries in the list.
+When FASYNC is configured for a process group (PIDTYPE_PGID), both
+functions use read_lock(&tasklist_lock) to traverse the task list.
+However, they are frequently called from softirq context:
+- send_sigio() via input_inject_event -> kill_fasync
+- send_sigurg() via tcp_check_urg -> sk_send_sigurg (NET_RX_SOFTIRQ)
 
-Fix this by passing the correct loop iterator 's' to sg_phys()
+The deadlock is caused by the rwlock writer fairness mechanism:
+1. CPU 0 (process context) holds read_lock(&tasklist_lock) in do_wait().
+2. CPU 1 (process context) attempts write_lock(&tasklist_lock) in
+   fork() or exit() and spins, which blocks all new readers.
+3. CPU 0 is interrupted by a softirq (e.g., TCP URG packet reception).
+4. The softirq calls send_sigurg() and attempts to acquire
+   read_lock(&tasklist_lock), deadlocking because CPU 1 is waiting.
 
-Fixes: 9d4f645a1fd49ee ("dma-debug: store a phys_addr_t in struct dma_debug_entry")
-Signed-off-by: Li RongQing <lirongqing@baidu.com>
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Link: https://lore.kernel.org/r/20260603123708.1665-1-lirongqing@baidu.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Since PID hashing and do_each_pid_task() traversals are already
+RCU-protected, the read_lock on tasklist_lock is no longer strictly
+required for safe traversal. Fix this by replacing tasklist_lock with
+rcu_read_lock(), aligning the process group signaling path with the
+single-PID path. This also mitigates a potential remote denial of
+service vector via TCP URG packets.
+
+Lockdep splat:
+=====================================================
+WARNING: SOFTIRQ-safe -> SOFTIRQ-unsafe lock order detected
+[...]
+Chain exists of:
+  &dev->event_lock --> &f_owner->lock --> tasklist_lock
+
+Possible interrupt unsafe locking scenario:
+       CPU0                    CPU1
+       ----                    ----
+  lock(tasklist_lock);
+                           local_irq_disable();
+                           lock(&dev->event_lock);
+                           lock(&f_owner->lock);
+  <Interrupt>
+    lock(&dev->event_lock);
+
+*** DEADLOCK ***
+
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Mingyu Wang <25181214217@stu.xidian.edu.cn>
+Link: https://patch.msgid.link/20260523135210.590928-1-w15303746062@163.com
+Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/dma/debug.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/fcntl.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/dma/debug.c b/kernel/dma/debug.c
-index fa4aac33391723..03780f39613cca 100644
---- a/kernel/dma/debug.c
-+++ b/kernel/dma/debug.c
-@@ -1555,7 +1555,7 @@ void debug_dma_sync_sg_for_device(struct device *dev, struct scatterlist *sg,
- 		struct dma_debug_entry ref = {
- 			.type           = dma_debug_sg,
- 			.dev            = dev,
--			.paddr		= sg_phys(sg),
-+			.paddr		= sg_phys(s),
- 			.dev_addr       = sg_dma_address(s),
- 			.size           = sg_dma_len(s),
- 			.direction      = direction,
--- 
-2.53.0
-
+--- a/fs/fcntl.c
++++ b/fs/fcntl.c
+@@ -801,11 +801,11 @@ void send_sigio(struct fown_struct *fown
+ 			send_sigio_to_task(p, fown, fd, band, type);
+ 		rcu_read_unlock();
+ 	} else {
+-		read_lock(&tasklist_lock);
++		rcu_read_lock();
+ 		do_each_pid_task(pid, type, p) {
+ 			send_sigio_to_task(p, fown, fd, band, type);
+ 		} while_each_pid_task(pid, type, p);
+-		read_unlock(&tasklist_lock);
++		rcu_read_unlock();
+ 	}
+  out_unlock_fown:
+ 	read_unlock_irqrestore(&fown->lock, flags);
+@@ -842,11 +842,11 @@ int send_sigurg(struct fown_struct *fown
+ 			send_sigurg_to_task(p, fown, type);
+ 		rcu_read_unlock();
+ 	} else {
+-		read_lock(&tasklist_lock);
++		rcu_read_lock();
+ 		do_each_pid_task(pid, type, p) {
+ 			send_sigurg_to_task(p, fown, type);
+ 		} while_each_pid_task(pid, type, p);
+-		read_unlock(&tasklist_lock);
++		rcu_read_unlock();
+ 	}
+  out_unlock_fown:
+ 	read_unlock_irqrestore(&fown->lock, flags);
 
 
 
