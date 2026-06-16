@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-265284-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265286-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id MJfABGSGMWqGlgUAu9opvQ
-	(envelope-from <stable+bounces-265284-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:22:44 +0200
+	id 9PL8KZKHMWoRlwUAu9opvQ
+	(envelope-from <stable+bounces-265286-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:27:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79D576930D1
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:22:43 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04292693252
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:27:46 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=mOgnDEJ9;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265284-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-265284-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=g2XuCruW;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265286-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265286-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2DA7B3096608
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:20:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4612B31B1EE7
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:20:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FD47478E55;
-	Tue, 16 Jun 2026 17:20:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6902466B5E;
+	Tue, 16 Jun 2026 17:20:33 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B5FE477E36;
-	Tue, 16 Jun 2026 17:20:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 780234657D0;
+	Tue, 16 Jun 2026 17:20:29 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781630420; cv=none; b=fk9sl6q4uXyeDFI/tOo/GTXUk0pLs68MkWVnS6z+RjKCVB/SgjDM5Wr4K1O31+W9rY12OSg0kXOowRmWGqFbsxJN9At1Oaux9jnrCS9baSomXO4T8OeOAeopuNwzT885pIay4XAl4t7LVLowMnyblJNFNpW5MtwFcvtZMb8YReI=
+	t=1781630433; cv=none; b=KJV9zPwLfBu23HfdpwSze2ctNHn5Ado6S+Qjjgi+YtLmDJiS/0NEEv/JgcJjgw1OW2qV/dpvHecJDkQ01u29NhW6gmdgbr6cdydCy7GwwaD2/JPJTq8c3ktaHa6TYKIl5BVWH5mq9/rMstG7L8VHm1xovoGm4WgCEBgvDV+BFtQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781630420; c=relaxed/simple;
-	bh=yzxNhnjhRz3EDt6JDFK3T8gAOmFhtynpU7qmzxPMzuY=;
+	s=arc-20240116; t=1781630433; c=relaxed/simple;
+	bh=+tppG+G8L2rUo1C4tN3fnw5l5LrdS4qlbsffkbE0M+s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QkZ6yRJyp5vHj8SQnZZo0SIU3odq4quwd23hc6ZXL7SB41d1iKlR6GxOcmDb8y46HnRjjyMIFTeCDNTqIneRR9CM/mjjFJwOcuhBC5qtnvDaoYU42twsCFEp1BPXcpeHWrK/iAQPu/OMGrUcqvoY2TOmv6lBHc/NmOOz4fdDXzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mOgnDEJ9; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48DBE1F000E9;
-	Tue, 16 Jun 2026 17:20:18 +0000 (UTC)
+	 MIME-Version; b=e/VZ4USKFxb4riPySqi8KLUSLLSQedWP/eaPs9l37fDhVjpHj60qHETQFKd9fcbj81l8X6F8tgyP2HVBjvyqBk2fbKfOI/Vyl+e81xQdovtB8/aiNEF9/haRzP7kdkAnOiFL2IcYE3WrpYoJiG/WJEI7lFxZTMjFcGsm5Pu6+GI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g2XuCruW; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31D131F000E9;
+	Tue, 16 Jun 2026 17:20:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781630419;
-	bh=MDKwWoAKR9pglG7nAQgp/WVbtR3cE6pghGseaaB2nRI=;
+	s=korg; t=1781630429;
+	bh=pvbGluoaU/4FLx3rofooVORoaFLNBr2ZsT/5hGibowk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=mOgnDEJ98f+4wdmPfjOhD4oIr26Z8FrPnnEzNHLDhNXoZIXGGlE7WkazkRVM+kRHR
-	 FLnEBrwLcXDnCAXccacHx6Z6P3k+r0oyr/BxtAx9bNe7zOpuzAFEZ1RZAn20xHuhak
-	 S8s+N8hn26/fvTMBDjgo0RJauzE8F2F1zaYE5hkQ=
+	b=g2XuCruWt/yqsAQMsKS8svpqKscmMqcr8K3m7HHNbfmxqLYcywXkr6dBr44qMx0et
+	 pYytJR/MstkVhthjnOr0aanwSp+1v8h6e0AaSrX3ZWmvr5/XAqLUGKcEehHnGJyt35
+	 7rxFrCdGtCi9cMzZ0cHEVYWUq1o0AnnmYHmmLVhU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lee Jones <lee@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	David Heidelberg <david@ixit.cz>,
+	Leo Lin <leo@depthfirst.com>,
+	David Ahern <dahern@nvidia.com>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 008/522] nfc: llcp: Fix use-after-free race in nfc_llcp_recv_cc()
-Date: Tue, 16 Jun 2026 20:22:35 +0530
-Message-ID: <20260616145125.770023549@linuxfoundation.org>
+Subject: [PATCH 6.1 009/522] xfrm: Check for underflow in xfrm_state_mtu
+Date: Tue, 16 Jun 2026 20:22:36 +0530
+Message-ID: <20260616145125.836595557@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
 References: <20260616145125.307082728@linuxfoundation.org>
@@ -72,22 +72,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265284-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265286-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:lee@kernel.org,m:horms@kernel.org,m:david@ixit.cz,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:leo@depthfirst.com,m:dahern@nvidia.com,m:steffen.klassert@secunet.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -99,72 +99,90 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,ixit.cz:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,nvidia.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,secunet.com:email,depthfirst.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 79D576930D1
+X-Rspamd-Queue-Id: 04292693252
 
 6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lee Jones <lee@kernel.org>
+From: David Ahern <dahern@nvidia.com>
 
-[ Upstream commit b493ea2765cc17cb8aa7e7544a4b6dcb05b6ed77 ]
+[ Upstream commit 742b04d0550b0ec89dcbc99537ec88653bd1ad90 ]
 
-A race condition exists in the NFC LLCP connection state machine where
-the connection acceptance packet (CC) can be processed concurrently with
-socket release.  This can lead to a use-after-free of the socket object.
+Leo Lin reported OOB write issue in esp component:
 
-When nfc_llcp_recv_cc() moves the socket from the connecting_sockets
-list to the sockets list, it does so without holding the socket lock.
-If llcp_sock_release() is executing concurrently, it might have already
-unlinked the socket and dropped its references, which can result in
-nfc_llcp_recv_cc() linking a freed socket into the live list.
+  xfrm_state_mtu() returns u32 but performs its arithmetic in unsigned
+  modulo-2^32 space using an attacker-influenced "header_len + authsize +
+  net_adj" subtracted from a small "mtu" argument. A nobody user can
+  install an IPv4 ESP tunnel SA with a large authentication key
+  (XFRMA_ALG_AUTH_TRUNC, e.g. hmac(sha512), 64-byte key, 64-byte trunc),
+  configure a small interface MTU (68 bytes), and set XFRMA_TFCPAD to a
+  large value. When a single UDP datagram is then sent through the
+  tunnel, xfrm_state_mtu() underflows to a near-2^32 value, and
+  esp_output() consumes it as a signed int via:
 
-Fix this by holding lock_sock() during the state transition and list
-movement in nfc_llcp_recv_cc().  After acquiring the lock, check if
-the socket is still hashed to ensure it hasn't already been unlinked
-and marked for destruction by the release path.  This aligns the locking
-pattern with recv_hdlc() and recv_disc().
+        padto      = min(x->tfcpad, xfrm_state_mtu(x, mtu_cached))
+        esp.tfclen = padto - skb->len   (assigned to int)
 
-Fixes: a69f32af86e3 ("NFC: Socket linked list")
-Signed-off-by: Lee Jones <lee@kernel.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260429134115.3558604-2-lee@kernel.org
-Signed-off-by: David Heidelberg <david@ixit.cz>
+  esp.tfclen ends up negative (e.g. -207). It is sign-extended to size_t
+  when passed to memset() inside esp_output_fill_trailer(), producing a
+  ~16 EB write of zeroes at skb_tail_pointer(skb). KASAN logs it as
+  "Write of size 18446744073709551537 at addr ffff888...".
+
+Check for underflow and return 1. This causes the sendmsg attempt to
+fail with ENETUNREACH.
+
+Fixes: c5c252389374 ("[XFRM]: Optimize MTU calculation")
+Reported-by: Leo Lin <leo@depthfirst.com>
+Assisted-by: Codex:26.506.31004
+Signed-off-by: David Ahern <dahern@nvidia.com>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/nfc/llcp_core.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ net/xfrm/xfrm_state.c | 19 ++++++++++++++++---
+ 1 file changed, 16 insertions(+), 3 deletions(-)
 
-diff --git a/net/nfc/llcp_core.c b/net/nfc/llcp_core.c
-index d9562840fa180b..62b0f2d6686eb8 100644
---- a/net/nfc/llcp_core.c
-+++ b/net/nfc/llcp_core.c
-@@ -1216,6 +1216,15 @@ static void nfc_llcp_recv_cc(struct nfc_llcp_local *local,
+diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
+index 7dd536d5f43f3a..f3661d2946e6ef 100644
+--- a/net/xfrm/xfrm_state.c
++++ b/net/xfrm/xfrm_state.c
+@@ -2577,10 +2577,14 @@ u32 xfrm_state_mtu(struct xfrm_state *x, int mtu)
+ 	const struct xfrm_type *type = READ_ONCE(x->type);
+ 	struct crypto_aead *aead;
+ 	u32 blksize, net_adj = 0;
++	u32 overhead, payload_mtu;
  
- 	sk = &llcp_sock->sk;
- 
-+	lock_sock(sk);
-+
-+	/* Check if socket was destroyed whilst waiting for the lock */
-+	if (!sk_hashed(sk)) {
-+		release_sock(sk);
-+		nfc_llcp_sock_put(llcp_sock);
-+		return;
+ 	if (x->km.state != XFRM_STATE_VALID ||
+-	    !type || type->proto != IPPROTO_ESP)
++	    !type || type->proto != IPPROTO_ESP) {
++		if (mtu <= x->props.header_len)
++			return 1;
+ 		return mtu - x->props.header_len;
 +	}
-+
- 	/* Unlink from connecting and link to the client array */
- 	nfc_llcp_sock_unlink(&local->connecting_sockets, sk);
- 	nfc_llcp_sock_link(&local->sockets, sk);
-@@ -1227,6 +1236,8 @@ static void nfc_llcp_recv_cc(struct nfc_llcp_local *local,
- 	sk->sk_state = LLCP_CONNECTED;
- 	sk->sk_state_change(sk);
  
-+	release_sock(sk);
+ 	aead = x->data;
+ 	blksize = ALIGN(crypto_aead_blocksize(aead), 4);
+@@ -2600,8 +2604,17 @@ u32 xfrm_state_mtu(struct xfrm_state *x, int mtu)
+ 		break;
+ 	}
+ 
+-	return ((mtu - x->props.header_len - crypto_aead_authsize(aead) -
+-		 net_adj) & ~(blksize - 1)) + net_adj - 2;
++	overhead = x->props.header_len + crypto_aead_authsize(aead) + net_adj;
++	if (mtu <= overhead)
++		return 1;
 +
- 	nfc_llcp_sock_put(llcp_sock);
++	payload_mtu = mtu - overhead;
++	payload_mtu &= ~(blksize - 1);
++	if (payload_mtu <= 2)
++		return 1;
++
++	return payload_mtu + net_adj - 2;
++
  }
+ EXPORT_SYMBOL_GPL(xfrm_state_mtu);
  
 -- 
 2.53.0
