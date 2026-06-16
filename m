@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-263895-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265816-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id LtQTDVtpMWrUigUAu9opvQ
-	(envelope-from <stable+bounces-263895-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:18:51 +0200
+	id 5EOyBniQMWpqmwUAu9opvQ
+	(envelope-from <stable+bounces-265816-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:05:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C232A690E6B
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:18:50 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8167A693CC5
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:05:43 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=TVMknDEi;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263895-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263895-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=g7j9D+T+;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265816-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265816-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7ABF03041A4A
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:17:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 583EE3018BD3
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:05:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54F4E43E9ED;
-	Tue, 16 Jun 2026 15:17:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80CA73D565C;
+	Tue, 16 Jun 2026 18:05:41 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28F0343E4B4;
-	Tue, 16 Jun 2026 15:17:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 617942F12AE;
+	Tue, 16 Jun 2026 18:05:40 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781623039; cv=none; b=ebffkEE5kzqp+VMuOw6h0OELo7TGV+s6BGJEXIpEdqBDOG6MyIV8WxfJNMNUvokMFiyzdbqNkHmUvfyu7c3bEOckb51IdLoyFuFzf+Dx+z4MfGF5N3MLMtfKoqcRQKTi6b0nlgc2bOhkuyCFRY6T5SzZZBJJp1AdzQJ2FmALtq4=
+	t=1781633141; cv=none; b=Nmex354aKsmBn1SOf1O38KRYQxLnSzqMsO7g1T1h3/iZC7Gc+A6eCMkzRHl9bT9lxJl6u7iKyOsfDEHaajw3bXIbD+UsSgZMn03b4ZZp47AYTsmqqhl9LLcg9EGxJHf4cH2gUHVIMLz8spcJrJeeQcvdvUX7JeUrH+3ZvRnkPIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781623039; c=relaxed/simple;
-	bh=me3eBPMU39fmd8swu80PPQZtOrfAQFOyrXkHTekvWt4=;
+	s=arc-20240116; t=1781633141; c=relaxed/simple;
+	bh=p6RB0+od2P2M0CCJooP+35PYfgq/VV5TGSAGsxm/iew=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uXPZa3tbLqMFmBbDAO8lFiZfVEMqO0TsjuEKhrEFDZ3U9HZOzb+mK0saYccUjeqonat68YVLM33gz4E8KeWYVFmEC+Ibz71Zh5YuIU80YNgg7Y6xCV2ETFyf0jYXcuZ6QVuN6Ata+95vG/LlYst3yDuWMMUAhA9QtUGVVP/6VwE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TVMknDEi; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9AE71F000E9;
-	Tue, 16 Jun 2026 15:17:16 +0000 (UTC)
+	 MIME-Version; b=HEEypo496Pt6Tqp3NExh1Pb+Bhx5v2tBrhkkC5BV1ufx/cI2fTMbDpsI78MpkNyMQwgj6HrbA3DJu3hGjKlx6lnw9ag8u0Dmqsce9qZ5acW2czdjr0msXFGu7qKB9MNW2sKAudjKDgrYX9mVKXwExPi1jjIZ7j9Co/C1oYnVjdM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g7j9D+T+; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A7901F000E9;
+	Tue, 16 Jun 2026 18:05:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781623037;
-	bh=/+232Od8jk+CVoTJ1LA7Ke/yz4gTWLPdfy4T1jmGNDg=;
+	s=korg; t=1781633140;
+	bh=TYFs29qQZ2yXuAvK9qrgYyBiDvKVLRbWT7ugdwzLzM0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=TVMknDEiGqknwhHJTPLMrFZqEU7McTIFwz0Ws/aOYLTUB1upFHAUi8lqyzVD4j8/a
-	 g0RxZbHqs3tG+acb/eREfHWa6MDmugDqHpYwusW1w9vE9jEga42Jgbrf8VcBhwi6Zt
-	 NMVifmCDg3xgS3Ky6jlCr7iXbRMCpdWejUGHP98g=
+	b=g7j9D+T+PwxhrU6MmvnBTSQ3kOEc72mThr+PvfHAe4JG3q+DiujttQA9iYYJ8kY9J
+	 CqnMXAFCy8ZiRRqvIebH3VLZAexd0YZLZNRflwXB1jT0QFATZHgf3T7bqMDViZteLf
+	 uMv52uXbuhrGwTNlWiDEwOGo0nnnb3LDi7IlAAqc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jakub Sitnicki <jakub@cloudflare.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Zhao Dongdong <zhaodongdong@kylinos.cn>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 033/378] net: Annotate sk->sk_write_space() for UDP SOCKMAP.
+Subject: [PATCH 5.15 026/411] Bluetooth: 6lowpan: check skb_clone() return value in send_mcast_pkt()
 Date: Tue, 16 Jun 2026 20:24:24 +0530
-Message-ID: <20260616145111.611489505@linuxfoundation.org>
+Message-ID: <20260616145101.747286933@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,95 +69,74 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-263895-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265816-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kuniyu@google.com,m:jakub@cloudflare.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:zhaodongdong@kylinos.cn,m:luiz.von.dentz@intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,kylinos.cn:email,intel.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C232A690E6B
+X-Rspamd-Queue-Id: 8167A693CC5
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Zhao Dongdong <zhaodongdong@kylinos.cn>
 
-[ Upstream commit b748765019fe9e9234660327090fc1a9665cdbdd ]
+[ Upstream commit 3c40d381ce04f9575a5d8b542898183c3b4b38dc ]
 
-UDP TX skb->destructor() is sock_wfree(), and UDP holds lock_sock()
-only for UDP_CORK / MSG_MORE sendmsg().
+The skb_clone() function can return NULL if memory allocation fails.
+send_mcast_pkt() calls skb_clone() without checking the return value, which
+can lead to a NULL pointer dereference in send_pkt() when it dereferences
+skb->data.
+Add a NULL check after skb_clone() and skip the peer if the clone fails.
 
-Otherwise, sk->sk_write_space() may be read locklessly while SOCKMAP
-rewrites sk->sk_write_space().
-
-Let's use WRITE_ONCE() and READ_ONCE() for sk->sk_write_space().
-
-Note that the write side is annotated by commit 2ef2b20cf4e0
-("net: annotate data-races around sk->sk_{data_ready,write_space}").
-
-Fixes: 7b98cd42b049 ("bpf: sockmap: Add UDP support")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Reviewed-by: Jakub Sitnicki <jakub@cloudflare.com>
-Link: https://patch.msgid.link/20260529193941.3897256-1-kuniyu@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 18722c247023 ("Bluetooth: Enable 6LoWPAN support for BT LE devices")
+Signed-off-by: Zhao Dongdong <zhaodongdong@kylinos.cn>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/sock.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ net/bluetooth/6lowpan.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/core/sock.c b/net/core/sock.c
-index 5976100a9d55a0..b197a795306392 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -2673,8 +2673,12 @@ void sock_wfree(struct sk_buff *skb)
- 	int old;
+diff --git a/net/bluetooth/6lowpan.c b/net/bluetooth/6lowpan.c
+index b70d3a38fdedc1..26bc594182ea08 100644
+--- a/net/bluetooth/6lowpan.c
++++ b/net/bluetooth/6lowpan.c
+@@ -485,6 +485,8 @@ static int send_mcast_pkt(struct sk_buff *skb, struct net_device *netdev)
+ 			int ret;
  
- 	if (!sock_flag(sk, SOCK_USE_WRITE_QUEUE)) {
-+		void (*sk_write_space)(struct sock *sk);
-+
-+		sk_write_space = READ_ONCE(sk->sk_write_space);
-+
- 		if (sock_flag(sk, SOCK_RCU_FREE) &&
--		    sk->sk_write_space == sock_def_write_space) {
-+		    sk_write_space == sock_def_write_space) {
- 			rcu_read_lock();
- 			free = __refcount_sub_and_test(len, &sk->sk_wmem_alloc,
- 						       &old);
-@@ -2690,7 +2694,7 @@ void sock_wfree(struct sk_buff *skb)
- 		 * after sk_write_space() call
- 		 */
- 		WARN_ON(refcount_sub_and_test(len - 1, &sk->sk_wmem_alloc));
--		sk->sk_write_space(sk);
-+		sk_write_space(sk);
- 		len = 1;
- 	}
- 	/*
+ 			local_skb = skb_clone(skb, GFP_ATOMIC);
++			if (!local_skb)
++				continue;
+ 
+ 			BT_DBG("xmit %s to %pMR type %u IP %pI6c chan %p",
+ 			       netdev->name,
 -- 
 2.53.0
 
