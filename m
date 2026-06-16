@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-264701-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264422-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id AZufMIp7MWr8kQUAu9opvQ
-	(envelope-from <stable+bounces-264701-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:36:26 +0200
+	id A3p9NUx2MWq+jwUAu9opvQ
+	(envelope-from <stable+bounces-264422-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:14:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36263692404
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:36:26 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 611F6691D55
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:14:04 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=itkNrGfF;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264701-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264701-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=h9s1+Oib;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264422-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264422-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 10D9030185A8
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:29:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E459F3164D09
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:03:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88327472762;
-	Tue, 16 Jun 2026 16:29:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFEAD451052;
+	Tue, 16 Jun 2026 16:03:19 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6803746AF14;
-	Tue, 16 Jun 2026 16:29:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CA3B44DB64;
+	Tue, 16 Jun 2026 16:03:18 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781627397; cv=none; b=cx9Ava39iZ8Wk+4+MyJOC0MVinvYlXrloWT0+lkFbSTt3btV9kql2V3xq/LNLsOTI1OHXBTBqovjrPRWA5wVD4Pl2Q/+MBGcPb0UPrgl9g+KVyH8XdZcKB3V/k1OY5Gwd0AbSMPmRyYbvqEfoGJcTllsoRB8qXbnfd1HCXj7qSg=
+	t=1781625799; cv=none; b=nWa7HABthA31FAlE8UfIBLZjDG4nO8AY9DWTKGpG63AmUJqvm8Pw/hF96wuWTvjyvxLQmQZlaCMpM9lPY+K0nVVS8uTzRzo8PfHHkp1Y7yfBgnkRumPXw9Q1FobeJvqghkKqHNXZq9AI8VuZDkHQnxd/kKFpCNXnFV7BLTxc6WM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781627397; c=relaxed/simple;
-	bh=jqMnilQnrrgt23P7RuZHjyTaVjy1wXa6BLwWXU99JTE=;
+	s=arc-20240116; t=1781625799; c=relaxed/simple;
+	bh=zPrrq9nJOw3ISDPb60G7DSv29ASn9AbJgfMVH+Oy4J4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OpgU/XsKciKAQbLedwzssmR3ijBPtCdOTCi3jQ/+jJwosB4iLV363F5HMizpO1mSy8lRf+OxNv/WIrtS/g75e5BV8bZRJIJcDhBbRuc0NLpCL1KAjcBkiEZfvxJG/v9zqDVlxxCkkCMdc7qqRaGeTT535qTKjkpAG6Z2CaQAIvA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=itkNrGfF; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFCA71F000E9;
-	Tue, 16 Jun 2026 16:29:46 +0000 (UTC)
+	 MIME-Version; b=B8jQvnnqCA+gGTmOPizsvWrsfDPn6l2tTY5Uvslo2DbtvTtmt2Dnc/NfRTeBAV57GxKIa4XsX10e//hCi6sPbTFIdj4NY37frKxo5WUb+PbBCoyALGU/FVReqvOWpPpdLrHvEXJh7q7OKP6cFdSqQCk6Rp+EoR3CNJK38JADuos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h9s1+Oib; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 907911F000E9;
+	Tue, 16 Jun 2026 16:03:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781627396;
-	bh=KIj55wvz8XodC+A4ZyJAsnLO0nD685ALCdImWaAIfMg=;
+	s=korg; t=1781625798;
+	bh=ROF2QF1GLblR2aWrowt4NA8HbJEh0Vxz++bgBnzxLk8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=itkNrGfFOn3lgyI8MIBfPqL/N9IfCa32Gj6CNdc+2MRzi2vZGgigY87JQOPJyQ97f
-	 EFuyMbQFCWPEC2OL3PrChopuie9g+jM2rgIJqnja54ge7E9VZ9XQD6ZCc8v9U+7DT+
-	 1n8iRfW0cu14cd0GfUtrhqI3j4wK51aEL2Y67upQ=
+	b=h9s1+Oibe/GT78MlO/TVXiAXeMPEAdFt7yaqc+3K70BD8bQz16N94Q32I88Bfsohu
+	 2gyZ5olM5tIHI+IjyUSM3PDaAnL85FLb0qjemntwcK6U1azyM+581PmUTW/usDDnHE
+	 k5nRHTnTjKyLhtQ4bHpQt1llpW8giAFVjPWBqJQM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chancel Liu <chancel.liu@nxp.com>,
-	Shengjiu Wang <shengjiu.wang@gmail.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.12 165/261] ASoC: fsl_sai: Fix 32 slots TDM broken by integer shift UB in xMR write
-Date: Tue, 16 Jun 2026 20:30:03 +0530
-Message-ID: <20260616145052.718085178@linuxfoundation.org>
+	Alon Kariv <alonka@amazon.com>,
+	Amit Matityahu <amitmat@amazon.com>,
+	Thomas Gleixner <tglx@kernel.org>
+Subject: [PATCH 6.18 208/325] timers/migration: Fix livelock in tmigr_handle_remote_up()
+Date: Tue, 16 Jun 2026 20:30:04 +0530
+Message-ID: <20260616145108.426066986@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
-References: <20260616145044.869532709@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,85 +67,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264422-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264701-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:chancel.liu@nxp.com,m:shengjiu.wang@gmail.com,m:broonie@kernel.org,m:shengjiuwang@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,nxp.com,gmail.com,kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:alonka@amazon.com,m:amitmat@amazon.com,m:tglx@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,nxp.com:email,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 36263692404
+X-Rspamd-Queue-Id: 611F6691D55
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chancel Liu <chancel.liu@nxp.com>
+From: Amit Matityahu <amitmat@amazon.com>
 
-commit 4790af1cc2e8871fb31f28c66e42b9a949a23992 upstream.
+commit d486b4934a8e504376b85cdb3766f306d57aff5b upstream.
 
-When configuring 32 slots TDM (channels == slots == 32), the xMR
-(Mask Register) write used:
-~0UL - ((1 << min(channels, slots)) - 1)
+tmigr_handle_remote_cpu() skips timer_expire_remote() when cpu ==
+smp_processor_id(), assuming the local softirq path already handled this
+CPU's timers.
 
-The literal "1" is a signed 32-bit int. Shifting it by 32 positions is
-undefined behaviour which may set this register to 0xFFFFFFFF, masking
-all 32 slots.
+This assumption is wrong because jiffies can advance after the handling of
+the CPU's global timers in run_timer_base(BASE_GLOBAL) and before
+tmigr_handle_remote() evaluates the expiry times.
 
-Use GENMASK_U32() macro instead. For 32 slots this produces a zero mask:
-~GENMASK_U32(31, 0) = ~0xFFFFFFFF = 0x00000000
-Behaviour for fewer than 32 slots is unchanged.
+As a consequence a timer which expires after the CPU local timer wheel
+advanced and becomes expired in the remote handling is ignored and the
+callback is never invoked and removed from the timer wheel.
 
-Fixes: 770f58d7d2c5 ("ASoC: fsl_sai: Support multiple data channel enable bits")
+What's worse is that fetch_next_timer_interrupt_remote() keeps reporting it
+as expired, and the event is re-queued with expires == now on each
+iteration.  The goto-again loop spins indefinitely.
+
+Fix this by calling timer_expire_remote() unconditionally. That's minimal
+overhead for the common case as __run_timer_base() returns immediately if
+there is nothing to expire in the local wheel.
+
+[ tglx: Amend change log and add a comment ]
+
+Fixes: 7ee988770326 ("timers: Implement the hierarchical pull model")
+Reported-by: Alon Kariv <alonka@amazon.com>
+Signed-off-by: Amit Matityahu <amitmat@amazon.com>
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
 Cc: stable@vger.kernel.org
-Signed-off-by: Chancel Liu <chancel.liu@nxp.com>
-Reviewed-by: Shengjiu Wang <shengjiu.wang@gmail.com>
-Link: https://patch.msgid.link/20260601083327.1535185-1-chancel.liu@oss.nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://patch.msgid.link/20260603170139.33628-1-amitmat@amazon.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/fsl/fsl_sai.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/time/timer_migration.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/sound/soc/fsl/fsl_sai.c
-+++ b/sound/soc/fsl/fsl_sai.c
-@@ -714,7 +714,7 @@ static int fsl_sai_hw_params(struct snd_
- 				   FSL_SAI_CR4_FSD_MSTR, FSL_SAI_CR4_FSD_MSTR);
+--- a/kernel/time/timer_migration.c
++++ b/kernel/time/timer_migration.c
+@@ -946,8 +946,12 @@ static void tmigr_handle_remote_cpu(unsi
+ 	/* Drop the lock to allow the remote CPU to exit idle */
+ 	raw_spin_unlock_irq(&tmc->lock);
  
- 	regmap_write(sai->regmap, FSL_SAI_xMR(tx),
--		     ~0UL - ((1 << min(channels, slots)) - 1));
-+		     ~GENMASK_U32(min(channels, slots) - 1, 0));
+-	if (cpu != smp_processor_id())
+-		timer_expire_remote(cpu);
++	/*
++	 * This can't exclude the local CPU because jiffies might have advanced
++	 * after the timer softirq invoked run_timer_base(BASE_GLOBAL) and the
++	 * point where the jiffies snapshot @jif was taken in tmigr_handle_remote().
++	 */
++	timer_expire_remote(cpu);
  
- 	return 0;
- }
+ 	/*
+ 	 * Lock ordering needs to be preserved - timer_base locks before tmigr
 
 
 
