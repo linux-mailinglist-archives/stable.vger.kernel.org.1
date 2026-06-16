@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-264937-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266271-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Q4zdDhSBMWpylAUAu9opvQ
-	(envelope-from <stable+bounces-264937-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:00:04 +0200
+	id zBTSCiKaMWrxnwUAu9opvQ
+	(envelope-from <stable+bounces-266271-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:46:58 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94D1F692A4A
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:00:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FFB9694772
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:46:57 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=levrUjTU;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264937-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264937-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Z89Q3L4o;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266271-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266271-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CA30331E620D
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:51:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4C1383177B14
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:45:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F7F6477E2D;
-	Tue, 16 Jun 2026 16:51:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBC3434F492;
+	Tue, 16 Jun 2026 18:45:53 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 248CE45348A;
-	Tue, 16 Jun 2026 16:51:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 831153A5E89;
+	Tue, 16 Jun 2026 18:45:52 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781628673; cv=none; b=PY4nP6K9fJoOFYD5jTKyxnIlw1bUzp6LUbZvrZEpaOEuNIi41f4rfkSBOrLTHQfdwL8L4tb66WQUQszoum3a6zlkGA0CQBkqpz3nB1XvlaHOO7Q4qFAYSgfRqUTaMxpJk3axiuyo6fq9Dsd0myoAIwt0QlupRXOE35mgUHTWsOg=
+	t=1781635553; cv=none; b=XZtwMQvhhjttYegzjMG8GTDQIp/EF0EzcIe3h1p+cfqTAeQ0pK8U723ZSc5xsoOrWo04RISx/Vd++oBGuBJtsJZYv+yaC5218LCkarnoXQ4RSwHRwj+wTLZ3UNRPZ3L9veht+hSQvl9iZXTnDMsY2+iMq1N4QoreGZCaUDuSGIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781628673; c=relaxed/simple;
-	bh=Ii1qz7kUCxP8PgqhGv7zboUYN7l+hMIEE6UmBmsOHJM=;
+	s=arc-20240116; t=1781635553; c=relaxed/simple;
+	bh=wU26ltw0kgBVyFCM0L5fEmOU/kYR+G0+XibBAFQC/bc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cXc8VZMToEkfgkiab6UXPhLv81MMd0gD/8ucpWGleNO36iwseM5LDh8frvKbs0y6bMEa7FjCRVFYJhfM+845wOejsnMruufToBxWK+yVFrnp0OPK3yeVzCt/il2rf8325hcEO1xmbHXlextha8H5hK8U+UUsVB1MU3tdgzxCgYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=levrUjTU; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 108A11F000E9;
-	Tue, 16 Jun 2026 16:51:10 +0000 (UTC)
+	 MIME-Version; b=i47Myn3Ozyb+G8XGwoeRyWbBYEfGvypX3Rf77d8gZCjbj8Wurw1AUSSZt10qFYwW8igOQxw32vv/UzkfuFmI8z8ajVHwPWwHkYcRpJw0frrPkpaqScr6ahgZGKJ3GY0dfFZyuXHagBPF4g0UisH+GhXB8R+7xuC1nh1ta8yGQx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z89Q3L4o; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 375C01F000E9;
+	Tue, 16 Jun 2026 18:45:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781628672;
-	bh=T2uf254yrQAv+DwiPzuK5i4CveI7eC2xY6p1uJl2OLc=;
+	s=korg; t=1781635552;
+	bh=KZBDoCSeoFtylLGMxVd1OajvgatjwWtOjz5dXiABeO4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=levrUjTU/XsUCKMcL1f4B2hp1ESYIeXOY2E/39pWmAjheFX2DJvuE3s043szDSgo6
-	 LTm0nNwAWUm6keRPnB3Px8myljZtTOEalHC+Yac/PazOhR3XmtxaHQamR+QJRdP7oD
-	 hxt3cctliuAAjzOM/cucXrfP+vhpuRG3SBYGiFY0=
+	b=Z89Q3L4omdeAFlZ8PwtfUxsia4l6Jn0iRFSEIw2L9NPN3kd3WhmqL9Al7nFjOBi5s
+	 eKogTxJko+qWRuqO+bAYKB0ujSwaP1e94JN4jvVz0Q1orE9Z+3M9q3+54sPtEX/x6V
+	 h15aP27tUPZ41YgoGt6tX2GcnPiav5IAGjADak0s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stable@vger.kernel.org,
-	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.6 139/452] ASoC: qcom: q6asm-dai: close stream only when running
+	Yuhao Jiang <danisjiang@gmail.com>,
+	Junrui Luo <moonafterrain@outlook.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.10 070/342] macsec: fix replay protection at XPN lower-PN wrap
 Date: Tue, 16 Jun 2026 20:26:06 +0530
-Message-ID: <20260616145125.022132686@linuxfoundation.org>
+Message-ID: <20260616145051.506146929@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,103 +76,75 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264937-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-266271-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:danisjiang@gmail.com,m:moonafterrain@outlook.com,m:kuba@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:Stable@vger.kernel.org,m:srinivas.kandagatla@oss.qualcomm.com,m:broonie@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,outlook.com,kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[outlook.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 94D1F692A4A
+X-Rspamd-Queue-Id: 6FFB9694772
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+From: Junrui Luo <moonafterrain@outlook.com>
 
-commit 048c540ee76ded666bda74f9dae1ca3254e0633c upstream.
+commit e68842b3356471ba56c882209f324613dac47f64 upstream.
 
-q6asm_dai_close() and q6asm_dai_compr_free() currently issue CMD_CLOSE
-whenever prtd->state is non-zero.
+In macsec_post_decrypt(), when pn is U32_MAX, pn + 1 overflows u32 to 0
+and the first branch never fires. If next_pn_halves.lower is also in the
+upper half, pn_same_half(pn, lower) is true and the XPN else-if does not
+fire either, leaving next_pn_halves unchanged. An attacker that captures
+the legitimate frame carrying pn == 0xFFFFFFFF on an XPN association
+can then replay it indefinitely, since lowest_pn never rises above
+the captured pn and macsec_decrypt() reconstructs the same IV.
 
-After prepare() closes an existing stream, the state is updated to
-Q6ASM_STREAM_STOPPED. Since this state is also non-zero, the close and
-free paths can send CMD_CLOSE again for a stream that has already been
-closed.
+Extend the XPN else-if to also fire when pn + 1 wraps to 0, so receipt
+of pn == U32_MAX advances next_pn_halves to (upper + 1, 0).
 
-Restrict CMD_CLOSE to the Q6ASM_STREAM_RUNNING state so the command is
-sent only when the ASM stream is still active.
-
-Fixes: 2a9e92d371db ("ASoC: qdsp6: q6asm: Add q6asm dai driver")
-Cc: Stable@vger.kernel.org
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260518092347.3446946-3-srinivas.kandagatla@oss.qualcomm.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: a21ecf0e0338 ("macsec: Support XPN frame handling - IEEE 802.1AEbw")
+Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
+Link: https://patch.msgid.link/SYBPR01MB78813FD49E58F253B989F197AF012@SYBPR01MB7881.ausprd01.prod.outlook.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/qcom/qdsp6/q6asm-dai.c |   14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/net/macsec.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/sound/soc/qcom/qdsp6/q6asm-dai.c
-+++ b/sound/soc/qcom/qdsp6/q6asm-dai.c
-@@ -456,12 +456,12 @@ static int q6asm_dai_close(struct snd_so
- 	struct q6asm_dai_rtd *prtd = runtime->private_data;
- 
- 	if (prtd->audio_client) {
--		if (prtd->state)
-+		if (prtd->state == Q6ASM_STREAM_RUNNING) {
- 			q6asm_cmd(prtd->audio_client, prtd->stream_id,
- 				  CMD_CLOSE);
--
--		q6asm_unmap_memory_regions(substream->stream,
-+			q6asm_unmap_memory_regions(substream->stream,
- 					   prtd->audio_client);
-+		}
- 		q6asm_audio_client_free(prtd->audio_client);
- 		prtd->audio_client = NULL;
- 	}
-@@ -678,7 +678,7 @@ static int q6asm_dai_compr_free(struct s
- 	struct snd_soc_pcm_runtime *rtd = stream->private_data;
- 
- 	if (prtd->audio_client) {
--		if (prtd->state) {
-+		if (prtd->state == Q6ASM_STREAM_RUNNING) {
- 			q6asm_cmd(prtd->audio_client, prtd->stream_id,
- 				  CMD_CLOSE);
- 			if (prtd->next_track_stream_id) {
-@@ -686,11 +686,11 @@ static int q6asm_dai_compr_free(struct s
- 					  prtd->next_track_stream_id,
- 					  CMD_CLOSE);
- 			}
--		}
- 
--		snd_dma_free_pages(&prtd->dma_buffer);
--		q6asm_unmap_memory_regions(stream->direction,
-+			q6asm_unmap_memory_regions(stream->direction,
- 					   prtd->audio_client);
-+		}
-+		snd_dma_free_pages(&prtd->dma_buffer);
- 		q6asm_audio_client_free(prtd->audio_client);
- 		prtd->audio_client = NULL;
- 	}
+--- a/drivers/net/macsec.c
++++ b/drivers/net/macsec.c
+@@ -828,7 +828,8 @@ static bool macsec_post_decrypt(struct s
+ 		if (pn + 1 > rx_sa->next_pn_halves.lower) {
+ 			rx_sa->next_pn_halves.lower = pn + 1;
+ 		} else if (secy->xpn &&
+-			   !pn_same_half(pn, rx_sa->next_pn_halves.lower)) {
++			   (pn + 1 == 0 ||
++			    !pn_same_half(pn, rx_sa->next_pn_halves.lower))) {
+ 			rx_sa->next_pn_halves.upper++;
+ 			rx_sa->next_pn_halves.lower = pn + 1;
+ 		}
 
 
 
