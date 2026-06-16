@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-265437-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263876-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id eN++NEiKMWpNmAUAu9opvQ
-	(envelope-from <stable+bounces-265437-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:39:20 +0200
+	id XHfEK5toMWqkigUAu9opvQ
+	(envelope-from <stable+bounces-263876-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:15:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4546C69357E
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:39:20 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 574B7690DD7
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:15:39 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=xwsbPrQM;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265437-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265437-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=dJWjsvMW;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263876-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-263876-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C5B1E321DA5C
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:33:22 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C2A263006811
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:15:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01F9D47CC8E;
-	Tue, 16 Jun 2026 17:33:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD12B43E486;
+	Tue, 16 Jun 2026 15:15:37 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C407247B425;
-	Tue, 16 Jun 2026 17:33:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F02E43DA2C;
+	Tue, 16 Jun 2026 15:15:36 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781631193; cv=none; b=uikzDzcOOtAR5zR9R8WFTTsrGv64cPhONw3DfbnZ0gyE4+AA8ykCfrudHTVz4rd/r/NDBcr57drjxuTKWVcRpA+R06+2kc3oZ0/UTWA7QTXdMKVTnwiOWLAJEbobOytEXl8in6ngzkoK61T2ItI48zSz10J0Fkhkc3+1uFzNAQw=
+	t=1781622937; cv=none; b=K/Xzp8a/yhWqq2ZA67Olnda7asUTa8m7FlPAWyyX7Rf/hqXDI6CDh1BC/E61ki+CDyVg+mvqF2Hc1hFSs3VnG25BLZUYtWDRHrDc8aJTjCNbyw/RGWEJpujbCYTHK9thbMHElpmEVSfRAtzIFiJSHG0xqa9x1YlbUavupiobpYM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781631193; c=relaxed/simple;
-	bh=HCBejHZfA8VEvV5aEwQyP+SLFAiqFGwla0BSRJQCWKo=;
+	s=arc-20240116; t=1781622937; c=relaxed/simple;
+	bh=1JyMyZJC/blU6RyYQLPvu+QqH0DxTkBThBDTj4l0qEE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Apnj6Qoa69RQ9+OBgjzkE2tcgQKG+FuEtF/yyeRYlTRq//Yhpy7nA0EcOYwSjKp+QgWhMr1yO4tuyWqk1poWNfc6PpgUEeHzcJ17OpzW8amBQpTubZiR0jrxDiyYjz4Uu7fRk3E7klznotoyo+jgAEqFgyoQc6UqzkHOPvenK7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xwsbPrQM; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C99F01F000E9;
-	Tue, 16 Jun 2026 17:33:11 +0000 (UTC)
+	 MIME-Version; b=FuYLluSCW1jhDbe9EQ3pp4j87l/Z0ZCazmT7hStcfM9guxheBH9OefFneCbNqpvjaLMWQQ0m63CV2J9Bh3L2OnZY9RtAAIW1RhYesaIlBD/1jXl9jpQkm+U+I4RucDARMbfynQ2KoPXU5VfpVh6r8HpLOkSmLyDLC3sFb68meMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dJWjsvMW; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E5461F000E9;
+	Tue, 16 Jun 2026 15:15:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781631192;
-	bh=4YCrzIHn12pryU4ST9iHloZ37PYEVrqunUpvgpg68Dw=;
+	s=korg; t=1781622936;
+	bh=NFy4586kmgSwsqEKx+5xJsVDAHL0OP0tizJ+UF1CqGA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=xwsbPrQMYmw37X5eZRHj7I4d3RgtzJ6G27BA5/3bjEbcUoWfCGzcPWHBnrFE7gJ1T
-	 0N4/JqAyHyvRFxzviHmcyWbAEdkB1Yr2h6VjZggZ/Ew7LRDN5DxwpMpQB4+fY8W/qq
-	 c74rzl9htvqUDeSFcURKXnw+KDuAQOdW//m0rcBU=
+	b=dJWjsvMWt8UkKFLbwP4KBKUKdVmTSc4NAxttgimP3eMlCqomXbnOPA91IXufY/rZH
+	 n5VNMz7J8WW4DY6So3GRa/OZ3GPwkZ9CtcsOPpR2WOdhv7na9HCFFKPQO3A06A5G1K
+	 DCUSNty9cLCOS12Z+wr272fig92k3stFuglzPeRM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guangshuo Li <lgs201920130244@gmail.com>,
-	William Breathitt Gray <wbg@kernel.org>
-Subject: [PATCH 6.1 141/522] counter: Fix refcount leak in counter_alloc() error path
+	Jianyu Li <jianyu.li@mediatek.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 057/378] af_unix: Fix inq_len update problem in partial read
 Date: Tue, 16 Jun 2026 20:24:48 +0530
-Message-ID: <20260616145132.686979893@linuxfoundation.org>
+Message-ID: <20260616145112.977450472@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,86 +70,98 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-265437-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:lgs201920130244@gmail.com,m:wbg@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-263876-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jianyu.li@mediatek.com,m:kuniyu@google.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,mediatek.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4546C69357E
+X-Rspamd-Queue-Id: 574B7690DD7
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guangshuo Li <lgs201920130244@gmail.com>
+From: Jianyu Li <jianyu.li@mediatek.com>
 
-commit d9eeb0ea0d2de658663bfaa9c26eccdd8fd64440 upstream.
+[ Upstream commit c1f07a7f2d47aeb9878301e7bb36bc1c2bc2be8e ]
 
-After device_initialize(), the lifetime of the embedded struct device
-is expected to be managed through the device core reference counting.
+Currently inq_len is updated only when the whole skb is consumed.
+If only part of the data is read, following SIOCINQ query would
+get value greater than what actually left.
 
-In counter_alloc(), if dev_set_name() fails after device_initialize(),
-the error path removes the chrdev, frees the ID, and frees the backing
-allocation directly instead of releasing the device reference with
-put_device(). This bypasses the normal device lifetime rules and may
-leave the reference count of the embedded struct device unbalanced,
-resulting in a refcount leak.
+This change update inq_len timely in unix_stream_read_generic(),
+and adjust unix_stream_read_skb() accordingly to prevent
+repetitive update.
 
-The issue was identified by a static analysis tool I developed and
-confirmed by manual review.
-
-Fix this by using put_device() in the dev_set_name() failure path and
-let counter_device_release() handle the final cleanup.
-
-Fixes: 4da08477ea1f ("counter: Set counter device name")
-Cc: stable@vger.kernel.org
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
-Link: https://lore.kernel.org/r/20260413134604.2861772-1-lgs201920130244@gmail.com
-Signed-off-by: William Breathitt Gray <wbg@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f4e1fb04c123 ("af_unix: Use cached value for SOCK_STREAM in unix_inq_len().")
+Signed-off-by: Jianyu Li <jianyu.li@mediatek.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20260601113640.231897-2-jianyu.li@mediatek.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/counter/counter-core.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/unix/af_unix.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
---- a/drivers/counter/counter-core.c
-+++ b/drivers/counter/counter-core.c
-@@ -123,7 +123,8 @@ struct counter_device *counter_alloc(siz
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index c3d68bf26ce19b..62ec16c8ab2ede 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -2882,7 +2882,7 @@ static int unix_stream_read_skb(struct sock *sk, skb_read_actor_t recv_actor)
+ 		return -EAGAIN;
+ 	}
  
- err_dev_set_name:
+-	WRITE_ONCE(u->inq_len, u->inq_len - skb->len);
++	WRITE_ONCE(u->inq_len, u->inq_len - unix_skb_len(skb));
  
--	counter_chrdev_remove(counter);
-+	put_device(dev);
-+	return NULL;
- err_chrdev_add:
+ #if IS_ENABLED(CONFIG_AF_UNIX_OOB)
+ 	if (skb == u->oob_skb) {
+@@ -3059,11 +3059,12 @@ static int unix_stream_read_generic(struct unix_stream_read_state *state,
+ 				unix_detach_fds(&scm, skb);
+ 			}
  
- 	ida_free(&counter_ida, dev->id);
+-			if (unix_skb_len(skb))
+-				break;
+-
+ 			spin_lock(&sk->sk_receive_queue.lock);
+-			WRITE_ONCE(u->inq_len, u->inq_len - skb->len);
++			WRITE_ONCE(u->inq_len, u->inq_len - chunk);
++			if (unix_skb_len(skb)) {
++				spin_unlock(&sk->sk_receive_queue.lock);
++				break;
++			}
+ 			__skb_unlink(skb, &sk->sk_receive_queue);
+ 			spin_unlock(&sk->sk_receive_queue.lock);
+ 
+-- 
+2.53.0
+
 
 
 
