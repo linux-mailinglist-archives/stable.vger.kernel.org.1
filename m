@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-265512-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264933-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id f60+LdWKMWqCmAUAu9opvQ
-	(envelope-from <stable+bounces-265512-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:41:41 +0200
+	id VU/tLBWCMWq8lAUAu9opvQ
+	(envelope-from <stable+bounces-264933-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:04:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA6396935FC
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:41:40 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AD8F692B25
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:04:21 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ZObEuxEe;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265512-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265512-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=gKEHk0jo;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264933-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264933-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9957E300BC69
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:39:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D6AFD31DA0D2
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:51:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9250446AF3C;
-	Tue, 16 Jun 2026 17:39:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76C3D478E55;
+	Tue, 16 Jun 2026 16:50:52 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48E4C3876CF;
-	Tue, 16 Jun 2026 17:39:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EC03449EC3;
+	Tue, 16 Jun 2026 16:50:51 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781631587; cv=none; b=jriOVLs59e/DQ9rnkUZeJ67ZspeaFB68tthRbQbDK7WyEAybtsaqzLxsbkGUd+unF6RI19T89C5ygSfOyZn6IR7vNqwQs+Wy73x8n+3W4WLsYnSuvA81CJasF3gZOBXmdMb3/ODWguFcSWzGXrQYOBO2WD86NNr9+6WhvOuAsag=
+	t=1781628652; cv=none; b=gdlKihYhcbT3c1wEd3mDFP7BVnKdfH7+mFJdnYuezQD8RHWx+1hQ9hDsqSv2qvxIK6rWeWBlAY+fF1AmHwEwyYugu4uLjcBPgbN+426vmR5g5ooOqhBIxHIlVG9mowoI4IAw9rAku4LQDA3p2xWLee8EVJbqXah3jCp9bDjiF1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781631587; c=relaxed/simple;
-	bh=tcAPip4BJgueaRnjnfEuydKLfsKAlqAFhCw85hKHZJ4=;
+	s=arc-20240116; t=1781628652; c=relaxed/simple;
+	bh=N8g/nCKAOSA275N+7gcuvgdcPx8UQn9RzYTxrEog70g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eK5EZkysvkdBwszfLp59vnV7okJS22vXlEfRzwj0zpmWJljOvo6eYfAwxwzZvSmC5Lrdya6g4hOyQCw2iGfE8v/rm3qPuOUwOjYQZCSSKEOlflOgA+FEHZPArUSd3ab0erTxPGNho7uzL5R9dINGQeckC3GTX3siDDjhrvoFwzk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZObEuxEe; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E6DD1F000E9;
-	Tue, 16 Jun 2026 17:39:44 +0000 (UTC)
+	 MIME-Version; b=C3v+YevKibxz+kqQ31RIoX5ShTkrM+SZQUf1KgU4rcBHKSTJ8oX8ajCfZwM0ukr7dgkVNo1b0uu+pEB7mVyT0rxOWK5Jw2nptv3lAWlh1MayyG0sswQmoTtZziqoI0SPKGqY9zeOufMssYVzkUjhwvWHDN1QK5Aw4jFbKVny7aE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gKEHk0jo; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 215A01F000E9;
+	Tue, 16 Jun 2026 16:50:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781631586;
-	bh=nydz9g3glMB8zvHMftFKeeRahzKRvZkwXMrWiYdZWjs=;
+	s=korg; t=1781628651;
+	bh=eUsma5g1WYIxLLpribTLeno7upuPvucxRVWi1XLvCf8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ZObEuxEeSpo0YVk/7L6n1pTU6gfHNu2+0RejkCBWydkpgTGMTRTC7DfpuF92zagWk
-	 kTVr3yQTuNCKD71Nn0kYQ6Z57LdrLHJCeTTD84Cgd2MlQ8dxsHcDhfIB6mX4mY2Obm
-	 fgooh2vInC+As2/VWptTZTIsGs7I8iBEwfRxe308=
+	b=gKEHk0jo3XZEWdv0MX8VoFt25B4CcQj3UKthMbnHnchl6zjdiRqfN7o/4Akd56BqJ
+	 mLf7KRbWiGnyjwu7u2QIW6XmnprvF9ZyoAEf99uwDS42dP2tZF/3lCNiPVQb4JD1hU
+	 Ku6Ffkpxf/8zJuiYwLZFvfcHQStB9n8xPy7eLm8s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Cen <rollkingzzc@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 216/522] Bluetooth: bnep: reject short frames before parsing
+	Maoyi Xie <maoyi.xie@ntu.edu.sg>,
+	Steffen Klassert <steffen.klassert@secunet.com>
+Subject: [PATCH 6.6 136/452] xfrm: route MIGRATE notifications to callers netns
 Date: Tue, 16 Jun 2026 20:26:03 +0530
-Message-ID: <20260616145136.140484458@linuxfoundation.org>
+Message-ID: <20260616145124.876333219@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,206 +71,196 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264933-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-265512-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:rollkingzzc@gmail.com,m:luiz.von.dentz@intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:maoyi.xie@ntu.edu.sg,m:steffen.klassert@secunet.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,secunet.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,ntu.edu.sg:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: CA6396935FC
+X-Rspamd-Queue-Id: 1AD8F692B25
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Cen <rollkingzzc@gmail.com>
+From: Maoyi Xie <maoyixie.tju@gmail.com>
 
-[ Upstream commit 6770d3a8acdf9151769180cc3710346c4cfbe6f0 ]
+commit 7e2a4f7ca0952820731ef7bdadfc9a9e9d3571b4 upstream.
 
-A BNEP peer can send a short BNEP SDU. bnep_rx_frame() reads the
-packet type byte immediately and, for control packets, reads the control
-opcode and setup UUID-size byte before proving that those bytes are
-present. bnep_rx_control() also dereferences the control opcode without
-rejecting an empty control payload.
+xfrm_send_migrate() in net/xfrm/xfrm_user.c and pfkey_send_migrate()
+in net/key/af_key.c both hardcode &init_net for the multicast that
+announces a successful XFRM_MSG_MIGRATE / SADB_X_MIGRATE.
 
-Use skb_pull_data() for the fixed fields in bnep_rx_frame() so a NULL
-return gates each dereference. Split the control handler so the frame
-path can pass an opcode that has already been pulled, and keep the
-byte-buffer wrapper for extension control payloads.
+XFRM_MSG_MIGRATE arrives on a per-netns NETLINK_XFRM socket, and the
+rest of the xfrm/af_key netlink path was made netns-aware in 2008.
+The other 14 multicast paths in xfrm_user.c route their event using
+xs_net(x), xp_net(xp) or sock_net(skb->sk); only the migrate path
+was missed.
 
-For BNEP_SETUP_CONN_REQ, name the UUID-size byte before pulling the
-setup payload. struct bnep_setup_conn_req carries destination and source
-service UUIDs after that byte, each uuid_size bytes, so the parser now
-documents that tuple explicitly instead of leaving the pull length as an
-opaque multiplication.
+Two consequences of the init_net hardcoding:
 
-Validation reproduced this kernel report:
-KASAN slab-out-of-bounds in bnep_rx_frame.isra.0+0x130c/0x1790
-The buggy address belongs to the object at ffff88800c0f7908 which belongs
-to the cache kmalloc-8 of size 8
-The buggy address is located 0 bytes to the right of allocated 1-byte
-region [ffff88800c0f7908, ffff88800c0f7909)
-Read of size 1
-Call trace:
-  dump_stack_lvl+0xb3/0x140 (?:?)
-  print_address_description+0x57/0x3a0 (?:?)
-  bnep_rx_frame+0x130c/0x1790 (net/bluetooth/bnep/core.c:306)
-  print_report+0xb9/0x2b0 (?:?)
-  __virt_addr_valid+0x1ba/0x3a0 (?:?)
-  srso_alias_return_thunk+0x5/0xfbef5 (?:?)
-  kasan_addr_to_slab+0x21/0x60 (?:?)
-  kasan_report+0xe0/0x110 (?:?)
-  process_one_work+0xfce/0x17e0 (kernel/workqueue.c:3200)
-  worker_thread+0x65c/0xe40 (?:?)
-  __kthread_parkme+0x184/0x230 (?:?)
-  kthread+0x35e/0x470 (?:?)
-  _raw_spin_unlock_irq+0x28/0x50 (?:?)
-  ret_from_fork+0x586/0x870 (?:?)
-  __switch_to+0x74f/0xdc0 (?:?)
-  ret_from_fork_asm+0x1a/0x30 (?:?)
+  1. The notification (selector, old/new endpoint addresses, and the
+     km_address) is delivered to listeners on init_net's
+     XFRMNLGRP_MIGRATE / pfkey BROADCAST_ALL groups rather than on
+     the issuing netns. An IKE daemon running in init_net therefore
+     receives migration notifications originating from any other
+     netns on the host.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Assisted-by: Codex:gpt-5.5
-Signed-off-by: Zhang Cen <rollkingzzc@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  2. An IKE daemon running inside a non-init netns and subscribed
+     to its own XFRMNLGRP_MIGRATE / pfkey groups never receives the
+     notification of its own migration. IKEv2 MOBIKE / address-update
+     handling inside a netns is silently broken.
+
+Thread struct net through km_migrate() and the xfrm_mgr.migrate
+function pointer, drop the &init_net override in xfrm_send_migrate()
+and pfkey_send_migrate(), and pass the caller's net (already in
+scope in xfrm_migrate() via sock_net(skb->sk)) all the way down.
+struct xfrm_mgr is in-tree only and not exported as a stable API,
+so the function-pointer signature change is internal.
+
+pfkey_broadcast() is already netns-aware via net_generic(net,
+pfkey_net_id) since the pernet conversion. The five other
+pfkey_broadcast() callers in af_key.c already pass xs_net(x),
+sock_net(sk) or a per-netns net, so this only removes the
+&init_net outlier.
+
+Fixes: 5c79de6e79cd ("[XFRM]: User interface for handling XFRM_MSG_MIGRATE")
+Cc: stable@vger.kernel.org # v5.15+
+Signed-off-by: Maoyi Xie <maoyi.xie@ntu.edu.sg>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/bnep/core.c | 57 ++++++++++++++++++++++++---------------
- 1 file changed, 36 insertions(+), 21 deletions(-)
+ include/net/xfrm.h     |    3 ++-
+ net/key/af_key.c       |    6 +++---
+ net/xfrm/xfrm_policy.c |    2 +-
+ net/xfrm/xfrm_state.c  |    4 ++--
+ net/xfrm/xfrm_user.c   |    5 ++---
+ 5 files changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/net/bluetooth/bnep/core.c b/net/bluetooth/bnep/core.c
-index 9d804b08de88e0..45d0f84652fc60 100644
---- a/net/bluetooth/bnep/core.c
-+++ b/net/bluetooth/bnep/core.c
-@@ -206,14 +206,11 @@ static int bnep_ctrl_set_mcfilter(struct bnep_session *s, u8 *data, int len)
+--- a/include/net/xfrm.h
++++ b/include/net/xfrm.h
+@@ -608,6 +608,7 @@ struct xfrm_mgr {
+ 					   const struct xfrm_migrate *m,
+ 					   int num_bundles,
+ 					   const struct xfrm_kmaddress *k,
++					   struct net *net,
+ 					   const struct xfrm_encap_tmpl *encap);
+ 	bool			(*is_alive)(const struct km_event *c);
+ };
+@@ -1772,7 +1773,7 @@ int xfrm_sk_policy_insert(struct sock *s
+ #ifdef CONFIG_XFRM_MIGRATE
+ int km_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
+ 	       const struct xfrm_migrate *m, int num_bundles,
+-	       const struct xfrm_kmaddress *k,
++	       const struct xfrm_kmaddress *k, struct net *net,
+ 	       const struct xfrm_encap_tmpl *encap);
+ struct xfrm_state *xfrm_migrate_state_find(struct xfrm_migrate *m, struct net *net,
+ 						u32 if_id);
+--- a/net/key/af_key.c
++++ b/net/key/af_key.c
+@@ -3563,7 +3563,7 @@ static int set_ipsecrequest(struct sk_bu
+ #ifdef CONFIG_NET_KEY_MIGRATE
+ static int pfkey_send_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
+ 			      const struct xfrm_migrate *m, int num_bundles,
+-			      const struct xfrm_kmaddress *k,
++			      const struct xfrm_kmaddress *k, struct net *net,
+ 			      const struct xfrm_encap_tmpl *encap)
+ {
+ 	int i;
+@@ -3668,7 +3668,7 @@ static int pfkey_send_migrate(const stru
+ 	}
+ 
+ 	/* broadcast migrate message to sockets */
+-	pfkey_broadcast(skb, GFP_ATOMIC, BROADCAST_ALL, NULL, &init_net);
++	pfkey_broadcast(skb, GFP_ATOMIC, BROADCAST_ALL, NULL, net);
+ 
  	return 0;
- }
  
--static int bnep_rx_control(struct bnep_session *s, void *data, int len)
-+static int bnep_rx_control_cmd(struct bnep_session *s, u8 cmd, void *data,
-+			       int len)
+@@ -3679,7 +3679,7 @@ err:
+ #else
+ static int pfkey_send_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
+ 			      const struct xfrm_migrate *m, int num_bundles,
+-			      const struct xfrm_kmaddress *k,
++			      const struct xfrm_kmaddress *k, struct net *net,
+ 			      const struct xfrm_encap_tmpl *encap)
  {
--	u8  cmd = *(u8 *)data;
- 	int err = 0;
+ 	return -ENOPROTOOPT;
+--- a/net/xfrm/xfrm_policy.c
++++ b/net/xfrm/xfrm_policy.c
+@@ -4595,7 +4595,7 @@ int xfrm_migrate(const struct xfrm_selec
+ 	}
  
--	data++;
--	len--;
--
- 	switch (cmd) {
- 	case BNEP_CMD_NOT_UNDERSTOOD:
- 	case BNEP_SETUP_CONN_RSP:
-@@ -254,6 +251,14 @@ static int bnep_rx_control(struct bnep_session *s, void *data, int len)
- 	return err;
- }
+ 	/* Stage 5 - announce */
+-	km_migrate(sel, dir, type, m, num_migrate, k, encap);
++	km_migrate(sel, dir, type, m, num_migrate, k, net, encap);
  
-+static int bnep_rx_control(struct bnep_session *s, void *data, int len)
-+{
-+	if (len < 1)
-+		return -EILSEQ;
-+
-+	return bnep_rx_control_cmd(s, *(u8 *)data, data + 1, len - 1);
-+}
-+
- static int bnep_rx_extension(struct bnep_session *s, struct sk_buff *skb)
+ 	xfrm_pol_put(pol);
+ 
+--- a/net/xfrm/xfrm_state.c
++++ b/net/xfrm/xfrm_state.c
+@@ -2583,7 +2583,7 @@ EXPORT_SYMBOL(km_policy_expired);
+ #ifdef CONFIG_XFRM_MIGRATE
+ int km_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
+ 	       const struct xfrm_migrate *m, int num_migrate,
+-	       const struct xfrm_kmaddress *k,
++	       const struct xfrm_kmaddress *k, struct net *net,
+ 	       const struct xfrm_encap_tmpl *encap)
  {
- 	struct bnep_ext_hdr *h;
-@@ -299,19 +304,26 @@ static int bnep_rx_frame(struct bnep_session *s, struct sk_buff *skb)
+ 	int err = -EINVAL;
+@@ -2594,7 +2594,7 @@ int km_migrate(const struct xfrm_selecto
+ 	list_for_each_entry_rcu(km, &xfrm_km_list, list) {
+ 		if (km->migrate) {
+ 			ret = km->migrate(sel, dir, type, m, num_migrate, k,
+-					  encap);
++					  net, encap);
+ 			if (!ret)
+ 				err = ret;
+ 		}
+--- a/net/xfrm/xfrm_user.c
++++ b/net/xfrm/xfrm_user.c
+@@ -2963,10 +2963,9 @@ out_cancel:
+ 
+ static int xfrm_send_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
+ 			     const struct xfrm_migrate *m, int num_migrate,
+-			     const struct xfrm_kmaddress *k,
++			     const struct xfrm_kmaddress *k, struct net *net,
+ 			     const struct xfrm_encap_tmpl *encap)
  {
- 	struct net_device *dev = s->dev;
- 	struct sk_buff *nskb;
-+	u8 *data;
- 	u8 type, ctrl_type;
+-	struct net *net = &init_net;
+ 	struct sk_buff *skb;
+ 	int err;
  
- 	dev->stats.rx_bytes += skb->len;
- 
--	type = *(u8 *) skb->data;
--	skb_pull(skb, 1);
--	ctrl_type = *(u8 *)skb->data;
-+	data = skb_pull_data(skb, sizeof(type));
-+	if (!data)
-+		goto badframe;
-+	type = *data;
- 
- 	if ((type & BNEP_TYPE_MASK) >= sizeof(__bnep_rx_hlen))
- 		goto badframe;
- 
- 	if ((type & BNEP_TYPE_MASK) == BNEP_CONTROL) {
--		if (bnep_rx_control(s, skb->data, skb->len) < 0) {
-+		data = skb_pull_data(skb, sizeof(ctrl_type));
-+		if (!data)
-+			goto badframe;
-+		ctrl_type = *data;
-+
-+		if (bnep_rx_control_cmd(s, ctrl_type, skb->data, skb->len) < 0) {
- 			dev->stats.tx_errors++;
- 			kfree_skb(skb);
- 			return 0;
-@@ -324,24 +336,27 @@ static int bnep_rx_frame(struct bnep_session *s, struct sk_buff *skb)
- 
- 		/* Verify and pull ctrl message since it's already processed */
- 		switch (ctrl_type) {
--		case BNEP_SETUP_CONN_REQ:
--			/* Pull: ctrl type (1 b), len (1 b), data (len bytes) */
--			if (!skb_pull(skb, 2 + *(u8 *)(skb->data + 1) * 2))
-+		case BNEP_SETUP_CONN_REQ: {
-+			u8 uuid_size;
-+
-+			/* Pull uuid_size and the dst/src service UUIDs. */
-+			data = skb_pull_data(skb, sizeof(uuid_size));
-+			if (!data)
-+				goto badframe;
-+			uuid_size = *data;
-+			if (!skb_pull(skb, uuid_size + uuid_size))
- 				goto badframe;
- 			break;
-+		}
- 		case BNEP_FILTER_MULTI_ADDR_SET:
--		case BNEP_FILTER_NET_TYPE_SET: {
--			u8 *hdr;
--
--			/* Pull ctrl type (1 b) + len (2 b) */
--			hdr = skb_pull_data(skb, 3);
--			if (!hdr)
-+		case BNEP_FILTER_NET_TYPE_SET:
-+			/* Pull: len (2 b), data (len bytes) */
-+			data = skb_pull_data(skb, sizeof(u16));
-+			if (!data)
- 				goto badframe;
--			/* Pull data (len bytes); length is big-endian */
--			if (!skb_pull(skb, get_unaligned_be16(&hdr[1])))
-+			if (!skb_pull(skb, get_unaligned_be16(data)))
- 				goto badframe;
- 			break;
--		}
- 		default:
- 			kfree_skb(skb);
- 			return 0;
--- 
-2.53.0
-
+@@ -2984,7 +2983,7 @@ static int xfrm_send_migrate(const struc
+ #else
+ static int xfrm_send_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
+ 			     const struct xfrm_migrate *m, int num_migrate,
+-			     const struct xfrm_kmaddress *k,
++			     const struct xfrm_kmaddress *k, struct net *net,
+ 			     const struct xfrm_encap_tmpl *encap)
+ {
+ 	return -ENOPROTOOPT;
 
 
 
