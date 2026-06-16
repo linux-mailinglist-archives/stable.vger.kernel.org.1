@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-266385-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266034-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 8nj0OFucMWqsoAUAu9opvQ
-	(envelope-from <stable+bounces-266385-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:56:27 +0200
+	id IqwjJwyVMWqKnQUAu9opvQ
+	(envelope-from <stable+bounces-266034-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:25:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73B0F69496B
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:56:27 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13A9E6941CE
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:25:16 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=KGlvnYr9;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266385-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-266385-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=BOJYg4XN;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266034-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266034-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3663F306823A
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:55:47 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1DC94307DE2C
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:25:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02412472798;
-	Tue, 16 Jun 2026 18:55:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10EE1472798;
+	Tue, 16 Jun 2026 18:25:12 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA49947D929;
-	Tue, 16 Jun 2026 18:55:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB2B93D8105;
+	Tue, 16 Jun 2026 18:25:10 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781636145; cv=none; b=ZatnOcSH3r4AjpFCL4TlyR+PSX+Oyxw6niBXd8Zky5LG3fVmFugccuQolgKvZvafC2uXiykt9C//yLsfdsxrqwTrfNS6epUA9jy+hJW1ZwZRLjgpL5hUMN8aAUNuqBF24wUWyKErn/958hbkIN0yKcqfZmXrqcsbeVUmjhzgFXc=
+	t=1781634311; cv=none; b=SOagk8Uz0hTTW0nNjVctcQU3h9YNAcGaenyadIRmNh7VOF5XNphXsoce7GMhvC8XveGmHom/w56295B0rPGiNJxdUWDDSHJlPA59bw84RwHLiQRtE9tgw/jhOVcCLLLhJcmw5sFHXU3luYi5jalOtlqXSVtsYCoe6fLRzuK4hCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781636145; c=relaxed/simple;
-	bh=XPRFjkaFulIe6nEVW6ZqIH6/bjW9FWYr4IPzt8iafeI=;
+	s=arc-20240116; t=1781634311; c=relaxed/simple;
+	bh=Qn4lSr8oz3wm4Ipz2zkOu2tz0/K3ISG4/IBBBdlhT+c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X1KOQBB/1LnTqXRt45iyPYfdX2Sqcji5PdPw17siM0+aGDejw7AQYrkP+baSNMHvavGCDMFlrCi+KzlmmO8/1V5ORKTO4j7C/UFVnsC+llrmgWS4iKRptqrrk7AgiKJD1cuu2+x09mE6OYQumihYT6ZAOA4H2DVFzATdbRjhTD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KGlvnYr9; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D14911F000E9;
-	Tue, 16 Jun 2026 18:55:43 +0000 (UTC)
+	 MIME-Version; b=rOHCVtMjqokoGpiLgTu3e1wUllb7o7TSyAL0IY280FE8GY8Cbe4I31RH7H28YWxZooVvZIHapgIf0fm2yLzrte2RQQIRaH8exWPzQBCUmX90lhFl2zWVgQdkydF4LWAiYRz7/LYSXcTxqors+1gUbK4kIY6sfA14FDObpwenzwE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BOJYg4XN; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0AE41F000E9;
+	Tue, 16 Jun 2026 18:25:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781636144;
-	bh=BQsjxERG2JtFgs+1YTfHrCvn1tR1NfcZOt8snWMTURQ=;
+	s=korg; t=1781634310;
+	bh=QIZ8Xy15S0QjI/o98viIQropbgaWyluXdOE3eeI3oq4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=KGlvnYr94vNcbTP9ZIIF83fpc4NjGqRxecIAYj0s9Y8iNfmRsxd3fzgIP4o72CFcX
-	 ZtWGC5P7F+GM38KhAv7xoxhvadooaeMt3zGiPcE4E+J7rt4PWrXNAJS2X1BN5uo64g
-	 uhCKRoLg9PGMKSoz+dp+vt0+3KZVMAkETL3jU49k=
+	b=BOJYg4XNMc4hHPw8HvqejbKLjVx3Q5p4mXyUUoxYs6bRSf5VvNCCPAELKt4gfWk1p
+	 vvvgrDbKOiMecOilXCsnHjT8kz+AwAr28tkkznjXrHvBao7e17jdhHU3g1RBYo19rO
+	 mkzLPd21Xydlfmqyf7qiKNjlkRNWe00rajqrAx6s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Korwel <adriank20047@gmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 5.10 183/342] USB: serial: io_ti: fix heap overflow in build_i2c_fw_hdr()
+	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
+	Srinivas Kandagatla <srini@kernel.org>
+Subject: [PATCH 5.15 241/411] slimbus: qcom-ngd-ctrl: Avoid ABBA on tx_lock/ctrl->lock
 Date: Tue, 16 Jun 2026 20:27:59 +0530
-Message-ID: <20260616145056.715466548@linuxfoundation.org>
+Message-ID: <20260616145113.716627727@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,81 +71,111 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-266034-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-266385-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:adriank20047@gmail.com,m:johan@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bjorn.andersson@oss.qualcomm.com,m:srini@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 73B0F69496B
+X-Rspamd-Queue-Id: 13A9E6941CE
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Korwel <adriank20047@gmail.com>
+From: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
 
-commit 0fd2b00b2d3d05e3eaa13342b3dfb0fa85c226ae upstream.
+commit 55f2ea9ff83cc27a85526b14bc9b32f96a08d6ec upstream.
 
-build_i2c_fw_hdr() allocates a fixed-size buffer of
-(16*1024 - 512) + sizeof(struct ti_i2c_firmware_rec) bytes, then
-copies le16_to_cpu(img_header->Length) bytes into it without
-validating that Length fits within the available space after the
-firmware record header.
+During the SSR/PDR down notification the tx_lock is taken with the
+intent to provide synchronization with active DMA transfers.
 
-img_header->Length is a __le16 from the firmware file and can be
-up to 65535. check_fw_sanity() validates the total firmware size
-but not img_header->Length specifically.
+But during this period qcom_slim_ngd_down() is invoked, which ends up in
+slim_report_absent(), which takes the slim_controller lock. In multiple
+other codepaths these two locks are taken in the opposite order (i.e.
+slim_controller then tx_lock).
 
-Fix by rejecting images where img_header->Length exceeds the
-available destination space.
+The result is a lockdep splat, and a possible deadlock:
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+  rprocctl/449 is trying to acquire lock:
+  ffff00009793e620 (&ctrl->lock){+.+.}-{4:4}, at: slim_report_absent (drivers/slimbus/core.c:322) slimbus
+
+  but task is already holding lock:
+  ffff00009793fb50 (&ctrl->tx_lock){+.+.}-{4:4}, at: qcom_slim_ngd_ssr_pdr_notify (drivers/slimbus/qcom-ngd-ctrl.c:1475) slim_qcom_ngd_ctrl
+
+  which lock already depends on the new lock.
+
+  Possible unsafe locking scenario:
+
+        CPU0                    CPU1
+        ----                    ----
+   lock(&ctrl->tx_lock);
+                                lock(&ctrl->lock);
+                                lock(&ctrl->tx_lock);
+   lock(&ctrl->lock);
+
+The assumption is that the comment refers to the desire to not call
+qcom_slim_ngd_exit_dma() while we have an ongoing DMA TX transaction.
+But any such transaction is initiated and completed within a single
+qcom_slim_ngd_xfer_msg().
+
+Prior to calling qcom_slim_ngd_exit_dma() the slim_controller is torn
+down, all child devices are notified that the slimbus is gone and the
+child devices are removed.
+
+Stop taking the tx_lock in qcom_slim_ngd_ssr_pdr_notify() to avoid the
+deadlock.
+
+Fixes: a899d324863a ("slimbus: qcom-ngd-ctrl: add Sub System Restart support")
 Cc: stable@vger.kernel.org
-Signed-off-by: Adrian Korwel <adriank20047@gmail.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
+Link: https://patch.msgid.link/20260530204421.116824-9-srini@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/io_ti.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/slimbus/qcom-ngd-ctrl.c |    3 ---
+ 1 file changed, 3 deletions(-)
 
---- a/drivers/usb/serial/io_ti.c
-+++ b/drivers/usb/serial/io_ti.c
-@@ -847,6 +847,11 @@ static int build_i2c_fw_hdr(u8 *header,
- 	/* Pointer to fw_down memory image */
- 	img_header = (struct ti_i2c_image_header *)&fw->data[4];
- 
-+	if (le16_to_cpu(img_header->Length) >
-+			buffer_size - sizeof(struct ti_i2c_firmware_rec)) {
-+		kfree(buffer);
-+		return -EINVAL;
-+	}
- 	memcpy(buffer + sizeof(struct ti_i2c_firmware_rec),
- 		&fw->data[4 + sizeof(struct ti_i2c_image_header)],
- 		le16_to_cpu(img_header->Length));
+--- a/drivers/slimbus/qcom-ngd-ctrl.c
++++ b/drivers/slimbus/qcom-ngd-ctrl.c
+@@ -1394,15 +1394,12 @@ static int qcom_slim_ngd_ssr_pdr_notify(
+ 	switch (action) {
+ 	case QCOM_SSR_BEFORE_SHUTDOWN:
+ 	case SERVREG_SERVICE_STATE_DOWN:
+-		/* Make sure the last dma xfer is finished */
+-		mutex_lock(&ctrl->tx_lock);
+ 		if (ctrl->state != QCOM_SLIM_NGD_CTRL_DOWN) {
+ 			pm_runtime_get_noresume(ctrl->ctrl.dev);
+ 			ctrl->state = QCOM_SLIM_NGD_CTRL_DOWN;
+ 			qcom_slim_ngd_down(ctrl);
+ 			qcom_slim_ngd_exit_dma(ctrl);
+ 		}
+-		mutex_unlock(&ctrl->tx_lock);
+ 		break;
+ 	case QCOM_SSR_AFTER_POWERUP:
+ 	case SERVREG_SERVICE_STATE_UP:
 
 
 
