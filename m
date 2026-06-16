@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-266547-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266193-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id tmLbKF+fMWoFogUAu9opvQ
-	(envelope-from <stable+bounces-266547-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:09:19 +0200
+	id EF3COd+ZMWrWnwUAu9opvQ
+	(envelope-from <stable+bounces-266193-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:45:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 473C7694CB3
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:09:19 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58EF4694730
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:45:51 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Y1zfzXou;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266547-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-266547-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=t9OmfknY;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266193-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-266193-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B6A30303035F
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:09:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id EE44C3091C17
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:39:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D30323DE422;
-	Tue, 16 Jun 2026 19:09:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 528814779B0;
+	Tue, 16 Jun 2026 18:39:02 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9906E34751B;
-	Tue, 16 Jun 2026 19:09:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B89B3DC4D9;
+	Tue, 16 Jun 2026 18:39:01 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781636955; cv=none; b=iAxNqS0OoQ0v9hoHl2flD1kLO3p/obIyZ2kXadDXARAEROhQ+nSv8z9SvyMLL2hTDL07hrfeUQaPX6ZwDgiw/FIrwUrPC7Z+K/fQ2sEJeD6P1dKgDxFFc/lsnX7mkoaNS8DvaOgewaUj3zt+yrz+KXXf8wKZba/j+4dyt9/gKHk=
+	t=1781635142; cv=none; b=V4zapP0G2/fjw6q8lIdsi8U8sNWbDaC3Q1o9P1hybuo5bPLp3yoXg20d0oHBDpf/rnzvCcQCgW4pb9EGVAVAzd06xs7jJVBv4HEqe2xHyFN+ml2pj/6WbMMQHOtEGTplZedjreQRIAPKmnEq1ucmBhFjb9V2s2bTU0UxP5Nu9Yo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781636955; c=relaxed/simple;
-	bh=Fftgb3Z0p/qFjLhCd2Mi1cLI9EWhecYpNEjP5n7LSrs=;
+	s=arc-20240116; t=1781635142; c=relaxed/simple;
+	bh=AQ9Xdij0cJ5Ui5B9nwJ2o2z1sanK93xfz51B0FqSA54=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SIwv22JiHe7JL6S6nCoijvEuAJOVkG0lIxd1/LOp/qmARh/8OZsKUMyB0vGCQgnlrLA05Lef2DeXSm5dpj1ZhWFILEkXfQ0Zf1pJHyY3gh6wPYHABOHzHz+dHKHAc0oF3lDLhoiASo77K66DM9Kjgj+SjuDODPLloDafU2frnXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y1zfzXou; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C9711F000E9;
-	Tue, 16 Jun 2026 19:09:13 +0000 (UTC)
+	 MIME-Version; b=cIqjmO8dWZGVGVYfHhhPNil77YzHxl56aM2K+5s+W3EiKEjzGU5nu71D35md+OUvrDTiot04CzFel2WCOhDC3jcE2gA42LTsuKY7jTLDV6Av2CE7rodTZv7MkHSi5Gp56fM6FJAabdrpkIOZxYw1euBdRGSEvBS6YrT7VCM57iY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t9OmfknY; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33CA51F000E9;
+	Tue, 16 Jun 2026 18:38:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781636954;
-	bh=y/MS9OED881MWjhGNIdB6CNrZSONRY7DDiSh3qVbLfw=;
+	s=korg; t=1781635141;
+	bh=vzQdmuS19j5P1t3wEcyea2OlFLE21X9Cbo63jXrnZQc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Y1zfzXouz3Vz/f65BUxXI1O8rvfYDjMgZNg4ld6neJSaGNeP+1SS4FMVxgB/B/otR
-	 u+CEIDHe/8BUBA0jb2ApY3hawHNcdAJqdPvQSfmE0kJ88Pc0FYp4GHXbUiBpcu8AC5
-	 DWFgNE2tPN69B+WBKAu3epUOq64qYRAunJqym6ss=
+	b=t9OmfknYJ4gQ/YQqqnsTCA9GVPi2h5T82fIIzM091otnQ1ULnxJdUb1waYkYudqN2
+	 5b5lOz27Kezg7qHRIfY7Kz7AQ/xu5z/1v2OZFxBhPlA0vODyZPpqc0QBPJkkODealm
+	 gpaEGaMQlIafRXk9X8hFpY/X+7vldgC3VuRX5DhE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shanker Donthineni <sdonthineni@nvidia.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>
-Subject: [PATCH 5.10 338/342] arm64: errata: Mitigate TLBI errata on NVIDIA Olympus CPU
-Date: Tue, 16 Jun 2026 20:30:34 +0530
-Message-ID: <20260616145104.381404886@linuxfoundation.org>
+	Pengpeng Hou <pengpeng@iscas.ac.cn>,
+	Justin Iurman <justin.iurman@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Li hongliang <1468888505@139.com>
+Subject: [PATCH 5.15 397/411] net/ipv6: ioam6: prevent schema length wraparound in trace fill
+Date: Tue, 16 Jun 2026 20:30:35 +0530
+Message-ID: <20260616145122.298220289@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,115 +68,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+X-Spamd-Result: default: False [5.34 / 15.00];
+	SEM_URIBL(3.50)[139.com:email];
+	SUSPICIOUS_RECIPS(1.50)[];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
+	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266547-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:sdonthineni@nvidia.com,m:catalin.marinas@arm.com,m:will@kernel.org,m:mark.rutland@arm.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
+	TAGGED_FROM(0.00)[bounces-266193-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:pengpeng@iscas.ac.cn,m:justin.iurman@gmail.com,m:davem@davemloft.net,m:1468888505@139.com,m:justiniurman@gmail.com,s:lists@lfdr.de];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,iscas.ac.cn,gmail.com,davemloft.net,139.com];
+	FORWARDED(0.00)[lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	GREYLIST(0.00)[pass,body];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,nvidia.com:email]
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_SPF_ALLOW(0.00)[+ip4:172.105.105.114:c];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,davemloft.net:email,vger.kernel.org:from_smtp,139.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 473C7694CB3
+X-Rspamd-Queue-Id: 58EF4694730
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shanker Donthineni <sdonthineni@nvidia.com>
+From: Pengpeng Hou <pengpeng@iscas.ac.cn>
 
-commit ec7216f92e4ebd485b1c6dc6aa3f6064b71a5768 upstream.
+[ Upstream commit 5e67ba9bb531e1ec6599a82a065dea9040b9ce50 ]
 
-NVIDIA Olympus cores are affected by the TLBI completion issue tracked as
-CVE-2025-10263. The existing ARM64_ERRATUM_4118414 handling already uses
-ARM64_WORKAROUND_REPEAT_TLBI to issue an additional broadcast TLBI;DSB
-sequence and ensure affected memory write effects are globally observed.
+ioam6_fill_trace_data() stores the schema contribution to the trace
+length in a u8. With bit 22 enabled and the largest schema payload,
+sclen becomes 1 + 1020 / 4, wraps from 256 to 0, and bypasses the
+remaining-space check. __ioam6_fill_trace_data() then positions the
+write cursor without reserving the schema area but still copies the
+4-byte schema header and the full schema payload, overrunning the trace
+buffer.
 
-Add MIDR_NVIDIA_OLYMPUS to the repeat-TLBI match list so the same
-mitigation is enabled on affected Olympus systems. Also document the
-NVIDIA Olympus erratum in the arm64 silicon errata table and list it in
-the Kconfig help text.
+Keep sclen in an unsigned int so the remaining-space check and the write
+cursor calculation both see the full schema length.
 
-Signed-off-by: Shanker Donthineni <sdonthineni@nvidia.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Acked-by: Mark Rutland <mark.rutland@arm.com>
-Signed-off-by: Will Deacon <will@kernel.org>
-[Mark: backport to v5.10.y]
-Signed-off-by: Shanker Donthineni <sdonthineni@nvidia.com>
+Fixes: 8c6f6fa67726 ("ipv6: ioam: IOAM Generic Netlink API")
+Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
+Reviewed-by: Justin Iurman <justin.iurman@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Li hongliang <1468888505@139.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/arm64/silicon-errata.rst |    3 +++
- arch/arm64/Kconfig                     |    3 ++-
- arch/arm64/kernel/cpu_errata.c         |    1 +
- 3 files changed, 6 insertions(+), 1 deletion(-)
+ net/ipv6/ioam6.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/Documentation/arm64/silicon-errata.rst
-+++ b/Documentation/arm64/silicon-errata.rst
-@@ -220,6 +220,9 @@ stable kernels.
- | Marvell        | ARM-MMU-500     | #582743         | N/A                         |
- +----------------+-----------------+-----------------+-----------------------------+
- +----------------+-----------------+-----------------+-----------------------------+
-+| NVIDIA         | Olympus core    | T410-OLY-1029   | ARM64_ERRATUM_4118414       |
-++----------------+-----------------+-----------------+-----------------------------+
-++----------------+-----------------+-----------------+-----------------------------+
- | Freescale/NXP  | LS2080A/LS1043A | A-008585        | FSL_ERRATUM_A008585         |
- +----------------+-----------------+-----------------+-----------------------------+
- +----------------+-----------------+-----------------+-----------------------------+
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -745,7 +745,7 @@ config ARM64_ERRATUM_4193714
- 	  If unsure, say Y.
+--- a/net/ipv6/ioam6.c
++++ b/net/ipv6/ioam6.c
+@@ -645,7 +645,7 @@ static void __ioam6_fill_trace_data(stru
+ 				    struct ioam6_namespace *ns,
+ 				    struct ioam6_trace_hdr *trace,
+ 				    struct ioam6_schema *sc,
+-				    u8 sclen)
++				    unsigned int sclen)
+ {
+ 	struct __kernel_sock_timeval ts;
+ 	u64 raw64;
+@@ -863,7 +863,7 @@ void ioam6_fill_trace_data(struct sk_buf
+ 			   struct ioam6_trace_hdr *trace)
+ {
+ 	struct ioam6_schema *sc;
+-	u8 sclen = 0;
++	unsigned int sclen = 0;
  
- config ARM64_ERRATUM_4118414
--	bool "Cortex-*/Neoverse-*/C1-*: Completion of affected memory accesses might not be guaranteed by completion of a TLBI"
-+	bool "Various: Completion of affected memory accesses might not be guaranteed by completion of a TLBI"
- 	default y
- 	select ARM64_WORKAROUND_REPEAT_TLBI
- 	help
-@@ -772,6 +772,7 @@ config ARM64_ERRATUM_4118414
- 	  * ARM Neoverse-V2 erratum 4193787
- 	  * ARM Neoverse-V3 erratum 4193784
- 	  * ARM Neoverse-V3AE erratum 4193784
-+	  * NVIDIA Olympus erratum T410-OLY-1029
- 
- 	  On affected cores, some memory accesses might not be completed by
- 	  broadcast TLB invalidation.
---- a/arch/arm64/kernel/cpu_errata.c
-+++ b/arch/arm64/kernel/cpu_errata.c
-@@ -250,6 +250,7 @@ static const struct arm64_cpu_capabiliti
- 			MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V2),
- 			MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V3),
- 			MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V3AE),
-+			MIDR_ALL_VERSIONS(MIDR_NVIDIA_OLYMPUS),
- 			{}
- 		})),
- 	},
+ 	/* Skip if Overflow flag is set
+ 	 */
 
 
 
