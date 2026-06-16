@@ -1,68 +1,60 @@
-Return-Path: <stable+bounces-265750-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264688-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id t0KxHCWPMWrPmgUAu9opvQ
-	(envelope-from <stable+bounces-265750-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:00:05 +0200
+	id uecZBPV7MWojkgUAu9opvQ
+	(envelope-from <stable+bounces-264688-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:38:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0498B693B57
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:00:05 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65A32692491
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:38:12 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=g1Gh70BO;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265750-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265750-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=fUeumGPw;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264688-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264688-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8EDE3307BFDD
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:59:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 775FD31B6601
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:28:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 189A047B406;
-	Tue, 16 Jun 2026 17:59:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06EB846AEDB;
+	Tue, 16 Jun 2026 16:28:30 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E006D30B535;
-	Tue, 16 Jun 2026 17:59:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D89EA4508F2;
+	Tue, 16 Jun 2026 16:28:28 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781632791; cv=none; b=MYwOtapGjnsNzjo4a+woafSJP1t9Yv0R4gnSCVzeFyy5GO4oWNh7JaaIeC9OIsxvtLeu0ui0GwEwycZNnIF/DOp+6lD1is6yNXNsctyWNo9GKOyMAdFSe02pBPG402f4YR5zaCQPqC9GgSxDUhhtd6gnkijxuPFdwC/c4UiHHc0=
+	t=1781627309; cv=none; b=aVanFJ4NgJwGtRHdBCPdGKHekvDOectRW2X7heKeW0UGkYmN6vXvFBkkhHN78F8VU4fdQ8i0vjaavS/WsE2DScuZW64gcJHD1hBTkoKt9HzMwS9YjrXPzRR2pMGFm5T7vkODAIwWZ0lp/pYe6KnYwSU1wPO2pR40MAU+jQ0nYno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781632791; c=relaxed/simple;
-	bh=SKCaMi44f0/murGk0ZeTQUvHNrAYQjg3C/vs4hRP7rA=;
+	s=arc-20240116; t=1781627309; c=relaxed/simple;
+	bh=3H891mxWDn7eIGD4SI92m+ancANXAnDXUVo02feI4cI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BFpNpvkxu2LLy8c96v+J/9hIq04B6913J/WQ2N4E3dJuK8xV/0L/Gif/TShxC0UFgMrmBOg5+f22h/KLLDxW8zvL+/skDZ55q4ME4qLLa8bn5ihtVcLCkjmtE16RCiyoofCNKVONpzSaQZm7I3EAl84QCq9zOisLoqlV3Koadyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g1Gh70BO; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B819B1F000E9;
-	Tue, 16 Jun 2026 17:59:49 +0000 (UTC)
+	 MIME-Version; b=U/SUK0vbOrNgYXuEkWFIE5ef9VU6KmYvhjvrbcV0oqkTdQeROayRsihIb/L33qG7hwSeWOwm4gwYoDYHWH6/UYA13gJU/wWBnQ4yR0Za2zBFi+xDEBUjRyasEg53OUtSi0PxtWNxRKO2m1h956mmnjmkAjfRGucrPlqzjF5MJI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fUeumGPw; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDFD61F000E9;
+	Tue, 16 Jun 2026 16:28:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781632790;
-	bh=Ybk2q1LVOtTJdnqbqDlkypCt/LJ3XnS3xu5cIYtnfNA=;
+	s=korg; t=1781627308;
+	bh=60PNUXhxWldG/RhJSke2IwFZmOalPhXoeHacWTAoEBg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=g1Gh70BO/l6aDqKR0/9WNci/siYvf97htMrutn1UaTrh2K/H3/C2bOnerzn5B9zUf
-	 uRvFRUD1k2ibw3LdT+qZ0aHi59JnvANe2FJ+jZXdKDvRcfwMRc9cIqZrwaw1TysKRr
-	 NQm+czx1naj3p2aXstC6dNrvJjQNzwwPDYaxiyP4=
+	b=fUeumGPwK5lgVaQwT8MVb6YKp+DU73ciA6L4EWY1iIyA355h6ZPuQe34+HrBJLaGy
+	 JZleITKZaIVhqvIdtwT3tqhzHFevh01cntWR8lDu3/8rYc/uNCxSEqn/xuYb2gXR5N
+	 5iQJMQDxiHqnCVdRR7bHKvsWcsTV6G4MN780a1OY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sunil Goutham <sgoutham@marvell.com>,
-	Linu Cherian <lcherian@marvell.com>,
-	Geetha sowjanya <gakula@marvell.com>,
-	hariprasad <hkelam@marvell.com>,
-	Subbaraya Sundeep <sbhatta@marvell.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	stable <stable@kernel.org>,
-	Sam Daly <sam@samdaly.ie>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 444/522] octeontx2-af: CGX: add bounds check to cgx_speed_mbps index
+	Yuho Choi <dbgh9129@gmail.com>,
+	Dinh Nguyen <dinguyen@kernel.org>
+Subject: [PATCH 6.12 153/261] ARM: socfpga: Fix OF node refcount leak in SMP setup
 Date: Tue, 16 Jun 2026 20:29:51 +0530
-Message-ID: <20260616145146.707780999@linuxfoundation.org>
+Message-ID: <20260616145052.170164422@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,97 +64,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-265750-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:sgoutham@marvell.com,m:lcherian@marvell.com,m:gakula@marvell.com,m:hkelam@marvell.com,m:sbhatta@marvell.com,m:andrew+netdev@lunn.ch,m:stable@kernel.org,m:sam@samdaly.ie,m:kuba@kernel.org,m:sashal@kernel.org,m:andrew@lunn.ch,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	TAGGED_FROM(0.00)[bounces-264688-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:dbgh9129@gmail.com,m:dinguyen@kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
+	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,marvell.com:email,msgid.link:url,lunn.ch:email,samdaly.ie:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 0498B693B57
+X-Rspamd-Queue-Id: 65A32692491
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sam Daly <sam@samdaly.ie>
+From: Yuho Choi <dbgh9129@gmail.com>
 
-[ Upstream commit c0bf0a4f3f1f5f57aa83e1400ba4f56f0abfd542 ]
+commit 63838c323924fe4a78b2323bd45aa1030f72ca60 upstream.
 
-cgx_speed_mbps has 13 elements but RESP_LINKSTAT_SPEED can yield values
-0-15. If it returns a value >= 13, this causes an out-of-bounds array
-access. Add a bounds check and default to speed 0 if the index is out of
-range.
+socfpga_smp_prepare_cpus() looks up the Cortex-A9 SCU node with
+of_find_compatible_node(), which returns a node reference that must be
+released with of_node_put().
 
-Fixes: 61071a871ea6 ("octeontx2-af: Forward CGX link notifications to PFs")
-Cc: Sunil Goutham <sgoutham@marvell.com>
-Cc: Linu Cherian <lcherian@marvell.com>
-Cc: Geetha sowjanya <gakula@marvell.com>
-Cc: hariprasad <hkelam@marvell.com>
-Cc: Subbaraya Sundeep <sbhatta@marvell.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>
-Cc: stable <stable@kernel.org>
-Signed-off-by: Sam Daly <sam@samdaly.ie>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://patch.msgid.link/2026051352-refined-demise-e88d@gregkh
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The function maps the SCU registers and then returns without dropping
+that reference, leaking the node on both the success path and the
+of_iomap() failure path.
+
+Drop the reference once the mapping attempt is complete. The returned
+MMIO mapping does not depend on keeping the device node reference held.
+
+Fixes: 122694a0c712 ("ARM: socfpga: use of_iomap to map the SCU")
+Cc: stable@vger.kernel.org
+Signed-off-by: Yuho Choi <dbgh9129@gmail.com>
+Signed-off-by: Dinh Nguyen <dinguyen@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/cgx.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ arch/arm/mach-socfpga/platsmp.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
-@@ -1228,13 +1228,18 @@ static inline void link_status_user_form
- 					   struct cgx_link_user_info *linfo,
- 					   struct cgx *cgx, u8 lmac_id)
- {
-+	unsigned int speed;
-+
- 	linfo->link_up = FIELD_GET(RESP_LINKSTAT_UP, lstat);
- 	linfo->full_duplex = FIELD_GET(RESP_LINKSTAT_FDUPLEX, lstat);
--	linfo->speed = cgx_speed_mbps[FIELD_GET(RESP_LINKSTAT_SPEED, lstat)];
- 	linfo->an = FIELD_GET(RESP_LINKSTAT_AN, lstat);
- 	linfo->fec = FIELD_GET(RESP_LINKSTAT_FEC, lstat);
- 	linfo->lmac_type_id = cgx_get_lmac_type(cgx, lmac_id);
+--- a/arch/arm/mach-socfpga/platsmp.c
++++ b/arch/arm/mach-socfpga/platsmp.c
+@@ -78,6 +78,7 @@ static void __init socfpga_smp_prepare_c
+ 	}
  
-+	speed = FIELD_GET(RESP_LINKSTAT_SPEED, lstat);
-+	linfo->speed = speed < ARRAY_SIZE(cgx_speed_mbps) ?
-+		       cgx_speed_mbps[speed] : 0;
-+
- 	if (linfo->lmac_type_id >= LMAC_MODE_MAX) {
- 		dev_err(&cgx->pdev->dev, "Unknown lmac_type_id %d reported by firmware on cgx port%d:%d",
- 			linfo->lmac_type_id, cgx->cgx_id, lmac_id);
+ 	socfpga_scu_base_addr = of_iomap(np, 0);
++	of_node_put(np);
+ 	if (!socfpga_scu_base_addr)
+ 		return;
+ 	scu_enable(socfpga_scu_base_addr);
 
 
 
