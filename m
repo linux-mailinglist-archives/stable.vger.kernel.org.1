@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-265907-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266291-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id GAtbNWOSMWo7nAUAu9opvQ
-	(envelope-from <stable+bounces-265907-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:13:55 +0200
+	id 79r2GvSaMWovoAUAu9opvQ
+	(envelope-from <stable+bounces-266291-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:50:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76F47693ECC
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:13:55 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1F83694823
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:50:27 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=uAT9++tM;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265907-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265907-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=SoBj7Ksa;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266291-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266291-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7B5E0303E8D3
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:13:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 90F5A3224770
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:47:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC24E3D5656;
-	Tue, 16 Jun 2026 18:13:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2426C43D4E8;
+	Tue, 16 Jun 2026 18:47:34 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 870053CEBBD;
-	Tue, 16 Jun 2026 18:13:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC5313CFF55;
+	Tue, 16 Jun 2026 18:47:32 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781633626; cv=none; b=UU2qMzRw0Pa6kRFh2EQbQ4ih7iBIL3GjtY+8PXXTHJvaxx8uDohx2AvNdEs1Ddk+WPgTv9bfyyrckPP/Zih0eRyYQcCBDKFs2xYM+2n0sCuDhUIffRahwls45weDrfj9ebRysjZ+jGhRHR9tFJrx7nPqU+pO5bzB5cDM/AAiXLw=
+	t=1781635653; cv=none; b=OqcGb9t4RBnRYkpZqIkKTIqyZjAOepz86QExCNdfg2/Qen/4Zang7TmsKdcHtt0wV/HHl/9J4LkrSB98pflDag74mGgV0zpdVt9k1U8mSqZU4MIQ0sJ6kg+V/fMvjyxaCG3sJosu4tO3XeoERdokUIub4DJsoJ9yzbYXhMgmEJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781633626; c=relaxed/simple;
-	bh=aUC4VHnWG6k3SQMMdaWv8y8S2/bwcxqJym0IYGz4Nds=;
+	s=arc-20240116; t=1781635653; c=relaxed/simple;
+	bh=P08A05qP2+4RP6WfWNQnkum5VWJwD6HplLLNHiJLGVk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=COdxXxAXiYqgv1fQnb1mb/z6FqOo2i+ZITeIBBFONdE/2qlRSWrs4xncyIRPdP6d20Vlzm/pFRwswZraAoBT+r2aqUPQgzEA4v2ZrRDv9qhh4rwlf8iMBz3QQ5KtoiOYhvXRKT4FpGuJF+tMS1uGLlAzsHIJwvLryiCb8JrQ2nE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uAT9++tM; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83C381F000E9;
-	Tue, 16 Jun 2026 18:13:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JIP9L8ff9oZIXMQtQ2zosmLf3CsDMtI6EjcH/m2wHPWsRg2UCRDFJBFHEHWLtId7l/pjtjK2G8QlHadlOIvoaFbKUFR7gz4DYkDqyCw5JgZ564JknFZlt8AW/VcQskKV/R5Aixe7R/nP/sEEtCRB+NQnEtk9NjgHzC+6CGDXXkU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SoBj7Ksa; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B57291F000E9;
+	Tue, 16 Jun 2026 18:47:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781633625;
-	bh=wfqWF+lfOs8iUlb8cOnhtUWoBjqI6y+y/NnXgJb8J2A=;
+	s=korg; t=1781635652;
+	bh=2ouKp6d+wQMK3dDq9n/8ZDR9V5AForsZ2dyTcPlNSBY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=uAT9++tMJXrIY9pEwT8jaD/IW5pDrxfOq4iFXF6m1dNg0tiXT1BiHuQD5gTwUs21m
-	 8NI1nhou7mGvmYU8K0W/e+w3gRkn6aiLY5XaPU3OPt1RDG/nzJf0Jvjej+6tMFh9yc
-	 lDr8tblYLYJlIQzFkGomEujqA4NHtXThKX2kZvGY=
+	b=SoBj7KsalSXhmK3nHBnH2R1VlIiw3PFavncILKNzYgf0kdl21a9qdJGdoGDcpCeFG
+	 ibUtQ8gyIvO+jZVRdYKQfaUNbNAgru7tr8V5CanYc7BtaFqm8m0ZCndpdqB9Pv77Vu
+	 qXAYOZsYcarKAMOdwDK6UTtWM7sDVOaQsrO/HhqY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Volckaert <janvolck@gmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 5.15 114/411] USB: serial: option: add MeiG SRM813Q
+	Christofer Jonason <christofer.jonason@guidelinegeo.com>,
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Salih Erim <salih.erim@amd.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.10 056/342] iio: adc: xilinx-xadc: Fix sequencer mode in postdisable for dual mux
 Date: Tue, 16 Jun 2026 20:25:52 +0530
-Message-ID: <20260616145106.360372115@linuxfoundation.org>
+Message-ID: <20260616145050.867955622@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,137 +67,114 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-266291-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-265907-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:janvolck@gmail.com,m:johan@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:christofer.jonason@guidelinegeo.com,m:andriy.shevchenko@intel.com,m:nuno.sa@analog.com,m:salih.erim@amd.com,m:Jonathan.Cameron@huawei.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,analog.com:email,intel.com:email,huawei.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,guidelinegeo.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 76F47693ECC
+X-Rspamd-Queue-Id: C1F83694823
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Volckaert <janvolck@gmail.com>
+From: Christofer Jonason <christofer.jonason@guidelinegeo.com>
 
-commit 7d2b37d3e42d19071b62f4ddbee6e16e905efbf1 upstream.
+commit 852534744c2d35626a604f128ff0b8ec12805591 upstream.
 
-Add support for the Qualcomm Technology Snapdragon X35-based MeiG
-SRM813Q module.
+xadc_postdisable() unconditionally sets the sequencer to continuous
+mode. For dual external multiplexer configurations this is incorrect:
+simultaneous sampling mode is required so that ADC-A samples through
+the mux on VAUX[0-7] while ADC-B simultaneously samples through the
+mux on VAUX[8-15]. In continuous mode only ADC-A is active, so
+VAUX[8-15] channels return incorrect data.
 
-The module can be put in different modes via AT commands to
-enable/disable GPS functionality:
+Since postdisable is also called from xadc_probe() to set the initial
+idle state, the wrong sequencer mode is active from the moment the
+driver loads.
 
-MODEM - PPP mode(2dee:4d63): AT+SER=1,1
+The preenable path already uses xadc_get_seq_mode() which returns
+SIMULTANEOUS for dual mux. Fix postdisable to do the same.
 
-If#= 0: RMNET
-If#= 1: DIAG/ADB
-If#= 2: MODEM
-If#= 3: AT
-
-P:  Vendor=2dee ProdID=4d63 Rev=05.15
-S:  Manufacturer=MEIG
-S:  Product=LTE-A Module
-S:  SerialNumber=1bd51f0e
-C:  #Ifs= 4 Cfg#= 1 Atr=80 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-
-NMEA mode(2dee:4d64): AT+SER=51,1
-
-If#= 0: RMNET
-If#= 1: DIAG/ADB
-If#= 2: NMEA
-If#= 3: AT
-
-P:  Vendor=2dee ProdID=4d64 Rev=05.15
-S:  Manufacturer=MEIG
-S:  Product=LTE-A Module
-S:  SerialNumber=1bd51f0e
-C:  #Ifs= 4 Cfg#= 1 Atr=80 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-
-Signed-off-by: Jan Volckaert <janvolck@gmail.com>
+Fixes: bdc8cda1d010 ("iio:adc: Add Xilinx XADC driver")
 Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Christofer Jonason <christofer.jonason@guidelinegeo.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Reviewed-by: Nuno Sá <nuno.sa@analog.com>
+Reviewed-by: Salih Erim <salih.erim@amd.com>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/option.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/iio/adc/xilinx-xadc-core.c |   11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -2450,6 +2450,12 @@ static const struct usb_device_id option
- 	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d38, 0xff, 0xff, 0x30) },	/* MeiG Smart SRM825WN (Diag) */
- 	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d38, 0xff, 0xff, 0x40) },	/* MeiG Smart SRM825WN (AT) */
- 	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d38, 0xff, 0xff, 0x60) },	/* MeiG Smart SRM825WN (NMEA) */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d63, 0xff, 0xff, 0x30) },	/* MeiG SRM813Q (Diag) */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d63, 0xff, 0xff, 0x40) },	/* MeiG SRM813Q (AT) */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d64, 0xff, 0xff, 0x30) },	/* MeiG SRM813Q (Diag) */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d64, 0xff, 0xff, 0x40) },	/* MeiG SRM813Q (AT) */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d64, 0xff, 0xff, 0x60) },	/* MeiG SRM813Q (NMEA) */
+--- a/drivers/iio/adc/xilinx-xadc-core.c
++++ b/drivers/iio/adc/xilinx-xadc-core.c
+@@ -770,6 +770,7 @@ static int xadc_postdisable(struct iio_d
+ {
+ 	struct xadc *xadc = iio_priv(indio_dev);
+ 	unsigned long scan_mask;
++	int seq_mode;
+ 	int ret;
+ 	int i;
+ 
+@@ -777,6 +778,12 @@ static int xadc_postdisable(struct iio_d
+ 	for (i = 0; i < indio_dev->num_channels; i++)
+ 		scan_mask |= BIT(indio_dev->channels[i].scan_index);
+ 
++	/*
++	 * Use the correct sequencer mode for the idle state: simultaneous
++	 * mode for dual external mux configurations, continuous otherwise.
++	 */
++	seq_mode = xadc_get_seq_mode(xadc, scan_mask);
 +
- 	{ USB_DEVICE_INTERFACE_CLASS(0x2df3, 0x9d03, 0xff) },			/* LongSung M5710 */
- 	{ USB_DEVICE_INTERFACE_CLASS(0x305a, 0x1404, 0xff) },			/* GosunCn GM500 RNDIS */
- 	{ USB_DEVICE_INTERFACE_CLASS(0x305a, 0x1405, 0xff) },			/* GosunCn GM500 MBIM */
+ 	/* Enable all channels and calibration */
+ 	ret = xadc_write_adc_reg(xadc, XADC_REG_SEQ(0), scan_mask & 0xffff);
+ 	if (ret)
+@@ -787,11 +794,11 @@ static int xadc_postdisable(struct iio_d
+ 		return ret;
+ 
+ 	ret = xadc_update_adc_reg(xadc, XADC_REG_CONF1, XADC_CONF1_SEQ_MASK,
+-		XADC_CONF1_SEQ_CONTINUOUS);
++				  seq_mode);
+ 	if (ret)
+ 		return ret;
+ 
+-	return xadc_power_adc_b(xadc, XADC_CONF1_SEQ_CONTINUOUS);
++	return xadc_power_adc_b(xadc, seq_mode);
+ }
+ 
+ static int xadc_preenable(struct iio_dev *indio_dev)
 
 
 
