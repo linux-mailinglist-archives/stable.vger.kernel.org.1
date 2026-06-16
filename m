@@ -1,220 +1,225 @@
-Return-Path: <stable+bounces-263708-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263710-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id vCiACC5AMWq3fQUAu9opvQ
-	(envelope-from <stable+bounces-263708-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 14:23:10 +0200
+	id SuhcGwNCMWpUfgUAu9opvQ
+	(envelope-from <stable+bounces-263710-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 14:30:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7321368F444
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 14:23:09 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3289768F56A
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 14:30:59 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=T5Ji00lZ;
-	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=JNZ7kJK4;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263708-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263708-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=reject) header.from=qualcomm.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=BDLtvHYb;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263710-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-263710-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=linux.dev;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C8F7130D8C57
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 12:22:56 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6E545302FA6F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 12:30:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E082D3546F8;
-	Tue, 16 Jun 2026 12:22:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60619361650;
+	Tue, 16 Jun 2026 12:30:37 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E4D1343D85
-	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 12:22:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBCF4332EC8
+	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 12:30:34 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781612575; cv=none; b=DnYb2dcd0OpO8DSK5WN188+7IytdA+XsRsExNQsE89hMw/0UNeyMxuKnp22L7jUc+rU47W8nLtpCmK34bWRu9zvxa4yxWaT6HPOn9hBQgIsvBRmjeNT7O4On+rJyO3L9bnKS+QHUnrZwRhOF+Aw0ls4Pc6Hrl3DIBW+G9GLgXFE=
+	t=1781613037; cv=none; b=AoFjaD9m1WW8mi9UHdo9AAVHHgYBYmBYt07fRu57kfpYYvBJyxQnQwX1QSKBVJIlNvx2d7qkQ5k4NwsgwuUoQyqjKUmIiVPBRv6E6atnU5quUeWPRjZyUYeGWvugNH2jcxzkK5+D7X5Tgpmm9K4hiwJasT6aBLiikMpcZaOFClU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781612575; c=relaxed/simple;
-	bh=D7NXdzkCcINECpn3/BnF0aqzW8DC+JtguYIvQdgYpTE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GrVTHPoAwr93h60v7e7su2oFL4o6uzYYJKjjWSLY57qOiEoRg2nFv2J2w9Lv9Pvie7qC3wmXWtfBZRR/dezpDqCHxBJogVtBFxOoSz2V5ZHwWeITPdb8aUUYrj9lIkpiapYQ/CIee0d2wdL78BY+pLBu8uLcAXh7Tvi9RAvEU0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=T5Ji00lZ; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=JNZ7kJK4; arc=none smtp.client-ip=205.220.180.131
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65GABosc3384159
-	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 12:22:53 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	bcEkcPtMtutFQ0nojyplD+yn0BA2r3GEybBSJI5Xbag=; b=T5Ji00lZ0+MfQp6X
-	1Czl+gt8xy30ur9IlOuLgACtwG82+77wZ42OSb4Xn7bndEYGfn7w2pVwuRWdW3kD
-	fmFL9PnPEZQKtabuuqogfY2fRhc6bhe1FzoeORITtmmd0RNGMMIKyyWiZ6W2CGSV
-	4uxNhRVOEoMRVFctwqkOt0mUxSzPwMuve5Biexe/SxIBXNB5uy5/87SjdpUKbQAa
-	4LNDjsZB1HCpOvFGhMYWqhH1YQeniRk4gvip/W+pSEfUmhSpNruOr9Q626Q1ycag
-	T4SQuxVAqRgEhaWL6mRcqujeOtuFj1Yuw1s32MtGxiuW9NJmrcIdnSSda65ZZqGs
-	TDQOtg==
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com [209.85.222.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4eu1ep9btw-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 12:22:53 +0000 (GMT)
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-9157b3e5182so15789285a.1
-        for <stable@vger.kernel.org>; Tue, 16 Jun 2026 05:22:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1781612573; x=1782217373; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=bcEkcPtMtutFQ0nojyplD+yn0BA2r3GEybBSJI5Xbag=;
-        b=JNZ7kJK4AU0fYxQ1VJt/PgO3IbGIzCJ0aCf9/pXNEqd+wqGydnuJAGL3e0h+vGKvKl
-         ZKUfFyuQjo7QvYclZ2XlsfnCK5BBSUb7LMOwDv/hm/Grywj/Th8eG/3rsuNCT3c+Ks1J
-         aUpwBnkEOqnHJPREc4iXiCEM+GBCNNA+owhWVoDt6aNzZOZ4MfbJYRi+gzQRXkeR8kaG
-         yFHEWShq94k4AFYG6um+al+Ga5xGj97MvrFXf8UXIUoeKjY9iR+8WbSX3wVelauGXeNH
-         8XLimEvuI2tuhpzUBvLivU/oArlidhYJY8A2ECjfxezA9hHhQPm0EEht6hb0IQKBBx5w
-         hy2A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781612573; x=1782217373;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=bcEkcPtMtutFQ0nojyplD+yn0BA2r3GEybBSJI5Xbag=;
-        b=o1dkcT2v6D2PfvQbHvbpG7yiEEOqncK3GxN6n6L5XQBffznODieKEoA2GFALDt0g9G
-         kIaGqX8HU6qp+x68+Zp/8wKHw26BS/bO5ZU13t3MeKs/rfg5jw4saN/6qC1x6gTzBwTt
-         8eUncQNNjm8hS3pFI/8vJdyUGD94mGrysYmEBZWbKYQgKft9QryxSzDb1JcF432bVYyC
-         7yHe4lcikM78pbYWHOBctXsJZwPgZ3l2mn4Klxb/BJagx/09bSAbaMg9memi+uSaf71U
-         cWATwteDwIT/VPiqQo1zF/ayRzyTAN66Ly2XC+QT+LU4r1dOmIMUXb2UbYn6JyPAFCc/
-         qbWg==
-X-Forwarded-Encrypted: i=1; AFNElJ+tIeie5tIOcNtR0ICFNqCbmU32Ta2WPK+CR3cMVpI8gW5K+1rJba4gG3BPAAXENn3P6K4cuEI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzLcak0Di4BRhyNnDtEPsbesgp5WU9/89jRttE26lBl4g77HfJr
-	B+iQXGl0LqPiq3Vk1LPHJgAynmwfnx9aT+wk9whYeIfCIikTr88+PQwDnzFPW8GtXSszYka6/cL
-	mcnTy7b+dG92UfJkQ/4bNOuhRJUrWFV+Phjmy/IuKYusZu55h0gGflbrujwY=
-X-Gm-Gg: Acq92OESPpwYTIr+ShQOibhOdduYAyK19cYEYMMMpdIHX+CNLGe+YdoJmfn8gwxZXYe
-	EbjrGSkpchxuOr/hz7rxBpkPs0vG4pya3XyK3RpzUihODIYQxsF1p+q5WSu8tEanMwo8/KCiPaQ
-	VC22YShBwPgvHOV4IRO3ockjnb7bBz71Akg5P2Iz2dCZ8vhOUALcXTFbokwHhY8sIPu27kUuCsH
-	VLjpp5xH5LxPbVUDfCUwxqq6mKcPyCgtMTp+rhohWoDCqdzfJPIN4w6j6iDPsN7dsi6JevVy0fL
-	lnP/h0AmgAPpKfLLmIJUPzIZjQpVQ1jgK8EiLmcocznwU1W5ppOA8diLGsC9uN7WaM2YzJmN5CN
-	Etyquu37gNoorNJTsAS3Nyw5GoP861oIefWtWazawFK4aLA==
-X-Received: by 2002:a05:620a:40d1:b0:8cf:d289:d0f3 with SMTP id af79cd13be357-9161bca6345mr1765200585a.4.1781612572828;
-        Tue, 16 Jun 2026 05:22:52 -0700 (PDT)
-X-Received: by 2002:a05:620a:40d1:b0:8cf:d289:d0f3 with SMTP id af79cd13be357-9161bca6345mr1765197085a.4.1781612572365;
-        Tue, 16 Jun 2026 05:22:52 -0700 (PDT)
-Received: from [192.168.120.170] ([178.235.128.140])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bfdb5103710sm636854066b.22.2026.06.16.05.22.49
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 16 Jun 2026 05:22:51 -0700 (PDT)
-Message-ID: <38dcea05-581c-411f-9196-caac9562d412@oss.qualcomm.com>
-Date: Tue, 16 Jun 2026 14:22:48 +0200
+	s=arc-20240116; t=1781613037; c=relaxed/simple;
+	bh=YsKACnlHGhYMGIrNxKW8NtTOdQvRuWNhLEkjh8lv0mc=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Dnevjr0RuUhguDZ+m4qflxoZdd5dT/OFp4D2FXP5Ev4e1cegTqx5EqAvqLml945f4kEjAvmE3KTwmjl3xmibkHcNfTlsRNkta7AOsA5JpLrMGd8Eg+BrD/t1E7WymnXCBuMdn0ClD7u7mnvtR1pKY1m8QMOoZaCg/60lTvT+Les=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=BDLtvHYb; arc=none smtp.client-ip=95.215.58.180
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1781613032;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=a7Yshx7diMX1O/OKyuwR/SBp/Kaw8zYRlyF2SsJvqRA=;
+	b=BDLtvHYbtbBl6jCK8W2J5U0MaZ+1oaEDCCnJQ5XN2nOHOb6aWrop/Ja302qc7D7mNgSFTC
+	JhIIPs9BWClMLzVyKktOsLn4D0CWfbprCz/ctP+BoNqWfwJ0yJmum4cSwIH2ADDPypw0OF
+	nlVgsdz7pcnHRW7oy9djaeQRtFiomBg=
+From: Lance Yang <lance.yang@linux.dev>
+To: richard.weiyang@gmail.com
+Cc: akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	riel@surriel.com,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	harry@kernel.org,
+	jannh@google.com,
+	balbirs@nvidia.com,
+	ziy@nvidia.com,
+	sj@kernel.org,
+	linux-mm@kvack.org,
+	lorenzo.stoakes@oracle.com,
+	stable@vger.kernel.org,
+	Lance Yang <lance.yang@linux.dev>
+Subject: Re: [Patch v2] mm/page_vma_mapped: revalidate and do proper check before return device-private pmd
+Date: Tue, 16 Jun 2026 20:30:01 +0800
+Message-Id: <20260616123001.6501-1-lance.yang@linux.dev>
+In-Reply-To: <20260616063436.20455-1-richard.weiyang@gmail.com>
+References: <20260616063436.20455-1-richard.weiyang@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/4] arm64: dts: qcom: x1-dell-thena: mark l12b and
- l15b always-on
-To: Michael Scott <mike.scott@oss.qualcomm.com>, linux-arm-msm@vger.kernel.org
-Cc: vkoul@kernel.org, neil.armstrong@linaro.org,
-        dmitry.baryshkov@oss.qualcomm.com, wesley.cheng@oss.qualcomm.com,
-        abelvesa@kernel.org, faisal.hassan@oss.qualcomm.com,
-        linux-phy@lists.infradead.org, andersson@kernel.org,
-        konradybcio@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
-        conor+dt@kernel.org, devicetree@vger.kernel.org, val@packett.cool,
-        bryan.odonoghue@linaro.org, laurentiu.tudor1@dell.com,
-        alex.vinarskis@gmail.com, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-References: <20260521010935.1333494-1-mike.scott@oss.qualcomm.com>
- <20260521010935.1333494-4-mike.scott@oss.qualcomm.com>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <20260521010935.1333494-4-mike.scott@oss.qualcomm.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Authority-Analysis: v=2.4 cv=I/ZVgtgg c=1 sm=1 tr=0 ts=6a31401d cx=c_pps
- a=hnmNkyzTK/kJ09Xio7VxxA==:117 a=PRfkaYvzSr8QmIIGAkY2Sg==:17
- a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=3WHJM1ZQz_JShphwDgj5:22
- a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=KdsBoOkKT-vHJQxM7ZgA:9 a=QEXdDO2ut3YA:10
- a=PEH46H7Ffwr30OY-TuGO:22
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjE2MDEyNSBTYWx0ZWRfX38ZA7gDbxky4
- 4HVQOkHIjHzO3TkUZMRmoqLYcQ/Mwn8ZtXOuRj3Dov6zClLU78NO4gQX0rEaKNVOTnuvVkj9OLn
- Og/sRu+BLKmLDhKb4RsC11sCegWqLyQ=
-X-Proofpoint-ORIG-GUID: arKmEafUBv4v6cz-9grDBsSlpQGCTj1N
-X-Proofpoint-GUID: arKmEafUBv4v6cz-9grDBsSlpQGCTj1N
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjE2MDEyNSBTYWx0ZWRfX1Ib44sQ88DnK
- rJ/Vs+A2kvw0loRA2rJ+YD4aVf+jg19U5LpDHIQFqtDI4tTu3OkfMZU13Szh3K0ADjrMOMznQsE
- aXO5aOqjlTlm3lRpQxiXgb6CgxLB+newT+7t5qD7B6YTJnIPbU8014H/NNTy9znYuns7yEppctz
- E5NZFmuWC3MKVStUHlmOWNuw+XlN0j7Zc8xE6JSJNyeWYytFxGEZsyx747qbTjed+UxP1mhcCC5
- 665D4HlcbdWGh6ZhXKaM2Ahki0X5Tdq5EzW5GxNiISYXiU4co8xmg7nej/Dxuj6eqSTLIPjRu6E
- ENAx3KGBpM08PMwx0gN3TDmZS7pIEP0bYqrN5ISTmt93A2DNoK599eqtZFSrhm0AEfI9o9ce2fX
- HHKQr8qMqJ8OYmg4XO1GHwBKrDVTiWtUn3Xf5grIzccz9WvVFJfdfx0yV7D8nq1xi0I5TA1Malb
- 0y0ehy+0cknKu1zeENw==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-16_03,2026-06-15_04,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 priorityscore=1501 lowpriorityscore=0 phishscore=0 adultscore=0
- malwarescore=0 spamscore=0 clxscore=1015 suspectscore=0 impostorscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606040000 definitions=main-2606160125
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [0.34 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
+	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	TAGGED_FROM(0.00)[bounces-263708-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:mike.scott@oss.qualcomm.com,m:linux-arm-msm@vger.kernel.org,m:vkoul@kernel.org,m:neil.armstrong@linaro.org,m:dmitry.baryshkov@oss.qualcomm.com,m:wesley.cheng@oss.qualcomm.com,m:abelvesa@kernel.org,m:faisal.hassan@oss.qualcomm.com,m:linux-phy@lists.infradead.org,m:andersson@kernel.org,m:konradybcio@kernel.org,m:robh@kernel.org,m:krzk+dt@kernel.org,m:conor+dt@kernel.org,m:devicetree@vger.kernel.org,m:val@packett.cool,m:bryan.odonoghue@linaro.org,m:laurentiu.tudor1@dell.com,m:alex.vinarskis@gmail.com,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:krzk@kernel.org,m:conor@kernel.org,m:alexvinarskis@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[konrad.dybcio@oss.qualcomm.com,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[kernel.org,linaro.org,oss.qualcomm.com,lists.infradead.org,vger.kernel.org,packett.cool,dell.com,gmail.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,qualcomm.com:dkim,qualcomm.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,oss.qualcomm.com:dkim,oss.qualcomm.com:mid,oss.qualcomm.com:from_mime];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[konrad.dybcio@oss.qualcomm.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:richard.weiyang@gmail.com,m:akpm@linux-foundation.org,m:david@kernel.org,m:ljs@kernel.org,m:riel@surriel.com,m:liam@infradead.org,m:vbabka@kernel.org,m:harry@kernel.org,m:jannh@google.com,m:balbirs@nvidia.com,m:ziy@nvidia.com,m:sj@kernel.org,m:linux-mm@kvack.org,m:lorenzo.stoakes@oracle.com,m:stable@vger.kernel.org,m:lance.yang@linux.dev,m:richardweiyang@gmail.com,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[3];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	FORGED_SENDER(0.00)[lance.yang@linux.dev,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-263710-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[linux.dev:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lance.yang@linux.dev,stable@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,dt];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	ALIAS_RESOLVED(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,linux.dev:dkim,linux.dev:mid,linux.dev:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7321368F444
+X-Rspamd-Queue-Id: 3289768F56A
 
-On 5/21/26 3:09 AM, Michael Scott wrote:
-> The l12b and l15b supplies are used by components that are not (fully)
-> described (and some never will be) and must never be disabled.
-> 
-> Mark the regulators as always-on to prevent them from being disabled,
-> for example, when consumers probe defer or suspend.
-> 
-> Note that these supplies currently have no consumers described in
-> mainline for dell-thena beyond the audio codec (vdd-buck/vdd-rxtx/
-> vdd-io on wcd938x), which can release them when the codec goes idle.
-> The board-level gpio-fixed regulators that feed the Type-C retimer's
-> VDDIO and other rails are not described with a vin-supply link, so
-> the kernel cannot keep their parent LDOs alive on its own.
-> 
-> This mirrors the same change Johan Hovold applied to every other
-> X1E80100 board in a March 2025 series; commit 63169c07d740
-> ("arm64: dts: qcom: x1e80100-dell-xps13-9345: mark l12b and l15b always-on")
-> is representative. The dell-thena board file was introduced four months
-> later and did not inherit that change; this patch closes the gap.
-> 
-> Fixes: e7733b42111c ("arm64: dts: qcom: Add support for Dell Inspiron 7441 / Latitude 7455")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Michael Scott <mike.scott@oss.qualcomm.com>
-> ---
 
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+On Tue, Jun 16, 2026 at 06:34:36AM +0000, Wei Yang wrote:
+[...]
+>diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
+>index 2ccbabfb2cc1..21635fab209c 100644
+>--- a/mm/page_vma_mapped.c
+>+++ b/mm/page_vma_mapped.c
+>@@ -243,40 +243,28 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
+> 		 */
+> 		pmde = pmdp_get_lockless(pvmw->pmd);
+> 
+>-		if (pmd_trans_huge(pmde) || pmd_is_migration_entry(pmde)) {
+>-			pvmw->ptl = pmd_lock(mm, pvmw->pmd);
+>-			pmde = *pvmw->pmd;
+>-			if (!pmd_present(pmde)) {
+>-				softleaf_t entry;
+>-
+>-				if (!thp_migration_supported() ||
+>-				    !(pvmw->flags & PVMW_MIGRATION))
+>-					return not_found(pvmw);
+>-				entry = softleaf_from_pmd(pmde);
+>-
+>-				if (!softleaf_is_migration(entry) ||
+>-				    !check_pmd(softleaf_to_pfn(entry), pvmw))
+>-					return not_found(pvmw);
+>-				return true;
+>-			}
+>-			if (likely(pmd_trans_huge(pmde))) {
+>-				if (pvmw->flags & PVMW_MIGRATION)
+>-					return not_found(pvmw);
+>-				if (!check_pmd(pmd_pfn(pmde), pvmw))
+>-					return not_found(pvmw);
+>-				return true;
+>-			}
+>-			/* THP pmd was split under us: handle on pte level */
+>-			spin_unlock(pvmw->ptl);
+>-			pvmw->ptl = NULL;
+>-		} else if (!pmd_present(pmde)) {
+>-			const softleaf_t entry = softleaf_from_pmd(pmde);
+>-
+>-			if (softleaf_is_device_private(entry)) {
+>-				pvmw->ptl = pmd_lock(mm, pvmw->pmd);
+>-				return true;
+>-			}
+>+		if (pmd_present(pmde)) {
+>+			if (!pmd_leaf(pmde))
+>+				goto pte_table;
+>+			if (pvmw->flags & PVMW_MIGRATION)
+>+				return not_found(pvmw);
+>+			if (!check_pmd(pmd_pfn(pmde), pvmw))
+>+				return not_found(pvmw);
+>+		} else if (pmd_is_migration_entry(pmde)) {
+>+			softleaf_t entry = softleaf_from_pmd(pmde);
+>+
+>+			if (!(pvmw->flags & PVMW_MIGRATION))
+>+				return not_found(pvmw);
 
-Konrad
+Looked at history a bit, and I wonder if this changed something old
+here ...
+
+Since 616b8371539a ("mm: thp: enable thp migration in generic path"), PMD
+migration handling took PTL before doing PVMW_MIGRATION/PFN checks,
+including not_found() cases. So lockless PMD read was just a filter ...
+
+With this fix, true case gets final pmd_same() check, but this
+not_found() case happens before taking PTL.
+
+So a !PVMW_MIGRATION walker could race with someone, e.g.
+remove_migration_pmd(): we make the not_found() decision from old PMD
+value that still says "migration", while real *pvmw->pmd may already be
+present again. We return without ever taking PTL :)
+
+Not sure about practical fallout, but should these PMD-level not_found()
+cases also take PTL and restart if PMD changed?
+
+>+			if (!check_pmd(softleaf_to_pfn(entry), pvmw))
+>+				return not_found(pvmw);
+>+		} else if (pmd_is_device_private_entry(pmde)) {
+>+			softleaf_t entry = softleaf_from_pmd(pmde);
+> 
+>+			if (pvmw->flags & PVMW_MIGRATION)
+>+				return not_found(pvmw);
+>+			if (!check_pmd(softleaf_to_pfn(entry), pvmw))
+>+				return not_found(pvmw);
+>+		} else {
+> 			if ((pvmw->flags & PVMW_SYNC) &&
+> 			    thp_vma_suitable_order(vma, pvmw->address,
+> 						   PMD_ORDER) &&
+>@@ -286,6 +274,15 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
+> 			step_forward(pvmw, PMD_SIZE);
+> 			continue;
+> 		}
+>+
+>+		/* Double-check under PTL that the PMD didn't change. */
+>+		pvmw->ptl = pmd_lock(mm, pvmw->pmd);
+>+		if (pmd_same(pmde, pmdp_get(pvmw->pmd)))
+>+			return true;
+>+		spin_unlock(pvmw->ptl);
+>+		pvmw->ptl = NULL;
+>+		goto restart;
+>+pte_table:
+> 		if (!map_pte(pvmw, &pmde, &ptl)) {
+> 			if (!pvmw->pte)
+> 				goto restart;
+>-- 
+>2.34.1
+>
+
+Cheers, Lance
 
