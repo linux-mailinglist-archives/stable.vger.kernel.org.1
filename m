@@ -1,63 +1,66 @@
-Return-Path: <stable+bounces-265011-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266339-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 8pj/HfiBMWqxlAUAu9opvQ
-	(envelope-from <stable+bounces-265011-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:03:52 +0200
+	id U/kLAEObMWpQoAUAu9opvQ
+	(envelope-from <stable+bounces-266339-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:51:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDBF0692B01
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:03:51 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6264A694867
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:51:46 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="06/oPpli";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265011-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265011-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=l0KwGH2+;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266339-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-266339-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 23FE831097B7
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:57:10 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5BE2A30591B8
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:51:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EEFD478E50;
-	Tue, 16 Jun 2026 16:57:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55AE747A0B2;
+	Tue, 16 Jun 2026 18:51:44 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D909B4657F8;
-	Tue, 16 Jun 2026 16:57:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10A0734FF79;
+	Tue, 16 Jun 2026 18:51:43 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781629028; cv=none; b=dym/0ENq5hXloKTXMYJz4Q7ZIWmuxoLMkb2g/xEvwTcQVt/toCJWISQvfJVgohUTSHLEhe8SOSYA6jjJkOs5f64JcG8W6Cid2NQvHCp4EAXP4Z+LZ/8/FcnSsWQ9bbe/dhvwG0XAcdKE66TRRVairvrKW3CG84nUCL0ExGqvSA4=
+	t=1781635904; cv=none; b=rJ16qJqCaIdbPyn1uJ5+TCM/PldyNE7yQLts/fR2yLkExf7N58Vapvbqt6DYqFMKP5YIdENVN731IyBwJEBUDgEzCTKLZGGyoLNH/ZxqAuBvIoqYnpAZ/ay6aToVR+7PQMKEREdiz70uKr0Qs62ABlupBgslnRm0jdt2j3NJ1Fg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781629028; c=relaxed/simple;
-	bh=xyC9uyiT17wGR8i+kEun5s/iRi2B8WAobwUDbkJ6dm8=;
+	s=arc-20240116; t=1781635904; c=relaxed/simple;
+	bh=+h2OUJLSvJSVwKqOQA8GRZU9+UMR1nZNck8uLNp4smk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ufHlaYIrfXyuo6Jz0DXBkL+6fMbpyRui/Hsene32HqsPqNWsvxCvmogKOaXgaCs+CGrl/ZAKJvG7Qi2QfOCGm+HZTk+KecF9FuFwDkDTOppH4k3eXlyRe9cCw5WYK8qefWCUv+AWdvqjrY89dCpHHFKhNc7ou+SdUJ7dkZA1oAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=06/oPpli; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CABF1F000E9;
-	Tue, 16 Jun 2026 16:57:05 +0000 (UTC)
+	 MIME-Version; b=fA4mVrt1nawHVQ3sZUqMoQSOnc5lhkzkoYyIcll4qua1YWnBVDRPKmSnnQ83B72JwPP5j1xOdLlwpGczVQHOrVGFEvECfac0by2wHPW+3GzZ1l9DDWDDiVgrqflWnZjIktIZldcqOjZyIom3htQe/2+RGFfrgcEPIkuj5zQUP60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l0KwGH2+; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 136331F000E9;
+	Tue, 16 Jun 2026 18:51:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781629026;
-	bh=FBMgxnFzK+bps7q8akdQm41Yd52rlk2uHFSnmFN7ed8=;
+	s=korg; t=1781635903;
+	bh=x6pYfwyaV36MAqeug3LbB+MCWfmWaol6NcELhscJPhU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=06/oPplijURRFIwTb3gZ2vdKLFB4Blwuz20rqwTQPdaBorcqCev3YQR0YAmCsOlgf
-	 5VQo3uKmKmLAri3oZa/jYzYJSNOHQm1S8A1CjouTZGNNXEipekoxPnVRf6q6YXhg5o
-	 5jQ10zSht0K68Izfa/iW5wShjvLUmgTqVOgS/ZvI=
+	b=l0KwGH2+M5n3xYiP4Ca2J02guaTVSGvf0+nDVfY9nnKD5tuDopF2koAHD6YgNiLfy
+	 12ikiLDO+/njJrM8dOWU7pdiomsW/Apw8auH4+BbN3z7vjATHwV7h0XIOjai8yHwRl
+	 Xctn981xU3kKZo/Cf1FnTAgYbDVMi+bOu0a8SJNg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+4edb496c3cad6e953a31@syzkaller.appspotmail.com,
-	Zhu Yanjun <yanjun.zhu@linux.dev>,
-	Leon Romanovsky <leon@kernel.org>,
-	Vladislav Nikolaev <vlad102nikolaev@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Kyle Zeng <kylebot@openai.com>,
+	Victor Nogueira <victor@mojatatu.com>,
+	syzbot@syzkaller.appspotmail.com,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Pedro Tammela <pctammela@mojatatu.com>,
+	Eric Dumazet <edumazet@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 207/452] RDMA/rxe: Fix "trying to register non-static key in rxe_qp_do_cleanup" bug
+Subject: [PATCH 5.10 138/342] net/sched: act_api: use RCU with deferred freeing for action lifecycle
 Date: Tue, 16 Jun 2026 20:27:14 +0530
-Message-ID: <20260616145128.676665244@linuxfoundation.org>
+Message-ID: <20260616145054.617155311@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,132 +72,142 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,linux.dev,kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-265011-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:syzbot+4edb496c3cad6e953a31@syzkaller.appspotmail.com,m:yanjun.zhu@linux.dev,m:leon@kernel.org,m:vlad102nikolaev@gmail.com,m:sashal@kernel.org,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-266339-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kuba@kernel.org,m:kylebot@openai.com,m:victor@mojatatu.com,m:syzbot@syzkaller.appspotmail.com,m:jhs@mojatatu.com,m:pctammela@mojatatu.com,m:edumazet@google.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,4edb496c3cad6e953a31];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,appspotmail.com:email,syzkaller.appspot.com:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,linux.dev:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,appspotmail.com:email,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,mojatatu.com:email,openai.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: DDBF0692B01
+X-Rspamd-Queue-Id: 6264A694867
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhu Yanjun <yanjun.zhu@linux.dev>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
 
-commit 1c7eec4d5f3b39cdea2153abaebf1b7229a47072 upstream.
+[ Upstream commit 5057e1aca011e51ef51498c940ef96f3d3e8a305 ]
 
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:120
- assign_lock_key kernel/locking/lockdep.c:986 [inline]
- register_lock_class+0x4a3/0x4c0 kernel/locking/lockdep.c:1300
- __lock_acquire+0x99/0x1ba0 kernel/locking/lockdep.c:5110
- lock_acquire kernel/locking/lockdep.c:5866 [inline]
- lock_acquire+0x179/0x350 kernel/locking/lockdep.c:5823
- __timer_delete_sync+0x152/0x1b0 kernel/time/timer.c:1644
- rxe_qp_do_cleanup+0x5c3/0x7e0 drivers/infiniband/sw/rxe/rxe_qp.c:815
- execute_in_process_context+0x3a/0x160 kernel/workqueue.c:4596
- __rxe_cleanup+0x267/0x3c0 drivers/infiniband/sw/rxe/rxe_pool.c:232
- rxe_create_qp+0x3f7/0x5f0 drivers/infiniband/sw/rxe/rxe_verbs.c:604
- create_qp+0x62d/0xa80 drivers/infiniband/core/verbs.c:1250
- ib_create_qp_kernel+0x9f/0x310 drivers/infiniband/core/verbs.c:1361
- ib_create_qp include/rdma/ib_verbs.h:3803 [inline]
- rdma_create_qp+0x10c/0x340 drivers/infiniband/core/cma.c:1144
- rds_ib_setup_qp+0xc86/0x19a0 net/rds/ib_cm.c:600
- rds_ib_cm_initiate_connect+0x1e8/0x3d0 net/rds/ib_cm.c:944
- rds_rdma_cm_event_handler_cmn+0x61f/0x8c0 net/rds/rdma_transport.c:109
- cma_cm_event_handler+0x94/0x300 drivers/infiniband/core/cma.c:2184
- cma_work_handler+0x15b/0x230 drivers/infiniband/core/cma.c:3042
- process_one_work+0x9cc/0x1b70 kernel/workqueue.c:3238
- process_scheduled_works kernel/workqueue.c:3319 [inline]
- worker_thread+0x6c8/0xf10 kernel/workqueue.c:3400
- kthread+0x3c2/0x780 kernel/kthread.c:464
- ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:153
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
+When NEWTFILTER and DELFILTER are run concurrently it is possible to create a
+race with an associated action.
 
-The root cause is as below:
+Let's illustrate with CPU0 running NEWTFILTER and CPU1 running DELFILTER:
 
-In the function rxe_create_qp, the function rxe_qp_from_init is called
-to create qp, if this function rxe_qp_from_init fails, rxe_cleanup will
-be called to handle all the allocated resources, including the timers:
-retrans_timer and rnr_nak_timer.
+ 0: mutex_lock() <-- holds the idr lock
+ 0: rcu_read_lock()
+ 0: p = idr_find(idr, index) <-- action p is valid (RCU protects IDR)
+ 0: mutex_unlock() <-- releases the idr lock
+ 1: refcount_dec_and_mutex_lock() <-- refcnt 1->0, mutex held
+ 1: idr_remove(idr, index) <-- Action removed from IDR
+ 1: mutex_unlock() <-- mutex released allowing us to delete the action
+ 1: tcf_action_cleanup(p); kfree(p) <-- Kfrees p immediately, no deferral
+ 0: refcount_inc_not_zero(&p->tcfa_refcnt) <-- ouch, UAF p points to freed memory
 
-The function rxe_qp_from_init calls the function rxe_qp_init_req to
-initialize the timers: retrans_timer and rnr_nak_timer.
+This patch fixes the race condition between NEWTFILTER and DELFILTER by
+adding struct rcu_head to tc_action used in the deferral and introducing a
+call_rcu() in the delete path to defer the final kfree().
 
-But these timers are initialized in the end of rxe_qp_init_req.
-If some errors occur before the initialization of these timers, this
-problem will occur.
+Note: this is a revert of commit d7fb60b9cafb ("net_sched: get rid of tcfa_rcu")
+but also modernization/simplification to directly use kfree_rcu().
 
-The solution is to check whether these timers are initialized or not.
-If these timers are not initialized, ignore these timers.
+Let's illustrate the new restored code path:
 
-Fixes: 8700e3e7c485 ("Soft RoCE driver")
-Reported-by: syzbot+4edb496c3cad6e953a31@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=4edb496c3cad6e953a31
-Signed-off-by: Zhu Yanjun <yanjun.zhu@linux.dev>
-Link: https://patch.msgid.link/20250419080741.1515231-1-yanjun.zhu@linux.dev
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-[ Vladislav: keep del_timer_sync() because linux-6.6.y has not renamed it
-  to timer_delete_sync() yet. The actual fix is unchanged: check the timer
-  .function fields before deleting the timers. ]
-Signed-off-by: Vladislav Nikolaev <vlad102nikolaev@gmail.com>
+ 0: rcu_read_lock()
+ 1: refcount_dec_and_mutex_lock() <-- refcnt 1->0, mutex held
+ 1: idr_remove(idr, index)
+ 1: mutex_unlock()
+ 1: call_rcu(&p->tcfa_rcu, tcf_action_rcu_free) <-- defer kfree after grace period
+ 0: p = idr_find(idr, index)
+ 0: refcount_inc_not_zero(&p->tcfa_refcnt) <-- fails, refcnt already 0
+ 1: rcu_read_unlock() <-- release so freeing can run after grace period
+
+After CPU1 calls idr_remove(), the object is no longer reachable through the IDR.
+CPU0's subsequent idr_find() will return NULL, and even if it still held a
+stale pointer, the immediate kfree() is now deferred until after the RCU grace
+period, so no UAF can occur.
+
+Fixes: d7fb60b9cafb ("net_sched: get rid of tcfa_rcu")
+Suggested-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: Kyle Zeng <kylebot@openai.com>
+Tested-by: Victor Nogueira <victor@mojatatu.com>
+Tested-by: syzbot@syzkaller.appspotmail.com
+Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Tested-by: Kyle Zeng <kylebot@openai.com>
+Reviewed-by: Pedro Tammela <pctammela@mojatatu.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Victor Nogueira <victor@mojatatu.com>
+Link: https://patch.msgid.link/20260531160812.68020-1-jhs@mojatatu.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/sw/rxe/rxe_qp.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ include/net/act_api.h | 1 +
+ net/sched/act_api.c   | 7 +------
+ 2 files changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/infiniband/sw/rxe/rxe_qp.c b/drivers/infiniband/sw/rxe/rxe_qp.c
-index 287fc8b8f5bafe..8426c261c263a9 100644
---- a/drivers/infiniband/sw/rxe/rxe_qp.c
-+++ b/drivers/infiniband/sw/rxe/rxe_qp.c
-@@ -817,7 +817,12 @@ static void rxe_qp_do_cleanup(struct work_struct *work)
- 	spin_unlock_irqrestore(&qp->state_lock, flags);
- 	qp->qp_timeout_jiffies = 0;
+diff --git a/include/net/act_api.h b/include/net/act_api.h
+index 2c88b8af3cdbe1..bbc4ab5e04f7d1 100644
+--- a/include/net/act_api.h
++++ b/include/net/act_api.h
+@@ -41,6 +41,7 @@ struct tc_action {
+ 	struct tc_cookie	__rcu *act_cookie;
+ 	struct tcf_chain	__rcu *goto_chain;
+ 	u32			tcfa_flags;
++	struct rcu_head         tcfa_rcu;
+ 	u8			hw_stats;
+ 	u8			used_hw_stats;
+ 	bool			used_hw_stats_valid;
+diff --git a/net/sched/act_api.c b/net/sched/act_api.c
+index bf98bb602a9de7..c724eea8cf8c52 100644
+--- a/net/sched/act_api.c
++++ b/net/sched/act_api.c
+@@ -93,11 +93,6 @@ struct tcf_chain *tcf_action_set_ctrlact(struct tc_action *a, int action,
+ }
+ EXPORT_SYMBOL(tcf_action_set_ctrlact);
  
--	if (qp_type(qp) == IB_QPT_RC) {
-+	/* In the function timer_setup, .function is initialized. If .function
-+	 * is NULL, it indicates the function timer_setup is not called, the
-+	 * timer is not initialized. Or else, the timer is initialized.
-+	 */
-+	if (qp_type(qp) == IB_QPT_RC && qp->retrans_timer.function &&
-+		qp->rnr_nak_timer.function) {
- 		del_timer_sync(&qp->retrans_timer);
- 		del_timer_sync(&qp->rnr_nak_timer);
- 	}
+-/* XXX: For standalone actions, we don't need a RCU grace period either, because
+- * actions are always connected to filters and filters are already destroyed in
+- * RCU callbacks, so after a RCU grace period actions are already disconnected
+- * from filters. Readers later can not find us.
+- */
+ static void free_tcf(struct tc_action *p)
+ {
+ 	struct tcf_chain *chain = rcu_dereference_protected(p->goto_chain, 1);
+@@ -110,7 +105,7 @@ static void free_tcf(struct tc_action *p)
+ 	if (chain)
+ 		tcf_chain_put_by_act(chain);
+ 
+-	kfree(p);
++	kfree_rcu(p, tcfa_rcu);
+ }
+ 
+ static void tcf_action_cleanup(struct tc_action *p)
 -- 
 2.53.0
 
