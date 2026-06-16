@@ -1,62 +1,63 @@
-Return-Path: <stable+bounces-266105-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264647-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id VxrBLJaWMWpSngUAu9opvQ
-	(envelope-from <stable+bounces-266105-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:31:50 +0200
+	id Kr/7LbB4MWrQkAUAu9opvQ
+	(envelope-from <stable+bounces-264647-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:24:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8195069436E
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:31:50 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73E446920AF
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:24:16 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Gpx3ppD5;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266105-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266105-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="zvZ6o0i/";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264647-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-264647-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8C266303E8E3
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:31:27 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DFE9B3032093
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:24:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 949333DA7E1;
-	Tue, 16 Jun 2026 18:31:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5205746AF11;
+	Tue, 16 Jun 2026 16:24:12 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7462332E13B;
-	Tue, 16 Jun 2026 18:31:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07BF246AF02;
+	Tue, 16 Jun 2026 16:24:11 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781634686; cv=none; b=b2alg3AYQuWIgD7f1sqo/B6SjF/aWL4hy2o9EzSm81xAhqX0yVJIsYQB+H5UAKOON4evIEFQxaT7buvRvRESJkYsGb5O8Q4BNMu/aiGo4rI26O/ASQplc755WSw4EKX2JCLpJDWELbdgMtVjI1Ter8SP+vnYuv0klYx6sPwYXMU=
+	t=1781627052; cv=none; b=bXuc9bhSIhKC9ojhbY1d//m8IvpI1aczhFMQ0byz8PE8uffos3T6zuKvQCAEq510kvxYNc9GLVv40EkgA2ghnN4gCKOz7c/3k9fl057lgeVGovhSzRYhqgVh3++Y9+q1ajXPwTecbevz7EpetjEXqavQ5tWMGY9f9KAquh/WOpo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781634686; c=relaxed/simple;
-	bh=AOT5sp9wvX/4KDCPClWOvdBgTDf5o2BOYmSZ8EwpiC4=;
+	s=arc-20240116; t=1781627052; c=relaxed/simple;
+	bh=ErHzqwNw4ZSDd9h0ChRYOiBGuCPhHOQiXs0ITXgx0Fw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lm+WD++CuAJr/2VS2U2iVcqMiduIXe6icTADFGrgRasvXV9UDamrzEtXw7tlxtUqocWEYQoRtzhONvtDgcQT1FXjcwi9rGFbYd3PhR18jShoIID/J66VVPhfcz5jX/q8Vu6LQuZWOlrGmSDIkJUzfHWB6h8Q+sCtTEgZjKyLCn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gpx3ppD5; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67CBF1F000E9;
-	Tue, 16 Jun 2026 18:31:24 +0000 (UTC)
+	 MIME-Version; b=KNJ7tgWRcbKq1eICRWha3T3zvuzrdAjzvFy1TfhYDRIxgTNR+P/lrg9FlMbzP+RtUcx+GgF9jxSFV/0yRaL33PDOl07/2RpdjUIF4LWBRITeaJEi/XnyNAs/OWwdPpt723111ttMswp2c/qVOx8ej+YJNH2dPaX+OO63L3Tg3gk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zvZ6o0i/; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A1891F000E9;
+	Tue, 16 Jun 2026 16:24:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781634685;
-	bh=Vs2OwZ5NswVlkEFma5DTAdXCgHIaNyRZsg/KycOcWME=;
+	s=korg; t=1781627050;
+	bh=QJyIaYu8AWAk/XZbCizUI9XdyUYJZVuXLiXav/BWoMQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Gpx3ppD5El9g9FmlSaRinyp3p1YI/I4z1oKX3WJ08j2LWh/MM12l3y7fHJr+TsCJH
-	 h6O5W9ja80pClVEoiBG50grlwPP8/0QY7eVRwJ+QhoDMQiyD8YSIQ/xY+IDNfbX2+j
-	 bUS2DjXW3zU8Z8fqvVEO7TxKWIfVnx3wXwaDeq/0=
+	b=zvZ6o0i/8GexuZBodXcRbM/XZMgW2gxmn1tvIwAx21BH45K0faJCXsE4/BZNK9Dcb
+	 LNEcj1b3tvqr2VT/lyJaHUSVS5tAr/5bKjyGdFloH46VyRoCZJxiOZpPV6wVlzs2Aq
+	 ekUXFukX8RXFQ1kSkatHJOgFDa9FghylkegBJJ48=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxime Ripard <mripard@kernel.org>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
+	Florian Westphal <fw@strlen.de>,
+	Qi Tang <tpluszz77@gmail.com>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
+	Simon Liebold <simonlie@amazon.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 312/411] spi: sun4i: fix controller deregistration
+Subject: [PATCH 6.12 112/261] xfrm: hold dev ref until after transport_finish NF_HOOK
 Date: Tue, 16 Jun 2026 20:29:10 +0530
-Message-ID: <20260616145117.728830186@linuxfoundation.org>
+Message-ID: <20260616145050.255860021@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,91 +71,184 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266105-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,strlen.de,gmail.com,secunet.com,amazon.de,kernel.org];
+	TAGGED_FROM(0.00)[bounces-264647-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mripard@kernel.org,m:johan@kernel.org,m:broonie@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:fw@strlen.de,m:tpluszz77@gmail.com,m:steffen.klassert@secunet.com,m:simonlie@amazon.de,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,amazon.de:email,strlen.de:email,secunet.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8195069436E
+X-Rspamd-Queue-Id: 73E446920AF
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Qi Tang <tpluszz77@gmail.com>
 
-[ Upstream commit 42108a2f03e0fdeabe9d02d085bdb058baa1189f ]
+[ Upstream commit 1c428b03840094410c5fb6a5db30640486bbbfcb ]
 
-Make sure to deregister the controller before disabling underlying
-resources like clocks during driver unbind.
+After async crypto completes, xfrm_input_resume() calls dev_put()
+immediately on re-entry before the skb reaches transport_finish.
+The skb->dev pointer is then used inside NF_HOOK and its okfn,
+which can race with device teardown.
 
-Fixes: b5f6517948cc ("spi: sunxi: Add Allwinner A10 SPI controller driver")
-Cc: stable@vger.kernel.org	# 3.15
-Cc: Maxime Ripard <mripard@kernel.org>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260410081757.503099-19-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-[ renamed `host`/`spi_controller` to `master`/`spi_master` and kept `int` return type with `return 0` in remove ]
+Remove the dev_put from the async resumption entry and instead
+drop the reference after the NF_HOOK call in transport_finish,
+using a saved device pointer since NF_HOOK may consume the skb.
+This covers NF_DROP, NF_QUEUE and NF_STOLEN paths that skip
+the okfn.
+
+For non-transport exits (decaps, gro, drop) and secondary
+async return points, release the reference inline when
+async is set.
+
+Suggested-by: Florian Westphal <fw@strlen.de>
+Fixes: acf568ee859f ("xfrm: Reinject transport-mode packets through tasklet")
+Cc: stable@vger.kernel.org
+Signed-off-by: Qi Tang <tpluszz77@gmail.com>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+[ xfrm_inner_mode_input() always completes synchronously in this kernel
+version and cannot return -EINPROGRESS. That requires
+7ac64f4598b4 ("xfrm: add mode_cbs module functionality"), which is not
+present, so the async dev_put path is unreachable and the hunk was
+omitted ]
+Signed-off-by: Simon Liebold <simonlie@amazon.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-sun4i.c |   10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ net/ipv4/xfrm4_input.c |  5 ++++-
+ net/ipv6/xfrm6_input.c |  5 ++++-
+ net/xfrm/xfrm_input.c  | 12 ++++++++++--
+ 3 files changed, 18 insertions(+), 4 deletions(-)
 
---- a/drivers/spi/spi-sun4i.c
-+++ b/drivers/spi/spi-sun4i.c
-@@ -503,7 +503,7 @@ static int sun4i_spi_probe(struct platfo
- 	pm_runtime_enable(&pdev->dev);
- 	pm_runtime_idle(&pdev->dev);
- 
--	ret = devm_spi_register_master(&pdev->dev, master);
-+	ret = spi_register_master(master);
- 	if (ret) {
- 		dev_err(&pdev->dev, "cannot register SPI master\n");
- 		goto err_pm_disable;
-@@ -521,8 +521,16 @@ err_free_master:
- 
- static int sun4i_spi_remove(struct platform_device *pdev)
+diff --git a/net/ipv4/xfrm4_input.c b/net/ipv4/xfrm4_input.c
+index 12a1a0f421956c..adf21d6b6076c1 100644
+--- a/net/ipv4/xfrm4_input.c
++++ b/net/ipv4/xfrm4_input.c
+@@ -50,6 +50,7 @@ int xfrm4_transport_finish(struct sk_buff *skb, int async)
  {
-+	struct spi_master *master = platform_get_drvdata(pdev);
-+
-+	spi_master_get(master);
-+
-+	spi_unregister_master(master);
-+
- 	pm_runtime_force_suspend(&pdev->dev);
+ 	struct xfrm_offload *xo = xfrm_offload(skb);
+ 	struct iphdr *iph = ip_hdr(skb);
++	struct net_device *dev = skb->dev;
  
-+	spi_master_put(master);
-+
+ 	iph->protocol = XFRM_MODE_SKB_CB(skb)->protocol;
+ 
+@@ -73,8 +74,10 @@ int xfrm4_transport_finish(struct sk_buff *skb, int async)
+ 	}
+ 
+ 	NF_HOOK(NFPROTO_IPV4, NF_INET_PRE_ROUTING,
+-		dev_net(skb->dev), NULL, skb, skb->dev, NULL,
++		dev_net(dev), NULL, skb, dev, NULL,
+ 		xfrm4_rcv_encap_finish);
++	if (async)
++		dev_put(dev);
  	return 0;
  }
  
+diff --git a/net/ipv6/xfrm6_input.c b/net/ipv6/xfrm6_input.c
+index 9005fc156a20e6..699a001ac16629 100644
+--- a/net/ipv6/xfrm6_input.c
++++ b/net/ipv6/xfrm6_input.c
+@@ -43,6 +43,7 @@ static int xfrm6_transport_finish2(struct net *net, struct sock *sk,
+ int xfrm6_transport_finish(struct sk_buff *skb, int async)
+ {
+ 	struct xfrm_offload *xo = xfrm_offload(skb);
++	struct net_device *dev = skb->dev;
+ 	int nhlen = -skb_network_offset(skb);
+ 
+ 	skb_network_header(skb)[IP6CB(skb)->nhoff] =
+@@ -68,8 +69,10 @@ int xfrm6_transport_finish(struct sk_buff *skb, int async)
+ 	}
+ 
+ 	NF_HOOK(NFPROTO_IPV6, NF_INET_PRE_ROUTING,
+-		dev_net(skb->dev), NULL, skb, skb->dev, NULL,
++		dev_net(dev), NULL, skb, dev, NULL,
+ 		xfrm6_transport_finish2);
++	if (async)
++		dev_put(dev);
+ 	return 0;
+ }
+ 
+diff --git a/net/xfrm/xfrm_input.c b/net/xfrm/xfrm_input.c
+index 90a79558dca259..5d3633ce6ba329 100644
+--- a/net/xfrm/xfrm_input.c
++++ b/net/xfrm/xfrm_input.c
+@@ -492,7 +492,6 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
+ 		/* An encap_type of -1 indicates async resumption. */
+ 		if (encap_type == -1) {
+ 			async = 1;
+-			dev_put(skb->dev);
+ 			seq = XFRM_SKB_CB(skb)->seq.input.low;
+ 			goto resume;
+ 		}
+@@ -645,8 +644,11 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
+ 			dev_hold(skb->dev);
+ 
+ 			nexthdr = x->type->input(x, skb);
+-			if (nexthdr == -EINPROGRESS)
++			if (nexthdr == -EINPROGRESS) {
++				if (async)
++					dev_put(skb->dev);
+ 				return 0;
++			}
+ 
+ 			dev_put(skb->dev);
+ 		}
+@@ -717,6 +719,8 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
+ 			sp->olen = 0;
+ 		if (skb_valid_dst(skb))
+ 			skb_dst_drop(skb);
++		if (async)
++			dev_put(skb->dev);
+ 		gro_cells_receive(&gro_cells, skb);
+ 		return 0;
+ 	} else {
+@@ -736,6 +740,8 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
+ 				sp->olen = 0;
+ 			if (skb_valid_dst(skb))
+ 				skb_dst_drop(skb);
++			if (async)
++				dev_put(skb->dev);
+ 			gro_cells_receive(&gro_cells, skb);
+ 			return err;
+ 		}
+@@ -746,6 +752,8 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
+ drop_unlock:
+ 	spin_unlock(&x->lock);
+ drop:
++	if (async)
++		dev_put(skb->dev);
+ 	xfrm_rcv_cb(skb, family, x && x->type ? x->type->proto : nexthdr, -1);
+ 	kfree_skb(skb);
+ 	return 0;
+-- 
+2.53.0
+
 
 
 
