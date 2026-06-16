@@ -1,66 +1,66 @@
-Return-Path: <stable+bounces-263540-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263541-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id aYUYNazWMGpvXwUAu9opvQ
-	(envelope-from <stable+bounces-263540-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 06:53:00 +0200
+	id 5ZewEu7WMGp4XwUAu9opvQ
+	(envelope-from <stable+bounces-263541-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 06:54:06 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5016B68BF53
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 06:53:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F403568BF7A
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 06:54:05 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=intel.com header.s=Intel header.b=BA6A8nGW;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263540-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-263540-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=intel.com header.s=Intel header.b=j86Su8Oc;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263541-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-263541-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=intel.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4B780302C785
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 04:52:38 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BA3BC3040D88
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 04:52:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8B073CCFA9;
-	Tue, 16 Jun 2026 04:52:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D49033CB916;
+	Tue, 16 Jun 2026 04:52:43 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 628133CB919;
-	Tue, 16 Jun 2026 04:52:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5829B3CD8B9;
+	Tue, 16 Jun 2026 04:52:42 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781585550; cv=none; b=icZwln2Lwb2xulndGKtkF9z17ITHRo28DusEwI8+4eNAWOCo27fSbMEABi2gAydVMfD70brYsXgrduuwm2LIK/VJ8o3jT8l/mG36C4ukUvmxYmU96aalzSij1x6FeWV2Tdq9pvKwN5K4PrhWSDqlfrxuRF8SlCctA5qh43pV47c=
+	t=1781585563; cv=none; b=efvDNReiA9Kla0oBCulSlh48oGp0Yo66Cf1zvLXi6q+bh7udHZ8soAGwtFWaxIWAk1d6zs/zdgBQCPHRF2IkmvmAdwum+5YphYXSXkudskoEZH8LQmEJLuAYpcxk5xqYEVRlb8QakkDjis84kqyb4o6lpfcSuIU5r9LeRCIMeAA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781585550; c=relaxed/simple;
-	bh=hLt4dKAkFM1ezvOFdUYbEocTcEcOU35jbSpPyPX0veA=;
+	s=arc-20240116; t=1781585563; c=relaxed/simple;
+	bh=VBK0ktbAZEblhul2ZSD/6BFwCP42zOQDKriOL6zk4wY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=s6RzJzRNUgkFpSENKXaLU5jb6aUZ3tT5BgfdgBxN/eL4FU5qvHlrrafpiusEOgx5SSiwe/SFs0Q3OkUSGE4fcWWJIg2w4GprC/yhUzIV5ZnJHznUJslNQbBzB4Q8HmpK/Hd63JON+roh3Bjf2EcAAreXg2OxQY0IHbNPj5LMNx0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BA6A8nGW; arc=none smtp.client-ip=192.198.163.15
+	 MIME-Version; b=hJWM6RcVhgLjc0ENBMZdePJRlas2d1MHgIy1Bv+z8dsDlknAQL9/X+qYdrH32pYVZAnhfcKAoKWFCEACNM67iNMX+PoctHgy2359e0B+fzGkp/NHBb47P43MIwuaa+mTOHbe5f8tNNhKibpNPjkawWhESlgSZFVAOT12y8sSXQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=j86Su8Oc; arc=none smtp.client-ip=192.198.163.15
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1781585549; x=1813121549;
+  t=1781585562; x=1813121562;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=hLt4dKAkFM1ezvOFdUYbEocTcEcOU35jbSpPyPX0veA=;
-  b=BA6A8nGWDmOhoYc0xKmjjyqMW7X2hSPOZmFZxPuTRsmfiv4dE68NKyWl
-   kAVoYDOXZgggZq8FlkdY4P2Q7kNpmAU8LFjInttHKLIrEDCcqduMIzRjx
-   f3hVl9FB0l2ObTMWoRAjiR6QOTvHzYk3LvUYQDbsv5nwcBp2pXr+8xEyx
-   OMs0zNBm6o0LT1/feAqEme61/6jnaqG7K7BAMNRlDfaoeifrRIi08393J
-   +/6/wSV634DY7TNMHJdxiZDoEIZR53eq7RDZU3SbHD87cSR/DQltQ7ZUI
-   JMtYbMbw6Rj8jngslwlwCoAM2kVU7F4iMDMjShJWkDVX1nM59fMeJgjWa
-   w==;
-X-CSE-ConnectionGUID: cNcI8yOSRXOqr1Hwc8YJvg==
-X-CSE-MsgGUID: hLcn2VwFRcm7N5WtY0+dRg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11818"; a="82445367"
+  bh=VBK0ktbAZEblhul2ZSD/6BFwCP42zOQDKriOL6zk4wY=;
+  b=j86Su8OcU78in8Ki97t6pAIVc4TUOmYp8an+38GXwdj/7G5944Sfy64Y
+   nJdbm2RxYqKHLSLdegP6TGvkpwg9heryynEHgLfzMzLeAxC+bbshNO+V3
+   8qHYcUot+PCx35IQwhyVL6PI7zejl3sXFbl4Zxl1ONnRiYv4ZEe888Emn
+   JlfPi8800OFfP7Do54AhiTyR+tZIcwHz5uDWpEDaAgTwlotBBEoM7iAQZ
+   8I+LrctSjv2EQLDOSMpgh1RIqeC5WmYGC4zi1n7wPxL/7eagAo/5GqkW0
+   8bg1uM6ElXsGryYN1eqsKhmbc8drovLilVp0KqQlun4LCe5PdP6n95qpx
+   Q==;
+X-CSE-ConnectionGUID: FAHBThzhSMqKNwBosS7DkA==
+X-CSE-MsgGUID: CFgxvNQ6TrSyJXJD4sIYJg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11818"; a="82445423"
 X-IronPort-AV: E=Sophos;i="6.24,207,1774335600"; 
-   d="scan'208";a="82445367"
+   d="scan'208";a="82445423"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2026 21:52:29 -0700
-X-CSE-ConnectionGUID: lIOe5CbVQjmURSdeFmJ03A==
-X-CSE-MsgGUID: D22z9UO+QrWN1A7C2oHEmQ==
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2026 21:52:42 -0700
+X-CSE-ConnectionGUID: G3pndbb0TWufGkvOd6hxKw==
+X-CSE-MsgGUID: fwCXms2RR8y35ZuWweZMxQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.24,207,1774335600"; 
-   d="scan'208";a="271726210"
+   d="scan'208";a="271726379"
 Received: from spr.sh.intel.com ([10.112.230.239])
-  by fmviesa001.fm.intel.com with ESMTP; 15 Jun 2026 21:52:25 -0700
+  by fmviesa001.fm.intel.com with ESMTP; 15 Jun 2026 21:52:38 -0700
 From: Dapeng Mi <dapeng1.mi@linux.intel.com>
 To: Peter Zijlstra <peterz@infradead.org>,
 	Ingo Molnar <mingo@redhat.com>,
@@ -79,9 +79,9 @@ Cc: linux-kernel@vger.kernel.org,
 	Xudong Hao <xudong.hao@intel.com>,
 	Dapeng Mi <dapeng1.mi@linux.intel.com>,
 	stable@vger.kernel.org
-Subject: [Patch v4 1/8] perf/x86/intel: Remove anythread_deprecated bit from perf_capabilities
-Date: Tue, 16 Jun 2026 12:46:47 +0800
-Message-Id: <20260616044654.3468742-2-dapeng1.mi@linux.intel.com>
+Subject: [Patch v4 4/8] perf/x86/intel: Fix kernel address leakages in LBR stack
+Date: Tue, 16 Jun 2026 12:46:50 +0800
+Message-Id: <20260616044654.3468742-5-dapeng1.mi@linux.intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260616044654.3468742-1-dapeng1.mi@linux.intel.com>
 References: <20260616044654.3468742-1-dapeng1.mi@linux.intel.com>
@@ -104,7 +104,7 @@ X-Spamd-Result: default: False [-3.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-263540-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-263541-lists,stable=lfdr.de];
 	RCPT_COUNT_TWELVE(0.00)[17];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS(0.00)[m:peterz@infradead.org,m:mingo@redhat.com,m:acme@kernel.org,m:namhyung@kernel.org,m:irogers@google.com,m:adrian.hunter@intel.com,m:alexander.shishkin@linux.intel.com,m:ak@linux.intel.com,m:eranian@google.com,m:linux-kernel@vger.kernel.org,m:linux-perf-users@vger.kernel.org,m:dapeng1.mi@intel.com,m:zide.chen@intel.com,m:thomas.falcon@intel.com,m:xudong.hao@intel.com,m:dapeng1.mi@linux.intel.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
@@ -124,88 +124,82 @@ X-Spamd-Result: default: False [-3.66 / 15.00];
 	ALIAS_RESOLVED(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,intel.com:dkim,intel.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.intel.com:mid,linux.intel.com:from_mime,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,intel.com:dkim,intel.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5016B68BF53
+X-Rspamd-Queue-Id: F403568BF7A
 
-AnyThread mode deprecation is enumerated by CPUID.0AH:EDX[15] instead of
-PERF_CAPABILITIES MSR. It's not a good practice to define a bit to
-represent "anythread deprecation" in perf_capabilities. It leads to the
-anythread_deprecated bit could be overwritten by the real value of
-PERF_CAPABILITIES MSR, just like the below code in update_pmu_cap() does.
+Before Arch LBR gained CPL filtering support, a user-only branch stack
+could still contain kernel addresses. As a result, kernel branch records
+may be exposed to user space even when PERF_SAMPLE_BRANCH_USER is
+requested.
 
-if (!intel_pmu_broken_perf_cap()) {
-	/* Perf Metric (Bit 15) and PEBS via PT (Bit 16) are hybrid enumeration */
-	rdmsrq(MSR_IA32_PERF_CAPABILITIES, hybrid(pmu, intel_cap).capabilities);
-}
+For example, on Intel Tiger Lake, the following command can still report
+SYSRET/ERET entries with kernel-space from addresses:
 
-It leads to the anythread_deprecated bit is cleared to 0 and the "any"
-attribute is incorrectly shown in the /sys/devices/cpu/format/ folder on
-these support Perfmon v6 platforms, like Clearwater Forest.
+$ ./perf record -e cycles:p -o - --branch-filter any,save_type,u -- \
+ 	./perf bench syscall basic --loop 1000 | \
+	./perf script -i - --fields brstack|tr ' ' '\n'| \
+	grep -E '0x[89a-f][0-9a-f]{15}'
 
-$ grep . /sys/devices/cpu/format/*
-/sys/devices/cpu/format/acr_mask:config2:0-63
-/sys/devices/cpu/format/any:config:21
-/sys/devices/cpu/format/cmask:config:24-31
+    Total time: 0.000 [sec]
 
-So remove the anythread_deprecated bit from perf_capabilities structure
-and directly depends on CPUID.0AH:EDX[15] to judge if anythread is
-deprecated.
+      0.219000 usecs/op
+     4,566,210 ops/sec
+[ perf record: Woken up 1 times to write data ]
+[ perf record: Captured and wrote 0.551 MB - ]
+0xffffffff93c001c8/0x7f12a2b1d647/P/-/-/16959/SYSRET/-
+0xffffffff93c001c8/0x7f12a2b1d5c2/P/-/-/17535/SYSRET/-
+0xffffffff93c01928/0x7f12a2861000/P/-/-/6719/ERET/-
+0xffffffff93c01928/0x7f12a297a000/P/-/-/8575/ERET/-
+
+The problem is that intel_pmu_lbr_filter() does not fully validate the
+privilege level of sampled entries. It filters some mismatches based on
+the branch type and the to address, but it does not reject entries whose
+from address violates the requested branch privilege filter.
+
+Fix this by extending software filtering to validate both from and to
+addresses against br_sel. Any LBR entry contains kernel address does not
+match the requested user filter is dropped. This prevents kernel
+addresses from appearing in user-only branch stacks.
 
 Cc: stable@vger.kernel.org
-Reported-by: Namhyung Kim <namhyung@kernel.org>
-Fixes: cadbaa039b99 ("perf/x86/intel: Make anythread filter support conditional")
-Acked-by: Namhyung Kim <namhyung@kernel.org>
+Reported-by: Ian Rogers <irogers@google.com>
+Fixes: 47125db27e47 ("perf/x86/intel/lbr: Support Architectural LBR")
 Signed-off-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
-Reviewed-by: Zide Chen <zide.chen@intel.com>
-Reviewed-by: Thomas Falcon <thomas.falcon@intel.com>
 ---
- arch/x86/events/intel/core.c | 10 +++-------
- arch/x86/events/perf_event.h |  2 +-
- 2 files changed, 4 insertions(+), 8 deletions(-)
+ arch/x86/events/intel/lbr.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
-index 0217e701aeeb..ea3ab3050a3b 100644
---- a/arch/x86/events/intel/core.c
-+++ b/arch/x86/events/intel/core.c
-@@ -7946,12 +7946,6 @@ __init int intel_pmu_init(void)
+diff --git a/arch/x86/events/intel/lbr.c b/arch/x86/events/intel/lbr.c
+index e2657f791e50..16eef1537816 100644
+--- a/arch/x86/events/intel/lbr.c
++++ b/arch/x86/events/intel/lbr.c
+@@ -1212,7 +1212,7 @@ intel_pmu_lbr_filter(struct cpu_hw_events *cpuc)
+ {
+ 	u64 from, to;
+ 	int br_sel = cpuc->br_sel;
+-	int i, j, type, to_plm;
++	int i, j, type, from_plm, to_plm;
+ 	bool compress = false;
  
- 	x86_add_quirk(intel_arch_events_quirk); /* Install first, so it runs last */
+ 	/* if sampling all branches, then nothing to filter */
+@@ -1244,8 +1244,14 @@ intel_pmu_lbr_filter(struct cpu_hw_events *cpuc)
+ 				type |= X86_BR_NO_TX;
+ 		}
  
--	if (version >= 5) {
--		x86_pmu.intel_cap.anythread_deprecated = edx.split.anythread_deprecated;
--		if (x86_pmu.intel_cap.anythread_deprecated)
--			pr_cont(" AnyThread deprecated, ");
--	}
--
- 	/* The perf side of core PMU is ready to support the mediated vPMU. */
- 	x86_get_pmu(smp_processor_id())->capabilities |= PERF_PMU_CAP_MEDIATED_VPMU;
- 
-@@ -8828,8 +8822,10 @@ __init int intel_pmu_init(void)
- 				      &x86_pmu.intel_ctrl);
- 
- 	/* AnyThread may be deprecated on arch perfmon v5 or later */
--	if (x86_pmu.intel_cap.anythread_deprecated)
-+	if (version >= 5 && edx.split.anythread_deprecated) {
- 		x86_pmu.format_attrs = intel_arch_formats_attr;
-+		pr_cont("AnyThread deprecated, ");
-+	}
- 
- 	intel_pmu_check_event_constraints_all(NULL);
- 
-diff --git a/arch/x86/events/perf_event.h b/arch/x86/events/perf_event.h
-index eae24bb35dc1..5902a297daa1 100644
---- a/arch/x86/events/perf_event.h
-+++ b/arch/x86/events/perf_event.h
-@@ -668,7 +668,7 @@ union perf_capabilities {
- 		u64	perf_metrics:1;
- 		u64	pebs_output_pt_available:1;
- 		u64	pebs_timing_info:1;
--		u64	anythread_deprecated:1;
-+		u64	__reserved:1;
- 		u64	rdpmc_metrics_clear:1;
- 	};
- 	u64	capabilities;
+-		/* if type does not correspond, then discard */
+-		if (type == X86_BR_NONE || (br_sel & type) != type) {
++		from_plm = kernel_ip(from) ? X86_BR_KERNEL : X86_BR_USER;
++		/*
++		 * If type does not correspond, then discard.
++		 * Specifically reject entries whose from address is in
++		 * kernel space when only X86_BR_USER is requested.
++		 */
++		if (type == X86_BR_NONE || (br_sel & type) != type ||
++		    (!(br_sel & X86_BR_KERNEL) && (from_plm & X86_BR_KERNEL))) {
+ 			cpuc->lbr_entries[i].from = 0;
+ 			compress = true;
+ 		}
 -- 
 2.34.1
 
