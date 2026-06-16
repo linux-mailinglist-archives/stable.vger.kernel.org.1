@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-265749-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266179-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id NQCYDjSPMWrXmgUAu9opvQ
-	(envelope-from <stable+bounces-265749-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:00:20 +0200
+	id 1DPrF+6YMWo1nwUAu9opvQ
+	(envelope-from <stable+bounces-266179-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:41:50 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C3C5693B78
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:00:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CFB20694580
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:41:49 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=dZiUoJ9q;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265749-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265749-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=zxwMmxyl;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266179-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266179-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E3C773091C44
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:59:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BD15A31921A6
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:37:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7511547B406;
-	Tue, 16 Jun 2026 17:59:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E87B7478E5E;
+	Tue, 16 Jun 2026 18:37:47 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C97930B535;
-	Tue, 16 Jun 2026 17:59:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B43883DF007;
+	Tue, 16 Jun 2026 18:37:46 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781632786; cv=none; b=fj1IMAi1Fd39k51tafLRBFlhzBJ3uyAUV3KvMtLRexl3o61xRw2URARAqnlTaXqNNFbnNFi/wgnUlMhuvDjeGaimHkeRG20RYuXskgauVOClH6Bc4kv66or2+Ec/eju4sijoS7J6qjipjXLJGoafHqdsvjU0B4lo1adVvg2EcqM=
+	t=1781635067; cv=none; b=hAkIoY3x5PrVCdYqAS3V9nV/l6AF6YBcAe4UqBQs605nwNbIPt3C/JtZiNlMoBkQN4/WUsthBcLMta/Ox4JdACcZJvV2ppPce/E78rPJvV9xxXzBZWFF0ZNcFgzMuTwAsRZ81/umKBd6VdfXK9MYYFh3MvIWLrf7YscM5Shcd88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781632786; c=relaxed/simple;
-	bh=Y2xgcmwXSgseh2grKST9efGiLS1HlrtsdEBq4b9GpJQ=;
+	s=arc-20240116; t=1781635067; c=relaxed/simple;
+	bh=HyjvumuACgLQ/5+6kygdrNUVD+83uTbTI32fqvyjGmg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WBv9Q+XwnZ+m9sqa31p6BE0zu9nprmko+8K37vQVQWxONSPnB5S+FtpQHvONCrmn3uBLIFy+TmAUTdAlZ7AW4d0Q5Wd2eMW/8HxvR1b3OzC1hcu0kNSviXYFkB5Um7SuyBzYPUT6vppyzBtHPcq82Uj81wYJZKXhLizsXPIwCtM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dZiUoJ9q; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 378E01F000E9;
-	Tue, 16 Jun 2026 17:59:43 +0000 (UTC)
+	 MIME-Version; b=fROesB7wgzUF55k0UPfGO8wjYQZmAMvv/ZDWAWVf8ikHI574rl/cNQfkCswP4CyopRJkY8D/QwCqFDUnCbLNODOiHI8O5ePWaPCSFGEcn/M0H/0eaEMkFSyhNTDy4Qv5NHWUic8UKAeVs8hQ+Xpv19NCT3jXqBzZE+XopTgnGu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zxwMmxyl; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E5821F000E9;
+	Tue, 16 Jun 2026 18:37:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781632785;
-	bh=AE9H09DQPGIOdwkeqX2RxhKRai2kJNWeOlv4H3Q5EWI=;
+	s=korg; t=1781635066;
+	bh=Q32RKynozgCx/tXP2uS2AU8eEbHfU+6J6tM+tc0Te9w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dZiUoJ9qNcjVgruKWks2m0036rLM4aOF7F5yCfYuuC38D6e8gm/zjMHvllLH+tDKW
-	 B+Qd0cSZdcc6BGaIsprGvS5zpSk5F0mjdNIqUgQ4uJi1DRo3QJdMeaNZD0tTnonkPC
-	 vnMjYBLPSRo2uyYhK3MAyd8Oyfz+Sp00f9YvmMwU=
+	b=zxwMmxyl4aBYRpC2PC1X/ywuoCTMLvKIx20S7OFg7sFJr2PfIGNEBmwB6oj0+TXHs
+	 6CJAcdiaFEu+lgceJLGAz7nYDteTXiRkmfYwnpnWdKgqAiVI1jZTo1gHArIy2A+dW6
+	 SaU3Qu7X9mnO2vr4EB0271tvcDiuZWCSv8/rfuy0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -50,12 +50,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Konrad Dybcio <konrad.dybcio@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 475/522] tty: serial: qcom-geni-serial: remove unused symbols
+Subject: [PATCH 5.15 384/411] tty: serial: qcom-geni-serial: align #define values
 Date: Tue, 16 Jun 2026 20:30:22 +0530
-Message-ID: <20260616145148.063079996@linuxfoundation.org>
+Message-ID: <20260616145121.671872318@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265749-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-266179-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
@@ -98,79 +98,121 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linaro.org:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linaro.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8C3C5693B78
+X-Rspamd-Queue-Id: CFB20694580
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-[ Upstream commit 68c6bd92c86cbc4937834c79963b27c77ee3bf51 ]
+[ Upstream commit 6cde11dbf4b65170eeefba48df730c93d75e01a3 ]
 
-Drop all unused symbols from the driver.
+Keep the #define symbols aligned for better readability.
 
 Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20221229155030.418800-4-brgl@bgdev.pl
+Link: https://lore.kernel.org/r/20221229155030.418800-5-brgl@bgdev.pl
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Stable-dep-of: ca2584d841b6 ("serial: qcom-geni: fix UART_RX_PAR_EN bit position")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/qcom_geni_serial.c |   15 ---------------
- 1 file changed, 15 deletions(-)
+ drivers/tty/serial/qcom_geni_serial.c |   60 +++++++++++++++++-----------------
+ 1 file changed, 30 insertions(+), 30 deletions(-)
 
 --- a/drivers/tty/serial/qcom_geni_serial.c
 +++ b/drivers/tty/serial/qcom_geni_serial.c
-@@ -42,20 +42,11 @@
- #define UART_TX_PAR_EN		BIT(0)
- #define UART_CTS_MASK		BIT(1)
+@@ -35,57 +35,57 @@
+ #define SE_UART_MANUAL_RFR		0x2ac
  
--/* SE_UART_TX_WORD_LEN */
--#define TX_WORD_LEN_MSK		GENMASK(9, 0)
--
+ /* SE_UART_TRANS_CFG */
+-#define UART_TX_PAR_EN		BIT(0)
+-#define UART_CTS_MASK		BIT(1)
++#define UART_TX_PAR_EN			BIT(0)
++#define UART_CTS_MASK			BIT(1)
+ 
  /* SE_UART_TX_STOP_BIT_LEN */
--#define TX_STOP_BIT_LEN_MSK	GENMASK(23, 0)
- #define TX_STOP_BIT_LEN_1	0
--#define TX_STOP_BIT_LEN_1_5	1
- #define TX_STOP_BIT_LEN_2	2
+-#define TX_STOP_BIT_LEN_1	0
+-#define TX_STOP_BIT_LEN_2	2
++#define TX_STOP_BIT_LEN_1		0
++#define TX_STOP_BIT_LEN_2		2
  
--/* SE_UART_TX_TRANS_LEN */
--#define TX_TRANS_LEN_MSK	GENMASK(23, 0)
--
  /* SE_UART_RX_TRANS_CFG */
--#define UART_RX_INS_STATUS_BIT	BIT(2)
- #define UART_RX_PAR_EN		BIT(3)
+-#define UART_RX_PAR_EN		BIT(3)
++#define UART_RX_PAR_EN			BIT(3)
  
  /* SE_UART_RX_WORD_LEN */
-@@ -66,12 +57,9 @@
+-#define RX_WORD_LEN_MASK	GENMASK(9, 0)
++#define RX_WORD_LEN_MASK		GENMASK(9, 0)
+ 
+ /* SE_UART_RX_STALE_CNT */
+-#define RX_STALE_CNT		GENMASK(23, 0)
++#define RX_STALE_CNT			GENMASK(23, 0)
  
  /* SE_UART_TX_PARITY_CFG/RX_PARITY_CFG */
- #define PAR_CALC_EN		BIT(0)
--#define PAR_MODE_MSK		GENMASK(2, 1)
--#define PAR_MODE_SHFT		1
- #define PAR_EVEN		0x00
- #define PAR_ODD			0x01
- #define PAR_SPACE		0x10
--#define PAR_MARK		0x11
+-#define PAR_CALC_EN		BIT(0)
+-#define PAR_EVEN		0x00
+-#define PAR_ODD			0x01
+-#define PAR_SPACE		0x10
++#define PAR_CALC_EN			BIT(0)
++#define PAR_EVEN			0x00
++#define PAR_ODD				0x01
++#define PAR_SPACE			0x10
  
  /* SE_UART_MANUAL_RFR register fields */
- #define UART_MANUAL_RFR_EN	BIT(31)
-@@ -80,11 +68,8 @@
+-#define UART_MANUAL_RFR_EN	BIT(31)
+-#define UART_RFR_NOT_READY	BIT(1)
+-#define UART_RFR_READY		BIT(0)
++#define UART_MANUAL_RFR_EN		BIT(31)
++#define UART_RFR_NOT_READY		BIT(1)
++#define UART_RFR_READY			BIT(0)
  
  /* UART M_CMD OP codes */
- #define UART_START_TX		0x1
--#define UART_START_BREAK	0x4
--#define UART_STOP_BREAK		0x5
+-#define UART_START_TX		0x1
++#define UART_START_TX			0x1
  /* UART S_CMD OP codes */
- #define UART_START_READ		0x1
--#define UART_PARAM		0x1
+-#define UART_START_READ		0x1
++#define UART_START_READ			0x1
  
- #define UART_OVERSAMPLING	32
- #define STALE_TIMEOUT		16
+-#define UART_OVERSAMPLING	32
+-#define STALE_TIMEOUT		16
+-#define DEFAULT_BITS_PER_CHAR	10
+-#define GENI_UART_CONS_PORTS	1
+-#define GENI_UART_PORTS		3
+-#define DEF_FIFO_DEPTH_WORDS	16
+-#define DEF_TX_WM		2
+-#define DEF_FIFO_WIDTH_BITS	32
+-#define UART_RX_WM		2
++#define UART_OVERSAMPLING		32
++#define STALE_TIMEOUT			16
++#define DEFAULT_BITS_PER_CHAR		10
++#define GENI_UART_CONS_PORTS		1
++#define GENI_UART_PORTS			3
++#define DEF_FIFO_DEPTH_WORDS		16
++#define DEF_TX_WM			2
++#define DEF_FIFO_WIDTH_BITS		32
++#define UART_RX_WM			2
+ 
+ /* SE_UART_LOOPBACK_CFG */
+-#define RX_TX_SORTED	BIT(0)
+-#define CTS_RTS_SORTED	BIT(1)
+-#define RX_TX_CTS_RTS_SORTED	(RX_TX_SORTED | CTS_RTS_SORTED)
++#define RX_TX_SORTED			BIT(0)
++#define CTS_RTS_SORTED			BIT(1)
++#define RX_TX_CTS_RTS_SORTED		(RX_TX_SORTED | CTS_RTS_SORTED)
+ 
+ /* UART pin swap value */
+-#define DEFAULT_IO_MACRO_IO0_IO1_MASK		GENMASK(3, 0)
++#define DEFAULT_IO_MACRO_IO0_IO1_MASK	GENMASK(3, 0)
+ #define IO_MACRO_IO0_SEL		0x3
+-#define DEFAULT_IO_MACRO_IO2_IO3_MASK		GENMASK(15, 4)
++#define DEFAULT_IO_MACRO_IO2_IO3_MASK	GENMASK(15, 4)
+ #define IO_MACRO_IO2_IO3_SWAP		0x4640
+ 
+ /* We always configure 4 bytes per FIFO word */
 
 
 
