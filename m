@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-264197-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264677-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id vuTKD5NyMWpfjgUAu9opvQ
-	(envelope-from <stable+bounces-264197-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:58:11 +0200
+	id gQy9FQV7MWq/kQUAu9opvQ
+	(envelope-from <stable+bounces-264677-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:34:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F627691935
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:58:10 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C22EF69236E
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:34:12 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=0KfyHKfG;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264197-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264197-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=F+GrBfST;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264677-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264677-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 359973041155
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:45:33 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BC9703076338
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:27:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9559A44D035;
-	Tue, 16 Jun 2026 15:44:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9CB7472764;
+	Tue, 16 Jun 2026 16:27:13 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67DF6361651;
-	Tue, 16 Jun 2026 15:44:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B26843A6B61;
+	Tue, 16 Jun 2026 16:27:12 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781624642; cv=none; b=bOoS5zY+aFLUFBiAyPyZnlFDzHU8mDuQK91nSSW0v8KqVdzUfJDcTQQzyqTRmEL4uynRTV4EIv8YaJOKztn9IhNxtJGrz7BoVQKl/KYnJ8/eeyNrMkaVx1lAwOBYiqvkTxFzwQ3DofnC6BBsUTJGsMD5tr3OGfSIX51nur2EVXs=
+	t=1781627233; cv=none; b=HASMjuttZ/H2ylAhzXJNxMShp4PifkCiahhfumaPkRMAUIjl4qX2zsMOn6YiCu82zzFmlLvb8o/qwf7ywTDtVwqQKGOZ5n+ubpTdOfh0rlee499dcfVr7FsVC0yIQsKel+NqUq75apankrlWh6rCyW2NFyhyp/eVOgUbC9idji8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781624642; c=relaxed/simple;
-	bh=BwwuXAwDRgqSTyEauyRJs+10iLbDsG+7O6S1ho1GNHc=;
+	s=arc-20240116; t=1781627233; c=relaxed/simple;
+	bh=Mt3n6NJ3gjyIq0V9K6Dt6XDJoUPcQBSCad98CTO+zj8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cV4n5Y2T9D+s3k1uT718YuzgY60UFRnaxQIkpK7ZRI6q/ljxk4lv4KQbG2qM8FLJAiuenofZvX/Iq8amPfEgc355lPUYbLYe2mV9owtS+MHHXjAP8pymvwc09GGuUA0zV7F8Tppvetx/TbRqtTTtRCBjA8wdGf1rcyB7FILEbzA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0KfyHKfG; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25AD41F000E9;
-	Tue, 16 Jun 2026 15:43:59 +0000 (UTC)
+	 MIME-Version; b=YQWmqEykD5T+FWDoshCgICO+0MTmJz6TaEikDtpTGd+8sr9IJRNU7oCM+lnDGMBBDldVktoFynA51GCuGTXJ3HUDN9lG69Yz2W9qVOMShyx1Ft7Csxq1MnxyWKv/4VntKCC744YJQTIPI+cDmg2ZplFHa1+YogH1eIAHClQwN08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F+GrBfST; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C09F51F000E9;
+	Tue, 16 Jun 2026 16:27:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781624641;
-	bh=iSo5kW0mxBbheIqI4QHY5TACJa4bXaYMRNUNxkbu9gM=;
+	s=korg; t=1781627232;
+	bh=4A+f/9zpHWoGsrKxDNKqLCRb2aZe+XGCiLSNLQuAYng=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=0KfyHKfGNsH5BlUMSBYe0qCGg/40mJNOVfePJqRofAvC8AfwZTe0cLdcxKL8Lh0vF
-	 UIHU71jLuJTDdVAqjYStu8O0Uzmrc4xDeOdyDUkQzgOp2LNec5QWa8FWTpbHwmGfiK
-	 dPBB/HfuVTLMgkRHoFlan5+UwFdXOKKC1lCLvIBQ=
+	b=F+GrBfSTAGBins4bVtR8Cgny3hhiyoHHtHKwu1wkSyaf7gMW0BNs2dKH094OS/Nc/
+	 V2n3wsa6tkqVKsZ8RpJtz1tzl3hHsAlBIv8cWyKNb/LbOIjU88DidgdtsXJTrB/mlU
+	 QmqFzV9EGcCOJmEzcSzFul+/nPL9nlGxPW8n6L1Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
-	Iago Toral Quiroga <itoral@igalia.com>
-Subject: [PATCH 7.0 340/378] drm/v3d: Wait for pending L2T flush before cleaning caches
+	Michael Roth <michael.roth@amd.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 6.12 133/261] KVM: Dont WARN if memory is dirtied without a vCPU when the VM is dying
 Date: Tue, 16 Jun 2026 20:29:31 +0530
-Message-ID: <20260616145128.085893582@linuxfoundation.org>
+Message-ID: <20260616145051.250017449@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,90 +65,105 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264677-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mcanal@igalia.com,m:itoral@igalia.com,s:lists@lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.roth@amd.com,m:seanjc@google.com,m:pbonzini@redhat.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-264197-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,igalia.com:email,vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,amd.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4F627691935
+X-Rspamd-Queue-Id: C22EF69236E
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maíra Canal <mcanal@igalia.com>
+From: Sean Christopherson <seanjc@google.com>
 
-commit abf888b03a9805a3bc37948a0df443553b1c0910 upstream.
+commit 8618004d3e897c0f1b71d9a9ab860461289bb89a upstream.
 
-v3d_clean_caches() starts the cache-clean sequence by writing
-V3D_L2TCACTL_TMUWCF to V3D_CTL_L2TCACTL and then polling for that bit to
-clear. It does not, however, check for an L2T flush (L2TFLS) that may
-still be in flight from a previous operation.
+When marking a page dirty, complain about not having a running/loaded vCPU
+if and only if the VM is still alive, i.e. its refcount is non-zero.  This
+will allow fixing a memory leak for x86 SEV-ES guests without hitting what
+is effectively a false positive on the WARN.
 
-On pre-V3D 7.1 hardware, kicking off the TMU write-combiner flush while an
-L2T flush is still pending can clobber bits in L2TCACTL and cause cache
-inconsistencies.
+For some SEV-ES VM-Exits, KVM keeps a writable mapping of a guest page
+across an exit to userspace, and typically unmaps the page on the next
+KVM_RUN.  But if userspace never calls KVM_RUN after such an exit, then KVM
+needs to unmap the page when the vCPU is destroyed, which in turn triggers
+the WARN about not having a running vCPU.
 
-Poll for L2TFLS to clear before writing L2TCACTL on V3D < 7.1, ensuring
-any pending flush has completed before a new clean is issued.
+Alternatively, SEV-ES could temporarily load the vCPU to suppress the WARN,
+as is done in nested_vmx_free_vcpu() (but for completely unrelated reasons;
+suppressing WARN from nested_put_vmcs12_pages() is pure happenstance).  But
+loading a vCPU during destruction is gross (ideally nVMX code would be
+cleaned up), risks complicating the SEV-ES code (KVM would need to ensure
+the temporarily load()+put() only runs when the vCPU isn't already loaded),
+and is ultimately pointless.
 
+The motivation for the WARN is to guard against KVM dirtying guest memory
+without pushing the corresponding GFN to the active vCPU's dirty ring, e.g.
+to ensure userspace doesn't miss a dirty page.  But for the VM's refcount
+to reach zero, there can't be _any_ userspace mappings to the dirty ring,
+as mapping the dirty ring requires doing mmap() on the vCPU FD.  I.e. if
+userspace had a valid mapping for the dirty ring, then the vCPU file and
+thus the owning VM would still be alive.  And so since userspace can't
+possibly reach the dirty ring, whether or not KVM technically "misses" a
+push to the dirty ring is irrelevant.
+
+Reported-by: Michael Roth <michael.roth@amd.com>
 Cc: stable@vger.kernel.org
-Fixes: d223f98f0209 ("drm/v3d: Add support for compute shader dispatch.")
-Link: https://patch.msgid.link/20260530-v3d-fix-rpi4-freezes-v1-1-c2c8307da6ce@igalia.com
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
-Reviewed-by: Iago Toral Quiroga <itoral@igalia.com>
+Reviewed-by: Michael Roth <michael.roth@amd.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-ID: <20260501202250.2115252-15-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Message-ID: <20260529183549.1104619-15-pbonzini@redhat.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/v3d/v3d_gem.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ virt/kvm/kvm_main.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/v3d/v3d_gem.c
-+++ b/drivers/gpu/drm/v3d/v3d_gem.c
-@@ -213,6 +213,14 @@ v3d_clean_caches(struct v3d_dev *v3d)
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -3611,7 +3611,8 @@ void mark_page_dirty_in_slot(struct kvm
+ 	if (WARN_ON_ONCE(vcpu && vcpu->kvm != kvm))
+ 		return;
  
- 	trace_v3d_cache_clean_begin(dev);
+-	WARN_ON_ONCE(!vcpu && !kvm_arch_allow_write_without_running_vcpu(kvm));
++	WARN_ON_ONCE(!vcpu && refcount_read(&kvm->users_count) &&
++		     !kvm_arch_allow_write_without_running_vcpu(kvm));
+ #endif
  
-+	/* GFXH-1897: Ensure pending flushes complete before writing L2TCACTL */
-+	if (v3d->ver < V3D_GEN_71) {
-+		if (wait_for(!(V3D_CORE_READ(core, V3D_CTL_L2TCACTL) &
-+			       V3D_L2TCACTL_L2TFLS), 100)) {
-+			drm_err(dev, "Timeout waiting for L2T clean\n");
-+		}
-+	}
-+
- 	V3D_CORE_WRITE(core, V3D_CTL_L2TCACTL, V3D_L2TCACTL_TMUWCF);
- 	if (wait_for(!(V3D_CORE_READ(core, V3D_CTL_L2TCACTL) &
- 		       V3D_L2TCACTL_TMUWCF), 100)) {
+ 	if (memslot && kvm_slot_dirty_track_enabled(memslot)) {
 
 
 
