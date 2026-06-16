@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-266276-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264004-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id NJ+iIf6ZMWrfnwUAu9opvQ
-	(envelope-from <stable+bounces-266276-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:46:22 +0200
+	id ROqQJONsMWoLjAUAu9opvQ
+	(envelope-from <stable+bounces-264004-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:33:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED0BC694749
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:46:21 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AA4F691260
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:33:55 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=tt65BNEw;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266276-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266276-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Fq3t7dD4;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264004-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264004-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0742D304920F
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:46:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4C0A23222EF1
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:27:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E47E35AC3E;
-	Tue, 16 Jun 2026 18:46:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 583E838B135;
+	Tue, 16 Jun 2026 15:27:06 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FF69331A44;
-	Tue, 16 Jun 2026 18:46:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8ECD1A682B;
+	Tue, 16 Jun 2026 15:27:04 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781635580; cv=none; b=s3goEHTlftTOxUIm45Z21/dHH0IAfoCSPd9Z3j8tQk39bRCxApL7pjcFpsVzhpCdRnL3PdCAURB6eRx/ggWbWCp9R27C5UJI0V/cSWl0reuzzJiL/OXpeNOOgo9nbp5AZBN2oU/Kccb5Qap7pF/81+mPSXRePCSNynkb9CaJj6E=
+	t=1781623626; cv=none; b=GUQRfN/s16CiSFGu1xcZsvaBHO9vHj4Dpp26+MTzGwmmQgkkP6x4LDvy2kHdQjt+peADjQYdAe8aPlE7a013KKezg3PoUev3hGlMMxhgtMo/w06k1vrXvHNfSdygfbnjm6hPFDCOliPT2WTqWQGFkLsxO/FLn1zXxAY4GqMCX+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781635580; c=relaxed/simple;
-	bh=ys23uhD38OrleZ/NywCcb6wIkKsk+H0j/niiPw5BpWA=;
+	s=arc-20240116; t=1781623626; c=relaxed/simple;
+	bh=T2+iANsqkFabZ1jTtDjA4zi2Frm5cXaFMB3IdbHDNwM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TaGstag7m0yQGk3RGBr6hBTfJssKDkG4r7INmM0weQRK2cAOXR75NjBpQTAY4IG4LmyWtg4Idr4sw9VujM9xbQyG8UXuxlyZkTUUirOKOOiRhsLw8moRSywSbzC7TExWDC2FTyGWV1y1Vg5Z+D/SEPJ/fTGgrq9+mnBDWas2uG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tt65BNEw; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9A2C1F000E9;
-	Tue, 16 Jun 2026 18:46:17 +0000 (UTC)
+	 MIME-Version; b=Ch7+k5Doui37GO7WDnA3UIkCryeqAf30BulWVthxRiKiBMPUgxWMX7Hcu/Zj+aK+3Q1gbeMFfKzWhPp8FZ73yMHs4vXchuTrj1JoTsmj8aMZ5/tAff36TCq29RACmqAxYaqGDHhATbhZxiW+09y/zzCjchLs9ujFPWItkd2i7Ls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fq3t7dD4; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B59D11F00A3A;
+	Tue, 16 Jun 2026 15:27:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781635578;
-	bh=NJZcb/fJ5fNmH1css+K2vN/U3rsNFya80BBRr+XYrXg=;
+	s=korg; t=1781623624;
+	bh=xA7h4EiE1f2rHqt6Hlk5GCqpu+AYhqPBK1IVw/lKatM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=tt65BNEwmO+Hzp8mAfOusviSXfewPYqHkqgtwheFMHLPjeLnAyQNumRDj5FHMf80L
-	 6NSPCUr5MH6dcP3By3lFae1vEJtFf1u3ZhgKEn+i5udKV3pmytZCEb/WgNmNoMsCXk
-	 eFMJbTpGxFLH0Lsmmu0a4kvqqWsUjdlPWHwmlNoM=
+	b=Fq3t7dD46c2KmiZrNV74hHtcfYMXOowjAl0/ZGYUJHMtZZ8bdozzNu1QKLwRvNJvy
+	 jEbHg2ihtQJF8df0HEWml6+SYU1I8poddCGKMvO27S4BeuKPBsUjb6x6NlJannqKpg
+	 GS9iatua3e36ik6H8dLvtNg+PPQyKLxbSUHrsukk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maoyi Xie <maoyi.xie@ntu.edu.sg>,
-	Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 5.10 075/342] ip6: vti: Use ip6_tnl.net in vti6_changelink().
-Date: Tue, 16 Jun 2026 20:26:11 +0530
-Message-ID: <20260616145051.738373650@linuxfoundation.org>
+	Jian Zhou <eilaimemedsnaimel@gmail.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 141/378] netfilter: revalidate bridge ports
+Date: Tue, 16 Jun 2026 20:26:12 +0530
+Message-ID: <20260616145117.697928283@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,114 +70,278 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266276-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,strlen.de,netfilter.org,kernel.org];
+	TAGGED_FROM(0.00)[bounces-264004-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:maoyi.xie@ntu.edu.sg,m:edumazet@google.com,m:kuniyu@google.com,m:pabeni@redhat.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:eilaimemedsnaimel@gmail.com,m:fw@strlen.de,m:pablo@netfilter.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,ntu.edu.sg:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[netfilter.org:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,strlen.de:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: ED0BC694749
+X-Rspamd-Queue-Id: 1AA4F691260
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Florian Westphal <fw@strlen.de>
 
-commit 11b326fb0a374f4654f9be22d0f0f7abd9f7d3fe upstream.
+[ Upstream commit ccb9fd4b87538ccf19ccff78ee26700526d94867 ]
 
-ip netns add ns1
-ip netns add ns2
-ip -n ns1 link add vti6_test type vti6 remote ::1 local ::2 key 7
-ip -n ns1 link set vti6_test netns ns2
-ip -n ns2 link set vti6_test type vti6 remote ::3 local ::4 key 9
-ip netns del ns2
-ip netns del ns1
-[  132.495484] ------------[ cut here ]------------
-[  132.497609] kernel BUG at net/core/dev.c:12376!
+ebt_redirect_tg() dereferences br_port_get_rcu() return without a
+NULL check, causing a kernel panic when the bridge port has been
+removed between the original hook invocation and an NFQUEUE
+reinject.
 
-Commit 61220ab34948 ("vti6: Enable namespace changing") dropped
-NETIF_F_NETNS_LOCAL from vti6 devices. A vti6 tunnel can then
-move through IFLA_NET_NS_FD. After the move dev_net(dev) points
-at the new netns while t->net stays at the creation netns.
+A mere NULL check isn't sufficient, however.  As sashiko review
+points out userspace can not only remove the port from the bridge,
+it could also place the device in a different virtual device, e.g.
+macvlan.
 
-vti6_changelink() and vti6_update() still use dev_net(dev) and
-dev_net(t->dev). They unlink from one per netns hash and relink
-into another. The creation netns is left with a stale entry.
-cleanup_net() of that netns later walks freed memory.
+If this happens, we must drop the packet, there is no way for us to
+reinject it into the bridge path.
 
-Reachable from an unprivileged user namespace (unshare --user
---map-root-user --net). Cross tenant scope on container hosts.
+Switch to _upper API, we don't need the bridge port structure.
+Also, this fix keeps another bug intact:
 
-Fixes: 61220ab34948 ("vti6: Enable namespace changing")
-Reported-by: Maoyi Xie <maoyi.xie@ntu.edu.sg>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Cc: stable@vger.kernel.org # v5.15+
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20260521130555.3421684-2-maoyixie.tju@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Both nfnetlink_log and nfnetlink_queue use CONFIG_BRIDGE_NETFILTER
+too aggressive, which prevents certain logging features when queueing
+in bridge family: NETFILTER_FAMILY_BRIDGE can be enabled while the old
+CONFIG_BRIDGE_NETFILTER cruft is off.
+
+Fixes tag is a common ancestor, this was always broken.
+
+Fixes: f350a0a87374 ("bridge: use rx_handler_data pointer to store net_bridge_port pointer")
+Reported-by: Ji'an Zhou <eilaimemedsnaimel@gmail.com>
+Assisted-by: Claude:claude-sonnet-4-6
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/ip6_vti.c |   12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ net/bridge/netfilter/ebt_dnat.c     |  4 +-
+ net/bridge/netfilter/ebt_redirect.c | 16 +++++---
+ net/netfilter/nfnetlink_log.c       | 23 +++++++++--
+ net/netfilter/nfnetlink_queue.c     | 64 +++++++++++++++++++++++++----
+ 4 files changed, 89 insertions(+), 18 deletions(-)
 
---- a/net/ipv6/ip6_vti.c
-+++ b/net/ipv6/ip6_vti.c
-@@ -725,10 +725,11 @@ vti6_tnl_change(struct ip6_tnl *t, const
- static int vti6_update(struct ip6_tnl *t, struct __ip6_tnl_parm *p,
- 		       bool keep_mtu)
+diff --git a/net/bridge/netfilter/ebt_dnat.c b/net/bridge/netfilter/ebt_dnat.c
+index 3fda71a8579d13..73f185cccd63df 100644
+--- a/net/bridge/netfilter/ebt_dnat.c
++++ b/net/bridge/netfilter/ebt_dnat.c
+@@ -39,7 +39,9 @@ ebt_dnat_tg(struct sk_buff *skb, const struct xt_action_param *par)
+ 			dev = xt_in(par);
+ 			break;
+ 		case NF_BR_PRE_ROUTING:
+-			dev = br_port_get_rcu(xt_in(par))->br->dev;
++			dev = netdev_master_upper_dev_get_rcu(xt_in(par));
++			if (!dev) /* bridge port removed? */
++				return EBT_DROP;
+ 			break;
+ 		default:
+ 			dev = NULL;
+diff --git a/net/bridge/netfilter/ebt_redirect.c b/net/bridge/netfilter/ebt_redirect.c
+index 307790562b4929..83486cd4d564b1 100644
+--- a/net/bridge/netfilter/ebt_redirect.c
++++ b/net/bridge/netfilter/ebt_redirect.c
+@@ -24,12 +24,18 @@ ebt_redirect_tg(struct sk_buff *skb, const struct xt_action_param *par)
+ 	if (skb_ensure_writable(skb, 0))
+ 		return EBT_DROP;
+ 
+-	if (xt_hooknum(par) != NF_BR_BROUTING)
+-		/* rcu_read_lock()ed by nf_hook_thresh */
+-		ether_addr_copy(eth_hdr(skb)->h_dest,
+-				br_port_get_rcu(xt_in(par))->br->dev->dev_addr);
+-	else
++	if (xt_hooknum(par) != NF_BR_BROUTING) {
++		const struct net_device *dev;
++
++		dev = netdev_master_upper_dev_get_rcu(xt_in(par));
++		if (!dev)
++			return EBT_DROP;
++
++		ether_addr_copy(eth_hdr(skb)->h_dest, dev->dev_addr);
++	} else {
+ 		ether_addr_copy(eth_hdr(skb)->h_dest, xt_in(par)->dev_addr);
++	}
++
+ 	skb->pkt_type = PACKET_HOST;
+ 	return info->target;
+ }
+diff --git a/net/netfilter/nfnetlink_log.c b/net/netfilter/nfnetlink_log.c
+index 0db908518b2fa2..f9bfc34d9ad355 100644
+--- a/net/netfilter/nfnetlink_log.c
++++ b/net/netfilter/nfnetlink_log.c
+@@ -450,6 +450,23 @@ static int nfulnl_put_bridge(struct nfulnl_instance *inst, const struct sk_buff
+ 	return -1;
+ }
+ 
++#if IS_ENABLED(CONFIG_BRIDGE_NETFILTER)
++static int nflog_put_master_ifindex(struct sk_buff *nlskb, int attr,
++				    const struct net_device *dev)
++{
++	const struct net_device *upper;
++
++	if (dev && !netif_is_bridge_port(dev))
++		return 0;
++
++	upper = netdev_master_upper_dev_get_rcu((struct net_device *)dev);
++	if (upper && nla_put_be32(nlskb, attr, htonl(upper->ifindex)))
++		return -EMSGSIZE;
++
++	return 0;
++}
++#endif
++
+ /* This is an inline function, we don't really care about a long
+  * list of arguments */
+ static inline int
+@@ -504,8 +521,7 @@ __build_packet_message(struct nfnl_log_net *log,
+ 			/* rcu_read_lock()ed by nf_hook_thresh or
+ 			 * nf_log_packet.
+ 			 */
+-			    nla_put_be32(inst->skb, NFULA_IFINDEX_INDEV,
+-					 htonl(br_port_get_rcu(indev)->br->dev->ifindex)))
++			    nflog_put_master_ifindex(inst->skb, NFULA_IFINDEX_INDEV, indev))
+ 				goto nla_put_failure;
+ 		} else {
+ 			int physinif;
+@@ -541,8 +557,7 @@ __build_packet_message(struct nfnl_log_net *log,
+ 			/* rcu_read_lock()ed by nf_hook_thresh or
+ 			 * nf_log_packet.
+ 			 */
+-			    nla_put_be32(inst->skb, NFULA_IFINDEX_OUTDEV,
+-					 htonl(br_port_get_rcu(outdev)->br->dev->ifindex)))
++			    nflog_put_master_ifindex(inst->skb, NFULA_IFINDEX_OUTDEV, outdev))
+ 				goto nla_put_failure;
+ 		} else {
+ 			struct net_device *physoutdev;
+diff --git a/net/netfilter/nfnetlink_queue.c b/net/netfilter/nfnetlink_queue.c
+index 0529a19ca9a838..69038d946fc243 100644
+--- a/net/netfilter/nfnetlink_queue.c
++++ b/net/netfilter/nfnetlink_queue.c
+@@ -426,10 +426,47 @@ static bool nf_ct_drop_unconfirmed(const struct nf_queue_entry *entry, bool *is_
+ 	return false;
+ }
+ 
++static bool nf_bridge_port_valid(const struct net_device *dev)
++{
++	if (!dev)
++		return true;
++
++	return netif_is_bridge_port(dev);
++}
++
++/* queued skbs leave rcu protection.  We bump device refcount so that
++ * the device cannot go away.  However, while packet was out the port
++ * could have been removed from the bridge.
++ *
++ * Ensure in+outdev are still part of a bridge at reinject time.
++ *
++ * The device rx_handler_data could even be pointing at data that is
++ * not a net_bridge_port structure.
++ */
++static bool nf_bridge_ports_valid(const struct nf_queue_entry *entry)
++{
++#if IS_ENABLED(CONFIG_BRIDGE_NETFILTER)
++	if (!nf_bridge_port_valid(entry->physin) ||
++	    !nf_bridge_port_valid(entry->physout))
++		return false;
++#endif
++	if (entry->state.pf != PF_BRIDGE)
++		return true;
++
++	if (!nf_bridge_port_valid(entry->state.in) ||
++	    !nf_bridge_port_valid(entry->state.out))
++		return false;
++
++	return true;
++}
++
+ static void nfqnl_reinject(struct nf_queue_entry *entry, unsigned int verdict)
  {
--	struct net *net = dev_net(t->dev);
--	struct vti6_net *ip6n = net_generic(net, vti6_net_id);
-+	struct net *net = t->net;
-+	struct vti6_net *ip6n;
- 	int err;
+ 	const struct nf_ct_hook *ct_hook;
  
-+	ip6n = net_generic(net, vti6_net_id);
- 	vti6_tnl_unlink(ip6n, t);
- 	synchronize_net();
- 	err = vti6_tnl_change(t, p, keep_mtu);
-@@ -1040,11 +1041,12 @@ static int vti6_changelink(struct net_de
- 			   struct nlattr *data[],
- 			   struct netlink_ext_ack *extack)
- {
--	struct ip6_tnl *t;
-+	struct ip6_tnl *t = netdev_priv(dev);
-+	struct net *net = t->net;
- 	struct __ip6_tnl_parm p;
--	struct net *net = dev_net(dev);
--	struct vti6_net *ip6n = net_generic(net, vti6_net_id);
-+	struct vti6_net *ip6n;
++	if (!nf_bridge_ports_valid(entry))
++		verdict = NF_DROP;
++
+ 	if (verdict == NF_ACCEPT ||
+ 	    verdict == NF_REPEAT ||
+ 	    verdict == NF_STOP) {
+@@ -622,6 +659,23 @@ static int nf_queue_checksum_help(struct sk_buff *entskb)
+ 	return skb_checksum_help(entskb);
+ }
  
-+	ip6n = net_generic(net, vti6_net_id);
- 	if (dev == ip6n->fb_tnl_dev)
- 		return -EINVAL;
- 
++#if IS_ENABLED(CONFIG_BRIDGE_NETFILTER)
++static int nfqnl_put_master_ifindex(struct sk_buff *nlskb, int attr,
++				    const struct net_device *dev)
++{
++	const struct net_device *upper;
++
++	if (dev && !netif_is_bridge_port(dev))
++		return 0;
++
++	upper = netdev_master_upper_dev_get_rcu((struct net_device *)dev);
++	if (upper && nla_put_be32(nlskb, attr, htonl(upper->ifindex)))
++		return -EMSGSIZE;
++
++	return 0;
++}
++#endif
++
+ static struct sk_buff *
+ nfqnl_build_packet_message(struct net *net, struct nfqnl_instance *queue,
+ 			   struct nf_queue_entry *entry,
+@@ -757,10 +811,7 @@ nfqnl_build_packet_message(struct net *net, struct nfqnl_instance *queue,
+ 			 * netfilter_bridge) */
+ 			if (nla_put_be32(skb, NFQA_IFINDEX_PHYSINDEV,
+ 					 htonl(indev->ifindex)) ||
+-			/* this is the bridge group "brX" */
+-			/* rcu_read_lock()ed by __nf_queue */
+-			    nla_put_be32(skb, NFQA_IFINDEX_INDEV,
+-					 htonl(br_port_get_rcu(indev)->br->dev->ifindex)))
++			    nfqnl_put_master_ifindex(skb, NFQA_IFINDEX_INDEV, indev))
+ 				goto nla_put_failure;
+ 		} else {
+ 			int physinif;
+@@ -791,10 +842,7 @@ nfqnl_build_packet_message(struct net *net, struct nfqnl_instance *queue,
+ 			 * netfilter_bridge) */
+ 			if (nla_put_be32(skb, NFQA_IFINDEX_PHYSOUTDEV,
+ 					 htonl(outdev->ifindex)) ||
+-			/* this is the bridge group "brX" */
+-			/* rcu_read_lock()ed by __nf_queue */
+-			    nla_put_be32(skb, NFQA_IFINDEX_OUTDEV,
+-					 htonl(br_port_get_rcu(outdev)->br->dev->ifindex)))
++			    nfqnl_put_master_ifindex(skb, NFQA_IFINDEX_OUTDEV, outdev))
+ 				goto nla_put_failure;
+ 		} else {
+ 			int physoutif;
+-- 
+2.53.0
+
 
 
 
