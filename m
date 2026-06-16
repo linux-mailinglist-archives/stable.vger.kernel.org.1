@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-264052-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266013-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 9ZaPCqRtMWpejAUAu9opvQ
-	(envelope-from <stable+bounces-264052-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:37:08 +0200
+	id gDXqEqeUMWpenQUAu9opvQ
+	(envelope-from <stable+bounces-266013-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:23:35 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CC9169136D
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:37:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B05FF694174
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:23:34 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="koEd8c/k";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264052-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264052-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=unmyLtX8;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266013-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266013-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 213A6312B7EB
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:31:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0DEDD317B8BE
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:23:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BE9B43D513;
-	Tue, 16 Jun 2026 15:31:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7E33466B5E;
+	Tue, 16 Jun 2026 18:23:21 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FCD835E923;
-	Tue, 16 Jun 2026 15:31:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A01CD3D8105;
+	Tue, 16 Jun 2026 18:23:20 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781623871; cv=none; b=oLiArNJOd6etNoDG88YyqohhekJoh0lbd/+VUqIVrWce8XM1os5GLgWivJSvrbhauxqVYjw4ij8tcSfHP2LuO5kKVgdq1bneM+y1715gTvOrXiPe1rt/zQtrmohIh92Za+GyVAx7aiGqsj0aTOZDSyUSpqiC6KKg1cF8MhTOnEg=
+	t=1781634201; cv=none; b=Y9oNBpee5v/IEwcefMqibjncO4Tb6O1nXIvsuhYpg2EH8lcK0gja5tl3JY6RR9Qy6uzR2lvHtCbI2MaqNwC1GVxSDscCET9nVoZEWrIy6HTvly59HIut47HDob+CP67m1J3lrGwmIPFGqiIJ90MNvMdqI+PUcJ3PplzHrVTCw5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781623871; c=relaxed/simple;
-	bh=9yAqH23JhJnuQFa9gkAddypDn+QFs1aT9CMuYB0/6xU=;
+	s=arc-20240116; t=1781634201; c=relaxed/simple;
+	bh=6bKZXmRCBOGuf40Pwnqw8mxwdwzJ95rOq2MsYcpcoX4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=moL5nVrePsyYIeyZyoIlLqE/YEjU+kDe6xfz8X+P5COCD8SEpmwlul8o7izP9tpTi90wzGGDwVvLNgV6Ou3SshHuuJmaMSEZJmOEACp7urA+bs7XYbyc9sruunTEbjdVHivCe0i0acUjFXQZGcXihhfHhQfV6hxWyxohh6TH/tc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=koEd8c/k; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E46BF1F000E9;
-	Tue, 16 Jun 2026 15:31:08 +0000 (UTC)
+	 MIME-Version; b=XyGM3TVxHjmPXAfSiNTJt5FfFuTCmPIYX/HrX44sIlUIJ30+WaaifTX1mUwyT91EMNvC31j+Tea8EqIWBB5c9y4S0WBvJXL3ADCm//e5D08qO/GBdc36zuAuvNI4eM6elciBg3Yrm8kNNVgnzg02dF8vMdrUho9Nff6UbPf3WQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=unmyLtX8; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC3B61F000E9;
+	Tue, 16 Jun 2026 18:23:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781623869;
-	bh=oG6kBxq34mq4++jOQfgzVQ896XlOU6KeDzDkKRxYls8=;
+	s=korg; t=1781634200;
+	bh=OB8XrELkEwdfNiqJF9hBnWNtO/Nxeuhh/V2Yqf61iTo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=koEd8c/k6F5m88YxkGDr8QGC2GFT5yeEx1vxh1djemnpImefAsoLxGYS8wWJyZg7b
-	 zmt7bTrW8lOCirikKPoEY0X+kVheR5/WM2IitFZPceP974ELRZHRw+Yrrul/kwMfuP
-	 bg/H08IXOLsFnt/UzRoTA3Bu9eaz2NihFdePr95Q=
+	b=unmyLtX8Mp/SMlYkqb8g/NSqKUNWl0M1F+gvSxWMnU9I5k9Ysv9M+fx9fo7/ahc2q
+	 euQwWUYtHbuVvBnU7BkRPvfUl4n8Uhk0677H0pZ2D9Qh3u7i+I4BvDcL2TUaTEPgia
+	 yz8Q/kQSF9wnZIaUEwNrigDTc+WSVT++Cx1DcZ7Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -52,12 +52,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Ray Wu <ray.wu@amd.com>,
 	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 7.0 217/378] drm/amd/display: Reject gpio_bitshift >= 32 in bios_parser_get_gpio_pin_info()
+Subject: [PATCH 5.15 210/411] drm/amd/display: Reject gpio_bitshift >= 32 in bios_parser_get_gpio_pin_info()
 Date: Tue, 16 Jun 2026 20:27:28 +0530
-Message-ID: <20260616145121.754848087@linuxfoundation.org>
+Message-ID: <20260616145111.921185290@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -80,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264052-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-266013-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:alex.hung@amd.com,m:harry.wentland@amd.com,m:ray.wu@amd.com,m:daniel.wheeler@amd.com,m:alexander.deucher@amd.com,s:lists@lfdr.de];
@@ -100,11 +100,11 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 6CC9169136D
+X-Rspamd-Queue-Id: B05FF694174
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -138,7 +138,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
 +++ b/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
-@@ -700,8 +700,10 @@ static enum bp_result bios_parser_get_gp
+@@ -547,8 +547,10 @@ static enum bp_result bios_parser_get_gp
  		info->offset_en = info->offset + 1;
  		info->offset_mask = info->offset - 1;
  
