@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-266481-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264396-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id B2cwDDeeMWqfoQUAu9opvQ
-	(envelope-from <stable+bounces-266481-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:04:23 +0200
+	id HcXNK313MWpFkAUAu9opvQ
+	(envelope-from <stable+bounces-264396-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:19:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1936694B7D
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:04:22 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2785A691EEA
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:19:09 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=nzqaaU7Q;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266481-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266481-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=zECB2pt3;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264396-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264396-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8A985304032E
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:04:12 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3CA2D3116F88
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:01:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE88F3DA5A8;
-	Tue, 16 Jun 2026 19:04:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19805451052;
+	Tue, 16 Jun 2026 16:01:07 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 659803DEAD8;
-	Tue, 16 Jun 2026 19:04:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2F3E44103A;
+	Tue, 16 Jun 2026 16:01:05 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781636641; cv=none; b=U8GpnU9RwARagdTqPOQ1gcdEl9LvG5fQtY/HL1HhuupqNw7P3MvhSquIwsFXvQNOdgrsngsY4twn4SXpdx83t0YnN8kycaGl3XmciZk/GBMcGJ0rIKsSNo/3Q7w7M0gMG0HVtAOaJ2TnvvoJjB4oHcXYv/MLIAAKJVpJ4kZGkb8=
+	t=1781625666; cv=none; b=hBhvT8JtzmQP1ELjtidxd3ue/Q5J0XnrmTWqiHloBneeSg4UOyu4kpcSYAdsvyqc30dbYZf9AH5pY3ut0dXhGAdFNwX6KIAPyW5b4ttyj3ykJlAO8CCjKi26OAG78DgC7y/y/uAtKHwmg/Eo/9ECYnj+QDQq48s/PQXTljdWWMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781636641; c=relaxed/simple;
-	bh=ZqigasSOjEEe0hbCIm3CE02fiY9bL0cSMSyMD2lVFQ4=;
+	s=arc-20240116; t=1781625666; c=relaxed/simple;
+	bh=9hzeqs/knRgAtWiip/lNqKc2tHSoIR2X+hlKJXIwJoQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y3Nfi1PN2Bo3Cef08xBblgAnl3vPytsYyY9jvrusicncR9HdoH9Qom55i0bbk/kWg6Fo/KxsTQN8nK6/+3nEAXwn6A2o3S1DwKxE7jG2jt6EfNOy4guiYzuz66XP/pjYsj9b8A9xwH9DSZ4eOaI4mIR+v3O8b5F2Zj7rbtvR+QU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nzqaaU7Q; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 570B61F000E9;
-	Tue, 16 Jun 2026 19:03:59 +0000 (UTC)
+	 MIME-Version; b=cS/XqaL73Mmx8xsspyH+54aZ7C9hPGrT8ixEbAbM03zjQrSgyxideap9AbLPaDGzd2DijI4q7VOXGivypzrDKZ2hjhse5mpXOkcrw5j9dK2W06GsLEgElui8LA+tMVmLVug0iqx9u60O1HrjPyn5QtVOWDwnT+/idunoDjryQss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zECB2pt3; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC2571F000E9;
+	Tue, 16 Jun 2026 16:01:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781636640;
-	bh=aajQ19UjW11YvDf8z1zgdTLrZ8ovXFHgpuzsYzgSlVU=;
+	s=korg; t=1781625665;
+	bh=XOduJSJWNlberM2AYUEqUhTKr0z+J1pFCt7d/YSyxkI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=nzqaaU7Qkc5Osuz3rsXMS4sdNtKgebXSaaKwR9HksEHjyXVtz/dtLz9flkqelI8+Z
-	 oZEIZWPxuJfdw0WoB/QOlJd02a6V++bx4rSeI6r0yD69WBeczx3MwnY11+gV9b5JaK
-	 6sLa2uVTwsUVvZQvzLBsoB/DekWj4d1U0aTxW2ic=
+	b=zECB2pt3AZlb5TI6fPJ57OZhlWh4bs9rfF9AJaXKqdL2ODfjc0JGKf+iFsGGYJTnT
+	 AsnzkHyRKnRFp1ULMq1erUBtxELos5QVIIq68DhinV2ZRNjw3UfEJ5lqQSDWXqPeUg
+	 AS2iDs/KlEY9Dv907mFfWxGKKD56bWROfvji3FTw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hauke Mehrtens <hauke@hauke-m.de>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 277/342] spi: lantiq-ssc: fix controller deregistration
+	HyeongJun An <sammiee5311@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.18 177/325] USB: serial: kl5kusb105: fix bulk-out buffer overflow
 Date: Tue, 16 Jun 2026 20:29:33 +0530
-Message-ID: <20260616145101.285063242@linuxfoundation.org>
+Message-ID: <20260616145106.690633153@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,94 +68,100 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-264396-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:sammiee5311@gmail.com,m:johan@kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266481-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:hauke@hauke-m.de,m:johan@kernel.org,m:broonie@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,msgid.link:url,hauke-m.de:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C1936694B7D
+X-Rspamd-Queue-Id: 2785A691EEA
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: HyeongJun An <sammiee5311@gmail.com>
 
-[ Upstream commit b99206710d032c16b7f8b75e4bc18414d8e4b9f4 ]
+commit 96d47e40bf9db4a9efd5c8fb53287a508d165f14 upstream.
 
-Make sure to deregister the controller before releasing underlying
-resources like clocks during driver unbind.
+klsi_105_prepare_write_buffer() is called by the generic write path
+with the bulk-out buffer and its size (bulk_out_size, 64 bytes). It
+stores a two-byte length header at the start of the buffer and copies
+the payload from the write fifo starting at buf + KLSI_HDR_LEN, but
+passes the full buffer size as the number of bytes to copy:
 
-Fixes: 17f84b793c01 ("spi: lantiq-ssc: add support for Lantiq SSC SPI controller")
-Cc: stable@vger.kernel.org	# 4.11
-Cc: Hauke Mehrtens <hauke@hauke-m.de>
+  count = kfifo_out_locked(&port->write_fifo, buf + KLSI_HDR_LEN,
+                           size, &port->lock);
+
+When the fifo holds at least size bytes, size bytes are copied starting
+two bytes into the size-byte buffer, writing KLSI_HDR_LEN bytes past its
+end. Copy at most size - KLSI_HDR_LEN bytes instead, leaving room for
+the header as safe_serial already does.
+
+Writing bulk_out_size or more bytes to the tty triggers a slab
+out-of-bounds write, observed with KASAN by emulating the device with
+dummy_hcd and raw-gadget:
+
+  BUG: KASAN: slab-out-of-bounds in kfifo_copy_out+0x83/0xc0
+  Write of size 64 at addr ffff888112c62202 by task python3
+   kfifo_copy_out
+   klsi_105_prepare_write_buffer [kl5kusb105]
+   usb_serial_generic_write_start [usbserial]
+  Allocated by task 139:
+   usb_serial_probe [usbserial]
+  The buggy address is located 2 bytes inside of allocated 64-byte region
+
+The out-of-bounds write no longer occurs with this change applied.
+
+Fixes: 60b3013cdaf3 ("USB: kl5usb105: reimplement using generic framework")
+Cc: stable@vger.kernel.org
+Assisted-by: Claude:claude-opus-4-8
+Signed-off-by: HyeongJun An <sammiee5311@gmail.com>
 Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260409120419.388546-17-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-[ adapted spi_controller/host naming to spi_master/master and preserved the int-returning remove() with trailing return 0 ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-lantiq-ssc.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/usb/serial/kl5kusb105.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/spi/spi-lantiq-ssc.c
-+++ b/drivers/spi/spi-lantiq-ssc.c
-@@ -1003,7 +1003,7 @@ static int lantiq_ssc_probe(struct platf
- 		"Lantiq SSC SPI controller (Rev %i, TXFS %u, RXFS %u, DMA %u)\n",
- 		revision, spi->tx_fifo_size, spi->rx_fifo_size, supports_dma);
+--- a/drivers/usb/serial/kl5kusb105.c
++++ b/drivers/usb/serial/kl5kusb105.c
+@@ -330,8 +330,8 @@ static int klsi_105_prepare_write_buffer
+ 	unsigned char *buf = dest;
+ 	int count;
  
--	err = devm_spi_register_master(dev, master);
-+	err = spi_register_master(master);
- 	if (err) {
- 		dev_err(dev, "failed to register spi_master\n");
- 		goto err_wq_destroy;
-@@ -1027,6 +1027,10 @@ static int lantiq_ssc_remove(struct plat
- {
- 	struct lantiq_ssc_spi *spi = platform_get_drvdata(pdev);
+-	count = kfifo_out_locked(&port->write_fifo, buf + KLSI_HDR_LEN, size,
+-								&port->lock);
++	count = kfifo_out_locked(&port->write_fifo, buf + KLSI_HDR_LEN,
++				 size - KLSI_HDR_LEN, &port->lock);
+ 	put_unaligned_le16(count, buf);
  
-+	spi_master_get(spi->master);
-+
-+	spi_unregister_master(spi->master);
-+
- 	lantiq_ssc_writel(spi, 0, LTQ_SPI_IRNEN);
- 	lantiq_ssc_writel(spi, 0, LTQ_SPI_CLC);
- 	rx_fifo_flush(spi);
-@@ -1037,6 +1041,8 @@ static int lantiq_ssc_remove(struct plat
- 	clk_disable_unprepare(spi->spi_clk);
- 	clk_put(spi->fpi_clk);
- 
-+	spi_master_put(spi->master);
-+
- 	return 0;
- }
- 
+ 	return count + KLSI_HDR_LEN;
 
 
 
