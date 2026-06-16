@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-266034-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264574-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id IqwjJwyVMWqKnQUAu9opvQ
-	(envelope-from <stable+bounces-266034-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:25:16 +0200
+	id oUmxBhl6MWpikQUAu9opvQ
+	(envelope-from <stable+bounces-264574-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:30:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13A9E6941CE
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:25:16 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD75269224C
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:30:16 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=BOJYg4XN;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266034-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266034-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=BR4iPlte;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264574-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264574-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1DC94307DE2C
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:25:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 91122335BC8D
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:17:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10EE1472798;
-	Tue, 16 Jun 2026 18:25:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CFB246AEC5;
+	Tue, 16 Jun 2026 16:17:19 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB2B93D8105;
-	Tue, 16 Jun 2026 18:25:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB14343E4BA;
+	Tue, 16 Jun 2026 16:17:17 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781634311; cv=none; b=SOagk8Uz0hTTW0nNjVctcQU3h9YNAcGaenyadIRmNh7VOF5XNphXsoce7GMhvC8XveGmHom/w56295B0rPGiNJxdUWDDSHJlPA59bw84RwHLiQRtE9tgw/jhOVcCLLLhJcmw5sFHXU3luYi5jalOtlqXSVtsYCoe6fLRzuK4hCo=
+	t=1781626638; cv=none; b=ayR+RUNLJ1Gjem7AyKkzxzjxruDTU91RF0Ztworzz8yda/T4kjXTRJgkAsUtdbj+vaux0/+Gxz7nZCuXw3ihl8z9Kx8b3j/ukjofl7OnADtAb/aO87On1utkURZ3jh7vrh+ujZf0p+w49bYaBKq0Sf+KEkqDqaxb/I4WYKGRNY0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781634311; c=relaxed/simple;
-	bh=Qn4lSr8oz3wm4Ipz2zkOu2tz0/K3ISG4/IBBBdlhT+c=;
+	s=arc-20240116; t=1781626638; c=relaxed/simple;
+	bh=0jiBn4L+8wALef/PrfrhoJLYjL0TkMPmASb+X6/ugoM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rOHCVtMjqokoGpiLgTu3e1wUllb7o7TSyAL0IY280FE8GY8Cbe4I31RH7H28YWxZooVvZIHapgIf0fm2yLzrte2RQQIRaH8exWPzQBCUmX90lhFl2zWVgQdkydF4LWAiYRz7/LYSXcTxqors+1gUbK4kIY6sfA14FDObpwenzwE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BOJYg4XN; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0AE41F000E9;
-	Tue, 16 Jun 2026 18:25:09 +0000 (UTC)
+	 MIME-Version; b=q+S28bAofd6TFKPrXpHqQc7gE31IRqN/q4SIydNpjexozRS/OHbf9kO1RP+0unAlxaBNtpV+a/QniwX+OVrcP3dIZRY3MyKfFUTMjeSvr6k24xodxKO7nHfXSlwc7V7t+gmUjgWuiBaMVtvmWrsp5KTSGHCLURtcQF8nnOi2Vi4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BR4iPlte; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC1B01F000E9;
+	Tue, 16 Jun 2026 16:17:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781634310;
-	bh=QIZ8Xy15S0QjI/o98viIQropbgaWyluXdOE3eeI3oq4=;
+	s=korg; t=1781626637;
+	bh=soBbb1uAvVzNJaP/Wk2KQb7bix3EuJWWMauSyL/V7Eg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=BOJYg4XNMc4hHPw8HvqejbKLjVx3Q5p4mXyUUoxYs6bRSf5VvNCCPAELKt4gfWk1p
-	 vvvgrDbKOiMecOilXCsnHjT8kz+AwAr28tkkznjXrHvBao7e17jdhHU3g1RBYo19rO
-	 mkzLPd21Xydlfmqyf7qiKNjlkRNWe00rajqrAx6s=
+	b=BR4iPlte24VaUZ9jNr4ff6WOSA/xFCGBlluubLhivcHaBfGYSM2EAOalJuc7FDCfs
+	 6Dn7eTnCnnaqItpfXosgL3LRv3CxCIPr8RSVixwBm3TtwsCJ6eVj8EmZGZmN1DIIKV
+	 USdzuOog2cjKxiIksAzYccEpa7Fa+ElCg+5dtFY8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
-	Srinivas Kandagatla <srini@kernel.org>
-Subject: [PATCH 5.15 241/411] slimbus: qcom-ngd-ctrl: Avoid ABBA on tx_lock/ctrl->lock
+	Zhang Cen <rollkingzzc@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 041/261] Bluetooth: bnep: reject short frames before parsing
 Date: Tue, 16 Jun 2026 20:27:59 +0530
-Message-ID: <20260616145113.716627727@linuxfoundation.org>
+Message-ID: <20260616145047.019615051@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,111 +72,206 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266034-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264574-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:rollkingzzc@gmail.com,m:luiz.von.dentz@intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bjorn.andersson@oss.qualcomm.com,m:srini@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,intel.com:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 13A9E6941CE
+X-Rspamd-Queue-Id: AD75269224C
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+From: Zhang Cen <rollkingzzc@gmail.com>
 
-commit 55f2ea9ff83cc27a85526b14bc9b32f96a08d6ec upstream.
+[ Upstream commit 6770d3a8acdf9151769180cc3710346c4cfbe6f0 ]
 
-During the SSR/PDR down notification the tx_lock is taken with the
-intent to provide synchronization with active DMA transfers.
+A BNEP peer can send a short BNEP SDU. bnep_rx_frame() reads the
+packet type byte immediately and, for control packets, reads the control
+opcode and setup UUID-size byte before proving that those bytes are
+present. bnep_rx_control() also dereferences the control opcode without
+rejecting an empty control payload.
 
-But during this period qcom_slim_ngd_down() is invoked, which ends up in
-slim_report_absent(), which takes the slim_controller lock. In multiple
-other codepaths these two locks are taken in the opposite order (i.e.
-slim_controller then tx_lock).
+Use skb_pull_data() for the fixed fields in bnep_rx_frame() so a NULL
+return gates each dereference. Split the control handler so the frame
+path can pass an opcode that has already been pulled, and keep the
+byte-buffer wrapper for extension control payloads.
 
-The result is a lockdep splat, and a possible deadlock:
+For BNEP_SETUP_CONN_REQ, name the UUID-size byte before pulling the
+setup payload. struct bnep_setup_conn_req carries destination and source
+service UUIDs after that byte, each uuid_size bytes, so the parser now
+documents that tuple explicitly instead of leaving the pull length as an
+opaque multiplication.
 
-  rprocctl/449 is trying to acquire lock:
-  ffff00009793e620 (&ctrl->lock){+.+.}-{4:4}, at: slim_report_absent (drivers/slimbus/core.c:322) slimbus
+Validation reproduced this kernel report:
+KASAN slab-out-of-bounds in bnep_rx_frame.isra.0+0x130c/0x1790
+The buggy address belongs to the object at ffff88800c0f7908 which belongs
+to the cache kmalloc-8 of size 8
+The buggy address is located 0 bytes to the right of allocated 1-byte
+region [ffff88800c0f7908, ffff88800c0f7909)
+Read of size 1
+Call trace:
+  dump_stack_lvl+0xb3/0x140 (?:?)
+  print_address_description+0x57/0x3a0 (?:?)
+  bnep_rx_frame+0x130c/0x1790 (net/bluetooth/bnep/core.c:306)
+  print_report+0xb9/0x2b0 (?:?)
+  __virt_addr_valid+0x1ba/0x3a0 (?:?)
+  srso_alias_return_thunk+0x5/0xfbef5 (?:?)
+  kasan_addr_to_slab+0x21/0x60 (?:?)
+  kasan_report+0xe0/0x110 (?:?)
+  process_one_work+0xfce/0x17e0 (kernel/workqueue.c:3200)
+  worker_thread+0x65c/0xe40 (?:?)
+  __kthread_parkme+0x184/0x230 (?:?)
+  kthread+0x35e/0x470 (?:?)
+  _raw_spin_unlock_irq+0x28/0x50 (?:?)
+  ret_from_fork+0x586/0x870 (?:?)
+  __switch_to+0x74f/0xdc0 (?:?)
+  ret_from_fork_asm+0x1a/0x30 (?:?)
 
-  but task is already holding lock:
-  ffff00009793fb50 (&ctrl->tx_lock){+.+.}-{4:4}, at: qcom_slim_ngd_ssr_pdr_notify (drivers/slimbus/qcom-ngd-ctrl.c:1475) slim_qcom_ngd_ctrl
-
-  which lock already depends on the new lock.
-
-  Possible unsafe locking scenario:
-
-        CPU0                    CPU1
-        ----                    ----
-   lock(&ctrl->tx_lock);
-                                lock(&ctrl->lock);
-                                lock(&ctrl->tx_lock);
-   lock(&ctrl->lock);
-
-The assumption is that the comment refers to the desire to not call
-qcom_slim_ngd_exit_dma() while we have an ongoing DMA TX transaction.
-But any such transaction is initiated and completed within a single
-qcom_slim_ngd_xfer_msg().
-
-Prior to calling qcom_slim_ngd_exit_dma() the slim_controller is torn
-down, all child devices are notified that the slimbus is gone and the
-child devices are removed.
-
-Stop taking the tx_lock in qcom_slim_ngd_ssr_pdr_notify() to avoid the
-deadlock.
-
-Fixes: a899d324863a ("slimbus: qcom-ngd-ctrl: add Sub System Restart support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
-Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
-Link: https://patch.msgid.link/20260530204421.116824-9-srini@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Assisted-by: Codex:gpt-5.5
+Signed-off-by: Zhang Cen <rollkingzzc@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/slimbus/qcom-ngd-ctrl.c |    3 ---
- 1 file changed, 3 deletions(-)
+ net/bluetooth/bnep/core.c | 57 ++++++++++++++++++++++++---------------
+ 1 file changed, 36 insertions(+), 21 deletions(-)
 
---- a/drivers/slimbus/qcom-ngd-ctrl.c
-+++ b/drivers/slimbus/qcom-ngd-ctrl.c
-@@ -1394,15 +1394,12 @@ static int qcom_slim_ngd_ssr_pdr_notify(
- 	switch (action) {
- 	case QCOM_SSR_BEFORE_SHUTDOWN:
- 	case SERVREG_SERVICE_STATE_DOWN:
--		/* Make sure the last dma xfer is finished */
--		mutex_lock(&ctrl->tx_lock);
- 		if (ctrl->state != QCOM_SLIM_NGD_CTRL_DOWN) {
- 			pm_runtime_get_noresume(ctrl->ctrl.dev);
- 			ctrl->state = QCOM_SLIM_NGD_CTRL_DOWN;
- 			qcom_slim_ngd_down(ctrl);
- 			qcom_slim_ngd_exit_dma(ctrl);
- 		}
--		mutex_unlock(&ctrl->tx_lock);
- 		break;
- 	case QCOM_SSR_AFTER_POWERUP:
- 	case SERVREG_SERVICE_STATE_UP:
+diff --git a/net/bluetooth/bnep/core.c b/net/bluetooth/bnep/core.c
+index 0de5df690bd0b2..5c5f53ff30e8e5 100644
+--- a/net/bluetooth/bnep/core.c
++++ b/net/bluetooth/bnep/core.c
+@@ -206,14 +206,11 @@ static int bnep_ctrl_set_mcfilter(struct bnep_session *s, u8 *data, int len)
+ 	return 0;
+ }
+ 
+-static int bnep_rx_control(struct bnep_session *s, void *data, int len)
++static int bnep_rx_control_cmd(struct bnep_session *s, u8 cmd, void *data,
++			       int len)
+ {
+-	u8  cmd = *(u8 *)data;
+ 	int err = 0;
+ 
+-	data++;
+-	len--;
+-
+ 	switch (cmd) {
+ 	case BNEP_CMD_NOT_UNDERSTOOD:
+ 	case BNEP_SETUP_CONN_RSP:
+@@ -254,6 +251,14 @@ static int bnep_rx_control(struct bnep_session *s, void *data, int len)
+ 	return err;
+ }
+ 
++static int bnep_rx_control(struct bnep_session *s, void *data, int len)
++{
++	if (len < 1)
++		return -EILSEQ;
++
++	return bnep_rx_control_cmd(s, *(u8 *)data, data + 1, len - 1);
++}
++
+ static int bnep_rx_extension(struct bnep_session *s, struct sk_buff *skb)
+ {
+ 	struct bnep_ext_hdr *h;
+@@ -299,19 +304,26 @@ static int bnep_rx_frame(struct bnep_session *s, struct sk_buff *skb)
+ {
+ 	struct net_device *dev = s->dev;
+ 	struct sk_buff *nskb;
++	u8 *data;
+ 	u8 type, ctrl_type;
+ 
+ 	dev->stats.rx_bytes += skb->len;
+ 
+-	type = *(u8 *) skb->data;
+-	skb_pull(skb, 1);
+-	ctrl_type = *(u8 *)skb->data;
++	data = skb_pull_data(skb, sizeof(type));
++	if (!data)
++		goto badframe;
++	type = *data;
+ 
+ 	if ((type & BNEP_TYPE_MASK) >= sizeof(__bnep_rx_hlen))
+ 		goto badframe;
+ 
+ 	if ((type & BNEP_TYPE_MASK) == BNEP_CONTROL) {
+-		if (bnep_rx_control(s, skb->data, skb->len) < 0) {
++		data = skb_pull_data(skb, sizeof(ctrl_type));
++		if (!data)
++			goto badframe;
++		ctrl_type = *data;
++
++		if (bnep_rx_control_cmd(s, ctrl_type, skb->data, skb->len) < 0) {
+ 			dev->stats.tx_errors++;
+ 			kfree_skb(skb);
+ 			return 0;
+@@ -324,24 +336,27 @@ static int bnep_rx_frame(struct bnep_session *s, struct sk_buff *skb)
+ 
+ 		/* Verify and pull ctrl message since it's already processed */
+ 		switch (ctrl_type) {
+-		case BNEP_SETUP_CONN_REQ:
+-			/* Pull: ctrl type (1 b), len (1 b), data (len bytes) */
+-			if (!skb_pull(skb, 2 + *(u8 *)(skb->data + 1) * 2))
++		case BNEP_SETUP_CONN_REQ: {
++			u8 uuid_size;
++
++			/* Pull uuid_size and the dst/src service UUIDs. */
++			data = skb_pull_data(skb, sizeof(uuid_size));
++			if (!data)
++				goto badframe;
++			uuid_size = *data;
++			if (!skb_pull(skb, uuid_size + uuid_size))
+ 				goto badframe;
+ 			break;
++		}
+ 		case BNEP_FILTER_MULTI_ADDR_SET:
+-		case BNEP_FILTER_NET_TYPE_SET: {
+-			u8 *hdr;
+-
+-			/* Pull ctrl type (1 b) + len (2 b) */
+-			hdr = skb_pull_data(skb, 3);
+-			if (!hdr)
++		case BNEP_FILTER_NET_TYPE_SET:
++			/* Pull: len (2 b), data (len bytes) */
++			data = skb_pull_data(skb, sizeof(u16));
++			if (!data)
+ 				goto badframe;
+-			/* Pull data (len bytes); length is big-endian */
+-			if (!skb_pull(skb, get_unaligned_be16(&hdr[1])))
++			if (!skb_pull(skb, get_unaligned_be16(data)))
+ 				goto badframe;
+ 			break;
+-		}
+ 		default:
+ 			kfree_skb(skb);
+ 			return 0;
+-- 
+2.53.0
+
 
 
 
