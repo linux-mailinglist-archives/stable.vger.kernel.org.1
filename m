@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-265173-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264405-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id gVFvNZmGMWqjlgUAu9opvQ
-	(envelope-from <stable+bounces-265173-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:23:37 +0200
+	id 22atGoh3MWpJkAUAu9opvQ
+	(envelope-from <stable+bounces-264405-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:19:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1274693122
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:23:36 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF93C691EFC
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:19:19 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=o8PrCFGL;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265173-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-265173-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=1Z7uzUd0;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264405-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264405-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 947B13023558
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:10:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0C899311AF18
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:01:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC2CD3AE71F;
-	Tue, 16 Jun 2026 17:10:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF5FA450902;
+	Tue, 16 Jun 2026 16:01:54 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B7C84779B1;
-	Tue, 16 Jun 2026 17:10:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B1B743E490;
+	Tue, 16 Jun 2026 16:01:53 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781629847; cv=none; b=Sg6zciJZpe9FRyqEq/6dsg5IMQCf0Hn7gDj02kMr6e66GtzKaIL32HPLshy1l86HauosJSOu9GkiPwg3SVEe4dz72BhZhgZKvfKxFaqYbyTarZkNk1iaZR9equmBudgMcAWbnZykFsO9YZeiIAgyOICgJKvq3cV4uI2UyuE+Bzw=
+	t=1781625714; cv=none; b=hG1KwfSpVGa5IMX94dJncxeT0tCAnf1fhU2kI1xEtcXaEuVdj895sBHPDzczKii26K8LltYgJlbqtJkVZU8aw3SxLddYv9D/7ttxgDd0FjXrYFT357tsqlFZTRLyKBjl8suhkvoxTiBHs1ZZHMgT/66KXv0+8LhUpAP6CvCyRKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781629847; c=relaxed/simple;
-	bh=W185l6DrtvHaPgcNzO9qpp4vfaTPR6vMhoZZw4BBxXw=;
+	s=arc-20240116; t=1781625714; c=relaxed/simple;
+	bh=1t1oi0SsAjKDkGyUUnfSTTVDhvudsuzebIJfI068g7U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WbYj6dhZFmamxK+ul85CkGHh4na0cstmUpQgM+8DxuUwq3peQikXtUfRBs/tdy9B/0vdPn7rY7z4/CbC7fk1ojDmX8WcVEmJpVzdhUS2TWXVMYKgyAKaXY8VwPqA/jiSlLv0JLU1JXBwY2xaQeNq+GvQcf/345G+FJPamcF0Ag0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o8PrCFGL; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F137C1F00A3A;
-	Tue, 16 Jun 2026 17:10:44 +0000 (UTC)
+	 MIME-Version; b=rBTDQY5I/IcOqiXYjNFLwQAJZfYg6sGK4KnMIzgTtnAG1Uq3dncQsjr9dodnUAPdSRbJ0Q+EpH4PyqQ/+Oa6221WBzNFh7+rTtR5G0fenpeTeGN5ifF1M+zBsipj8YFz3NxzE5Adz//OrGH25hD9B+j8ut2FtKM2pgLZrPPl6zQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Z7uzUd0; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E2BF1F000E9;
+	Tue, 16 Jun 2026 16:01:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781629846;
-	bh=PDGkwPFK4NmciK0n5CZd03L43q5EhuBYkmgo5LwrDTo=;
+	s=korg; t=1781625713;
+	bh=S4fPSCCWLKUcx+QRt7W/x2MhWnvpOUQUE1PzR9NIEUs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=o8PrCFGL54eYXQN6Agk/t+pWqVxsYI/BE4RMztL1eDuAVVyEoYXNXYlvcHScBflN4
-	 55Yx/r1/2rBlcATIq/5WeIaNo2A5mOLgwgsG52giifCJytCtUgsm7/orcVFRc4KMtF
-	 ry/sjUcJZJgsSXxooeEYkAon9/wp76UNc+iQ11D8=
+	b=1Z7uzUd0xexVnozwMdoA4amGnyui2lQT6DsTEkBa1YgBQ9rId0JoDZ9aOJh/AwNs+
+	 CcKIXgzDb7FmIuGa+14DGYZWE2jMnus8+S1FeXRdrUd4D+MmDYyVFWml+uk79YG0BD
+	 SgmTHBNx2hy7BNvw9HP41hSxcRmVn/PhVhvpojP0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Vitaly Prosyak <vitaly.prosyak@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.6 363/452] drm/amdgpu: restart the CS if some parts of the VM are still invalidated
+	Alistair Popple <apopple@nvidia.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	David Hildenbrand <david@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.18 194/325] arm64: mm: call pagetable dtor when freeing hot-removed page tables
 Date: Tue, 16 Jun 2026 20:29:50 +0530
-Message-ID: <20260616145136.158449521@linuxfoundation.org>
+Message-ID: <20260616145107.625844612@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,87 +67,107 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:christian.koenig@amd.com,m:vitaly.prosyak@amd.com,m:alexander.deucher@amd.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-265173-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264405-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:apopple@nvidia.com,m:catalin.marinas@arm.com,m:david@kernel.org,m:will@kernel.org,m:akpm@linux-foundation.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ALIAS_RESOLVED(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,amd.com:email,vger.kernel.org:from_smtp]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,vger.kernel.org:from_smtp,nvidia.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linux-foundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: F1274693122
+X-Rspamd-Queue-Id: EF93C691EFC
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian König <christian.koenig@amd.com>
+From: Alistair Popple <apopple@nvidia.com>
 
-commit 40396ffdf6120e2380706c59e1a84d7e765a37b6 upstream.
+commit c594b83457ccdee76d458416fb3bc9348a37592f upstream.
 
-Make sure that we only submit work with full up to date VM page tables.
+Since 5e8eb9aeeda3 ("arm64: mm: always call PTE/PMD ctor in
+__create_pgd_mapping()") page-table allocation on ARM64 always calls
+pagetable_{pte,pmd,pud,p4d}_ctor().  This sets the page_type to
+PGTY_table, increments NR_PAGETABLE and possible allocates a PTL.  However
+the matching pagetable_dtor() calls were never added.
 
-Backport to 7.1 and older.
+With DEBUG_VM enabled on kernel versions prior to v6.17 without
+2dfcd1608f3a9 ("mm/page_alloc: let page freeing clear any set page type")
+this leads to the following warning when freeing these pages due to
+page->page_type sharing page->_mapcount:
 
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
-Tested-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 59720bfd8c6dbebeb8d5a7ab64241b007efd9213)
-Cc: stable@vger.kernel.org
+  BUG: Bad page state in process ... pfn:284fbb
+  page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x284fbb
+  flags: 0x17fffc000000000(node=0|zone=2|lastcpupid=0x1ffff)
+  page_type: f2(table)
+  page dumped because: nonzero mapcount
+  Call trace:
+   bad_page+0x13c/0x160
+   __free_frozen_pages+0x6cc/0x860
+   ___free_pages+0xf4/0x180
+   free_pages+0x54/0x80
+   free_hotplug_page_range.part.0+0x58/0x90
+   free_empty_tables+0x438/0x500
+   __remove_pgd_mapping.constprop.0+0x60/0xa8
+   arch_remove_memory+0x48/0x80
+   try_remove_memory+0x158/0x1d8
+   offline_and_remove_memory+0x138/0x180
+
+It can also lead to leaking the ptl allocation if ALLOC_SPLIT_PTLOCKS is
+defined and incorrect NR_PAGETABLE stats.  Fix this by calling
+pagetable_dtor() in free_hotplug_pgtable_page() prior to freeing the page
+to undo the effects of calling pagetable_*_ctor().
+
+Link: https://lore.kernel.org/20260521032730.2104017-1-apopple@nvidia.com
+Fixes: 5e8eb9aeeda3 ("arm64: mm: always call PTE/PMD ctor in __create_pgd_mapping()")
+Signed-off-by: Alistair Popple <apopple@nvidia.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Will Deacon <will@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/arm64/mm/mmu.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
-@@ -1272,6 +1272,7 @@ static int amdgpu_cs_submit(struct amdgp
+--- a/arch/arm64/mm/mmu.c
++++ b/arch/arm64/mm/mmu.c
+@@ -1447,6 +1447,7 @@ static void free_hotplug_page_range(stru
+ 
+ static void free_hotplug_pgtable_page(struct page *page)
  {
- 	struct amdgpu_fpriv *fpriv = p->filp->driver_priv;
- 	struct amdgpu_job *leader = p->gang_leader;
-+	struct amdgpu_vm *vm = &fpriv->vm;
- 	struct amdgpu_bo_list_entry *e;
- 	struct drm_gem_object *gobj;
- 	unsigned long index;
-@@ -1317,7 +1318,8 @@ static int amdgpu_cs_submit(struct amdgp
- 							e->range);
- 		e->range = NULL;
- 	}
--	if (r) {
-+
-+	if (r || !list_empty(&vm->invalidated)) {
- 		r = -EAGAIN;
- 		mutex_unlock(&p->adev->notifier_lock);
- 		return r;
++	pagetable_dtor(page_ptdesc(page));
+ 	free_hotplug_page_range(page, PAGE_SIZE, NULL);
+ }
+ 
 
 
 
