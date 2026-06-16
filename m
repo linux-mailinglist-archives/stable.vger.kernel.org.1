@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-264096-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266061-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Z2gkI5NuMWq7jAUAu9opvQ
-	(envelope-from <stable+bounces-264096-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:41:07 +0200
+	id u9qCEJ6VMWrBnQUAu9opvQ
+	(envelope-from <stable+bounces-266061-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:27:42 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36A0A691494
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:41:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB7FA69423A
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:27:41 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=hqASkftL;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264096-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264096-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=IktLh0Jj;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266061-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266061-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7831D3058DE9
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:35:08 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 463F2301255D
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:27:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67915449EB8;
-	Tue, 16 Jun 2026 15:35:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E036472798;
+	Tue, 16 Jun 2026 18:27:38 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47A7B38837F;
-	Tue, 16 Jun 2026 15:35:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E3813D810C;
+	Tue, 16 Jun 2026 18:27:37 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781624105; cv=none; b=ePOVJPYFqLDSN2RGnMQEyxXoMow8uLf5J1b5L/E8UZmKvlk7tXqh5a6UalZoVjtsw0r6Ih6cu4QhIrsO/FdOA9vGaJzeN+iSYblNbzky9XXETpo9PA01++MrzS4j6Y0Dtr2x3LxPVgIlswHWGiDQQ/AlY9acQehndvMcIRKW9sk=
+	t=1781634458; cv=none; b=ZyKsbzBKHklueYtb0uz0aGSZgGuoj+kXlECt9hD6mVkUb7rtUN5geYJPQ9vET52RwlLUUQ+acpEPnDUU8GTOR2ipbMCU0eYIruwCacsMmGU8aIt7jJMXFc1366daUshllSpZh0/RsZDcEBpQ+Wzc4p9pXFQ/pUfzvjhCl8QFKYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781624105; c=relaxed/simple;
-	bh=TdhYv0OeWrBZ7grc5+C/fF0UyWwuE0wwH2bmiOlfJaM=;
+	s=arc-20240116; t=1781634458; c=relaxed/simple;
+	bh=tBUx559aQ6c7TX7qnTFhWM8knFES8fSuC4Gft5ZjJIg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gw8Lczx4FJvtk0ck2pfseTcQ8y2aiuwOfjKhXEfgkHDPILJAa4HQtN67GKwHRNGCiV1pqQvsbq9yAO5gsluLhMMlC0Cs1+iO5/qRmPJdyve94a2fYBeCCrJqo2JMXSYEcbmEo/1DwgjFW0TsSomt/nmENbq5o2q5gbhebqHS2nk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hqASkftL; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24EF61F000E9;
-	Tue, 16 Jun 2026 15:35:02 +0000 (UTC)
+	 MIME-Version; b=DB3q5NZH3tftyngSndep3UJ63Mgwx8Eembfm4YyU9B8awtne6dKB7ugG8RwzSSPEBhcMOvgj2qln2sExTnuXXmeP++dB43BZUMXBIk30Kl+gYz56+ciI8KytHwS351Tk53Sl6vm1f5/vax2xmzYdyBRH72gGkaqzKNDnMLm1L7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IktLh0Jj; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E88D1F000E9;
+	Tue, 16 Jun 2026 18:27:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781624104;
-	bh=3MwV5pB3ZueDzwVndYWMXETHdbgQT1cm7Pyb+Ly9veA=;
+	s=korg; t=1781634457;
+	bh=L8vlCADltDA0gK40WDfds5EJ9VwMyj0Sh+RVzotlUQM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hqASkftLHjUv0RTsfnYqueQ1iveINpmVQcgvBippgWWzn59s0ZHVRnQWx/6x9LBGu
-	 nxdhCBaPaUVdp2L+RvF/1tKqaLyaG3RujFdXMkjFT6NwLqm0Bqs8w67luKKKyTQiTk
-	 qhWt8p59QWCAwde27ZEVAUtZQRpNquefBqFR0Br0=
+	b=IktLh0JjM9KU+zSDBx4a82lk0IDMfa6qmkyjOyIfqQ7Rm4JbaycG7JJuKkIXIBvG4
+	 G3UkWEf9POOxJPDk4qsRM0TI5oOeU0uSC+jXXjCbTBzBM2TYwmTHON8c3DRLGUIABH
+	 7I/xmIH5WB9Zr/bqgugas9f1/R42Ah0PVz+cSgHs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hongfei Ren <lcrhf@outlook.com>,
-	stable@kernel.org,
-	Cryolitia PukNgae <cryolitia.pukngae@linux.dev>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 7.0 275/378] Input: atkbd - skip deactivate for HONOR BCC-Ns internal keyboard
-Date: Tue, 16 Jun 2026 20:28:26 +0530
-Message-ID: <20260616145124.586326459@linuxfoundation.org>
+	Tom Yan <tom.ty89@gmail.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 269/411] nvme: fix interpretation of DMRSL
+Date: Tue, 16 Jun 2026 20:28:27 +0530
+Message-ID: <20260616145115.382422751@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,82 +72,91 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,outlook.com,kernel.org,linux.dev,gmail.com];
-	TAGGED_FROM(0.00)[bounces-264096-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:lcrhf@outlook.com,m:stable@kernel.org,m:cryolitia.pukngae@linux.dev,m:dmitry.torokhov@gmail.com,m:dmitrytorokhov@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-266061-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:tom.ty89@gmail.com,m:hch@lst.de,m:sashal@kernel.org,m:tomty89@gmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lst.de,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,outlook.com:email,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 36A0A691494
+X-Rspamd-Queue-Id: CB7FA69423A
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cryolitia PukNgae <cryolitia.pukngae@linux.dev>
+From: Tom Yan <tom.ty89@gmail.com>
 
-commit fb402386af4cdce108ff991a796386de55439735 upstream.
+[ Upstream commit 1a86924e4f464757546d7f7bdc469be237918395 ]
 
-After commit 9cf6e24c9fbf17e52de9fff07f12be7565ea6d61 ("Input: atkbd -
-do not skip atkbd_deactivate() when skipping ATKBD_CMD_GETID"), HONOR
-BCC-N, aka HONOR MagicBook 14 2026's internal keyboard stops
-working. Adding the atkbd_deactivate_fixup quirk fixes it.
+DMRSLl is in the unit of logical blocks, while max_discard_sectors is
+in the unit of "linux sector".
 
-DMI: HONOR BCC-N/BCC-N-PCB, BIOS 1.04 04/07/2026
-
-Fixes: 9cf6e24c9fbf17e52de9fff07f12be7565ea6d61 ("Input: atkbd - do not skip atkbd_deactivate() when skipping ATKBD_CMD_GETID")
-Reported-by: Hongfei Ren <lcrhf@outlook.com>
-Link: https://github.com/colorcube/Linux-on-Honor-Magicbook-14-Pro/issues/1#issuecomment-4562679891
-Tested-by: Hongfei Ren <lcrhf@outlook.com>
-Cc: stable@kernel.org
-Signed-off-by: Cryolitia PukNgae <cryolitia.pukngae@linux.dev>
-Link: https://patch.msgid.link/20260605-honor-v1-1-78e05e491193@linux.dev
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Tom Yan <tom.ty89@gmail.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Stable-dep-of: 40f0496b617b ("nvme: respect NVME_QUIRK_DISABLE_WRITE_ZEROES when wzsl is set")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/keyboard/atkbd.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/nvme/host/core.c |    6 ++++--
+ drivers/nvme/host/nvme.h |    1 +
+ 2 files changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/input/keyboard/atkbd.c
-+++ b/drivers/input/keyboard/atkbd.c
-@@ -1952,6 +1952,13 @@ static const struct dmi_system_id atkbd_
- 		},
- 		.callback = atkbd_deactivate_fixup,
- 	},
-+	{
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "HONOR"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "BCC-N"),
-+		},
-+		.callback = atkbd_deactivate_fixup,
-+	},
- 	{ }
- };
+--- a/drivers/nvme/host/core.c
++++ b/drivers/nvme/host/core.c
+@@ -1736,6 +1736,9 @@ static void nvme_config_discard(struct g
+ 	if (blk_queue_flag_test_and_set(QUEUE_FLAG_DISCARD, queue))
+ 		return;
  
++	if (ctrl->dmrsl && ctrl->dmrsl <= nvme_sect_to_lba(ns, UINT_MAX))
++		ctrl->max_discard_sectors = nvme_lba_to_sect(ns, ctrl->dmrsl);
++
+ 	blk_queue_max_discard_sectors(queue, ctrl->max_discard_sectors);
+ 	blk_queue_max_discard_segments(queue, ctrl->max_discard_segments);
+ 
+@@ -2948,8 +2951,7 @@ static int nvme_init_non_mdts_limits(str
+ 
+ 	if (id->dmrl)
+ 		ctrl->max_discard_segments = id->dmrl;
+-	if (id->dmrsl)
+-		ctrl->max_discard_sectors = le32_to_cpu(id->dmrsl);
++	ctrl->dmrsl = le32_to_cpu(id->dmrsl);
+ 	if (id->wzsl)
+ 		ctrl->max_zeroes_sectors = nvme_mps_to_sectors(ctrl, id->wzsl);
+ 
+--- a/drivers/nvme/host/nvme.h
++++ b/drivers/nvme/host/nvme.h
+@@ -299,6 +299,7 @@ struct nvme_ctrl {
+ #endif
+ 	u16 crdt[3];
+ 	u16 oncs;
++	u32 dmrsl;
+ 	u16 oacs;
+ 	u16 nssa;
+ 	u16 nr_streams;
 
 
 
