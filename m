@@ -1,64 +1,63 @@
-Return-Path: <stable+bounces-264844-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265828-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 4/NzGl19MWrPkgUAu9opvQ
-	(envelope-from <stable+bounces-264844-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:44:13 +0200
+	id ImsLEsuQMWqCmwUAu9opvQ
+	(envelope-from <stable+bounces-265828-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:07:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 048D469266B
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:44:13 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B5C6693CFE
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:07:06 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=hrcKUaRq;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264844-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264844-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ohjw6C3P;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265828-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265828-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 627E6301C64D
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:43:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7ADF83148F0B
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:06:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6974046AED1;
-	Tue, 16 Jun 2026 16:43:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 629603D091A;
+	Tue, 16 Jun 2026 18:06:56 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 405B53D890D;
-	Tue, 16 Jun 2026 16:43:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C2362F12AE;
+	Tue, 16 Jun 2026 18:06:55 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781628187; cv=none; b=NL3gwFuFcUiKpeBWhV7C4Bky2Unuzh/TpG91AOY5pB9kcEDe87COYd0DD4K5eNEuG2eum74WE4tWQfOTzPBcaM/1XZ1XTIR+DNzJVaI4RpjI/Ct12ff0ifM/qWiJ/ag+qhRXQdDDuZjceMYX4hANoK4byZrbo0SvlWYb8FPwZ/s=
+	t=1781633216; cv=none; b=u/3mkhtuNwlxcCzQ6Ls65jmyG0o8ns9qi3KFxX1gb0EeAWP+NKrUxjgFNR7Pltx7rnu99eNhHtQXH76bV7ooAeC2I9OhYbncez37+Wdrl02HHOpppjzWgx68rq4ehHl3Fh8odof1lov1+hAfTxVzeTHjT5LzOp08e9YsxD2Z1BU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781628187; c=relaxed/simple;
-	bh=mIEbaw/aK9flHZi1/UjDl5QAaY8HxE1nyK94v3VHoaI=;
+	s=arc-20240116; t=1781633216; c=relaxed/simple;
+	bh=6w6ipqeyWMrH7h9Ey+tBteZDQ2b/N0+mvpMskWS+Ci4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=awbojs3o4C424lpUIfHe6XonoPFsmzBQt/wF2jFyi2SckwsbGiRwoKoJDd/b6ptsRMJvgxKMNjHiaqR2zcSeDkKQBBm/VJ7wFgkEjfFsm8n6Kr7zY97BUEcLshuzIVEXtcAhf4z4EMfFZIbRY0YkGaVLZ1XGU7C7GQ80GS6T610=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hrcKUaRq; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4312A1F000E9;
-	Tue, 16 Jun 2026 16:43:05 +0000 (UTC)
+	 MIME-Version; b=QYh3TG5RiUvuBB9KHdEd2LOIfBjG5TEmnehvuD9l+XRvLvUtS2qcWC70u7BlS4ep7o19cQVOAenZdTYq42cpZZ6ZQX68PTY4nj8TnqUaJmlWrDh+IrX0i/biEEHY6ckkxh6F0u3BqQ04+hwGdy0w9qARKzX8AaXz7HnuWImvHWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ohjw6C3P; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6A5D1F000E9;
+	Tue, 16 Jun 2026 18:06:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781628186;
-	bh=5xIelE03B9Kfd324vtrs5uOz83GIGqkxVlWuKeDhGNc=;
+	s=korg; t=1781633215;
+	bh=FNmCB8n25KLrngx4nhYh7S/xKBoh6pEl4TKnlRvroW4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hrcKUaRq1aIy4PKgNJmNAsGTCfjiV1jAff37pgf2FU4n1Yvc3c1HsSAUmr6Xo65L8
-	 kaY81/9h6yj0gBKtXerH3xQ+CofJITslTSc1/iisRPLEk+1JvWgD1JnR2CQri8tiR4
-	 I/5ec6Z4etLDigQmEj2CZ+DH8yjwwBt1NNA0LXpg=
+	b=ohjw6C3PnzlUILBorDT0Yo3aBcrA20vTYTjBM129XDd46pg9psWw4jCeagVVmr6qF
+	 AMHFHFOt8grGU53v1/tZJk/9n78wrXFWsVEV+EOLpJizewcqL2vP+06+AtFuVgwa+2
+	 VYPopGCPcEWZKigVxFTNeDeEV4wVRuLQQ3j7fcrI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Minh Nguyen <minhnguyen.080505@gmail.com>,
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	stable@kernel.org,
+	Ido Schimmel <idosch@nvidia.com>,
+	syzbot+9fdcc9f05a98a540b816@syzkaller.appspotmail.com,
+	Sven Eckelmann <sven@narfation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 048/452] net: skbuff: fix pskb_carve leaking zcopy pages
+Subject: [PATCH 5.15 037/411] batman-adv: bla: avoid NULL-ptr deref for claim via dropped interface
 Date: Tue, 16 Jun 2026 20:24:35 +0530
-Message-ID: <20260616145120.471783340@linuxfoundation.org>
+Message-ID: <20260616145102.291791821@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,23 +74,22 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-264844-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:minhnguyen.080505@gmail.com,m:willemdebruijn.kernel@gmail.com,m:asml.silence@gmail.com,m:willemb@google.com,m:kuba@kernel.org,m:sashal@kernel.org,m:minhnguyen080505@gmail.com,m:willemdebruijnkernel@gmail.com,m:asmlsilence@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORWARDED(0.00)[lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265828-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:idosch@nvidia.com,m:syzbot+9fdcc9f05a98a540b816@syzkaller.appspotmail.com,m:sven@narfation.org,m:sashal@kernel.org,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -99,74 +97,63 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	TAGGED_RCPT(0.00)[stable,9fdcc9f05a98a540b816];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,narfation.org:email,syzkaller.appspot.com:url,nvidia.com:email,appspotmail.com:email,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 048D469266B
+X-Rspamd-Queue-Id: 8B5C6693CFE
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Sven Eckelmann <sven@narfation.org>
 
-[ Upstream commit ff6e798c2eac3ebd0501ad7e796f583fab928de8 ]
+commit f80d3d98d2ff78d9e2fe5d68b1f45948c4f7bd24 upstream.
 
-When SKBFL_MANAGED_FRAG_REFS is set, frag pages are not refcounted but
-their lifetime is controlled by the attached ubuf_info. To make a copy
-of the skb_shared_info, we either should clear the flag and reference
-the frags, or keep the flag and have frags unreferenced.
+Without rtnl_lock held, a hardif might be retrieved as primary interface of
+a meshif, but then (while operating on this interface) getting decoupled
+from the mesh interface. In this case, the meshif still exists but the
+pointer from the primary hardif to the meshif is set to NULL.
 
-pskb_carve_inside_header() and pskb_carve_inside_nonlinear() don't
-follow the rule and thus can leak page references. Let's clear
-SKBFL_MANAGED_FRAG_REFS from the original skb to fix it. It's the
-simplest way to address it, but there are more performant ways to do
-that if it ever becomes a problem.
+The mesh_iface must be checked first to be non-NULL before continuing to
+send an ARP request using meshif.
 
-Link: https://lore.kernel.org/all/20260523085809.26331-1-nvminh232@clc.fitus.edu.vn/
-Fixes: 753f1ca4e1e50 ("net: introduce managed frags infrastructure")
-Reported-by: Minh Nguyen <minhnguyen.080505@gmail.com>
-Reported-by: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/1e2086aa69217d7f9c8da3d38f5be7160f1b4cd1.1779993185.git.asml.silence@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: stable@kernel.org
+Fixes: 23721387c409 ("batman-adv: add basic bridge loop avoidance code")
+Reported-by: Ido Schimmel <idosch@nvidia.com>
+Reported-by: syzbot+9fdcc9f05a98a540b816@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=9fdcc9f05a98a540b816
+[ switch to old "mesh_iface" name "soft_iface" ]
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/skbuff.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ net/batman-adv/bridge_loop_avoidance.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index 8b05866e93b195..2282b6ad4be21a 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -6397,6 +6397,11 @@ static int pskb_carve_inside_header(struct sk_buff *skb, const u32 off,
- 	skb_copy_from_linear_data_offset(skb, off, data, new_hlen);
- 	skb->len -= off;
+diff --git a/net/batman-adv/bridge_loop_avoidance.c b/net/batman-adv/bridge_loop_avoidance.c
+index f768a4e0bc0f49..d8ead0eb71da06 100644
+--- a/net/batman-adv/bridge_loop_avoidance.c
++++ b/net/batman-adv/bridge_loop_avoidance.c
+@@ -355,12 +355,14 @@ static void batadv_bla_send_claim(struct batadv_priv *bat_priv, u8 *mac,
+ 	       sizeof(local_claim_dest));
+ 	local_claim_dest.type = claimtype;
  
-+	/* Remove SKBFL_MANAGED_FRAG_REFS instead of trying to honour it
-+	 * while refcounting frags below.
-+	 */
-+	skb_zcopy_downgrade_managed(skb);
-+
- 	memcpy((struct skb_shared_info *)(data + size),
- 	       skb_shinfo(skb),
- 	       offsetof(struct skb_shared_info,
-@@ -6509,6 +6514,11 @@ static int pskb_carve_inside_nonlinear(struct sk_buff *skb, const u32 off,
- 		return -ENOMEM;
- 	size = SKB_WITH_OVERHEAD(size);
+-	soft_iface = primary_if->soft_iface;
++	soft_iface = READ_ONCE(primary_if->soft_iface);
++	if (!soft_iface)
++		goto out;
  
-+	/* Remove SKBFL_MANAGED_FRAG_REFS instead of trying to honour it
-+	 * while refcounting frags below.
-+	 */
-+	skb_zcopy_downgrade_managed(skb);
-+
- 	memcpy((struct skb_shared_info *)(data + size),
- 	       skb_shinfo(skb), offsetof(struct skb_shared_info, frags[0]));
- 	if (skb_orphan_frags(skb, gfp_mask)) {
+ 	skb = arp_create(ARPOP_REPLY, ETH_P_ARP,
+ 			 /* IP DST: 0.0.0.0 */
+ 			 zeroip,
+-			 primary_if->soft_iface,
++			 soft_iface,
+ 			 /* IP SRC: 0.0.0.0 */
+ 			 zeroip,
+ 			 /* Ethernet DST: Broadcast */
 -- 
 2.53.0
 
