@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-265989-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265518-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id YGCZOCWUMWoonQUAu9opvQ
-	(envelope-from <stable+bounces-265989-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:21:25 +0200
+	id yNMAJfCLMWoomQUAu9opvQ
+	(envelope-from <stable+bounces-265518-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:46:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A07356940F3
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:21:25 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1CBA693772
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:46:23 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=RNMu7EoS;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265989-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265989-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=UVGH9VKT;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265518-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265518-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D399F3042721
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:21:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 648033050A65
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:40:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8369466B64;
-	Tue, 16 Jun 2026 18:21:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EBF547A0CD;
+	Tue, 16 Jun 2026 17:40:19 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79296477E33;
-	Tue, 16 Jun 2026 18:21:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1357E3C4178;
+	Tue, 16 Jun 2026 17:40:18 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781634074; cv=none; b=sVGG8NW1P6FqCGf/8qPjbD2fUhg36XqWHR2wgmO7W3UTpg8qizN+jhifXimEodhur8BjfvhP1Kiw1B39DuxnYLKeSsaz6Xqk3RWW/M0zP+8qXZP1y9B6/y/8TFi1+zLSbAOTZZePncC9PNIXR44YXVJE5PlkdE9KRy0GGTdoqko=
+	t=1781631619; cv=none; b=VBUPB2QP4MpBt9S5RL1UhhKvNrFbCcoG2n78kC9eowkRteXVaagFHf9yULjqdPJc/70BlUjohrGjeJ2NdHeKV0gZDASw8HQKD3LFVrkeFU/jeAXRUVi1HuCv7Zeat+6ieklDgPkX6V03xLYXbsFAWzTQLigMKOWD248KQZFgSGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781634074; c=relaxed/simple;
-	bh=HNRZ+RlALymPiUtBqhK2BB7msUd8RMzmEauzWPAsH+c=;
+	s=arc-20240116; t=1781631619; c=relaxed/simple;
+	bh=YxFPCEt0No1AmGNlp2Bacdkff37VJe+uBX1l0z7tIOM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=encnYZVS+BuXzcaRRQVkiFhZJ2/8jRfJ/4VxrR7x/lpMiTXhAvbt0NiUbYBoTmhvi3rkS/vgKgE4RQ2wVVJohWfXLc5xFQLZtqMCoxrtegn0WgxXn4rpQ0lvUL4bh1YeAnmZDCXUvFKuqmYmybA9Ir/6IQ+ifYogQjasDXEkuK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RNMu7EoS; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 839121F000E9;
-	Tue, 16 Jun 2026 18:21:12 +0000 (UTC)
+	 MIME-Version; b=Plqxmr+18BaMZBvDQm2hcFxJRkrMwEgx+neqtZrjYLFWRZlXjA+buuS/ogB8ErSZMhom94rv9ysNcmMi4SY6l0KowWBk7veraNPT1fI22+hNuXK5s87bJDIY6hDDVyNHMQa+HSh5uhfHhZBn7hlV06s41t1uCg08uqsiEnxdOAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UVGH9VKT; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 162B01F000E9;
+	Tue, 16 Jun 2026 17:40:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781634073;
-	bh=tK5kojDyk2msr6YXiPNVYplCF2QIZKf3UrKsKhAviLo=;
+	s=korg; t=1781631618;
+	bh=AVks9yqtnzdjy0ZGD2Yrn4PRC63vPGNn5NKa2RSlrFQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=RNMu7EoS77R2fVXUM/+M/VXT8H76ntNcMAon085P44kbfLZlwfBG/HIEyTdbl1sb5
-	 EuA820XcQm6IG1iylxkDU24eagcIcw28SdmLqXyFbcy3Mn1BRa0e7dkrN8y1jue4te
-	 wOQzMfe3bsH/C12BQM/IfC+J4dts7Z+H38uDN9+8=
+	b=UVGH9VKTmMiTsz9t7g8t4lQoKrY7xbgDhzeMRrap87JP891aQy8uzL6QpPGvhZv1u
+	 YU6FgKHh7IQ9ryVZLzRujocZU7zfmGH4Gb5JAyT2Er3ZTewO79Mmt4hCcS60qG26B1
+	 aSVwUarFjMpOiMT5JAZ+O1N2xrJ9h+1XS3iBS8qc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Muhammad Bilal <meatuni001@gmail.com>,
-	SeungJu Cheon <suunj1331@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Breno Leitao <leitao@debian.org>,
+	Allison Henderson <achender@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 164/411] Bluetooth: RFCOMM: validate skb length in MCC handlers
+Subject: [PATCH 6.1 255/522] rds: mark snapshot pages dirty in rds_info_getsockopt()
 Date: Tue, 16 Jun 2026 20:26:42 +0530
-Message-ID: <20260616145109.225549672@linuxfoundation.org>
+Message-ID: <20260616145137.884996400@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,203 +70,80 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-265989-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:meatuni001@gmail.com,m:suunj1331@gmail.com,m:luiz.von.dentz@intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265518-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:leitao@debian.org,m:achender@kernel.org,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A07356940F3
+X-Rspamd-Queue-Id: E1CBA693772
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeungJu Cheon <suunj1331@gmail.com>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit 23882b828c3c8c51d0c946446a396b10abb3b16b ]
+[ Upstream commit 512db8267b73a220a64180d95ab5eebe7c4964a8 ]
 
-The RFCOMM MCC handlers cast skb->data to protocol-specific structs
-without validating skb->len first. A malicious remote device can send
-truncated MCC frames and trigger out-of-bounds reads in these handlers.
+rds_info_getsockopt() pins the destination user pages with FOLL_WRITE and
+the RDS_INFO_* producers memcpy the snapshot into them through
+kmap_atomic(). Because that copy goes through the kernel direct map, the
+dirty bit on the user PTE is never set, so unpin_user_pages() releases the
+pages without marking them dirty. A file-backed destination page can then
+be reclaimed without writeback, silently discarding the copied data.
 
-Fix this by using skb_pull_data() to validate and access the required
-data before dereferencing it.
+Use unpin_user_pages_dirty_lock() with make_dirty=true so the modified
+pages are marked dirty before they are unpinned.
 
-rfcomm_recv_rpn() requires special handling since ETSI TS 07.10 allows
-1-byte RPN requests. Handle this by validating only the DLCI byte first,
-and validating the full struct only when len > 1.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Suggested-by: Muhammad Bilal <meatuni001@gmail.com>
-Signed-off-by: SeungJu Cheon <suunj1331@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: a8c879a7ee98 ("RDS: Info and stats")
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Allison Henderson <achender@kernel.org>
+Link: https://patch.msgid.link/20260608-rds_fix-v1-1-006c88543408@debian.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/rfcomm/core.c | 67 +++++++++++++++++++++++++++----------
- 1 file changed, 49 insertions(+), 18 deletions(-)
+ net/rds/info.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/bluetooth/rfcomm/core.c b/net/bluetooth/rfcomm/core.c
-index 4f54c7df3a94f8..374187def190da 100644
---- a/net/bluetooth/rfcomm/core.c
-+++ b/net/bluetooth/rfcomm/core.c
-@@ -1427,10 +1427,15 @@ static int rfcomm_apply_pn(struct rfcomm_dlc *d, int cr, struct rfcomm_pn *pn)
+diff --git a/net/rds/info.c b/net/rds/info.c
+index b6b46a8214a0a5..b3ee5f8238c44d 100644
+--- a/net/rds/info.c
++++ b/net/rds/info.c
+@@ -235,7 +235,7 @@ int rds_info_getsockopt(struct socket *sock, int optname, char __user *optval,
  
- static int rfcomm_recv_pn(struct rfcomm_session *s, int cr, struct sk_buff *skb)
- {
--	struct rfcomm_pn *pn = (void *) skb->data;
-+	struct rfcomm_pn *pn;
- 	struct rfcomm_dlc *d;
--	u8 dlci = pn->dlci;
-+	u8 dlci;
-+
-+	pn = skb_pull_data(skb, sizeof(*pn));
-+	if (!pn)
-+		return -EILSEQ;
+ out:
+ 	if (pages)
+-		unpin_user_pages(pages, nr_pages);
++		unpin_user_pages_dirty_lock(pages, nr_pages, true);
+ 	kfree(pages);
  
-+	dlci = pn->dlci;
- 	BT_DBG("session %p state %ld dlci %d", s, s->state, dlci);
- 
- 	if (!dlci)
-@@ -1479,8 +1484,8 @@ static int rfcomm_recv_pn(struct rfcomm_session *s, int cr, struct sk_buff *skb)
- 
- static int rfcomm_recv_rpn(struct rfcomm_session *s, int cr, int len, struct sk_buff *skb)
- {
--	struct rfcomm_rpn *rpn = (void *) skb->data;
--	u8 dlci = __get_dlci(rpn->dlci);
-+	struct rfcomm_rpn *rpn;
-+	u8 dlci;
- 
- 	u8 bit_rate  = 0;
- 	u8 data_bits = 0;
-@@ -1491,15 +1496,16 @@ static int rfcomm_recv_rpn(struct rfcomm_session *s, int cr, int len, struct sk_
- 	u8 xoff_char = 0;
- 	u16 rpn_mask = RFCOMM_RPN_PM_ALL;
- 
--	BT_DBG("dlci %d cr %d len 0x%x bitr 0x%x line 0x%x flow 0x%x xonc 0x%x xoffc 0x%x pm 0x%x",
--		dlci, cr, len, rpn->bit_rate, rpn->line_settings, rpn->flow_ctrl,
--		rpn->xon_char, rpn->xoff_char, rpn->param_mask);
-+	if (len == 1) {
-+		rpn = skb_pull_data(skb, 1);
-+		if (!rpn)
-+			return -EILSEQ;
- 
--	if (!cr)
--		return 0;
-+		dlci = __get_dlci(rpn->dlci);
-+
-+		if (!cr)
-+			return 0;
- 
--	if (len == 1) {
--		/* This is a request, return default (according to ETSI TS 07.10) settings */
- 		bit_rate  = RFCOMM_RPN_BR_9600;
- 		data_bits = RFCOMM_RPN_DATA_8;
- 		stop_bits = RFCOMM_RPN_STOP_1;
-@@ -1510,6 +1516,19 @@ static int rfcomm_recv_rpn(struct rfcomm_session *s, int cr, int len, struct sk_
- 		goto rpn_out;
- 	}
- 
-+	rpn = skb_pull_data(skb, sizeof(*rpn));
-+	if (!rpn)
-+		return -EILSEQ;
-+
-+	dlci = __get_dlci(rpn->dlci);
-+
-+	BT_DBG("dlci %d cr %d len 0x%x bitr 0x%x line 0x%x flow 0x%x xonc 0x%x xoffc 0x%x pm 0x%x",
-+	       dlci, cr, len, rpn->bit_rate, rpn->line_settings, rpn->flow_ctrl,
-+	       rpn->xon_char, rpn->xoff_char, rpn->param_mask);
-+
-+	if (!cr)
-+		return 0;
-+
- 	/* Check for sane values, ignore/accept bit_rate, 8 bits, 1 stop bit,
- 	 * no parity, no flow control lines, normal XON/XOFF chars */
- 
-@@ -1585,9 +1604,14 @@ static int rfcomm_recv_rpn(struct rfcomm_session *s, int cr, int len, struct sk_
- 
- static int rfcomm_recv_rls(struct rfcomm_session *s, int cr, struct sk_buff *skb)
- {
--	struct rfcomm_rls *rls = (void *) skb->data;
--	u8 dlci = __get_dlci(rls->dlci);
-+	struct rfcomm_rls *rls;
-+	u8 dlci;
- 
-+	rls = skb_pull_data(skb, sizeof(*rls));
-+	if (!rls)
-+		return -EILSEQ;
-+
-+	dlci = __get_dlci(rls->dlci);
- 	BT_DBG("dlci %d cr %d status 0x%x", dlci, cr, rls->status);
- 
- 	if (!cr)
-@@ -1604,10 +1628,15 @@ static int rfcomm_recv_rls(struct rfcomm_session *s, int cr, struct sk_buff *skb
- 
- static int rfcomm_recv_msc(struct rfcomm_session *s, int cr, struct sk_buff *skb)
- {
--	struct rfcomm_msc *msc = (void *) skb->data;
-+	struct rfcomm_msc *msc;
- 	struct rfcomm_dlc *d;
--	u8 dlci = __get_dlci(msc->dlci);
-+	u8 dlci;
-+
-+	msc = skb_pull_data(skb, sizeof(*msc));
-+	if (!msc)
-+		return -EILSEQ;
- 
-+	dlci = __get_dlci(msc->dlci);
- 	BT_DBG("dlci %d cr %d v24 0x%x", dlci, cr, msc->v24_sig);
- 
- 	d = rfcomm_dlc_get(s, dlci);
-@@ -1640,17 +1669,19 @@ static int rfcomm_recv_msc(struct rfcomm_session *s, int cr, struct sk_buff *skb
- 
- static int rfcomm_recv_mcc(struct rfcomm_session *s, struct sk_buff *skb)
- {
--	struct rfcomm_mcc *mcc = (void *) skb->data;
-+	struct rfcomm_mcc *mcc;
- 	u8 type, cr, len;
- 
-+	mcc = skb_pull_data(skb, sizeof(*mcc));
-+	if (!mcc)
-+		return -EILSEQ;
-+
- 	cr   = __test_cr(mcc->type);
- 	type = __get_mcc_type(mcc->type);
- 	len  = __get_mcc_len(mcc->len);
- 
- 	BT_DBG("%p type 0x%x cr %d", s, type, cr);
- 
--	skb_pull(skb, 2);
--
- 	switch (type) {
- 	case RFCOMM_PN:
- 		rfcomm_recv_pn(s, cr, skb);
+ 	return ret;
 -- 
 2.53.0
 
