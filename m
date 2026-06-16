@@ -1,62 +1,65 @@
-Return-Path: <stable+bounces-264006-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265974-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id k9a9HOtsMWoQjAUAu9opvQ
-	(envelope-from <stable+bounces-264006-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:34:03 +0200
+	id OLgKMtGTMWoGnQUAu9opvQ
+	(envelope-from <stable+bounces-265974-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:20:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BB0E691274
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:34:03 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 470836940A5
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:20:01 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="S/5vBlzm";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264006-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264006-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=oXiYKOsZ;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265974-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-265974-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0B271313CE9F
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:27:17 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 531273088120
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:20:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A07B43E49A;
-	Tue, 16 Jun 2026 15:27:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1170F3D091A;
+	Tue, 16 Jun 2026 18:19:58 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D91134889F;
-	Tue, 16 Jun 2026 15:27:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CAD335292A;
+	Tue, 16 Jun 2026 18:19:56 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781623636; cv=none; b=SNubqVZDdhkKOi8BA3q2N7ZWYHE0j6FlmSzWUHkk6A0kdkzflWa+w6C82O70DpdA18KjDNyd9eFA5sT6w/RAmLARDNT6BtQYaiun8VvBwf4MrXf0ShPEoKK6ZQACNjLvPC0GxrFHQvPMHDXlFSwC3PTbN/rFYkEQPjKT987a5Rs=
+	t=1781633997; cv=none; b=Kc0NHR05634moBsidO9Fv0N+Bipe7Xl4CvtIpxkueqs7EzEFr7lvcN9zzKZ6SISYPK+U6UH0o7VZodOT/OW8j6jmy0RXQA6mNV37gpjzItT0Yy8IAg8dIPT+TP+1k7CKTtbzf8PLymUVACUkhWEx+NGdGsw5jJnyAT+m4Av00M0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781623636; c=relaxed/simple;
-	bh=4OyvMAmT35nZEvfXRhN5KzXQhsEHhw0SID5dqtvDjtA=;
+	s=arc-20240116; t=1781633997; c=relaxed/simple;
+	bh=Wjigji+ezK1fJlkQwvZkPceFjFy2Vb6w2C5in7iN5IY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YkjNmSQOUtZuoMTzHaodWoX1vxpjUAHjJlbeHdl9IZ1jg9CPmDB09JkA1QCz+WLyJwdzZZVRynNK5iI/RfNuBGsSU24bvPpU8ILuF5DAC/nSqxq52ShtxIlWbUG3YKx4DF/Xki6W1DZANzfY616H/1fcionho3kJJO6mUGadPvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S/5vBlzm; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D42F81F000E9;
-	Tue, 16 Jun 2026 15:27:13 +0000 (UTC)
+	 MIME-Version; b=n8U0yqt+yLQJV5ZsFJDfvSrDW6TY9/bglb0B6n/NYC/6s64aW0iGAQKl2qo8K9ww9F9Io44ZfNHlweaagv03K6u5mzQgpCQXMVU/a+emQoXfQlDchcxJrOquP31ch3dOsSHEoOlDd15gQYiKFmh3O6vhvZ5E/TiEU8TaGbv7tcI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oXiYKOsZ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BEF91F000E9;
+	Tue, 16 Jun 2026 18:19:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781623634;
-	bh=a2gADEBeXQ43toRYapGuKX0NvyiAmL1O5DpghQhEew0=;
+	s=korg; t=1781633996;
+	bh=LkBEKS8Gk8kJDRCGW+B+hhKhOCMd+GjJA13nq5EpGG4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=S/5vBlzmxfWppXTC+TFtqgjpCmcdxuTDhoE+9mcdQTF6Mjv9FMtjK2GM56VDBkSja
-	 XFyvslyt25DMNnlI9KL5OzxHhbuH3EojjsoQf58fRQbRtdFXMIJ31tga7M+gN5kZ8Y
-	 nqewDBi46KeeygR+PmvEQ7Z7svoEVwc8TiBZwI7k=
+	b=oXiYKOsZjJGYSmo9I2BCERjMbAImeGzL5mLuAf6g4+bAx48FC2AximrOxKvUiFKQy
+	 XSomuChHL1byjhZjFhkJIx8i4lRl2NlHLG6sC1f1NaJ25MMtXDW6izgqMHxzq4N6c3
+	 vakhGDlMbzNwRt2Eb27YeaZKs5pAtFQRptovKNOY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Hellstrom <thomas.hellstrom@linux.intel.com>,
-	Tangudu Tilak Tirumalesh <tilak.tirumalesh.tangudu@intel.com>,
-	Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>
-Subject: [PATCH 7.0 187/378] Revert "drm/xe: Skip exec queue schedule toggle if queue is idle during suspend"
-Date: Tue, 16 Jun 2026 20:26:58 +0530
-Message-ID: <20260616145120.228063538@linuxfoundation.org>
+	Mark Rutland <mark.rutland@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oupton@kernel.org>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 181/411] arm64: tlb: Optimize ARM64_WORKAROUND_REPEAT_TLBI
+Date: Tue, 16 Jun 2026 20:26:59 +0530
+Message-ID: <20260616145110.312121918@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,22 +75,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264006-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265974-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:thomas.hellstrom@linux.intel.com,m:tilak.tirumalesh.tangudu@intel.com,m:daniele.ceraolospurio@intel.com,m:rodrigo.vivi@intel.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mark.rutland@arm.com,m:catalin.marinas@arm.com,m:maz@kernel.org,m:oupton@kernel.org,m:ryan.roberts@arm.com,m:will@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -96,211 +99,392 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,arm.com:url,arm.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 0BB0E691274
+X-Rspamd-Queue-Id: 470836940A5
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tangudu Tilak Tirumalesh <tilak.tirumalesh.tangudu@intel.com>
+From: Mark Rutland <mark.rutland@arm.com>
 
-commit fa7c84726dc217ce0c183926ef9411636c7a2213 upstream.
+commit a8f78680ee6bf795086384e8aea159a52814f827 upstream.
 
-This reverts commit 8533051ce92015e9cc6f75e0d52119b9d91610b6.
+The ARM64_WORKAROUND_REPEAT_TLBI workaround is used to mitigate several
+errata where broadcast TLBI;DSB sequences don't provide all the
+architecturally required synchronization. The workaround performs more
+work than necessary, and can have significant overhead. This patch
+optimizes the workaround, as explained below.
 
-The idle-skip optimization bypasses GuC suspend, so the GPU may not
-perform the context switch that flushes TLB entries for invalidated
-userptr VMAs. In LR/preempt-fence VM mode, this can lead to missed TLB
-invalidation and page faults during userptr invalidation tests.
+The workaround was originally added for Qualcomm Falkor erratum 1009 in
+commit:
 
-Restore unconditional schedule toggling on suspend so the context-switch
-TLB flush is always performed.
+  d9ff80f83ecb ("arm64: Work around Falkor erratum 1009")
 
-This optimization will be reintroduced with a fix that does not skip
-suspend in LR/preempt-fence VM mode.
+As noted in the message for that commit, the workaround is applied even
+in cases where it is not strictly necessary.
 
-Fixes: 8533051ce920 ("drm/xe: Skip exec queue schedule toggle if queue is idle during suspend")
-Cc: stable@vger.kernel.org # v7.0+
-Suggested-by: Thomas Hellstrom <thomas.hellstrom@linux.intel.com>
-Signed-off-by: Tangudu Tilak Tirumalesh <tilak.tirumalesh.tangudu@intel.com>
-Reviewed-by: Thomas Hellstrom <thomas.hellstrom@linux.intel.com>
-Signed-off-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
-Link: https://patch.msgid.link/20260603065217.3131066-2-tilak.tirumalesh.tangudu@intel.com
-(cherry picked from commit 6a1e7934d9a6cf46aecae00a99c2603d1295e170)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+The workaround was later reused without changes for:
+
+* Arm Cortex-A76 erratum #1286807
+  SDEN v33: https://developer.arm.com/documentation/SDEN-885749/33-0/
+
+* Arm Cortex-A55 erratum #2441007
+  SDEN v16: https://developer.arm.com/documentation/SDEN-859338/1600/
+
+* Arm Cortex-A510 erratum #2441009
+  SDEN v19: https://developer.arm.com/documentation/SDEN-1873351/1900/
+
+The important details to note are as follows:
+
+1. All relevant errata only affect the ordering and/or completion of
+   memory accesses which have been translated by an invalidated TLB
+   entry. The actual invalidation of TLB entries is unaffected.
+
+2. The existing workaround is applied to both broadcast and local TLB
+   invalidation, whereas for all relevant errata it is only necessary to
+   apply a workaround for broadcast invalidation.
+
+3. The existing workaround replaces every TLBI with a TLBI;DSB;TLBI
+   sequence, whereas for all relevant errata it is only necessary to
+   execute a single additional TLBI;DSB sequence after any number of
+   TLBIs are completed by a DSB.
+
+   For example, for a sequence of batched TLBIs:
+
+       TLBI <op1>[, <arg1>]
+       TLBI <op2>[, <arg2>]
+       TLBI <op3>[, <arg3>]
+       DSB ISH
+
+   ... the existing workaround will expand this to:
+
+       TLBI <op1>[, <arg1>]
+       DSB ISH                  // additional
+       TLBI <op1>[, <arg1>]     // additional
+       TLBI <op2>[, <arg2>]
+       DSB ISH                  // additional
+       TLBI <op2>[, <arg2>]     // additional
+       TLBI <op3>[, <arg3>]
+       DSB ISH                  // additional
+       TLBI <op3>[, <arg3>]     // additional
+       DSB ISH
+
+   ... whereas it is sufficient to have:
+
+       TLBI <op1>[, <arg1>]
+       TLBI <op2>[, <arg2>]
+       TLBI <op3>[, <arg3>]
+       DSB ISH
+       TLBI <opX>[, <argX>]     // additional
+       DSB ISH                  // additional
+
+   Using a single additional TBLI and DSB at the end of the sequence can
+   have significantly lower overhead as each DSB which completes a TLBI
+   must synchronize with other PEs in the system, with potential
+   performance effects both locally and system-wide.
+
+4. The existing workaround repeats each specific TLBI operation, whereas
+   for all relevant errata it is sufficient for the additional TLBI to
+   use *any* operation which will be broadcast, regardless of which
+   translation regime or stage of translation the operation applies to.
+
+   For example, for a single TLBI:
+
+       TLBI ALLE2IS
+       DSB ISH
+
+   ... the existing workaround will expand this to:
+
+       TLBI ALLE2IS
+       DSB ISH
+       TLBI ALLE2IS             // additional
+       DSB ISH                  // additional
+
+   ... whereas it is sufficient to have:
+
+       TLBI ALLE2IS
+       DSB ISH
+       TLBI VALE1IS, XZR        // additional
+       DSB ISH                  // additional
+
+   As the additional TLBI doesn't have to match a specific earlier TLBI,
+   the additional TLBI can be implemented in separate code, with no
+   memory of the earlier TLBIs. The additional TLBI can also use a
+   cheaper TLBI operation.
+
+5. The existing workaround is applied to both Stage-1 and Stage-2 TLB
+   invalidation, whereas for all relevant errata it is only necessary to
+   apply a workaround for Stage-1 invalidation.
+
+   Architecturally, TLBI operations which invalidate only Stage-2
+   information (e.g. IPAS2E1IS) are not required to invalidate TLB
+   entries which combine information from Stage-1 and Stage-2
+   translation table entries, and consequently may not complete memory
+   accesses translated by those combined entries. In these cases,
+   completion of memory accesses is only guaranteed after subsequent
+   invalidation of Stage-1 information (e.g. VMALLE1IS).
+
+Taking the above points into account, this patch reworks the workaround
+logic to reduce overhead:
+
+* New __tlbi_sync_s1ish() and __tlbi_sync_s1ish_hyp() functions are
+  added and used in place of any dsb(ish) which is used to complete
+  broadcast Stage-1 TLB maintenance. When the
+  ARM64_WORKAROUND_REPEAT_TLBI workaround is enabled, these helpers will
+  execute an additional TLBI;DSB sequence.
+
+  For consistency, it might make sense to add __tlbi_sync_*() helpers
+  for local and stage 2 maintenance. For now I've left those with
+  open-coded dsb() to keep the diff small.
+
+* The duplication of TLBIs in __TLBI_0() and __TLBI_1() is removed. This
+  is no longer needed as the necessary synchronization will happen in
+  __tlbi_sync_s1ish() or __tlbi_sync_s1ish_hyp().
+
+* The additional TLBI operation is chosen to have minimal impact:
+
+  - __tlbi_sync_s1ish() uses "TLBI VALE1IS, XZR". This is only used at
+    EL1 or at EL2 with {E2H,TGE}=={1,1}, where it will target an unused
+    entry for the reserved ASID in the kernel's own translation regime,
+    and have no adverse affect.
+
+  - __tlbi_sync_s1ish_hyp() uses "TLBI VALE2IS, XZR". This is only used
+    in hyp code, where it will target an unused entry in the hyp code's
+    TTBR0 mapping, and should have no adverse effect.
+
+* As __TLBI_0() and __TLBI_1() no longer replace each TLBI with a
+  TLBI;DSB;TLBI sequence, batching TLBIs is worthwhile, and there's no
+  need for arch_tlbbatch_should_defer() to consider
+  ARM64_WORKAROUND_REPEAT_TLBI.
+
+When building defconfig with GCC 15.1.0, compared to v6.19-rc1, this
+patch saves ~1KiB of text, makes the vmlinux ~42KiB smaller, and makes
+the resulting Image 64KiB smaller:
+
+| [mark@lakrids:~/src/linux]% size vmlinux-*
+|    text    data     bss     dec     hex filename
+| 21179831        19660919         708216 41548966        279fca6 vmlinux-after
+| 21181075        19660903         708216 41550194        27a0172 vmlinux-before
+| [mark@lakrids:~/src/linux]% ls -l vmlinux-*
+| -rwxr-xr-x 1 mark mark 157771472 Feb  4 12:05 vmlinux-after
+| -rwxr-xr-x 1 mark mark 157815432 Feb  4 12:05 vmlinux-before
+| [mark@lakrids:~/src/linux]% ls -l Image-*
+| -rw-r--r-- 1 mark mark 41007616 Feb  4 12:05 Image-after
+| -rw-r--r-- 1 mark mark 41073152 Feb  4 12:05 Image-before
+
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Marc Zyngier <maz@kernel.org>
+Cc: Oliver Upton <oupton@kernel.org>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[Mark: Backport to v5.15.y; use inline ALTERNATIVE() sequence]
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_exec_queue.h      |   17 ---------
- drivers/gpu/drm/xe/xe_guc_submit.c      |   55 +-------------------------------
- drivers/gpu/drm/xe/xe_hw_engine_group.c |   10 +----
- 3 files changed, 5 insertions(+), 77 deletions(-)
+ arch/arm64/include/asm/tlbflush.h | 51 ++++++++++++++++++++++---------
+ arch/arm64/kernel/sys_compat.c    |  2 +-
+ arch/arm64/kvm/hyp/nvhe/tlb.c     |  6 ++--
+ arch/arm64/kvm/hyp/vhe/tlb.c      |  6 ++--
+ 4 files changed, 44 insertions(+), 21 deletions(-)
 
---- a/drivers/gpu/drm/xe/xe_exec_queue.h
-+++ b/drivers/gpu/drm/xe/xe_exec_queue.h
-@@ -161,21 +161,4 @@ int xe_exec_queue_contexts_hwsp_rebase(s
+diff --git a/arch/arm64/include/asm/tlbflush.h b/arch/arm64/include/asm/tlbflush.h
+index 2626a45849c241..cc6e47172f8fa7 100644
+--- a/arch/arm64/include/asm/tlbflush.h
++++ b/arch/arm64/include/asm/tlbflush.h
+@@ -30,18 +30,10 @@
+  */
+ #define __TLBI_0(op, arg) asm (ARM64_ASM_PREAMBLE			       \
+ 			       "tlbi " #op "\n"				       \
+-		   ALTERNATIVE("nop\n			nop",		       \
+-			       "dsb ish\n		tlbi " #op,	       \
+-			       ARM64_WORKAROUND_REPEAT_TLBI,		       \
+-			       CONFIG_ARM64_WORKAROUND_REPEAT_TLBI)	       \
+ 			    : : )
  
- struct xe_lrc *xe_exec_queue_lrc(struct xe_exec_queue *q);
+ #define __TLBI_1(op, arg) asm (ARM64_ASM_PREAMBLE			       \
+ 			       "tlbi " #op ", %x0\n"			       \
+-		   ALTERNATIVE("nop\n			nop",		       \
+-			       "dsb ish\n		tlbi " #op ", %x0",    \
+-			       ARM64_WORKAROUND_REPEAT_TLBI,		       \
+-			       CONFIG_ARM64_WORKAROUND_REPEAT_TLBI)	       \
+ 			    : : "rZ" (arg))
  
--/**
-- * xe_exec_queue_idle_skip_suspend() - Can exec queue skip suspend
-- * @q: The exec_queue
-- *
-- * If an exec queue is not parallel and is idle, the suspend steps can be
-- * skipped in the submission backend immediatley signaling the suspend fence.
-- * Parallel queues cannot skip this step due to limitations in the submission
-- * backend.
-- *
-- * Return: True if exec queue is idle and can skip suspend steps, False
-- * otherwise
-- */
--static inline bool xe_exec_queue_idle_skip_suspend(struct xe_exec_queue *q)
--{
--	return !xe_exec_queue_is_parallel(q) && xe_exec_queue_is_idle(q);
--}
--
+ #define __TLBI_N(op, arg, n, ...) __TLBI_##n(op, arg)
+@@ -158,6 +150,37 @@ static inline unsigned long get_trans_granule(void)
+ #define __TLBI_RANGE_NUM(pages, scale)	\
+ 	((((pages) >> (5 * (scale) + 1)) & TLBI_RANGE_MASK) - 1)
+ 
++#define __repeat_tlbi_sync(op, arg)						\
++do {										\
++	asm volatile(								\
++	ALTERNATIVE("nop\n			nop",				\
++		    "tlbi " #op ", %x0\n	dsb ish",			\
++		    ARM64_WORKAROUND_REPEAT_TLBI,				\
++		    CONFIG_ARM64_WORKAROUND_REPEAT_TLBI)			\
++	:									\
++	: "rZ" (arg));								\
++} while (0)
++
++/*
++ * Complete broadcast TLB maintenance issued by the host which invalidates
++ * stage 1 information in the host's own translation regime.
++ */
++static inline void __tlbi_sync_s1ish(void)
++{
++	dsb(ish);
++	__repeat_tlbi_sync(vale1is, 0);
++}
++
++/*
++ * Complete broadcast TLB maintenance issued by hyp code which invalidates
++ * stage 1 translation information in any translation regime.
++ */
++static inline void __tlbi_sync_s1ish_hyp(void)
++{
++	dsb(ish);
++	__repeat_tlbi_sync(vale2is, 0);
++}
++
+ /*
+  *	TLB Invalidation
+  *	================
+@@ -239,7 +262,7 @@ static inline void flush_tlb_all(void)
+ {
+ 	dsb(ishst);
+ 	__tlbi(vmalle1is);
+-	dsb(ish);
++	__tlbi_sync_s1ish();
+ 	isb();
+ }
+ 
+@@ -251,7 +274,7 @@ static inline void flush_tlb_mm(struct mm_struct *mm)
+ 	asid = __TLBI_VADDR(0, ASID(mm));
+ 	__tlbi(aside1is, asid);
+ 	__tlbi_user(aside1is, asid);
+-	dsb(ish);
++	__tlbi_sync_s1ish();
+ }
+ 
+ static inline void flush_tlb_page_nosync(struct vm_area_struct *vma,
+@@ -269,7 +292,7 @@ static inline void flush_tlb_page(struct vm_area_struct *vma,
+ 				  unsigned long uaddr)
+ {
+ 	flush_tlb_page_nosync(vma, uaddr);
+-	dsb(ish);
++	__tlbi_sync_s1ish();
+ }
+ 
+ /*
+@@ -357,7 +380,7 @@ static inline void __flush_tlb_range(struct vm_area_struct *vma,
+ 		}
+ 		scale++;
+ 	}
+-	dsb(ish);
++	__tlbi_sync_s1ish();
+ }
+ 
+ static inline void flush_tlb_range(struct vm_area_struct *vma,
+@@ -386,7 +409,7 @@ static inline void flush_tlb_kernel_range(unsigned long start, unsigned long end
+ 	dsb(ishst);
+ 	for (addr = start; addr < end; addr += 1 << (PAGE_SHIFT - 12))
+ 		__tlbi(vaale1is, addr);
+-	dsb(ish);
++	__tlbi_sync_s1ish();
+ 	isb();
+ }
+ 
+@@ -400,7 +423,7 @@ static inline void __flush_tlb_kernel_pgtable(unsigned long kaddr)
+ 
+ 	dsb(ishst);
+ 	__tlbi(vaae1is, addr);
+-	dsb(ish);
++	__tlbi_sync_s1ish();
+ 	isb();
+ }
  #endif
---- a/drivers/gpu/drm/xe/xe_guc_submit.c
-+++ b/drivers/gpu/drm/xe/xe_guc_submit.c
-@@ -72,7 +72,6 @@ exec_queue_to_guc(struct xe_exec_queue *
- #define EXEC_QUEUE_STATE_WEDGED			(1 << 8)
- #define EXEC_QUEUE_STATE_BANNED			(1 << 9)
- #define EXEC_QUEUE_STATE_PENDING_RESUME		(1 << 10)
--#define EXEC_QUEUE_STATE_IDLE_SKIP_SUSPEND	(1 << 11)
- 
- static bool exec_queue_registered(struct xe_exec_queue *q)
- {
-@@ -224,21 +223,6 @@ static void clear_exec_queue_pending_res
- 	atomic_and(~EXEC_QUEUE_STATE_PENDING_RESUME, &q->guc->state);
- }
- 
--static bool exec_queue_idle_skip_suspend(struct xe_exec_queue *q)
--{
--	return atomic_read(&q->guc->state) & EXEC_QUEUE_STATE_IDLE_SKIP_SUSPEND;
--}
--
--static void set_exec_queue_idle_skip_suspend(struct xe_exec_queue *q)
--{
--	atomic_or(EXEC_QUEUE_STATE_IDLE_SKIP_SUSPEND, &q->guc->state);
--}
--
--static void clear_exec_queue_idle_skip_suspend(struct xe_exec_queue *q)
--{
--	atomic_and(~EXEC_QUEUE_STATE_IDLE_SKIP_SUSPEND, &q->guc->state);
--}
--
- static bool exec_queue_killed_or_banned_or_wedged(struct xe_exec_queue *q)
- {
- 	return (atomic_read(&q->guc->state) &
-@@ -1110,7 +1094,7 @@ static void submit_exec_queue(struct xe_
- 	if (!job->restore_replay || job->last_replay) {
- 		if (xe_exec_queue_is_parallel(q))
- 			wq_item_append(q);
--		else if (!exec_queue_idle_skip_suspend(q))
-+		else
- 			xe_lrc_set_ring_tail(lrc, lrc->ring.tail);
- 		job->last_replay = false;
- 	}
-@@ -1781,10 +1765,9 @@ static void __guc_exec_queue_process_msg
- {
- 	struct xe_exec_queue *q = msg->private_data;
- 	struct xe_guc *guc = exec_queue_to_guc(q);
--	bool idle_skip_suspend = xe_exec_queue_idle_skip_suspend(q);
- 
--	if (!idle_skip_suspend && guc_exec_queue_allowed_to_change_state(q) &&
--	    !exec_queue_suspended(q) && exec_queue_enabled(q)) {
-+	if (guc_exec_queue_allowed_to_change_state(q) && !exec_queue_suspended(q) &&
-+	    exec_queue_enabled(q)) {
- 		wait_event(guc->ct.wq, vf_recovery(guc) ||
- 			   ((q->guc->resume_time != RESUME_PENDING ||
- 			   xe_guc_read_stopped(guc)) && !exec_queue_pending_disable(q)));
-@@ -1803,33 +1786,11 @@ static void __guc_exec_queue_process_msg
- 			disable_scheduling(q, false);
+diff --git a/arch/arm64/kernel/sys_compat.c b/arch/arm64/kernel/sys_compat.c
+index b88a52f7188fcc..416195f376816b 100644
+--- a/arch/arm64/kernel/sys_compat.c
++++ b/arch/arm64/kernel/sys_compat.c
+@@ -38,7 +38,7 @@ __do_compat_cache_op(unsigned long start, unsigned long end)
+ 			 * We pick the reserved-ASID to minimise the impact.
+ 			 */
+ 			__tlbi(aside1is, __TLBI_VADDR(0, 0));
+-			dsb(ish);
++			__tlbi_sync_s1ish();
  		}
- 	} else if (q->guc->suspend_pending) {
--		if (idle_skip_suspend)
--			set_exec_queue_idle_skip_suspend(q);
- 		set_exec_queue_suspended(q);
- 		suspend_fence_signal(q);
- 	}
- }
  
--static void sched_context(struct xe_exec_queue *q)
--{
--	struct xe_guc *guc = exec_queue_to_guc(q);
--	struct xe_lrc *lrc = q->lrc[0];
--	u32 action[] = {
--		XE_GUC_ACTION_SCHED_CONTEXT,
--		q->guc->id,
--	};
--
--	xe_gt_assert(guc_to_gt(guc), !xe_exec_queue_is_parallel(q));
--	xe_gt_assert(guc_to_gt(guc), !exec_queue_destroyed(q));
--	xe_gt_assert(guc_to_gt(guc), exec_queue_registered(q));
--	xe_gt_assert(guc_to_gt(guc), !exec_queue_pending_disable(q));
--
--	trace_xe_exec_queue_submit(q);
--
--	xe_lrc_set_ring_tail(lrc, lrc->ring.tail);
--	xe_guc_ct_send(&guc->ct, action, ARRAY_SIZE(action), 0, 0);
--}
--
- static void __guc_exec_queue_process_msg_resume(struct xe_sched_msg *msg)
+ 		ret = caches_clean_inval_user_pou(start, start + chunk);
+diff --git a/arch/arm64/kvm/hyp/nvhe/tlb.c b/arch/arm64/kvm/hyp/nvhe/tlb.c
+index 291789df24e3ee..76973e3b48a076 100644
+--- a/arch/arm64/kvm/hyp/nvhe/tlb.c
++++ b/arch/arm64/kvm/hyp/nvhe/tlb.c
+@@ -81,7 +81,7 @@ void __kvm_tlb_flush_vmid_ipa(struct kvm_s2_mmu *mmu,
+ 	 */
+ 	dsb(ish);
+ 	__tlbi(vmalle1is);
+-	dsb(ish);
++	__tlbi_sync_s1ish_hyp();
+ 	isb();
+ 
+ 	__tlb_switch_to_host(&cxt);
+@@ -97,7 +97,7 @@ void __kvm_tlb_flush_vmid(struct kvm_s2_mmu *mmu)
+ 	__tlb_switch_to_guest(mmu, &cxt);
+ 
+ 	__tlbi(vmalls12e1is);
+-	dsb(ish);
++	__tlbi_sync_s1ish_hyp();
+ 	isb();
+ 
+ 	__tlb_switch_to_host(&cxt);
+@@ -122,5 +122,5 @@ void __kvm_flush_vm_context(void)
  {
- 	struct xe_exec_queue *q = msg->private_data;
-@@ -1837,22 +1798,12 @@ static void __guc_exec_queue_process_msg
- 	if (guc_exec_queue_allowed_to_change_state(q)) {
- 		clear_exec_queue_suspended(q);
- 		if (!exec_queue_enabled(q)) {
--			if (exec_queue_idle_skip_suspend(q)) {
--				struct xe_lrc *lrc = q->lrc[0];
--
--				clear_exec_queue_idle_skip_suspend(q);
--				xe_lrc_set_ring_tail(lrc, lrc->ring.tail);
--			}
- 			q->guc->resume_time = RESUME_PENDING;
- 			set_exec_queue_pending_resume(q);
- 			enable_scheduling(q);
--		} else if (exec_queue_idle_skip_suspend(q)) {
--			clear_exec_queue_idle_skip_suspend(q);
--			sched_context(q);
- 		}
- 	} else {
- 		clear_exec_queue_suspended(q);
--		clear_exec_queue_idle_skip_suspend(q);
- 	}
+ 	dsb(ishst);
+ 	__tlbi(alle1is);
+-	dsb(ish);
++	__tlbi_sync_s1ish_hyp();
  }
+diff --git a/arch/arm64/kvm/hyp/vhe/tlb.c b/arch/arm64/kvm/hyp/vhe/tlb.c
+index fc3fcd29ccc306..59aa22b48e9538 100644
+--- a/arch/arm64/kvm/hyp/vhe/tlb.c
++++ b/arch/arm64/kvm/hyp/vhe/tlb.c
+@@ -105,7 +105,7 @@ void __kvm_tlb_flush_vmid_ipa(struct kvm_s2_mmu *mmu,
+ 	 */
+ 	dsb(ish);
+ 	__tlbi(vmalle1is);
+-	dsb(ish);
++	__tlbi_sync_s1ish_hyp();
+ 	isb();
  
---- a/drivers/gpu/drm/xe/xe_hw_engine_group.c
-+++ b/drivers/gpu/drm/xe/xe_hw_engine_group.c
-@@ -207,21 +207,15 @@ static int xe_hw_engine_group_suspend_fa
- 	lockdep_assert_held_write(&group->mode_sem);
+ 	__tlb_switch_to_host(&cxt);
+@@ -121,7 +121,7 @@ void __kvm_tlb_flush_vmid(struct kvm_s2_mmu *mmu)
+ 	__tlb_switch_to_guest(mmu, &cxt);
  
- 	list_for_each_entry(q, &group->exec_queue_list, hw_engine_group_link) {
--		bool idle_skip_suspend;
+ 	__tlbi(vmalls12e1is);
+-	dsb(ish);
++	__tlbi_sync_s1ish_hyp();
+ 	isb();
  
- 		if (!xe_vm_in_fault_mode(q->vm))
- 			continue;
- 
--		idle_skip_suspend = xe_exec_queue_idle_skip_suspend(q);
--		if (!idle_skip_suspend && has_deps)
-+		if (has_deps)
- 			return -EAGAIN;
- 
- 		xe_gt_stats_incr(q->gt, XE_GT_STATS_ID_HW_ENGINE_GROUP_SUSPEND_LR_QUEUE_COUNT, 1);
--		if (idle_skip_suspend)
--			xe_gt_stats_incr(q->gt,
--					 XE_GT_STATS_ID_HW_ENGINE_GROUP_SKIP_LR_QUEUE_COUNT, 1);
--
--		need_resume |= !idle_skip_suspend;
-+		need_resume = true;
- 		q->ops->suspend(q);
- 		gt = q->gt;
- 	}
+ 	__tlb_switch_to_host(&cxt);
+@@ -146,5 +146,5 @@ void __kvm_flush_vm_context(void)
+ {
+ 	dsb(ishst);
+ 	__tlbi(alle1is);
+-	dsb(ish);
++	__tlbi_sync_s1ish_hyp();
+ }
+-- 
+2.53.0
+
 
 
 
