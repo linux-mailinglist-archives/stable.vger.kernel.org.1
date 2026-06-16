@@ -1,59 +1,67 @@
-Return-Path: <stable+bounces-265912-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265490-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 1dJDFqCSMWpinAUAu9opvQ
-	(envelope-from <stable+bounces-265912-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:14:56 +0200
+	id RSriC2KLMWrgmAUAu9opvQ
+	(envelope-from <stable+bounces-265490-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:44:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57043693F2A
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:14:55 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4D746936B2
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:44:01 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=gMI8lMte;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265912-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265912-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ghO4Na9R;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265490-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265490-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2287F301A06B
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:14:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C19CF31B07FC
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:37:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ABA83D7D9F;
-	Tue, 16 Jun 2026 18:14:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0485146AF3C;
+	Tue, 16 Jun 2026 17:37:48 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 122BF3CE4BA;
-	Tue, 16 Jun 2026 18:14:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEDDC332EC1;
+	Tue, 16 Jun 2026 17:37:46 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781633653; cv=none; b=VKu52w+ifgeE32iFIVHV01mI3kVmBVNWuOoIouvrmsS/K2BA+dklfHosA2HmYutiMSc85ecS/4myCzN147ff5xwcx3WjjZEXEic9gx45IlAWJAcDss2m0BOBop38wk3odl1y29uDrsJ3jS8LfGHrFs4mUy8+hvn4+vMsrJcToJk=
+	t=1781631467; cv=none; b=cVt1Ad4ONDMkdXryzEenkK3GCOtX5fGpdrU06zeNKAMWDaDXz0Ifl2k1DjBfmI/jaP5TlpnNhnfNCgl8F6qex8JJeELQImdL6u3tqMsSCAutigzLpjiR3/vvVlDATve7+Se9etwDzxLPEPkefHV+oCsfwNv+7Dq2o4NBa1YrsVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781633653; c=relaxed/simple;
-	bh=ZFOz4wDD7dZar9Zf4FHSA5WS7vAwc9YxNNPWDCfr0qA=;
+	s=arc-20240116; t=1781631467; c=relaxed/simple;
+	bh=RxmJAIOWsvBmDI1HNrDEdBLR0bIsx1hDC5i1kAfUXSQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=adex3Zfx90LM/LCI3Qz/5QiNgSqYIlTNqxl4AJPwTmLMDBW2U8kIW7hj0okeqG4Q8usYpWAuyg0UXb64Fz1zUXYu9M6HmtX7sLJE4wmARkfCiPi0uC7QHsLzv0qEkrtMBbtwgMcHWjBBewB6eJK7CXEIL0wnEkFHcnJgxQKVSWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gMI8lMte; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C277B1F000E9;
-	Tue, 16 Jun 2026 18:14:10 +0000 (UTC)
+	 MIME-Version; b=ZcCy6Ezc0b0ar9aowKhIDA0mVK0gpmnHu4eE1+1UqwxDZPCOB3C+SCjqIvjoq32eYK6jej8Wo5jhENLqgG3xUUs3foLNor7wO8PtXWpt+Mb6YgB5vs2FMZri/kQcpbHVWWWBFOBgsRUFkTQ+IYfR/yi9LU1nIx8G8vX2kWozRL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ghO4Na9R; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 757C11F000E9;
+	Tue, 16 Jun 2026 17:37:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781633651;
-	bh=HMy+KdGiQbbeou65H2ua1JRx/fSzYg40JGn0OHSBs10=;
+	s=korg; t=1781631466;
+	bh=1C4cOaqo+xHCg9MEh9T0Iog9uFlcOFih/TymDIIBJb0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gMI8lMteukFordyRciT9s5KU88IUjF0jhtFkVGtMAxePRKiputvNTMzOKwkVnT10W
-	 +jslNA/7+J4ChfkJFCxOpgWvUIwHvzffUrhoCUHdck0gatEf+Dml3zPaninwHWYCux
-	 uI7eySM2LnJ8xddeYz9kcluH5i9vp3+CzT70SdQE=
+	b=ghO4Na9R3v6dK1PQs/Og3aWj6jk2JGzY7lR6RTW+gjMSBpFORgEwFQx0FMHJj6DQp
+	 v5akUkTrsZmlQ06mfe/RGpxVpX9tKW2FoNkFRS4YwDRqAyR4SI9mT5HodrNO6qUCo9
+	 cbHTX+dhfx05KMowRzGPs+QmBIg2AYOnW1oELJLs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 5.15 118/411] USB: serial: keyspan: fix missing indat transfer sanity check
+	Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>,
+	Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>,
+	Ao Wang <wangao@seu.edu.cn>,
+	Xuewei Feng <fengxw06@126.com>,
+	Qi Li <qli01@tsinghua.edu.cn>,
+	Ke Xu <xuke@tsinghua.edu.cn>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 209/522] net: garp: fix unsigned integer underflow in garp_pdu_parse_attr
 Date: Tue, 16 Jun 2026 20:25:56 +0530
-Message-ID: <20260616145106.580992962@linuxfoundation.org>
+Message-ID: <20260616145135.836795232@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,69 +78,94 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-265912-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:johan@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	TAGGED_FROM(0.00)[bounces-265490-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:zhaoyz24@mails.tsinghua.edu.cn,m:yangyx22@mails.tsinghua.edu.cn,m:wangao@seu.edu.cn,m:fengxw06@126.com,m:qli01@tsinghua.edu.cn,m:xuke@tsinghua.edu.cn,m:horms@kernel.org,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,mails.tsinghua.edu.cn,seu.edu.cn,126.com,tsinghua.edu.cn,kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tsinghua.edu.cn:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,seu.edu.cn:email,vger.kernel.org:from_smtp,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 57043693F2A
+X-Rspamd-Queue-Id: A4D746936B2
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
 
-commit ab8336a7e414f018430aa1af3a46944032f7ff96 upstream.
+[ Upstream commit 16e408e607a94b646fb14a2a98422c6877ae4b3c ]
 
-Add the missing sanity check on the size of usa49wg indat transfers to
-avoid parsing stale or uninitialised slab data.
+The receive-side GARP attribute parser computes dlen with reversed
+operands:
 
-Fixes: 0ca1268e109a ("USB Serial Keyspan: add support for USA-49WG & USA-28XG")
-Cc: stable@vger.kernel.org	# 2.6.23
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+        dlen = sizeof(*ga) - ga->len;
+
+ga->len is the on-wire attribute length and includes the GARP attribute
+header. For normal attributes with data, ga->len is larger than
+sizeof(*ga), so the subtraction underflows in unsigned arithmetic.
+
+The resulting value is later passed to garp_attr_lookup(), whose length
+argument is u8. After truncation, the parsed data length usually no
+longer matches the length stored for locally registered attributes, so
+received Join/Leave events are ignored. This breaks the GARP receive path
+for common attributes, such as GVRP VLAN registration attributes.
+
+Compute the data length as the attribute length minus the header length.
+
+Fixes: eca9ebac651f ("net: Add GARP applicant-only participant")
+Reported-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+Reported-by: Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>
+Reported-by: Ao Wang <wangao@seu.edu.cn>
+Reported-by: Xuewei Feng <fengxw06@126.com>
+Reported-by: Qi Li <qli01@tsinghua.edu.cn>
+Reported-by: Ke Xu <xuke@tsinghua.edu.cn>
+Signed-off-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260527083200.42861-1-zhaoyz24@mails.tsinghua.edu.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/keyspan.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ net/802/garp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/serial/keyspan.c
-+++ b/drivers/usb/serial/keyspan.c
-@@ -1184,6 +1184,10 @@ static void usa49wg_indat_callback(struc
- 	len = 0;
+diff --git a/net/802/garp.c b/net/802/garp.c
+index fc9eb02a912f81..f8037227e6dd66 100644
+--- a/net/802/garp.c
++++ b/net/802/garp.c
+@@ -452,7 +452,7 @@ static int garp_pdu_parse_attr(struct garp_applicant *app, struct sk_buff *skb,
+ 	if (!pskb_may_pull(skb, ga->len))
+ 		return -1;
+ 	skb_pull(skb, ga->len);
+-	dlen = sizeof(*ga) - ga->len;
++	dlen = ga->len - sizeof(*ga);
  
- 	while (i < urb->actual_length) {
-+		if (urb->actual_length - i < 3) {
-+			dev_warn_ratelimited(&urb->dev->dev, "malformed indat packet\n");
-+			break;
-+		}
- 
- 		/* Check port number from message */
- 		if (data[i] >= serial->num_ports) {
+ 	if (attrtype > app->app->maxattr)
+ 		return 0;
+-- 
+2.53.0
+
 
 
 
