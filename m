@@ -1,65 +1,61 @@
-Return-Path: <stable+bounces-264400-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264179-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 7su/Dh91MWo+jwUAu9opvQ
-	(envelope-from <stable+bounces-264400-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:09:03 +0200
+	id 8AswCvZwMWqNjQUAu9opvQ
+	(envelope-from <stable+bounces-264179-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:51:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BC2E691BAD
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:09:02 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id B245E69170D
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:51:17 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Upx2vcUq;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264400-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264400-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=BmoypmeU;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264179-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-264179-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 463EC3010BB9
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:01:51 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id F14E43097779
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:43:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5A21453498;
-	Tue, 16 Jun 2026 16:01:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F55A44E02C;
+	Tue, 16 Jun 2026 15:42:20 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A8884657F4;
-	Tue, 16 Jun 2026 16:01:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5CC7466B66;
+	Tue, 16 Jun 2026 15:42:18 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781625687; cv=none; b=ouFQzdxCupJTlXP548hmBOV8PgIpcgGa7bdU8JQy0HHC8iO7KaUL/MmW5VxVCKSxsKwHXm7hfwGgbtFISQfZTMsaZM9rwz57ASXy+JT363/yGMjGEv/d6RsDqrt8pYX7xc4pgGJh+RsDEt3FzEBSiU+TK81JDrEqgFp0g+gocAA=
+	t=1781624540; cv=none; b=IwmefX3VHtYB8iNKsQPsNtvzq3DqN80ba/MQeugq6lfDmcAc9+3U3c/RdcAWxQ5TYWe7e52bOf7W4xE6jRNEKPXTE6TMn4RCEC+8CWbMR88zDyo6eiehuhL2dMXd7lIgDXgvdJJsa4sdAsBdhua6+4kGXak+r2b3+Su+LvpCbHY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781625687; c=relaxed/simple;
-	bh=yWZQ9Zzvo4ze2rISTioBZItG+1BMSu0fz+9GzwD273k=;
+	s=arc-20240116; t=1781624540; c=relaxed/simple;
+	bh=Lkf7B5pwrDB5rNx6VSkUEkLnV9BP5loT97lzVW4qmBw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ecLN4R28ZSYc1pO83RlsxJDMnkUqeK+AkI6qvXs6vKMu4j5yMJUAXVV2H95PqLEEwU1nbD4sNEGo96I7huO8ZbRsI6RNEZVGi9loSGr3NdDmQw3pgEzU1gHD/LPtC7FwOPe54G3+i1VnwJI0suVs3Ia5Y0XM2+V7Ktkb9agE1MI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Upx2vcUq; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53FA31F000E9;
-	Tue, 16 Jun 2026 16:01:24 +0000 (UTC)
+	 MIME-Version; b=u+Yzmnbz6ZWewBNv0BAQZLuQLblMJzPFyXMhN7S+Ipr5JulMGDZ52Y/iy+loE4OmZwaozS/Z9fMf2seTPEqZe+QPxTKhEuMvOzHeixRsZ7+oL5PiaAT/RpCv4pkIWP7o16EOOm6YDwmjfozhe3MgHcciifHWNMurhdWspgvkU1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BmoypmeU; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67A241F00A3A;
+	Tue, 16 Jun 2026 15:42:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781625686;
-	bh=fNGw/nexpVTFo8Drau6MTQMqO8io0EDU6KQ9hhF9TqQ=;
+	s=korg; t=1781624538;
+	bh=2HN2mE9GL5BeZ0N01YHXAmDVG2L1aWwgXlswSIxSzpA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Upx2vcUqrQ9Iig5IxC43Tia49BjZ9wOgvo4NRSmzogRHCD+v9HJlWAD1xWM90ECdr
-	 6kUtoEwJl8IYYmbxlJDB6LHrwmDA20XtXS7YSAPiBLp8kyM2yuq66l5+fNq1yAYUlb
-	 W+f1CQ7Ny9sdhtp+3oNdlU53dW50pFfCVHzWOFg0=
+	b=BmoypmeUy/qtPfbW3Y7s636xykcWI6VuOUVDfabbJ8/5ygdepU4QoN7lkzdEAMxgw
+	 5DBBawraUd9TEdqfdLhJ8tZklxunxj3xhzi0DMsc6ICz/ivqStgVF9ARaPKHEm7TWv
+	 y5zvXXgLBB9jdA8aSoBtkBe+h+09whvpdfELsVGA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Cunlong Li <shenxiaogll@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Minchan Kim <minchan@kernel.org>,
-	Yisheng Xie <xieyisheng1@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.18 189/325] zram: fix use-after-free in zram_bvec_write_partial()
-Date: Tue, 16 Jun 2026 20:29:45 +0530
-Message-ID: <20260616145107.323521970@linuxfoundation.org>
+	Leorize <leorize+oss@disroot.org>,
+	Alex Hung <alex.hung@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 7.0 355/378] drm/amd/display: add missing CSC entries for BT.2020 for DCE IPs
+Date: Tue, 16 Jun 2026 20:29:46 +0530
+Message-ID: <20260616145128.832796610@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,88 +67,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,lst.de,chromium.org,gmail.com,kernel.dk,kernel.org,huawei.com,linux-foundation.org];
-	TAGGED_FROM(0.00)[bounces-264400-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:hch@lst.de,m:senozhatsky@chromium.org,m:shenxiaogll@gmail.com,m:axboe@kernel.dk,m:minchan@kernel.org,m:xieyisheng1@huawei.com,m:akpm@linux-foundation.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-264179-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:leorize+oss@disroot.org,m:alex.hung@amd.com,m:alexander.deucher@amd.com,m:leorize@disroot.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kernel.dk:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,huawei.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,chromium.org:email,lst.de:email]
+	TAGGED_RCPT(0.00)[stable,oss];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gitlab.freedesktop.org:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,amd.com:email,disroot.org:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7BC2E691BAD
+X-Rspamd-Queue-Id: B245E69170D
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cunlong Li <shenxiaogll@gmail.com>
+From: Leorize <leorize+oss@disroot.org>
 
-commit 732fd9f0b9c1cdc6dfd77162ded60df005182cc0 upstream.
+commit 6590fe323ce2807f5d9454e7fccf3fab875d4352 upstream.
 
-zram_read_page() picks the sync or async backing device read path based on
-whether the parent bio is NULL.  zram_bvec_write_partial() passes its
-parent bio down, so for ZRAM_WB slots the read is dispatched
-asynchronously and zram_read_page() returns 0 while the bio is still in
-flight.  The caller then runs memcpy_from_bvec(), zram_write_page() and
-__free_page() on the buffer, leaving the async read to write into a freed
-page.
+DCE-based hardware does not have the CSC matrices for BT.2020, which
+causes the driver to fallback to the GPU built-in matrices. This does
+not appear to cause any issues for RGB sinks, but causes major color
+artifacts for YCbCr ones (e.g. black becomes green).
 
-zram_bvec_read_partial() was switched to NULL in commit 4e3c87b9421d
-("zram: fix synchronous reads") for the same reason; the write_partial
-counterpart was missed.
+This commit adds the missing CSC matrices (taken from DC common) to DCE
+CSC tables, resolving the issue.
 
-Link: https://lore.kernel.org/20260528-zram-v3-1-cab86eef8764@gmail.com
-Fixes: 8e654f8fbff5 ("zram: read page from backing device")
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Signed-off-by: Cunlong Li <shenxiaogll@gmail.com>
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: Minchan Kim <minchan@kernel.org>
-Cc: Yisheng Xie <xieyisheng1@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/work_items/3358
+Closes: https://gitlab.freedesktop.org/drm/amd/-/work_items/5333
+Assisted-by: oh-my-pi:GPT-5.5
+Signed-off-by: Leorize <leorize+oss@disroot.org>
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 51e6668ab4baf55b082c376318d51ef965757196)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/block/zram/zram_drv.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/dce/dce_transform.c       |   10 +++++++++-
+ drivers/gpu/drm/amd/display/dc/dce110/dce110_opp_csc_v.c |   10 +++++++++-
+ 2 files changed, 18 insertions(+), 2 deletions(-)
 
---- a/drivers/block/zram/zram_drv.c
-+++ b/drivers/block/zram/zram_drv.c
-@@ -1915,7 +1915,7 @@ static int zram_bvec_write_partial(struc
- 	if (!page)
- 		return -ENOMEM;
+--- a/drivers/gpu/drm/amd/display/dc/dce/dce_transform.c
++++ b/drivers/gpu/drm/amd/display/dc/dce/dce_transform.c
+@@ -110,7 +110,15 @@ static const struct out_csc_color_matrix
+ { COLOR_SPACE_YCBCR601_LIMITED, { 0xE00, 0xF447, 0xFDB9, 0x1000, 0x991,
+ 	0x12C9, 0x3A6, 0x200, 0xFB47, 0xF6B9, 0xE00, 0x1000} },
+ { COLOR_SPACE_YCBCR709_LIMITED, { 0xE00, 0xF349, 0xFEB7, 0x1000, 0x6CE, 0x16E3,
+-	0x24F, 0x200, 0xFCCB, 0xF535, 0xE00, 0x1000} }
++	0x24F, 0x200, 0xFCCB, 0xF535, 0xE00, 0x1000} },
++{ COLOR_SPACE_2020_RGB_FULLRANGE,
++	{ 0x2000, 0, 0, 0, 0, 0x2000, 0, 0, 0, 0, 0x2000, 0} },
++{ COLOR_SPACE_2020_RGB_LIMITEDRANGE,
++	{ 0x1B67, 0, 0, 0x201, 0, 0x1B67, 0, 0x201, 0, 0, 0x1B67, 0x201} },
++{ COLOR_SPACE_2020_YCBCR_LIMITED, { 0x1000, 0xF149, 0xFEB7, 0x1004, 0x0868,
++	0x15B2, 0x01E6, 0x201, 0xFB88, 0xF478, 0x1000, 0x1004} },
++{ COLOR_SPACE_2020_YCBCR_FULL, { 0x1000, 0xF149, 0xFEB7, 0x1004, 0x0868, 0x15B2,
++	0x01E6, 0x201, 0xFB88, 0xF478, 0x1000, 0x1004} }
+ };
  
--	ret = zram_read_page(zram, page, index, bio);
-+	ret = zram_read_page(zram, page, index, NULL);
- 	if (!ret) {
- 		memcpy_from_bvec(page_address(page) + offset, bvec);
- 		ret = zram_write_page(zram, page, index);
+ static bool setup_scaling_configuration(
+--- a/drivers/gpu/drm/amd/display/dc/dce110/dce110_opp_csc_v.c
++++ b/drivers/gpu/drm/amd/display/dc/dce110/dce110_opp_csc_v.c
+@@ -88,7 +88,15 @@ static const struct out_csc_color_matrix
+ { COLOR_SPACE_YCBCR601_LIMITED, { 0xE00, 0xF447, 0xFDB9, 0x1000, 0x991,
+ 	0x12C9, 0x3A6, 0x200, 0xFB47, 0xF6B9, 0xE00, 0x1000} },
+ { COLOR_SPACE_YCBCR709_LIMITED, { 0xE00, 0xF349, 0xFEB7, 0x1000, 0x6CE, 0x16E3,
+-	0x24F, 0x200, 0xFCCB, 0xF535, 0xE00, 0x1000} }
++	0x24F, 0x200, 0xFCCB, 0xF535, 0xE00, 0x1000} },
++{ COLOR_SPACE_2020_RGB_FULLRANGE,
++	{ 0x2000, 0, 0, 0, 0, 0x2000, 0, 0, 0, 0, 0x2000, 0} },
++{ COLOR_SPACE_2020_RGB_LIMITEDRANGE,
++	{ 0x1B67, 0, 0, 0x201, 0, 0x1B67, 0, 0x201, 0, 0, 0x1B67, 0x201} },
++{ COLOR_SPACE_2020_YCBCR_LIMITED, { 0x1000, 0xF149, 0xFEB7, 0x1004, 0x0868,
++	0x15B2, 0x01E6, 0x201, 0xFB88, 0xF478, 0x1000, 0x1004} },
++{ COLOR_SPACE_2020_YCBCR_FULL, { 0x1000, 0xF149, 0xFEB7, 0x1004, 0x0868, 0x15B2,
++	0x01E6, 0x201, 0xFB88, 0xF478, 0x1000, 0x1004} }
+ };
+ 
+ enum csc_color_mode {
 
 
 
