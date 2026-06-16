@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-266521-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264706-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id AakyI+yfMWpKogUAu9opvQ
-	(envelope-from <stable+bounces-266521-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:11:40 +0200
+	id ZnZHFIV9MWrkkgUAu9opvQ
+	(envelope-from <stable+bounces-264706-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:44:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15E96694DA4
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:11:40 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B1026926B8
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:44:52 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ZcWLBSDK;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266521-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266521-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=rLEwC6Bv;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264706-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264706-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F27773210B98
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:07:07 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E66AA302E9F4
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:30:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EE303DDDA1;
-	Tue, 16 Jun 2026 19:07:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2DC5472786;
+	Tue, 16 Jun 2026 16:30:36 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D9663DDDA0;
-	Tue, 16 Jun 2026 19:07:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0075466B4E;
+	Tue, 16 Jun 2026 16:30:35 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781636827; cv=none; b=FFe4WaTu+d8+QRF/AOHosJbnFzZfh3DtIBoE9EUv1rbphNhRlI8CvSYjN4ik0PxtgB54AEinKTGbI5e4iQhoAjhETbV6o5wsFLsx0oiFixYhoweheC/s+enzB/xxLGkWk5n46m3Zyr7dCoJ/taRpuHX8x6XRCgRHkwzrpeCKjns=
+	t=1781627436; cv=none; b=AlNj0lgu485W89EoOhx+K8BNjxGjp+5FjUxbi3CClXAw7xR+UPuc2gB9kxPdt7Q53CyEwnUhIzCsljZIYJ7od5b41KLmFS9/qE5YTMVAfqzMrMMZ492dCatG4oqz8Ef8gFeintfw8L9oMg5Q6AGhThmtfYceSPWaqpBy4EP7AKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781636827; c=relaxed/simple;
-	bh=4XtXucT84PJLNJalBTpVeVaa1zzIvBtlHTpN0SKsC0E=;
+	s=arc-20240116; t=1781627436; c=relaxed/simple;
+	bh=9GB6SEprNiFBYEiHriUs2J8kw4/LnSifnicL+HQchgc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SnFWAt/MyZ9Q4fYq4Et1qqOPpnf8UsZw0QtFcNqSom4/iIU1kmmD5zddxPUrJuvoXTqdqmCJ8dAgun9bXOuo4VWQjHqau0lZXTwTG1q3MO+bmBd2K3OCSyNCtUhqWIgs3jkCw0nQ0YJp/XinKdkHFQ4s6FMWAQETGY9l3g9Ft48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZcWLBSDK; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C1641F000E9;
-	Tue, 16 Jun 2026 19:07:04 +0000 (UTC)
+	 MIME-Version; b=idAaNA1AiysQNrdq2N5zVSO3tLSGsT1vjzogqQ7h34dVBzTzAfqujpGp1aACoCSEw+PWynZ2c71lD5IB3znHWm2DE66Y4Xw2eagZI+X177/VXwbRM6bYq0qyC3LovWEJw02TTwnesAUrJzSN7YIacFM7Lq9NAYVHWom4gTZ8zQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rLEwC6Bv; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A42C1F000E9;
+	Tue, 16 Jun 2026 16:30:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781636826;
-	bh=3lgIx2qPbi96pzK4n1EGXi3SqQFWg1zbemVy5VQi1Vc=;
+	s=korg; t=1781627435;
+	bh=MwrKsmsUo1fGODvWJfxjr5pJvui1OqYtqIJcnvMzqno=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ZcWLBSDKMQ7QXhj+6VEmmbkv1ZIv/enbsycsfMVoeCz9aUP8+D4495Rf7eiBVjz1c
-	 MTIKGAU0kA/rA9wqkkTrtfeOXisl4kjz7OhctYRLvgSpAd0dfgC83CiJJUVJeOpbvV
-	 Q41mFqpumTJT5ZbP4UePcyfb/KeJJ/4cipdAa488=
+	b=rLEwC6Bv6kJPYxe6ufrGIpKyCEPQAqrlF8uUmIZPY0lvGolvmVkZsizvMZBfSoQL4
+	 o1GGwlq4T2kJuBw1u7HhpZpSuOu1hYKM/I9n2GrBJIwvIcRt6eq8JIshl+L3+1yX4r
+	 dkrO8kQ0IpY0vy178TDS7wpIPnr+g2DnzK4vphFA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anton Leontev <leontyevantony@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 312/342] hv_netvsc: use kmap_local_page in netvsc_copy_to_send_buf
+	Arpith Kalaginanavoor <arpithk@nvidia.com>,
+	"Christian Brauner (Amutable)" <brauner@kernel.org>
+Subject: [PATCH 6.12 170/261] fs/qnx6: fix pointer arithmetic in directory iteration
 Date: Tue, 16 Jun 2026 20:30:08 +0530
-Message-ID: <20260616145103.018875221@linuxfoundation.org>
+Message-ID: <20260616145052.947445753@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,124 +71,93 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264706-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-266521-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:leontyevantony@gmail.com,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com,kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:arpithk@nvidia.com,m:brauner@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,nvidia.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 15E96694DA4
+X-Rspamd-Queue-Id: 5B1026926B8
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anton Leontev <leontyevantony@gmail.com>
+From: Arpith Kalaginanavoor <arpithk@nvidia.com>
 
-[ Upstream commit 004e9ecfe6c5384f9e0b2f6f6389d42ec22789af ]
+commit 89c4a1167f3a0a0efd2ec3e1801036d2eb65ae1a upstream.
 
-netvsc_copy_to_send_buf() copies page buffer entries into the VMBus
-send buffer using phys_to_virt() on the entry PFN. Entries for the
-RNDIS header and the skb linear data come from kmalloc'd memory and
-are always in the kernel direct map, but entries for skb fragments
-reference page cache or user pages, which on 32-bit x86 with
-CONFIG_HIGHMEM=y can live above the LOWMEM boundary. For such a page
-phys_to_virt() returns an address outside the direct map and the
-subsequent memcpy() faults on the transmit softirq path, which is
-fatal.
+The conversion to qnx6_get_folio() in commit b2aa61556fcf
+("qnx6: Convert qnx6_get_page() to qnx6_get_folio()")
+introduced a regression in directory iteration. The pointer 'de'
+and the 'limit' address were calculated using byte offsets from
+a char pointer without scaling by the size of a QNX6 directory
+entry.
 
-Map the pages with kmap_local_page() instead, handling two properties
-of the page buffer entries:
+This causes the driver to read from incorrect memory offsets,
+leading to "invalid direntry size" errors and premature
+termination of directory scans.
 
- - pb[i].pfn is a Hyper-V PFN at HV_HYP_PAGE_SIZE (4K) granularity,
-   not a native PFN. Reconstruct the physical address first and derive
-   the native page from it, so the mapping stays correct where
-   PAGE_SIZE > HV_HYP_PAGE_SIZE (e.g. arm64 with 64K pages).
+Fix this by casting 'kaddr' to 'struct qnx6_dir_entry *' before
+applying the offset and last_entry(...) increments. This allows the
+compiler to correctly scale the pointer arithmetic by the 32-byte
+stride of the directory entry structure.
 
- - Since commit 41a6328b2c55 ("hv_netvsc: Preserve contiguous PFN
-   grouping in the page buffer array"), an entry describes a full
-   physically contiguous fragment and pb[i].len can exceed PAGE_SIZE,
-   while kmap_local_page() maps a single page. Copy page by page,
-   splitting at native page boundaries.
-
-The copy path only handles packets smaller than the send section size
-(6144 bytes by default); larger packets take the cp_partial path where
-only the RNDIS header is copied. So entries here are bounded by the
-section size and a copy is split at most once on 4K-page systems. On
-!CONFIG_HIGHMEM configs kmap_local_page() folds to page_address() and
-no mapping work is added.
-
-Fixes: c25aaf814a63 ("hyperv: Enable sendbuf mechanism on the send path")
+Fixes: b2aa61556fcf ("qnx6: Convert qnx6_get_page() to qnx6_get_folio()")
 Cc: stable@vger.kernel.org
-Signed-off-by: Anton Leontev <leontyevantony@gmail.com>
-Link: https://patch.msgid.link/20260604165938.32033-1-leontyevantony@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Arpith Kalaginanavoor <arpithk@nvidia.com>
+Link: https://patch.msgid.link/20260526123858.1683035-1-arpithk@nvidia.com
+Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/hyperv/netvsc.c |   19 +++++++++++++++----
- 1 file changed, 15 insertions(+), 4 deletions(-)
+ fs/qnx6/dir.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/net/hyperv/netvsc.c
-+++ b/drivers/net/hyperv/netvsc.c
-@@ -12,6 +12,7 @@
- #include <linux/sched.h>
- #include <linux/wait.h>
- #include <linux/mm.h>
-+#include <linux/highmem.h>
- #include <linux/delay.h>
- #include <linux/io.h>
- #include <linux/slab.h>
-@@ -889,12 +890,22 @@ static void netvsc_copy_to_send_buf(stru
- 	}
+--- a/fs/qnx6/dir.c
++++ b/fs/qnx6/dir.c
+@@ -131,16 +131,16 @@ static int qnx6_readdir(struct file *fil
+ 		struct qnx6_dir_entry *de;
+ 		struct folio *folio;
+ 		char *kaddr = qnx6_get_folio(inode, n, &folio);
+-		char *limit;
++		struct qnx6_dir_entry *limit;
  
- 	for (i = 0; i < page_count; i++) {
--		char *src = phys_to_virt(pb[i].pfn << HV_HYP_PAGE_SHIFT);
--		u32 offset = pb[i].offset;
-+		phys_addr_t paddr = (pb[i].pfn << HV_HYP_PAGE_SHIFT) +
-+				    pb[i].offset;
- 		u32 len = pb[i].len;
+ 		if (IS_ERR(kaddr)) {
+ 			pr_err("%s(): read failed\n", __func__);
+ 			ctx->pos = (n + 1) << PAGE_SHIFT;
+ 			return PTR_ERR(kaddr);
+ 		}
+-		de = (struct qnx6_dir_entry *)(kaddr + offset);
+-		limit = kaddr + last_entry(inode, n);
+-		for (; (char *)de < limit; de++, ctx->pos += QNX6_DIR_ENTRY_SIZE) {
++		de = (struct qnx6_dir_entry *)kaddr + offset;
++		limit = (struct qnx6_dir_entry *)kaddr + last_entry(inode, n);
++		for (; de < limit; de++, ctx->pos += QNX6_DIR_ENTRY_SIZE) {
+ 			int size = de->de_size;
+ 			u32 no_inode = fs32_to_cpu(sbi, de->de_inode);
  
--		memcpy(dest, (src + offset), len);
--		dest += len;
-+		while (len) {
-+			struct page *page = pfn_to_page(PHYS_PFN(paddr));
-+			u32 off = offset_in_page(paddr);
-+			u32 chunk = min_t(u32, len, PAGE_SIZE - off);
-+			char *src = kmap_atomic(page);
-+
-+			memcpy(dest, src + off, chunk);
-+			kunmap_atomic(src);
-+			dest += chunk;
-+			paddr += chunk;
-+			len -= chunk;
-+		}
- 	}
- 
- 	if (padding)
 
 
 
