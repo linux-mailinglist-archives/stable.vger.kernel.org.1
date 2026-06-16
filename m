@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-265934-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266286-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 1Qd1KvmSMWqLnAUAu9opvQ
-	(envelope-from <stable+bounces-265934-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:16:25 +0200
+	id /qu9BZCaMWoVoAUAu9opvQ
+	(envelope-from <stable+bounces-266286-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:48:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E3C4693F9F
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:16:25 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81FC16947D8
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:48:47 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=SW3KQhb8;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265934-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-265934-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=vulllewS;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266286-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266286-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CE2C7308DBB8
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:16:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DE17531A060A
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:47:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FF793EB0F5;
-	Tue, 16 Jun 2026 18:16:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42CD247AF5F;
+	Tue, 16 Jun 2026 18:47:07 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB1A035292A;
-	Tue, 16 Jun 2026 18:16:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1727734F492;
+	Tue, 16 Jun 2026 18:47:05 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781633767; cv=none; b=J/SkKoucLG/7aBm2AQ2znofzp+wPmmD8zD0Dy4J8ff7JOwmo/GnWMeMrg3JyMqJ2FyLi8H7srCJUtJvTtW+bqZ7TgYbM79JmDT8Tl5pBKiEYjTt4jjjYl1hMFQkHBVBiXf93MLJ7IAzstvXUyAwD9HkSYhzzE1snXreO7fAwGec=
+	t=1781635627; cv=none; b=b0l8UMXuuHkKWWGwX/mTSaPbRflLoMoUz+zkQY8VxfQ02qvnnvPwcyQwYm7jCQFDpO8h/spvwnTvlX0aj2n4ZUTpm+ghofnR0Y1qNgQ2ba1sy1srptuTfGl+VAfAvOwp2+s2xbTgbsfAT0SdVlML2HCc8667V5p1vwUgJBsCjMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781633767; c=relaxed/simple;
-	bh=rDRRedisskJkBTJK/n2mfRoHcZA12pxsVj5Btbu8nHE=;
+	s=arc-20240116; t=1781635627; c=relaxed/simple;
+	bh=dxrlR22HY/8nhRXz/xW8oqmOqYodCfZzLGRyfw3B1c8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QaUj5lLYQIG3NL2ysH2uepbAZhoI4HCyB5jTNtBk1dvXnqt5IRljFEML215wy8vOCHEkqTmeYyMos2kUTLn7CCQ6VNjBo9UOoWiDUwoDsFI6rTd/GnsXzcxQsns2yVxWRo6mEnCIYR0fjZLarEdn8dSy/WPOiKEJ43kdpPfdj0M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SW3KQhb8; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE5F51F000E9;
-	Tue, 16 Jun 2026 18:16:04 +0000 (UTC)
+	 MIME-Version; b=cnZ7/QHaFoY1xH5x19f2njUf+XlgUIP1RTmQdB2XhNh4GFeSKpAWdwk7KCYP5FO6nhhMnCbPdDKEdI2rJBUQVAP+/kAzKYjfmCweyyNC+sVO14RJMASN4eXlz/19XygXSctTOV2rYXlxP/FG9X3ARAH9u/44M/nxwJTuHk0dQwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vulllewS; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D487C1F000E9;
+	Tue, 16 Jun 2026 18:47:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781633765;
-	bh=A3QQVK+1v1A2y/pUKZ7n/l1tVakip42zD2QDE1qaKD4=;
+	s=korg; t=1781635625;
+	bh=wY/zcdJWgKsYZBK2ceL6jDWiKJ4y2zYrPBJolY3FSKg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=SW3KQhb85EY/gfPQgJKP+STChTPfNLJQQsc2pWL9JKktszP9socVYiFBwwhMNqBfx
-	 3mg7FoQcpr7Oj54Nd1TqjSEqG64O1qK0OmQS04q9WsKIec8hQxbnOnm9LPJ3J+gp1z
-	 naasbIxH46iyLDqYItOdhV6W4LPXByp5W1SZojlI=
+	b=vulllewSv6kw9YWpydHEP3rEd4oAQiNP2+oKY2UBhmXf1pfiyrbDTT0+5ADc5wYv5
+	 P7Pl5OmvRT9LDRqCycZHDbSCaMWHkVjxNF7jKibYAUKquK4iFr0NSOLQdYtFQjCBVi
+	 2pqqdNX1aM+BsfUw0lafQU1HjPSSG+mgLw5d2LMs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 141/411] serial: dz: Fix bootconsole handover lockup
+	Stable@vger.kernel.org,
+	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 5.10 083/342] ASoC: qcom: q6asm-dai: do not set stream state in event and trigger callbacks
 Date: Tue, 16 Jun 2026 20:26:19 +0530
-Message-ID: <20260616145107.868406795@linuxfoundation.org>
+Message-ID: <20260616145052.110072707@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,22 +72,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265934-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-266286-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:macro@orcam.me.uk,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:Stable@vger.kernel.org,m:srinivas.kandagatla@oss.qualcomm.com,m:broonie@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -97,123 +98,76 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[orcam.me.uk:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,qualcomm.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2E3C4693F9F
+X-Rspamd-Queue-Id: 81FC16947D8
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej W. Rozycki <macro@orcam.me.uk>
+From: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
 
-commit 7f127b2208e5e2b817243cad41fe4211a6d5a7a3 upstream.
+commit cee3e63e7106c3c81b2053371fdf14240bfba2fc upstream.
 
-Calling dz_reset() in the course of setting up the serial device causes
-line parameters to be reset and the transmitter disabled.  We've been
-lucky in that no message is usually produced to the kernel log between
-this call and the later call to uart_set_options() in the course of
-console setup done by dz_serial_console_init(), or the system would hang
-as the console output handler in the firmware tried to access a port the
-transmitter of which has been disabled and line parameters messed up.
+The q6asm-dai stream state is used by prepare() to decide whether an
+existing stream setup needs to be closed before opening/configuring a new
+one. Updating the state from trigger or asynchronous DSP callbacks can make
+that state stale or incorrect relative to the actual setup lifetime.
 
-This will change with the next change to the driver, so fix dz_reset()
-such that line parameters are set for 9600n8 console operation as with
-the system firmware and the transmitter re-enabled after reset.  This
-also means dz_pm() serves no purpose anymore, so drop it.
+In particular, setting Q6ASM_STREAM_STOPPED on STOP or EOS completion can
+make prepare() believe there is no active setup to close, which can result
+in opening/configuring the same stream more than once.
 
-Fixes: e6ee512f5a77 ("dz.c: Resource management")
-Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Cc: stable@vger.kernel.org # v2.6.25+
-Link: https://patch.msgid.link/alpine.DEB.2.21.2605062302010.46195@angie.orcam.me.uk
+Keep stream state updates tied to prepare(), where the stream is actually
+closed and reopened, and stop changing it from trigger and EOS callbacks.
+
+Fixes: bfbb12dfa144 ("ASoC: qcom: q6asm-dai: perform correct state check before closing")
+Cc: Stable@vger.kernel.org
+Closes: https://lore.kernel.org/all/afS7rTHdc9TyIeLx@rdacayan/
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260518092347.3446946-2-srinivas.kandagatla@oss.qualcomm.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[ Avoid C99+ 'for' loop initial declaration for 5.15.y. ]
-Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/dz.c | 37 +++++++++++++------------------------
- 1 file changed, 13 insertions(+), 24 deletions(-)
+ sound/soc/qcom/qdsp6/q6asm-dai.c |    5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/drivers/tty/serial/dz.c b/drivers/tty/serial/dz.c
-index 6d74ba5a5a431c..05f22e76a50893 100644
---- a/drivers/tty/serial/dz.c
-+++ b/drivers/tty/serial/dz.c
-@@ -546,6 +546,7 @@ static void dz_reset(struct dz_port *dport)
- 	struct dz_mux *mux = dport->mux;
- 	unsigned short tcr;
- 	int loops = 10000;
-+	int line;
+--- a/sound/soc/qcom/qdsp6/q6asm-dai.c
++++ b/sound/soc/qcom/qdsp6/q6asm-dai.c
+@@ -191,7 +191,6 @@ static void event_handler(uint32_t opcod
+ 				   prtd->pcm_count, 0, 0, 0);
+ 		break;
+ 	case ASM_CLIENT_EVENT_CMD_EOS_DONE:
+-		prtd->state = Q6ASM_STREAM_STOPPED;
+ 		break;
+ 	case ASM_CLIENT_EVENT_DATA_WRITE_DONE: {
+ 		prtd->pcm_irq_pos += prtd->pcm_count;
+@@ -338,7 +337,6 @@ static int q6asm_dai_trigger(struct snd_
+ 				       0, 0, 0);
+ 		break;
+ 	case SNDRV_PCM_TRIGGER_STOP:
+-		prtd->state = Q6ASM_STREAM_STOPPED;
+ 		ret = q6asm_cmd_nowait(prtd->audio_client, prtd->stream_id,
+ 				       CMD_EOS);
+ 		break;
+@@ -568,8 +566,6 @@ static void compress_event_handler(uint3
+ 			snd_compr_drain_notify(prtd->cstream);
+ 			prtd->notify_on_drain = false;
  
- 	if (mux->initialised)
- 		return;
-@@ -573,6 +574,18 @@ static void dz_reset(struct dz_port *dport)
- 	while (dz_in(dport, DZ_CSR) & DZ_CLR);
- 	iob();
- 
-+	/*
-+	 * Set parameters across all lines such as not to interfere
-+	 * with the initial PROM-based console.  Otherwise any output
-+	 * produced before the console handover would cause the system
-+	 * firmware to produce rubbish.
-+	 */
-+	for (line = 0; line < DZ_NB_PORT; line++)
-+		dz_out(dport, DZ_LPR, DZ_B9600 | DZ_CS8 | line);
-+
-+	/* Re-enable transmission for the initial PROM-based console.  */
-+	dz_out(dport, DZ_TCR, tcr);
-+
- 	/* Enable scanning.  */
- 	dz_out(dport, DZ_CSR, DZ_MSE);
- 
-@@ -653,26 +666,6 @@ static void dz_set_termios(struct uart_port *uport, struct ktermios *termios,
- 	spin_unlock_irqrestore(&dport->port.lock, flags);
- }
- 
--/*
-- * Hack alert!
-- * Required solely so that the initial PROM-based console
-- * works undisturbed in parallel with this one.
-- */
--static void dz_pm(struct uart_port *uport, unsigned int state,
--		  unsigned int oldstate)
--{
--	struct dz_port *dport = to_dport(uport);
--	unsigned long flags;
--
--	spin_lock_irqsave(&dport->port.lock, flags);
--	if (state < 3)
--		dz_start_tx(&dport->port);
--	else
--		dz_stop_tx(&dport->port);
--	spin_unlock_irqrestore(&dport->port.lock, flags);
--}
--
--
- static const char *dz_type(struct uart_port *uport)
- {
- 	return "DZ";
-@@ -768,7 +761,6 @@ static const struct uart_ops dz_ops = {
- 	.startup	= dz_startup,
- 	.shutdown	= dz_shutdown,
- 	.set_termios	= dz_set_termios,
--	.pm		= dz_pm,
- 	.type		= dz_type,
- 	.release_port	= dz_release_port,
- 	.request_port	= dz_request_port,
-@@ -893,10 +885,7 @@ static int __init dz_console_setup(struct console *co, char *options)
- 	if (ret)
- 		return ret;
- 
--	spin_lock_init(&dport->port.lock);	/* For dz_pm().  */
--
- 	dz_reset(dport);
--	dz_pm(uport, 0, -1);
- 
- 	if (options)
- 		uart_parse_options(options, &baud, &parity, &bits, &flow);
--- 
-2.53.0
-
+-		} else {
+-			prtd->state = Q6ASM_STREAM_STOPPED;
+ 		}
+ 		spin_unlock_irqrestore(&prtd->lock, flags);
+ 		break;
+@@ -1032,7 +1028,6 @@ static int q6asm_dai_compr_trigger(struc
+ 				       0, 0, 0);
+ 		break;
+ 	case SNDRV_PCM_TRIGGER_STOP:
+-		prtd->state = Q6ASM_STREAM_STOPPED;
+ 		ret = q6asm_cmd_nowait(prtd->audio_client, prtd->stream_id,
+ 				       CMD_EOS);
+ 		break;
 
 
 
