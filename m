@@ -1,63 +1,61 @@
-Return-Path: <stable+bounces-265544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265949-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 6gaXB0KLMWrOmAUAu9opvQ
-	(envelope-from <stable+bounces-265544-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:43:30 +0200
+	id 0qvKMzqTMWqznAUAu9opvQ
+	(envelope-from <stable+bounces-265949-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:17:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F19F69367B
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:43:29 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65A08693FE7
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:17:30 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Sxx3vDvz;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265544-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265544-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Hny2Zu7B;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265949-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-265949-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1FF483004CAA
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:42:25 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6E7E330449CE
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:17:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D01D347AF67;
-	Tue, 16 Jun 2026 17:42:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A53C93D75CE;
+	Tue, 16 Jun 2026 18:17:26 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EB1247AF68;
-	Tue, 16 Jun 2026 17:42:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F1E63CEBBD;
+	Tue, 16 Jun 2026 18:17:25 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781631741; cv=none; b=mIv+Iv6FTkx/S8+4kacZ+lb+bYf1dQixtWHi2zxMcPCn03NoZZoUB7LQviGYsSYh19StA1JzsgM5V2nWdUTdHB880GXlg9daooH6+b24BrG1VOsDEpazpSJOXSgABSD1gpaBnmvUlSUeiSBU0ccYp6ncsMDqZ5w46Cni5oiX6dM=
+	t=1781633846; cv=none; b=iMkPbX7DiJ2O5cmPmORurduKxQ7wYLjzcpOkgxTN9oNr3d44uOEFcoYQFHtHeWxGvA1CUPFaNpcRuRKWHf7FaOMO0aGfOUTL1HkmikAyNSRivlYp9IuNdkG+P+atGEy8OJy4b/otTzMsOKS6EbKaGQeYHzHRFSgMgrxsGL6Lpz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781631741; c=relaxed/simple;
-	bh=2CnsogwPOz8ql3tFxDvJiGf527hlSotN6rjPQGSMTbY=;
+	s=arc-20240116; t=1781633846; c=relaxed/simple;
+	bh=xhQtiLHL3B+jHnqSoOvyMW2bk3bNbDvwwQdtuwJvEdI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vt7gMxdwWfRS+G2PrQdTRuMQycWcs+icHslcvUqjHM9HwrH3Gn3mZ1fwXqqKLZeRDyqnl+fGm+Gd/EDQt3yACy+Ljm61QYCxygNqK0hN/sAaxDXTcbRGerd2FC8YNBduHODJa8sOJD4at6qtg041ADCazIau9k1J7VhQazBWhF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sxx3vDvz; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8BB71F00A3D;
-	Tue, 16 Jun 2026 17:42:15 +0000 (UTC)
+	 MIME-Version; b=o1sUS0Qt1cExAL1exLxblcMv6PL54fUXHkOpvZTjj237KCrEejji317afbNT0BuNBW9s3G4x2YVyB8UpEwzLCjMbTCwLCmNrDF7t37yPt6tSDm46cMMLFBzo0MtuvkSx0n+BUgd8DWe7pu3J+QK6m5oxSdF9VMjgJtKV5Zw5G0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hny2Zu7B; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 591B21F000E9;
+	Tue, 16 Jun 2026 18:17:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781631736;
-	bh=7wIgRF2s6mZVhqtQyV3IILWxUJDyLzU6do9nik2AMzI=;
+	s=korg; t=1781633845;
+	bh=HbyH/BqpI28WCKSDy/CMPzn0irlNlQ028SEXyk3sQVk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Sxx3vDvzHhUB8MWahlk09OFMIzpj7ty0DGF2M+WS1v+UUTSZIHB3NS5ViZIVXGFkc
-	 kRZ5uV0QxIm+ZnKAcP40J3niiwhjH92UBDJj2qCvZ2O921uWla04DUyIxEP3LVKMaM
-	 pyFgy1UlWBzFqcHI041aBPFEIT848MrHzwUjG7lc=
+	b=Hny2Zu7B0C8qC6ojIUQFAY4KQdmBifBtn2BJA8IQ6+aoLRvEjD5RMh/MyZMU8yxcz
+	 QL9BC3we0rpyOdkxSiKEosfiMiLhOvQY8bIFFwcdIcwiw59SGGIVVMpW1tnx9tQsOB
+	 eP+T0Ktkr6UvEZg6nkNdCwZaliG2w0aHI2d2mzOo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kyle Zeng <kylebot@openai.com>,
-	Eric Dumazet <edumazet@google.com>,
-	syzbot+6eb9ca986d80f6f88cf9@syzkaller.appspotmail.com,
-	Jakub Kicinski <kuba@kernel.org>,
+	Guangshuo Li <lgs201920130244@gmail.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 246/522] ipv6: sit: reload inner IPv6 header after GSO offloads
+Subject: [PATCH 5.15 155/411] dm cache policy smq: check allocation under invalidate lock
 Date: Tue, 16 Jun 2026 20:26:33 +0530
-Message-ID: <20260616145137.486296914@linuxfoundation.org>
+Message-ID: <20260616145108.692471376@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,91 +67,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265544-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-265949-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:lgs201920130244@gmail.com,m:mpatocka@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kylebot@openai.com,m:edumazet@google.com,m:syzbot+6eb9ca986d80f6f88cf9@syzkaller.appspotmail.com,m:kuba@kernel.org,m:sashal@kernel.org,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com,kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,6eb9ca986d80f6f88cf9];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,appspotmail.com:email,msgid.link:url,openai.com:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2F19F69367B
+X-Rspamd-Queue-Id: 65A08693FE7
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kyle Zeng <kylebot@openai.com>
+From: Guangshuo Li <lgs201920130244@gmail.com>
 
-[ Upstream commit f0e42f0c4337b1f220de1ddd63f47197c7dee4de ]
+[ Upstream commit d3f0a606b9f278ece8a0df626ded9c4044071235 ]
 
-ipip6_tunnel_xmit() caches the inner IPv6 header pointer at function
-entry and continues using it after iptunnel_handle_offloads().
+commit 2d1f7b65f5de ("dm cache policy smq: fix missing locks in
+invalidating cache blocks") added mq->lock around the destructive part of
+smq_invalidate_mapping(), but left the e->allocated check outside the
+critical section.
 
-For GSO skbs, iptunnel_handle_offloads() calls skb_header_unclone().
-When the skb header is cloned, skb_header_unclone() can call
-pskb_expand_head(), which may move the skb head. The pskb_expand_head()
-contract requires pointers into the skb header to be reloaded after the
-call.
+That leaves a check-then-act race. Two concurrent invalidators can both
+observe e->allocated as true before either of them takes mq->lock. The
+first invalidator that acquires the lock removes the entry from the
+queues and hash table and then calls free_entry(), which clears
+e->allocated and puts the entry back on the free list. The second
+invalidator can then acquire mq->lock and continue with the stale result
+of the unlocked check.
 
-If the later skb_realloc_headroom() branch is not taken, SIT uses the
-stale iph6 pointer to read the inner hop limit and DS field. That can
-read from a freed skb head after the old head's remaining clone is
-released.
+This can corrupt the SMQ queues or hash table by deleting an entry that
+is no longer on those structures. It can also hit the allocation check in
+free_entry() when the same entry is freed again.
 
-Reload iph6 after the offload helper succeeds and before subsequent
-reads from the inner IPv6 header. Keep the existing reload after
-skb_realloc_headroom(), since that branch can also replace the skb.
+Move the allocation check under mq->lock so the predicate and the
+destructive operations are serialized by the same lock.
 
-Fixes: 14909664e4e1 ("sit: Setup and TX path for sit/UDP foo-over-udp encapsulation")
-Signed-off-by: Kyle Zeng <kylebot@openai.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reported-by: syzbot+6eb9ca986d80f6f88cf9@syzkaller.appspotmail.com
-Link: https://patch.msgid.link/20260605073448.6524-1-kylebot@openai.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 2d1f7b65f5de ("dm cache policy smq: fix missing locks in invalidating cache blocks")
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/sit.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/md/dm-cache-policy-smq.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/net/ipv6/sit.c b/net/ipv6/sit.c
-index eb4c8e2a2b12e0..aa88a41034d920 100644
---- a/net/ipv6/sit.c
-+++ b/net/ipv6/sit.c
-@@ -965,6 +965,7 @@ static netdev_tx_t ipip6_tunnel_xmit(struct sk_buff *skb,
- 		ip_rt_put(rt);
- 		goto tx_error;
- 	}
-+	iph6 = ipv6_hdr(skb);
+diff --git a/drivers/md/dm-cache-policy-smq.c b/drivers/md/dm-cache-policy-smq.c
+index 95b0670c32acda..e5c4d7ff2c655b 100644
+--- a/drivers/md/dm-cache-policy-smq.c
++++ b/drivers/md/dm-cache-policy-smq.c
+@@ -1585,18 +1585,22 @@ static int smq_invalidate_mapping(struct dm_cache_policy *p, dm_cblock_t cblock)
+ 	struct smq_policy *mq = to_smq_policy(p);
+ 	struct entry *e = get_entry(&mq->cache_alloc, from_cblock(cblock));
+ 	unsigned long flags;
+-
+-	if (!e->allocated)
+-		return -ENODATA;
++	int r = 0;
  
- 	if (df) {
- 		mtu = dst_mtu(&rt->dst) - t_hlen;
+ 	spin_lock_irqsave(&mq->lock, flags);
++	if (!e->allocated) {
++		r = -ENODATA;
++		goto out;
++	}
+ 	// FIXME: what if this block has pending background work?
+ 	del_queue(mq, e);
+ 	h_remove(&mq->table, e);
+ 	free_entry(&mq->cache_alloc, e);
++
++out:
+ 	spin_unlock_irqrestore(&mq->lock, flags);
+ 
+-	return 0;
++	return r;
+ }
+ 
+ static uint32_t smq_get_hint(struct dm_cache_policy *p, dm_cblock_t cblock)
 -- 
 2.53.0
 
