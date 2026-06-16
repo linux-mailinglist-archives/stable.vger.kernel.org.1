@@ -1,64 +1,63 @@
-Return-Path: <stable+bounces-266356-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264039-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 2CHWMZmbMWpuoAUAu9opvQ
-	(envelope-from <stable+bounces-266356-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:53:13 +0200
+	id krCVNadtMWphjAUAu9opvQ
+	(envelope-from <stable+bounces-264039-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:37:11 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 658446948C7
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:53:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 75ADD691375
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:37:11 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=hygqoNgt;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266356-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-266356-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=NAKCX05N;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264039-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-264039-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id CDAB2303BA89
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:53:12 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 536A330CED4A
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:30:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCF9A472798;
-	Tue, 16 Jun 2026 18:53:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D8C543E4BA;
+	Tue, 16 Jun 2026 15:30:02 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DF133CC303;
-	Tue, 16 Jun 2026 18:53:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54307283FE5;
+	Tue, 16 Jun 2026 15:30:01 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781635991; cv=none; b=C03AAC77kwCnyuF/VH4cUU/Q8U1nSnnY3Mc1IZdwGmdMj7cXm2Nb8KfhycWSVpUXCUonwcSa9Nj9VY1/++p9xiFqsThtAiVQWJQ+Nz2NojK70B9RilBWiX+w8VIIS5TmbKxkToNmK8GntrdfKvGBqdIfSa4KPk5gqaMMjxCvaAA=
+	t=1781623802; cv=none; b=kjcnX/1Jb+praiNDYjpxmgn4sWlMXgfU6akcc3E68MIPmYmI3l3HlZqLcMFlOC7Ne5cFhg16M6CRBH0C7+rdMCCANFkeGg8AzAv3L25yiRCQ0QC+/dNhZROl0SjWDXHzOwwkJpCc9Juto1kcR5R5qalXt+OpEpEVXxDx7T+QG4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781635991; c=relaxed/simple;
-	bh=fqsfryQRLY6Ga9ue1hwFbicBZ1IuCjnv25rpHFharVQ=;
+	s=arc-20240116; t=1781623802; c=relaxed/simple;
+	bh=SolzZoKz6XKgNCXCXIyHwyGh3xHpupM8r0u+mRJ7qVE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yb5KwqmWxNXirYXhw9EzHT5vJfMO84kV4q3/lEGT+SKb/s6NNgSxRUJW6Wg4TrLtc4N/JEz5UCH1Nr1Czj7BF5Xq6UF+qlw2tq/Vcd0AQ9yeTJNxwf45Cib3/DhdAK3drEKYSpnkEPlHcmUtiJVxLotzNXf78ha/NATxT8OQVmA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hygqoNgt; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C7A91F000E9;
-	Tue, 16 Jun 2026 18:53:09 +0000 (UTC)
+	 MIME-Version; b=t+ff1XsBDNXSxqyuyvo48RH/uitd8LRQP+AZmB7UjLkxcKoLpU+Kt3iY0LrBKTZNg16sjWCA1plFXoeMubIvQ2cZxqgfXJTsAXxnB9s3+y1G/h9OoitYMVy/G5//CkvvcruKQQOFWLt87+5o5JojrwDpZAVccKdtG4MZz6lvQdM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NAKCX05N; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 239281F000E9;
+	Tue, 16 Jun 2026 15:29:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781635990;
-	bh=HUYU8s2K+psNSOT71bDGBpLI3jB+IVf0Qxsll3NND54=;
+	s=korg; t=1781623801;
+	bh=SdHxbfq26RG5NFfp78cbsForPPzBQRqy9U1kB8SeFqA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hygqoNgt4lqA8yHBMNz/PASibaC73/aOgnxlG49YjXEkRvrtyVQS9hkS6qdnsyDTk
-	 rC9+pdvj3qDNjOkrpqTeAdY2E+vjTwwlBoEkoOcmfDcl9l0U3oLzAR5JEpG0LYmZy6
-	 oeuHperN4dSp/FBB1NUQr40faDJB8tHBkB9yz58Y=
+	b=NAKCX05NSnARpuYjQe7W4YEZH1I/j3ED7ZjHxyYVlU2yV1/vsbrjYokQ87NPwksce
+	 hnMzp0+S3AcPln3RiNaxpFZ0Y6+REmDCnZ8tJchU4doKVWY5y0jTKaRahy0wRQ1Mym
+	 g9+aHb0pHtvIqcPAUQzVZC/n/Rz0QpayGszSk4tg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+04c4e65cab786a2e5b7e@syzkaller.appspotmail.com,
-	Tejas Bharambe <tejas.bharambe@outlook.com>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org,
-	Alexey Panov <apanov@astralinux.ru>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 153/342] ext4: validate p_idx bounds in ext4_ext_correct_indexes
-Date: Tue, 16 Jun 2026 20:27:29 +0530
-Message-ID: <20260616145055.288443840@linuxfoundation.org>
+	SeongJae Park <sj@kernel.org>,
+	Fernand Sieber <sieberf@amazon.com>,
+	Leonard Foerster <foersleo@amazon.de>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 7.0 219/378] mm/damon/ops-common: call folio_test_lru() after folio_get()
+Date: Tue, 16 Jun 2026 20:27:30 +0530
+Message-ID: <20260616145121.845485514@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,117 +69,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,outlook.com,mit.edu,kernel.org,astralinux.ru];
-	TAGGED_FROM(0.00)[bounces-266356-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:syzbot+04c4e65cab786a2e5b7e@syzkaller.appspotmail.com,m:tejas.bharambe@outlook.com,m:tytso@mit.edu,m:stable@kernel.org,m:apanov@astralinux.ru,m:sashal@kernel.org,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264039-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:sj@kernel.org,m:sieberf@amazon.com,m:foersleo@amazon.de,m:shakeel.butt@linux.dev,m:akpm@linux-foundation.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,04c4e65cab786a2e5b7e];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,syzkaller.appspot.com:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,outlook.com:email,msgid.link:url,appspotmail.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amazon.de:email,linux-foundation.org:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linux.dev:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 658446948C7
+X-Rspamd-Queue-Id: 75ADD691375
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tejas Bharambe <tejas.bharambe@outlook.com>
+From: SeongJae Park <sj@kernel.org>
 
-commit 2acb5c12ebd860f30e4faf67e6cc8c44ddfe5fe8 upstream.
+commit d6b8b02a27b3dd09ec12144322b3dac46d9bc9ef upstream.
 
-ext4_ext_correct_indexes() walks up the extent tree correcting
-index entries when the first extent in a leaf is modified. Before
-accessing path[k].p_idx->ei_block, there is no validation that
-p_idx falls within the valid range of index entries for that
-level.
+damon_get_folio() speculatively calls folio_test_lru() before
+folio_try_get().  The folio can get freed and reallocated to a tail page.
+In the case, VM_BUG_ON_PGFLAGS() in const_folio_flags() can be triggered.
+Remove the speculative call.
 
-If the on-disk extent header contains a corrupted or crafted
-eh_entries value, p_idx can point past the end of the allocated
-buffer, causing a slab-out-of-bounds read.
+Also mark folio_test_lru() check right after folio_try_get() success as no
+more unlikely.
 
-Fix this by validating path[k].p_idx against EXT_LAST_INDEX() at
-both access sites: before the while loop and inside it. Return
--EFSCORRUPTED if the index pointer is out of range, consistent
-with how other bounds violations are handled in the ext4 extent
-tree code.
+The race should be rare.  Also the problem can happen only if the kernel
+has enabled CONFIG_DEBUG_VM_PGFLAGS.  No real world report of this issue
+has been made so far.  This fix is based on only theoretical analysis.
+That said, a bug is a bug.  A similar issue was also fixed via commit
+3203b3ab0fcf ("mm/filemap: don't call folio_test_locked() without a
+reference in next_uptodate_folio()").  I don't expect this change will
+make a meaningful impact to DAMON performance in the real world, though I
+will be happy to be corrected from the real world reports.
 
-Reported-by: syzbot+04c4e65cab786a2e5b7e@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=04c4e65cab786a2e5b7e
-Signed-off-by: Tejas Bharambe <tejas.bharambe@outlook.com>
-Link: https://patch.msgid.link/JH0PR06MB66326016F9B6AD24097D232B897CA@JH0PR06MB6632.apcprd06.prod.outlook.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
-[ Alexey: Adapt goto clean to break because the clean error path is not
-  present in linux-5.10.y and linux-5.15.y. ]
-Signed-off-by: Alexey Panov <apanov@astralinux.ru>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The issue was discovered [1] by Sashiko.
+
+
+Link: https://lore.kernel.org/20260525162256.8317-1-sj@kernel.org
+Link: https://lore.kernel.org/20260517234112.89245-1-sj@kernel.org [1]
+Fixes: 3f49584b262c ("mm/damon: implement primitives for the virtual memory address spaces")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: Fernand Sieber <sieberf@amazon.com>
+Cc: Leonard Foerster <foersleo@amazon.de>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: <stable@vger.kernel.org> # 5.15.x
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/extents.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ mm/damon/ops-common.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
-index 6d37805d315507..388e47dfb7aa18 100644
---- a/fs/ext4/extents.c
-+++ b/fs/ext4/extents.c
-@@ -1731,6 +1731,13 @@ static int ext4_ext_correct_indexes(handle_t *handle, struct inode *inode,
- 	err = ext4_ext_get_access(handle, inode, path + k);
- 	if (err)
- 		return err;
-+	if (unlikely(path[k].p_idx > EXT_LAST_INDEX(path[k].p_hdr))) {
-+		EXT4_ERROR_INODE(inode,
-+				 "path[%d].p_idx %p > EXT_LAST_INDEX %p",
-+				 k, path[k].p_idx,
-+				 EXT_LAST_INDEX(path[k].p_hdr));
-+		return -EFSCORRUPTED;
-+	}
- 	path[k].p_idx->ei_block = border;
- 	err = ext4_ext_dirty(handle, inode, path + k);
- 	if (err)
-@@ -1743,6 +1750,14 @@ static int ext4_ext_correct_indexes(handle_t *handle, struct inode *inode,
- 		err = ext4_ext_get_access(handle, inode, path + k);
- 		if (err)
- 			break;
-+		if (unlikely(path[k].p_idx > EXT_LAST_INDEX(path[k].p_hdr))) {
-+			EXT4_ERROR_INODE(inode,
-+					 "path[%d].p_idx %p > EXT_LAST_INDEX %p",
-+					 k, path[k].p_idx,
-+					 EXT_LAST_INDEX(path[k].p_hdr));
-+			err = -EFSCORRUPTED;
-+			break;
-+		}
- 		path[k].p_idx->ei_block = border;
- 		err = ext4_ext_dirty(handle, inode, path + k);
- 		if (err)
--- 
-2.53.0
-
+--- a/mm/damon/ops-common.c
++++ b/mm/damon/ops-common.c
+@@ -32,9 +32,9 @@ struct folio *damon_get_folio(unsigned l
+ 		return NULL;
+ 
+ 	folio = page_folio(page);
+-	if (!folio_test_lru(folio) || !folio_try_get(folio))
++	if (!folio_try_get(folio))
+ 		return NULL;
+-	if (unlikely(page_folio(page) != folio || !folio_test_lru(folio))) {
++	if (unlikely(page_folio(page) != folio) || !folio_test_lru(folio)) {
+ 		folio_put(folio);
+ 		folio = NULL;
+ 	}
 
 
 
