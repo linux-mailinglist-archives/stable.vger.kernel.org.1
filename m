@@ -1,62 +1,73 @@
-Return-Path: <stable+bounces-264733-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265758-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id AuJcFod8MWplkgUAu9opvQ
-	(envelope-from <stable+bounces-264733-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:40:39 +0200
+	id cTBlE1iPMWrhmgUAu9opvQ
+	(envelope-from <stable+bounces-265758-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:00:56 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C365E69253E
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:40:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32CF5693BA1
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:00:55 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="E4d/ORfI";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264733-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264733-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=mNx4qNkb;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265758-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-265758-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0BCC030E6EAE
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:33:15 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8CAC9308F910
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:00:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C67C22F745E;
-	Tue, 16 Jun 2026 16:33:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A6D83D171F;
+	Tue, 16 Jun 2026 18:00:34 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94C9D45349C;
-	Tue, 16 Jun 2026 16:33:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A9C53D47CE;
+	Tue, 16 Jun 2026 18:00:32 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781627594; cv=none; b=d+rrGeyxELol5a0yiLrMkB6tTU+QJAecYRp7gnrwK22igi6x4uuN/KmcQy5TmYLNROCuPJZUCel+iMwp75pwtBwOqcxrjKLanDY9iGGvC4ICHXds7wzrIB8NAQyudkCoaDlM3Z5zyAxa+jy2AfwzuM8xlNnHqT20K6c2XrP/M/A=
+	t=1781632833; cv=none; b=QGAWO/x1oaM+JeDLrhc9WLQ5rOHFYoCDZIZzm1dPHPsvAZdDlRKIiVq6cv+rDJhGZT6HJRcsI779F3HeY/RX//FF5QAp6CCvynxE2wPoAm+fjJTnXDjeQjeoATuYst5DkmBoqast/xDthXb63flgOa9hucCC8o9UVp4PBqQd5FQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781627594; c=relaxed/simple;
-	bh=CfbHP5k8bHH984DWFanfj6RYpiq7ILgkuZa8JK1anig=;
+	s=arc-20240116; t=1781632833; c=relaxed/simple;
+	bh=4fTE7QnV+HpQHUymCb0c+0fsPwT5mhO/7NAMrDMnCJY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Um4ekyECRfWrxIeAWRCDMMfoGOTovwsQK+Xo93f2VlU7UzGpDD06AfxnZAppZclh0ktH0kjSsM3Wl0ISPP61Qj64m6I2OarsZJwOp5o0N1KCMJxzTRUWr7eMQRT7XUvu7If88oPs/sKyIx9KPLxZoO9dDSRG+/imvStMzWZlYuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E4d/ORfI; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 320701F000E9;
-	Tue, 16 Jun 2026 16:33:11 +0000 (UTC)
+	 MIME-Version; b=Kitvpwkpg7fmj7nIH4ld63EZ8hGKaF9SPu/tsBEZdFEkyeQmMAlEz+YEXHwhJ8GzQbJ7f+ezv3VJ72umny8OId+/qI9LGVYB6+uWGD2nz28qejbkdnzOnohN7lpVHmjRiqY4ODuAFxnCzNVt+S8+mwMzeKWnDFCy/gOASXSCntw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mNx4qNkb; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 124801F000E9;
+	Tue, 16 Jun 2026 18:00:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781627593;
-	bh=8b1y2lgXBnUfx/ot6p38qXTxGGo3IaUJZOEwLkjIwTM=;
+	s=korg; t=1781632832;
+	bh=Z6urFAwqsT/P/c6PfZGrcnG8Q8t1RZF6KFK5PWEMTB4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=E4d/ORfIFsb5fpinSMZuz6OFytVFb0qDC3NmuEtCvgZmNMFVUtgTFGrS3DLhEXGLE
-	 VhPZ6tG4vMkb9U4PTvkQFFnc5oOHZd46KjJeDEOdbVyBlu7rWM6KeJcW8AKzydnT9V
-	 Kb08B0UBBKCYfcih2qdMXr6Yfihl+Gjo6whXv/Fw=
+	b=mNx4qNkbY0Ltk9pGKo2aCsbyP+895mhTcktjuIdt6AqzrqF2IqCFxVV6SM27197Xv
+	 GdAZS1wgpTHEIX/6jlYbFfczq6edGX+H7wQNYVCMQC7wm/PYWSEvrkWn8Dw7Lndabb
+	 g6NpQznFF7ZwhFO8R+hO/wF7JAKOde/uOwB451O8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Ulf Hansson <ulfh@kernel.org>
-Subject: [PATCH 6.12 195/261] mmc: renesas_sdhi: Add OF entry for RZ/G2H SoC
+	Wupeng Ma <mawupeng1@huawei.com>,
+	"Oscar Salvador (SUSE)" <osalvador@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	David Hildenbrand <david@kernel.org>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 486/522] mm/memory-failure: fix hugetlb_lock AA deadlock in get_huge_page_for_hwpoison
 Date: Tue, 16 Jun 2026 20:30:33 +0530
-Message-ID: <20260616145054.095327886@linuxfoundation.org>
+Message-ID: <20260616145148.550265518@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
-References: <20260616145044.869532709@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,71 +89,213 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264733-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:prabhakar.mahadev-lad.rj@bp.renesas.com,m:wsa+renesas@sang-engineering.com,m:geert+renesas@glider.be,m:ulfh@kernel.org,m:wsa@sang-engineering.com,m:geert@glider.be,s:lists@lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265758-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mawupeng1@huawei.com,m:osalvador@kernel.org,m:muchun.song@linux.dev,m:wangkefeng.wang@huawei.com,m:linmiaohe@huawei.com,m:david@kernel.org,m:liam.howlett@oracle.com,m:ljs@kernel.org,m:mhocko@suse.com,m:rppt@kernel.org,m:nao.horiguchi@gmail.com,m:surenb@google.com,m:vbabka@kernel.org,m:akpm@linux-foundation.org,m:sashal@kernel.org,m:naohoriguchi@gmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,huawei.com,kernel.org,linux.dev,oracle.com,suse.com,gmail.com,google.com,linux-foundation.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,renesas];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,glider.be:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,sang-engineering.com:email,renesas.com:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,linux-foundation.org:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C365E69253E
+X-Rspamd-Queue-Id: 32CF5693BA1
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+From: Wupeng Ma <mawupeng1@huawei.com>
 
-commit f48ee49726ee4ab545fd2dc644f169c0809b19b3 upstream.
+[ Upstream commit 3c2d42b8ee345b17a4ba56b0f6492d1ff4c1178e ]
 
-The RZ/G2H (R8A774E1) SoC was previously handled via the generic
-"renesas,rcar-gen3-sdhi" fallback compatible string. However, because
-the SDHI IP on RZ/G2H is identical with the R-Car H3-N (R8A77951), it
-requires the specific quirks and configuration defined in
-`of_r8a7795_compatible` rather than the generic Gen3 data.
+Two concurrent madvise(MADV_HWPOISON) calls on the same hugetlb page can
+trigger a recursive spinlock self-deadlock (AA deadlock) on hugetlb_lock
+when racing with a concurrent unmap:
 
-Add the explicit "renesas,sdhi-r8a774e1" match entry to map it correctly.
-Note that the DT binding file renesas,sdhi.yaml does not need an update
-as the entry for this SoC is already present.
+  thread#0                              thread#1
+  --------                              --------
+  madvise(folio, MADV_HWPOISON)
+    -> poisons the folio successfully
+  madvise(folio, MADV_HWPOISON)         unmap(folio)
+    try_memory_failure_hugetlb
+      get_huge_page_for_hwpoison
+        spin_lock_irq(&hugetlb_lock)    <- held
+        __get_huge_page_for_hwpoison
+          hugetlb_update_hwpoison()
+            -> MF_HUGETLB_FOLIO_PRE_POISONED
+          goto out:
+            folio_put()
+              refcount: 1 -> 0
+              free_huge_folio()
+                spin_lock_irqsave(&hugetlb_lock)
+                  -> AA DEADLOCK!
 
-Fixes: 31941342888d ("arm64: dts: renesas: r8a774e1: Add SDHI nodes")
-Cc: stable@vger.kernel.org
-Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Signed-off-by: Ulf Hansson <ulfh@kernel.org>
+The out: path in __get_huge_page_for_hwpoison() calls folio_put() to drop
+the GUP reference while the hugetlb_lock is still held by the hugetlb.c
+wrapper get_huge_page_for_hwpoison().  If concurrent unmap has released
+the page table mapping reference, folio_put() drops the folio refcount to
+zero, triggering free_huge_folio() which attempts to re-acquire the
+non-recursive hugetlb_lock.
+
+Fix this by moving hugetlb_lock acquisition from the hugetlb.c wrapper
+into get_huge_page_for_hwpoison().  Place spin_unlock_irq() before the
+folio_put() at the out: label so the folio is always released outside the
+lock.
+
+[akpm@linux-foundation.org: fix race, rename label per Miaohe]
+  Link: https://sashiko.dev/#/patchset/20260522010305.4099834-1-mawupeng1@huawei.com
+  Link: https://lore.kernel.org/f39f405e-4b4b-8f79-70fe-a2b5b62114eb@huawei.com
+Link: https://lore.kernel.org/20260522010305.4099834-1-mawupeng1@huawei.com
+Fixes: 405ce051236c ("mm/hwpoison: fix race between hugetlb free/demotion and memory_failure_hugetlb()")
+Signed-off-by: Wupeng Ma <mawupeng1@huawei.com>
+Acked-by: Oscar Salvador (SUSE) <osalvador@kernel.org>
+Acked-by: Muchun Song <muchun.song@linux.dev>
+Reviewed-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+Acked-by: Miaohe Lin <linmiaohe@huawei.com>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/renesas_sdhi_internal_dmac.c |    1 +
- 1 file changed, 1 insertion(+)
+ include/linux/hugetlb.h |    6 ------
+ include/linux/mm.h      |    5 -----
+ mm/hugetlb.c            |   10 ----------
+ mm/memory-failure.c     |   19 ++++++++++---------
+ 4 files changed, 10 insertions(+), 30 deletions(-)
 
---- a/drivers/mmc/host/renesas_sdhi_internal_dmac.c
-+++ b/drivers/mmc/host/renesas_sdhi_internal_dmac.c
-@@ -278,6 +278,7 @@ static const struct renesas_sdhi_of_data
- static const struct of_device_id renesas_sdhi_internal_dmac_of_match[] = {
- 	{ .compatible = "renesas,sdhi-r7s9210", .data = &of_rza2_compatible, },
- 	{ .compatible = "renesas,sdhi-mmc-r8a77470", .data = &of_rcar_gen3_compatible, },
-+	{ .compatible = "renesas,sdhi-r8a774e1", .data = &of_r8a7795_compatible, },
- 	{ .compatible = "renesas,sdhi-r8a7795", .data = &of_r8a7795_compatible, },
- 	{ .compatible = "renesas,sdhi-r8a77961", .data = &of_r8a77961_compatible, },
- 	{ .compatible = "renesas,sdhi-r8a77965", .data = &of_r8a77965_compatible, },
+--- a/include/linux/hugetlb.h
++++ b/include/linux/hugetlb.h
+@@ -184,7 +184,6 @@ long hugetlb_unreserve_pages(struct inod
+ 						long freed);
+ int folio_isolate_hugetlb(struct page *page, struct list_head *list);
+ int get_hwpoison_huge_page(struct page *page, bool *hugetlb);
+-int get_huge_page_for_hwpoison(unsigned long pfn, int flags);
+ void folio_putback_hugetlb(struct page *page);
+ void move_hugetlb_state(struct page *oldpage, struct page *newpage, int reason);
+ void free_huge_page(struct page *page);
+@@ -437,11 +436,6 @@ static inline int get_hwpoison_huge_page
+ {
+ 	return 0;
+ }
+-
+-static inline int get_huge_page_for_hwpoison(unsigned long pfn, int flags)
+-{
+-	return 0;
+-}
+ 
+ static inline void folio_putback_hugetlb(struct page *page)
+ {
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -3429,15 +3429,10 @@ extern atomic_long_t num_poisoned_pages
+ extern int soft_offline_page(unsigned long pfn, int flags);
+ #ifdef CONFIG_MEMORY_FAILURE
+ extern void memory_failure_queue(unsigned long pfn, int flags);
+-extern int __get_huge_page_for_hwpoison(unsigned long pfn, int flags);
+ #else
+ static inline void memory_failure_queue(unsigned long pfn, int flags)
+ {
+ }
+-static inline int __get_huge_page_for_hwpoison(unsigned long pfn, int flags)
+-{
+-	return 0;
+-}
+ #endif
+ 
+ #ifndef arch_memory_failure
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -7499,16 +7499,6 @@ int get_hwpoison_huge_page(struct page *
+ 	return ret;
+ }
+ 
+-int get_huge_page_for_hwpoison(unsigned long pfn, int flags)
+-{
+-	int ret;
+-
+-	spin_lock_irq(&hugetlb_lock);
+-	ret = __get_huge_page_for_hwpoison(pfn, flags);
+-	spin_unlock_irq(&hugetlb_lock);
+-	return ret;
+-}
+-
+ /**
+  * folio_putback_hugetlb - unisolate a hugetlb page
+  * @page: the isolated hugetlb page
+--- a/mm/memory-failure.c
++++ b/mm/memory-failure.c
+@@ -1812,19 +1812,18 @@ void hugetlb_clear_page_hwpoison(struct
+ 	free_raw_hwp_pages(hpage, true);
+ }
+ 
+-/*
+- * Called from hugetlb code with hugetlb_lock held.
+- */
+-int __get_huge_page_for_hwpoison(unsigned long pfn, int flags)
++static int get_huge_page_for_hwpoison(unsigned long pfn, int flags)
+ {
+ 	struct page *page = pfn_to_page(pfn);
+-	struct page *head = compound_head(page);
++	struct page *head;
+ 	bool count_increased = false;
+ 	int ret, rc;
+ 
++	spin_lock_irq(&hugetlb_lock);
++	head = compound_head(page);
+ 	if (!PageHeadHuge(head)) {
+ 		ret = MF_HUGETLB_NON_HUGEPAGE;
+-		goto out;
++		goto out_unlock;
+ 	} else if (flags & MF_COUNT_INCREASED) {
+ 		ret = MF_HUGETLB_IN_USED;
+ 		count_increased = true;
+@@ -1840,17 +1839,19 @@ int __get_huge_page_for_hwpoison(unsigne
+ 	} else {
+ 		ret = MF_HUGETLB_RETRY;
+ 		if (!(flags & MF_NO_RETRY))
+-			goto out;
++			goto out_unlock;
+ 	}
+ 
+ 	rc = hugetlb_update_hwpoison(head, page);
+ 	if (rc >= MF_HUGETLB_FOLIO_PRE_POISONED) {
+ 		ret = rc;
+-		goto out;
++		goto out_unlock;
+ 	}
+ 
++	spin_unlock_irq(&hugetlb_lock);
+ 	return ret;
+-out:
++out_unlock:
++	spin_unlock_irq(&hugetlb_lock);
+ 	if (count_increased)
+ 		put_page(head);
+ 	return ret;
 
 
 
