@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-263867-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265396-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id WBdHIvRpMWoRiwUAu9opvQ
-	(envelope-from <stable+bounces-263867-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:21:24 +0200
+	id GPd8L3qJMWr1lwUAu9opvQ
+	(envelope-from <stable+bounces-265396-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:35:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF8A3690F38
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:21:23 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA2766934B4
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:35:53 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=OriQcAoR;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263867-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263867-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ivcszbdQ;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265396-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265396-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 877C731B98CD
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:14:51 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 900C030429FC
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:29:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1310343D4E9;
-	Tue, 16 Jun 2026 15:14:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74838355F2A;
+	Tue, 16 Jun 2026 17:29:46 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDF7E42B738;
-	Tue, 16 Jun 2026 15:14:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C7573BFE5B;
+	Tue, 16 Jun 2026 17:29:45 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781622890; cv=none; b=nePkVmmgFN98kH2/7y/O+wA0gtQc/S0DLltVjhObTncv9Hmqa4kYVFbeC4ujGfz7I2fCnWhaSK8KWd75PM3w2Zc7snxN5wGOaL6TH2/oK+phOivfJ6XmQnLnhGerQNQYVhY4WFF6Y44NQorpxoJKDKl7gA2EMWR/iyidDQBMG9s=
+	t=1781630986; cv=none; b=Xf9eKMpWXcSWejO8svz8Na0OjvbB5CtzZaj/KJAZKf14K54R9fHNfTi+2HzViJBS3Ao25c2rgS1d3Q97L0iSLmzX1oQVx5Qid2Niyo3Rn+gPd/YVLnyCWovsEr7yQModhd+xB0fQlkaBLnYGgf9XE5bXp0ujH8OviEQtDlORxlM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781622890; c=relaxed/simple;
-	bh=3CtDenxy3CGipq+78qxWmWmVBZVJbtNqgn1TdlTegOE=;
+	s=arc-20240116; t=1781630986; c=relaxed/simple;
+	bh=z06MKUgJ4aooyWCxTs5pS1tGFVMLjAqa6E7y11bn+wo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HPUTeg1xAQcgfAFllTHgnrwGEs9oH+a7l22pBGk66R+aOq9tKQt0jiPbRfv3zYpNpSdDc2GOPufZOnVdkv20k1DJAZqRanB7esQFcedKGL6iVm5dOE684sMdmh5UxEUe7yJWCqO2MYvFo74kPPlrLSm986uGYDhhj/qVW6zNMqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OriQcAoR; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA5A71F000E9;
-	Tue, 16 Jun 2026 15:14:48 +0000 (UTC)
+	 MIME-Version; b=QHAOZ2V8b6Vbz5+oMZniu8b3hPEOZYIoEMj2lRUrzycpjWH/IaHV0c5fQTgJkWD8aYhZnJVUAtvhw32ezGTnSqisbqkhZzqwwZMylRc7iSLH3BjJV6CNt9yLsqGhTmgW+QO0p9Kt/bARS2N7B2nLDruZKRFupq9oKuUUnPzZBJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ivcszbdQ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BB691F000E9;
+	Tue, 16 Jun 2026 17:29:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781622889;
-	bh=OZRV5LZH+TOM2XrPlgEMnJ66dPI3kIdWjr5yxoDknL8=;
+	s=korg; t=1781630985;
+	bh=fDYFQdbbtwlYMnGwNv5f7XwjKMAi1FdrtIoVsDckxLM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OriQcAoRykLMZO4ActsgyTxtMEcUALjKQ7a27AGsnZOJ0z3VFnc7yr6yk4zSjWciv
-	 pd50h5qSnfzmYyx1OwGPtEOugtrYD50DNbYPZNw2fil95R7n+mYLvBWjXtMIdc2XYm
-	 Pft49vmns8FQ0P671Xmc0ZDHiolVaw5HkCGSGUiU=
+	b=ivcszbdQioIkhVOed7T/cXzGKyoGX6vo07tq7fVE0SFyVGsD/WzHlATu8AD0nn5aV
+	 LUigPC/PHapqrstoZbubBD8iOkPauS1CPU+/klegWOPlRD9mjbEUJLD9TmF28bpY5U
+	 t/qn2ONZOGaxxDtm/+2VLVnrZFiEWce7LqRByNK4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+535ecc844591e50588a5@syzkaller.appspotmail.com,
-	Bharath Reddy <kbreddy.rpbc@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 049/378] Bluetooth: fix memory leak in error path of hci_alloc_dev()
+	Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>,
+	Florian Westphal <fw@strlen.de>
+Subject: [PATCH 6.1 133/522] netfilter: conntrack: tcp: do not force CLOSE on invalid-seq RST without direction check
 Date: Tue, 16 Jun 2026 20:24:40 +0530
-Message-ID: <20260616145112.502266196@linuxfoundation.org>
+Message-ID: <20260616145132.329518959@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,100 +66,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,intel.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-263867-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:syzbot+535ecc844591e50588a5@syzkaller.appspotmail.com,m:kbreddy.rpbc@gmail.com,m:luiz.von.dentz@intel.com,m:sashal@kernel.org,m:syzbot@syzkaller.appspotmail.com,m:kbreddyrpbc@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-265396-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:hamzamahfooz@linux.microsoft.com,m:fw@strlen.de,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,535ecc844591e50588a5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,vger.kernel.org:from_smtp,appspotmail.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,syzkaller.appspot.com:url]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,strlen.de:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: CF8A3690F38
+X-Rspamd-Queue-Id: BA2766934B4
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bharath Reddy <kbreddy.rpbc@gmail.com>
+From: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
 
-[ Upstream commit 37b3009bf5976e8ab77c8b9a9bc3bbd7ff49e37f ]
+commit bed6e04be8e6b9133d8b16d5a42d0e0ce674fa9a upstream.
 
-Early failures in Bluetooth HCI UART configuration leak SRCU percpu
-memory.
+An unintended behavior in the TCP conntrack state machine allows a
+connection to be forced into the CLOSE state using an RST packet with an
+invalid sequence number.
 
-When device initialization fails before hci_register_dev() completes,
-the HCI_UNREGISTER flag is never set. As a result, when the device
-reference count reaches zero, bt_host_release() evaluates this flag as
-false and falls back to a direct kfree(hdev).
+Specifically, after a SYN packet is observed, an RST with an invalid SEQ
+can transition the conntrack entry to TCP_CONNTRACK_CLOSE, regardless of
+whether the RST corresponds to the expected reply direction. The relevant
+code path assumes the RST is a response to an outgoing SYN, but does not
+validate packet direction or ensure that a matching SYN was actually sent
+in the opposite direction.
 
-Because hci_release_dev() is bypassed, the SRCU struct initialized
-early in hci_alloc_dev() is never cleaned up, resulting in a leak of
-percpu memory.
+As a result, a crafted packet sequence consisting of a SYN followed by an
+invalid-sequence RST can prematurely terminate an active NAT entry. This
+makes connection teardown easier than intended.
 
-Fix the leak by explicitly calling cleanup_srcu_struct() in the
-fallback (unregistered) branch of bt_host_release() before freeing
-the device.
+So, tighten the state transition logic to ensure that RST-triggered
+CLOSE transitions only occur when the RST is a valid response to a
+previously observed SYN in the correct direction.
 
-Reported-by: syzbot+535ecc844591e50588a5@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=535ecc844591e50588a5
-Tested-by: syzbot+535ecc844591e50588a5@syzkaller.appspotmail.com
-Fixes: 1d6123102e9f ("Bluetooth: hci_core: Fix use-after-free in vhci_flush()")
-Signed-off-by: Bharath Reddy <kbreddy.rpbc@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 9fb9cbb1082d ("[NETFILTER]: Add nf_conntrack subsystem.")
+Signed-off-by: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/hci_sysfs.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ net/netfilter/nf_conntrack_proto_tcp.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/bluetooth/hci_sysfs.c b/net/bluetooth/hci_sysfs.c
-index 041ce9adc378ae..8957ce7c21b76c 100644
---- a/net/bluetooth/hci_sysfs.c
-+++ b/net/bluetooth/hci_sysfs.c
-@@ -83,10 +83,12 @@ static void bt_host_release(struct device *dev)
- {
- 	struct hci_dev *hdev = to_hci_dev(dev);
- 
--	if (hci_dev_test_flag(hdev, HCI_UNREGISTER))
-+	if (hci_dev_test_flag(hdev, HCI_UNREGISTER)) {
- 		hci_release_dev(hdev);
--	else
-+	} else {
-+		cleanup_srcu_struct(&hdev->srcu);
- 		kfree(hdev);
-+	}
- 	module_put(THIS_MODULE);
- }
- 
--- 
-2.53.0
-
+--- a/net/netfilter/nf_conntrack_proto_tcp.c
++++ b/net/netfilter/nf_conntrack_proto_tcp.c
+@@ -1222,7 +1222,8 @@ int nf_conntrack_tcp_packet(struct nf_co
+ 			new_state = old_state;
+ 		}
+ 		if (((test_bit(IPS_SEEN_REPLY_BIT, &ct->status)
+-			 && ct->proto.tcp.last_index == TCP_SYN_SET)
++			 && ct->proto.tcp.last_index == TCP_SYN_SET
++			 && ct->proto.tcp.last_dir != dir)
+ 			|| (!test_bit(IPS_ASSURED_BIT, &ct->status)
+ 			    && ct->proto.tcp.last_index == TCP_ACK_SET))
+ 		    && ntohl(th->ack_seq) == ct->proto.tcp.last_end) {
 
 
 
