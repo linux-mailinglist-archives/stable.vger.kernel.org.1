@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-265523-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263997-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id B2cHNw2MMWoymQUAu9opvQ
-	(envelope-from <stable+bounces-265523-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:46:53 +0200
+	id N223Lr1sMWr+iwUAu9opvQ
+	(envelope-from <stable+bounces-263997-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:33:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AA17693788
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:46:53 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1941E69122F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:33:17 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=kBIA78S4;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265523-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265523-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=u8kZOODx;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263997-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-263997-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9B3F33037F68
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:40:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DBC25322E53F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:26:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F0774779A8;
-	Tue, 16 Jun 2026 17:40:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C9CA43E49A;
+	Tue, 16 Jun 2026 15:26:30 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0C1947AF6E;
-	Tue, 16 Jun 2026 17:40:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AC421E8320;
+	Tue, 16 Jun 2026 15:26:29 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781631644; cv=none; b=kiGv9Y1afR/1ssKyJl61LTSD9k/tnXp6efXvn+gQQL6suoHAIqhzwNxE/Xa3v7/+gpBXf3lUaXDOuLKzKzCi7IAVKTTrOrTZK8+YGyp6/7WE3FyCMfBTZsCXUMSyA+hKtrjrw8nNeyikBYXqANhpizKMnuNxM5Fj/C68Y9MQCmQ=
+	t=1781623590; cv=none; b=kpQFBjvslNh3SvDT3gC/ylrT2cWr7zH03hdMoL9bFokA67hNq8XT9v6Kx2qpQ6nWYFwVahz4ZTrL6F4Kgr0EtJRYqKzQtRjVDOz0WlmKnKemOwluQCGWrc3ZeuaJ0GAjPr1Z57EmPBoxij0bu6/t4UNI1ahhcVtCQpeZumTbvdw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781631644; c=relaxed/simple;
-	bh=xUobUleStuu5j5Jy1is6v6Q+pomFAvxnMur7+zcDTYo=;
+	s=arc-20240116; t=1781623590; c=relaxed/simple;
+	bh=GKseS2nDQqsH2EfBMmsEfE7zvMCoGTUd/ftM2Y06XN0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JV77LBiL1iVyUiwOIq0RBcoy0Q+mVHo+FvDNQ+sRb8tjC1AfF28leN6V998biDZFZowBQQc80yQ7pmytdwzXffkVyO/ZmxVGCupcq0gMd92qDc1Jkk82cvPW1UUwkDsZr+gDQ7PT5ttsfU28FuntqOflLqviaMlZuACf5vaTlSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kBIA78S4; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3C901F00A3A;
-	Tue, 16 Jun 2026 17:40:42 +0000 (UTC)
+	 MIME-Version; b=ofHiEkpJzH7wWjR3DdQk3IWMUQ4p4JiRifZ3zW//YGm/nqCiQj1w0IqHpw8CDrxI4ZLpb7qVxRGVTnoRx4g0NfMk2TC9hAy3TJYqNToCSvdfq5IMRSuHM3XRLUZfFk39a5PwJMrhbNaW/lgO/xAEqG0kJBg/tfJYmiONZmd1XXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u8kZOODx; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 486D61F000E9;
+	Tue, 16 Jun 2026 15:26:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781631643;
-	bh=gpUb/yNMd58vZK+hx1rdIYPU59KiQDkcBDuYPr78sd0=;
+	s=korg; t=1781623589;
+	bh=Paghg2JuevHuXRSlecRZPXH3NdgoMipYRh04YECAFMI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=kBIA78S4k8MkRuMe68gMNPSU6W+5bSKfr8n4U87no4l9ypBalKRz2zWOpt81vqOVS
-	 Yrv9Z9f2POlSadIh0MoJEIrV5CgIvfxL1cFJpmoirdF7qhBcEa16qu+/Ow6FRNY7Ng
-	 oNaMvXhZsHc/OdYA4zcQw8h6lioif8dtNeh0vvQo=
+	b=u8kZOODx7wEUzVBmEr4nN7hTZffpBcUfawbhfUMaES6Z7PB6ydHXBqok0/bBMQ2jv
+	 KltSFgwG1GdRTax3PmhEUALeaFiITZ8xvzhv9S2xrKbRHBI6NhK2Y4dj6N0vlGb+FI
+	 Y1isuFjaOGMNLa3FCysSS1a7Yj+CGtBUHIOIAAbY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Til Kaiser <mail@tk154.de>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 260/522] net: mvpp2: sync RX data at the hardware packet offset
+	Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
+	Julia Filipchuk <julia.filipchuk@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Matt Roper <matthew.d.roper@intel.com>
+Subject: [PATCH 7.0 176/378] Revert "drm/xe/nvls: Define GuC firmware for NVL-S"
 Date: Tue, 16 Jun 2026 20:26:47 +0530
-Message-ID: <20260616145138.109035489@linuxfoundation.org>
+Message-ID: <20260616145119.637881964@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,89 +70,80 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265523-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mail@tk154.de,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-263997-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:daniele.ceraolospurio@intel.com,m:julia.filipchuk@intel.com,m:rodrigo.vivi@intel.com,m:matthew.d.roper@intel.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tk154.de:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3AA17693788
+X-Rspamd-Queue-Id: 1941E69122F
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Til Kaiser <mail@tk154.de>
+From: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
 
-[ Upstream commit 180235600934bef6add3be637c296d6cf3272e67 ]
+commit 42445de1765547f56f48d107c0b8f3482c98458e upstream.
 
-mvpp2 programs the RX queue packet offset, so hardware writes received
-data at dma_addr + MVPP2_SKB_HEADROOM. The current CPU sync starts at
-dma_addr and only covers rx_bytes + MVPP2_MH_SIZE bytes, which syncs the
-unused headroom and misses the same number of bytes at the packet tail.
+This reverts commit 4e88de313ff4d1c67b644b1f39f9fb4089711b71.
 
-On non-coherent DMA systems this can leave the CPU reading stale cache
-contents for the end of the received frame.
+The early GuC FW definition meant for our CI branch was accidentally
+merged to the drm-xe-next branch instead. This GuC FW will never be
+released to linux-firmware, so we do not want the definition to be
+available in the mainline Linux codebase.
 
-Use dma_sync_single_range_for_cpu() with MVPP2_SKB_HEADROOM as the range
-offset so the sync covers the Marvell header and packet data actually
-written by hardware.
-
-Fixes: e1921168bbd4 ("mvpp2: sync only the received frame")
-Signed-off-by: Til Kaiser <mail@tk154.de>
-Link: https://patch.msgid.link/20260607134943.21996-2-mail@tk154.de
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 4e88de313ff4 ("drm/xe/nvls: Define GuC firmware for NVL-S")
+Signed-off-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
+Cc: Julia Filipchuk <julia.filipchuk@intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: Matt Roper <matthew.d.roper@intel.com>
+Cc: stable@vger.kernel.org # v7.0+
+Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Link: https://patch.msgid.link/20260529193558.185436-11-daniele.ceraolospurio@intel.com
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+(cherry picked from commit 65b8e0ac86e48cfc9128c04dfc53ea3395d030dd)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/xe/xe_uc_fw.c |    1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-index b42c2c498faa2e..62d72f5ed01295 100644
---- a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-+++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-@@ -3948,9 +3948,10 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
- 			dma_dir = DMA_FROM_DEVICE;
- 		}
+--- a/drivers/gpu/drm/xe/xe_uc_fw.c
++++ b/drivers/gpu/drm/xe/xe_uc_fw.c
+@@ -115,7 +115,6 @@ struct fw_blobs_by_type {
+ #define XE_GT_TYPE_ANY XE_GT_TYPE_UNINITIALIZED
  
--		dma_sync_single_for_cpu(dev->dev.parent, dma_addr,
--					rx_bytes + MVPP2_MH_SIZE,
--					dma_dir);
-+		dma_sync_single_range_for_cpu(dev->dev.parent, dma_addr,
-+					      MVPP2_SKB_HEADROOM,
-+					      rx_bytes + MVPP2_MH_SIZE,
-+					      dma_dir);
- 
- 		/* Buffer header not supported */
- 		if (rx_status & MVPP2_RXD_BUF_HDR)
--- 
-2.53.0
-
+ #define XE_GUC_FIRMWARE_DEFS(fw_def, mmp_ver, major_ver)					\
+-	fw_def(NOVALAKE_S,	GT_TYPE_ANY,	mmp_ver(xe,	guc,	nvl,	70, 55, 4))	\
+ 	fw_def(PANTHERLAKE,	GT_TYPE_ANY,	major_ver(xe,	guc,	ptl,	70, 54, 0))	\
+ 	fw_def(BATTLEMAGE,	GT_TYPE_ANY,	major_ver(xe,	guc,	bmg,	70, 54, 0))	\
+ 	fw_def(LUNARLAKE,	GT_TYPE_ANY,	major_ver(xe,	guc,	lnl,	70, 53, 0))	\
 
 
 
