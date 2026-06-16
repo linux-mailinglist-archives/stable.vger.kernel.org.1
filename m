@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-264392-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266157-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 0SzpLt51MWqOjwUAu9opvQ
-	(envelope-from <stable+bounces-264392-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:12:14 +0200
+	id i4pcB8KYMWodnwUAu9opvQ
+	(envelope-from <stable+bounces-266157-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:41:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B33C691CCC
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:12:14 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6470D694540
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:41:05 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=nw4D66X5;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264392-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264392-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=TlGe88YS;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266157-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266157-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6E12932D7A2D
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:01:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6E2323212FF3
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:36:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24A294657F3;
-	Tue, 16 Jun 2026 16:00:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E26E73DC4D9;
+	Tue, 16 Jun 2026 18:36:02 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5A2B44103A;
-	Tue, 16 Jun 2026 16:00:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1812169AD2;
+	Tue, 16 Jun 2026 18:36:01 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781625646; cv=none; b=M9U3DhTqOceCoWQOLZfXYyXZpE24Do3HtLVo0PKwKZcznSQxxaem+Cx4uC9klZ6Z4x01ObHBNAyOF3IF0TnqLRUUufSjXeeyWVmcDcFj0R1FIvpso8h0/Y9TPNPE2W4mXboOTDnWsplGXESekUsuDmT38Jexd/R9dCWY5NmSeak=
+	t=1781634962; cv=none; b=nzzDKSLd+UaqTLlfZGaJtgNViAz0aPbT3bQfOnwfUjC6MXnniDtIQWbJnz8SmXw0z7SExaxC9rZiOlz+4HxnaKUfJlJQJ29n3O5Tl+7S/StCPL1yIgWcwK1Ziz7DBoQdoPOpiBgLdgLXL72cc30+vi2Uia+UaaEXBTFUp8LgFes=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781625646; c=relaxed/simple;
-	bh=IEwh28yTjw16iIeoBFbKumjFa9q0lGWfq6mKceQGY38=;
+	s=arc-20240116; t=1781634962; c=relaxed/simple;
+	bh=RyItyWwTmn0yC824k2Tn4xdxFtptuuw780PJdLdalwo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I20QrwW1QU/OCNdDJC5AwFLFcoKcfVAeWLXGR3+tKPGm0/FvZQJCbg4vBYb62kztU9tzzCTNA4hWXgc9NK3YROZ3wbqw8AIcGn+Llh2zwHFRSs50JPYYWLf7m2EWk9BY8JO8/T0UnrqfUCpDn1QczwnVunrvHbbGOr0H6c9KQ30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nw4D66X5; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 651751F00A3A;
-	Tue, 16 Jun 2026 16:00:44 +0000 (UTC)
+	 MIME-Version; b=BwOCHfrsJUAXy/ur/gdVRfeh7wNwm+z/J/WrtS18F93Hq+PoGCpcVir8XraA8fQWs/8uzUlZeRRHUc2BT/BQhH2h/J9OPnqrF+iafJ8QtFmfXmoTH2MTq0t7PWH2t3DRUQtGhxH4Wu8SUKjOJ190WuVAA0rSPk8N7neExwecnSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TlGe88YS; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A2CB1F000E9;
+	Tue, 16 Jun 2026 18:36:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781625645;
-	bh=gnI2k/PLc6HAQlNn2c8oh9fRT4U73r49fcy5eByTbM0=;
+	s=korg; t=1781634961;
+	bh=MeHV7pkSQt35C22kt7/mpQpQAFGOm4ft5Klm1a/2OWU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=nw4D66X5fEEcr55TvJgPEEjmJ28tt4GLe/Nyk5xtiHwB8EmZpPCDimpIr6/lqNTMp
-	 WQ4CHTGRiOsUieftzwo2RhyCxV9xg3lMPwFSLmfrfsg4GSpT6P36pRH6rFY/7tUbB5
-	 +jb2P58U7IaoyexfRF2xWHpPf2Q6355LwPr3w3zw=
+	b=TlGe88YSUtqB6eHYuovoU89OatbCXXSHolZwzcTQFHrfjVbnyl0RJ6p4A20Upjg9u
+	 LWa1ANJ5kNX+3DnNr5SI+yF3Hn9QI8aP5X3rTbRSIyOFkTtCYg+Fp626mCn6fujuKE
+	 XOgYoAjCVtBeysvBKMSNsLlT8WUgYuY0DBpgVie8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Hopps <chopps@labn.net>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Tristan Madani <tristan@talencesecurity.com>
-Subject: [PATCH 6.18 173/325] xfrm: iptfs: fix ABBA deadlock in iptfs_destroy_state()
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 331/411] mptcp: pm: ADD_ADDR rtx: fix potential data-race
 Date: Tue, 16 Jun 2026 20:29:29 +0530
-Message-ID: <20260616145106.468142306@linuxfoundation.org>
+Message-ID: <20260616145118.740448073@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,113 +70,91 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264392-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:chopps@labn.net,m:steffen.klassert@secunet.com,m:tristan@talencesecurity.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-266157-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:martineau@kernel.org,m:matttbe@kernel.org,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[secunet.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,labn.net:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 1B33C691CCC
+X-Rspamd-Queue-Id: 6470D694540
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tristan Madani <tristmd@gmail.com>
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 
-commit c8a8a75b733467b00c08b91a38dbaf207a08ed6e upstream.
+[ Upstream commit 5cd6e0ad79d2615264f63929f8b457ad97ae550d ]
 
-iptfs_destroy_state() calls hrtimer_cancel() while holding a spinlock
-that the timer callback also acquires, leading to an ABBA deadlock on
-SMP systems.
+This mptcp_pm_add_timer() helper is executed as a timer callback in
+softirq context. To avoid any data races, the socket lock needs to be
+held with bh_lock_sock().
 
-For the output timer (iptfs_timer):
-  - iptfs_destroy_state() holds x->lock, calls hrtimer_cancel()
-  - iptfs_delay_timer() callback takes x->lock
+If the socket is in use, retry again soon after, similar to what is done
+with the keepalive timer.
 
-For the drop timer (drop_timer):
-  - iptfs_destroy_state() holds drop_lock, calls hrtimer_cancel()
-  - iptfs_drop_timer() callback takes drop_lock
-
-Both timers use HRTIMER_MODE_REL_SOFT, so their callbacks run in softirq
-context.  When hrtimer_cancel() is called for a soft timer that is
-currently executing on another CPU, hrtimer_cancel_wait_running() spins
-on softirq_expiry_lock -- the same lock held by the softirq running the
-callback.  If the callback is blocked waiting for the spinlock held by
-the caller of hrtimer_cancel(), a circular dependency forms:
-
-  CPU 0: holds lock_A -> waits for softirq_expiry_lock
-  CPU 1: holds softirq_expiry_lock -> waits for lock_A
-
-Fix by calling hrtimer_cancel() before acquiring the respective locks.
-hrtimer_cancel() is safe to call without holding any lock and will wait
-for any in-progress callback to complete.  For the output timer, the
-lock is still acquired afterwards to drain the packet queue.  For the
-drop timer, the lock/unlock pair is removed entirely since it only
-existed to serialize with the timer callback, which hrtimer_cancel()
-already guarantees.
-
-Found by source code audit.
-
-Fixes: 4b3faf610cc6 ("xfrm: iptfs: add new iptfs xfrm mode impl")
-Cc: Christian Hopps <chopps@labn.net>
-Cc: Steffen Klassert <steffen.klassert@secunet.com>
+Fixes: 00cfd77b9063 ("mptcp: retransmit ADD_ADDR when timeout")
 Cc: stable@vger.kernel.org
-Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260505-net-mptcp-pm-fixes-7-1-rc3-v1-3-fca8091060a4@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ applied hunk to `net/mptcp/pm_netlink.c` instead of `net/mptcp/pm.c` ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/xfrm/xfrm_iptfs.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ net/mptcp/pm_netlink.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/net/xfrm/xfrm_iptfs.c
-+++ b/net/xfrm/xfrm_iptfs.c
-@@ -2731,8 +2731,9 @@ static void iptfs_destroy_state(struct x
- 	if (!xtfs)
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -330,6 +330,13 @@ static void mptcp_pm_add_timer(struct ti
+ 	if (!entry->addr.id)
  		return;
  
--	spin_lock_bh(&xtfs->x->lock);
- 	hrtimer_cancel(&xtfs->iptfs_timer);
++	bh_lock_sock(sk);
++	if (sock_owned_by_user(sk)) {
++		/* Try again later. */
++		sk_reset_timer(sk, timer, jiffies + HZ / 20);
++		goto out;
++	}
 +
-+	spin_lock_bh(&xtfs->x->lock);
- 	__skb_queue_head_init(&list);
- 	skb_queue_splice_init(&xtfs->queue, &list);
- 	spin_unlock_bh(&xtfs->x->lock);
-@@ -2740,9 +2741,7 @@ static void iptfs_destroy_state(struct x
- 	while ((skb = __skb_dequeue(&list)))
- 		kfree_skb(skb);
+ 	if (mptcp_pm_should_add_signal_addr(msk)) {
+ 		sk_reset_timer(sk, timer, jiffies + TCP_RTO_MAX / 8);
+ 		goto out;
+@@ -358,6 +365,7 @@ static void mptcp_pm_add_timer(struct ti
+ 		mptcp_pm_subflow_established(msk);
  
--	spin_lock_bh(&xtfs->drop_lock);
- 	hrtimer_cancel(&xtfs->drop_timer);
--	spin_unlock_bh(&xtfs->drop_lock);
+ out:
++	bh_unlock_sock(sk);
+ 	__sock_put(sk);
+ }
  
- 	if (xtfs->ra_newskb)
- 		kfree_skb(xtfs->ra_newskb);
 
 
 
