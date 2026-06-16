@@ -1,61 +1,68 @@
-Return-Path: <stable+bounces-264094-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264635-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id nwO+JzJvMWr0jAUAu9opvQ
-	(envelope-from <stable+bounces-264094-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:43:46 +0200
+	id +1+eJgd7MWrAkQUAu9opvQ
+	(envelope-from <stable+bounces-264635-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:34:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AA17691559
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:43:46 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EEED692371
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:34:15 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="DnL4t/7l";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264094-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264094-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=r71X9rhP;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264635-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264635-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C0F2630B5255
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:34:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B52333079AE1
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:22:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0B2643E9C6;
-	Tue, 16 Jun 2026 15:34:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61AB444DB64;
+	Tue, 16 Jun 2026 16:22:22 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 854C838837F;
-	Tue, 16 Jun 2026 15:34:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CAE643E4BA;
+	Tue, 16 Jun 2026 16:22:20 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781624094; cv=none; b=Y3vhLhXeO9cibK/GlzW8wJXfyL4c9tlT4gPA8DH9ROAHAsmD/0EI8ZQ3DRISwWcao4wOwb0QsW+LSKI1z6jauhXne02isYB3TMNGE/f4hllwnD/3cL5g+h70qthOKwhnKzGsmPapDD3/3KeJFqR4Z2lJdezScyCDqhQ2LA2ilEU=
+	t=1781626942; cv=none; b=h1w7MmjeaBTwPIDZbi4tg7EOsok95KvSbYi0hPBInehed++vpD22x9sd3xlnXHHQrYKuYBzZI1sJydGgVwOGDsKVEi0jdypXUj1NPGxFRi3R6fzLjUm07lvCW1/NKrztNoPubZSa3VoKcCHxUwaw97+zBN2dIjQLSS8yZ3690/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781624094; c=relaxed/simple;
-	bh=1HA2tjdqBWmRIKuX3ckvjQagYmu2/sP00OhntK0d7Dk=;
+	s=arc-20240116; t=1781626942; c=relaxed/simple;
+	bh=FbkUfGVEWK1pAgct9+oOE1R9E8JlThVHmr03114SAQ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bu9uo54e8kD76N4+Ixo8ehbzB9U6f4VsXgSzRjK+UmSyyn09HguXZMnPHr0DhsJ0qx0rZnpyecGuVRAgSA+yhU+zptXrdDn/wZG/vA0cvkvONYEMs5amyXlE7lu+58wnK09btnBsUByrA+8Sawzyl+8bQn/D8t8lxTWawvolPsc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DnL4t/7l; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84CF81F000E9;
-	Tue, 16 Jun 2026 15:34:52 +0000 (UTC)
+	 MIME-Version; b=Cg7dyubSg1t9bCtX41qCYIN4w4JGz0l6Lklc14MH8lb/wUnZJi2bS4EeUvupmMYovVRAjWd0kQPSTf8INXIz8MXQN4LZmeumQMeNIiBgMDBzdelSoyvXk+5ot+LAlMeKv5vLzvDqDfThoBG3sIQ+55GcKSd3aAuM/OngsJchwmE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r71X9rhP; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FDA71F000E9;
+	Tue, 16 Jun 2026 16:22:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781624093;
-	bh=I5Ln7CKrKVmREY0yMJrlQMFkwfAr2bUg9az/bT70H7Y=;
+	s=korg; t=1781626940;
+	bh=D3ctNp57qeoCFvrkNJfcDI5g1mNj4cVUayOJl3JdsI0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=DnL4t/7lfeHHXsUuPNX3CO8Gf2ZjRvzWEMVNHCc4Ep9euyMfDEFa86C3QhTXbHIv0
-	 26Nv1axdvcLS+DNUAmmG18YSbLd4QWfCnnO67IExTJfMdNXFsfluxENmA3bLxQAKvP
-	 1ThRqzWakQ1j2oLq8ePEnyLK/3ER9ZRawK/T0gPA=
+	b=r71X9rhPH83F3oiEX7PBa3/fXR5xH+4X0vu7ATyX+I35RNrjzcLdxUafEX0UWGBaj
+	 A71ym1FUlPf7BV5s69YQrXVymNQ8SXYyWw/MxoixjLC+/x/Alr7p3wAMPWf4Tkd7dM
+	 rjAiNo7CAblv1EZPB381IKcpzqcToxja1vN/0K84=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Akhil R <akhilrajeev@nvidia.com>,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 7.0 273/378] i2c: tegra: Fix NOIRQ suspend/resume
+	Tushar Sugandhi <tusharsu@linux.microsoft.com>,
+	Eric Biederman <ebiederm@xmission.com>,
+	Baoquan He <bhe@redhat.com>,
+	Vivek Goyal <vgoyal@redhat.com>,
+	Dave Young <dyoung@redhat.com>,
+	Steven Chen <chenste@linux.microsoft.com>,
+	Mimi Zohar <zohar@linux.ibm.com>,
+	Sherry Yang <sherry.yang@oracle.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Stefan Berger <stefanb@linux.ibm.com>
+Subject: [PATCH 6.12 066/261] ima: kexec: move IMA log copy from kexec load to execute
 Date: Tue, 16 Jun 2026 20:28:24 +0530
-Message-ID: <20260616145124.484393043@linuxfoundation.org>
+Message-ID: <20260616145048.190592578@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,22 +79,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264094-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264635-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:akhilrajeev@nvidia.com,m:jonathanh@nvidia.com,m:andi.shyti@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:tusharsu@linux.microsoft.com,m:ebiederm@xmission.com,m:bhe@redhat.com,m:vgoyal@redhat.com,m:dyoung@redhat.com,m:chenste@linux.microsoft.com,m:zohar@linux.ibm.com,m:sherry.yang@oracle.com,m:sashal@kernel.org,m:stefanb@linux.ibm.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -98,130 +105,173 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,oracle.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2AA17691559
+X-Rspamd-Queue-Id: 0EEED692371
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Akhil R <akhilrajeev@nvidia.com>
+From: Steven Chen <chenste@linux.microsoft.com>
 
-commit 656646b3847ac6a21b074a813223feef2aadd6e2 upstream.
+[ Upstream commit 9f0ec4b16f2b41d663f688a8012e9e52b2657eba ]
 
-The Tegra I2C driver relies on runtime PM to wake up the controller before
-each transfer. However, runtime PM is disabled between the system suspend
-and NOIRQ suspend. If an I2C device initiates a transfer during this
-window, the I2C controller fails to wake up and the transfer fails. To
-handle this, the controller must be kept available for this period to
-allow transfers.
+The IMA log is currently copied to the new kernel during kexec 'load' using
+ima_dump_measurement_list(). However, the IMA measurement list copied at
+kexec 'load' may result in loss of IMA measurements records that only
+occurred after the kexec 'load'. Move the IMA measurement list log copy
+from kexec 'load' to 'execute'
 
-Rework the I2C controller's system PM callbacks such that the controller
-is resumed from runtime suspend during system suspend and it stays
-RPM_ACTIVE throughout the suspend-resume cycle until it is runtime
-suspended back in the system resume. The clocks are disabled in NOIRQ
-suspend and enabled back in NOIRQ resume by calling the controller's
-runtime PM functions directly.
+Make the kexec_segment_size variable a local static variable within the
+file, so it can be accessed during both kexec 'load' and 'execute'.
 
-Fixes: 8ebf15e9c869 ("i2c: tegra: Move suspend handling to NOIRQ phase")
-Assisted-by: Cursor:claude-4.6-opus
-Signed-off-by: Akhil R <akhilrajeev@nvidia.com>
-Cc: <stable@vger.kernel.org> # v5.4+
-Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20260518114013.62065-5-akhilrajeev@nvidia.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Define kexec_post_load() as a wrapper for calling ima_kexec_post_load() and
+machine_kexec_post_load().  Replace the existing direct call to
+machine_kexec_post_load() with kexec_post_load().
+
+When there is insufficient memory to copy all the measurement logs, copy as
+much of the measurement list as possible.
+
+Co-developed-by: Tushar Sugandhi <tusharsu@linux.microsoft.com>
+Signed-off-by: Tushar Sugandhi <tusharsu@linux.microsoft.com>
+Cc: Eric Biederman <ebiederm@xmission.com>
+Cc: Baoquan He <bhe@redhat.com>
+Cc: Vivek Goyal <vgoyal@redhat.com>
+Cc: Dave Young <dyoung@redhat.com>
+Signed-off-by: Steven Chen <chenste@linux.microsoft.com>
+Tested-by: Stefan Berger <stefanb@linux.ibm.com> # ppc64/kvm
+Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
+(cherry picked from commit 9f0ec4b16f2b41d663f688a8012e9e52b2657eba)
+Signed-off-by: Sherry Yang <sherry.yang@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-tegra.c |   53 +++++++++++++++++++++++------------------
- 1 file changed, 30 insertions(+), 23 deletions(-)
+ kernel/kexec_file.c                | 11 +++++++-
+ security/integrity/ima/ima_kexec.c | 43 ++++++++++++++++++++----------
+ 2 files changed, 39 insertions(+), 15 deletions(-)
 
---- a/drivers/i2c/busses/i2c-tegra.c
-+++ b/drivers/i2c/busses/i2c-tegra.c
-@@ -2147,28 +2147,37 @@ static int __maybe_unused tegra_i2c_runt
+diff --git a/kernel/kexec_file.c b/kernel/kexec_file.c
+index a20ceb4d27ccce..909432e804be16 100644
+--- a/kernel/kexec_file.c
++++ b/kernel/kexec_file.c
+@@ -201,6 +201,15 @@ kimage_validate_signature(struct kimage *image)
+ }
+ #endif
  
- static int __maybe_unused tegra_i2c_suspend(struct device *dev)
- {
-+	/*
-+	 * Bring the controller up and hold a usage count so it stays
-+	 * available until the noirq phase.
-+	 */
-+	return pm_runtime_resume_and_get(dev);
++static int kexec_post_load(struct kimage *image, unsigned long flags)
++{
++#ifdef CONFIG_IMA_KEXEC
++	if (!(flags & KEXEC_FILE_ON_CRASH))
++		ima_kexec_post_load(image);
++#endif
++	return machine_kexec_post_load(image);
 +}
 +
-+static int __maybe_unused tegra_i2c_suspend_noirq(struct device *dev)
-+{
- 	struct tegra_i2c_dev *i2c_dev = dev_get_drvdata(dev);
--	int err;
+ /*
+  * In file mode list of segments is prepared by kernel. Copy relevant
+  * data from user space, do error checking, prepare segment list
+@@ -428,7 +437,7 @@ SYSCALL_DEFINE5(kexec_file_load, int, kernel_fd, int, initrd_fd,
  
- 	i2c_mark_adapter_suspended(&i2c_dev->adapter);
+ 	kimage_terminate(image);
  
--	if (!pm_runtime_status_suspended(dev)) {
--		err = tegra_i2c_runtime_suspend(dev);
--		if (err)
--			return err;
--	}
+-	ret = machine_kexec_post_load(image);
++	ret = kexec_post_load(image, flags);
+ 	if (ret)
+ 		goto out;
+ 
+diff --git a/security/integrity/ima/ima_kexec.c b/security/integrity/ima/ima_kexec.c
+index 4de9834c3e1335..48fe9a7e1f456e 100644
+--- a/security/integrity/ima/ima_kexec.c
++++ b/security/integrity/ima/ima_kexec.c
+@@ -21,6 +21,7 @@
+ #ifdef CONFIG_IMA_KEXEC
+ static bool ima_kexec_update_registered;
+ static struct seq_file ima_kexec_file;
++static size_t kexec_segment_size;
+ static void *ima_kexec_buffer;
+ 
+ static void ima_free_kexec_file_buf(struct seq_file *sf)
+@@ -84,9 +85,6 @@ static int ima_dump_measurement_list(unsigned long *buffer_size, void **buffer,
+ 		}
+ 	}
+ 
+-	if (ret < 0)
+-		goto out;
 -
--	return 0;
-+	/*
-+	 * Runtime PM is already disabled at this point, so invoke the
-+	 * runtime_suspend callback directly to put the controller down.
-+	 */
-+	return tegra_i2c_runtime_suspend(dev);
- }
- 
--static int __maybe_unused tegra_i2c_resume(struct device *dev)
-+static int __maybe_unused tegra_i2c_resume_noirq(struct device *dev)
- {
- 	struct tegra_i2c_dev *i2c_dev = dev_get_drvdata(dev);
- 	int err;
- 
  	/*
--	 * We need to ensure that clocks are enabled so that registers can be
--	 * restored in tegra_i2c_init().
-+	 * Runtime PM is still disabled at this point, so invoke the
-+	 * runtime_resume callback directly to bring the controller back up
-+	 * before re-initializing the hardware. The adapter is then marked
-+	 * resumed so that consumers can issue transfers from their own
-+	 * resume_noirq() handlers and onwards.
- 	 */
- 	err = tegra_i2c_runtime_resume(dev);
- 	if (err)
-@@ -2178,24 +2187,22 @@ static int __maybe_unused tegra_i2c_resu
- 	if (err)
- 		return err;
+ 	 * fill in reserved space with some buffer details
+ 	 * (eg. version, buffer size, number of measurements)
+@@ -106,7 +104,7 @@ static int ima_dump_measurement_list(unsigned long *buffer_size, void **buffer,
  
--	/*
--	 * In case we are runtime suspended, disable clocks again so that we
--	 * don't unbalance the clock reference counts during the next runtime
--	 * resume transition.
--	 */
--	if (pm_runtime_status_suspended(dev)) {
--		err = tegra_i2c_runtime_suspend(dev);
--		if (err)
--			return err;
--	}
--
- 	i2c_mark_adapter_resumed(&i2c_dev->adapter);
- 
- 	return 0;
+ 	*buffer_size = ima_kexec_file.count;
+ 	*buffer = ima_kexec_file.buf;
+-out:
++
+ 	return ret;
  }
  
-+static int __maybe_unused tegra_i2c_resume(struct device *dev)
-+{
-+	pm_runtime_put(dev);
+@@ -124,9 +122,8 @@ void ima_add_kexec_buffer(struct kimage *image)
+ 	unsigned long binary_runtime_size;
+ 
+ 	/* use more understandable variable names than defined in kbuf */
++	size_t kexec_buffer_size = 0;
+ 	void *kexec_buffer = NULL;
+-	size_t kexec_buffer_size;
+-	size_t kexec_segment_size;
+ 	int ret;
+ 
+ 	if (image->type == KEXEC_TYPE_CRASH)
+@@ -154,13 +151,6 @@ void ima_add_kexec_buffer(struct kimage *image)
+ 		return;
+ 	}
+ 
+-	ima_dump_measurement_list(&kexec_buffer_size, &kexec_buffer,
+-				  kexec_segment_size);
+-	if (!kexec_buffer) {
+-		pr_err("Not enough memory for the kexec measurement buffer.\n");
+-		return;
+-	}
+-
+ 	kbuf.buffer = kexec_buffer;
+ 	kbuf.bufsz = kexec_buffer_size;
+ 	kbuf.memsz = kexec_segment_size;
+@@ -188,7 +178,32 @@ void ima_add_kexec_buffer(struct kimage *image)
+ static int ima_update_kexec_buffer(struct notifier_block *self,
+ 				   unsigned long action, void *data)
+ {
+-	return NOTIFY_OK;
++	size_t buf_size = 0;
++	int ret = NOTIFY_OK;
++	void *buf = NULL;
 +
-+	return 0;
-+}
++	if (!kexec_in_progress) {
++		pr_info("No kexec in progress.\n");
++		return ret;
++	}
 +
- static const struct dev_pm_ops tegra_i2c_pm = {
--	SET_NOIRQ_SYSTEM_SLEEP_PM_OPS(tegra_i2c_suspend, tegra_i2c_resume)
-+	SET_SYSTEM_SLEEP_PM_OPS(tegra_i2c_suspend, tegra_i2c_resume)
-+	SET_NOIRQ_SYSTEM_SLEEP_PM_OPS(tegra_i2c_suspend_noirq,
-+				      tegra_i2c_resume_noirq)
- 	SET_RUNTIME_PM_OPS(tegra_i2c_runtime_suspend, tegra_i2c_runtime_resume,
- 			   NULL)
- };
++	if (!ima_kexec_buffer) {
++		pr_err("Kexec buffer not set.\n");
++		return ret;
++	}
++
++	ret = ima_dump_measurement_list(&buf_size, &buf, kexec_segment_size);
++
++	if (ret)
++		pr_err("Dump measurements failed. Error:%d\n", ret);
++
++	if (buf_size != 0)
++		memcpy(ima_kexec_buffer, buf, buf_size);
++
++	kimage_unmap_segment(ima_kexec_buffer);
++	ima_kexec_buffer = NULL;
++
++	return ret;
+ }
+ 
+ static struct notifier_block update_buffer_nb = {
+-- 
+2.53.0
+
 
 
 
