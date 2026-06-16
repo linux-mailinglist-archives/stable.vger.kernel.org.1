@@ -1,60 +1,65 @@
-Return-Path: <stable+bounces-264954-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265503-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id jheuG2GCMWrRlAUAu9opvQ
-	(envelope-from <stable+bounces-264954-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:05:37 +0200
+	id 3J0MEL6LMWoOmQUAu9opvQ
+	(envelope-from <stable+bounces-265503-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:45:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F00AB692B60
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:05:36 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5E3D693722
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:45:33 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=xr3SkmQS;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264954-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264954-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=bQZScKQq;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265503-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265503-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DA37E307257D
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:52:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 580093214933
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:39:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BDDB47279B;
-	Tue, 16 Jun 2026 16:52:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A15647AF6E;
+	Tue, 16 Jun 2026 17:38:59 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32A9D1C5D72;
-	Tue, 16 Jun 2026 16:52:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78F4047A0CD;
+	Tue, 16 Jun 2026 17:38:57 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781628763; cv=none; b=MNoCxSvawDGrp7Ul42Jjf7DAuwhQ1f0rYzGtJCkQjimKAwGS0RaKGWQhfnKZ+mX1jCyMsvK7z3d6GamvyQ8DonR/tB8AbYdF1EMEJooHxGAy4tGWVhU7Yf94VQRbNzTRM8+VIM2Jb490x5IsVepXwDvFFdBUHOK7frXWoGQxRX0=
+	t=1781631538; cv=none; b=sDRMbT9pbJcyJv44B9gxwW6QiL0GKZ3Q1tyE72fWkBtkVnB+M7GKUYUXxCDaMAfOLM75fuVQm6N5FX51Z88r3qdaipGFUdQ2eEFssyTdD3MiC0ia1PkIvxa8pWsStAmcyMdbnGzcRxfV1xtwuoGgWVxSOv6ymtRn98a+OHI7hOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781628763; c=relaxed/simple;
-	bh=Eqs9tMLKzK3gmTw7NJDSU/t0s837f6acXotH1VHk/TQ=;
+	s=arc-20240116; t=1781631538; c=relaxed/simple;
+	bh=XdCXftbpIoC5A6UfxNd3cG6nLkshOwDBeliHfLMhGFQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cXfD1s2S6msBKUWRhx/O6udbw07KCw20owGMEIWGWsvJ+2m2TxUw5ghYvRLtCG1yt9Lsl6QVwWXmShMjcYxKO95ZDlLZUpQUr93zz+bSYkEdJwx/iLCbJex2PPzSJ5l/R67ro/nn4zUmXhmW3r4WufO3PGGW1GHnTy4PCDRsLmM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xr3SkmQS; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 070F91F000E9;
-	Tue, 16 Jun 2026 16:52:40 +0000 (UTC)
+	 MIME-Version; b=ms/7GsSyCl+i904MHkGuoy6HSBALY+rQoXQqNh4KH4i4H8RZUdFWCqvqHnI862SlmiohIUAUPFnz92hclVyjwyQLrsWGrREy8Gb+UN4pYmgcpL557BK44csqegR2cxKkEp0KiEMGx7hX6xHFrqHyCIW00YrE+SPPhTSIuAsIZg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bQZScKQq; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A37C1F000E9;
+	Tue, 16 Jun 2026 17:38:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781628761;
-	bh=3Q1R7pXpztxFbnTAU/HWO6KooQegq9bX7RARs3Q96fo=;
+	s=korg; t=1781631537;
+	bh=dzTcbVzzetLKhyZMpnZo29R9CoOyTtyAp4ZCHAnVz5g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=xr3SkmQSjdgLiRiSA9pBLLqqGc0UgECFBaD/kPxTj6EbX5VvDcd9ytZDGxq5SxBiw
-	 TXS6CuTPcGXyBOxhasgnP6ZGZh7bO3BeC7gujaWc8g/6ZAUh8y8xk7XFTYVpHbTlz1
-	 GjAf/SU11SESkAsyqQy72qG06zjZ1pAkUEdPODoU=
+	b=bQZScKQqk15hZf8g0l3JmhLfTcjwLPRFWeL4H9fA568jQzst7erbvfidyp3ozySpL
+	 +0iQVnE8EGbSI+tqEm+zQFODndFGFpS5eSSD0iQEB2hTyB/BknpeMJbFTf10eMbh3W
+	 Ak1MlvQeQNZzadG2JVfIfNRXG4vuQitbUniBQBoQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Volckaert <janvolck@gmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.6 158/452] USB: serial: option: add MeiG SRM813Q
+	Mark Rutland <mark.rutland@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oupton@kernel.org>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 238/522] arm64: tlb: Optimize ARM64_WORKAROUND_REPEAT_TLBI
 Date: Tue, 16 Jun 2026 20:26:25 +0530
-Message-ID: <20260616145126.043343971@linuxfoundation.org>
+Message-ID: <20260616145137.116921407@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,133 +73,429 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-264954-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:janvolck@gmail.com,m:johan@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-265503-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mark.rutland@arm.com,m:catalin.marinas@arm.com,m:maz@kernel.org,m:oupton@kernel.org,m:ryan.roberts@arm.com,m:will@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,arm.com:url,arm.com:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: F00AB692B60
+X-Rspamd-Queue-Id: A5E3D693722
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Volckaert <janvolck@gmail.com>
+From: Mark Rutland <mark.rutland@arm.com>
 
-commit 7d2b37d3e42d19071b62f4ddbee6e16e905efbf1 upstream.
+commit a8f78680ee6bf795086384e8aea159a52814f827 upstream.
 
-Add support for the Qualcomm Technology Snapdragon X35-based MeiG
-SRM813Q module.
+The ARM64_WORKAROUND_REPEAT_TLBI workaround is used to mitigate several
+errata where broadcast TLBI;DSB sequences don't provide all the
+architecturally required synchronization. The workaround performs more
+work than necessary, and can have significant overhead. This patch
+optimizes the workaround, as explained below.
 
-The module can be put in different modes via AT commands to
-enable/disable GPS functionality:
+The workaround was originally added for Qualcomm Falkor erratum 1009 in
+commit:
 
-MODEM - PPP mode(2dee:4d63): AT+SER=1,1
+  d9ff80f83ecb ("arm64: Work around Falkor erratum 1009")
 
-If#= 0: RMNET
-If#= 1: DIAG/ADB
-If#= 2: MODEM
-If#= 3: AT
+As noted in the message for that commit, the workaround is applied even
+in cases where it is not strictly necessary.
 
-P:  Vendor=2dee ProdID=4d63 Rev=05.15
-S:  Manufacturer=MEIG
-S:  Product=LTE-A Module
-S:  SerialNumber=1bd51f0e
-C:  #Ifs= 4 Cfg#= 1 Atr=80 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+The workaround was later reused without changes for:
 
-NMEA mode(2dee:4d64): AT+SER=51,1
+* Arm Cortex-A76 erratum #1286807
+  SDEN v33: https://developer.arm.com/documentation/SDEN-885749/33-0/
 
-If#= 0: RMNET
-If#= 1: DIAG/ADB
-If#= 2: NMEA
-If#= 3: AT
+* Arm Cortex-A55 erratum #2441007
+  SDEN v16: https://developer.arm.com/documentation/SDEN-859338/1600/
 
-P:  Vendor=2dee ProdID=4d64 Rev=05.15
-S:  Manufacturer=MEIG
-S:  Product=LTE-A Module
-S:  SerialNumber=1bd51f0e
-C:  #Ifs= 4 Cfg#= 1 Atr=80 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+* Arm Cortex-A510 erratum #2441009
+  SDEN v19: https://developer.arm.com/documentation/SDEN-1873351/1900/
 
-Signed-off-by: Jan Volckaert <janvolck@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+The important details to note are as follows:
+
+1. All relevant errata only affect the ordering and/or completion of
+   memory accesses which have been translated by an invalidated TLB
+   entry. The actual invalidation of TLB entries is unaffected.
+
+2. The existing workaround is applied to both broadcast and local TLB
+   invalidation, whereas for all relevant errata it is only necessary to
+   apply a workaround for broadcast invalidation.
+
+3. The existing workaround replaces every TLBI with a TLBI;DSB;TLBI
+   sequence, whereas for all relevant errata it is only necessary to
+   execute a single additional TLBI;DSB sequence after any number of
+   TLBIs are completed by a DSB.
+
+   For example, for a sequence of batched TLBIs:
+
+       TLBI <op1>[, <arg1>]
+       TLBI <op2>[, <arg2>]
+       TLBI <op3>[, <arg3>]
+       DSB ISH
+
+   ... the existing workaround will expand this to:
+
+       TLBI <op1>[, <arg1>]
+       DSB ISH                  // additional
+       TLBI <op1>[, <arg1>]     // additional
+       TLBI <op2>[, <arg2>]
+       DSB ISH                  // additional
+       TLBI <op2>[, <arg2>]     // additional
+       TLBI <op3>[, <arg3>]
+       DSB ISH                  // additional
+       TLBI <op3>[, <arg3>]     // additional
+       DSB ISH
+
+   ... whereas it is sufficient to have:
+
+       TLBI <op1>[, <arg1>]
+       TLBI <op2>[, <arg2>]
+       TLBI <op3>[, <arg3>]
+       DSB ISH
+       TLBI <opX>[, <argX>]     // additional
+       DSB ISH                  // additional
+
+   Using a single additional TBLI and DSB at the end of the sequence can
+   have significantly lower overhead as each DSB which completes a TLBI
+   must synchronize with other PEs in the system, with potential
+   performance effects both locally and system-wide.
+
+4. The existing workaround repeats each specific TLBI operation, whereas
+   for all relevant errata it is sufficient for the additional TLBI to
+   use *any* operation which will be broadcast, regardless of which
+   translation regime or stage of translation the operation applies to.
+
+   For example, for a single TLBI:
+
+       TLBI ALLE2IS
+       DSB ISH
+
+   ... the existing workaround will expand this to:
+
+       TLBI ALLE2IS
+       DSB ISH
+       TLBI ALLE2IS             // additional
+       DSB ISH                  // additional
+
+   ... whereas it is sufficient to have:
+
+       TLBI ALLE2IS
+       DSB ISH
+       TLBI VALE1IS, XZR        // additional
+       DSB ISH                  // additional
+
+   As the additional TLBI doesn't have to match a specific earlier TLBI,
+   the additional TLBI can be implemented in separate code, with no
+   memory of the earlier TLBIs. The additional TLBI can also use a
+   cheaper TLBI operation.
+
+5. The existing workaround is applied to both Stage-1 and Stage-2 TLB
+   invalidation, whereas for all relevant errata it is only necessary to
+   apply a workaround for Stage-1 invalidation.
+
+   Architecturally, TLBI operations which invalidate only Stage-2
+   information (e.g. IPAS2E1IS) are not required to invalidate TLB
+   entries which combine information from Stage-1 and Stage-2
+   translation table entries, and consequently may not complete memory
+   accesses translated by those combined entries. In these cases,
+   completion of memory accesses is only guaranteed after subsequent
+   invalidation of Stage-1 information (e.g. VMALLE1IS).
+
+Taking the above points into account, this patch reworks the workaround
+logic to reduce overhead:
+
+* New __tlbi_sync_s1ish() and __tlbi_sync_s1ish_hyp() functions are
+  added and used in place of any dsb(ish) which is used to complete
+  broadcast Stage-1 TLB maintenance. When the
+  ARM64_WORKAROUND_REPEAT_TLBI workaround is enabled, these helpers will
+  execute an additional TLBI;DSB sequence.
+
+  For consistency, it might make sense to add __tlbi_sync_*() helpers
+  for local and stage 2 maintenance. For now I've left those with
+  open-coded dsb() to keep the diff small.
+
+* The duplication of TLBIs in __TLBI_0() and __TLBI_1() is removed. This
+  is no longer needed as the necessary synchronization will happen in
+  __tlbi_sync_s1ish() or __tlbi_sync_s1ish_hyp().
+
+* The additional TLBI operation is chosen to have minimal impact:
+
+  - __tlbi_sync_s1ish() uses "TLBI VALE1IS, XZR". This is only used at
+    EL1 or at EL2 with {E2H,TGE}=={1,1}, where it will target an unused
+    entry for the reserved ASID in the kernel's own translation regime,
+    and have no adverse affect.
+
+  - __tlbi_sync_s1ish_hyp() uses "TLBI VALE2IS, XZR". This is only used
+    in hyp code, where it will target an unused entry in the hyp code's
+    TTBR0 mapping, and should have no adverse effect.
+
+* As __TLBI_0() and __TLBI_1() no longer replace each TLBI with a
+  TLBI;DSB;TLBI sequence, batching TLBIs is worthwhile, and there's no
+  need for arch_tlbbatch_should_defer() to consider
+  ARM64_WORKAROUND_REPEAT_TLBI.
+
+When building defconfig with GCC 15.1.0, compared to v6.19-rc1, this
+patch saves ~1KiB of text, makes the vmlinux ~42KiB smaller, and makes
+the resulting Image 64KiB smaller:
+
+| [mark@lakrids:~/src/linux]% size vmlinux-*
+|    text    data     bss     dec     hex filename
+| 21179831        19660919         708216 41548966        279fca6 vmlinux-after
+| 21181075        19660903         708216 41550194        27a0172 vmlinux-before
+| [mark@lakrids:~/src/linux]% ls -l vmlinux-*
+| -rwxr-xr-x 1 mark mark 157771472 Feb  4 12:05 vmlinux-after
+| -rwxr-xr-x 1 mark mark 157815432 Feb  4 12:05 vmlinux-before
+| [mark@lakrids:~/src/linux]% ls -l Image-*
+| -rw-r--r-- 1 mark mark 41007616 Feb  4 12:05 Image-after
+| -rw-r--r-- 1 mark mark 41073152 Feb  4 12:05 Image-before
+
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Marc Zyngier <maz@kernel.org>
+Cc: Oliver Upton <oupton@kernel.org>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[Mark: Backport to v6.1.y]
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/option.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/arm64/include/asm/tlbflush.h | 48 ++++++++++++++++++++++---------
+ arch/arm64/kernel/sys_compat.c    |  2 +-
+ arch/arm64/kvm/hyp/nvhe/tlb.c     |  6 ++--
+ arch/arm64/kvm/hyp/pgtable.c      |  2 +-
+ arch/arm64/kvm/hyp/vhe/tlb.c      |  6 ++--
+ 5 files changed, 42 insertions(+), 22 deletions(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -2450,6 +2450,12 @@ static const struct usb_device_id option
- 	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d38, 0xff, 0xff, 0x30) },	/* MeiG Smart SRM825WN (Diag) */
- 	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d38, 0xff, 0xff, 0x40) },	/* MeiG Smart SRM825WN (AT) */
- 	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d38, 0xff, 0xff, 0x60) },	/* MeiG Smart SRM825WN (NMEA) */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d63, 0xff, 0xff, 0x30) },	/* MeiG SRM813Q (Diag) */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d63, 0xff, 0xff, 0x40) },	/* MeiG SRM813Q (AT) */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d64, 0xff, 0xff, 0x30) },	/* MeiG SRM813Q (Diag) */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d64, 0xff, 0xff, 0x40) },	/* MeiG SRM813Q (AT) */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d64, 0xff, 0xff, 0x60) },	/* MeiG SRM813Q (NMEA) */
+diff --git a/arch/arm64/include/asm/tlbflush.h b/arch/arm64/include/asm/tlbflush.h
+index 2626a45849c241..289c3948d5b08a 100644
+--- a/arch/arm64/include/asm/tlbflush.h
++++ b/arch/arm64/include/asm/tlbflush.h
+@@ -30,18 +30,10 @@
+  */
+ #define __TLBI_0(op, arg) asm (ARM64_ASM_PREAMBLE			       \
+ 			       "tlbi " #op "\n"				       \
+-		   ALTERNATIVE("nop\n			nop",		       \
+-			       "dsb ish\n		tlbi " #op,	       \
+-			       ARM64_WORKAROUND_REPEAT_TLBI,		       \
+-			       CONFIG_ARM64_WORKAROUND_REPEAT_TLBI)	       \
+ 			    : : )
+ 
+ #define __TLBI_1(op, arg) asm (ARM64_ASM_PREAMBLE			       \
+ 			       "tlbi " #op ", %x0\n"			       \
+-		   ALTERNATIVE("nop\n			nop",		       \
+-			       "dsb ish\n		tlbi " #op ", %x0",    \
+-			       ARM64_WORKAROUND_REPEAT_TLBI,		       \
+-			       CONFIG_ARM64_WORKAROUND_REPEAT_TLBI)	       \
+ 			    : : "rZ" (arg))
+ 
+ #define __TLBI_N(op, arg, n, ...) __TLBI_##n(op, arg)
+@@ -158,6 +150,34 @@ static inline unsigned long get_trans_granule(void)
+ #define __TLBI_RANGE_NUM(pages, scale)	\
+ 	((((pages) >> (5 * (scale) + 1)) & TLBI_RANGE_MASK) - 1)
+ 
++#define __repeat_tlbi_sync(op, arg...)						\
++do {										\
++	if (!alternative_has_feature_unlikely(ARM64_WORKAROUND_REPEAT_TLBI))	\
++		break;								\
++	__tlbi(op, ##arg);							\
++	dsb(ish);								\
++} while (0)
 +
- 	{ USB_DEVICE_INTERFACE_CLASS(0x2df3, 0x9d03, 0xff) },			/* LongSung M5710 */
- 	{ USB_DEVICE_INTERFACE_CLASS(0x305a, 0x1404, 0xff) },			/* GosunCn GM500 RNDIS */
- 	{ USB_DEVICE_INTERFACE_CLASS(0x305a, 0x1405, 0xff) },			/* GosunCn GM500 MBIM */
++/*
++ * Complete broadcast TLB maintenance issued by the host which invalidates
++ * stage 1 information in the host's own translation regime.
++ */
++static inline void __tlbi_sync_s1ish(void)
++{
++	dsb(ish);
++	__repeat_tlbi_sync(vale1is, 0);
++}
++
++/*
++ * Complete broadcast TLB maintenance issued by hyp code which invalidates
++ * stage 1 translation information in any translation regime.
++ */
++static inline void __tlbi_sync_s1ish_hyp(void)
++{
++	dsb(ish);
++	__repeat_tlbi_sync(vale2is, 0);
++}
++
+ /*
+  *	TLB Invalidation
+  *	================
+@@ -239,7 +259,7 @@ static inline void flush_tlb_all(void)
+ {
+ 	dsb(ishst);
+ 	__tlbi(vmalle1is);
+-	dsb(ish);
++	__tlbi_sync_s1ish();
+ 	isb();
+ }
+ 
+@@ -251,7 +271,7 @@ static inline void flush_tlb_mm(struct mm_struct *mm)
+ 	asid = __TLBI_VADDR(0, ASID(mm));
+ 	__tlbi(aside1is, asid);
+ 	__tlbi_user(aside1is, asid);
+-	dsb(ish);
++	__tlbi_sync_s1ish();
+ }
+ 
+ static inline void flush_tlb_page_nosync(struct vm_area_struct *vma,
+@@ -269,7 +289,7 @@ static inline void flush_tlb_page(struct vm_area_struct *vma,
+ 				  unsigned long uaddr)
+ {
+ 	flush_tlb_page_nosync(vma, uaddr);
+-	dsb(ish);
++	__tlbi_sync_s1ish();
+ }
+ 
+ /*
+@@ -357,7 +377,7 @@ static inline void __flush_tlb_range(struct vm_area_struct *vma,
+ 		}
+ 		scale++;
+ 	}
+-	dsb(ish);
++	__tlbi_sync_s1ish();
+ }
+ 
+ static inline void flush_tlb_range(struct vm_area_struct *vma,
+@@ -386,7 +406,7 @@ static inline void flush_tlb_kernel_range(unsigned long start, unsigned long end
+ 	dsb(ishst);
+ 	for (addr = start; addr < end; addr += 1 << (PAGE_SHIFT - 12))
+ 		__tlbi(vaale1is, addr);
+-	dsb(ish);
++	__tlbi_sync_s1ish();
+ 	isb();
+ }
+ 
+@@ -400,7 +420,7 @@ static inline void __flush_tlb_kernel_pgtable(unsigned long kaddr)
+ 
+ 	dsb(ishst);
+ 	__tlbi(vaae1is, addr);
+-	dsb(ish);
++	__tlbi_sync_s1ish();
+ 	isb();
+ }
+ #endif
+diff --git a/arch/arm64/kernel/sys_compat.c b/arch/arm64/kernel/sys_compat.c
+index df14336c3a29cf..2bc2ac91d79e39 100644
+--- a/arch/arm64/kernel/sys_compat.c
++++ b/arch/arm64/kernel/sys_compat.c
+@@ -37,7 +37,7 @@ __do_compat_cache_op(unsigned long start, unsigned long end)
+ 			 * We pick the reserved-ASID to minimise the impact.
+ 			 */
+ 			__tlbi(aside1is, __TLBI_VADDR(0, 0));
+-			dsb(ish);
++			__tlbi_sync_s1ish();
+ 		}
+ 
+ 		ret = caches_clean_inval_user_pou(start, start + chunk);
+diff --git a/arch/arm64/kvm/hyp/nvhe/tlb.c b/arch/arm64/kvm/hyp/nvhe/tlb.c
+index 291789df24e3ee..76973e3b48a076 100644
+--- a/arch/arm64/kvm/hyp/nvhe/tlb.c
++++ b/arch/arm64/kvm/hyp/nvhe/tlb.c
+@@ -81,7 +81,7 @@ void __kvm_tlb_flush_vmid_ipa(struct kvm_s2_mmu *mmu,
+ 	 */
+ 	dsb(ish);
+ 	__tlbi(vmalle1is);
+-	dsb(ish);
++	__tlbi_sync_s1ish_hyp();
+ 	isb();
+ 
+ 	__tlb_switch_to_host(&cxt);
+@@ -97,7 +97,7 @@ void __kvm_tlb_flush_vmid(struct kvm_s2_mmu *mmu)
+ 	__tlb_switch_to_guest(mmu, &cxt);
+ 
+ 	__tlbi(vmalls12e1is);
+-	dsb(ish);
++	__tlbi_sync_s1ish_hyp();
+ 	isb();
+ 
+ 	__tlb_switch_to_host(&cxt);
+@@ -122,5 +122,5 @@ void __kvm_flush_vm_context(void)
+ {
+ 	dsb(ishst);
+ 	__tlbi(alle1is);
+-	dsb(ish);
++	__tlbi_sync_s1ish_hyp();
+ }
+diff --git a/arch/arm64/kvm/hyp/pgtable.c b/arch/arm64/kvm/hyp/pgtable.c
+index f0167dc7438f8a..d2838de92b4796 100644
+--- a/arch/arm64/kvm/hyp/pgtable.c
++++ b/arch/arm64/kvm/hyp/pgtable.c
+@@ -486,7 +486,7 @@ static int hyp_unmap_walker(u64 addr, u64 end, u32 level, kvm_pte_t *ptep,
+ 		data->unmapped += granule;
+ 	}
+ 
+-	dsb(ish);
++	__tlbi_sync_s1ish_hyp();
+ 	isb();
+ 	mm_ops->put_page(ptep);
+ 
+diff --git a/arch/arm64/kvm/hyp/vhe/tlb.c b/arch/arm64/kvm/hyp/vhe/tlb.c
+index fc3fcd29ccc306..59aa22b48e9538 100644
+--- a/arch/arm64/kvm/hyp/vhe/tlb.c
++++ b/arch/arm64/kvm/hyp/vhe/tlb.c
+@@ -105,7 +105,7 @@ void __kvm_tlb_flush_vmid_ipa(struct kvm_s2_mmu *mmu,
+ 	 */
+ 	dsb(ish);
+ 	__tlbi(vmalle1is);
+-	dsb(ish);
++	__tlbi_sync_s1ish_hyp();
+ 	isb();
+ 
+ 	__tlb_switch_to_host(&cxt);
+@@ -121,7 +121,7 @@ void __kvm_tlb_flush_vmid(struct kvm_s2_mmu *mmu)
+ 	__tlb_switch_to_guest(mmu, &cxt);
+ 
+ 	__tlbi(vmalls12e1is);
+-	dsb(ish);
++	__tlbi_sync_s1ish_hyp();
+ 	isb();
+ 
+ 	__tlb_switch_to_host(&cxt);
+@@ -146,5 +146,5 @@ void __kvm_flush_vm_context(void)
+ {
+ 	dsb(ishst);
+ 	__tlbi(alle1is);
+-	dsb(ish);
++	__tlbi_sync_s1ish_hyp();
+ }
+-- 
+2.53.0
+
 
 
 
