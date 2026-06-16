@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-265608-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264253-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id SSiRNiyNMWq4mQUAu9opvQ
-	(envelope-from <stable+bounces-265608-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:51:40 +0200
+	id 4BF3BG9yMWpMjgUAu9opvQ
+	(envelope-from <stable+bounces-264253-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:57:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 650B76938CA
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:51:40 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA9DF6918FA
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:57:34 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ZVBoG0Ox;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265608-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265608-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=VUDdn8WC;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264253-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264253-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 71519309C28D
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:47:44 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0D20730A8031
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:49:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A43F3CFF4B;
-	Tue, 16 Jun 2026 17:47:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B077743D4F7;
+	Tue, 16 Jun 2026 15:49:19 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F116F169AD2;
-	Tue, 16 Jun 2026 17:47:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04097364024;
+	Tue, 16 Jun 2026 15:49:16 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781632062; cv=none; b=tlvAiauRx5oQ5GYaL5qhdrXwh5VylzNp2f9kQIkdCYZcEsGow9fYsp1RCP6SW/4ir0yzq5+cFqRWMiM0f7fKj02UMysM/4Bvw1ljhos6Q05cbsTBtIOOkZ/sjtD6jPB9hiUqDzb9CzmELjTFFg9/XhfHeVPFRJ7dK2EofMxpeZA=
+	t=1781624959; cv=none; b=mALkBPDcMYKMkL9Jk3bpTO8+XZS6TqYtvzNkgdjxcL0BegzYOpIc2XHO0ELTIaqmD8XDLh9HJzrmSBLXSbwM6gEmNDYKkid1zX06d43GCa/X2BUA635jq3qdm5ZJcFzBBgIQj4uVcBds80ZjvmQ8R0zWKwaeZlZRM/0+6qRBYd0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781632062; c=relaxed/simple;
-	bh=URF75w1GIqnEhrQsizzGXf/tL7mLcRdlfn1e2UtuhVw=;
+	s=arc-20240116; t=1781624959; c=relaxed/simple;
+	bh=ttKy+xCBStkIWPr5F238oXonuklsXYFD4ComUS8DTkc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BFTCMNZoAhyAHiy83KjQDqwxtFvVh1Uasu+P/xxC0A20n9mEvG7xscjP64WnAOkfia20H+ZfP5G4YY/xvo0QDFxt2A6SRTL8TOlKzAz14G48F2656ZPX/nt3CUm/hZlQfIOUqqFl+Hxn0pyY/E0nI13uMOOKDsub8Smzn1lTqi4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZVBoG0Ox; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C47B1F000E9;
-	Tue, 16 Jun 2026 17:47:40 +0000 (UTC)
+	 MIME-Version; b=mFVBrFiS1sF3ZedIGU2iXkBNdOZYhkUFOxD52/nEdFzaE8F89GdDhG60U3vWS/9pA6rFU6ff/BrfUUKvfMC4ByKOs3Pnaqj9eXHRx+NUgJv3M0su2lUe2YEM+MlmSkfeZY+X5oBzmx/JrRnDoe7jPOGm4n9C2DyRnRc4LCBXvQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VUDdn8WC; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 601CA1F000E9;
+	Tue, 16 Jun 2026 15:49:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781632061;
-	bh=1sc8pSEZESWAyMwhRqyWm7xr5Tnt3HljhLAgA1d+3rA=;
+	s=korg; t=1781624956;
+	bh=O2HoLgLBcW284sP9d8Tinbx8UDCVo2MjpMgw8TfXTB0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ZVBoG0Oxm7zp3bZivnDRRpL6VPo0cnu9lCIPmB2WcA2CD2+cgX3PgBR0dnsFmcUgX
-	 WGZorbkd9WIlzOyQxS3QUlJK67JbWKdS8EkgSHJdqsqDZfsOj6fhUiIfc0/QjSv35w
-	 r9p/zPZrDD6DqXhrOZX1sloh9y7IuBtc0bdIgbWY=
+	b=VUDdn8WCjcmC0DeOp7eo/Kn5Okt7M9WqP/UwSja6EAbOTYGCNJkQew0VSXTQTSj5x
+	 Kxc2OzxzRjrERpz6BIM8hu6sRaeg62GVOQr5tGBu6B5PFoJKnVq5cO3Q6woDeOTyBQ
+	 IFl4C5rRPm7/1zvEW7pwDWGBgX03AjGKUr0NAieI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 306/522] net: mv643xx: fix OF node refcount
+	Florian Zeitz <florian.zeitz@schettke.com>,
+	Kurt Kanzenbach <kurt@linutronix.de>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 057/325] ptp: vclock: Switch from RCU to SRCU
 Date: Tue, 16 Jun 2026 20:27:33 +0530
-Message-ID: <20260616145140.195852458@linuxfoundation.org>
+Message-ID: <20260616145100.533501242@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,76 +71,123 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265608-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bartosz.golaszewski@oss.qualcomm.com,m:kuba@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264253-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:florian.zeitz@schettke.com,m:kurt@linutronix.de,m:bigeasy@linutronix.de,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,qualcomm.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,vger.kernel.org:from_smtp,linutronix.de:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 650B76938CA
+X-Rspamd-Queue-Id: CA9DF6918FA
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+From: Kurt Kanzenbach <kurt@linutronix.de>
 
-commit 4aacf509e537a711fa71bca9f234e5eb6968850e upstream.
+[ Upstream commit 672bd0519e27c357c43b7f8c0d653fce3817d06e ]
 
-Platform devices created with platform_device_alloc() call
-platform_device_release() when the last reference to the device's
-kobject is dropped. This function calls of_node_put() unconditionally.
-This works fine for devices created with platform_device_register_full()
-but users of the split approach (platform_device_alloc() +
-platform_device_add()) must bump the reference of the of_node they
-assign manually. Add the missing call to of_node_get().
+The usage of PTP vClocks leads immediately to the following issues with
+ptp4l with LOCKDEP and DEBUG_ATOMIC_SLEEP enabled: "BUG: sleeping function
+called from invalid context".
 
-Cc: stable@vger.kernel.org
-Fixes: 76723bca2802 ("net: mv643xx_eth: add DT parsing support")
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260602073414.22500-1-bartosz.golaszewski@oss.qualcomm.com
+ptp_convert_timestamp() acquires a mutex_t within a RCU read section.  This
+is illegal, because acquiring a mutex_t can result in voluntary scheduling
+request which is not allowed within a RCU read section.
+
+Replace the RCU usage with SRCU where sleeping is allowed.
+
+Reported-by: Florian Zeitz <florian.zeitz@schettke.com>
+Closes: https://lore.kernel.org/all/00a8cce8-410e-4038-98af-49be6d93d7bd@schettke.com/
+Fixes: 67d93ffc0f3c ("ptp: vclock: use mutex to fix "sleep on atomic" bug")
+Signed-off-by: Kurt Kanzenbach <kurt@linutronix.de>
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Link: https://patch.msgid.link/20260529-vclock_rcu-v2-1-02a5531fab92@linutronix.de
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/mv643xx_eth.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/ptp/ptp_vclock.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
---- a/drivers/net/ethernet/marvell/mv643xx_eth.c
-+++ b/drivers/net/ethernet/marvell/mv643xx_eth.c
-@@ -2781,7 +2781,7 @@ static int mv643xx_eth_shared_of_add_por
- 		goto put_err;
- 	}
- 	ppdev->dev.coherent_dma_mask = DMA_BIT_MASK(32);
--	ppdev->dev.of_node = pnp;
-+	ppdev->dev.of_node = of_node_get(pnp);
+diff --git a/drivers/ptp/ptp_vclock.c b/drivers/ptp/ptp_vclock.c
+index 64c95045651787..295a64bdd846f2 100644
+--- a/drivers/ptp/ptp_vclock.c
++++ b/drivers/ptp/ptp_vclock.c
+@@ -19,6 +19,8 @@ static DEFINE_SPINLOCK(vclock_hash_lock);
  
- 	ret = platform_device_add_resources(ppdev, &res, 1);
- 	if (ret)
+ static DEFINE_READ_MOSTLY_HASHTABLE(vclock_hash, 8);
+ 
++DEFINE_STATIC_SRCU(vclock_srcu);
++
+ static void ptp_vclock_hash_add(struct ptp_vclock *vclock)
+ {
+ 	spin_lock(&vclock_hash_lock);
+@@ -37,7 +39,7 @@ static void ptp_vclock_hash_del(struct ptp_vclock *vclock)
+ 
+ 	spin_unlock(&vclock_hash_lock);
+ 
+-	synchronize_rcu();
++	synchronize_srcu(&vclock_srcu);
+ }
+ 
+ static int ptp_vclock_adjfine(struct ptp_clock_info *ptp, long scaled_ppm)
+@@ -276,14 +278,16 @@ ktime_t ptp_convert_timestamp(const ktime_t *hwtstamp, int vclock_index)
+ {
+ 	unsigned int hash = vclock_index % HASH_SIZE(vclock_hash);
+ 	struct ptp_vclock *vclock;
+-	u64 ns;
+ 	u64 vclock_ns = 0;
++	int srcu_idx;
++	u64 ns;
+ 
+ 	ns = ktime_to_ns(*hwtstamp);
+ 
+-	rcu_read_lock();
++	srcu_idx = srcu_read_lock(&vclock_srcu);
+ 
+-	hlist_for_each_entry_rcu(vclock, &vclock_hash[hash], vclock_hash_node) {
++	hlist_for_each_entry_srcu(vclock, &vclock_hash[hash], vclock_hash_node,
++				  srcu_read_lock_held(&vclock_srcu)) {
+ 		if (vclock->clock->index != vclock_index)
+ 			continue;
+ 
+@@ -294,7 +298,7 @@ ktime_t ptp_convert_timestamp(const ktime_t *hwtstamp, int vclock_index)
+ 		break;
+ 	}
+ 
+-	rcu_read_unlock();
++	srcu_read_unlock(&vclock_srcu, srcu_idx);
+ 
+ 	return ns_to_ktime(vclock_ns);
+ }
+-- 
+2.53.0
+
 
 
 
