@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-265394-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264848-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ubGrDneJMWrzlwUAu9opvQ
-	(envelope-from <stable+bounces-265394-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:35:51 +0200
+	id KHrnCFd+MWookwUAu9opvQ
+	(envelope-from <stable+bounces-264848-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:48:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 317576934AB
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:35:50 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A679692773
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:48:22 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=FICIW+4v;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265394-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265394-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=fldhUP7Q;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264848-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264848-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D0DB3304289C
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:29:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 60266307F51F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:43:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FADF21C16A;
-	Tue, 16 Jun 2026 17:29:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BF19477E21;
+	Tue, 16 Jun 2026 16:43:29 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CD664657F8;
-	Tue, 16 Jun 2026 17:29:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBD6D3C063F;
+	Tue, 16 Jun 2026 16:43:26 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781630975; cv=none; b=NSmkLPVjbKXpLUyD63wlp0Mn8eSTL84Ea6yo9iTwCiD2y0fXQHZwNVKs5TCRCq0dG+91jRGjnVIDz8SLwi8hkzsX5osVS4bABJR9u+MmA/kUG455b4HH+Xy63Pymz0LiTwKgOK2olnh0v/e2b2aehmlaxzCCQZB1RUFQLiEKM1o=
+	t=1781628208; cv=none; b=iVOmYYm52eWC/FvIBjyb/lA0xlpa2vjbChlOexOyXLO5Nu8E72/dgbtp+mFr5uMQTn2DjXr6AYRRhUM0O9WsErdk3WJz0ST5A6rIeMIqYsN6dpzNu/OwbPviDeuxUJyCAYgCzI0x5mpXLqv9iWYRTjXSc4jpdNWBk79M6So2Co0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781630975; c=relaxed/simple;
-	bh=zeXoEKAA9I4bO1GXv3Xhp6sbO4iRPvGBr6qkH5bGsCg=;
+	s=arc-20240116; t=1781628208; c=relaxed/simple;
+	bh=nhVJrsqCh6AgXrO9ATKg842qwAeNQrKaxsCxYOEfbWM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hOeI3Tk+6y4hWz9L9AprHLctyhhwjecwhyInzQFLMyBBDcqyjCk18ZqVTNSPoJ0Dx7g8DLYehAMhaWXE8vHZDDAmmwu42i0XZm3UCIQTi05vKFhYe72a5nBxtrREsMNvQD1usQ4php04LTFpu/99GE87DFX1TPuSiOoYbIeMC/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FICIW+4v; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 239B31F000E9;
-	Tue, 16 Jun 2026 17:29:32 +0000 (UTC)
+	 MIME-Version; b=OJHY9EjMTBP8YlDlBlI9kGOOWbIupsGT4/QCRJ95jrknkgHI0K47OAI/q/wEucqEcPUbuPEjaD48OsHWdpW4zXWY7Z/zReFMg6l2jOGd2gTDq4JroulFzsxm0u2fX+f4hbrkoldCdFvdpX/AZmh0aa6vLyH3n0oesDz7ByqtH5I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fldhUP7Q; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 768E01F000E9;
+	Tue, 16 Jun 2026 16:43:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781630974;
-	bh=+dqpIIkoJvQDiRQvi83PbGRgpCEiXshocWaFI06ClwY=;
+	s=korg; t=1781628206;
+	bh=Kyq5VSuvn0miBsWMIcj/+ZRExLa5e8vTk1SZF2PIAFg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=FICIW+4va2iIrf7GBiqeA3LHx2P2ASJNJlHFmrciWB2CKtKmKsnx50qWZYN+FSiVf
-	 LuqnZvtOdeVTKmUgJEeMRSEdQRGG+SuuUj2ofb7gEpMBO3Qz7UBThm0a2+6zq4dEKz
-	 zbSszHs0s63s5ALMjbQjvLVyXu8qTacvZiao1E2I=
+	b=fldhUP7QVublnua7M1U/ujmiLLIf4WtaqwY8Rh3xkMF8Wy5ablMVXurX6EKdW3L7q
+	 R+sUDmNS4N9ugkACchuBObyyiZNCSjBTnFu66exdRXLlWafhGlWr+I5MALhEp5iCHq
+	 WxXb2wXon0a7kEDTYNIUizNFz4nah/nr2e89lH/U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maoyi Xie <maoyi.xie@ntu.edu.sg>,
-	Steffen Klassert <steffen.klassert@secunet.com>
-Subject: [PATCH 6.1 131/522] xfrm: route MIGRATE notifications to callers netns
-Date: Tue, 16 Jun 2026 20:24:38 +0530
-Message-ID: <20260616145132.231717353@linuxfoundation.org>
+	stable@kernel.org,
+	Sven Eckelmann <sven@narfation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 052/452] batman-adv: tt: reject oversized local TVLV buffers
+Date: Tue, 16 Jun 2026 20:24:39 +0530
+Message-ID: <20260616145120.699326156@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,22 +72,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265394-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264848-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:maoyi.xie@ntu.edu.sg,m:steffen.klassert@secunet.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:sven@narfation.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -97,170 +98,71 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[secunet.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[narfation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 317576934AB
+X-Rspamd-Queue-Id: 7A679692773
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maoyi Xie <maoyixie.tju@gmail.com>
+From: Sven Eckelmann <sven@narfation.org>
 
-commit 7e2a4f7ca0952820731ef7bdadfc9a9e9d3571b4 upstream.
+commit 1e9fab756f8395096d5bba7be0c373c4c8f5d165 upstream.
 
-xfrm_send_migrate() in net/xfrm/xfrm_user.c and pfkey_send_migrate()
-in net/key/af_key.c both hardcode &init_net for the multicast that
-announces a successful XFRM_MSG_MIGRATE / SADB_X_MIGRATE.
+The commit 3a359bf5c61d ("batman-adv: reject oversized global TT response
+buffers") added a check to ensure that a global return buffer size can be
+stored in an u16. The same buffer handling also exists for the local data
+buffer but was not touched.
 
-XFRM_MSG_MIGRATE arrives on a per-netns NETLINK_XFRM socket, and the
-rest of the xfrm/af_key netlink path was made netns-aware in 2008.
-The other 14 multicast paths in xfrm_user.c route their event using
-xs_net(x), xp_net(xp) or sock_net(skb->sk); only the migrate path
-was missed.
+A similar check should be also be in place for the local TVLV buffer. It
+doesn't have the similar attack surface because it is only generated from
+locally discovered MAC addresses but the dynamic nature could still cause
+temporarily to large buffers.
 
-Two consequences of the init_net hardcoding:
-
-  1. The notification (selector, old/new endpoint addresses, and the
-     km_address) is delivered to listeners on init_net's
-     XFRMNLGRP_MIGRATE / pfkey BROADCAST_ALL groups rather than on
-     the issuing netns. An IKE daemon running in init_net therefore
-     receives migration notifications originating from any other
-     netns on the host.
-
-  2. An IKE daemon running inside a non-init netns and subscribed
-     to its own XFRMNLGRP_MIGRATE / pfkey groups never receives the
-     notification of its own migration. IKEv2 MOBIKE / address-update
-     handling inside a netns is silently broken.
-
-Thread struct net through km_migrate() and the xfrm_mgr.migrate
-function pointer, drop the &init_net override in xfrm_send_migrate()
-and pfkey_send_migrate(), and pass the caller's net (already in
-scope in xfrm_migrate() via sock_net(skb->sk)) all the way down.
-struct xfrm_mgr is in-tree only and not exported as a stable API,
-so the function-pointer signature change is internal.
-
-pfkey_broadcast() is already netns-aware via net_generic(net,
-pfkey_net_id) since the pernet conversion. The five other
-pfkey_broadcast() callers in af_key.c already pass xs_net(x),
-sock_net(sk) or a per-netns net, so this only removes the
-&init_net outlier.
-
-Fixes: 5c79de6e79cd ("[XFRM]: User interface for handling XFRM_MSG_MIGRATE")
-Cc: stable@vger.kernel.org # v5.15+
-Signed-off-by: Maoyi Xie <maoyi.xie@ntu.edu.sg>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@kernel.org
+Fixes: 7ea7b4a14275 ("batman-adv: make the TT CRC logic VLAN specific")
+[ Context ]
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/xfrm.h     |    3 ++-
- net/key/af_key.c       |    6 +++---
- net/xfrm/xfrm_policy.c |    2 +-
- net/xfrm/xfrm_state.c  |    4 ++--
- net/xfrm/xfrm_user.c   |    5 ++---
- 5 files changed, 10 insertions(+), 10 deletions(-)
+ net/batman-adv/translation-table.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/include/net/xfrm.h
-+++ b/include/net/xfrm.h
-@@ -590,6 +590,7 @@ struct xfrm_mgr {
- 					   const struct xfrm_migrate *m,
- 					   int num_bundles,
- 					   const struct xfrm_kmaddress *k,
-+					   struct net *net,
- 					   const struct xfrm_encap_tmpl *encap);
- 	bool			(*is_alive)(const struct km_event *c);
- };
-@@ -1692,7 +1693,7 @@ int xfrm_sk_policy_insert(struct sock *s
- #ifdef CONFIG_XFRM_MIGRATE
- int km_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
- 	       const struct xfrm_migrate *m, int num_bundles,
--	       const struct xfrm_kmaddress *k,
-+	       const struct xfrm_kmaddress *k, struct net *net,
- 	       const struct xfrm_encap_tmpl *encap);
- struct xfrm_state *xfrm_migrate_state_find(struct xfrm_migrate *m, struct net *net,
- 						u32 if_id);
---- a/net/key/af_key.c
-+++ b/net/key/af_key.c
-@@ -3548,7 +3548,7 @@ static int set_ipsecrequest(struct sk_bu
- #ifdef CONFIG_NET_KEY_MIGRATE
- static int pfkey_send_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
- 			      const struct xfrm_migrate *m, int num_bundles,
--			      const struct xfrm_kmaddress *k,
-+			      const struct xfrm_kmaddress *k, struct net *net,
- 			      const struct xfrm_encap_tmpl *encap)
+diff --git a/net/batman-adv/translation-table.c b/net/batman-adv/translation-table.c
+index d830ccf016697b..8ffebece03c529 100644
+--- a/net/batman-adv/translation-table.c
++++ b/net/batman-adv/translation-table.c
+@@ -924,12 +924,12 @@ batadv_tt_prepare_tvlv_local_data(struct batadv_priv *bat_priv,
  {
- 	int i;
-@@ -3653,7 +3653,7 @@ static int pfkey_send_migrate(const stru
- 	}
+ 	struct batadv_tvlv_tt_vlan_data *tt_vlan;
+ 	struct batadv_softif_vlan *vlan;
++	size_t change_offset;
+ 	u16 num_vlan = 0;
+ 	u16 vlan_entries = 0;
+ 	u16 total_entries = 0;
+ 	u16 tvlv_len;
+ 	u8 *tt_change_ptr;
+-	int change_offset;
  
- 	/* broadcast migrate message to sockets */
--	pfkey_broadcast(skb, GFP_ATOMIC, BROADCAST_ALL, NULL, &init_net);
-+	pfkey_broadcast(skb, GFP_ATOMIC, BROADCAST_ALL, NULL, net);
+ 	spin_lock_bh(&bat_priv->softif_vlan_list_lock);
+ 	hlist_for_each_entry(vlan, &bat_priv->softif_vlan_list, list) {
+@@ -948,8 +948,10 @@ batadv_tt_prepare_tvlv_local_data(struct batadv_priv *bat_priv,
+ 	if (*tt_len < 0)
+ 		*tt_len = batadv_tt_len(total_entries);
  
- 	return 0;
+-	tvlv_len = *tt_len;
+-	tvlv_len += change_offset;
++	if (check_add_overflow(*tt_len, change_offset, &tvlv_len)) {
++		tvlv_len = 0;
++		goto out;
++	}
  
-@@ -3664,7 +3664,7 @@ err:
- #else
- static int pfkey_send_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
- 			      const struct xfrm_migrate *m, int num_bundles,
--			      const struct xfrm_kmaddress *k,
-+			      const struct xfrm_kmaddress *k, struct net *net,
- 			      const struct xfrm_encap_tmpl *encap)
- {
- 	return -ENOPROTOOPT;
---- a/net/xfrm/xfrm_policy.c
-+++ b/net/xfrm/xfrm_policy.c
-@@ -4492,7 +4492,7 @@ int xfrm_migrate(const struct xfrm_selec
- 	}
- 
- 	/* Stage 5 - announce */
--	km_migrate(sel, dir, type, m, num_migrate, k, encap);
-+	km_migrate(sel, dir, type, m, num_migrate, k, net, encap);
- 
- 	xfrm_pol_put(pol);
- 
---- a/net/xfrm/xfrm_state.c
-+++ b/net/xfrm/xfrm_state.c
-@@ -2300,7 +2300,7 @@ EXPORT_SYMBOL(km_policy_expired);
- #ifdef CONFIG_XFRM_MIGRATE
- int km_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
- 	       const struct xfrm_migrate *m, int num_migrate,
--	       const struct xfrm_kmaddress *k,
-+	       const struct xfrm_kmaddress *k, struct net *net,
- 	       const struct xfrm_encap_tmpl *encap)
- {
- 	int err = -EINVAL;
-@@ -2311,7 +2311,7 @@ int km_migrate(const struct xfrm_selecto
- 	list_for_each_entry_rcu(km, &xfrm_km_list, list) {
- 		if (km->migrate) {
- 			ret = km->migrate(sel, dir, type, m, num_migrate, k,
--					  encap);
-+					  net, encap);
- 			if (!ret)
- 				err = ret;
- 		}
---- a/net/xfrm/xfrm_user.c
-+++ b/net/xfrm/xfrm_user.c
-@@ -2908,10 +2908,9 @@ out_cancel:
- 
- static int xfrm_send_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
- 			     const struct xfrm_migrate *m, int num_migrate,
--			     const struct xfrm_kmaddress *k,
-+			     const struct xfrm_kmaddress *k, struct net *net,
- 			     const struct xfrm_encap_tmpl *encap)
- {
--	struct net *net = &init_net;
- 	struct sk_buff *skb;
- 	int err;
- 
-@@ -2929,7 +2928,7 @@ static int xfrm_send_migrate(const struc
- #else
- static int xfrm_send_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
- 			     const struct xfrm_migrate *m, int num_migrate,
--			     const struct xfrm_kmaddress *k,
-+			     const struct xfrm_kmaddress *k, struct net *net,
- 			     const struct xfrm_encap_tmpl *encap)
- {
- 	return -ENOPROTOOPT;
+ 	*tt_data = kmalloc(tvlv_len, GFP_ATOMIC);
+ 	if (!*tt_data) {
+-- 
+2.53.0
+
 
 
 
