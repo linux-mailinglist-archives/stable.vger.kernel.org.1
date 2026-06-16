@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-266249-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263965-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id w6G4F3CZMWqNnwUAu9opvQ
-	(envelope-from <stable+bounces-266249-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:44:00 +0200
+	id +Ki7IVlsMWrUiwUAu9opvQ
+	(envelope-from <stable+bounces-263965-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:31:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 061DD694665
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:44:00 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EE856911A5
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:31:36 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=rl1yFtTA;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266249-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266249-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ysN6yvYI;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263965-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263965-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 16EA5309A170
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:43:59 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 230CA309270B
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:24:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4584843CEC7;
-	Tue, 16 Jun 2026 18:43:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5994C4418D7;
+	Tue, 16 Jun 2026 15:23:45 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C2DC38C437;
-	Tue, 16 Jun 2026 18:43:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23C1843E4BA;
+	Tue, 16 Jun 2026 15:23:43 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781635436; cv=none; b=XEAF+Ew3wFSIUA/Sv102V5nF3433rw0prP81Tw6jY80QjUfYq64+SX22sKD0G9KjsprLi3Xj2gXz0RWyk3FQcUPdTvfd0q+AYG3Ek4v+8PpwVeJ3war5VB9qjaTa3eJ4EiyHej4qqc32z7nWoKELFSmMSTWcMN0pVB9S5yphPH0=
+	t=1781623425; cv=none; b=Y9/+xKP5swfbAuYE6svQKqNZ+pfFP8/ysVcFI8ov6vTrOE0VewiiphrDri/Yh8cPoNDV1fbyq759R8B9SQcKxZmJ1hJy5OjWc/jYzg1XiHtE/EHywrI3ADxQIxMSvcwWEdygGbk/f/gtY6lFLygnyWji+21wrmfhW2xl7tPcVHk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781635436; c=relaxed/simple;
-	bh=Zg+feg560EwiPy8KhBtom5vrCMa8R6UfgGGF6+zd6CA=;
+	s=arc-20240116; t=1781623425; c=relaxed/simple;
+	bh=WFppll+nsE6hAAl5IQ2QHKk0l8cP1Yxun2OZ2w4UA08=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tr5+P9vpy4W80QEl8qe889IMOoZTMWfyrgjiuNGdPTuM6VWCDizh+8FuLXRntFr96p4AMuGtfHEPYILEqohCeCRD7PJpTrXFJQsi1JGz9L94WczYGA3K+VBnoB9B/MuFy563ghGw47/SpPWFqd5WzuQRJPkG+4zzwuwZ07O8FLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rl1yFtTA; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 182A91F000E9;
-	Tue, 16 Jun 2026 18:43:53 +0000 (UTC)
+	 MIME-Version; b=oHRAFExENBaSb23F1O342WWsumaK0UaUbQPJT1wmBAqRdMj+MW3uzd9+rDYRA5IDW3f1aWJRj4Zf1npQlOOxYYAa2ifqEyokytltdNW+3Oq/iWodKBxZJLc5qBEawoUprqzFy8pAO2915GdXC51JEIodQQooeHTzUDB0nW+fszY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ysN6yvYI; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAF641F000E9;
+	Tue, 16 Jun 2026 15:23:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781635435;
-	bh=eQejk4cxyuVVNztwm67WUvClvjmXJgC9AG68fsoZMyY=;
+	s=korg; t=1781623423;
+	bh=ZZMTRhx6oN1xWT1VvFPWvsc4kEkq9O0qqRH7Z0Q82z4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=rl1yFtTAXEGXgiGV6fDy5YZD8yq0EaAdwQ+sRr6Az1Dkrfqaovy2nIgSdWCJNL/4h
-	 LFkY9atN2guLOF2UVoFQ1SD6zBgKDvvLOZNBVcqSqTvNuriwNKbVwwwWObQ0D8fMhl
-	 81ydQ5aJAxj8L7AOICPYMvdoYUHvzJrSeXLaSesg=
+	b=ysN6yvYI+dvFQZi4eHc3rJSc6G7ITDISZVz48REPEtav2D/r3GaM6EZmIkITtUzje
+	 AOX6soa8b0GbDrByliOZcG4kWtsGJ5Y7rGc//b+WlYx9emJrZh7Ye6YIG+djGg21Ax
+	 iBETUXjHfTLTvmN9Ipjab9I0JV1SjxHk5z96wveM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 5.10 047/342] usb: typec: altmodes/displayport: validate count before reading Status Update VDO
+	Rosen Penev <rosenp@gmail.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 112/378] net: ibm: emac: Fix use-after-free during device removal
 Date: Tue, 16 Jun 2026 20:25:43 +0530
-Message-ID: <20260616145050.452043823@linuxfoundation.org>
+Message-ID: <20260616145116.265907035@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,70 +73,109 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266249-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:heikki.krogerus@linux.intel.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-263965-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:rosenp@gmail.com,m:jacob.e.keller@intel.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 061DD694665
+X-Rspamd-Queue-Id: 7EE856911A5
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Rosen Penev <rosenp@gmail.com>
 
-commit 8a18f896e667df491331371b55d4ad644dc51d60 upstream.
+[ Upstream commit a0130d682222ae21afc395aead7cd2d87e1a8358 ]
 
-A broken/malicious device can send the incorrect count for a status
-update VDO, which will cause the kernel to read uninitialized stack data
-and send it off elsewhere.
+The driver was using devm_register_netdev() which causes unregister_netdev()
+to be deferred until the devres cleanup phase, which runs after emac_remove()
+returns. This creates a use-after-free window where:
 
-Fix this up by correctly verifying the count for the update object.
+1. emac_remove() is called, which tears down hardware (cancels work, detaches
+   modules, unregisters from MAL)
+2. emac_remove() returns
+3. devres cleanup runs and finally calls unregister_netdev()
 
-Assisted-by: gkh_clanker_t1000
-Cc: stable <stable@kernel.org>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://patch.msgid.link/2026051350-reacquire-sculpture-4244@gregkh
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+During step 3, the network stack might still process packets, triggering
+emac_irq(), emac_poll(), or other handlers that access now-freed hardware
+resources (dev->emacp, dev->mal, etc.).
+
+Fix this by replacing devm_register_netdev() with manual register_netdev()
+and calling unregister_netdev() at the beginning of emac_remove(), before
+any hardware teardown. This ensures the network device is fully stopped and
+unregistered before hardware resources are released.
+
+The change is safe because:
+- dev->ndev is assigned very early in probe (before any error paths that
+  could bypass emac_remove)
+- platform_set_drvdata() is only called after successful registration, so
+  emac_remove() only runs for fully registered devices
+- unregister_netdev() is idempotent and safe to call on any registered device
+
+Fixes: a4dd8535a527 ("net: ibm: emac: use devm for register_netdev")
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/altmodes/displayport.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/ibm/emac/core.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/typec/altmodes/displayport.c
-+++ b/drivers/usb/typec/altmodes/displayport.c
-@@ -292,6 +292,8 @@ static int dp_altmode_vdm(struct typec_a
- 			}
- 			break;
- 		case DP_CMD_STATUS_UPDATE:
-+			if (count < 2)
-+				break;
- 			dp->data.status = *vdo;
- 			ret = dp_altmode_status_update(dp);
- 			break;
+diff --git a/drivers/net/ethernet/ibm/emac/core.c b/drivers/net/ethernet/ibm/emac/core.c
+index 417dfa18daae3a..4e503b3d0d2d34 100644
+--- a/drivers/net/ethernet/ibm/emac/core.c
++++ b/drivers/net/ethernet/ibm/emac/core.c
+@@ -3144,7 +3144,7 @@ static int emac_probe(struct platform_device *ofdev)
+ 
+ 	netif_carrier_off(ndev);
+ 
+-	err = devm_register_netdev(&ofdev->dev, ndev);
++	err = register_netdev(ndev);
+ 	if (err) {
+ 		printk(KERN_ERR "%pOF: failed to register net device (%d)!\n",
+ 		       np, err);
+@@ -3197,6 +3197,13 @@ static void emac_remove(struct platform_device *ofdev)
+ 
+ 	DBG(dev, "remove" NL);
+ 
++	/* Unregister network device before tearing down hardware
++	 * to prevent use-after-free during deferred cleanup. This ensures
++	 * the network stack stops all operations before hardware resources
++	 * are released.
++	 */
++	unregister_netdev(dev->ndev);
++
+ 	cancel_work_sync(&dev->reset_work);
+ 
+ 	if (emac_has_feature(dev, EMAC_FTR_HAS_TAH))
+-- 
+2.53.0
+
 
 
 
