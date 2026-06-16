@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-264370-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266110-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id KpNjH1F1MWpVjwUAu9opvQ
-	(envelope-from <stable+bounces-264370-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:09:53 +0200
+	id b31gLp6WMWpWngUAu9opvQ
+	(envelope-from <stable+bounces-266110-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:31:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9C51691BFE
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:09:52 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDB46694373
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:31:57 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Eq+65mVC;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264370-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264370-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=fdV6rVvm;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266110-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-266110-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 25D0E3253DCF
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:00:18 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 09E98300138F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:31:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E5BB46AF10;
-	Tue, 16 Jun 2026 15:58:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF9EC43CEC7;
+	Tue, 16 Jun 2026 18:31:53 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09EE04534AE;
-	Tue, 16 Jun 2026 15:58:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBF8C3DA7E1;
+	Tue, 16 Jun 2026 18:31:52 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781625521; cv=none; b=uRfckZm7Rj5gYqbTunCbYEc4Mm8eHRHv6Bi9Zq+I/3ZduNhu4hUdz6R/SvxaW/VrUKM1djO9LNNlVO7Ht5rPUFHEiOJzLV3KH6JJDz89gxzN62MeKdsetCleKII1Ga1CLodDUSyRy7g18VMmA9OJ12qj1MM2VER4EdvgmV2yyxM=
+	t=1781634713; cv=none; b=j4xK+76rE+9yPHF2OupDU2Nw3iXwzckBIzvxAG5swYdkqp9JUPgo8xzXUVDid72mwR9z2d7IuXhc+NlWsmQ42/SLZGj9+L6XBAKv20ZoG667U38xQ5TFO5reCBJov2B9KjmrK7okA1eJJ6s/w2aZrOFlnDHyruRneQo/LbFXQ5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781625521; c=relaxed/simple;
-	bh=252OxGtUWpKNBSQAQwvqiNKtpkC7ADoAmyZvufWugZs=;
+	s=arc-20240116; t=1781634713; c=relaxed/simple;
+	bh=CfA6Is2hUgrN1vJnBxk02A4VHYxoUtj17+eYCvHLWwU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=djOsQKqMUFf5Nr3wiVlCVnk7fW722rnVxlLGwav3Uu9jTTCXm7eZYuUTC7D2uNJCtyOzKQ7qvKMkrk6vuI0vSHJLPHAovgwfsidddsBcO5c0u65DI0LN7YT46llbiE63nXudphIYWGXk1VsgvG8OfK8FSSqlOYACtnDPrUj+W10=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Eq+65mVC; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7EDE1F000E9;
-	Tue, 16 Jun 2026 15:58:38 +0000 (UTC)
+	 MIME-Version; b=C7hsckXxZjH3Ut/uUX7ibFK2yiZxOmya2SFJayAn+262EtSL7kkwbZMLHpnPpgXeSr2Z3JuiGw8UEi9nm8Dg8RWxASNJ4m/ZB2XXc7Hah1fjlmTFHZuBISEsjbyA3hXhsvIV9x/tLeZR6gBl9XCT2bwkyJdufKcB+ZuJdtlxCbQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fdV6rVvm; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F2E11F000E9;
+	Tue, 16 Jun 2026 18:31:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781625519;
-	bh=aQqnGQUIAoayokgFF+52Uk8MIFG6V6j4BlwDZBUi/FQ=;
+	s=korg; t=1781634712;
+	bh=q+gIjWqy1QTJltl8X1RHx+3Fypg0DLyUUXOUmCFm8do=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Eq+65mVCeScebH+Lqo94ZSgNUiCPDz59d31NTZuPNsuJJY50vl2JIVbqYEuKqAZ1L
-	 cOFKa7tUGt0dISEoMomVoGQzWT/Pj3z40ddF2wejS2rScfT/tMPuzQVtrFFwZp5/w2
-	 3pcTNz8K4e/vj4Ix/XqMzAke7i/zCph0uhC7ccEw=
+	b=fdV6rVvmnYYmL4CdZxQRcBerF6KHEp79hakU7uOh4hc1XWXVxG1AZdVZ4jqMOEW1/
+	 mscohTW7VI5SR2hzsK53QAJX+bsaiQ4JXBZ/K1LTw3CWjvpZfObk/KivePgS0nrcxz
+	 QCRPlWNNpeHtnqF7iQL5bkCs8mPry5ZRa2dCb06g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ralf Jung <post@ralfj.de>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.18 159/325] rust: x86: support Rust >= 1.98.0 target spec
+	Jingoo Han <jg1.han@samsung.com>,
+	Johan Hovold <johan@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 317/411] spi: tegra114: fix controller deregistration
 Date: Tue, 16 Jun 2026 20:29:15 +0530
-Message-ID: <20260616145105.677364917@linuxfoundation.org>
+Message-ID: <20260616145118.002992405@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,97 +70,94 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264370-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:post@ralfj.de,m:aliceryhl@google.com,m:ojeda@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-266110-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jg1.han@samsung.com,m:johan@kernel.org,m:broonie@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,msgid.link:url,ralfj.de:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,samsung.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C9C51691BFE
+X-Rspamd-Queue-Id: BDB46694373
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miguel Ojeda <ojeda@kernel.org>
+From: Johan Hovold <johan@kernel.org>
 
-commit 905b06d32a52afe32fcf5f30cf298c9ea6359f11 upstream.
+[ Upstream commit 9c9c27ff2058142d8f800de3186d6864184958de ]
 
-Starting with Rust 1.98.0 (expected 2026-08-20), the target spec will not
-support `x86-softfloat` anymore [1]. Instead, `softfloat` should be used,
-which is an alias. Otherwise, one gets:
+Make sure to deregister the controller before disabling underlying
+resources like clocks during driver unbind.
 
-    error: error loading target specification: rustc-abi: invalid rustc abi: 'x86-softfloat'. allowed values: 'x86-sse2', 'softfloat' at line 3 column 32
-      |
-      = help: run `rustc --print target-list` for a list of built-in targets
-
-Thus conditionally use one or the other depending on the version.
-
-The alias has existed since Rust 1.95.0 (released 2026-04-16) [2], but
-use the newer version instead to avoid changing how the build works for
-existing compilers, at least until more testing takes place.
-
-Cc: Ralf Jung <post@ralfj.de>
-Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned in older LTSs).
-Link: https://github.com/rust-lang/rust/pull/157151 [1]
-Link: https://github.com/rust-lang/rust/pull/151154 [2]
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Link: https://patch.msgid.link/20260530114925.260754-1-ojeda@kernel.org
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Fixes: 5c8096439600 ("spi: tegra114: use devm_spi_register_master()")
+Cc: stable@vger.kernel.org	# 3.13
+Cc: Jingoo Han <jg1.han@samsung.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260410081757.503099-22-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+[ renamed spi_controller/host APIs to spi_master/master equivalents and placed spi_master_put() before the existing return 0 in remove ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/generate_rust_target.rs |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/spi/spi-tegra114.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/scripts/generate_rust_target.rs
-+++ b/scripts/generate_rust_target.rs
-@@ -196,7 +196,9 @@ fn main() {
-         }
-     } else if cfg.has("X86_64") {
-         ts.push("arch", "x86_64");
--        if cfg.rustc_version_atleast(1, 86, 0) {
-+        if cfg.rustc_version_atleast(1, 98, 0) {
-+            ts.push("rustc-abi", "softfloat");
-+        } else if cfg.rustc_version_atleast(1, 86, 0) {
-             ts.push("rustc-abi", "x86-softfloat");
-         }
-         ts.push(
-@@ -236,7 +238,9 @@ fn main() {
-             panic!("32-bit x86 only works under UML");
-         }
-         ts.push("arch", "x86");
--        if cfg.rustc_version_atleast(1, 86, 0) {
-+        if cfg.rustc_version_atleast(1, 98, 0) {
-+            ts.push("rustc-abi", "softfloat");
-+        } else if cfg.rustc_version_atleast(1, 86, 0) {
-             ts.push("rustc-abi", "x86-softfloat");
-         }
-         ts.push(
+--- a/drivers/spi/spi-tegra114.c
++++ b/drivers/spi/spi-tegra114.c
+@@ -1417,7 +1417,7 @@ static int tegra_spi_probe(struct platfo
+ 	}
+ 
+ 	master->dev.of_node = pdev->dev.of_node;
+-	ret = devm_spi_register_master(&pdev->dev, master);
++	ret = spi_register_master(master);
+ 	if (ret < 0) {
+ 		dev_err(&pdev->dev, "can not register to master err %d\n", ret);
+ 		goto exit_free_irq;
+@@ -1443,6 +1443,10 @@ static int tegra_spi_remove(struct platf
+ 	struct spi_master *master = platform_get_drvdata(pdev);
+ 	struct tegra_spi_data	*tspi = spi_master_get_devdata(master);
+ 
++	spi_master_get(master);
++
++	spi_unregister_master(master);
++
+ 	free_irq(tspi->irq, tspi);
+ 
+ 	if (tspi->tx_dma_chan)
+@@ -1455,6 +1459,8 @@ static int tegra_spi_remove(struct platf
+ 	if (!pm_runtime_status_suspended(&pdev->dev))
+ 		tegra_spi_runtime_suspend(&pdev->dev);
+ 
++	spi_master_put(master);
++
+ 	return 0;
+ }
+ 
 
 
 
