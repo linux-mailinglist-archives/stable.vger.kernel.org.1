@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-265230-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264748-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id gwZfOYqGMWqdlgUAu9opvQ
-	(envelope-from <stable+bounces-265230-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:23:22 +0200
+	id X3FNNeR9MWr8kgUAu9opvQ
+	(envelope-from <stable+bounces-264748-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:46:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48A1369310A
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:23:22 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5AFE6926FE
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:46:27 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=twVIafn+;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265230-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265230-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="DBM/TbAi";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264748-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264748-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BA8AD31E8D88
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:15:43 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B6AC53002D3B
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:34:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C688478E2B;
-	Tue, 16 Jun 2026 17:15:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39D034779AA;
+	Tue, 16 Jun 2026 16:34:39 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D6B7478E26;
-	Tue, 16 Jun 2026 17:15:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A25D472798;
+	Tue, 16 Jun 2026 16:34:37 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781630143; cv=none; b=lc6zKVR+f1NQNcvh97XubrgwjzwP7JJux4/BU2RFZj2D6Hw28G86EgJmPMymhnudM8dIYwjGykUUv/07aIStxKFmL8OqsoSBF3xdYE1a2dvSkldaU/pMdFSic/b0Tmvhphx5ZHqYYAOWWU6W2JIRFr6eKoZ689QdcjQqlMHhWB8=
+	t=1781627679; cv=none; b=DBgbaA4DcAoTD+fvAmOdjlyQesypPLVol3Z0BpM9jIsBhjCxkUaV0jiLSB+BAVF8DxCGVXq7/TOThywdjvhTUh+hFeA7wHKoAh9V4/OgNY0MsHSmqVuSUpJfhwbCunUenHA0ZTITGfCLCNbyGn5YHsmk8Q/U61MMfP5I2U6t6SY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781630143; c=relaxed/simple;
-	bh=xulDoHhpD6gbQeQ4oB+1zL7jAP32REA6GRFsID7OYlU=;
+	s=arc-20240116; t=1781627679; c=relaxed/simple;
+	bh=2QxKcDVnaacJnhWQ/aD2K4Cq3z/I9TxAwkCbDZcgcPI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iUVt5UXjmNEbDeRRZ5C/TMUYRkmzyebneYwHS6jWSAhhL66m4bBP27J9rQpwCUsjH0+zSc374pEqL+blHXSE2I/3MDeuzlZOzCsS+AojgYqPkm18ENC8BBQqVl4uPbmTahIuC7Hj2lLRNqYzj6C3r5PtQx9q2xIax+voqymfwn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=twVIafn+; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 171AC1F000E9;
-	Tue, 16 Jun 2026 17:15:40 +0000 (UTC)
+	 MIME-Version; b=N9r6jc+O0cGs/VSp/L1HLpo12qjpER1BxcB1lU+hnoCER3lsbsNTcQCgVvUW4FbneJoh5uneUdM9B0/131zBGAu7owBkr3IHU5HMunJpRk+P6wQWMzmzlMOH5DP/I1r4lhZ5d5ZKHew9WeMZnxIrmwS7tZlOoYKOETcFaxtRe98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DBM/TbAi; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4D981F00A3A;
+	Tue, 16 Jun 2026 16:34:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781630141;
-	bh=2p2FfoLUxeADZ9l6S3HULSxBl2H7Gaf7KrhvnQKKVAc=;
+	s=korg; t=1781627677;
+	bh=OfQCFYb0LvTUJ+NzKoXFPRq/F3xG9wL0/7NBMqj8KCE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=twVIafn+2b0AkvlrDdOzf63bfCg+0OWWv1EiowtoMGTqK9aMnilbJT4ZE3fKw+/qN
-	 aOyFp0l90+BHGcP3nDDkmOqdzICBSUorAiYxW9c7iDF9p4lPSWLi0rT7tJ1L44Hn2/
-	 wyfZ4d6LTsbiGvwJTJ+OF1I0koR/I0FoKDxgEE5Q=
+	b=DBM/TbAi2c/BHJKB4yvupFcKs/fB5A5pSICyEDlFtxSj5XcVg4NlgrhIkieWXXFIY
+	 c44G72FtfTBZLR+OjVUQqDhkNAW5STe6ksuREMHSLt0d3FGx49MQZBuM2RpmY3QZQ4
+	 4k2HIp0vtMWaCSsJy+taIdIR+R6VHEOAQAvbLeXM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 419/452] usb: musb: omap2430: Fix use-after-free in omap2430_probe()
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>,
+	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
+	Srinivas Kandagatla <srini@kernel.org>
+Subject: [PATCH 6.12 208/261] slimbus: qcom-ngd-ctrl: Fix up platform_driver registration
 Date: Tue, 16 Jun 2026 20:30:46 +0530
-Message-ID: <20260616145138.774543046@linuxfoundation.org>
+Message-ID: <20260616145054.684430202@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,89 +70,132 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265230-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:vulab@iscas.ac.cn,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264748-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:dmitry.baryshkov@oss.qualcomm.com,m:mukesh.ojha@oss.qualcomm.com,m:bjorn.andersson@oss.qualcomm.com,m:srini@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,qualcomm.com:email,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 48A1369310A
+X-Rspamd-Queue-Id: D5AFE6926FE
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wentao Liang <vulab@iscas.ac.cn>
+From: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
 
-[ Upstream commit e194ce048f5a6c549b3a23a8c568c6470f40f772 ]
+commit 8663e8334d7b6007f5d8a4e5dd270246f35107a6 upstream.
 
-In omap2430_probe(), of_node_put(np) is called prematurely before the
-last access to np, leading to a use-after-free if the node's reference
-count drops to zero. Move the of_node_put() calls after the last use of
-np in both the success and error paths.
+Device drivers should not invoke platform_driver_register()/unregister()
+in their probe and remove paths. They should further not rely on
+platform_driver_unregister() as their only means of "deleting" their
+child devices.
 
-Fixes: ffbe2feac59b ("usb: musb: omap2430: Fix probe regression for missing resources")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-Link: https://patch.msgid.link/20260409101104.480623-1-vulab@iscas.ac.cn
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Introduce a helper to unregister the child device and move the
+platform_driver_register()/unregister() to module_init()/exit().
+
+Fixes: 917809e2280b ("slimbus: ngd: Add qcom SLIMBus NGD driver")
+Cc: stable@vger.kernel.org
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
+Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
+Link: https://patch.msgid.link/20260530204421.116824-3-srini@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/musb/omap2430.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/slimbus/qcom-ngd-ctrl.c |   36 +++++++++++++++++++++++++++++++++---
+ 1 file changed, 33 insertions(+), 3 deletions(-)
 
---- a/drivers/usb/musb/omap2430.c
-+++ b/drivers/usb/musb/omap2430.c
-@@ -340,7 +340,6 @@ static int omap2430_probe(struct platfor
- 	} else {
- 		device_set_of_node_from_dev(&musb->dev, &pdev->dev);
+--- a/drivers/slimbus/qcom-ngd-ctrl.c
++++ b/drivers/slimbus/qcom-ngd-ctrl.c
+@@ -1566,6 +1566,13 @@ static int of_qcom_slim_ngd_register(str
+ 	return -ENODEV;
+ }
+ 
++static void qcom_slim_ngd_unregister(struct qcom_slim_ngd_ctrl *ctrl)
++{
++	struct qcom_slim_ngd *ngd = ctrl->ngd;
++
++	platform_device_del(ngd->pdev);
++}
++
+ static int qcom_slim_ngd_probe(struct platform_device *pdev)
+ {
+ 	struct device *dev = &pdev->dev;
+@@ -1668,7 +1675,6 @@ static int qcom_slim_ngd_ctrl_probe(stru
+ 		goto err_pdr_lookup;
  	}
--	of_node_put(np);
  
- 	glue->dev			= &pdev->dev;
- 	glue->musb			= musb;
-@@ -458,6 +457,7 @@ static int omap2430_probe(struct platfor
- 		dev_err(&pdev->dev, "failed to register musb device\n");
- 		goto err3;
- 	}
-+	of_node_put(np);
+-	platform_driver_register(&qcom_slim_ngd_driver);
+ 	return of_qcom_slim_ngd_register(dev, ctrl);
  
- 	return 0;
+ err_pdr_alloc:
+@@ -1682,7 +1688,9 @@ err_pdr_lookup:
  
-@@ -467,6 +467,7 @@ err_put_control_otghs:
- 	if (!IS_ERR(glue->control_otghs))
- 		put_device(glue->control_otghs);
- err2:
-+	of_node_put(np);
- 	platform_device_put(musb);
+ static void qcom_slim_ngd_ctrl_remove(struct platform_device *pdev)
+ {
+-	platform_driver_unregister(&qcom_slim_ngd_driver);
++	struct qcom_slim_ngd_ctrl *ctrl = platform_get_drvdata(pdev);
++
++	qcom_slim_ngd_unregister(ctrl);
+ }
  
- err0:
+ static void qcom_slim_ngd_remove(struct platform_device *pdev)
+@@ -1758,6 +1766,28 @@ static struct platform_driver qcom_slim_
+ 	},
+ };
+ 
+-module_platform_driver(qcom_slim_ngd_ctrl_driver);
++static int qcom_slim_ngd_init(void)
++{
++	int ret;
++
++	ret = platform_driver_register(&qcom_slim_ngd_driver);
++	if (ret)
++		return ret;
++
++	ret = platform_driver_register(&qcom_slim_ngd_ctrl_driver);
++	if (ret)
++		platform_driver_unregister(&qcom_slim_ngd_driver);
++
++	return ret;
++}
++
++static void qcom_slim_ngd_exit(void)
++{
++	platform_driver_unregister(&qcom_slim_ngd_ctrl_driver);
++	platform_driver_unregister(&qcom_slim_ngd_driver);
++}
++
++module_init(qcom_slim_ngd_init);
++module_exit(qcom_slim_ngd_exit);
+ MODULE_LICENSE("GPL v2");
+ MODULE_DESCRIPTION("Qualcomm SLIMBus NGD controller");
 
 
 
