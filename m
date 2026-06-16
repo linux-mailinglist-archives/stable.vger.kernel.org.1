@@ -1,65 +1,61 @@
-Return-Path: <stable+bounces-266357-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266016-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id dM3VEdycMWrpoAUAu9opvQ
-	(envelope-from <stable+bounces-266357-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:58:36 +0200
+	id FpRgN7OUMWptnQUAu9opvQ
+	(envelope-from <stable+bounces-266016-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:23:47 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B62876949F0
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:58:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4330C694181
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:23:47 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=S640OvDb;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266357-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266357-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=e1mn5W2O;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266016-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266016-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7437432061AA
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:53:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BC2FE3171372
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:23:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CEBF4779BF;
-	Tue, 16 Jun 2026 18:53:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B08A3D88F6;
+	Tue, 16 Jun 2026 18:23:37 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFEBE3CC303;
-	Tue, 16 Jun 2026 18:53:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40F16466B5E;
+	Tue, 16 Jun 2026 18:23:36 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781635997; cv=none; b=uttvZRfXf5AXT3PIFnDZrDDPHmuVjVbrNslqdUwLWYzLumiQyQRJl36KnLTnNG8L5UdaruX3S4eRDfnfUx1Xya1sF/rXCb7uYIp18Qxrk6QSsscIhyj6+C79RnE2Pwf+lhH/1FMZcPvyigOXs4Za2YXn+I+bYorldTauIM2edUs=
+	t=1781634217; cv=none; b=YTmKg+iFl6qUNcA0TE1YHxWDjQrV7cye8FpQbJPPUp5CCGFM7649pfawjevMOuYAiHNluekx/W9rGooNY4ZWHw/w6wxFvVPade56g/KPoqOgLJkMxtoSNZ5Kf5hQ7J4WYCr1/BR6OevxrFRfYCTjmIh+5gxjjwuxyWgCfee1Qws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781635997; c=relaxed/simple;
-	bh=24E/55rDyF5ANyFrochG4e+OEQEiBnSpmweNWllcZDc=;
+	s=arc-20240116; t=1781634217; c=relaxed/simple;
+	bh=PbJA6BCok+aMdtTzVz79FGxbpJliO4y+yAgP8OLm8EE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jgC4miyparH+BtEx8uwDZJP/3SwfMUaI6jAi9gcuH4ot/oKjZPHC3APgWNlkXFZnG2d/KFDK9QltnJbO21Tm0oVdwIBWRjPbYF++n9yyalVAH/DMoA54oXW19WGPhCOJ/Gi23k/ww8jI9fYg+g+3/zfUcM8nCDYpFUQ6jrN5IsU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S640OvDb; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23CD11F000E9;
-	Tue, 16 Jun 2026 18:53:14 +0000 (UTC)
+	 MIME-Version; b=PeH7/rQcPjO593WqqGq3XLH1FWYndWn2Nnd3LBmNUUpbSY7StdCjdKj5oALwPVWcwRw2nhNKaEwHbamcefq6M1ECfvC2yWPSIjZnMZvgC+++bObsolKb2ych7T4njzOy4IxvXn0Z1BhH21wQncYRrikqGus29jPqpzQmw7hP/uo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e1mn5W2O; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42DFD1F000E9;
+	Tue, 16 Jun 2026 18:23:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781635996;
-	bh=7UQlN2kFuHSbGq+CME0tox55BFEW7yGcZGS/EYEWVR8=;
+	s=korg; t=1781634216;
+	bh=oxu70sP3hr4FmM9717ALC8oJi9rIsRl4gA802yXweIo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=S640OvDbOOITbY6wcfC7HVWkYuxi4B+uSr3uY8vIs6gAHybnX+XdYVjoR3EoiiJul
-	 D5IRmpnKZfhgagMCgfhFvckxY7qh+etxWLbpOLSwqsMHOap3KjwIKWe2l6uZkMrloP
-	 S9I8fcKeR/6V6qsiQSpJWA6lJT+AhBicOtZBaxx0=
+	b=e1mn5W2OhnX4OG/Ocd5Na/kDEtx0WIFa3l8EgDTfUTfZ3B5PSQdzihqz2MnvCR6l+
+	 n1QtPtXlaHjYkJaT83PKeMe1HARwJphnFmjANmlQMCieg6SCJ8JISJ5m9JAAt8h/wi
+	 NY+iMPDUHZ/KZov3t4H1cmSgJs1+rLF/lrSpKzHE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+9c081b17773615f24672@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Jay Vosburgh <jv@jvosburgh.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Alexey Panov <apanov@astralinux.ru>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 154/342] bonding: limit BOND_MODE_8023AD to Ethernet devices
-Date: Tue, 16 Jun 2026 20:27:30 +0530
-Message-ID: <20260616145055.332530728@linuxfoundation.org>
+	Karl Mehltretter <kmehltretter@gmail.com>,
+	Linus Walleij <linusw@kernel.org>,
+	Russell King <rmk+kernel@armlinux.org.uk>
+Subject: [PATCH 5.15 213/411] ARM: 9474/1: io: avoid KASAN instrumentation of raw halfword I/O
+Date: Tue, 16 Jun 2026 20:27:31 +0530
+Message-ID: <20260616145112.087601064@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -81,126 +77,89 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266357-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:syzbot+9c081b17773615f24672@syzkaller.appspotmail.com,m:edumazet@google.com,m:andrew+netdev@lunn.ch,m:jv@jvosburgh.net,m:kuba@kernel.org,m:apanov@astralinux.ru,m:sashal@kernel.org,m:syzbot@syzkaller.appspotmail.com,m:andrew@lunn.ch,s:lists@lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-266016-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kmehltretter@gmail.com,m:linusw@kernel.org,m:rmk+kernel@armlinux.org.uk,m:rmk@armlinux.org.uk,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,armlinux.org.uk];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,9c081b17773615f24672,netdev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,appspotmail.com:email,lunn.ch:email,vger.kernel.org:from_smtp,msgid.link:url,astralinux.ru:email]
+	TAGGED_RCPT(0.00)[stable,kernel];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,armlinux.org.uk:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B62876949F0
+X-Rspamd-Queue-Id: 4330C694181
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Karl Mehltretter <kmehltretter@gmail.com>
 
-commit c84fcb79e5dbde0b8d5aeeaf04282d2149aebcf6 upstream.
+commit d59ed803715a71fb9582e139d648ece8d66dc743 upstream.
 
-BOND_MODE_8023AD makes sense for ARPHRD_ETHER only.
+For CPUs before ARMv6, __raw_readw() and __raw_writew() are implemented
+as C volatile halfword accesses so the compiler can generate an access
+sequence that is safe for those machines. With KASAN enabled, those C
+accesses are instrumented as normal memory accesses.
 
-syzbot reported:
+That is not valid for MMIO. On ARM926/VersatilePB with KASAN enabled,
+PL011 probing traps in __asan_store2() while registering the UART, because
+the instrumented writew() tries to check KASAN shadow for an MMIO address.
 
- BUG: KASAN: global-out-of-bounds in __hw_addr_create net/core/dev_addr_lists.c:63 [inline]
- BUG: KASAN: global-out-of-bounds in __hw_addr_add_ex+0x25d/0x760 net/core/dev_addr_lists.c:118
-Read of size 16 at addr ffffffff8bf94040 by task syz.1.3580/19497
+Keep the existing volatile halfword access, but move the ARMv5 definitions
+into __no_kasan_or_inline functions so raw MMIO halfword accesses are not
+instrumented by KASAN. The ARMv6-and-newer inline assembly path is
+unchanged.
 
-CPU: 1 UID: 0 PID: 19497 Comm: syz.1.3580 Tainted: G             L      syzkaller #0 PREEMPT(full)
-Tainted: [L]=SOFTLOCKUP
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/25/2025
-Call Trace:
- <TASK>
-  dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
-  print_address_description mm/kasan/report.c:378 [inline]
-  print_report+0xca/0x240 mm/kasan/report.c:482
-  kasan_report+0x118/0x150 mm/kasan/report.c:595
- check_region_inline mm/kasan/generic.c:-1 [inline]
-  kasan_check_range+0x2b0/0x2c0 mm/kasan/generic.c:200
-  __asan_memcpy+0x29/0x70 mm/kasan/shadow.c:105
-  __hw_addr_create net/core/dev_addr_lists.c:63 [inline]
-  __hw_addr_add_ex+0x25d/0x760 net/core/dev_addr_lists.c:118
-  __dev_mc_add net/core/dev_addr_lists.c:868 [inline]
-  dev_mc_add+0xa1/0x120 net/core/dev_addr_lists.c:886
-  bond_enslave+0x2b8b/0x3ac0 drivers/net/bonding/bond_main.c:2180
-  do_set_master+0x533/0x6d0 net/core/rtnetlink.c:2963
-  do_setlink+0xcf0/0x41c0 net/core/rtnetlink.c:3165
-  rtnl_changelink net/core/rtnetlink.c:3776 [inline]
-  __rtnl_newlink net/core/rtnetlink.c:3935 [inline]
-  rtnl_newlink+0x161c/0x1c90 net/core/rtnetlink.c:4072
-  rtnetlink_rcv_msg+0x7cf/0xb70 net/core/rtnetlink.c:6958
-  netlink_rcv_skb+0x208/0x470 net/netlink/af_netlink.c:2550
-  netlink_unicast_kernel net/netlink/af_netlink.c:1318 [inline]
-  netlink_unicast+0x82f/0x9e0 net/netlink/af_netlink.c:1344
-  netlink_sendmsg+0x805/0xb30 net/netlink/af_netlink.c:1894
-  sock_sendmsg_nosec net/socket.c:727 [inline]
-  __sock_sendmsg+0x21c/0x270 net/socket.c:742
-  ____sys_sendmsg+0x505/0x820 net/socket.c:2592
-  ___sys_sendmsg+0x21f/0x2a0 net/socket.c:2646
-  __sys_sendmsg+0x164/0x220 net/socket.c:2678
-  do_syscall_32_irqs_on arch/x86/entry/syscall_32.c:83 [inline]
-  __do_fast_syscall_32+0x1dc/0x560 arch/x86/entry/syscall_32.c:307
-  do_fast_syscall_32+0x34/0x80 arch/x86/entry/syscall_32.c:332
- entry_SYSENTER_compat_after_hwframe+0x84/0x8e
- </TASK>
-
-The buggy address belongs to the variable:
- lacpdu_mcast_addr+0x0/0x40
-
-Fixes: 872254dd6b1f ("net/bonding: Enable bonding to enslave non ARPHRD_ETHER")
-Reported-by: syzbot+9c081b17773615f24672@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/6966946b.a70a0220.245e30.0002.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>
-Acked-by: Jay Vosburgh <jv@jvosburgh.net>
-Link: https://patch.msgid.link/20260113191201.3970737-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Alexey: Replace SLAVE_NL_ERR() with NL_SET_ERR_MSG() and slave_err()
-  because SLAVE_NL_ERR() is not present in linux-5.10.y. ]
-Signed-off-by: Alexey Panov <apanov@astralinux.ru>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 421015713b30 ("ARM: 9017/2: Enable KASan for ARM")
+Cc: stable@vger.kernel.org # v5.11+
+Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
+Reviewed-by: Linus Walleij <linusw@kernel.org>
+Signed-off-by: Russell King <rmk+kernel@armlinux.org.uk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/bonding/bond_main.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/arm/include/asm/io.h |   15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index 812e1792c232e1..86f0f155e9862c 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -1763,6 +1763,13 @@ int bond_enslave(struct net_device *bond_dev, struct net_device *slave_dev,
- 	 */
- 	if (!bond_has_slaves(bond)) {
- 		if (bond_dev->type != slave_dev->type) {
-+			if (slave_dev->type != ARPHRD_ETHER &&
-+			    BOND_MODE(bond) == BOND_MODE_8023AD) {
-+				NL_SET_ERR_MSG(extack, "8023AD mode requires Ethernet devices");
-+				slave_err(bond_dev, slave_dev,
-+					  "Error: 8023AD mode requires Ethernet devices\n");
-+				return -EINVAL;
-+			}
- 			slave_dbg(bond_dev, slave_dev, "change device type from %d to %d\n",
- 				  bond_dev->type, slave_dev->type);
- 
--- 
-2.53.0
-
+--- a/arch/arm/include/asm/io.h
++++ b/arch/arm/include/asm/io.h
+@@ -56,8 +56,19 @@ void __raw_readsl(const volatile void __
+  * the bus. Rather than special-case the machine, just let the compiler
+  * generate the access for CPUs prior to ARMv6.
+  */
+-#define __raw_readw(a)         (__chk_io_ptr(a), *(volatile unsigned short __force *)(a))
+-#define __raw_writew(v,a)      ((void)(__chk_io_ptr(a), *(volatile unsigned short __force *)(a) = (v)))
++#define __raw_writew __raw_writew
++static __no_kasan_or_inline void __raw_writew(u16 val, volatile void __iomem *addr)
++{
++	__chk_io_ptr(addr);
++	*(volatile unsigned short __force *)addr = val;
++}
++
++#define __raw_readw __raw_readw
++static __no_kasan_or_inline u16 __raw_readw(const volatile void __iomem *addr)
++{
++	__chk_io_ptr(addr);
++	return *(const volatile unsigned short __force *)addr;
++}
+ #else
+ /*
+  * When running under a hypervisor, we want to avoid I/O accesses with
 
 
 
