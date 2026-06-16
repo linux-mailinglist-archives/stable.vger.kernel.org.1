@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-266265-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264932-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id PGWTEhGaMWronwUAu9opvQ
-	(envelope-from <stable+bounces-266265-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:46:41 +0200
+	id I8hPAhSCMWq6lAUAu9opvQ
+	(envelope-from <stable+bounces-264932-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:04:20 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D47C8694759
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:46:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55AB0692B20
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:04:19 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=bMidImxY;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266265-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266265-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=bLBnSJKH;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264932-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264932-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0064E31E6BB9
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:45:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CB3113292419
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:51:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD93447B425;
-	Tue, 16 Jun 2026 18:45:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09D95466B4B;
+	Tue, 16 Jun 2026 16:50:47 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACF6E47A0B2;
-	Tue, 16 Jun 2026 18:45:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2EF1449EC3;
+	Tue, 16 Jun 2026 16:50:45 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781635521; cv=none; b=l04hvcMm7CHwvz90omQFXnujFf/4+1eO1KrACKmOT+D/HOmncjIB7B7PBbKkBvYetg/uEHmlRiUzSRk3y22d5EvsOc4Y3KT1ReCn3yK0bWw/D66QoSZ4taWDze9hj4Ak5mF0xSb7yKkKzxxZLrcjTC+/7djZzRpbpp2fi0R6hn0=
+	t=1781628646; cv=none; b=no832EcNXw7KTxbt3i4MuO+dEbPHCvm0Rs/C9LiV1tlty4E0Oo7s9HCpEt2d53t6cmjPQO16LEd6mv/y7QWYj1NP3yXeamCWTldWerqMwVpmlz1nZJjmvhJfhyKXa8DntuSzDpA4M3NHt/i5BKTMTzfTtoCferhdK1+ehZoCx1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781635521; c=relaxed/simple;
-	bh=n6IVmpO3C12nGPas1+5QHhzRD35mam9QRVWKRMKRP/c=;
+	s=arc-20240116; t=1781628646; c=relaxed/simple;
+	bh=qJdrgxyf4oy3z+UfOIvwK/b9hIPliyxdGV/NhyZsvwQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sr/MNb+dxXE4BclndLCJrL4zBzRxfwwOVWKdhkF8qQiP2KnwtD1qs/aP2s+I2KO4N4evWjMx7EE+K16+lLFHHVCF33Mg5jh0CHfcmZJ4jZo+yh1IdtjR3G4QacGbSo/teXQr7B935jZSfU1uLxfbUjlCTkvZcYFhu0CLvTx1wGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bMidImxY; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70C611F00A3F;
-	Tue, 16 Jun 2026 18:45:19 +0000 (UTC)
+	 MIME-Version; b=ZgnQkvcfA79bvQYmPIrZdCv7Ia0AL3v4eRMcrN3/ZFL9aggxtc7LZit1/XwYuc8SFG1lO7juR5AClC2G6qtyI0uV2a3jg6E9SbQiWcHGDKiZGf+juJqqqHLr0SbaRsJcWHysmPOmzfrVcBzNthacquMV5sa1yelwHF2IJ2QLLys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bLBnSJKH; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0B751F000E9;
+	Tue, 16 Jun 2026 16:50:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781635520;
-	bh=6c6kSel2loR9PVLcXo06/P4JlHazOxYpMKndBwFqbcI=;
+	s=korg; t=1781628645;
+	bh=fzLNSi93zWpwk3VBtULl8ppT7HnMc8OIszlZo/++F5E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=bMidImxYDmJl+pIdR2r/VpdP0ww0Izx+fiolbj/otPmLgsCHLDzxFVbimLXrgmeVP
-	 6gAyFn+5xSq4cwuuDfIn1spMkOaEe7IXY/f+0VjkK6sxBoZkb8xlq4QS/Au4JXoZrK
-	 KQaLfgHfArr1YaDB3QioWFvJFBo8Rm/l9XH7seLI=
+	b=bLBnSJKHN3y78UUnIUcw5RsUyuM5NcTyZ2k12VGeATmuNaN0DgbC4Hvakq6rqBOWs
+	 59Kxsn5hl/KQOR//pApF2eQUrwl1fz08/NCyMd5gRp8RP2YJOmjdvQVX3mU0FQrsJy
+	 sZoUETFzJJD5jARCRdYXe+q4N2s9aSQdZDjeP7Do=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 5.10 065/342] USB: serial: omninet: fix memory corruption with small endpoint
-Date: Tue, 16 Jun 2026 20:26:01 +0530
-Message-ID: <20260616145051.282625503@linuxfoundation.org>
+	Simon Horman <horms@kernel.org>,
+	Ashutosh Desai <ashutoshdesai993@gmail.com>,
+	David Heidelberg <david@ixit.cz>
+Subject: [PATCH 6.6 135/452] nfc: hci: fix out-of-bounds read in HCP header parsing
+Date: Tue, 16 Jun 2026 20:26:02 +0530
+Message-ID: <20260616145124.822756229@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,86 +76,121 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-266265-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:johan@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-264932-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:horms@kernel.org,m:ashutoshdesai993@gmail.com,m:david@ixit.cz,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,ixit.cz];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,ixit.cz:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D47C8694759
+X-Rspamd-Queue-Id: 55AB0692B20
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Ashutosh Desai <ashutoshdesai993@gmail.com>
 
-commit 60df93d30f9bdd27db17c4d80ed80ef718d7226b upstream.
+commit f040e590c035bfd9553fe79ee9585caf1b14d67b upstream.
 
-Make sure that the bulk-out buffers are at least as large as the
-hardcoded transfer size to avoid user-controlled slab corruption should
-a malicious device report a smaller endpoint max packet size than
-expected.
+Both nfc_hci_recv_from_llc() and nci_hci_data_received_cb() read
+packet->header from skb->data at function entry without first checking
+that the buffer holds at least one byte. A malicious NFC peer can send
+a 0-byte HCP frame that passes through the SHDLC layer and reaches
+these functions, causing an out-of-bounds heap read of packet->header.
+The same 0-byte frame, if queued as a non-final fragment, also causes
+the reassembly loop to underflow msg_len to UINT_MAX, triggering
+skb_over_panic() when the reassembled skb is written.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Fix this by adding a pskb_may_pull() check at the entry of each
+function before packet->header is first accessed. The existing
+pskb_may_pull() checks before the reassembled hcp_skb is cast to
+struct hcp_packet remain in place to guard the 2-byte HCP message
+header.
+
+Fixes: 8b8d2e08bf0d ("NFC: HCI support")
+Fixes: 11f54f228643 ("NFC: nci: Add HCI over NCI protocol support")
 Cc: stable@vger.kernel.org
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Ashutosh Desai <ashutoshdesai993@gmail.com>
+Link: https://patch.msgid.link/20260505170712.96560-1-ashutoshdesai993@gmail.com
+Signed-off-by: David Heidelberg <david@ixit.cz>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/omninet.c |    9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ net/nfc/hci/core.c |   10 ++++++++++
+ net/nfc/nci/hci.c  |   10 ++++++++++
+ 2 files changed, 20 insertions(+)
 
---- a/drivers/usb/serial/omninet.c
-+++ b/drivers/usb/serial/omninet.c
-@@ -30,6 +30,10 @@
- /* This one seems to be a re-branded ZyXEL device */
- #define BT_IGNITIONPRO_ID	0x2000
+--- a/net/nfc/hci/core.c
++++ b/net/nfc/hci/core.c
+@@ -861,6 +861,11 @@ static void nfc_hci_recv_from_llc(struct
+ 	struct sk_buff *frag_skb;
+ 	int msg_len;
  
-+#define OMNINET_HEADERLEN	4
-+#define OMNINET_BULKOUTSIZE	64
-+#define OMNINET_PAYLOADSIZE	(OMNINET_BULKOUTSIZE - OMNINET_HEADERLEN)
++	if (!pskb_may_pull(skb, NFC_HCI_HCP_PACKET_HEADER_LEN)) {
++		kfree_skb(skb);
++		return;
++	}
 +
- /* function prototypes */
- static void omninet_process_read_urb(struct urb *urb);
- static int omninet_prepare_write_buffer(struct usb_serial_port *port,
-@@ -55,6 +59,7 @@ static struct usb_serial_driver zyxel_om
- 	.description =		"ZyXEL - omni.net lcd plus usb",
- 	.id_table =		id_table,
- 	.num_bulk_out =		2,
-+	.bulk_out_size =	OMNINET_BULKOUTSIZE,
- 	.calc_num_ports =	omninet_calc_num_ports,
- 	.port_probe =		omninet_port_probe,
- 	.port_remove =		omninet_port_remove,
-@@ -133,10 +138,6 @@ static int omninet_port_remove(struct us
- 	return 0;
- }
+ 	packet = (struct hcp_packet *)skb->data;
+ 	if ((packet->header & ~NFC_HCI_FRAGMENT) == 0) {
+ 		skb_queue_tail(&hdev->rx_hcp_frags, skb);
+@@ -904,6 +909,11 @@ static void nfc_hci_recv_from_llc(struct
+ 	 * unblock waiting cmd context. Otherwise, enqueue to dispatch
+ 	 * in separate context where handler can also execute command.
+ 	 */
++	if (!pskb_may_pull(hcp_skb, NFC_HCI_HCP_HEADER_LEN)) {
++		kfree_skb(hcp_skb);
++		return;
++	}
++
+ 	packet = (struct hcp_packet *)hcp_skb->data;
+ 	type = HCP_MSG_GET_TYPE(packet->message.header);
+ 	if (type == NFC_HCI_HCP_RESPONSE) {
+--- a/net/nfc/nci/hci.c
++++ b/net/nfc/nci/hci.c
+@@ -439,6 +439,11 @@ void nci_hci_data_received_cb(void *cont
+ 		return;
+ 	}
  
--#define OMNINET_HEADERLEN	4
--#define OMNINET_BULKOUTSIZE	64
--#define OMNINET_PAYLOADSIZE	(OMNINET_BULKOUTSIZE - OMNINET_HEADERLEN)
--
- static void omninet_process_read_urb(struct urb *urb)
- {
- 	struct usb_serial_port *port = urb->context;
++	if (!pskb_may_pull(skb, NCI_HCI_HCP_PACKET_HEADER_LEN)) {
++		kfree_skb(skb);
++		return;
++	}
++
+ 	packet = (struct nci_hcp_packet *)skb->data;
+ 	if ((packet->header & ~NCI_HCI_FRAGMENT) == 0) {
+ 		skb_queue_tail(&ndev->hci_dev->rx_hcp_frags, skb);
+@@ -482,6 +487,11 @@ void nci_hci_data_received_cb(void *cont
+ 	 * unblock waiting cmd context. Otherwise, enqueue to dispatch
+ 	 * in separate context where handler can also execute command.
+ 	 */
++	if (!pskb_may_pull(hcp_skb, NCI_HCI_HCP_HEADER_LEN)) {
++		kfree_skb(hcp_skb);
++		return;
++	}
++
+ 	packet = (struct nci_hcp_packet *)hcp_skb->data;
+ 	type = NCI_HCP_MSG_GET_TYPE(packet->message.header);
+ 	if (type == NCI_HCI_HCP_RESPONSE) {
 
 
 
