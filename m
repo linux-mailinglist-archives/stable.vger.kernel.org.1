@@ -1,94 +1,63 @@
-Return-Path: <stable+bounces-263754-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263756-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 5fO3E1BXMWrohAUAu9opvQ
-	(envelope-from <stable+bounces-263754-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:01:52 +0200
+	id pZ/2AUBYMWpvhQUAu9opvQ
+	(envelope-from <stable+bounces-263756-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:05:52 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D54D690301
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:01:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 77423690373
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:05:51 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=fkz6Ovai;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263754-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-263754-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mgAwMTyg;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263756-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-263756-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 557443046E91
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 13:56:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1C8D631C02E9
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 14:02:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B531348C79;
-	Tue, 16 Jun 2026 13:56:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1B423328FC;
+	Tue, 16 Jun 2026 14:02:18 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dy1-f172.google.com (mail-dy1-f172.google.com [74.125.82.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E6C932D0FC
-	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 13:56:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E906935200F
+	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 14:02:16 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781618209; cv=none; b=pwR8aN595KyfyDXkMpBIJfxFFmpxMCzK4lbTYeoq49u3rkSqCOPKli7OFiAV8AYUidyn9f1P48ifxPez/zKpoWbrP2DXWCAv3RNSrcbQjuGL50E+SfvP6qxiSIW3Le1RktdPGhHfbdUXlvX71BUWag4n48wgFpe79p4X88pJ+cY=
+	t=1781618538; cv=none; b=Dhr6mzhLp3Q8pbKwhDSx2dRnekCRl9Qk+6Ek5BhVvCrFfhpVNIo7ekM7a6CR2HQCijgdn74YrQNjCzf4kqr3lR7a3rlpW54M7EpKYnKgPsEzNGm7j9kpxhhphS6PFEkxQIujYTRplmntKeLyOaCnOKi6fhUXzIFyvdWHHn1WKVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781618209; c=relaxed/simple;
-	bh=pzkCjeIwaAWRaa3ER7qo2m/enxolHd2bgsECYrxA5fE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YoucBZNc5lZR6hRC1axTqi2/UULwvxyoWT/NyQ/kY/ZSBDBlB1oqLcqSXpKyNFF1XAF8IwTHUTYVikYng4t7fJQ2wVGNGKNTPB+NhhjtnsaT1z/UpBH/VQ0pP8BEhOIITr3JOpTyw0qLzBIr2yLhcJhtD30LEWFPH27etPI57/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fkz6Ovai; arc=none smtp.client-ip=74.125.82.172
-Received: by mail-dy1-f172.google.com with SMTP id 5a478bee46e88-3078e0dcd67so4813226eec.0
-        for <stable@vger.kernel.org>; Tue, 16 Jun 2026 06:56:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781618207; x=1782223007; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=4/yKpIl7fnTH/Z8cujrZ2kgityIQr3NnutG1Y8WhoW4=;
-        b=fkz6OvaiXxKQ2XVv3ytfuGzpMKDjOMd25yhWzZUpaVz+o7nQZSFTzV8nYyduZ147Xg
-         ++oDPTgUTxYqoIhnCafmjAEW2S0fs7TUr70FS4tpAYudFoK9Snqy2qLIalaK/4NoR4HJ
-         oDb8nQ9hv94BbWoU6Knyt8R1xs9crdoVfHSCmxsO620O9DOIKaSbk4l7ZOV8eKX6ocDb
-         FHOucuTWThYF4K7mkxc0kAOTiDYnyh5SwZN7gfwrHb7H9C9XyfN3j7fxboyYg09zXsr9
-         OnjiuK+eH5mU7y/KQoojz5lIi7Zd4aPhaETfoj7ovcovtAgYoKHWqC8/6DKW9ShUA4fp
-         6CGg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781618207; x=1782223007;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4/yKpIl7fnTH/Z8cujrZ2kgityIQr3NnutG1Y8WhoW4=;
-        b=bcvXAbZ8J0iZp7fEacyILP13zNks8/Pxp10EiHX19fULanmYwUlgNZ7sDohRI3/yei
-         seGjz8fAhNAHUrWDEikFhmXzkTaPlDa42zoKQhLQEgpmU5uFKwIVepbczdwg/xwz4nRC
-         vfjFeuzZ2JxJYDMGPnfKzmD3zzGVWhNRpeahM+mvwMMh1RdOg/smC125lVrh+aqrCcz4
-         UgnCCUcnGmWMP8cbWEXoF5TNnRd0aER9iJg6ygHLAGrS+NnyVvx9+ANPZ8+Wz9zFkZjX
-         nV0v6kdtg9paUeA8Gl8gFWeSk1e557/aj5wZnEQwYMoLfFEVDhBiyIX7c4PcKlx+AwgS
-         Af+Q==
-X-Forwarded-Encrypted: i=1; AFNElJ97A/bXLYkO1onjjqn/U2WY8+pTQiiRKcMjU2L7dr24lWKR9w+ZBCActMMlYik6d8bGDHDsaaw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxWoWmJEdlnE9RyZj6vUdjwZ47IYNpxrB/P0Y9mqBmsKUbLO+Lx
-	+vnS470T7WGsO8Ys3SX97mUxBqBg+t4jkKK/Hp6/8Sn/3wH9C5NwPURr
-X-Gm-Gg: Acq92OHQ62zf5ElKwzC6gEnjbU6zgHUaRQgqGpRFswdpE79Qbc55LYEn/Nn04MEVCC9
-	CUhB6Ijq0VXLe8rVwsSaP94gAoxhW+jHZyMPlNMdTT3ttMLihObZd0oToBtPI4lTmh2AJIozNjs
-	moqrEg9WillY8AXb1cQigrpl4kCMV11te2SNqDWrjCnawjzQ4xaP43O4omwpnRGEOR4rkkAQOEg
-	xmx84IumegnV66gNYEjma8PTv19aZVgMLZk3DqJ6+ThoM5x3936cjWtJiMVJqiecy6nbDSYKZ0S
-	ZVAMv/XAl1b/3N5BDHPxoHFZzv4BcIJmxJ9bI/h2MWrrBB7tfbE5Jv1gzDk/GBXgAfs3d+CQfMY
-	zTmf6v6DYuypZvMQ00RqK4kd8cLRcNI0ZfSjfYWggzP/xtdsqhjIqk3RW45pNBmSAxCDYkDhw4k
-	Xyx8KZ8PN/Pi5P3BcqYmiRL7bca68pvWPePpxYuAGimv2mGQDfYWcWzVmul6c=
-X-Received: by 2002:a05:693c:3945:b0:307:91f5:93f7 with SMTP id 5a478bee46e88-3092b94dc86mr7904991eec.0.1781618207060;
-        Tue, 16 Jun 2026 06:56:47 -0700 (PDT)
-Received: from qiwenjie-ThinkCentre-M760t.mioffice.cn ([43.224.245.241])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30bc1e2bd13sm626947eec.2.2026.06.16.06.56.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Jun 2026 06:56:46 -0700 (PDT)
-From: Wenjie Qi <qwjhust@gmail.com>
-X-Google-Original-From: Wenjie Qi <qiwenjie@xiaomi.com>
-To: jaegeuk@kernel.org,
-	chao@kernel.org
-Cc: yangyongpeng@xiaomi.com,
-	geoo115@gmail.com,
-	stable@vger.kernel.org,
-	linux-f2fs-devel@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org,
-	qiwenjie@xiaomi.com,
-	qwjhust@gmail.com
-Subject: [PATCH v5] f2fs: use post-decrement count for cp_wait wakeup
-Date: Tue, 16 Jun 2026 21:56:37 +0800
-Message-ID: <20260616135637.1439319-1-qiwenjie@xiaomi.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1781618538; c=relaxed/simple;
+	bh=4ZDYu8gkdk9Me7iU27Ux5bv62sjBEXxFP0WDWU3vxSM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=pO8Mxvqh5vetYXQjdILDCGJ/KegUfoZijCg1qQHGSfwe4eoEa/nGw3fEIsGbezmGiLjsPAWZTy8X7u2FPF90e9RUiO4Sc+B0tuE8C58/ArFUR1sFMc8uTollDsdTSP97bu6TdmP5oHOGGMi1FqM4M9YIuK4BQOYanxj3GebuQ6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mgAwMTyg; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 055501F000E9;
+	Tue, 16 Jun 2026 14:02:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781618536;
+	bh=TMK0LM//mt8h1pPIKcpfXhLGstc85YFOc7sefGU0LXs=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=mgAwMTygDo1NznfIpfVseJ4Yj3yUiqCoIpmNEk5W05Oy6iG1+BFE6Xxrj5Nvhvn2v
+	 /gu+bA+BfQ3DQXQIJtASQ+OYyhjVpJ2Y53a75K8s2BWhqk+FhMy0XjewcQBFsuqNsB
+	 c+s0+bytgaTK3tIJFmKKIargJmtzxCcyJXrVtHsZ54SKHWqS3K5RnMs8NABGmx8nMA
+	 dm44Di/w+Vgw79MIz3WF2IvfZxbXHvJDifTtb/bDdZoFq1uybGel+4wpR5dbrkUG0X
+	 Pu2FYxVCOKJOzE1OetPdg5JPIuxJIXqIeBEr06ZbajKdvmV2Yob4pney98qbWOfEwd
+	 /+CFYlpFr4kkg==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Christoph Hellwig <hch@lst.de>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Carlos Maiolino <cem@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12.y 1/2] xfs: remove the expr argument to XFS_TEST_ERROR
+Date: Tue, 16 Jun 2026 10:02:13 -0400
+Message-ID: <20260616140214.3285019-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026061544-strife-handwork-2622@gregkh>
+References: <2026061544-strife-handwork-2622@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -97,88 +66,595 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-3.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	FORGED_RECIPIENTS(0.00)[m:jaegeuk@kernel.org,m:chao@kernel.org,m:yangyongpeng@xiaomi.com,m:geoo115@gmail.com,m:stable@vger.kernel.org,m:linux-f2fs-devel@lists.sourceforge.net,m:linux-kernel@vger.kernel.org,m:qiwenjie@xiaomi.com,m:qwjhust@gmail.com,s:lists@lfdr.de];
-	FREEMAIL_CC(0.00)[xiaomi.com,gmail.com,vger.kernel.org,lists.sourceforge.net];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-263754-lists,stable=lfdr.de];
-	FORGED_SENDER(0.00)[qwjhust@gmail.com,stable@vger.kernel.org];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-263756-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:hch@lst.de,m:djwong@kernel.org,m:cem@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[qwjhust@gmail.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_COUNT_FIVE(0.00)[5];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_NONE(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[xiaomi.com:mid,xiaomi.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,lst.de:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5D54D690301
+X-Rspamd-Queue-Id: 77423690373
 
-f2fs_write_end_io() decrements the writeback page counter and then
-reads it again with get_pages() to decide whether the last
-F2FS_WB_CP_DATA completion should wake cp_wait.
+From: Christoph Hellwig <hch@lst.de>
 
-Use atomic_dec_return() for F2FS_WB_CP_DATA completions so the wakeup
-decision is made from the value produced by the decrement itself. Keep
-the existing dec_page_count() path for other writeback counters.
+[ Upstream commit 807df3227d7674d7957c576551d552acf15bb96f ]
 
-Fixes: e234088758fc ("f2fs: avoid wait if IO end up when do_checkpoint for better performance")
-Fixes: ce2739e482bc ("f2fs: fix to avoid UAF in f2fs_write_end_io()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Wenjie Qi <qiwenjie@xiaomi.com>
+Don't pass expr to XFS_TEST_ERROR.  Most calls pass a constant false,
+and the places that do pass an expression become cleaner by moving it
+out.
+
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
+Stable-dep-of: fcf4faba9f98 ("xfs: fix error returns in CoW fork repair")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/data.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ fs/xfs/libxfs/xfs_ag_resv.c    |  8 ++++----
+ fs/xfs/libxfs/xfs_alloc.c      |  5 ++---
+ fs/xfs/libxfs/xfs_attr_leaf.c  |  2 +-
+ fs/xfs/libxfs/xfs_bmap.c       | 17 ++++++++---------
+ fs/xfs/libxfs/xfs_btree.c      |  2 +-
+ fs/xfs/libxfs/xfs_da_btree.c   |  2 +-
+ fs/xfs/libxfs/xfs_dir2.c       |  2 +-
+ fs/xfs/libxfs/xfs_exchmaps.c   |  4 ++--
+ fs/xfs/libxfs/xfs_ialloc.c     |  2 +-
+ fs/xfs/libxfs/xfs_inode_buf.c  |  4 ++--
+ fs/xfs/libxfs/xfs_inode_fork.c |  3 +--
+ fs/xfs/libxfs/xfs_refcount.c   |  5 ++---
+ fs/xfs/libxfs/xfs_rmap.c       |  2 +-
+ fs/xfs/scrub/cow_repair.c      |  2 +-
+ fs/xfs/scrub/repair.c          |  2 +-
+ fs/xfs/xfs_attr_item.c         |  2 +-
+ fs/xfs/xfs_buf.c               |  4 ++--
+ fs/xfs/xfs_error.c             |  5 ++---
+ fs/xfs/xfs_error.h             | 10 +++++-----
+ fs/xfs/xfs_inode.c             | 28 +++++++++++++---------------
+ fs/xfs/xfs_iomap.c             |  2 +-
+ fs/xfs/xfs_log.c               |  8 ++++----
+ fs/xfs/xfs_trans_ail.c         |  2 +-
+ 23 files changed, 58 insertions(+), 65 deletions(-)
 
-diff --git a/fs/f2fs/data.c b/fs/f2fs/data.c
-index d83a21998ec2..58d23eb74ec2 100644
---- a/fs/f2fs/data.c
-+++ b/fs/f2fs/data.c
-@@ -392,15 +392,17 @@ static void f2fs_write_end_io(struct bio *bio)
- 		if (f2fs_in_warm_node_list(folio))
- 			f2fs_del_fsync_node_entry(sbi, folio);
+diff --git a/fs/xfs/libxfs/xfs_ag_resv.c b/fs/xfs/libxfs/xfs_ag_resv.c
+index 216423df939e5c..4886fad9815540 100644
+--- a/fs/xfs/libxfs/xfs_ag_resv.c
++++ b/fs/xfs/libxfs/xfs_ag_resv.c
+@@ -91,9 +91,9 @@ xfs_ag_resv_critical(
+ 	trace_xfs_ag_resv_critical(pag, type, avail);
  
--		dec_page_count(sbi, type);
--
- 		/*
- 		 * we should access sbi before folio_end_writeback() to
- 		 * avoid racing w/ kill_f2fs_super()
- 		 */
--		if (type == F2FS_WB_CP_DATA && !get_pages(sbi, type) &&
--				wq_has_sleeper(&sbi->cp_wait))
--			wake_up(&sbi->cp_wait);
-+		if (type == F2FS_WB_CP_DATA) {
-+			if (!atomic_dec_return(&sbi->nr_pages[type]) &&
-+			    wq_has_sleeper(&sbi->cp_wait))
-+				wake_up(&sbi->cp_wait);
-+		} else {
-+			dec_page_count(sbi, type);
-+		}
+ 	/* Critically low if less than 10% or max btree height remains. */
+-	return XFS_TEST_ERROR(avail < orig / 10 ||
+-			      avail < pag->pag_mount->m_agbtree_maxlevels,
+-			pag->pag_mount, XFS_ERRTAG_AG_RESV_CRITICAL);
++	return avail < orig / 10 ||
++	       avail < pag->pag_mount->m_agbtree_maxlevels ||
++	       XFS_TEST_ERROR(pag->pag_mount, XFS_ERRTAG_AG_RESV_CRITICAL);
+ }
  
- 		folio_clear_f2fs_gcing(folio);
- 		folio_end_writeback(folio);
-
-base-commit: c0b65f6129c7fbb526e921dd60261650f1b2bef9
+ /*
+@@ -201,7 +201,7 @@ __xfs_ag_resv_init(
+ 		return -EINVAL;
+ 	}
+ 
+-	if (XFS_TEST_ERROR(false, mp, XFS_ERRTAG_AG_RESV_FAIL))
++	if (XFS_TEST_ERROR(mp, XFS_ERRTAG_AG_RESV_FAIL))
+ 		error = -ENOSPC;
+ 	else
+ 		error = xfs_dec_fdblocks(mp, hidden_space, true);
+diff --git a/fs/xfs/libxfs/xfs_alloc.c b/fs/xfs/libxfs/xfs_alloc.c
+index 22bdbb3e9980c4..3633f4d28c3b74 100644
+--- a/fs/xfs/libxfs/xfs_alloc.c
++++ b/fs/xfs/libxfs/xfs_alloc.c
+@@ -3312,7 +3312,7 @@ xfs_agf_read_verify(
+ 		xfs_verifier_error(bp, -EFSBADCRC, __this_address);
+ 	else {
+ 		fa = xfs_agf_verify(bp);
+-		if (XFS_TEST_ERROR(fa, mp, XFS_ERRTAG_ALLOC_READ_AGF))
++		if (fa || XFS_TEST_ERROR(mp, XFS_ERRTAG_ALLOC_READ_AGF))
+ 			xfs_verifier_error(bp, -EFSCORRUPTED, fa);
+ 	}
+ }
+@@ -3986,8 +3986,7 @@ __xfs_free_extent(
+ 	ASSERT(len != 0);
+ 	ASSERT(type != XFS_AG_RESV_AGFL);
+ 
+-	if (XFS_TEST_ERROR(false, mp,
+-			XFS_ERRTAG_FREE_EXTENT))
++	if (XFS_TEST_ERROR(mp, XFS_ERRTAG_FREE_EXTENT))
+ 		return -EIO;
+ 
+ 	error = xfs_free_extent_fix_freelist(tp, pag, &agbp);
+diff --git a/fs/xfs/libxfs/xfs_attr_leaf.c b/fs/xfs/libxfs/xfs_attr_leaf.c
+index bfcac9036c1126..afdd3fc0a8be1f 100644
+--- a/fs/xfs/libxfs/xfs_attr_leaf.c
++++ b/fs/xfs/libxfs/xfs_attr_leaf.c
+@@ -1225,7 +1225,7 @@ xfs_attr3_leaf_to_node(
+ 
+ 	trace_xfs_attr_leaf_to_node(args);
+ 
+-	if (XFS_TEST_ERROR(false, mp, XFS_ERRTAG_ATTR_LEAF_TO_NODE)) {
++	if (XFS_TEST_ERROR(mp, XFS_ERRTAG_ATTR_LEAF_TO_NODE)) {
+ 		error = -EIO;
+ 		goto out;
+ 	}
+diff --git a/fs/xfs/libxfs/xfs_bmap.c b/fs/xfs/libxfs/xfs_bmap.c
+index 36dd08d132931d..b2b5a36ead97b6 100644
+--- a/fs/xfs/libxfs/xfs_bmap.c
++++ b/fs/xfs/libxfs/xfs_bmap.c
+@@ -3766,8 +3766,7 @@ xfs_bmap_btalloc(
+ 	/* Trim the allocation back to the maximum an AG can fit. */
+ 	args.maxlen = min(ap->length, mp->m_ag_max_usable);
+ 
+-	if (unlikely(XFS_TEST_ERROR(false, mp,
+-			XFS_ERRTAG_BMAP_ALLOC_MINLEN_EXTENT)))
++	if (unlikely(XFS_TEST_ERROR(mp, XFS_ERRTAG_BMAP_ALLOC_MINLEN_EXTENT)))
+ 		error = xfs_bmap_exact_minlen_extent_alloc(ap, &args);
+ 	else if ((ap->datatype & XFS_ALLOC_USERDATA) &&
+ 			xfs_inode_is_filestream(ap->ip))
+@@ -3953,7 +3952,7 @@ xfs_bmapi_read(
+ 	}
+ 
+ 	if (XFS_IS_CORRUPT(mp, !xfs_ifork_has_extents(ifp)) ||
+-	    XFS_TEST_ERROR(false, mp, XFS_ERRTAG_BMAPIFORMAT)) {
++	    XFS_TEST_ERROR(mp, XFS_ERRTAG_BMAPIFORMAT)) {
+ 		xfs_bmap_mark_sick(ip, whichfork);
+ 		return -EFSCORRUPTED;
+ 	}
+@@ -4442,7 +4441,7 @@ xfs_bmapi_write(
+ 			(XFS_BMAPI_PREALLOC | XFS_BMAPI_ZERO));
+ 
+ 	if (XFS_IS_CORRUPT(mp, !xfs_ifork_has_extents(ifp)) ||
+-	    XFS_TEST_ERROR(false, mp, XFS_ERRTAG_BMAPIFORMAT)) {
++	    XFS_TEST_ERROR(mp, XFS_ERRTAG_BMAPIFORMAT)) {
+ 		xfs_bmap_mark_sick(ip, whichfork);
+ 		return -EFSCORRUPTED;
+ 	}
+@@ -4785,7 +4784,7 @@ xfs_bmapi_remap(
+ 			(XFS_BMAPI_ATTRFORK | XFS_BMAPI_PREALLOC));
+ 
+ 	if (XFS_IS_CORRUPT(mp, !xfs_ifork_has_extents(ifp)) ||
+-	    XFS_TEST_ERROR(false, mp, XFS_ERRTAG_BMAPIFORMAT)) {
++	    XFS_TEST_ERROR(mp, XFS_ERRTAG_BMAPIFORMAT)) {
+ 		xfs_bmap_mark_sick(ip, whichfork);
+ 		return -EFSCORRUPTED;
+ 	}
+@@ -5873,7 +5872,7 @@ xfs_bmap_collapse_extents(
+ 	int			logflags = 0;
+ 
+ 	if (XFS_IS_CORRUPT(mp, !xfs_ifork_has_extents(ifp)) ||
+-	    XFS_TEST_ERROR(false, mp, XFS_ERRTAG_BMAPIFORMAT)) {
++	    XFS_TEST_ERROR(mp, XFS_ERRTAG_BMAPIFORMAT)) {
+ 		xfs_bmap_mark_sick(ip, whichfork);
+ 		return -EFSCORRUPTED;
+ 	}
+@@ -5988,7 +5987,7 @@ xfs_bmap_insert_extents(
+ 	int			logflags = 0;
+ 
+ 	if (XFS_IS_CORRUPT(mp, !xfs_ifork_has_extents(ifp)) ||
+-	    XFS_TEST_ERROR(false, mp, XFS_ERRTAG_BMAPIFORMAT)) {
++	    XFS_TEST_ERROR(mp, XFS_ERRTAG_BMAPIFORMAT)) {
+ 		xfs_bmap_mark_sick(ip, whichfork);
+ 		return -EFSCORRUPTED;
+ 	}
+@@ -6092,7 +6091,7 @@ xfs_bmap_split_extent(
+ 	int				i = 0;
+ 
+ 	if (XFS_IS_CORRUPT(mp, !xfs_ifork_has_extents(ifp)) ||
+-	    XFS_TEST_ERROR(false, mp, XFS_ERRTAG_BMAPIFORMAT)) {
++	    XFS_TEST_ERROR(mp, XFS_ERRTAG_BMAPIFORMAT)) {
+ 		xfs_bmap_mark_sick(ip, whichfork);
+ 		return -EFSCORRUPTED;
+ 	}
+@@ -6257,7 +6256,7 @@ xfs_bmap_finish_one(
+ 
+ 	trace_xfs_bmap_deferred(bi);
+ 
+-	if (XFS_TEST_ERROR(false, tp->t_mountp, XFS_ERRTAG_BMAP_FINISH_ONE))
++	if (XFS_TEST_ERROR(tp->t_mountp, XFS_ERRTAG_BMAP_FINISH_ONE))
+ 		return -EIO;
+ 
+ 	switch (bi->bi_type) {
+diff --git a/fs/xfs/libxfs/xfs_btree.c b/fs/xfs/libxfs/xfs_btree.c
+index 134d87b3489aa4..f0ddaa136a0bf3 100644
+--- a/fs/xfs/libxfs/xfs_btree.c
++++ b/fs/xfs/libxfs/xfs_btree.c
+@@ -300,7 +300,7 @@ xfs_btree_check_block(
+ 
+ 	fa = __xfs_btree_check_block(cur, block, level, bp);
+ 	if (XFS_IS_CORRUPT(mp, fa != NULL) ||
+-	    XFS_TEST_ERROR(false, mp, xfs_btree_block_errtag(cur))) {
++	    XFS_TEST_ERROR(mp, xfs_btree_block_errtag(cur))) {
+ 		if (bp)
+ 			trace_xfs_btree_corrupt(bp, _RET_IP_);
+ 		xfs_btree_mark_sick(cur);
+diff --git a/fs/xfs/libxfs/xfs_da_btree.c b/fs/xfs/libxfs/xfs_da_btree.c
+index 723a0643b8386c..90f7fc219fccc8 100644
+--- a/fs/xfs/libxfs/xfs_da_btree.c
++++ b/fs/xfs/libxfs/xfs_da_btree.c
+@@ -565,7 +565,7 @@ xfs_da3_split(
+ 
+ 	trace_xfs_da_split(state->args);
+ 
+-	if (XFS_TEST_ERROR(false, state->mp, XFS_ERRTAG_DA_LEAF_SPLIT))
++	if (XFS_TEST_ERROR(state->mp, XFS_ERRTAG_DA_LEAF_SPLIT))
+ 		return -EIO;
+ 
+ 	/*
+diff --git a/fs/xfs/libxfs/xfs_dir2.c b/fs/xfs/libxfs/xfs_dir2.c
+index 202468223bf943..945285060e6548 100644
+--- a/fs/xfs/libxfs/xfs_dir2.c
++++ b/fs/xfs/libxfs/xfs_dir2.c
+@@ -223,7 +223,7 @@ xfs_dir_ino_validate(
+ 	bool		ino_ok = xfs_verify_dir_ino(mp, ino);
+ 
+ 	if (XFS_IS_CORRUPT(mp, !ino_ok) ||
+-	    XFS_TEST_ERROR(false, mp, XFS_ERRTAG_DIR_INO_VALIDATE)) {
++	    XFS_TEST_ERROR(mp, XFS_ERRTAG_DIR_INO_VALIDATE)) {
+ 		xfs_warn(mp, "Invalid inode number 0x%Lx",
+ 				(unsigned long long) ino);
+ 		return -EFSCORRUPTED;
+diff --git a/fs/xfs/libxfs/xfs_exchmaps.c b/fs/xfs/libxfs/xfs_exchmaps.c
+index 2021396651de27..f9df18a84f6547 100644
+--- a/fs/xfs/libxfs/xfs_exchmaps.c
++++ b/fs/xfs/libxfs/xfs_exchmaps.c
+@@ -616,7 +616,7 @@ xfs_exchmaps_finish_one(
+ 			return error;
+ 	}
+ 
+-	if (XFS_TEST_ERROR(false, tp->t_mountp, XFS_ERRTAG_EXCHMAPS_FINISH_ONE))
++	if (XFS_TEST_ERROR(tp->t_mountp, XFS_ERRTAG_EXCHMAPS_FINISH_ONE))
+ 		return -EIO;
+ 
+ 	/* If we still have work to do, ask for a new transaction. */
+@@ -880,7 +880,7 @@ xmi_ensure_delta_nextents(
+ 				&new_nextents))
+ 		return -EFBIG;
+ 
+-	if (XFS_TEST_ERROR(false, mp, XFS_ERRTAG_REDUCE_MAX_IEXTENTS) &&
++	if (XFS_TEST_ERROR(mp, XFS_ERRTAG_REDUCE_MAX_IEXTENTS) &&
+ 	    new_nextents > 10)
+ 		return -EFBIG;
+ 
+diff --git a/fs/xfs/libxfs/xfs_ialloc.c b/fs/xfs/libxfs/xfs_ialloc.c
+index 8223464e23e7f7..0fdb2a30e50d1f 100644
+--- a/fs/xfs/libxfs/xfs_ialloc.c
++++ b/fs/xfs/libxfs/xfs_ialloc.c
+@@ -2690,7 +2690,7 @@ xfs_agi_read_verify(
+ 		xfs_verifier_error(bp, -EFSBADCRC, __this_address);
+ 	else {
+ 		fa = xfs_agi_verify(bp);
+-		if (XFS_TEST_ERROR(fa, mp, XFS_ERRTAG_IALLOC_READ_AGI))
++		if (fa || XFS_TEST_ERROR(mp, XFS_ERRTAG_IALLOC_READ_AGI))
+ 			xfs_verifier_error(bp, -EFSCORRUPTED, fa);
+ 	}
+ }
+diff --git a/fs/xfs/libxfs/xfs_inode_buf.c b/fs/xfs/libxfs/xfs_inode_buf.c
+index 79babeac9d7546..63f4abd8707641 100644
+--- a/fs/xfs/libxfs/xfs_inode_buf.c
++++ b/fs/xfs/libxfs/xfs_inode_buf.c
+@@ -60,8 +60,8 @@ xfs_inode_buf_verify(
+ 		di_ok = xfs_verify_magic16(bp, dip->di_magic) &&
+ 			xfs_dinode_good_version(mp, dip->di_version) &&
+ 			xfs_verify_agino_or_null(bp->b_pag, unlinked_ino);
+-		if (unlikely(XFS_TEST_ERROR(!di_ok, mp,
+-						XFS_ERRTAG_ITOBP_INOTOBP))) {
++		if (unlikely(!di_ok ||
++				XFS_TEST_ERROR(mp, XFS_ERRTAG_ITOBP_INOTOBP))) {
+ 			if (readahead) {
+ 				bp->b_flags &= ~XBF_DONE;
+ 				xfs_buf_ioerror(bp, -EIO);
+diff --git a/fs/xfs/libxfs/xfs_inode_fork.c b/fs/xfs/libxfs/xfs_inode_fork.c
+index 1158ca48626b71..78af39caa0f1bd 100644
+--- a/fs/xfs/libxfs/xfs_inode_fork.c
++++ b/fs/xfs/libxfs/xfs_inode_fork.c
+@@ -795,8 +795,7 @@ xfs_iext_count_extend(
+ 	if (nr_exts < ifp->if_nextents)
+ 		return -EFBIG;
+ 
+-	if (XFS_TEST_ERROR(false, mp, XFS_ERRTAG_REDUCE_MAX_IEXTENTS) &&
+-	    nr_exts > 10)
++	if (XFS_TEST_ERROR(mp, XFS_ERRTAG_REDUCE_MAX_IEXTENTS) && nr_exts > 10)
+ 		return -EFBIG;
+ 
+ 	if (nr_exts > xfs_iext_max_nextents(has_large, whichfork)) {
+diff --git a/fs/xfs/libxfs/xfs_refcount.c b/fs/xfs/libxfs/xfs_refcount.c
+index 198b84117df138..e26a2472c25d18 100644
+--- a/fs/xfs/libxfs/xfs_refcount.c
++++ b/fs/xfs/libxfs/xfs_refcount.c
+@@ -1073,8 +1073,7 @@ xfs_refcount_still_have_space(
+ 	 * refcount continue update "error" has been injected.
+ 	 */
+ 	if (cur->bc_refc.nr_ops > 2 &&
+-	    XFS_TEST_ERROR(false, cur->bc_mp,
+-			XFS_ERRTAG_REFCOUNT_CONTINUE_UPDATE))
++	    XFS_TEST_ERROR(cur->bc_mp, XFS_ERRTAG_REFCOUNT_CONTINUE_UPDATE))
+ 		return false;
+ 
+ 	if (cur->bc_refc.nr_ops == 0)
+@@ -1353,7 +1352,7 @@ xfs_refcount_finish_one(
+ 
+ 	trace_xfs_refcount_deferred(mp, ri);
+ 
+-	if (XFS_TEST_ERROR(false, mp, XFS_ERRTAG_REFCOUNT_FINISH_ONE))
++	if (XFS_TEST_ERROR(mp, XFS_ERRTAG_REFCOUNT_FINISH_ONE))
+ 		return -EIO;
+ 
+ 	/*
+diff --git a/fs/xfs/libxfs/xfs_rmap.c b/fs/xfs/libxfs/xfs_rmap.c
+index 6ef4687b3aba8f..0fbec9134cb510 100644
+--- a/fs/xfs/libxfs/xfs_rmap.c
++++ b/fs/xfs/libxfs/xfs_rmap.c
+@@ -2579,7 +2579,7 @@ xfs_rmap_finish_one(
+ 
+ 	trace_xfs_rmap_deferred(mp, ri);
+ 
+-	if (XFS_TEST_ERROR(false, mp, XFS_ERRTAG_RMAP_FINISH_ONE))
++	if (XFS_TEST_ERROR(mp, XFS_ERRTAG_RMAP_FINISH_ONE))
+ 		return -EIO;
+ 
+ 	/*
+diff --git a/fs/xfs/scrub/cow_repair.c b/fs/xfs/scrub/cow_repair.c
+index 4de3f0f40f486c..3524695625e338 100644
+--- a/fs/xfs/scrub/cow_repair.c
++++ b/fs/xfs/scrub/cow_repair.c
+@@ -297,7 +297,7 @@ xrep_cow_find_bad(
+ 	 * on the debugging knob, replace everything in the CoW fork.
+ 	 */
+ 	if ((sc->sm->sm_flags & XFS_SCRUB_IFLAG_FORCE_REBUILD) ||
+-	    XFS_TEST_ERROR(false, sc->mp, XFS_ERRTAG_FORCE_SCRUB_REPAIR)) {
++	    XFS_TEST_ERROR(sc->mp, XFS_ERRTAG_FORCE_SCRUB_REPAIR)) {
+ 		error = xrep_cow_mark_file_range(xc, xc->irec.br_startblock,
+ 				xc->irec.br_blockcount);
+ 		if (error)
+diff --git a/fs/xfs/scrub/repair.c b/fs/xfs/scrub/repair.c
+index c19abc687072f9..4d763e7b644674 100644
+--- a/fs/xfs/scrub/repair.c
++++ b/fs/xfs/scrub/repair.c
+@@ -990,7 +990,7 @@ xrep_will_attempt(
+ 		return true;
+ 
+ 	/* Let debug users force us into the repair routines. */
+-	if (XFS_TEST_ERROR(false, sc->mp, XFS_ERRTAG_FORCE_SCRUB_REPAIR))
++	if (XFS_TEST_ERROR(sc->mp, XFS_ERRTAG_FORCE_SCRUB_REPAIR))
+ 		return true;
+ 
+ 	/* Metadata is corrupt or failed cross-referencing. */
+diff --git a/fs/xfs/xfs_attr_item.c b/fs/xfs/xfs_attr_item.c
+index 6a2ee93d5fffcb..b81eafc9543b1d 100644
+--- a/fs/xfs/xfs_attr_item.c
++++ b/fs/xfs/xfs_attr_item.c
+@@ -490,7 +490,7 @@ xfs_attr_finish_item(
+ 	/* Reset trans after EAGAIN cycle since the transaction is new */
+ 	args->trans = tp;
+ 
+-	if (XFS_TEST_ERROR(false, args->dp->i_mount, XFS_ERRTAG_LARP)) {
++	if (XFS_TEST_ERROR(args->dp->i_mount, XFS_ERRTAG_LARP)) {
+ 		error = -EIO;
+ 		goto out;
+ 	}
+diff --git a/fs/xfs/xfs_buf.c b/fs/xfs/xfs_buf.c
+index afcdfe317b7e86..1f6b2888bd418a 100644
+--- a/fs/xfs/xfs_buf.c
++++ b/fs/xfs/xfs_buf.c
+@@ -1498,7 +1498,7 @@ xfs_buf_bio_end_io(
+ 
+ 	if (!bio->bi_status &&
+ 	    (bp->b_flags & XBF_WRITE) && (bp->b_flags & XBF_ASYNC) &&
+-	    XFS_TEST_ERROR(false, bp->b_mount, XFS_ERRTAG_BUF_IOERROR))
++	    XFS_TEST_ERROR(bp->b_mount, XFS_ERRTAG_BUF_IOERROR))
+ 		bio->bi_status = BLK_STS_IOERR;
+ 
+ 	/*
+@@ -2451,7 +2451,7 @@ void xfs_buf_set_ref(struct xfs_buf *bp, int lru_ref)
+ 	 * This allows userspace to disrupt buffer caching for debug/testing
+ 	 * purposes.
+ 	 */
+-	if (XFS_TEST_ERROR(false, bp->b_mount, XFS_ERRTAG_BUF_LRU_REF))
++	if (XFS_TEST_ERROR(bp->b_mount, XFS_ERRTAG_BUF_LRU_REF))
+ 		lru_ref = 0;
+ 
+ 	atomic_set(&bp->b_lru_ref, lru_ref);
+diff --git a/fs/xfs/xfs_error.c b/fs/xfs/xfs_error.c
+index 78cdc5064a8c47..3b41cc591e92ed 100644
+--- a/fs/xfs/xfs_error.c
++++ b/fs/xfs/xfs_error.c
+@@ -292,7 +292,6 @@ xfs_errortag_enabled(
+ bool
+ xfs_errortag_test(
+ 	struct xfs_mount	*mp,
+-	const char		*expression,
+ 	const char		*file,
+ 	int			line,
+ 	unsigned int		error_tag)
+@@ -318,8 +317,8 @@ xfs_errortag_test(
+ 		return false;
+ 
+ 	xfs_warn_ratelimited(mp,
+-"Injecting error (%s) at file %s, line %d, on filesystem \"%s\"",
+-			expression, file, line, mp->m_super->s_id);
++"Injecting error at file %s, line %d, on filesystem \"%s\"",
++			file, line, mp->m_super->s_id);
+ 	return true;
+ }
+ 
+diff --git a/fs/xfs/xfs_error.h b/fs/xfs/xfs_error.h
+index 0b9c5ba8a5981a..ff7792988b8aa2 100644
+--- a/fs/xfs/xfs_error.h
++++ b/fs/xfs/xfs_error.h
+@@ -41,10 +41,10 @@ extern void xfs_inode_verifier_error(struct xfs_inode *ip, int error,
+ #ifdef DEBUG
+ extern int xfs_errortag_init(struct xfs_mount *mp);
+ extern void xfs_errortag_del(struct xfs_mount *mp);
+-extern bool xfs_errortag_test(struct xfs_mount *mp, const char *expression,
+-		const char *file, int line, unsigned int error_tag);
+-#define XFS_TEST_ERROR(expr, mp, tag)		\
+-	((expr) || xfs_errortag_test((mp), #expr, __FILE__, __LINE__, (tag)))
++bool xfs_errortag_test(struct xfs_mount *mp, const char *file, int line,
++		unsigned int error_tag);
++#define XFS_TEST_ERROR(mp, tag)		\
++	xfs_errortag_test((mp), __FILE__, __LINE__, (tag))
+ bool xfs_errortag_enabled(struct xfs_mount *mp, unsigned int tag);
+ #define XFS_ERRORTAG_DELAY(mp, tag)		\
+ 	do { \
+@@ -66,7 +66,7 @@ extern int xfs_errortag_clearall(struct xfs_mount *mp);
+ #else
+ #define xfs_errortag_init(mp)			(0)
+ #define xfs_errortag_del(mp)
+-#define XFS_TEST_ERROR(expr, mp, tag)		(expr)
++#define XFS_TEST_ERROR(mp, tag)			(false)
+ #define XFS_ERRORTAG_DELAY(mp, tag)		((void)0)
+ #define xfs_errortag_set(mp, tag, val)		(ENOSYS)
+ #define xfs_errortag_add(mp, tag)		(ENOSYS)
+diff --git a/fs/xfs/xfs_inode.c b/fs/xfs/xfs_inode.c
+index ed09b4a3084e1c..266fcc7890987d 100644
+--- a/fs/xfs/xfs_inode.c
++++ b/fs/xfs/xfs_inode.c
+@@ -2367,37 +2367,35 @@ xfs_iflush(
+ 	 * error handling as the caller will shutdown and fail the buffer.
+ 	 */
+ 	error = -EFSCORRUPTED;
+-	if (XFS_TEST_ERROR(dip->di_magic != cpu_to_be16(XFS_DINODE_MAGIC),
+-			       mp, XFS_ERRTAG_IFLUSH_1)) {
++	if (dip->di_magic != cpu_to_be16(XFS_DINODE_MAGIC) ||
++	    XFS_TEST_ERROR(mp, XFS_ERRTAG_IFLUSH_1)) {
+ 		xfs_alert_tag(mp, XFS_PTAG_IFLUSH,
+ 			"%s: Bad inode %llu magic number 0x%x, ptr "PTR_FMT,
+ 			__func__, ip->i_ino, be16_to_cpu(dip->di_magic), dip);
+ 		goto flush_out;
+ 	}
+ 	if (S_ISREG(VFS_I(ip)->i_mode)) {
+-		if (XFS_TEST_ERROR(
+-		    ip->i_df.if_format != XFS_DINODE_FMT_EXTENTS &&
+-		    ip->i_df.if_format != XFS_DINODE_FMT_BTREE,
+-		    mp, XFS_ERRTAG_IFLUSH_3)) {
++		if ((ip->i_df.if_format != XFS_DINODE_FMT_EXTENTS &&
++		     ip->i_df.if_format != XFS_DINODE_FMT_BTREE) ||
++		    XFS_TEST_ERROR(mp, XFS_ERRTAG_IFLUSH_3)) {
+ 			xfs_alert_tag(mp, XFS_PTAG_IFLUSH,
+ 				"%s: Bad regular inode %llu, ptr "PTR_FMT,
+ 				__func__, ip->i_ino, ip);
+ 			goto flush_out;
+ 		}
+ 	} else if (S_ISDIR(VFS_I(ip)->i_mode)) {
+-		if (XFS_TEST_ERROR(
+-		    ip->i_df.if_format != XFS_DINODE_FMT_EXTENTS &&
+-		    ip->i_df.if_format != XFS_DINODE_FMT_BTREE &&
+-		    ip->i_df.if_format != XFS_DINODE_FMT_LOCAL,
+-		    mp, XFS_ERRTAG_IFLUSH_4)) {
++		if ((ip->i_df.if_format != XFS_DINODE_FMT_EXTENTS &&
++		     ip->i_df.if_format != XFS_DINODE_FMT_BTREE &&
++		     ip->i_df.if_format != XFS_DINODE_FMT_LOCAL) ||
++		    XFS_TEST_ERROR(mp, XFS_ERRTAG_IFLUSH_4)) {
+ 			xfs_alert_tag(mp, XFS_PTAG_IFLUSH,
+ 				"%s: Bad directory inode %llu, ptr "PTR_FMT,
+ 				__func__, ip->i_ino, ip);
+ 			goto flush_out;
+ 		}
+ 	}
+-	if (XFS_TEST_ERROR(ip->i_df.if_nextents + xfs_ifork_nextents(&ip->i_af) >
+-				ip->i_nblocks, mp, XFS_ERRTAG_IFLUSH_5)) {
++	if (ip->i_df.if_nextents + xfs_ifork_nextents(&ip->i_af) >
++	    ip->i_nblocks || XFS_TEST_ERROR(mp, XFS_ERRTAG_IFLUSH_5)) {
+ 		xfs_alert_tag(mp, XFS_PTAG_IFLUSH,
+ 			"%s: detected corrupt incore inode %llu, "
+ 			"total extents = %llu nblocks = %lld, ptr "PTR_FMT,
+@@ -2406,8 +2404,8 @@ xfs_iflush(
+ 			ip->i_nblocks, ip);
+ 		goto flush_out;
+ 	}
+-	if (XFS_TEST_ERROR(ip->i_forkoff > mp->m_sb.sb_inodesize,
+-				mp, XFS_ERRTAG_IFLUSH_6)) {
++	if (ip->i_forkoff > mp->m_sb.sb_inodesize ||
++	    XFS_TEST_ERROR(mp, XFS_ERRTAG_IFLUSH_6)) {
+ 		xfs_alert_tag(mp, XFS_PTAG_IFLUSH,
+ 			"%s: bad inode %llu, forkoff 0x%x, ptr "PTR_FMT,
+ 			__func__, ip->i_ino, ip->i_forkoff, ip);
+diff --git a/fs/xfs/xfs_iomap.c b/fs/xfs/xfs_iomap.c
+index 6335b122486fee..3483b3728b7bea 100644
+--- a/fs/xfs/xfs_iomap.c
++++ b/fs/xfs/xfs_iomap.c
+@@ -993,7 +993,7 @@ xfs_buffered_write_iomap_begin(
+ 		return error;
+ 
+ 	if (XFS_IS_CORRUPT(mp, !xfs_ifork_has_extents(&ip->i_df)) ||
+-	    XFS_TEST_ERROR(false, mp, XFS_ERRTAG_BMAPIFORMAT)) {
++	    XFS_TEST_ERROR(mp, XFS_ERRTAG_BMAPIFORMAT)) {
+ 		xfs_bmap_mark_sick(ip, XFS_DATA_FORK);
+ 		error = -EFSCORRUPTED;
+ 		goto out_unlock;
+diff --git a/fs/xfs/xfs_log.c b/fs/xfs/xfs_log.c
+index bf9245b1b4c658..e275dd265faf5c 100644
+--- a/fs/xfs/xfs_log.c
++++ b/fs/xfs/xfs_log.c
+@@ -968,8 +968,8 @@ xfs_log_unmount_write(
+ 	 * counters will be recalculated.  Refer to xlog_check_unmount_rec for
+ 	 * more details.
+ 	 */
+-	if (XFS_TEST_ERROR(xfs_fs_has_sickness(mp, XFS_SICK_FS_COUNTERS), mp,
+-			XFS_ERRTAG_FORCE_SUMMARY_RECALC)) {
++	if (xfs_fs_has_sickness(mp, XFS_SICK_FS_COUNTERS) ||
++	    XFS_TEST_ERROR(mp, XFS_ERRTAG_FORCE_SUMMARY_RECALC)) {
+ 		xfs_alert(mp, "%s: will fix summary counters at next mount",
+ 				__func__);
+ 		return;
+@@ -1239,7 +1239,7 @@ xlog_ioend_work(
+ 	/*
+ 	 * Race to shutdown the filesystem if we see an error.
+ 	 */
+-	if (XFS_TEST_ERROR(error, log->l_mp, XFS_ERRTAG_IODONE_IOERR)) {
++	if (error || XFS_TEST_ERROR(log->l_mp, XFS_ERRTAG_IODONE_IOERR)) {
+ 		xfs_alert(log->l_mp, "log I/O error %d", error);
+ 		xlog_force_shutdown(log, SHUTDOWN_LOG_IO_ERROR);
+ 	}
+@@ -1848,7 +1848,7 @@ xlog_sync(
+ 	 * detects the bad CRC and attempts to recover.
+ 	 */
+ #ifdef DEBUG
+-	if (XFS_TEST_ERROR(false, log->l_mp, XFS_ERRTAG_LOG_BAD_CRC)) {
++	if (XFS_TEST_ERROR(log->l_mp, XFS_ERRTAG_LOG_BAD_CRC)) {
+ 		iclog->ic_header.h_crc &= cpu_to_le32(0xAAAAAAAA);
+ 		iclog->ic_fail_crc = true;
+ 		xfs_warn(log->l_mp,
+diff --git a/fs/xfs/xfs_trans_ail.c b/fs/xfs/xfs_trans_ail.c
+index 85641af916a004..62d76420520657 100644
+--- a/fs/xfs/xfs_trans_ail.c
++++ b/fs/xfs/xfs_trans_ail.c
+@@ -385,7 +385,7 @@ xfsaild_push_item(
+ 	 * If log item pinning is enabled, skip the push and track the item as
+ 	 * pinned. This can help induce head-behind-tail conditions.
+ 	 */
+-	if (XFS_TEST_ERROR(false, ailp->ail_log->l_mp, XFS_ERRTAG_LOG_ITEM_PIN))
++	if (XFS_TEST_ERROR(ailp->ail_log->l_mp, XFS_ERRTAG_LOG_ITEM_PIN))
+ 		return XFS_ITEM_PINNED;
+ 
+ 	/*
 -- 
-2.43.0
+2.53.0
 
 
