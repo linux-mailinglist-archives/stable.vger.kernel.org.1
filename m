@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-265885-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265474-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ejPFBYSSMWpUnAUAu9opvQ
-	(envelope-from <stable+bounces-265885-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:14:28 +0200
+	id EVoQNZiJMWoCmAUAu9opvQ
+	(envelope-from <stable+bounces-265474-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:36:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DB63693EFB
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:14:27 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49B166934CB
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:36:24 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=OJYtTKJH;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265885-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265885-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=sC+RguUn;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265474-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-265474-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8570C31CADBA
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:11:56 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 542023013B5F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:36:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29D143D75CE;
-	Tue, 16 Jun 2026 18:11:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B433E4611CF;
+	Tue, 16 Jun 2026 17:36:22 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EDF03D47CE;
-	Tue, 16 Jun 2026 18:11:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8233B26CE05;
+	Tue, 16 Jun 2026 17:36:21 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781633516; cv=none; b=a9gaMiLdTWCUJMhm13fHNA+sQ/u5wIqUWDADNzzHqCR6fE1+Qc7ARx2nliHSYi9bZhuYt+ZzRfAP+37rj4/onOuiQ4VIN8ndN02byWO8RdyDOVtoqBEOocGNRkakFQM8Yu2j6UviHkTrMFJkqFnzoj56EXtHsHkO+a6wFimEeL8=
+	t=1781631382; cv=none; b=Q7nKe0nnFVF4cP4EhoMk5fBYS6faqF6tTmc1KkfjtSVhkAegEXLe3s0HwD84DILgPdIYcce0XgwV+9Y0z8pmhYxaJ/mWEBIZKzb6Y49ajb5rrRVf4YHyzvweC8jEQvGA9DUzuuspuJNWSFJ6vc7nc/h0CMlesv4wNTVMDpOD9GQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781633516; c=relaxed/simple;
-	bh=cx/NPcODYvZ1nyuIfmICcQZihUWtlsydLITL6/Afl4k=;
+	s=arc-20240116; t=1781631382; c=relaxed/simple;
+	bh=6Y4Ren6Is4L6f5ChhYJgnaH87nHnClAcF1XbMlx8qh0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lKDaJMj3GTb8NufBtPAcPPHJwJW8bQv0PPTDEy5zhMxurnVZnkreCDeKaXpMdTyEu0gwVRPKbm1m2A4us0wa2inX05OamhXCY4eQD5l8ina9jZrq5uHZfBDX+BDETBu7gBfRMbndQL9a1CQgwHAL+p1a61wCsOWLuOclkrBWz7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OJYtTKJH; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 146CA1F000E9;
-	Tue, 16 Jun 2026 18:11:53 +0000 (UTC)
+	 MIME-Version; b=ALeu8iGsYaFVPlLoJRdFYQk0I450phmbvqtjywRhia92YkY2sj2wCiEEhG1V6ae2lJaw6t3g76FiWKgtkArwuBQ8LKuL8ibdTxHMz+MQEd6FneAsUKE7m8SdqopuGdKZ1DRCRWgLAGI1ziDhuIPYBYXTnofS1kamcV0C/6Ci4ms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sC+RguUn; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59FBD1F000E9;
+	Tue, 16 Jun 2026 17:36:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781633515;
-	bh=BI1d5jk2wz6N0eO3LN1LrUHrKiae0kE0k7ykLP+xz4A=;
+	s=korg; t=1781631381;
+	bh=p76aWtIM3bH0pltuvhoyacgv9UpFO+FcwrJxYiqG8sQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OJYtTKJHKXJgUqtYlssBCkVyDm2++54uvtJnKICnyKwY7cFU5istiX9vsRqYHmtad
-	 Z65v+SLD0dHxRcTcygyiGRrCus3WCazcVTt4WWv3jK4wVX9Crwan66RhiP9ClpeY7N
-	 Pzv0ePe3HU8U7qYGSNymMsmqT/N8rbOeS2KPmpaY=
+	b=sC+RguUn3FbFdi7wAPRhGcLqldDumzld32hoWvmFIJWcc2Q8/vXDjrmTgpOo7zxyT
+	 rTY+iC37zd3lav9lmOr2GDJ+8hQpvuwrHCXHEZY2Ckm3ffr2vg3ae/O2jK9jsusMY7
+	 G9AfeM7nl8fdCP8A5IJu0fyMYhoTT+SC0lLHyA4c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Iurman <justin.iurman@gmail.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 086/411] ipv6: exthdrs: refresh nh pointer after ipv6_hop_jumbo()
+	"Maciej W. Rozycki" <macro@orcam.me.uk>
+Subject: [PATCH 6.1 177/522] serial: zs: Fix bootconsole handover lockup
 Date: Tue, 16 Jun 2026 20:25:24 +0530
-Message-ID: <20260616145104.824758790@linuxfoundation.org>
+Message-ID: <20260616145134.420384627@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,76 +65,140 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265885-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:justin.iurman@gmail.com,m:idosch@nvidia.com,m:kuba@kernel.org,m:justiniurman@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nvidia.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_FROM(0.00)[bounces-265474-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:macro@orcam.me.uk,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCPT_COUNT_THREE(0.00)[4];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,nvidia.com:email,vger.kernel.org:from_smtp,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,orcam.me.uk:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5DB63693EFB
+X-Rspamd-Queue-Id: 49B166934CB
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Iurman <justin.iurman@gmail.com>
+From: Maciej W. Rozycki <macro@orcam.me.uk>
 
-commit d47548a36639095939f4747d4c43f2271366f565 upstream.
+commit 6c05cf72e13314ce9b770b5951695dc5a2152920 upstream.
 
-ipv6_hop_jumbo() calls pskb_trim_rcsum(), which can change skb pointers.
-Let's recompute nh pointer to make sure any change won't mess things up.
+Calling zs_reset() in the course of setting up the serial device causes
+line parameters to be reset and the transmitter disabled.  We've been
+lucky in that no message is usually produced to the kernel log between
+this call and the later call to uart_set_options() in the course of
+console setup done by zs_serial_console_init(), or the system would hang
+as the console output handler in the firmware tried to access a port the
+transmitter of which has been disabled and line parameters messed up.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Justin Iurman <justin.iurman@gmail.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20260522112013.12342-1-justin.iurman@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+This will change with the next change to the driver, so fix zs_reset()
+such that line parameters are set for 9600n8 console operation as with
+the system firmware and the transmitter re-enabled after reset.  This
+also means zs_pm() serves no purpose anymore, so drop it.
+
+Fixes: 8b4a40809e53 ("zs: move to the serial subsystem")
+Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Cc: stable@vger.kernel.org # v2.6.23+
+Link: https://patch.msgid.link/alpine.DEB.2.21.2605062308040.46195@angie.orcam.me.uk
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/exthdrs.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/tty/serial/zs.c |   29 ++++++++---------------------
+ 1 file changed, 8 insertions(+), 21 deletions(-)
 
---- a/net/ipv6/exthdrs.c
-+++ b/net/ipv6/exthdrs.c
-@@ -183,6 +183,8 @@ static bool ip6_parse_tlv(bool hopbyhop,
- 				case IPV6_TLV_JUMBO:
- 					if (!ipv6_hop_jumbo(skb, off))
- 						return false;
-+
-+					nh = skb_network_header(skb);
- 					break;
- 				case IPV6_TLV_CALIPSO:
- 					if (!ipv6_hop_calipso(skb, off))
+--- a/drivers/tty/serial/zs.c
++++ b/drivers/tty/serial/zs.c
+@@ -105,18 +105,24 @@ struct zs_parms {
+ 
+ static struct zs_scc zs_sccs[ZS_NUM_SCCS];
+ 
++/*
++ * Set parameters in WR5, WR12, WR13 such as not to interfere
++ * with the initial PROM-based console.  Otherwise any output
++ * produced before the console handover would cause the system
++ * firmware to hang (TxENAB) or produce rubbish (Tx8, B9600).
++ */
+ static u8 zs_init_regs[ZS_NUM_REGS] __initdata = {
+ 	0,				/* write 0 */
+ 	PAR_SPEC,			/* write 1 */
+ 	0,				/* write 2 */
+ 	0,				/* write 3 */
+ 	X16CLK | SB1,			/* write 4 */
+-	0,				/* write 5 */
++	Tx8 | TxENAB,			/* write 5 */
+ 	0, 0, 0,			/* write 6, 7, 8 */
+ 	MIE | DLC | NV,			/* write 9 */
+ 	NRZ,				/* write 10 */
+ 	TCBR | RCBR,			/* write 11 */
+-	0, 0,				/* BRG time constant, write 12 + 13 */
++	0x16, 0x00,			/* BRG time constant, write 12 + 13 */
+ 	BRSRC | BRENABL,		/* write 14 */
+ 	0,				/* write 15 */
+ };
+@@ -955,23 +961,6 @@ static void zs_set_termios(struct uart_p
+ 	spin_unlock_irqrestore(&scc->zlock, flags);
+ }
+ 
+-/*
+- * Hack alert!
+- * Required solely so that the initial PROM-based console
+- * works undisturbed in parallel with this one.
+- */
+-static void zs_pm(struct uart_port *uport, unsigned int state,
+-		  unsigned int oldstate)
+-{
+-	struct zs_port *zport = to_zport(uport);
+-
+-	if (state < 3)
+-		zport->regs[5] |= TxENAB;
+-	else
+-		zport->regs[5] &= ~TxENAB;
+-	write_zsreg(zport, R5, zport->regs[5]);
+-}
+-
+ 
+ static const char *zs_type(struct uart_port *uport)
+ {
+@@ -1054,7 +1043,6 @@ static const struct uart_ops zs_ops = {
+ 	.startup	= zs_startup,
+ 	.shutdown	= zs_shutdown,
+ 	.set_termios	= zs_set_termios,
+-	.pm		= zs_pm,
+ 	.type		= zs_type,
+ 	.release_port	= zs_release_port,
+ 	.request_port	= zs_request_port,
+@@ -1209,7 +1197,6 @@ static int __init zs_console_setup(struc
+ 		return ret;
+ 
+ 	zs_reset(zport);
+-	zs_pm(uport, 0, -1);
+ 
+ 	if (options)
+ 		uart_parse_options(options, &baud, &parity, &bits, &flow);
 
 
 
