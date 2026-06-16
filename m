@@ -1,63 +1,62 @@
-Return-Path: <stable+bounces-264589-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265071-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ytwkHZN5MWoqkQUAu9opvQ
-	(envelope-from <stable+bounces-264589-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:28:03 +0200
+	id hxY8BRODMWoNlQUAu9opvQ
+	(envelope-from <stable+bounces-265071-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:08:35 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBDBA6921A7
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:28:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78D6C692C45
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:08:34 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=OeMS6j4D;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264589-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264589-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=WKoodeEL;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265071-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265071-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D75AE30A626E
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:18:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A3FFD30C71FD
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:02:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 415D0466B57;
-	Tue, 16 Jun 2026 16:18:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCF624657CF;
+	Tue, 16 Jun 2026 17:02:09 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E830433688F;
-	Tue, 16 Jun 2026 16:18:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B67F8328610;
+	Tue, 16 Jun 2026 17:02:08 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781626714; cv=none; b=eQbIhsbWhDjP+01szSwnth9yqb4IQGH0dFn2vU12zm13UWhnhWibcoK4P6MKPO3BO0TGE6xqLh5A4YU2v5Bqmq+Xc5Cil+FLM4VjDyJD9fVW9GSqMAsKeOy/Px5r/UBtVBbItWS9yh/fFllFzHWfneJbY1zLVjvWr+6mCnPR+6E=
+	t=1781629329; cv=none; b=poZ/j9I/1ffYvgd6oEBSpQDPHe5x02QWkZKe5ztyMEzk/aHu/WfMJGAXgzEfj1ZfWgjC10VMiLB7nQqbtSyTmzIdE5yuWqsQC/D0fZ429sJvphFkjOH10fF31fC5dySd0MOT1N7pplx15E/xduEGiuG42ENbF4DjvifoPDlSUyc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781626714; c=relaxed/simple;
-	bh=coenfrOX6skmC4BBTdy36cIusPzOz1tZBo1UqbBMjZo=;
+	s=arc-20240116; t=1781629329; c=relaxed/simple;
+	bh=yiJFZleikrZYS8Udk9TNCJZL1CIJtnGrTIJz9eoEBU8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XqF25+rLqfr6tZMTY07GPxHyFuEbM0uWizlqnyPcytGtEkGJsZK/q6+cJmvZ4sLKzwoeCxnrCQFK+XcGm2+QKoBYRgtD/ulcxrphTeYh343bbTGnh7KHf9fVL3kqZW6SbnV2NHh1/QVjex8MZ3qsYjsn0tUFlBIgEB+YQKburbQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OeMS6j4D; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FCE21F00A3A;
-	Tue, 16 Jun 2026 16:18:31 +0000 (UTC)
+	 MIME-Version; b=Qg8bGjIBtNHvqLeS0SjhTLXUxiubh7ayJQIa0vNNWOKqjh/fUTEkAkgTi67mw+D63woxrVIjJu42Hannc8qUFSw3q+YPTHR8kW4mpk3MsVKeAo6PMDwup7AqB2Ln1+WrBkhYHVqtPrD11+D1q0ejQ/cB32JLYqyG9q5oBw1k1sM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WKoodeEL; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD5C61F000E9;
+	Tue, 16 Jun 2026 17:02:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781626712;
-	bh=XotQWlUyPqfrpcUH64tupyZc0bD+IFwQoWePIIxmIQw=;
+	s=korg; t=1781629328;
+	bh=E9YE749YHYQ8JTffSzX8e21Rm51zgNH3r0Y0crZuWvs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OeMS6j4DydSosFGKvIbbwO49ErawRp+Xz1+06WIjy7H1HTGwGUw1okL56ORcZ46sD
-	 njYNXxGcMT85ULhoZCIPqklIISHpzQ6HJFFpNb4w5k1jtKEIx2U1tvkcHWYT5gbPll
-	 gIOaHd4fGQZKV7aaQCLXkgge+lcAMrx6ogl9Irwc=
+	b=WKoodeEL5fdOsGNC64HKi5e1+VlWVwTzhv2TvQZTSN8mrhn6kbivKYdGGg7vmPx34
+	 76/NL3cHYiOLPYgFiNgnySMR3T5DsXBzpUyKj4LJndM5lC7OqV36krzGuirrQb21we
+	 2SyIMLo/yg9tHUrZ6gT2eN2vmOtppakMVqQMFfOM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Naveen Mamindlapalli <naveenm@marvell.com>,
-	Nithin Dabilpuram <ndabilpuram@marvell.com>,
-	Ratheesh Kannoth <rkannoth@marvell.com>,
+	Yao Sang <sangyao@kylinos.cn>,
+	Jacob Keller <jacob.e.keller@intel.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 054/261] octeontx2-af: npc: Fix CPT channel mask in npc_install_flow
+Subject: [PATCH 6.6 265/452] net/mlx4: avoid GCC 10 __bad_copy_from() false positive
 Date: Tue, 16 Jun 2026 20:28:12 +0530
-Message-ID: <20260616145047.654587583@linuxfoundation.org>
+Message-ID: <20260616145131.526272527@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
-References: <20260616145044.869532709@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -80,10 +79,10 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264589-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265071-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:naveenm@marvell.com,m:ndabilpuram@marvell.com,m:rkannoth@marvell.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:sangyao@kylinos.cn,m:jacob.e.keller@intel.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
@@ -97,128 +96,70 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,marvell.com:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,kylinos.cn:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,intel.com:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: EBDBA6921A7
+X-Rspamd-Queue-Id: 78D6C692C45
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nithin Dabilpuram <ndabilpuram@marvell.com>
+From: Yao Sang <sangyao@kylinos.cn>
 
-[ Upstream commit 1d31eb27e570daa04f5373345f9ac98c95863be9 ]
+[ Upstream commit 2365343f4aad3e1b1e7a2e87e98cf66d5e590589 ]
 
-Use the CPT-aware NIX channel mask in the npc_install_flow path so that
-when the host PF installs steering rules in kernel for a VF used from
-userspace (e.g. DPDK), MCAM entries see the same channel mask semantics as
-other RX paths.
+mlx4_init_user_cqes() fills a scratch buffer with the CQE
+initialization pattern and then copies from that buffer to userspace.
 
-Fixes: 56bcef528bd8 ("octeontx2-af: Use npc_install_flow API for promisc and broadcast entries")
-Cc: Naveen Mamindlapalli <naveenm@marvell.com>
-Signed-off-by: Nithin Dabilpuram <ndabilpuram@marvell.com>
-Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
-Link: https://patch.msgid.link/20260602045853.1558530-1-rkannoth@marvell.com
+In the single-copy path, the copy length is array_size(entries,
+cqe_size), but the scratch buffer is allocated with PAGE_SIZE. GCC 10
+does not carry the branch invariant strongly enough through the object
+size checks and falsely triggers __bad_copy_from().
+
+Size the scratch buffer to the actual copy length for the active path,
+keep array_size() for the single-copy case, and retain a WARN_ON_ONCE()
+guard for the PAGE_SIZE invariant before allocating the buffer.
+
+Fixes: f69bf5dee7ef ("net/mlx4: Use array_size() helper in copy_to_user()")
+Signed-off-by: Yao Sang <sangyao@kylinos.cn>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/marvell/octeontx2/af/rvu.h   |  1 +
- .../ethernet/marvell/octeontx2/af/rvu_npc.c   | 32 +++++++++----------
- .../marvell/octeontx2/af/rvu_npc_fs.c         |  2 +-
- 3 files changed, 18 insertions(+), 17 deletions(-)
+ drivers/net/ethernet/mellanox/mlx4/cq.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu.h b/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
-index f94bf04788e986..77a03e29a77116 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
-@@ -1020,6 +1020,7 @@ int rvu_cpt_lf_teardown(struct rvu *rvu, u16 pcifunc, int blkaddr, int lf,
- 			int slot);
- int rvu_cpt_ctx_flush(struct rvu *rvu, u16 pcifunc);
- int rvu_cpt_init(struct rvu *rvu);
-+u32 rvu_get_cpt_chan_mask(struct rvu *rvu);
- 
- #define NDC_AF_BANK_MASK       GENMASK_ULL(7, 0)
- #define NDC_AF_BANK_LINE_MASK  GENMASK_ULL(31, 16)
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
-index 3e03f85bf362cb..0163fbb758d3d3 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
-@@ -597,6 +597,19 @@ void npc_set_mcam_action(struct rvu *rvu, struct npc_mcam *mcam,
- 			   NPC_AF_MCAMEX_BANKX_ACTION(index, bank), cfg);
- }
- 
-+u32 rvu_get_cpt_chan_mask(struct rvu *rvu)
-+{
-+	/* For cn10k the upper two bits of the channel number are
-+	 * cpt channel number. with masking out these bits in the
-+	 * mcam entry, same entry used for NIX will allow packets
-+	 * received from cpt for parsing.
-+	 */
-+	if (!is_rvu_otx2(rvu))
-+		return NIX_CHAN_CPT_X2P_MASK;
-+	else
-+		return 0xFFFu;
-+}
-+
- void rvu_npc_install_ucast_entry(struct rvu *rvu, u16 pcifunc,
- 				 int nixlf, u64 chan, u8 *mac_addr)
+diff --git a/drivers/net/ethernet/mellanox/mlx4/cq.c b/drivers/net/ethernet/mellanox/mlx4/cq.c
+index 4d4f9cf9facb87..fb83d8af8dcb9c 100644
+--- a/drivers/net/ethernet/mellanox/mlx4/cq.c
++++ b/drivers/net/ethernet/mellanox/mlx4/cq.c
+@@ -290,6 +290,7 @@ static void mlx4_cq_free_icm(struct mlx4_dev *dev, int cqn)
+ static int mlx4_init_user_cqes(void *buf, int entries, int cqe_size)
  {
-@@ -640,7 +653,7 @@ void rvu_npc_install_ucast_entry(struct rvu *rvu, u16 pcifunc,
- 	eth_broadcast_addr((u8 *)&req.mask.dmac);
- 	req.features = BIT_ULL(NPC_DMAC);
- 	req.channel = chan;
--	req.chan_mask = 0xFFFU;
-+	req.chan_mask = rvu_get_cpt_chan_mask(rvu);
- 	req.intf = pfvf->nix_rx_intf;
- 	req.op = action.op;
- 	req.hdr.pcifunc = 0; /* AF is requester */
-@@ -710,11 +723,7 @@ void rvu_npc_install_promisc_entry(struct rvu *rvu, u16 pcifunc,
- 	 * mcam entry, same entry used for NIX will allow packets
- 	 * received from cpt for parsing.
- 	 */
--	if (!is_rvu_otx2(rvu)) {
--		req.chan_mask = NIX_CHAN_CPT_X2P_MASK;
--	} else {
--		req.chan_mask = 0xFFFU;
--	}
-+	req.chan_mask = rvu_get_cpt_chan_mask(rvu);
+ 	int entries_per_copy = PAGE_SIZE / cqe_size;
++	size_t copy_bytes;
+ 	void *init_ents;
+ 	int err = 0;
+ 	int i;
+@@ -314,8 +315,14 @@ static int mlx4_init_user_cqes(void *buf, int entries, int cqe_size)
+ 			buf += PAGE_SIZE;
+ 		}
+ 	} else {
++		copy_bytes = array_size(entries, cqe_size);
++		if (WARN_ON_ONCE(copy_bytes > PAGE_SIZE)) {
++			err = -EINVAL;
++			goto out;
++		}
++
+ 		err = copy_to_user((void __user *)buf, init_ents,
+-				   array_size(entries, cqe_size)) ?
++				   copy_bytes) ?
+ 			-EFAULT : 0;
+ 	}
  
- 	if (chan_cnt > 1) {
- 		if (!is_power_of_2(chan_cnt)) {
-@@ -903,16 +912,7 @@ void rvu_npc_install_allmulti_entry(struct rvu *rvu, u16 pcifunc, int nixlf,
- 	ether_addr_copy(req.mask.dmac, mac_addr);
- 	req.features = BIT_ULL(NPC_DMAC);
- 
--	/* For cn10k the upper two bits of the channel number are
--	 * cpt channel number. with masking out these bits in the
--	 * mcam entry, same entry used for NIX will allow packets
--	 * received from cpt for parsing.
--	 */
--	if (!is_rvu_otx2(rvu))
--		req.chan_mask = NIX_CHAN_CPT_X2P_MASK;
--	else
--		req.chan_mask = 0xFFFU;
--
-+	req.chan_mask = rvu_get_cpt_chan_mask(rvu);
- 	req.channel = chan;
- 	req.intf = pfvf->nix_rx_intf;
- 	req.entry = index;
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
-index 0c484120be7993..73850213b1f30a 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
-@@ -1484,7 +1484,7 @@ int rvu_mbox_handler_npc_install_flow(struct rvu *rvu,
- 
- 	/* ignore chan_mask in case pf func is not AF, revisit later */
- 	if (!is_pffunc_af(req->hdr.pcifunc))
--		req->chan_mask = 0xFFF;
-+		req->chan_mask = rvu_get_cpt_chan_mask(rvu);
- 
- 	err = npc_check_unsupported_flows(rvu, req->features, req->intf);
- 	if (err)
 -- 
 2.53.0
 
