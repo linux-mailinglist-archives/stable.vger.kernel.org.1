@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-266147-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264689-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id BIdGI2GXMWqdngUAu9opvQ
-	(envelope-from <stable+bounces-266147-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:35:13 +0200
+	id kvp0NrV5MWo/kQUAu9opvQ
+	(envelope-from <stable+bounces-264689-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:28:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EC86694420
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:35:12 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 776F86921DA
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:28:37 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=o6dZmsAF;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266147-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266147-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=dQPQoPZ0;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264689-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264689-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C6AB13001FA9
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:35:09 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C94393036EC3
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:28:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC2EE4418D7;
-	Tue, 16 Jun 2026 18:35:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9D0B46AEE0;
+	Tue, 16 Jun 2026 16:28:34 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5493169AD2;
-	Tue, 16 Jun 2026 18:35:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1E72425CEE;
+	Tue, 16 Jun 2026 16:28:33 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781634908; cv=none; b=OjtSY2oB/92prnOgWXWEQgKBC8CiQH1IYJywep0a2U/J/HleAC56E3r5500Kitlx60hWcrBdsQVoS46b2aVne07w+iSDRPTwtyU3kflmk3QcgBWogsUmnWRrnKkj/Z2jkOK3RWYGuoSdW4IRdPwzoYvJwU1XNDH+2k/gsvZ35fQ=
+	t=1781627314; cv=none; b=tE1YM0UUQZ6L47t8HIRaOhGBS32SL5EgG8WoKjAB8Rm0rS7cdj02MgvwhQ2x7nOwyxvO/ECgYPfBLgvacCZBny2F4f1Zhhb/QIhJ0RuFaoxu7eAR7I+lgsm4cMLFlc5o8sPJN3RyJTNRWIVooMcjfnjdto9rw+kRxAdsr6UoI9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781634908; c=relaxed/simple;
-	bh=nn+RC/MIb0OPKU7tbJyYj/7ZCXxn6TvTHI1UZ8Tm43k=;
+	s=arc-20240116; t=1781627314; c=relaxed/simple;
+	bh=5cUbhv2qxHK80K7dkUacYYtbqG7sXOfswq4A4THRhlg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fzfms2Lcnzqas7cFW4s6Jxlibo+a8Hv/pHXsqqlHVFG/780yR/iUEgO3/7QhGkeYyKLgYVRYnyGkumWv+aEk5E2OFesQ7B/UKkgztj1ClQVMQjOJR8/jaFOGuL1iJXzFEcQ7QcH295Xcq56HYIytEBPGlJEGm8JZweXcpvup2cI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o6dZmsAF; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D5EA1F000E9;
-	Tue, 16 Jun 2026 18:35:06 +0000 (UTC)
+	 MIME-Version; b=h2Gt9s4sR+wCkauAuaR5OM+vnfGP+/NXa3Kiq4LVUgsqYS9CIojowp2Drqyv5wF2DZRCHyVpDcZOy9VOiL5iyoPvwWNblnOtyoducSLwGG9fkwHvM2XXaIJ0SHXOYKAQW+Iy3pMP7SyGSXaN+riJrR0vBR2mHUM/FRM03pLna9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dQPQoPZ0; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B651D1F000E9;
+	Tue, 16 Jun 2026 16:28:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781634907;
-	bh=RQf6qzqwfdPRoRLP0cUWDysitNvLRvBSB4U4BfO/Ksw=;
+	s=korg; t=1781627313;
+	bh=8V5i+foK+BSnE1hECBqBughZYBDhK8NuhsO+hMIKWC8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=o6dZmsAFmZxwXsVJkOs2w0S+Rlh0tGtd573FyEP1EvlypdrasDd5xma01N3NLzrif
-	 pv+laDf7AVvjeEg3gYJMxw/TuX0SlVJUGAgZsA1Ik17tzwsDJ+XgGCzj0vUt99n/k6
-	 zkS6Z/sGm7LAzMpNuqPcMpZmm5Rd2kaHE8gbOls4=
+	b=dQPQoPZ0E45n2ANWk5ZebuTEP5BYOuQwFi2OLh9wuTyk2ZZ4eV82lioFNC4v4dmXk
+	 XxCqMZYbhsiOKETkoGGaod1Pa4xh+W0sUpPyk0g4o17hEldVseFQg2hb+o1ZWIEozx
+	 FcIrB2IHZJuP8+y2rSrtYc4nXevBYEYlEoHS8+iA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 354/411] selftests: mptcp: drop nanoseconds width specifier
+	Karl Mehltretter <kmehltretter@gmail.com>,
+	Linus Walleij <linusw@kernel.org>,
+	Russell King <rmk+kernel@armlinux.org.uk>
+Subject: [PATCH 6.12 154/261] ARM: 9474/1: io: avoid KASAN instrumentation of raw halfword I/O
 Date: Tue, 16 Jun 2026 20:29:52 +0530
-Message-ID: <20260616145120.130625246@linuxfoundation.org>
+Message-ID: <20260616145052.215603647@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,106 +67,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266147-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:matttbe@kernel.org,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264689-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,armlinux.org.uk];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kmehltretter@gmail.com,m:linusw@kernel.org,m:rmk+kernel@armlinux.org.uk,m:rmk@armlinux.org.uk,s:lists@lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+	TAGGED_RCPT(0.00)[stable,kernel];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,armlinux.org.uk:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8EC86694420
+X-Rspamd-Queue-Id: 776F86921DA
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+From: Karl Mehltretter <kmehltretter@gmail.com>
 
-[ Upstream commit 01ff78e4b3d98689184c52d97f9575dfbdc3b10f ]
+commit d59ed803715a71fb9582e139d648ece8d66dc743 upstream.
 
-Using the format specifier +%s%3N with GNU date is honoured, and only
-prints 3 digits of the nanoseconds portion of the seconds since epoch,
-which corresponds to the milliseconds.
+For CPUs before ARMv6, __raw_readw() and __raw_writew() are implemented
+as C volatile halfword accesses so the compiler can generate an access
+sequence that is safe for those machines. With KASAN enabled, those C
+accesses are instrumented as normal memory accesses.
 
-The uutils implementation of date currently does not honour this, and
-always prints all 9 digits. This is a known issue [1], but can be worked
-around by adapting this test to use nanoseconds instead of microseconds,
-and then divide it by 1e6.
+That is not valid for MMIO. On ARM926/VersatilePB with KASAN enabled,
+PL011 probing traps in __asan_store2() while registering the UART, because
+the instrumented writew() tries to check KASAN shadow for an MMIO address.
 
-This fix is similar to what has been done on systemd side [2], and it is
-needed to run the selftests on Ubuntu 26.04, containing uutils 0.8.0.
+Keep the existing volatile halfword access, but move the ARMv5 definitions
+into __no_kasan_or_inline functions so raw MMIO halfword accesses are not
+instrumented by KASAN. The ARMv6-and-newer inline assembly path is
+unchanged.
 
-Note that the Fixes tag is there even if this patch doesn't fix an issue
-in the kernel selftests, but it is useful for those using uutils 0.8.0.
-
-Fixes: 048d19d444be ("mptcp: add basic kselftest for mptcp")
-Cc: stable@vger.kernel.org
-Link: https://github.com/uutils/coreutils/issues/11658 [1]
-Link: https://github.com/systemd/systemd/pull/41627 [2]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260515-net-mptcp-misc-fixes-7-1-rc4-v2-6-701e96419f2f@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 421015713b30 ("ARM: 9017/2: Enable KASan for ARM")
+Cc: stable@vger.kernel.org # v5.11+
+Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
+Reviewed-by: Linus Walleij <linusw@kernel.org>
+Signed-off-by: Russell King <rmk+kernel@armlinux.org.uk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_connect.sh |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/arm/include/asm/io.h |   15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_connect.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_connect.sh
-@@ -462,7 +462,7 @@ do_transfer()
- 	wait_local_port_listen "${listener_ns}" "${port}"
- 
- 	local start
--	start=$(date +%s%3N)
-+	start=$(date +%s%N)
- 	timeout ${timeout_test} \
- 		ip netns exec ${connector_ns} \
- 			./mptcp_connect -t ${timeout_poll} -p $port -s ${cl_proto} \
-@@ -475,7 +475,7 @@ do_transfer()
- 	local rets=$?
- 
- 	local stop
--	stop=$(date +%s%3N)
-+	stop=$(date +%s%N)
- 
- 	if $capture; then
- 		sleep 1
-@@ -491,7 +491,7 @@ do_transfer()
- 	fi
- 
- 	local duration
--	duration=$((stop-start))
-+	duration=$(((stop-start) / 1000000))
- 	printf "(duration %05sms) " "${duration}"
- 	if [ ${rets} -ne 0 ] || [ ${retc} -ne 0 ]; then
- 		echo "[ FAIL ] client exit code $retc, server $rets" 1>&2
+--- a/arch/arm/include/asm/io.h
++++ b/arch/arm/include/asm/io.h
+@@ -56,8 +56,19 @@ void __raw_readsl(const volatile void __
+  * the bus. Rather than special-case the machine, just let the compiler
+  * generate the access for CPUs prior to ARMv6.
+  */
+-#define __raw_readw(a)         (__chk_io_ptr(a), *(volatile unsigned short __force *)(a))
+-#define __raw_writew(v,a)      ((void)(__chk_io_ptr(a), *(volatile unsigned short __force *)(a) = (v)))
++#define __raw_writew __raw_writew
++static __no_kasan_or_inline void __raw_writew(u16 val, volatile void __iomem *addr)
++{
++	__chk_io_ptr(addr);
++	*(volatile unsigned short __force *)addr = val;
++}
++
++#define __raw_readw __raw_readw
++static __no_kasan_or_inline u16 __raw_readw(const volatile void __iomem *addr)
++{
++	__chk_io_ptr(addr);
++	return *(const volatile unsigned short __force *)addr;
++}
+ #else
+ /*
+  * When running under a hypervisor, we want to avoid I/O accesses with
 
 
 
