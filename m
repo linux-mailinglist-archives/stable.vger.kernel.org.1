@@ -1,67 +1,62 @@
-Return-Path: <stable+bounces-266257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263930-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 6tlIGa+ZMWq8nwUAu9opvQ
-	(envelope-from <stable+bounces-266257-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:45:03 +0200
+	id pNsvEEprMWp2iwUAu9opvQ
+	(envelope-from <stable+bounces-263930-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:27:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA9706946DE
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:45:02 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CC75691091
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:27:05 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=aRuWUV3Q;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266257-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-266257-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=OuxzdFJp;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263930-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263930-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 709AA309C167
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:44:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C3B8331AA41E
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:20:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6E7147CC7F;
-	Tue, 16 Jun 2026 18:44:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AF2F43E4BA;
+	Tue, 16 Jun 2026 15:20:40 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B45A47B406;
-	Tue, 16 Jun 2026 18:44:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C530526B0A9;
+	Tue, 16 Jun 2026 15:20:38 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781635478; cv=none; b=YXLXEImyJcMRn00nLnJ8xIItrdu2s3D12ccXDhYi6C1h20Q3cL5SoBY3kcUeKponxb6+/9j6h6WVGdppoC59Y37rZ9GeBjA2DGcNhwEuepFqWojuSfwPopVOXWUDYYuD81VopPRQetzzNmVL9pTwIehPwzGEPLy4MZKOJemlwbQ=
+	t=1781623239; cv=none; b=AdC0VhpmaxwldGU0klJgkgzBcbvotf2iKi214Sgq8ymzNT7kYRJVPdKM4wQUqVDdkYEe7UnNZmcpQ5oBRniFrjYoCEwaW97Sra4nojex/U0bcPtDdRGmJtw3TG8OKVRBsX8sgEt2crJXWE3+K8+BydXvXlOqCOP4f2r45sJVY8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781635478; c=relaxed/simple;
-	bh=oMgQmGuAPewuWCp8WJz7u/385eIMj+oCsyvA4dNE2Vc=;
+	s=arc-20240116; t=1781623239; c=relaxed/simple;
+	bh=wrIsw6Fd3LBdNlg444Yl+bnS+76ROdtFMxp36izius4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T5KXJQkwQvL5fI30i2XygPqcXBizmCSFqQfUINjtvs4cCe0pdY5CDcaT8DT2S4wJtRwSAA4MgDCrepC+o4oaVCHsQXjOPrXBRpX66sHynPNyGUxGBCuMd4eBgP0d9OxyAIrpdErVZ6VzmSMbDffKg94FobgdARsPTuIt9OZQpOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aRuWUV3Q; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B9B61F00ADB;
-	Tue, 16 Jun 2026 18:44:36 +0000 (UTC)
+	 MIME-Version; b=e1HvC5PAj2HX1KukpJxwgP/BngMGBmUbmjJFZrLDvf29GYadS/xYT8EbCC5N7QjNAdObkPN/carGeaVhKSNPm9aX0G5tZk5EbgPfLVIT3v2dbyb7Sgz4KdXI6Kii34ZKbW9nla+VakXeZrvwXU3UE/AcqNVMoDVuvr7mD+ReCtw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OuxzdFJp; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42D2B1F000E9;
+	Tue, 16 Jun 2026 15:20:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781635477;
-	bh=kmsMpBOoOgxqbxq3wG2vVuqytCbXfzeejvxXWNEc9og=;
+	s=korg; t=1781623238;
+	bh=TbeTjazUGzd9G3CYLQcnrtaacj10TwaO3AjXz1zA3ao=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=aRuWUV3QQo3vRWH9Dv6lgv4L4woBd76mfDoIjiJdiZdpRovO7NHSwBGYmgdKjGs/e
-	 4Drg2BvCDeoCOOE3e5ISv81AKBZAQYnC5oBYIBgL8djWen9lYnolV6iDB9iUQAkPPV
-	 /SdZxHg9Bj0Xudy46FTYkMGxVouOYqHeQTHZ+qNQ=
+	b=OuxzdFJpw3Tozc0K13ylOBmEfnqiNa+4S0DDM7DJmqDVA02FCObZlbISz9VdYuVTA
+	 8UshFQOqBJtefBrm7qHn5OPUVqoPeZnTw4Z6HVpJg5NtDpe+cK1bVIJNRr9fu+ymR5
+	 pWq7CbanWRA8jJTUH2aOJINrcNItfLwL4LqvU4v0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Luxiao Xu <rakukuip@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Florian Westphal <fw@strlen.de>,
+	syzbot+b109633ea805cac54a61@syzkaller.appspotmail.com,
+	Aleksandr Nogikh <nogikh@google.com>,
+	"Christian Brauner (Amutable)" <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 013/342] netfilter: ebtables: fix OOB read in compat_mtw_from_user
+Subject: [PATCH 7.0 078/378] signal: clear JOBCTL_PENDING_MASK for caller in zap_other_threads()
 Date: Tue, 16 Jun 2026 20:25:09 +0530
-Message-ID: <20260616145048.917888505@linuxfoundation.org>
+Message-ID: <20260616145114.285011628@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,145 +68,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	TAGGED_FROM(0.00)[bounces-266257-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:yuantan098@gmail.com,m:yifanwucs@gmail.com,m:tomapufckgml@gmail.com,m:bird@lzu.edu.cn,m:rakukuip@gmail.com,m:n05ec@lzu.edu.cn,m:fmancera@suse.de,m:fw@strlen.de,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-263930-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,suse.de,strlen.de,kernel.org];
-	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:syzbot+b109633ea805cac54a61@syzkaller.appspotmail.com,m:nogikh@google.com,m:brauner@kernel.org,m:sashal@kernel.org,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lzu.edu.cn:email,strlen.de:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,suse.de:email]
+	TAGGED_RCPT(0.00)[stable,b109633ea805cac54a61];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,syzkaller.appspot.com:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,appspotmail.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: DA9706946DE
+X-Rspamd-Queue-Id: 8CC75691091
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Aleksandr Nogikh <nogikh@google.com>
 
-[ Upstream commit f438d1786d657d57790c5d138d6db3fc9fdac392 ]
+[ Upstream commit 90918794a4e2c3b440f8fcf3847765a8b1d81b25 ]
 
-Luxiao Xu says:
+When a multi-threaded process receives a stop signal (e.g., SIGSTOP),
+do_signal_stop() sets JOBCTL_STOP_PENDING and JOBCTL_STOP_CONSUME on all
+threads and sets signal->group_stop_count to the number of threads. If
+one of the threads concurrently calls execve(), de_thread() invokes
+zap_other_threads() to kill all other threads. zap_other_threads()
+aborts the pending group stop by resetting signal->group_stop_count to 0
+and clears the JOBCTL_PENDING_MASK for all other threads. However, it
+fails to clear the job control flags for the calling thread.
 
- The function compat_mtw_from_user() converts ebtables extensions from
- 32-bit user structures to kernel native structures. However, it lacks
- proper validation of the user-supplied match_size/target_size.
+When execve() completes, the calling thread returns to user mode and
+checks for pending signals. Seeing the stale JOBCTL_STOP_PENDING flag,
+it calls do_signal_stop(), which invokes task_participate_group_stop().
+Since JOBCTL_STOP_CONSUME is still set, it attempts to decrement the
+already-zero signal->group_stop_count, triggering a warning:
 
- When certain extensions are processed, the kernel-side translation
- logic may perform memory accesses based on the extension's expected
- size. If the user provides a size smaller than what the extension
- requires, it results in an out-of-bounds read as reported by KASAN.
+sig->group_stop_count == 0
+WARNING: CPU: 1 PID: 6475 at kernel/signal.c:373
+task_participate_group_stop+0x215/0x2d0
+Call Trace:
+ <TASK>
+ do_signal_stop+0x3be/0x5c0 kernel/signal.c:2619
+ get_signal+0xa8c/0x1330 kernel/signal.c:2884
+ arch_do_signal_or_restart+0xbc/0x840 arch/x86/kernel/signal.c:337
+ exit_to_user_mode_loop+0x8c/0x4d0 kernel/entry/common.c:98
+ do_syscall_64+0x33e/0xf80 arch/x86/entry/syscall_64.c:100
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+ </TASK>
 
- This fix introduces a check to ensure match_size is at least as large
- as the extension's required compatsize. This covers matches, watchers,
- and targets, while maintaining compatibility with standard targets.
+Fix this race condition by clearing the JOBCTL_PENDING_MASK for the
+calling thread in zap_other_threads(), ensuring it does not retain any
+stale job control state after the thread group is destroyed. This aligns
+with other functions that tear down a thread group and abort group
+stops, such as zap_process() and complete_signal(), which correctly
+clear these flags for all threads including the current one.
 
-AFAIU this is relevant for matches that need to go though
-match->compat_from_user() call.  Those that use plain memcpy with the
-user-provided size are ok because the caller checks that size vs the
-start of the next rule entry offset (which itself is checked vs. total
-size copied from userspace).
-
-The ->compat_from_user() callbacks assume they can read compatsize bytes,
-so they need this extra check.
-
-Based on an earlier patch from Luxiao Xu.
-
-Fixes: 81e675c227ec ("netfilter: ebtables: add CONFIG_COMPAT support")
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Luxiao Xu <rakukuip@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Fixes: 39efa3ef3a37 ("signal: Use GROUP_STOP_PENDING to stop once for a single group stop")
+Assisted-by: Gemini:gemini-3.1-pro-preview Gemini:gemini-3-flash-preview syzbot
+Reported-by: syzbot+b109633ea805cac54a61@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=b109633ea805cac54a61
+Link: https://syzkaller.appspot.com/ai_job?id=d70208cc-862b-4fe3-bf02-3031e10cd0b3
+Signed-off-by: Aleksandr Nogikh <nogikh@google.com>
+Link: https://patch.msgid.link/20260521142240.2973022-1-nogikh@google.com
+Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/netfilter/ebtables.c | 30 ++++++++++++++++++++++++++++++
- 1 file changed, 30 insertions(+)
+ kernel/signal.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/bridge/netfilter/ebtables.c b/net/bridge/netfilter/ebtables.c
-index 14a06d8b1a2d0e..e86695f1ed95b6 100644
---- a/net/bridge/netfilter/ebtables.c
-+++ b/net/bridge/netfilter/ebtables.c
-@@ -1838,6 +1838,25 @@ enum compat_mwt {
- 	EBT_COMPAT_TARGET,
- };
+diff --git a/kernel/signal.c b/kernel/signal.c
+index d65d0fe24bfb8c..1c9b5bf8126e01 100644
+--- a/kernel/signal.c
++++ b/kernel/signal.c
+@@ -1340,6 +1340,7 @@ int zap_other_threads(struct task_struct *p)
+ 	int count = 0;
  
-+static bool match_size_ok(const struct xt_match *match, unsigned int match_size)
-+{
-+	u16 csize;
-+
-+	if (match->matchsize == -1) /* cannot validate ebt_among */
-+		return true;
-+
-+	csize = match->compatsize ? : match->matchsize;
-+
-+	return match_size >= csize;
-+}
-+
-+static bool tgt_size_ok(const struct xt_target *tgt, unsigned int tgt_size)
-+{
-+	u16 csize = tgt->compatsize ? : tgt->targetsize;
-+
-+	return tgt_size >= csize;
-+}
-+
- static int compat_mtw_from_user(const struct compat_ebt_entry_mwt *mwt,
- 				enum compat_mwt compat_mwt,
- 				struct ebt_entries_buf_state *state,
-@@ -1863,6 +1882,11 @@ static int compat_mtw_from_user(const struct compat_ebt_entry_mwt *mwt,
- 		if (IS_ERR(match))
- 			return PTR_ERR(match);
+ 	p->signal->group_stop_count = 0;
++	task_clear_jobctl_pending(p, JOBCTL_PENDING_MASK);
  
-+		if (!match_size_ok(match, match_size)) {
-+			module_put(match->me);
-+			return -EINVAL;
-+		}
-+
- 		off = ebt_compat_match_offset(match, match_size);
- 		if (dst) {
- 			if (match->compat_from_user)
-@@ -1882,6 +1906,12 @@ static int compat_mtw_from_user(const struct compat_ebt_entry_mwt *mwt,
- 					    mwt->u.revision);
- 		if (IS_ERR(wt))
- 			return PTR_ERR(wt);
-+
-+		if (!tgt_size_ok(wt, match_size)) {
-+			module_put(wt->me);
-+			return -EINVAL;
-+		}
-+
- 		off = xt_compat_target_offset(wt);
- 
- 		if (dst) {
+ 	for_other_threads(p, t) {
+ 		task_clear_jobctl_pending(t, JOBCTL_PENDING_MASK);
 -- 
 2.53.0
 
