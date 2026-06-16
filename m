@@ -1,63 +1,68 @@
-Return-Path: <stable+bounces-265619-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264638-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id gmahBHCNMWrsmQUAu9opvQ
-	(envelope-from <stable+bounces-265619-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:52:48 +0200
+	id orPINyV7MWrEkQUAu9opvQ
+	(envelope-from <stable+bounces-264638-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:34:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8744A693939
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:52:47 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48C0D692383
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:34:45 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=kavjCQM3;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265619-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265619-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="vT0H4Ic/";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264638-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264638-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BE9423056637
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:48:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B18AA31B6623
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:23:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A6673CC33F;
-	Tue, 16 Jun 2026 17:48:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1005946AEC5;
+	Tue, 16 Jun 2026 16:23:05 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 125AA32A3C9;
-	Tue, 16 Jun 2026 17:48:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C95491E8320;
+	Tue, 16 Jun 2026 16:23:03 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781632114; cv=none; b=HCpLMUI8VehO4GohBkbbcP9qrA/kcPA9HDjX84GuCwn+CtGjWiOlsrbodeSuVJVTNsqCFbFv1cG1f8wk2cW9Jl+mBUaWpam56BkrZSQS6Y/X1CMI71W1G5EBEiM7LGctgT0Qhlb0e9pVWiylxaX64+3DVxbbJUI5koQfhock9A4=
+	t=1781626984; cv=none; b=LPdYRvIiuIYRAq50igejiZezx5o6Sxv+bkRZB8qspa3RSTpOjcfbFd5aivzKDv2f+sxQEIe9TkMB7w2Ndp2yBH/vk08lteCRbXPFrBMEUtmwq8p12MOAC0gk80EAg2ebmkXfqf3qAYMtV2IJ4iSMOo3qj+zJpRcb9JwDmvrd0O4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781632114; c=relaxed/simple;
-	bh=he7SL5BnZQd5uFRL8AEc8hchEvIW5MtRb5DD+O7pAXE=;
+	s=arc-20240116; t=1781626984; c=relaxed/simple;
+	bh=P/yAgMKFU3k7oj1pdvkaJc5h2b9WDrlfej5Th7saj94=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F7jsjpe90P/FYd3RKZg5ID2O4n4g74IOK0u4C8ZavkDdIjrmq1zTUuYnuSHPvpnjybVEyeVlrJ3XmopsziVqbn+wSKKpSsq+/EzSuqzM9u/JbHIPUIZ8vzu46wClohOHr0xNksqCmmJCp60ju0UZ3mcwnOIdskSibUpp4DcwMM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kavjCQM3; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19A541F000E9;
-	Tue, 16 Jun 2026 17:48:31 +0000 (UTC)
+	 MIME-Version; b=oB0yQVWXmB6W7kQwt2nKADRaZ3O52EL6X4ybIl9TfKr/2eqGO/A0WEkr2kpUPe+ng9dHOQ0lynANvnvWKeJRnGi+04aHSfz6bcCKjHrF/nVAcbWDaZdbBGnIWIbMn2YfLMwVhmS2rtfnqdyO0rxCpZOuVma6plUwbe7F0ZFAz84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vT0H4Ic/; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDC671F000E9;
+	Tue, 16 Jun 2026 16:22:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781632113;
-	bh=fIg3LJWZcwNwg+TIVyLwLjagxsb9r84OqCQkc4O6Fd4=;
+	s=korg; t=1781626983;
+	bh=qpyGesDQj+gPTsFM+QrkZv6pEY3xo2jgnU7gvAll8bY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=kavjCQM3v3OETowFuJWa2e2Cq8Z08ZzOLeCHIsJ5X1/IU64Hvxu5SRHRTN9R7Ei0S
-	 NdY+o4Yk5D/OI4dQVSxf6CSqBwJir07j2SoO19GoxC5LvtdmBa3QgDlj+1Bq3UeWko
-	 f/oMrZ8us/ELvKXjdJt7yDbv+cXbafpBpPoCXjWA=
+	b=vT0H4Ic/QJCGfL+uSWPS3/0Qk/0WsrMuHgWQW+rA9WIiM90JdeDsDqlMzwMi5O/Zq
+	 xqFIRK+kSKXriqTdjr1Y1i09+Tlhcbf2OdvfsjMAEr6DJnQJLiUMEMD8vmFuPqY+Q3
+	 GEudxgVBGtgQ+3oKeinw9eQQyIGTnNVlMbx5JIEk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Lew <quic_clew@quicinc.com>,
-	Vignesh Viswanathan <quic_viswanat@quicinc.com>,
-	Simon Horman <simon.horman@corigine.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Zhengchuan Liang <zcliangcn@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Yuqi Xu <xuyq21@lenovo.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Xin Long <lucien.xin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 350/522] net: qrtr: ns: Change servers radix tree to xarray
+Subject: [PATCH 6.12 059/261] sctp: purge outqueue on stale COOKIE-ECHO handling
 Date: Tue, 16 Jun 2026 20:28:17 +0530
-Message-ID: <20260616145142.173862722@linuxfoundation.org>
+Message-ID: <20260616145047.885995066@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,347 +74,129 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265619-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:quic_clew@quicinc.com,m:quic_viswanat@quicinc.com,m:simon.horman@corigine.com,m:davem@davemloft.net,m:sashal@kernel.org,s:lists@lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264638-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:yuantan098@gmail.com,m:yifanwucs@gmail.com,m:tomapufckgml@gmail.com,m:zcliangcn@gmail.com,m:bird@lzu.edu.cn,m:xuyq21@lenovo.com,m:n05ec@lzu.edu.cn,m:lucien.xin@gmail.com,m:kuba@kernel.org,m:sashal@kernel.org,m:lucienxin@gmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,lenovo.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[quicinc.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,davemloft.net:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,lenovo.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,lzu.edu.cn:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8744A693939
+X-Rspamd-Queue-Id: 48C0D692383
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vignesh Viswanathan <quic_viswanat@quicinc.com>
+From: Xin Long <lucien.xin@gmail.com>
 
-[ Upstream commit 608a147a88728f84bbd2efdde3d4984339f1d872 ]
+[ Upstream commit e374b22e9b07b72a25909621464ff74096151bfb ]
 
-There is a use after free scenario while iterating through the servers
-radix tree despite the ns being a single threaded process. This can
-happen when the radix tree APIs are not synchronized with the
-rcu_read_lock() APIs.
+sctp_stream_update() is only invoked when the association is moved into
+COOKIE_WAIT during association setup/reconfiguration. In this path, the
+outbound stream scheduler state (stream->out_curr) is expected to be
+clean, since no user data should have been transmitted yet unless the
+state machine has already partially progressed.
 
-Convert the radix tree for servers to xarray to take advantage of the
-built in rcu lock usage provided by xarray.
+However, a corner case exists in sctp_sf_do_5_2_6_stale(): when a
+Stale Cookie ERROR is received, the association is rolled back from
+COOKIE_ECHOED to COOKIE_WAIT. In this scenario, user data may already
+have been queued and even bundled with the COOKIE-ECHO chunk.
 
-Signed-off-by: Chris Lew <quic_clew@quicinc.com>
-Signed-off-by: Vignesh Viswanathan <quic_viswanat@quicinc.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 68efba36446a ("net: qrtr: ns: Free the node during ctrl_cmd_bye()")
+During the rollback, sctp_stream_update() frees the old stream table
+and installs a new one, but it does not invalidate stream->out_curr.
+As a result, out_curr may still point to a freed sctp_stream_out
+entry from the previous stream state.
+
+Later, SCTP scheduler dequeue paths (FCFS, RR, PRIO, etc.) rely on
+stream->out_curr->ext, which can lead to use-after-free once the old
+stream state has been released via sctp_stream_free().
+
+This results in crashes such as (reported by Yuqi):
+
+  BUG: KASAN: slab-use-after-free in sctp_sched_fcfs_dequeue+0x13a/0x140
+  Read of size 8 at addr ff1100004d4d3208 by task mini_poc/9312
+  CPU: 1 UID: 1001 PID: 9312 Comm: mini_poc Not tainted
+     7.1.0-rc1-00305-gbd3a4795d574 #5 PREEMPT(full)
+   sctp_sched_fcfs_dequeue+0x13a/0x140
+   sctp_outq_flush+0x1603/0x33e0
+   sctp_do_sm+0x31c9/0x5d30
+   sctp_assoc_bh_rcv+0x392/0x6f0
+   sctp_inq_push+0x1db/0x270
+   sctp_rcv+0x138d/0x3c10
+
+Fix this by fully purging the association outqueue when handling the
+Stale Cookie case. This ensures all pending transmit and retransmit
+state is dropped, and any scheduler cached pointers are invalidated,
+making it safe to rebuild stream state during COOKIE_WAIT restart.
+
+Updating only stream->out_curr would be insufficient, since queued
+and retransmittable data would still reference the old stream state and
+trigger later use-after-free in dequeue paths.
+
+Fixes: 5bbbbe32a431 ("sctp: introduce stream scheduler foundations")
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Zhengchuan Liang <zcliangcn@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Reported-by: Yuqi Xu <xuyq21@lenovo.com>
+Reported-by: Ren Wei <n05ec@lzu.edu.cn>
+Signed-off-by: Xin Long <lucien.xin@gmail.com>
+Link: https://patch.msgid.link/94318159b9052907a6cbb7256aee8b5f8dfbfccb.1780510304.git.lucien.xin@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/qrtr/ns.c |  133 ++++++++++------------------------------------------------
- 1 file changed, 24 insertions(+), 109 deletions(-)
+ net/sctp/sm_statefuns.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
---- a/net/qrtr/ns.c
-+++ b/net/qrtr/ns.c
-@@ -67,7 +67,7 @@ struct qrtr_server {
+diff --git a/net/sctp/sm_statefuns.c b/net/sctp/sm_statefuns.c
+index 376d4ce5ebb3cb..613c5c3fa8462e 100644
+--- a/net/sctp/sm_statefuns.c
++++ b/net/sctp/sm_statefuns.c
+@@ -2598,11 +2598,7 @@ static enum sctp_disposition sctp_sf_do_5_2_6_stale(
+ 	 */
+ 	sctp_add_cmd_sf(commands, SCTP_CMD_DEL_NON_PRIMARY, SCTP_NULL());
  
- struct qrtr_node {
- 	unsigned int id;
--	struct radix_tree_root servers;
-+	struct xarray servers;
- };
+-	/* If we've sent any data bundled with COOKIE-ECHO we will need to
+-	 * resend
+-	 */
+-	sctp_add_cmd_sf(commands, SCTP_CMD_T1_RETRAN,
+-			SCTP_TRANSPORT(asoc->peer.primary_path));
++	sctp_add_cmd_sf(commands, SCTP_CMD_PURGE_OUTQUEUE, SCTP_NULL());
  
- /* Max lookup limit is chosen based on the current platform requirements. If the
-@@ -89,6 +89,7 @@ static struct qrtr_node *node_get(unsign
- 		return NULL;
- 
- 	node->id = node_id;
-+	xa_init(&node->servers);
- 
- 	if (radix_tree_insert(&nodes, node_id, node)) {
- 		kfree(node);
-@@ -199,40 +200,23 @@ static void lookup_notify(struct sockadd
- 
- static int announce_servers(struct sockaddr_qrtr *sq)
- {
--	struct radix_tree_iter iter;
- 	struct qrtr_server *srv;
- 	struct qrtr_node *node;
--	void __rcu **slot;
-+	unsigned long index;
- 	int ret;
- 
- 	node = node_get(qrtr_ns.local_node);
- 	if (!node)
- 		return 0;
- 
--	rcu_read_lock();
- 	/* Announce the list of servers registered in this node */
--	radix_tree_for_each_slot(slot, &node->servers, &iter, 0) {
--		srv = radix_tree_deref_slot(slot);
--		if (!srv)
--			continue;
--		if (radix_tree_deref_retry(srv)) {
--			slot = radix_tree_iter_retry(&iter);
--			continue;
--		}
--		slot = radix_tree_iter_resume(slot, &iter);
--		rcu_read_unlock();
--
-+	xa_for_each(&node->servers, index, srv) {
- 		ret = service_announce_new(sq, srv);
- 		if (ret < 0) {
- 			pr_err("failed to announce new service\n");
- 			return ret;
- 		}
--
--		rcu_read_lock();
- 	}
--
--	rcu_read_unlock();
--
- 	return 0;
- }
- 
-@@ -262,14 +246,17 @@ static struct qrtr_server *server_add(un
- 		goto err;
- 
- 	/* Delete the old server on the same port */
--	old = radix_tree_lookup(&node->servers, port);
-+	old = xa_store(&node->servers, port, srv, GFP_KERNEL);
- 	if (old) {
--		radix_tree_delete(&node->servers, port);
--		kfree(old);
-+		if (xa_is_err(old)) {
-+			pr_err("failed to add server [0x%x:0x%x] ret:%d\n",
-+			       srv->service, srv->instance, xa_err(old));
-+			goto err;
-+		} else {
-+			kfree(old);
-+		}
- 	}
- 
--	radix_tree_insert(&node->servers, port, srv);
--
- 	trace_qrtr_ns_server_add(srv->service, srv->instance,
- 				 srv->node, srv->port);
- 
-@@ -286,11 +273,11 @@ static int server_del(struct qrtr_node *
- 	struct qrtr_server *srv;
- 	struct list_head *li;
- 
--	srv = radix_tree_lookup(&node->servers, port);
-+	srv = xa_load(&node->servers, port);
- 	if (!srv)
- 		return -ENOENT;
- 
--	radix_tree_delete(&node->servers, port);
-+	xa_erase(&node->servers, port);
- 
- 	/* Broadcast the removal of local servers */
- 	if (srv->node == qrtr_ns.local_node && bcast)
-@@ -350,13 +337,12 @@ static int ctrl_cmd_hello(struct sockadd
- static int ctrl_cmd_bye(struct sockaddr_qrtr *from)
- {
- 	struct qrtr_node *local_node;
--	struct radix_tree_iter iter;
- 	struct qrtr_ctrl_pkt pkt;
- 	struct qrtr_server *srv;
- 	struct sockaddr_qrtr sq;
- 	struct msghdr msg = { };
- 	struct qrtr_node *node;
--	void __rcu **slot;
-+	unsigned long index;
- 	struct kvec iv;
- 	int ret;
- 
-@@ -367,22 +353,9 @@ static int ctrl_cmd_bye(struct sockaddr_
- 	if (!node)
- 		return 0;
- 
--	rcu_read_lock();
- 	/* Advertise removal of this client to all servers of remote node */
--	radix_tree_for_each_slot(slot, &node->servers, &iter, 0) {
--		srv = radix_tree_deref_slot(slot);
--		if (!srv)
--			continue;
--		if (radix_tree_deref_retry(srv)) {
--			slot = radix_tree_iter_retry(&iter);
--			continue;
--		}
--		slot = radix_tree_iter_resume(slot, &iter);
--		rcu_read_unlock();
-+	xa_for_each(&node->servers, index, srv)
- 		server_del(node, srv->port, true);
--		rcu_read_lock();
--	}
--	rcu_read_unlock();
- 
- 	/* Advertise the removal of this client to all local servers */
- 	local_node = node_get(qrtr_ns.local_node);
-@@ -393,18 +366,7 @@ static int ctrl_cmd_bye(struct sockaddr_
- 	pkt.cmd = cpu_to_le32(QRTR_TYPE_BYE);
- 	pkt.client.node = cpu_to_le32(from->sq_node);
- 
--	rcu_read_lock();
--	radix_tree_for_each_slot(slot, &local_node->servers, &iter, 0) {
--		srv = radix_tree_deref_slot(slot);
--		if (!srv)
--			continue;
--		if (radix_tree_deref_retry(srv)) {
--			slot = radix_tree_iter_retry(&iter);
--			continue;
--		}
--		slot = radix_tree_iter_resume(slot, &iter);
--		rcu_read_unlock();
--
-+	xa_for_each(&local_node->servers, index, srv) {
- 		sq.sq_family = AF_QIPCRTR;
- 		sq.sq_node = srv->node;
- 		sq.sq_port = srv->port;
-@@ -417,11 +379,7 @@ static int ctrl_cmd_bye(struct sockaddr_
- 			pr_err("failed to send bye cmd\n");
- 			return ret;
- 		}
--		rcu_read_lock();
- 	}
--
--	rcu_read_unlock();
--
- 	return 0;
- }
- 
-@@ -429,7 +387,6 @@ static int ctrl_cmd_del_client(struct so
- 			       unsigned int node_id, unsigned int port)
- {
- 	struct qrtr_node *local_node;
--	struct radix_tree_iter iter;
- 	struct qrtr_lookup *lookup;
- 	struct qrtr_ctrl_pkt pkt;
- 	struct msghdr msg = { };
-@@ -438,7 +395,7 @@ static int ctrl_cmd_del_client(struct so
- 	struct qrtr_node *node;
- 	struct list_head *tmp;
- 	struct list_head *li;
--	void __rcu **slot;
-+	unsigned long index;
- 	struct kvec iv;
- 	int ret;
- 
-@@ -484,18 +441,7 @@ static int ctrl_cmd_del_client(struct so
- 	pkt.client.node = cpu_to_le32(node_id);
- 	pkt.client.port = cpu_to_le32(port);
- 
--	rcu_read_lock();
--	radix_tree_for_each_slot(slot, &local_node->servers, &iter, 0) {
--		srv = radix_tree_deref_slot(slot);
--		if (!srv)
--			continue;
--		if (radix_tree_deref_retry(srv)) {
--			slot = radix_tree_iter_retry(&iter);
--			continue;
--		}
--		slot = radix_tree_iter_resume(slot, &iter);
--		rcu_read_unlock();
--
-+	xa_for_each(&local_node->servers, index, srv) {
- 		sq.sq_family = AF_QIPCRTR;
- 		sq.sq_node = srv->node;
- 		sq.sq_port = srv->port;
-@@ -508,11 +454,7 @@ static int ctrl_cmd_del_client(struct so
- 			pr_err("failed to send del client cmd\n");
- 			return ret;
- 		}
--		rcu_read_lock();
- 	}
--
--	rcu_read_unlock();
--
- 	return 0;
- }
- 
-@@ -585,13 +527,12 @@ static int ctrl_cmd_del_server(struct so
- static int ctrl_cmd_new_lookup(struct sockaddr_qrtr *from,
- 			       unsigned int service, unsigned int instance)
- {
--	struct radix_tree_iter node_iter;
- 	struct qrtr_server_filter filter;
--	struct radix_tree_iter srv_iter;
- 	struct qrtr_lookup *lookup;
-+	struct qrtr_server *srv;
- 	struct qrtr_node *node;
--	void __rcu **node_slot;
--	void __rcu **srv_slot;
-+	unsigned long node_idx;
-+	unsigned long srv_idx;
- 
- 	/* Accept only local observers */
- 	if (from->sq_node != qrtr_ns.local_node)
-@@ -616,40 +557,14 @@ static int ctrl_cmd_new_lookup(struct so
- 	filter.service = service;
- 	filter.instance = instance;
- 
--	rcu_read_lock();
--	radix_tree_for_each_slot(node_slot, &nodes, &node_iter, 0) {
--		node = radix_tree_deref_slot(node_slot);
--		if (!node)
--			continue;
--		if (radix_tree_deref_retry(node)) {
--			node_slot = radix_tree_iter_retry(&node_iter);
--			continue;
--		}
--		node_slot = radix_tree_iter_resume(node_slot, &node_iter);
--
--		radix_tree_for_each_slot(srv_slot, &node->servers,
--					 &srv_iter, 0) {
--			struct qrtr_server *srv;
--
--			srv = radix_tree_deref_slot(srv_slot);
--			if (!srv)
--				continue;
--			if (radix_tree_deref_retry(srv)) {
--				srv_slot = radix_tree_iter_retry(&srv_iter);
--				continue;
--			}
--
-+	xa_for_each(&nodes, node_idx, node) {
-+		xa_for_each(&node->servers, srv_idx, srv) {
- 			if (!server_match(srv, &filter))
- 				continue;
- 
--			srv_slot = radix_tree_iter_resume(srv_slot, &srv_iter);
--
--			rcu_read_unlock();
- 			lookup_notify(from, srv, true);
--			rcu_read_lock();
- 		}
- 	}
--	rcu_read_unlock();
- 
- 	/* Empty notification, to indicate end of listing */
- 	lookup_notify(from, NULL, true);
+ 	/* Cast away the const modifier, as we want to just
+ 	 * rerun it through as a sideffect.
+-- 
+2.53.0
+
 
 
 
