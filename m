@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-266202-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265763-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id mGsCG1SZMWp1nwUAu9opvQ
-	(envelope-from <stable+bounces-266202-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:43:32 +0200
+	id F/qcNF2PMWrnmgUAu9opvQ
+	(envelope-from <stable+bounces-265763-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:01:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2B1C694620
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:43:31 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4900F693BA9
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:01:01 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=wrwX+ptC;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266202-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266202-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=FbzxT9Db;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265763-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-265763-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BBC3831DC45C
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:39:49 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B85A6303BA86
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:01:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8736B4779B0;
-	Tue, 16 Jun 2026 18:39:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B38E3CE4BA;
+	Tue, 16 Jun 2026 18:00:58 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 615D6169AD2;
-	Tue, 16 Jun 2026 18:39:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E86D34E764;
+	Tue, 16 Jun 2026 18:00:56 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781635189; cv=none; b=L6iJrMRZs3JQMpJSgQvywwcLMAfaHTnT9+5l9S0HVKH2MoDMYf0016P4PFZjCGarsA6XEvawB8cMB6GrAyilsGYEKYs4swPpZTtBWiRAVn1oPcz63Inks/W193YVN3pSuP0LpBW6Vouv8b71a0JZbtk1ADoMH2+rpDRaHnBSvY8=
+	t=1781632858; cv=none; b=qXiER/hL4zgiTJa9ht2WN22+d97iDp80kuSo8iDKcQD8J2ECVuSeQD8K5H9DAxjq3KTSQOE2rRZNZkefJYOdqu12R7wdbj2wp7+lwNtzM/lzzO7Ja1aBBV5dy3eVFt9y+8hEJtfb6sq715sQDUmNfEOWKYiWs0CdqVAAtvsbT4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781635189; c=relaxed/simple;
-	bh=k2tkcCLateGmvsbTBNveypWOz3Zbq0B61AQU000BKrs=;
+	s=arc-20240116; t=1781632858; c=relaxed/simple;
+	bh=GB05mR1mJyBTDENHq5BKFnQ+saRimjeL6IE79FrX3Lk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SavAX1rAS7ON0eOET9LeAhxbHu28TAEws93/JW6VCP8DJjyeEiIIcooUTznWx5GnWm3AOlqETVLS11PvMgJVfOh4pd508Wkzu7v3PX77QCyyFZE5C0Ct+i5dObb+RuM/H7yiLpwMKwsYNDnUlaaTzzC3e9eSENfUFYueG/v3zG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wrwX+ptC; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49C771F000E9;
-	Tue, 16 Jun 2026 18:39:47 +0000 (UTC)
+	 MIME-Version; b=FWZdlE+NSyH48kwdwTi/a4/oZCQ0gCsvjzaFde6TV61IGaUbko/BG6dEXHcZdoCegKwfDNJAHZXVdY/YcJrFUCkM77vmVdSngvrNtz8SSWVNJA2qVn3v6Zf9yvwUpbYeuIeJT1GCZj4zS9cQA5OWUE9leCCaA1dhr6m5SMpRXFg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FbzxT9Db; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABA101F000E9;
+	Tue, 16 Jun 2026 18:00:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781635188;
-	bh=x9oc5z29YPVamxKf0XnmpQGLTvsRwLsqCnyetmWHx1g=;
+	s=korg; t=1781632856;
+	bh=MHV6c+cS1R/1RMQyVlrXBLxozuiEoefrKpKZBUunVlg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=wrwX+ptCFXj1C36ZsSuwmMplI0LH8pwiLc43+iEG3CeHNyPHdIYrz3A0MHh1olJwp
-	 PoWm8/JmXB5yhup5dbVkruF5N9X6fqPcHyb1o0dPmQtDUqFOR1UpEYOnd9Yqfmd90o
-	 kC4tm/YhhP44rX/bA9CU2krGCLHlTAUbhOfke1fg=
+	b=FbzxT9Db1jWwxbyp4vUJM8SEpHaFqeuXFlfmOYxa0F6PCrAUI6y4uz9NabiRQO/GZ
+	 sT6jBunQuPRG7e7pcGKY2WdaZLXuV2XU5YhHk1ifezN7merbsWyKYVv87KpGvWnnua
+	 WpwmmOyuVXOJVm/QdzVl5uvHjJLMRXj+iHAKPiDU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aaron Erhardt <aer@tuxedocomputers.com>,
-	Werner Sembach <wse@tuxedocomputers.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.15 400/411] ALSA: hda/hdmi: Add quirk for TUXEDO IBS14G6
+	Tejun Heo <tj@kernel.org>,
+	Breno Leitao <leitao@debian.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Robert Garcia <rob_garcia@163.com>
+Subject: [PATCH 6.1 491/522] blk-cgroup: Fix NULL deref caused by blkg_policy_data being installed before init
 Date: Tue, 16 Jun 2026 20:30:38 +0530
-Message-ID: <20260616145122.446427603@linuxfoundation.org>
+Message-ID: <20260616145148.769581521@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,68 +73,202 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266202-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:aer@tuxedocomputers.com,m:wse@tuxedocomputers.com,m:tiwai@suse.de,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,debian.org,kernel.dk,163.com];
+	TAGGED_FROM(0.00)[bounces-265763-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:tj@kernel.org,m:leitao@debian.org,m:axboe@kernel.dk,m:rob_garcia@163.com,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tuxedocomputers.com:email,suse.de:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A2B1C694620
+X-Rspamd-Queue-Id: 4900F693BA9
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aaron Erhardt <aer@tuxedocomputers.com>
+From: Tejun Heo <tj@kernel.org>
 
-commit d649c58bcad8fb9b749e3837136a201632fa109d upstream.
+commit ec14a87ee1999b19d8b7ed0fa95fea80644624ae upstream.
 
-Depending on the timing during boot, the BIOS might report wrong pin
-capabilities, which can lead to HDMI audio being disabled. Therefore,
-force HDMI audio connection on TUXEDO InfinityBook S 14 Gen6.
+blk-iocost sometimes causes the following crash:
 
-Signed-off-by: Aaron Erhardt <aer@tuxedocomputers.com>
-Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
-Link: https://patch.msgid.link/20260218213234.429686-1-wse@tuxedocomputers.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
+  BUG: kernel NULL pointer dereference, address: 00000000000000e0
+  ...
+  RIP: 0010:_raw_spin_lock+0x17/0x30
+  Code: be 01 02 00 00 e8 79 38 39 ff 31 d2 89 d0 5d c3 0f 1f 00 0f 1f 44 00 00 55 48 89 e5 65 ff 05 48 d0 34 7e b9 01 00 00 00 31 c0 <f0> 0f b1 0f 75 02 5d c3 89 c6 e8 ea 04 00 00 5d c3 0f 1f 84 00 00
+  RSP: 0018:ffffc900023b3d40 EFLAGS: 00010046
+  RAX: 0000000000000000 RBX: 00000000000000e0 RCX: 0000000000000001
+  RDX: ffffc900023b3d20 RSI: ffffc900023b3cf0 RDI: 00000000000000e0
+  RBP: ffffc900023b3d40 R08: ffffc900023b3c10 R09: 0000000000000003
+  R10: 0000000000000064 R11: 000000000000000a R12: ffff888102337000
+  R13: fffffffffffffff2 R14: ffff88810af408c8 R15: ffff8881070c3600
+  FS:  00007faaaf364fc0(0000) GS:ffff88842fdc0000(0000) knlGS:0000000000000000
+  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  CR2: 00000000000000e0 CR3: 00000001097b1000 CR4: 0000000000350ea0
+  Call Trace:
+   <TASK>
+   ioc_weight_write+0x13d/0x410
+   cgroup_file_write+0x7a/0x130
+   kernfs_fop_write_iter+0xf5/0x170
+   vfs_write+0x298/0x370
+   ksys_write+0x5f/0xb0
+   __x64_sys_write+0x1b/0x20
+   do_syscall_64+0x3d/0x80
+   entry_SYSCALL_64_after_hwframe+0x46/0xb0
+
+This happens because iocg->ioc is NULL. The field is initialized by
+ioc_pd_init() and never cleared. The NULL deref is caused by
+blkcg_activate_policy() installing blkg_policy_data before initializing it.
+
+blkcg_activate_policy() was doing the following:
+
+1. Allocate pd's for all existing blkg's and install them in blkg->pd[].
+2. Initialize all pd's.
+3. Online all pd's.
+
+blkcg_activate_policy() only grabs the queue_lock and may release and
+re-acquire the lock as allocation may need to sleep. ioc_weight_write()
+grabs blkcg->lock and iterates all its blkg's. The two can race and if
+ioc_weight_write() runs during #1 or between #1 and #2, it can encounter a
+pd which is not initialized yet, leading to crash.
+
+The crash can be reproduced with the following script:
+
+  #!/bin/bash
+
+  echo +io > /sys/fs/cgroup/cgroup.subtree_control
+  systemd-run --unit touch-sda --scope dd if=/dev/sda of=/dev/null bs=1M count=1 iflag=direct
+  echo 100 > /sys/fs/cgroup/system.slice/io.weight
+  bash -c "echo '8:0 enable=1' > /sys/fs/cgroup/io.cost.qos" &
+  sleep .2
+  echo 100 > /sys/fs/cgroup/system.slice/io.weight
+
+with the following patch applied:
+
+> diff --git a/block/blk-cgroup.c b/block/blk-cgroup.c
+> index fc49be622e05..38d671d5e10c 100644
+> --- a/block/blk-cgroup.c
+> +++ b/block/blk-cgroup.c
+> @@ -1553,6 +1553,12 @@ int blkcg_activate_policy(struct gendisk *disk, const struct blkcg_policy *pol)
+> 		pd->online = false;
+> 	}
+>
+> +       if (system_state == SYSTEM_RUNNING) {
+> +               spin_unlock_irq(&q->queue_lock);
+> +               ssleep(1);
+> +               spin_lock_irq(&q->queue_lock);
+> +       }
+> +
+> 	/* all allocated, init in the same order */
+> 	if (pol->pd_init_fn)
+> 		list_for_each_entry_reverse(blkg, &q->blkg_list, q_node)
+
+I don't see a reason why all pd's should be allocated, initialized and
+onlined together. The only ordering requirement is that parent blkgs to be
+initialized and onlined before children, which is guaranteed from the
+walking order. Let's fix the bug by allocating, initializing and onlining pd
+for each blkg and holding blkcg->lock over initialization and onlining. This
+ensures that an installed blkg is always fully initialized and onlined
+removing the the race window.
+
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Reported-by: Breno Leitao <leitao@debian.org>
+Fixes: 9d179b865449 ("blkcg: Fix multiple bugs in blkcg_activate_policy()")
+Link: https://lore.kernel.org/r/ZN0p5_W-Q9mAHBVY@slm.duckdns.org
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Robert Garcia <rob_garcia@163.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_hdmi.c |    1 +
- 1 file changed, 1 insertion(+)
+ block/blk-cgroup.c |   32 ++++++++++++++++++--------------
+ 1 file changed, 18 insertions(+), 14 deletions(-)
 
---- a/sound/pci/hda/patch_hdmi.c
-+++ b/sound/pci/hda/patch_hdmi.c
-@@ -1970,6 +1970,7 @@ static const struct snd_pci_quirk force_
- 	SND_PCI_QUIRK(0x1043, 0x86ae, "ASUS", 1),  /* Z170 PRO */
- 	SND_PCI_QUIRK(0x1043, 0x86c7, "ASUS", 1),  /* Z170M PLUS */
- 	SND_PCI_QUIRK(0x1462, 0xec94, "MS-7C94", 1),
-+	SND_PCI_QUIRK(0x1558, 0x14a1, "TUXEDO InfinityBook S 14 Gen6", 1),
- 	SND_PCI_QUIRK(0x8086, 0x2060, "Intel NUC5CPYB", 1),
- 	SND_PCI_QUIRK(0x8086, 0x2081, "Intel NUC 10", 1),
- 	{}
+--- a/block/blk-cgroup.c
++++ b/block/blk-cgroup.c
+@@ -1407,7 +1407,7 @@ int blkcg_activate_policy(struct request
+ retry:
+ 	spin_lock_irq(&q->queue_lock);
+ 
+-	/* blkg_list is pushed at the head, reverse walk to allocate parents first */
++	/* blkg_list is pushed at the head, reverse walk to initialize parents first */
+ 	list_for_each_entry_reverse(blkg, &q->blkg_list, q_node) {
+ 		struct blkg_policy_data *pd;
+ 
+@@ -1445,21 +1445,20 @@ retry:
+ 				goto enomem;
+ 		}
+ 
+-		blkg->pd[pol->plid] = pd;
++		spin_lock(&blkg->blkcg->lock);
++
+ 		pd->blkg = blkg;
+ 		pd->plid = pol->plid;
+-		pd->online = false;
+-	}
++		blkg->pd[pol->plid] = pd;
+ 
+-	/* all allocated, init in the same order */
+-	if (pol->pd_init_fn)
+-		list_for_each_entry_reverse(blkg, &q->blkg_list, q_node)
+-			pol->pd_init_fn(blkg->pd[pol->plid]);
++		if (pol->pd_init_fn)
++			pol->pd_init_fn(pd);
+ 
+-	list_for_each_entry_reverse(blkg, &q->blkg_list, q_node) {
+ 		if (pol->pd_online_fn)
+-			pol->pd_online_fn(blkg->pd[pol->plid]);
+-		blkg->pd[pol->plid]->online = true;
++			pol->pd_online_fn(pd);
++		pd->online = true;
++
++		spin_unlock(&blkg->blkcg->lock);
+ 	}
+ 
+ 	__set_bit(pol->plid, q->blkcg_pols);
+@@ -1476,14 +1475,19 @@ out:
+ 	return ret;
+ 
+ enomem:
+-	/* alloc failed, nothing's initialized yet, free everything */
++	/* alloc failed, take down everything */
+ 	spin_lock_irq(&q->queue_lock);
+ 	list_for_each_entry(blkg, &q->blkg_list, q_node) {
+ 		struct blkcg *blkcg = blkg->blkcg;
++		struct blkg_policy_data *pd;
+ 
+ 		spin_lock(&blkcg->lock);
+-		if (blkg->pd[pol->plid]) {
+-			pol->pd_free_fn(blkg->pd[pol->plid]);
++		pd = blkg->pd[pol->plid];
++		if (pd) {
++			if (pd->online && pol->pd_offline_fn)
++				pol->pd_offline_fn(pd);
++			pd->online = false;
++			pol->pd_free_fn(pd);
+ 			blkg->pd[pol->plid] = NULL;
+ 		}
+ 		spin_unlock(&blkcg->lock);
 
 
 
