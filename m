@@ -1,150 +1,133 @@
-Return-Path: <stable+bounces-263661-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263663-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 4/qjMnMoMWqacwUAu9opvQ
-	(envelope-from <stable+bounces-263661-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 12:41:55 +0200
+	id 21McIJ4rMWp/dAUAu9opvQ
+	(envelope-from <stable+bounces-263663-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 12:55:26 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B46568E648
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 12:41:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6CC568E839
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 12:55:25 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lDST57TJ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263661-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-263661-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=arm.com header.s=foss header.b=gYlVH83J;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263663-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-263663-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=arm.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 98C38300D332
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 10:41:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 050C53128635
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 10:52:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 213A63D75BF;
-	Tue, 16 Jun 2026 10:41:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4284142883D;
+	Tue, 16 Jun 2026 10:52:24 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E115F324B31
-	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 10:41:24 +0000 (UTC)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98A9442847B
+	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 10:52:22 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781606485; cv=none; b=DHtVPOFd27k0LAFSI+8zkDK+UKH/fWfLmswuYz32pVSmaiLWmjt034eSkdBTxIoGaey4gtEpRLUjYkI17KeKma9YHB0pF5KAety76HJ85jKXE4NHkvsnTzbZbavwacXBNXUE3N//hCz/QqdCpacBPl1ZsWvbIw20HSNllm2seg4=
+	t=1781607144; cv=none; b=bi/9+VRM1vPsEM7IMsMFt/KIAVnpq6Sr2IEPLquLqekVTryE05HLRWxKJf88zv1kR1ucF8tMuWkYMbXQAT4nkhgrvBZBewfhrCA+/C380aU17vajmooPuHKx+sLcJ+znnkT2FiuqdxWsjqkXCkmqtg3RbdYxf8HPxnKXK1fzIFU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781606485; c=relaxed/simple;
-	bh=GiwgUDhVPuccDsHM6fcajwPeBmdY/V23LoCQ/JyqQ5w=;
-	h=From:In-Reply-To:MIME-Version:References:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=l5y7rkpxVJ2bKfoIHigBMNQVkKS25NPxBabL9MJX+rmk7XQfh33DJJYvYhWxkPW13QjlYxM0rdY4FJGUOj1spFYORhq+DsJp7ZrJtGhgbbA8uwHBpQMIZM4L2yWou1j/lmx4EkMRfQK7eU53+86e3gmfN1lT9S4tlZ21yaEbIAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lDST57TJ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA5AC1F00AC4
-	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 10:41:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781606484;
-	bh=2tpmLa3dd6flsbsy+JH4P54/CMX4D7LsJ6W8CltvTok=;
-	h=From:In-Reply-To:References:Date:Subject:To:Cc;
-	b=lDST57TJodRceigb2VwiaQ0BBbw1vD9bcd9X+L/nZuc6pTHePvV4PTHHs537n9baA
-	 67mbbjNVI3bXFnrZcPIUhGxb4fRHzSstlZPhGjb1gUDOui4i92rQevtsl4KRu5s+/j
-	 2B9u0UDWiPDndFFN60XSAIdtKWCIPeoP+spHQctav/sGCBTE8KIcMW1AZtt5Ytfhjv
-	 nrJn6CdUEheRPHjszM3T5wAzpxGipr4r/hjfBCCTKzppunk8tdW7OYuxo0yDYA5C72
-	 RXkFbjX3cgn4dc3P9PweExe7AuoSMG7XiyGF+ZQad0sEK+YfaxLoOmf0/MV7haV9dG
-	 8+XZ1+sV/eSLw==
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-5aa6863327fso3764820e87.0
-        for <stable@vger.kernel.org>; Tue, 16 Jun 2026 03:41:24 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ9WuVYrCMmfQCnWZqy3hpYgnyhrB5fiYsqflR12JHnin2vdZILIrReYSPdadb1iQIrSKxGRuJE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw9npmYhPCXR+AsIXR0cTVJSmfRXDZY5LveTzf1IN4HZnwBUgr3
-	gQlzY+UY53/gdAa4i7lrSO7Hgcv5YMtmvvUtUjrONgK2Q/w8iyZLNfK6WnretfREKAhQFlkbNzB
-	dbo27l4PTX+9eKBcYFB3vkhLn+WC3rd3pBxPRMZoHKw==
-X-Received: by 2002:a05:6512:3e17:b0:5aa:6946:6e4d with SMTP id
- 2adb3069b0e04-5ad4351b594mr963896e87.19.1781606483423; Tue, 16 Jun 2026
- 03:41:23 -0700 (PDT)
-Received: from 969154062570 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 16 Jun 2026 10:41:21 +0000
-Received: from 969154062570 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 16 Jun 2026 10:41:21 +0000
-From: Bartosz Golaszewski <brgl@kernel.org>
-In-Reply-To: <20260616051820.GA127019@sol>
+	s=arc-20240116; t=1781607144; c=relaxed/simple;
+	bh=gREfZnfgLmUTFhhzBicAnDy2Je16XA6X8rMqNNigJtY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lRrupLmh3yl3PiHf2LlqQw69cYLtmf0UN31M8MB2QajdfhaKwEtSRZZcC2eUhhfUKt7g+F+oBWYiPxU68C3lf4gtsLER7HSSzKhhm6uxox8ncLxQzANEeVykBalnyfusPRFgxMFnUmbZkWwdKKqLfKbGW72VG0cXc31JHl9dMpU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=gYlVH83J; arc=none smtp.client-ip=217.140.110.172
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 30E8A43D0;
+	Tue, 16 Jun 2026 03:52:17 -0700 (PDT)
+Received: from J2N7QTR9R3 (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 94F923F915;
+	Tue, 16 Jun 2026 03:52:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1781607141; bh=gREfZnfgLmUTFhhzBicAnDy2Je16XA6X8rMqNNigJtY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=gYlVH83Jp6I0D/1Fthy2kS9zB3FEa3R6vK9lAqpwrZ7jJBn6fEo4e9j1omEFPzVU2
+	 MJVKQScIveUt0xmiU53mV914DD9Jfx6O7MTAEgs6OWzswvKMIa3bN8x6jPsreamvPC
+	 E9w0p8QFbZsmfr+uFAbzI6IZy9beH4teCvXj1aHA=
+Date: Tue, 16 Jun 2026 11:52:14 +0100
+From: Mark Rutland <mark.rutland@arm.com>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, catalin.marinas@arm.com, lee@kernel.org,
+	sdonthineni@nvidia.com, will@kernel.org
+Subject: Re: [PATCH 6.18.y 0/5] arm64: errata: Mitigate TLBI errata on
+ various Arm CPUs
+Message-ID: <ajEq3rRp8rYQg7Fu@J2N7QTR9R3>
+References: <20260616051329.111597-1-mark.rutland@arm.com>
+ <2026061655-veggie-rerun-83e6@gregkh>
+ <2026061658-landowner-dangling-5d07@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260615-qce-fix-self-tests-v2-0-dc911f1aad42@oss.qualcomm.com>
- <20260615-qce-fix-self-tests-v2-1-dc911f1aad42@oss.qualcomm.com> <20260616051820.GA127019@sol>
-Date: Tue, 16 Jun 2026 10:41:21 +0000
-X-Gmail-Original-Message-ID: <CAMRc=McmpeWY2yVbf-KoAG-uC8_cvcW6MJXFSOjnEFqpmjaoig@mail.gmail.com>
-X-Gm-Features: AVVi8CfBtys2dQpRs7E2oMR0x48_wmRqAKjUTOb8b_ZnXmDQi8Ass0ebG3f0ZrY
-Message-ID: <CAMRc=McmpeWY2yVbf-KoAG-uC8_cvcW6MJXFSOjnEFqpmjaoig@mail.gmail.com>
-Subject: Re: [PATCH v2 1/8] crypto: qce - Remove unsafe/deprecated algorithms
-To: Eric Biggers <ebiggers@kernel.org>
-Cc: Thara Gopinath <thara.gopinath@gmail.com>, Herbert Xu <herbert@gondor.apana.org.au>, 
-	"David S. Miller" <davem@davemloft.net>, Stanimir Varbanov <svarbanov@mm-sol.com>, 
-	Eneas U de Queiroz <cotequeiroz@gmail.com>, Kuldeep Singh <kuldeep.singh@oss.qualcomm.com>, 
-	linux-crypto@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, brgl@kernel.org, stable@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2026061658-landowner-dangling-5d07@gregkh>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.66 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	DMARC_POLICY_ALLOW(-0.50)[arm.com,none];
+	MID_RHS_NOT_FQDN(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_DKIM_ALLOW(-0.20)[arm.com:s=foss];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[13];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-263661-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:ebiggers@kernel.org,m:thara.gopinath@gmail.com,m:herbert@gondor.apana.org.au,m:davem@davemloft.net,m:svarbanov@mm-sol.com,m:cotequeiroz@gmail.com,m:kuldeep.singh@oss.qualcomm.com,m:linux-crypto@vger.kernel.org,m:linux-arm-msm@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:brgl@kernel.org,m:stable@vger.kernel.org,m:bartosz.golaszewski@oss.qualcomm.com,m:tharagopinath@gmail.com,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[brgl@kernel.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[gmail.com,gondor.apana.org.au,davemloft.net,mm-sol.com,oss.qualcomm.com,vger.kernel.org,kernel.org];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,mail.gmail.com:mid,qualcomm.com:email];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[brgl@kernel.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-263663-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_SENDER(0.00)[mark.rutland@arm.com,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,m:catalin.marinas@arm.com,m:lee@kernel.org,m:sdonthineni@nvidia.com,m:will@kernel.org,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	DKIM_TRACE(0.00)[arm.com:+];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[mark.rutland@arm.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2B46568E648
+X-Rspamd-Queue-Id: D6CC568E839
 
-On Tue, 16 Jun 2026 07:18:20 +0200, Eric Biggers <ebiggers@kernel.org> said:
-> On Mon, Jun 15, 2026 at 05:49:52PM +0200, Bartosz Golaszewski wrote:
->> Remove algorithms that are either unsafe or deprecated and have no
->> in-kernel users that cannot be served by the ARM CE implementations.
->>
->> AES-ECB reveals plaintext patterns (identical plaintext blocks produce
->> identical ciphertext blocks) and should not be exposed as a hardware-
->> accelerated primitive. DES, Triple DES and HMAC-SHA1 have been
->> deprecated for years.
->>
->> Remove ecb(aes), cbc(des), ecb(des3_ede), cbc(des3_ede), hmac(sha1) and
->> all AEAD variants built on these primitives. Also clean up the - now dead
->> - code, flags and constants.
->>
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
->
-> What is the rationale for still supporting the following?
->
->     sha1
->     ecb(des)
->     authenc(hmac(sha256),cbc(des))
->
+On Tue, Jun 16, 2026 at 03:34:27PM +0530, Greg KH wrote:
+> On Tue, Jun 16, 2026 at 03:31:11PM +0530, Greg KH wrote:
+> > On Tue, Jun 16, 2026 at 06:13:24AM +0100, Mark Rutland wrote:
+> > > This is a v6.18-only backport of a workaround for a TLB invalidation
+> > > issue affecting several CPUs. The final patches landed in mainline
+> > > yesterday:
+> > > 
+> > >   https://lore.kernel.org/linux-arm-kernel/178157002783.358810.8206806281627742561.pr-tracker-bot@kernel.org/
+> > >   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=80476f22b8b7e193b26f285a7c9f9e4b63abca16
+> > > 
+> > > This issue has been assigned CVE ID CVE-2025-10263, and Arm have
+> > > published a security bulletin:
+> > > 
+> > >   https://developer.arm.com/documentation/112137/latest/
+> > > 
+> > > I've pushed a copy of this backport to my kernel.org repo:
+> > > 
+> > >   https://git.kernel.org/pub/scm/linux/kernel/git/mark/linux.git/log/?h=stable-6.18/arm-4118414/backport
+> > 
+> > Should I cherry-pick these to 7.1.y and 7.0.y as well?
+> 
+> Ok, cherry-picking didn't work well, I gave up on patch 3...
+> 
+> Can you send backports for those branches too?
 
-No, I should have removed those too. I'll update it in v3.
+Sorry about that.
 
-Bart
+I'll send out backports for v7.0.y and v7.1.y later today.
+
+Mark.
 
