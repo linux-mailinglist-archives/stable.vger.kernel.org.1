@@ -1,61 +1,64 @@
-Return-Path: <stable+bounces-266062-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264098-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id hdltLrqVMWrQnQUAu9opvQ
-	(envelope-from <stable+bounces-266062-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:28:10 +0200
+	id yyM6HqNuMWrBjAUAu9opvQ
+	(envelope-from <stable+bounces-264098-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:41:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39BAE69425F
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:28:10 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70D236914A3
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:41:22 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=sLetqoX9;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266062-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266062-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=0zyUzV7m;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264098-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264098-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E68993096614
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:27:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 78C5F31161D8
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:35:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF8D5477986;
-	Tue, 16 Jun 2026 18:27:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11A1A34889F;
+	Tue, 16 Jun 2026 15:35:16 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDD663D75A4;
-	Tue, 16 Jun 2026 18:27:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C916538837F;
+	Tue, 16 Jun 2026 15:35:14 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781634462; cv=none; b=XDlbX6h0GMxMW7D/wo8JI0zSAr6bULKK0Qjgh3L/eHzBCe1eCUQ39N0+PV4fZUN8QSwlEPuYg++JJ7XWB+4G6o2TyUgFm3Z/K2hE5HaeHXLtyfUOLm1/b9Cm96w9NItp/G6mj7ZODpjE80o7GcstmCPWIgOuzvAABQVEgiuIQOs=
+	t=1781624115; cv=none; b=EmoLykHCudVd7uTT05A7vvmTlilBvuo/D2+KGw3xK3llH53l0Yi3IP40iM3JEbRvJ1wcHFGDRHbimJ0TSANJKP+qdnrYgaT7ZyUNaumJT/pljTylRMoNf0UqrHL0hiRILcjYcL0mUgaAbElLjyEXCmTVKObW7vvPmGj9eLdX3pY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781634462; c=relaxed/simple;
-	bh=rW6ZsEbObG08MnFjTMlfZQkyYw+4juj1iGLre0RBNxw=;
+	s=arc-20240116; t=1781624115; c=relaxed/simple;
+	bh=QWKBrz7LtSasIw+aiaqCUmaUEjy3c5H8kzkQwe8/vUo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Aq7fmNnXF95TzhMaQ+4KnWGR7hSi8oOXbBxo9pyxeLHpbsT9kIBjns6wDUR0juZXb7PRr2VaRb6otDzaFMOoVzQjdk5XsO7nss2RzfjixI2kdn48Q6xiEYPQ8ESsjUsAAuZdw655ycgUkl1sGj2dtjr+bGv/1LfXFElYCEmpC7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sLetqoX9; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE3A51F000E9;
-	Tue, 16 Jun 2026 18:27:40 +0000 (UTC)
+	 MIME-Version; b=EJhnb9xjsxkRzjTfqWyy3Nwp6Rl45Ltz30f7tbulqfkpUFIe8eHBsm+5QigAtU84d84QsKvmMhaHRnVa211IKOPLfsAJRq7MqaVw8TIxAMXvEdOjnNT0In6LFeXg+9cDvIoDVGJbm8TBc+4j3uXN1bVelj3+Yh6oNvPGta7BIkk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0zyUzV7m; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B12271F00AC4;
+	Tue, 16 Jun 2026 15:35:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781634461;
-	bh=3q8CiZoAiZdEK0q9ZTkqOyGe0bcJ5/DX/ynLi3pxawc=;
+	s=korg; t=1781624114;
+	bh=T7lSHEsKQUp/xKUG+6k8XcUxyR8q/iiWWl568ADM50Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=sLetqoX9DVDTcNMb92Ej1TNmccid1m2GSQznGvCu7peO6KfprBULV4vjnzunnoBaB
-	 XeGnuu8K3daZEonlzDuj3BgOPOK8Dvks+bRX8sjER7KsWheaKpA1Mpbk9HgJ6X57Di
-	 oXcu1TBA2XdcTyKvYoiT9J/brlJRbepZYEX6LWb8=
+	b=0zyUzV7mClcIuh1t8aVIOLJBHdLg1Xnfj2/H6JTTutl/T1WkSknNcaQj8ThaujLN8
+	 LOOybetSOvGjSgDl5s7Xerea96J4PVEI20MnPzIXR9dIlI4q6jjexKuN+6dQNdT018
+	 keBSOaHc07VkL5UvidS3mdzCcLojFyiNOpVX3wuk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robert Beckett <bob.beckett@collabora.com>,
-	Keith Busch <kbusch@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 270/411] nvme: respect NVME_QUIRK_DISABLE_WRITE_ZEROES when wzsl is set
+	Mark Lord <mlord@pobox.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Samiullah Khawaja <skhawaja@google.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>
+Subject: [PATCH 7.0 277/378] iommu/dma: Do not try to iommu_map a 0 length region in swiotlb
 Date: Tue, 16 Jun 2026 20:28:28 +0530
-Message-ID: <20260616145115.447433458@linuxfoundation.org>
+Message-ID: <20260616145124.689470923@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,80 +72,113 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266062-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bob.beckett@collabora.com,m:kbusch@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264098-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mlord@pobox.com,m:jgg@nvidia.com,m:hch@lst.de,m:leonro@nvidia.com,m:skhawaja@google.com,m:m.szyprowski@samsung.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lst.de:email,vger.kernel.org:from_smtp,samsung.com:email,nvidia.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,pobox.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 39BAE69425F
+X-Rspamd-Queue-Id: 70D236914A3
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Robert Beckett <bob.beckett@collabora.com>
+From: Jason Gunthorpe <jgg@nvidia.com>
 
-[ Upstream commit 40f0496b617b431f8d2dd94d7f785c1121f8a68a ]
+commit 6ec91df8aff77e2e8fe3179c1f3fc15b43a40ba3 upstream.
 
-The NVM Command Set Identify Controller data may report a non-zero
-Write Zeroes Size Limit (wzsl). When present, nvme_init_non_mdts_limits()
-unconditionally overrides max_zeroes_sectors from wzsl, even if
-NVME_QUIRK_DISABLE_WRITE_ZEROES previously set it to zero.
+iommu_dma_iova_link_swiotlb() processes a mapping that is unaligned in three
+parts, the head, middle and trailer. If the middle is empty because there
+are no aligned pages it will call down to iommu_map() with a 0 size
+which the iommupt implementation will fail as illegal.
 
-This effectively re-enables write zeroes for devices that need it
-disabled, defeating the quirk. Several Kingston OM* drives rely on
-this quirk to avoid firmware issues with write zeroes commands.
+It then tries to do an error unwind and starts from the wrong spot
+corrupting the mapping so the eventual destruction triggers a WARN_ON.
 
-Check for the quirk before applying the wzsl override.
+Check for 0 length and avoid mapping and use offset not 0 as the starting
+point to unlink.
 
-Fixes: 5befc7c26e5a ("nvme: implement non-mdts command limits")
+This is frequently triggered by using some kinds of thunderbolt NVMe
+drives that trigger forced SWIOTLB for unaligned memory. NVMe seems to
+pass in oddly aligned buffers for the passthrough commands from smartctl
+that hit this condition.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Robert Beckett <bob.beckett@collabora.com>
-Assisted-by: claude-opus-4-6-v1
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 433a76207dcf ("dma-mapping: Implement link/unlink ranges API")
+Reported-by: Mark Lord <mlord@pobox.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+Reviewed-by: Samiullah Khawaja <skhawaja@google.com>
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Link: https://lore.kernel.org/r/0-v1-8536728bc89f+469-swiotlb_warn_jgg@nvidia.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/host/core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iommu/dma-iommu.c |   19 +++++++++++++------
+ 1 file changed, 13 insertions(+), 6 deletions(-)
 
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -2952,7 +2952,7 @@ static int nvme_init_non_mdts_limits(str
- 	if (id->dmrl)
- 		ctrl->max_discard_segments = id->dmrl;
- 	ctrl->dmrsl = le32_to_cpu(id->dmrsl);
--	if (id->wzsl)
-+	if (id->wzsl && !(ctrl->quirks & NVME_QUIRK_DISABLE_WRITE_ZEROES))
- 		ctrl->max_zeroes_sectors = nvme_mps_to_sectors(ctrl, id->wzsl);
+--- a/drivers/iommu/dma-iommu.c
++++ b/drivers/iommu/dma-iommu.c
+@@ -1895,12 +1895,18 @@ static int iommu_dma_iova_link_swiotlb(s
+ 			return 0;
+ 	}
  
- free_data:
++	/*
++	 * After removing the partial head and tail, there may be no aligned
++	 * middle left to map.  The tail still gets bounced below.
++	 */
+ 	size -= iova_end_pad;
+-	error = __dma_iova_link(dev, addr + mapped, phys + mapped, size, dir,
+-			attrs);
+-	if (error)
+-		goto out_unmap;
+-	mapped += size;
++	if (size) {
++		error = __dma_iova_link(dev, addr + mapped, phys + mapped,
++				size, dir, attrs);
++		if (error)
++			goto out_unmap;
++		mapped += size;
++	}
+ 
+ 	if (iova_end_pad) {
+ 		error = iommu_dma_iova_bounce_and_link(dev, addr + mapped,
+@@ -1913,7 +1919,8 @@ static int iommu_dma_iova_link_swiotlb(s
+ 	return 0;
+ 
+ out_unmap:
+-	dma_iova_unlink(dev, state, 0, mapped, dir, attrs);
++	if (mapped)
++		dma_iova_unlink(dev, state, offset, mapped, dir, attrs);
+ 	return error;
+ }
+ 
 
 
 
