@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-265045-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264058-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id NRIYJeCCMWr5lAUAu9opvQ
-	(envelope-from <stable+bounces-265045-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:07:44 +0200
+	id 7FGUEiFuMWqJjAUAu9opvQ
+	(envelope-from <stable+bounces-264058-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:39:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DAEA692BF6
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:07:44 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD3E26913E0
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:39:12 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=eM3eWPrt;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265045-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-265045-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=k72VoVJY;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264058-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-264058-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A090530B2B24
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:00:03 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 164D930A0E3F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:31:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B7FE332637;
-	Tue, 16 Jun 2026 17:00:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED36B44105C;
+	Tue, 16 Jun 2026 15:31:37 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5EAC33AD9B;
-	Tue, 16 Jun 2026 16:59:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7CF3449EAB;
+	Tue, 16 Jun 2026 15:31:36 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781629200; cv=none; b=sLdr12Ot4NgATfs7OZJ4Al4BNPkNbWSALEXHY2GZyRZL67oB/Rm9RfYFjbSs5T1o3kZJNUCp7MYDWadgZrNyth2z0gE9peA3YoVNbql7O7VpzR+nfwgICimScvv0PWWrz9TGdRfj2DNc2GNmL2TLaiSgTZgKugKrlDzzH+KTqyM=
+	t=1781623897; cv=none; b=PbusA/JlkCJt0kTU7VCoav7JyPKMiBO1YWV3k0rQ+DyTRamcQXGA5RPYByU8udhVyy9h0SvVMlLPjlhfltpUokSe1+ZKN8A2R5tMqAVjpnffbym5rLFvSa40uPesKzVOHbSgmToIOF9GI8iCmu1C4MrFqRtO7dxAx4b0ce5bKo4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781629200; c=relaxed/simple;
-	bh=o1sSYpAX0+ik9o0DQTT55T39cx5UF5P5bjpFjNtlv+E=;
+	s=arc-20240116; t=1781623897; c=relaxed/simple;
+	bh=yUV+HHTO8Rseyr7Tr777DfFKIJc926VZs8EYkfv74u0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b4QfViOXLEApuRYvVwx+qD/Uqsi5D2C9uRYwHabBVYHzuw3UYp1kBOdesV/Qki0Ff4Ua1eO5fDa3j5US+jdym5guEFBsvz6jGMI05w3RynVfRgdLIwJC8Vq+ubxLrvpP8rWDAZYuD+nlg23eDpKxPDrBdXsBqEEQNIqx93u5dXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eM3eWPrt; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AFA21F000E9;
-	Tue, 16 Jun 2026 16:59:58 +0000 (UTC)
+	 MIME-Version; b=Ki/Yf/ZRM4gfTJMIoiyKQ3M+3ke5I69Jry1jHrTpcyTRyYx530pSWvjS8g9u+fY9fiVzwxOUyJu4+llW2UyX04AsSbhq90RPif3pgGwQkSCjCoYmRWqpbc4mdhpba60naFwo9w60PiK3++FzW10hY3SMn9T9rEfQ3RqTfBUCyts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k72VoVJY; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1F191F000E9;
+	Tue, 16 Jun 2026 15:31:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781629199;
-	bh=jje9zgTViTQvvoEyA7gdWrwF7qFg6E0X9qxq01UKFnQ=;
+	s=korg; t=1781623896;
+	bh=BR9mM1k+GrbSjfTYaJqUEAxtiBUYb6JxF822Bao7vG8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=eM3eWPrt4WFCNEjfmqTQQI+Mrgouwvsl/dQymReusBA/eGgPGlxVo5g8qu+PqfFLI
-	 Xzr7Xs6kSG638PAKomAPlQEzzcROrYJy/iFNhP0wclrKTEaF0wmaESQy3O1kbqhv/4
-	 Tuc9pPZIeqSwIjG7Eh0s8OFN1OMM59aynPK11bWU=
+	b=k72VoVJYtL358niKVA8X1CGQ6wGDJELnveGAPS55PP+ELhp7qdNjShsEUNUD/ji0d
+	 SorMUDp2VQBh+d6zC2cmMcv1hyA0vvZXx4PbYtlt7LKktmVpVWOn0mQxOMYCK+rUCU
+	 keWy3E/g/DNTOIJUL+2+x9BPqfa6H5Fna+IM0vEU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 240/452] net: ethernet: mtk_eth_soc: Fix use-after-free in metadata dst teardown
-Date: Tue, 16 Jun 2026 20:27:47 +0530
-Message-ID: <20260616145130.298033812@linuxfoundation.org>
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 7.0 237/378] mptcp: sockopt: set sockopt on all subflows
+Date: Tue, 16 Jun 2026 20:27:48 +0530
+Message-ID: <20260616145122.710509630@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,21 +72,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265045-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264058-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:martineau@kernel.org,m:matttbe@kernel.org,m:kuba@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:lorenzo@kernel.org,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -98,56 +98,55 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2DAEA692BF6
+X-Rspamd-Queue-Id: CD3E26913E0
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Bianconi <lorenzo@kernel.org>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-[ Upstream commit 80df409e1a483676826a6c66e693dba6ac507751 ]
+commit 7690137e70ab0fb1f8b5a30e6f087f8ee908b680 upstream.
 
-mtk_free_dev() calls metadata_dst_free() which frees the metadata_dst
-with kfree() immediately, bypassing the RCU grace period.
-In the RX path, skb_dst_set_noref() sets a non-refcounted pointer from
-the skb to the metadata_dst. This function requires RCU read-side
-protection and the dst must remain valid until all RCU readers complete.
-Since metadata_dst_free() calls kfree() directly, a use-after-free can
-occur if any skb still holds a noref pointer to the dst when the driver
-tears it down.
-Replace metadata_dst_free() with dst_release() which properly goes
-through the refcount path: when the refcount drops to zero, it schedules
-the actual free via call_rcu_hurry(), ensuring all RCU readers have
-completed before the memory is freed.
+The mptcp_setsockopt_all_sf(), currently used only with TCP_MAXSEG,
+stopped when one subflow returned an error.
 
-Fixes: 2d7605a72906 ("net: ethernet: mtk_eth_soc: enable hardware DSA untagging")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://patch.msgid.link/20260602-airoha-mtk-metadata-uaf-fix-v1-2-3aaa99d83351@kernel.org
+Even if it is not wrong, this is different from the other helpers trying
+to set the option on all subflows, and then returning an error if at
+least one of them had an issue.
+
+Follow this behaviour, for a question of uniformity.
+
+Fixes: 51c5fd09e1b4 ("mptcp: add TCP_MAXSEG sockopt support")
+Cc: stable@vger.kernel.org
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260602-net-mptcp-misc-fixes-7-1-rc7-v2-8-856831229976@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mediatek/mtk_eth_soc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mptcp/sockopt.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.c b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-index 74cb96dbff9ee4..6de783fe116ce8 100644
---- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-+++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-@@ -4246,7 +4246,7 @@ static int mtk_free_dev(struct mtk_eth *eth)
- 	for (i = 0; i < ARRAY_SIZE(eth->dsa_meta); i++) {
- 		if (!eth->dsa_meta[i])
- 			break;
--		metadata_dst_free(eth->dsa_meta[i]);
-+		dst_release(&eth->dsa_meta[i]->dst);
+--- a/net/mptcp/sockopt.c
++++ b/net/mptcp/sockopt.c
+@@ -811,10 +811,11 @@ static int mptcp_setsockopt_all_sf(struc
+ 
+ 	mptcp_for_each_subflow(msk, subflow) {
+ 		struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
++		int err;
+ 
+-		ret = tcp_setsockopt(ssk, level, optname, optval, optlen);
+-		if (ret)
+-			break;
++		err = tcp_setsockopt(ssk, level, optname, optval, optlen);
++		if (err < 0 && ret == 0)
++			ret = err;
  	}
  
- 	return 0;
--- 
-2.53.0
-
+ 	if (!ret)
 
 
 
