@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-266434-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265650-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id eIhEMTedMWoZoQUAu9opvQ
-	(envelope-from <stable+bounces-266434-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:00:07 +0200
+	id dZPFBMONMWonmgUAu9opvQ
+	(envelope-from <stable+bounces-265650-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:54:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CEA9694A5C
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:00:07 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54CA06939C9
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:54:10 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=LBvy8lcs;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266434-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266434-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=OFrHOkB0;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265650-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265650-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 29EB33045469
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:00:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A4B4B3002F86
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:51:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 927FA3D9DAA;
-	Tue, 16 Jun 2026 19:00:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EC32477982;
+	Tue, 16 Jun 2026 17:51:19 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D86B3ACA68;
-	Tue, 16 Jun 2026 19:00:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36F4A3D669A;
+	Tue, 16 Jun 2026 17:51:18 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781636404; cv=none; b=EbNoB0A3JINPryytPhoIk4+2x5Qg81MvwSeLbjlDFuKMIMyx9mr575FcRi8erxFitcxFE+WIN4M+yoic9kkhfXBktNQSct6hPymZqVVZR8siJ49P53Wbjn3NtnexBIIcxJRdvQT0isE429N2dz/Dnt7BD2EgQfPWO0Rj8/Uv+ac=
+	t=1781632279; cv=none; b=usLpKk0pm4FtNfgqotq/Lxt4wZAsBj7vlSiaBXECtSMJItXVLCXN5Ubx4d/FUrmvYMiguzCryOgGGSPssNviY0KGREA5M1RmQ5rAxIc51vc9+npLUB0c3BarjZMkaG51/qF6OCXqa6DVuod30SYpPWzrMZP/EiC67SQZ7mZFA+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781636404; c=relaxed/simple;
-	bh=ZwpNfZf5qHG8uDqCOVe3MjmfEPwKGYenPtBRGwSKFw8=;
+	s=arc-20240116; t=1781632279; c=relaxed/simple;
+	bh=Yq0GyMjThH8fyZEp7M0sUv7xDEnyQIQ7H0CN54Kce8I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YvKeIN2dvD93qOKEeeZRwQdQ85NKFfcQ4VYI2tKjIgGAamdw7G2ct/x+cAVfUjTrjwqRant2OMCW25ZZ69/x18NGjPHzMRP4Bkx01DKhkEAqKECVss3iFkN2g4Ww1YWTtro0VN4Ifcx/sKHecvxVTVWQ+hU9FmomYPGTkBQ2uwA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LBvy8lcs; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 195A61F000E9;
-	Tue, 16 Jun 2026 19:00:01 +0000 (UTC)
+	 MIME-Version; b=urKbNdn+/aDB526a2rtnoJzhGfGKLmnMnoiwDNLpb0KlIY1Wteya6/wn/qteOtGgYn9v2lPDXuEjuOUe6TRcjEFACY+EmO3kD81471Iso/JJsqc1RcnAOlXcVBnT1SjcQQwxojl3CTdwpG8w4relyZinStM43xGDi/3nQRe5ekk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OFrHOkB0; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 107A81F000E9;
+	Tue, 16 Jun 2026 17:51:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781636403;
-	bh=Hghlkp8QU9jmfAPmUpPzHZJ0GHKBT1Hw1TJctqATKRk=;
+	s=korg; t=1781632278;
+	bh=du+LYkAMb3JmJYOikrWDBk56ceWoSEERpvv+tc+GVIQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=LBvy8lcsHo5cFHkii+KtWkH97ASgyjSuJy2sBfMuqrVXd+rmkZhgpgi8cfMG1JCBD
-	 CAw8/WHPA70PoyixppPjScCMCh49BUdvS4JGgtMfw4u3WeiGOq/EyYzvTf8qaX2agg
-	 fo37LwTsrDkybue+417AhqQRC1WgsNvYcgJMMlm4=
+	b=OFrHOkB0XcghEKNjxHbMe/fMR7jkBYBD5gfCYnaakqyoJ8KD4WUL0mM0mbT62fIrW
+	 LswChFYXS0EUFY9DMuYYysEt3/5IAZ1wm92BojmDvuAoekHkirFPJk1QfLDlNhxzoY
+	 dZLFNM5ZVEPE83n7NAZaDkMQXKktjS7w98wCNcno=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joseph Salisbury <joseph.salisbury@oracle.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Masahisa Kojima <masahisa.kojima@linaro.org>,
+	Johan Hovold <johan@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 232/342] sched: Use u64 for bandwidth ratio calculations
+Subject: [PATCH 6.1 381/522] spi: syncuacer: fix controller deregistration
 Date: Tue, 16 Jun 2026 20:28:48 +0530
-Message-ID: <20260616145059.010270287@linuxfoundation.org>
+Message-ID: <20260616145143.600431881@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,109 +70,89 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266434-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:joseph.salisbury@oracle.com,m:peterz@infradead.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265650-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:masahisa.kojima@linaro.org,m:johan@kernel.org,m:broonie@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,oracle.com:email,vger.kernel.org:from_smtp,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linaro.org:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4CEA9694A5C
+X-Rspamd-Queue-Id: 54CA06939C9
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joseph Salisbury <joseph.salisbury@oracle.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit c6e80201e057dfb7253385e60bf541121bf5dc33 ]
+[ Upstream commit 75d849c3452e9611de031db45b3149ba9a99035f ]
 
-to_ratio() computes BW_SHIFT-scaled bandwidth ratios from u64 period and
-runtime values, but it returns unsigned long.  tg_rt_schedulable() also
-stores the current group limit and the accumulated child sum in unsigned
-long.
+Make sure to deregister the controller before disabling underlying
+resources like clocks during driver unbind.
 
-On 32-bit builds, large bandwidth ratios can be truncated and the RT
-group sum can wrap when enough siblings are present.  That can let an
-overcommitted RT hierarchy pass the schedulability check, and it also
-narrows the helper result for other callers.
-
-Return u64 from to_ratio() and use u64 for the RT group totals so
-bandwidth ratios are preserved and compared at full width on both 32-bit
-and 64-bit builds.
-
-Fixes: b40b2e8eb521 ("sched: rt: multi level group constraints")
-Assisted-by: Codex:GPT-5
-Signed-off-by: Joseph Salisbury <joseph.salisbury@oracle.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260403210014.2713404-1-joseph.salisbury@oracle.com
-[ dropped `extern` keyword from `to_ratio()` declaration ]
+Fixes: b0823ee35cf9 ("spi: Add spi driver for Socionext SynQuacer platform")
+Cc: stable@vger.kernel.org	# 5.3
+Cc: Masahisa Kojima <masahisa.kojima@linaro.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260410081757.503099-21-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/core.c  |    2 +-
- kernel/sched/rt.c    |    2 +-
- kernel/sched/sched.h |    2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/spi/spi-synquacer.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -3328,7 +3328,7 @@ void sched_post_fork(struct task_struct
- 	uclamp_post_fork(p);
+--- a/drivers/spi/spi-synquacer.c
++++ b/drivers/spi/spi-synquacer.c
+@@ -719,7 +719,7 @@ static int synquacer_spi_probe(struct pl
+ 	pm_runtime_set_active(sspi->dev);
+ 	pm_runtime_enable(sspi->dev);
+ 
+-	ret = devm_spi_register_controller(sspi->dev, host);
++	ret = spi_register_controller(host);
+ 	if (ret)
+ 		goto disable_pm;
+ 
+@@ -740,9 +740,15 @@ static void synquacer_spi_remove(struct
+ 	struct spi_controller *host = platform_get_drvdata(pdev);
+ 	struct synquacer_spi *sspi = spi_controller_get_devdata(host);
+ 
++	spi_controller_get(host);
++
++	spi_unregister_controller(host);
++
+ 	pm_runtime_disable(sspi->dev);
+ 
+ 	clk_disable_unprepare(sspi->clk);
++
++	spi_controller_put(host);
  }
  
--unsigned long to_ratio(u64 period, u64 runtime)
-+u64 to_ratio(u64 period, u64 runtime)
- {
- 	if (runtime == RUNTIME_INF)
- 		return BW_UNIT;
---- a/kernel/sched/rt.c
-+++ b/kernel/sched/rt.c
-@@ -2527,7 +2527,7 @@ static int tg_rt_schedulable(struct task
- {
- 	struct rt_schedulable_data *d = data;
- 	struct task_group *child;
--	unsigned long total, sum = 0;
-+	u64 total, sum = 0;
- 	u64 period, runtime;
- 
- 	period = ktime_to_ns(tg->rt_bandwidth.rt_period);
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -1956,7 +1956,7 @@ extern void init_dl_inactive_task_timer(
- #define RATIO_SHIFT		8
- #define MAX_BW_BITS		(64 - BW_SHIFT)
- #define MAX_BW			((1ULL << MAX_BW_BITS) - 1)
--unsigned long to_ratio(u64 period, u64 runtime);
-+u64 to_ratio(u64 period, u64 runtime);
- 
- extern void init_entity_runnable_average(struct sched_entity *se);
- extern void post_init_entity_util_avg(struct task_struct *p);
+ static int __maybe_unused synquacer_spi_suspend(struct device *dev)
 
 
 
