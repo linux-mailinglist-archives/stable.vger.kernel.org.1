@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-264201-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264389-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Y1vHJJ5xMWrZjQUAu9opvQ
-	(envelope-from <stable+bounces-264201-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:54:06 +0200
+	id ZamWLnl3MWpCkAUAu9opvQ
+	(envelope-from <stable+bounces-264389-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:19:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 023116917CB
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:54:06 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30DAA691EDF
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:19:05 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=AEMikakB;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264201-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264201-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=qi5pAC44;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264389-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264389-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7F3C13117A38
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:45:38 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 631E73114679
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:01:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D65F74508F2;
-	Tue, 16 Jun 2026 15:44:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 933514611FC;
+	Tue, 16 Jun 2026 16:00:30 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0A2044E05B;
-	Tue, 16 Jun 2026 15:44:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56CDD4534B4;
+	Tue, 16 Jun 2026 16:00:29 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781624663; cv=none; b=ZRVJibW/qI4Tbcph0Jvoj/KFAZd0SNVF7fWCJGJf+dqIva9ODxw1pyv+T2ul3Tzm/snvr2Z/40OF9d62AryvDHldj1G+EfVyIzgZA2+tKIue63Ji0+i54Rdoxl/EgS7iLerLmPodXjyPokHceDjBSMHb3hcIjDSYCajt6z6i570=
+	t=1781625630; cv=none; b=lYU36sxd+QPqRCASPIPg24IZUj729LBq5Iu7TY3szWNApTHv88SKaBRc6OqXx46APPHDvzAucb7aye3m6XPzdogX2saOHCipZNBn0ZOUZ+i8WnbJPySL5dqEeqGs/t/PkuvyGmxzXjcUMAtePywI/+slvQE1Mq6GjgQPbh/gv/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781624663; c=relaxed/simple;
-	bh=8WOfC5/DOQP1vdXG2hwUh27Q5tg+T93FtDLR2xJk5BM=;
+	s=arc-20240116; t=1781625630; c=relaxed/simple;
+	bh=AbfSACgVlAvItdRWyYhPlnkcqGelrFOBd6vRC0jVDT0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SwZiPqrSHH3D+VNG+61xERey4LUjrKkdvonJMAT6gZty8Si5jPeG8FBSee8Dtc9ttxmwf9gevxW2hh5t3CGO3k9Q6JR7PpBPx0sOiqwxK2/3lyScDiqhUh19VtCpjhGEL1sDmy1EDE1PpJkNU2c/MXHNNZrJ7fHYgtqdLkm/GRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AEMikakB; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A87B71F000E9;
-	Tue, 16 Jun 2026 15:44:21 +0000 (UTC)
+	 MIME-Version; b=cQZbE/nUQ5ueRsJeTJQAEMmc+MkIvbvid56ZupcLxvh1FXcfr5OP4pdomFIUamK58L9Eb7nJP1SqJ1+pRt0lCZaOBRBrsES5dutk4X8JCbThW6KI5n18u4xWjVNYQ/uUzyM9UayIT/gRXR2cc3WRm/U0yPa+XElKkbEtRwCrJ0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qi5pAC44; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 633371F000E9;
+	Tue, 16 Jun 2026 16:00:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781624662;
-	bh=z8g4uwPifVcennyRQwGfijDUK/YDIW8yrrV/f3gLWos=;
+	s=korg; t=1781625629;
+	bh=OPas+cDFqBZR6D037aHvtGc/dkJeM3Ji4B18mqWxYwI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=AEMikakB5GBXm9hRvKstK1gSVibWwf7i3HZvwbkJKocZ1ZJfpn0Kdn5uNafwro5nP
-	 D4NfS7IvarS1d1MHVMqWOIWdFX/o00knhZ+mzjXOZxSFfI4B4/PcGC8De1MDmqClHS
-	 ZYa5ZyfUFhAnxdUzOe1ccpVM8Xt/Spk2Wh0hl5s8=
+	b=qi5pAC44jWasGLfqzz5T2uIOCxPSjrup26lkpPbvTe9Ls+N/MeabxkwnYhjWk86i9
+	 QsPFh/Qs1T0uhDLWjRy9ouBCFreN3FN6KRQQC1LcIiZ9Y/xprQ3M2r9Ino1XtH0YKO
+	 +ub5vfFTmYiL6ZqVjQKKop7SqH22vgxw8caw6Va8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Uma Shankar <uma.shankar@intel.com>,
-	Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	Pranay Samala <pranay.samala@intel.com>
-Subject: [PATCH 7.0 334/378] drm/i915: Fix color blob reference handling in intel_plane_state
-Date: Tue, 16 Jun 2026 20:29:25 +0530
-Message-ID: <20260616145127.803645838@linuxfoundation.org>
+	Gil Portnoy <dddhkts1@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.18 170/325] ksmbd: fix use-after-free of a deferred file_lock on double SMB2_CANCEL
+Date: Tue, 16 Jun 2026 20:29:26 +0530
+Message-ID: <20260616145106.300754133@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,120 +69,108 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-264389-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:dddhkts1@gmail.com,m:linkinjeon@kernel.org,m:stfrench@microsoft.com,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264201-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:uma.shankar@intel.com,m:chaitanya.kumar.borah@intel.com,m:tursulin@ursulin.net,m:pranay.samala@intel.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,intel.com:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,ursulin.net:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 023116917CB
+X-Rspamd-Queue-Id: 30DAA691EDF
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
+From: Gil Portnoy <dddhkts1@gmail.com>
 
-commit 26eb7c0a7ab09d83eec833db6a5a2bc60b9d4d9a upstream.
+commit f580d27e8928828693df44ba2db0fffdbe11dfea upstream.
 
-Take proper references for hw color blobs (degamma_lut, gamma_lut,
-ctm, lut_3d) in intel_plane_duplicate_state() and drop them in
-intel_plane_destroy_state().
+A deferred byte-range lock (an SMB2_LOCK that blocks) registers an async work on
+conn->async_requests via setup_async_work(), with cancel_fn =
+smb2_remove_blocked_lock and cancel_argv[0] pointing at the struct file_lock.
 
-v2:
-- handle blobs in hw state clear
+When the request is cancelled, the worker frees the file_lock with
+locks_free_lock() and takes the cancelled early-exit, which "goto out"s and never
+reaches release_async_work() -- the only site that unlinks the work from
+conn->async_requests and clears cancel_fn/cancel_argv. The work therefore stays
+matchable on async_requests with a live cancel_fn pointing at the freed file_lock,
+until connection teardown finally runs release_async_work().
 
-Cc: <stable@vger.kernel.org> #v6.19+
-Fixes: 3b7476e786c2 ("drm/i915/color: Add framework to program PRE/POST CSC LUT")
-Fixes: a78f1b6baf4d ("drm/i915/color: Add framework to program CSC")
-Fixes: 65db7a1f9cf7 ("drm/i915/color: Add 3D LUT to color pipeline")
-Reviewed-by: Pranay Samala <pranay.samala@intel.com> #v1
-Reviewed-by: Uma Shankar <uma.shankar@intel.com>
-Signed-off-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
-Signed-off-by: Uma Shankar <uma.shankar@intel.com>
-Link: https://patch.msgid.link/20260601082953.128539-4-chaitanya.kumar.borah@intel.com
-(cherry picked from commit c6eea1925154b6697fe22b217faab9bb30635e6b)
-Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
+smb2_cancel() fires cancel_fn unconditionally with no state guard, so a second
+SMB2_CANCEL for the same AsyncId, arriving in that window, re-runs
+smb2_remove_blocked_lock() on the freed file_lock -- a slab use-after-free:
+
+  BUG: KASAN: slab-use-after-free in __locks_delete_block
+    __locks_delete_block
+    locks_delete_block
+    ksmbd_vfs_posix_lock_unblock
+    smb2_remove_blocked_lock
+    smb2_cancel                 <- 2nd SMB2_CANCEL fires cancel_fn
+    handle_ksmbd_work
+  Allocated by ...: locks_alloc_lock <- smb2_lock
+  Freed by ...:     locks_free_lock  <- smb2_lock (cancelled branch)
+  ... cache file_lock_cache of size 192
+
+Reproduced on mainline with KASAN by an authenticated SMB client.
+
+Skip a work whose state is already KSMBD_WORK_CANCELLED so its cancel callback
+cannot be fired a second time.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Gil Portnoy <dddhkts1@gmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/display/intel_plane.c |   27 +++++++++++++++++++++++++++
- 1 file changed, 27 insertions(+)
+ fs/smb/server/smb2pdu.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/drivers/gpu/drm/i915/display/intel_plane.c
-+++ b/drivers/gpu/drm/i915/display/intel_plane.c
-@@ -144,6 +144,15 @@ intel_plane_duplicate_state(struct drm_p
- 	if (intel_state->hw.fb)
- 		drm_framebuffer_get(intel_state->hw.fb);
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -7328,6 +7328,17 @@ int smb2_cancel(struct ksmbd_work *work)
+ 			    le64_to_cpu(hdr->Id.AsyncId))
+ 				continue;
  
-+	if (intel_state->hw.degamma_lut)
-+		drm_property_blob_get(intel_state->hw.degamma_lut);
-+	if (intel_state->hw.gamma_lut)
-+		drm_property_blob_get(intel_state->hw.gamma_lut);
-+	if (intel_state->hw.ctm)
-+		drm_property_blob_get(intel_state->hw.ctm);
-+	if (intel_state->hw.lut_3d)
-+		drm_property_blob_get(intel_state->hw.lut_3d);
++			/*
++			 * A cancelled deferred byte-range lock frees its
++			 * file_lock and takes the smb2_lock() early-exit that
++			 * skips release_async_work(), so the work stays on
++			 * conn->async_requests with a live cancel_fn pointing
++			 * at the freed file_lock.  Re-firing it on a second
++			 * SMB2_CANCEL is a use-after-free.
++			 */
++			if (iter->state == KSMBD_WORK_CANCELLED)
++				break;
 +
- 	return &intel_state->uapi;
- }
- 
-@@ -167,6 +176,16 @@ intel_plane_destroy_state(struct drm_pla
- 	__drm_atomic_helper_plane_destroy_state(&plane_state->uapi);
- 	if (plane_state->hw.fb)
- 		drm_framebuffer_put(plane_state->hw.fb);
-+
-+	if (plane_state->hw.degamma_lut)
-+		drm_property_blob_put(plane_state->hw.degamma_lut);
-+	if (plane_state->hw.gamma_lut)
-+		drm_property_blob_put(plane_state->hw.gamma_lut);
-+	if (plane_state->hw.ctm)
-+		drm_property_blob_put(plane_state->hw.ctm);
-+	if (plane_state->hw.lut_3d)
-+		drm_property_blob_put(plane_state->hw.lut_3d);
-+
- 	kfree(plane_state);
- }
- 
-@@ -317,6 +336,14 @@ static void intel_plane_clear_hw_state(s
- {
- 	if (plane_state->hw.fb)
- 		drm_framebuffer_put(plane_state->hw.fb);
-+	if (plane_state->hw.degamma_lut)
-+		drm_property_blob_put(plane_state->hw.degamma_lut);
-+	if (plane_state->hw.gamma_lut)
-+		drm_property_blob_put(plane_state->hw.gamma_lut);
-+	if (plane_state->hw.ctm)
-+		drm_property_blob_put(plane_state->hw.ctm);
-+	if (plane_state->hw.lut_3d)
-+		drm_property_blob_put(plane_state->hw.lut_3d);
- 
- 	memset(&plane_state->hw, 0, sizeof(plane_state->hw));
- }
+ 			ksmbd_debug(SMB,
+ 				    "smb2 with AsyncId %llu cancelled command = 0x%x\n",
+ 				    le64_to_cpu(hdr->Id.AsyncId),
 
 
 
