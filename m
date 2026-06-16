@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-265687-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265164-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 8yQcL/eNMWpAmgUAu9opvQ
-	(envelope-from <stable+bounces-265687-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:55:03 +0200
+	id doPeK/WEMWr1lQUAu9opvQ
+	(envelope-from <stable+bounces-265164-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:16:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FD0F693A0B
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:55:03 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08989692F30
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:16:37 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=YmRUYCGP;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265687-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-265687-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=BeIoXz1L;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265164-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265164-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BD99430786DE
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:54:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0BC2430F7793
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:10:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42C5F477995;
-	Tue, 16 Jun 2026 17:54:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A369449EA8;
+	Tue, 16 Jun 2026 17:09:59 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A7E13C76AF;
-	Tue, 16 Jun 2026 17:54:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D1AC1A6803;
+	Tue, 16 Jun 2026 17:09:57 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781632466; cv=none; b=h0Be5VQnpJ5f/25f//KgkSdO+U0Y5wOWcxHNJn1Uhf9BlMRhjnCYFFCcpBwLDWONP3qoSJVlTg5OB4raa5Z7j1s78Umby20SVAvuAjNoNVpg87WxVLYFk5eWE4Rp5ysKekALAf3566Eg08Lb0YYNJq4dMT3meP5aDQyt0noPoQ0=
+	t=1781629799; cv=none; b=ELYuif7v69N81WUQ12XPN3R1y03njKSd2Gq+hxZN38KXAEY94XWcO9JQbwAIrlO0QeiroBE1IbMfU2KEgL63Qp95GTOEO9OtgIxtjMTmlF4PiQnw3vCTPYnh1p8qWxo1bu0Hc/tUVth0mxyDa8K8ynPTvG6ZjcCKCOqvJwpWn2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781632466; c=relaxed/simple;
-	bh=J5XsPx+IJ9sRWwkWHM8mtr/rsqKAleJzmAYfa6+H6gw=;
+	s=arc-20240116; t=1781629799; c=relaxed/simple;
+	bh=lfyBDrVCB4sekq2iz044xATwWmU1/JBb2kjqH578MEU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JTW0CorKw01O6lkbcfS9Ee+QkmSvggFJsbg9aASrxjtFUq+NVhzSe/T4Kg9FHVEUWOrNd3+Zs+t3FOw7aej+F/G/ukgRRFerhjd0TfQ2ZOU3VRRx2io6JkYIGNeKwaemM1ovKSay0nU3U6YA2sPPwjEPdDYE5HqLwasmY4rfcDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YmRUYCGP; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 193191F000E9;
-	Tue, 16 Jun 2026 17:54:23 +0000 (UTC)
+	 MIME-Version; b=em0S3xZ95wHzn1Ce/S2djGU9+4FPJ1GkhqfnWZ28Wkhq/sjNfNWAgOPyOKn/tGR5WnS++Oe9EFYn+zMazGyOsO6wXeD0dBTZtEZjaXZZJmRZLv3IX72nViWW6aKkdvdh6/d9Z0eGjWuY/7BfoDvUCY4h6bfA1IhXQHqlOUEHYZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BeIoXz1L; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFC721F000E9;
+	Tue, 16 Jun 2026 17:09:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781632464;
-	bh=7Sj4kF3tB6olfJYwnswg5Rp28RpMl8B6g6dFnHt9ugk=;
+	s=korg; t=1781629797;
+	bh=L9LV+TJVu4yiYkipv9+GpQaqf+Upsn6l32176YhYiok=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=YmRUYCGPjnYU2hTvfFAarXBHWLx/9jzlv/QwgXB/tCLrYyHH+qmfD1Ze9vg0mu6C3
-	 MWfl6p9kGeVYEDs1MCG4cGY/LFNmaUwznA7bz3Q3L6p4SjQkGD58tUZandvtOQFY1G
-	 NKczgrDsjzwocZlvGqCY6TxLvG9R0tCUBsH7LUr0=
+	b=BeIoXz1LAC9HeN4GQkReQSXlJ/S0sbNF/b4EZT5Et+qLocFl8BK4o3Qh3wTznhIH4
+	 pXEx/On7he9OYhxYgzmH+IOXuIfuSwVAeRjZVuuXXzlEo2E0LZkrb7wMZ3kM0aTQ+V
+	 wJl6tMqpPnbbpw2nJJkBG22ZZ6GnIiPr9EjppIhw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 417/522] smb: client: validate dacloffset before building DACL pointers
+	Nikolay Kuratov <kniv@yandex-team.ru>,
+	Md Haris Iqbal <haris.iqbal@linux.dev>,
+	Moshe Shemesh <moshe@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.6 337/452] net/mlx5: Reorder completion before putting command entry in cmd_work_handler
 Date: Tue, 16 Jun 2026 20:29:24 +0530
-Message-ID: <20260616145145.526900189@linuxfoundation.org>
+Message-ID: <20260616145135.029083358@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,159 +69,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265687-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:stfrench@microsoft.com,m:sashal@kernel.org,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265164-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kniv@yandex-team.ru,m:haris.iqbal@linux.dev,m:moshe@nvidia.com,m:tariqt@nvidia.com,m:pabeni@redhat.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,microsoft.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux.dev:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,nvidia.com:email,vger.kernel.org:from_smtp,yandex-team.ru:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5FD0F693A0B
+X-Rspamd-Queue-Id: 08989692F30
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Nikolay Kuratov <kniv@yandex-team.ru>
 
-[ Upstream commit f98b48151cc502ada59d9778f0112d21f2586ca3 ]
+commit 02896a7fa4cd3ec61d60ba30136841e4f04bdeac upstream.
 
-parse_sec_desc(), build_sec_desc(), and the chown path in
-id_mode_to_cifs_acl() all add the server-supplied dacloffset to pntsd
-before proving a DACL header fits inside the returned security
-descriptor.
+Assuming callback != NULL && !page_queue, cmd_work_handler takes
+command entry with refcnt == 1 from mlx5_cmd_invoke.
+If either semaphore timeout or index allocation error happens,
+it does final cmd_ent_put(ent). To avoid access to freed memory,
+notify slotted completion before cmd_ent_put.
 
-On 32-bit builds a malicious server can return dacloffset near
-U32_MAX, wrap the derived DACL pointer below end_of_acl, and then slip
-past the later pointer-based bounds checks. build_sec_desc() and
-id_mode_to_cifs_acl() can then dereference DACL fields from the wrapped
-pointer in the chmod/chown rewrite paths.
+This is theoretical issue found by Svace static analyser.
 
-Validate dacloffset numerically before building any DACL pointer and
-reuse the same helper at the three DACL entry points.
-
-Fixes: bc3e9dd9d104 ("cifs: Change SIDs in ACEs while transferring file ownership.")
 Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-6
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-[ renamed smb_ntsd/smb_acl structs to cifs_ntsd/cifs_acl and kept existing inline ACL size check instead of using missing validate_dacl() helper ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 485d65e135712 ("net/mlx5: Add a timeout to acquire the command queue semaphore")
+Fixes: 0e2909c6bec90 ("net/mlx5: Fix variable not being completed when function returns")
+Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
+Reviewed-by: Md Haris Iqbal <haris.iqbal@linux.dev>
+Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
+Acked-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20260526162932.501584-1-kniv@yandex-team.ru
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/cifsacl.c |   35 ++++++++++++++++++++++++++++++++---
- 1 file changed, 32 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/cmd.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/fs/smb/client/cifsacl.c
-+++ b/fs/smb/client/cifsacl.c
-@@ -1254,6 +1254,17 @@ static int parse_sid(struct cifs_sid *ps
- 	return 0;
- }
- 
-+static bool dacl_offset_valid(unsigned int acl_len, __u32 dacloffset)
-+{
-+	if (acl_len < sizeof(struct cifs_acl))
-+		return false;
-+
-+	if (dacloffset < sizeof(struct cifs_ntsd))
-+		return false;
-+
-+	return dacloffset <= acl_len - sizeof(struct cifs_acl);
-+}
-+
- 
- /* Convert CIFS ACL to POSIX form */
- static int parse_sec_desc(struct cifs_sb_info *cifs_sb,
-@@ -1274,7 +1285,6 @@ static int parse_sec_desc(struct cifs_sb
- 	group_sid_ptr = (struct cifs_sid *)((char *)pntsd +
- 				le32_to_cpu(pntsd->gsidoffset));
- 	dacloffset = le32_to_cpu(pntsd->dacloffset);
--	dacl_ptr = (struct cifs_acl *)((char *)pntsd + dacloffset);
- 	cifs_dbg(NOISY, "revision %d type 0x%x ooffset 0x%x goffset 0x%x sacloffset 0x%x dacloffset 0x%x\n",
- 		 pntsd->revision, pntsd->type, le32_to_cpu(pntsd->osidoffset),
- 		 le32_to_cpu(pntsd->gsidoffset),
-@@ -1305,11 +1315,18 @@ static int parse_sec_desc(struct cifs_sb
- 		return rc;
- 	}
- 
--	if (dacloffset)
-+	if (dacloffset) {
-+		if (!dacl_offset_valid(acl_len, dacloffset)) {
-+			cifs_dbg(VFS, "Server returned illegal DACL offset\n");
-+			return -EINVAL;
-+		}
-+
-+		dacl_ptr = (struct cifs_acl *)((char *)pntsd + dacloffset);
- 		parse_dacl(dacl_ptr, end_of_acl, owner_sid_ptr,
- 			   group_sid_ptr, fattr, get_mode_from_special_sid);
--	else
-+	} else {
- 		cifs_dbg(FYI, "no ACL\n"); /* BB grant all or default perms? */
-+	}
- 
- 	return rc;
- }
-@@ -1332,6 +1349,11 @@ static int build_sec_desc(struct cifs_nt
- 
- 	dacloffset = le32_to_cpu(pntsd->dacloffset);
- 	if (dacloffset) {
-+		if (!dacl_offset_valid(secdesclen, dacloffset)) {
-+			cifs_dbg(VFS, "Server returned illegal DACL offset\n");
-+			return -EINVAL;
-+		}
-+
- 		dacl_ptr = (struct cifs_acl *)((char *)pntsd + dacloffset);
- 		rc = validate_dacl(dacl_ptr, end_of_acl);
- 		if (rc)
-@@ -1698,6 +1720,12 @@ id_mode_to_cifs_acl(struct inode *inode,
- 		nsecdesclen = sizeof(struct cifs_ntsd) + (sizeof(struct cifs_sid) * 2);
- 		dacloffset = le32_to_cpu(pntsd->dacloffset);
- 		if (dacloffset) {
-+			if (!dacl_offset_valid(secdesclen, dacloffset)) {
-+				cifs_dbg(VFS, "Server returned illegal DACL offset\n");
-+				rc = -EINVAL;
-+				goto id_mode_to_cifs_acl_exit;
-+			}
-+
- 			dacl_ptr = (struct cifs_acl *)((char *)pntsd + dacloffset);
- 			rc = validate_dacl(dacl_ptr, (char *)pntsd + secdesclen);
- 			if (rc) {
-@@ -1740,6 +1768,7 @@ id_mode_to_cifs_acl(struct inode *inode,
- 		rc = ops->set_acl(pnntsd, nsecdesclen, inode, path, aclflag);
- 		cifs_dbg(NOISY, "set_cifs_acl rc: %d\n", rc);
- 	}
-+id_mode_to_cifs_acl_exit:
- 	cifs_put_tlink(tlink);
- 
- 	kfree(pnntsd);
+--- a/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
+@@ -989,12 +989,13 @@ static void cmd_work_handler(struct work
+ 				ent->callback(-EBUSY, ent->context);
+ 				mlx5_free_cmd_msg(dev, ent->out);
+ 				free_msg(dev, ent->in);
++				complete(&ent->slotted);
+ 				cmd_ent_put(ent);
+ 			} else {
+ 				ent->ret = -EBUSY;
+ 				complete(&ent->done);
++				complete(&ent->slotted);
+ 			}
+-			complete(&ent->slotted);
+ 			return;
+ 		}
+ 		alloc_ret = cmd_alloc_index(cmd, ent);
+@@ -1004,13 +1005,14 @@ static void cmd_work_handler(struct work
+ 				ent->callback(-EAGAIN, ent->context);
+ 				mlx5_free_cmd_msg(dev, ent->out);
+ 				free_msg(dev, ent->in);
++				complete(&ent->slotted);
+ 				cmd_ent_put(ent);
+ 			} else {
+ 				ent->ret = -EAGAIN;
+ 				complete(&ent->done);
++				complete(&ent->slotted);
+ 			}
+ 			up(&cmd->vars.sem);
+-			complete(&ent->slotted);
+ 			return;
+ 		}
+ 	} else {
 
 
 
