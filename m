@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-266110-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265706-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id b31gLp6WMWpWngUAu9opvQ
-	(envelope-from <stable+bounces-266110-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:31:58 +0200
+	id NP6aF0mOMWpbmgUAu9opvQ
+	(envelope-from <stable+bounces-265706-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:56:25 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDB46694373
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:31:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70952693A46
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:56:24 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=fdV6rVvm;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266110-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-266110-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=N7awLs+D;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265706-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-265706-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 09E98300138F
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:31:55 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 90B983010DE8
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:56:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF9EC43CEC7;
-	Tue, 16 Jun 2026 18:31:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECB9E47CC80;
+	Tue, 16 Jun 2026 17:56:07 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBF8C3DA7E1;
-	Tue, 16 Jun 2026 18:31:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5683647B406;
+	Tue, 16 Jun 2026 17:56:06 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781634713; cv=none; b=j4xK+76rE+9yPHF2OupDU2Nw3iXwzckBIzvxAG5swYdkqp9JUPgo8xzXUVDid72mwR9z2d7IuXhc+NlWsmQ42/SLZGj9+L6XBAKv20ZoG667U38xQ5TFO5reCBJov2B9KjmrK7okA1eJJ6s/w2aZrOFlnDHyruRneQo/LbFXQ5w=
+	t=1781632567; cv=none; b=m6+q6bPwhG9sSB3S9iiGCPnpRle7V+hAmU3hn1A4t+pxyiukNi2s0bJ2iFKLfSN6SIL2d/4GOABlkHxox5d9fmIlfUioYmsSBM6wg7JRbpQIflGXiuO7APLNisKfhUlFQcAAYZ+y9oVgCBe6nu7ihXDUoJE73JusZnoQW/2xhUM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781634713; c=relaxed/simple;
-	bh=CfA6Is2hUgrN1vJnBxk02A4VHYxoUtj17+eYCvHLWwU=;
+	s=arc-20240116; t=1781632567; c=relaxed/simple;
+	bh=0Z+EPv99my3YAW6ATM8aMN9xcqngFILcVJCzgrkBrlQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C7hsckXxZjH3Ut/uUX7ibFK2yiZxOmya2SFJayAn+262EtSL7kkwbZMLHpnPpgXeSr2Z3JuiGw8UEi9nm8Dg8RWxASNJ4m/ZB2XXc7Hah1fjlmTFHZuBISEsjbyA3hXhsvIV9x/tLeZR6gBl9XCT2bwkyJdufKcB+ZuJdtlxCbQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fdV6rVvm; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F2E11F000E9;
-	Tue, 16 Jun 2026 18:31:51 +0000 (UTC)
+	 MIME-Version; b=Df5MaRwtW66kiGdJG2mOLhVetC88UfUlMB5INdiAC+4k+ljPqMGW9oyIrw9++bMHcxZ652J0ddSNuECi1vjQ6y7aTx32r9hxiSWLo03uzvTcHddM89XMOFMyeqwHu9mwUCFFBKkEXtALcpVHNvq7pNf9KPWqbODq0BgkDX0eXWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N7awLs+D; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E49D1F000E9;
+	Tue, 16 Jun 2026 17:56:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781634712;
-	bh=q+gIjWqy1QTJltl8X1RHx+3Fypg0DLyUUXOUmCFm8do=;
+	s=korg; t=1781632565;
+	bh=XEBGD4sOqYbeSFsDT9ObPGE78/f5Yd7o09cWVdhLaKo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fdV6rVvmnYYmL4CdZxQRcBerF6KHEp79hakU7uOh4hc1XWXVxG1AZdVZ4jqMOEW1/
-	 mscohTW7VI5SR2hzsK53QAJX+bsaiQ4JXBZ/K1LTw3CWjvpZfObk/KivePgS0nrcxz
-	 QCRPlWNNpeHtnqF7iQL5bkCs8mPry5ZRa2dCb06g=
+	b=N7awLs+D8qT3EBrT3l+dM3/JpbOpamkYIaJepnvL5tG20ysBxYiFNCJDDAHzaNo4o
+	 wSPN3NL17KtuAVy0AlJ1F3mVj3q1CU/c4PplTJjprLbEomFLz7Pq9frpX7Zno7vQ1Y
+	 e3bfUPjpRBbPtgcxyL1QFNjbqJiDpJIxO2wuBAdY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jingoo Han <jg1.han@samsung.com>,
-	Johan Hovold <johan@kernel.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Li Zetao <lizetao1@huawei.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 317/411] spi: tegra114: fix controller deregistration
+Subject: [PATCH 6.1 408/522] spi: microchip-core-qspi: Use helper function devm_clk_get_enabled()
 Date: Tue, 16 Jun 2026 20:29:15 +0530
-Message-ID: <20260616145118.002992405@linuxfoundation.org>
+Message-ID: <20260616145145.148672160@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -79,10 +79,10 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266110-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265706-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jg1.han@samsung.com,m:johan@kernel.org,m:broonie@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:Jonathan.Cameron@huawei.com,m:lizetao1@huawei.com,m:broonie@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
@@ -99,65 +99,102 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,samsung.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,huawei.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: BDB46694373
+X-Rspamd-Queue-Id: 70952693A46
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Li Zetao <lizetao1@huawei.com>
 
-[ Upstream commit 9c9c27ff2058142d8f800de3186d6864184958de ]
+[ Upstream commit e922f3fff21445117e9196bd8e940ad8e15ca8c7 ]
 
-Make sure to deregister the controller before disabling underlying
-resources like clocks during driver unbind.
+Since commit 7ef9651e9792 ("clk: Provide new devm_clk helpers for prepared
+and enabled clocks"), devm_clk_get() and clk_prepare_enable() can now be
+replaced by devm_clk_get_enabled() when driver enables (and possibly
+prepares) the clocks for the whole lifetime of the device. Moreover, it is
+no longer necessary to unprepare and disable the clocks explicitly.
 
-Fixes: 5c8096439600 ("spi: tegra114: use devm_spi_register_master()")
-Cc: stable@vger.kernel.org	# 3.13
-Cc: Jingoo Han <jg1.han@samsung.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260410081757.503099-22-johan@kernel.org
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Li Zetao <lizetao1@huawei.com>
+Link: https://lore.kernel.org/r/20230823133938.1359106-18-lizetao1@huawei.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
-[ renamed spi_controller/host APIs to spi_master/master equivalents and placed spi_master_put() before the existing return 0 in remove ]
+Stable-dep-of: e6464140d439 ("spi: microchip-core-qspi: fix controller deregistration")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-tegra114.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/spi/spi-microchip-core-qspi.c |   29 +++++++----------------------
+ 1 file changed, 7 insertions(+), 22 deletions(-)
 
---- a/drivers/spi/spi-tegra114.c
-+++ b/drivers/spi/spi-tegra114.c
-@@ -1417,7 +1417,7 @@ static int tegra_spi_probe(struct platfo
+--- a/drivers/spi/spi-microchip-core-qspi.c
++++ b/drivers/spi/spi-microchip-core-qspi.c
+@@ -519,30 +519,23 @@ static int mchp_coreqspi_probe(struct pl
+ 		return dev_err_probe(&pdev->dev, PTR_ERR(qspi->regs),
+ 				     "failed to map registers\n");
+ 
+-	qspi->clk = devm_clk_get(&pdev->dev, NULL);
++	qspi->clk = devm_clk_get_enabled(&pdev->dev, NULL);
+ 	if (IS_ERR(qspi->clk))
+ 		return dev_err_probe(&pdev->dev, PTR_ERR(qspi->clk),
+ 				     "could not get clock\n");
+ 
+-	ret = clk_prepare_enable(qspi->clk);
+-	if (ret)
+-		return dev_err_probe(&pdev->dev, ret,
+-				     "failed to enable clock\n");
+-
+ 	init_completion(&qspi->data_completion);
+ 	mutex_init(&qspi->op_lock);
+ 
+ 	qspi->irq = platform_get_irq(pdev, 0);
+-	if (qspi->irq < 0) {
+-		ret = qspi->irq;
+-		goto out;
+-	}
++	if (qspi->irq < 0)
++		return qspi->irq;
+ 
+ 	ret = devm_request_irq(&pdev->dev, qspi->irq, mchp_coreqspi_isr,
+ 			       IRQF_SHARED, pdev->name, qspi);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "request_irq failed %d\n", ret);
+-		goto out;
++		return ret;
  	}
  
- 	master->dev.of_node = pdev->dev.of_node;
--	ret = devm_spi_register_master(&pdev->dev, master);
-+	ret = spi_register_master(master);
- 	if (ret < 0) {
- 		dev_err(&pdev->dev, "can not register to master err %d\n", ret);
- 		goto exit_free_irq;
-@@ -1443,6 +1443,10 @@ static int tegra_spi_remove(struct platf
- 	struct spi_master *master = platform_get_drvdata(pdev);
- 	struct tegra_spi_data	*tspi = spi_master_get_devdata(master);
+ 	ctlr->bits_per_word_mask = SPI_BPW_MASK(8);
+@@ -553,18 +546,11 @@ static int mchp_coreqspi_probe(struct pl
+ 	ctlr->dev.of_node = np;
  
-+	spi_master_get(master);
-+
-+	spi_unregister_master(master);
-+
- 	free_irq(tspi->irq, tspi);
+ 	ret = devm_spi_register_controller(&pdev->dev, ctlr);
+-	if (ret) {
+-		dev_err_probe(&pdev->dev, ret,
+-			      "spi_register_controller failed\n");
+-		goto out;
+-	}
++	if (ret)
++		return dev_err_probe(&pdev->dev, ret,
++				     "spi_register_controller failed\n");
  
- 	if (tspi->tx_dma_chan)
-@@ -1455,6 +1459,8 @@ static int tegra_spi_remove(struct platf
- 	if (!pm_runtime_status_suspended(&pdev->dev))
- 		tegra_spi_runtime_suspend(&pdev->dev);
- 
-+	spi_master_put(master);
-+
  	return 0;
+-
+-out:
+-	clk_disable_unprepare(qspi->clk);
+-
+-	return ret;
  }
  
+ static void mchp_coreqspi_remove(struct platform_device *pdev)
+@@ -575,7 +561,6 @@ static void mchp_coreqspi_remove(struct
+ 	mchp_coreqspi_disable_ints(qspi);
+ 	control &= ~CONTROL_ENABLE;
+ 	writel_relaxed(control, qspi->regs + REG_CONTROL);
+-	clk_disable_unprepare(qspi->clk);
+ }
+ 
+ static const struct of_device_id mchp_coreqspi_of_match[] = {
 
 
 
