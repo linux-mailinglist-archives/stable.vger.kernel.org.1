@@ -1,65 +1,60 @@
-Return-Path: <stable+bounces-263922-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264904-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id LQTBDiNqMWojiwUAu9opvQ
-	(envelope-from <stable+bounces-263922-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:22:11 +0200
+	id 8DOlHVCAMWoUlAUAu9opvQ
+	(envelope-from <stable+bounces-264904-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:56:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id C15D2690F76
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:22:10 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DC3369299D
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:56:47 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=wba7Q8xh;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263922-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-263922-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=JljdT0j8;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264904-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264904-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 60CE0304BEEE
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:20:07 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B64D230172D7
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:48:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B13343E4BA;
-	Tue, 16 Jun 2026 15:19:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0A1645348A;
+	Tue, 16 Jun 2026 16:48:22 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FEC82F8EBC;
-	Tue, 16 Jun 2026 15:19:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99AB83C09F3;
+	Tue, 16 Jun 2026 16:48:21 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781623194; cv=none; b=tTDfoPVa4HGaBqdi2xVPIAMUAdonUFJJM/PHIqR1UFg5M9Ld6NUVKVa6b/YL4H0+mlPTSisUhjUlOyukuBRWOZUaedh05OW6qBwakbk4SGVGioljOVFNN9dlQEKQEy+b+PpNSMDtyqZ5LJNTwFyMmyNGz9DRWRZFgXGV6kPDJlQ=
+	t=1781628502; cv=none; b=owes+Dv3Nkm396hEk6dJxSHkRVHz02a9AjxPEAe+B6H3PSKzp7otia8zKC/Lt6jk4+6U4y1kjdb8ln4CAx0xi9Qoo7QZwAHaWt6KmthzCWwMsFk6NcpzcNQsZFB4mxqAe4/ZX7RCPCrHUr4TDcNAyT19ZTfBh+BabX5uV2V8M+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781623194; c=relaxed/simple;
-	bh=NJIvOhvELW7KjCMoOUtDbanOwFBk3unDn8k0PFp+vjs=;
+	s=arc-20240116; t=1781628502; c=relaxed/simple;
+	bh=oQEFOwgNzrQvkoAh2Vjs67xrusdDeaTEXsa8WQWP8UM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VnfRU0YDkwfYmlMNpAVqYfS7WaFli8zWYkByirPj3v6G+KcN0EPwGm82XeI4A03dUN/NMFjXRLOoWOnJ826maURKOyNzJodYo2u39wuhVngs3HenyTxfeZi6F4XCHIXjjKbtlL01hhzFHSrArKH42r/n0+e8Oedz3rCjHiIZAj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wba7Q8xh; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBA5A1F000E9;
-	Tue, 16 Jun 2026 15:19:51 +0000 (UTC)
+	 MIME-Version; b=NV00eEx71uIKCCYXOVAARw7Mh9nB692jnpNE02PhE6WherLoAaShP0q9S8qvHjnMN2BM4REdzQRnkhWQHnl0ajgj77k7MXfOIkSpZ2459cXj7Mls0Ga4YMWn+A8UT8GKLw7wL2d+8i963sosg5jp5TBlHkA6XaAdxAbEDFir91I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JljdT0j8; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C7671F000E9;
+	Tue, 16 Jun 2026 16:48:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781623192;
-	bh=51A8FErQlr82zfbaiJbsud3xD2KSMqF+R3fBz5Udgz0=;
+	s=korg; t=1781628501;
+	bh=soB1W5/qydvuk9qbgdTAXviZnMN52IUs72FjLsNrjoA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=wba7Q8xhaGa4POWUsW2DZoOnwtQR0xiUkmbO7/cVQngt0HjA0xJ53WICCBqeIKtFn
-	 DKn9LyNodRsBiDzS/xLtV7ZO69oUXdxCW0+O0OOg2L3dBX1vCuenjkiBHdEr+Oyx0t
-	 iNCZnt+QbvWr8d5WIX/ewqL3an1XfrWtdOeDCYOI=
+	b=JljdT0j8ezmZvJLnO7Xq9wLG0Qf9mj+5/sq7xGJww+Z0MYp/EPkkBlCM7f/V9kM/F
+	 +Jzhrgdg8bIGGkJVlzkOVTd1AsRW8Z+MARYQjNSz/MSxC7LNdkrTypONpI3iZaVyEQ
+	 LQhGRPHLTnFziQJwUGYBFLP45bugvwmMy4UL8bsg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Petr Oros <poros@redhat.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Rinitha S <sx.rinitha@intel.com>
-Subject: [PATCH 7.0 102/378] ice: fix missing priority callbacks for U.FL DPLL pins
+	"Naveen N Rao (AMD)" <naveen@kernel.org>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.6 106/452] KVM: SVM: Flush the current TLB when transitioning from xAVIC => x2AVIC
 Date: Tue, 16 Jun 2026 20:25:33 +0530
-Message-ID: <20260616145115.729372503@linuxfoundation.org>
+Message-ID: <20260616145123.343980225@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,112 +68,121 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-263922-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264904-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:aleksandr.loktionov@intel.com,m:pmenzel@molgen.mpg.de,m:poros@redhat.com,m:anthony.l.nguyen@intel.com,m:kuba@kernel.org,m:sashal@kernel.org,m:sx.rinitha@intel.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:naveen@kernel.org,m:seanjc@google.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,mpg.de:email,vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C15D2690F76
+X-Rspamd-Queue-Id: 9DC3369299D
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Oros <poros@redhat.com>
+From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit f1fa677e428e8873486938086bd934dc18169b47 ]
+commit a9e18aa3263f356edae305e29830e5fe63d8597a upstream.
 
-The U.FL2 input pin advertises DPLL_PIN_CAPABILITIES_PRIORITY_CAN_CHANGE
-in its capability mask, but ice_dpll_pin_ufl_ops does not provide
-.prio_get and .prio_set callbacks. As a result the DPLL subsystem
-cannot report or accept priority for U.FL pins: pin-get omits the prio
-field on U.FL2 and pin-set with prio is rejected as invalid, even
-though the capability is present. This prevents user space from using
-priority to select or disable U.FL2 as a DPLL input source.
+Flush the current TLB when xAVIC *or* x2AVIC is activated, as KVM is
+(apparently) responsible for purging TLB entries when transitioning from
+xAVIC to x2AVIC.  The APM says a whole lot of nothing about TLB flushing
+with respect to (x2)AVIC, but empirical data strongly suggests hardware
+also does a whole lot of nothing.
 
-Reproducer with iproute2 (dpll command):
+Failure to flush the TLB when enabling x2AVIC can lead to guest accesses
+to the APIC base address getting incorrectly redirected to the virtual
+APIC page.  The flaw most visibly manifests as failures in KVM-Unit-Test's
+verify_disabled_apic_mmio() testcase when x2APIC is enabled (though for
+reasons unknown, the test only reliably fails with EFI builds).
 
-  # dpll pin show board-label U.FL2
-  pin id 16:
-    module-name ice
-    board-label U.FL2
-    type ext
-    capabilities priority-can-change|state-can-change
-    parent-device:
-      id 0 direction input state selectable phase-offset 0
-    /* note: no "prio" between "direction" and "state",
-       even though priority-can-change is advertised */
-
-  # dpll pin set id 16 parent-device 0 prio 5
-  RTNETLINK answers: Operation not supported
-
-After the fix the prio field is reported by pin show and pin set with
-prio is accepted on U.FL2.
-
-Add the missing .prio_get and .prio_set callbacks to
-ice_dpll_pin_ufl_ops, reusing ice_dpll_sw_input_prio_{get,set}. The
-same ops struct is shared by U.FL1 and U.FL2: U.FL2 (input) delegates
-to the backing hardware input pin, while U.FL1 (output) does not
-advertise DPLL_PIN_CAPABILITIES_PRIORITY_CAN_CHANGE so the dpll core
-capability gate never invokes prio_set for it, and prio_get reports
-the OUTPUT sentinel (ICE_DPLL_PIN_PRIO_OUTPUT) on the output side
-exactly like the SMA path does today.
-
-Fixes: 2dd5d03c77e2 ("ice: redesign dpll sma/u.fl pins control")
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Signed-off-by: Petr Oros <poros@redhat.com>
-Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Link: https://patch.msgid.link/20260602225513.393338-3-anthony.l.nguyen@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 0ccf3e7cb95a ("KVM: SVM: Flush the "current" TLB when activating AVIC")
+Fixes: 4d1d7942e36a ("KVM: SVM: Introduce logic to (de)activate x2AVIC mode")
+Cc: stable@vger.kernel.org
+Cc: Naveen N Rao (AMD) <naveen@kernel.org>
+Link: https://patch.msgid.link/20260515171536.1841645-1-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/ice/ice_dpll.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/x86/kvm/svm/avic.c |   35 +++++++++++++++++++++++++++++------
+ 1 file changed, 29 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_dpll.c b/drivers/net/ethernet/intel/ice/ice_dpll.c
-index 892bc7c2e28b46..0704e92ab04305 100644
---- a/drivers/net/ethernet/intel/ice/ice_dpll.c
-+++ b/drivers/net/ethernet/intel/ice/ice_dpll.c
-@@ -2633,6 +2633,8 @@ static const struct dpll_pin_ops ice_dpll_pin_ufl_ops = {
- 	.state_on_dpll_set = ice_dpll_ufl_pin_state_set,
- 	.state_on_dpll_get = ice_dpll_sw_pin_state_get,
- 	.direction_get = ice_dpll_pin_sw_direction_get,
-+	.prio_get = ice_dpll_sw_input_prio_get,
-+	.prio_set = ice_dpll_sw_input_prio_set,
- 	.frequency_get = ice_dpll_sw_pin_frequency_get,
- 	.frequency_set = ice_dpll_sw_pin_frequency_set,
- 	.esync_set = ice_dpll_sw_esync_set,
--- 
-2.53.0
-
+--- a/arch/x86/kvm/svm/avic.c
++++ b/arch/x86/kvm/svm/avic.c
+@@ -111,6 +111,35 @@ static void avic_activate_vmcb(struct vc
+ 	svm_clr_intercept(svm, INTERCEPT_CR8_WRITE);
+ 
+ 	/*
++	 * Flush the TLB when enabling (x2)AVIC and when transitioning between
++	 * xAVIC and x2AVIC, as the CPU may have inserted a TLB entry for the
++	 * "wrong" mapping.
++	 *
++	 * KVM uses a per-VM "scratch" page to back the APIC memslot, because
++	 * KVM also uses per-VM page tables *and* maintains the page table (NPT
++	 * or shadow page) mappings for said memslot even if one or more vCPUs
++	 * have their local APIC hardware-disabled or are in x2APIC mode, i.e.
++	 * even if one or more vCPUs' APIC MMIO BAR is effectively disabled.
++	 *
++	 * If xAVIC is fully enabled, hardware ignores the physical address in
++	 * KVM's page tables, i.e. in the leaf SPTE for the APIC memslot, and
++	 * instead redirects the access to the AVIC backing page, i.e. to the
++	 * vCPU's virtual APIC page.  If xAVIC is not enabled (APIC is either
++	 * hardware-disabled or in x2APIC mode), then guest accesses will use
++	 * the page table mapping verbatim, i.e. will access the per-VM scratch
++	 * page, as normal memory.
++	 *
++	 * In both cases, the CPU is allowed to cache TLB entries for the APIC
++	 * base GPA.  So, KVM needs to flush the TLB when enabling xAVIC, as
++	 * accesses need to be redirected to the virtual APIC page, but the TLB
++	 * may contain entries pointing at the scratch page.  KVM also needs to
++	 * flush the TLB when enabling x2AVIC, as accesses need to go to the
++	 * scratch page, but the TLB may contain entries tagged as xAVIC, i.e.
++	 * entries pointing to the vCPU's virtual APIC page.
++	 */
++	kvm_make_request(KVM_REQ_TLB_FLUSH_CURRENT, &svm->vcpu);
++
++	/*
+ 	 * Note: KVM supports hybrid-AVIC mode, where KVM emulates x2APIC MSR
+ 	 * accesses, while interrupt injection to a running vCPU can be
+ 	 * achieved using AVIC doorbell.  KVM disables the APIC access page
+@@ -123,12 +152,6 @@ static void avic_activate_vmcb(struct vc
+ 		/* Disabling MSR intercept for x2APIC registers */
+ 		svm_set_x2apic_msr_interception(svm, false);
+ 	} else {
+-		/*
+-		 * Flush the TLB, the guest may have inserted a non-APIC
+-		 * mapping into the TLB while AVIC was disabled.
+-		 */
+-		kvm_make_request(KVM_REQ_TLB_FLUSH_CURRENT, &svm->vcpu);
+-
+ 		/* Enabling MSR intercept for x2APIC registers */
+ 		svm_set_x2apic_msr_interception(svm, true);
+ 	}
 
 
 
