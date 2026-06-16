@@ -1,75 +1,61 @@
-Return-Path: <stable+bounces-266187-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266543-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Bdu3HCyYMWrlngUAu9opvQ
-	(envelope-from <stable+bounces-266187-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:38:36 +0200
+	id vxLbAVWfMWoAogUAu9opvQ
+	(envelope-from <stable+bounces-266543-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:09:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70C6D6944AC
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:38:35 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7303694CA0
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:09:08 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=JM+aKmO0;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266187-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-266187-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=piuH7FtX;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266543-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266543-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9E3E73004430
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:38:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C35F7306C9AD
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:08:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B40E03D669D;
-	Tue, 16 Jun 2026 18:38:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23CBA3DE425;
+	Tue, 16 Jun 2026 19:08:56 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F7EB3DC4D9;
-	Tue, 16 Jun 2026 18:38:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2FAD3DDDA1;
+	Tue, 16 Jun 2026 19:08:54 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781635111; cv=none; b=b21zEXTSlmlxnpyPPV+Zyyk9KQS33mycJQClkAFPlPZLh50qi+mBHv8UShct0ImOzHF/41ag+GFs66Q9VxAIvQnORQeR21K4nKQHD56gbiEIib1fVR48L9NE0zadm3HjQc7zi8lOmz79MSOy+WNOHNrAYkh1I0p3HxSgLTtkX6o=
+	t=1781636935; cv=none; b=ZvYLO5uD2j02aZ0MyEf7R1nnHDkyp9IHugfZWFc06D2RfIIRst5xugxVdKV5yvtq9xWJLyT3XD18aRykidt2hgpH7UwCO4VzEHlDAJBAiQtHySc78uIyyaSsdU7L92VdF5gdgL580pJcQ7WsBHBobh2HVtdro9KChsxwu5VwvR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781635111; c=relaxed/simple;
-	bh=NBNhSuJ6oKPUQ7fm9ISoNpp78M5G7N4mf1OZ/i20Mt0=;
+	s=arc-20240116; t=1781636935; c=relaxed/simple;
+	bh=nDCNN4hNFxbsFTZDoN1jBL4zpfF68E5Qt+QqD8vOSP8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gFSinRtYXDOVWUtXmZB9Jl8xbH516eYqfvvcDtWfnd5FW/lv7rjkkGxBnSsmkTpiqU6JQbFCxP2PS2TGlrOqpUGrTvtqjFyCa+fsZCRth0J285dr9IBV4b2LTKe+exKVSqfnBV1OjkdGpMFtzyJWhqr9z5cSUue6hTpQlxbTY9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JM+aKmO0; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22AEA1F000E9;
-	Tue, 16 Jun 2026 18:38:29 +0000 (UTC)
+	 MIME-Version; b=T9x9HrL5LFsG/KrHvZiVQkvFD1ryTLInZoT4njLhQkSGZ3HQLOxzTlozM0LShK3bEfuEu2Moa81L7ZUViJcZyFhswIMOuMUR1aFchCJ/YGFpMRQ6n5zNblt4k8cxZ+8RQe4yl/jDrIvfN56kBJTIYxKMSIDissJlsn/NXPU/aoA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=piuH7FtX; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA5401F000E9;
+	Tue, 16 Jun 2026 19:08:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781635110;
-	bh=ANZisJGzyxShD/+bsxZ9eeaHR0oJfCo9/Y3TJU4lPI4=;
+	s=korg; t=1781636934;
+	bh=t+CF0Q+HhoNvmAHOGZGkPlYpyAo3TVGfR8MoPoWmp7Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=JM+aKmO0p2YPX5l9ae9p5P24Q7UQBPQxcHILOC22yH+t2AmXsxeG/JBORlUFOAg4M
-	 SykQvQGZ7AKr5S1atkImRvjfgQQ9gyI0P5hetczSUOEORSi71fUXw9B86kqayodhOz
-	 np0Z534W0/T36WlWbB8DduoBq5qGKFbMrnb3aAg8=
+	b=piuH7FtX8jbyAFZ3/kTzjg9Tw/Q1r/gH82tyBrr9HvZry36yD19t71y8AL2i56om+
+	 FV/sQ2tD4ysQdvGy5BVEIV4FTYbPHOhpYn306i9JstwevDcg3q2nZdRovqv+DQn23a
+	 orPS+ViaUynZB96Wx2t2+N5nO0pyg5jij2dWOVm4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yin Tirui <yintirui@huawei.com>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"David Hildenbrand (arm)" <david@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>,
-	Dev Jain <dev.jain@arm.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Barry Song <baohua@kernel.org>,
-	Chen Jun <chenjun102@huawei.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Nico Pache <npache@redhat.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Yang Shi <yang.shi@linux.alibaba.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 392/411] mm/huge_memory: update file PMD counter before folio_put()
+	Shanker Donthineni <sdonthineni@nvidia.com>,
+	Will Deacon <will@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>
+Subject: [PATCH 5.10 334/342] arm64: cputype: Add NVIDIA Olympus definitions
 Date: Tue, 16 Jun 2026 20:30:30 +0530
-Message-ID: <20260616145122.064997421@linuxfoundation.org>
+Message-ID: <20260616145104.179524410@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -86,22 +72,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266187-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-266543-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[20];
+	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:yintirui@huawei.com,m:ljs@kernel.org,m:david@kernel.org,m:lance.yang@linux.dev,m:dev.jain@arm.com,m:baolin.wang@linux.alibaba.com,m:baohua@kernel.org,m:chenjun102@huawei.com,m:wangkefeng.wang@huawei.com,m:liam@infradead.org,m:npache@redhat.com,m:ryan.roberts@arm.com,m:vbabka@kernel.org,m:yang.shi@linux.alibaba.com,m:ziy@nvidia.com,m:akpm@linux-foundation.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:sdonthineni@nvidia.com,m:will@kernel.org,m:mark.rutland@arm.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -112,62 +98,47 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,nvidia.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 70C6D6944AC
+X-Rspamd-Queue-Id: A7303694CA0
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yin Tirui <yintirui@huawei.com>
+From: Shanker Donthineni <sdonthineni@nvidia.com>
 
-[ Upstream commit 8d878059924f12c1bc24556a92ec56add74de3c8 ]
+commit e185c8a0d84236d14af61faff8147c953a878a77 upstream.
 
-__split_huge_pmd_locked() updates the file/shmem RSS counter after
-dropping the PMD mapping's folio reference.  If folio_put() drops the last
-reference, mm_counter_file() can later read freed folio state via
-folio_test_swapbacked().
+Add cpu part and model macro definitions for NVIDIA Olympus core.
 
-Move the counter update before folio_put().
-
-Link: https://lore.kernel.org/20260526101337.1984081-1-yintirui@huawei.com
-Fixes: fadae2953072 ("thp: use mm_file_counter to determine update which rss counter")
-Signed-off-by: Yin Tirui <yintirui@huawei.com>
-Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
-Acked-by: David Hildenbrand (arm) <david@kernel.org>
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
-Reviewed-by: Dev Jain <dev.jain@arm.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Barry Song <baohua@kernel.org>
-Cc: Chen Jun <chenjun102@huawei.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Liam R. Howlett <liam@infradead.org>
-Cc: Nico Pache <npache@redhat.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>
-Cc: Yang Shi <yang.shi@linux.alibaba.com>
-Cc: Zi Yan <ziy@nvidia.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Shanker Donthineni <sdonthineni@nvidia.com>
+Signed-off-by: Will Deacon <will@kernel.org>
+[Mark: backport to v5.10.y]
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/huge_memory.c |    2 ++
+ arch/arm64/include/asm/cputype.h |    2 ++
  1 file changed, 2 insertions(+)
 
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -1994,7 +1994,9 @@ static void __split_huge_pmd_locked(stru
- 			if (!PageReferenced(page) && pmd_young(old_pmd))
- 				SetPageReferenced(page);
- 			page_remove_rmap(page, true);
-+			add_mm_counter(mm, mm_counter_file(page), -HPAGE_PMD_NR);
- 			put_page(page);
-+			return;
- 		}
- 		add_mm_counter(mm, mm_counter_file(page), -HPAGE_PMD_NR);
- 		return;
+--- a/arch/arm64/include/asm/cputype.h
++++ b/arch/arm64/include/asm/cputype.h
+@@ -121,6 +121,7 @@
+ 
+ #define NVIDIA_CPU_PART_DENVER		0x003
+ #define NVIDIA_CPU_PART_CARMEL		0x004
++#define NVIDIA_CPU_PART_OLYMPUS		0x010
+ 
+ #define FUJITSU_CPU_PART_A64FX		0x001
+ 
+@@ -183,6 +184,7 @@
+ #define MIDR_QCOM_KRYO_4XX_SILVER MIDR_CPU_MODEL(ARM_CPU_IMP_QCOM, QCOM_CPU_PART_KRYO_4XX_SILVER)
+ #define MIDR_NVIDIA_DENVER MIDR_CPU_MODEL(ARM_CPU_IMP_NVIDIA, NVIDIA_CPU_PART_DENVER)
+ #define MIDR_NVIDIA_CARMEL MIDR_CPU_MODEL(ARM_CPU_IMP_NVIDIA, NVIDIA_CPU_PART_CARMEL)
++#define MIDR_NVIDIA_OLYMPUS MIDR_CPU_MODEL(ARM_CPU_IMP_NVIDIA, NVIDIA_CPU_PART_OLYMPUS)
+ #define MIDR_FUJITSU_A64FX MIDR_CPU_MODEL(ARM_CPU_IMP_FUJITSU, FUJITSU_CPU_PART_A64FX)
+ #define MIDR_HISI_TSV110 MIDR_CPU_MODEL(ARM_CPU_IMP_HISI, HISI_CPU_PART_TSV110)
+ #define MIDR_APPLE_M1_ICESTORM MIDR_CPU_MODEL(ARM_CPU_IMP_APPLE, APPLE_CPU_PART_M1_ICESTORM)
 
 
 
