@@ -1,75 +1,60 @@
-Return-Path: <stable+bounces-264293-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264129-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id qB2KGtBxMWrnjQUAu9opvQ
-	(envelope-from <stable+bounces-264293-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:54:56 +0200
+	id RqyVITNvMWr1jAUAu9opvQ
+	(envelope-from <stable+bounces-264129-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:43:47 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C86DD691801
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:54:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E91B269155E
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:43:46 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=cuKXBUqz;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264293-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264293-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=eT2KDIPQ;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264129-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264129-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 62B6A30067A4
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:53:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0317A31A52AB
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:38:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1B7F44B69C;
-	Tue, 16 Jun 2026 15:53:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8436143E9C6;
+	Tue, 16 Jun 2026 15:38:00 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B443342847F;
-	Tue, 16 Jun 2026 15:53:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A9153AB267;
+	Tue, 16 Jun 2026 15:37:59 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781625200; cv=none; b=uxPdSe+ZdIHKTRyBGOo9cuOzofeFOGrnrOA7jn61omiaxmTeQdu51I2KOcBUBT8Lv2KvaDk9ctcgHJ1NLU4mMEhnIswUYi3TGkuaDc0l8SYiExfWeSltkueJXn4jTlXBRYk1xLM8ErpMEZzFod4Rw7Jxm0Yc7ZALwtG1svT015I=
+	t=1781624280; cv=none; b=Oh85WOxe9rBvjeAU9rgl2widfEDMWzvHzsBJvCmswEOCYsEuNu+lZt1eBQLPgbYWAq/co99/5hbYUAP9OGvciFiuyMs/izAzmPnWnkvmLhJxZCmXl+HCjcYqkTCCB5vzOLVU1mWqYu/iVPZ0kF1xiwXxbQHLRhTiPApycFbapp0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781625200; c=relaxed/simple;
-	bh=lOHOxH6UXht5Gt2Z0Oyrbz7iJcOnL6x43Jyeoh2IsXU=;
+	s=arc-20240116; t=1781624280; c=relaxed/simple;
+	bh=6khjy8biSSEKDje9UZ1h4ztOefqZreKmZzbkpSVux4g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CHyBC0+BAZodA59aG0uTtdslPPeNTNmgkCqpjzuFFpOxVR+htws55jFz4mfONf57GYlamglfhySZ+1Am3MSAN0DCComFdHOn9+Q7mkTDc6B04zuEgAHEL9B04yZKn7ZbV5MJQRLHdfQt8H231PlZdyAeP6XKBVyJWFD7QcSA7pQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cuKXBUqz; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74FBE1F000E9;
-	Tue, 16 Jun 2026 15:53:18 +0000 (UTC)
+	 MIME-Version; b=RessxIGEZOZqDw7HEKy8XJjs/G8VkMNEKJL2qHHfEqkucobYOmVS3x0Ia89wYRbtvYHVfARuKVIAoxQviib7u3+3v2vDm6iAhpKtFcmOsuFma5OtjiYLEXT68ghwJbg7zrHzRuUfUHDxhqI+jRIIunlyuGwESfwxJUPer3X9EIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eT2KDIPQ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36D471F000E9;
+	Tue, 16 Jun 2026 15:37:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781625199;
-	bh=yjcZv062jBe2DysJ1qCr+cHCs2MkFsb2jbyQmNqRRlw=;
+	s=korg; t=1781624279;
+	bh=DVpsSqBhwprGGptwq3xu9/CtG23uTHeWoQYMVayvcME=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=cuKXBUqzaNzHw51QYlfrZprozKVBPX8S8/7ypFKiJyG5rIgrv+4WrVNmpBP643ny2
-	 qtYws9WNN8N9iP9iHlvvfAqsK/3HNBbYzwtZ0OVxZvyiS1NV6Bko4gHU8Uu7G2VUdX
-	 i/V4hn/d9vIr2C2fsT3SsaK9nGnsh6wMIzHvj+Ic=
+	b=eT2KDIPQMvGmzLN81PJCLg05MLgViLaqPnCWQfIhfqw/+36H9dZqulaG2yzD/9u5f
+	 +Yvp96CKFd6yf3yUgZ5YSV530BdAgBb15pwZWDFAQpjyGONvtj5OQjfGLwniwGQjRW
+	 ntNeesP828MC/MhTbei02MSWc36eqPNLAiuedv18=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Tamir Shahar <tamirthesis@gmail.com>,
-	Amit Klein <aksecurity@gmail.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Jiri Olsa <jolsa@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 097/325] tcp: restrict SO_ATTACH_FILTER to priv users
-Date: Tue, 16 Jun 2026 20:28:13 +0530
-Message-ID: <20260616145102.521142898@linuxfoundation.org>
+	Muhammad Bilal <meatuni001@gmail.com>,
+	"Rob Herring (Arm)" <robh@kernel.org>
+Subject: [PATCH 7.0 263/378] accel/ethosu: reject DMA commands with uninitialized length
+Date: Tue, 16 Jun 2026 20:28:14 +0530
+Message-ID: <20260616145123.928018699@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -81,8 +66,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
@@ -92,17 +76,17 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264293-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:edumazet@google.com,m:tamirthesis@gmail.com,m:aksecurity@gmail.com,m:willemb@google.com,m:ast@kernel.org,m:daniel@iogearbox.net,m:andrii@kernel.org,m:martin.lau@linux.dev,m:eddyz87@gmail.com,m:memxor@gmail.com,m:song@kernel.org,m:yonghong.song@linux.dev,m:jolsa@kernel.org,m:john.fastabend@gmail.com,m:sdf@fomichev.me,m:kuba@kernel.org,m:sashal@kernel.org,m:johnfastabend@gmail.com,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,gmail.com,kernel.org,iogearbox.net,linux.dev,fomichev.me];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-264129-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:meatuni001@gmail.com,m:robh@kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -110,71 +94,60 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,fomichev.me:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,iogearbox.net:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C86DD691801
+X-Rspamd-Queue-Id: E91B269155E
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Muhammad Bilal <meatuni001@gmail.com>
 
-[ Upstream commit 5d39580f68e6ddeedd15e587282207489dfb3da2 ]
+commit d9d021218162b6c4fe0bdf42b2b340f1aae23a12 upstream.
 
-This patch restricts the use of SO_ATTACH_FILTER (cBPF) on TCP sockets
-to users with CAP_NET_ADMIN capability.
+cmd_state_init() initializes the command state with memset(0xff),
+leaving dma->len at U64_MAX to signal missing setup. The only setter
+is NPU_SET_DMA0_LEN; if userspace omits this command and issues
+NPU_OP_DMA_START, dma->len remains U64_MAX.
 
-This blocks potential side-channel attack where an unprivileged application
-attaches a filter to leak TCP sequence/acknowledgment numbers.
+In dma_length(), a positive stride added to U64_MAX wraps to a small
+value. With size0 == 1, check_mul_overflow() does not trigger and
+dma_length() returns 0 instead of U64_MAX. The caller's U64_MAX check
+then passes, region_size[] stays 0, and the bounds check in
+ethosu_job.c is bypassed, allowing hardware to execute DMA with stale
+physical addresses.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reported-by: Tamir Shahar <tamirthesis@gmail.com>
-Reported-by: Amit Klein <aksecurity@gmail.com>
-Cc: Willem de Bruijn <willemb@google.com>
-Cc: Alexei Starovoitov <ast@kernel.org>
-Cc: Daniel Borkmann <daniel@iogearbox.net>
-Cc: Andrii Nakryiko <andrii@kernel.org>
-Cc: Martin KaFai Lau <martin.lau@linux.dev>
-Cc: Eduard Zingerman <eddyz87@gmail.com>
-Cc: Kumar Kartikeya Dwivedi <memxor@gmail.com>
-Cc: Song Liu <song@kernel.org>
-Cc: Yonghong Song <yonghong.song@linux.dev>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: John Fastabend <john.fastabend@gmail.com>
-Cc: Stanislav Fomichev <sdf@fomichev.me>
-Acked-by: Daniel Borkmann <daniel@iogearbox.net>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix by checking for U64_MAX at the start of dma_length() before any
+arithmetic, consistent with the sentinel value used throughout the
+driver to detect uninitialized fields.
+
+Fixes: 5a5e9c0228e6 ("accel: Add Arm Ethos-U NPU driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Muhammad Bilal <meatuni001@gmail.com>
+Link: https://patch.msgid.link/20260524130319.12747-1-meatuni001@gmail.com
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/sock.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/accel/ethosu/ethosu_gem.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/core/sock.c b/net/core/sock.c
-index 82470f59fa5c50..04fa0c18adc3e4 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -1457,6 +1457,11 @@ int sk_setsockopt(struct sock *sk, int level, int optname,
- 	case SO_ATTACH_FILTER: {
- 		struct sock_fprog fprog;
+--- a/drivers/accel/ethosu/ethosu_gem.c
++++ b/drivers/accel/ethosu/ethosu_gem.c
+@@ -164,6 +164,9 @@ static u64 dma_length(struct ethosu_vali
+ 	s8 mode = dma_st->mode;
+ 	u64 len = dma->len;
  
-+		if (sk_is_tcp(sk) &&
-+		    !sockopt_ns_capable(sock_net(sk)->user_ns, CAP_NET_ADMIN)) {
-+			ret = -EPERM;
-+			break;
-+		}
- 		ret = copy_bpf_fprog_from_user(&fprog, optval, optlen);
- 		if (!ret)
- 			ret = sk_attach_filter(&fprog, sk);
--- 
-2.53.0
-
++	if (len == U64_MAX)
++		return U64_MAX;
++
+ 	if (mode >= 1) {
+ 		if (dma->stride[0] < 0 && (u64)(-dma->stride[0]) > len)
+ 			return U64_MAX;
 
 
 
