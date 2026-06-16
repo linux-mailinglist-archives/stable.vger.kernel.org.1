@@ -1,141 +1,152 @@
-Return-Path: <stable+bounces-265573-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265617-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 9y8SAa6MMWp5mQUAu9opvQ
-	(envelope-from <stable+bounces-265573-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:49:34 +0200
+	id c6enIGeNMWrhmQUAu9opvQ
+	(envelope-from <stable+bounces-265617-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:52:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 531B6693842
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:49:33 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1110693929
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:52:38 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=intel.com header.s=Intel header.b=StKcjs5I;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265573-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265573-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=intel.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=m8JwMayz;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265617-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265617-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2C4323113C9A
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:44:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 30FFE3211245
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:48:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F5E147B429;
-	Tue, 16 Jun 2026 17:44:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1F44472771;
+	Tue, 16 Jun 2026 17:48:24 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4255B47AF5F;
-	Tue, 16 Jun 2026 17:44:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96D923D669A
+	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 17:48:23 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781631884; cv=none; b=E1JTEROV4ydsqU7m5lahwMBkXBPUCmzB3ASKHTcBvqexBsuTGZ/zJgFeYFnR4URQ3468pjFEpxXEyCCL0F209+CTYkhjSEWBpi0xKVx4MukxStrIQdcWBKSoLFIYg1hIDHU+1cHibtvOo6E2VOXHcqHIPH/vxUBZF7EfyMFRzZI=
+	t=1781632104; cv=none; b=OTaeO9rimJHN8RxS22Qevrp6kgtfikKo5r9Tpk8uBc4gnEAe7BsgnSzPEndMbBhjcurKU3/DwjAi9qbJEPmMeOVd7rRkfQ7a4vwVnwWqAuIJjv+kCbOiqh7rfi3eLpW3K3QbBhjB7TSs5CTHSrkDeqHejOUunoFuvNnX+pHCQo4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781631884; c=relaxed/simple;
-	bh=PQA145YAA2CJZfOtrtPtkSQEG98dC0r4HRCTF/mgdjc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bcdPOBlNPlDVdWm4qofedNpZNYSS+TfrY84NXwvi2tQQNn15jW7TinNDzBUCyn87VRd3g2oFQ0IcVErpyS9A2VGW870YrT2xihcWfRWnWtTzXb2+TlfibVmJIFDYDRqAEJLny461Y9N9lzIOabcEk5EmdxgzJVNm35CAwxVZifw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=StKcjs5I; arc=none smtp.client-ip=192.198.163.13
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1781631882; x=1813167882;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=PQA145YAA2CJZfOtrtPtkSQEG98dC0r4HRCTF/mgdjc=;
-  b=StKcjs5IG/IaKGzMI+JeQgQZlKWmOIPcJSQV5mSCyiwAenSxVdnKsccJ
-   xGDpdhwUmsQq9K/KxEvwKUsUprzarkokG68kjLdIKFVID2wBdDXnILhUn
-   k2lUooQCdfFN6Nk0inuSVYdyA9k40G6OsHaKr5SQ2uGPfv+rW2pUvHq0e
-   eSriDmsA1Nxh3DSyZLi4orSNVjC23cXR+RlYpNUSGE4rfnFNHWKf68rtm
-   rtSnTo6w5Jdna7TgahFRuv/VgsDwGV5VS2LK2hCx0qfGBvzijdCNiefLr
-   uCgKZFOfDTjUMQ8A18d6kMJyAGHck5tbr4uau7sAwcV+ZDslw6Jav5htE
-   A==;
-X-CSE-ConnectionGUID: HOGDe5ykTn+lxdAQhjCmxg==
-X-CSE-MsgGUID: qJgcM1a5TZ6H3lJK1QHmbQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11819"; a="84971395"
-X-IronPort-AV: E=Sophos;i="6.24,208,1774335600"; 
-   d="scan'208";a="84971395"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jun 2026 10:44:42 -0700
-X-CSE-ConnectionGUID: EGu9RFbRTzqgHkXWAdaN6w==
-X-CSE-MsgGUID: tLFRqi/tTci1/3FLRF0UZw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,208,1774335600"; 
-   d="scan'208";a="271908495"
-Received: from aduenasd-mobl5.amr.corp.intel.com (HELO [10.125.111.91]) ([10.125.111.91])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jun 2026 10:44:40 -0700
-Message-ID: <81f90f2e-a0df-483a-af25-7eac7a19049a@intel.com>
-Date: Tue, 16 Jun 2026 10:44:39 -0700
+	s=arc-20240116; t=1781632104; c=relaxed/simple;
+	bh=03pf5/j3NaGgDKmpev630Mujf0qwm+ljLt88XRCabPg=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=QxSzNMhU/f0KVjRjTBX5Dpr5msaby7hIXStQNRbjNmT1CIbg40CSEFWDW/jDmsUuG3JxuGIltbyS1+4UtXsfvCYAt9Gy+84D3wWO2eSSB+8IIZV61MoHDsbzbxDWlhr43f/3RAwwtDcmw+P+Rb0QBZlSCHSw1x5MPlbnjZmQkXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m8JwMayz; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B8891F00A3A;
+	Tue, 16 Jun 2026 17:48:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781632103;
+	bh=03pf5/j3NaGgDKmpev630Mujf0qwm+ljLt88XRCabPg=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject;
+	b=m8JwMayz7XbS6AU76PPInUfzXGpqSEoOrAZQKKOjS1CYAzO4mePH0twohOKuSg8IW
+	 /xtIhZjUdI1BapUeTMFqAhgD+rZ03gUthTY47H7XXF5cYqucEFAGhYt/dAC0KU3KiK
+	 oK4kNAdFfU52pdc2KPsQwtPLNutQ+s2xAyXN2LXKUxlVkFuue/01caCmVbPBkrmHNg
+	 u+rrztweZuFPxVo/HSAH/hNPe1/qXIdXOx//f9JiGEyvoHCiLxQZ0jC1uBgmLSduS3
+	 MlazOptH8Fu3tWU/h6hZlczWcOxTmccE9HPKwSVkco9txzOrWSCjaIqf1KqJ0D5Idb
+	 tZafMN/sFgQqw==
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 63666F40069;
+	Tue, 16 Jun 2026 13:48:22 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-05.internal (MEProxy); Tue, 16 Jun 2026 13:48:22 -0400
+X-ME-Sender: <xms:Zowxav-WRym7mZvdypSw_zP1nfRRYZ2qCMN4Ml-QcZlu7o-549hrJQ>
+    <xme:ZowxasIa2kt024t9ZG9CLxSoI4f6dtLFeB3d8NFMzoWE4TIH8arwmm3SQD208ckEm
+    kz0HKQVjgqGC4pqxWZrOzXhY_AGhfgcA9MaABeVMcSrMKcbEQ1RlqA>
+X-ME-Received: <xmr:Zowxatusxu-KGL93NBz5xUj-7M_XlPBAD2-VxnKMsxOQny6SLisNCISUkq-DtSQ9rTJfM4EFPqPo_3mqNBZHyVWQjSDQoGSRYV0>
+X-ME-Proxy-Cause: dmFkZTGLmkz7uKr1nHdeJCfWh26WhHA9wRCkSRVB2EW4+YwAPQJy0tDPAsb9w6mSto6Jim
+    TXmhtVARgz9dZ/kbZ+Jy2KdgKFNFpzrhDZL2s4xVNrdL1o9U7eg0H7TU4RXgeKZL7zkTSi
+    12hL/sUfmr+CQdS/LxNmft5WEYWHX7RZKzbPZU76k0LIXxcKUa2E8Ydg+3zl7w6+8gwX5a
+    FD4BcxHlEj8Ul+sPnmaIFwIOml6bwduMOi5D3Qp6hjmjaaA0YBZ3A5QD8GOSc/zpOV04OB
+    NupRapVJwdbyqeig+p+3mE+TaSOTPzdhaRIGO4n23T3ik2jjdjkQYmCS2D2PZ+XK/DT8nP
+    CnNKswe5fuJKDBXEhnuQICuPAezf1l00yhkHiurqK3KdvXmS8u+IZQ1jF7kjzygfo3BNo+
+    hIHWpGSlAcPMP/TWBpAtb8bMTwJ+UvjqUOvngcZP7Me0JlG8P2ob2fLnttpgKirkHN235n
+    4OA84mYLT4ZtuYUeCgC7w1FVnKyJACWws35BuvNoPCdNpqFY4/mHMbd+KJzJzDdSz4zS2d
+    hAFCn8R+kCrRduBGqMEwq4ORLPMVIi0lAGXI0e2AmBwkDVwJYI63yLN+VA4x3GcPKSGucb
+    txZaSlTIxYCn75wMI9nIrRS7105rTtpR1XwgzRTdrQK9VUyVMoWO0tcX0wCg
+X-ME-Proxy: <xmx:ZowxajBClFL0e6_36FaVBfo7oOUNnswe1IpjkP4wThk4KzMQ9eibkQ>
+    <xmx:ZowxalOHfXRcwccotzowQIQI94wc_MKL1JDotQDVXv3dowDj3M7gFg>
+    <xmx:ZowxarAxAEwqsjnfnBBo67Y_8tb6kVrwRh7exAm45gC5G44ay6vXEg>
+    <xmx:Zowxau4fF1OCFhnWlg5mNwzjZ-fJyKEMuc7RU5JTEfzwofWN3WL-Mg>
+    <xmx:Zowxat7j8tMmKqs6WUzbfQw65KGXbeuSJEDiwFoWEZTtZTMXq7deQ3kC>
+Feedback-ID: i67ae4b3e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 16 Jun 2026 13:48:21 -0400 (EDT)
+Date: Tue, 16 Jun 2026 10:48:21 -0700
+From: "Dan Williams (nvidia)" <djbw@kernel.org>
+To: Dave Jiang <dave.jiang@intel.com>, 
+ linux-cxl@vger.kernel.org
+Cc: djbw@kernel.org, 
+ dave@stgolabs.net, 
+ jic23@kernel.org, 
+ alison.schofield@intel.com, 
+ vishal.l.verma@intel.com, 
+ flavien@nus.edu.sg, 
+ stable@vger.kernel.org
+Message-ID: <6a318c65234a_199fc4100d4@djbw-dev.notmuch>
+In-Reply-To: <20260616004007.4186004-3-dave.jiang@intel.com>
+References: <20260616004007.4186004-1-dave.jiang@intel.com>
+ <20260616004007.4186004-3-dave.jiang@intel.com>
+Subject: Re: [PATCH 2/2] cxl/mce: Serialize the MCE handler against endpoint
+ teardown
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] cxl/mce: Validate memdev and endpoint before
- dereference in cxl_handle_mce()
-To: "Dan Williams (nvidia)" <djbw@kernel.org>, linux-cxl@vger.kernel.org
-Cc: dave@stgolabs.net, jic23@kernel.org, alison.schofield@intel.com,
- vishal.l.verma@intel.com, flavien@nus.edu.sg, stable@vger.kernel.org
-References: <20260616004007.4186004-1-dave.jiang@intel.com>
- <20260616004007.4186004-2-dave.jiang@intel.com>
- <6a318b25443ad_199fc4100b5@djbw-dev.notmuch>
-Content-Language: en-US
-From: Dave Jiang <dave.jiang@intel.com>
-In-Reply-To: <6a318b25443ad_199fc4100b5@djbw-dev.notmuch>
-Content-Type: text/plain; charset=UTF-8
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-5.16 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[intel.com:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [-4.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	MV_CASE(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_CC(0.00)[kernel.org,stgolabs.net,intel.com,nus.edu.sg,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-265617-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-265573-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[stgolabs.net,kernel.org,intel.com,nus.edu.sg,vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER(0.00)[dave.jiang@intel.com,stable@vger.kernel.org];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[djbw-dev.notmuch:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp];
+	FORGED_SENDER(0.00)[djbw@kernel.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:djbw@kernel.org,m:linux-cxl@vger.kernel.org,m:dave@stgolabs.net,m:jic23@kernel.org,m:alison.schofield@intel.com,m:vishal.l.verma@intel.com,m:flavien@nus.edu.sg,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:dave.jiang@intel.com,m:linux-cxl@vger.kernel.org,m:djbw@kernel.org,m:dave@stgolabs.net,m:jic23@kernel.org,m:alison.schofield@intel.com,m:vishal.l.verma@intel.com,m:flavien@nus.edu.sg,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dave.jiang@intel.com,stable@vger.kernel.org];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[djbw@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:mid,intel.com:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 531B6693842
+X-Rspamd-Queue-Id: D1110693929
 
+Dave Jiang wrote:
+> CXL endpoint has a shorter lifetime than CXL memdev state (mds) and
+> the MCE notifier is part of the mds. The MCE handler needs to take
+> a reference on the endpoint in order to keep it alive while operating
+> on it. Take the cxlmd lock to verify the endpoint is still valid and
+> take a reference on it before accessing it.
 
+The only way to synchronize against the removal of cxlmd would be to
+lock its parent device which is moving in the wrong direction.
 
-On 6/16/26 10:43 AM, Dan Williams (nvidia) wrote:
-> Dave Jiang wrote:
->> cxlmd and endpoint are both used in cxl_handle_mce() without proper
->> validation, which can lead to NULL pointer dereference or invalid pointer
->> dereference. The notifier is registered in cxl_memdev_state_create()
->> when the CXL PCI driver first binds, before the memdev is published and
->> before it is attached to a CXL topology.
->>
->> Add checks to cxlmd and endpoint to ensure they are valid before usage.
-> 
-> This looks to be trying to band-aid the original mistake of having
-> cxl_memdev_state_create() register a region-relative callback.
-> 
-> Move the mce notifier registration to be per-region and all the lookup
-> lifetime problems disappear.
-
-ok that makes sense. 
+This lifetime problem disappears with a region-relative mce
+notification.
 
