@@ -1,64 +1,63 @@
-Return-Path: <stable+bounces-263860-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265817-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id mM0sJs5pMWoDiwUAu9opvQ
-	(envelope-from <stable+bounces-263860-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:20:46 +0200
+	id FZbLGX+QMWptmwUAu9opvQ
+	(envelope-from <stable+bounces-265817-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:05:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15DCE690F0F
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:20:46 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5FE1693CC8
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:05:50 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=QeZUL3AR;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263860-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263860-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=n8i+IfBZ;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265817-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265817-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1170331A5E18
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:14:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7662B3037DDF
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:05:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7271D43DA5E;
-	Tue, 16 Jun 2026 15:14:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3E5E3D566F;
+	Tue, 16 Jun 2026 18:05:48 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1924143CEC7;
-	Tue, 16 Jun 2026 15:14:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73FBD3D7A14;
+	Tue, 16 Jun 2026 18:05:46 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781622854; cv=none; b=rzSLmgx7XyjCefFzfnQmu/uVXrxlMUxVoHpkyEh9COMyHs9I3v589VCQzIdfYMO1y2PlvmGZR5KNDrlDpucsiycFwMQAkFDgW4XwbqmKIcQwtgMSfBQtfq1rlCGkjbkF3k/1hfqNcw57u1ZXr1Dm8ysJQWCnnbsp3Smgd6v89HI=
+	t=1781633148; cv=none; b=WHeJ3eVZTCij/Dx3JbX+UKanW8G90FlYsWsI+mCCXieApYFrjVZ863fgtSIdfBmnMLxr4Sw60/599m+twvP9IYTZWz/yGqfOWpKDSrlytIzd3f+L35JUn7cH1L0uIG8R57rrZ/rn4BvUXGVjUJrVvcikIRHOFVvluTlJCd/vVGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781622854; c=relaxed/simple;
-	bh=bmx7j2VRIRlJA9z/gqLToNR67cZPcDHlSTBRy74B41w=;
+	s=arc-20240116; t=1781633148; c=relaxed/simple;
+	bh=yJ+P3tlWc1JgK8ISB4s+v2epoGiT0+k1QdyJVwDk8d0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oHgmfUeyNyfSL8ZVo9k+30Jyn/FIPJ+PRZ3dJScUlLzkuvcunMyHseZiZe4HPD3oarFmKRS/ogT8i1W2WoaWgY2DzZUk3E9MvXzNYqPzxCnlVMyVymhUbXCozSC6amtkul2c2yUN5t22Fbrx/41O+eFU6HQ3t4wfU50fsdhgsI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QeZUL3AR; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 020981F000E9;
-	Tue, 16 Jun 2026 15:14:11 +0000 (UTC)
+	 MIME-Version; b=PjkqykcfmM6zRL1jMBgVyxu80Yrii0dblMlZFhwtJwqom7U6fLOQJ9t6dbxkh3/4ZgqczC5llMveacQo9RtscZT6Q/lyKj+ooEuMDgLxZoAvK4j2ySyvKyekvdl4gYtoOSVk3qH7dDazdniRd8i8wPKb6dNrEB1FumfcgRpDgiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n8i+IfBZ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2922F1F000E9;
+	Tue, 16 Jun 2026 18:05:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781622853;
-	bh=KMQFpKPXbTFXVQQkK5PoH4CKRYAwHdpG+lqFJ8cLBDA=;
+	s=korg; t=1781633146;
+	bh=W6YEp683evY99MEFgY3zWjHNe3HgteabYmQ+6EHVwU4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QeZUL3ARqvHJyApfHM0i7VKgMUVE/KT+MrRC064vQ/umSLqHC10E4FlrN1mUkckm8
-	 YTLAz9fHx0hLlQ3kn54vZKdIyaLMlEivkz32zNcTUSdHvli4ZeyICmdZrqw0nyb+HH
-	 JUQ6FMlS71dX4wotdezRl1vuB85nES0V6ChS3VAk=
+	b=n8i+IfBZg+nPgK6feNvBTDcTaqsN+FPxzhvRlr7VqVQtqVGmVuecFlGE/nXm0QU7J
+	 OnfJnm8OJYVHUqC93CzI6xNwf66Y9SyWuQkhdJJPBUfJQFK01NlPcd59zXfxzguiwO
+	 6E+rN9aAOTtS/XUp3rR2hcpyvByGtAfaMRxNiExo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+e809069bc15f26300526@syzkaller.appspotmail.com,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	syzbot+8ed98cbd0161632bce95@syzkaller.appspotmail.com,
+	Oliver Hartkopp <socketcan@hartkopp.net>,
+	Jay Vosburgh <jv@jvosburgh.net>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 034/378] tcp: Add preempt_{disable,enable}_nested() in reqsk_queue_hash_req().
+Subject: [PATCH 5.15 027/411] bonding: refuse to enslave CAN devices
 Date: Tue, 16 Jun 2026 20:24:25 +0530
-Message-ID: <20260616145111.664111905@linuxfoundation.org>
+Message-ID: <20260616145101.796400856@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,20 +75,20 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-263860-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265817-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:syzbot+e809069bc15f26300526@syzkaller.appspotmail.com,m:kuniyu@google.com,m:edumazet@google.com,m:bigeasy@linutronix.de,m:kuba@kernel.org,m:sashal@kernel.org,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:syzbot+8ed98cbd0161632bce95@syzkaller.appspotmail.com,m:socketcan@hartkopp.net,m:jv@jvosburgh.net,m:kuba@kernel.org,m:sashal@kernel.org,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -99,127 +98,83 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,e809069bc15f26300526];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linutronix.de:email,msgid.link:url]
+	TAGGED_RCPT(0.00)[stable,8ed98cbd0161632bce95];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,syzkaller.appspot.com:url,jvosburgh.net:email,appspotmail.com:email,hartkopp.net:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 15DCE690F0F
+X-Rspamd-Queue-Id: B5FE1693CC8
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Oliver Hartkopp <socketcan@hartkopp.net>
 
-[ Upstream commit e10902df24488ca722303133acfc82490f7d59ad ]
+[ Upstream commit 8ba68464e4787b6a7ec938826e16124df20fd23d ]
 
-syzbot reported a weird reqsk->rsk_refcnt underflow in
-__inet_csk_reqsk_queue_drop().
+syzbot reported a kernel paging request crash in
+can_rx_unregister() inside net/can/af_can.c. The crash occurs
+because a virtual CAN device (vxcan) is being enslaved to a
+bonding master.
 
-The captured reqsk_put() in __inet_csk_reqsk_queue_drop()
-is called only when it successfully removes reqsk from ehash.
+During the enslavement process, the bonding driver mutates
+and modifies the network device states to fit an Ethernet-like
+aggregation model. However, CAN devices operate on a completely
+different Layer 2 architecture, relying on the CAN mid-layer
+private data structure (can_ml_priv) instead of standard
+Ethernet structures. Since bonding does not initialize or
+maintain these CAN structures, subsequent operations on the
+half-enslaved interface (such as closing associated sockets
+via isotp_release) lead to a null-pointer dereference when
+accessing the CAN receiver lists.
 
-Moreover, reqsk_timer_handler() calls another reqsk_put()
-after that.
+Bonding CAN interfaces is architecturally invalid as CAN lacks
+MAC addresses, ARP capabilities, and standard Ethernet
+link-layer mechanisms. While generic loopback devices are
+blocked globally in net/core/dev.c, virtual CAN devices
+bypass this check because they do not carry the IFF_LOOPBACK
+flag, despite acting as local software-loopbacks.
 
-This indicates that the reqsk was missing both refcnts for
-ehash and the timer itself.
+Fix this by explicitly blocking network devices of type
+ARPHRD_CAN from being enslaved at the very beginning of
+bond_enslave(). This prevents illegal state mutations,
+eliminates the resulting KASAN crashes, and avoids potential
+memory leaks from incomplete socket cleanups.
 
-Since all the syzbot reports had PREEMPT_RT enabled, the only
-possible scenario is that reqsk_queue_hash_req() is preempted
-after mod_timer() and before refcount_set(), and then the timer
-triggered after 1s aborts the reqsk due to its listener's close().
+As the CAN support has been added a long time after bonding
+the Fixes-tag points to the introduction of ARPHRD_CAN that
+would have needed a specific handling in bonding_main.c.
 
-Let's wrap mod_timer() and refcount_set() with
-preempt_disable_nested() and preempt_enable_nested().
-
-Note that inet_ehash_insert() holds the normal spin_lock()
-(mutex in PREEMPT_RT), so it must be called outside of
-preempt_disable_nested(), but this is fine.
-
-The lookup path just ignores 0 sk_refcnt entries in ehash
-and tries to create another reqsk, but this will fail at
-inet_ehash_insert().
-
-[0]:
-refcount_t: underflow; use-after-free.
-WARNING: lib/refcount.c:28 at refcount_warn_saturate+0xb2/0x110 lib/refcount.c:28, CPU#0: ktimers/0/16
-Modules linked in:
-CPU: 0 UID: 0 PID: 16 Comm: ktimers/0 Tainted: G             L      syzkaller #0 PREEMPT_{RT,(full)}
-Tainted: [L]=SOFTLOCKUP
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/18/2026
-RIP: 0010:refcount_warn_saturate+0xb2/0x110 lib/refcount.c:28
-Code: e4 7d d1 0a 67 48 0f b9 3a eb 4a e8 38 3d 23 fd 48 8d 3d e1 7d d1 0a 67 48 0f b9 3a eb 37 e8 25 3d 23 fd 48 8d 3d de 7d d1 0a <67> 48 0f b9 3a eb 24 e8 12 3d 23 fd 48 8d 3d db 7d d1 0a 67 48 0f
-RSP: 0000:ffffc90000157948 EFLAGS: 00010246
-RAX: ffffffff84a1301b RBX: 0000000000000003 RCX: ffff88801ca98000
-RDX: 0000000000000100 RSI: 0000000000000000 RDI: ffffffff8f72ae00
-RBP: ffffffff99ae3b01 R08: ffff88801ca98000 R09: 0000000000000005
-R10: 0000000000000100 R11: 0000000000000004 R12: ffff8880425ef568
-R13: ffff8880425ef4f8 R14: ffff8880425ef578 R15: 0000000000000000
-FS:  0000000000000000(0000) GS:ffff888126386000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f7b46710e9c CR3: 000000000dbb6000 CR4: 00000000003526f0
-Call Trace:
- <TASK>
- __refcount_sub_and_test include/linux/refcount.h:400 [inline]
- __refcount_dec_and_test include/linux/refcount.h:432 [inline]
- refcount_dec_and_test include/linux/refcount.h:450 [inline]
- reqsk_put include/net/request_sock.h:136 [inline]
- __inet_csk_reqsk_queue_drop+0x3ce/0x440 net/ipv4/inet_connection_sock.c:1007
- reqsk_timer_handler+0x651/0xdf0 net/ipv4/inet_connection_sock.c:1137
- call_timer_fn+0x192/0x5e0 kernel/time/timer.c:1748
- expire_timers kernel/time/timer.c:1799 [inline]
- __run_timers kernel/time/timer.c:2374 [inline]
- __run_timer_base+0x6a3/0x9f0 kernel/time/timer.c:2386
- run_timer_base kernel/time/timer.c:2395 [inline]
- run_timer_softirq+0x67/0x170 kernel/time/timer.c:2403
- handle_softirqs+0x1de/0x6d0 kernel/softirq.c:622
- __do_softirq kernel/softirq.c:656 [inline]
- run_ktimerd+0x69/0x100 kernel/softirq.c:1151
- smpboot_thread_fn+0x541/0xa50 kernel/smpboot.c:160
- kthread+0x388/0x470 kernel/kthread.c:436
- ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
-
-Fixes: d2d6422f8bd1 ("x86: Allow to enable PREEMPT_RT.")
-Reported-by: syzbot+e809069bc15f26300526@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/6a1a7bcf.0a9e871e.332604.000b.GAE@google.com/
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Link: https://patch.msgid.link/20260601182101.3183993-1-kuniyu@google.com
+Fixes: cd05acfe65ed ("[CAN]: Allocate protocol numbers for PF_CAN")
+Reported-by: syzbot+8ed98cbd0161632bce95@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=8ed98cbd0161632bce95
+Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Acked-by: Jay Vosburgh <jv@jvosburgh.net>
+Link: https://patch.msgid.link/20260526-bonding-candev-v1-1-ba1df400918a@hartkopp.net
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/inet_connection_sock.c | 6 ++++++
+ drivers/net/bonding/bond_main.c | 6 ++++++
  1 file changed, 6 insertions(+)
 
-diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_sock.c
-index f1988fd503540d..d9f6c8d4d7e63a 100644
---- a/net/ipv4/inet_connection_sock.c
-+++ b/net/ipv4/inet_connection_sock.c
-@@ -1151,6 +1151,9 @@ static bool reqsk_queue_hash_req(struct request_sock *req)
- 	/* The timer needs to be setup after a successful insertion. */
- 	req->timeout = tcp_timeout_init((struct sock *)req);
- 	timer_setup(&req->rsk_timer, reqsk_timer_handler, TIMER_PINNED);
-+
-+	preempt_disable_nested();
-+
- 	mod_timer(&req->rsk_timer, jiffies + req->timeout);
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index 5321d9dca698a9..42ad34b308b924 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -1776,6 +1776,12 @@ int bond_enslave(struct net_device *bond_dev, struct net_device *slave_dev,
+ 	int link_reporting;
+ 	int res = 0, i;
  
- 	/* before letting lookups find us, make sure all req fields
-@@ -1158,6 +1161,9 @@ static bool reqsk_queue_hash_req(struct request_sock *req)
- 	 */
- 	smp_wmb();
- 	refcount_set(&req->rsk_refcnt, 2 + 1);
++	if (slave_dev->type == ARPHRD_CAN) {
++		BOND_NL_ERR(bond_dev, extack,
++			    "CAN devices cannot be enslaved");
++		return -EPERM;
++	}
 +
-+	preempt_enable_nested();
-+
- 	return true;
- }
- 
+ 	if (slave_dev->flags & IFF_MASTER &&
+ 	    !netif_is_bond_master(slave_dev)) {
+ 		BOND_NL_ERR(bond_dev, extack,
 -- 
 2.53.0
 
