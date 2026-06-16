@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-265577-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265033-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 8Zo8NJ6LMWoCmQUAu9opvQ
-	(envelope-from <stable+bounces-265577-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:45:02 +0200
+	id kqx9AOGDMWp0lQUAu9opvQ
+	(envelope-from <stable+bounces-265033-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:12:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3396B693704
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:45:02 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DEDA692D76
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:12:00 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ltgjSykF;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265577-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265577-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=QEgt0Qqg;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265033-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265033-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 37EEC304C050
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:45:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1081D33226C3
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:59:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFDC43BFAF7;
-	Tue, 16 Jun 2026 17:45:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 801CF478E39;
+	Tue, 16 Jun 2026 16:58:58 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 995A7331A44;
-	Tue, 16 Jun 2026 17:44:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 396DF47AF67;
+	Tue, 16 Jun 2026 16:58:57 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781631900; cv=none; b=f4o13/DF6tdh4ScuWSVMY6t9vuZZBK31cQQeRzw1koaiGNw4qBF8tsdMlAXgMRnDFMHIBR3oJuYfjYhlZ9WtHMm54nkkxVh5BvGJj+4j/StcGeKBL6J8fcg3X7vC5Xr2Ox1SGBJo2qB2sMZl4oo7SFF5WuvTciN9gpfA4NyIAB0=
+	t=1781629138; cv=none; b=VZgBG2l052q8VCRUonkH34FBxDhZ8vjPE05e0RueqcB0zAOxRGKaEPbNGWKBbYvWL61m8im7iYlltd+nCsKADvIo5KtbHyRT64qQm+tX3+dK4dOUjXLKCRF7rxjCUxLcE+JMde5l40834ovN6xkX0fo/j8dtLVc3OvgAyom+eOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781631900; c=relaxed/simple;
-	bh=9pnad41aAVBadcIK1bPpQm9mATOfPzL7UjDaMTFxa9g=;
+	s=arc-20240116; t=1781629138; c=relaxed/simple;
+	bh=1Dp2ZF1KE3ggDoj726zdsX40op04D0sLzfIMaqIw3tw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QN+7R0iQbOPuJXUKOQHU9T5xTt/HwiN8ElFDH7rxbKXSTa2hNiIYcT0QMa7801Qt0L7dgaT9uR0djWy8xNdhGZ7x0ZSfVRyF7tiwfqac8UgK9jnPTQcAdfOPzlYAhE8MjkkJZDXghThebgAcIUT/hqk5WZp+plUKfbH1HJCx1Ow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ltgjSykF; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9A8E1F000E9;
-	Tue, 16 Jun 2026 17:44:58 +0000 (UTC)
+	 MIME-Version; b=D9rvOy8/QOBYIn74QivU4Fp1srH0vAsXDl01uhDquqbrZ9MZ2yAyaLYcaH9cdLg0gjDPEMOVCFj1xRGpGRD4Vvut+tmuMxJHHZkMncNSc6KWZGBfuiJzB/3tMDxS/GiLh8tRQwnkDSvIZ/8a0ICcUuJZ/9Uo2CQ1CW6Ok2PzRUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QEgt0Qqg; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DCA31F000E9;
+	Tue, 16 Jun 2026 16:58:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781631899;
-	bh=L4oAPEGOFA1NnS8yvc6p5Yj+MrOB66owRILkOADukiw=;
+	s=korg; t=1781629137;
+	bh=Xq7MHgKcRzfxmAG8+vprDpWqqqzIlmjazjPSZNJChCQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ltgjSykFAlBLzENeAHPty93UA4VBj4hBZGrhGI80yOuFs1rFEWVDiG9/FdDfdPidC
-	 28fYHcdnNrIXNpw+HWQZ+9+DfjMjK+Md2foY1PYUtC8l3o+5JIhdzqwuZSX8KH1Go+
-	 vs858pvI46PLlbIWn9SeyoQdYzNL/fnz/na/VikY=
+	b=QEgt0QqgXVXaLVVQkizUiYTACEJqVdzp28upaquz3CGjjWwaaVp9+yiTk38v7TKr3
+	 6rpgYPjG0n5x6SbwHMv7P2igxLJcJnQWqaZ7iai+SZeOJQr7iTq4seqfUODC3yE+ft
+	 n3J3Ehp7BT7VS5zfOQCVtYLsXiP+5QpfGEolqJdk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kamal Dasu <kamal.dasu@broadcom.com>,
-	Shawn Lin <shawn.lin@rock-chips.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.1 309/522] mmc: core: Fix host controller programming for fixed driver type
+	David Thompson <davthompson@nvidia.com>,
+	Thangaraj Samynathan <Thangaraj.s@microchip.com>,
+	Nicolai Buchwitz <nb@tipi-net.de>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 229/452] net: lan743x: permit VLAN-tagged packets up to configured MTU
 Date: Tue, 16 Jun 2026 20:27:36 +0530
-Message-ID: <20260616145140.330695504@linuxfoundation.org>
+Message-ID: <20260616145129.759738512@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,84 +71,137 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265577-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kamal.dasu@broadcom.com,m:shawn.lin@rock-chips.com,m:ulf.hansson@linaro.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265033-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:davthompson@nvidia.com,m:Thangaraj.s@microchip.com,m:nb@tipi-net.de,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[rock-chips.com:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linaro.org:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,broadcom.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,vger.kernel.org:from_smtp,tipi-net.de:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3396B693704
+X-Rspamd-Queue-Id: 6DEDA692D76
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kamal Dasu <kamal.dasu@broadcom.com>
+From: David Thompson <davthompson@nvidia.com>
 
-commit 5a52c5701a67d5176eb1afbf1bdaf7d6dfeec597 upstream.
+[ Upstream commit 8173d22b211f615015f7b35f48ab11a6dd78dc99 ]
 
-When using the fixed-emmc-driver-type device tree property, the MMC core
-correctly selects the driver strength for the card but fails to program
-the host controller accordingly. This causes a mismatch where the card
-uses the specified driver type while the host controller defaults to
-Type B (since ios->drv_type remains zero).
+VLAN-tagged interfaces on lan743x devices were previously unreachable via
+SSH and failed to respond to large ping packets (e.g. "ping -s 1469" given
+MTU=1500). In these scenarios, "ethtool -S" reports non-zero "RX Oversize
+Frame Errors". According to Microchip AN2948, the MAC_RX FSE (VLAN field
+size enforcement) bit determines whether frames with VLAN tags exceeding
+the base MTU plus tag length are discarded.
 
-Split the driver type programming logic to handle both fixed and dynamic
-driver type selection paths. For fixed driver types, program the host
-controller with the selected drive_strength value. For dynamic selection,
-use the existing drv_type as before.
+The driver must set the MAC_RX.FSE bit before setting MAC_RX.RXEN to allow
+VLAN-tagged frames up to the interface MTU, preventing them from being
+treated as oversized. As a result, both the base and VLAN-tagged interfaces
+can use the same MTU without receive errors.
 
-This ensures both the eMMC device and host controller use matching driver
-strengths, preventing potential signal integrity issues.
-
-Fixes: 6186d06c519e ("mmc: parse new binding for eMMC fixed driver type")
-Signed-off-by: Kamal Dasu <kamal.dasu@broadcom.com>
-Reviewed-by: Shawn Lin <shawn.lin@rock-chips.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 23f0703c125b ("lan743x: Add main source files for new lan743x driver")
+Signed-off-by: David Thompson <davthompson@nvidia.com>
+Reviewed-by: Thangaraj Samynathan <Thangaraj.s@microchip.com>
+Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
+Tested-by: Nicolai Buchwitz <nb@tipi-net.de> # lan7430 on arm64 (RevPi
+Link: https://patch.msgid.link/20260529210300.433135-1-davthompson@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/core/mmc.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/microchip/lan743x_main.c | 32 +++++++++++++++++++
+ drivers/net/ethernet/microchip/lan743x_main.h |  1 +
+ 2 files changed, 33 insertions(+)
 
---- a/drivers/mmc/core/mmc.c
-+++ b/drivers/mmc/core/mmc.c
-@@ -1354,7 +1354,9 @@ static void mmc_select_driver_type(struc
- 
- 	card->drive_strength = drive_strength;
- 
--	if (drv_type)
-+	if (fixed_drv_type >= 0 && drive_strength)
-+		mmc_set_driver_type(card->host, drive_strength);
-+	else if (drv_type)
- 		mmc_set_driver_type(card->host, drv_type);
+diff --git a/drivers/net/ethernet/microchip/lan743x_main.c b/drivers/net/ethernet/microchip/lan743x_main.c
+index 8910928b38498b..50abc227f6f160 100644
+--- a/drivers/net/ethernet/microchip/lan743x_main.c
++++ b/drivers/net/ethernet/microchip/lan743x_main.c
+@@ -1255,6 +1255,36 @@ static void lan743x_mac_set_address(struct lan743x_adapter *adapter,
+ 		   "MAC address set to %pM\n", addr);
  }
  
++static void lan743x_mac_rx_enable_fse(struct lan743x_adapter *adapter)
++{
++	u32 mac_rx;
++	bool rxen;
++
++	mac_rx = lan743x_csr_read(adapter, MAC_RX);
++	if (mac_rx & MAC_RX_FSE_)
++		return;
++
++	rxen = mac_rx & MAC_RX_RXEN_;
++	if (rxen) {
++		mac_rx &= ~MAC_RX_RXEN_;
++		lan743x_csr_write(adapter, MAC_RX, mac_rx);
++		lan743x_csr_wait_for_bit(adapter, MAC_RX, MAC_RX_RXD_,
++					 1, 1000, 20000, 100);
++	}
++
++	/* Per AN2948, hardware prevents modification of the FSE bit while the
++	 * MAC receiver is enabled (RXEN bit set). Use separate register write
++	 * to assert the FSE bit before enabling the RXEN bit in MAC_RX
++	 */
++	mac_rx |= MAC_RX_FSE_;
++	lan743x_csr_write(adapter, MAC_RX, mac_rx);
++
++	if (rxen) {
++		mac_rx |= MAC_RX_RXEN_;
++		lan743x_csr_write(adapter, MAC_RX, mac_rx);
++	}
++}
++
+ static int lan743x_mac_init(struct lan743x_adapter *adapter)
+ {
+ 	bool mac_address_valid = true;
+@@ -1294,6 +1324,8 @@ static int lan743x_mac_init(struct lan743x_adapter *adapter)
+ 	lan743x_mac_set_address(adapter, adapter->mac_address);
+ 	eth_hw_addr_set(netdev, adapter->mac_address);
+ 
++	lan743x_mac_rx_enable_fse(adapter);
++
+ 	return 0;
+ }
+ 
+diff --git a/drivers/net/ethernet/microchip/lan743x_main.h b/drivers/net/ethernet/microchip/lan743x_main.h
+index b6c83c68241e63..f1d346db85ea04 100644
+--- a/drivers/net/ethernet/microchip/lan743x_main.h
++++ b/drivers/net/ethernet/microchip/lan743x_main.h
+@@ -180,6 +180,7 @@
+ #define MAC_RX				(0x104)
+ #define MAC_RX_MAX_SIZE_SHIFT_		(16)
+ #define MAC_RX_MAX_SIZE_MASK_		(0x3FFF0000)
++#define MAC_RX_FSE_			BIT(2)
+ #define MAC_RX_RXD_			BIT(1)
+ #define MAC_RX_RXEN_			BIT(0)
+ 
+-- 
+2.53.0
+
 
 
 
