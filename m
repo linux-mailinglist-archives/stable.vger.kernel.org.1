@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-265730-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264182-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id IWKjIrqOMWqLmgUAu9opvQ
-	(envelope-from <stable+bounces-265730-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:58:18 +0200
+	id W1bDG3BxMWq/jQUAu9opvQ
+	(envelope-from <stable+bounces-264182-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:53:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E04C693AA9
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:58:18 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8CE869177D
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:53:19 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=lwrtGqAi;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265730-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265730-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=x4l9QXHT;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264182-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264182-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9D26F3035B81
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:58:17 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D9F5D30BD7CC
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:44:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C75D1477E51;
-	Tue, 16 Jun 2026 17:58:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 667BB3B840B;
+	Tue, 16 Jun 2026 15:42:40 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EC9A27FD49;
-	Tue, 16 Jun 2026 17:58:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32FF144CF44;
+	Tue, 16 Jun 2026 15:42:39 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781632694; cv=none; b=tdHUO8rMhqLawCC+m9Cdj2vMIRTznxORIE2xanrKESVqOOM7HnSst1SsGRevGaNn0NauPieZd4mK86Qpg9/h0mmBg5eEiXgP6tzod1r5P75XU/bfchhC0+HowR5vrxYVi7qVu4+UNIgjWSgBCK4wJ/XYxXhAiVeBkISnuJRSfAs=
+	t=1781624560; cv=none; b=kgQTAlZVeFMxWov+o3MCd+oN4Ioao4Ni6M10+wa3TVN8sT99U6jHrNdkx7PDuD8fT6pASj6zO4ORh/emKQMgHmDkfALWWjaDm738gwhs/ewXdqB9WmflBocHGoRfXc0pXZ8x7+spWJRKjkOmJn8kakwIm7lBH7jZyuC9D+x0DpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781632694; c=relaxed/simple;
-	bh=+gE9uVhY4/7ieo8V8sN+ixhXEHKRY7F5EcbRSVOGBI0=;
+	s=arc-20240116; t=1781624560; c=relaxed/simple;
+	bh=3N5ZVKGx/+pEtQwOZeioll6aMksYXiGE9ZFP+LvFKxM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hOLXPsmpK30m2dTLlFYPsPx5ieTIRwEKGG4XJ+JuII1GiwVY/shS2cFsKR70YHq9mmbGasaQfvPz0i3VllUQTT6k1g6ODCkYEVSGRXPTZvkN/072KbNbE7cn0y+hTe8EAjbzrNk+iMlV8NYFxdkP+FQezssP5y6U1b6MAmX+L6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lwrtGqAi; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DC2E1F000E9;
-	Tue, 16 Jun 2026 17:58:12 +0000 (UTC)
+	 MIME-Version; b=H1X2F9Nv82k9teXo8G9auoRXaWAoOYQ9K0BbT66PcEyBwVlvlsEy/weSV4eSjPXHsKCHaGbakeaRBXbvtImzOYR5YORXNx+bMAe/MgDXSB1XTzivsPhZS3bl6zWYHh0PBCUamzE7LhBl4o/n3dQyqnQ50ANsk8MAff25+NgIP/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x4l9QXHT; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D5021F00A3A;
+	Tue, 16 Jun 2026 15:42:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781632693;
-	bh=ax1K0O63NFuZOExYMmgYS88n4NbCtKa5k1pwmCIq7E0=;
+	s=korg; t=1781624559;
+	bh=wIv3bCO7koGVOiCKPPLMc0im4ueljunDGQgmGnFPqTg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=lwrtGqAi4ov5lgrIAxoIEeVlOX3Il+Cw9sq+kqicfDkoY3bKwfWTpz9vMri+OWouD
-	 X/OSbdx/eLcW468aly+rQxopcWC8WO5+htGvubzexwbKvB0uqU/ufWQVeXXodVy/DT
-	 QVwFmCpmRx3VgcpFS8rkj5OgZzz18iYJ3kZNqLnI=
+	b=x4l9QXHThnmEjj16lgib7zMr5c6htOAInvIcIaZhgxzXtibkFLa5VEctVqoEgVmE1
+	 Y9sE5k0Jx+nHJhA38WNlK3K5fGPTz7fQUxXNMtA5BFLD5uOH1liYRaY3FtHQ5Rgz3W
+	 mXEkW6N3Ya47mMRJgSR1YB6pVRXdkIyTNOvFM8yo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 442/522] selftests: mptcp: drop nanoseconds width specifier
+	Alex Hung <alex.hung@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Ray Wu <ray.wu@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 7.0 358/378] drm/amd/display: Use krealloc_array() in dal_vector_reserve()
 Date: Tue, 16 Jun 2026 20:29:49 +0530
-Message-ID: <20260616145146.619899299@linuxfoundation.org>
+Message-ID: <20260616145128.991808370@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,104 +71,84 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265730-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:matttbe@kernel.org,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264182-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:alex.hung@amd.com,m:harry.wentland@amd.com,m:ray.wu@amd.com,m:daniel.wheeler@amd.com,m:alexander.deucher@amd.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,amd.com:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2E04C693AA9
+X-Rspamd-Queue-Id: C8CE869177D
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+From: Harry Wentland <harry.wentland@amd.com>
 
-[ Upstream commit 01ff78e4b3d98689184c52d97f9575dfbdc3b10f ]
+commit da48bc4461b8a5ebfb9264c9b191a701d8e99009 upstream.
 
-Using the format specifier +%s%3N with GNU date is honoured, and only
-prints 3 digits of the nanoseconds portion of the seconds since epoch,
-which corresponds to the milliseconds.
+[Why & How]
+dal_vector_reserve() computes the allocation size as
+"capacity * vector->struct_size" using uint32_t arithmetic, which can
+silently wrap to a small value on overflow. This would cause krealloc to
+return a smaller buffer than expected, leading to heap overflows on
+subsequent vector appends.
 
-The uutils implementation of date currently does not honour this, and
-always prints all 9 digits. This is a known issue [1], but can be worked
-around by adapting this test to use nanoseconds instead of microseconds,
-and then divide it by 1e6.
+Replace krealloc() with krealloc_array() which performs an internal
+overflow check and returns NULL on wrap, preventing the issue.
 
-This fix is similar to what has been done on systemd side [2], and it is
-needed to run the selftests on Ubuntu 26.04, containing uutils 0.8.0.
-
-Note that the Fixes tag is there even if this patch doesn't fix an issue
-in the kernel selftests, but it is useful for those using uutils 0.8.0.
-
-Fixes: 048d19d444be ("mptcp: add basic kselftest for mptcp")
+Fixes: 2004f45ef83f ("drm/amd/display: Use kernel alloc/free")
+Assisted-by: Copilot:claude-opus-4.6
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Ray Wu <ray.wu@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 37668568641ccc4cc1dbca4923d0a16609dd5707)
 Cc: stable@vger.kernel.org
-Link: https://github.com/uutils/coreutils/issues/11658 [1]
-Link: https://github.com/systemd/systemd/pull/41627 [2]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260515-net-mptcp-misc-fixes-7-1-rc4-v2-6-701e96419f2f@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_connect.sh |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/display/dc/basics/vector.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_connect.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_connect.sh
-@@ -450,7 +450,7 @@ do_transfer()
- 	wait_local_port_listen "${listener_ns}" "${port}"
+--- a/drivers/gpu/drm/amd/display/dc/basics/vector.c
++++ b/drivers/gpu/drm/amd/display/dc/basics/vector.c
+@@ -288,8 +288,8 @@ bool dal_vector_reserve(struct vector *v
+ 	if (capacity <= vector->capacity)
+ 		return true;
  
- 	local start
--	start=$(date +%s%3N)
-+	start=$(date +%s%N)
- 	timeout ${timeout_test} \
- 		ip netns exec ${connector_ns} \
- 			./mptcp_connect -t ${timeout_poll} -p $port -s ${cl_proto} \
-@@ -463,7 +463,7 @@ do_transfer()
- 	local rets=$?
+-	new_container = krealloc(vector->container,
+-				 capacity * vector->struct_size, GFP_KERNEL);
++	new_container = krealloc_array(vector->container,
++				       capacity, vector->struct_size, GFP_KERNEL);
  
- 	local stop
--	stop=$(date +%s%3N)
-+	stop=$(date +%s%N)
- 
- 	if $capture; then
- 		sleep 1
-@@ -479,7 +479,7 @@ do_transfer()
- 	fi
- 
- 	local duration
--	duration=$((stop-start))
-+	duration=$(((stop-start) / 1000000))
- 	printf "(duration %05sms) " "${duration}"
- 	if [ ${rets} -ne 0 ] || [ ${retc} -ne 0 ]; then
- 		echo "[ FAIL ] client exit code $retc, server $rets" 1>&2
+ 	if (new_container) {
+ 		vector->container = new_container;
 
 
 
