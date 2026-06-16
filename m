@@ -1,63 +1,62 @@
-Return-Path: <stable+bounces-265147-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264639-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id rPwyCTCGMWpslgUAu9opvQ
-	(envelope-from <stable+bounces-265147-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:21:52 +0200
+	id zdhaBOJ6MWqzkQUAu9opvQ
+	(envelope-from <stable+bounces-264639-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:33:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 226EF69307B
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:21:51 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A530692353
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:33:37 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=RFNEtZvR;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265147-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-265147-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="AI/3Mloa";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264639-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264639-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0BBB6309491D
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:09:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E8BBE3277B6A
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:23:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3338A47CC79;
-	Tue, 16 Jun 2026 17:08:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C156546AF21;
+	Tue, 16 Jun 2026 16:23:10 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBC6F47CC7F;
-	Tue, 16 Jun 2026 17:08:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3994477986;
+	Tue, 16 Jun 2026 16:23:09 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781629710; cv=none; b=IfTyDUP/75pBckV/eFRoNXUNJoWf2888eVRZb6Ml9bi7f5WUSRy41aI93JedLfa7eU0BwPFJu76nFo6Oelq7r54zAVNgUmbwbEOsQrzGEOO/X5/Usdlmq7cJ/0zjpWSl1PDXWZLvBXUeDu2o7JgvmocONj7lH5plFRVtIFQd34E=
+	t=1781626990; cv=none; b=PpGvDEWdwJ8Ebh1fPKZxO8GQC2Jtk8FV2+Tb5924TdtdYLHqi9kPJkVI1U2nvmiAadLUSaOfYdx8rVS4vN/jT8Mbunk3EuaS8g63P3pnD03SzMexcOcWTe2rinY3gQUW6O1wiLB2SB+9mAr3pvbTb1SHsbdm9WJ7AQA+7QfwoaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781629710; c=relaxed/simple;
-	bh=M1LbFfkyhU8Uo5GVV154Vas9WAXuFxQiLWQ11wKB7G4=;
+	s=arc-20240116; t=1781626990; c=relaxed/simple;
+	bh=4Yc+JhDRInUeu6dMgSKtzIWH4gIKV0hxLeYZOYqDsvY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O2TaGOYosXxVSqbPLp8upE8ZMoPeEzDj3TKLbk8+v+YM2nnINjLIfn2Kv9YjIY5Ms6H6LSDt9/S3W/iMLaLFv2QZ5kPYh2I2pIpcnUxYB9a8dECZGXfCyjqOBnYAJO5AA+2w1EWVe+jmc57h1ZUmVB47kPuPN6gUNicwa17AeQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RFNEtZvR; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A36A01F000E9;
-	Tue, 16 Jun 2026 17:08:27 +0000 (UTC)
+	 MIME-Version; b=k68VBsEYIS/7s/fsvyUPNt0/0IzCrF9KWEIDxrSMYIIoMIJc/zLhZq9b4E5ow4WiMhOq4nEFa4jCdiYT3SFpFB9bGqNPuXEjktKk82oM5PcaMMfFNndy2tMQiLAFROGG42RabvRFTkvl6HRLpso010M4soCkAKJGsQRP4zm/54k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AI/3Mloa; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69B521F000E9;
+	Tue, 16 Jun 2026 16:23:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781629708;
-	bh=nDphKQB/rc+HpjwkKFJ+ErbaMqIFH6nq9uZPOV0FTxQ=;
+	s=korg; t=1781626989;
+	bh=eisGFZfQ1s9ZxWl4Y0gSr0JuqbOdJroGDE8oJHGZ29g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=RFNEtZvRL8tKJbSFZ/G4nEfmMjpVXIvPEqGArbRytSYMtovfEV8BDpQGo0pQm8r+l
-	 cDDgnEHUAh4I/ElSBryRcS4SIo7SEZ9fxOzCVbMBueULUK4osQQrOyTBCJzTSklINC
-	 uvtO8NpQKTdYRpGT+WMTH2tfn6B+PcZZrdqymu8U=
+	b=AI/3MloaXgvBII4WlJmmm27D5cn69fybfh+Ys6kEcqHXF/tf8OVLWiENxDAIv2lUC
+	 giu3CQ1ososUDIcMsUbtMMgkL8y3ChDxeT9ihOXukpkq5iIOV54JytcNdpkvz6WjJf
+	 L6kshqn/i1II2jrGy08b8GstGwlSLRH4BlHPx5so=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	Fernand Sieber <sieberf@amazon.com>,
-	Leonard Foerster <foersleo@amazon.de>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 307/452] mm/damon/ops-common: call folio_test_lru() after folio_get()
+	Breno Leitao <leitao@debian.org>,
+	Allison Henderson <achender@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 096/261] rds: mark snapshot pages dirty in rds_info_getsockopt()
 Date: Tue, 16 Jun 2026 20:28:54 +0530
-Message-ID: <20260616145133.633519397@linuxfoundation.org>
+Message-ID: <20260616145049.486279529@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,22 +72,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265147-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264639-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:sj@kernel.org,m:sieberf@amazon.com,m:foersleo@amazon.de,m:shakeel.butt@linux.dev,m:akpm@linux-foundation.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:leitao@debian.org,m:achender@kernel.org,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -97,69 +96,57 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linux.dev:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,amazon.de:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 226EF69307B
+X-Rspamd-Queue-Id: 6A530692353
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Breno Leitao <leitao@debian.org>
 
-commit d6b8b02a27b3dd09ec12144322b3dac46d9bc9ef upstream.
+[ Upstream commit 512db8267b73a220a64180d95ab5eebe7c4964a8 ]
 
-damon_get_folio() speculatively calls folio_test_lru() before
-folio_try_get().  The folio can get freed and reallocated to a tail page.
-In the case, VM_BUG_ON_PGFLAGS() in const_folio_flags() can be triggered.
-Remove the speculative call.
+rds_info_getsockopt() pins the destination user pages with FOLL_WRITE and
+the RDS_INFO_* producers memcpy the snapshot into them through
+kmap_atomic(). Because that copy goes through the kernel direct map, the
+dirty bit on the user PTE is never set, so unpin_user_pages() releases the
+pages without marking them dirty. A file-backed destination page can then
+be reclaimed without writeback, silently discarding the copied data.
 
-Also mark folio_test_lru() check right after folio_try_get() success as no
-more unlikely.
+Use unpin_user_pages_dirty_lock() with make_dirty=true so the modified
+pages are marked dirty before they are unpinned.
 
-The race should be rare.  Also the problem can happen only if the kernel
-has enabled CONFIG_DEBUG_VM_PGFLAGS.  No real world report of this issue
-has been made so far.  This fix is based on only theoretical analysis.
-That said, a bug is a bug.  A similar issue was also fixed via commit
-3203b3ab0fcf ("mm/filemap: don't call folio_test_locked() without a
-reference in next_uptodate_folio()").  I don't expect this change will
-make a meaningful impact to DAMON performance in the real world, though I
-will be happy to be corrected from the real world reports.
-
-The issue was discovered [1] by Sashiko.
-
-
-Link: https://lore.kernel.org/20260525162256.8317-1-sj@kernel.org
-Link: https://lore.kernel.org/20260517234112.89245-1-sj@kernel.org [1]
-Fixes: 3f49584b262c ("mm/damon: implement primitives for the virtual memory address spaces")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: Fernand Sieber <sieberf@amazon.com>
-Cc: Leonard Foerster <foersleo@amazon.de>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: <stable@vger.kernel.org> # 5.15.x
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a8c879a7ee98 ("RDS: Info and stats")
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Allison Henderson <achender@kernel.org>
+Link: https://patch.msgid.link/20260608-rds_fix-v1-1-006c88543408@debian.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/damon/ops-common.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/rds/info.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/mm/damon/ops-common.c
-+++ b/mm/damon/ops-common.c
-@@ -28,9 +28,9 @@ struct folio *damon_get_folio(unsigned l
- 		return NULL;
+diff --git a/net/rds/info.c b/net/rds/info.c
+index b6b46a8214a0a5..b3ee5f8238c44d 100644
+--- a/net/rds/info.c
++++ b/net/rds/info.c
+@@ -235,7 +235,7 @@ int rds_info_getsockopt(struct socket *sock, int optname, char __user *optval,
  
- 	folio = page_folio(page);
--	if (!folio_test_lru(folio) || !folio_try_get(folio))
-+	if (!folio_try_get(folio))
- 		return NULL;
--	if (unlikely(page_folio(page) != folio || !folio_test_lru(folio))) {
-+	if (unlikely(page_folio(page) != folio) || !folio_test_lru(folio)) {
- 		folio_put(folio);
- 		folio = NULL;
- 	}
+ out:
+ 	if (pages)
+-		unpin_user_pages(pages, nr_pages);
++		unpin_user_pages_dirty_lock(pages, nr_pages, true);
+ 	kfree(pages);
+ 
+ 	return ret;
+-- 
+2.53.0
+
 
 
 
