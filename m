@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-265117-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266077-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id G1QHG3SCMWrZlAUAu9opvQ
-	(envelope-from <stable+bounces-265117-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:05:56 +0200
+	id 7Z/zGu6VMWrwnQUAu9opvQ
+	(envelope-from <stable+bounces-266077-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:29:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13BF0692B83
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:05:56 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B30B76942AA
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:29:01 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=IZJr305H;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265117-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-265117-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=zz1vr874;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266077-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266077-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 820AA30385B0
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:05:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 726C331541C3
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:29:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF72343E4BC;
-	Tue, 16 Jun 2026 17:05:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3935477E33;
+	Tue, 16 Jun 2026 18:28:59 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A13C0376A19;
-	Tue, 16 Jun 2026 17:05:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B9BB43CEC7;
+	Tue, 16 Jun 2026 18:28:58 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781629553; cv=none; b=l3nw7zrQDUF+SaquJJaI3UWr3NgTHmcSwSqQcZnp+YVx2XNrJP9vTX3o9/Q5aMpfU+ykJmm1BsemtiD2VnV55+puzKrz7nc4iTsmrUYcw8GB7uhkkau3oGIfv/pGqmXLWverAhdMEl/+RalZgFpvj5911z15/hQueJ5IsQZiQBM=
+	t=1781634539; cv=none; b=PgnfsQi7yg+GBMkmkjujbM9JcQtLJ6qwv3rGKg93JYXyzJBYAbB9GJO3OnMnYIMcptxpB2VGKycmonrdHG6Q6KshUVM4GCFS8QacMyYMis7q8y8uaU3P1DXjrxIAI8+S576A3qoSr7eScIJwq4pCyaI/68uVz0sjerge093n5h8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781629553; c=relaxed/simple;
-	bh=1VYVNRbmVceGgpE8+NscvQnLCzs3jFlUVYfIxWuiAUU=;
+	s=arc-20240116; t=1781634539; c=relaxed/simple;
+	bh=sacLKDoR/XsWpdhHtaKdPUzXbsCfD2oYfUFtDv7RI/8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EyHBD6FLIbIbTctzqsej7egp4ZJmTo9V7SqiZU3U1ENX+9qKtE5sm0FZBp1FHYDUxSxo0SpdrZ1k3FuQPIzs4Y+9VfLJe5JtbMCdcBG78ZRn2nV1/vYM6JsNRovRA1htOo+g+0VJaIuPLEZmWS3Px6oEI6V8AHzWMCBeTTmihjc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IZJr305H; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACA041F000E9;
-	Tue, 16 Jun 2026 17:05:51 +0000 (UTC)
+	 MIME-Version; b=baZ0zPtapjlp7L81BPU6gEXRveAccK+d4zUu5/sAZsnDxVRz0v59KndtltVDJs7Su/YyI8JlF9vaGf6raxBVaojgIqenT0xOVE5BhaHfVmEQfI29C/6Tc04gVsQxyPrLdJoKOKR+JXj7Viemtcu9pxwRggkeTJR0aFr7oRU+3JM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zz1vr874; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AD511F000E9;
+	Tue, 16 Jun 2026 18:28:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781629552;
-	bh=1IbOppDXXFQBgxGiDRFxdjfqGLyvh5j+fkLmPqDeFxQ=;
+	s=korg; t=1781634538;
+	bh=3lShzoSu2lnNxAVFvC3o2yz+h5oQN0TIEjr3unrNVu4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=IZJr305H6yZXoE0aUDW6dH4bmASickFE7K30uQE0SnEr/ot3KEtlIGV/rukwyN13D
-	 /4uCI42bP37cm5tT+1LX8MJjzj0jFpi8ua2jPmB0UVbLUVcq/QmB9ocLpr9k1UMISs
-	 zvTTLhNsyl2apK/99J2Z2cFRnE7HWsScZG9N+G1Y=
+	b=zz1vr874ut6VYrIBZbJLwWILuoZhIL8BRRji0oP+GpGR5cqpTyub0poUFQ2CcUXt3
+	 kuevEI1lcP91k8PrlLqLsx4iA7leNqiXCd0K4eS4iPmaIyCp/RFdFPlUnj6RB38uzr
+	 hmriDaRAh0HqA8a245SqgDK7li1hTXd7VgvB6/7o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Inochi Amaoto <inochiama@gmail.com>,
-	Gabriel Somlo <gsomlo@gmail.com>,
-	Ulf Hansson <ulfh@kernel.org>
-Subject: [PATCH 6.6 295/452] mmc: litex_mmc: Use DIV_ROUND_UP for more accurate clock calculation
+	Seohyeon Maeng <bioloidgp@gmail.com>,
+	Jan Kara <jack@suse.cz>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 284/411] udf: fix partition descriptor append bookkeeping
 Date: Tue, 16 Jun 2026 20:28:42 +0530
-Message-ID: <20260616145133.034136235@linuxfoundation.org>
+Message-ID: <20260616145116.253903414@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,21 +72,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-265117-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:inochiama@gmail.com,m:gsomlo@gmail.com,m:ulfh@kernel.org,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-266077-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bioloidgp@gmail.com,m:jack@suse.cz,m:sashal@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.cz,kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -99,58 +99,67 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,msgid.link:url,suse.cz:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 13BF0692B83
+X-Rspamd-Queue-Id: B30B76942AA
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Inochi Amaoto <inochiama@gmail.com>
+From: Seohyeon Maeng <bioloidgp@gmail.com>
 
-commit b837e38c255dd9f8b53511d52e87f1fda32b3dfe upstream.
+[ Upstream commit 08841b06fa64d8edbd1a21ca6e613420c90cc4b8 ]
 
-The previous clock uses roundup_pow_of_two() to calculate the core
-clock frequency. It does not meet the actual hardware meaning.
-The actual frequency is calculated by "ref_clk / ((div >> 1) << 1)".
+Mounting a crafted UDF image with repeated partition descriptors can
+trigger a heap out-of-bounds write in part_descs_loc[].
 
-Fix the clock divider calculation.
+handle_partition_descriptor() deduplicates entries by partition number,
+but appended slots never record partnum. As a result duplicate
+Partition Descriptors are appended repeatedly and num_part_descs keeps
+growing.
 
-Fixes: 92e099104729 ("mmc: Add driver for LiteX's LiteSDCard interface")
-Signed-off-by: Inochi Amaoto <inochiama@gmail.com>
-Reviewed-by: Gabriel Somlo <gsomlo@gmail.com>
+Once the table is full, the growth path still sizes the allocation from
+partnum even though inserts are indexed by num_part_descs. If partnum is
+already aligned to PART_DESC_ALLOC_STEP, ALIGN(partnum, step) can keep
+the old capacity and the next append writes past the end of the table.
+
+Store partnum in the appended slot and size growth from the next append
+count so deduplication and capacity tracking follow the same model.
+
+Fixes: ee4af50ca94f ("udf: Fix mounting of Win7 created UDF filesystems")
 Cc: stable@vger.kernel.org
-Signed-off-by: Ulf Hansson <ulfh@kernel.org>
+Signed-off-by: Seohyeon Maeng <bioloidgp@gmail.com>
+Link: https://patch.msgid.link/20260310081652.21220-1-bioloidgp@gmail.com
+Signed-off-by: Jan Kara <jack@suse.cz>
+[ replaced kzalloc_objs() helper with equivalent kcalloc() ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/litex_mmc.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/udf/super.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/mmc/host/litex_mmc.c
-+++ b/drivers/mmc/host/litex_mmc.c
-@@ -16,6 +16,7 @@
- #include <linux/interrupt.h>
- #include <linux/iopoll.h>
- #include <linux/litex.h>
-+#include <linux/math.h>
- #include <linux/mod_devicetable.h>
- #include <linux/module.h>
- #include <linux/platform_device.h>
-@@ -436,11 +437,10 @@ static void litex_mmc_setclk(struct lite
- 	struct device *dev = mmc_dev(host->mmc);
- 	u32 div;
+--- a/fs/udf/super.c
++++ b/fs/udf/super.c
+@@ -1658,8 +1658,9 @@ static struct udf_vds_record *handle_par
+ 			return &(data->part_descs_loc[i].rec);
+ 	if (data->num_part_descs >= data->size_part_descs) {
+ 		struct part_desc_seq_scan_data *new_loc;
+-		unsigned int new_size = ALIGN(partnum, PART_DESC_ALLOC_STEP);
++		unsigned int new_size;
  
--	div = freq ? host->ref_clk / freq : 256U;
--	div = roundup_pow_of_two(div);
-+	div = freq ? DIV_ROUND_UP(host->ref_clk, freq) : 256U;
- 	div = clamp(div, 2U, 256U);
- 	dev_dbg(dev, "sd_clk_freq=%d: set to %d via div=%d\n",
--		freq, host->ref_clk / div, div);
-+		freq, host->ref_clk / ((div + 1) & ~1U), div);
- 	litex_write16(host->sdphy + LITEX_PHY_CLOCKERDIV, div);
- 	host->sd_clk = freq;
++		new_size = data->num_part_descs + PART_DESC_ALLOC_STEP;
+ 		new_loc = kcalloc(new_size, sizeof(*new_loc), GFP_KERNEL);
+ 		if (!new_loc)
+ 			return ERR_PTR(-ENOMEM);
+@@ -1669,6 +1670,7 @@ static struct udf_vds_record *handle_par
+ 		data->part_descs_loc = new_loc;
+ 		data->size_part_descs = new_size;
+ 	}
++	data->part_descs_loc[data->num_part_descs].partnum = partnum;
+ 	return &(data->part_descs_loc[data->num_part_descs++].rec);
  }
+ 
 
 
 
