@@ -1,63 +1,63 @@
-Return-Path: <stable+bounces-265497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266287-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ivNaMH2LMWr2mAUAu9opvQ
-	(envelope-from <stable+bounces-265497-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:44:29 +0200
+	id td/IDzmaMWr6nwUAu9opvQ
+	(envelope-from <stable+bounces-266287-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:47:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2974A6936E3
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:44:29 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3355E694785
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:47:20 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=sUfg3qO7;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265497-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265497-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=vrMuzgYN;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266287-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-266287-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E08B031429C6
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:38:26 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3CCFB30091DD
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:47:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ACCA331A44;
-	Tue, 16 Jun 2026 17:38:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D06134657C2;
+	Tue, 16 Jun 2026 18:47:12 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F07824611CF;
-	Tue, 16 Jun 2026 17:38:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A64BB3CFF55;
+	Tue, 16 Jun 2026 18:47:11 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781631506; cv=none; b=BJObrTHsHHcj36a3ILpoOmvZZpV5AvjwiwHsZZqozC5XxLiewqyOGuPO6cfWpLANW1m3pH1OqkOGZJmd68h+cSvoZ+RodE9lQ7FzUIbL088XcZ9v7Ow5wmQA4ic+/d2k8jGKN44BmFdhpL30avxOx5vIrN8m1aZtOWjiJT3EUCE=
+	t=1781635632; cv=none; b=a6n2kcXqQcd7lgDZKfE1aa3pdkSANECtcsH+xW6jYtGVcS8+iT0qqwUo2OyRwXrz6LbUdXU3hKpjIcyNX+ezHbRgF89In0bFsVavwIsRv3t04Uw9seCaTK8vVdYYefWOHtcDGfSgdYDoTOgSFHm3K+SqsYDGyuVVFLKV4C9Feyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781631506; c=relaxed/simple;
-	bh=9dZdLxtnrdPD9u37qMjKlPabyTXaOOLVXXIT9u8OPRY=;
+	s=arc-20240116; t=1781635632; c=relaxed/simple;
+	bh=MntT3d87tJ9ak+PAtBHvlmL1+R2zU0KYxbKsgQKxSVQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cdA1Xg7ERql1j03liOAK+5yiZmgvcA9Q7P3Q6huJlu8NZbxjvhwW9CSgvLobfLGEl9deCJ6yKtNb5oqnD9vjF5QSoNDZ74KIefwRo4crqX5ZNkWBl6zrSPxEHyVDYQr39l3F7nimK2NSZQKvylYWZlzs5zbvK3smjMNUUIxD7H8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sUfg3qO7; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C00F31F000E9;
-	Tue, 16 Jun 2026 17:38:23 +0000 (UTC)
+	 MIME-Version; b=d8zy37i0cEkFsm5JwPKyEZnA6gVcpnoTmR0923oRMcPG1nQ8TwzM4EfYC5s+a11Dmqp7Qpa4YO7dpqCY7adSJTNGCVxjk7edkvNlZqcipIRg+gtziqjJ8yMSqCzW3Xm5wfFudnCDK5rlWTCYFLjAzlwglcOS/cFg/0MupHWqjvM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vrMuzgYN; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 565A71F000E9;
+	Tue, 16 Jun 2026 18:47:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781631504;
-	bh=7XzgobV2HG3ISdARtJbDZl6Y/UIxLBBTS7fWnTUEgZI=;
+	s=korg; t=1781635631;
+	bh=EjoCxkcHAaD34CzWl5W+yjFLt2mkPAgEPDo35mpSKHA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=sUfg3qO7owsALrofySNCOuGQ2uvCxOP51UaFhsWaj0zV+XMF/gr67OsgA3sPnIB4w
-	 ljgNJbCfeVd3U6hF9WyDHznWogBkVO3n2+d/ltumA67in30C8LaaazaSxDK3Qmwl/O
-	 2KXObQ0hGJteCEZmNBDaSTkrvZerrfFzTepXnNHg=
+	b=vrMuzgYNuOa7AiQR+YnWw1Hk+ikzbsXtPRz8SwrxPfxTfqToZEJK44y9BD8+UfKEr
+	 rpvZZas2AEKwzoSuTg4nD23bNxrD87GVEwGlpCGfVvzBs7KMfdf+HOwzEPDrSUUR06
+	 4OS/05SOaoX/vh2DgINz+DttCj0euv3T7GSNvHNY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Val Packett <val@packett.cool>,
-	stable <stable@kernel.org>,
-	Kuen-Han Tsai <khtsai@google.com>,
-	Carlos Llamas <cmllamas@google.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 233/522] usb: gadget: u_ether: Fix NULL pointer deref in eth_get_drvinfo
+	Lin Ma <malin89@huawei.com>,
+	Chenyuan Mi <michenyuan@huawei.com>,
+	Jingguo Tan <tanjingguo@huawei.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Steffen Klassert <steffen.klassert@secunet.com>
+Subject: [PATCH 5.10 084/342] xfrm: esp: restore combined single-frag length gate
 Date: Tue, 16 Jun 2026 20:26:20 +0530
-Message-ID: <20260616145136.892384839@linuxfoundation.org>
+Message-ID: <20260616145052.159111831@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,22 +73,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265497-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-266287-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:val@packett.cool,m:stable@kernel.org,m:khtsai@google.com,m:cmllamas@google.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:malin89@huawei.com,m:michenyuan@huawei.com,m:tanjingguo@huawei.com,m:sd@queasysnail.net,m:steffen.klassert@secunet.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -100,70 +100,69 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,queasysnail.net:email,vger.kernel.org:from_smtp,huawei.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2974A6936E3
+X-Rspamd-Queue-Id: 3355E694785
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuen-Han Tsai <khtsai@google.com>
+From: Jingguo Tan <tanjingguo@huawei.com>
 
-[ Upstream commit e002e92e88e12457373ed096b18716d97e7bbb20 ]
+commit dfa0d7b0ff1eb6b2c416b8fdb9b4f2cefba57a40 upstream.
 
-Commit ec35c1969650 ("usb: gadget: f_ncm: Fix net_device lifecycle with
-device_move") reparents the gadget device to /sys/devices/virtual during
-unbind, clearing the gadget pointer. If the userspace tool queries on
-the surviving interface during this detached window, this leads to a
-NULL pointer dereference.
+The ESP out-of-place fast path appends the trailer in esp_output_head()
+before esp_output_tail() allocates the destination page frag. The
+head-side gate currently checks skb->data_len and tailen separately, but
+the tail code allocates a single destination frag from the combined
+post-trailer skb->data_len.
 
-Unable to handle kernel NULL pointer dereference
-Call trace:
- eth_get_drvinfo+0x50/0x90
- ethtool_get_drvinfo+0x5c/0x1f0
- __dev_ethtool+0xaec/0x1fe0
- dev_ethtool+0x134/0x2e0
- dev_ioctl+0x338/0x560
+Reject the page-frag fast path when the combined aligned length exceeds a
+page. Otherwise skb_page_frag_refill() may fall back to a single page while
+the destination sg still spans the combined skb->data_len.
 
-Add a NULL check for dev->gadget in eth_get_drvinfo(). When detached,
-skip copying the fw_version and bus_info strings, which is natively
-handled by ethtool_get_drvinfo for empty strings.
+Restore this combined-length page gate for both IPv4 and IPv6.
 
-Suggested-by: Val Packett <val@packett.cool>
-Reported-by: Val Packett <val@packett.cool>
-Closes: https://lore.kernel.org/linux-usb/10890524-cf83-4a71-b879-93e2b2cc1fcc@packett.cool/
-Fixes: ec35c1969650 ("usb: gadget: f_ncm: Fix net_device lifecycle with device_move")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
-Link: https://patch.msgid.link/20260316-eth-null-deref-v1-1-07005f33be85@google.com
+Fixes: 5bd8baab087d ("esp: limit skb_page_frag_refill use to a single page")
+Cc: stable@vger.kernel.org
+Signed-off-by: Lin Ma <malin89@huawei.com>
+Signed-off-by: Chenyuan Mi <michenyuan@huawei.com>
+Signed-off-by: Jingguo Tan <tanjingguo@huawei.com>
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/u_ether.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ net/ipv4/esp4.c |    4 ++--
+ net/ipv6/esp6.c |    4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/usb/gadget/function/u_ether.c b/drivers/usb/gadget/function/u_ether.c
-index e972de236be5e2..83dfc5008b689e 100644
---- a/drivers/usb/gadget/function/u_ether.c
-+++ b/drivers/usb/gadget/function/u_ether.c
-@@ -147,8 +147,10 @@ static void eth_get_drvinfo(struct net_device *net, struct ethtool_drvinfo *p)
+--- a/net/ipv4/esp4.c
++++ b/net/ipv4/esp4.c
+@@ -459,8 +459,8 @@ int esp_output_head(struct xfrm_state *x
+ 			return err;
+ 	}
  
- 	strscpy(p->driver, "g_ether", sizeof(p->driver));
- 	strscpy(p->version, UETH__VERSION, sizeof(p->version));
--	strscpy(p->fw_version, dev->gadget->name, sizeof(p->fw_version));
--	strscpy(p->bus_info, dev_name(&dev->gadget->dev), sizeof(p->bus_info));
-+	if (dev->gadget) {
-+		strscpy(p->fw_version, dev->gadget->name, sizeof(p->fw_version));
-+		strscpy(p->bus_info, dev_name(&dev->gadget->dev), sizeof(p->bus_info));
-+	}
- }
+-	if (ALIGN(tailen, L1_CACHE_BYTES) > PAGE_SIZE ||
+-	    ALIGN(skb->data_len, L1_CACHE_BYTES) > PAGE_SIZE)
++	if (ALIGN(skb->data_len + tailen, L1_CACHE_BYTES) >
++	    PAGE_SIZE)
+ 		goto cow;
  
- /* REVISIT can also support:
--- 
-2.53.0
-
+ 	if (!skb_cloned(skb)) {
+--- a/net/ipv6/esp6.c
++++ b/net/ipv6/esp6.c
+@@ -493,8 +493,8 @@ int esp6_output_head(struct xfrm_state *
+ 			return err;
+ 	}
+ 
+-	if (ALIGN(tailen, L1_CACHE_BYTES) > PAGE_SIZE ||
+-	    ALIGN(skb->data_len, L1_CACHE_BYTES) > PAGE_SIZE)
++	if (ALIGN(skb->data_len + tailen, L1_CACHE_BYTES) >
++	    PAGE_SIZE)
+ 		goto cow;
+ 
+ 	if (!skb_cloned(skb)) {
 
 
 
