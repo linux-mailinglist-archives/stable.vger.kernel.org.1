@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-266183-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265211-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id en6YGQ2ZMWpEnwUAu9opvQ
-	(envelope-from <stable+bounces-266183-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:42:21 +0200
+	id mym3J/iGMWrXlgUAu9opvQ
+	(envelope-from <stable+bounces-265211-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:25:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1B296945A7
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:42:20 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0EB96931B0
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:25:11 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=utvOELmr;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266183-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266183-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=HjYOM4Mp;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265211-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-265211-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5660B303CE96
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:38:10 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 75E283015D47
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:14:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9380C46AF3C;
-	Tue, 16 Jun 2026 18:38:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8137043E490;
+	Tue, 16 Jun 2026 17:14:02 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60ECC169AD2;
-	Tue, 16 Jun 2026 18:38:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4870C33A9EB;
+	Tue, 16 Jun 2026 17:14:00 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781635089; cv=none; b=rvwSRZn8/tYfVP6EfSc0VehIqhbmO2b3sFWRsfwOiLdSQYEFINdV0OcYr6LZRNgOau3SjMk1FOQlNOlWho0+etvTVfCvZrrqxcBbApuw1hmfxrQ095noxDVYbYrhGCQ6QgF4O+6PAliGhQ2hT598N9a32JC5NJJlYI5BkrtOJhU=
+	t=1781630042; cv=none; b=lCLcDMkUe73lWGtHv8pZtdwpVL+AeYZ1z0UNSFvJTYiVSzwRwFf/ScmIiqNa9WbzTR4V7jTSbCFySDV/yU9AnmecCnlX1fqwTH63TSO3pJxyPlnHO7SFOm0Ng4TW2MldAiz2gA2Nv+jTuyoVaL0pJGEdJUFe8MdzBO+S1raHOrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781635089; c=relaxed/simple;
-	bh=sXC66G3Q3paW2JS3LEd4uh0gUQSKqFuRRobazS9hCos=;
+	s=arc-20240116; t=1781630042; c=relaxed/simple;
+	bh=b22KIQIsaoKtZ3qc3i4n4ZuRwi8HrRTtTka1LyilNEI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dVnWGQYin9DwPhQqWJ34iRVVuD39fNm3DpDszVlHjCGOEC0Alxl24a6tWDTngZTYp8TaR68Uj4vYOdCxhy8tdfVlknONYh0/Bi/L7ljVksrUOzdD8GbOFyJELYcIwM1AJ+YlylnHWhBFQJYfPNKh9VrX5P68tIkdhowMrlcQAJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=utvOELmr; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 369281F000E9;
-	Tue, 16 Jun 2026 18:38:06 +0000 (UTC)
+	 MIME-Version; b=M2ZoeT97UTZ1ieP3lSlxsBx5j8COtzWvtIbtCBijUXcNroOrZLOEc9j7X/F0gQ6ssrIfiTWFsesfNHGqt79toUmhEC/DezdvZWHQa6hhc1WzgWdWR7gk3tiXUkr6HHNy2IzjJPFDFJ6cunXWEiAm8MaMbNgSArC7wlUS6kSyHAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HjYOM4Mp; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D55E1F000E9;
+	Tue, 16 Jun 2026 17:13:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781635088;
-	bh=wY5Hh1gRI7H1biQF0V8f3+/OHy3PFlDDShbnCnNF1g4=;
+	s=korg; t=1781630040;
+	bh=velStp7CdpBB1HFG9GtUP76PViV2qfQRCdqJ55nTfG8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=utvOELmrbKsnSrAYSDEg1Gv/Cuhgq6siLzhZiV2fh636EHQga9T2tkXfEJ6cRsozf
-	 cUiA6VL6Ajb9v65RtymmDJImjZzdeNddR6ryCVw2tOBEw0C51FuWuFbS2Kn2QxjoQq
-	 l2amoG4ZU3Q6QZlYqnl8Jo6QIrnymBk12TrtEXas=
+	b=HjYOM4Mp8733u7llUDm56J7hRlRAhvr2IAmRr+JnFTWuylpU5DnHY8EA4+llPANqt
+	 l841iPt/3xnXXJta5gPzE9lBBgUKQq0ltS3ADBFNFIh4Y7YZNP0Gws3FmtOU4Zpw3j
+	 OreUU3cD1DdOmu1OHoR0jWmT6tApvltdtzyvPtTA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anton Leontev <leontyevantony@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	David Carlier <devnexen@gmail.com>,
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <jic23@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 388/411] hv_netvsc: use kmap_local_page in netvsc_copy_to_send_buf
+Subject: [PATCH 6.6 399/452] iio: adc: npcm: fix unbalanced clk_disable_unprepare()
 Date: Tue, 16 Jun 2026 20:30:26 +0530
-Message-ID: <20260616145121.869726654@linuxfoundation.org>
+Message-ID: <20260616145137.820840551@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,125 +74,145 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,vger.kernel.org,kernel.org];
+	TAGGED_FROM(0.00)[bounces-265211-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-266183-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:leontyevantony@gmail.com,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:devnexen@gmail.com,m:andriy.shevchenko@intel.com,m:Stable@vger.kernel.org,m:jic23@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com,kernel.org];
-	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,intel.com:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D1B296945A7
+X-Rspamd-Queue-Id: D0EB96931B0
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anton Leontev <leontyevantony@gmail.com>
+From: David Carlier <devnexen@gmail.com>
 
-[ Upstream commit 004e9ecfe6c5384f9e0b2f6f6389d42ec22789af ]
+[ Upstream commit 0d42e2c0bd6ceb89e44c6e065f9bdf9b1df3ef0c ]
 
-netvsc_copy_to_send_buf() copies page buffer entries into the VMBus
-send buffer using phys_to_virt() on the entry PFN. Entries for the
-RNDIS header and the skb linear data come from kmalloc'd memory and
-are always in the kernel direct map, but entries for skb fragments
-reference page cache or user pages, which on 32-bit x86 with
-CONFIG_HIGHMEM=y can live above the LOWMEM boundary. For such a page
-phys_to_virt() returns an address outside the direct map and the
-subsequent memcpy() faults on the transmit softirq path, which is
-fatal.
+The driver acquired the ADC clock with devm_clk_get() and read its
+rate, but never called clk_prepare_enable(). The probe error path and
+npcm_adc_remove() both called clk_disable_unprepare() unconditionally,
+causing the clk framework's enable/prepare counts to underflow on
+probe failure or module unbind.
 
-Map the pages with kmap_local_page() instead, handling two properties
-of the page buffer entries:
+The issue went unnoticed because NPCM BMC firmware leaves the ADC
+clock enabled at boot, so the driver happened to work in practice.
 
- - pb[i].pfn is a Hyper-V PFN at HV_HYP_PAGE_SIZE (4K) granularity,
-   not a native PFN. Reconstruct the physical address first and derive
-   the native page from it, so the mapping stays correct where
-   PAGE_SIZE > HV_HYP_PAGE_SIZE (e.g. arm64 with 64K pages).
+Switch to devm_clk_get_enabled() so the clock is properly enabled
+during probe and automatically released by the device-managed
+cleanup, and drop the now-redundant clk_disable_unprepare() from
+both the probe error path and remove().
 
- - Since commit 41a6328b2c55 ("hv_netvsc: Preserve contiguous PFN
-   grouping in the page buffer array"), an entry describes a full
-   physically contiguous fragment and pb[i].len can exceed PAGE_SIZE,
-   while kmap_local_page() maps a single page. Copy page by page,
-   splitting at native page boundaries.
+While at it, drop the duplicate error message on devm_request_irq()
+failure since the IRQ core already logs it.
 
-The copy path only handles packets smaller than the send section size
-(6144 bytes by default); larger packets take the cp_partial path where
-only the RNDIS header is copied. So entries here are bounded by the
-section size and a copy is split at most once on 4K-page systems. On
-!CONFIG_HIGHMEM configs kmap_local_page() folds to page_address() and
-no mapping work is added.
-
-Fixes: c25aaf814a63 ("hyperv: Enable sendbuf mechanism on the send path")
-Cc: stable@vger.kernel.org
-Signed-off-by: Anton Leontev <leontyevantony@gmail.com>
-Link: https://patch.msgid.link/20260604165938.32033-1-leontyevantony@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-[ adapted `phys_to_page(paddr)` to `pfn_to_page(PHYS_PFN(paddr))` ]
+Fixes: 9bf85fbc9d8f ("iio: adc: add NPCM ADC driver")
+Signed-off-by: David Carlier <devnexen@gmail.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <jic23@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/hyperv/netvsc.c |   19 +++++++++++++++----
- 1 file changed, 15 insertions(+), 4 deletions(-)
+ drivers/iio/adc/npcm_adc.c |   25 ++++++++-----------------
+ 1 file changed, 8 insertions(+), 17 deletions(-)
 
---- a/drivers/net/hyperv/netvsc.c
-+++ b/drivers/net/hyperv/netvsc.c
-@@ -12,6 +12,7 @@
- #include <linux/sched.h>
- #include <linux/wait.h>
- #include <linux/mm.h>
-+#include <linux/highmem.h>
- #include <linux/delay.h>
- #include <linux/io.h>
- #include <linux/slab.h>
-@@ -956,12 +957,22 @@ static void netvsc_copy_to_send_buf(stru
- 	}
+--- a/drivers/iio/adc/npcm_adc.c
++++ b/drivers/iio/adc/npcm_adc.c
+@@ -231,7 +231,7 @@ static int npcm_adc_probe(struct platfor
+ 	if (IS_ERR(info->reset))
+ 		return PTR_ERR(info->reset);
  
- 	for (i = 0; i < page_count; i++) {
--		char *src = phys_to_virt(pb[i].pfn << HV_HYP_PAGE_SHIFT);
--		u32 offset = pb[i].offset;
-+		phys_addr_t paddr = (pb[i].pfn << HV_HYP_PAGE_SHIFT) +
-+				    pb[i].offset;
- 		u32 len = pb[i].len;
+-	info->adc_clk = devm_clk_get(&pdev->dev, NULL);
++	info->adc_clk = devm_clk_get_enabled(&pdev->dev, NULL);
+ 	if (IS_ERR(info->adc_clk)) {
+ 		dev_warn(&pdev->dev, "ADC clock failed: can't read clk\n");
+ 		return PTR_ERR(info->adc_clk);
+@@ -244,17 +244,13 @@ static int npcm_adc_probe(struct platfor
+ 	info->adc_sample_hz = clk_get_rate(info->adc_clk) / ((div + 1) * 2);
  
--		memcpy(dest, (src + offset), len);
--		dest += len;
-+		while (len) {
-+			struct page *page = pfn_to_page(PHYS_PFN(paddr));
-+			u32 off = offset_in_page(paddr);
-+			u32 chunk = min_t(u32, len, PAGE_SIZE - off);
-+			char *src = kmap_local_page(page);
-+
-+			memcpy(dest, src + off, chunk);
-+			kunmap_local(src);
-+			dest += chunk;
-+			paddr += chunk;
-+			len -= chunk;
-+		}
- 	}
+ 	irq = platform_get_irq(pdev, 0);
+-	if (irq < 0) {
+-		ret = irq;
+-		goto err_disable_clk;
+-	}
++	if (irq < 0)
++		return irq;
  
- 	if (padding)
+ 	ret = devm_request_irq(&pdev->dev, irq, npcm_adc_isr, 0,
+ 			       "NPCM_ADC", indio_dev);
+-	if (ret < 0) {
+-		dev_err(dev, "failed requesting interrupt\n");
+-		goto err_disable_clk;
+-	}
++	if (ret < 0)
++		return ret;
+ 
+ 	reg_con = ioread32(info->regs + NPCM_ADCCON);
+ 	info->vref = devm_regulator_get_optional(&pdev->dev, "vref");
+@@ -262,7 +258,7 @@ static int npcm_adc_probe(struct platfor
+ 		ret = regulator_enable(info->vref);
+ 		if (ret) {
+ 			dev_err(&pdev->dev, "Can't enable ADC reference voltage\n");
+-			goto err_disable_clk;
++			return ret;
+ 		}
+ 
+ 		iowrite32(reg_con & ~NPCM_ADCCON_REFSEL,
+@@ -272,10 +268,8 @@ static int npcm_adc_probe(struct platfor
+ 		 * Any error which is not ENODEV indicates the regulator
+ 		 * has been specified and so is a failure case.
+ 		 */
+-		if (PTR_ERR(info->vref) != -ENODEV) {
+-			ret = PTR_ERR(info->vref);
+-			goto err_disable_clk;
+-		}
++		if (PTR_ERR(info->vref) != -ENODEV)
++			return PTR_ERR(info->vref);
+ 
+ 		/* Use internal reference */
+ 		iowrite32(reg_con | NPCM_ADCCON_REFSEL,
+@@ -314,8 +308,6 @@ err_iio_register:
+ 	iowrite32(reg_con & ~NPCM_ADCCON_ADC_EN, info->regs + NPCM_ADCCON);
+ 	if (!IS_ERR(info->vref))
+ 		regulator_disable(info->vref);
+-err_disable_clk:
+-	clk_disable_unprepare(info->adc_clk);
+ 
+ 	return ret;
+ }
+@@ -332,7 +324,6 @@ static void npcm_adc_remove(struct platf
+ 	iowrite32(regtemp & ~NPCM_ADCCON_ADC_EN, info->regs + NPCM_ADCCON);
+ 	if (!IS_ERR(info->vref))
+ 		regulator_disable(info->vref);
+-	clk_disable_unprepare(info->adc_clk);
+ }
+ 
+ static struct platform_driver npcm_adc_driver = {
 
 
 
