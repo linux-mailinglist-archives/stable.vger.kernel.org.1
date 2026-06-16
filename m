@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-264269-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265019-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id gAjMDC1xMWqwjQUAu9opvQ
-	(envelope-from <stable+bounces-264269-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:52:13 +0200
+	id DjnIIxyBMWp0lAUAu9opvQ
+	(envelope-from <stable+bounces-265019-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:00:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84EBA691743
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:52:12 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57581692A52
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:00:12 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=CplkxtRf;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264269-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264269-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="v/snFwsc";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265019-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265019-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id ED21230F2242
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:51:09 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 16518302C2FA
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:57:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79A0F44BCB8;
-	Tue, 16 Jun 2026 15:51:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18A97466B4B;
+	Tue, 16 Jun 2026 16:57:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BAD344B66E;
-	Tue, 16 Jun 2026 15:51:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E388431328E;
+	Tue, 16 Jun 2026 16:57:48 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781625069; cv=none; b=PlHt4svBZwtnouuLvlU/+MsHthHLvZxqDGL8aj+0vQ4Ihbzi2Cb8SEmdGsDUtQYwjNRNDjvNw17MaXiKzfknxnhWuZRlo1yDx4ga31Fbb6Xq+CACVDXmaa88GyvC35Yb1Yj9qFIdZUbQIxeRGOtI4P2JlcABwfEYLd81VArz/5I=
+	t=1781629069; cv=none; b=k60aDfG3K9Tc9Q8mq1sg3VBKUYJvnMt0bjwmbpPlHTX5WLQNv8VA1/jy9Whu5W0cZFgTXKcZ2zSbQjTm5D7CBZ/bFqlG33B2eXO4/uUJYJ4L2RKoPIG2KvcaLWYUZCGPjTwwGvq8HRtsbcDjRF1gncy/3ZLKBbVrqupgg9FxACE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781625069; c=relaxed/simple;
-	bh=ujBkuxjF7yTfOBd+9c1yA9DSXA1AlBfF7lPa4wB4fDk=;
+	s=arc-20240116; t=1781629069; c=relaxed/simple;
+	bh=PbJuk+FFMVxuUflrGXw5rwLguWcxDM2aRxQi74vwtYU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fvI+FVE1ikPe3rCC+Vbbryx8Bm/n0SzMsPVoQp7Y+q03vohE9qNKtxbvOcdv78VXtJ2YVZ0qvHb1Ukk0qIbuOuYIVP0bx//DiEsv8btf9Xr1VzWNYkAtI5F2CT7gENhqu4vsnrRXeBmVDrb3P4vexkC8ObQeI7/9F9tSPNkV+bQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CplkxtRf; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7BFC1F000E9;
-	Tue, 16 Jun 2026 15:51:06 +0000 (UTC)
+	 MIME-Version; b=Tr5XV0KVnl6O0/BdCuWJ3xNuv1QUNjDdufdNbZfSoBk7DyuGA3c6XhA2Zb+pDDvGVzRktwIxnGmXKBWmqzW3jh14cY6MyfwcvWHVkiOhtpEszJBWXb4tnBfvdeg3PGWeJzEMJ3ZLhtYFWCmCv77/MWUUYds78AtuVTVFm8h3w5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v/snFwsc; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6A131F000E9;
+	Tue, 16 Jun 2026 16:57:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781625068;
-	bh=x65rtoOVcwBamyr63QJFBBUZ937NoxlWjn54SJ2c6LY=;
+	s=korg; t=1781629068;
+	bh=AvPl+v6o3Asd8DnkWADI9+FcZjVZu1VhurFIzJlTkIg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=CplkxtRfYNQ3Z5+Z3WR7hIDrQUj+7QsEGIO1FQJ+jrZULgJVjMQjnRm97UL/u9iLC
-	 xJoxiZTU8xeB7NhcFMkcKWfnUY24W2I+zW7GbEeOnHCyqkvi3l2IFvbmQxLN0X+QB0
-	 maaGuzn0MO64jiNqltvhTcQUc3sJk53kGI5vz3FY=
+	b=v/snFwsc1M98IbJpDhEh3ZLbnOynssa/rcrjjRZbly0Z4SYxgwwR/5aAwORlX9XE2
+	 7lFaDuk7r6uVXCB17IXTKGa/uKBLqoo9vkh9WMsWqZSL0RuANK+IGr4BIWJZMDWn7b
+	 NhXNa8LgFMpC3nY6n8mxjXwoXg3yE1xh1NUjGRJA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dudu Lu <phx0fer@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Gil Portnoy <dddhkts1@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 045/325] Bluetooth: bnep: fix incorrect length parsing in bnep_rx_frame() extension handling
+Subject: [PATCH 6.6 214/452] ksmbd: fix NULL-deref of opinfo->conn in oplock/lease break notifiers
 Date: Tue, 16 Jun 2026 20:27:21 +0530
-Message-ID: <20260616145059.973581616@linuxfoundation.org>
+Message-ID: <20260616145129.037375824@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,103 +73,108 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-264269-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:phx0fer@gmail.com,m:luiz.von.dentz@intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
+	TAGGED_FROM(0.00)[bounces-265019-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:dddhkts1@gmail.com,m:linkinjeon@kernel.org,m:stfrench@microsoft.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 84EBA691743
+X-Rspamd-Queue-Id: 57581692A52
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dudu Lu <phx0fer@gmail.com>
+From: Gil Portnoy <dddhkts1@gmail.com>
 
-[ Upstream commit 72b8deccff17a7644e0367e1aaf1a36cfb014324 ]
+[ Upstream commit b003086d76968298f22e7cf62239833b5a3a06b1 ]
 
-In bnep_rx_frame(), the BNEP_FILTER_NET_TYPE_SET and
-BNEP_FILTER_MULTI_ADDR_SET extension header parsing has two bugs:
+smb2_oplock_break_noti() and smb2_lease_break_noti() read opinfo->conn
+into a local with neither READ_ONCE() nor a NULL check.  Both run from
+oplock_break() after opinfo_get_list() has dropped ci->m_lock, so a
+concurrent SMB2 LOGOFF (session_fd_check()) can set op->conn = NULL
+under ci->m_lock within that window.  ksmbd_conn_r_count_inc(conn) then
+writes through NULL at offset 0xc4 -- a remotely triggerable oops.
 
-1) The 2-byte length field is read with *(u16 *)(skb->data + 1), which
-   performs a native-endian read. The BNEP protocol specifies this field
-   in big-endian (network byte order), and the same file correctly uses
-   get_unaligned_be16() for the identical fields in
-   bnep_ctrl_set_netfilter() and bnep_ctrl_set_mcfilter().
+Guard both reads the way compare_guid_key() already does: read
+opinfo->conn with READ_ONCE() and return early if it is NULL, before
+allocating the work struct so nothing leaks.  A NULL conn means the
+client is gone and the break is moot, so return 0; oplock_break() treats
+that as success and runs the normal teardown.
 
-2) The length is multiplied by 2, but unlike BNEP_SETUP_CONN_REQ where
-   the length byte counts UUID pairs (requiring * 2 for two UUIDs per
-   entry), the filter extension length field already represents the total
-   data size in bytes. This is confirmed by bnep_ctrl_set_netfilter()
-   which reads the same field as a byte count and divides by 4 to get
-   the number of filter entries.
-
-   The bogus * 2 means skb_pull advances twice as far as it should,
-   either dropping valid data from the next header or causing the pull
-   to fail entirely when the doubled length exceeds the remaining skb.
-
-Fix by splitting the pull into two steps: first use skb_pull_data() to
-safely pull and validate the 3-byte fixed header (ctrl type + length),
-then pull the variable-length data using the properly decoded length.
-
-Fixes: bf8b9a9cb77b ("Bluetooth: bnep: Add support to extended headers of control frames")
-Signed-off-by: Dudu Lu <phx0fer@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: c8efcc786146 ("ksmbd: add support for durable handles v1/v2")
+Assisted-by: Henry (Claude):claude-opus-4
+Signed-off-by: Gil Portnoy <dddhkts1@gmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/bnep/core.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ fs/smb/server/oplock.c | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/net/bluetooth/bnep/core.c b/net/bluetooth/bnep/core.c
-index b3cef7a4db5412..0de5df690bd0b2 100644
---- a/net/bluetooth/bnep/core.c
-+++ b/net/bluetooth/bnep/core.c
-@@ -330,11 +330,18 @@ static int bnep_rx_frame(struct bnep_session *s, struct sk_buff *skb)
- 				goto badframe;
- 			break;
- 		case BNEP_FILTER_MULTI_ADDR_SET:
--		case BNEP_FILTER_NET_TYPE_SET:
--			/* Pull: ctrl type (1 b), len (2 b), data (len bytes) */
--			if (!skb_pull(skb, 3 + *(u16 *)(skb->data + 1) * 2))
-+		case BNEP_FILTER_NET_TYPE_SET: {
-+			u8 *hdr;
+diff --git a/fs/smb/server/oplock.c b/fs/smb/server/oplock.c
+index 5302c30a4a91d7..bba17ea84023e2 100644
+--- a/fs/smb/server/oplock.c
++++ b/fs/smb/server/oplock.c
+@@ -714,11 +714,16 @@ static void __smb2_oplock_break_noti(struct work_struct *wk)
+  */
+ static int smb2_oplock_break_noti(struct oplock_info *opinfo)
+ {
+-	struct ksmbd_conn *conn = opinfo->conn;
++	struct ksmbd_conn *conn;
+ 	struct oplock_break_info *br_info;
+ 	int ret = 0;
+-	struct ksmbd_work *work = ksmbd_alloc_work_struct();
++	struct ksmbd_work *work;
 +
-+			/* Pull ctrl type (1 b) + len (2 b) */
-+			hdr = skb_pull_data(skb, 3);
-+			if (!hdr)
-+				goto badframe;
-+			/* Pull data (len bytes); length is big-endian */
-+			if (!skb_pull(skb, get_unaligned_be16(&hdr[1])))
- 				goto badframe;
- 			break;
-+		}
- 		default:
- 			kfree_skb(skb);
- 			return 0;
++	conn = READ_ONCE(opinfo->conn);
++	if (!conn)
++		return 0;
+ 
++	work = ksmbd_alloc_work_struct();
+ 	if (!work)
+ 		return -ENOMEM;
+ 
+@@ -818,11 +823,15 @@ static void __smb2_lease_break_noti(struct work_struct *wk)
+  */
+ static int smb2_lease_break_noti(struct oplock_info *opinfo)
+ {
+-	struct ksmbd_conn *conn = opinfo->conn;
++	struct ksmbd_conn *conn;
+ 	struct ksmbd_work *work;
+ 	struct lease_break_info *br_info;
+ 	struct lease *lease = opinfo->o_lease;
+ 
++	conn = READ_ONCE(opinfo->conn);
++	if (!conn)
++		return 0;
++
+ 	work = ksmbd_alloc_work_struct();
+ 	if (!work)
+ 		return -ENOMEM;
 -- 
 2.53.0
 
