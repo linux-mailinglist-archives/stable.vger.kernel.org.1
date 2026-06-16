@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-264972-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263806-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id R2d0NYSAMWozlAUAu9opvQ
-	(envelope-from <stable+bounces-264972-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:57:40 +0200
+	id fzNzFcZmMWoYigUAu9opvQ
+	(envelope-from <stable+bounces-263806-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:07:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F5856929D9
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:57:40 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11142690C4E
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:07:50 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=gwER47zS;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264972-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264972-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=VFYxjE2m;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263806-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-263806-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 276F3300C0D5
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:54:24 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7E58D301600B
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:07:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E52B449EC3;
-	Tue, 16 Jun 2026 16:54:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF7C63ACA42;
+	Tue, 16 Jun 2026 15:07:47 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66D02478E50;
-	Tue, 16 Jun 2026 16:54:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B1D53370EA;
+	Tue, 16 Jun 2026 15:07:46 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781628862; cv=none; b=F8kAO2Sr8foEkfsEGlb4lQDgLZOIAeBpZOZ1H4JNwlwSPD3U+a9fqtfcZ5TnoD6eTVmiwRg49DeNVj/IUJwM+ZQuPFiQEGob2qqrKncUE41gn+rm1UWx6akukYpj1FqbJ+bfs/Lg+aDOJzj3826L0VvTFhAtKVrVDJZsGkIV7xY=
+	t=1781622467; cv=none; b=HXRVlAbGrbABn7OrQdT3xArPFp6PpCuvgJbu/IeoyeBMGrHWi77600kBoKA0XakKxPEGgAin/CjCmqmsReJi6dEc/hWhloMja9R6DgXLO34goBqbAht4rhorZPU2UvVgd/4xYiFz2FXSCSalnGhfKSQm4LxQ1YetryONvXhb9Us=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781628862; c=relaxed/simple;
-	bh=O2s6OYTEJtsQx+0IdLEBqYZII1cdo8/SlsrcF9k3/0Y=;
+	s=arc-20240116; t=1781622467; c=relaxed/simple;
+	bh=p5RcP/6FM5TiVKBU2ZlhHQlg2JQU08xxcI5+Vz+6KoE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AoljqOCFUTHrOMZVH6xowg2+KpE6DxHwAUUD9XkYr5d7H3uLRtwYmPBR2rXp56kaBS/9cK0KhBjURBeIe8L/OP/Lc3IkcIHjsQOltSwMwJwEnPKyTnXBfayHyjh4rjIBElVOb09br0lO2rWENa0WKceR9l4ibl31eN+f+Zc3SF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gwER47zS; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17C741F000E9;
-	Tue, 16 Jun 2026 16:54:18 +0000 (UTC)
+	 MIME-Version; b=poX/ioQdOQY+GATAZqK7R0CherS/A0yV6Rl6rdO740ovc4AslF8kbv63uoEcnjr8muLYuVrpEotPRnQ5sDAooMtUbBEA/WXUhQCsE8+lyV7nGngvOHbHhuibHjiSiAFQa6VHra6PO33UbuiDv+CrDAD2r3gxe6oV7gBi4iR54wE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VFYxjE2m; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F5FB1F000E9;
+	Tue, 16 Jun 2026 15:07:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781628860;
-	bh=Wg1xqcHFivysUaW3WjFJLmUh//az8b5hsF8MOeI4mA0=;
+	s=korg; t=1781622466;
+	bh=1S53ksa2rhLU/XaZH8vIK6lblCGY05wJZMMpebgIRHE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gwER47zSarKhKvtPICKvmOkTH0tKN+4miBf5k0H43+t4em+vXqChFBoSjva/9EkQy
-	 tw7ErK4Vc8TQZK3DlRi/w9iZbEZAM6TnqoglCxb1FNjm5c16AMogDVOe3p+xHnEpfY
-	 nqmNVKcgDmXFyj90xeJrSbchHcp4i0eYxTbJCAtc=
+	b=VFYxjE2mGXYRqOBFMRmSAe9RAwrxaYZwA9auk1KvUwyb7k4FLHBfJkgUj0D0qERH3
+	 SH8gVh40VmkSE0t25TLcTZwSOQG2gkyqGqZ4zXiyGZdQ3xIn4aC7qKBLx72HZkoYmF
+	 BWQYtcN3eb5ZWSbv8WytzB8n7OSX6jik09UvpUbY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	John Garry <john.g.garry@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.6 174/452] scsi: target: iscsi: Bound iscsi_encode_text_output() appends to rsp_buf
+	Xie Yuanbin <xieyuanbin1@huawei.com>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 005/325] ARM: fix branch predictor hardening
 Date: Tue, 16 Jun 2026 20:26:41 +0530
-Message-ID: <20260616145127.026364508@linuxfoundation.org>
+Message-ID: <20260616145058.095123041@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,235 +74,194 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264972-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:john.g.garry@oracle.com,m:martin.petersen@oracle.com,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oracle.com];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-263806-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:xieyuanbin1@huawei.com,m:rmk+kernel@armlinux.org.uk,m:bigeasy@linutronix.de,m:sashal@kernel.org,m:rmk@armlinux.org.uk,s:lists@lfdr.de];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,oracle.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	TAGGED_RCPT(0.00)[stable,kernel];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,huawei.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linutronix.de:email,vger.kernel.org:from_smtp,armlinux.org.uk:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9F5856929D9
+X-Rspamd-Queue-Id: 11142690C4E
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 
-commit bf33e01f88388c43e285492a63e539df6ffed64c upstream.
+commit fd2dee1c6e2256f726ba33fd3083a7be0efc80d3 upstream.
 
-iscsi_encode_text_output() concatenates "key=value\0" records into
-login->rsp_buf, an 8192-byte kzalloc(MAX_KEY_VALUE_PAIRS) buffer
-allocated in iscsit_alloc_login_setup_buffer(). The three sprintf() call
-sites in this function (lines 1398, 1411, 1424 in v7.1-rc2) never check
-the remaining buffer capacity:
+__do_user_fault() may be called with indeterminent interrupt enable
+state, which means we may be preemptive at this point. This causes
+problems when calling harden_branch_predictor(). For example, when
+called from a data abort, do_alignment_fault()->do_bad_area().
 
-	*length += sprintf(output_buf, "%s=%s", er->key, er->value);
-	*length += 1;
-	output_buf = textbuf + *length;
+Move harden_branch_predictor() out of __do_user_fault() and into the
+calling contexts.
 
-The 8192-byte ceiling at iscsi_target_check_login_request() bounds the
-*input* Login PDU payload, but a single PDU can carry up to 2048 minimal
-four-byte "a=b\0" pairs, each unknown key expanding to a 16-byte
-"a=NotUnderstood\0" output record via iscsi_add_notunderstood_response().
-2048 * 16 = 32 KiB of output into an 8 KiB buffer, producing a ~24 KiB
-heap overrun in the kmalloc-8k slab.
+Moving it into do_kernel_address_page_fault(), we can be sure that
+interrupts will be disabled here.
 
-The fix introduces a static iscsi_encode_text_record() helper that uses
-snprintf() with a per-call bounds check against the remaining buffer,
-and threads a u32 textbuf_size parameter through
-iscsi_encode_text_output(). Both call sites in
-iscsi_target_handle_csg_zero() (PHASE_SECURITY) and
-iscsi_target_handle_csg_one() (PHASE_OPERATIONAL) pass
-MAX_KEY_VALUE_PAIRS. On overflow the encoder logs the condition, calls
-iscsi_release_extra_responses() to drop queued records, and returns -1;
-both caller sites now emit ISCSI_STATUS_CLS_INITIATOR_ERR /
-ISCSI_LOGIN_STATUS_INIT_ERR via iscsit_tx_login_rsp() before returning,
-so the initiator sees an explicit failed-login response rather than a
-silent connection drop. (Prior to this patch only the PHASE_OPERATIONAL
-caller did that; the PHASE_SECURITY caller is converted to the same
-shape.)
+Converting do_translation_fault() to use do_kernel_address_page_fault()
+rather than do_bad_area() means that we keep branch predictor handling
+for translation faults. Interrupts will also be disabled at this call
+site.
 
-Fixes: e48354ce078c ("iscsi-target: Add iSCSI fabric support for target v4.1")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-7
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Tested-by: John Garry <john.g.garry@oracle.com>
-Reviewed-by: John Garry <john.g.garry@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+do_sect_fault() needs special handling, so detect user mode accesses
+to kernel-addresses, and add an explicit call to branch predictor
+hardening.
+
+Finally, add branch predictor hardening to do_alignment() for the
+faulting case (user mode accessing kernel addresses) before interrupts
+are enabled.
+
+This should cover all cases where harden_branch_predictor() is called,
+ensuring that it is always has interrupts disabled, also ensuring that
+it is called early in each call path.
+
+Reviewed-by: Xie Yuanbin <xieyuanbin1@huawei.com>
+Tested-by: Xie Yuanbin <xieyuanbin1@huawei.com>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/target/iscsi/iscsi_target_nego.c       |    7 ++
- drivers/target/iscsi/iscsi_target_parameters.c |   62 +++++++++++++++++++------
- drivers/target/iscsi/iscsi_target_parameters.h |    2 
- 3 files changed, 55 insertions(+), 16 deletions(-)
+ arch/arm/mm/alignment.c |  6 +++++-
+ arch/arm/mm/fault.c     | 39 ++++++++++++++++++++++++++-------------
+ 2 files changed, 31 insertions(+), 14 deletions(-)
 
---- a/drivers/target/iscsi/iscsi_target_nego.c
-+++ b/drivers/target/iscsi/iscsi_target_nego.c
-@@ -899,10 +899,14 @@ static int iscsi_target_handle_csg_zero(
- 			SENDER_TARGET,
- 			login->rsp_buf,
- 			&login->rsp_length,
-+			MAX_KEY_VALUE_PAIRS,
- 			conn->param_list,
- 			conn->tpg->tpg_attrib.login_keys_workaround);
--	if (ret < 0)
-+	if (ret < 0) {
-+		iscsit_tx_login_rsp(conn, ISCSI_STATUS_CLS_INITIATOR_ERR,
-+				ISCSI_LOGIN_STATUS_INIT_ERR);
- 		return -1;
-+	}
+diff --git a/arch/arm/mm/alignment.c b/arch/arm/mm/alignment.c
+index 3c6ddb1afdc463..812380f30ae36a 100644
+--- a/arch/arm/mm/alignment.c
++++ b/arch/arm/mm/alignment.c
+@@ -19,10 +19,11 @@
+ #include <linux/init.h>
+ #include <linux/sched/signal.h>
+ #include <linux/uaccess.h>
++#include <linux/unaligned.h>
  
- 	if (!iscsi_check_negotiated_keys(conn->param_list)) {
- 		bool auth_required = iscsi_conn_auth_required(conn);
-@@ -986,6 +990,7 @@ static int iscsi_target_handle_csg_one(s
- 			SENDER_TARGET,
- 			login->rsp_buf,
- 			&login->rsp_length,
-+			MAX_KEY_VALUE_PAIRS,
- 			conn->param_list,
- 			conn->tpg->tpg_attrib.login_keys_workaround);
- 	if (ret < 0) {
---- a/drivers/target/iscsi/iscsi_target_parameters.c
-+++ b/drivers/target/iscsi/iscsi_target_parameters.c
-@@ -1419,19 +1419,42 @@ free_buffer:
- 	return -1;
- }
+ #include <asm/cp15.h>
+ #include <asm/system_info.h>
+-#include <linux/unaligned.h>
++#include <asm/system_misc.h>
+ #include <asm/opcodes.h>
  
-+/*
-+ * Append "key=value" plus a trailing NUL into @textbuf at *@length.
-+ * Returns 0 on success and advances *@length, or -EMSGSIZE if the
-+ * record (including the NUL) would not fit in the remaining buffer.
-+ */
-+static int iscsi_encode_text_record(char *textbuf, u32 *length,
-+				    u32 textbuf_size,
-+				    const char *key, const char *value)
-+{
-+	int n;
-+	u32 avail;
+ #include "fault.h"
+@@ -809,6 +810,9 @@ do_alignment(unsigned long addr, unsigned int fsr, struct pt_regs *regs)
+ 	int thumb2_32b = 0;
+ 	int fault;
+ 
++	if (addr >= TASK_SIZE && user_mode(regs))
++		harden_branch_predictor();
 +
-+	if (*length >= textbuf_size)
-+		return -EMSGSIZE;
-+
-+	avail = textbuf_size - *length;
-+	n = snprintf(textbuf + *length, avail, "%s=%s", key, value);
-+	if (n < 0 || (u32)n + 1 > avail)
-+		return -EMSGSIZE;
-+
-+	*length += n + 1;
-+	return 0;
-+}
-+
- int iscsi_encode_text_output(
- 	u8 phase,
- 	u8 sender,
- 	char *textbuf,
- 	u32 *length,
-+	u32 textbuf_size,
- 	struct iscsi_param_list *param_list,
- 	bool keys_workaround)
+ 	if (interrupts_enabled(regs))
+ 		local_irq_enable();
+ 
+diff --git a/arch/arm/mm/fault.c b/arch/arm/mm/fault.c
+index 0e5b4bc7b21760..ed4330cc3f4e6f 100644
+--- a/arch/arm/mm/fault.c
++++ b/arch/arm/mm/fault.c
+@@ -198,9 +198,6 @@ __do_user_fault(unsigned long addr, unsigned int fsr, unsigned int sig,
  {
--	char *output_buf = NULL;
- 	struct iscsi_extra_response *er;
- 	struct iscsi_param *param;
+ 	struct task_struct *tsk = current;
+ 
+-	if (addr > TASK_SIZE)
+-		harden_branch_predictor();
 -
--	output_buf = textbuf + *length;
-+	int ret;
- 
- 	if (iscsi_enforce_integrity_rules(phase, param_list) < 0)
- 		return -1;
-@@ -1443,10 +1466,12 @@ int iscsi_encode_text_output(
- 		    !IS_PSTATE_RESPONSE_SENT(param) &&
- 		    !IS_PSTATE_REPLY_OPTIONAL(param) &&
- 		    (param->phase & phase)) {
--			*length += sprintf(output_buf, "%s=%s",
--				param->name, param->value);
--			*length += 1;
--			output_buf = textbuf + *length;
-+			ret = iscsi_encode_text_record(textbuf, length,
-+						       textbuf_size,
-+						       param->name,
-+						       param->value);
-+			if (ret < 0)
-+				goto err_overflow;
- 			SET_PSTATE_RESPONSE_SENT(param);
- 			pr_debug("Sending key: %s=%s\n",
- 				param->name, param->value);
-@@ -1456,10 +1481,12 @@ int iscsi_encode_text_output(
- 		    !IS_PSTATE_ACCEPTOR(param) &&
- 		    !IS_PSTATE_PROPOSER(param) &&
- 		    (param->phase & phase)) {
--			*length += sprintf(output_buf, "%s=%s",
--				param->name, param->value);
--			*length += 1;
--			output_buf = textbuf + *length;
-+			ret = iscsi_encode_text_record(textbuf, length,
-+						       textbuf_size,
-+						       param->name,
-+						       param->value);
-+			if (ret < 0)
-+				goto err_overflow;
- 			SET_PSTATE_PROPOSER(param);
- 			iscsi_check_proposer_for_optional_reply(param,
- 							        keys_workaround);
-@@ -1469,14 +1496,21 @@ int iscsi_encode_text_output(
- 	}
- 
- 	list_for_each_entry(er, &param_list->extra_response_list, er_list) {
--		*length += sprintf(output_buf, "%s=%s", er->key, er->value);
--		*length += 1;
--		output_buf = textbuf + *length;
-+		ret = iscsi_encode_text_record(textbuf, length, textbuf_size,
-+					       er->key, er->value);
-+		if (ret < 0)
-+			goto err_overflow;
- 		pr_debug("Sending key: %s=%s\n", er->key, er->value);
- 	}
- 	iscsi_release_extra_responses(param_list);
- 
+ #ifdef CONFIG_DEBUG_USER
+ 	if (((user_debug & UDBG_SEGV) && (sig == SIGSEGV)) ||
+ 	    ((user_debug & UDBG_BUS)  && (sig == SIGBUS))) {
+@@ -269,8 +266,10 @@ do_kernel_address_page_fault(struct mm_struct *mm, unsigned long addr,
+ 		/*
+ 		 * Fault from user mode for a kernel space address. User mode
+ 		 * should not be faulting in kernel space, which includes the
+-		 * vector/khelper page. Send a SIGSEGV.
++		 * vector/khelper page. Handle the branch predictor hardening
++		 * while interrupts are still disabled, then send a SIGSEGV.
+ 		 */
++		harden_branch_predictor();
+ 		__do_user_fault(addr, fsr, SIGSEGV, SEGV_MAPERR, regs);
+ 	} else {
+ 		/*
+@@ -485,16 +484,20 @@ do_page_fault(unsigned long addr, unsigned int fsr, struct pt_regs *regs)
+  * We enter here because the first level page table doesn't contain
+  * a valid entry for the address.
+  *
+- * If the address is in kernel space (>= TASK_SIZE), then we are
+- * probably faulting in the vmalloc() area.
++ * If this is a user address (addr < TASK_SIZE), we handle this as a
++ * normal page fault. This leaves the remainder of the function to handle
++ * kernel address translation faults.
+  *
+- * If the init_task's first level page tables contains the relevant
+- * entry, we copy the it to this task.  If not, we send the process
+- * a signal, fixup the exception, or oops the kernel.
++ * Since user mode is not permitted to access kernel addresses, pass these
++ * directly to do_kernel_address_page_fault() to handle.
+  *
+- * NOTE! We MUST NOT take any locks for this case. We may be in an
+- * interrupt or a critical region, and should only copy the information
+- * from the master page table, nothing more.
++ * Otherwise, we're probably faulting in the vmalloc() area, so try to fix
++ * that up. Note that we must not take any locks or enable interrupts in
++ * this case.
++ *
++ * If vmalloc() fixup fails, that means the non-leaf page tables did not
++ * contain an entry for this address, so handle this via
++ * do_kernel_address_page_fault().
+  */
+ #ifdef CONFIG_MMU
+ static int __kprobes
+@@ -560,7 +563,8 @@ do_translation_fault(unsigned long addr, unsigned int fsr,
  	return 0;
-+
-+err_overflow:
-+	pr_err("iSCSI login response buffer (%u bytes) exhausted, dropping login.\n",
-+	       textbuf_size);
-+	iscsi_release_extra_responses(param_list);
-+	return -1;
- }
  
- int iscsi_check_negotiated_keys(struct iscsi_param_list *param_list)
---- a/drivers/target/iscsi/iscsi_target_parameters.h
-+++ b/drivers/target/iscsi/iscsi_target_parameters.h
-@@ -46,7 +46,7 @@ extern struct iscsi_param *iscsi_find_pa
- extern int iscsi_extract_key_value(char *, char **, char **);
- extern int iscsi_update_param_value(struct iscsi_param *, char *);
- extern int iscsi_decode_text_input(u8, u8, char *, u32, struct iscsit_conn *);
--extern int iscsi_encode_text_output(u8, u8, char *, u32 *,
-+extern int iscsi_encode_text_output(u8, u8, char *, u32 *, u32,
- 			struct iscsi_param_list *, bool);
- extern int iscsi_check_negotiated_keys(struct iscsi_param_list *);
- extern void iscsi_set_connection_parameters(struct iscsi_conn_ops *,
+ bad_area:
+-	do_bad_area(addr, fsr, regs);
++	do_kernel_address_page_fault(current->mm, addr, fsr, regs);
++
+ 	return 0;
+ }
+ #else					/* CONFIG_MMU */
+@@ -580,7 +584,16 @@ do_translation_fault(unsigned long addr, unsigned int fsr,
+ static int
+ do_sect_fault(unsigned long addr, unsigned int fsr, struct pt_regs *regs)
+ {
++	/*
++	 * If this is a kernel address, but from user mode, then userspace
++	 * is trying bad stuff. Invoke the branch predictor handling.
++	 * Interrupts are disabled here.
++	 */
++	if (addr >= TASK_SIZE && user_mode(regs))
++		harden_branch_predictor();
++
+ 	do_bad_area(addr, fsr, regs);
++
+ 	return 0;
+ }
+ #endif /* CONFIG_ARM_LPAE */
+-- 
+2.53.0
+
 
 
 
