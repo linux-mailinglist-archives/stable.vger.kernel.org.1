@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-264187-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265753-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id BDl1JYBxMWrMjQUAu9opvQ
-	(envelope-from <stable+bounces-264187-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:53:36 +0200
+	id lRaMN0SPMWrbmgUAu9opvQ
+	(envelope-from <stable+bounces-265753-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:00:36 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2854669179A
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:53:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A5825693B88
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:00:35 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=bcUsYMub;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264187-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264187-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=HSSj6L+i;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265753-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265753-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DF1D731037BE
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:44:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 620313092C24
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:00:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF57F451068;
-	Tue, 16 Jun 2026 15:43:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D84FD47D94D;
+	Tue, 16 Jun 2026 18:00:11 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B4B94508E0;
-	Tue, 16 Jun 2026 15:43:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBB8C47CC87;
+	Tue, 16 Jun 2026 18:00:07 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781624592; cv=none; b=fDkJOiuHB6ceul9gSwOYmEwERpBIFh9v36nMEjkbX2qVBK9XIvXocA/cPwh8Rh8+OD4VVSGReYlZnCTWWwBVxnSrAKJoM0OfpZZDqYFhF5nHx9TBKb75IbRhMCenynzb78MB33UAthfNasuyQawNUD3vZW7PyPAhsfh1uAIaia0=
+	t=1781632810; cv=none; b=bJ8eeWw5ZJ3rad+4D4o0Ie/ls+wkFqDaPxOrkKfIbY+vbtgau+TpNtvm/346Lfy5W7A6GoNEW+UtivuApAdyKMvKs1sua8ashXG5UK+jH1sIUFfah6r2zQfpWGF68dlcsNbiK7cOcLBkI3kCA+J+DxqMb8qCTn6bFAh0tbeiU40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781624592; c=relaxed/simple;
-	bh=oniYnt43lxxehPjeUoyL3b4WljbGzoi+LsHJDSLR0Dk=;
+	s=arc-20240116; t=1781632810; c=relaxed/simple;
+	bh=QZCMXydysoiPwmpSaftrTawaHqFli4VWWLcjA7KwQdk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NDKFRpzn9uXxKFz1brft06lie5u/8XkJaC2Tm503t07o+Rob0zlibEpS1U09H76mA3Y6DkdGK+KuLuDote3rqJvJEPCofY6ai5m9qZn+O0bgwAc9qpJocMl/KnYNMbk9oF0CWxcPobVmrl2AWjZ0+izvUyJ056GwWtMo12vDfmE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bcUsYMub; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 061901F000E9;
-	Tue, 16 Jun 2026 15:43:09 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Ta/8i9K2nu3YxGxg+sJtS0o1tNpVn3fOUmJZ5MrswqzCnAEKs0ELJSbh56tU8vEzlkVPqmBiK4C5qnpqAGRlW1PIyrmLm616wYlL9g7f7+CfD+6nOuFniPOlCVS4y2z3pJa6Fp8QRDFAUmr8T5FakzlvEIXLT2SKHB0b810rJTM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HSSj6L+i; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C3181F000E9;
+	Tue, 16 Jun 2026 18:00:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781624591;
-	bh=Tx/SbDx/bwbTL5ZzLjKJhmkZ+P6y6FFU4r5hsrOrdSM=;
+	s=korg; t=1781632807;
+	bh=YyfCyxi+aCZOg1gqysjX4oU1IvV5nHKTk9n6kXk04yw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=bcUsYMubuxf6jX5e2sT7OQ4L9bCA60aVd4tFc4lUG94b6+cKpwP2t6vYin1y7ertI
-	 pSNsE4T6DWLQB59019JwMQiwhJLXSPEz/H1u5GlTO4ZOEvGVqqAYcUF0NXOSeEVGWE
-	 D+tuhNXsyApyA3fJLeWMFvfd8eoMcjnvFwQj8LFM=
+	b=HSSj6L+iaZpfd765mO0CiFnTvhcSt0y0xSQcjIZGux1qQ9yx9Ja0kKw/Pvw+0BSIz
+	 rELyxY9SMaqNY12z29OV5anI+DVDaMSszz0xi6y1Ndtekx8c8bY1ZsG/piZe5kpUd0
+	 8Z3DD4cCF2ZFQkqrwB1MQbXuIqfObi2Du743Vn8U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Davide Ornaghi <d.ornaghi97@gmail.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	"David E. Box" <david.e.box@linux.intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 363/378] netfilter: nft_fib: fix stale stack leak via the OIFNAME register
+Subject: [PATCH 6.1 447/522] platform/x86/intel/vsec: Add private data for per-device data
 Date: Tue, 16 Jun 2026 20:29:54 +0530
-Message-ID: <20260616145129.248860384@linuxfoundation.org>
+Message-ID: <20260616145146.838578907@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,127 +65,102 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,strlen.de,gmail.com,netfilter.org,kernel.org];
-	TAGGED_FROM(0.00)[bounces-264187-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:david.e.box@linux.intel.com,m:ilpo.jarvinen@linux.intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:fw@strlen.de,m:d.ornaghi97@gmail.com,m:pablo@netfilter.org,m:sashal@kernel.org,m:dornaghi97@gmail.com,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-265753-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,strlen.de:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,intel.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2854669179A
+X-Rspamd-Queue-Id: A5825693B88
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Davide Ornaghi <d.ornaghi97@gmail.com>
+From: "David E. Box" <david.e.box@linux.intel.com>
 
-[ Upstream commit ab185e0c4fb82dfba6fb86f8271e06f931d9c64c ]
+[ Upstream commit dc957ab6aa05c118c3da0542428a4d6602aa2d2d ]
 
-For NFT_FIB_RESULT_OIFNAME the destination register is declared with
-len = IFNAMSIZ (four 32-bit registers), but on the lookup-fail,
-RTN_LOCAL and oif-mismatch paths nft_fib{4,6}_eval() only writes one
-register via "*dest = 0". The remaining three registers are left as
-whatever was on the stack in nft_do_chain()'s struct nft_regs, and a
-downstream expression that loads the register span can leak that
-uninitialised kernel stack to userspace.
+Introduce a new private structure, struct vsec_priv, to hold a pointer to
+the platform-specific information. Although the driver didn’t previously
+require this per-device data, adding it now lays the groundwork for
+upcoming patches that will manage such data. No functional changes.
 
-The NFTA_FIB_F_PRESENT existence check has the same shape: it is only
-meaningful for NFT_FIB_RESULT_OIF, yet it was accepted for any result type
-while the eval stores a single byte via nft_reg_store8(), leaving the rest
-of the declared span stale.
-
-Fix both:
-
- - replace the bare "*dest = 0" in the eval with nft_fib_store_result(),
-   which strscpy_pad()s the whole IFNAMSIZ for OIFNAME (and is already
-   used on the other early-return path), and
-
- - restrict NFTA_FIB_F_PRESENT to NFT_FIB_RESULT_OIF and declare its
-   destination as a single u8, so the marked span matches the one byte
-   the eval writes.
-
-Fixes: f6d0cbcf09c5 ("netfilter: nf_tables: add fib expression")
-Suggested-by: Florian Westphal <fw@strlen.de>
-Cc: stable@vger.kernel.org
-Signed-off-by: Davide Ornaghi <d.ornaghi97@gmail.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-[ kept the tree's older `ip6_route_lookup()`/`rt6_info` IPv6 context and changed only `*dest = 0;` to `nft_fib_store_result(dest, priv, NULL);` ]
+Signed-off-by: David E. Box <david.e.box@linux.intel.com>
+Link: https://lore.kernel.org/r/20250703022832.1302928-3-david.e.box@linux.intel.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Stable-dep-of: 348ccc754d89 ("platform/x86/intel/vsec: Fix enable_cnt imbalance on PCIe error recovery")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/netfilter/nft_fib_ipv4.c |    2 +-
- net/ipv6/netfilter/nft_fib_ipv6.c |    2 +-
- net/netfilter/nft_fib.c           |    6 ++++++
- 3 files changed, 8 insertions(+), 2 deletions(-)
+ drivers/platform/x86/intel/vsec.c |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
---- a/net/ipv4/netfilter/nft_fib_ipv4.c
-+++ b/net/ipv4/netfilter/nft_fib_ipv4.c
-@@ -128,7 +128,7 @@ void nft_fib4_eval(const struct nft_expr
- 		fl4.saddr = get_saddr(iph->daddr);
- 	}
+--- a/drivers/platform/x86/intel/vsec.c
++++ b/drivers/platform/x86/intel/vsec.c
+@@ -73,6 +73,10 @@ static enum intel_vsec_id intel_vsec_all
+ 	VSEC_ID_SDSI,
+ };
  
--	*dest = 0;
-+	nft_fib_store_result(dest, priv, NULL);
- 
- 	if (fib_lookup(nft_net(pkt), &fl4, &res, FIB_LOOKUP_IGNORE_LINKSTATE))
- 		return;
---- a/net/ipv6/netfilter/nft_fib_ipv6.c
-+++ b/net/ipv6/netfilter/nft_fib_ipv6.c
-@@ -192,7 +192,7 @@ void nft_fib6_eval(const struct nft_expr
- 
- 	lookup_flags = nft_fib6_flowi_init(&fl6, priv, pkt, oif, iph);
- 
--	*dest = 0;
-+	nft_fib_store_result(dest, priv, NULL);
- 	rt = (void *)ip6_route_lookup(nft_net(pkt), &fl6, pkt->skb,
- 				      lookup_flags);
- 	if (rt->dst.error)
---- a/net/netfilter/nft_fib.c
-+++ b/net/netfilter/nft_fib.c
-@@ -107,6 +107,12 @@ int nft_fib_init(const struct nft_ctx *c
- 		return -EINVAL;
- 	}
- 
-+	if (priv->flags & NFTA_FIB_F_PRESENT) {
-+		if (priv->result != NFT_FIB_RESULT_OIF)
-+			return -EINVAL;
-+		len = sizeof(u8);
-+	}
++struct vsec_priv {
++	struct intel_vsec_platform_info *info;
++};
 +
- 	err = nft_parse_register_store(ctx, tb[NFTA_FIB_DREG], &priv->dreg,
- 				       NULL, NFT_DATA_VALUE, len);
- 	if (err < 0)
+ static const char *intel_vsec_name(enum intel_vsec_id id)
+ {
+ 	switch (id) {
+@@ -375,6 +379,7 @@ static bool intel_vsec_walk_vsec(struct
+ static int intel_vsec_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ {
+ 	struct intel_vsec_platform_info *info;
++	struct vsec_priv *priv;
+ 	bool have_devices = false;
+ 	int ret;
+ 
+@@ -387,6 +392,13 @@ static int intel_vsec_pci_probe(struct p
+ 	if (!info)
+ 		return -EINVAL;
+ 
++	priv = devm_kzalloc(&pdev->dev, sizeof(*priv), GFP_KERNEL);
++	if (!priv)
++		return -ENOMEM;
++
++	priv->info = info;
++	pci_set_drvdata(pdev, priv);
++
+ 	if (intel_vsec_walk_dvsec(pdev, info))
+ 		have_devices = true;
+ 
 
 
 
