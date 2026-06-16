@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-264453-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265237-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id vfO8NXl3MWpDkAUAu9opvQ
-	(envelope-from <stable+bounces-264453-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:19:05 +0200
+	id GJvSNeaEMWrvlQUAu9opvQ
+	(envelope-from <stable+bounces-265237-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:16:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35450691EE0
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:19:05 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82ECC692F18
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:16:22 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=SLQDqa18;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264453-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264453-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="O/2tQ04B";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265237-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265237-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E810E31EDEA0
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:06:03 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id EE3D130039AB
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:16:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C98744CF44;
-	Tue, 16 Jun 2026 16:06:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DBA047A0CD;
+	Tue, 16 Jun 2026 17:16:20 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 492D01E8320;
-	Tue, 16 Jun 2026 16:06:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2471747A0D1;
+	Tue, 16 Jun 2026 17:16:17 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781625963; cv=none; b=Dcg6ycfsBO/IVqM8o+LVa5NtHFjj6wnW+h3Q3fk+MP8khRT4gjbfzQ5Ma8QGxtgnGDKYyOQAKgTJP5gs44A4AYOEjCGS2eT7dF+OwBdMX/z/5U9xtwAvcm6gqDCIbKTotcC/+VKKILuD1RRVTibTWDpluX7YugOIYI3bQLjJwvo=
+	t=1781630180; cv=none; b=F3M42pyBLtlRb5NMPEaz4Pv8zpbkZSe6x3QGwvXJ1GH/2sRj3vi3Dusx1qrYj0Q/XTaz2o9AAjrrM21CktgHLqoCUwhkEcK4V8QtKep8Di4gEe40rjfAVsTyisnWDJcjLz7idqFD8TUvICLGPqdJLrj3nlg2+0HY8fzf61GwIk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781625963; c=relaxed/simple;
-	bh=Zjuc2OLa9ctFcTf1k15pxU5+lyl0pEP+uevx0cxBZwE=;
+	s=arc-20240116; t=1781630180; c=relaxed/simple;
+	bh=JQ9gRxgCrp4JCLCC6IwttvaWwTQupPX2HIDhyygM5kA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R209A75a+ts+QKuX2qeQlQs9CFgZ74ceZoz2x8IFixtwQsTgr85blCT0GN25ugepiqBRgHMpQ4SWxsv2l6DHV5A35tH/cDhVmkEeqH/Ga2Rb8IIuPrdGdiP1C/BC0aDIaJ7FtC2/L4r89sYwWF6P1Mtnpe1m5sjR9+lIKiGk0Zw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SLQDqa18; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 422641F000E9;
-	Tue, 16 Jun 2026 16:06:01 +0000 (UTC)
+	 MIME-Version; b=RhuCjbDb/E2xzIkHETakV9GjCYLhe1Y/zGGev+2R/b7g98xaF4rIbU+iUPhlvi6RVsw5zfGeeEj4iX3KupwmesgMGX27teXMUPGYZsS9LIpcQGe41y4z8ve+Hi2/+RZ08kx4712+c3RJFXxSd8lT4FOFLRMDm4jzfKaPm3YTf2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O/2tQ04B; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B729F1F00A3A;
+	Tue, 16 Jun 2026 17:16:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781625962;
-	bh=BzMV5uf8SQb0zhJCeQIvGx9TLI1GvisFAda4xVZtpw4=;
+	s=korg; t=1781630177;
+	bh=EJ7TXhR+XzxIGqXqlqimI61bIxL+EIHatdCiFqR7Klo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=SLQDqa18lUS2BcwGVWI9qV0RXWfOcAkWARgdNUEDd/gQgrLXvaLGxFzzsEDD4dKIj
-	 MvqYOVUWAyhFeUPCbc37LN43WY8fDdLbT1bBQBTIECFhaEEJkjGeJu//dcGBHhpl8l
-	 2iHF1PQiQDZ5d6GwSJyyRO8dmX9CiQTEdulx+RGg=
+	b=O/2tQ04BJv2Ql2jMYgZo2Hntg3D1vdOAcwBAXKw6jj7Q+Elnjdd7e35QV4bJ1Lf5S
+	 zTOZonOKrYbdPBWwXI9nAv6DcxxI3WAA8Ru9cJYiiPREjY+OdKyDHEVaJy6KknxH7E
+	 oLD75IAZfaI5ZEaTWIENMlBwLaUVUjXSTuA2NW/8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.18 239/325] net: mv643xx: fix OF node refcount
+	Paolo Abeni <pabeni@redhat.com>,
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 408/452] mptcp: handle first subflow closing consistently
 Date: Tue, 16 Jun 2026 20:30:35 +0530
-Message-ID: <20260616145110.356569746@linuxfoundation.org>
+Message-ID: <20260616145138.232951797@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,76 +71,138 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264453-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bartosz.golaszewski@oss.qualcomm.com,m:kuba@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265237-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:pabeni@redhat.com,m:martineau@kernel.org,m:matttbe@kernel.org,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,qualcomm.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 35450691EE0
+X-Rspamd-Queue-Id: 82ECC692F18
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-commit 4aacf509e537a711fa71bca9f234e5eb6968850e upstream.
+[ Upstream commit 0eeb372deebce6c25b9afc09e35d6c75a744299a ]
 
-Platform devices created with platform_device_alloc() call
-platform_device_release() when the last reference to the device's
-kobject is dropped. This function calls of_node_put() unconditionally.
-This works fine for devices created with platform_device_register_full()
-but users of the split approach (platform_device_alloc() +
-platform_device_add()) must bump the reference of the of_node they
-assign manually. Add the missing call to of_node_get().
+Currently, as soon as the PM closes a subflow, the msk stops accepting
+data from it, even if the TCP socket could be still formally open in the
+incoming direction, with the notable exception of the first subflow.
 
-Cc: stable@vger.kernel.org
-Fixes: 76723bca2802 ("net: mv643xx_eth: add DT parsing support")
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260602073414.22500-1-bartosz.golaszewski@oss.qualcomm.com
+The root cause of such behavior is that code currently piggy back two
+separate semantic on the subflow->disposable bit: the subflow context
+must be released and that the subflow must stop accepting incoming
+data.
+
+The first subflow is never disposed, so it also never stop accepting
+incoming data. Use a separate bit to mark the latter status and set such
+bit in __mptcp_close_ssk() for all subflows.
+
+Beyond making per subflow behaviour more consistent this will also
+simplify the next patch.
+
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20251121-net-next-mptcp-memcg-backlog-imp-v1-11-1f34b6c1e0b1@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 50c2d91c5dfa ("mptcp: do not drop partial packets")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/marvell/mv643xx_eth.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mptcp/protocol.c |   14 +++++++++-----
+ net/mptcp/protocol.h |    3 ++-
+ 2 files changed, 11 insertions(+), 6 deletions(-)
 
---- a/drivers/net/ethernet/marvell/mv643xx_eth.c
-+++ b/drivers/net/ethernet/marvell/mv643xx_eth.c
-@@ -2781,7 +2781,7 @@ static int mv643xx_eth_shared_of_add_por
- 		goto put_err;
- 	}
- 	ppdev->dev.coherent_dma_mask = DMA_BIT_MASK(32);
--	ppdev->dev.of_node = pnp;
-+	ppdev->dev.of_node = of_node_get(pnp);
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -889,10 +889,10 @@ void mptcp_data_ready(struct sock *sk, s
+ 	int sk_rbuf, ssk_rbuf;
  
- 	ret = platform_device_add_resources(ppdev, &res, 1);
- 	if (ret)
+ 	/* The peer can send data while we are shutting down this
+-	 * subflow at msk destruction time, but we must avoid enqueuing
++	 * subflow at subflow destruction time, but we must avoid enqueuing
+ 	 * more data to the msk receive queue
+ 	 */
+-	if (unlikely(subflow->disposable))
++	if (unlikely(subflow->closing))
+ 		return;
+ 
+ 	ssk_rbuf = READ_ONCE(ssk->sk_rcvbuf);
+@@ -2491,6 +2491,13 @@ static void __mptcp_close_ssk(struct soc
+ 	struct mptcp_sock *msk = mptcp_sk(sk);
+ 	bool dispose_it, need_push = false;
+ 
++	/* Do not pass RX data to the msk, even if the subflow socket is not
++	 * going to be freed (i.e. even for the first subflow on graceful
++	 * subflow close.
++	 */
++	lock_sock_nested(ssk, SINGLE_DEPTH_NESTING);
++	subflow->closing = 1;
++
+ 	/* If the first subflow moved to a close state before accept, e.g. due
+ 	 * to an incoming reset or listener shutdown, the subflow socket is
+ 	 * already deleted by inet_child_forget() and the mptcp socket can't
+@@ -2501,7 +2508,6 @@ static void __mptcp_close_ssk(struct soc
+ 		/* ensure later check in mptcp_worker() will dispose the msk */
+ 		mptcp_set_close_tout(sk, tcp_jiffies32 - (TCP_TIMEWAIT_LEN + 1));
+ 		sock_set_flag(sk, SOCK_DEAD);
+-		lock_sock_nested(ssk, SINGLE_DEPTH_NESTING);
+ 		mptcp_subflow_drop_ctx(ssk);
+ 		goto out_release;
+ 	}
+@@ -2510,8 +2516,6 @@ static void __mptcp_close_ssk(struct soc
+ 	if (dispose_it)
+ 		list_del(&subflow->node);
+ 
+-	lock_sock_nested(ssk, SINGLE_DEPTH_NESTING);
+-
+ 	if (subflow->send_fastclose && ssk->sk_state != TCP_CLOSE)
+ 		tcp_set_state(ssk, TCP_CLOSE);
+ 
+--- a/net/mptcp/protocol.h
++++ b/net/mptcp/protocol.h
+@@ -503,11 +503,12 @@ struct mptcp_subflow_context {
+ 		send_infinite_map : 1,
+ 		remote_key_valid : 1,        /* received the peer key from */
+ 		disposable : 1,	    /* ctx can be free at ulp release time */
++		closing : 1,	    /* must not pass rx data to msk anymore */
+ 		stale : 1,	    /* unable to snd/rcv data, do not use for xmit */
+ 		valid_csum_seen : 1,        /* at least one csum validated */
+ 		is_mptfo : 1,	    /* subflow is doing TFO */
+ 		close_event_done : 1,       /* has done the post-closed part */
+-		__unused : 9;
++		__unused : 8;
+ 	bool	data_avail;
+ 	bool	scheduled;
+ 	bool	pm_listener;	    /* a listener managed by the kernel PM? */
 
 
 
