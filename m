@@ -1,63 +1,61 @@
-Return-Path: <stable+bounces-265083-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264128-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id jBFJJyyEMWqXlQUAu9opvQ
-	(envelope-from <stable+bounces-265083-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:13:16 +0200
+	id 62icKDBvMWrzjAUAu9opvQ
+	(envelope-from <stable+bounces-264128-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:43:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3F72692DF8
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:13:15 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3C14691556
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:43:43 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=qAVGY5LX;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265083-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265083-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=F1DPq1yh;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264128-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264128-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 07EBA3148F0F
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:03:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 537D13184F0A
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:37:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA2AA47A0A1;
-	Tue, 16 Jun 2026 17:03:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF2AB42B74A;
+	Tue, 16 Jun 2026 15:37:54 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7486A43D4E9;
-	Tue, 16 Jun 2026 17:03:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0C303AB267;
+	Tue, 16 Jun 2026 15:37:53 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781629388; cv=none; b=inCKrGzBXA666VEeGtdpiy/HWd7q1qdbOtlb9NK7ScDfS02+QpVa+wBSttmFz7gT2xooSlfoP03hey562GMzRSP0w/VZpYP6y5PSBGHmBeDlfNIceBMK9MhpZ3mCzjS8CuTIPCZg4UGuSJhxA8L4tGZTDbd4Ji21QKAMZNvBCd0=
+	t=1781624274; cv=none; b=MgLi02TpqgwWln3Vgxog0mlVclkZrBR9byzEotCMK0lCAAcCZ+kGieEC9XrfCrQXaHotKTbm0oSnl1AKlgoKAIQtgPCKnb7Z7DEk0sdGAKyP9z+pa55MvrlbM1NvQi0U1OTTazDC3JqG7fiIH8CUZLqqWjItbJZy3RoeJ91Jv2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781629388; c=relaxed/simple;
-	bh=Cb7J/Fs2rJWCzdcEnPPusXSFixlnKk1ldeKz1HWotE8=;
+	s=arc-20240116; t=1781624274; c=relaxed/simple;
+	bh=y5C5AujIreWYP+RmwoIa7VswuIt5V0HoPSbDqYv1xMw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BV61sOebHoVCPK/yjbcrZXGJ8C0RSXaLV2KAttB6GP1B1FcQZWgxdMd8g3B3iBhs94VTrf/gsKuh5cQ008EuGo7F3nhg13rgNPTqo2OPgiCqKu8ivKtnWM0t9Rm0s7dF+wNQti8id1eb5s/eO/CN20jQDMemzR1rl4Z0i9r7n3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qAVGY5LX; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 766EB1F000E9;
-	Tue, 16 Jun 2026 17:03:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=T6k1BIUastinfezlQpQe1Pbdk0mIdzLCQiAJ3maujbzzKW8KTMSMfj+NxaR8OwNEFqJukqieweUpGtpE50rxZajzSTeRv7fGgwlQv7A47H9I2igYfwTLYcVAvZa1z5ihk3jLOqvlZwn03MykLPCHjQ1AeU9TN66B+VyiCeCU9bs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F1DPq1yh; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A8FF1F000E9;
+	Tue, 16 Jun 2026 15:37:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781629387;
-	bh=8braIcAlR9IAb9IECQkwBvT0767JLQuIONbfW0aVA6I=;
+	s=korg; t=1781624273;
+	bh=Uve4RwhBN/a6IuHMi1+PPsYMSya8+kL/tPcP046Ohtc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=qAVGY5LXwyCISCbKzbY6EKGJ5h6+ZIu9tWzQiyUfzcnzxQCcKUwy8QAFF5w8McmxW
-	 z0qx89qCj5+y0Pz6DdaexWarni9ZCjVzxTh2xCuixdEP5nlLpLdxNUD7l+HDOlcapT
-	 aWP6oATrTFA+/3k7eMmp2tmgkCTIk26cqr90e05k=
+	b=F1DPq1yhn4IhmvwsZbH2btIYsR+Bgs16cTwzjX8JFvAMYNIGfmkGMVi99fxP3Ug3s
+	 uTPkRTMN5jXAoqrqgF01ixNOaI46dyeXuKpcz4FGZiJL75yiGsUW/B2HD+igjS/G+0
+	 8oUNa4x7IEPKFRHO6FkrYeXjlh2cfzfJ5iVn0MKo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 275/452] ip6_vti: fix incorrect tunnel matching in vti6_tnl_lookup()
-Date: Tue, 16 Jun 2026 20:28:22 +0530
-Message-ID: <20260616145132.096719958@linuxfoundation.org>
+	=?UTF-8?q?Guillermo=20Rodr=C3=ADguez?= <guille.rodriguez@gmail.com>,
+	Alain Volmat <alain.volmat@foss.st.com>,
+	Andi Shyti <andi.shyti@kernel.org>
+Subject: [PATCH 7.0 272/378] i2c: stm32f7: fix timing computation ignoring i2c-analog-filter
+Date: Tue, 16 Jun 2026 20:28:23 +0530
+Message-ID: <20260616145124.429644185@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,101 +65,100 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265083-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:edumazet@google.com,m:steffen.klassert@secunet.com,m:nicolas.dichtel@6wind.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-264128-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:guille.rodriguez@gmail.com,m:alain.volmat@foss.st.com,m:andi.shyti@kernel.org,m:guillerodriguez@gmail.com,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,foss.st.com,kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,secunet.com:email,vger.kernel.org:from_smtp,msgid.link:url,6wind.com:email]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,st.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E3F72692DF8
+X-Rspamd-Queue-Id: F3C14691556
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Guillermo Rodríguez <guille.rodriguez@gmail.com>
 
-[ Upstream commit a5c0359f5cbc51a2e2b114d6041e0f3c73f903e9 ]
+commit a124579c0763da7bc408f4cd7e8f606cadc94855 upstream.
 
-In vti6_tnl_lookup(), when an exact match for a tunnel fails,
-the code falls back to searching for wildcard tunnels:
+stm32f7_i2c_compute_timing() uses i2c_dev->analog_filter to pick
+the analog filter delay, but i2c_dev->analog_filter is parsed from
+the "i2c-analog-filter" DT property only after the compute_timing
+loop in stm32f7_i2c_setup_timing(), so in practice the timing
+calculations always ignore the analog filter. On an STM32MP1 board
+with clock-frequency = <400000> and i2c-analog-filter set, measured
+SCL frequency was ~382 kHz.
 
-- Tunnels matching the packet's local address, with any remote address
-  wildcard remote).
+This also affects (widens) the computed SDADEL range. At high bus
+clock speeds, this can select an SDADEL value that violates tVD;DAT
+(data valid time).
 
-- Tunnels matching the packet's remote address, with any local address
-  (wildcard local).
+Fix by parsing "i2c-analog-filter" before the compute_timing loop.
 
-However, vti6 stores all these different types of tunnels in the same
-hash table (ip6n->tnls_r_l) prone to hash collisions.
-
-The bug is that the fallback search loops in vti6_tnl_lookup() were
-missing checks to ensure that the candidate tunnel actually has
-a wildcard address.
-
-Fixes: fbe68ee87522 ("vti6: Add a lookup method for tunnels with wildcard endpoints.")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Steffen Klassert <steffen.klassert@secunet.com>
-Reviewed-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Link: https://patch.msgid.link/20260608164613.933023-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 83c3408f7b9c ("i2c: stm32f7: support DT binding i2c-analog-filter")
+Signed-off-by: Guillermo Rodríguez <guille.rodriguez@gmail.com>
+Cc: <stable@vger.kernel.org> # v5.13+
+Acked-by: Alain Volmat <alain.volmat@foss.st.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/20260526091210.20383-1-guille.rodriguez@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/ip6_vti.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/i2c/busses/i2c-stm32f7.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/ipv6/ip6_vti.c b/net/ipv6/ip6_vti.c
-index 5e71dbd9401694..67cf616c1499a4 100644
---- a/net/ipv6/ip6_vti.c
-+++ b/net/ipv6/ip6_vti.c
-@@ -105,6 +105,7 @@ vti6_tnl_lookup(struct net *net, const struct in6_addr *remote,
- 	hash = HASH(&any, local);
- 	for_each_vti6_tunnel_rcu(ip6n->tnls_r_l[hash]) {
- 		if (ipv6_addr_equal(local, &t->parms.laddr) &&
-+		    ipv6_addr_any(&t->parms.raddr) &&
- 		    (t->dev->flags & IFF_UP))
- 			return t;
+--- a/drivers/i2c/busses/i2c-stm32f7.c
++++ b/drivers/i2c/busses/i2c-stm32f7.c
+@@ -694,6 +694,9 @@ static int stm32f7_i2c_setup_timing(stru
+ 	if (!of_property_read_bool(i2c_dev->dev->of_node, "i2c-digital-filter"))
+ 		i2c_dev->dnf_dt = STM32F7_I2C_DNF_DEFAULT;
+ 
++	i2c_dev->analog_filter = of_property_read_bool(i2c_dev->dev->of_node,
++						       "i2c-analog-filter");
++
+ 	do {
+ 		ret = stm32f7_i2c_compute_timing(i2c_dev, setup,
+ 						 &i2c_dev->timing);
+@@ -715,9 +718,6 @@ static int stm32f7_i2c_setup_timing(stru
+ 		return ret;
  	}
-@@ -112,6 +113,7 @@ vti6_tnl_lookup(struct net *net, const struct in6_addr *remote,
- 	hash = HASH(remote, &any);
- 	for_each_vti6_tunnel_rcu(ip6n->tnls_r_l[hash]) {
- 		if (ipv6_addr_equal(remote, &t->parms.raddr) &&
-+		    ipv6_addr_any(&t->parms.laddr) &&
- 		    (t->dev->flags & IFF_UP))
- 			return t;
- 	}
--- 
-2.53.0
-
+ 
+-	i2c_dev->analog_filter = of_property_read_bool(i2c_dev->dev->of_node,
+-						       "i2c-analog-filter");
+-
+ 	dev_dbg(i2c_dev->dev, "I2C Speed(%i), Clk Source(%i)\n",
+ 		setup->speed_freq, setup->clock_src);
+ 	dev_dbg(i2c_dev->dev, "I2C Rise(%i) and Fall(%i) Time\n",
 
 
 
