@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-264538-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264780-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id uvAYKYB2MWrZjwUAu9opvQ
-	(envelope-from <stable+bounces-264538-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:14:56 +0200
+	id SnaFDh19MWq0kgUAu9opvQ
+	(envelope-from <stable+bounces-264780-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:43:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FFCD691DA2
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:14:56 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88978692612
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:43:08 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=p6po6iP8;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264538-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-264538-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=UtaGpOqy;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264780-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264780-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 67EE5303F3EB
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:14:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DF1D5302C916
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:37:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B600466B5D;
-	Tue, 16 Jun 2026 16:14:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B05647798F;
+	Tue, 16 Jun 2026 16:37:32 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26E5144BCB8;
-	Tue, 16 Jun 2026 16:14:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6286466B4B;
+	Tue, 16 Jun 2026 16:37:30 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781626455; cv=none; b=tuYC5xZAQDUGCvcZQQY5j+0H6h6/46ueJanM2tjhnzt/pjiof3llRGLRWqEeqMTwFHFUhzq8o5PEsArnCDnYsWlsykaW55sO19IrmpTbHD/0QJH7LCgeteoM8DRx8yKu5wXeXSX8wFv/Fih+VXMRVvhJn9ACiIjhDsrA5W8BVH0=
+	t=1781627851; cv=none; b=eo2kncUo7BXzNJWmMygdZnM2Qudb/DJsLQ/55CmTxDdn4oiib/36kvZOfC7UV6suwEezqzpcRStwBkIAniS5e4ZcxgWxkDieYUH0LiTxuNYicp2yO58jyyU1suEfkRszsTgTNaJfWPCNFskmjcTxqYOFDTq/gzT+ZlLnzXY1on4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781626455; c=relaxed/simple;
-	bh=bGJ3mvSaZYW0DHtae7qG346lD7yEs/EaL6H57Yqdsew=;
+	s=arc-20240116; t=1781627851; c=relaxed/simple;
+	bh=GA8VOQsX/LovcdOb9/XYtOMMBiTnyVcBCixocVMWYN0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m5rH5NwIMcUa+dGDEGKLUktWhKNSdz6EOS/e5EiCpT3St0unLqh//apiDy6D68Ma6ok6TJhMmHRjvHkPtrOUrOIns8AzmR4ApGHy70t1aApqynW63NkXETcHdJlgogeNAq9CipGSQlZP8ZG2DTXmGblJdqja12CRnfEC4tkDaow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p6po6iP8; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28CE71F000E9;
-	Tue, 16 Jun 2026 16:14:12 +0000 (UTC)
+	 MIME-Version; b=AeRREAY4tyEMSLHc5Dp0PFyK9U2ddAdylVGBZ7ryq4zIzdWpZQu5hYV4Aq/jUeukU9+T/oRkjNvkkKEg0mCwaaVSH2DxhSupkn6hRh2yC/TWmKhWYXVE9TI0+3BPD0cPksizvIfAXVd1zC3csJuX0531M8GCXyNGIjzDqUCkasw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UtaGpOqy; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B53F11F000E9;
+	Tue, 16 Jun 2026 16:37:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781626454;
-	bh=6vxqq9fxFwYOOE0ynnBrq8TRFw36cimmnqvDyUD1olk=;
+	s=korg; t=1781627850;
+	bh=kjfjdE/9PwWNLCIIIoImH+5xW+BUB0X4Lld4IHxZFRI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=p6po6iP8wTppnB12zP5I0tfDV9KUtMj5PCfmlBGazDH7CBSfG6UTmJ2skQvar/edm
-	 aTjYjLSHPH2A9toVUU9BWTcm8z7zeDFYIs49lO82ZwmgCt5V1+jL3ZiOEBGq+mM+gP
-	 nw/kLVH0JL8CbaQGZJttFRBG5EuhgIjwElGkNles=
+	b=UtaGpOqywfr6tadFCXJ33kveit96ht1Rx4Y2H0C3jNjKOEo3y3t68C9V7A5C/UbQL
+	 wIDeX8E/+WAr4kilk71sKcKTcZHxiemubYkxFDVsWpe/P74VNCv+G6aE8LLFM1B4qh
+	 pjwj/qk5u14WSBq2RYDr9rRtOalALjBRPFTygfiY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
-	Srinivas Kandagatla <srini@kernel.org>
-Subject: [PATCH 6.18 281/325] slimbus: qcom-ngd-ctrl: Avoid ABBA on tx_lock/ctrl->lock
+	Philip Tsukerman <philiptsukerman@gmail.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 239/261] RDMA: During rereg_mr ensure that REREG_ACCESS is compatible
 Date: Tue, 16 Jun 2026 20:31:17 +0530
-Message-ID: <20260616145112.724897144@linuxfoundation.org>
+Message-ID: <20260616145056.147514825@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,111 +72,190 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264538-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264780-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:philiptsukerman@gmail.com,m:jgg@nvidia.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bjorn.andersson@oss.qualcomm.com,m:srini@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nvidia.com,kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,vger.kernel.org:from_smtp,qualcomm.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,nvidia.com:email,vger.kernel.org:from_smtp,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3FFCD691DA2
+X-Rspamd-Queue-Id: 88978692612
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+From: Jason Gunthorpe <jgg@nvidia.com>
 
-commit 55f2ea9ff83cc27a85526b14bc9b32f96a08d6ec upstream.
+[ Upstream commit badad6fad60def1b9805559dd81dbab3d97b82aa ]
 
-During the SSR/PDR down notification the tx_lock is taken with the
-intent to provide synchronization with active DMA transfers.
+If IB_MR_REREG_ACCESS changes from RO to RW then the umem has to be
+re-evaluated to ensure it is properly pinned as RW. Since the umem is
+hidden inside each driver's mr struct add a ib_umem_check_rereg() function
+that each driver has to call before processing IB_MR_REREG_ACCESS.
 
-But during this period qcom_slim_ngd_down() is invoked, which ends up in
-slim_report_absent(), which takes the slim_controller lock. In multiple
-other codepaths these two locks are taken in the opposite order (i.e.
-slim_controller then tx_lock).
+mlx4 has to retain its duplicate ib_access_writable check because it
+implements IB_MR_REREG_ACCESS | IB_MR_REREG_TRANS by changing both items
+in place sequentially while the MR is live, so it will continue to not
+support this combination.
 
-The result is a lockdep splat, and a possible deadlock:
-
-  rprocctl/449 is trying to acquire lock:
-  ffff00009793e620 (&ctrl->lock){+.+.}-{4:4}, at: slim_report_absent (drivers/slimbus/core.c:322) slimbus
-
-  but task is already holding lock:
-  ffff00009793fb50 (&ctrl->tx_lock){+.+.}-{4:4}, at: qcom_slim_ngd_ssr_pdr_notify (drivers/slimbus/qcom-ngd-ctrl.c:1475) slim_qcom_ngd_ctrl
-
-  which lock already depends on the new lock.
-
-  Possible unsafe locking scenario:
-
-        CPU0                    CPU1
-        ----                    ----
-   lock(&ctrl->tx_lock);
-                                lock(&ctrl->lock);
-                                lock(&ctrl->tx_lock);
-   lock(&ctrl->lock);
-
-The assumption is that the comment refers to the desire to not call
-qcom_slim_ngd_exit_dma() while we have an ongoing DMA TX transaction.
-But any such transaction is initiated and completed within a single
-qcom_slim_ngd_xfer_msg().
-
-Prior to calling qcom_slim_ngd_exit_dma() the slim_controller is torn
-down, all child devices are notified that the slimbus is gone and the
-child devices are removed.
-
-Stop taking the tx_lock in qcom_slim_ngd_ssr_pdr_notify() to avoid the
-deadlock.
-
-Fixes: a899d324863a ("slimbus: qcom-ngd-ctrl: add Sub System Restart support")
 Cc: stable@vger.kernel.org
-Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
-Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
-Link: https://patch.msgid.link/20260530204421.116824-9-srini@kernel.org
+Fixes: b40656aa7d55 ("RDMA/umem: remove FOLL_FORCE usage")
+Link: https://patch.msgid.link/r/0-v1-06fb1a2d6cf5+107-rereg_access_jgg@nvidia.com
+Reported-by: Philip Tsukerman <philiptsukerman@gmail.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/slimbus/qcom-ngd-ctrl.c |    3 ---
- 1 file changed, 3 deletions(-)
+ drivers/infiniband/core/umem.c          |   16 ++++++++++++++++
+ drivers/infiniband/hw/hns/hns_roce_mr.c |    4 ++++
+ drivers/infiniband/hw/irdma/verbs.c     |    4 ++++
+ drivers/infiniband/hw/mlx4/mr.c         |    4 ++++
+ drivers/infiniband/hw/mlx5/mr.c         |    4 ++++
+ drivers/infiniband/sw/rxe/rxe_verbs.c   |    5 +++++
+ include/rdma/ib_umem.h                  |    8 ++++++++
+ 7 files changed, 45 insertions(+)
 
---- a/drivers/slimbus/qcom-ngd-ctrl.c
-+++ b/drivers/slimbus/qcom-ngd-ctrl.c
-@@ -1471,15 +1471,12 @@ static int qcom_slim_ngd_ssr_pdr_notify(
- 	switch (action) {
- 	case QCOM_SSR_BEFORE_SHUTDOWN:
- 	case SERVREG_SERVICE_STATE_DOWN:
--		/* Make sure the last dma xfer is finished */
--		mutex_lock(&ctrl->tx_lock);
- 		if (ctrl->state != QCOM_SLIM_NGD_CTRL_DOWN) {
- 			pm_runtime_get_noresume(ctrl->ctrl.dev);
- 			ctrl->state = QCOM_SLIM_NGD_CTRL_DOWN;
- 			qcom_slim_ngd_down(ctrl);
- 			qcom_slim_ngd_exit_dma(ctrl);
- 		}
--		mutex_unlock(&ctrl->tx_lock);
- 		break;
- 	case QCOM_SSR_AFTER_POWERUP:
- 	case SERVREG_SERVICE_STATE_UP:
+--- a/drivers/infiniband/core/umem.c
++++ b/drivers/infiniband/core/umem.c
+@@ -326,3 +326,19 @@ int ib_umem_copy_from(void *dst, struct
+ 		return 0;
+ }
+ EXPORT_SYMBOL(ib_umem_copy_from);
++
++/*
++ * Called during rereg mr if the driver is able to re-use a umem for
++ * IB_MR_REREG_ACCESS.
++ */
++int ib_umem_check_rereg(struct ib_umem *umem, int flags, int new_access_flags)
++{
++	if (!umem)
++		return 0;
++
++	if ((flags & IB_MR_REREG_ACCESS) && !(flags & IB_MR_REREG_TRANS))
++		if (ib_access_writable(new_access_flags) && !umem->writable)
++			return -EACCES;
++	return 0;
++}
++EXPORT_SYMBOL(ib_umem_check_rereg);
+--- a/drivers/infiniband/hw/hns/hns_roce_mr.c
++++ b/drivers/infiniband/hw/hns/hns_roce_mr.c
+@@ -292,6 +292,10 @@ struct ib_mr *hns_roce_rereg_user_mr(str
+ 		goto err_out;
+ 	}
+ 
++	ret = ib_umem_check_rereg(mr->pbl_mtr.umem, flags, mr_access_flags);
++	if (ret)
++		goto err_out;
++
+ 	mailbox = hns_roce_alloc_cmd_mailbox(hr_dev);
+ 	ret = PTR_ERR_OR_ZERO(mailbox);
+ 	if (ret)
+--- a/drivers/infiniband/hw/irdma/verbs.c
++++ b/drivers/infiniband/hw/irdma/verbs.c
+@@ -3245,6 +3245,10 @@ static struct ib_mr *irdma_rereg_user_mr
+ 	if (flags & ~(IB_MR_REREG_TRANS | IB_MR_REREG_PD | IB_MR_REREG_ACCESS))
+ 		return ERR_PTR(-EOPNOTSUPP);
+ 
++	ret = ib_umem_check_rereg(iwmr->region, flags, new_access);
++	if (ret)
++		return ERR_PTR(ret);
++
+ 	ret = irdma_hwdereg_mr(ib_mr);
+ 	if (ret)
+ 		return ERR_PTR(ret);
+--- a/drivers/infiniband/hw/mlx4/mr.c
++++ b/drivers/infiniband/hw/mlx4/mr.c
+@@ -466,6 +466,10 @@ struct ib_mr *mlx4_ib_rereg_user_mr(stru
+ 	struct mlx4_mpt_entry **pmpt_entry = &mpt_entry;
+ 	int err;
+ 
++	err = ib_umem_check_rereg(mmr->umem, flags, mr_access_flags);
++	if (err)
++		return ERR_PTR(err);
++
+ 	/* Since we synchronize this call and mlx4_ib_dereg_mr via uverbs,
+ 	 * we assume that the calls can't run concurrently. Otherwise, a
+ 	 * race exists.
+--- a/drivers/infiniband/hw/mlx5/mr.c
++++ b/drivers/infiniband/hw/mlx5/mr.c
+@@ -1829,6 +1829,10 @@ struct ib_mr *mlx5_ib_rereg_user_mr(stru
+ 	if (flags & ~(IB_MR_REREG_TRANS | IB_MR_REREG_PD | IB_MR_REREG_ACCESS))
+ 		return ERR_PTR(-EOPNOTSUPP);
+ 
++	err = ib_umem_check_rereg(mr->umem, flags, new_access_flags);
++	if (err)
++		return ERR_PTR(err);
++
+ 	if (!(flags & IB_MR_REREG_ACCESS))
+ 		new_access_flags = mr->access_flags;
+ 	if (!(flags & IB_MR_REREG_PD))
+--- a/drivers/infiniband/sw/rxe/rxe_verbs.c
++++ b/drivers/infiniband/sw/rxe/rxe_verbs.c
+@@ -1312,6 +1312,7 @@ static struct ib_mr *rxe_rereg_user_mr(s
+ 	struct rxe_mr *mr = to_rmr(ibmr);
+ 	struct rxe_pd *old_pd = to_rpd(ibmr->pd);
+ 	struct rxe_pd *pd = to_rpd(ibpd);
++	int err;
+ 
+ 	/* for now only support the two easy cases:
+ 	 * rereg_pd and rereg_access
+@@ -1321,6 +1322,10 @@ static struct ib_mr *rxe_rereg_user_mr(s
+ 		return ERR_PTR(-EOPNOTSUPP);
+ 	}
+ 
++	err = ib_umem_check_rereg(mr->umem, flags, access);
++	if (err)
++		return ERR_PTR(err);
++
+ 	if (flags & IB_MR_REREG_PD) {
+ 		rxe_put(old_pd);
+ 		rxe_get(pd);
+--- a/include/rdma/ib_umem.h
++++ b/include/rdma/ib_umem.h
+@@ -163,6 +163,8 @@ void ib_umem_dmabuf_revoke_lock(struct i
+ void ib_umem_dmabuf_revoke_unlock(struct ib_umem_dmabuf *umem_dmabuf);
+ void ib_umem_dmabuf_revoke(struct ib_umem_dmabuf *umem_dmabuf);
+ 
++int ib_umem_check_rereg(struct ib_umem *umem, int flags, int new_access_flags);
++
+ #else /* CONFIG_INFINIBAND_USER_MEM */
+ 
+ #include <linux/err.h>
+@@ -225,5 +227,11 @@ static inline void ib_umem_dmabuf_revoke
+ static inline void ib_umem_dmabuf_revoke_unlock(struct ib_umem_dmabuf *umem_dmabuf) {}
+ static inline void ib_umem_dmabuf_revoke(struct ib_umem_dmabuf *umem_dmabuf) {}
+ 
++static inline int ib_umem_check_rereg(struct ib_umem *umem, int flags,
++				      int new_access_flags)
++{
++	return -EOPNOTSUPP;
++}
++
+ #endif /* CONFIG_INFINIBAND_USER_MEM */
+ #endif /* IB_UMEM_H */
 
 
 
