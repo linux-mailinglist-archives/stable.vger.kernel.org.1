@@ -1,62 +1,63 @@
-Return-Path: <stable+bounces-266564-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266565-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id x6gPBpypMWqLowUAu9opvQ
-	(envelope-from <stable+bounces-266564-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:53:00 +0200
+	id easCHqipMWqOowUAu9opvQ
+	(envelope-from <stable+bounces-266565-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:53:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 564CB695042
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:52:59 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AB5C69504F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:53:11 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jtNA1SEW;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266564-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266564-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=irV1ZscY;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266565-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-266565-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 26B4A3020D4E
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:52:58 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7C5B33006202
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:53:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9549837997E;
-	Tue, 16 Jun 2026 19:52:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A17F3793AA;
+	Tue, 16 Jun 2026 19:53:06 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D0F42356C6
-	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 19:52:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0815D2356C6
+	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 19:53:04 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781639577; cv=none; b=arKr42DEPHineoih+Un9wxyu7kgBjMB+N4499rrxDFXdibS8xx1lrzEZADm36LXV2u6U2tNoomN/nN8ZpxbRKSr0gphJ6A8FjH6pTZcbTvprlzb2AAnySc3VGG37ujVW9yNbiYBgd7i1nFzqMC+MZkxMZtb8ZnudkIaqV2gjoOw=
+	t=1781639586; cv=none; b=d2Oy6iC/s9cca1iRD3Of24I7nVMOXhpdnABBnGzGezejPz1acMOTfl5JV4+4eoCyDPjlfKx5lwkBz1FGKz4OAsDf1yRmyCtfKbnjkdhhrnuBrCn69BLoMhS3xH1FWwO60Gt/1tGzhYjcxd/8NLdSSJBb9X58GSpcwzQ44NkXi3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781639577; c=relaxed/simple;
-	bh=36u5z43Y4yET9L4B45tDjUygTcKerVhoLNRoj8NL2y0=;
+	s=arc-20240116; t=1781639586; c=relaxed/simple;
+	bh=VXXM4mTnU8yhc3S3zFQ7bDb0OeV4hFxBLeGiVNP4ew4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yw3fRIMlkEOUj5EPFo/3X7SELHUqX/LxCVWnyIuEhqukxDt5CC1HRqJEaY67NdSzilvB/UbWeootFD50FqYkn0HDvpfD1FljoXSt81NmoWUNM1Xq78tVJkF/U2Ghl/M1GP9IueHs9KYQlrPcSgG9DN6yVq/j3ZmptYa728UketI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jtNA1SEW; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA1EE1F000E9;
-	Tue, 16 Jun 2026 19:52:55 +0000 (UTC)
+	 MIME-Version; b=qY+ZBGH8tlSzvSBqfOw3ZJU6lSJAiHSWhRor4hjbU0Og34WlevYTuh8VIxeFHYUxwcu/VYIVkuRdOfScZZ6n8bylHALCW29cMGZ0vRL+y5L+k/0pkM73YsH9MOe+3R7eDvrnq9mR0sOwaOLRBefesXz0kY4kqORTaex6vmjFKGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=irV1ZscY; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2480E1F000E9;
+	Tue, 16 Jun 2026 19:53:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781639576;
-	bh=tRYxbkQCgYsSdLp4X49L/g+w6hxo18wZzxuMrCVMOFw=;
+	s=k20260515; t=1781639584;
+	bh=lHA3uLrrSwaW3LocPor+zs9OT5Xt0ChI1FmESRGEBfo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jtNA1SEWhaZJHu1iBanQ3lWqn9JZuJFaZK0DeDyjC3yrbvrX7e52Q3VHpQMtGZzfH
-	 ElwaYjPvGvDIPWrLvqUSoQu6csbA6/kXgrV/mfr3l1ddmfqjG+cYFi0Nk0dwlt9Xiw
-	 uxjcZDCue+aJIn+FYMCuj8ezdnddgCHSlFF8uRw/+CEvE1qrdm4WpxP4PBCsnn9/ZJ
-	 xUzmVHZlsjd1krDRCjULpS2bfpMPvyOH+LUQy4K5OwktR28ctcQ+FMaIksZTt6fUi4
-	 5YFBXlanUC4cOXQofm/ElCTC8gOl/92BHqhzz780uLOt4GRiF/xJHG1BSaUCgDC70+
-	 wsvvK5/0Y5VxQ==
+	b=irV1ZscY30L+q2gqklzuE/CQ8F8eyMczzupfr2STjI1cnOBJYqa9vLpBuH1EdCYb7
+	 ffX9B/CVptATevVusXW8XlndsVngb12QGLFnDZfsNgoRM7PKOBriitUraDf6ucxz3T
+	 5gnKpBlPEepLo9tVCsORH3QcloLsjXZ8bddu3vKcSN+rKIeNJqK9A8W9hMwjyyC4Wq
+	 VxYdiLFmh0BuNR5zfSIQwvphg2poGBf6vxkRKEtxd6Ts4iZnD5HP0k1v+7QGLzDX7H
+	 aara2nDbm/u/3iKnfEj/JL8f5qSm0Hs3vBBlgpaZ4/njDO7zBxQHYJ0/FCVHI+JfMi
+	 R8tU4U+NPG+jA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Ji'an Zhou <eilaimemedsnaimel@gmail.com>,
-	Thomas Gleixner <tglx@kernel.org>,
+Cc: Abel Vesa <abel.vesa@linaro.org>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y] futex/requeue: Prevent NULL pointer dereference in remove_waiter() on self-deadlock
-Date: Tue, 16 Jun 2026 15:52:54 -0400
-Message-ID: <20260616195254.3526787-1-sashal@kernel.org>
+Subject: [PATCH 5.15.y 1/2] misc: fastrpc: Add dma_mask to fastrpc_channel_ctx
+Date: Tue, 16 Jun 2026 15:53:01 -0400
+Message-ID: <20260616195302.3526937-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026061530-freefall-hardware-b907@gregkh>
-References: <2026061530-freefall-hardware-b907@gregkh>
+In-Reply-To: <2026061532-proponent-wife-a132@gregkh>
+References: <2026061532-proponent-wife-a132@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -67,82 +68,80 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-3.66 / 15.00];
 	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-266564-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-266565-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:eilaimemedsnaimel@gmail.com,m:tglx@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:abel.vesa@linaro.org,m:srinivas.kandagatla@linaro.org,m:gregkh@linuxfoundation.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:email,linaro.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 564CB695042
+X-Rspamd-Queue-Id: 6AB5C69504F
 
-From: Ji'an Zhou <eilaimemedsnaimel@gmail.com>
+From: Abel Vesa <abel.vesa@linaro.org>
 
-[ Upstream commit 74e144274af39935b0f410c0ee4d2b91c3730414 ]
+[ Upstream commit 9bde43a0e2f469961e18d0a3496a9a74379c22bf ]
 
-When FUTEX_CMP_REQUEUE_PI requeues a non-top waiter that already owns the
-target PI futex, task_blocks_on_rt_mutex() returns -EDEADLK before setting
-waiter->task.
+dma_set_mask_and_coherent only updates the mask to which the device
+dma_mask pointer points to. Add a dma_mask to the channel ctx and set
+the device dma_mask to point to that, otherwise the dma_set_mask will
+return an error and the dma_set_coherent_mask will be skipped too.
 
-The subsequent remove_waiter() in rt_mutex_start_proxy_lock() dereferences
-the NULL waiter->task, causing a kernel crash.
-
-Add a self-deadlock check for non-top waiters before calling
-rt_mutex_start_proxy_lock(), analogous to the top-waiter check in
-futex_lock_pi_atomic().
-
-Fixes: 3bfdc63936dd4773109b7b8c280c0f3b5ae7d349 ("rtmutex: Use waiter::task instead of current in remove_waiter()")
-Signed-off-by: Ji'an Zhou <eilaimemedsnaimel@gmail.com>
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Cc: stable@vger.kernel.org
+Co-developed-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Link: https://lore.kernel.org/r/20221125071405.148786-11-srinivas.kandagatla@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 5401fb4fe10f ("misc: fastrpc: Fix NULL pointer dereference in rpmsg callback")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/futex/requeue.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/misc/fastrpc.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/kernel/futex/requeue.c b/kernel/futex/requeue.c
-index 60b08247b07dd5..8cf1234be584d7 100644
---- a/kernel/futex/requeue.c
-+++ b/kernel/futex/requeue.c
-@@ -629,6 +629,12 @@ int futex_requeue(u32 __user *uaddr1, unsigned int flags, u32 __user *uaddr2,
- 			continue;
- 		}
+diff --git a/drivers/misc/fastrpc.c b/drivers/misc/fastrpc.c
+index e83c1c7b34c258..fad9654a8ee1c4 100644
+--- a/drivers/misc/fastrpc.c
++++ b/drivers/misc/fastrpc.c
+@@ -214,6 +214,7 @@ struct fastrpc_channel_ctx {
+ 	struct list_head users;
+ 	struct miscdevice miscdev;
+ 	struct kref refcount;
++	u64 dma_mask;
+ };
  
-+		/* Self-deadlock: non-top waiter already owns the PI futex. */
-+		if (rt_mutex_owner(&pi_state->pi_mutex) == this->task) {
-+			ret = -EDEADLK;
-+			break;
-+		}
-+
- 		ret = rt_mutex_start_proxy_lock(&pi_state->pi_mutex,
- 						this->rt_waiter,
- 						this->task);
+ struct fastrpc_user {
+@@ -1662,6 +1663,7 @@ static int fastrpc_rpmsg_probe(struct rpmsg_device *rpdev)
+ 	kref_init(&data->refcount);
+ 
+ 	dev_set_drvdata(&rpdev->dev, data);
++	rdev->dma_mask = &data->dma_mask;
+ 	dma_set_mask_and_coherent(rdev, DMA_BIT_MASK(32));
+ 	INIT_LIST_HEAD(&data->users);
+ 	spin_lock_init(&data->lock);
 -- 
 2.53.0
 
