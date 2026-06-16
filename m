@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-265550-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266329-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id KfP6H0+LMWrTmAUAu9opvQ
-	(envelope-from <stable+bounces-265550-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:43:43 +0200
+	id ClGhEg6bMWpBoAUAu9opvQ
+	(envelope-from <stable+bounces-266329-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:50:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 855D769368C
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:43:42 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB79A694841
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:50:53 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=xCnW3O59;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265550-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265550-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=khJtBYPG;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266329-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-266329-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C86CC3015620
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:42:54 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 57C6C303CE33
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:50:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 821023101A7;
-	Tue, 16 Jun 2026 17:42:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46BE943D4E8;
+	Tue, 16 Jun 2026 18:50:52 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E2A121C16A;
-	Tue, 16 Jun 2026 17:42:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15E483D8100;
+	Tue, 16 Jun 2026 18:50:51 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781631771; cv=none; b=jH4HvJbDiROy6AjKx9liVTYzy5N/C5YbA6qkY38hFvwE41SegzlIpEO3aUfd6Q0wEymor5Wle+xqwISi6rtCAG1JrdyOQ6BUOLfxkOo6/gLgpiazBAxUlWgTH4YalOnjBgpPNpMRLagv2ZsoxShtxXzzk5mV6K8mdDAnoAXPIjA=
+	t=1781635852; cv=none; b=pVlfT13FXUdpyGMCYDzdzWXMAy+ZBgehsCu1+4VbvM/HXEQ34/0/pB2BMK7le3vHzXvRj2H2x8z105ZhGFQGtBAJM7XGqAOek9vWhzv/shWYOOB+x+Z91//X+skdNTPr+w7S8hKJL3AKr3TnkVhtKNCIwKcHZy2nIU1o49yTcGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781631771; c=relaxed/simple;
-	bh=dK22F0HUs+t8y9FIoa2ymLrcP/etMrg8HuMsOnVPbo4=;
+	s=arc-20240116; t=1781635852; c=relaxed/simple;
+	bh=lbsDXII+xSdHT5HoNrqqqYZ1pT0SJ6FpHj7nFXb7KOo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i/jbiehmTqKCfI2vGmXVVzKBhaRbYQTO8grz8ZhoDuDKV2c8VRMqpj4wpW4Uyrdigd5UYc3+V9Vl4VSKEC33T20T/sV2OxbbDTb22RvNGClk99LDZIDiutbEqsxsmQ6b5r8HBHvXSspmjZP2SMyUgknN/p3cV9DCBba/o0vK4pU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xCnW3O59; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21CBD1F000E9;
-	Tue, 16 Jun 2026 17:42:46 +0000 (UTC)
+	 MIME-Version; b=tYnzAdinCAx1MrwzPwpr/MQtiG6RraPFDprIZozVhIT25lwzOApzqiR3LSgIhCw6sTOkPLqAlF17SAGTNZtX3FQg9lVNyf9dkkwS67sU0tGaVmFtcDWqM5gNG8BSSH+zH2jqRHk+O8ze3+MOWG2tOl/1V/XYX6b0uHpll8CAt70=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=khJtBYPG; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A6201F000E9;
+	Tue, 16 Jun 2026 18:50:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781631768;
-	bh=0R+gDhRpUY1Aa4TGNg1D4+WZZmHNGMGYWtbrRJtgp5Y=;
+	s=korg; t=1781635851;
+	bh=Hq+RdGD8G6hTerCXvduzi+IMIslO1v5I6ErSMicqdhc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=xCnW3O59w8WEmtBIIpFnhOeaoDLRsnBxHraW/rN871tO1k3ZASWJncNOcmmGdEo/D
-	 q9OpIzjAtEOPkiSbWzL0zDa4g2UAu7T8ZyqQ9MUdGHQwLxSmtZCKw/Vo747RJpm0o9
-	 tcrKmON2uvqkLBMdnmLuqw1G0oqMmbOizDXmGyJo=
+	b=khJtBYPGGgMmoW5WlgzNIc3rWExm7Hhj0cFmuofNL9daLCVgSoo0SecsJujod/KYt
+	 tctOsam+ig1N97qjU6O5UPjFfZL0l5DSCwWqkVrrfehwBxZvosHNvxxi1wNE1Lii76
+	 A/YE4DYNYKrHUvmbAYCq6USYivq54Ql7UXtGAFK8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 242/522] ASoC: wm_adsp: Fix NULL dereference when removing firmware controls
+	Sam Burkels <sam@1a38.nl>,
+	Oliver Neukum <oneukum@suse.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH 5.10 093/342] usb: storage: Add quirks for PNY Elite Portable SSD
 Date: Tue, 16 Jun 2026 20:26:29 +0530
-Message-ID: <20260616145137.303655475@linuxfoundation.org>
+Message-ID: <20260616145052.566730327@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,21 +72,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265550-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-266329-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:rf@opensource.cirrus.com,m:broonie@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:sam@1a38.nl,m:oneukum@suse.com,m:stable@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -98,61 +98,78 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,vger.kernel.org:from_smtp,cirrus.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,suse.com:email,1a38.nl:email,synopsys.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 855D769368C
+X-Rspamd-Queue-Id: DB79A694841
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Fitzgerald <rf@opensource.cirrus.com>
+From: Sam Burkels <sam@1a38.nl>
 
-[ Upstream commit 7d3fb78b550301e43fdc60312aed733069694426 ]
+commit b53ebb811e00be50a779ce4e7aee604178b4a825 upstream.
 
-In wm_adsp_control_remove() check that the priv pointer is not NULL
-before attempting to cleanup what it points to.
+The PNY Elite Portable SSD (USB ID 154b:f009) is a sibling of the
+already-quirked PNY Pro Elite SSDs (154b:f00b and 154b:f00d). Like its
+siblings, it uses a Phison-based USB-SATA bridge that exhibits
+firmware bugs when bound to the uas driver.
 
-When cs_dsp creates a control it calls wm_adsp_control_add_cb() so that
-wm_adsp can create its own private control data. There are two cases
-where private data is not created:
+Without quirks, the device fails to complete READ CAPACITY commands
+when accessed over UAS on a SuperSpeed (USB 3) port. The device
+enumerates and reports as a SCSI direct-access device, but reports
+zero logical blocks and never finishes spin-up:
 
-1. The control is a SYSTEM control, so an ALSA control is not created.
+    usb 2-3: new SuperSpeed USB device number 8 using xhci_hcd
+    usb 2-3: New USB device found, idVendor=154b, idProduct=f009
+    usb 2-3: Product: PNY ELITE PSSD
+    usb 2-3: Manufacturer: PNY
+    scsi host0: uas
+    scsi 0:0:0:0: Direct-Access     PNY      PNY ELITE PSSD   0
+    sd 0:0:0:0: [sda] Spinning up disk...
+    [...10+ seconds of polling, no progress...]
+    sd 0:0:0:0: [sda] Read Capacity(16) failed: hostbyte=DID_ERROR
+    sd 0:0:0:0: [sda] Read Capacity(10) failed: hostbyte=DID_ERROR
+    sd 0:0:0:0: [sda] 0 512-byte logical blocks: (0 B/0 B)
 
-2. The codec driver has registered a control_add() callback that
-   hides the control, so wm_adsp_control_add() is not called.
+Tested each individual quirk to find the minimum that fixes this:
+  - US_FL_NO_ATA_1X alone: device hangs on spin-up
+  - US_FL_NO_REPORT_OPCODES alone: works on USB 2.0, hangs on USB 3.0
+  - US_FL_NO_ATA_1X | US_FL_NO_REPORT_OPCODES: works on both
 
-When cs_dsp_remove destroys its control list it calls
-wm_adsp_control_remove() for each control. But wm_adsp_control_remove()
-was attempting to cleanup the private data pointed to by cs_ctl->priv
-without checking the pointer for NULL.
+With both quirks the device enumerates correctly while still using
+the uas driver, and delivers full UAS throughput (~281 MB/s
+sequential read on a USB 3.0 Gen 1 port).
 
-Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Fixes: 0700bc2fb94c ("ASoC: wm_adsp: Separate generic cs_dsp_coeff_ctl handling")
-Link: https://patch.msgid.link/20260604101244.1402862-1-rf@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The existing PNY Pro Elite entries (f00b, f00d) only set NO_ATA_1X,
+but this device additionally chokes on REPORT OPCODES under
+SuperSpeed.
+
+Signed-off-by: Sam Burkels <sam@1a38.nl>
+Acked-by: Oliver Neukum <oneukum@suse.com>
+Cc: stable <stable@kernel.org>
+Link: https://patch.msgid.link/20260501132346.86572-1-sam@1a38.nl
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/wm_adsp.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/usb/storage/unusual_uas.h |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/sound/soc/codecs/wm_adsp.c b/sound/soc/codecs/wm_adsp.c
-index 47a4c363227ccd..bc9798ea5a25e2 100644
---- a/sound/soc/codecs/wm_adsp.c
-+++ b/sound/soc/codecs/wm_adsp.c
-@@ -666,6 +666,9 @@ static void wm_adsp_control_remove(struct cs_dsp_coeff_ctl *cs_ctl)
- {
- 	struct wm_coeff_ctl *ctl = cs_ctl->priv;
+--- a/drivers/usb/storage/unusual_uas.h
++++ b/drivers/usb/storage/unusual_uas.h
+@@ -132,6 +132,13 @@ UNUSUAL_DEV(0x152d, 0x0583, 0x0000, 0x99
+ 		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
+ 		US_FL_NO_REPORT_OPCODES),
  
-+	if (!ctl)
-+		return;
++/* Reported-by: Sam Burkels <sam@1a38.nl> */
++UNUSUAL_DEV(0x154b, 0xf009, 0x0000, 0x9999,
++		"PNY",
++		"PNY ELITE PSSD",
++		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
++		US_FL_NO_ATA_1X | US_FL_NO_REPORT_OPCODES),
 +
- 	cancel_work_sync(&ctl->work);
- 
- 	kfree(ctl->name);
--- 
-2.53.0
-
+ /* Reported-by: Thinh Nguyen <thinhn@synopsys.com> */
+ UNUSUAL_DEV(0x154b, 0xf00b, 0x0000, 0x9999,
+ 		"PNY",
 
 
 
