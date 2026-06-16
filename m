@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-264553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266056-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id cDHKAMB5MWpEkQUAu9opvQ
-	(envelope-from <stable+bounces-264553-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:28:48 +0200
+	id H0FWHZ2VMWrAnQUAu9opvQ
+	(envelope-from <stable+bounces-266056-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:27:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D2B56921E7
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:28:47 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id A850A694237
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:27:40 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=yAOuULCa;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264553-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264553-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=rjdevBBC;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266056-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-266056-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A5EC23254D34
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:15:41 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0931E301B50A
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:27:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DF9946AF21;
-	Tue, 16 Jun 2026 16:15:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1BD7477E33;
+	Tue, 16 Jun 2026 18:27:10 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EA1D46AF02;
-	Tue, 16 Jun 2026 16:15:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B6913D810C;
+	Tue, 16 Jun 2026 18:27:09 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781626531; cv=none; b=GiKtDtvLTlTfBoToJoUCIL4uWuGC3Mz85BDJtq8BvaKd2thUa6fE6z1JONTq6QOpzU9toCrtIAdT86CKu2wcXYl8HZ+E3Bjv1nPMxXYrf+r/886U3IU9tQVxivwFFMZvtC47pYDlPTcTafvNaBz9/zSs0I7KCyO+6FCOOFOm8ig=
+	t=1781634430; cv=none; b=VQgIRDf2qSN/LYa4kOytT5E+/SyPdS4VSHiC3tGuSZPOQuvnsCmqeMp824qSXRKM/Joe8ugFlwp3KcsXwIxWS0JJpD8OdDk+P15Qa2hr8CZWfkZ3hve43NAM54F11G/OAP3ikBRJI0ZfAQaUrFsBhn1f3FXTlWuLyw8OPcDxR7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781626531; c=relaxed/simple;
-	bh=faW+20ag12lB0SEhvQLvwvPnuenIIR8tmwm7s0khbZc=;
+	s=arc-20240116; t=1781634430; c=relaxed/simple;
+	bh=Bx01kfMQNsN5smiB5vKM1sEmGkolduXCnfVyTW8cFF4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oB8AEkP2zCLqJfgX9wtL8R8VvfM0J9zMo65dFWit4upd6bR3kYgfcULZIKpVxdMgS40qgdMLru3kZDgTQ211mb1smsAGeuIjTsZ8Rma9w5gRKbsNEw7iTnLr8B0RCa5Ldt84IlY8+JJkGdDiZekM5EM5IfvDDEZ5EosUQbDK4R0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yAOuULCa; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 109071F00A3A;
-	Tue, 16 Jun 2026 16:15:28 +0000 (UTC)
+	 MIME-Version; b=B36+RYx+bsGlHgrymZ+WTTUYEcA+YvobQSG+Lj5LlUcjtHv3D7mkBnEpkCkGbvvis4ZOmEh68I5rDvSgJcni5WZHaSFcSuT13iCgAyXTUjExRBxKshnqJjBUBrVIAkOawyTyBJB8PUuXphV+KCkmI4ywOzRcwG6R3MprqKI3XSk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rjdevBBC; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E90A1F000E9;
+	Tue, 16 Jun 2026 18:27:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781626530;
-	bh=tGzRvyubN63PDDi7NGn+T37WBEaldA0iSTHySrepHt4=;
+	s=korg; t=1781634429;
+	bh=P9iOOJjksyMIYTTkGRPgyKMpqGT/tZs7Qx+JfnaWQh4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=yAOuULCa2MA0JQcHgsSquWYzQ1FbgADRw/nkYvxPrtJTexJcQaopP0hCvy/WeRbpJ
-	 xL8O++F/Cxe0hcBsuaeOlP5LM7UtcTNpxZXHNx1fW9kPc2SRmJ7b1czGj0vWtnBi34
-	 BbN2bh/RMPhmfrV4jneBT3d/GjmwXmqPqsobo4iU=
+	b=rjdevBBCSLJ0gbMywTHj7ujeRt4KUU+lFai7CTCp5tXvfW7bfFiXXUbuPqKcYeJBr
+	 HWY74lBhekvLAg9H8kqEHvwv6gekCzMOuciBI9K4RJqtYazVxEVcrGTYO7zNRlQZzc
+	 4PF2zmza14jRSrN+koAXLiFrEoZbL0yIpV7AC2sU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 020/261] netfilter: synproxy: add mutex to guard hook reference counting
+	Jann Horn <jannh@google.com>,
+	Miklos Szeredi <mszeredi@redhat.com>,
+	"Christian Brauner (Amutable)" <brauner@kernel.org>
+Subject: [PATCH 5.15 220/411] fuse: reject fuse_notify() pagecache ops on directories
 Date: Tue, 16 Jun 2026 20:27:38 +0530
-Message-ID: <20260616145045.939754622@linuxfoundation.org>
+Message-ID: <20260616145112.487388117@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
-References: <20260616145044.869532709@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,151 +69,94 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264553-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-266056-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:fmancera@suse.de,m:fw@strlen.de,m:pablo@netfilter.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jannh@google.com,m:mszeredi@redhat.com,m:brauner@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,suse.de:email,vger.kernel.org:from_smtp,netfilter.org:email,strlen.de:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5D2B56921E7
+X-Rspamd-Queue-Id: A850A694237
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fernando Fernandez Mancera <fmancera@suse.de>
+From: Jann Horn <jannh@google.com>
 
-[ Upstream commit 2fcba19caaeb2a33017459d3430f057967bb91b6 ]
+commit 9c954499d43aefac01c5dfb57a82b13d2dcf4b94 upstream.
 
-As the synproxy infrastructure register netfilter hooks on-demand when a
-user adds the first iptables target or nftables expression, if done
-concurrently they can race each other.
+The operations FUSE_NOTIFY_STORE and FUSE_NOTIFY_RETRIEVE allow the
+FUSE daemon to actively write/read pagecache contents.
 
-Introduce a mutex to serialize the refcount control blocks access from
-both frontends. While a per namespace mutex might be more efficient, it
-is not needed for target/expression like SYNPROXY.
+For directories with FOPEN_CACHE_DIR, the pagecache is used as
+kernel-internal cache storage, and userspace is not supposed to have
+direct access to this cache - in particular, fuse_parse_cache() will hit
+WARN_ON() if the cache contains bogus data.
 
-Fixes: ad49d86e07a4 ("netfilter: nf_tables: Add synproxy support")
-Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reject FUSE_NOTIFY_STORE and FUSE_NOTIFY_RETRIEVE on anything other than
+regular files with -EINVAL.
+
+Fixes: 5d7bc7e8680c ("fuse: allow using readdir cache")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jann Horn <jannh@google.com>
+Link: https://patch.msgid.link/20260519-fuse-dir-pagecache-v2-1-5428fa48e175@google.com
+Acked-by: Miklos Szeredi <mszeredi@redhat.com>
+Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_synproxy_core.c | 24 ++++++++++++++++++------
- 1 file changed, 18 insertions(+), 6 deletions(-)
+ fs/fuse/dev.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nf_synproxy_core.c b/net/netfilter/nf_synproxy_core.c
-index 6a851ac4dd048f..a277b2bd3275dc 100644
---- a/net/netfilter/nf_synproxy_core.c
-+++ b/net/netfilter/nf_synproxy_core.c
-@@ -21,6 +21,8 @@
- #include <net/netfilter/nf_conntrack_zones.h>
- #include <net/netfilter/nf_synproxy.h>
+--- a/fs/fuse/dev.c
++++ b/fs/fuse/dev.c
+@@ -1599,6 +1599,10 @@ static int fuse_notify_store(struct fuse
+ 	inode = fuse_ilookup(fc, nodeid,  NULL);
+ 	if (!inode)
+ 		goto out_up_killsb;
++	if (!S_ISREG(inode->i_mode)) {
++		err = -EINVAL;
++		goto out_iput;
++	}
  
-+static DEFINE_MUTEX(synproxy_mutex);
-+
- unsigned int synproxy_net_id;
- EXPORT_SYMBOL_GPL(synproxy_net_id);
+ 	mapping = inode->i_mapping;
+ 	index = outarg.offset >> PAGE_SHIFT;
+@@ -1770,7 +1774,10 @@ static int fuse_notify_retrieve(struct f
  
-@@ -768,26 +770,31 @@ static const struct nf_hook_ops ipv4_synproxy_ops[] = {
- 
- int nf_synproxy_ipv4_init(struct synproxy_net *snet, struct net *net)
- {
--	int err;
-+	int err = 0;
- 
-+	mutex_lock(&synproxy_mutex);
- 	if (snet->hook_ref4 == 0) {
- 		err = nf_register_net_hooks(net, ipv4_synproxy_ops,
- 					    ARRAY_SIZE(ipv4_synproxy_ops));
- 		if (err)
--			return err;
-+			goto out;
+ 	inode = fuse_ilookup(fc, nodeid, &fm);
+ 	if (inode) {
+-		err = fuse_retrieve(fm, inode, &outarg);
++		if (!S_ISREG(inode->i_mode))
++			err = -EINVAL;
++		else
++			err = fuse_retrieve(fm, inode, &outarg);
+ 		iput(inode);
  	}
- 
- 	snet->hook_ref4++;
--	return 0;
-+out:
-+	mutex_unlock(&synproxy_mutex);
-+	return err;
- }
- EXPORT_SYMBOL_GPL(nf_synproxy_ipv4_init);
- 
- void nf_synproxy_ipv4_fini(struct synproxy_net *snet, struct net *net)
- {
-+	mutex_lock(&synproxy_mutex);
- 	snet->hook_ref4--;
- 	if (snet->hook_ref4 == 0)
- 		nf_unregister_net_hooks(net, ipv4_synproxy_ops,
- 					ARRAY_SIZE(ipv4_synproxy_ops));
-+	mutex_unlock(&synproxy_mutex);
- }
- EXPORT_SYMBOL_GPL(nf_synproxy_ipv4_fini);
- 
-@@ -1192,27 +1199,32 @@ static const struct nf_hook_ops ipv6_synproxy_ops[] = {
- int
- nf_synproxy_ipv6_init(struct synproxy_net *snet, struct net *net)
- {
--	int err;
-+	int err = 0;
- 
-+	mutex_lock(&synproxy_mutex);
- 	if (snet->hook_ref6 == 0) {
- 		err = nf_register_net_hooks(net, ipv6_synproxy_ops,
- 					    ARRAY_SIZE(ipv6_synproxy_ops));
- 		if (err)
--			return err;
-+			goto out;
- 	}
- 
- 	snet->hook_ref6++;
--	return 0;
-+out:
-+	mutex_unlock(&synproxy_mutex);
-+	return err;
- }
- EXPORT_SYMBOL_GPL(nf_synproxy_ipv6_init);
- 
- void
- nf_synproxy_ipv6_fini(struct synproxy_net *snet, struct net *net)
- {
-+	mutex_lock(&synproxy_mutex);
- 	snet->hook_ref6--;
- 	if (snet->hook_ref6 == 0)
- 		nf_unregister_net_hooks(net, ipv6_synproxy_ops,
- 					ARRAY_SIZE(ipv6_synproxy_ops));
-+	mutex_unlock(&synproxy_mutex);
- }
- EXPORT_SYMBOL_GPL(nf_synproxy_ipv6_fini);
- #endif /* CONFIG_IPV6 */
--- 
-2.53.0
-
+ 	up_read(&fc->killsb);
 
 
 
