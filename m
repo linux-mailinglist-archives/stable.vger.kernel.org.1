@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-266251-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264882-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id gde7KoOZMWqdnwUAu9opvQ
-	(envelope-from <stable+bounces-266251-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:44:19 +0200
+	id 8xwYMOV9MWr9kgUAu9opvQ
+	(envelope-from <stable+bounces-264882-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:46:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37498694685
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:44:19 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FCA8692705
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:46:29 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=h3wwEDfB;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266251-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266251-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=FNkrT3gX;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264882-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264882-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 09A42309AF70
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:44:11 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id BD99930087E4
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:46:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0383347CC86;
-	Tue, 16 Jun 2026 18:44:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D650A43E4BF;
+	Tue, 16 Jun 2026 16:46:27 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D82D143CEC7;
-	Tue, 16 Jun 2026 18:44:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5F9032C302;
+	Tue, 16 Jun 2026 16:46:26 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781635446; cv=none; b=XyyAUHrQw6RXlDUanIrDJGSjZA4SkDiWLrdrrhfUFZzmWIZqHHk/RB9mHokRjVLRZV12S780TWhhTDXyTwhG1zXPndH5qcgLjoQUP8nLWZieBrxZfsIQ4pj/A7c3hYZpOgOfksjbjf3T+42uZ3i8xywEtjb6z0V4hYQ2TwgD154=
+	t=1781628387; cv=none; b=M/AEHqvxGZ5rwInQR+OpQcNiGRUsvGaAd3vRQjG4oaoAyCD5meToWyL0K8qrlHFniUcxjFw9iJ9wZHsrDtWWn8RPTdtHMHTcoBdLFgxIzktguFmTyzf93AtW+mzzrsNGAtix6W1Enl/nBlp/nvSvyxzH8kjFXHgXWKCN5DgRWCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781635446; c=relaxed/simple;
-	bh=NNLVBZ4DcaND1o7cf85cato4hURKxvDMYaVy2XUF7AQ=;
+	s=arc-20240116; t=1781628387; c=relaxed/simple;
+	bh=6xzD+GvgCoynPWfAgN99skP5xyGg8KMTU+naLM/87FA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iAdYVis8T6PDU3h9meiZ7UutJwusZ8kCoYiIUBtBmGVagiWYYqeGSMsc5STg0kFaDcVG0sBwE1XnZHDZq5Sbc0Z2u3oS6dkJhcw836iQEE2B9BmREjoBFAE4PrbmdjZg0I3ppl0oqA6LcycF/K1FwGJ7Al3FdAw/2AhZXFhUHpw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h3wwEDfB; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7A0E1F00A3D;
-	Tue, 16 Jun 2026 18:44:04 +0000 (UTC)
+	 MIME-Version; b=g1gYX84+XnZfM34YVMvo9QKE7kUzzo1YVTbSUolPS9c9KXtXQiTS9NU87A5fROLsE5vbbOye0sKtsuLmr09Dktg9vO5l4wXWg8ImP0jsP3tDQm3hZuHIO2bjgEsbl40HJfpqJsh3NplkFp5XMKPsEYHoTbLbPOWKOEsWNm6Z/zE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FNkrT3gX; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A5CC1F000E9;
+	Tue, 16 Jun 2026 16:46:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781635445;
-	bh=hWjBvFq7wBiOvawGMKP/D4vB5sGA/OYUBmuT8AOGIrA=;
+	s=korg; t=1781628386;
+	bh=bhl4eJY6cei9B+omydQdk3JIerNpWS02ntSvDJtQ62c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=h3wwEDfBGmWzJgrYv7jF/c4ZcyISkY4WqDbWZl7950TN8wiJVcQ/urXjsr/ia2H+T
-	 vrU8kqI5x/4YBF1D9AGi/0/sJMchnQdw1rfQeoA3JlUgcqkNFSDHuTJQt7cX+abKu3
-	 CwdBb3y45nL+jq9q00njAfUlFCFUs4hj/xKGxysc=
+	b=FNkrT3gXcvldaFR0tAnhKMYXHLufdqE8NBvWRYmbSWVXEYu1vaxjuLZjwia7fYo90
+	 4jdGePhqMQsFGnzN2BIGi9ZLcBSsgFJccp5TeWYv2+hfgvbezqmRxaWv/0aI+Rd376
+	 YXaD6jL3G8a5ceKs/7Rjt4TJTbKf29h0/UG/5h5o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Halil Pasic <pasic@linux.ibm.com>,
-	Alexandra Winter <wintera@linux.ibm.com>,
-	Mahanta Jambigi <mjambigi@linux.ibm.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 017/342] net/smc: Do not re-initialize smc hashtables
+	stable <stable@kernel.org>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 6.6 086/452] usb: typec: wcove: dont write past struct pd_message in wcove_read_rx_buffer()
 Date: Tue, 16 Jun 2026 20:25:13 +0530
-Message-ID: <20260616145049.081611478@linuxfoundation.org>
+Message-ID: <20260616145122.373833600@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,97 +68,117 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266251-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264882-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:pasic@linux.ibm.com,m:wintera@linux.ibm.com,m:mjambigi@linux.ibm.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:heikki.krogerus@linux.intel.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,intel.com:email,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 37498694685
+X-Rspamd-Queue-Id: 4FCA8692705
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandra Winter <wintera@linux.ibm.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-[ Upstream commit 9e4389b0038781f19f97895186ed941ff8ac1678 ]
+commit 4af7ad0e6d7aa4403dbb1dac7b9659b0421efcaa upstream.
 
-INIT_HLIST_HEAD(&smc_v*_hashinfo.ht) are called after smc_nl_init(),
-proto_register() and sock_register(). This can lead to smc_v*_hashinfo.ht
-being reset even though hash entries already exist and are being used,
-possibly resulting in a corrupted list.
+wcove_read_rx_buffer() copies the PD RX FIFO into the caller's
+struct pd_message with
 
-Remove unnecessary and dangerous re-initialisation of smc_v*_hashinfo.ht in
-smc_init(); it is implicitly initialised to zero anyhow. Add
-HLIST_HEAD_INIT to the definitions for clarity.
+	for (i = 0; i < USBC_RXINFO_RXBYTES(info); i++)
+		regmap_read(wcove->regmap, USBC_RX_DATA + i, msg + i);
 
-Fixes: f16a7dd5cf27 ("smc: netlink interface for SMC sockets")
-Suggested-by: Halil Pasic <pasic@linux.ibm.com>
-Signed-off-by: Alexandra Winter <wintera@linux.ibm.com>
-Acked-by: Halil Pasic <pasic@linux.ibm.com>
-Reviewed-by: Mahanta Jambigi <mjambigi@linux.ibm.com>
-Link: https://patch.msgid.link/20260521145639.10317-1-wintera@linux.ibm.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+which has two problems:
+
+USBC_RXINFO_RXBYTES() is a 5-bit field (max 31) while struct pd_message
+is 30 bytes (__le16 header + __le32 payload[PD_MAX_PAYLOAD], packed).
+The byte count latched in RXINFO is the number of bytes the port partner
+put on the wire, so a malicious partner that transmits a 31-byte frame
+can drive the loop one byte past the destination if the WCOVE BMC
+receiver does not enforce the PD object-count limit in hardware. The
+existing FIXME flagged this as unverified.
+
+Independently, regmap_read() takes an unsigned int * and stores a full
+unsigned int at the destination. Passing the byte pointer msg + i means
+each iteration writes four bytes; the high three are zero (val_bits is
+8) and are normally overwritten by the next iteration, but the final
+iteration's high bytes are not. With RXBYTES == 30 the i == 29 iteration
+already writes three zero bytes past msg, which sits on the IRQ thread's
+stack in wcove_typec_irq().
+
+Clamp the loop to sizeof(struct pd_message) and read each register into
+a local before storing only its low byte, so the copy can never exceed
+the destination regardless of what RXINFO reports.
+
+Assisted-by: gkh_clanker_t1000
+Cc: stable <stable@kernel.org>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://patch.msgid.link/2026051347-clustered-deflected-9543@gregkh
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/smc/af_smc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/typec/tcpm/wcove.c |   13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
-index d64cfd651c7a16..8e1e38bc0df4b0 100644
---- a/net/smc/af_smc.c
-+++ b/net/smc/af_smc.c
-@@ -71,10 +71,12 @@ static void smc_set_keepalive(struct sock *sk, int val)
+--- a/drivers/usb/typec/tcpm/wcove.c
++++ b/drivers/usb/typec/tcpm/wcove.c
+@@ -444,9 +444,11 @@ static int wcove_start_toggling(struct t
+ 	return regmap_write(wcove->regmap, USBC_CONTROL1, usbc_ctrl);
+ }
  
- static struct smc_hashinfo smc_v4_hashinfo = {
- 	.lock = __RW_LOCK_UNLOCKED(smc_v4_hashinfo.lock),
-+	.ht = HLIST_HEAD_INIT,
- };
+-static int wcove_read_rx_buffer(struct wcove_typec *wcove, void *msg)
++static int wcove_read_rx_buffer(struct wcove_typec *wcove,
++				struct pd_message *msg)
+ {
+-	unsigned int info;
++	unsigned int info, val, len;
++	u8 *buf = (u8 *)msg;
+ 	int ret;
+ 	int i;
  
- static struct smc_hashinfo smc_v6_hashinfo = {
- 	.lock = __RW_LOCK_UNLOCKED(smc_v6_hashinfo.lock),
-+	.ht = HLIST_HEAD_INIT,
- };
+@@ -454,12 +456,13 @@ static int wcove_read_rx_buffer(struct w
+ 	if (ret)
+ 		return ret;
  
- int smc_hash_sk(struct sock *sk)
-@@ -2586,8 +2588,6 @@ static int __init smc_init(void)
- 		pr_err("%s: sock_register fails with %d\n", __func__, rc);
- 		goto out_proto6;
+-	/* FIXME: Check that USBC_RXINFO_RXBYTES(info) matches the header */
++	len = min(USBC_RXINFO_RXBYTES(info), sizeof(*msg));
+ 
+-	for (i = 0; i < USBC_RXINFO_RXBYTES(info); i++) {
+-		ret = regmap_read(wcove->regmap, USBC_RX_DATA + i, msg + i);
++	for (i = 0; i < len; i++) {
++		ret = regmap_read(wcove->regmap, USBC_RX_DATA + i, &val);
+ 		if (ret)
+ 			return ret;
++		buf[i] = val;
  	}
--	INIT_HLIST_HEAD(&smc_v4_hashinfo.ht);
--	INIT_HLIST_HEAD(&smc_v6_hashinfo.ht);
  
- 	rc = smc_ib_register_client();
- 	if (rc) {
--- 
-2.53.0
-
+ 	return regmap_write(wcove->regmap, USBC_RXSTATUS,
 
 
 
