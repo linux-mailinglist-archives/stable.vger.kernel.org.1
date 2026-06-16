@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-266070-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264107-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id gy2uFM6VMWrdnQUAu9opvQ
-	(envelope-from <stable+bounces-266070-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:28:30 +0200
+	id ejpwK0JvMWr9jAUAu9opvQ
+	(envelope-from <stable+bounces-264107-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:44:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47A03694289
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:28:29 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7963691579
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:44:01 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=oesbweHf;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266070-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-266070-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=1v8bGdv4;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264107-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264107-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 533293003730
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:28:26 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id AF9543032C58
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:36:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E28247A0CD;
-	Tue, 16 Jun 2026 18:28:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 650D04418FF;
+	Tue, 16 Jun 2026 15:36:02 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22006472798;
-	Tue, 16 Jun 2026 18:28:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41CFD449EB8;
+	Tue, 16 Jun 2026 15:36:01 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781634503; cv=none; b=VSKZxnK9MVbsYFa8H3v7+jChUAs+aAE/3fcDZVfF18d43EIkrVsGCwx5ouPt0JYl2ZCkO6VBJ35D+5ZBuJzJS1ZcXDFFvis3wrhkYz/D9CQAuGt9QINSyGCo/F1iZpStdGE0T58j59RtRLD8GkRdVlKGCN1e+z/0gVEDFcJkZBI=
+	t=1781624162; cv=none; b=fXOlpnar8D9MxLWmkM/NqHmhdM2PHmgjadt1ptgrfrimUrJtOboRF2IBNHCdsysi+9ZlG2Ub8pxtczHMfIfkvaDAcoirKvLXo+Om9OjOMycrkUxCEU5O9Sj5866Lf+s/4YLeEhMv5Pv9OVB3tLvlp8UXWmqOV9Laup+xz0vhzSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781634503; c=relaxed/simple;
-	bh=/M8MXoEuUPJdWGdgRslEcUqXDgWdBU+hhzqYNMQtG6M=;
+	s=arc-20240116; t=1781624162; c=relaxed/simple;
+	bh=JlEqudlUIg3l7ckdHPrLJPW76Q6JtbRV5LGX0aDCZYo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AarbyyaUPJkNmllK7ZyNswsS6EtNxr2rRVO2CanElutL36aVTSfi6m7YT26mHI8S4qH1z4Kd1TEqkheMXzPAbRAM7x+bT212MFIc8fwQR7bnAKptf7ZzsesF+xWABeWSA85th9cQzh+IVX4aJrKmQHasTR/UWjnPs3fl8r/24tI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oesbweHf; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6DBC1F000E9;
-	Tue, 16 Jun 2026 18:28:20 +0000 (UTC)
+	 MIME-Version; b=UN1KIbC6JVFVrS4bbJ0UmNy9pIfdrILF46jIOiHHh1u5iQ4otdTi3q3aFPfK6qd1mJgvmpyIXcDXF4nzTfCjZSaOuPrQlNZsmFSBQXhPJpxo4Ebz73omdcsb0oaMETE03Wsul2r39pJirDEoaXZxPVbWXs4bbpVsm5V3CORnfYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1v8bGdv4; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA6161F00A3A;
+	Tue, 16 Jun 2026 15:35:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781634501;
-	bh=SDoKSEFpvQUMihcvryN9BjcVABiDHfYNfQxjr22z2gs=;
+	s=korg; t=1781624160;
+	bh=hb2zk41v5/Vh36I9/uOAR+CVDOMtOtek64RIQdLREU8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=oesbweHf2ml/Nr55xnQzj2/ZKaGjtzY/4y7z7A1PJ/8+5Jfqy22dW15+qojD2dJE5
-	 Ex68Lk0Zc5Jms6GBkJASpvc/tvkXA4PN2w39JAESbrIQneGskHK0Zh/JdhDmPMelc7
-	 tOj6Lz3RMowC/hfJ4zHvqvb20QHBG+hncdpK0hhQ=
+	b=1v8bGdv4scNQY1hgk65K46hIpF6qPuuL9KxPvDT1x92L2edOBpCAIGwMVm5INu/gE
+	 MeraiczQQd6FrzduYaerP6E7FmpMoSm5vnByda+ug9pBAYgt9KEvg0THn+rcCBu8HY
+	 EalYkW00zOv8PbwhtdXVz5vp+K/itI7bySOzGcs8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuan Zhaoming <yuanzm2@lenovo.com>,
-	Jeremy Kerr <jk@codeconstruct.com.au>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 277/411] net: mctp: fix dont require received header reserved bits to be zero
+	Yuhao Jiang <danisjiang@gmail.com>,
+	Junrui Luo <moonafterrain@outlook.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Srinivas Kandagatla <srini@kernel.org>
+Subject: [PATCH 7.0 284/378] misc: fastrpc: fix DMA address corruption due to find_vma misuse
 Date: Tue, 16 Jun 2026 20:28:35 +0530
-Message-ID: <20260616145115.854115173@linuxfoundation.org>
+Message-ID: <20260616145125.049009635@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,125 +70,79 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266070-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,outlook.com,oss.qualcomm.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-264107-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:yuanzm2@lenovo.com,m:jk@codeconstruct.com.au,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:danisjiang@gmail.com,m:moonafterrain@outlook.com,m:dmitry.baryshkov@oss.qualcomm.com,m:srini@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,lenovo.com:email,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,vger.kernel.org:from_smtp,qualcomm.com:email,outlook.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 47A03694289
+X-Rspamd-Queue-Id: B7963691579
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuan Zhaoming <yuanzm2@lenovo.com>
+From: Junrui Luo <moonafterrain@outlook.com>
 
-[ Upstream commit a663bac71a2f0b3ac6c373168ca57b2a6e6381aa ]
+commit 464c6ad2aa16e1e1df9d559289199356493d1e00 upstream.
 
->From the MCTP Base specification (DSP0236 v1.2.1), the first byte of
-the MCTP header contains a 4 bit reserved field, and 4 bit version.
+fastrpc_get_args() uses find_vma() to look up the VMA for a user-provided
+pointer and compute a DMA address offset. When the address falls in a gap
+before the returned VMA, (ptr & PAGE_MASK) - vma->vm_start underflows,
+corrupting the DMA address sent to the DSP.
 
-On our current receive path, we require those 4 reserved bits to be
-zero, but the 9500-8i card is non-conformant, and may set these
-reserved bits.
+Replace find_vma() with vma_lookup(), which returns NULL when the address
+is not contained within any VMA.
 
-DSP0236 states that the reserved bits must be written as zero, and
-ignored when read. While the device might not conform to the former,
-we should accept these message to conform to the latter.
-
-Relax our check on the MCTP version byte to allow non-zero bits in the
-reserved field.
-
-Fixes: 889b7da23abf ("mctp: Add initial routing framework")
-Signed-off-by: Yuan Zhaoming <yuanzm2@lenovo.com>
 Cc: stable@vger.kernel.org
-Acked-by: Jeremy Kerr <jk@codeconstruct.com.au>
-Link: https://patch.msgid.link/20260417141340.5306-1-yuanzhaoming901030@126.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 80f3afd72bd4 ("misc: fastrpc: consider address offset before sending to DSP")
+Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
+Link: https://patch.msgid.link/20260530204528.116920-3-srini@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/mctp.h |    3 +++
- net/mctp/route.c   |    8 ++++++--
- 2 files changed, 9 insertions(+), 2 deletions(-)
+ drivers/misc/fastrpc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/include/net/mctp.h
-+++ b/include/net/mctp.h
-@@ -25,6 +25,9 @@ struct mctp_hdr {
- #define MCTP_VER_MIN	1
- #define MCTP_VER_MAX	1
+--- a/drivers/misc/fastrpc.c
++++ b/drivers/misc/fastrpc.c
+@@ -1087,7 +1087,7 @@ static int fastrpc_get_args(u32 kernel,
+ 			pages[i].addr = ctx->maps[i]->dma_addr;
  
-+/* Definitions for ver field */
-+#define MCTP_HDR_VER_MASK	GENMASK(3, 0)
-+
- /* Definitions for flags_seq_tag field */
- #define MCTP_HDR_FLAG_SOM	BIT(7)
- #define MCTP_HDR_FLAG_EOM	BIT(6)
---- a/net/mctp/route.c
-+++ b/net/mctp/route.c
-@@ -229,6 +229,7 @@ static int mctp_route_input(struct mctp_
- 	unsigned long f;
- 	u8 tag, flags;
- 	int rc;
-+	u8 ver;
- 
- 	msk = NULL;
- 	rc = -EINVAL;
-@@ -246,7 +247,8 @@ static int mctp_route_input(struct mctp_
- 	mh = mctp_hdr(skb);
- 	skb_pull(skb, sizeof(struct mctp_hdr));
- 
--	if (mh->ver != 1)
-+	ver = mh->ver & MCTP_HDR_VER_MASK;
-+	if (ver < MCTP_VER_MIN || ver > MCTP_VER_MAX)
- 		goto out;
- 
- 	flags = mh->flags_seq_tag & (MCTP_HDR_FLAG_SOM | MCTP_HDR_FLAG_EOM);
-@@ -859,6 +861,7 @@ static int mctp_pkttype_receive(struct s
- 	struct mctp_skb_cb *cb;
- 	struct mctp_route *rt;
- 	struct mctp_hdr *mh;
-+	u8 ver;
- 
- 	/* basic non-data sanity checks */
- 	if (dev->type != ARPHRD_MCTP)
-@@ -872,7 +875,8 @@ static int mctp_pkttype_receive(struct s
- 
- 	/* We have enough for a header; decode and route */
- 	mh = mctp_hdr(skb);
--	if (mh->ver < MCTP_VER_MIN || mh->ver > MCTP_VER_MAX)
-+	ver = mh->ver & MCTP_HDR_VER_MASK;
-+	if (ver < MCTP_VER_MIN || ver > MCTP_VER_MAX)
- 		goto err_drop;
- 
- 	cb = __mctp_cb(skb);
+ 			mmap_read_lock(current->mm);
+-			vma = find_vma(current->mm, ctx->args[i].ptr);
++			vma = vma_lookup(current->mm, ctx->args[i].ptr);
+ 			if (vma)
+ 				pages[i].addr += (ctx->args[i].ptr & PAGE_MASK) -
+ 						 vma->vm_start;
 
 
 
