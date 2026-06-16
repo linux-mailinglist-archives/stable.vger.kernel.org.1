@@ -1,66 +1,60 @@
-Return-Path: <stable+bounces-263538-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263539-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id vnxYIarVMGpdXwUAu9opvQ
-	(envelope-from <stable+bounces-263538-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 06:48:42 +0200
+	id Pam9KkjWMGpnXwUAu9opvQ
+	(envelope-from <stable+bounces-263539-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 06:51:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 043ED68BF21
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 06:48:41 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3127568BF38
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 06:51:20 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=e8XJB3qN;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263538-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263538-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ywM0SPYp;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263539-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-263539-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3FE07301416F
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 04:48:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 990B0300E719
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 04:51:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B2293C454E;
-	Tue, 16 Jun 2026 04:48:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35F7A3C1F48;
+	Tue, 16 Jun 2026 04:51:18 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0177D2750ED;
-	Tue, 16 Jun 2026 04:48:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FBD63C13FB
+	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 04:51:17 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781585317; cv=none; b=nreUF1Psf/muToJaiD7Amb6XeNxpYGFsVHaMD3leGGt5c8cFPM9b8rniurun4FWANjLThX7Vrglc7Vx91S4kRYo4WCbRpezgAeyn21x5LfuxjkYSyV9Gr3IzfjhA2RkQAvFjII01fsqU13wA5gsj3OtjRSkM4M7+kr9l8kbEQFo=
+	t=1781585478; cv=none; b=WXZGzzP2GOHzIeoEUfsOKcCYfnrniRjkKAHde+Zcl/BfGf8VI5/CFD7f6Z/e5hg1xrAHty8+FsPP08cy7NupyKS9ERjeqeNtBGUlCOtz3w+Pq48udbSIlGhJ6whrmJMPw9Ao3UFMve3BOxwG8iW7ybkUSAVf0HbySaQNYKUSj20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781585317; c=relaxed/simple;
-	bh=+GAzhuOVqYflmhuwdTsSL+/EE2isHEZUlqKl3kdaaSg=;
+	s=arc-20240116; t=1781585478; c=relaxed/simple;
+	bh=86RZviP1Y54FCsoRguikapH8/mKUmhmhjoDAtftY9Bs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ctSgDYwlFBZeNFa5CvihMp4cEtYwiS9qulso6v3C1D1HYBL02zAn3eVMR1/DXPUPphGjCJ9pxvwK4+T1qWwQSLgzw6gwZwhApu/5l+vYY/2+YMjO+06JKvY69OC2KxQXTpI18bZbUnXjjJTjdzuc3DS5RGf2LN/uwbz7ggSzcq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e8XJB3qN; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E8671F000E9;
-	Tue, 16 Jun 2026 04:48:34 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=UidcAFaQXuQmksKPTrT1aj/DZzR8knxPQX++YXCbBaQyvkv92bbObojICbxs1TT8k3GEH3HdB47DEchnTRm/jmdAqQ8HngEA3EpesS8pKGwDIIeQgZ9u/ovae/2uDmiOApV4BYBtb+XL3zKS3LwlV/Gevv6dGKlIU7BEp6JUWkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ywM0SPYp; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08E3A1F000E9;
+	Tue, 16 Jun 2026 04:51:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781585315;
-	bh=59eSE6Ypmdqidr8SEUba7qcDtoyeflow3dPcMaCCM1o=;
+	s=korg; t=1781585477;
+	bh=UhdJGMkuJuDqQp7U2xv66IDTZktjFS+131Oks1JmnyY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=e8XJB3qNY3Iia94LYouqyZznnC3rhYx8DuLLujNzA8u7k4pc7aXmt0u9DmxcJFZ4e
-	 +LnAFumMEsx4qzMgPHrn3TDLyxxvfW5JQFrBLww206+nSOjAG4ZsNotZKywj4t0u/r
-	 y0lfXc/2AVxNGdi01bFU6opnQOYlYzB2rJ5O3eDw=
-Date: Tue, 16 Jun 2026 10:17:31 +0530
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: Sasha Levin <sashal@kernel.org>, "Michael S. Tsirkin" <mst@redhat.com>,
-	AVKrasnov@sberdevices.ru, edumazet@google.com, eperezma@redhat.com,
-	jasowang@redhat.com, kuba@kernel.org, leonardi@redhat.com,
-	stefanha@redhat.com, virtualization@lists.linux.dev,
-	xuanzhuo@linux.alibaba.com, stable-commits@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: Patch "vsock/virtio: fix potential unbounded skb queue" has been
- added to the 6.6-stable tree
-Message-ID: <2026061624-harbor-capture-a5bf@gregkh>
-References: <2026051553-santa-unretired-a417@gregkh>
- <20260515113503-mutt-send-email-mst@kernel.org>
- <2026051526-banish-strife-6dba@gregkh>
- <20260515114521-mutt-send-email-mst@kernel.org>
- <20260516170159.vsock-virtio-unbounded-drop@kernel.org>
- <ag8EvTp29B-Q3nCq@sgarzare-redhat>
+	b=ywM0SPYptq0l+gcwkxMpuwmjDI8g+3+/4nDX8LYKqyYH3zsoDK1s74+DstdLSSMi9
+	 xQWsFvDC52iD0jE1P4pQ6L5XrdaKSwjYOFicWYsEXu97rPxlrV6RLIGcG8g/ijoK7X
+	 QLJ/hMJzH7vzU4S0uef8J1H6FB8oQv8ubkkseGK8=
+Date: Tue, 16 Jun 2026 10:20:12 +0530
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Ben Hutchings <benh@debian.org>
+Cc: Sasha Levin <sashal@kernel.org>,
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Helge Deller <deller@gmx.de>, stable@vger.kernel.org,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Javier Martinez Canillas <javierm@redhat.com>
+Subject: Re: [6.6] fbdev/vt8500lcdfb: Initialize fb_ops with fbdev macros
+Message-ID: <2026061605-barley-bootie-0b2a@gregkh>
+References: <ahg8Ocvb3UFV6Vdl@decadent.org.uk>
+ <3f2908646639f4af8844cb8f5a9b4d2d4f904631.camel@debian.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -69,27 +63,28 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ag8EvTp29B-Q3nCq@sgarzare-redhat>
+In-Reply-To: <3f2908646639f4af8844cb8f5a9b4d2d4f904631.camel@debian.org>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [2.34 / 15.00];
+X-Spamd-Result: default: False [3.84 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-263539-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:sgarzare@redhat.com,m:sashal@kernel.org,m:mst@redhat.com,m:AVKrasnov@sberdevices.ru,m:edumazet@google.com,m:eperezma@redhat.com,m:jasowang@redhat.com,m:kuba@kernel.org,m:leonardi@redhat.com,m:stefanha@redhat.com,m:virtualization@lists.linux.dev,m:xuanzhuo@linux.alibaba.com,m:stable-commits@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-263538-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:benh@debian.org,m:sashal@kernel.org,m:fourier.thomas@gmail.com,m:deller@gmx.de,m:stable@vger.kernel.org,m:tzimmermann@suse.de,m:javierm@redhat.com,m:fourierthomas@gmail.com,s:lists@lfdr.de];
+	FREEMAIL_CC(0.00)[kernel.org,gmail.com,gmx.de,vger.kernel.org,suse.de,redhat.com];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -98,38 +93,23 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,gregkh:mid,vger.kernel.org:from_smtp]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 043ED68BF21
+X-Rspamd-Queue-Id: 3127568BF38
 
-On Thu, May 21, 2026 at 03:15:54PM +0200, Stefano Garzarella wrote:
-> On Sun, May 17, 2026 at 09:33:06AM -0400, Sasha Levin wrote:
-> > > > What's the status of that fix?
-> > > 
-> > > Stefano posted v3 and is working on v4.
-> > > 
-> > > >  Should it be reverted elsewhere?
-> > > 
-> > > Donnu. With the change we have no DoS but the socket gets silently
-> > > broken.  Eric felt given the brokenness is upstream already it's better
-> > > to work on a fix on top, not revert.
-> > 
-> > Dropped from the 6.6, 6.12, 6.18, and 7.0 queues. We'll pick up Stefano's
-> > follow-up once it lands upstream.
-> 
-> FYI v4 is now merged in the net tree, so I guess they will land upstream
-> soon. I CCed stable on both patches:
-> 
-> a4f0b001782b ("vsock/virtio: reset connection on receiving queue overflow")
-> c6087c5aaad6 ("vsock/virtio: fix skb overhead accounting to preserve full
-> buf_alloc")
-> 
-> Both are related, but the second is the main fix of this patch.
+On Thu, May 28, 2026 at 03:03:28PM +0200, Ben Hutchings wrote:
+> For 6.6, please cherry-pick commit 63a11adaceb8 "fbdev/vt8500lcdfb:
+> Initialize fb_ops with fbdev macros" as stable dependency of commit
+> 88b3b9924337 "fbdev: vt8500lcdfb: fix missing dma_free_coherent()". 
+> This seems to be applicable without changes.
 
-THe second one doesn't apply at all :(
+Now applied, thanks.
+
+greg k-h
 
