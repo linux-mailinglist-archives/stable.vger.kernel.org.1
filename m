@@ -1,63 +1,61 @@
-Return-Path: <stable+bounces-264078-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266032-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ckF5CKZuMWrDjAUAu9opvQ
-	(envelope-from <stable+bounces-264078-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:41:26 +0200
+	id aDzRAQKVMWqInQUAu9opvQ
+	(envelope-from <stable+bounces-266032-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:25:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 215A66914AB
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:41:25 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B8E56941C4
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:25:05 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=qvuw2nyV;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264078-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264078-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=l9Ee9Ot4;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266032-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266032-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1E2F1301EFCB
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:33:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 977BB307DE2D
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:25:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C39244103D;
-	Tue, 16 Jun 2026 15:33:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE1CC46AF1B;
+	Tue, 16 Jun 2026 18:25:01 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEE0B357D14;
-	Tue, 16 Jun 2026 15:33:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4B6B3BFE5A;
+	Tue, 16 Jun 2026 18:25:00 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781624010; cv=none; b=PMF1Qi0CVcl+ukUXmMZY7kILdHk3H75aj1/DPCwpZfaTBw9CaI5x8tSjohIHUVc4hpIyS0JSKdaZNgE8yz3xejSONlAlChaLqIAoNR6/jv7rP+i6IsvRZY9VeGZVCFoXZS0fpcYlO49v6kYoVO5y3C9ZikVpqoj9lZe+O0ZR3b0=
+	t=1781634301; cv=none; b=hP98t9y40zqQMJg6qSoj2cZJMCq1AJR5bk2GQPe8A9q2V9GV7Kz/jZbyIA03ZKAaah65EemQklMdwQ+wPYSXp/Q1DKT4TzII9dQDqv0fUQafvhSK5Gt+q7u5N128ueXikhxEaIMp8Sied4KLiEOxFQuYc8zCxAcdonhbB1wu4qQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781624010; c=relaxed/simple;
-	bh=0Ka5c85E/v+cYfER3ln3ug3ecyBt4naL1RP5M2yBHqk=;
+	s=arc-20240116; t=1781634301; c=relaxed/simple;
+	bh=EuQPfIaWeStx0kA9Y+KZIyPy1SKitUMVKefBOhzbIps=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ffpWMiL5VyTNsedldJSL3WS2sfshmiEo416rwFEtTWEhP1GI5aZGKDh/A0eVS5E1a3swsgwr+d/93d3RmyWMf/3jij8RvwWh+c/aUWFZSwDUR9VCAog3ImlbO2UaHStbWaOWLAMJ7LgyiPn2ORQ1Io2aIiBZT9p9Ky9Xbybf7ks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qvuw2nyV; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5C511F000E9;
-	Tue, 16 Jun 2026 15:33:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=nayJ5bBs3nL6D/lB6w1kp1HIQVDZjSMKfnYNykVBTemqg2Q0wBxXsgwRZ1NHMADFkVKVISSFkSCXxP0et12+cIFw6HLQjN63aqIerH4TFRINQGP+isTdQciYgk/4FPi1s+SabWerNo/7TCXu+2A7QNmxg0DwHjY3hrKm55lKXys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l9Ee9Ot4; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7F081F000E9;
+	Tue, 16 Jun 2026 18:24:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781624009;
-	bh=psJF92ZTkJKqlQaFWM9bmaLN0/jN5A4LhvufK6QDHOo=;
+	s=korg; t=1781634300;
+	bh=Ew2IUvP5/tAY0drFZO18RvNQ78s2blUi7BGxjLTeMjE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=qvuw2nyV3oyUpyXyNcD+CrgkeEwFKF5KYvSgILrrQS25qo8z66g6CnzazyrPF964D
-	 vSHmpGyu1B/dEXbFDbRyq8/XiRnqWv1GSNupAuQCOgcYjvEExaeACKgielghXSxUJK
-	 BcKz5H9M5TbqFLfzYnnW+JE5CXH5yLAg4zUXD6/U=
+	b=l9Ee9Ot43gqPDwio/D5W3l/yBjNLiGK1Ek55P6PlBmhdDj3yAkUngmCWOd4FWO3h4
+	 EEOLFxNcPxlK1CJjuRqSDtL5Q/TlO+y+AliQuYTpUkXFxsSYPBAiteaUKLgjni0nzK
+	 GIHgwEx7lAfdiWlBhjH/Gz4pSUlUKWslXMJ8Vk7o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alistair Popple <apopple@nvidia.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	David Hildenbrand <david@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 7.0 229/378] arm64: mm: call pagetable dtor when freeing hot-removed page tables
+	=?UTF-8?q?Guillermo=20Rodr=C3=ADguez?= <guille.rodriguez@gmail.com>,
+	Alain Volmat <alain.volmat@foss.st.com>,
+	Andi Shyti <andi.shyti@kernel.org>
+Subject: [PATCH 5.15 222/411] i2c: stm32f7: fix timing computation ignoring i2c-analog-filter
 Date: Tue, 16 Jun 2026 20:27:40 +0530
-Message-ID: <20260616145122.328768376@linuxfoundation.org>
+Message-ID: <20260616145112.603998958@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,107 +65,100 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264078-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:apopple@nvidia.com,m:catalin.marinas@arm.com,m:david@kernel.org,m:will@kernel.org,m:akpm@linux-foundation.org,s:lists@lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-266032-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:guille.rodriguez@gmail.com,m:alain.volmat@foss.st.com,m:andi.shyti@kernel.org,m:guillerodriguez@gmail.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,foss.st.com,kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,nvidia.com:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linux-foundation.org:email]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,st.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 215A66914AB
+X-Rspamd-Queue-Id: 8B8E56941C4
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alistair Popple <apopple@nvidia.com>
+From: Guillermo Rodríguez <guille.rodriguez@gmail.com>
 
-commit c594b83457ccdee76d458416fb3bc9348a37592f upstream.
+commit a124579c0763da7bc408f4cd7e8f606cadc94855 upstream.
 
-Since 5e8eb9aeeda3 ("arm64: mm: always call PTE/PMD ctor in
-__create_pgd_mapping()") page-table allocation on ARM64 always calls
-pagetable_{pte,pmd,pud,p4d}_ctor().  This sets the page_type to
-PGTY_table, increments NR_PAGETABLE and possible allocates a PTL.  However
-the matching pagetable_dtor() calls were never added.
+stm32f7_i2c_compute_timing() uses i2c_dev->analog_filter to pick
+the analog filter delay, but i2c_dev->analog_filter is parsed from
+the "i2c-analog-filter" DT property only after the compute_timing
+loop in stm32f7_i2c_setup_timing(), so in practice the timing
+calculations always ignore the analog filter. On an STM32MP1 board
+with clock-frequency = <400000> and i2c-analog-filter set, measured
+SCL frequency was ~382 kHz.
 
-With DEBUG_VM enabled on kernel versions prior to v6.17 without
-2dfcd1608f3a9 ("mm/page_alloc: let page freeing clear any set page type")
-this leads to the following warning when freeing these pages due to
-page->page_type sharing page->_mapcount:
+This also affects (widens) the computed SDADEL range. At high bus
+clock speeds, this can select an SDADEL value that violates tVD;DAT
+(data valid time).
 
-  BUG: Bad page state in process ... pfn:284fbb
-  page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x284fbb
-  flags: 0x17fffc000000000(node=0|zone=2|lastcpupid=0x1ffff)
-  page_type: f2(table)
-  page dumped because: nonzero mapcount
-  Call trace:
-   bad_page+0x13c/0x160
-   __free_frozen_pages+0x6cc/0x860
-   ___free_pages+0xf4/0x180
-   free_pages+0x54/0x80
-   free_hotplug_page_range.part.0+0x58/0x90
-   free_empty_tables+0x438/0x500
-   __remove_pgd_mapping.constprop.0+0x60/0xa8
-   arch_remove_memory+0x48/0x80
-   try_remove_memory+0x158/0x1d8
-   offline_and_remove_memory+0x138/0x180
+Fix by parsing "i2c-analog-filter" before the compute_timing loop.
 
-It can also lead to leaking the ptl allocation if ALLOC_SPLIT_PTLOCKS is
-defined and incorrect NR_PAGETABLE stats.  Fix this by calling
-pagetable_dtor() in free_hotplug_pgtable_page() prior to freeing the page
-to undo the effects of calling pagetable_*_ctor().
-
-Link: https://lore.kernel.org/20260521032730.2104017-1-apopple@nvidia.com
-Fixes: 5e8eb9aeeda3 ("arm64: mm: always call PTE/PMD ctor in __create_pgd_mapping()")
-Signed-off-by: Alistair Popple <apopple@nvidia.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Will Deacon <will@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 83c3408f7b9c ("i2c: stm32f7: support DT binding i2c-analog-filter")
+Signed-off-by: Guillermo Rodríguez <guille.rodriguez@gmail.com>
+Cc: <stable@vger.kernel.org> # v5.13+
+Acked-by: Alain Volmat <alain.volmat@foss.st.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/20260526091210.20383-1-guille.rodriguez@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/mm/mmu.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/i2c/busses/i2c-stm32f7.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/arch/arm64/mm/mmu.c
-+++ b/arch/arm64/mm/mmu.c
-@@ -1445,6 +1445,7 @@ static void free_hotplug_page_range(stru
+--- a/drivers/i2c/busses/i2c-stm32f7.c
++++ b/drivers/i2c/busses/i2c-stm32f7.c
+@@ -673,6 +673,9 @@ static int stm32f7_i2c_setup_timing(stru
+ 	if (!of_property_read_bool(i2c_dev->dev->of_node, "i2c-digital-filter"))
+ 		i2c_dev->dnf_dt = STM32F7_I2C_DNF_DEFAULT;
  
- static void free_hotplug_pgtable_page(struct page *page)
- {
-+	pagetable_dtor(page_ptdesc(page));
- 	free_hotplug_page_range(page, PAGE_SIZE, NULL);
- }
++	i2c_dev->analog_filter = of_property_read_bool(i2c_dev->dev->of_node,
++						       "i2c-analog-filter");
++
+ 	do {
+ 		ret = stm32f7_i2c_compute_timing(i2c_dev, setup,
+ 						 &i2c_dev->timing);
+@@ -694,9 +697,6 @@ static int stm32f7_i2c_setup_timing(stru
+ 		return ret;
+ 	}
  
+-	i2c_dev->analog_filter = of_property_read_bool(i2c_dev->dev->of_node,
+-						       "i2c-analog-filter");
+-
+ 	dev_dbg(i2c_dev->dev, "I2C Speed(%i), Clk Source(%i)\n",
+ 		setup->speed_freq, setup->clock_src);
+ 	dev_dbg(i2c_dev->dev, "I2C Rise(%i) and Fall(%i) Time\n",
 
 
 
