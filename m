@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-264639-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266441-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id zdhaBOJ6MWqzkQUAu9opvQ
-	(envelope-from <stable+bounces-264639-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:33:38 +0200
+	id CULWAVydMWoioQUAu9opvQ
+	(envelope-from <stable+bounces-266441-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:00:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A530692353
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:33:37 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80E24694A78
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:00:43 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="AI/3Mloa";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264639-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264639-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=kdC+imUk;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266441-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266441-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E8BBE3277B6A
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:23:18 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id EEB5D30372BC
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:00:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C156546AF21;
-	Tue, 16 Jun 2026 16:23:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14347362149;
+	Tue, 16 Jun 2026 19:00:42 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3994477986;
-	Tue, 16 Jun 2026 16:23:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE2933D7D9D;
+	Tue, 16 Jun 2026 19:00:40 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781626990; cv=none; b=PpGvDEWdwJ8Ebh1fPKZxO8GQC2Jtk8FV2+Tb5924TdtdYLHqi9kPJkVI1U2nvmiAadLUSaOfYdx8rVS4vN/jT8Mbunk3EuaS8g63P3pnD03SzMexcOcWTe2rinY3gQUW6O1wiLB2SB+9mAr3pvbTb1SHsbdm9WJ7AQA+7QfwoaQ=
+	t=1781636441; cv=none; b=TQPfuncy7p6NFYoRHXxNNkGIq7suzXRg6OWDuiamWOqx9jWq4aeohtnfLbiir6QfPSQkBOHbSZFqttr8Wg6quwWscfHtIkzHH7ElWl2DD5EcczqGm3hm/ovKNW8g4221fa4vNH7FdWZpE1Jz2qoXSI3F2cnJ8PXGjgxVDTd8Q28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781626990; c=relaxed/simple;
-	bh=4Yc+JhDRInUeu6dMgSKtzIWH4gIKV0hxLeYZOYqDsvY=;
+	s=arc-20240116; t=1781636441; c=relaxed/simple;
+	bh=T0msyVZL0xPc0gXDKA+c/TB5USKywn2Zo+ECKOY3KS8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k68VBsEYIS/7s/fsvyUPNt0/0IzCrF9KWEIDxrSMYIIoMIJc/zLhZq9b4E5ow4WiMhOq4nEFa4jCdiYT3SFpFB9bGqNPuXEjktKk82oM5PcaMMfFNndy2tMQiLAFROGG42RabvRFTkvl6HRLpso010M4soCkAKJGsQRP4zm/54k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AI/3Mloa; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69B521F000E9;
-	Tue, 16 Jun 2026 16:23:08 +0000 (UTC)
+	 MIME-Version; b=PDZhG4nKmb0yHR9wQviKXJFqh668ABDbI1o2fiq882Lc+9Q5lX/Qc2QFCL8cpeNgQKzYI+7Ybv5UboRpWqh3NtxN9fpFQ7xteNZiK+oBvQglq3ltXloNb+Vrz5AYmN0UmgczyUPaxppEC1d5ADbo/523DESU1g9zZ3uUJuyEP78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kdC+imUk; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 583211F00A3A;
+	Tue, 16 Jun 2026 19:00:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781626989;
-	bh=eisGFZfQ1s9ZxWl4Y0gSr0JuqbOdJroGDE8oJHGZ29g=;
+	s=korg; t=1781636440;
+	bh=pyXRqcAd4NfvyoEk/WTLptovRCH/McFifBb27bhj53Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=AI/3MloaXgvBII4WlJmmm27D5cn69fybfh+Ys6kEcqHXF/tf8OVLWiENxDAIv2lUC
-	 giu3CQ1ososUDIcMsUbtMMgkL8y3ChDxeT9ihOXukpkq5iIOV54JytcNdpkvz6WjJf
-	 L6kshqn/i1II2jrGy08b8GstGwlSLRH4BlHPx5so=
+	b=kdC+imUkSr93Q7g0/muaORumLudGW8gjJ+hOn4alwn9HYk6D/ML++6wao+QsD04oB
+	 UweMkq9/1J5ZVtA5vdpEdHZVc+8COXU3OCNX3NwXIDFABPqUj4otldDGJRSyfeS7qr
+	 hiBhweNSvAwSzElCyeV/zIYIWHUEQVvMzZoAx2qY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Allison Henderson <achender@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Sanjaikumar V S <sanjaikumar.vs@dicortech.com>,
+	Hendrik Donner <hd@os-cillation.de>,
+	"Pratyush Yadav (Google)" <pratyush@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 096/261] rds: mark snapshot pages dirty in rds_info_getsockopt()
-Date: Tue, 16 Jun 2026 20:28:54 +0530
-Message-ID: <20260616145049.486279529@linuxfoundation.org>
+Subject: [PATCH 5.10 239/342] mtd: spi-nor: sst: Fix write enable before AAI sequence
+Date: Tue, 16 Jun 2026 20:28:55 +0530
+Message-ID: <20260616145059.340436342@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
-References: <20260616145044.869532709@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,22 +72,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264639-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-266441-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:leitao@debian.org,m:achender@kernel.org,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:sanjaikumar.vs@dicortech.com,m:hd@os-cillation.de,m:pratyush@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -99,54 +99,72 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,os-cillation.de:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 6A530692353
+X-Rspamd-Queue-Id: 80E24694A78
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Sanjaikumar V S <sanjaikumar.vs@dicortech.com>
 
-[ Upstream commit 512db8267b73a220a64180d95ab5eebe7c4964a8 ]
+[ Upstream commit a0f64241d3566a49c0a9b33ba7ae458ae22003a9 ]
 
-rds_info_getsockopt() pins the destination user pages with FOLL_WRITE and
-the RDS_INFO_* producers memcpy the snapshot into them through
-kmap_atomic(). Because that copy goes through the kernel direct map, the
-dirty bit on the user PTE is never set, so unpin_user_pages() releases the
-pages without marking them dirty. A file-backed destination page can then
-be reclaimed without writeback, silently discarding the copied data.
+When writing to SST flash starting at an odd address, a single byte is
+first programmed using the byte program (BP) command. After this
+operation completes, the flash hardware automatically clears the Write
+Enable Latch (WEL) bit.
 
-Use unpin_user_pages_dirty_lock() with make_dirty=true so the modified
-pages are marked dirty before they are unpinned.
+If an AAI (Auto Address Increment) word program sequence follows, it
+requires WEL to be set. Without re-enabling writes, the AAI sequence
+fails.
 
-Fixes: a8c879a7ee98 ("RDS: Info and stats")
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Reviewed-by: Allison Henderson <achender@kernel.org>
-Link: https://patch.msgid.link/20260608-rds_fix-v1-1-006c88543408@debian.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Add spi_nor_write_enable() after the odd-address byte program when more
+data needs to be written. Use a local boolean for clarity.
+
+Fixes: b199489d37b2 ("mtd: spi-nor: add the framework for SPI NOR")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sanjaikumar V S <sanjaikumar.vs@dicortech.com>
+Tested-by: Hendrik Donner <hd@os-cillation.de>
+Reviewed-by: Hendrik Donner <hd@os-cillation.de>
+Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
+[ kept inline `nor->program_opcode = SPINOR_OP_BP;` ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rds/info.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mtd/spi-nor/sst.c |   13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/net/rds/info.c b/net/rds/info.c
-index b6b46a8214a0a5..b3ee5f8238c44d 100644
---- a/net/rds/info.c
-+++ b/net/rds/info.c
-@@ -235,7 +235,7 @@ int rds_info_getsockopt(struct socket *sock, int optname, char __user *optval,
+--- a/drivers/mtd/spi-nor/sst.c
++++ b/drivers/mtd/spi-nor/sst.c
+@@ -63,6 +63,8 @@ static int sst_write(struct mtd_info *mt
  
- out:
- 	if (pages)
--		unpin_user_pages(pages, nr_pages);
-+		unpin_user_pages_dirty_lock(pages, nr_pages, true);
- 	kfree(pages);
+ 	/* Start write from odd address. */
+ 	if (to % 2) {
++		bool needs_write_enable = (len > 1);
++
+ 		nor->program_opcode = SPINOR_OP_BP;
  
- 	return ret;
--- 
-2.53.0
-
+ 		/* write one byte. */
+@@ -76,6 +78,17 @@ static int sst_write(struct mtd_info *mt
+ 
+ 		to++;
+ 		actual++;
++
++		/*
++		 * Byte program clears the write enable latch. If more
++		 * data needs to be written using the AAI sequence,
++		 * re-enable writes.
++		 */
++		if (needs_write_enable) {
++			ret = spi_nor_write_enable(nor);
++			if (ret)
++				goto out;
++		}
+ 	}
+ 
+ 	/* Write out most of the data here. */
 
 
 
