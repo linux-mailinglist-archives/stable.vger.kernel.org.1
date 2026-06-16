@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-264608-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265635-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 8nE2M6Z6MWqYkQUAu9opvQ
-	(envelope-from <stable+bounces-264608-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:32:38 +0200
+	id Lr6YI8+MMWqKmQUAu9opvQ
+	(envelope-from <stable+bounces-265635-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:50:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40C666922EB
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:32:38 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88CC069385E
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:50:06 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ghlPnq39;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264608-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264608-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=XpJXV7qv;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265635-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-265635-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AC8DF31E4C22
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:20:01 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 34C043001F86
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:50:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FE5337DEBF;
-	Tue, 16 Jun 2026 16:20:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 761984418E3;
+	Tue, 16 Jun 2026 17:50:00 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B8F035AC1E;
-	Tue, 16 Jun 2026 16:19:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A1C032A3C9;
+	Tue, 16 Jun 2026 17:49:59 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781626800; cv=none; b=JmfOnF/dSnLgM0ZWkz5hPHlBtiyQx6gTHvt9bMbFpAVyw8+sS84XCKhpG6tg6Zc0gIgPKfnJWXn6PhNqYXlW/IFVofarmNV9Tz73oWNRS+PoMnUUutDP+s1c+xEJPZKYtRP0ssGB98tCAqn9rh2MoSnljAqBAP0Qg4Il6HYm6hs=
+	t=1781632200; cv=none; b=KU8urSCYcjqvogD4TIA/A+Im3ZmIhIwAgK2DLb8aVkgo3juCWkBAzEcIoOiLbLjO74P+WPFkXd9pwPFn+SdWXD7uDN+FcLkRUPoqxoH7YWxNHi4i9s5pElRJT5dMZxBTlF7lkGqzxNCdSCWw2LkxSBulxAaR5hInmroMypB9qRI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781626800; c=relaxed/simple;
-	bh=ouj4tCVAgGurB52+rPJg7NQvfDDExNYbEtTuVoTWEzs=;
+	s=arc-20240116; t=1781632200; c=relaxed/simple;
+	bh=Jo/gesppJz7wD46zySIgfrqSFh1ycNLG8cNaQP7Kv3o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D4RvMLRGKBeDjG+GmJMcvaFHsOsz3Kz//hyt3uOJck5wenfYjLcOpQdPQnaCT796DfQfuos5L8GDqV/ssPShYRoishHqh5kJV47Bam3EPihhocu1klZYPQejLkoLIVk9n0h+rdMQvO26Uy0GLaauu0Gt4TjvuKX9A6bhRquVho4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ghlPnq39; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2D8C1F000E9;
-	Tue, 16 Jun 2026 16:19:57 +0000 (UTC)
+	 MIME-Version; b=F4Ax2OoY0K6fvzuaztp6ut2dUO6dMi+gTyX9Pv2IXXeT/NN/AUmkdjC0UhBBNBxQZHEkE2L7j64fVMUH8a5+ZHvgUaVuM3cmgM39Ojl9IanTkebJ0JLxYbXlxjMkgIks2aGX7V7DjuOuasm4d1l1nC9TdT0otIOe8zB4I1eEiy0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XpJXV7qv; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51B681F00A3D;
+	Tue, 16 Jun 2026 17:49:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781626798;
-	bh=qmHjyq7LORLwUG/bUJdxssYolVOJESXRDUpZFnD0uyw=;
+	s=korg; t=1781632199;
+	bh=WTqbzuNfoDHBh/dnasvNJRntJZr8X8ZD5JVEL/CgSgA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ghlPnq39JTHGmw4YGNIknbQ55mtLR3bkIM27/qMfUqw+BVoOpG3iXmtlg56TitmAJ
-	 Fm0Xc/lkyMj0uDyxOEXtf8n0hWXodhDO5GtwTbo9rU30Cs8DtJyyppEBeiycCOiCbC
-	 pZwD7hUkYTxOJU94L9Wv6lCFT8eJOgxVHwINA7OQ=
+	b=XpJXV7qvLTjUppioxNQ9O0y4v+H4woHJhkQuU4TXmp7LA1IMUn0rU7Cz6F70i+kIF
+	 NfqeKibHf/muJfdjt+gyI0uJv7nvWB85PhmV0tTLOIOAkouFry40XP2CG6bmzxI3Be
+	 cLrnV9T8p6clULM1tAe3cfAPAS9oGcuyA0I9oS2Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li RongQing <lirongqing@baidu.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Yuhao Jiang <danisjiang@gmail.com>,
+	Junrui Luo <moonafterrain@outlook.com>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 073/261] dma-debug: fix physical address retrieval in debug_dma_sync_sg_for_device
+Subject: [PATCH 6.1 364/522] erofs: fix unsigned underflow in z_erofs_lz4_handle_overlap()
 Date: Tue, 16 Jun 2026 20:28:31 +0530
-Message-ID: <20260616145048.494689048@linuxfoundation.org>
+Message-ID: <20260616145142.814414384@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
-References: <20260616145044.869532709@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,79 +73,91 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264608-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:lirongqing@baidu.com,m:m.szyprowski@samsung.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,outlook.com,linux.alibaba.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-265635-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:danisjiang@gmail.com,m:moonafterrain@outlook.com,m:hsiangkao@linux.alibaba.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,samsung.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,alibaba.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,outlook.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 40C666922EB
+X-Rspamd-Queue-Id: 88CC069385E
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li RongQing <lirongqing@baidu.com>
+From: Junrui Luo <moonafterrain@outlook.com>
 
-[ Upstream commit 9bfaa86b405381326c971984fd6da184c289713f ]
+[ Upstream commit 21e161de2dc660b1bb70ef5b156ab8e6e1cca3ab ]
 
-In debug_dma_sync_sg_for_device(), when iterating over a scatterlist,
-the debug entry population mistakenly uses the head of the scatterlist
-'sg' to fetch the physical address via sg_phys(), instead of using the
-current iterator variable 's'.
+Some crafted images can have illegal (!partial_decoding &&
+m_llen < m_plen) extents, and the LZ4 inplace decompression path
+can be wrongly hit, but it cannot handle (outpages < inpages)
+properly: "outpages - inpages" wraps to a large value and
+the subsequent rq->out[] access reads past the decompressed_pages
+array.
 
-This causes dma-debug to track the physical address of the very first
-scatterlist entry for all subsequent entries in the list.
+However, such crafted cases can correctly result in a corruption
+report in the normal LZ4 non-inplace path.
 
-Fix this by passing the correct loop iterator 's' to sg_phys()
+Let's add an additional check to fix this for backporting.
 
-Fixes: 9d4f645a1fd49ee ("dma-debug: store a phys_addr_t in struct dma_debug_entry")
-Signed-off-by: Li RongQing <lirongqing@baidu.com>
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Link: https://lore.kernel.org/r/20260603123708.1665-1-lirongqing@baidu.com
+Reproducible image (base64-encoded gzipped blob):
+
+H4sIAJGR12kCA+3SPUoDQRgG4MkmkkZk8QRbRFIIi9hbpEjrHQI5ghfwCN5BLCzTGtLbBI+g
+dilSJo1CnIm7GEXFxhT6PDDwfrs73/ywIQD/1ePD4r7Ou6ETsrq4mu7XcWfj++Pb58nJU/9i
+PNtbjhan04/9GtX4qVYc814WDqt6FaX5s+ZwXXeq52lndT6IuVvlblytLMvh4Gzwaf90nsvz
+2DF/21+20T/ldgp5s1jXRaN4t/8izsy/OUB6e/Qa79r+JwAAAAAAAL52vQVuGQAAAP6+my1w
+ywAAAAAAAADwu14ATsEYtgBQAAA=
+
+$ mount -t erofs -o cache_strategy=disabled foo.erofs /mnt
+$ dd if=/mnt/data of=/dev/null bs=4096 count=1
+
+Fixes: 598162d05080 ("erofs: support decompress big pcluster for lz4 backend")
+Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
+Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+[ inverted condition to early-out `goto docopy` form and used `ctx->inpages`/`ctx->outpages` instead of `rq->` ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/dma/debug.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/erofs/decompressor.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/kernel/dma/debug.c b/kernel/dma/debug.c
-index 035dda07ab0d08..b1192cff035924 100644
---- a/kernel/dma/debug.c
-+++ b/kernel/dma/debug.c
-@@ -1573,7 +1573,7 @@ void debug_dma_sync_sg_for_device(struct device *dev, struct scatterlist *sg,
- 		struct dma_debug_entry ref = {
- 			.type           = dma_debug_sg,
- 			.dev            = dev,
--			.paddr		= sg_phys(sg),
-+			.paddr		= sg_phys(s),
- 			.dev_addr       = sg_dma_address(s),
- 			.size           = sg_dma_len(s),
- 			.direction      = direction,
--- 
-2.53.0
-
+--- a/fs/erofs/decompressor.c
++++ b/fs/erofs/decompressor.c
+@@ -133,6 +133,7 @@ static void *z_erofs_lz4_handle_overlap(
+ 	if (rq->inplace_io) {
+ 		omargin = PAGE_ALIGN(ctx->oend) - ctx->oend;
+ 		if (rq->partial_decoding || !may_inplace ||
++		    ctx->outpages < ctx->inpages ||
+ 		    omargin < LZ4_DECOMPRESS_INPLACE_MARGIN(rq->inputsize))
+ 			goto docopy;
+ 
 
 
 
