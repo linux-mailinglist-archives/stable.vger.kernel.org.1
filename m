@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-265584-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266392-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id vjQKBNGLMWoamQUAu9opvQ
-	(envelope-from <stable+bounces-265584-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:45:53 +0200
+	id 1i4nIJ+dMWoyoQUAu9opvQ
+	(envelope-from <stable+bounces-266392-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:01:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7FA2693746
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:45:52 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDDEB694AAC
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:01:50 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=lwU9V8iB;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265584-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265584-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=exuyjm0w;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266392-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266392-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1A4B63064070
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:45:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0ECDA3109E33
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:56:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 662013C276B;
-	Tue, 16 Jun 2026 17:45:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6923440E8C1;
+	Tue, 16 Jun 2026 18:56:23 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49763246762;
-	Tue, 16 Jun 2026 17:45:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 317C347B435;
+	Tue, 16 Jun 2026 18:56:22 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781631936; cv=none; b=Me5Xe3OxRheOnapFwLuB+M491cpA4lgDqpalRrTnYfwic7IYorP4ngTsDFnzfqNMq6STzp19/ablLNlXPIckci1tVNCpvma/j2BwfShB9W/RSd1MwOo8tB+von7PEpVGtbe5uQoJzbGE7ywaU9jXzB4bTQi8slnexMTOz9chK7I=
+	t=1781636183; cv=none; b=iV+Wx11QG+EuSoYsNFFqggJC2WEdD/QISAN4Lxq7iGVno5sXTq6X+KtOpKaWZeuW8DAI5Yap1Io7fwvPe52+L3zLX/hH6+l+H3/rkUacp+tfzMZX+6HiK3pHInkPQsw+fHWXbr6AgG+VlcpkjGi2MR8CoI714EIq+GarPUNF540=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781631936; c=relaxed/simple;
-	bh=/hjyd8mERC9MbjYz8kEXyD+FIt/lvHEyUMWPcFD2Ld8=;
+	s=arc-20240116; t=1781636183; c=relaxed/simple;
+	bh=nQ49ONMyHUiiNvut3nvDzNvcq54bTcpez2VO64t9fsI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RGjPBvNxzamOEyjV3R162A8ci2+43zwoWwUkvlHKbuoqcGkTdrnf0UgaMIOjy2ViJSl/vdASA4pzg+aR8s2j7QURZ+4mC7CX6RVP4XFICGlbDFoxZQGR7tdIO+4VkNvsxUiON/JLg1wAxWGB9AdNXkayIkEb2lc2g3IELmuNA9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lwU9V8iB; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A0D81F000E9;
-	Tue, 16 Jun 2026 17:45:33 +0000 (UTC)
+	 MIME-Version; b=UboDI8qfrcxHmOY5vD6LHGY2mHlcvFmKCF/VvGmiF+tZC7iZ1ADYMnPXFsB1GCoTqtmQtinFIdVDUAblqdxaTkPvlKsxhi/J+JrSx+SMH2iknnEs7J3a2+t6/5gJYiRcThsS74Fwszs7HoZVIWcRVcNV06xD/SUaCqK2d4MwzFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=exuyjm0w; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3385E1F000E9;
+	Tue, 16 Jun 2026 18:56:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781631935;
-	bh=C1LTQ3zwHSJaV0jTb+nGUFYUfAGH3tWJq+r0z76G8Bo=;
+	s=korg; t=1781636182;
+	bh=FUMGTIHvBYXco27KneSSd3brdV22STjnqw9cM0QOXqA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=lwU9V8iBVvnQ90OVPEJvKOkEmfSKky770gZ4Mb/ufnUItxEHw+PoMSzq6lC0GgN/p
-	 PMvDWt0lzxC9alDGUH1RE3GcMRIrUsxVF9dEDAMKLVQqnNYGlXTlvivPZm3SQK2Pc9
-	 F9d21yznmGHFHKb7n/Evvljw4g0T52o76WifO2kU=
+	b=exuyjm0wlFLlyFvGwUUXIaaAd14RdYBny4TUdJrOD22MIBmbZFnIQbb81OQtpg/Ph
+	 TGaiaxTP5T+0JdHcyDbTyw0Dd+VVLxAxvwttcvaoqdZhCSrwlSym1p3NFyqQDgwF1I
+	 MZXlqNUnelnJ4xFbjGmJnmBFl148XnlzOAEBpZAo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: [PATCH 6.1 316/522] thunderbolt: Bound root directory content to block size
+	Mingyu Wang <25181214217@stu.xidian.edu.cn>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 167/342] net: qrtr: fix refcount saturation and potential UAF in qrtr_port_remove
 Date: Tue, 16 Jun 2026 20:27:43 +0530
-Message-ID: <20260616145140.643384477@linuxfoundation.org>
+Message-ID: <20260616145055.976082702@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,82 +68,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265584-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:mika.westerberg@linux.intel.com,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-266392-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:25181214217@stu.xidian.edu.cn,m:horms@kernel.org,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.intel.com];
 	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,intel.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,xidian.edu.cn:email,vger.kernel.org:from_smtp,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A7FA2693746
+X-Rspamd-Queue-Id: DDDEB694AAC
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Mingyu Wang <25181214217@stu.xidian.edu.cn>
 
-commit 65423079c7420e3dbf9a7aa345c243a3f5752e5d upstream.
+[ Upstream commit a2171131ecda1ed61a594a1eb715e75fdad0fef5 ]
 
-__tb_property_parse_dir() does not check that content_offset +
-content_len fits within block_len for the root directory case.
-When rootdir->length equals or exceeds block_len - 2, the entry
-loop reads past the allocated property block.
+In qrtr_port_remove(), the socket reference count is decremented via
+__sock_put() before the port is removed from the qrtr_ports XArray and
+before the RCU grace period elapses.
 
-Add a bounds check after computing content_offset and content_len
-to reject directories whose content extends past the block.
+This breaks the fundamental RCU update paradigm. It exposes a race
+window where a concurrent RCU reader (such as qrtr_reset_ports() or
+qrtr_port_lookup()) can obtain a pointer to the socket from the XArray,
+and attempt to call sock_hold() on a socket whose reference count has
+already dropped to zero.
 
-Fixes: cdae7c07e3e3 ("thunderbolt: Add support for XDomain properties")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-7
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This exact race condition was hit during syzkaller fuzzing, leading to
+the following refcount saturation warning and a potential Use-After-Free:
+
+  refcount_t: saturated; leaking memory.
+  WARNING: CPU: 3 PID: 1273 at lib/refcount.c:22 refcount_warn_saturate+0xae/0x1d0
+  Modules linked in: qrtr(+) bochs drm_shmem_helper ...
+  Call Trace:
+   <TASK>
+   qrtr_reset_ports net/qrtr/af_qrtr.c:768 [inline] [qrtr]
+   __qrtr_bind.isra.0+0x48b/0x570 net/qrtr/af_qrtr.c:805 [qrtr]
+   qrtr_bind+0x17d/0x210 net/qrtr/af_qrtr.c:901 [qrtr]
+   kernel_bind+0xe4/0x120 net/socket.c:3592
+   qrtr_ns_init+0x1a6/0x380 net/qrtr/ns.c:715 [qrtr]
+   qrtr_proto_init+0x3b/0xff0 net/qrtr/af_qrtr.c:169 [qrtr]
+   do_one_initcall+0xf5/0x5e0 init/main.c:1283
+   ...
+   </TASK>
+
+Fix this by deferring the reference count decrement until after the
+xa_erase() and the synchronize_rcu() complete.
+
+(Note: The v1 of this patch incorrectly replaced __sock_put() with
+sock_put(). As Simon Horman pointed out, the callers of qrtr_port_remove()
+still hold a reference to the socket, so freeing the socket memory here
+would lead to a subsequent UAF in the caller. Thus, the __sock_put() is
+kept, but only repositioned to close the RCU race.)
+
+Fixes: bdabad3e363d ("net: Add Qualcomm IPC router")
+Signed-off-by: Mingyu Wang <25181214217@stu.xidian.edu.cn>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260604064801.1180388-1-w15303746062@163.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thunderbolt/property.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ net/qrtr/af_qrtr.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/thunderbolt/property.c
-+++ b/drivers/thunderbolt/property.c
-@@ -181,6 +181,10 @@ static struct tb_property_dir *__tb_prop
- 	if (is_root) {
- 		content_offset = dir_offset + 2;
- 		content_len = dir_len;
-+		if (content_offset + content_len > block_len) {
-+			tb_property_free_dir(dir);
-+			return NULL;
-+		}
- 	} else {
- 		if (dir_len < 4) {
- 			tb_property_free_dir(dir);
+diff --git a/net/qrtr/af_qrtr.c b/net/qrtr/af_qrtr.c
+index fdb7a5a12f0358..fb0398903e4f36 100644
+--- a/net/qrtr/af_qrtr.c
++++ b/net/qrtr/af_qrtr.c
+@@ -701,13 +701,13 @@ static void qrtr_port_remove(struct qrtr_sock *ipc)
+ 	if (port == QRTR_PORT_CTRL)
+ 		port = 0;
+ 
+-	__sock_put(&ipc->sk);
+-
+ 	xa_erase(&qrtr_ports, port);
+ 
+ 	/* Ensure that if qrtr_port_lookup() did enter the RCU read section we
+ 	 * wait for it to up increment the refcount */
+ 	synchronize_rcu();
++
++	__sock_put(&ipc->sk);
+ }
+ 
+ /* Assign port number to socket.
+-- 
+2.53.0
+
 
 
 
