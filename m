@@ -1,64 +1,60 @@
-Return-Path: <stable+bounces-266360-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265608-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id R8gBHOacMWrwoAUAu9opvQ
-	(envelope-from <stable+bounces-266360-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:58:46 +0200
+	id SSiRNiyNMWq4mQUAu9opvQ
+	(envelope-from <stable+bounces-265608-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:51:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3AC6694A07
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:58:45 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 650B76938CA
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:51:40 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=v4rLY5lf;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266360-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266360-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ZVBoG0Ox;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265608-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265608-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id ABE2F320ECC1
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:53:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 71519309C28D
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:47:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3682C47A0B2;
-	Tue, 16 Jun 2026 18:53:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A43F3CFF4B;
+	Tue, 16 Jun 2026 17:47:43 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 108343CC303;
-	Tue, 16 Jun 2026 18:53:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F116F169AD2;
+	Tue, 16 Jun 2026 17:47:41 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781636014; cv=none; b=MnM9z0QgeZkBksp6dhxNwozGaLMT+7uV5yzRwy1qVmmib152ny66CvLcmFimDYTdr33pWHVskur0J6mRUJl9oXrFELs82FmEPj7C30tTkbsj75/7n4DbF/LsHZN9UHAtJGUmrk0EhL5M0OUCXMOXToCX5KVc7B23WsF9/dFYoHY=
+	t=1781632062; cv=none; b=tlvAiauRx5oQ5GYaL5qhdrXwh5VylzNp2f9kQIkdCYZcEsGow9fYsp1RCP6SW/4ir0yzq5+cFqRWMiM0f7fKj02UMysM/4Bvw1ljhos6Q05cbsTBtIOOkZ/sjtD6jPB9hiUqDzb9CzmELjTFFg9/XhfHeVPFRJ7dK2EofMxpeZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781636014; c=relaxed/simple;
-	bh=XQ0pJ+Imm5g4ju0Z47urXtXvaFJSghh8ZPd0OQp7jOk=;
+	s=arc-20240116; t=1781632062; c=relaxed/simple;
+	bh=URF75w1GIqnEhrQsizzGXf/tL7mLcRdlfn1e2UtuhVw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g0DRUrMO+4NUVWd1+AJweyXKp1mASy3VlJxR0i4SxbytsVaewPXY46i6VGVHZbrnDjPGe2I/kCqKKnBv+H1iREHFph3d8pfZY0wokgYIRGKBN4LJ6MTLfoFJ/w+ZjIR2FL7SwylQe3t51vMCNgpmzW/IrTWo00B+MjrlID2SVOg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v4rLY5lf; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 139191F000E9;
-	Tue, 16 Jun 2026 18:53:31 +0000 (UTC)
+	 MIME-Version; b=BFTCMNZoAhyAHiy83KjQDqwxtFvVh1Uasu+P/xxC0A20n9mEvG7xscjP64WnAOkfia20H+ZfP5G4YY/xvo0QDFxt2A6SRTL8TOlKzAz14G48F2656ZPX/nt3CUm/hZlQfIOUqqFl+Hxn0pyY/E0nI13uMOOKDsub8Smzn1lTqi4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZVBoG0Ox; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C47B1F000E9;
+	Tue, 16 Jun 2026 17:47:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781636013;
-	bh=NwR3JxvQov6b6MmvwGPWdaClpTZXbpTAtVn14b/di78=;
+	s=korg; t=1781632061;
+	bh=1sc8pSEZESWAyMwhRqyWm7xr5Tnt3HljhLAgA1d+3rA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=v4rLY5lfKf6WUjQuKyO7yPSa5klTdkQ8/SeztwJnV/c0z4OTthjnN/XWgMOOaeb/Y
-	 DDAr1tf3TWboP5bqBOF8guoclCoGYaHZRgsbSOcFhmHjS64yxScT0jINEElcy7NgGp
-	 RpN4UXhZ+8acFObBO1JKy5T7BlIMK1qUCXTi0DWQ=
+	b=ZVBoG0Oxm7zp3bZivnDRRpL6VPo0cnu9lCIPmB2WcA2CD2+cgX3PgBR0dnsFmcUgX
+	 WGZorbkd9WIlzOyQxS3QUlJK67JbWKdS8EkgSHJdqsqDZfsOj6fhUiIfc0/QjSv35w
+	 r9p/zPZrDD6DqXhrOZX1sloh9y7IuBtc0bdIgbWY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+56b6a844a4ea74487b7b@syzkaller.appspotmail.com,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Deepanshu Kartikey <kartikey406@gmail.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Alexey Panov <apanov@astralinux.ru>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 157/342] wifi: mac80211: check tdls flag in ieee80211_tdls_oper
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 306/522] net: mv643xx: fix OF node refcount
 Date: Tue, 16 Jun 2026 20:27:33 +0530
-Message-ID: <20260616145055.483655243@linuxfoundation.org>
+Message-ID: <20260616145140.195852458@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,91 +66,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,sipsolutions.net,gmail.com,intel.com,astralinux.ru,kernel.org];
-	TAGGED_FROM(0.00)[bounces-266360-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:syzbot+56b6a844a4ea74487b7b@syzkaller.appspotmail.com,m:johannes@sipsolutions.net,m:kartikey406@gmail.com,m:johannes.berg@intel.com,m:apanov@astralinux.ru,m:sashal@kernel.org,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-265608-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bartosz.golaszewski@oss.qualcomm.com,m:kuba@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,56b6a844a4ea74487b7b];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,appspotmail.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,msgid.link:url,astralinux.ru:email,syzkaller.appspot.com:url]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,qualcomm.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E3AC6694A07
+X-Rspamd-Queue-Id: 650B76938CA
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Deepanshu Kartikey <kartikey406@gmail.com>
+From: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 
-commit 7d73872d949c488a1d7c308031d6a9d89b5e0a8b upstream.
+commit 4aacf509e537a711fa71bca9f234e5eb6968850e upstream.
 
-When NL80211_TDLS_ENABLE_LINK is called, the code only checks if the
-station exists but not whether it is actually a TDLS station. This
-allows the operation to proceed for non-TDLS stations, causing
-unintended side effects like modifying channel context and HT
-protection before failing.
+Platform devices created with platform_device_alloc() call
+platform_device_release() when the last reference to the device's
+kobject is dropped. This function calls of_node_put() unconditionally.
+This works fine for devices created with platform_device_register_full()
+but users of the split approach (platform_device_alloc() +
+platform_device_add()) must bump the reference of the of_node they
+assign manually. Add the missing call to of_node_get().
 
-Add a check for sta->sta.tdls early in the ENABLE_LINK case, before
-any side effects occur, to ensure the operation is only allowed for
-actual TDLS peers.
-
-Reported-by: syzbot+56b6a844a4ea74487b7b@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=56b6a844a4ea74487b7b
-Tested-by: syzbot+56b6a844a4ea74487b7b@syzkaller.appspotmail.com
-Suggested-by: Johannes Berg <johannes@sipsolutions.net>
-Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
-Link: https://patch.msgid.link/20260313092417.520807-1-kartikey406@gmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-[ Alexey: Adapted to the older sta_mtx locking and error-handling flow. ]
-Signed-off-by: Alexey Panov <apanov@astralinux.ru>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 76723bca2802 ("net: mv643xx_eth: add DT parsing support")
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260602073414.22500-1-bartosz.golaszewski@oss.qualcomm.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mac80211/tdls.c | 2 +-
+ drivers/net/ethernet/marvell/mv643xx_eth.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/mac80211/tdls.c b/net/mac80211/tdls.c
-index e01e4daeb8cd31..66e32f1d0a989a 100644
---- a/net/mac80211/tdls.c
-+++ b/net/mac80211/tdls.c
-@@ -1380,7 +1380,7 @@ int ieee80211_tdls_oper(struct wiphy *wiphy, struct net_device *dev,
+--- a/drivers/net/ethernet/marvell/mv643xx_eth.c
++++ b/drivers/net/ethernet/marvell/mv643xx_eth.c
+@@ -2781,7 +2781,7 @@ static int mv643xx_eth_shared_of_add_por
+ 		goto put_err;
+ 	}
+ 	ppdev->dev.coherent_dma_mask = DMA_BIT_MASK(32);
+-	ppdev->dev.of_node = pnp;
++	ppdev->dev.of_node = of_node_get(pnp);
  
- 		mutex_lock(&local->sta_mtx);
- 		sta = sta_info_get(sdata, peer);
--		if (!sta) {
-+		if (!sta || !sta->sta.tdls) {
- 			mutex_unlock(&local->sta_mtx);
- 			ret = -ENOLINK;
- 			break;
--- 
-2.53.0
-
+ 	ret = platform_device_add_resources(ppdev, &res, 1);
+ 	if (ret)
 
 
 
