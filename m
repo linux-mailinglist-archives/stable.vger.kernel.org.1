@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-265986-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265987-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id DPvBMx+UMWolnQUAu9opvQ
-	(envelope-from <stable+bounces-265986-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:21:19 +0200
+	id INZdCRWUMWojnQUAu9opvQ
+	(envelope-from <stable+bounces-265987-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:21:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40E986940EA
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:21:19 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9B086940E2
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:21:08 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=XkQoGBAa;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265986-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-265986-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=V0+BH7d2;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265987-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265987-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9FE6B3097247
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:21:02 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 33CD430322D6
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:21:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F02BD3D810C;
-	Tue, 16 Jun 2026 18:20:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D22604779BB;
+	Tue, 16 Jun 2026 18:21:04 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 994C33D8105;
-	Tue, 16 Jun 2026 18:20:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 974F4466B64;
+	Tue, 16 Jun 2026 18:21:03 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781634059; cv=none; b=UGgG7rHD2DzLyPhUwPk1PQwKGpTr37R9TqG85HEe/LF/zjUSfXO+givwtNotdyvsNfXICJWu8JGqBridUpU8dGG3XQhbSNZWXRlJXdmUtMkKsVqOHGnQoFQyFmCZRlztg86N+xb9f/42JOOKy7XqkHijHZnxekbPlz4H7TixMfA=
+	t=1781634064; cv=none; b=DBxTQTaKrtlKorixAr9/EMkr925/Ul2Fn2mfWWCpKy/VUNRdEwrNYWv903f4QwHZqa2e2vYeJyPOCp5ROXd0wn7TO+/V+6ccq2o54JA+zhgDQv+/Mg2IQqC/lEKFC9G16fZSFbYsc5OVEPdoj1IpYgQaRUL9flb6wv/veXxM52I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781634059; c=relaxed/simple;
-	bh=V8wfiAJl4sU5RJKmqWior9a1maM/OA0rVSqTOV2BnxM=;
+	s=arc-20240116; t=1781634064; c=relaxed/simple;
+	bh=/IA3yFg+xFCPkxXGIBoxCFlHz39VCVealOsW9xCbyts=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FnXqVGafPPA2DCPZFtW5mvmYd/y5RyKOSamqbJJBvQcRlXfQ49GHOoUoY4eOKAxdAv28MatF711zeY1y3cfCQ6e+2qt4IQrVcdGC2wXsf96l/uSYRgnWcJ+uWLAtSq3/PSUaH67QbDbZtQfCgNRdwNwVK+ghbEjYa0bx4KuFUjo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XkQoGBAa; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 584E91F000E9;
-	Tue, 16 Jun 2026 18:20:57 +0000 (UTC)
+	 MIME-Version; b=NJ18sp1ZhAhGamnE1VtV8T9PwnsmaSs1OoZOMj3yRldjQMgl+/famJOFbHsmn2jD5AAirhXbt4I+hgVJwQB9yuGHwuXCg/l+JlbnMMiaZXYI+xDRPBeqQzhjtYBqUdpc4kz4vItcABM9LmI05Oyjj+lABo3MGZbiv4j2TJ7teIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V0+BH7d2; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B3421F000E9;
+	Tue, 16 Jun 2026 18:21:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781634058;
-	bh=RWGLYSey4i5iysqkwImnltIrbb0N4GrXSoMxDfmg6tw=;
+	s=korg; t=1781634063;
+	bh=13QvInhMoHu7KEFATSOdEUOJpkI82ZY2IOfdB0jZp0Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=XkQoGBAalsYgh21lILoj2tka5oyQBKN4ZK275c2Sm+yR767kBv7mAWXxv7ZGeiYOh
-	 X0W+gnsgvS9mc5Pisj2IN0h9SMqKObyunr7phqijxwbGupS+jTYpiEUuLlsTfuj7DY
-	 QjT9R3luLKhxe4P7UPfmeLGZH1JVdUJFh6oIUlAk=
+	b=V0+BH7d29axzecc8deC7qoDlt0rSsyAGcTTrlrYdRNxeaPbGEv0jcmMko0uY5sWg2
+	 xHUWigPomrFvxkm25o/FrwMcz7FibyikUOCqqFqUGhpiFTdKN5t+145t4J0hWPrDIo
+	 KvWQxoTKDELzfDsrehs022H6RCmE/Pthuj2qthgs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kyle Zeng <kylebot@openai.com>,
+	Weiming Shi <bestswngs@gmail.com>,
+	Xiang Mei <xmei5@asu.edu>,
 	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 192/411] netfilter: x_tables: avoid leaking percpu counter pointers
-Date: Tue, 16 Jun 2026 20:27:10 +0530
-Message-ID: <20260616145110.917047404@linuxfoundation.org>
+Subject: [PATCH 5.15 193/411] netfilter: nf_log: validate MAC header was set before dumping it
+Date: Tue, 16 Jun 2026 20:27:11 +0530
+Message-ID: <20260616145110.984893387@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
 References: <20260616145100.376842714@linuxfoundation.org>
@@ -72,175 +73,103 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265986-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kylebot@openai.com,m:pablo@netfilter.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,asu.edu,netfilter.org,kernel.org];
+	TAGGED_FROM(0.00)[bounces-265987-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bestswngs@gmail.com,m:xmei5@asu.edu,m:pablo@netfilter.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,openai.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,netfilter.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,netfilter.org:email,asu.edu:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 40E986940EA
+X-Rspamd-Queue-Id: B9B086940E2
 
 5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kyle Zeng <kylebot@openai.com>
+From: Xiang Mei <xmei5@asu.edu>
 
-[ Upstream commit f7f2fbb0e893a0238dc464f8d8c0f5609bec584f ]
+[ Upstream commit a84b6fedbc97078788be78dbdd7517d143ad1a77 ]
 
-The native and compat get-entries paths copy the fixed rule entry header
-from the kernelized rule blob to userspace before overwriting the entry's
-counter fields with a sanitized counter snapshot.
+The fallback path of dump_mac_header() guards the MAC header access
+only with "skb->mac_header != skb->network_header", without checking
+skb_mac_header_was_set(). When the MAC header is unset, mac_header is
+0xffff, so the test passes and skb_mac_header(skb) returns
+skb->head + 0xffff, ~64 KiB past the buffer; the loop then reads
+dev->hard_header_len bytes out of bounds into the kernel log.
 
-On SMP kernels, entry->counters.pcnt contains the percpu allocation
-address used by x_tables rule counters. A caller can provide a userspace
-buffer that faults during the initial fixed-header copy after pcnt has
-been copied but before the later sanitized counter copy runs. The syscall
-then returns -EFAULT while leaving the raw percpu pointer in userspace.
+This is reachable via the netdev logger: nf_log_unknown_packet() calls
+dump_mac_header() unconditionally, and an skb sent through AF_PACKET
+with PACKET_QDISC_BYPASS reaches the egress hook with mac_header still
+unset (__dev_queue_xmit(), which would reset it, is bypassed).
 
-Copy only the fixed entry prefix before counters from the kernelized rule
-blob, then copy the sanitized counter snapshot into the counter field.
-Apply this ordering to the IPv4, IPv6, and ARP native and compat
-get-entries implementations so a fault cannot expose the internal percpu
-counter pointer.
+Add the skb_mac_header_was_set() check the ARPHRD_ETHER path already
+uses, and replace the open-coded MAC header length test with
+skb_mac_header_len(). Only skbs with an unset MAC header are affected;
+valid ones are dumped as before.
 
-Fixes: 71ae0dff02d7 ("netfilter: xtables: use percpu rule counters")
-Signed-off-by: Kyle Zeng <kylebot@openai.com>
+ BUG: KASAN: slab-out-of-bounds in dump_mac_header (net/netfilter/nf_log_syslog.c:831)
+ Read of size 1 at addr ffff88800ea49d3f by task exploit/148
+ Call Trace:
+  kasan_report (mm/kasan/report.c:595)
+  dump_mac_header (net/netfilter/nf_log_syslog.c:831)
+  nf_log_netdev_packet (net/netfilter/nf_log_syslog.c:938 net/netfilter/nf_log_syslog.c:963)
+  nf_log_packet (net/netfilter/nf_log.c:260)
+  nft_log_eval (net/netfilter/nft_log.c:60)
+  nft_do_chain (net/netfilter/nf_tables_core.c:285)
+  nft_do_chain_netdev (net/netfilter/nft_chain_filter.c:307)
+  nf_hook_slow (net/netfilter/core.c:619)
+  nf_hook_direct_egress (net/packet/af_packet.c:257)
+  packet_xmit (net/packet/af_packet.c:280)
+  packet_sendmsg (net/packet/af_packet.c:3114)
+  __sys_sendto (net/socket.c:2265)
+
+Fixes: 7eb9282cd0ef ("netfilter: ipt_LOG/ip6t_LOG: add option to print decoded MAC header")
+Reported-by: Weiming Shi <bestswngs@gmail.com>
+Assisted-by: Claude:claude-opus-4-8
+Signed-off-by: Xiang Mei <xmei5@asu.edu>
 Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/netfilter/arp_tables.c | 15 ++++++---------
- net/ipv4/netfilter/ip_tables.c  | 15 ++++++---------
- net/ipv6/netfilter/ip6_tables.c | 15 ++++++---------
- 3 files changed, 18 insertions(+), 27 deletions(-)
+ net/netfilter/nf_log_syslog.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv4/netfilter/arp_tables.c b/net/ipv4/netfilter/arp_tables.c
-index 92bc90ee767484..2c39529769f19a 100644
---- a/net/ipv4/netfilter/arp_tables.c
-+++ b/net/ipv4/netfilter/arp_tables.c
-@@ -701,14 +701,12 @@ static int copy_entries_to_user(unsigned int total_size,
- 		const struct xt_entry_target *t;
+diff --git a/net/netfilter/nf_log_syslog.c b/net/netfilter/nf_log_syslog.c
+index 7000e069bc0760..2b0edb22ba511b 100644
+--- a/net/netfilter/nf_log_syslog.c
++++ b/net/netfilter/nf_log_syslog.c
+@@ -793,8 +793,8 @@ static void dump_ipv4_mac_header(struct nf_log_buf *m,
  
- 		e = loc_cpu_entry + off;
--		if (copy_to_user(userptr + off, e, sizeof(*e))) {
--			ret = -EFAULT;
--			goto free_counters;
--		}
--		if (copy_to_user(userptr + off
-+		if (copy_to_user(userptr + off, e,
-+				 offsetof(struct arpt_entry, counters)) ||
-+		    copy_to_user(userptr + off
- 				 + offsetof(struct arpt_entry, counters),
- 				 &counters[num],
--				 sizeof(counters[num])) != 0) {
-+				 sizeof(counters[num]))) {
- 			ret = -EFAULT;
- 			goto free_counters;
- 		}
-@@ -1326,9 +1324,8 @@ static int compat_copy_entry_to_user(struct arpt_entry *e, void __user **dstptr,
+ fallback:
+ 	nf_log_buf_add(m, "MAC=");
+-	if (dev->hard_header_len &&
+-	    skb->mac_header != skb->network_header) {
++	if (dev->hard_header_len && skb_mac_header_was_set(skb) &&
++	    skb_mac_header_len(skb) != 0) {
+ 		const unsigned char *p = skb_mac_header(skb);
+ 		unsigned int i;
  
- 	origsize = *size;
- 	ce = *dstptr;
--	if (copy_to_user(ce, e, sizeof(struct arpt_entry)) != 0 ||
--	    copy_to_user(&ce->counters, &counters[i],
--	    sizeof(counters[i])) != 0)
-+	if (copy_to_user(ce, e, offsetof(struct compat_arpt_entry, counters)) ||
-+	    copy_to_user(&ce->counters, &counters[i], sizeof(counters[i])))
- 		return -EFAULT;
- 
- 	*dstptr += sizeof(struct compat_arpt_entry);
-diff --git a/net/ipv4/netfilter/ip_tables.c b/net/ipv4/netfilter/ip_tables.c
-index aee7cd584c9262..15a9e303a15317 100644
---- a/net/ipv4/netfilter/ip_tables.c
-+++ b/net/ipv4/netfilter/ip_tables.c
-@@ -833,14 +833,12 @@ copy_entries_to_user(unsigned int total_size,
- 		const struct xt_entry_target *t;
- 
- 		e = loc_cpu_entry + off;
--		if (copy_to_user(userptr + off, e, sizeof(*e))) {
--			ret = -EFAULT;
--			goto free_counters;
--		}
--		if (copy_to_user(userptr + off
-+		if (copy_to_user(userptr + off, e,
-+				 offsetof(struct ipt_entry, counters)) ||
-+		    copy_to_user(userptr + off
- 				 + offsetof(struct ipt_entry, counters),
- 				 &counters[num],
--				 sizeof(counters[num])) != 0) {
-+				 sizeof(counters[num]))) {
- 			ret = -EFAULT;
- 			goto free_counters;
- 		}
-@@ -1229,9 +1227,8 @@ compat_copy_entry_to_user(struct ipt_entry *e, void __user **dstptr,
- 
- 	origsize = *size;
- 	ce = *dstptr;
--	if (copy_to_user(ce, e, sizeof(struct ipt_entry)) != 0 ||
--	    copy_to_user(&ce->counters, &counters[i],
--	    sizeof(counters[i])) != 0)
-+	if (copy_to_user(ce, e, offsetof(struct compat_ipt_entry, counters)) ||
-+	    copy_to_user(&ce->counters, &counters[i], sizeof(counters[i])))
- 		return -EFAULT;
- 
- 	*dstptr += sizeof(struct compat_ipt_entry);
-diff --git a/net/ipv6/netfilter/ip6_tables.c b/net/ipv6/netfilter/ip6_tables.c
-index afd22ea9f555ba..f2de34f0de239c 100644
---- a/net/ipv6/netfilter/ip6_tables.c
-+++ b/net/ipv6/netfilter/ip6_tables.c
-@@ -850,14 +850,12 @@ copy_entries_to_user(unsigned int total_size,
- 		const struct xt_entry_target *t;
- 
- 		e = loc_cpu_entry + off;
--		if (copy_to_user(userptr + off, e, sizeof(*e))) {
--			ret = -EFAULT;
--			goto free_counters;
--		}
--		if (copy_to_user(userptr + off
-+		if (copy_to_user(userptr + off, e,
-+				 offsetof(struct ip6t_entry, counters)) ||
-+		    copy_to_user(userptr + off
- 				 + offsetof(struct ip6t_entry, counters),
- 				 &counters[num],
--				 sizeof(counters[num])) != 0) {
-+				 sizeof(counters[num]))) {
- 			ret = -EFAULT;
- 			goto free_counters;
- 		}
-@@ -1246,9 +1244,8 @@ compat_copy_entry_to_user(struct ip6t_entry *e, void __user **dstptr,
- 
- 	origsize = *size;
- 	ce = *dstptr;
--	if (copy_to_user(ce, e, sizeof(struct ip6t_entry)) != 0 ||
--	    copy_to_user(&ce->counters, &counters[i],
--	    sizeof(counters[i])) != 0)
-+	if (copy_to_user(ce, e, offsetof(struct compat_ip6t_entry, counters)) ||
-+	    copy_to_user(&ce->counters, &counters[i], sizeof(counters[i])))
- 		return -EFAULT;
- 
- 	*dstptr += sizeof(struct compat_ip6t_entry);
 -- 
 2.53.0
 
