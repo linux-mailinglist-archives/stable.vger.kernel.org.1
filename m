@@ -1,63 +1,63 @@
-Return-Path: <stable+bounces-264265-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266369-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ZoxDOKt0MWoRjwUAu9opvQ
-	(envelope-from <stable+bounces-264265-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:07:07 +0200
+	id uPSYNN+bMWqCoAUAu9opvQ
+	(envelope-from <stable+bounces-266369-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:54:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56567691B31
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:07:07 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D91A6948F8
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:54:23 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=kYpN7VTD;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264265-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264265-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=EJI0MkEQ;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266369-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266369-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D8BE23073A09
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:50:43 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DCAC7303CD5E
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:54:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7763844B66E;
-	Tue, 16 Jun 2026 15:50:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E13F14779BF;
+	Tue, 16 Jun 2026 18:54:21 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 222DB42B738;
-	Tue, 16 Jun 2026 15:50:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD6EE3CC303;
+	Tue, 16 Jun 2026 18:54:20 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781625041; cv=none; b=KdHsGRgd9Fcqf7qHpye59ugIsudgFcVoOchSIqB0EYDd5Im3rEdTu7Z9dmm1Q2LjDWIRIbU3BYoqWfLAo6C96sgcwtSvNrgQ+J5QqbZmBFSacC6gu+c6BpU17kx5LK5tR03R1Z2hb4lVyzSygp2Ll+fB/yyYDeq9fXNGepbkJgU=
+	t=1781636061; cv=none; b=oXSpB55VR+uO7TDU/hWgo4YzgrWOY+XsitrBNFoJ3yZb0U7Q4ZhTwi8VtbFar1VdeDjd4I8emjnfQsXe43s4msMjxipXirLq3LAA5m1dch5atJOkDDOqkL3FGwMKJREOmYZKousi/QXEGn3FFB5Jk4E5day+24J2o6hm5je5ixk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781625041; c=relaxed/simple;
-	bh=3KLNo+TR4odpo3cJSviiIsEoxyMYyqQjBPOzXtR+EgE=;
+	s=arc-20240116; t=1781636061; c=relaxed/simple;
+	bh=kcxcSLBjzie0abp3QLTGX6cDmPq99aTOrYt9AS6rNIA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OPd86K9zAhkRa6YNgo2nyESrUQe53/2bwhWwtnSMl7QCz6QgYZIt0cxjcu4ZHxHjgAYEwC+EkRVQi+51DRbyEykWEogzf5C2hGEMy08krRLMEkH3UaMPFZ/7GlcPugBMk6sPnfDXbjEfL+ivHDzQ/m02CsutS80Gt0ZuFZ6BZIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kYpN7VTD; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA6EE1F000E9;
-	Tue, 16 Jun 2026 15:50:38 +0000 (UTC)
+	 MIME-Version; b=YArB3Gsah1mjG95PxFWi0xILmCPtl0ZNJ7fBq1/baOPcyqccozmxMvNaVTHrHNwQZSqUPNdZein1+UoJT5P6wTUXQINWT5cXdTnQzOpyLpD30/eajkhjuc++Sxh7koUlKrg6Q68M9K8lE+CISEciqLxhMX2vOXXyvZCZY+JpBVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EJI0MkEQ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F29A1F000E9;
+	Tue, 16 Jun 2026 18:54:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781625040;
-	bh=Mn1f1Ej3iNmaSDOv295fmNuXBFl94NMsqbrS55/fLa8=;
+	s=korg; t=1781636060;
+	bh=hGRbcdhQRVhpR/XYwMYXxK9n4n5qaHeg8RcgwAvGuVE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=kYpN7VTDBAY+DK3QoZ/2Sj0V1FP7SvfKsGmAFCHH3pbvKmmSWk3dCcJcROgRQC4q8
-	 g/C4RryYalyZAEq8nIlGPJpJcmI1ATwVa34bK1B77/PaU5EuVNELmzKFVCfD4HYAuf
-	 X7vtiRr/utWjLPyPgDYyZTDrlEMWP/39EQdjZCjY=
+	b=EJI0MkEQcuVhnU+DRuRpVvStsrSU9X6FR2xoZ8mqADBOCoQTZyveibUP8+bemyD0T
+	 +/BArzi3nWAie7u5DvLiBAxG6VeWUfKNwYcvfnjuEBRBPhxybappLysSqIJTkLk3m7
+	 aeHWERxuT9tYe5a+sc6+alkXtk4u8Jpk8NmAP9vE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roman Kisel <romank@linux.microsoft.com>,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Michael Kelley <mhklinux@outlook.com>,
-	Wei Liu <wei.liu@kernel.org>,
+	Kyle Zeng <kylebot@openai.com>,
+	Eric Dumazet <edumazet@google.com>,
+	syzbot+6eb9ca986d80f6f88cf9@syzkaller.appspotmail.com,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 068/325] Drivers: hv: VMBus protocol version 6.0
+Subject: [PATCH 5.10 168/342] ipv6: sit: reload inner IPv6 header after GSO offloads
 Date: Tue, 16 Jun 2026 20:27:44 +0530
-Message-ID: <20260616145101.089925452@linuxfoundation.org>
+Message-ID: <20260616145056.024084124@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,26 +69,26 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.microsoft.com,oracle.com,outlook.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-264265-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:romank@linux.microsoft.com,m:alok.a.tiwari@oracle.com,m:mhklinux@outlook.com,m:wei.liu@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-266369-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kylebot@openai.com,m:edumazet@google.com,m:syzbot+6eb9ca986d80f6f88cf9@syzkaller.appspotmail.com,m:kuba@kernel.org,m:sashal@kernel.org,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -100,200 +100,60 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TO_DN_SOME(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,outlook.com:email,vger.kernel.org:from_smtp,oracle.com:email]
+	TAGGED_RCPT(0.00)[stable,6eb9ca986d80f6f88cf9];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,appspotmail.com:email,msgid.link:url,openai.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 56567691B31
+X-Rspamd-Queue-Id: 6D91A6948F8
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roman Kisel <romank@linux.microsoft.com>
+From: Kyle Zeng <kylebot@openai.com>
 
-[ Upstream commit 6802d8af47d1dccd9a74a1f708fb9129244ef843 ]
+[ Upstream commit f0e42f0c4337b1f220de1ddd63f47197c7dee4de ]
 
-The confidential VMBus is supported starting from the protocol
-version 6.0 onwards.
+ipip6_tunnel_xmit() caches the inner IPv6 header pointer at function
+entry and continues using it after iptunnel_handle_offloads().
 
-Provide the required definitions. No functional changes.
+For GSO skbs, iptunnel_handle_offloads() calls skb_header_unclone().
+When the skb header is cloned, skb_header_unclone() can call
+pskb_expand_head(), which may move the skb head. The pskb_expand_head()
+contract requires pointers into the skb header to be reloaded after the
+call.
 
-Signed-off-by: Roman Kisel <romank@linux.microsoft.com>
-Reviewed-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Reviewed-by: Michael Kelley <mhklinux@outlook.com>
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
-Stable-dep-of: c5c3ef8d49e1 ("Drivers: hv: vmbus: Provide option to skip VMBus unload on panic")
+If the later skb_realloc_headroom() branch is not taken, SIT uses the
+stale iph6 pointer to read the inner hop limit and DS field. That can
+read from a freed skb head after the old head's remaining clone is
+released.
+
+Reload iph6 after the offload helper succeeds and before subsequent
+reads from the inner IPv6 header. Keep the existing reload after
+skb_realloc_headroom(), since that branch can also replace the skb.
+
+Fixes: 14909664e4e1 ("sit: Setup and TX path for sit/UDP foo-over-udp encapsulation")
+Signed-off-by: Kyle Zeng <kylebot@openai.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reported-by: syzbot+6eb9ca986d80f6f88cf9@syzkaller.appspotmail.com
+Link: https://patch.msgid.link/20260605073448.6524-1-kylebot@openai.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hv/hyperv_vmbus.h   |  2 ++
- drivers/hv/vmbus_drv.c      | 12 +++++++
- include/hyperv/hvgdk_mini.h |  1 +
- include/linux/hyperv.h      | 69 +++++++++++++++++++++++++++----------
- 4 files changed, 65 insertions(+), 19 deletions(-)
+ net/ipv6/sit.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/hv/hyperv_vmbus.h b/drivers/hv/hyperv_vmbus.h
-index 0b450e53161e51..4a01797d485139 100644
---- a/drivers/hv/hyperv_vmbus.h
-+++ b/drivers/hv/hyperv_vmbus.h
-@@ -333,6 +333,8 @@ extern const struct vmbus_channel_message_table_entry
+diff --git a/net/ipv6/sit.c b/net/ipv6/sit.c
+index 9806bd56b95f12..387b48ba4aac71 100644
+--- a/net/ipv6/sit.c
++++ b/net/ipv6/sit.c
+@@ -964,6 +964,7 @@ static netdev_tx_t ipip6_tunnel_xmit(struct sk_buff *skb,
+ 		ip_rt_put(rt);
+ 		goto tx_error;
+ 	}
++	iph6 = ipv6_hdr(skb);
  
- /* General vmbus interface */
- 
-+bool vmbus_is_confidential(void);
-+
- struct hv_device *vmbus_device_create(const guid_t *type,
- 				      const guid_t *instance,
- 				      struct vmbus_channel *channel);
-diff --git a/drivers/hv/vmbus_drv.c b/drivers/hv/vmbus_drv.c
-index 3ab62277b6be6c..6d2bf7a96aa638 100644
---- a/drivers/hv/vmbus_drv.c
-+++ b/drivers/hv/vmbus_drv.c
-@@ -57,6 +57,18 @@ static long __percpu *vmbus_evt;
- int vmbus_irq;
- int vmbus_interrupt;
- 
-+/*
-+ * If the Confidential VMBus is used, the data on the "wire" is not
-+ * visible to either the host or the hypervisor.
-+ */
-+static bool is_confidential;
-+
-+bool vmbus_is_confidential(void)
-+{
-+	return is_confidential;
-+}
-+EXPORT_SYMBOL_GPL(vmbus_is_confidential);
-+
- /*
-  * The panic notifier below is responsible solely for unloading the
-  * vmbus connection, which is necessary in a panic event.
-diff --git a/include/hyperv/hvgdk_mini.h b/include/hyperv/hvgdk_mini.h
-index 77abddfc750e40..7f730a0e54e611 100644
---- a/include/hyperv/hvgdk_mini.h
-+++ b/include/hyperv/hvgdk_mini.h
-@@ -260,6 +260,7 @@ union hv_hypervisor_version_info {
- #define HYPERV_CPUID_VIRT_STACK_PROPERTIES	 0x40000082
- /* Support for the extended IOAPIC RTE format */
- #define HYPERV_VS_PROPERTIES_EAX_EXTENDED_IOAPIC_RTE	 BIT(2)
-+#define HYPERV_VS_PROPERTIES_EAX_CONFIDENTIAL_VMBUS_AVAILABLE	 BIT(3)
- 
- #define HYPERV_HYPERVISOR_PRESENT_BIT		 0x80000000
- #define HYPERV_CPUID_MIN			 0x40000005
-diff --git a/include/linux/hyperv.h b/include/linux/hyperv.h
-index 59826c89171c79..dfc516c1c7193f 100644
---- a/include/linux/hyperv.h
-+++ b/include/linux/hyperv.h
-@@ -265,16 +265,18 @@ static inline u32 hv_get_avail_to_write_percent(
-  * Linux kernel.
-  */
- 
--#define VERSION_WS2008  ((0 << 16) | (13))
--#define VERSION_WIN7    ((1 << 16) | (1))
--#define VERSION_WIN8    ((2 << 16) | (4))
--#define VERSION_WIN8_1    ((3 << 16) | (0))
--#define VERSION_WIN10 ((4 << 16) | (0))
--#define VERSION_WIN10_V4_1 ((4 << 16) | (1))
--#define VERSION_WIN10_V5 ((5 << 16) | (0))
--#define VERSION_WIN10_V5_1 ((5 << 16) | (1))
--#define VERSION_WIN10_V5_2 ((5 << 16) | (2))
--#define VERSION_WIN10_V5_3 ((5 << 16) | (3))
-+#define VMBUS_MAKE_VERSION(MAJ, MIN)	((((u32)MAJ) << 16) | (MIN))
-+#define VERSION_WS2008					VMBUS_MAKE_VERSION(0, 13)
-+#define VERSION_WIN7					VMBUS_MAKE_VERSION(1, 1)
-+#define VERSION_WIN8					VMBUS_MAKE_VERSION(2, 4)
-+#define VERSION_WIN8_1					VMBUS_MAKE_VERSION(3, 0)
-+#define VERSION_WIN10					VMBUS_MAKE_VERSION(4, 0)
-+#define VERSION_WIN10_V4_1				VMBUS_MAKE_VERSION(4, 1)
-+#define VERSION_WIN10_V5				VMBUS_MAKE_VERSION(5, 0)
-+#define VERSION_WIN10_V5_1				VMBUS_MAKE_VERSION(5, 1)
-+#define VERSION_WIN10_V5_2				VMBUS_MAKE_VERSION(5, 2)
-+#define VERSION_WIN10_V5_3				VMBUS_MAKE_VERSION(5, 3)
-+#define VERSION_WIN10_V6_0				VMBUS_MAKE_VERSION(6, 0)
- 
- /* Make maximum size of pipe payload of 16K */
- #define MAX_PIPE_DATA_PAYLOAD		(sizeof(u8) * 16384)
-@@ -335,14 +337,22 @@ struct vmbus_channel_offer {
- } __packed;
- 
- /* Server Flags */
--#define VMBUS_CHANNEL_ENUMERATE_DEVICE_INTERFACE	1
--#define VMBUS_CHANNEL_SERVER_SUPPORTS_TRANSFER_PAGES	2
--#define VMBUS_CHANNEL_SERVER_SUPPORTS_GPADLS		4
--#define VMBUS_CHANNEL_NAMED_PIPE_MODE			0x10
--#define VMBUS_CHANNEL_LOOPBACK_OFFER			0x100
--#define VMBUS_CHANNEL_PARENT_OFFER			0x200
--#define VMBUS_CHANNEL_REQUEST_MONITORED_NOTIFICATION	0x400
--#define VMBUS_CHANNEL_TLNPI_PROVIDER_OFFER		0x2000
-+#define VMBUS_CHANNEL_ENUMERATE_DEVICE_INTERFACE		0x0001
-+/*
-+ * This flag indicates that the channel is offered by the paravisor, and must
-+ * use encrypted memory for the channel ring buffer.
-+ */
-+#define VMBUS_CHANNEL_CONFIDENTIAL_RING_BUFFER			0x0002
-+/*
-+ * This flag indicates that the channel is offered by the paravisor, and must
-+ * use encrypted memory for GPA direct packets and additional GPADLs.
-+ */
-+#define VMBUS_CHANNEL_CONFIDENTIAL_EXTERNAL_MEMORY		0x0004
-+#define VMBUS_CHANNEL_NAMED_PIPE_MODE					0x0010
-+#define VMBUS_CHANNEL_LOOPBACK_OFFER					0x0100
-+#define VMBUS_CHANNEL_PARENT_OFFER						0x0200
-+#define VMBUS_CHANNEL_REQUEST_MONITORED_NOTIFICATION	0x0400
-+#define VMBUS_CHANNEL_TLNPI_PROVIDER_OFFER				0x2000
- 
- struct vmpacket_descriptor {
- 	u16 type;
-@@ -621,6 +631,12 @@ struct vmbus_channel_relid_released {
- 	u32 child_relid;
- } __packed;
- 
-+/*
-+ * Used by the paravisor only, means that the encrypted ring buffers and
-+ * the encrypted external memory are supported
-+ */
-+#define VMBUS_FEATURE_FLAG_CONFIDENTIAL_CHANNELS	0x10
-+
- struct vmbus_channel_initiate_contact {
- 	struct vmbus_channel_message_header header;
- 	u32 vmbus_version_requested;
-@@ -630,7 +646,8 @@ struct vmbus_channel_initiate_contact {
- 		struct {
- 			u8	msg_sint;
- 			u8	msg_vtl;
--			u8	reserved[6];
-+			u8	reserved[2];
-+			u32 feature_flags; /* VMBus version 6.0 */
- 		};
- 	};
- 	u64 monitor_page1;
-@@ -1003,6 +1020,10 @@ struct vmbus_channel {
- 
- 	/* boolean to control visibility of sysfs for ring buffer */
- 	bool ring_sysfs_visible;
-+	/* The ring buffer is encrypted */
-+	bool co_ring_buffer;
-+	/* The external memory is encrypted */
-+	bool co_external_memory;
- };
- 
- #define lock_requestor(channel, flags)					\
-@@ -1027,6 +1048,16 @@ u64 vmbus_request_addr_match(struct vmbus_channel *channel, u64 trans_id,
- 			     u64 rqst_addr);
- u64 vmbus_request_addr(struct vmbus_channel *channel, u64 trans_id);
- 
-+static inline bool is_co_ring_buffer(const struct vmbus_channel_offer_channel *o)
-+{
-+	return !!(o->offer.chn_flags & VMBUS_CHANNEL_CONFIDENTIAL_RING_BUFFER);
-+}
-+
-+static inline bool is_co_external_memory(const struct vmbus_channel_offer_channel *o)
-+{
-+	return !!(o->offer.chn_flags & VMBUS_CHANNEL_CONFIDENTIAL_EXTERNAL_MEMORY);
-+}
-+
- static inline bool is_hvsock_offer(const struct vmbus_channel_offer_channel *o)
- {
- 	return !!(o->offer.chn_flags & VMBUS_CHANNEL_TLNPI_PROVIDER_OFFER);
+ 	if (df) {
+ 		mtu = dst_mtu(&rt->dst) - t_hlen;
 -- 
 2.53.0
 
