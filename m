@@ -1,74 +1,63 @@
-Return-Path: <stable+bounces-264426-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265703-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 9X4pAAp0MWrmjgUAu9opvQ
-	(envelope-from <stable+bounces-264426-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:04:26 +0200
+	id AwPiB9qOMWqXmgUAu9opvQ
+	(envelope-from <stable+bounces-265703-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:58:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F803691A90
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:04:25 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8935B693AC6
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:58:49 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=c2erPEei;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264426-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264426-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=VFpXL9db;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265703-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265703-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 29C43303BA8C
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:03:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E524631DA0F1
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:55:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BA3A4611EE;
-	Tue, 16 Jun 2026 16:03:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DE32478E55;
+	Tue, 16 Jun 2026 17:55:52 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFDB44534B9;
-	Tue, 16 Jun 2026 16:03:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5E9D257827;
+	Tue, 16 Jun 2026 17:55:50 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781625820; cv=none; b=MoBRbw1Fs9Uu5N4G11l3ibQzjAqC+dHqDBetQUKNIRvMf3NGBlL1YKbb2e0epbWdcRkWX49Zj6WHHVIFVdm/4DRpWP72BQZPD1NEXwrg/BlQhG8yf04T83dTKovhizwZ2ovTmXLT92BOpHNP4RJLkjEBMf3bOwaJUxbgBZ7CQOg=
+	t=1781632552; cv=none; b=eF0SOt5s970USkoR1uIe1bcVsgEptFLMEJo4JaN7+lPRf7UlpDsDftceaOt8HLHHyilBy0FQuml/mOKRz1jNU45SSFV/b2cdfLa7Ung/Ga9h50Mld109xZFI9Xl5IJx9x7q5tzIpbeX8LXnX9E580TWq2wbGh4hxSugWiaPLumw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781625820; c=relaxed/simple;
-	bh=wQoJgJidDrdmWGq7b5EWGoXfb7daU1bSBW7vCojn2c0=;
+	s=arc-20240116; t=1781632552; c=relaxed/simple;
+	bh=+AFzyfZVXTXui6/chBu/Wp59NSAKHyXiTfXlG7HSlRs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jeynVXPsgSAdjF5cjTkM0SrEbEda1uf4ANageJjkefusRLmMzXAECcVKVRhSHDNYS+82jbVQBUOwbZx1HnV+Lz6Cz/djjwuzYhBO5FnOJYxeHOeKnnGBeTIS5vxN744tJhuNILwXIRnPdeWHqjRUM+WMKYnnqlkPfIhOIp/fAfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c2erPEei; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFEEE1F000E9;
-	Tue, 16 Jun 2026 16:03:37 +0000 (UTC)
+	 MIME-Version; b=qbQ0cRZtiubH7cqxjWy5siXMMoFH4KotIbkgzDBv8fggmW+K4NfjYBCnM0ImcOZUSl2KaOnrmb93tdo3BKIjQQlVq14gcH2CpH1t+iKk5RBE2QfDMsZVxwl71selC3aXSWxO4rA7waKqV5nOBsIfhjwrmH4QCMzcaQ+eBraouHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VFpXL9db; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0A851F000E9;
+	Tue, 16 Jun 2026 17:55:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781625818;
-	bh=c0qqRZBuMdtqEjTj4xhi0KCCRWjAfvkLlw47xnqO7MI=;
+	s=korg; t=1781632550;
+	bh=W5RPdIwidTNQzlihX+V0RFdEaS4Kn3OvMrJ31i22Vo4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=c2erPEeiOCGKu8MtPcC7qH9F96sk5vM0Gx2voMVbl4tJdcU8t9zJY3ub2G0W9DEaV
-	 eqDdCFjVw3/oJOClyQDCfSBkPE+nkR4Rab5UY7wHY/njMO5BAJ0sHG84VBUX9Aw5Vy
-	 fRJW2rdSyW7Kd37Ue+ea5fcvMgOiHYN65G0GqkZw=
+	b=VFpXL9dbEBECYqjkQekF19gqbmsKtOgAcIBJxQ24Gz9Fjtm5gPYFpoJHSxu3Eeyt9
+	 ktPdyUnAf2Uya0bn8IA5g9NH6cOnz+l+qX1wXkVeKyVZxVOSixPKfuRVinbjNeo6cV
+	 EDgypP5ZXOtNdr/aQ5hC9ZUyPFdtzpCNJxyGt/Wo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yin Tirui <yintirui@huawei.com>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"David Hildenbrand (arm)" <david@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>,
-	Dev Jain <dev.jain@arm.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Barry Song <baohua@kernel.org>,
-	Chen Jun <chenjun102@huawei.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Nico Pache <npache@redhat.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Yang Shi <yang.shi@linux.alibaba.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.18 183/325] mm/huge_memory: update file PMD counter before folio_put()
+	Ido Schimmel <idosch@nvidia.com>,
+	Mat Martineau <martineau@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 432/522] genetlink: Use internal flags for multicast groups
 Date: Tue, 16 Jun 2026 20:29:39 +0530
-Message-ID: <20260616145107.007661714@linuxfoundation.org>
+Message-ID: <20260616145146.176350677@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -82,90 +71,151 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264426-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:yintirui@huawei.com,m:ljs@kernel.org,m:david@kernel.org,m:lance.yang@linux.dev,m:dev.jain@arm.com,m:baolin.wang@linux.alibaba.com,m:baohua@kernel.org,m:chenjun102@huawei.com,m:wangkefeng.wang@huawei.com,m:liam@infradead.org,m:npache@redhat.com,m:ryan.roberts@arm.com,m:vbabka@kernel.org,m:yang.shi@linux.alibaba.com,m:ziy@nvidia.com,m:akpm@linux-foundation.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265703-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:idosch@nvidia.com,m:martineau@kernel.org,m:andriy.shevchenko@linux.intel.com,m:davem@davemloft.net,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,nvidia.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,intel.com:email,davemloft.net:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8F803691A90
+X-Rspamd-Queue-Id: 8935B693AC6
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yin Tirui <yintirui@huawei.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-commit 8d878059924f12c1bc24556a92ec56add74de3c8 upstream.
+[ Upstream commit cd4d7263d58ab98fd4dee876776e4da6c328faa3 ]
 
-__split_huge_pmd_locked() updates the file/shmem RSS counter after
-dropping the PMD mapping's folio reference.  If folio_put() drops the last
-reference, mm_counter_file() can later read freed folio state via
-folio_test_swapbacked().
+As explained in commit e03781879a0d ("drop_monitor: Require
+'CAP_SYS_ADMIN' when joining "events" group"), the "flags" field in the
+multicast group structure reuses uAPI flags despite the field not being
+exposed to user space. This makes it impossible to extend its use
+without adding new uAPI flags, which is inappropriate for internal
+kernel checks.
 
-Move the counter update before folio_put().
+Solve this by adding internal flags (i.e., "GENL_MCAST_*") and convert
+the existing users to use them instead of the uAPI flags.
 
-Link: https://lore.kernel.org/20260526101337.1984081-1-yintirui@huawei.com
-Fixes: fadae2953072 ("thp: use mm_file_counter to determine update which rss counter")
-Signed-off-by: Yin Tirui <yintirui@huawei.com>
-Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
-Acked-by: David Hildenbrand (arm) <david@kernel.org>
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
-Reviewed-by: Dev Jain <dev.jain@arm.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Barry Song <baohua@kernel.org>
-Cc: Chen Jun <chenjun102@huawei.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Liam R. Howlett <liam@infradead.org>
-Cc: Nico Pache <npache@redhat.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>
-Cc: Yang Shi <yang.shi@linux.alibaba.com>
-Cc: Zi Yan <ziy@nvidia.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Tested using the reproducers in commit 44ec98ea5ea9 ("psample: Require
+'CAP_NET_ADMIN' when joining "packets" group") and commit e03781879a0d
+("drop_monitor: Require 'CAP_SYS_ADMIN' when joining "events" group").
+
+No functional changes intended.
+
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: d1ebfce2c1d1 ("smb: client: require net admin for CIFS SWN netlink")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/huge_memory.c |    2 ++
- 1 file changed, 2 insertions(+)
+ include/net/genetlink.h |    9 ++++++---
+ net/core/drop_monitor.c |    2 +-
+ net/mptcp/pm_netlink.c  |    2 +-
+ net/netlink/genetlink.c |    4 ++--
+ net/psample/psample.c   |    2 +-
+ 5 files changed, 11 insertions(+), 8 deletions(-)
 
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -2877,7 +2877,9 @@ static void __split_huge_pmd_locked(stru
- 			if (!folio_test_referenced(folio) && pmd_young(old_pmd))
- 				folio_set_referenced(folio);
- 			folio_remove_rmap_pmd(folio, page, vma);
-+			add_mm_counter(mm, mm_counter_file(folio), -HPAGE_PMD_NR);
- 			folio_put(folio);
-+			return;
- 		}
- 		add_mm_counter(mm, mm_counter_file(folio), -HPAGE_PMD_NR);
- 		return;
+--- a/include/net/genetlink.h
++++ b/include/net/genetlink.h
+@@ -8,16 +8,19 @@
+ 
+ #define GENLMSG_DEFAULT_SIZE (NLMSG_DEFAULT_SIZE - GENL_HDRLEN)
+ 
++/* Binding to multicast group requires %CAP_NET_ADMIN */
++#define GENL_MCAST_CAP_NET_ADMIN	BIT(0)
++/* Binding to multicast group requires %CAP_SYS_ADMIN */
++#define GENL_MCAST_CAP_SYS_ADMIN	BIT(1)
++
+ /**
+  * struct genl_multicast_group - generic netlink multicast group
+  * @name: name of the multicast group, names are per-family
+- * @flags: GENL_* flags (%GENL_ADMIN_PERM or %GENL_UNS_ADMIN_PERM)
+- * @cap_sys_admin: whether %CAP_SYS_ADMIN is required for binding
++ * @flags: GENL_MCAST_* flags
+  */
+ struct genl_multicast_group {
+ 	char			name[GENL_NAMSIZ];
+ 	u8			flags;
+-	u8			cap_sys_admin:1;
+ };
+ 
+ struct genl_ops;
+--- a/net/core/drop_monitor.c
++++ b/net/core/drop_monitor.c
+@@ -181,7 +181,7 @@ out:
+ }
+ 
+ static const struct genl_multicast_group dropmon_mcgrps[] = {
+-	{ .name = "events", .cap_sys_admin = 1 },
++	{ .name = "events", .flags = GENL_MCAST_CAP_SYS_ADMIN, },
+ };
+ 
+ static void send_dm_alert(struct work_struct *work)
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -1313,7 +1313,7 @@ bool mptcp_pm_nl_is_backup(struct mptcp_
+ static const struct genl_multicast_group mptcp_pm_mcgrps[] = {
+ 	[MPTCP_PM_CMD_GRP_OFFSET]	= { .name = MPTCP_PM_CMD_GRP_NAME, },
+ 	[MPTCP_PM_EV_GRP_OFFSET]        = { .name = MPTCP_PM_EV_GRP_NAME,
+-					    .flags = GENL_UNS_ADMIN_PERM,
++					    .flags = GENL_MCAST_CAP_NET_ADMIN,
+ 					  },
+ };
+ 
+--- a/net/netlink/genetlink.c
++++ b/net/netlink/genetlink.c
+@@ -1431,10 +1431,10 @@ static int genl_bind(struct net *net, in
+ 			continue;
+ 
+ 		grp = &family->mcgrps[i];
+-		if ((grp->flags & GENL_UNS_ADMIN_PERM) &&
++		if ((grp->flags & GENL_MCAST_CAP_NET_ADMIN) &&
+ 		    !ns_capable(net->user_ns, CAP_NET_ADMIN))
+ 			ret = -EPERM;
+-		if (grp->cap_sys_admin &&
++		if ((grp->flags & GENL_MCAST_CAP_SYS_ADMIN) &&
+ 		    !ns_capable(net->user_ns, CAP_SYS_ADMIN))
+ 			ret = -EPERM;
+ 
+--- a/net/psample/psample.c
++++ b/net/psample/psample.c
+@@ -32,7 +32,7 @@ enum psample_nl_multicast_groups {
+ static const struct genl_multicast_group psample_nl_mcgrps[] = {
+ 	[PSAMPLE_NL_MCGRP_CONFIG] = { .name = PSAMPLE_NL_MCGRP_CONFIG_NAME },
+ 	[PSAMPLE_NL_MCGRP_SAMPLE] = { .name = PSAMPLE_NL_MCGRP_SAMPLE_NAME,
+-				      .flags = GENL_UNS_ADMIN_PERM },
++				      .flags = GENL_MCAST_CAP_NET_ADMIN, },
+ };
+ 
+ static struct genl_family psample_nl_family __ro_after_init;
 
 
 
