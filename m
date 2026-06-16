@@ -1,62 +1,67 @@
-Return-Path: <stable+bounces-266293-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264924-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id VCMgN1OaMWoAoAUAu9opvQ
-	(envelope-from <stable+bounces-266293-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:47:47 +0200
+	id fbxpKTZ/MWqAkwUAu9opvQ
+	(envelope-from <stable+bounces-264924-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:52:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70B5669479A
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:47:47 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46E23692874
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:52:06 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=EdjjBvy9;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266293-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266293-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Ww14bdAN;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264924-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-264924-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B95DC303789F
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:47:46 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0CC5430486C5
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:50:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0738143D4E8;
-	Tue, 16 Jun 2026 18:47:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 596C747AF49;
+	Tue, 16 Jun 2026 16:50:06 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB4693D8125;
-	Tue, 16 Jun 2026 18:47:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29E2D43D4E9;
+	Tue, 16 Jun 2026 16:50:04 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781635664; cv=none; b=tXK3gO4SZGpJgnGW8l8tAFppdYKjh+l4uchUGWkMceOk7mbgoYAooocNtGFH1Eg6arnwvoLyZGYegCt9C1ZQwjx183Xx2hVH/3jA9vNkQKyh4IA2ke4Uhy6KMhpFPyFMJM6HNd8NYhSKUM6MWYoRp+znUGe5EfJSh3l7YoVZsks=
+	t=1781628606; cv=none; b=bYYl8BnRFEk9E/QoGgZPkHkr1CiKI1lNWjYwpnSdwyHUtM+QnmsxjbPmurDEP5cTDisEUz/rqG9ly2liS7E4TOERm58Qg7/firIupv4zbJiWl/b725pz2oeAv7xTAIT+juq6gWzZT5y1/NbIGUjpO5K3ty+hXDF3WeC4ysZme+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781635664; c=relaxed/simple;
-	bh=QN/0R1EFQHXlUeAomdOpIl2OaVqNc4fO9OtVrRiOKmA=;
+	s=arc-20240116; t=1781628606; c=relaxed/simple;
+	bh=bzsGmZtRyd1dC3fUUtAxnU2apKVAHeQvO6dG+kPn+SI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KJ9q2TCH8sPSX/qwVrORgmazFgM1cuXKhTdpR9Iq/WuNDd5WKafxlCzdcviM5Nok/cZU5uTPugFgNNlXKRuqKE8SPIgXjoo36pWYwGOyfMqEQ+xUHKgxnyFqkjzIZsFOweCcsALAJ+bEV6wkYABZSOnOS8Xo5/sk+qoyNOuIL6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EdjjBvy9; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 709C11F000E9;
-	Tue, 16 Jun 2026 18:47:42 +0000 (UTC)
+	 MIME-Version; b=VR96PwN8USG3hlL2cijtPZtPN0+6FEz41ntHY1gcVMlG2/+viQG0NLLGQvVRs5Ls0SUg/gYiPjAwm/+swSXC4xPCXeZE/N/2sCBv7DqMfTKE4uB7VigZDjq2YhQK6xEwq+njdJYW2P0pG0w8mokt5cdhuds3/FFBlNjLzxRFosw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ww14bdAN; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE3ED1F000E9;
+	Tue, 16 Jun 2026 16:50:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781635663;
-	bh=PmrEwbjfMJnsAtLIeAQUsNmu28NvJFq5Yaskvgbd7kU=;
+	s=korg; t=1781628604;
+	bh=mXMvquBL7JgM/HLNzoAe6vPqCWXsOWhTOM9MSva3r2k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=EdjjBvy9Y4HjUdDLQ63IRs94PaDJkagsfHw7jeRg54KA779rJNWrbtW7a4FRXPO6L
-	 YirzDnmJT2xY/lIcwMNIxY19AWb8m0nKeDAj6Ji0oD9TcybjzfhJKYQ4lJieGBYM05
-	 HIzHsuxZIYSiIr1YvU6xMDhqzeX+/xV8oQ1/3TSc=
+	b=Ww14bdANpdbcYy2Hkxy/Fk5F3y0fhVjV0PIslIe2RAI2CxM0kkVNkfhz0tliNKk/p
+	 IxCANdk0lDlMGpeGoEPRKRdBl6d368/qqewIL+6XiDoKXrtZnSa1vh5ttjUVWfqA9Y
+	 dt1zSWT4EM/14ELDUbGu8DEIparNBH3U03a5VlKM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@intel.com>,
-	Rodrigo Alencar <rodrigo.alencar@analog.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <jic23@kernel.org>
-Subject: [PATCH 5.10 058/342] iio: dac: ad5686: fix input raw value check
-Date: Tue, 16 Jun 2026 20:25:54 +0530
-Message-ID: <20260616145050.965132708@linuxfoundation.org>
+	stable@kernel.org,
+	Yuan Tan <yuantan098@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Luxing Yin <tr0jan@lzu.edu.cn>,
+	Zhengchuan Liang <zcliangcn@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Justin Iurman <justin.iurman@gmail.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 128/452] ipv6: exthdrs: refresh nh after handling HAO option
+Date: Tue, 16 Jun 2026 20:25:55 +0530
+Message-ID: <20260616145124.468572247@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,75 +73,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266293-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:andriy.shevchenko@intel.com,m:rodrigo.alencar@analog.com,m:Stable@vger.kernel.org,m:jic23@kernel.org,s:lists@lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264924-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:yuantan098@gmail.com,m:bird@lzu.edu.cn,m:tr0jan@lzu.edu.cn,m:zcliangcn@gmail.com,m:n05ec@lzu.edu.cn,m:justin.iurman@gmail.com,m:idosch@nvidia.com,m:kuba@kernel.org,m:justiniurman@gmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,nvidia.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,intel.com:email,vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,analog.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,vger.kernel.org:from_smtp,msgid.link:url,lzu.edu.cn:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 70B5669479A
+X-Rspamd-Queue-Id: 46E23692874
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rodrigo Alencar <rodrigo.alencar@analog.com>
+From: Zhengchuan Liang <zcliangcn@gmail.com>
 
-commit d01220ee5e43c65a206df827b39bf5cf5f7b9dce upstream.
+commit f7b52afe3592eae66e160586b45a3f2242972c63 upstream.
 
-Fix range check for input raw value, which is off by one, i.e., for a
-10-bit DAC the max valid value is 1023, but 1 << 10 equals 1024, which
-passes the previous check, allowing an out-of-range write. The issue
-exists since the ad5686 driver was first introduced.
+ip6_parse_tlv() caches skb_network_header(skb) in nh while walking
+IPv6 TLVs.
 
-Fixes: c2f37c8dcadc ("iio: dac: New driver for AD5686R, AD5685R, AD5684R Digital to analog converters")
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Signed-off-by: Rodrigo Alencar <rodrigo.alencar@analog.com>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <jic23@kernel.org>
+ipv6_dest_hao() may call pskb_expand_head() for a cloned skb, which can
+move the skb head and invalidate the cached network header pointer.
+Refresh nh after ipv6_dest_hao() returns so any trailing padding or TLVs
+are parsed from the current skb head.
+
+This matches the existing pattern used in ip6_parse_tlv() after helpers
+that can modify skb header storage.
+
+Fixes: a831f5bbc89a ("[IPV6] MIP6: Add inbound interface of home address option.")
+Cc: stable@kernel.org
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Co-developed-by: Luxing Yin <tr0jan@lzu.edu.cn>
+Signed-off-by: Luxing Yin <tr0jan@lzu.edu.cn>
+Signed-off-by: Zhengchuan Liang <zcliangcn@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Reviewed-by: Justin Iurman <justin.iurman@gmail.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/7aba1debc2196189172499e5769802b026f8caf8.1779247873.git.zcliangcn@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/dac/ad5686.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv6/exthdrs.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/iio/dac/ad5686.c
-+++ b/drivers/iio/dac/ad5686.c
-@@ -154,7 +154,7 @@ static int ad5686_write_raw(struct iio_d
- 
- 	switch (mask) {
- 	case IIO_CHAN_INFO_RAW:
--		if (val > (1 << chan->scan_type.realbits) || val < 0)
-+		if (val >= (1 << chan->scan_type.realbits) || val < 0)
- 			return -EINVAL;
- 
- 		mutex_lock(&st->lock);
+--- a/net/ipv6/exthdrs.c
++++ b/net/ipv6/exthdrs.c
+@@ -202,6 +202,8 @@ static bool ip6_parse_tlv(bool hopbyhop,
+ 				case IPV6_TLV_HAO:
+ 					if (!ipv6_dest_hao(skb, off))
+ 						return false;
++
++					nh = skb_network_header(skb);
+ 					break;
+ #endif
+ 				default:
 
 
 
