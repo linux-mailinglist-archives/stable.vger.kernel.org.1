@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-264171-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264685-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id lmYHMoJwMWphjQUAu9opvQ
-	(envelope-from <stable+bounces-264171-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:49:22 +0200
+	id jjYFBlx9MWrOkgUAu9opvQ
+	(envelope-from <stable+bounces-264685-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:44:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A29E69168E
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:49:22 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 128E6692663
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:44:11 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Xfl+slYI;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264171-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264171-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=OsQ2TR+m;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264685-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264685-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A70553028245
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:42:33 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 44A46306B621
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:28:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C42844CF44;
-	Tue, 16 Jun 2026 15:41:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D82D47276B;
+	Tue, 16 Jun 2026 16:28:09 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44D5F4611C2;
-	Tue, 16 Jun 2026 15:41:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE27847277F;
+	Tue, 16 Jun 2026 16:28:07 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781624494; cv=none; b=jYUfvJVvbtIkHdFa8IiNQGdzv67Diwox0CJR5894pn/wHE1DGoCklbPt4gPoiiXpHDK9RlDjUVH7HHd/6sGa9Btu2eApoq9SxBXIFVS/ct2Q8e6WmZkvplE7FImDQOT30zufgv0tkODwS3U5OQOYuvMpzj3NbOVoXMlhuuV03Z8=
+	t=1781627289; cv=none; b=tUKo4fx4E/qxhiuY3/o/jDqGtPoWcleXdaLo7+fFeWZlxen/lYNxlPNv4Ckqa06LuiieBghvMy/Er/AQgp1Hl2qlMd4fA2ss2WZbJIvznSdy+iBbYLx2Wc5teGALcRrdS9SIgwXKRHsfnczB3gdfTYIM4nQl3hGDOHF0Et0E0ac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781624494; c=relaxed/simple;
-	bh=s2lH5y8hQB6awWW4Fng8HXZnntn82NaHiFeltELGArk=;
+	s=arc-20240116; t=1781627289; c=relaxed/simple;
+	bh=Va1I41W4CtZDK8pd6bw8uefeHj6AIrj43wk1jOk9y7g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qZkBRAiFLynuqI1/fPpfNMFo4oD4UH10A4VTOO+0h3VWmAQQRK3EtJVcwzI4Btu1Y3anB9wkWyjsnNV7RvTReNaGo7GYtHPzg8fQltPLA84FI2kzMIk+yqgLiVl4t40H9sJeQ3X7xaUTbdltuCYgg+E6fpyr+TfDUEU0B/ffatQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xfl+slYI; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 462CC1F00A3A;
-	Tue, 16 Jun 2026 15:41:31 +0000 (UTC)
+	 MIME-Version; b=YddSeNSO2rKhxbh7Y+eIZ9HBXi7ukvmWv2KdGMOJh0Cbjv7D4W0rsg7Z2SrAL0EGb9m8hMgBiKBUj1eb0yXuXllRHk0IF7DhYy7wdhphZy9BNATBpE4UZJuoD6bcbu0TZzzO7gBX8/XdVgo/qrlFFZd4Syow+6S2zdYv2QeMaC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OsQ2TR+m; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEB011F000E9;
+	Tue, 16 Jun 2026 16:28:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781624493;
-	bh=bTFe0mMoQdH4WrpoxAAAUUiOPNS6wewKQymZO6gxLOo=;
+	s=korg; t=1781627287;
+	bh=jsJXFlXIGHHQaabXqmfSxJex3TLAJ+Afx0ppmGyILLk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Xfl+slYIRu7QVE3eoZs0TRXzAebdKiFK57zoMwGPT3b9KvHjtuIa8uxWnMPV1RtsN
-	 tZMi0HLQuUr9Wsjc6Xfcoups0aB6lhbfVvzfT8X7w1Fxn5tpeGXdp7UbjWQv7LA//P
-	 fy5xqfHHzRv12XWL5YNpSxGUjdWay02E0eh24/lU=
+	b=OsQ2TR+mqAdPd/bncM0qvc4l3JPIOuq70DheDu8Lvw5QvTo6tixy7NfSPatg0kzzy
+	 cGl2b+dXFJqfPcAjOakMcS4gq3Z4fwOSJl75JPmDS6v7ttfswsE+TIKRVTvb6/ILhT
+	 RAfJ2+Gis4lBNLTnBgOEKaRI7QU/n8HvU4St7Rt4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Wang <kevinyang.wang@amd.com>,
-	Kenneth Feng <kenneth.feng@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 7.0 348/378] drm/amd/pm: apply SMU 13.0.10 workaround during MP1 unload
-Date: Tue, 16 Jun 2026 20:29:39 +0530
-Message-ID: <20260616145128.478565137@linuxfoundation.org>
+	HyeongJun An <sammiee5311@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.12 142/261] USB: serial: kl5kusb105: fix bulk-out buffer overflow
+Date: Tue, 16 Jun 2026 20:29:40 +0530
+Message-ID: <20260616145051.662977615@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,87 +71,97 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264171-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264685-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:sammiee5311@gmail.com,m:johan@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kevinyang.wang@amd.com,m:kenneth.feng@amd.com,m:alexander.deucher@amd.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,gitlab.freedesktop.org:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5A29E69168E
+X-Rspamd-Queue-Id: 128E6692663
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Wang <kevinyang.wang@amd.com>
+From: HyeongJun An <sammiee5311@gmail.com>
 
-commit 2493d87bb4c31ec9ca7f0ef7257e33b8b175f913 upstream.
+commit 96d47e40bf9db4a9efd5c8fb53287a508d165f14 upstream.
 
-On SMU v13.0.10, sending PrepareMp1ForUnload with the default
-parameter may leave the device in an inaccessible state. This can
-affect runtime power management and partial PnP flows.
-e.g: kexec, driver unload, boco/d3cold.
+klsi_105_prepare_write_buffer() is called by the generic write path
+with the bulk-out buffer and its size (bulk_out_size, 64 bytes). It
+stores a two-byte length header at the start of the buffer and copies
+the payload from the write fifo starting at buf + KLSI_HDR_LEN, but
+passes the full buffer size as the number of bytes to copy:
 
-Pass the required workaround parameter 0x55, when preparing MP1 for
-unload on SMU v13.0.10, keep the existing behavior for other SMU
-versions.
+  count = kfifo_out_locked(&port->write_fifo, buf + KLSI_HDR_LEN,
+                           size, &port->lock);
 
-Closes: https://gitlab.freedesktop.org/drm/amd/-/work_items/5133
-Signed-off-by: Yang Wang <kevinyang.wang@amd.com>
-Reviewed-by: Kenneth Feng <kenneth.feng@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 4e8ee1afeedb8d24dd22cdd5ae9f98a6d76ebe4b)
+When the fifo holds at least size bytes, size bytes are copied starting
+two bytes into the size-byte buffer, writing KLSI_HDR_LEN bytes past its
+end. Copy at most size - KLSI_HDR_LEN bytes instead, leaving room for
+the header as safe_serial already does.
+
+Writing bulk_out_size or more bytes to the tty triggers a slab
+out-of-bounds write, observed with KASAN by emulating the device with
+dummy_hcd and raw-gadget:
+
+  BUG: KASAN: slab-out-of-bounds in kfifo_copy_out+0x83/0xc0
+  Write of size 64 at addr ffff888112c62202 by task python3
+   kfifo_copy_out
+   klsi_105_prepare_write_buffer [kl5kusb105]
+   usb_serial_generic_write_start [usbserial]
+  Allocated by task 139:
+   usb_serial_probe [usbserial]
+  The buggy address is located 2 bytes inside of allocated 64-byte region
+
+The out-of-bounds write no longer occurs with this change applied.
+
+Fixes: 60b3013cdaf3 ("USB: kl5usb105: reimplement using generic framework")
 Cc: stable@vger.kernel.org
+Assisted-by: Claude:claude-opus-4-8
+Signed-off-by: HyeongJun An <sammiee5311@gmail.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c |   10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/usb/serial/kl5kusb105.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
-@@ -2801,11 +2801,19 @@ static void smu_v13_0_0_i2c_control_fini
- static int smu_v13_0_0_set_mp1_state(struct smu_context *smu,
- 				     enum pp_mp1_state mp1_state)
- {
-+	uint32_t param;
- 	int ret;
+--- a/drivers/usb/serial/kl5kusb105.c
++++ b/drivers/usb/serial/kl5kusb105.c
+@@ -330,8 +330,8 @@ static int klsi_105_prepare_write_buffer
+ 	unsigned char *buf = dest;
+ 	int count;
  
- 	switch (mp1_state) {
- 	case PP_MP1_STATE_UNLOAD:
--		ret = smu_cmn_set_mp1_state(smu, mp1_state);
-+		/*
-+		 * NOTE: Param 0x55 comes from PMFW 80.31.0, ignored in older versions.
-+		 * No PMFW version check required.
-+		 */
-+		param = amdgpu_ip_version(smu->adev, MP1_HWIP, 0) == IP_VERSION(13, 0, 10) ?
-+			0x55 : 0x00;
-+		ret = smu_cmn_send_smc_msg_with_param(smu, SMU_MSG_PrepareMp1ForUnload,
-+						      param, NULL);
- 		break;
- 	default:
- 		/* Ignore others */
+-	count = kfifo_out_locked(&port->write_fifo, buf + KLSI_HDR_LEN, size,
+-								&port->lock);
++	count = kfifo_out_locked(&port->write_fifo, buf + KLSI_HDR_LEN,
++				 size - KLSI_HDR_LEN, &port->lock);
+ 	put_unaligned_le16(count, buf);
+ 
+ 	return count + KLSI_HDR_LEN;
 
 
 
