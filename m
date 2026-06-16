@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-265662-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265121-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id H3PaK2CNMWrgmQUAu9opvQ
-	(envelope-from <stable+bounces-265662-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:52:32 +0200
+	id uWn/JomCMWrelAUAu9opvQ
+	(envelope-from <stable+bounces-265121-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:06:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE7E2693926
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:52:31 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BC42692B96
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:06:17 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ePbo34HF;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265662-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265662-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Vpq1ROPf;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265121-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265121-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 08E113001199
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:52:28 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A90133038CD2
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:06:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FB6E47A0A9;
-	Tue, 16 Jun 2026 17:52:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06AA047799B;
+	Tue, 16 Jun 2026 17:06:14 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADB1D45BD78;
-	Tue, 16 Jun 2026 17:52:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D06B943E4BC;
+	Tue, 16 Jun 2026 17:06:12 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781632344; cv=none; b=H0nL+pWodj8Ex/GOdElp2Cg5OKbYCV7Zt35gM74K043n3jg7G4+C7nSgyIZUnjk+76EWco4ya7mP4v0q0V2UO4MCkUWda/kN8zHzx2/0HT+yWCa9FT5jFkze820Rhna1A6blki8e7/LBKn/LtEC22qhvnfH1NHPbH/t20GCxn8k=
+	t=1781629573; cv=none; b=m5xlcol1n/TlYdzbiiw1vpJhWd3V04N+k4NG5vdxWQBwG755lrg0a0L84uJSiBz/uW3xAhhdMkomWtv+xuHBD2Ezx6SI262BTd8Awyw+7DVCRIq6Inl2wUD+tNry5OMsbY8f1ZJcJ7bxGFnbvyLtkkmEIvJCR+zUFsolK5jnrDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781632344; c=relaxed/simple;
-	bh=m86AibhHYY/2ti/KV0rbQDtAI7awSBgm0SzsFdpZHzc=;
+	s=arc-20240116; t=1781629573; c=relaxed/simple;
+	bh=0IgELGJr0llH9mF5v6PqI2JMbTiU9IeRha9AWjSR/a0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hdDBaVXqY9tjyL+1+6FKYN9jGpTnv6b4ayFn5ei7ydsGIryaI9ZSmlS4qYn9MSEvL1bmJ7QbAaFnkAtdQByH3rV3S29M1ocNP9fXqUThWNG0Tn2cDwoVrLBxHt9XBX6ZTCjOq2RfnIt44MGqZ+67ttQNlQ89qm4KtqWC97t6QqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ePbo34HF; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 481651F000E9;
-	Tue, 16 Jun 2026 17:52:20 +0000 (UTC)
+	 MIME-Version; b=dOseU74H5TbdIdFNzk1lQt6LPOpGqnS4E2hoF4Xg0dXgYPEisciN4KA8XbVchytkrzdEc1j8gJah6DV1x2FfL3JVsNZHjwu/ut55qgFe5/StmTqCwYmroKlT++hAyxuEKJY56WJrSNyf+cH9QeXr2eUY7eJOqWyOzk3PFGg1d7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vpq1ROPf; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B911B1F000E9;
+	Tue, 16 Jun 2026 17:06:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781632341;
-	bh=gtbHPRg96AYk48B5h8Kost19nkS0GqN5jS94AIwsTY0=;
+	s=korg; t=1781629572;
+	bh=STrRJT5DKGizQh/M4YsOzWCp1gI/asSyf+4CP4F6ar8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ePbo34HFosO6vz0r8TIm7fizUSWuId2sbmEXd5AG4IjLf2R9Ya7cA8VRUcM2770qe
-	 iGOWSxLn8bQ7xvQyt9hRR0eOHcXNz9cPrdeAmNKM2RHSE1pMgMveKJvJWfrj7uhL+w
-	 zaTlpGo4BcGN7UAypnzj+Msxu24nLTcpwaT1DPtA=
+	b=Vpq1ROPfy+2WNzu+XKCmrmcGtQ1AsByS5kdZql2CVu21ZURFd+2tWg3vf9Txcn+y3
+	 k5omm3phSheB19WTyaZmvJcgpEylKR4gv6YB455AWArCrCsR8u6qa2HBr0gpSsvwd5
+	 OcRV8TYMZucI1JDH9OmD91qbxvU+f//PRxpnQ6WA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pei Xiao <xiaopei01@kylinos.cn>,
-	Michal Simek <michal.simek@amd.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 392/522] spi: zynq-qspi: Simplify clock handling with devm_clk_get_enabled()
+	Karl Mehltretter <kmehltretter@gmail.com>,
+	Linus Walleij <linusw@kernel.org>,
+	Russell King <rmk+kernel@armlinux.org.uk>
+Subject: [PATCH 6.6 312/452] ARM: 9474/1: io: avoid KASAN instrumentation of raw halfword I/O
 Date: Tue, 16 Jun 2026 20:28:59 +0530
-Message-ID: <20260616145144.147028794@linuxfoundation.org>
+Message-ID: <20260616145133.905083800@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,179 +67,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265662-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:xiaopei01@kylinos.cn,m:michal.simek@amd.com,m:broonie@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265121-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kmehltretter@gmail.com,m:linusw@kernel.org,m:rmk+kernel@armlinux.org.uk,m:rmk@armlinux.org.uk,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,armlinux.org.uk];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,kylinos.cn:email,amd.com:email]
+	TAGGED_RCPT(0.00)[stable,kernel];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,armlinux.org.uk:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: AE7E2693926
+X-Rspamd-Queue-Id: 3BC42692B96
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pei Xiao <xiaopei01@kylinos.cn>
+From: Karl Mehltretter <kmehltretter@gmail.com>
 
-[ Upstream commit 1f8fd9490e3184e9a2394df2e682901a1d57ce71 ]
+commit d59ed803715a71fb9582e139d648ece8d66dc743 upstream.
 
-Replace devm_clk_get() followed by clk_prepare_enable() with
-devm_clk_get_enabled() for both "pclk" and "ref_clk". This removes
-the need for explicit clock enable and disable calls, as the managed
-API automatically disables the clocks on device removal or probe
-failure.
+For CPUs before ARMv6, __raw_readw() and __raw_writew() are implemented
+as C volatile halfword accesses so the compiler can generate an access
+sequence that is safe for those machines. With KASAN enabled, those C
+accesses are instrumented as normal memory accesses.
 
-Remove the now-unnecessary clk_disable_unprepare() calls from the
-probe error paths and the remove callback. Simplify error handling
-by jumping directly to the remove_ctlr label.
+That is not valid for MMIO. On ARM926/VersatilePB with KASAN enabled,
+PL011 probing traps in __asan_store2() while registering the UART, because
+the instrumented writew() tries to check KASAN shadow for an MMIO address.
 
-Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
-Acked-by: Michal Simek <michal.simek@amd.com>
-Link: https://patch.msgid.link/24043625f89376da36feca2408f990a85be7ab36.1775555500.git.xiaopei01@kylinos.cn
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: c9c012706c9f ("spi: zynq-qspi: fix controller deregistration")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Keep the existing volatile halfword access, but move the ARMv5 definitions
+into __no_kasan_or_inline functions so raw MMIO halfword accesses are not
+instrumented by KASAN. The ARMv6-and-newer inline assembly path is
+unchanged.
+
+Fixes: 421015713b30 ("ARM: 9017/2: Enable KASan for ARM")
+Cc: stable@vger.kernel.org # v5.11+
+Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
+Reviewed-by: Linus Walleij <linusw@kernel.org>
+Signed-off-by: Russell King <rmk+kernel@armlinux.org.uk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-zynq-qspi.c |   42 ++++++------------------------------------
- 1 file changed, 6 insertions(+), 36 deletions(-)
+ arch/arm/include/asm/io.h |   15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
---- a/drivers/spi/spi-zynq-qspi.c
-+++ b/drivers/spi/spi-zynq-qspi.c
-@@ -379,21 +379,10 @@ static int zynq_qspi_setup_op(struct spi
- {
- 	struct spi_controller *ctlr = spi->controller;
- 	struct zynq_qspi *qspi = spi_controller_get_devdata(ctlr);
--	int ret;
- 
- 	if (ctlr->busy)
- 		return -EBUSY;
- 
--	ret = clk_enable(qspi->refclk);
--	if (ret)
--		return ret;
--
--	ret = clk_enable(qspi->pclk);
--	if (ret) {
--		clk_disable(qspi->refclk);
--		return ret;
--	}
--
- 	zynq_qspi_write(qspi, ZYNQ_QSPI_ENABLE_OFFSET,
- 			ZYNQ_QSPI_ENABLE_ENABLE_MASK);
- 
-@@ -659,7 +648,7 @@ static int zynq_qspi_probe(struct platfo
- 		goto remove_ctlr;
- 	}
- 
--	xqspi->pclk = devm_clk_get(&pdev->dev, "pclk");
-+	xqspi->pclk = devm_clk_get_enabled(&pdev->dev, "pclk");
- 	if (IS_ERR(xqspi->pclk)) {
- 		dev_err(&pdev->dev, "pclk clock not found.\n");
- 		ret = PTR_ERR(xqspi->pclk);
-@@ -668,36 +657,24 @@ static int zynq_qspi_probe(struct platfo
- 
- 	init_completion(&xqspi->data_completion);
- 
--	xqspi->refclk = devm_clk_get(&pdev->dev, "ref_clk");
-+	xqspi->refclk = devm_clk_get_enabled(&pdev->dev, "ref_clk");
- 	if (IS_ERR(xqspi->refclk)) {
- 		dev_err(&pdev->dev, "ref_clk clock not found.\n");
- 		ret = PTR_ERR(xqspi->refclk);
- 		goto remove_ctlr;
- 	}
- 
--	ret = clk_prepare_enable(xqspi->pclk);
--	if (ret) {
--		dev_err(&pdev->dev, "Unable to enable APB clock.\n");
--		goto remove_ctlr;
--	}
--
--	ret = clk_prepare_enable(xqspi->refclk);
--	if (ret) {
--		dev_err(&pdev->dev, "Unable to enable device clock.\n");
--		goto clk_dis_pclk;
--	}
--
- 	xqspi->irq = platform_get_irq(pdev, 0);
- 	if (xqspi->irq < 0) {
- 		ret = xqspi->irq;
--		goto clk_dis_all;
-+		goto remove_ctlr;
- 	}
- 	ret = devm_request_irq(&pdev->dev, xqspi->irq, zynq_qspi_irq,
- 			       0, pdev->name, xqspi);
- 	if (ret != 0) {
- 		ret = -ENXIO;
- 		dev_err(&pdev->dev, "request_irq failed\n");
--		goto clk_dis_all;
-+		goto remove_ctlr;
- 	}
- 
- 	ret = of_property_read_u32(np, "num-cs",
-@@ -707,7 +684,7 @@ static int zynq_qspi_probe(struct platfo
- 	} else if (num_cs > ZYNQ_QSPI_MAX_NUM_CS) {
- 		ret = -EINVAL;
- 		dev_err(&pdev->dev, "only 2 chip selects are available\n");
--		goto clk_dis_all;
-+		goto remove_ctlr;
- 	} else {
- 		ctlr->num_chipselect = num_cs;
- 	}
-@@ -725,15 +702,11 @@ static int zynq_qspi_probe(struct platfo
- 	ret = devm_spi_register_controller(&pdev->dev, ctlr);
- 	if (ret) {
- 		dev_err(&pdev->dev, "devm_spi_register_controller failed\n");
--		goto clk_dis_all;
-+		goto remove_ctlr;
- 	}
- 
- 	return ret;
- 
--clk_dis_all:
--	clk_disable_unprepare(xqspi->refclk);
--clk_dis_pclk:
--	clk_disable_unprepare(xqspi->pclk);
- remove_ctlr:
- 	spi_controller_put(ctlr);
- 
-@@ -755,9 +728,6 @@ static void zynq_qspi_remove(struct plat
- 	struct zynq_qspi *xqspi = platform_get_drvdata(pdev);
- 
- 	zynq_qspi_write(xqspi, ZYNQ_QSPI_ENABLE_OFFSET, 0);
--
--	clk_disable_unprepare(xqspi->refclk);
--	clk_disable_unprepare(xqspi->pclk);
- }
- 
- static const struct of_device_id zynq_qspi_of_match[] = {
+--- a/arch/arm/include/asm/io.h
++++ b/arch/arm/include/asm/io.h
+@@ -56,8 +56,19 @@ void __raw_readsl(const volatile void __
+  * the bus. Rather than special-case the machine, just let the compiler
+  * generate the access for CPUs prior to ARMv6.
+  */
+-#define __raw_readw(a)         (__chk_io_ptr(a), *(volatile unsigned short __force *)(a))
+-#define __raw_writew(v,a)      ((void)(__chk_io_ptr(a), *(volatile unsigned short __force *)(a) = (v)))
++#define __raw_writew __raw_writew
++static __no_kasan_or_inline void __raw_writew(u16 val, volatile void __iomem *addr)
++{
++	__chk_io_ptr(addr);
++	*(volatile unsigned short __force *)addr = val;
++}
++
++#define __raw_readw __raw_readw
++static __no_kasan_or_inline u16 __raw_readw(const volatile void __iomem *addr)
++{
++	__chk_io_ptr(addr);
++	return *(const volatile unsigned short __force *)addr;
++}
+ #else
+ /*
+  * When running under a hypervisor, we want to avoid I/O accesses with
 
 
 
