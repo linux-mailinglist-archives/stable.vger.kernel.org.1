@@ -1,65 +1,63 @@
-Return-Path: <stable+bounces-265829-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264845-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Zwd7N86QMWqDmwUAu9opvQ
-	(envelope-from <stable+bounces-265829-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:07:10 +0200
+	id MbaAKS5+MWoWkwUAu9opvQ
+	(envelope-from <stable+bounces-264845-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:47:42 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41960693D01
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:07:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03AD7692745
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:47:42 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=DFd6EjlX;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265829-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265829-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=PFMc2Ztr;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264845-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264845-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D9ABD3113CAF
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:07:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A0AF5302BA79
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:43:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7719D3D45D0;
-	Tue, 16 Jun 2026 18:07:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06AAE46AED1;
+	Tue, 16 Jun 2026 16:43:12 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49A892F12AE;
-	Tue, 16 Jun 2026 18:07:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3A9035DA6A;
+	Tue, 16 Jun 2026 16:43:10 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781633223; cv=none; b=KX+s5KGdf8Om/zGlQUx0zIrdvXGJuFlPmQglpq/jpdx1AGDrzvwqn3BrTC4liyj6qiPUpqAqm/4zx18WBNj73VpWYwdzXYHpg+mdffuDtqwGYNxttnlU/c9BpMVY61V6HNnSXRNQ9mZs+dVZ6gLg97UJH9Epyp04xilfg5Pfg/Q=
+	t=1781628191; cv=none; b=tIYadx+5OMgrzxVnpKYWEnYtapP7C7UwcDTX2aE36vZKY5D2rR03zKxtobz42u/z7/dcg0Br9ceAd7+ia/Lzs6BibxXwEZp+DHXT3EAwpoZIAwC9GdXYnrCTyIKXjrETG/pFekFR7qS/Xf8D7gIBLrab66BGJdzcVPM+kgGcFh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781633223; c=relaxed/simple;
-	bh=jXqdvwCqyXdXy7ev4+bJnphiNhyickPnbW9PSS3LU4I=;
+	s=arc-20240116; t=1781628191; c=relaxed/simple;
+	bh=lgf8N2EDsS7HZa44lJSLHlEnai3qL1TIGTUGZYXWBYs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vFHJHNLmtnvtHYjSth2JqFd1hIGg6urHBgVRewS3AUuNtWp1K1cx+N/qUPGL6ReIHxSTiEgQJVPOfvvbxW6zkVmsiDcbXr4j7sBQ84WX1bYIa4GcUxyu6TY7+8M11BHvpwOiBUKx1oP8b/xFqdEc4gxY+e5lvBu5Tx1/DbG04E8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DFd6EjlX; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1119F1F000E9;
-	Tue, 16 Jun 2026 18:07:00 +0000 (UTC)
+	 MIME-Version; b=udXd91dLyFmCffcBNrbw41xuE6R0+og/4sUJiO7itBeFmrCrUwHF0Kqyu6JaCLouKsZdS1crT/VS9raFkS2UGqwBGUQhUWaZmDwYlT8nRnMpbmLg1B/Abpr97PC966mpFcNPRX1k4xUtJ1LCG2o3v1OFTor198bRW8AVq/zftDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PFMc2Ztr; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9FF51F000E9;
+	Tue, 16 Jun 2026 16:43:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781633222;
-	bh=TzbYu/ojPNR6C8GvrhFzp4bYQK7dcaoxB//xp8PP5Y4=;
+	s=korg; t=1781628190;
+	bh=5hrsMiN/LJm35TWAge8LU0/5KdPGgUmNrajQ10Z1o1Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=DFd6EjlXOE2H2vJpQPV6uJt+LxE/sLanXUwv21p5yqzsrVMcTKmSc3Z3C3sAedgzK
-	 nUZeelD4sb6SRTP1nSMOFRCjLAMYYAwP1AsrEzhAzULU1FrbIx+cFiHH0Kqvh9ef/+
-	 jhO+ZOUMpEw7XIAX4PyAsfm5rNQjyn0rPQCHWWpI=
+	b=PFMc2Ztrt79pfU8riIx4YloZaPALZf+h7sSFxRebM4XV1QWhuQk0NOuJ6BhlWdDxJ
+	 UNWBINjQwVo5JdcIr08HyA4d/qbWlEw1/SX7af/Yms5zoY5eb1r7yIDgqlXaloNd7p
+	 z+BFwU5DLENUefsTGXTktgDGBv3rqv5/ycgAxii4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Sven Eckelmann <sven@narfation.org>,
+	Yeoreum Yun <yeoreum.yun@arm.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	David Wang <00107082@163.com>,
+	Ian Klatzco <iklatzco@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 038/411] batman-adv: tvlv: reject oversized TVLV packets
+Subject: [PATCH 6.6 049/452] perf: Fix dangling cgroup pointer in cpuctx
 Date: Tue, 16 Jun 2026 20:24:36 +0530
-Message-ID: <20260616145102.344142329@linuxfoundation.org>
+Message-ID: <20260616145120.525872058@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -81,11 +79,11 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,narfation.org];
-	TAGGED_FROM(0.00)[bounces-265829-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,arm.com,infradead.org,163.com,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-264845-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:yuantan098@gmail.com,m:yifanwucs@gmail.com,m:tomapufckgml@gmail.com,m:bird@lzu.edu.cn,m:sven@narfation.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:yeoreum.yun@arm.com,m:peterz@infradead.org,m:00107082@163.com,m:iklatzco@gmail.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -100,94 +98,73 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lzu.edu.cn:email,narfation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,infradead.org:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 41960693D01
+X-Rspamd-Queue-Id: 03AD7692745
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: Yeoreum Yun <yeoreum.yun@arm.com>
 
-commit f50487e3566358b2b982b7801945e858c78ad9ab upstream.
+[ Upstream commit 3b7a34aebbdf2a4b7295205bf0c654294283ec82 ]
 
-batadv_tvlv_container_ogm_append() builds a TVLV packet section from
-the tvlv.container_list. The total size of this section is computed by
-batadv_tvlv_container_list_size(), which sums the sizes of all registered
-containers.
+Commit a3c3c6667("perf/core: Fix child_total_time_enabled accounting
+bug at task exit") moves the event->state update to before
+list_del_event(). This makes the event->state test in list_del_event()
+always false; never calling perf_cgroup_event_disable().
 
-The return type and accumulator in batadv_tvlv_container_list_size() were
-u16. If the accumulated size exceeds U16_MAX, the value wraps around,
-causing the subsequent allocation in batadv_tvlv_container_ogm_append()
-to be undersized. The memcpy-style copy that follows would then write
-beyond the end of the allocated buffer, corrupting kernel memory.
+As a result, cpuctx->cgrp won't be cleared properly; causing havoc.
 
-Fix this by widening the return type of batadv_tvlv_container_list_size()
-to size_t. In batadv_tvlv_container_ogm_append(), check the computed length
-against U16_MAX before proceeding, and bail out as if the allocation had
-failed when the limit is exceeded.
-
-Cc: stable@kernel.org
-Fixes: ef26157747d4 ("batman-adv: tvlv - basic infrastructure")
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Reviewed-by: Yuan Tan <yuantan098@gmail.com>
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Fixes: a3c3c6667("perf/core: Fix child_total_time_enabled accounting bug at task exit")
+Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Tested-by: David Wang <00107082@163.com>
+Link: https://lore.kernel.org/all/aD2TspKH%2F7yvfYoO@e129823.arm.com/
+Signed-off-by: Ian Klatzco <iklatzco@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/batman-adv/tvlv.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ kernel/events/core.c | 16 ++++------------
+ 1 file changed, 4 insertions(+), 12 deletions(-)
 
-diff --git a/net/batman-adv/tvlv.c b/net/batman-adv/tvlv.c
-index 4812137439708f..de0c139426839c 100644
---- a/net/batman-adv/tvlv.c
-+++ b/net/batman-adv/tvlv.c
-@@ -13,6 +13,7 @@
- #include <linux/if_ether.h>
- #include <linux/kernel.h>
- #include <linux/kref.h>
-+#include <linux/limits.h>
- #include <linux/list.h>
- #include <linux/lockdep.h>
- #include <linux/netdevice.h>
-@@ -160,10 +161,10 @@ batadv_tvlv_container_get(struct batadv_priv *bat_priv, u8 type, u8 version)
-  *
-  * Return: size of all currently registered tvlv containers in bytes.
-  */
--static u16 batadv_tvlv_container_list_size(struct batadv_priv *bat_priv)
-+static size_t batadv_tvlv_container_list_size(struct batadv_priv *bat_priv)
- {
- 	struct batadv_tvlv_container *tvlv;
--	u16 tvlv_len = 0;
-+	size_t tvlv_len = 0;
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index eba5eb6fcb8762..a4187dea6402a7 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -2056,18 +2056,6 @@ list_del_event(struct perf_event *event, struct perf_event_context *ctx)
+ 	if (event->group_leader == event)
+ 		del_event_from_groups(event, ctx);
  
- 	lockdep_assert_held(&bat_priv->tvlv.container_list_lock);
- 
-@@ -316,13 +317,17 @@ int batadv_tvlv_container_ogm_append(struct batadv_priv *bat_priv,
- {
- 	struct batadv_tvlv_container *tvlv;
- 	struct batadv_tvlv_hdr *tvlv_hdr;
--	u16 tvlv_value_len;
-+	size_t tvlv_value_len;
- 	void *tvlv_value;
- 	int tvlv_len_ret;
- 	bool ret;
- 
- 	spin_lock_bh(&bat_priv->tvlv.container_list_lock);
- 	tvlv_value_len = batadv_tvlv_container_list_size(bat_priv);
-+	if (tvlv_value_len > U16_MAX) {
-+		tvlv_len_ret = -E2BIG;
-+		goto end;
-+	}
- 
- 	ret = batadv_tvlv_realloc_packet_buff(packet_buff, packet_buff_len,
- 					      packet_min_len, tvlv_value_len);
+-	/*
+-	 * If event was in error state, then keep it
+-	 * that way, otherwise bogus counts will be
+-	 * returned on read(). The only way to get out
+-	 * of error state is by explicit re-enabling
+-	 * of the event
+-	 */
+-	if (event->state > PERF_EVENT_STATE_OFF) {
+-		perf_cgroup_event_disable(event, ctx);
+-		perf_event_set_state(event, PERF_EVENT_STATE_OFF);
+-	}
+-
+ 	ctx->generation++;
+ 	event->pmu_ctx->nr_events--;
+ }
+@@ -2401,6 +2389,10 @@ __perf_remove_from_context(struct perf_event *event,
+ 		state = PERF_EVENT_STATE_DEAD;
+ 	}
+ 	event_sched_out(event, ctx);
++
++	if (event->state > PERF_EVENT_STATE_OFF)
++		perf_cgroup_event_disable(event, ctx);
++
+ 	perf_event_set_state(event, min(event->state, state));
+ 	if (flags & DETACH_GROUP)
+ 		perf_group_detach(event);
 -- 
 2.53.0
 
