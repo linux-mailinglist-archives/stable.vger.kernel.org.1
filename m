@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-264290-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264586-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 5IJfC+ByMWp9jgUAu9opvQ
-	(envelope-from <stable+bounces-264290-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:59:28 +0200
+	id gtQhBF93MWoykAUAu9opvQ
+	(envelope-from <stable+bounces-264586-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:18:39 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA73E691990
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:59:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8019691EBA
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:18:38 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=gOYjpsYR;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264290-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264290-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=mw6pyPy9;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264586-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264586-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0895B303683F
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:53:09 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7CFEF301E5B6
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:18:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3CDB44CAE6;
-	Tue, 16 Jun 2026 15:53:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF83C45BD6F;
+	Tue, 16 Jun 2026 16:18:19 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE48F43D4F7;
-	Tue, 16 Jun 2026 15:53:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8367835AC1E;
+	Tue, 16 Jun 2026 16:18:18 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781625185; cv=none; b=CYoqO1Me2a+8N47bOCzLjPRdR2uoJSALCVZLzK/Gxhuzk7uKxI0nAN6iBMkrneA/c1DXu3QyItGVpY/wkKmJSdRgNTjWTIVbaCejDykjtOkCVF+trdbQeXMkMwX13fHh1naG/RJ3JwbXwT2yjmPf77wN7ggDO0HmKKNrrMtkbOk=
+	t=1781626699; cv=none; b=HKt8x/0XrkXVIWfFkbjxvuULr1CQzDIqzK8Cpat6zXcShPdshL0SQa1u65NRoI37rtlkVDR78WcRREwhVBK4P1j/W1uqjbgJ+0GqtlhmypaI4F4g/IlTDm9XMNB+Yj31Rk5MXStV3d37aFf1tOydQxpb7PhE9eFG7M9ZjEaR9SY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781625185; c=relaxed/simple;
-	bh=3i8EKkwF7E6pGaXJhXwtugy3pcx06z2KvbhwE+MC2E0=;
+	s=arc-20240116; t=1781626699; c=relaxed/simple;
+	bh=CLzp+df0c+LHtZoemPP6IQSkxPolwWJ9o5cyBm1LQXw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KHj9Gxvlo4NQazmBds0Yt8Qe7TBeubmTzRXTG6G9Ok5m+rPZOiBkEwHVfu5uw/EPMmiM5EyQnTyBbYUPcd/rkuMTmuC+rNEeerqTuLNd+M7WLXwYutKvSJscoCjtCPFp57NtDLwURGhB6vVT2Y8GDJSOAb/IYLLL69tvggQR5jo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gOYjpsYR; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8BC91F000E9;
-	Tue, 16 Jun 2026 15:53:03 +0000 (UTC)
+	 MIME-Version; b=P6/4ovbLbOxqbnO8GlVB7ffXrvT227O14aphW5cvepOxIYjGJiGpD3gF072jdIr9UKFIEOTFSH49178zUKMM963ET5jlvQlRe+AV+60cL0IBbFBZ/9ljQE3jlmIUhFxhRnebDyFAm/JOIUInbWXALa/kckBxq5b+F7nUFJkLaF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mw6pyPy9; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 967671F000E9;
+	Tue, 16 Jun 2026 16:18:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781625184;
-	bh=ZsBCAcrSoSbwfdiK0zwPa8jTMdgx/EOwA/fVzwbylj4=;
+	s=korg; t=1781626698;
+	bh=AlOvCY2ICeezt5JPs4/O7KjP8XlQ7pjoNVmF7/V3sWo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gOYjpsYRFMZ7QMDOZqmp7qIouatyP9RdazQbu7JYxVcvBL3mhr4hk/7Uh08NrGpSo
-	 plQUC43WZY5obahJTZtu9dncnf3VK/ZZ4hkgJ9lTzLafPHxf1oxR5alVaaBVjgGT5n
-	 Bt2GCTHmITDxp67Lq+7qgaO4o7ymiZ6EblqH0gcQ=
+	b=mw6pyPy9LZOeUoXz/hnAXXBTIq8G2aukrrKfpSJcV8/DhN0h9zzAo51IRjGiklzyG
+	 qaf8lhb9TCqKROWd7GXwwqfU6siWPnfJROqA7PEoXRiiHZ5UVE8loxDAaEwHn42GWf
+	 AuKxQAmI8b5djOqOzFpCGOJBoNNNTl0IAEofRmJg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chenguang Zhao <zhaochenguang@kylinos.cn>,
+	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 094/325] netlabel: validate unlabeled address and mask attribute lengths
+Subject: [PATCH 6.12 052/261] net_sched: act_pedit: use RCU in tcf_pedit_dump()
 Date: Tue, 16 Jun 2026 20:28:10 +0530
-Message-ID: <20260616145102.379166543@linuxfoundation.org>
+Message-ID: <20260616145047.561651539@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,12 +77,12 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264290-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264586-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:zhaochenguang@kylinos.cn,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:edumazet@google.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
@@ -98,93 +98,115 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: CA73E691990
+X-Rspamd-Queue-Id: A8019691EBA
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chenguang Zhao <zhaochenguang@kylinos.cn>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 9772589b57e44aedc240211c5c3f7a684a034d3a ]
+[ Upstream commit 9d096746572616a50cac4906f528a1959c0ee1c2 ]
 
-netlbl_unlabel_addrinfo_get() used the address attribute length to
-determine whether the attribute data could be read as an IPv4 or IPv6
-address, but did not independently validate the corresponding mask
-attribute length.  A crafted Generic Netlink request could therefore
-provide a valid IPv4/IPv6 address attribute with a shorter mask
-attribute, which would later be read as a full struct in_addr or
-struct in6_addr.
+Also storing tcf_action into struct tcf_pedit_params
+makes sure there is no discrepancy in tcf_pedit_act().
 
-NLA_BINARY policy lengths are maximum lengths by default, so use
-NLA_POLICY_EXACT_LEN() for the unlabeled IPv4/IPv6 address and mask
-attributes.  This rejects short attributes during policy validation and
-also exposes the exact length requirements through policy introspection.
-
-Fixes: 8cc44579d1bd ("NetLabel: Introduce static network labels for unlabeled connections")
-Signed-off-by: Chenguang Zhao <zhaochenguang@kylinos.cn>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250709090204.797558-10-edumazet@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 899ee91156e5 ("net/sched: fix pedit partial COW leading to page cache corruption")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netlabel/netlabel_unlabeled.c | 30 ++++++++++--------------------
- 1 file changed, 10 insertions(+), 20 deletions(-)
+ include/net/tc_act/tc_pedit.h |  1 +
+ net/sched/act_pedit.c         | 20 ++++++++++----------
+ 2 files changed, 11 insertions(+), 10 deletions(-)
 
-diff --git a/net/netlabel/netlabel_unlabeled.c b/net/netlabel/netlabel_unlabeled.c
-index dfda9ea61971b3..2237a5261dd2a2 100644
---- a/net/netlabel/netlabel_unlabeled.c
-+++ b/net/netlabel/netlabel_unlabeled.c
-@@ -114,14 +114,14 @@ static struct genl_family netlbl_unlabel_gnl_family;
- /* NetLabel Netlink attribute policy */
- static const struct nla_policy netlbl_unlabel_genl_policy[NLBL_UNLABEL_A_MAX + 1] = {
- 	[NLBL_UNLABEL_A_ACPTFLG] = { .type = NLA_U8 },
--	[NLBL_UNLABEL_A_IPV6ADDR] = { .type = NLA_BINARY,
--				      .len = sizeof(struct in6_addr) },
--	[NLBL_UNLABEL_A_IPV6MASK] = { .type = NLA_BINARY,
--				      .len = sizeof(struct in6_addr) },
--	[NLBL_UNLABEL_A_IPV4ADDR] = { .type = NLA_BINARY,
--				      .len = sizeof(struct in_addr) },
--	[NLBL_UNLABEL_A_IPV4MASK] = { .type = NLA_BINARY,
--				      .len = sizeof(struct in_addr) },
-+	[NLBL_UNLABEL_A_IPV6ADDR] =
-+		NLA_POLICY_EXACT_LEN(sizeof(struct in6_addr)),
-+	[NLBL_UNLABEL_A_IPV6MASK] =
-+		NLA_POLICY_EXACT_LEN(sizeof(struct in6_addr)),
-+	[NLBL_UNLABEL_A_IPV4ADDR] =
-+		NLA_POLICY_EXACT_LEN(sizeof(struct in_addr)),
-+	[NLBL_UNLABEL_A_IPV4MASK] =
-+		NLA_POLICY_EXACT_LEN(sizeof(struct in_addr)),
- 	[NLBL_UNLABEL_A_IFACE] = { .type = NLA_NUL_STRING,
- 				   .len = IFNAMSIZ - 1 },
- 	[NLBL_UNLABEL_A_SECCTX] = { .type = NLA_BINARY }
-@@ -757,24 +757,14 @@ static int netlbl_unlabel_addrinfo_get(struct genl_info *info,
- 				       void **mask,
- 				       u32 *len)
- {
--	u32 addr_len;
+diff --git a/include/net/tc_act/tc_pedit.h b/include/net/tc_act/tc_pedit.h
+index 83fe3993178180..f58ee15cd858cf 100644
+--- a/include/net/tc_act/tc_pedit.h
++++ b/include/net/tc_act/tc_pedit.h
+@@ -14,6 +14,7 @@ struct tcf_pedit_key_ex {
+ struct tcf_pedit_parms {
+ 	struct tc_pedit_key	*tcfp_keys;
+ 	struct tcf_pedit_key_ex	*tcfp_keys_ex;
++	int action;
+ 	u32 tcfp_off_max_hint;
+ 	unsigned char tcfp_nkeys;
+ 	unsigned char tcfp_flags;
+diff --git a/net/sched/act_pedit.c b/net/sched/act_pedit.c
+index fc0a35a7b62ac7..4b65901397a888 100644
+--- a/net/sched/act_pedit.c
++++ b/net/sched/act_pedit.c
+@@ -279,7 +279,7 @@ static int tcf_pedit_init(struct net *net, struct nlattr *nla,
+ 	}
+ 
+ 	p = to_pedit(*a);
 -
- 	if (info->attrs[NLBL_UNLABEL_A_IPV4ADDR] &&
- 	    info->attrs[NLBL_UNLABEL_A_IPV4MASK]) {
--		addr_len = nla_len(info->attrs[NLBL_UNLABEL_A_IPV4ADDR]);
--		if (addr_len != sizeof(struct in_addr) &&
--		    addr_len != nla_len(info->attrs[NLBL_UNLABEL_A_IPV4MASK]))
--			return -EINVAL;
--		*len = addr_len;
-+		*len = sizeof(struct in_addr);
- 		*addr = nla_data(info->attrs[NLBL_UNLABEL_A_IPV4ADDR]);
- 		*mask = nla_data(info->attrs[NLBL_UNLABEL_A_IPV4MASK]);
- 		return 0;
- 	} else if (info->attrs[NLBL_UNLABEL_A_IPV6ADDR]) {
--		addr_len = nla_len(info->attrs[NLBL_UNLABEL_A_IPV6ADDR]);
--		if (addr_len != sizeof(struct in6_addr) &&
--		    addr_len != nla_len(info->attrs[NLBL_UNLABEL_A_IPV6MASK]))
--			return -EINVAL;
--		*len = addr_len;
-+		*len = sizeof(struct in6_addr);
- 		*addr = nla_data(info->attrs[NLBL_UNLABEL_A_IPV6ADDR]);
- 		*mask = nla_data(info->attrs[NLBL_UNLABEL_A_IPV6MASK]);
- 		return 0;
++	nparms->action = parm->action;
+ 	spin_lock_bh(&p->tcf_lock);
+ 	goto_ch = tcf_action_set_ctrlact(*a, parm->action, goto_ch);
+ 	oparms = rcu_replace_pointer(p->parms, nparms, 1);
+@@ -483,7 +483,7 @@ TC_INDIRECT_SCOPE int tcf_pedit_act(struct sk_buff *skb,
+ bad:
+ 	tcf_action_inc_overlimit_qstats(&p->common);
+ done:
+-	return p->tcf_action;
++	return parms->action;
+ }
+ 
+ static void tcf_pedit_stats_update(struct tc_action *a, u64 bytes, u64 packets,
+@@ -500,19 +500,19 @@ static int tcf_pedit_dump(struct sk_buff *skb, struct tc_action *a,
+ 			  int bind, int ref)
+ {
+ 	unsigned char *b = skb_tail_pointer(skb);
+-	struct tcf_pedit *p = to_pedit(a);
+-	struct tcf_pedit_parms *parms;
++	const struct tcf_pedit *p = to_pedit(a);
++	const struct tcf_pedit_parms *parms;
+ 	struct tc_pedit *opt;
+ 	struct tcf_t t;
+ 	int s;
+ 
+-	spin_lock_bh(&p->tcf_lock);
+-	parms = rcu_dereference_protected(p->parms, 1);
++	rcu_read_lock();
++	parms = rcu_dereference(p->parms);
+ 	s = struct_size(opt, keys, parms->tcfp_nkeys);
+ 
+ 	opt = kzalloc(s, GFP_ATOMIC);
+ 	if (unlikely(!opt)) {
+-		spin_unlock_bh(&p->tcf_lock);
++		rcu_read_unlock();
+ 		return -ENOBUFS;
+ 	}
+ 	opt->nkeys = parms->tcfp_nkeys;
+@@ -521,7 +521,7 @@ static int tcf_pedit_dump(struct sk_buff *skb, struct tc_action *a,
+ 	       flex_array_size(opt, keys, parms->tcfp_nkeys));
+ 	opt->index = p->tcf_index;
+ 	opt->flags = parms->tcfp_flags;
+-	opt->action = p->tcf_action;
++	opt->action = parms->action;
+ 	opt->refcnt = refcount_read(&p->tcf_refcnt) - ref;
+ 	opt->bindcnt = atomic_read(&p->tcf_bindcnt) - bind;
+ 
+@@ -540,13 +540,13 @@ static int tcf_pedit_dump(struct sk_buff *skb, struct tc_action *a,
+ 	tcf_tm_dump(&t, &p->tcf_tm);
+ 	if (nla_put_64bit(skb, TCA_PEDIT_TM, sizeof(t), &t, TCA_PEDIT_PAD))
+ 		goto nla_put_failure;
+-	spin_unlock_bh(&p->tcf_lock);
++	rcu_read_unlock();
+ 
+ 	kfree(opt);
+ 	return skb->len;
+ 
+ nla_put_failure:
+-	spin_unlock_bh(&p->tcf_lock);
++	rcu_read_unlock();
+ 	nlmsg_trim(skb, b);
+ 	kfree(opt);
+ 	return -1;
 -- 
 2.53.0
 
