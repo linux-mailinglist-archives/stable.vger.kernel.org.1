@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-265519-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264975-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id WeYODYuKMWpnmAUAu9opvQ
-	(envelope-from <stable+bounces-265519-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:40:27 +0200
+	id UyYtB2yAMWonlAUAu9opvQ
+	(envelope-from <stable+bounces-264975-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:57:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C7036935AC
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:40:26 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 843EF6929C4
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:57:15 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=rpAdp7e7;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265519-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-265519-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="q3Pf4VM/";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264975-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264975-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A73CE3048634
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:40:25 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 993503017FA0
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:54:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE33947AF5F;
-	Tue, 16 Jun 2026 17:40:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94ABF40E8C1;
+	Tue, 16 Jun 2026 16:54:36 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CDD53876CF;
-	Tue, 16 Jun 2026 17:40:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 400144502F;
+	Tue, 16 Jun 2026 16:54:35 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781631624; cv=none; b=atbOkHtMTvvwLB7cuNhZz3JrtudckulHMmlpsr8WxuHim4fM9rj5CPgirbk7AqX2EgFQLeS5yPmfDIJMc6cJ5tTAqC3/lVUwlg5VzDScv2RpgcOCx2UhH13W86sk9k8aU1T6qlE4/qZrvsVsg9cRixASm0VCdLDNbKe14m9ayHw=
+	t=1781628876; cv=none; b=E+a3+nWgV+TWyiAwNCYN1Y8xqw/wZucIAQ8XgRgevze2PMZkebLqto+V+ZYtrQKmTS9zuhvTDgomc9PA5O/bnujhoisa6sflUs8PoiRbtEUslG0yKD5TLXMRHbSM0U2G7/QG5QYRnjhLt5OfqHe9FksK5j0zf5uU9rVqLnaZRvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781631624; c=relaxed/simple;
-	bh=X6hodFe62WAtmsL56kwlecVVYlJCmoRbqZn1gqInVx0=;
+	s=arc-20240116; t=1781628876; c=relaxed/simple;
+	bh=WBonmLvxOtQZnZKG4PgmvIt8BZC2VtdgvF04LdKJ5sI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PYn5dnIrKst7zj9Doo/ZFRNy0puGCjf54y/YbaqzOp51LsSN/igT9Fm8AVgP+xBMCfp0DiQ5ozHz/53ucMQ9NlVUIIW/b8HKwmjWR5XhYK5Oy6+lM9LAqDs7dQ3V2w8Op+1jA3I5myuEqeSEsNUq4pyk1BkA2yDVZdFe2xBgwnM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rpAdp7e7; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55D9B1F000E9;
-	Tue, 16 Jun 2026 17:40:22 +0000 (UTC)
+	 MIME-Version; b=P5Eb+pFnoaRKY3id17BIWjPW7nvXBflrBpqgSU/itXbtVJypnzsUb+chlbD2DxrmksvUKy4e6EUIx5fLKZBsqZtUmwc3peafEiRgJzHrgez2Sjf1QFPaDthYIBsYLoZKAWXBVF1/GEytirL/eyiuzBlD/nKUsOSLNmQMLGCTe/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q3Pf4VM/; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 438531F000E9;
+	Tue, 16 Jun 2026 16:54:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781631623;
-	bh=9uPUBwMPXvmI9JtNCiY7/uGPm6sAIChqXCHAY2UDsxY=;
+	s=korg; t=1781628875;
+	bh=h3PG/3WiOqlzCKzXGW1ADHhoJXlazTroLW0Gu91IN3s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=rpAdp7e7Cu+2OK612CnR4TlCxGDRhCxnk3kGt2rAaC3YRKJxod9TBEQKugEGxA+3L
-	 t2XpXXtvs3ubbMN39jJPgOsWg50qHrtujY3yk8qz4YZ/izWwWOs3Mv9UOTfV3v+H0y
-	 fpPJKaoVrv47Dbk+NpEwupPC7q0gvs+I3LSiRuIA=
+	b=q3Pf4VM/nfRMEorM7/OYuupgsVpizDeIaiMJFau5APYXCtrbOCH+7+oLsJ8jsGX6O
+	 pCV74aFV65GtgnLgip9INU11IxZZd5NsWQRwZmhI7zcr94CbSdmVyrhkU2ExkrC7aY
+	 cJewkga6leMe8zvBGTsZ4GlX9dWyks/5Dtule1A0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang Mei <xmei5@asu.edu>,
-	Weiming Shi <bestswngs@gmail.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 256/522] netfilter: nf_conntrack: destroy stale expectfn expectations on unregister
-Date: Tue, 16 Jun 2026 20:26:43 +0530
-Message-ID: <20260616145137.929033421@linuxfoundation.org>
+	Berkant Koc <me@berkoc.com>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
+Subject: [PATCH 6.6 177/452] drm/hyperv: validate VMBus packet size in receive callback
+Date: Tue, 16 Jun 2026 20:26:44 +0530
+Message-ID: <20260616145127.172067803@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,185 +72,223 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,netfilter.org,kernel.org];
-	TAGGED_FROM(0.00)[bounces-265519-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:xmei5@asu.edu,m:bestswngs@gmail.com,m:pablo@netfilter.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-264975-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:me@berkoc.com,m:mhklinux@outlook.com,m:hamzamahfooz@linux.microsoft.com,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,berkoc.com,outlook.com,linux.microsoft.com];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[asu.edu:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,netfilter.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,outlook.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9C7036935AC
+X-Rspamd-Queue-Id: 843EF6929C4
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weiming Shi <bestswngs@gmail.com>
+From: Berkant Koc <me@berkoc.com>
 
-[ Upstream commit c3009418f9fa1dcb3eb86f4d8c92583537b5faa3 ]
+commit 7f87763f47a3c22fb50265a00619ef10f2394b18 upstream.
 
-NAT helpers such as nf_nat_h323 store a raw pointer to module text in
-exp->expectfn (e.g. ip_nat_q931_expect). nf_ct_helper_expectfn_unregister()
-only unlinks the callback descriptor and never walks the expectation table,
-so an expectation pending at module removal survives with a dangling
-exp->expectfn into freed module text.
+hyperv_receive_sub() reads msg->vid_hdr.type and dispatches into one
+of four message-type branches without knowing how many bytes the host
+wrote into hv->recv_buf. The completion path then runs
+memcpy(hv->init_buf, msg, VMBUS_MAX_PACKET_SIZE), so the consumer that
+wakes on wait_for_completion_timeout() can read up to 16 KiB of
+residue from a prior message as if it were the response payload.
 
-When the expected connection arrives, init_conntrack() invokes
-exp->expectfn(), now a stale pointer into the unloaded module. Reproduced
-on a KASAN build by loading the H.323 helpers, creating a Q.931
-expectation, unloading nf_nat_h323, then connecting to the expected port:
+Pass bytes_recvd into hyperv_receive_sub() and reject any packet that
+does not cover the pipe + synthvid header. A single switch on
+msg->vid_hdr.type then computes the type-specific payload size: the
+three completion-driving types (SYNTHVID_VERSION_RESPONSE,
+SYNTHVID_RESOLUTION_RESPONSE, SYNTHVID_VRAM_LOCATION_ACK) fall through
+to a shared exit that requires that size before memcpy/complete, while
+SYNTHVID_FEATURE_CHANGE validates its own payload and returns before
+reading is_dirt_needed. Unknown types are dropped.
 
- Oops: int3: 0000 [#1] SMP KASAN NOPTI
- RIP: 0010:0xffffffffa06102d1
-  init_conntrack.isra.0 (net/netfilter/nf_conntrack_core.c:1862)
-  nf_conntrack_in (net/netfilter/nf_conntrack_core.c:2049)
-  ipv4_conntrack_local (net/netfilter/nf_conntrack_proto.c:223)
-  nf_hook_slow (net/netfilter/core.c:619)
-  __ip_local_out (net/ipv4/ip_output.c:120)
-  __tcp_transmit_skb (net/ipv4/tcp_output.c:1715)
-  tcp_connect (net/ipv4/tcp_output.c:4374)
-  tcp_v4_connect (net/ipv4/tcp_ipv4.c:345)
-  __sys_connect (net/socket.c:2167)
- Modules linked in: nf_conntrack_h323 [last unloaded: nf_nat_h323]
+SYNTHVID_RESOLUTION_RESPONSE is variable length: the host fills
+resolution_count entries, not the full SYNTHVID_MAX_RESOLUTION_COUNT
+array. Validate the fixed prefix first so resolution_count can be
+read, bound it against the array, then require only the count-sized
+array, so the shorter responses the host actually sends are accepted.
 
-Reaching the dangling state requires CAP_SYS_MODULE in the initial user
-namespace to remove a NAT helper that still has live expectations, so this
-is a robustness fix; leaving an expectation pointing at freed text is wrong
-regardless.
+Only run the sub-handler when vmbus_recvpacket() returned success. The
+memcpy length is bytes_recvd, which is bounded by VMBUS_MAX_PACKET_SIZE
+only on a successful receive; on -ENOBUFS vmbus_recvpacket() instead
+reports the required length, which can exceed hv->recv_buf, so copying
+bytes_recvd would read and write past the 16 KiB buffers. Gating on the
+success return keeps the copy bounded. The nonzero-return path is itself
+a malformed-message case and is now logged rather than silently skipped;
+channel recovery is not attempted.
 
-Add nf_ct_helper_expectfn_destroy(), which walks the expectation table and
-drops every expectation whose ->expectfn matches the descriptor being torn
-down. Call it from each NAT helper's exit path after the existing RCU grace
-period, so no expectation outlives the code it points at and no extra
-synchronize_rcu() is introduced. With the fix, the same reproducer runs to
-completion without the Oops.
+Rejected packets are reported via drm_err_ratelimited() rather than
+silently dropped, matching the CoCo-hardened pattern in
+hv_kvp_onchannelcallback().
 
-Fixes: f587de0e2feb ("[NETFILTER]: nf_conntrack/nf_nat: add H.323 helper port")
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Assisted-by: Claude:claude-opus-4-8
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 76c56a5affeb ("drm/hyperv: Add DRM driver for hyperv synthetic video device")
+Cc: stable@vger.kernel.org # 5.14+
+Signed-off-by: Berkant Koc <me@berkoc.com>
+Assisted-by: Claude:claude-opus-4-7 berkoc-pipeline
+Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+Tested-by: Michael Kelley <mhklinux@outlook.com>
+Signed-off-by: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
+Link: https://patch.msgid.link/8200dbc199c7a9b75ac7e8af6c748d2189b5ebd5.1779542874.git.me@berkoc.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/netfilter/nf_conntrack_helper.h |  1 +
- net/ipv4/netfilter/nf_nat_h323.c            |  2 ++
- net/netfilter/nf_conntrack_helper.c         | 19 +++++++++++++++++++
- net/netfilter/nf_nat_core.c                 |  2 ++
- net/netfilter/nf_nat_sip.c                  |  1 +
- 5 files changed, 25 insertions(+)
+ drivers/gpu/drm/hyperv/hyperv_drm_proto.c |  100 ++++++++++++++++++++++++++----
+ 1 file changed, 87 insertions(+), 13 deletions(-)
 
-diff --git a/include/net/netfilter/nf_conntrack_helper.h b/include/net/netfilter/nf_conntrack_helper.h
-index 9939c366f720d4..2435039434ea9d 100644
---- a/include/net/netfilter/nf_conntrack_helper.h
-+++ b/include/net/netfilter/nf_conntrack_helper.h
-@@ -152,6 +152,7 @@ void nf_ct_helper_log(struct sk_buff *skb, const struct nf_conn *ct,
- 
- void nf_ct_helper_expectfn_register(struct nf_ct_helper_expectfn *n);
- void nf_ct_helper_expectfn_unregister(struct nf_ct_helper_expectfn *n);
-+void nf_ct_helper_expectfn_destroy(const struct nf_ct_helper_expectfn *n);
- struct nf_ct_helper_expectfn *
- nf_ct_helper_expectfn_find_by_name(const char *name);
- struct nf_ct_helper_expectfn *
-diff --git a/net/ipv4/netfilter/nf_nat_h323.c b/net/ipv4/netfilter/nf_nat_h323.c
-index faee20af485613..10e1b0837731b7 100644
---- a/net/ipv4/netfilter/nf_nat_h323.c
-+++ b/net/ipv4/netfilter/nf_nat_h323.c
-@@ -555,6 +555,8 @@ static void __exit nf_nat_h323_fini(void)
- 	nf_ct_helper_expectfn_unregister(&q931_nat);
- 	nf_ct_helper_expectfn_unregister(&callforwarding_nat);
- 	synchronize_rcu();
-+	nf_ct_helper_expectfn_destroy(&q931_nat);
-+	nf_ct_helper_expectfn_destroy(&callforwarding_nat);
+--- a/drivers/gpu/drm/hyperv/hyperv_drm_proto.c
++++ b/drivers/gpu/drm/hyperv/hyperv_drm_proto.c
+@@ -425,30 +425,92 @@ static int hyperv_get_supported_resoluti
+ 	return 0;
  }
  
- /****************************************************************************/
-diff --git a/net/netfilter/nf_conntrack_helper.c b/net/netfilter/nf_conntrack_helper.c
-index 6a2ad31ac62f12..8e72c3d4db4ad1 100644
---- a/net/netfilter/nf_conntrack_helper.c
-+++ b/net/netfilter/nf_conntrack_helper.c
-@@ -286,6 +286,25 @@ void nf_ct_helper_expectfn_unregister(struct nf_ct_helper_expectfn *n)
- }
- EXPORT_SYMBOL_GPL(nf_ct_helper_expectfn_unregister);
+-static void hyperv_receive_sub(struct hv_device *hdev)
++static void hyperv_receive_sub(struct hv_device *hdev, u32 bytes_recvd)
+ {
+ 	struct hyperv_drm_device *hv = hv_get_drvdata(hdev);
+ 	struct synthvid_msg *msg;
++	size_t hdr_size;
++	size_t need;
  
-+static bool expect_iter_expectfn(struct nf_conntrack_expect *exp, void *data)
-+{
-+	const struct nf_ct_helper_expectfn *n = data;
-+
-+	/* Relies on registered expectfn descriptors having unique ->expectfn
-+	 * pointers, which holds for the in-tree NAT helpers.
-+	 */
-+	return exp->expectfn == n->expectfn;
-+}
-+
-+/* Destroy expectations still pointing at @n->expectfn; call after the
-+ * caller's RCU grace period so none outlives the (often modular) callback.
-+ */
-+void nf_ct_helper_expectfn_destroy(const struct nf_ct_helper_expectfn *n)
-+{
-+	nf_ct_expect_iterate_destroy(expect_iter_expectfn, (void *)n);
-+}
-+EXPORT_SYMBOL_GPL(nf_ct_helper_expectfn_destroy);
-+
- /* Caller should hold the rcu lock */
- struct nf_ct_helper_expectfn *
- nf_ct_helper_expectfn_find_by_name(const char *name)
-diff --git a/net/netfilter/nf_nat_core.c b/net/netfilter/nf_nat_core.c
-index 6b683ff015b9cc..cf7c06b79d5614 100644
---- a/net/netfilter/nf_nat_core.c
-+++ b/net/netfilter/nf_nat_core.c
-@@ -1157,6 +1157,7 @@ static int __init nf_nat_init(void)
- 		RCU_INIT_POINTER(nf_nat_hook, NULL);
- 		nf_ct_helper_expectfn_unregister(&follow_master_nat);
- 		synchronize_net();
-+		nf_ct_helper_expectfn_destroy(&follow_master_nat);
- 		unregister_pernet_subsys(&nat_net_ops);
- 		kvfree(nf_nat_bysource);
+ 	if (!hv)
+ 		return;
+ 
+-	msg = (struct synthvid_msg *)hv->recv_buf;
+-
+-	/* Complete the wait event */
+-	if (msg->vid_hdr.type == SYNTHVID_VERSION_RESPONSE ||
+-	    msg->vid_hdr.type == SYNTHVID_RESOLUTION_RESPONSE ||
+-	    msg->vid_hdr.type == SYNTHVID_VRAM_LOCATION_ACK) {
+-		memcpy(hv->init_buf, msg, VMBUS_MAX_PACKET_SIZE);
+-		complete(&hv->wait);
++	hdr_size = sizeof(struct pipe_msg_hdr) +
++		   sizeof(struct synthvid_msg_hdr);
++	if (bytes_recvd < hdr_size) {
++		drm_err_ratelimited(&hv->dev,
++				    "synthvid packet too small for header: %u\n",
++				    bytes_recvd);
+ 		return;
  	}
-@@ -1174,6 +1175,7 @@ static void __exit nf_nat_cleanup(void)
- 	RCU_INIT_POINTER(nf_nat_hook, NULL);
  
- 	synchronize_net();
-+	nf_ct_helper_expectfn_destroy(&follow_master_nat);
- 	kvfree(nf_nat_bysource);
- 	unregister_pernet_subsys(&nat_net_ops);
- }
-diff --git a/net/netfilter/nf_nat_sip.c b/net/netfilter/nf_nat_sip.c
-index 9fbfc6bff0c221..00838c0cc5bb28 100644
---- a/net/netfilter/nf_nat_sip.c
-+++ b/net/netfilter/nf_nat_sip.c
-@@ -655,6 +655,7 @@ static void __exit nf_nat_sip_fini(void)
- 	RCU_INIT_POINTER(nf_nat_sip_hooks, NULL);
- 	nf_ct_helper_expectfn_unregister(&sip_nat);
- 	synchronize_rcu();
-+	nf_ct_helper_expectfn_destroy(&sip_nat);
+-	if (msg->vid_hdr.type == SYNTHVID_FEATURE_CHANGE) {
++	msg = (struct synthvid_msg *)hv->recv_buf;
++	need = hdr_size;
++
++	switch (msg->vid_hdr.type) {
++	case SYNTHVID_VERSION_RESPONSE:
++		need += sizeof(struct synthvid_version_resp);
++		break;
++	case SYNTHVID_RESOLUTION_RESPONSE:
++		/*
++		 * The resolution response is variable length: the host
++		 * fills resolution_count entries, not the full
++		 * SYNTHVID_MAX_RESOLUTION_COUNT array. Require the fixed
++		 * prefix first so resolution_count can be read, then
++		 * demand exactly the count-sized array.
++		 */
++		need += offsetof(struct synthvid_supported_resolution_resp,
++				 supported_resolution);
++		if (bytes_recvd < need)
++			break;
++		if (msg->resolution_resp.resolution_count >
++		    SYNTHVID_MAX_RESOLUTION_COUNT) {
++			drm_err_ratelimited(&hv->dev,
++					    "synthvid resolution count too large: %u\n",
++					    msg->resolution_resp.resolution_count);
++			return;
++		}
++		need += msg->resolution_resp.resolution_count *
++			sizeof(struct hvd_screen_info);
++		break;
++	case SYNTHVID_VRAM_LOCATION_ACK:
++		need += sizeof(struct synthvid_vram_location_ack);
++		break;
++	case SYNTHVID_FEATURE_CHANGE:
++		/*
++		 * Not a completion-driving message: validate its own payload
++		 * and consume it here rather than falling through to the
++		 * memcpy/complete shared by the wait-event responses.
++		 */
++		if (bytes_recvd < need +
++		    sizeof(struct synthvid_feature_change)) {
++			drm_err_ratelimited(&hv->dev,
++					    "synthvid feature change packet too small: %u\n",
++					    bytes_recvd);
++			return;
++		}
+ 		hv->dirt_needed = msg->feature_chg.is_dirt_needed;
+ 		if (hv->dirt_needed)
+ 			hyperv_hide_hw_ptr(hv->hdev);
++		return;
++	default:
++		return;
++	}
++
++	/*
++	 * Shared completion path for the wait-event responses
++	 * (VERSION_RESPONSE, RESOLUTION_RESPONSE, VRAM_LOCATION_ACK):
++	 * require the type-specific payload before handing the buffer to
++	 * the waiter.
++	 */
++	if (bytes_recvd < need) {
++		drm_err_ratelimited(&hv->dev,
++				    "synthvid packet too small for type %u: %u < %zu\n",
++				    msg->vid_hdr.type, bytes_recvd, need);
++		return;
+ 	}
++	memcpy(hv->init_buf, msg, bytes_recvd);
++	complete(&hv->wait);
  }
  
- static const struct nf_nat_sip_hooks sip_hooks = {
--- 
-2.53.0
-
+ static void hyperv_receive(void *ctx)
+@@ -469,9 +531,21 @@ static void hyperv_receive(void *ctx)
+ 		ret = vmbus_recvpacket(hdev->channel, recv_buf,
+ 				       VMBUS_MAX_PACKET_SIZE,
+ 				       &bytes_recvd, &req_id);
+-		if (bytes_recvd > 0 &&
+-		    recv_buf->pipe_hdr.type == PIPE_MSG_DATA)
+-			hyperv_receive_sub(hdev);
++		if (ret) {
++			/*
++			 * A nonzero return (e.g. -ENOBUFS for an oversized
++			 * packet) is itself a malformed message: bytes_recvd
++			 * then reports the required length rather than a copied
++			 * payload, so it must not be forwarded to the
++			 * sub-handler. Channel recovery is not attempted.
++			 */
++			drm_err_ratelimited(&hv->dev,
++					    "vmbus_recvpacket failed: %d (need %u)\n",
++					    ret, bytes_recvd);
++		} else if (bytes_recvd > 0 &&
++			   recv_buf->pipe_hdr.type == PIPE_MSG_DATA) {
++			hyperv_receive_sub(hdev, bytes_recvd);
++		}
+ 	} while (bytes_recvd > 0 && ret == 0);
+ }
+ 
 
 
 
