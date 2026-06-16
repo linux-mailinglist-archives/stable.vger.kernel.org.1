@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-264675-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265702-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id pBp+I7p7MWoLkgUAu9opvQ
-	(envelope-from <stable+bounces-264675-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:37:14 +0200
+	id IlG6LcWOMWqNmgUAu9opvQ
+	(envelope-from <stable+bounces-265702-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:58:29 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 269FE692445
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:37:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20E42693AB3
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:58:29 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=10ZUqtqJ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264675-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264675-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=hquEjS+Z;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265702-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265702-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5239D3032F7D
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:27:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D478531C53EB
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:55:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE81F46AF21;
-	Tue, 16 Jun 2026 16:27:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADFA847B41C;
+	Tue, 16 Jun 2026 17:55:46 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0C123BFE40;
-	Tue, 16 Jun 2026 16:27:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F55A478E55;
+	Tue, 16 Jun 2026 17:55:45 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781627223; cv=none; b=s9un8OgNgNrQOuOKtN4S0NqumB3KUU3xul3VNnxEkkbFRJEA9bmjSscpy8v9RiuXiCwb3sZzcpEnZID5wXipsvyae3LAN8q+4IfS7hmPvPp0Qu1T1uPM+LimvQ2Hs+2Jt3lDWSAsAxkYDlfR03unAE/BAUjwvghwNQyGVXoyX1Q=
+	t=1781632546; cv=none; b=fujKS1/VUJbcefZaw3JBbmdVfKTTmNcIE723ND/zR52KHLu+GkSppPdrgONnxW7l1x3xMlkAleCGnnCeOfNKWzzA2ebAsoL9O0zMRVfmoELBNxu7c7yxV25UXfJm1Q9QItFpOfeRxd6AsctCYwSdblTSLFbLhFUdeIXKWfXXHc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781627223; c=relaxed/simple;
-	bh=QRh1esEtSdAIZJVS8MyuvX/Su40Jcoir8tZIpDy7feY=;
+	s=arc-20240116; t=1781632546; c=relaxed/simple;
+	bh=hlHa1+CE2Fn0Vd3FSWmni9/19d2EoS5PS/0VeAfAlwk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ATzTmCmgQDytJzKP9gbyYkTlA9E9GTBIVjumGtww7SR+143y2f9CZAP4MCDDQIzMSSdRpMZPUSlIGq18gxDdDBg1CwInEBCFjjeMR3zMiuZmmemB6WldX/JxAfKwUk/3RkTJ0WH7raH6epJg3RuZqH6Hr/kHMNqh07O18E+DLl4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=10ZUqtqJ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A29CB1F000E9;
-	Tue, 16 Jun 2026 16:27:01 +0000 (UTC)
+	 MIME-Version; b=LdkK7rcy8ZpuRlJe5Mmo0kG/4ZeKHfQqKS9eg9E8rTcaAz/RjnwV80hQjd0093jWkJfP0qTL3cSfrOfhGvNRfwkANJ/JEqI6wSOpNYKgACEcz7XpPpVlQeglv7zIPLpngV/MGHXj8I8B73rocG1GKDsLfm5A2QifBwiPFeEaCoo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hquEjS+Z; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24DA41F00A3A;
+	Tue, 16 Jun 2026 17:55:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781627222;
-	bh=AUWESKnSTar6qskMN/Mx/3Ow+QOWF6c60eaz5tgEl4w=;
+	s=korg; t=1781632545;
+	bh=tk28eEXyGKSmXtrqWRKZI7zDql6cKVdc0KGwihM9Z5Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=10ZUqtqJjE7l24ubIFGu5I2cQgRfUK85w6rm9pgJHJ0JiMaybFybGwZ9kgVusTKZz
-	 KKYTCUaD7PcDw49eyPDZQcR80fLDmQmNaLZUvUhECBGO4Bn+p0enBL+MtAQTefI8rt
-	 rpeir+DbsUBT8edEGHtel2aR+Qgp6PGuemtPXNOg=
+	b=hquEjS+Zi57y3KifcUBmjUXugSr7WALgeAcJfOOLCkSuSJjz0vgmuTpcucFemo6wC
+	 3B1aDYHVPhqJly00UBVmT+FMeYQXOxnE6XnqgFO/3t0UyCg0mTUNr7GvaHBRVL2qSZ
+	 SQK+kSpuQx990/Ay55DYEmsCqGzLL86P0Xj3c2To=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Korwel <adriank20047@gmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.12 140/261] USB: serial: io_ti: fix heap overflow in build_i2c_fw_hdr()
+	Guopeng Zhang <zhangguopeng@kylinos.cn>,
+	Tejun Heo <tj@kernel.org>,
+	Chen Ridong <chenridong@huaweicloud.com>,
+	Waiman Long <longman@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 431/522] cgroup/cpuset: Reset DL migration state on can_attach() failure
 Date: Tue, 16 Jun 2026 20:29:38 +0530
-Message-ID: <20260616145051.569629578@linuxfoundation.org>
+Message-ID: <20260616145146.132165243@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
-References: <20260616145044.869532709@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,86 +69,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [3.84 / 15.00];
+	SEM_URIBL(3.50)[huaweicloud.com:email];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	BAD_REP_POLICIES(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
+	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-264675-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:adriank20047@gmail.com,m:johan@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
+	TAGGED_FROM(0.00)[bounces-265702-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:zhangguopeng@kylinos.cn,m:tj@kernel.org,m:chenridong@huaweicloud.com,m:longman@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	R_SPF_ALLOW(0.00)[+ip6:2600:3c0a:e001:db::/64:c];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
+	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,kylinos.cn:email,huaweicloud.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 269FE692445
+X-Rspamd-Queue-Id: 20E42693AB3
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Korwel <adriank20047@gmail.com>
+From: Guopeng Zhang <zhangguopeng@kylinos.cn>
 
-commit 0fd2b00b2d3d05e3eaa13342b3dfb0fa85c226ae upstream.
+[ Upstream commit 4a39eda5fdd867fc39f3c039714dd432cee00268 ]
 
-build_i2c_fw_hdr() allocates a fixed-size buffer of
-(16*1024 - 512) + sizeof(struct ti_i2c_firmware_rec) bytes, then
-copies le16_to_cpu(img_header->Length) bytes into it without
-validating that Length fits within the available space after the
-firmware record header.
+cpuset_can_attach() accumulates temporary SCHED_DEADLINE migration
+state in the destination cpuset while walking the taskset.
 
-img_header->Length is a __le16 from the firmware file and can be
-up to 65535. check_fw_sanity() validates the total firmware size
-but not img_header->Length specifically.
+If a later task_can_attach() or security_task_setscheduler() check
+fails, cgroup_migrate_execute() treats cpuset as the failing subsystem
+and does not call cpuset_cancel_attach() for it. The partially
+accumulated state is then left behind and can be consumed by a later
+attach, corrupting cpuset DL task accounting and pending DL bandwidth
+accounting.
 
-Fix by rejecting images where img_header->Length exceeds the
-available destination space.
+Reset the pending DL migration state from the common error exit when
+ret is non-zero. Successful can_attach() keeps the state for
+cpuset_attach() or cpuset_cancel_attach().
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Adrian Korwel <adriank20047@gmail.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Fixes: 2ef269ef1ac0 ("cgroup/cpuset: Free DL BW in case can_attach() fails")
+Cc: stable@vger.kernel.org # v6.10+
+Signed-off-by: Guopeng Zhang <zhangguopeng@kylinos.cn>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Reviewed-by: Chen Ridong <chenridong@huaweicloud.com>
+Reviewed-by: Waiman Long <longman@redhat.com>
+[ omitted upstream context line `cs->dl_bw_cpu = cpu;` ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/io_ti.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ kernel/cgroup/cpuset.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/usb/serial/io_ti.c
-+++ b/drivers/usb/serial/io_ti.c
-@@ -844,6 +844,11 @@ static int build_i2c_fw_hdr(u8 *header,
- 	/* Pointer to fw_down memory image */
- 	img_header = (struct ti_i2c_image_header *)&fw->data[4];
+--- a/kernel/cgroup/cpuset.c
++++ b/kernel/cgroup/cpuset.c
+@@ -2579,16 +2579,13 @@ static int cpuset_can_attach(struct cgro
+ 		int cpu = cpumask_any_and(cpu_active_mask, cs->effective_cpus);
  
-+	if (le16_to_cpu(img_header->Length) >
-+			buffer_size - sizeof(struct ti_i2c_firmware_rec)) {
-+		kfree(buffer);
-+		return -EINVAL;
-+	}
- 	memcpy(buffer + sizeof(struct ti_i2c_firmware_rec),
- 		&fw->data[4 + sizeof(struct ti_i2c_image_header)],
- 		le16_to_cpu(img_header->Length));
+ 		if (unlikely(cpu >= nr_cpu_ids)) {
+-			reset_migrate_dl_data(cs);
+ 			ret = -EINVAL;
+ 			goto out_unlock;
+ 		}
+ 
+ 		ret = dl_bw_alloc(cpu, cs->sum_migrate_dl_bw);
+-		if (ret) {
+-			reset_migrate_dl_data(cs);
++		if (ret)
+ 			goto out_unlock;
+-		}
+ 	}
+ 
+ out_success:
+@@ -3401,7 +3398,10 @@ static int cpuset_can_fork(struct task_s
+ 	 * changes which zero cpus/mems_allowed.
+ 	 */
+ 	cs->attach_in_progress++;
++
+ out_unlock:
++	if (ret)
++		reset_migrate_dl_data(cs);
+ 	mutex_unlock(&cpuset_mutex);
+ 	return ret;
+ }
 
 
 
