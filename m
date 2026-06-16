@@ -1,68 +1,63 @@
-Return-Path: <stable+bounces-266027-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265595-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id fPMvC+eUMWp/nQUAu9opvQ
-	(envelope-from <stable+bounces-266027-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:24:39 +0200
+	id lxGxCgeMMWowmQUAu9opvQ
+	(envelope-from <stable+bounces-265595-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:46:47 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7EA96941A8
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:24:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B0CE869377D
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:46:46 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=c1lba9ON;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266027-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-266027-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Oxc01+jH;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265595-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-265595-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 36837303131D
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:24:38 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E531E303D77C
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:46:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2305E478868;
-	Tue, 16 Jun 2026 18:24:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6B983C65F2;
+	Tue, 16 Jun 2026 17:46:35 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA53B3D8114;
-	Tue, 16 Jun 2026 18:24:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C5F43D669A;
+	Tue, 16 Jun 2026 17:46:34 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781634274; cv=none; b=qY4jLUK43dQVBde83Ty+DaqAtUazYFzfx7mqykwTEbHbR4SPN8T1OyMZzd38z068lPRji2208iESCatJbOkh+So0ODe7J7L5hAOMNtukFUQ1LxN4ve/9S8qsUXUplGuLnLcDMErnSZDwNdSk6b+op/1yYIcH+x63+gsbbcUm1+o=
+	t=1781631995; cv=none; b=mgWWyVn/CMZaseGy7eaubXtcPT5xhiKeYPO2ktC8yoXRvlluXbYIGuwKtsz7Xnly26iwUUGQBedBVWrN+TRmL53grCCrMcJanwwNmxvsZjGqHDEBUMRvcSfcWLvRf8dh2wnjmSO38d3+N47coQNnzwXjcZutEOnvG/qvsf2XrI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781634274; c=relaxed/simple;
-	bh=+HAXhjvS+g1gMBm/wsBj3IGv/GawbU8H5zKP19f+cQk=;
+	s=arc-20240116; t=1781631995; c=relaxed/simple;
+	bh=sLjmNT2Gi6YBLaLnQhUTA9Yiqt7t4jMWyWKuyushADc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PgZ4kItqrC6eIocaMTBDc9PDARnaXzKWag0X23gkL05KG1QDoubRbRhb10ttzt3CHFC+I5QeTUWmZhMw3gkOY82jgPNCjzTggCWw7Wb83bv4vTMsOfz9YOOGTXnY4d3Vxce8xLgt8xsOAzhAHGgFMpTE3+Bi2oYEoibDyNZJho0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c1lba9ON; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0A8C1F000E9;
-	Tue, 16 Jun 2026 18:24:32 +0000 (UTC)
+	 MIME-Version; b=LSQBDjdnJEhdTE8CyPOy8FpZUTyTrBnZNWdDkjq8l+Ka2mi6W90+jITBcoIN41RkR6F/qdRkkINU9lM57GNmOLHh8Ok6gk+UTtEuG+VMFvL01g+4FWLMN8qouAGErhEJm0gjRI5tEWk1BrVyXKLnKX/98YyrRCmKSFPvf7zClRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Oxc01+jH; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E5631F000E9;
+	Tue, 16 Jun 2026 17:46:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781634273;
-	bh=qLCdJR1jXmZz+1ft7S6XB4yaO4eG1bh0PzphnI35mNg=;
+	s=korg; t=1781631994;
+	bh=A8P2IXjlRMsv+dJXBujhUTGkUuRvMypyxoaipb1qzgs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=c1lba9ONDDUupuIfz15uRQ97Q+QIU/6wGxq9Ik5qSfBto6y2CLs0Ni3672js/Fzza
-	 lRVaXigUb5v3sEQiY3JpkqhCMB5K63r8Bhb3b39+TCeOwSlPtMj7p+Vpu7Qf12C7It
-	 StEOwv8Umg69Nfwfn28eGNVVfFgSMUMx3E7/2Wgg=
+	b=Oxc01+jH1MUYMHZmR6S3kXgfKXc3bCzQWkS1eKR/+A4cRMwAdxUWzjyAl6WNDnrfy
+	 L9UUaRpm5lHFjYStFbMgRfnA9t0/1fpnGY698Pm8N7QJP0bVxzlTgh4Smd6WPJPy+V
+	 rmAOJt40leoJ9vDTbj4rExROGUlWEtmTdi8ftXuY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Zhengchuan Liang <zcliangcn@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Zhao Zhang <zzhan461@ucr.edu>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Xin Long <lucien.xin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 235/411] sctp: diag: reject stale associations in dump_one path
+	Alex Hung <alex.hung@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Ray Wu <ray.wu@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.1 326/522] drm/amd/display: Use krealloc_array() in dal_vector_reserve()
 Date: Tue, 16 Jun 2026 20:27:53 +0530
-Message-ID: <20260616145113.326169303@linuxfoundation.org>
+Message-ID: <20260616145141.088507460@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,120 +69,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266027-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:yuantan098@gmail.com,m:yifanwucs@gmail.com,m:tomapufckgml@gmail.com,m:zcliangcn@gmail.com,m:bird@lzu.edu.cn,m:zzhan461@ucr.edu,m:n05ec@lzu.edu.cn,m:lucien.xin@gmail.com,m:kuba@kernel.org,m:lucienxin@gmail.com,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265595-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:alex.hung@amd.com,m:harry.wentland@amd.com,m:ray.wu@amd.com,m:daniel.wheeler@amd.com,m:alexander.deucher@amd.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,ucr.edu];
 	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,lzu.edu.cn:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,amd.com:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B7EA96941A8
+X-Rspamd-Queue-Id: B0CE869377D
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhao Zhang <zzhan461@ucr.edu>
+From: Harry Wentland <harry.wentland@amd.com>
 
-commit 5eba3e48d78edd7551b992cb7ba687019b3a78da upstream.
+commit da48bc4461b8a5ebfb9264c9b191a701d8e99009 upstream.
 
-The SCTP exact sock_diag lookup can hold a transport reference, block on
-lock_sock(sk), and then resume after sctp_association_free() has marked
-the association dead and freed its bind address list.
+[Why & How]
+dal_vector_reserve() computes the allocation size as
+"capacity * vector->struct_size" using uint32_t arithmetic, which can
+silently wrap to a small value on overflow. This would cause krealloc to
+return a smaller buffer than expected, leading to heap overflows on
+subsequent vector appends.
 
-When that happens, inet_assoc_attr_size() and
-inet_diag_msg_sctpasoc_fill() can still dereference association state
-that is no longer valid for reporting. In particular,
-inet_diag_msg_sctpasoc_fill() may read an empty bind-address list as a
-real sctp_sockaddr_entry and trigger an out-of-bounds read from
-unrelated association memory.
+Replace krealloc() with krealloc_array() which performs an internal
+overflow check and returns NULL on wrap, preventing the issue.
 
-Reject the association after taking the socket lock if it has been
-reaped or detached from the endpoint, and report the lookup as stale.
-This keeps the exact dump-one path from formatting torn association
-state.
-
-Fixes: 8f840e47f190 ("sctp: add the sctp_diag.c file")
-Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Zhengchuan Liang <zcliangcn@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Zhao Zhang <zzhan461@ucr.edu>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Acked-by: Xin Long <lucien.xin@gmail.com>
-Link: https://patch.msgid.link/fac6043fa20a2ff68e12958c431836f692c51268.1780113823.git.zzhan461@ucr.edu
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 2004f45ef83f ("drm/amd/display: Use kernel alloc/free")
+Assisted-by: Copilot:claude-opus-4.6
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Ray Wu <ray.wu@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 37668568641ccc4cc1dbca4923d0a16609dd5707)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sctp/diag.c |   17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ drivers/gpu/drm/amd/display/dc/basics/vector.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/net/sctp/diag.c
-+++ b/net/sctp/diag.c
-@@ -266,15 +266,15 @@ static int sctp_sock_dump_one(struct sct
+--- a/drivers/gpu/drm/amd/display/dc/basics/vector.c
++++ b/drivers/gpu/drm/amd/display/dc/basics/vector.c
+@@ -289,8 +289,8 @@ bool dal_vector_reserve(struct vector *v
+ 	if (capacity <= vector->capacity)
+ 		return true;
  
- 	lock_sock(sk);
+-	new_container = krealloc(vector->container,
+-				 capacity * vector->struct_size, GFP_KERNEL);
++	new_container = krealloc_array(vector->container,
++				       capacity, vector->struct_size, GFP_KERNEL);
  
--	rep = nlmsg_new(inet_assoc_attr_size(sk, assoc), GFP_KERNEL);
--	if (!rep) {
--		release_sock(sk);
--		return -ENOMEM;
-+	if (ep != assoc->ep || assoc->base.dead) {
-+		err = -ESTALE;
-+		goto out_unlock;
- 	}
- 
--	if (ep != assoc->ep) {
--		err = -EAGAIN;
--		goto out;
-+	rep = nlmsg_new(inet_assoc_attr_size(sk, assoc), GFP_KERNEL);
-+	if (!rep) {
-+		err = -ENOMEM;
-+		goto out_unlock;
- 	}
- 
- 	err = inet_sctp_diag_fill(sk, assoc, rep, req, sk_user_ns(NETLINK_CB(skb).sk),
-@@ -289,8 +289,9 @@ static int sctp_sock_dump_one(struct sct
- 	return nlmsg_unicast(sock_net(skb->sk)->diag_nlsk, rep, NETLINK_CB(skb).portid);
- 
- out:
--	release_sock(sk);
- 	kfree_skb(rep);
-+out_unlock:
-+	release_sock(sk);
- 	return err;
- }
- 
+ 	if (new_container) {
+ 		vector->container = new_container;
 
 
 
