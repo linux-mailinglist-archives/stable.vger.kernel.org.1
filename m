@@ -1,65 +1,60 @@
-Return-Path: <stable+bounces-263993-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264246-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id CQmOMZtsMWrpiwUAu9opvQ
-	(envelope-from <stable+bounces-263993-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:32:43 +0200
+	id FbLdLU1yMWowjgUAu9opvQ
+	(envelope-from <stable+bounces-264246-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:57:01 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 563C96911EE
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:32:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50D496918BC
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:57:01 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="jkHY8Oa/";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263993-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263993-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=NgI6yFLZ;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264246-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264246-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C0E2E3036E97
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:26:27 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 623DE308E749
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:48:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6496D1E8320;
-	Tue, 16 Jun 2026 15:26:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30410364024;
+	Tue, 16 Jun 2026 15:48:32 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2883044102A;
-	Tue, 16 Jun 2026 15:26:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01D612EEE68;
+	Tue, 16 Jun 2026 15:48:31 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781623569; cv=none; b=JZbQV9d/DqmAVOuGbSSNBoZzHqJ3H9lgxdQJhu332j9ag3RLkyV3GCDtHAHKHzzuLBzcHGaJJrDKgrQjx8S0JBxC0IlehlzRlKlf4S2g6RcLzbfjHkW0b2C1W3DAeshJxjUKpEQYN3CYD78fByNtXha9E5tRNXC1I9sWg9Hl2aw=
+	t=1781624912; cv=none; b=mC68JN+zL8MNrQDSEsts5+01zrMYLGTISDJ3zQ5A66kKkrds7bjLiAD8SXATzMVmR2FuVSWrRFxy5CbpfRnkPvQLHH3/I5Hw6bM8g4nHurKe0enBHqrLBt7OW9WI7JL6FVRLKPQA62yaOZ+WcYUzgyM74Z97c6X8WXQweWRZzbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781623569; c=relaxed/simple;
-	bh=XbbuCKrCRkrs6SF99r7GaYKaFffH3n1HIjjWgOwArXk=;
+	s=arc-20240116; t=1781624912; c=relaxed/simple;
+	bh=gLgXgLq6UtVLLEWFBcXym6NRDplnCAMhxNmLmvOupyI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XcGDea7Xz4gUE/gnqDQCkJ07Hth7djy7lw6iaj6sL01ShlrEwFzvC0OEALGZWVgOyP+LcnwvKn/5MmSsU3BFwRwUz47NPtc0srMD/17MR+8RRZWH+8GIWutl4We+KJbpcuiwKS1JnfHrkJY+g1YWYK6zwVW/qIpa7Kq8padWDuI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jkHY8Oa/; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F5461F000E9;
-	Tue, 16 Jun 2026 15:26:06 +0000 (UTC)
+	 MIME-Version; b=UgS6xLdCXAKZ+mShxa7q6donLeo1e7BonKP8+SHap+1p8kDpUprCoVQzHJnvvmbT+2oHgzDQfxnFDWPkY0gFQv6tTQrZr47iMfxDWmidnFMeJn7w/av3eft4Njp9TQD8YjCqUgNDjLTOe9NeKZolsBO+/DIoPAPRFRti8tkXWa4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NgI6yFLZ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A7B81F00A3A;
+	Tue, 16 Jun 2026 15:48:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781623568;
-	bh=W+GUFc8HhiPhHHDrFAbQAvmRsGMRV2CshJIrp/ic3iU=;
+	s=korg; t=1781624910;
+	bh=Gt0jkjuIUrkVE8f+Fcl+CI2FdmCUnwh5lobH9LKIy8c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jkHY8Oa/Gn4P9K2oM7pbZ2Bbe817mtfIoCR7ARrtQ2ghv1EJ0wQ7bBqCauel84aH9
-	 6XVJgufXhzITFkFguG9TrVUEwsHaTwvBAdHpYxhkw/F3CgwIhtSfF9+cE6MAK/UK+h
-	 JKQQVMVqERzJqOTCY+PITSJ1JQe+KNuuRC7LgoKQ=
+	b=NgI6yFLZjdivknFmGsGNz8bSCK0ovoCq5gyAm7akM40Uhvo7ayFnGvbQBwMRx0DV/
+	 6ak+9O73wWl9Dyq5TheyalkX23TvFQ0xMM6PO5TZbgoMzuV4+0Rd0o59rcCLdDqzxn
+	 PxJgU2JON6l0Y5lUkWUr5CUbaCQP/aL6gViY+PXA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Zhengchuan Liang <zcliangcn@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Yuqi Xu <xuyq21@lenovo.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 7.0 172/378] Bluetooth: hci_sync: reject oversized Broadcast Announcement prepend
+	Mingyu Wang <25181214217@stu.xidian.edu.cn>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>
+Subject: [PATCH 6.18 007/325] i2c: dev: prevent integer overflow in I2C_TIMEOUT ioctl
 Date: Tue, 16 Jun 2026 20:26:43 +0530
-Message-ID: <20260616145119.387573825@linuxfoundation.org>
+Message-ID: <20260616145058.182148696@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,7 +66,8 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
@@ -80,79 +76,91 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,lenovo.com,intel.com];
-	TAGGED_FROM(0.00)[bounces-263993-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:yuantan098@gmail.com,m:zcliangcn@gmail.com,m:bird@lzu.edu.cn,m:xuyq21@lenovo.com,m:n05ec@lzu.edu.cn,m:luiz.von.dentz@intel.com,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-264246-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:25181214217@stu.xidian.edu.cn,m:wsa+renesas@sang-engineering.com,m:wsa@sang-engineering.com,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,intel.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	TAGGED_RCPT(0.00)[stable,renesas];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,sang-engineering.com:email,xidian.edu.cn:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 563C96911EE
+X-Rspamd-Queue-Id: 50D496918BC
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuqi Xu <xuyq21@lenovo.com>
+From: Mingyu Wang <25181214217@stu.xidian.edu.cn>
 
-commit 5c65b96b549ea2dcfde497436bf9e048deb87758 upstream.
+commit 617eb7c0961a8dfcfc811844a6396e406b2923ea upstream.
 
-Existing advertising instances can already hold the maximum extended
-advertising payload. When hci_adv_bcast_annoucement() prepends the
-Broadcast Announcement service data to that payload, the combined data
-may no longer fit in the temporary buffer used to rebuild the
-advertising data.
+While fuzzing with Syzkaller, a persistent `schedule_timeout: wrong
+timeout value` warning was observed, accompanied by SMBus controller
+state machine corruption.
 
-Reject that case before copying the existing payload and report the
-failure through the device log. This keeps the existing advertising
-data intact and avoids overrunning the temporary buffer.
+The I2C_TIMEOUT ioctl accepts a user-provided timeout in multiples of
+10 ms. The user argument is checked against INT_MAX, but it is
+subsequently multiplied by 10 before being passed to msecs_to_jiffies().
 
-Fixes: 5725bc608252 ("Bluetooth: hci_sync: Fix broadcast/PA when using an existing instance")
-Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Zhengchuan Liang <zcliangcn@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Assisted-by: Codex:GPT-5.4
-Signed-off-by: Yuqi Xu <xuyq21@lenovo.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+A malicious user can pass a large value (e.g., 429496729) that passes
+the `arg > INT_MAX` check but overflows when multiplied by 10. This
+results in a truncated 32-bit unsigned value that bypasses the
+internal `(int)m < 0` check in `msecs_to_jiffies()`.
+
+The truncated value is then assigned to `client->adapter->timeout`
+(a signed 32-bit int), which is reinterpreted as a negative number.
+When passed to wait_for_completion_timeout(), this negative value
+undergoes sign extension to a 64-bit unsigned long, triggering the
+`schedule_timeout` warning and causing premature returns. This leaves
+the SMBus state machine in an unrecoverable state, constituting a
+local Denial of Service (DoS).
+
+Fix this by bounding the user argument to `INT_MAX / 10`.
+
+Signed-off-by: Mingyu Wang <25181214217@stu.xidian.edu.cn>
+[wsa: move the comment as well]
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/hci_sync.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/i2c/i2c-dev.c |    9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
---- a/net/bluetooth/hci_sync.c
-+++ b/net/bluetooth/hci_sync.c
-@@ -1725,6 +1725,11 @@ static int hci_adv_bcast_annoucement(str
- 	/* Generate Broadcast ID */
- 	get_random_bytes(bid, sizeof(bid));
- 	len = eir_append_service_data(ad, 0, 0x1852, bid, sizeof(bid));
-+	if (adv->adv_data_len > sizeof(ad) - len) {
-+		bt_dev_err(hdev, "No room for Broadcast Announcement");
-+		return -EINVAL;
-+	}
-+
- 	memcpy(ad + len, adv->adv_data, adv->adv_data_len);
- 	hci_set_adv_instance_data(hdev, adv->instance, len + adv->adv_data_len,
- 				  ad, 0, NULL);
+--- a/drivers/i2c/i2c-dev.c
++++ b/drivers/i2c/i2c-dev.c
+@@ -487,12 +487,13 @@ static long i2cdev_ioctl(struct file *fi
+ 		client->adapter->retries = arg;
+ 		break;
+ 	case I2C_TIMEOUT:
+-		if (arg > INT_MAX)
++		/*
++		 * For historical reasons, user-space sets the timeout value in
++		 * units of 10 ms.
++		 */
++		if (arg > INT_MAX / 10)
+ 			return -EINVAL;
+ 
+-		/* For historical reasons, user-space sets the timeout
+-		 * value in units of 10 ms.
+-		 */
+ 		client->adapter->timeout = msecs_to_jiffies(arg * 10);
+ 		break;
+ 	default:
 
 
 
