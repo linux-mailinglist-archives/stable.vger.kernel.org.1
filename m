@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-266394-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266405-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id mEjHLL+dMWo9oQUAu9opvQ
-	(envelope-from <stable+bounces-266394-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:02:23 +0200
+	id J8AoKhGeMWqMoQUAu9opvQ
+	(envelope-from <stable+bounces-266405-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:03:45 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10DEB694ACA
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:02:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02C63694B3F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:03:45 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="c7ejm/3J";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266394-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266394-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=k5pF87xd;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266405-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266405-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 643C432312FE
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:56:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5AA1D31E3131
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:57:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2700A47CC7E;
-	Tue, 16 Jun 2026 18:56:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 160BA47CC96;
+	Tue, 16 Jun 2026 18:57:34 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E21103EB0F5;
-	Tue, 16 Jun 2026 18:56:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF9CD3D810C;
+	Tue, 16 Jun 2026 18:57:32 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781636194; cv=none; b=iJo1aRy4fooQkYPO7U/Z1tevKy+AL5MIc0jH9zAV82OrfT0ovVjzNhJTQb3QlNaYPHvhLWSYRtq73+WEFWImCxL5ZiIluW4OfhFfjaGuy68TowkxOMI4wCEdEwk3P/Jp+gzpg8PQ2Wi6AYQItX3aQ0fLJp1VNjg6At3R1MveJSI=
+	t=1781636253; cv=none; b=pT7YQYeyeXqGU7/AX4TbV4OLJqb5LzNbxrQS8vELBR1VnSQInR07sFxEsQcvauELJJ4nw49arNbiX2BDbTN6cf0zQ6FkM2P829fBRUHxDa5ZiPXzwms8G7M1ifIoJDuNPcYxQOVJi5SnU519SWcs2JaCNWVMAg2R+CSec7655GQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781636194; c=relaxed/simple;
-	bh=BDfmUsPCdtswEd0D7XCrnBuFBMIa6a+jJjJHbuK2IsI=;
+	s=arc-20240116; t=1781636253; c=relaxed/simple;
+	bh=VWOJVLvt/3xD1CwIMiKdO3RUtoiU6km89cVmShzA+ws=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WWdIKvFR8f/RC/sJTlehhUD6YqQW+1f3QteB+RMKsTT0hs0/hB8w38MDVU/KC39Ku2922ZaorY+p9IDnzvTDNSXgoFYZo0wccNLGf6oJgYOp/9FM5Pz4OtbqL+e/Tf0MN9u1U+zv2paVEbaLhoIDFLoWbl/nb2TxXpHQD1tPmo0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c7ejm/3J; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CD551F000E9;
-	Tue, 16 Jun 2026 18:56:32 +0000 (UTC)
+	 MIME-Version; b=LYhD2pTEUWC+cuZFXqj/0q134Fhvpv5xKy0x8hvHAMl0fsYga10M+omD7lsktOJ27scR3jM8M6pLXX5cQSjDIh/iGsmormTyeF2IDwaXbIUwiBvplgRTkqSmtwOPEb6dhwy1d7cy64v0LMsVgvmMhZd4wnqJLZoLOal+IIFmccE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k5pF87xd; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5F281F000E9;
+	Tue, 16 Jun 2026 18:57:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781636193;
-	bh=i3DfIsciVvdSTUr4TxFnlMlQ27g8cQBhDNpFwhM3dVk=;
+	s=korg; t=1781636252;
+	bh=G0aNp/txeBm9vgzuI1d0fDWM9S1lnunkdh6wpAGmFjY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=c7ejm/3J6lucJY/EJV38fP//z76z4pFQSMTE2OK6bT7kFiBBBGpIO1rWkEVWRhtjz
-	 bz1L25LoK5pol6irvNZ7fNVRSulBLVooV5OXuxpIKo6LrjnZsDv12ydD6psYmTA2Hn
-	 Pv2adtkZ1e35uNbJ5n7bNLninzZo2K9G6MdMmz6A=
+	b=k5pF87xdEtvve+K5rKFcHr/DpMERUIHTRqi/l4nOmwFdUw1YstIwF0Kv95AGxJloN
+	 yxJmDarCfrPf+/sieG/ojJ297M5jDYzubJywhL7xoW7YrqIMoUz0+FWFhCvNh7MAFV
+	 Fy10nH4njOtCvi0GiR8IboYBC0N/DDiZ8qHkBPpA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	HyeongJun An <sammiee5311@gmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 5.10 185/342] USB: serial: kl5kusb105: fix bulk-out buffer overflow
-Date: Tue, 16 Jun 2026 20:28:01 +0530
-Message-ID: <20260616145056.804714833@linuxfoundation.org>
+	Kyle Zeng <kylebot@openai.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.10 186/342] ALSA: timer: Fix UAF at snd_timer_user_params()
+Date: Tue, 16 Jun 2026 20:28:02 +0530
+Message-ID: <20260616145056.846164724@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
 References: <20260616145048.348037099@linuxfoundation.org>
@@ -75,93 +75,77 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-266405-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-266394-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:sammiee5311@gmail.com,m:johan@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kylebot@openai.com,m:tiwai@suse.de,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,suse.de:email,vger.kernel.org:from_smtp,msgid.link:url,openai.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 10DEB694ACA
+X-Rspamd-Queue-Id: 02C63694B3F
 
 5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: HyeongJun An <sammiee5311@gmail.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit 96d47e40bf9db4a9efd5c8fb53287a508d165f14 upstream.
+commit 053a401b592be424fea9d57c789f66cd5d8cec11 upstream.
 
-klsi_105_prepare_write_buffer() is called by the generic write path
-with the bulk-out buffer and its size (bulk_out_size, 64 bytes). It
-stores a two-byte length header at the start of the buffer and copies
-the payload from the write fifo starting at buf + KLSI_HDR_LEN, but
-passes the full buffer size as the number of bytes to copy:
+At releasing a timer object, e.g. when a userspace timer
+(CONFIG_SND_UTIMER) gets closed and snd_timer_free() is called, it
+tries to detach the timer instances and release the resources.
+However, it's still possible that other in-flight tasks are holding
+the timer instance where the to-be-deleted timer object is associated,
+and this may lead to racy accesses.
 
-  count = kfifo_out_locked(&port->write_fifo, buf + KLSI_HDR_LEN,
-                           size, &port->lock);
+Fortunately, most of ioctls dealing with the timer instance list
+already have the protection with register_mutex, and this also avoids
+such races.  But, SNDRV_TIMER_IOCTL_PARAMS isn't protected, hence the
+concurrent ioctl may lead to use-after-free.
 
-When the fifo holds at least size bytes, size bytes are copied starting
-two bytes into the size-byte buffer, writing KLSI_HDR_LEN bytes past its
-end. Copy at most size - KLSI_HDR_LEN bytes instead, leaving room for
-the header as safe_serial already does.
+This patch just adds the guard with register_mutex to protect
+snd_timer_user_params() for covering the code path as a quick
+workaround.  It's no hot-path but rather a rarely issued ioctl, so the
+performance penalty doesn't matter.
 
-Writing bulk_out_size or more bytes to the tty triggers a slab
-out-of-bounds write, observed with KASAN by emulating the device with
-dummy_hcd and raw-gadget:
-
-  BUG: KASAN: slab-out-of-bounds in kfifo_copy_out+0x83/0xc0
-  Write of size 64 at addr ffff888112c62202 by task python3
-   kfifo_copy_out
-   klsi_105_prepare_write_buffer [kl5kusb105]
-   usb_serial_generic_write_start [usbserial]
-  Allocated by task 139:
-   usb_serial_probe [usbserial]
-  The buggy address is located 2 bytes inside of allocated 64-byte region
-
-The out-of-bounds write no longer occurs with this change applied.
-
-Fixes: 60b3013cdaf3 ("USB: kl5usb105: reimplement using generic framework")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-8
-Signed-off-by: HyeongJun An <sammiee5311@gmail.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Reported-by: Kyle Zeng <kylebot@openai.com>
+Tested-by: Kyle Zeng <kylebot@openai.com>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20260606161145.1933447-2-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/kl5kusb105.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/core/timer.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/usb/serial/kl5kusb105.c
-+++ b/drivers/usb/serial/kl5kusb105.c
-@@ -359,8 +359,8 @@ static int klsi_105_prepare_write_buffer
- 	unsigned char *buf = dest;
- 	int count;
+--- a/sound/core/timer.c
++++ b/sound/core/timer.c
+@@ -1842,6 +1842,7 @@ static int snd_timer_user_params(struct
+ 	struct snd_timer *t;
+ 	int err;
  
--	count = kfifo_out_locked(&port->write_fifo, buf + KLSI_HDR_LEN, size,
--								&port->lock);
-+	count = kfifo_out_locked(&port->write_fifo, buf + KLSI_HDR_LEN,
-+				 size - KLSI_HDR_LEN, &port->lock);
- 	put_unaligned_le16(count, buf);
- 
- 	return count + KLSI_HDR_LEN;
++	guard(mutex)(&register_mutex);
+ 	tu = file->private_data;
+ 	if (!tu->timeri)
+ 		return -EBADFD;
 
 
 
