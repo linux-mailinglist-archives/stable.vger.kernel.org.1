@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-265671-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264644-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id hNkiCoqNMWoHmgUAu9opvQ
-	(envelope-from <stable+bounces-265671-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:53:14 +0200
+	id JAqcHp54MWrMkAUAu9opvQ
+	(envelope-from <stable+bounces-264644-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:23:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C068F69396E
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:53:13 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 194CF69209D
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:23:58 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="xA/1uYhE";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265671-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265671-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=oDhBp4K8;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264644-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-264644-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C74A83011791
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:53:12 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 885D8302F4CD
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:23:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84FB04779BB;
-	Tue, 16 Jun 2026 17:53:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7245146AF1B;
+	Tue, 16 Jun 2026 16:23:54 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEA764779B3;
-	Tue, 16 Jun 2026 17:53:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 030CE46AF02;
+	Tue, 16 Jun 2026 16:23:53 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781632390; cv=none; b=u54tY6+O6OTcJtaYHGJKcBN1RUpROOgk3DwXv/bPRjeUpwTfJS/F+9JZ7lrRCKPXhqj0NNz5Imh7ORrA3JiyDoJB4Ryyu7Ss65dtK7cQAZiy1hX88JrOgF0MaaenndjWSdlQ28RQHv1mIt9emCaSg8Y/I7yM3KHGyEEFkFL2jb0=
+	t=1781627034; cv=none; b=Q+cY+TsxRhsShTQ9PYWKztu7zGNWAjSNzeTmwJR9tciaPwsaVPNQr5G9JqymWWjfdJKtpTTmlfgG7dkD4Jx3uIQODLdSWiwsQRCXAUjChiMmgyeMPBkCaoVpwP1V0G05Zt8XZyeVvnOp7TFU3+kqc9MoLdDldfYnzZtkAGFRiBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781632390; c=relaxed/simple;
-	bh=OcdRlbNgQnsdbyMXkF73D2JCdpLUOxZiA0iQSrHfb2E=;
+	s=arc-20240116; t=1781627034; c=relaxed/simple;
+	bh=IrxJuMra34XPHXpGP+BGE5tUgfZSc20Jg/a9mZ9X+X0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XmqvHCggF41U7x3lBKd5fmPgobmtr6ksH1k/WCJ33PNGrTmvb3asQXNmxZxwNsVFZvhyyZEp1at3sbnN1kVJir3fswCk5L4Jw9RE3aJ1lUL0eQ6w/Hc2lpTgh5MKN60QwYgU4woJERn7S//VtSE3SoZ5zuDImlmFUhqtY4ikts8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xA/1uYhE; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F6021F000E9;
-	Tue, 16 Jun 2026 17:53:06 +0000 (UTC)
+	 MIME-Version; b=oBoGg5qJjTYakIsqIXOfjyF29YE//T9WacvmOFVBk6NuxNJRiTh2AAWck9iClD6SbstPkcx5hfGS80cUdXZqy2RszKk8ev1uZR5IiPAGPzrnpHpYeSfj7Zk8skn19tSSU7VyYJRHdewc8/PzSePjU5DKjradYICjPs8pOKdGuOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oDhBp4K8; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FE181F000E9;
+	Tue, 16 Jun 2026 16:23:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781632388;
-	bh=X0qT4kxgtZkZcZjUDwsZbf61aDrLdKsBk6xIjpmrxZg=;
+	s=korg; t=1781627032;
+	bh=T4TxMq67KxMxtWjaeG3CxhJtuBInT0qz8mVTTXyJGu8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=xA/1uYhEpBO0ItfvK847eH9I8LSjz9ZJVUXhTsf3lgxB4spLU7xTtVnMAfXbroRZv
-	 veI6LJXjz7p5IskkQ+/sXtwnn3uMAxX1tLAoEw+bG2xhgiNZenhU9OS314eHX881TQ
-	 m+Pbt/kxRq8ofTo17VzgWGGivgv99fT8dfe6gIeg=
+	b=oDhBp4K8dACEUUx1+HzXh92JhPvPji3lBIMDEcsUa0/itTzjnhVYL/MkU4Hxm293G
+	 6hbDof2r9DmC7PXv+fMHEmhD350L7nYC5oeI2AhILDHRbQnARxcqcILuU7tV03uVnP
+	 2mK5LEmysQKF2c0aZgQJCe5YyMHI8A2M+C3wnTl8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jingoo Han <jg1.han@samsung.com>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
+	Tejun Heo <tj@kernel.org>,
+	Jan Kara <jack@suse.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 400/522] spi: tegra20-sflash: fix controller deregistration
+Subject: [PATCH 6.12 109/261] writeback: Avoid contention on wb->list_lock when switching inodes
 Date: Tue, 16 Jun 2026 20:29:07 +0530
-Message-ID: <20260616145144.783911694@linuxfoundation.org>
+Message-ID: <20260616145050.111347590@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,93 +69,338 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265671-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264644-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jg1.han@samsung.com,m:johan@kernel.org,m:broonie@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:tj@kernel.org,m:jack@suse.cz,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,samsung.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C068F69396E
+X-Rspamd-Queue-Id: 194CF69209D
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit ad7310e983327f939dd6c4e801eab13238992572 ]
+[ Upstream commit e1b849cfa6b61f1c866a908c9e8dd9b5aaab820b ]
 
-Make sure to deregister the controller before disabling underlying
-resources like clocks during driver unbind.
+There can be multiple inode switch works that are trying to switch
+inodes to / from the same wb. This can happen in particular if some
+cgroup exits which owns many (thousands) inodes and we need to switch
+them all. In this case several inode_switch_wbs_work_fn() instances will
+be just spinning on the same wb->list_lock while only one of them makes
+forward progress. This wastes CPU cycles and quickly leads to softlockup
+reports and unusable system.
 
-Fixes: f12f7318c44a ("spi: tegra20-sflash: use devm_spi_register_master()")
-Cc: stable@vger.kernel.org	# 3.13
-Cc: Jingoo Han <jg1.han@samsung.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260410081757.503099-23-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-[ renamed spi_controller/host APIs to spi_master/master equivalents and switched devm_spi_register_master to spi_register_master ]
+Instead of running several inode_switch_wbs_work_fn() instances in
+parallel switching to the same wb and contending on wb->list_lock, run
+just one work item per wb and manage a queue of isw items switching to
+this wb.
+
+Acked-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-tegra20-sflash.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ fs/fs-writeback.c                | 99 ++++++++++++++++++++------------
+ include/linux/backing-dev-defs.h |  4 ++
+ include/linux/writeback.h        |  2 +
+ mm/backing-dev.c                 |  5 ++
+ 4 files changed, 74 insertions(+), 36 deletions(-)
 
---- a/drivers/spi/spi-tegra20-sflash.c
-+++ b/drivers/spi/spi-tegra20-sflash.c
-@@ -506,7 +506,7 @@ static int tegra_sflash_probe(struct pla
- 	pm_runtime_put(&pdev->dev);
- 
- 	master->dev.of_node = pdev->dev.of_node;
--	ret = devm_spi_register_master(&pdev->dev, master);
-+	ret = spi_register_master(master);
- 	if (ret < 0) {
- 		dev_err(&pdev->dev, "can not register to master err %d\n", ret);
- 		goto exit_pm_disable;
-@@ -529,12 +529,18 @@ static int tegra_sflash_remove(struct pl
- 	struct spi_master *master = platform_get_drvdata(pdev);
- 	struct tegra_sflash_data	*tsd = spi_master_get_devdata(master);
- 
-+	spi_master_get(master);
-+
-+	spi_unregister_master(master);
-+
- 	free_irq(tsd->irq, tsd);
- 
- 	pm_runtime_disable(&pdev->dev);
- 	if (!pm_runtime_status_suspended(&pdev->dev))
- 		tegra_sflash_runtime_suspend(&pdev->dev);
- 
-+	spi_master_put(master);
-+
- 	return 0;
+diff --git a/fs/fs-writeback.c b/fs/fs-writeback.c
+index 45e90338fbb2df..a8d21a5f354859 100644
+--- a/fs/fs-writeback.c
++++ b/fs/fs-writeback.c
+@@ -369,7 +369,8 @@ static struct bdi_writeback *inode_to_wb_and_lock_list(struct inode *inode)
  }
  
+ struct inode_switch_wbs_context {
+-	struct rcu_work		work;
++	/* List of queued switching contexts for the wb */
++	struct llist_node	list;
+ 
+ 	/*
+ 	 * Multiple inodes can be switched at once.  The switching procedure
+@@ -379,7 +380,6 @@ struct inode_switch_wbs_context {
+ 	 * array embedded into struct inode_switch_wbs_context.  Otherwise
+ 	 * an inode could be left in a non-consistent state.
+ 	 */
+-	struct bdi_writeback	*new_wb;
+ 	struct inode		*inodes[];
+ };
+ 
+@@ -488,13 +488,11 @@ static bool inode_do_switch_wbs(struct inode *inode,
+ 	return switched;
+ }
+ 
+-static void inode_switch_wbs_work_fn(struct work_struct *work)
++static void process_inode_switch_wbs(struct bdi_writeback *new_wb,
++				     struct inode_switch_wbs_context *isw)
+ {
+-	struct inode_switch_wbs_context *isw =
+-		container_of(to_rcu_work(work), struct inode_switch_wbs_context, work);
+ 	struct backing_dev_info *bdi = inode_to_bdi(isw->inodes[0]);
+ 	struct bdi_writeback *old_wb = isw->inodes[0]->i_wb;
+-	struct bdi_writeback *new_wb = isw->new_wb;
+ 	unsigned long nr_switched = 0;
+ 	struct inode **inodep;
+ 
+@@ -554,6 +552,38 @@ static void inode_switch_wbs_work_fn(struct work_struct *work)
+ 	atomic_dec(&isw_nr_in_flight);
+ }
+ 
++void inode_switch_wbs_work_fn(struct work_struct *work)
++{
++	struct bdi_writeback *new_wb = container_of(work, struct bdi_writeback,
++						    switch_work);
++	struct inode_switch_wbs_context *isw, *next_isw;
++	struct llist_node *list;
++
++	/*
++	 * Grab out reference to wb so that it cannot get freed under us
++	 * after we process all the isw items.
++	 */
++	wb_get(new_wb);
++	while (1) {
++		list = llist_del_all(&new_wb->switch_wbs_ctxs);
++		/* Nothing to do? */
++		if (!list)
++			break;
++		/*
++		 * In addition to synchronizing among switchers, I_WB_SWITCH
++		 * tells the RCU protected stat update paths to grab the i_page
++		 * lock so that stat transfer can synchronize against them.
++		 * Let's continue after I_WB_SWITCH is guaranteed to be
++		 * visible.
++		 */
++		synchronize_rcu();
++
++		llist_for_each_entry_safe(isw, next_isw, list, list)
++			process_inode_switch_wbs(new_wb, isw);
++	}
++	wb_put(new_wb);
++}
++
+ static bool inode_prepare_wbs_switch(struct inode *inode,
+ 				     struct bdi_writeback *new_wb)
+ {
+@@ -583,6 +613,13 @@ static bool inode_prepare_wbs_switch(struct inode *inode,
+ 	return true;
+ }
+ 
++static void wb_queue_isw(struct bdi_writeback *wb,
++			 struct inode_switch_wbs_context *isw)
++{
++	if (llist_add(&isw->list, &wb->switch_wbs_ctxs))
++		queue_work(isw_wq, &wb->switch_work);
++}
++
+ /**
+  * inode_switch_wbs - change the wb association of an inode
+  * @inode: target inode
+@@ -596,6 +633,7 @@ static void inode_switch_wbs(struct inode *inode, int new_wb_id)
+ 	struct backing_dev_info *bdi = inode_to_bdi(inode);
+ 	struct cgroup_subsys_state *memcg_css;
+ 	struct inode_switch_wbs_context *isw;
++	struct bdi_writeback *new_wb = NULL;
+ 
+ 	/* noop if seems to be already in progress */
+ 	if (inode->i_state & I_WB_SWITCH)
+@@ -620,40 +658,34 @@ static void inode_switch_wbs(struct inode *inode, int new_wb_id)
+ 	if (!memcg_css)
+ 		goto out_free;
+ 
+-	isw->new_wb = wb_get_create(bdi, memcg_css, GFP_ATOMIC);
++	new_wb = wb_get_create(bdi, memcg_css, GFP_ATOMIC);
+ 	css_put(memcg_css);
+-	if (!isw->new_wb)
++	if (!new_wb)
+ 		goto out_free;
+ 
+-	if (!inode_prepare_wbs_switch(inode, isw->new_wb))
++	if (!inode_prepare_wbs_switch(inode, new_wb))
+ 		goto out_free;
+ 
+ 	isw->inodes[0] = inode;
+ 
+-	/*
+-	 * In addition to synchronizing among switchers, I_WB_SWITCH tells
+-	 * the RCU protected stat update paths to grab the i_page
+-	 * lock so that stat transfer can synchronize against them.
+-	 * Let's continue after I_WB_SWITCH is guaranteed to be visible.
+-	 */
+-	INIT_RCU_WORK(&isw->work, inode_switch_wbs_work_fn);
+-	queue_rcu_work(isw_wq, &isw->work);
++	wb_queue_isw(new_wb, isw);
+ 	return;
+ 
+ out_free:
+ 	atomic_dec(&isw_nr_in_flight);
+-	if (isw->new_wb)
+-		wb_put(isw->new_wb);
++	if (new_wb)
++		wb_put(new_wb);
+ 	kfree(isw);
+ }
+ 
+-static bool isw_prepare_wbs_switch(struct inode_switch_wbs_context *isw,
++static bool isw_prepare_wbs_switch(struct bdi_writeback *new_wb,
++				   struct inode_switch_wbs_context *isw,
+ 				   struct list_head *list, int *nr)
+ {
+ 	struct inode *inode;
+ 
+ 	list_for_each_entry(inode, list, i_io_list) {
+-		if (!inode_prepare_wbs_switch(inode, isw->new_wb))
++		if (!inode_prepare_wbs_switch(inode, new_wb))
+ 			continue;
+ 
+ 		isw->inodes[*nr] = inode;
+@@ -677,6 +709,7 @@ bool cleanup_offline_cgwb(struct bdi_writeback *wb)
+ {
+ 	struct cgroup_subsys_state *memcg_css;
+ 	struct inode_switch_wbs_context *isw;
++	struct bdi_writeback *new_wb;
+ 	int nr;
+ 	bool restart = false;
+ 
+@@ -689,12 +722,12 @@ bool cleanup_offline_cgwb(struct bdi_writeback *wb)
+ 
+ 	for (memcg_css = wb->memcg_css->parent; memcg_css;
+ 	     memcg_css = memcg_css->parent) {
+-		isw->new_wb = wb_get_create(wb->bdi, memcg_css, GFP_KERNEL);
+-		if (isw->new_wb)
++		new_wb = wb_get_create(wb->bdi, memcg_css, GFP_KERNEL);
++		if (new_wb)
+ 			break;
+ 	}
+-	if (unlikely(!isw->new_wb))
+-		isw->new_wb = &wb->bdi->wb; /* wb_get() is noop for bdi's wb */
++	if (unlikely(!new_wb))
++		new_wb = &wb->bdi->wb; /* wb_get() is noop for bdi's wb */
+ 
+ 	nr = 0;
+ 	spin_lock(&wb->list_lock);
+@@ -706,27 +739,21 @@ bool cleanup_offline_cgwb(struct bdi_writeback *wb)
+ 	 * bandwidth restrictions, as writeback of inode metadata is not
+ 	 * accounted for.
+ 	 */
+-	restart = isw_prepare_wbs_switch(isw, &wb->b_attached, &nr);
++	restart = isw_prepare_wbs_switch(new_wb, isw, &wb->b_attached, &nr);
+ 	if (!restart)
+-		restart = isw_prepare_wbs_switch(isw, &wb->b_dirty_time, &nr);
++		restart = isw_prepare_wbs_switch(new_wb, isw, &wb->b_dirty_time,
++						 &nr);
+ 	spin_unlock(&wb->list_lock);
+ 
+ 	/* no attached inodes? bail out */
+ 	if (nr == 0) {
+ 		atomic_dec(&isw_nr_in_flight);
+-		wb_put(isw->new_wb);
++		wb_put(new_wb);
+ 		kfree(isw);
+ 		return restart;
+ 	}
+ 
+-	/*
+-	 * In addition to synchronizing among switchers, I_WB_SWITCH tells
+-	 * the RCU protected stat update paths to grab the i_page
+-	 * lock so that stat transfer can synchronize against them.
+-	 * Let's continue after I_WB_SWITCH is guaranteed to be visible.
+-	 */
+-	INIT_RCU_WORK(&isw->work, inode_switch_wbs_work_fn);
+-	queue_rcu_work(isw_wq, &isw->work);
++	wb_queue_isw(new_wb, isw);
+ 
+ 	return restart;
+ }
+diff --git a/include/linux/backing-dev-defs.h b/include/linux/backing-dev-defs.h
+index 2ad261082bba5f..c5c9d89c73edcc 100644
+--- a/include/linux/backing-dev-defs.h
++++ b/include/linux/backing-dev-defs.h
+@@ -152,6 +152,10 @@ struct bdi_writeback {
+ 	struct list_head blkcg_node;	/* anchored at blkcg->cgwb_list */
+ 	struct list_head b_attached;	/* attached inodes, protected by list_lock */
+ 	struct list_head offline_node;	/* anchored at offline_cgwbs */
++	struct work_struct switch_work;	/* work used to perform inode switching
++					 * to this wb */
++	struct llist_head switch_wbs_ctxs;	/* queued contexts for
++						 * writeback switching */
+ 
+ 	union {
+ 		struct work_struct release_work;
+diff --git a/include/linux/writeback.h b/include/linux/writeback.h
+index 641a057e041329..b6bf90a7052599 100644
+--- a/include/linux/writeback.h
++++ b/include/linux/writeback.h
+@@ -293,6 +293,8 @@ static inline void wbc_init_bio(struct writeback_control *wbc, struct bio *bio)
+ 		bio_associate_blkg_from_css(bio, wbc->wb->blkcg_css);
+ }
+ 
++void inode_switch_wbs_work_fn(struct work_struct *work);
++
+ #else	/* CONFIG_CGROUP_WRITEBACK */
+ 
+ static inline void inode_attach_wb(struct inode *inode, struct folio *folio)
+diff --git a/mm/backing-dev.c b/mm/backing-dev.c
+index bf0594ceb3ff87..956a7e23b5d634 100644
+--- a/mm/backing-dev.c
++++ b/mm/backing-dev.c
+@@ -634,6 +634,7 @@ static void cgwb_release_workfn(struct work_struct *work)
+ 	wb_exit(wb);
+ 	bdi_put(bdi);
+ 	WARN_ON_ONCE(!list_empty(&wb->b_attached));
++	WARN_ON_ONCE(work_pending(&wb->switch_work));
+ 	call_rcu(&wb->rcu, cgwb_free_rcu);
+ }
+ 
+@@ -710,6 +711,8 @@ static int cgwb_create(struct backing_dev_info *bdi,
+ 	wb->memcg_css = memcg_css;
+ 	wb->blkcg_css = blkcg_css;
+ 	INIT_LIST_HEAD(&wb->b_attached);
++	INIT_WORK(&wb->switch_work, inode_switch_wbs_work_fn);
++	init_llist_head(&wb->switch_wbs_ctxs);
+ 	INIT_WORK(&wb->release_work, cgwb_release_workfn);
+ 	set_bit(WB_registered, &wb->state);
+ 	bdi_get(bdi);
+@@ -840,6 +843,8 @@ static int cgwb_bdi_init(struct backing_dev_info *bdi)
+ 	if (!ret) {
+ 		bdi->wb.memcg_css = &root_mem_cgroup->css;
+ 		bdi->wb.blkcg_css = blkcg_root_css;
++		INIT_WORK(&bdi->wb.switch_work, inode_switch_wbs_work_fn);
++		init_llist_head(&bdi->wb.switch_wbs_ctxs);
+ 	}
+ 	return ret;
+ }
+-- 
+2.53.0
+
 
 
 
