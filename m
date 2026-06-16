@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-265280-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265281-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id UwJoLEqGMWp+lgUAu9opvQ
-	(envelope-from <stable+bounces-265280-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:22:18 +0200
+	id f4BiIlqGMWqDlgUAu9opvQ
+	(envelope-from <stable+bounces-265281-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:22:34 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B90F6930B2
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:22:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D3AA6930C8
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:22:34 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=dtJ4Wr96;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265280-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265280-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=KZ27OZv7;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265281-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265281-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3EC68307C7CD
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:20:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3C97D308F916
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:20:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67B9447B43B;
-	Tue, 16 Jun 2026 17:20:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7950A47A0DE;
+	Tue, 16 Jun 2026 17:20:05 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B66E47B413;
-	Tue, 16 Jun 2026 17:19:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F8081A6803;
+	Tue, 16 Jun 2026 17:20:04 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781630400; cv=none; b=ps2/UzhjhKsGhNp1Dcd64oDI4+hyycpjbOiIcOLe2YHdYUFy0FSKsrhPmad+pdWLmQoSslxiRrq0iZWNbKbD8NnlBvEKkenUva9OVEicORZ5TF5PJ57tnJjOWU54FC2z9tXAwZCogB+O20W/0EFEj5w4OOPcNZo/FpM91K19S8Y=
+	t=1781630405; cv=none; b=MBLHnYbVvxgtc5AtiSLcq0rt1LMWok+UToHUypvnWNJIal0ILrxsVyXKMDbMwER2ogDGte6rWRx+O0AlkPB6DuEwzi6iEZiVzcrlN+5a5otvrSJr/6kofPKFaUW8gP2cQOR07NvmZrhSWwXB1rfoNKkqJNLFUDhyLftVPhYC+EQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781630400; c=relaxed/simple;
-	bh=Vy9qsmoNU4yRnPFefra+66EZc38OMl3rqv2TqC5kfUQ=;
+	s=arc-20240116; t=1781630405; c=relaxed/simple;
+	bh=pT2Pxg9yFvTQnXViYABqNWLWW23Un3AvJZtbnNHdgdQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LLxrIdG3W87Ech07Ihy5MYhaSFRgl1nxeUBKpXrGuzdUthOQ8k8PR1AeP0M6JElhoNRBb+xIjLtQ/mNRXblg3Awi1Sm55HWpJtw+JZbeuOBEJ6qO9dvG59zTQcan+8ZPp+FWq+RLLh/KROzM4e+T6yHqn1nhvbcxeCfxAbx4gEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dtJ4Wr96; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38CB61F00A3A;
-	Tue, 16 Jun 2026 17:19:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Z6BoqRJZlkAtJENe+5pWvApC3HuFDUkph0v7FVj92VJpgaGWgHNx7YXsnFLDxtaauMGlWq7AayRyNwCgACEh4qPCndjpAHNEsogAgaDwtWw51ELmEZpkn5VWoezNM9DAIK95V/aU67MGpPvwa6j/+Zbt+nSNliNj9AOMAgLkwBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KZ27OZv7; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 118731F000E9;
+	Tue, 16 Jun 2026 17:20:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781630399;
-	bh=IPmZxVoUGCpgz1Hu0fH/yhXWI/W1catzJxJzW36z1hk=;
+	s=korg; t=1781630403;
+	bh=ymyQg1XIDahLMZunrO21T9h8PPmM0ATDhTsEaeaRPVo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dtJ4Wr96lnVmC3CDuebgBTaMcEPpValrEpuO+t5aDuQ9m+bgOsNoJja2uDjIOgNnB
-	 GOKwY8nrL/1jLhMtn/LzGThv7ZlAiXQWWIoxicQYV44r6EXg5L3xahsFdfr6BTR0KU
-	 KS2V1W3YIG6zeCxN9k6wOXvJ2jp0iKfh0/uVo8vU=
+	b=KZ27OZv7swFAhMOJNvKczSNASxR1DvSN+1fn/y1h3U379LtIC9Y4vkHsGn7wmWLof
+	 uxs1P6n+LVGc0VJf1yj0xA8lrYg0QdBEF1yBiFJMdgN4chp/jnb1PXaEBBvwS8KKG3
+	 N7F6Oez9R9AO2sP/m8DJTc7E98olPx6tKhf25cuA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jian Zhou <eilaimemedsnaimel@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	Jason Xing <kerneljasonxing@gmail.com>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Jakub Kicinski <kuba@kernel.org>,
+	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 022/522] ipv4: free net->ipv4.sysctl_local_reserved_ports after unregister_net_sysctl_table()
-Date: Tue, 16 Jun 2026 20:22:49 +0530
-Message-ID: <20260616145126.613017281@linuxfoundation.org>
+Subject: [PATCH 6.1 023/522] ASoC: Intel: bytcht_es8316: Fix MCLK leak on init errors
+Date: Tue, 16 Jun 2026 20:22:50 +0530
+Message-ID: <20260616145126.685120928@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
 References: <20260616145125.307082728@linuxfoundation.org>
@@ -69,88 +65,149 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,linux.dev,kernel.org];
-	TAGGED_FROM(0.00)[bounces-265280-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265281-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:eilaimemedsnaimel@gmail.com,m:edumazet@google.com,m:xiyou.wangcong@gmail.com,m:kerneljasonxing@gmail.com,m:jiayuan.chen@linux.dev,m:kuba@kernel.org,m:sashal@kernel.org,m:xiyouwangcong@gmail.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:cassiogabrielcontato@gmail.com,m:broonie@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linux.dev:email,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 1B90F6930B2
+X-Rspamd-Queue-Id: 0D3AA6930C8
 
 6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
 
-[ Upstream commit 87a1e0fe7776da7ab411be332b4be58ac8840d10 ]
+[ Upstream commit afb2a3a9d8369d18122a0d7cd294eba9a98259c6 ]
 
-ipv4_sysctl_exit_net() is currently freeing net->ipv4.sysctl_local_reserved_ports
-too soon.
+byt_cht_es8316_init() enables MCLK before configuring the codec sysclk
+and creating the headset jack. If either of those later steps fails, the
+function returns without disabling MCLK, leaving the clock enabled after
+card registration fails.
 
-Only after unregister_net_sysctl_table() we can be sure no threads can possibly
-use the sysctls, including /proc/sys/net/ipv4/ip_local_reserved_ports.
+Track whether this driver enabled MCLK and disable it on the init error
+paths. Add the matching DAI link exit callback so the same clock enable
+is also balanced when ASoC cleans up a successfully initialized link.
 
-Fixes: 122ff243f5f1 ("ipv4: make ip_local_reserved_ports per netns")
-Reported-by: Ji'an Zhou <eilaimemedsnaimel@gmail.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Cong Wang <xiyou.wangcong@gmail.com>
-Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
-Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Link: https://patch.msgid.link/20260521122147.3584624-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: a03bdaa565cb ("ASoC: Intel: add machine driver for BYT/CHT + ES8316")
+Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+Link: https://patch.msgid.link/20260519-asoc-bytcht-es8316-mclk-leak-v1-1-b4a11cdc2afd@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/sysctl_net_ipv4.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/intel/boards/bytcht_es8316.c | 29 ++++++++++++++++++++++++--
+ 1 file changed, 27 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv4/sysctl_net_ipv4.c b/net/ipv4/sysctl_net_ipv4.c
-index 6b4c9b0fc9abb7..ef17d0f95a9da5 100644
---- a/net/ipv4/sysctl_net_ipv4.c
-+++ b/net/ipv4/sysctl_net_ipv4.c
-@@ -1449,10 +1449,10 @@ static __net_exit void ipv4_sysctl_exit_net(struct net *net)
- {
- 	struct ctl_table *table;
+diff --git a/sound/soc/intel/boards/bytcht_es8316.c b/sound/soc/intel/boards/bytcht_es8316.c
+index fa2c3981dacac9..ff3642e8c132f8 100644
+--- a/sound/soc/intel/boards/bytcht_es8316.c
++++ b/sound/soc/intel/boards/bytcht_es8316.c
+@@ -39,6 +39,7 @@ struct byt_cht_es8316_private {
+ 	struct gpio_desc *speaker_en_gpio;
+ 	struct device *codec_dev;
+ 	bool speaker_en;
++	bool mclk_enabled;
+ };
  
--	kfree(net->ipv4.sysctl_local_reserved_ports);
- 	table = net->ipv4.ipv4_hdr->ctl_table_arg;
- 	unregister_net_sysctl_table(net->ipv4.ipv4_hdr);
- 	kfree(table);
-+	kfree(net->ipv4.sysctl_local_reserved_ports);
+ enum {
+@@ -169,6 +170,15 @@ static struct snd_soc_jack_pin byt_cht_es8316_jack_pins[] = {
+ 	},
+ };
+ 
++static void byt_cht_es8316_disable_mclk(struct byt_cht_es8316_private *priv)
++{
++	if (!priv->mclk_enabled)
++		return;
++
++	clk_disable_unprepare(priv->mclk);
++	priv->mclk_enabled = false;
++}
++
+ static int byt_cht_es8316_init(struct snd_soc_pcm_runtime *runtime)
+ {
+ 	struct snd_soc_component *codec = asoc_rtd_to_codec(runtime, 0)->component;
+@@ -225,12 +235,14 @@ static int byt_cht_es8316_init(struct snd_soc_pcm_runtime *runtime)
+ 	ret = clk_prepare_enable(priv->mclk);
+ 	if (ret)
+ 		dev_err(card->dev, "unable to enable MCLK\n");
++	else
++		priv->mclk_enabled = true;
+ 
+ 	ret = snd_soc_dai_set_sysclk(asoc_rtd_to_codec(runtime, 0), 0, 19200000,
+ 				     SND_SOC_CLOCK_IN);
+ 	if (ret < 0) {
+ 		dev_err(card->dev, "can't set codec clock %d\n", ret);
+-		return ret;
++		goto err_disable_mclk;
+ 	}
+ 
+ 	ret = snd_soc_card_jack_new_pins(card, "Headset",
+@@ -239,13 +251,25 @@ static int byt_cht_es8316_init(struct snd_soc_pcm_runtime *runtime)
+ 					 ARRAY_SIZE(byt_cht_es8316_jack_pins));
+ 	if (ret) {
+ 		dev_err(card->dev, "jack creation failed %d\n", ret);
+-		return ret;
++		goto err_disable_mclk;
+ 	}
+ 
+ 	snd_jack_set_key(priv->jack.jack, SND_JACK_BTN_0, KEY_PLAYPAUSE);
+ 	snd_soc_component_set_jack(codec, &priv->jack, NULL);
+ 
+ 	return 0;
++
++err_disable_mclk:
++	byt_cht_es8316_disable_mclk(priv);
++	return ret;
++}
++
++static void byt_cht_es8316_exit(struct snd_soc_pcm_runtime *runtime)
++{
++	struct snd_soc_card *card = runtime->card;
++	struct byt_cht_es8316_private *priv = snd_soc_card_get_drvdata(card);
++
++	byt_cht_es8316_disable_mclk(priv);
  }
  
- static __net_initdata struct pernet_operations ipv4_sysctl_ops = {
+ static int byt_cht_es8316_codec_fixup(struct snd_soc_pcm_runtime *rtd,
+@@ -355,6 +379,7 @@ static struct snd_soc_dai_link byt_cht_es8316_dais[] = {
+ 		.dpcm_playback = 1,
+ 		.dpcm_capture = 1,
+ 		.init = byt_cht_es8316_init,
++		.exit = byt_cht_es8316_exit,
+ 		SND_SOC_DAILINK_REG(ssp2_port, ssp2_codec, platform),
+ 	},
+ };
 -- 
 2.53.0
 
