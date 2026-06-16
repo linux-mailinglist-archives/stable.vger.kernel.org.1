@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-265685-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264156-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id RHWZNw2OMWpDmgUAu9opvQ
-	(envelope-from <stable+bounces-265685-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:55:25 +0200
+	id PeMtAVFzMWqojgUAu9opvQ
+	(envelope-from <stable+bounces-264156-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:01:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29037693A18
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:55:25 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01FD86919FA
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:01:17 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=C66QrApH;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265685-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265685-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=2mPw+GXA;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264156-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264156-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BEEB930F2262
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:54:17 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3B5F53023547
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:41:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DEFB4779B3;
-	Tue, 16 Jun 2026 17:54:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57028450909;
+	Tue, 16 Jun 2026 15:40:18 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16E353C276B;
-	Tue, 16 Jun 2026 17:54:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28697449EAB;
+	Tue, 16 Jun 2026 15:40:17 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781632456; cv=none; b=CF4pbd44GvUzZ1aRsa5VhzqX9woQq5vQz0rsgP7EWVfrETjauxlGtadaZ/8KenyWH8v1NFoHmuaoc+M54pLznJbULd4/l7cR0BMGWcAwMnJhlncd/cUdi9txkMsRT66iOxOhe9tDoVq8P0gY2pfTSBVy3PPzWlxia7szmNCT4Pc=
+	t=1781624418; cv=none; b=A8KuUz6RlYB4aldNW17hBYXdH2t/WIIidGQ/wXcq5QP/+wNCOv4jed3wAcD+pvpTCmSYL7SyIX8m549pTws1VOi814Uk/pDquwT4Fk7FLLwGQj3qvpaK4ZVNaEbtPl01eF6DwQVuwQH97iX1LPVK8T+jLBZ93pGYrUJmYELqBKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781632456; c=relaxed/simple;
-	bh=eJqeyeh06dIUUFvtj9DnDjCgJk1ROtGGAFM4zx9eOtE=;
+	s=arc-20240116; t=1781624418; c=relaxed/simple;
+	bh=K2UDrgNed6RHqg/75vOR0D/0Q7eY+o7UPgNrk67Toow=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=am5AdY1cs85cLSL97J0CgtYKuZdDzBmQdWGWX8gQEkxbjsLjk6Juqt0+bAfIZD08V6241jVvy/0RxZN4VzDMWZbIFhn+Y+J6HDNg5+ckPfZpo1N7fgA1nnxvp2Twb2pEblQvrYZhWIxz9p9uHuf7cBKSdcqvC7/22uSlGwNYoCE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C66QrApH; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0D851F000E9;
-	Tue, 16 Jun 2026 17:54:13 +0000 (UTC)
+	 MIME-Version; b=ByjP7GLrfs2VJEVxHjtSuEFNIETqCGw00QihHwwjWB3AA4xgf1dHpQQBpFMR0ojComSqikUH7dAhmYm6MKttNoyXtkbDoHq6ruTlK4XmdAEtQsQB9ZqPISqgwjqb8OKkYbPs/RKcDp4IrH2Bie0neRoYNGI0Aj84VMVt/SQebAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2mPw+GXA; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F8411F000E9;
+	Tue, 16 Jun 2026 15:40:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781632455;
-	bh=V5zzUmtiZm7sCatfObgZxN6AMp5Ia0W+UIgRdJuGvkw=;
+	s=korg; t=1781624417;
+	bh=lSXgaPybHoFgHm3xJJ37byb8iPOodzSsq5L3CKIkSm4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=C66QrApHsxPbtZ+SBiulu28htEgNXQ0FemY/ZS7AMVAvG2+i/aLM3I4sBAtdukosl
-	 3Sq/SjImaN2FlBbSG9QFbwPQLksXIaNJfjSG+3nLkFr63q06tVe0MKICsza5fmRv/b
-	 kMypEP6q/JA04ImMRgFwsTj1brS+BJ3YSEwcgtq4=
+	b=2mPw+GXAyHxPgibCKpFYZQZM9T2rPD60WU3r7D7hEfQm66M57Jg6puZ1FZaQ6gHI3
+	 DYWsvl+VmQXTa+g6R/AWm1PBBGJTlFemMZGYKQJgVEzcgJdPF4TcTQ3FOznH72PUWv
+	 t912OQ3OtgRjmRmael4M3xU7cy5SetgOvm91cdK0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Guangshuo Li <lgs201920130244@gmail.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 415/522] btrfs: fix double free in create_space_info_sub_group() error path
+	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
+	Srinivas Kandagatla <srini@kernel.org>
+Subject: [PATCH 7.0 331/378] slimbus: qcom-ngd-ctrl: Balance pm_runtime enablement for NGD
 Date: Tue, 16 Jun 2026 20:29:22 +0530
-Message-ID: <20260616145145.448499093@linuxfoundation.org>
+Message-ID: <20260616145127.653293070@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,91 +71,80 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,suse.com,gmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-265685-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264156-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:wqu@suse.com,m:lgs201920130244@gmail.com,m:dsterba@suse.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bjorn.andersson@oss.qualcomm.com,m:srini@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,suse.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,qualcomm.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 29037693A18
+X-Rspamd-Queue-Id: 01FD86919FA
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guangshuo Li <lgs201920130244@gmail.com>
+From: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
 
-[ Upstream commit a7449edf96143f192606ec8647e3167e1ecbd728 ]
+commit 6a003446b725c44b9e3ffa111b0effbaa2d43085 upstream.
 
-When kobject_init_and_add() fails, the call chain is:
+The pm_runtime_enable() and pm_runtime_use_autosuspend() calls are
+supposed to be balanced on exit, add these calls.
 
-create_space_info_sub_group()
--> btrfs_sysfs_add_space_info_type()
--> kobject_init_and_add()
--> failure
--> kobject_put(&sub_group->kobj)
--> space_info_release()
--> kfree(sub_group)
-
-Then control returns to create_space_info_sub_group(), where:
-
-btrfs_sysfs_add_space_info_type() returns error
--> kfree(sub_group)
-
-Thus, sub_group is freed twice.
-
-Keep parent->sub_group[index] = NULL for the failure path, but after
-btrfs_sysfs_add_space_info_type() has called kobject_put(), let the
-kobject release callback handle the cleanup.
-
-Fixes: f92ee31e031c ("btrfs: introduce btrfs_space_info sub-group")
-CC: stable@vger.kernel.org # 6.18+
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 917809e2280b ("slimbus: ngd: Add qcom SLIMBus NGD driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
+Link: https://patch.msgid.link/20260530204421.116824-8-srini@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/space-info.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/slimbus/qcom-ngd-ctrl.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/fs/btrfs/space-info.c
-+++ b/fs/btrfs/space-info.c
-@@ -260,10 +260,8 @@ static int create_space_info_sub_group(s
- 	sub_group->subgroup_id = id;
+--- a/drivers/slimbus/qcom-ngd-ctrl.c
++++ b/drivers/slimbus/qcom-ngd-ctrl.c
+@@ -1582,8 +1582,11 @@ static int qcom_slim_ngd_probe(struct pl
+ 	pm_runtime_enable(dev);
+ 	pm_runtime_get_noresume(dev);
+ 	ret = qcom_slim_ngd_qmi_svc_event_init(ctrl);
+-	if (ret)
++	if (ret) {
+ 		dev_err(&pdev->dev, "QMI service registration failed:%d", ret);
++		pm_runtime_dont_use_autosuspend(dev);
++		pm_runtime_disable(dev);
++	}
  
- 	ret = btrfs_sysfs_add_space_info_type(sub_group);
--	if (ret) {
--		kfree(sub_group);
-+	if (ret)
- 		parent->sub_group[index] = NULL;
--	}
  	return ret;
  }
+@@ -1696,6 +1699,7 @@ static void qcom_slim_ngd_remove(struct
+ {
+ 	struct qcom_slim_ngd_ctrl *ctrl = platform_get_drvdata(pdev);
  
++	pm_runtime_dont_use_autosuspend(&pdev->dev);
+ 	pm_runtime_disable(&pdev->dev);
+ 	qcom_slim_ngd_enable(ctrl, false);
+ 	qcom_slim_ngd_exit_dma(ctrl);
 
 
 
