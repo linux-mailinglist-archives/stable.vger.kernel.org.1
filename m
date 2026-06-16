@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-266500-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266148-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id T1YkL4eeMWq3oQUAu9opvQ
-	(envelope-from <stable+bounces-266500-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:05:43 +0200
+	id elXKMGSXMWqgngUAu9opvQ
+	(envelope-from <stable+bounces-266148-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:35:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71AD3694BCA
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:05:43 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FF35694423
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:35:16 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=0oTnVS9G;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266500-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266500-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=m4PjH7Oz;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266148-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-266148-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E33E6303C539
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:05:42 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id CBA66303AF12
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:35:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 250363DBD76;
-	Tue, 16 Jun 2026 19:05:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 761914779B0;
+	Tue, 16 Jun 2026 18:35:14 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 015733DA5A8;
-	Tue, 16 Jun 2026 19:05:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 439073DF007;
+	Tue, 16 Jun 2026 18:35:13 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781636741; cv=none; b=SH3kxhUOw3ETqjqT1AxQN4JXXIFkHJz3ts4yCFnoJor33kBk+4GkHGQk08HIuqYYYIV8YNOhv1Ik0rH6P2gG9OrzqVUfd6Aajylalgb/vW8304c1niKLy6TsHFPdr8ScDvPll+Jief9hsWgOC+1zZse/qGgsjh5Q98bLG20XXNg=
+	t=1781634914; cv=none; b=MUoEcFAbJCaN0+kAHRjAkspnpxc9fwc6LiIYQS/PRQ+VvhsXFTxuxc8mvLxL8nx/WhFvhPYJGzx1ylfWgPuTi9tJzD7P7Wch/UsHcXC9oBED3U1LTe251B60qShysEaTp7pThwv8xR5122FErBpLulp3RVRmfj0JBr5PvdVVHzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781636741; c=relaxed/simple;
-	bh=pxDheUAPQtNCkvYSwTsvS0SPOQk3hfK60+heqBDPZd4=;
+	s=arc-20240116; t=1781634914; c=relaxed/simple;
+	bh=KPFdgdN5zbk4e76dyqXW+Jkznd/NAoepeDTXqJHJCDQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uNCqkrIoav2btQC2ahY/JzGM9Ny0SJCiAlsAsjVnrlWnxntiwJ7k1kUYxPtNHxlsK785vXhv8jNOvuDzyHvpl0VFRYp6EKxzIBlX8jUfuy8VLmZLGJw04wtoZnvtr7Mau2Zqr1VdNvfNpHsM2ARF4dPnqt3iT5NI/dQwfW07Szo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0oTnVS9G; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03EF31F000E9;
-	Tue, 16 Jun 2026 19:05:39 +0000 (UTC)
+	 MIME-Version; b=pdDXF9s6ckmOUn9buDsXcDf4WYOguykoGh9EY3g0q8TfwX6BrrvnFXY7VB770OqJaZgOr1lKPi8+AS7AnujQaVMdFnzbcedGnxDSAMgWQE9n3V0M35t1kYkQVJcCbTarciPExpDjl3D53ujdsfYkEzwOkXiJ1VpPrazoQBVaM7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m4PjH7Oz; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AAB41F000E9;
+	Tue, 16 Jun 2026 18:35:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781636740;
-	bh=5KHscalTWFaUlRnLKvr4xXeKcv4Nw2my2orZW0MALO4=;
+	s=korg; t=1781634913;
+	bh=4dUSjXLPOGWklBBUussc76l+OuepB1Jobv5vlcWucf4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=0oTnVS9GzO6HjBH/LNCxg9DDY468ulF49V9Jhz9OUil+f7f9JQVVOCMe8gCI4mcv1
-	 fz9kCyoEMehqzovCw+UFATTw6+xA3u4vXA5wDFBgKN5Rd5GyIewnZ6GWHN9iCtHiz9
-	 GNzWiUf99lso+aUypnjPiwbwnWe3KCDfyP/fjqHE=
+	b=m4PjH7OzBZ05tL1aV9ObnjMI3mrJPTEhBAfXW0Xo1doWqal7u2FerMBhN877z1U+M
+	 EV/4KnchRD9bWbrcutzhQEzsuoajYpJHr4LLhYjqpaFcN4mn7TbS548jtDMqhKgReP
+	 8Z6U/lY0gCGZQSPHgE+kXjT4eWIPo9I5eVYTJYkY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
+	Shardul Bankar <shardul.b@mpiricsoftware.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 297/342] spi: qup: fix error pointer deref after DMA setup failure
+Subject: [PATCH 5.15 355/411] mptcp: do not drop partial packets
 Date: Tue, 16 Jun 2026 20:29:53 +0530
-Message-ID: <20260616145102.267366649@linuxfoundation.org>
+Message-ID: <20260616145120.190120936@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,82 +70,112 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266500-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:johan@kernel.org,m:broonie@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-266148-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:shardul.b@mpiricsoftware.com,m:pabeni@redhat.com,m:matttbe@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,sashiko.dev:url,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 71AD3694BCA
+X-Rspamd-Queue-Id: 5FF35694423
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Shardul Bankar <shardul.b@mpiricsoftware.com>
 
-[ Upstream commit a7e8f3efd50a165ba0189f6dc57f7e51a7d149db ]
+[ Upstream commit 50c2d91c5dfa0e465826ec1f8dbad9cdc254bd85 ]
 
-The driver falls back to PIO mode if DMA setup fails during probe.
+When a packet arrives with map_seq < ack_seq < end_seq, the beginning
+of the packet has already been acknowledged but the end contains new
+data. Currently the entire packet is dropped as "old data," forcing
+the sender to retransmit.
 
-Make sure to the clear the DMA channel pointers on setup failure to
-avoid dereferencing an error pointer (or attempting to release a channel
-a second time) on later probe errors or driver unbind.
+Instead, skip the already-acked bytes by adjusting the skb offset and
+enqueue only the new portion. Update bytes_received and ack_seq to
+reflect the new data consumed.
 
-This issue was flagged by Sashiko when reviewing a devres allocation
-conversion patch.
+A previous attempt at this fix has been sent by Paolo Abeni [1], but had
+issues [2]: it also added a zero-window check and changed rcv_wnd_sent
+initialization, which caused test regressions. This version addresses
+only the partial packet handling without modifying receive window
+accounting.
 
-Fixes: 612762e82ae6 ("spi: qup: Add DMA capabilities")
-Link: https://sashiko.dev/#/patchset/20260505072909.618363-1-johan%40kernel.org?part=4
-Cc: stable@vger.kernel.org	# 4.1
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260512074334.914735-1-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: ab174ad8ef76 ("mptcp: move ooo skbs into msk out of order queue.")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/c9b426a4e163aa3c4fe8b80c79f1a610f47ae7d8.1763075056.git.pabeni@redhat.com [1]
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/600 [2]
+Signed-off-by: Shardul Bankar <shardul.b@mpiricsoftware.com>
+[pabeni@redhat.com: update map]
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260515-net-mptcp-misc-fixes-7-1-rc4-v2-1-701e96419f2f@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[ dropped `msk->bytes_received += copy_len;` and relocated the `drop:` label to the function end for the existing RCVPRUNED `goto drop;` ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-qup.c |    3 +++
- 1 file changed, 3 insertions(+)
+ net/mptcp/protocol.c |   22 +++++++++++++++++++---
+ 1 file changed, 19 insertions(+), 3 deletions(-)
 
---- a/drivers/spi/spi-qup.c
-+++ b/drivers/spi/spi-qup.c
-@@ -969,8 +969,11 @@ static int spi_qup_init_dma(struct spi_c
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -329,10 +329,26 @@ static bool __mptcp_move_skb(struct mptc
+ 		return false;
+ 	}
  
- err:
- 	dma_release_channel(host->dma_tx);
-+	host->dma_tx = NULL;
- err_tx:
- 	dma_release_channel(host->dma_rx);
-+	host->dma_rx = NULL;
+-	/* old data, keep it simple and drop the whole pkt, sender
+-	 * will retransmit as needed, if needed.
++	/* Completely old data? */
++	if (!after64(MPTCP_SKB_CB(skb)->end_seq, msk->ack_seq)) {
++		MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_DUPDATA);
++		mptcp_drop(sk, skb);
++		return false;
++	}
 +
- 	return ret;
- }
- 
++	/* Partial packet: map_seq < ack_seq < end_seq.
++	 * Skip the already-acked bytes and enqueue the new data.
+ 	 */
+-	MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_DUPDATA);
++	copy_len = MPTCP_SKB_CB(skb)->end_seq - msk->ack_seq;
++	MPTCP_SKB_CB(skb)->offset += msk->ack_seq - MPTCP_SKB_CB(skb)->map_seq;
++	MPTCP_SKB_CB(skb)->map_seq += msk->ack_seq -
++				      MPTCP_SKB_CB(skb)->map_seq;
++	WRITE_ONCE(msk->ack_seq, msk->ack_seq + copy_len);
++
++	skb_set_owner_r(skb, sk);
++	__skb_queue_tail(&sk->sk_receive_queue, skb);
++	return true;
++
+ drop:
+ 	mptcp_drop(sk, skb);
+ 	return false;
 
 
 
