@@ -1,59 +1,65 @@
-Return-Path: <stable+bounces-265024-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265969-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id U/67ILKDMWptlQUAu9opvQ
-	(envelope-from <stable+bounces-265024-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:11:14 +0200
+	id yTQkOLiTMWr5nAUAu9opvQ
+	(envelope-from <stable+bounces-265969-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:19:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7FA1692D57
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:11:13 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6ACE694091
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:19:35 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="sFWk/J49";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265024-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265024-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=fkzrh5j2;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265969-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-265969-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CF6BB31C1D82
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:58:15 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2F8813002B5F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:19:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5630146AF2D;
-	Tue, 16 Jun 2026 16:58:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B89943D091A;
+	Tue, 16 Jun 2026 18:19:30 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2654B33AD9B;
-	Tue, 16 Jun 2026 16:58:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F8A935292A;
+	Tue, 16 Jun 2026 18:19:29 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781629095; cv=none; b=fSvvbUVMfmZono500yhRF2Ww0uCpoycIPVJ/P/raRQzhZmI7Am6xPQqY1DLc6lBG/KgkAaLgBHq8nisJBEEbDDlQgepejL9qxzJofvMCNd2HBncFC8xmC9K4k+jjiD3d9Ys2H0l7uNr51dveEH9DTisqhb7gJ3Hg2LgDt/ennEw=
+	t=1781633970; cv=none; b=YMlAr70ZlxoEXHeYTy4AImiyz9ARnV+x7jexQIr7LQlLVm7KlWsGFM6racAsNvBCBE+MFUf16gc3nWlnjIIRNYlRbxnbo923IaBq9YUmX4eyuD2N5MSEyZUtAkdPVln9dla9tzf044ga862Pyyw8dELlP1LXlneSKNI9FW/nkiw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781629095; c=relaxed/simple;
-	bh=1S0OLtHpC+SYaRNAg14f7VZAI+xNnlbISGQLg/uPwjI=;
+	s=arc-20240116; t=1781633970; c=relaxed/simple;
+	bh=wwRV8p461imdW1w306IjmqXg5IrwFKLKOf4wAh66DnE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l8SlvuGPCvU5V4Odmd00AH9nWyrdFc8t0tH2sOkwTV4SNzgRDgZ6zfi4728gTClkWKBN8F2uclEXxH5QBsj0fEYwjIyxJjnm8s/TfZ+NLDbhIUSYP1PkVBhketnpKNwVMe/67zm6HM4xIScl7yPW4uI7KaFNcNYHCaKRKCE0AEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sFWk/J49; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34A771F000E9;
-	Tue, 16 Jun 2026 16:58:12 +0000 (UTC)
+	 MIME-Version; b=C//7mlZpXJQt0OLhci8Fvl21DpZVejybaVkpRhSaWXUia3/NkWNOBC+9eRBZ7q6kVhh/vjVdJMazHbjTEIxvrgtee0oWRHgdXvUjOzRfF4rsFc3lOOKVDVVyD+cdLse/URkMHOQYTbwjYMEhqg6X+Fs/gCrOZiW7eyQDzzXdgzY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fkzrh5j2; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 756841F000E9;
+	Tue, 16 Jun 2026 18:19:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781629094;
-	bh=FhT513Lze4LSsvccWYVZEXi+3ZTiwIQ3G0YnbDgAGbE=;
+	s=korg; t=1781633969;
+	bh=9teiSd6F75jgX7+fQdh4JVNwXFr3J1rYG8Kn34HuVKY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=sFWk/J49RCDAIRUFSepjR/Ko9+EjieR+SLel6pvMdKWey72tA8hR+OaaUE/RVzBzI
-	 6v7Dv4ASpyZnzBj7KlUNNSpjhj/O+hDAFR/iVgMxFbRt7hdcKiEmyRb48r1DVN5n2+
-	 UkbJORd9dh0rkcU4L1QdxKvmfZRzQ6JdC+rOYV4M=
+	b=fkzrh5j2Fr6ie/OW7/2WgwotKwQiP+caihYRNycxXOG8bid8d5aB0EIhhA+veEP7v
+	 9zAiV/K1+sdBNdpjM9Y/qp0u+7jKeihS1q1AzGCt09JWS4Efskf09YRhqBXA907sMO
+	 m5Evsln94KSPJiFusZoBafXDNEIvBJ7fdNrpZOhQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>
-Subject: [PATCH 6.6 188/452] serial: dz: Fix bootconsole message clobbering at chip reset
+	Xiang Mei <xmei5@asu.edu>,
+	Weiming Shi <bestswngs@gmail.com>,
+	Dongli Zhang <dongli.zhang@oracle.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 177/411] tap: free page on error paths in tap_get_user_xdp()
 Date: Tue, 16 Jun 2026 20:26:55 +0530
-Message-ID: <20260616145127.712805382@linuxfoundation.org>
+Message-ID: <20260616145110.080425920@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,106 +76,93 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-265024-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,oracle.com,google.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-265969-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:macro@orcam.me.uk,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:xmei5@asu.edu,m:bestswngs@gmail.com,m:dongli.zhang@oracle.com,m:willemb@google.com,m:kuba@kernel.org,m:harshit.m.mogalapalli@oracle.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,orcam.me.uk:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,oracle.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D7FA1692D57
+X-Rspamd-Queue-Id: E6ACE694091
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej W. Rozycki <macro@orcam.me.uk>
+From: Weiming Shi <bestswngs@gmail.com>
 
-commit ca904f4b42355287bc5ce8b7550ebe909cda4c2c upstream.
+[ Upstream commit 3bcf7aec6a9d16438f2cec29f5d7c8d5b8edf9b2 ]
 
-In the DZ interface as implemented by the DC7085 gate array the serial
-transmitters are double buffered, meaning that at the time a transmitter
-is ready to accept the next character there is one in the transmit shift
-register still being sent to the line.  Issuing a master clear at this
-time causes this character to be lost, so wait an extra amount of time
-sufficient for the transmit shift register to drain at 9600bps, which is
-the baud rate setting used by the firmware console.
+tap_get_user_xdp() rejects a frame shorter than ETH_HLEN with -EINVAL,
+and returns -ENOMEM when build_skb() fails. Both paths jump to the err
+label without freeing the page that vhost_net_build_xdp() allocated for
+the frame. tap_sendmsg() discards the per-buffer return value and always
+returns 0, so vhost_tx_batch() takes the success path and never frees
+the page; each rejected frame in a batch leaks one page-frag chunk.
 
-Mind the specified 1.4us TRDY recovery time in the course and continue
-using iob() as the completion barrier, since the platforms involved use
-a write buffer that can delay and combine writes, and reorder them with
-respect to reads regardless of the MMIO locations accessed and we still
-lack a platform-independent handler for that.
+Free the page on both error paths, before the skb is built. This is the
+tap counterpart of the same leak in tun_xdp_one().
 
-When called from dz_serial_console_init() this is too early for fsleep()
-to work and even before lpj has been calculated and therefore the delay
-is actually not sufficient for the transmitter to drain and is merely a
-placeholder now.  This will be addressed in a follow-up change.
-
-Fixes: e6ee512f5a77 ("dz.c: Resource management")
-Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Cc: stable@vger.kernel.org # v2.6.25+
-Link: https://patch.msgid.link/alpine.DEB.2.21.2605062259080.46195@angie.orcam.me.uk
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0efac27791ee ("tap: accept an array of XDP buffs through sendmsg()")
+Fixes: ed7f2afdd0e0 ("tap: add missing verification for short frame")
+Reported-by: Xiang Mei <xmei5@asu.edu>
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+Reviewed-by: Dongli Zhang <dongli.zhang@oracle.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20260521163230.1478627-2-bestswngs@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+(cherry picked from commit 3bcf7aec6a9d16438f2cec29f5d7c8d5b8edf9b2)
+Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/dz.c |   21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ drivers/net/tap.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/tty/serial/dz.c
-+++ b/drivers/tty/serial/dz.c
-@@ -543,10 +543,31 @@ static int dz_encode_baud_rate(unsigned
- static void dz_reset(struct dz_port *dport)
- {
- 	struct dz_mux *mux = dport->mux;
-+	unsigned short tcr;
-+	int loops = 10000;
+diff --git a/drivers/net/tap.c b/drivers/net/tap.c
+index a08adca412b41a..3a91972485cc36 100644
+--- a/drivers/net/tap.c
++++ b/drivers/net/tap.c
+@@ -1143,6 +1143,7 @@ static int tap_get_user_xdp(struct tap_queue *q, struct xdp_buff *xdp)
+ 	int err, depth;
  
- 	if (mux->initialised)
- 		return;
+ 	if (unlikely(xdp->data_end - xdp->data < ETH_HLEN)) {
++		put_page(virt_to_head_page(xdp->data));
+ 		err = -EINVAL;
+ 		goto err;
+ 	}
+@@ -1152,6 +1153,7 @@ static int tap_get_user_xdp(struct tap_queue *q, struct xdp_buff *xdp)
  
-+	tcr = dz_in(dport, DZ_TCR);
-+
-+	/* Do not disturb any ongoing transmissions.  */
-+	if (dz_in(dport, DZ_CSR) & DZ_MSE) {
-+		unsigned short csr, mask;
-+
-+		mask = tcr;
-+		while ((mask & DZ_LNENB) && loops--) {
-+			csr = dz_in(dport, DZ_CSR);
-+			if (!(csr & DZ_TRDY))
-+				continue;
-+			mask &= ~(1 << ((csr & DZ_TLINE) >> 8));
-+			dz_out(dport, DZ_TCR, mask);
-+			iob();
-+			udelay(2);		/* 1.4us TRDY recovery.  */
-+		}
-+		udelay(1200);			/* Transmitter drain.  */
-+	}
-+
- 	dz_out(dport, DZ_CSR, DZ_CLR);
- 	while (dz_in(dport, DZ_CSR) & DZ_CLR);
- 	iob();
+ 	skb = build_skb(xdp->data_hard_start, buflen);
+ 	if (!skb) {
++		put_page(virt_to_head_page(xdp->data));
+ 		err = -ENOMEM;
+ 		goto err;
+ 	}
+-- 
+2.53.0
+
 
 
 
