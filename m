@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-263862-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265390-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id n/acOtVpMWoGiwUAu9opvQ
-	(envelope-from <stable+bounces-263862-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:20:53 +0200
+	id iYT2I/6HMWpUlwUAu9opvQ
+	(envelope-from <stable+bounces-265390-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:29:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BAA2690F1B
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:20:53 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 225FC693316
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:29:34 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=KBR26HR1;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263862-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-263862-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=lKcW5HLS;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265390-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-265390-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E460F31AA83A
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:14:25 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4C6873014535
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:29:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3757143D4FA;
-	Tue, 16 Jun 2026 15:14:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2F79478E57;
+	Tue, 16 Jun 2026 17:29:15 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDF3A43C05C;
-	Tue, 16 Jun 2026 15:14:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCF5F3A3E78;
+	Tue, 16 Jun 2026 17:29:14 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781622865; cv=none; b=JFPENqT9TVd35cI4anaC+jFmohyPtK23B7kcI18VqE8AsfvaJ10C9IznJAXsZW4+EFuHVwBXr1LVMbn6tJx6l22YDyDq/R33QU+AIoL9ZmSvitgOWwxSMBJ8YVC2GlsGAnvRzFUpFPr0zEY9GiY0nJN2oGoIzym7VHgznWVDLkc=
+	t=1781630955; cv=none; b=Q6OWVvb4SkzdTgoMYIRZlj0JjvRphIun0lXeA+iAsESciS7Jw/NKs5jirzG2JO+HdNJelXlbMApuhIP/Pfta5OYaC2yvV4VidySKUZeQmxXJVlCqkHpP25K1/AkeyDn8p0YxW8hpKgBWFXs4iLlj7Ke6EpTqkTqSaYCm1tmKORk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781622865; c=relaxed/simple;
-	bh=8D8y1l06usua+xcvVKAbgHMQnCMftYCHGRHKT8mZdIk=;
+	s=arc-20240116; t=1781630955; c=relaxed/simple;
+	bh=NWtULYsJzXxS619hnCT8C9jYfek+08MrrOl5Bw4jIl4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uLjpNe88aPPHTqiN5F/2QxrKo/WwWVtcbEh/AljCn7gm4F1p7hvYxL5/h2LsfiPZrGG3nPAKxgrgYOeZbeNwzDJnDk/NAaGgGuLsljNOVfuNCTvwTomRXlf+itNMIzGz6XowV6bpPd6lNa5e4i8Zbl4gEkfAB8PRcxlmkA1UOV0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KBR26HR1; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBE2E1F000E9;
-	Tue, 16 Jun 2026 15:14:22 +0000 (UTC)
+	 MIME-Version; b=BH5uFH2FgDCEdZi/MXVa6E6OznoTx5tekW1SrcBGCLo/CBQxd4RHGci6Qcid+Bj/+M6Fyt00jbbPCZlNnKR0yo/CVs2UfL7exBn+Toa8TGiznp3HJ5WOe4Zqs1Rz5RvK2+/jMPbWuwhSK03oMBl4BYh5ZXpwS5dre8L8YI1mu18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lKcW5HLS; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7BAA1F000E9;
+	Tue, 16 Jun 2026 17:29:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781622863;
-	bh=AvWmKnIGVQTcYaddk/2RDyzGEeHYiiVmUY0U2utxKmY=;
+	s=korg; t=1781630954;
+	bh=ryRr3g5myTMTUIgTkqM1/86BJFzrtYemXGI623fMYFw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=KBR26HR1oFUvgdbCtxrbXyh3Dd9BZLGcEK6B/JFo1Ak/S2XaTYGWuSFb29R15fA36
-	 DTR1avKfluu8hWrhmlg6sJTrqs9DyCDT2oG3P2Df8RDxC4rs1IYM3B98FsiuqIBsuy
-	 3ng5UDJxvgDGs5FCwyoCb//0rg8k0Wy75g34kjkw=
+	b=lKcW5HLSAxl6J/eHb91weo/tgNRg2UwK9cRjF36KeQ1ob2MV14Rq41zNkKW8nhnx/
+	 BnZ9sh8ue6vIsJQzNaK9V1l6fPzhK7WxcLkYq+BSLl85RwnI0JaOyFIipqYYTzgWlv
+	 EbxSLMB4WifCfCP4ZZpEVC+cK4ElZCGm3mXDD03E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Cen <rollkingzzc@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 044/378] Bluetooth: RFCOMM: hold listener socket in rfcomm_connect_ind()
+	Ping Cheng <ping.cheng@wacom.com>,
+	Lee Jones <lee@kernel.org>,
+	Benjamin Tissoires <bentiss@kernel.org>
+Subject: [PATCH 6.1 128/522] HID: wacom: Fix OOB write in wacom_hid_set_device_mode()
 Date: Tue, 16 Jun 2026 20:24:35 +0530
-Message-ID: <20260616145112.227082897@linuxfoundation.org>
+Message-ID: <20260616145132.087830630@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,162 +72,116 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265390-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-263862-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:rollkingzzc@gmail.com,m:luiz.von.dentz@intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:ping.cheng@wacom.com,m:lee@kernel.org,m:bentiss@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7BAA2690F1B
+X-Rspamd-Queue-Id: 225FC693316
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Cen <rollkingzzc@gmail.com>
+From: Lee Jones <lee@kernel.org>
 
-[ Upstream commit 43c441edacf953b39517a44f5e5e10a93618b226 ]
+commit c0a8899e02ddebd51e2589835182c239c2e224ae upstream.
 
-rfcomm_get_sock_by_channel() scans rfcomm_sk_list under the list lock,
-but returns the selected listener after dropping that lock without
-taking a reference. rfcomm_connect_ind() then locks the listener,
-queues a child socket on it, and may notify it after unlocking it.
+wacom_hid_set_device_mode() currently assumes that the HID_DG_INPUTMODE
+usage is always located in the first field (field[0]) of the feature report.
+However, a device can specify HID_DG_INPUTMODE in a different field.
 
-The buggy scenario involves two paths, with each column showing the
-order within that path:
+If HID_DG_INPUTMODE is in a field other than the first one and the first
+field has a report_count smaller than the usage_index of HID_DG_INPUTMODE,
+this leads to an out-of-bounds write to r->field[0]->value.
 
-rfcomm_connect_ind():            listener close:
-  1. Find parent in              1. close() enters
-     rfcomm_get_sock_by_channel()   rfcomm_sock_release().
-  2. Drop rfcomm_sk_list.lock    2. rfcomm_sock_shutdown()
-     without pinning parent.        closes the listener.
-  3. Call lock_sock(parent) and  3. rfcomm_sock_kill()
-     bt_accept_enqueue(parent,      unlinks and puts parent.
-     sk, true).
-  4. Read parent flags and may   4. parent can be freed.
-     call sk_state_change().
+Fix this by storing the field index of HID_DG_INPUTMODE in 'struct
+hid_data' during feature mapping.  In wacom_hid_set_device_mode(), use
+this stored field index to access the correct field and add bounds
+checks to ensure both the field index and the value index are within
+valid ranges before writing.
 
-If close wins the race, parent can be freed before
-rfcomm_connect_ind() reaches lock_sock(), bt_accept_enqueue(), or the
-deferred-setup callback.
-
-Take a reference on the listener before leaving rfcomm_sk_list.lock.
-After lock_sock() succeeds, recheck that it is still in BT_LISTEN
-before queueing a child, cache the deferred-setup bit while the parent
-is locked, and drop the reference after the last parent use.
-
-KASAN reported a slab-use-after-free in lock_sock_nested() from
-rfcomm_connect_ind(), with the freeing stack going through
-rfcomm_sock_kill() and rfcomm_sock_release().
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Zhang Cen <rollkingzzc@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 5ae6e89f7409 ("HID: wacom: implement the finger part of the HID generic handling")
+Tested-by: Ping Cheng <ping.cheng@wacom.com>
+Reviewed-by: Ping Cheng <ping.cheng@wacom.com>
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/rfcomm/sock.c | 26 ++++++++++++++++++++++----
- 1 file changed, 22 insertions(+), 4 deletions(-)
+ drivers/hid/wacom_sys.c |   13 ++++++++++---
+ drivers/hid/wacom_wac.h |    1 +
+ 2 files changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/net/bluetooth/rfcomm/sock.c b/net/bluetooth/rfcomm/sock.c
-index bd7d959c6e9eb8..805ed5d28ed668 100644
---- a/net/bluetooth/rfcomm/sock.c
-+++ b/net/bluetooth/rfcomm/sock.c
-@@ -122,7 +122,7 @@ static struct sock *__rfcomm_get_listen_sock_by_addr(u8 channel, bdaddr_t *src)
- }
+--- a/drivers/hid/wacom_sys.c
++++ b/drivers/hid/wacom_sys.c
+@@ -341,6 +341,7 @@ static void wacom_feature_mapping(struct
  
- /* Find socket with channel and source bdaddr.
-- * Returns closest match.
-+ * Returns closest match with an extra reference held.
-  */
- static struct sock *rfcomm_get_sock_by_channel(int state, u8 channel, bdaddr_t *src)
- {
-@@ -136,15 +136,25 @@ static struct sock *rfcomm_get_sock_by_channel(int state, u8 channel, bdaddr_t *
+ 		hid_data->inputmode = field->report->id;
+ 		hid_data->inputmode_index = usage->usage_index;
++		hid_data->inputmode_field_index = field->index;
+ 		break;
  
- 		if (rfcomm_pi(sk)->channel == channel) {
- 			/* Exact match. */
--			if (!bacmp(&rfcomm_pi(sk)->src, src))
-+			if (!bacmp(&rfcomm_pi(sk)->src, src)) {
-+				sock_hold(sk);
- 				break;
-+			}
+ 	case HID_UP_DIGITIZER:
+@@ -556,9 +557,14 @@ static int wacom_hid_set_device_mode(str
  
- 			/* Closest match */
--			if (!bacmp(&rfcomm_pi(sk)->src, BDADDR_ANY))
-+			if (!bacmp(&rfcomm_pi(sk)->src, BDADDR_ANY)) {
-+				if (sk1)
-+					sock_put(sk1);
+ 	re = &(hdev->report_enum[HID_FEATURE_REPORT]);
+ 	r = re->report_id_hash[hid_data->inputmode];
+-	if (r) {
+-		r->field[0]->value[hid_data->inputmode_index] = 2;
+-		hid_hw_request(hdev, r, HID_REQ_SET_REPORT);
++	if (r && hid_data->inputmode_field_index >= 0 &&
++	    hid_data->inputmode_field_index < r->maxfield) {
++		struct hid_field *field = r->field[hid_data->inputmode_field_index];
 +
- 				sk1 = sk;
-+				sock_hold(sk1);
-+			}
- 		}
++		if (field && hid_data->inputmode_index < field->report_count) {
++			field->value[hid_data->inputmode_index] = 2;
++			hid_hw_request(hdev, r, HID_REQ_SET_REPORT);
++		}
  	}
- 
-+	if (sk && sk1)
-+		sock_put(sk1);
-+
- 	read_unlock(&rfcomm_sk_list.lock);
- 
- 	return sk ? sk : sk1;
-@@ -941,6 +951,7 @@ int rfcomm_connect_ind(struct rfcomm_session *s, u8 channel, struct rfcomm_dlc *
- {
- 	struct sock *sk, *parent;
- 	bdaddr_t src, dst;
-+	bool defer_setup = false;
- 	int result = 0;
- 
- 	BT_DBG("session %p channel %d", s, channel);
-@@ -954,6 +965,11 @@ int rfcomm_connect_ind(struct rfcomm_session *s, u8 channel, struct rfcomm_dlc *
- 
- 	lock_sock(parent);
- 
-+	if (parent->sk_state != BT_LISTEN)
-+		goto done;
-+
-+	defer_setup = test_bit(BT_SK_DEFER_SETUP, &bt_sk(parent)->flags);
-+
- 	/* Check for backlog size */
- 	if (sk_acceptq_is_full(parent)) {
- 		BT_DBG("backlog full %d", parent->sk_ack_backlog);
-@@ -981,9 +997,11 @@ int rfcomm_connect_ind(struct rfcomm_session *s, u8 channel, struct rfcomm_dlc *
- done:
- 	release_sock(parent);
- 
--	if (test_bit(BT_SK_DEFER_SETUP, &bt_sk(parent)->flags))
-+	if (defer_setup)
- 		parent->sk_state_change(parent);
- 
-+	sock_put(parent);
-+
- 	return result;
+ 	return 0;
  }
+@@ -2813,6 +2819,7 @@ static int wacom_probe(struct hid_device
+ 		return error;
  
--- 
-2.53.0
-
+ 	wacom_wac->hid_data.inputmode = -1;
++	wacom_wac->hid_data.inputmode_field_index = -1;
+ 	wacom_wac->mode_report = -1;
+ 
+ 	if (hid_is_usb(hdev)) {
+--- a/drivers/hid/wacom_wac.h
++++ b/drivers/hid/wacom_wac.h
+@@ -297,6 +297,7 @@ struct wacom_shared {
+ struct hid_data {
+ 	__s16 inputmode;	/* InputMode HID feature, -1 if non-existent */
+ 	__s16 inputmode_index;	/* InputMode HID feature index in the report */
++	__s16 inputmode_field_index; /* InputMode HID feature field index in the report */
+ 	bool sense_state;
+ 	bool inrange_state;
+ 	bool invert_state;
 
 
 
