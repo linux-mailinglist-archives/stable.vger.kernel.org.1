@@ -1,62 +1,63 @@
-Return-Path: <stable+bounces-266111-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265712-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 130KO6OWMWpXngUAu9opvQ
-	(envelope-from <stable+bounces-266111-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:32:03 +0200
+	id gfr9IAWPMWqtmgUAu9opvQ
+	(envelope-from <stable+bounces-265712-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:59:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE68E69437C
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:32:02 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BE06693B0B
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:59:33 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=cR6F7emx;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266111-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266111-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=s3owaLIa;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265712-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265712-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1299D30015A2
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:32:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 06F583016C96
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:56:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B5DE3DC4D9;
-	Tue, 16 Jun 2026 18:31:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3F22477E51;
+	Tue, 16 Jun 2026 17:56:40 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE0CB34FF79;
-	Tue, 16 Jun 2026 18:31:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B85D4779BB;
+	Tue, 16 Jun 2026 17:56:39 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781634718; cv=none; b=gJtjz9QDS4QRJytR4Sn9MnYvsUKBK6dATHLreufWEGdb1z1wkr9GJd/KzNvgrb6ASVGMVtW5sjlrsFHbS8KAH217mqq/z6xYJkZQg785G8Aodbl+kY2vgD2l0tLVRGulQOmPqkrFVfYWWBl9YjLg1dHvZ3VrJbaPe0tS84Ey/+s=
+	t=1781632600; cv=none; b=Dv0QdjsxNQNiuEpt26xp+afzK9FFdaSfJmOc1Cy3BtTjRNevu5ad8mgUfVtOI7wqqYMfi697rmFb+YolfbTs5tKQv2odJ6VSrys9dfKDNOI4qrHLlZZtm8OvQw1p734mUCZH/+G7/y2+kUiaGpFzo6AP0w/DzTlopLfAdzYL9+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781634718; c=relaxed/simple;
-	bh=Ro6Zpg34BHy6ciBE1BdP6wt+jiqG2pwcuQKOWeV/F/0=;
+	s=arc-20240116; t=1781632600; c=relaxed/simple;
+	bh=kqB3xQ6tf1K1+2Pl9goqgZEs+yQbtHSjjel6mtj7fLM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FgveXZ47Yh5w3unZBO0T1iZtGiNc53Zzdva8Hg4PbUfhtPJE7lv8kzh60CGUEd+U4foRQ1hs9vFYjanLZwg5RItGqWnoOvTQYkb2AdAndBx+QtHc/a1zFfK87a3mEsak46rglhi/wGjrzYAhLZ+iyh3PjzjyRKhBhyyQ492GjgU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cR6F7emx; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A49781F000E9;
-	Tue, 16 Jun 2026 18:31:56 +0000 (UTC)
+	 MIME-Version; b=ReHIz57jNvFaN7RYbi1MgVJyWDLLEjBKU9seUzNdXsRb+UYkfDj1g1txY/IWunWBkVqvYgKvAMFuNVlY2FbBHRx+vK3aUMAWqtSCF0Dg1BvXp6trZ3c8h/zLncnT6H2z+UOkGyWfCHPSca2D/GWVCdebaijikMFWVZJ+58brbxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s3owaLIa; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E5871F000E9;
+	Tue, 16 Jun 2026 17:56:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781634717;
-	bh=gYPQPRF/RcJNgJ8g9sdCzSpBdr6qeMCf/+Tuui6KhgM=;
+	s=korg; t=1781632599;
+	bh=KBeKzmqeFOgaJfyN9gFqtP+00KYUKhRbPWPEF+oHf+s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=cR6F7emxkYmplhABHGYb5EzhoH+Y5ScSfBV21C1Und/CSD4QhyhpT2QRjnosUOG+h
-	 SK0Ojp1hZqRza7FzynspYiSRpzELDmivN/tiZFF2yW6uAypdQu6HC6yV8S0gfzDqyb
-	 4uUv5s/HEO8MKKJ8tpZ84jwxts8RicSNpdU4Fhds=
+	b=s3owaLIaKT68qXGDcdm/1Efl/VtFwtt8hvHy9TWJxqEJOeSISDDc/ZUmEIuh/AKAP
+	 28aFtO6TpXmlWjtgF7PJUr+LiT4L6e3MBgeLBTJftbKo+uFR+I3Dp6Szgj5OJi6bJY
+	 6KEhgNZJegq9WoFM50jLDhTJFFwTvpmLOK6Hpxqk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jingoo Han <jg1.han@samsung.com>,
+	Naga Sureshkumar Relli <nagasuresh.relli@microchip.com>,
 	Johan Hovold <johan@kernel.org>,
+	Conor Dooley <conor.dooley@microchip.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 318/411] spi: tegra20-sflash: fix controller deregistration
+Subject: [PATCH 6.1 409/522] spi: microchip-core-qspi: fix controller deregistration
 Date: Tue, 16 Jun 2026 20:29:16 +0530
-Message-ID: <20260616145118.054914297@linuxfoundation.org>
+Message-ID: <20260616145145.194041334@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,22 +73,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266111-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265712-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jg1.han@samsung.com,m:johan@kernel.org,m:broonie@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:nagasuresh.relli@microchip.com,m:johan@kernel.org,m:conor.dooley@microchip.com,m:broonie@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -96,67 +97,73 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,samsung.com:email,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,microchip.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: DE68E69437C
+X-Rspamd-Queue-Id: 0BE06693B0B
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit ad7310e983327f939dd6c4e801eab13238992572 ]
+[ Upstream commit e6464140d439f2d42f072eb422a5b1fec470c5a6 ]
 
 Make sure to deregister the controller before disabling underlying
-resources like clocks during driver unbind.
+resources like interrupts during driver unbind.
 
-Fixes: f12f7318c44a ("spi: tegra20-sflash: use devm_spi_register_master()")
-Cc: stable@vger.kernel.org	# 3.13
-Cc: Jingoo Han <jg1.han@samsung.com>
+Fixes: 8596124c4c1b ("spi: microchip-core-qspi: Add support for microchip fpga qspi controllers")
+Cc: stable@vger.kernel.org	# 6.1
+Cc: Naga Sureshkumar Relli <nagasuresh.relli@microchip.com>
 Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260410081757.503099-23-johan@kernel.org
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Link: https://patch.msgid.link/20260409120419.388546-19-johan@kernel.org
 Signed-off-by: Mark Brown <broonie@kernel.org>
-[ renamed spi_controller/host APIs to spi_master/master equivalents and switched devm_spi_register_master to spi_register_master ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-tegra20-sflash.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/spi/spi-microchip-core-qspi.c |   12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
---- a/drivers/spi/spi-tegra20-sflash.c
-+++ b/drivers/spi/spi-tegra20-sflash.c
-@@ -507,7 +507,7 @@ static int tegra_sflash_probe(struct pla
- 	pm_runtime_put(&pdev->dev);
+--- a/drivers/spi/spi-microchip-core-qspi.c
++++ b/drivers/spi/spi-microchip-core-qspi.c
+@@ -512,7 +512,7 @@ static int mchp_coreqspi_probe(struct pl
+ 				     "unable to allocate master for QSPI controller\n");
  
- 	master->dev.of_node = pdev->dev.of_node;
--	ret = devm_spi_register_master(&pdev->dev, master);
-+	ret = spi_register_master(master);
- 	if (ret < 0) {
- 		dev_err(&pdev->dev, "can not register to master err %d\n", ret);
- 		goto exit_pm_disable;
-@@ -530,12 +530,18 @@ static int tegra_sflash_remove(struct pl
- 	struct spi_master *master = platform_get_drvdata(pdev);
- 	struct tegra_sflash_data	*tsd = spi_master_get_devdata(master);
+ 	qspi = spi_controller_get_devdata(ctlr);
+-	platform_set_drvdata(pdev, qspi);
++	platform_set_drvdata(pdev, ctlr);
  
-+	spi_master_get(master);
+ 	qspi->regs = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(qspi->regs))
+@@ -545,7 +545,7 @@ static int mchp_coreqspi_probe(struct pl
+ 			  SPI_TX_DUAL | SPI_TX_QUAD;
+ 	ctlr->dev.of_node = np;
+ 
+-	ret = devm_spi_register_controller(&pdev->dev, ctlr);
++	ret = spi_register_controller(ctlr);
+ 	if (ret)
+ 		return dev_err_probe(&pdev->dev, ret,
+ 				     "spi_register_controller failed\n");
+@@ -555,9 +555,13 @@ static int mchp_coreqspi_probe(struct pl
+ 
+ static void mchp_coreqspi_remove(struct platform_device *pdev)
+ {
+-	struct mchp_coreqspi *qspi = platform_get_drvdata(pdev);
+-	u32 control = readl_relaxed(qspi->regs + REG_CONTROL);
++	struct spi_controller *ctlr = platform_get_drvdata(pdev);
++	struct mchp_coreqspi *qspi = spi_controller_get_devdata(ctlr);
++	u32 control;
+ 
++	spi_unregister_controller(ctlr);
 +
-+	spi_unregister_master(master);
-+
- 	free_irq(tsd->irq, tsd);
- 
- 	pm_runtime_disable(&pdev->dev);
- 	if (!pm_runtime_status_suspended(&pdev->dev))
- 		tegra_sflash_runtime_suspend(&pdev->dev);
- 
-+	spi_master_put(master);
-+
- 	return 0;
- }
- 
++	control = readl_relaxed(qspi->regs + REG_CONTROL);
+ 	mchp_coreqspi_disable_ints(qspi);
+ 	control &= ~CONTROL_ENABLE;
+ 	writel_relaxed(control, qspi->regs + REG_CONTROL);
 
 
 
