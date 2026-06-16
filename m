@@ -1,61 +1,66 @@
-Return-Path: <stable+bounces-265669-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266424-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id tZE4AYGNMWr7mQUAu9opvQ
-	(envelope-from <stable+bounces-265669-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:53:05 +0200
+	id R4HyK2aeMWqtoQUAu9opvQ
+	(envelope-from <stable+bounces-266424-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:05:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76AC7693953
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:53:04 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11627694BA5
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:05:10 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="KU7kes/E";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265669-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-265669-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=s4wF1Tjs;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266424-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266424-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7D11D3013868
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:53:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AE06031BC97A
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:59:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B34A047B41C;
-	Tue, 16 Jun 2026 17:53:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FFBE47CC96;
+	Tue, 16 Jun 2026 18:59:12 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5587C3C76AF;
-	Tue, 16 Jun 2026 17:52:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D95BA472798;
+	Tue, 16 Jun 2026 18:59:10 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781632380; cv=none; b=KZqaZrg43GRPuMhpo+qguPw3y2nimaaeDSsw4hIcmwtlP0QjWEQcrWUQ7oeCupzv269RVkeIm0SnolBcmhEg6yzjrOydd1x2eloMZZh8C3VGZ0ONeutLVp5sNrBqppwTgzt1AEIiYAh86pdGTClZB411dexhv8dGF/QBYKre9LI=
+	t=1781636352; cv=none; b=Z4FqLN6zPRG8FQLp90acukmVCQBCKDmwxFAAwz9Ds734YJmUJJ7EPJ1xpWyUVQXiokj8YFg1F3AQ/elHJVu6lr7tEFQFb4L5Anq+ioSwtRyzhmYCnr9bmm4JCEjG+B5ju3wU8VS73TYlHvoS7TE/KXNjDc766HnwzBhwircPqMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781632380; c=relaxed/simple;
-	bh=nygm+PE+0lKYrsCXc32lrs90u6ZgPWxgp7dbGIUB66E=;
+	s=arc-20240116; t=1781636352; c=relaxed/simple;
+	bh=/ZjBbvbDX6DSQaIB50xh/t9zv9VG0s8e+F+vCm0szWs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kz/i4++QikHr6lhTex0ATcc/JIuwWkLmowEuTiTGaDwrhdKSxx32v4DNpZAoS4fe3ictxhZKKogpL1mVIQ82c0CiB4ruwodID3xGCQdfausJrQXmO0DkCVR0wrpUcbjb6yV+zJO5erD1nZERfSEtKdUDpMAYjgnaRnC2/T135zM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KU7kes/E; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BD0A1F000E9;
-	Tue, 16 Jun 2026 17:52:56 +0000 (UTC)
+	 MIME-Version; b=Pux+J+D7v1+g7uWY3xshwvFwsBNlohbxRptN8h6IQUPOYJD70fcyJMQ2h6OZultyLk87hOJ1X8rLDATIbZ+1LZI7svCckQaKGHEOiD7PHncUpdTKMu3QgN/e3PUuGMXm0wenztIdqkwRF2wCvCwFgh8Bp4KpDpq15aLM4A1P1sQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s4wF1Tjs; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEA901F000E9;
+	Tue, 16 Jun 2026 18:59:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781632377;
-	bh=R+rU7486WVez4f2z15OCPAl6fJxmNgG6PZjz/4TaSK0=;
+	s=korg; t=1781636350;
+	bh=N1mzZMy7A3cALvWXRjZDWukE6Ir9SaE4nRs0XNeW2Nw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=KU7kes/EAIwU1xXSOjcAmLF1CMqenVd/mX180koEKhRYl3OFOjL3bIZnmFYOr6t0v
-	 cQKETYK1CZHIo4JcIiGIDN4JnPyrZJDuP6JZtqI5RlEzzKLxtbD5HO59OJ/N1OGNEq
-	 0pbqhgR8bcv+/lMV3sWAWDAe9Q4AapSzkiAa7Aqo=
+	b=s4wF1TjswcJi8ebu6Mde6w+Vy5OH8LukiOf1FYGKPu7bMlDxzVuE/vjvp5H3y/V21
+	 P85VSqWpsWVBaXuF76we+MyERofSN4KS18WtCwo8qIJkwGJJYP/OOdjIlaaMSewtod
+	 Bb6qX7+2cy0OWrdgw9HunfNvU00zbXfshb+2Jjlw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Will Deacon <will@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 372/522] wifi: mac80211: remove station if connection prep fails
+Subject: [PATCH 5.10 223/342] arm64/mm: Enable batched TLB flush in unmap_hotplug_range()
 Date: Tue, 16 Jun 2026 20:28:39 +0530
-Message-ID: <20260616145143.177105383@linuxfoundation.org>
+Message-ID: <20260616145058.588020672@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,89 +74,172 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265669-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:miriam.rachel.korenblit@intel.com,m:johannes.berg@intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-266424-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:will@kernel.org,m:linux-arm-kernel@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:david@kernel.org,m:ryan.roberts@arm.com,m:anshuman.khandual@arm.com,m:catalin.marinas@arm.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,intel.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,arm.com:email,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 76AC7693953
+X-Rspamd-Queue-Id: 11627694BA5
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Anshuman Khandual <anshuman.khandual@arm.com>
 
-[ Upstream commit 283fc9e44ff5b5ac967439b4951b80bd4299f4e4 ]
+[ Upstream commit 48478b9f791376b4b89018d7afdfd06865498f65 ]
 
-If connection preparation fails for MLO connections, then the
-interface is completely reset to non-MLD. In this case, we must
-not keep the station since it's related to the link of the vif
-being removed. Delete an existing station. Any "new_sta" is
-already being removed, so that doesn't need changes.
+During a memory hot remove operation, both linear and vmemmap mappings for
+the memory range being removed, get unmapped via unmap_hotplug_range() but
+mapped pages get freed only for vmemmap mapping. This is just a sequential
+operation where each table entry gets cleared, followed by a leaf specific
+TLB flush, and then followed by memory free operation when applicable.
 
-This fixes a use-after-free/double-free in debugfs if that's
-enabled, because a vif going from MLD (and to MLD, but that's
-not relevant here) recreates its entire debugfs.
+This approach was simple and uniform both for vmemmap and linear mappings.
+But linear mapping might contain CONT marked block memory where it becomes
+necessary to first clear out all entire in the range before a TLB flush.
+This is as per the architecture requirement. Hence batch all TLB flushes
+during the table tear down walk and finally do it in unmap_hotplug_range().
 
+Prior to this fix, it was hypothetically possible for a speculative access
+to a higher address in the contiguous block to fill the TLB with shattered
+entries for the entire contiguous range after a lower address had already
+been cleared and invalidated. Due to the table entries being shattered, the
+subsequent TLB invalidation for the higher address would not then clear the
+TLB entries for the lower address, meaning stale TLB entries could persist.
+
+Besides it also helps in improving the performance via TLBI range operation
+along with reduced synchronization instructions. The time spent executing
+unmap_hotplug_range() improved 97% measured over a 2GB memory hot removal
+in KVM guest.
+
+This scheme is not applicable during vmemmap mapping tear down where memory
+needs to be freed and hence a TLB flush is required after clearing out page
+table entry.
+
+Cc: Will Deacon <will@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
+Closes: https://lore.kernel.org/all/aWZYXhrT6D2M-7-N@willie-the-truck/
+Fixes: bbd6ec605c0f ("arm64/mm: Enable memory hot remove")
 Cc: stable@vger.kernel.org
-Fixes: 81151ce462e5 ("wifi: mac80211: support MLO authentication/association with one link")
-Reviewed-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20260505151533.c4e52deb06ad.Iafe56cec7de8512626169496b134bce3a6c17010@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-[ used sta_info_destroy_addr() instead of __sta_info_destroy() ]
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+[ renamed `__pte_clear()` to `pte_clear()` and inlined `pmd_cont(pmd)` as `pmd_val(pmd) & PMD_SECT_CONT` ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mac80211/mlme.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/arm64/mm/mmu.c |   36 ++++++++++++++++++++----------------
+ 1 file changed, 20 insertions(+), 16 deletions(-)
 
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -6586,7 +6586,7 @@ static int ieee80211_prep_connection(str
- 	struct ieee80211_bss *bss = (void *)cbss->priv;
- 	struct sta_info *new_sta = NULL;
- 	struct ieee80211_link_data *link;
--	bool have_sta = false;
-+	struct sta_info *have_sta = NULL;
- 	bool mlo;
- 	int err;
+--- a/arch/arm64/mm/mmu.c
++++ b/arch/arm64/mm/mmu.c
+@@ -862,10 +862,14 @@ static void unmap_hotplug_pte_range(pmd_
  
-@@ -6751,6 +6751,8 @@ static int ieee80211_prep_connection(str
- 
- out_err:
- 	ieee80211_link_release_channel(&sdata->deflink);
-+	if (mlo && have_sta)
-+		WARN_ON(sta_info_destroy_addr(sdata, ap_mld_addr));
- 	ieee80211_vif_set_links(sdata, 0);
- 	return err;
+ 		WARN_ON(!pte_present(pte));
+ 		pte_clear(&init_mm, addr, ptep);
+-		flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
+-		if (free_mapped)
++		if (free_mapped) {
++			/* CONT blocks are not supported in the vmemmap */
++			WARN_ON(pte_cont(pte));
++			flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
+ 			free_hotplug_page_range(pte_page(pte),
+ 						PAGE_SIZE, altmap);
++		}
++		/* unmap_hotplug_range() flushes TLB for !free_mapped */
+ 	} while (addr += PAGE_SIZE, addr < end);
  }
+ 
+@@ -886,15 +890,14 @@ static void unmap_hotplug_pmd_range(pud_
+ 		WARN_ON(!pmd_present(pmd));
+ 		if (pmd_sect(pmd)) {
+ 			pmd_clear(pmdp);
+-
+-			/*
+-			 * One TLBI should be sufficient here as the PMD_SIZE
+-			 * range is mapped with a single block entry.
+-			 */
+-			flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
+-			if (free_mapped)
++			if (free_mapped) {
++				/* CONT blocks are not supported in the vmemmap */
++				WARN_ON(pmd_val(pmd) & PMD_SECT_CONT);
++				flush_tlb_kernel_range(addr, addr + PMD_SIZE);
+ 				free_hotplug_page_range(pmd_page(pmd),
+ 							PMD_SIZE, altmap);
++			}
++			/* unmap_hotplug_range() flushes TLB for !free_mapped */
+ 			continue;
+ 		}
+ 		WARN_ON(!pmd_table(pmd));
+@@ -919,15 +922,12 @@ static void unmap_hotplug_pud_range(p4d_
+ 		WARN_ON(!pud_present(pud));
+ 		if (pud_sect(pud)) {
+ 			pud_clear(pudp);
+-
+-			/*
+-			 * One TLBI should be sufficient here as the PUD_SIZE
+-			 * range is mapped with a single block entry.
+-			 */
+-			flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
+-			if (free_mapped)
++			if (free_mapped) {
++				flush_tlb_kernel_range(addr, addr + PUD_SIZE);
+ 				free_hotplug_page_range(pud_page(pud),
+ 							PUD_SIZE, altmap);
++			}
++			/* unmap_hotplug_range() flushes TLB for !free_mapped */
+ 			continue;
+ 		}
+ 		WARN_ON(!pud_table(pud));
+@@ -957,6 +957,7 @@ static void unmap_hotplug_p4d_range(pgd_
+ static void unmap_hotplug_range(unsigned long addr, unsigned long end,
+ 				bool free_mapped, struct vmem_altmap *altmap)
+ {
++	unsigned long start = addr;
+ 	unsigned long next;
+ 	pgd_t *pgdp, pgd;
+ 
+@@ -978,6 +979,9 @@ static void unmap_hotplug_range(unsigned
+ 		WARN_ON(!pgd_present(pgd));
+ 		unmap_hotplug_p4d_range(pgdp, addr, next, free_mapped, altmap);
+ 	} while (addr = next, addr < end);
++
++	if (!free_mapped)
++		flush_tlb_kernel_range(start, end);
+ }
+ 
+ static void free_empty_pte_table(pmd_t *pmdp, unsigned long addr,
 
 
 
