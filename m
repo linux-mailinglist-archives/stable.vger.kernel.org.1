@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-266127-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263774-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 0nR8C0uYMWrwngUAu9opvQ
-	(envelope-from <stable+bounces-266127-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:39:07 +0200
+	id E+phBmFlMWrciQUAu9opvQ
+	(envelope-from <stable+bounces-263774-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:01:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8291E6944C5
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:39:06 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07DF8690BA7
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:01:51 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="Cz/hKWOS";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266127-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266127-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=0aqOHTaS;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263774-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263774-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8E5F031E73C8
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:33:25 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B00B53014014
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:00:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05FB33DF007;
-	Tue, 16 Jun 2026 18:33:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 886C2438FF3;
+	Tue, 16 Jun 2026 15:00:40 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D86B434FF79;
-	Tue, 16 Jun 2026 18:33:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D12726CE05;
+	Tue, 16 Jun 2026 15:00:39 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781634804; cv=none; b=Jt28r0NvE8kbZhtCgpXhLw2Z++NC+GejCkzgY04oxFzU+cYDveDNsJpu1bpc4J0qkYCCoWmeu6+DJo9f7l3jusMnM9TjIdm5HHcbGd5R8U3d+S0TLjc9Y5LZqGtnv3VjZTncINK7BUjjKfTQONrj+44AaUaZn2MrWHldSgCA7vk=
+	t=1781622040; cv=none; b=bj6su5vTxfHytTMIQwHXxjsq3LWXpE++fIaYybz77xiIKjp2LSQtoTzuTrNLlsrbF5fN6qSYjuKGOruKtbm7oZQl4FiYgZb7egrE8VP88N7gVoJeQBLOpq+588nJq+xqDZN7GibhqjASd8uCpUYBXQGYWz4/PIQ5NOBwpKXLSmI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781634804; c=relaxed/simple;
-	bh=0jMpN45fDvOvS6ly9kU9u98SDZU2KkqXgJ80dfDzgWc=;
+	s=arc-20240116; t=1781622040; c=relaxed/simple;
+	bh=dvsYHRcL4uazI57jnCHKPMIaeClU48upJid+MmXHxm0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U0SY4+bmUsgON/ikUE+aihOzpq0rJyuUczyUZTRygOy5+H56PT6LDJtUXbLMe19ru7S8+JEZ0l6IeVqMC7eCnI2BOX1kSMPjln+1idFfXpEQTQE2ZKxETzWufq0Gn7pJZUWpkaJFS1tiVnKGkMUfv5hjHHtRyBA+clvfNxxaUIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cz/hKWOS; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B391D1F000E9;
-	Tue, 16 Jun 2026 18:33:22 +0000 (UTC)
+	 MIME-Version; b=ROqTBQD24+dyc3GhxfqBqHaUhdBVQJ5RhM3AkG7gImFDUgswTgTC8EhXjjtamAaimd/iCa5A3aj0IIVfC4dzFo4bf8r7Pd+3JOR5rIXjvrbkPUJxZsflWTmffo4WWIyJqx2iLsFoERxgaMdk45Sd93Az8HtKe7RVAwJPC7W2Xt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0aqOHTaS; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2461C1F00A3A;
+	Tue, 16 Jun 2026 15:00:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781634803;
-	bh=ETredjUqkT5ps/ysBg/kebdiF2Fo71tOyERpEdBxlt8=;
+	s=korg; t=1781622039;
+	bh=nWM1nWuKl8f8OZ5GcqwAZlnnJ95aR10M9CTwYan0XH4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Cz/hKWOS2N6DviKjIcwhfQCta+T9/JP8m2dxdrDhX8vSEUNg1jEvrmNoCN51ZC/z1
-	 9LTsPaYGP+tuhZ6IS2u+hvEwL6ba4xubHwG5jdDv7iTqlrMKmi5vkhZ+PSdhJciT1P
-	 /pZkvE03ofOJT71Nhk70MFF3N2fzQugquHsbTtSI=
+	b=0aqOHTaSftH17GgCG9AJiCXH0UjVDGBM1u8bZFuarM5Yf1SvXhNcNIIDDfyicRCXZ
+	 OdTbnqvXX9bo83yh/P8L+a1N606N20RwMExMxnkOO/YRv2c8SyOE9aUUfSk4mhMVve
+	 57vSKRjzf6u094YW9NO7YjXf9Fpl2HW5vuIf3vyQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 292/411] crypto: nx - fix bounce buffer leaks in nx842_crypto_{alloc,free}_ctx
+	Mark Rutland <mark.rutland@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH 7.1 5/8] arm64: cputype: Add C1-Premium definitions
 Date: Tue, 16 Jun 2026 20:28:50 +0530
-Message-ID: <20260616145116.672551944@linuxfoundation.org>
+Message-ID: <20260616145523.497251633@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145523.335696673@linuxfoundation.org>
+References: <20260616145523.335696673@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,21 +72,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266127-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-263774-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:thorsten.blum@linux.dev,m:herbert@gondor.apana.org.au,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mark.rutland@arm.com,m:catalin.marinas@arm.com,m:will@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -98,57 +98,56 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[apana.org.au:email,linux.dev:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,arm.com:url,arm.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8291E6944C5
+X-Rspamd-Queue-Id: 07DF8690BA7
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+7.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thorsten Blum <thorsten.blum@linux.dev>
+From: Mark Rutland <mark.rutland@arm.com>
 
-[ Upstream commit adb3faf2db1a66d0f015b44ac909a32dfc7f2f9c ]
+commit d28413bfc5a255957241f1df5d7fd0c2cd74fe18 upstream.
 
-The bounce buffers are allocated with __get_free_pages() using
-BOUNCE_BUFFER_ORDER (order 2 = 4 pages), but both the allocation error
-path and nx842_crypto_free_ctx() release the buffers with free_page().
-Use free_pages() with the matching order instead.
+Add cputype definitions for C1-Premium. These will be used for errata
+detection in subsequent patches.
 
-Fixes: ed70b479c2c0 ("crypto: nx - add hardware 842 crypto comp alg")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+These values can be found in the C1-Premium TRM:
+
+  https://developer.arm.com/documentation/109416/0100/
+
+... in section A.5.1 ("MIDR_EL1, Main ID Register").
+
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Signed-off-by: Will Deacon <will@kernel.org>
+[Mark: backport to v7.1.y]
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/nx/nx-842.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/arm64/include/asm/cputype.h |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/crypto/nx/nx-842.c
-+++ b/drivers/crypto/nx/nx-842.c
-@@ -116,8 +116,8 @@ void *nx842_crypto_alloc_ctx(struct nx84
- 	ctx->dbounce = (u8 *)__get_free_pages(GFP_KERNEL, BOUNCE_BUFFER_ORDER);
- 	if (!ctx->wmem || !ctx->sbounce || !ctx->dbounce) {
- 		kfree(ctx->wmem);
--		free_page((unsigned long)ctx->sbounce);
--		free_page((unsigned long)ctx->dbounce);
-+		free_pages((unsigned long)ctx->sbounce, BOUNCE_BUFFER_ORDER);
-+		free_pages((unsigned long)ctx->dbounce, BOUNCE_BUFFER_ORDER);
- 		kfree(ctx);
- 		return ERR_PTR(-ENOMEM);
- 	}
-@@ -131,8 +131,8 @@ void nx842_crypto_free_ctx(void *p)
- 	struct nx842_crypto_ctx *ctx = p;
+--- a/arch/arm64/include/asm/cputype.h
++++ b/arch/arm64/include/asm/cputype.h
+@@ -100,6 +100,7 @@
+ #define ARM_CPU_PART_C1_ULTRA		0xD8C
+ #define ARM_CPU_PART_NEOVERSE_N3	0xD8E
+ #define ARM_CPU_PART_C1_PRO		0xD8B
++#define ARM_CPU_PART_C1_PREMIUM		0xD90
  
- 	kfree(ctx->wmem);
--	free_page((unsigned long)ctx->sbounce);
--	free_page((unsigned long)ctx->dbounce);
-+	free_pages((unsigned long)ctx->sbounce, BOUNCE_BUFFER_ORDER);
-+	free_pages((unsigned long)ctx->dbounce, BOUNCE_BUFFER_ORDER);
- }
- EXPORT_SYMBOL_GPL(nx842_crypto_free_ctx);
- 
+ #define APM_CPU_PART_XGENE		0x000
+ #define APM_CPU_VAR_POTENZA		0x00
+@@ -193,6 +194,7 @@
+ #define MIDR_C1_ULTRA MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_C1_ULTRA)
+ #define MIDR_NEOVERSE_N3 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_N3)
+ #define MIDR_C1_PRO MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_C1_PRO)
++#define MIDR_C1_PREMIUM MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_C1_PREMIUM)
+ #define MIDR_THUNDERX	MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX)
+ #define MIDR_THUNDERX_81XX MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX_81XX)
+ #define MIDR_THUNDERX_83XX MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX_83XX)
 
 
 
