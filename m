@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-264941-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265487-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id UknsERiDMWoPlQUAu9opvQ
-	(envelope-from <stable+bounces-264941-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:08:40 +0200
+	id 5tKPJViLMWrYmAUAu9opvQ
+	(envelope-from <stable+bounces-265487-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:43:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D4D4692C4A
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:08:39 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E956D6936A6
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:43:51 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=n7a09ght;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264941-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264941-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=I8PA2AJg;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265487-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265487-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8314330A41A4
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:52:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 07F7A3153274
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:37:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E7C5478E50;
-	Tue, 16 Jun 2026 16:51:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D1C446AF3C;
+	Tue, 16 Jun 2026 17:37:31 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59922478E5B;
-	Tue, 16 Jun 2026 16:51:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47FCD4611CF;
+	Tue, 16 Jun 2026 17:37:30 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781628694; cv=none; b=hWvqVUBkIV5pKJ5cBEUr5/J6m3mw/FcEFyKljJJb9Q8dL0MXfvzjt2PViT0uN9bMi1hFv0pwPqv2ta4EdqOibSsAlkEfWY2XWDYR5BKv/+JxeJdMgzH/RorG20FY/HEuyaaiYTfuz/ASHvu6F/kQPjGq0M4HHKlJ5tC333t2pQQ=
+	t=1781631451; cv=none; b=CWxvshebkaYmjPvKx9docYCwvfwcmhNz2EOurWo91QwvMA6eFpYdOrYXUTxV9XOT0m9N/REvg3lpcYW4UJbx7YIFfCDPRJzYqsTdbbZ+H1bT559ZxdrWv0xXKjHNsfI/wF2Z0cTtTD6/QS0OaScw/X37aITIaFtqX5XyNdCKMk0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781628694; c=relaxed/simple;
-	bh=fZuSh8px1FkvdqMfdeOVVf5sOdpvEgIvHEuqWLzhoc8=;
+	s=arc-20240116; t=1781631451; c=relaxed/simple;
+	bh=FyGVlvrELIoMNlRliigGj7JwmE307f8s6GeGRr/aPFU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=am1IUokUChthhbpcheUeX3EgVfw/1Ira3H6TuQLHKePGYd3b85YdEd+cQISlZLzukztIPJ6n4IT4Bwy7LryttEemn8daCrWpGkEnRhIHmhgvP9GDftht+j2nHzZY2VZf0gPXzElyRWR4AJpcalbYe4DJ0hdeOOV1hIQn6Csq+7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n7a09ght; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BB1C1F000E9;
-	Tue, 16 Jun 2026 16:51:32 +0000 (UTC)
+	 MIME-Version; b=uYvvXCyiYKj+YLdpxPMxLXITsR3jErVUr8QS2sPbhr3Csy13J1BrBcCp71NzHirVBBnBx5NCvp+G8n18CyOkUnZn2zDNJykgOs8PSz+2mNibTA0Q4yjkF3H5/jC/B7i90cG3/Jvv1jLFx16WPd88UtThPgZw00jiezocpCJQOeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I8PA2AJg; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22A881F000E9;
+	Tue, 16 Jun 2026 17:37:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781628693;
-	bh=fcSQvV0Wt+n2a+3d3Hha1Dpd6exgyjWkD7sbVEdooMs=;
+	s=korg; t=1781631450;
+	bh=iwAslf2nevZbjVGVoTPlI7vhLuZ4sq4Xzd83iptqLzM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=n7a09ghtuTw9vkvT89U4Hu8ah8HEE4ffc2/hSpRjKdwNjOv89wYzXTxV6KWvZAPuk
-	 DurkDLus/wwqs9G3HeMMh4Ctb3RCntorBxyGikZMOOMRrfCZ/RHVCvxAggZcT/juiX
-	 MpNYLsC5ZBnDvB77SimgJO+Fm9jZgaTjlaOzSyJc=
+	b=I8PA2AJgRugcgL1UCl6HafLOvrGN7YBKjcrr8g8WAgzx4la8Hb0oGevzRcajajY2R
+	 1+a42PpjMB+pCe8ss6nmxv4eBjHb0iDEr45J9R7OfOtGKTBaRy322LkjVUlgiNt23+
+	 SxCi4gLcyipFqsCp7LG2Na5Go7FG3ulKrUPhIc7s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitriy Zharov <contact@zharov.dev>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.6 143/452] Input: xpad - add support for ASUS ROG RAIKIRI II
-Date: Tue, 16 Jun 2026 20:26:10 +0530
-Message-ID: <20260616145125.218594317@linuxfoundation.org>
+	syzbot+f13c19f75e1097abd116@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 224/522] ieee802154: 6lowpan: only accept IPv6 packets in lowpan_xmit()
+Date: Tue, 16 Jun 2026 20:26:11 +0530
+Message-ID: <20260616145136.493403963@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,79 +75,91 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264941-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:contact@zharov.dev,m:dmitry.torokhov@gmail.com,m:dmitrytorokhov@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,zharov.dev,gmail.com];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265487-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:syzbot+f13c19f75e1097abd116@syzkaller.appspotmail.com,m:edumazet@google.com,m:miquel.raynal@bootlin.com,m:kuba@kernel.org,m:sashal@kernel.org,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	TAGGED_RCPT(0.00)[stable,f13c19f75e1097abd116];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,appspotmail.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,bootlin.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3D4D4692C4A
+X-Rspamd-Queue-Id: E956D6936A6
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitriy Zharov <contact@zharov.dev>
+From: Eric Dumazet <edumazet@google.com>
 
-commit c897cf120696b94f56ed0f3197ba9a77071a59ec upstream.
+[ Upstream commit 3a5f3f7aff18bcc36a57839cf50cf0cc8de707f3 ]
 
-Add the VID/PIDs for the ASUS ROG RAIKIRI II controller to xpad_device
-and the VID to xpad_table. The controller has a physical PC/XBOX toggle
-which switches between XBOX360 and XBOXONE protocols.
+The aoe driver (or similar) generates a non-IPv6 packet
+(e.g., ETH_P_AOE) and queues it for transmission via dev_queue_xmit()
+on a 6LoWPAN interface (configured by the user or test case).
 
-Signed-off-by: Dmitriy Zharov <contact@zharov.dev>
-Link: https://patch.msgid.link/20260430183522.122151-1-contact@zharov.dev
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Since the packet is not IPv6, the 6LoWPAN header_ops->create function
+(lowpan_header_create or header_create) returns early without initializing
+the lowpan_addr_info structure in the skb headroom.
+
+In the transmit function (lowpan_xmit), the driver calls lowpan_header
+(or setup_header) which unconditionally copies and uses the lowpan_addr_info
+from the headroom, which contains uninitialized data.
+
+Fix this by dropping non IPv6 packets.
+
+A similar fix is needed in net/bluetooth/6lowpan.c bt_xmit().
+
+Fixes: 4dc315e267fe ("ieee802154: 6lowpan: move transmit functionality")
+Reported-by: syzbot+f13c19f75e1097abd116@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/6a1fd763.278b5b03.2bcf39.0049.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://patch.msgid.link/20260603072955.4032221-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/joystick/xpad.c |    5 +++++
+ net/ieee802154/6lowpan/tx.c | 5 +++++
  1 file changed, 5 insertions(+)
 
---- a/drivers/input/joystick/xpad.c
-+++ b/drivers/input/joystick/xpad.c
-@@ -215,6 +215,10 @@ static const struct xpad_device {
- 	{ 0x07ff, 0xffff, "Mad Catz GamePad", 0, XTYPE_XBOX360 },
- 	{ 0x0b05, 0x1a38, "ASUS ROG RAIKIRI", MAP_SHARE_BUTTON, XTYPE_XBOXONE },
- 	{ 0x0b05, 0x1abb, "ASUS ROG RAIKIRI PRO", 0, XTYPE_XBOXONE },
-+	{ 0x0b05, 0x1c91, "ASUS ROG RAIKIRI II", 0, XTYPE_XBOX360 },
-+	{ 0x0b05, 0x1c92, "ASUS ROG RAIKIRI II WIRELESS", 0, XTYPE_XBOX360 },
-+	{ 0x0b05, 0x1c96, "ASUS ROG RAIKIRI II XBOX", MAP_SHARE_BUTTON, XTYPE_XBOXONE },
-+	{ 0x0b05, 0x1d04, "ASUS ROG RAIKIRI II XBOX WIRELESS", MAP_SHARE_BUTTON, XTYPE_XBOXONE },
- 	{ 0x0c12, 0x0005, "Intec wireless", 0, XTYPE_XBOX },
- 	{ 0x0c12, 0x8801, "Nyko Xbox Controller", 0, XTYPE_XBOX },
- 	{ 0x0c12, 0x8802, "Zeroplus Xbox Controller", 0, XTYPE_XBOX },
-@@ -527,6 +531,7 @@ static const struct usb_device_id xpad_t
- 	{ USB_DEVICE(0x0738, 0x4540) },		/* Mad Catz Beat Pad */
- 	XPAD_XBOXONE_VENDOR(0x0738),		/* Mad Catz FightStick TE 2 */
- 	XPAD_XBOX360_VENDOR(0x07ff),		/* Mad Catz Gamepad */
-+	XPAD_XBOX360_VENDOR(0x0b05),		/* ASUS controllers */
- 	XPAD_XBOXONE_VENDOR(0x0b05),		/* ASUS controllers */
- 	XPAD_XBOX360_VENDOR(0x0c12),		/* Zeroplus X-Box 360 controllers */
- 	XPAD_XBOX360_VENDOR(0x0db0),		/* Micro Star International X-Box 360 controllers */
+diff --git a/net/ieee802154/6lowpan/tx.c b/net/ieee802154/6lowpan/tx.c
+index 0c07662b44c0ca..4df76ff50699ed 100644
+--- a/net/ieee802154/6lowpan/tx.c
++++ b/net/ieee802154/6lowpan/tx.c
+@@ -255,6 +255,11 @@ netdev_tx_t lowpan_xmit(struct sk_buff *skb, struct net_device *ldev)
+ 
+ 	pr_debug("package xmit\n");
+ 
++	if (skb->protocol != htons(ETH_P_IPV6)) {
++		kfree_skb(skb);
++		return NET_XMIT_DROP;
++	}
++
+ 	WARN_ON_ONCE(skb->len > IPV6_MIN_MTU);
+ 
+ 	/* We must take a copy of the skb before we modify/replace the ipv6
+-- 
+2.53.0
+
 
 
 
