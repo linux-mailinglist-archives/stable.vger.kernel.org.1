@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-266494-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264641-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id YdcjBrKfMWo3ogUAu9opvQ
-	(envelope-from <stable+bounces-266494-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:10:42 +0200
+	id 7UNECPZ8MWqokgUAu9opvQ
+	(envelope-from <stable+bounces-264641-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:42:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A168B694D65
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:10:41 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17D586925DD
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:42:29 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=eRCnbjCj;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266494-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266494-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=wgWv+hSi;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264641-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264641-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CF39D31D8B94
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:05:11 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5DD8D308957D
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:23:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40C0E3DC87A;
-	Tue, 16 Jun 2026 19:05:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8761246AF11;
+	Tue, 16 Jun 2026 16:23:26 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 008373DA5A8;
-	Tue, 16 Jun 2026 19:05:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 475A61E8320;
+	Tue, 16 Jun 2026 16:23:25 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781636711; cv=none; b=jJ+ax9xu+oPKXnMjpUKqH+Yh3qZIyEQmq98LVwOYgqXFgW8x1H3mBpChvzhQXeIHOpkxttexnTuuMMUUJ7+w3XvHtQD3TC1MUbn55n7ZUHnt+PesfTVMIxeCO/j5LWrRshgU/weMXtjAbkcp7J73Uywc2UeLU29gC5WRXFxuA2U=
+	t=1781627006; cv=none; b=q0c5GMWkvUuB8Tbtg15JtJtb1F7w1e6oSMc6EYHXVo65qY/5kX02Ee4oq46oqhDduS8e8tsPSJQPQr1uA7kWMTPNgLGDFokakozK+CyerBYUkpjxUucZ6mUFnkLnj9zzD3AsWmLkAGhutrYr07iYTjep1c/v+aOXi/LN1qs5F80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781636711; c=relaxed/simple;
-	bh=tE1jMWTkkNdKZcYRP1Z2jPLWy1m2TjkaIdnceIFmOfs=;
+	s=arc-20240116; t=1781627006; c=relaxed/simple;
+	bh=U6NAyJ3FqyplKo2Yy70AAOyg/rzBYgtHGlFgDaZLPgw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dquaakdax6bPpCgpc9v5rdoacKY/fDU+11KlCR25Mk696UIy3ICVXW/nWg0yD1lpB2TLOYo+FFcxzGSAq/e4MPRg3whN6Vten5Ru7aV8zlc/gltuyc6KLfRTj2zskv9PPgkQVCSihM8ACda7hmf7tuYlaLGlssb0n5pX6UKoKME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eRCnbjCj; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08EC81F000E9;
-	Tue, 16 Jun 2026 19:05:08 +0000 (UTC)
+	 MIME-Version; b=skbhbizMsa9w9bAmMP1CL4r2SrBKSRNf7wdg96gZqhsBxU2hBGdYp7lGg0Y5RCIrIdVajPP2NmLMFLuHWTz6biG9GQHJeJaX04obwYIwcin8Dm6lieXS/DoREPMEQkpoElXuugXXkN17FjRB8Ww0ZP4BvDKpmUjK562bR+cA3mQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wgWv+hSi; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FA0E1F00A3A;
+	Tue, 16 Jun 2026 16:23:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781636709;
-	bh=g2nDv6+/FxUVRnsBvKZnsiU512YVzdOrX1CteChstyc=;
+	s=korg; t=1781627005;
+	bh=GjmPS85KE2jR6RKkZuAefO717TXZlR6DB++fXuiwtb8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=eRCnbjCjsc0sEcglM2l5TS+qUkqHD1YCiiH4s/QJsO8M1CcI61K2UhAMx6plDsFgf
-	 mHn2blzFmDD+XOCrQoIAbD7/xl2KUDWZtUuOSRuGYDaSgX7wQq9xdmiSFowUHRO4o7
-	 NYLzM4aXEzVMzxS8YYmVzPGcudQFj7D8zbMSV6og=
+	b=wgWv+hSiv2F4PGKLL5QzSa27cp/PChuVIwBbJc5isk8arxXsYGdrUZNMwtptH7fc3
+	 Q2RcDMSikbXlr/h3c5sE61CanCtTRbfCOBZb4+6AXPR7647oMAuS8d49WGBZ9tEpmA
+	 rUwePlnuuNOp1P0LmCXK3Fz6dvgmO3/GUzwXhqp4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Max Kellermann <max.kellermann@ionos.com>,
-	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
-	Ilya Dryomov <idryomov@gmail.com>,
+	Til Kaiser <mail@tk154.de>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 248/342] ceph: only d_add() negative dentries when they are unhashed
+Subject: [PATCH 6.12 106/261] net: mvpp2: build skb from XDP-adjusted data on XDP_PASS
 Date: Tue, 16 Jun 2026 20:29:04 +0530
-Message-ID: <20260616145059.781630544@linuxfoundation.org>
+Message-ID: <20260616145049.965323724@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,146 +72,141 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,ionos.com,ibm.com,gmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-266494-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264641-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:max.kellermann@ionos.com,m:Slava.Dubeyko@ibm.com,m:idryomov@gmail.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mail@tk154.de,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,ionos.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,tk154.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,xdp.data:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A168B694D65
+X-Rspamd-Queue-Id: 17D586925DD
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Max Kellermann <max.kellermann@ionos.com>
+From: Til Kaiser <mail@tk154.de>
 
-[ Upstream commit 803447f93d75ab6e40c85e6d12b5630d281d70d6 ]
+[ Upstream commit 77a6b90ce56bc982dcfa94229b8e28e6abb16e95 ]
 
-Ceph can call d_add(dentry, NULL) on a negative dentry that is already
-present in the primary dcache hash.
+When an XDP program uses bpf_xdp_adjust_head() or bpf_xdp_adjust_tail()
+and then returns XDP_PASS, mvpp2 still builds the skb from fixed offsets
+derived from the original RX descriptor. Packet geometry changes made by
+the XDP program are therefore discarded before the skb reaches the stack.
 
-In the current VFS that is not safe.  d_add() goes through __d_add()
-to __d_rehash(), which unconditionally reinserts dentry->d_hash into
-the hlist_bl bucket.  If the dentry is already hashed, reinserting the
-same node can corrupt the bucket, including creating a self-loop.
-Once that happens, __d_lookup() can spin forever in the hlist_bl walk,
-typically looping only on the d_name.hash mismatch check and
-eventually triggering RCU stall reports like this one:
+Update rx_offset and rx_bytes from xdp.data and xdp.data_end for
+XDP_PASS. This makes skb_reserve() and skb_put() reflect the packet seen
+by XDP, and makes RX byte accounting for XDP_PASS follow the length of the
+skb passed to the network stack.
 
- rcu: INFO: rcu_sched self-detected stall on CPU
- rcu:         87-....: (2100 ticks this GP) idle=3a4c/1/0x4000000000000000 softirq=25003319/25003319 fqs=829
- rcu:         (t=2101 jiffies g=79058445 q=698988 ncpus=192)
- CPU: 87 UID: 2952868916 PID: 3933303 Comm: php-cgi8.3 Not tainted 6.18.17-i1-amd #950 NONE
- Hardware name: Dell Inc. PowerEdge R7615/0G9DHV, BIOS 1.6.6 09/22/2023
- RIP: 0010:__d_lookup+0x46/0xb0
- Code: c1 e8 07 48 8d 04 c2 48 8b 00 49 89 fc 49 89 f5 48 89 c3 48 83 e3 fe 48 83 f8 01 77 0f eb 2d 0f 1f 44 00 00 48 8b 1b 48 85 db <74> 20 39 6b 18 75 f3 48 8d 7b 78 e8 ba 85 d0 00 4c 39 63 10 74 1f
- RSP: 0018:ff745a70c8253898 EFLAGS: 00000282
- RAX: ff26e470054cb208 RBX: ff26e470054cb208 RCX: 000000006e958966
- RDX: ff26e48267340000 RSI: ff745a70c82539b0 RDI: ff26e458f74655c0
- RBP: 000000006e958966 R08: 0000000000000180 R09: 9cd08d909b919a89
- R10: ff26e458f74655c0 R11: 0000000000000000 R12: ff26e458f74655c0
- R13: ff745a70c82539b0 R14: d0d0d0d0d0d0d0d0 R15: 2f2f2f2f2f2f2f2f
- FS:  00007f5770896980(0000) GS:ff26e482c5d88000(0000) knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 00007f5764de50c0 CR3: 000000a72abb5001 CR4: 0000000000771ef0
- PKRU: 55555554
- Call Trace:
-  <TASK>
-  lookup_fast+0x9f/0x100
-  walk_component+0x1f/0x150
-  link_path_walk+0x20e/0x3d0
-  path_lookupat+0x68/0x180
-  filename_lookup+0xdc/0x1e0
-  vfs_statx+0x6c/0x140
-  vfs_fstatat+0x67/0xa0
-  __do_sys_newfstatat+0x24/0x60
-  do_syscall_64+0x6a/0x230
-  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+Keep a separate rx_sync_size for page-pool recycling on skb allocation
+failure, which must stay tied to the received buffer range.
 
-This is reachable with reused cached negative dentries.  A Ceph lookup
-or atomic_open can be handed a negative dentry that is already hashed,
-and fs/ceph/dir.c then hits one of two paths that incorrectly assume
-"negative" also means "unhashed":
+Non-PASS verdicts continue to account the descriptor length because no skb
+is passed up in those cases.
 
-  - ceph_finish_lookup():
-      MDS reply is -ENOENT with no trace
-      -> d_add(dentry, NULL)
-
-  - ceph_lookup():
-      local ENOENT fast path for a complete directory with shared caps
-      -> d_add(dentry, NULL)
-
-Both paths can therefore re-add an already-hashed negative dentry.
-
-Ceph already uses the correct pattern elsewhere: ceph_fill_trace() only
-calls d_add(dn, NULL) for a negative null-dentry reply when d_unhashed(dn)
-is true.
-
-Fix both fs/ceph/dir.c sites the same way: only call d_add() for a
-negative dentry when it is actually unhashed.  If the negative dentry
-is already hashed, leave it in place and reuse it as-is.
-
-This preserves the existing behavior for unhashed dentries while
-avoiding d_hash list corruption for reused hashed negatives.
-
-Cc: stable@vger.kernel.org
-Fixes: 2817b000b02c ("ceph: directory operations")
-Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
-Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-[ kept existing dout() debug call instead of upstream's doutc() form when adding the d_unhashed() guard around d_add() ]
+Fixes: 07dd0a7aae7f ("mvpp2: add basic XDP support")
+Signed-off-by: Til Kaiser <mail@tk154.de>
+Link: https://patch.msgid.link/20260607134943.21996-5-mail@tk154.de
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ceph/dir.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ .../net/ethernet/marvell/mvpp2/mvpp2_main.c   | 21 +++++++++++++------
+ 1 file changed, 15 insertions(+), 6 deletions(-)
 
---- a/fs/ceph/dir.c
-+++ b/fs/ceph/dir.c
-@@ -719,7 +719,8 @@ struct dentry *ceph_finish_lookup(struct
- 				d_drop(dentry);
- 				err = -ENOENT;
- 			} else {
--				d_add(dentry, NULL);
-+				if (d_unhashed(dentry))
-+					d_add(dentry, NULL);
+diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
+index 2c517f6ca39c40..325a3a657249df 100644
+--- a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
++++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
+@@ -3932,10 +3932,10 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
+ 		struct mvpp2_bm_pool *bm_pool;
+ 		struct page_pool *pp = NULL;
+ 		struct sk_buff *skb;
+-		unsigned int frag_size;
++		unsigned int frag_size, rx_sync_size;
+ 		dma_addr_t dma_addr;
+ 		phys_addr_t phys_addr;
+-		int pool, rx_bytes, err, ret;
++		int pool, rx_bytes, rx_offset, err, ret;
+ 		struct page *page;
+ 		void *data;
+ 
+@@ -3948,6 +3948,8 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
+ 		rx_status = mvpp2_rxdesc_status_get(port, rx_desc);
+ 		rx_bytes = mvpp2_rxdesc_size_get(port, rx_desc);
+ 		rx_bytes -= MVPP2_MH_SIZE;
++		rx_sync_size = rx_bytes + MVPP2_MH_SIZE;
++		rx_offset = MVPP2_MH_SIZE + MVPP2_SKB_HEADROOM;
+ 		dma_addr = mvpp2_rxdesc_dma_addr_get(port, rx_desc);
+ 
+ 		pool = (rx_status & MVPP2_RXD_BM_POOL_ID_MASK) >>
+@@ -3963,7 +3965,7 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
+ 
+ 		dma_sync_single_range_for_cpu(dev->dev.parent, dma_addr,
+ 					      MVPP2_SKB_HEADROOM,
+-					      rx_bytes + MVPP2_MH_SIZE,
++					      rx_sync_size,
+ 					      dma_dir);
+ 
+ 		/* Buffer header not supported */
+@@ -4014,6 +4016,14 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
+ 				continue;
  			}
+ 
++			rx_sync_size = max_t(unsigned int, rx_sync_size,
++					     xdp.data_end - xdp.data_hard_start -
++					     MVPP2_SKB_HEADROOM);
++
++			/* Update offset and length to reflect any XDP adjustments. */
++			rx_offset = xdp.data     - data;
++			rx_bytes  = xdp.data_end - xdp.data;
++
+ 			metasize = xdp.data - xdp.data_meta;
  		}
- 	}
-@@ -775,7 +776,8 @@ static struct dentry *ceph_lookup(struct
- 			__ceph_touch_fmode(ci, mdsc, CEPH_FILE_MODE_RD);
- 			spin_unlock(&ci->i_ceph_lock);
- 			dout(" dir %p complete, -ENOENT\n", dir);
--			d_add(dentry, NULL);
-+			if (d_unhashed(dentry))
-+				d_add(dentry, NULL);
- 			di->lease_shared_gen = atomic_read(&ci->i_shared_gen);
- 			return NULL;
- 		}
+ 
+@@ -4025,8 +4035,7 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
+ 			netdev_warn(port->dev, "skb build failed\n");
+ 			if (pp) {
+ 				page_pool_put_page(pp, virt_to_head_page(data),
+-						   rx_bytes + MVPP2_MH_SIZE,
+-						   true);
++						   rx_sync_size, true);
+ 			} else {
+ 				dma_unmap_single_attrs(dev->dev.parent, dma_addr,
+ 						       bm_pool->buf_size,
+@@ -4056,7 +4065,7 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
+ 		ps.rx_packets++;
+ 		ps.rx_bytes += rx_bytes;
+ 
+-		skb_reserve(skb, MVPP2_MH_SIZE + MVPP2_SKB_HEADROOM);
++		skb_reserve(skb, rx_offset);
+ 		skb_put(skb, rx_bytes);
+ 		if (metasize)
+ 			skb_metadata_set(skb, metasize);
+-- 
+2.53.0
+
 
 
 
