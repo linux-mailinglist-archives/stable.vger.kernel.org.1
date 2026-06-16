@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-264614-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264300-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Q0LXKJ58MWpvkgUAu9opvQ
-	(envelope-from <stable+bounces-264614-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:41:02 +0200
+	id vndjFAVyMWoEjgUAu9opvQ
+	(envelope-from <stable+bounces-264300-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:55:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id A88F9692565
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:41:01 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FE6D691854
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:55:48 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=VADd4W2n;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264614-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-264614-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=C10FWn1u;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264300-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264300-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7DFA6307C849
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:20:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6D5063059FEA
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:53:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0373E46AF02;
-	Tue, 16 Jun 2026 16:20:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A64FF44CF44;
+	Tue, 16 Jun 2026 15:53:58 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B80214508E4;
-	Tue, 16 Jun 2026 16:20:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7369215B998;
+	Tue, 16 Jun 2026 15:53:57 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781626830; cv=none; b=C+6bD3ucgcm852ZMki+CL6r+VtVGDFTPJYkIjXTz4daKdrOC90DaPAf+q6mN8xJDqLynYxaLEOOYN7nr6vPfu9JoScthJqtJj1/ohdcXuHC3tzYZlvKFFo2jhAhMqqlYUQKodQE785h+rDhiEjn3CMLMBlW56IGeCzcPpR3TTSg=
+	t=1781625238; cv=none; b=SFHOu8YaCsIFaDOjRKIl0V5GYZbAzwFEzm+J5ET1/6M4U23E8GqTwLapSNOvTlbGtsm+NLjlrGOtn7RNju4oMDe2xCgVqBzKl+MIHtEr2+94MpsJLKLw0jnUuuox3aj7GXePiHKpQp+5PolffF70Zf1O06TfRe3nth9gyz6SnLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781626830; c=relaxed/simple;
-	bh=MEYFawXtpU1BUN6Tu/B5//sQz9gR5fskgjfqJMGH34Q=;
+	s=arc-20240116; t=1781625238; c=relaxed/simple;
+	bh=cpbzTHJsrzbGYI+nSBOcyvFqLGtaS4RfnpxG8AKH7xA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZDVkYlXADI6+U1+keQHO2tuXQBmlKErZ72iBPvp5Vyx6X2h9R/hgVzW90TXyoWVbSnF0Wg5QPge46tKvPK7Asdrr1fWPBUL7tQBwHmrtm86OvC8/m/nGn4MFQHTvSOQl3asswk0R1clgRae6mOuYLH2rNARPzkfqWUKCo4TdQgw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VADd4W2n; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 780081F000E9;
-	Tue, 16 Jun 2026 16:20:28 +0000 (UTC)
+	 MIME-Version; b=gdhMgJgD2K1Btza90FXDz6o1qisoyEfsP3DNw2xnQ1DTW/Yb4GzcnUz1wNenyeS7VC+VmmTudTYO9kz41x50iwB5b331WLJ3Lgjkd5HTeVYy4JrNe/YC4tA607gk/sqa9mcZsVgsRsj5koCQnPfF5KVN671TneCPnvgxKbPOFMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C10FWn1u; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C8C11F000E9;
+	Tue, 16 Jun 2026 15:53:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781626829;
-	bh=EbOwZKP+Ga2VqHy2UKzgVtdhVqrnM1kZktOTvYdrwGs=;
+	s=korg; t=1781625237;
+	bh=JvkztUMJAJmtHU24vZRJFXCXw0+3Ezh0hpSwIGyVifw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=VADd4W2nkJvav2t939PldTPiDPYmi5spL3iD6Bf37ds/xpVsmrUXWnU3mWle/yBYV
-	 hX9DtaAh7oXsY1/2bcocXAL1cMMatDvh8RXB7/fkqcYTOX3ULK7xxUrsJE3AWQSk8i
-	 4wYqqI5fShcRIyl7pcEbnWUIqDrK9GTgdAialA20=
+	b=C10FWn1uILA0kUXV0vbWGRKCOob3OUHrcUmREftiWK8Zqg7s29CLB3fzlu6Cyn9zW
+	 qLqjxkAHvUfbumQjx5YddwUp2jNl06ORrdG6u2P8t652hCqKe7Fu4JoSccZ62+agsD
+	 TdZyaxcEl6FU3Pi5BH135+5iYoORUrUUUJZohJhk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+b109633ea805cac54a61@syzkaller.appspotmail.com,
-	Aleksandr Nogikh <nogikh@google.com>,
-	"Christian Brauner (Amutable)" <brauner@kernel.org>,
+	Mingyu Wang <25181214217@stu.xidian.edu.cn>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 061/261] signal: clear JOBCTL_PENDING_MASK for caller in zap_other_threads()
+Subject: [PATCH 6.18 103/325] net: qrtr: fix refcount saturation and potential UAF in qrtr_port_remove
 Date: Tue, 16 Jun 2026 20:28:19 +0530
-Message-ID: <20260616145047.971968772@linuxfoundation.org>
+Message-ID: <20260616145102.812762014@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
-References: <20260616145044.869532709@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,110 +68,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264614-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264300-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:syzbot+b109633ea805cac54a61@syzkaller.appspotmail.com,m:nogikh@google.com,m:brauner@kernel.org,m:sashal@kernel.org,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:25181214217@stu.xidian.edu.cn,m:horms@kernel.org,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,b109633ea805cac54a61];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,syzkaller.appspot.com:url,appspotmail.com:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,xidian.edu.cn:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A88F9692565
+X-Rspamd-Queue-Id: 9FE6D691854
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Nogikh <nogikh@google.com>
+From: Mingyu Wang <25181214217@stu.xidian.edu.cn>
 
-[ Upstream commit 90918794a4e2c3b440f8fcf3847765a8b1d81b25 ]
+[ Upstream commit a2171131ecda1ed61a594a1eb715e75fdad0fef5 ]
 
-When a multi-threaded process receives a stop signal (e.g., SIGSTOP),
-do_signal_stop() sets JOBCTL_STOP_PENDING and JOBCTL_STOP_CONSUME on all
-threads and sets signal->group_stop_count to the number of threads. If
-one of the threads concurrently calls execve(), de_thread() invokes
-zap_other_threads() to kill all other threads. zap_other_threads()
-aborts the pending group stop by resetting signal->group_stop_count to 0
-and clears the JOBCTL_PENDING_MASK for all other threads. However, it
-fails to clear the job control flags for the calling thread.
+In qrtr_port_remove(), the socket reference count is decremented via
+__sock_put() before the port is removed from the qrtr_ports XArray and
+before the RCU grace period elapses.
 
-When execve() completes, the calling thread returns to user mode and
-checks for pending signals. Seeing the stale JOBCTL_STOP_PENDING flag,
-it calls do_signal_stop(), which invokes task_participate_group_stop().
-Since JOBCTL_STOP_CONSUME is still set, it attempts to decrement the
-already-zero signal->group_stop_count, triggering a warning:
+This breaks the fundamental RCU update paradigm. It exposes a race
+window where a concurrent RCU reader (such as qrtr_reset_ports() or
+qrtr_port_lookup()) can obtain a pointer to the socket from the XArray,
+and attempt to call sock_hold() on a socket whose reference count has
+already dropped to zero.
 
-sig->group_stop_count == 0
-WARNING: CPU: 1 PID: 6475 at kernel/signal.c:373
-task_participate_group_stop+0x215/0x2d0
-Call Trace:
- <TASK>
- do_signal_stop+0x3be/0x5c0 kernel/signal.c:2619
- get_signal+0xa8c/0x1330 kernel/signal.c:2884
- arch_do_signal_or_restart+0xbc/0x840 arch/x86/kernel/signal.c:337
- exit_to_user_mode_loop+0x8c/0x4d0 kernel/entry/common.c:98
- do_syscall_64+0x33e/0xf80 arch/x86/entry/syscall_64.c:100
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
- </TASK>
+This exact race condition was hit during syzkaller fuzzing, leading to
+the following refcount saturation warning and a potential Use-After-Free:
 
-Fix this race condition by clearing the JOBCTL_PENDING_MASK for the
-calling thread in zap_other_threads(), ensuring it does not retain any
-stale job control state after the thread group is destroyed. This aligns
-with other functions that tear down a thread group and abort group
-stops, such as zap_process() and complete_signal(), which correctly
-clear these flags for all threads including the current one.
+  refcount_t: saturated; leaking memory.
+  WARNING: CPU: 3 PID: 1273 at lib/refcount.c:22 refcount_warn_saturate+0xae/0x1d0
+  Modules linked in: qrtr(+) bochs drm_shmem_helper ...
+  Call Trace:
+   <TASK>
+   qrtr_reset_ports net/qrtr/af_qrtr.c:768 [inline] [qrtr]
+   __qrtr_bind.isra.0+0x48b/0x570 net/qrtr/af_qrtr.c:805 [qrtr]
+   qrtr_bind+0x17d/0x210 net/qrtr/af_qrtr.c:901 [qrtr]
+   kernel_bind+0xe4/0x120 net/socket.c:3592
+   qrtr_ns_init+0x1a6/0x380 net/qrtr/ns.c:715 [qrtr]
+   qrtr_proto_init+0x3b/0xff0 net/qrtr/af_qrtr.c:169 [qrtr]
+   do_one_initcall+0xf5/0x5e0 init/main.c:1283
+   ...
+   </TASK>
 
-Fixes: 39efa3ef3a37 ("signal: Use GROUP_STOP_PENDING to stop once for a single group stop")
-Assisted-by: Gemini:gemini-3.1-pro-preview Gemini:gemini-3-flash-preview syzbot
-Reported-by: syzbot+b109633ea805cac54a61@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=b109633ea805cac54a61
-Link: https://syzkaller.appspot.com/ai_job?id=d70208cc-862b-4fe3-bf02-3031e10cd0b3
-Signed-off-by: Aleksandr Nogikh <nogikh@google.com>
-Link: https://patch.msgid.link/20260521142240.2973022-1-nogikh@google.com
-Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+Fix this by deferring the reference count decrement until after the
+xa_erase() and the synchronize_rcu() complete.
+
+(Note: The v1 of this patch incorrectly replaced __sock_put() with
+sock_put(). As Simon Horman pointed out, the callers of qrtr_port_remove()
+still hold a reference to the socket, so freeing the socket memory here
+would lead to a subsequent UAF in the caller. Thus, the __sock_put() is
+kept, but only repositioned to close the RCU race.)
+
+Fixes: bdabad3e363d ("net: Add Qualcomm IPC router")
+Signed-off-by: Mingyu Wang <25181214217@stu.xidian.edu.cn>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260604064801.1180388-1-w15303746062@163.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/signal.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/qrtr/af_qrtr.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/signal.c b/kernel/signal.c
-index 468b589c39e695..b832158a9c4608 100644
---- a/kernel/signal.c
-+++ b/kernel/signal.c
-@@ -1371,6 +1371,7 @@ int zap_other_threads(struct task_struct *p)
- 	int count = 0;
+diff --git a/net/qrtr/af_qrtr.c b/net/qrtr/af_qrtr.c
+index b703e4c6458532..2c009793f1931d 100644
+--- a/net/qrtr/af_qrtr.c
++++ b/net/qrtr/af_qrtr.c
+@@ -707,13 +707,13 @@ static void qrtr_port_remove(struct qrtr_sock *ipc)
+ 	if (port == QRTR_PORT_CTRL)
+ 		port = 0;
  
- 	p->signal->group_stop_count = 0;
-+	task_clear_jobctl_pending(p, JOBCTL_PENDING_MASK);
+-	__sock_put(&ipc->sk);
+-
+ 	xa_erase(&qrtr_ports, port);
  
- 	for_other_threads(p, t) {
- 		task_clear_jobctl_pending(t, JOBCTL_PENDING_MASK);
+ 	/* Ensure that if qrtr_port_lookup() did enter the RCU read section we
+ 	 * wait for it to up increment the refcount */
+ 	synchronize_rcu();
++
++	__sock_put(&ipc->sk);
+ }
+ 
+ /* Assign port number to socket.
 -- 
 2.53.0
 
