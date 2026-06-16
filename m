@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-266025-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266376-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id b8CqCuiUMWqAnQUAu9opvQ
-	(envelope-from <stable+bounces-266025-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:24:40 +0200
+	id ozcwDAycMWqUoAUAu9opvQ
+	(envelope-from <stable+bounces-266376-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:55:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 822416941AB
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:24:39 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id B719169491D
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:55:07 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=cmNH9VfM;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266025-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266025-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=bGjhUeHI;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266376-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-266376-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 13354318361C
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:24:25 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2841E30588BC
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:54:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4B96466B64;
-	Tue, 16 Jun 2026 18:24:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B4FA47B435;
+	Tue, 16 Jun 2026 18:54:58 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C14346AF1B;
-	Tue, 16 Jun 2026 18:24:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC8533CC303;
+	Tue, 16 Jun 2026 18:54:56 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781634264; cv=none; b=PLEnfio+DJYoKqOEQD2ghNr+oQrxo4vFYT/+Xh9r65qc6XxUfPzcVJWwmrXiCfU2KA2xFFJflwv5xARprua+nOt8QBk4Gd7qAq5zAIGGl8xmXRsR9bePgSy0HkuQBBHquq+emcvZ5ubnkkZeTPwbe98C+6pJ2ZLMfgv9OkxJs8s=
+	t=1781636097; cv=none; b=deCXELfXXMu9AKasW0/1hJFHYlw6MpGr7HaUIiUykTuyroHiqhKavOSOGmkFpf/R0hZ7nOfZ9uVj1Thhw8/zliSZQOdQOdtuPciKUUsDYt01c/UyZgMyrRxPkLtQF7FKWrerLVuZlbNMm1BElJEHJ2qy3n4HP9ZmzsPyFdiyN+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781634264; c=relaxed/simple;
-	bh=cf/92yuffpGojz05p1pe4/wMczQwalnB5Lz9/XUqoFU=;
+	s=arc-20240116; t=1781636097; c=relaxed/simple;
+	bh=KKIFXSxNv1L7cJa09FoYaoz8Eu8aiWS+C9+8HvGh4sU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nnz3+VNLoiyYGH7+JBQCrcmicZqJlnT37p9negsYxVaKxg2q3IIvk7W0Xle462Hjz9eZYwR9kkcZBIgFcTyE92gvMHP80heZp+kTfox6yLxQwvSkk3c6hiD6Oq09pVEM0Jfel2I0y3boX+w2EVUMBH8PksZnnQfc0ZbvX6M5UBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cmNH9VfM; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 846521F000E9;
-	Tue, 16 Jun 2026 18:24:22 +0000 (UTC)
+	 MIME-Version; b=C+qOUX+1gTOc0Lw9PGAWP3Bxh+Cc4nWpItZ+FOPZQTJr9IjQR3Gnjcb9VXYk3QN5bHTbReuFpboNOPzoNr3SHaEeoIPNKWE9lUE+n21qcgjj2sQcIuAxOdYq2CgNg5eCp0mHJAAKrreJ4Wj9/untApowceKzW1MJoNR6pScl78I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bGjhUeHI; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2C021F00A3A;
+	Tue, 16 Jun 2026 18:54:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781634263;
-	bh=ZIUmRDxzl7LaCCMHXLreiT227SMIhq6IkSf1vsA6GsY=;
+	s=korg; t=1781636096;
+	bh=OxuMUzbmseXL7+z2xVIKVgCAnJHan5d6+uQ/X+aGzF8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=cmNH9VfMvQDI/FZUS/cFRnF5QRyDqwEhU3sfoYwftAsvQgvpSArIV4e5bZ6sxNM0w
-	 NC86qVsG86R+HYc7RLpGrmibtoGULSMah2FxuM5mgwKNIlK28t3WUf7RdbTY2CXcTm
-	 gVGmOHl8sy5m8eF/NRYzKpkgG8Bz1MgfkTeYtVZU=
+	b=bGjhUeHIOqL2Zczm4K1Vt1Uq8Xt8rzyDA358tL6dC3sLRc+lv6LSs4GCyyidf27rp
+	 cerY3Uu9SOQ9d1zAZU4m1qgMxSUWMgLcmWhxHdxn2hhyzkAAybvqWaHiBpJnT/CdoF
+	 kHNCmZ3a7Lwn5knzXbmhRpvPaUMZnNRRVYZtEtxA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Ulf Hansson <ulfh@kernel.org>
-Subject: [PATCH 5.15 233/411] mmc: renesas_sdhi: Add OF entry for RZ/G2H SoC
+	Kyle Zeng <kylebot@openai.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 175/342] netfilter: x_tables: avoid leaking percpu counter pointers
 Date: Tue, 16 Jun 2026 20:27:51 +0530
-Message-ID: <20260616145113.218914401@linuxfoundation.org>
+Message-ID: <20260616145056.357398903@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,81 +67,183 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266025-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-266376-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:prabhakar.mahadev-lad.rj@bp.renesas.com,m:wsa+renesas@sang-engineering.com,m:geert+renesas@glider.be,m:ulfh@kernel.org,m:wsa@sang-engineering.com,m:geert@glider.be,s:lists@lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kylebot@openai.com,m:pablo@netfilter.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,renesas];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,sang-engineering.com:email,glider.be:email,renesas.com:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,netfilter.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,openai.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 822416941AB
+X-Rspamd-Queue-Id: B719169491D
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+From: Kyle Zeng <kylebot@openai.com>
 
-commit f48ee49726ee4ab545fd2dc644f169c0809b19b3 upstream.
+[ Upstream commit f7f2fbb0e893a0238dc464f8d8c0f5609bec584f ]
 
-The RZ/G2H (R8A774E1) SoC was previously handled via the generic
-"renesas,rcar-gen3-sdhi" fallback compatible string. However, because
-the SDHI IP on RZ/G2H is identical with the R-Car H3-N (R8A77951), it
-requires the specific quirks and configuration defined in
-`of_r8a7795_compatible` rather than the generic Gen3 data.
+The native and compat get-entries paths copy the fixed rule entry header
+from the kernelized rule blob to userspace before overwriting the entry's
+counter fields with a sanitized counter snapshot.
 
-Add the explicit "renesas,sdhi-r8a774e1" match entry to map it correctly.
-Note that the DT binding file renesas,sdhi.yaml does not need an update
-as the entry for this SoC is already present.
+On SMP kernels, entry->counters.pcnt contains the percpu allocation
+address used by x_tables rule counters. A caller can provide a userspace
+buffer that faults during the initial fixed-header copy after pcnt has
+been copied but before the later sanitized counter copy runs. The syscall
+then returns -EFAULT while leaving the raw percpu pointer in userspace.
 
-Fixes: 31941342888d ("arm64: dts: renesas: r8a774e1: Add SDHI nodes")
-Cc: stable@vger.kernel.org
-Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Signed-off-by: Ulf Hansson <ulfh@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Copy only the fixed entry prefix before counters from the kernelized rule
+blob, then copy the sanitized counter snapshot into the counter field.
+Apply this ordering to the IPv4, IPv6, and ARP native and compat
+get-entries implementations so a fault cannot expose the internal percpu
+counter pointer.
+
+Fixes: 71ae0dff02d7 ("netfilter: xtables: use percpu rule counters")
+Signed-off-by: Kyle Zeng <kylebot@openai.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/renesas_sdhi_internal_dmac.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/ipv4/netfilter/arp_tables.c | 15 ++++++---------
+ net/ipv4/netfilter/ip_tables.c  | 15 ++++++---------
+ net/ipv6/netfilter/ip6_tables.c | 15 ++++++---------
+ 3 files changed, 18 insertions(+), 27 deletions(-)
 
---- a/drivers/mmc/host/renesas_sdhi_internal_dmac.c
-+++ b/drivers/mmc/host/renesas_sdhi_internal_dmac.c
-@@ -231,6 +231,7 @@ static const struct renesas_sdhi_of_data
- static const struct of_device_id renesas_sdhi_internal_dmac_of_match[] = {
- 	{ .compatible = "renesas,sdhi-r7s9210", .data = &of_rza2_compatible, },
- 	{ .compatible = "renesas,sdhi-mmc-r8a77470", .data = &of_rcar_gen3_compatible, },
-+	{ .compatible = "renesas,sdhi-r8a774e1", .data = &of_r8a7795_compatible, },
- 	{ .compatible = "renesas,sdhi-r8a7795", .data = &of_r8a7795_compatible, },
- 	{ .compatible = "renesas,sdhi-r8a7796", .data = &of_rcar_gen3_compatible, },
- 	{ .compatible = "renesas,sdhi-r8a77961", .data = &of_r8a77961_compatible, },
+diff --git a/net/ipv4/netfilter/arp_tables.c b/net/ipv4/netfilter/arp_tables.c
+index d5f3b6260da0cf..bc8a5b6eccc336 100644
+--- a/net/ipv4/netfilter/arp_tables.c
++++ b/net/ipv4/netfilter/arp_tables.c
+@@ -701,14 +701,12 @@ static int copy_entries_to_user(unsigned int total_size,
+ 		const struct xt_entry_target *t;
+ 
+ 		e = loc_cpu_entry + off;
+-		if (copy_to_user(userptr + off, e, sizeof(*e))) {
+-			ret = -EFAULT;
+-			goto free_counters;
+-		}
+-		if (copy_to_user(userptr + off
++		if (copy_to_user(userptr + off, e,
++				 offsetof(struct arpt_entry, counters)) ||
++		    copy_to_user(userptr + off
+ 				 + offsetof(struct arpt_entry, counters),
+ 				 &counters[num],
+-				 sizeof(counters[num])) != 0) {
++				 sizeof(counters[num]))) {
+ 			ret = -EFAULT;
+ 			goto free_counters;
+ 		}
+@@ -1326,9 +1324,8 @@ static int compat_copy_entry_to_user(struct arpt_entry *e, void __user **dstptr,
+ 
+ 	origsize = *size;
+ 	ce = *dstptr;
+-	if (copy_to_user(ce, e, sizeof(struct arpt_entry)) != 0 ||
+-	    copy_to_user(&ce->counters, &counters[i],
+-	    sizeof(counters[i])) != 0)
++	if (copy_to_user(ce, e, offsetof(struct compat_arpt_entry, counters)) ||
++	    copy_to_user(&ce->counters, &counters[i], sizeof(counters[i])))
+ 		return -EFAULT;
+ 
+ 	*dstptr += sizeof(struct compat_arpt_entry);
+diff --git a/net/ipv4/netfilter/ip_tables.c b/net/ipv4/netfilter/ip_tables.c
+index 22e9ff592cd75f..55798e12fb3745 100644
+--- a/net/ipv4/netfilter/ip_tables.c
++++ b/net/ipv4/netfilter/ip_tables.c
+@@ -833,14 +833,12 @@ copy_entries_to_user(unsigned int total_size,
+ 		const struct xt_entry_target *t;
+ 
+ 		e = loc_cpu_entry + off;
+-		if (copy_to_user(userptr + off, e, sizeof(*e))) {
+-			ret = -EFAULT;
+-			goto free_counters;
+-		}
+-		if (copy_to_user(userptr + off
++		if (copy_to_user(userptr + off, e,
++				 offsetof(struct ipt_entry, counters)) ||
++		    copy_to_user(userptr + off
+ 				 + offsetof(struct ipt_entry, counters),
+ 				 &counters[num],
+-				 sizeof(counters[num])) != 0) {
++				 sizeof(counters[num]))) {
+ 			ret = -EFAULT;
+ 			goto free_counters;
+ 		}
+@@ -1229,9 +1227,8 @@ compat_copy_entry_to_user(struct ipt_entry *e, void __user **dstptr,
+ 
+ 	origsize = *size;
+ 	ce = *dstptr;
+-	if (copy_to_user(ce, e, sizeof(struct ipt_entry)) != 0 ||
+-	    copy_to_user(&ce->counters, &counters[i],
+-	    sizeof(counters[i])) != 0)
++	if (copy_to_user(ce, e, offsetof(struct compat_ipt_entry, counters)) ||
++	    copy_to_user(&ce->counters, &counters[i], sizeof(counters[i])))
+ 		return -EFAULT;
+ 
+ 	*dstptr += sizeof(struct compat_ipt_entry);
+diff --git a/net/ipv6/netfilter/ip6_tables.c b/net/ipv6/netfilter/ip6_tables.c
+index df7cd3d285e4f0..da136d25701a9e 100644
+--- a/net/ipv6/netfilter/ip6_tables.c
++++ b/net/ipv6/netfilter/ip6_tables.c
+@@ -850,14 +850,12 @@ copy_entries_to_user(unsigned int total_size,
+ 		const struct xt_entry_target *t;
+ 
+ 		e = loc_cpu_entry + off;
+-		if (copy_to_user(userptr + off, e, sizeof(*e))) {
+-			ret = -EFAULT;
+-			goto free_counters;
+-		}
+-		if (copy_to_user(userptr + off
++		if (copy_to_user(userptr + off, e,
++				 offsetof(struct ip6t_entry, counters)) ||
++		    copy_to_user(userptr + off
+ 				 + offsetof(struct ip6t_entry, counters),
+ 				 &counters[num],
+-				 sizeof(counters[num])) != 0) {
++				 sizeof(counters[num]))) {
+ 			ret = -EFAULT;
+ 			goto free_counters;
+ 		}
+@@ -1246,9 +1244,8 @@ compat_copy_entry_to_user(struct ip6t_entry *e, void __user **dstptr,
+ 
+ 	origsize = *size;
+ 	ce = *dstptr;
+-	if (copy_to_user(ce, e, sizeof(struct ip6t_entry)) != 0 ||
+-	    copy_to_user(&ce->counters, &counters[i],
+-	    sizeof(counters[i])) != 0)
++	if (copy_to_user(ce, e, offsetof(struct compat_ip6t_entry, counters)) ||
++	    copy_to_user(&ce->counters, &counters[i], sizeof(counters[i])))
+ 		return -EFAULT;
+ 
+ 	*dstptr += sizeof(struct compat_ip6t_entry);
+-- 
+2.53.0
+
 
 
 
