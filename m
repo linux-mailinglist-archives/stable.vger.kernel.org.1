@@ -1,66 +1,63 @@
-Return-Path: <stable+bounces-265060-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264249-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id mcRLFDyEMWqelQUAu9opvQ
-	(envelope-from <stable+bounces-265060-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:13:32 +0200
+	id 3EZbBzt0MWr0jgUAu9opvQ
+	(envelope-from <stable+bounces-264249-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:05:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9A32692E13
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:13:31 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BE6A691ACC
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:05:14 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=CKcsLJPd;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265060-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265060-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="K/7cwS7A";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264249-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264249-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3434A32AD843
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:01:21 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CD6463123A7F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:48:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1A3447799B;
-	Tue, 16 Jun 2026 17:01:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32AFE361651;
+	Tue, 16 Jun 2026 15:48:51 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E78435675A;
-	Tue, 16 Jun 2026 17:01:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0817615B998;
+	Tue, 16 Jun 2026 15:48:50 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781629280; cv=none; b=M/pjZNhRf5A0a22LIfdTHirr5EPZEcW/xe/XbJfihE7WUjg/2Bu2jZrbk9uCd8CObjw8kzzTlN6r6LIjoFCIlzhwJNBT8Jb0wYaBncieDISAEbYJID/K7xP1xN+3cQGm91tMBl/MOAtgr6VmF5tx9Ik2tgSdm1EjwIrhz5rpo1M=
+	t=1781624931; cv=none; b=A0wLnWeUqKyX+Ks0XpFYqsIzDT7NPoef78sr8p9UEBQpArfIlR1JGu2xbqNhoOUph25bls1S4Io4aPEVqOf+ivYdYagm8DP92BqOUfih87Mt/b/GlK8PRFHQBN+g2ZWK+k12ZQPRPHl080U+Rfo42l692N5N1V7oVVnsMVhTZKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781629280; c=relaxed/simple;
-	bh=0J+e1sD4o21uBfFzKEW7bGV8CcCepKIeqfkRbkkByHQ=;
+	s=arc-20240116; t=1781624931; c=relaxed/simple;
+	bh=M5xDI1Ls+twH9h88sRGPoaKYWH08II9Yahv28Dz/omI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LJi9pvqVIgfgmb9SmX7ysc1ZC4CgvXi2BsdfwRHRIIDk9cfPDAwqr1agRiVFe5Kgl/aMGJZa2wbfnpzOChOF0xfqaR3z/UthjkdUsEWb1Hbnv/uzbVbYbhM3wnv6+vpVJMvKrZA04QV8p92rSOOKMN4XTjovqEua0xtZAneqPMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CKcsLJPd; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34BA51F000E9;
-	Tue, 16 Jun 2026 17:01:17 +0000 (UTC)
+	 MIME-Version; b=tbcaGCo+WFQRwxUu+fhXtT+XdYYhLPIK+0WqR0lc0ozckxveh0Bq5n4MjCTSlojEbCo285IlyXY68K5WVt6JISMQjzH3BjXZytqw53lWT++xcQEFvByMS5ylqqrp380huTlqwzf3ASQm9W/r4K8FW5yCawdSuL8Mp6UVy2vmvxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K/7cwS7A; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8C971F000E9;
+	Tue, 16 Jun 2026 15:48:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781629279;
-	bh=8EFiwR1QFfdHwYpKJQS4+ZeERVUMVym76kxhlNiSypI=;
+	s=korg; t=1781624929;
+	bh=SyA2XjyWfOB5E5BF8G6eWBjikyXZKfgtTKaXSLPL89Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=CKcsLJPdhEjKsRhL/0uwvJX61bSDt00epQJOzZHj1z7MXaRbPQtQE/gBjYDToFdme
-	 +YQhf8EHknTQYB7HjGWKRbTGp1pceWjDk3g++NEx7smI7tXKfUCpI5xabI48UmMUCP
-	 sFeEcFrYtT2XWnXKRevP08xb+RjhEDu1KCtgmL0Y=
+	b=K/7cwS7AWrlEXqADbRV2KfAxr+mux1Uwk6C/fPGwa2Hiiu05FoUBEh3cpYthXRjcq
+	 5l1Ft5D5ispicKiTWF6JhxLLam9Gx9PZBUX+ZOKX9/yNIqk5vMEfw0nYrcaumzrJp8
+	 IBUDiTTe07nbzcPKUAjlX8OprXDwWzw/Gmou9i8A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Geetha sowjanya <gakula@marvell.com>,
+	Subbaraya Sundeep <sbhatta@marvell.com>,
+	Simon Horman <horms@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Kyle Zeng <kylebot@openai.com>,
-	Victor Nogueira <victor@mojatatu.com>,
-	syzbot@syzkaller.appspotmail.com,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Pedro Tammela <pctammela@mojatatu.com>,
-	Eric Dumazet <edumazet@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 222/452] net/sched: act_api: use RCU with deferred freeing for action lifecycle
+Subject: [PATCH 6.18 053/325] octeontx2-pf: Fix NDC sync operation errors
 Date: Tue, 16 Jun 2026 20:27:29 +0530
-Message-ID: <20260616145129.422082958@linuxfoundation.org>
+Message-ID: <20260616145100.342362285@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,22 +73,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265060-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264249-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kuba@kernel.org,m:kylebot@openai.com,m:victor@mojatatu.com,m:syzbot@syzkaller.appspotmail.com,m:jhs@mojatatu.com,m:pctammela@mojatatu.com,m:edumazet@google.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:gakula@marvell.com,m:sbhatta@marvell.com,m:horms@kernel.org,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -100,114 +97,49 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,openai.com:email,vger.kernel.org:from_smtp,appspotmail.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D9A32692E13
+X-Rspamd-Queue-Id: 7BE6A691ACC
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jamal Hadi Salim <jhs@mojatatu.com>
+From: Geetha sowjanya <gakula@marvell.com>
 
-[ Upstream commit 5057e1aca011e51ef51498c940ef96f3d3e8a305 ]
+[ Upstream commit a910fb8f7b9e4c566db363e6c2ec378dc7153995 ]
 
-When NEWTFILTER and DELFILTER are run concurrently it is possible to create a
-race with an associated action.
+On system reboot "rvu_nicpf 0002:03:00.0: NDC sync operation failed"
+error messages are shown, even if the operations is successful.
+This is due to wrong if error check in ndc_syc() function.
 
-Let's illustrate with CPU0 running NEWTFILTER and CPU1 running DELFILTER:
-
- 0: mutex_lock() <-- holds the idr lock
- 0: rcu_read_lock()
- 0: p = idr_find(idr, index) <-- action p is valid (RCU protects IDR)
- 0: mutex_unlock() <-- releases the idr lock
- 1: refcount_dec_and_mutex_lock() <-- refcnt 1->0, mutex held
- 1: idr_remove(idr, index) <-- Action removed from IDR
- 1: mutex_unlock() <-- mutex released allowing us to delete the action
- 1: tcf_action_cleanup(p); kfree(p) <-- Kfrees p immediately, no deferral
- 0: refcount_inc_not_zero(&p->tcfa_refcnt) <-- ouch, UAF p points to freed memory
-
-This patch fixes the race condition between NEWTFILTER and DELFILTER by
-adding struct rcu_head to tc_action used in the deferral and introducing a
-call_rcu() in the delete path to defer the final kfree().
-
-Note: this is a revert of commit d7fb60b9cafb ("net_sched: get rid of tcfa_rcu")
-but also modernization/simplification to directly use kfree_rcu().
-
-Let's illustrate the new restored code path:
-
- 0: rcu_read_lock()
- 1: refcount_dec_and_mutex_lock() <-- refcnt 1->0, mutex held
- 1: idr_remove(idr, index)
- 1: mutex_unlock()
- 1: call_rcu(&p->tcfa_rcu, tcf_action_rcu_free) <-- defer kfree after grace period
- 0: p = idr_find(idr, index)
- 0: refcount_inc_not_zero(&p->tcfa_refcnt) <-- fails, refcnt already 0
- 1: rcu_read_unlock() <-- release so freeing can run after grace period
-
-After CPU1 calls idr_remove(), the object is no longer reachable through the IDR.
-CPU0's subsequent idr_find() will return NULL, and even if it still held a
-stale pointer, the immediate kfree() is now deferred until after the RCU grace
-period, so no UAF can occur.
-
-Fixes: d7fb60b9cafb ("net_sched: get rid of tcfa_rcu")
-Suggested-by: Jakub Kicinski <kuba@kernel.org>
-Reported-by: Kyle Zeng <kylebot@openai.com>
-Tested-by: Victor Nogueira <victor@mojatatu.com>
-Tested-by: syzbot@syzkaller.appspotmail.com
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Tested-by: Kyle Zeng <kylebot@openai.com>
-Reviewed-by: Pedro Tammela <pctammela@mojatatu.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Victor Nogueira <victor@mojatatu.com>
-Link: https://patch.msgid.link/20260531160812.68020-1-jhs@mojatatu.com
+Fixes: 42c45ac1419c ("octeontx2-af: Sync NIX and NPA contexts from NDC to LLC/DRAM")
+Signed-off-by: Geetha sowjanya <gakula@marvell.com>
+Signed-off-by: Subbaraya Sundeep <sbhatta@marvell.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/1780054677-17249-1-git-send-email-sbhatta@marvell.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/act_api.h | 1 +
- net/sched/act_api.c   | 7 +------
- 2 files changed, 2 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/net/act_api.h b/include/net/act_api.h
-index 8db6994c90eec1..56f49351fd5177 100644
---- a/include/net/act_api.h
-+++ b/include/net/act_api.h
-@@ -42,6 +42,7 @@ struct tc_action {
- 	struct tc_cookie	__rcu *user_cookie;
- 	struct tcf_chain	__rcu *goto_chain;
- 	u32			tcfa_flags;
-+	struct rcu_head         tcfa_rcu;
- 	u8			hw_stats;
- 	u8			used_hw_stats;
- 	bool			used_hw_stats_valid;
-diff --git a/net/sched/act_api.c b/net/sched/act_api.c
-index e509ac28c49299..bed04ae3003c43 100644
---- a/net/sched/act_api.c
-+++ b/net/sched/act_api.c
-@@ -112,11 +112,6 @@ struct tcf_chain *tcf_action_set_ctrlact(struct tc_action *a, int action,
- }
- EXPORT_SYMBOL(tcf_action_set_ctrlact);
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
+index bbf25769f4994a..fa23d42d1318b4 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
+@@ -3481,7 +3481,7 @@ static void otx2_ndc_sync(struct otx2_nic *pf)
+ 	req->nix_lf_rx_sync = 1;
+ 	req->npa_lf_sync = 1;
  
--/* XXX: For standalone actions, we don't need a RCU grace period either, because
-- * actions are always connected to filters and filters are already destroyed in
-- * RCU callbacks, so after a RCU grace period actions are already disconnected
-- * from filters. Readers later can not find us.
-- */
- static void free_tcf(struct tc_action *p)
- {
- 	struct tcf_chain *chain = rcu_dereference_protected(p->goto_chain, 1);
-@@ -129,7 +124,7 @@ static void free_tcf(struct tc_action *p)
- 	if (chain)
- 		tcf_chain_put_by_act(chain);
+-	if (!otx2_sync_mbox_msg(mbox))
++	if (otx2_sync_mbox_msg(mbox))
+ 		dev_err(pf->dev, "NDC sync operation failed\n");
  
--	kfree(p);
-+	kfree_rcu(p, tcfa_rcu);
- }
- 
- static void offload_action_hw_count_set(struct tc_action *act,
+ 	mutex_unlock(&mbox->lock);
 -- 
 2.53.0
 
