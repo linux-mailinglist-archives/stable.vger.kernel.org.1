@@ -1,75 +1,61 @@
-Return-Path: <stable+bounces-265143-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266114-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id v2vOARGFMWr9lQUAu9opvQ
-	(envelope-from <stable+bounces-265143-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:17:05 +0200
+	id iCIjNQeYMWrbngUAu9opvQ
+	(envelope-from <stable+bounces-266114-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:37:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 783C8692F50
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:17:04 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32A0D694491
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:37:59 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=edRgS8pI;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265143-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265143-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=0G3SwVJl;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266114-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266114-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8D2BA3018C31
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:08:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6427831D4225
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:32:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFE7147799B;
-	Tue, 16 Jun 2026 17:08:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 933BF34FF79;
+	Tue, 16 Jun 2026 18:32:16 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A051F47B434;
-	Tue, 16 Jun 2026 17:08:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CD523DA7E1;
+	Tue, 16 Jun 2026 18:32:15 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781629689; cv=none; b=RIe5SSsIf2XOQ35dyCKDWJGD8OX//21FMDGC6v9EGCbUlqwso8KsEHL8cJO0qf7WnmYsC/TgKhCNzDqiV6tN2y50MCvi3ocLAotjHgjy7SaKCT2QD8xO2rsSsap3AfdPOpE8VMZr3eVyR44EI8uJVX+8SH7ADF5tadbAZ64K1c8=
+	t=1781634736; cv=none; b=tUFftkyCS+nshQPo7PEQQZZdM/KRY+QCISfyufSbBAMIrkExisuNYbDWi8n4crKpAQI+wROk7YVQ6cWAptEHkdxHQG3bHq2hSN8vO+eLmKO3vrGkbPz0kfvOijE/WWf/1E2Hdxfd75gbHq+pA05CHG1wPdv/zg8jIHpkPZ0tR3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781629689; c=relaxed/simple;
-	bh=DDUhYVBri/u+K21x6YXpSE/fowehSqQibIHAS/OQR70=;
+	s=arc-20240116; t=1781634736; c=relaxed/simple;
+	bh=5jvaTpUL4fsOCin9HT7dhm3eoHSIm1JVWOXrxhw+KPs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MTnWEz8obqfe4ISBFhn4DbmU4L2TQPsan2owUN0XgCRJR8/cq/GE+J/BIP2pPTzkKA4Brxi/bSaE+HNCLIRZeDAyrIOeJXf3LGc9TtNn29boSOWAGM2QnUpRoDRuskBOFrPX0LnEVnymL0xDD+nf1FtlFfGQaTWcGI29AWJ97JI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=edRgS8pI; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D2281F000E9;
-	Tue, 16 Jun 2026 17:08:07 +0000 (UTC)
+	 MIME-Version; b=a5NPHrzPPR8l+EALIZa9ebazgom5QLW9FfFbVznm4YMCHU4CRfvyl/XfEwcSsGtlFZSSvJ9Bm9992H1qH5MCzAqXiLj/QKB8cIRDYVFQ/dAOSQRT0NY/kTt96KmLtTSxBhBRLrnT7ZuTzcFoAoqiFdckw714SRNGPbZKPOxBhhk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0G3SwVJl; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F10B71F000E9;
+	Tue, 16 Jun 2026 18:32:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781629688;
-	bh=JOWIV6bc/rrDnW4pz6FY9/B1QgbVaF6CdCWmBW9yK+Q=;
+	s=korg; t=1781634735;
+	bh=lgzEEp3cPCZvuF2nJux1GQ/z5VOtnecEHxYxq8yvo+o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=edRgS8pIaHyXU/APCOGQ8gOVbi5gHp1uYUMhWiXlpaORakHIzWoXkoveAe13nrH0K
-	 rwXMzRkrUpojpDLiPnlvU2j00gyEtt0xkx0nunxuMDDjLO4QQb1W7gKQHvhSUpjpcN
-	 FsH0F3HckqKzJzNoNSYeKx0qrFKCliH4scugvPyg=
+	b=0G3SwVJlec814Lbh6QkqAw7G2spx7WZh6xlcl0KpCLdEzu2EULLCt7GooC4iwVvMu
+	 ijQ6vRKyQYDzBmxvK+OAuB/15oy2EAwVLoOChTHsukkb/eIM8ncRZd3NTrdIkkee3F
+	 YctHIh8IrnO6bO9LnixOulzuTr92+1T8GyY0VObk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Yilin Zhu <zylzyl2333@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Christian Brauner <brauner@kernel.org>,
-	Jeongjun Park <aha310510@gmail.com>,
-	Kees Cook <kees@kernel.org>,
-	Liam Howlett <liam@infradead.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Serge Hallyn <sergeh@kernel.org>,
-	Vasiliy Kulikov <segoon@openwall.com>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Serge Hallyn <serge@hallyn.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 332/452] ipc/shm: serialize orphan cleanup with shm_nattch updates
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Helge Deller <deller@gmx.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 321/411] fbcon: Avoid OOB font access if console rotation fails
 Date: Tue, 16 Jun 2026 20:29:19 +0530
-Message-ID: <20260616145134.803760796@linuxfoundation.org>
+Message-ID: <20260616145118.218529226@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -86,21 +72,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	TAGGED_FROM(0.00)[bounces-265143-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:yuantan098@gmail.com,m:yifanwucs@gmail.com,m:tomapufckgml@gmail.com,m:bird@lzu.edu.cn,m:zylzyl2333@gmail.com,m:n05ec@lzu.edu.cn,m:brauner@kernel.org,m:aha310510@gmail.com,m:kees@kernel.org,m:liam@infradead.org,m:ljs@kernel.org,m:sergeh@kernel.org,m:segoon@openwall.com,m:dave@stgolabs.net,m:oleg@redhat.com,m:serge@hallyn.com,m:akpm@linux-foundation.org,s:lists@lfdr.de];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-266114-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:tzimmermann@suse.de,m:deller@gmx.de,m:sashal@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,kernel.org,infradead.org,openwall.com,stgolabs.net,redhat.com,hallyn.com,linux-foundation.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,suse.de,gmx.de,kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -109,80 +95,65 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[bootlin.com:url,vger.kernel.org:from_smtp,suse.de:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,gmx.de:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 783C8692F50
+X-Rspamd-Queue-Id: 32A0D694491
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yilin Zhu <zylzyl2333@gmail.com>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-commit 2e5c6f4fd4001562781e99bbfc7f1f0127187542 upstream.
+[ Upstream commit e4ef723d8975a2694cc90733a6b888a5e2841842 ]
 
-shm_destroy_orphaned() walks the shm idr under shm_ids(ns).rwsem, but that
-does not serialize all fields tested by shm_may_destroy().  In particular,
-shm_nattch is updated while holding shm_perm.lock, and attach paths can do
-that without holding the rwsem.
+Clear the font buffer if the reallocation during console rotation fails
+in fbcon_rotate_font(). The putcs implementations for the rotated buffer
+will return early in this case. See [1] for an example.
 
-Do not decide that an orphaned segment is unused before taking the object
-lock.  Move the shm_may_destroy() check under shm_perm.lock, matching the
-other destroy paths, and unlock the segment when it no longer qualifies
-for removal.
+Currently, fbcon_rotate_font() keeps the old buffer, which is too small
+for the rotated font. Printing to the rotated console with a high-enough
+character code will overflow the font buffer.
 
-Link: https://lore.kernel.org/9d97cc1031de2d0bace0edf3a668818aa2f4eca6.1777410234.git.zylzyl2333@gmail.com
-Fixes: 4c677e2eefdb ("shm: optimize locking and ipc_namespace getting")
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Yilin Zhu <zylzyl2333@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Jeongjun Park <aha310510@gmail.com>
-Cc: Kees Cook <kees@kernel.org>
-Cc: Liam Howlett <liam@infradead.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Serge Hallyn <sergeh@kernel.org>
-Cc: Vasiliy Kulikov <segoon@openwall.com>
-Cc: Davidlohr Bueso <dave@stgolabs.net>
-Cc: Oleg Nesterov <oleg@redhat.com>
-Cc: Serge Hallyn <serge@hallyn.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+v2:
+- fix typos in commit message
+
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Fixes: 6cc50e1c5b57 ("[PATCH] fbcon: Console Rotation - Add support to rotate font bitmap")
+Cc: stable@vger.kernel.org # v2.6.15+
+Link: https://elixir.bootlin.com/linux/v6.19/source/drivers/video/fbdev/core/fbcon_ccw.c#L144 # [1]
+Signed-off-by: Helge Deller <deller@gmx.de>
+[ renamed `par` to `ops` to match the 6.12 local pointer name ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- ipc/shm.c |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/video/fbdev/core/fbcon_rotate.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/ipc/shm.c
-+++ b/ipc/shm.c
-@@ -415,15 +415,17 @@ static int shm_try_destroy_orphaned(int
- 	 * We want to destroy segments without users and with already
- 	 * exit'ed originating process.
- 	 *
--	 * As shp->* are changed under rwsem, it's safe to skip shp locking.
-+	 * shm_nattch can be changed under shm_perm.lock without holding the
-+	 * rwsem, so take the object lock before checking shm_may_destroy().
- 	 */
- 	if (!list_empty(&shp->shm_clist))
- 		return 0;
+--- a/drivers/video/fbdev/core/fbcon_rotate.c
++++ b/drivers/video/fbdev/core/fbcon_rotate.c
+@@ -46,6 +46,10 @@ static int fbcon_rotate_font(struct fb_i
+ 		info->fbops->fb_sync(info);
  
--	if (shm_may_destroy(shp)) {
--		shm_lock_by_ptr(shp);
-+	shm_lock_by_ptr(shp);
-+	if (shm_may_destroy(shp))
- 		shm_destroy(ns, shp);
--	}
-+	else
-+		shm_unlock(shp);
- 	return 0;
- }
+ 	if (ops->fd_size < d_cellsize * len) {
++		kfree(ops->fontbuffer);
++		ops->fontbuffer = NULL;
++		ops->fd_size = 0;
++
+ 		dst = kmalloc_array(len, d_cellsize, GFP_KERNEL);
+ 
+ 		if (dst == NULL) {
+@@ -54,7 +58,6 @@ static int fbcon_rotate_font(struct fb_i
+ 		}
+ 
+ 		ops->fd_size = d_cellsize * len;
+-		kfree(ops->fontbuffer);
+ 		ops->fontbuffer = dst;
+ 	}
  
 
 
