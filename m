@@ -1,60 +1,65 @@
-Return-Path: <stable+bounces-265777-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264501-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 4WHmEMqPMWoRmwUAu9opvQ
-	(envelope-from <stable+bounces-265777-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:02:50 +0200
+	id 65mNKJB1MWpxjwUAu9opvQ
+	(envelope-from <stable+bounces-264501-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:10:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5DBF693C0E
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:02:49 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 422AB691C64
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:10:56 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=AwIvhgiT;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265777-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265777-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=y6YfGf2t;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264501-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264501-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6A5B6300F79D
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:02:07 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 94B603036821
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:10:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2A23352007;
-	Tue, 16 Jun 2026 18:02:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CC5845BD4B;
+	Tue, 16 Jun 2026 16:10:26 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85A573CE4BA;
-	Tue, 16 Jun 2026 18:02:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBBAB44E045;
+	Tue, 16 Jun 2026 16:10:24 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781632926; cv=none; b=l2SfFRLYhsIZdw2Wi50oyvm+qNUyVvvNPETbDJg3WswZLC6EhYREKc0DKlPhspUe0pqW4uQ7YfLKMIwWqhK1yTNcwuVJVeK40Rr2rdnzYyri99Z39nrfAzD52U+YpyIVrPML1dzjCQX0aRiXzTwhsWQlBSsW3ranCsOL12p6nq4=
+	t=1781626226; cv=none; b=Bj6dctw9jqx8Dpirn0m/IQy/o0mM+JUkOdd16v8PzkSa/nTLYTQ+8lRwModqJXJjKRt3LFEDwsEVK4oBR4YE7LFViOmeezsq2RM8BsClOOc5eG/NmrPXpyMG93hC9jNrNq6C5dxCc//lVRMAxhHJnL2Mbq0u1VEJo0Y3oM44n/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781632926; c=relaxed/simple;
-	bh=HjEvR2yZkYHr2WtBsK8cn2uzmP9EkkBHisQkZyxpRjo=;
+	s=arc-20240116; t=1781626226; c=relaxed/simple;
+	bh=+22ka7+TPN49jP4XD7yCcTIFJzL7YXStf9RcM1A6YF8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qFwYv4DoY4pDw21w3joh7jt3wWPV5vs9Fiv4Vii25GjcvIZlPyUSHKsHaQap7YayAwqL7p0kmE1IJ6gMZv98MLSNZmIXc+H+jS1lDi1AGi2WBz8jo2hI54kwUjHiKcIge7mvJBeatXTbyzDs//IuJBkw8rp9oxsZ8K2pXXgCGdE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AwIvhgiT; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 491371F000E9;
-	Tue, 16 Jun 2026 18:02:03 +0000 (UTC)
+	 MIME-Version; b=I2yVr6s4w8KmrUwLAOZ+HdWnFKVCkX3VR3UJaklkWyP5FXaxstrYpmN5xIdUbQI8EM/vUm/0nd8bE8kmOjmdzuimAn3zOqJ28KGiaAhqKPs5ZrfymuLo3PAxiePIJy2vvvCqt3ZDkQe6xDRvWvng821v5HxTwF0gEH930ija+oQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y6YfGf2t; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1C5A1F000E9;
+	Tue, 16 Jun 2026 16:10:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781632925;
-	bh=8XoN73znVi4HTSLBvG0+JC+iC7PRdxKRZ4XNdNzkhxM=;
+	s=korg; t=1781626224;
+	bh=Ml1fut3ArSi1XG6ncicnBMfVTlwBYq5N9LRQ+17643M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=AwIvhgiT6hi1ngPCgpE50up3ZWK8m2FJi3RfgFSYb520fYixIrAsXBNe3AcBq556q
-	 TZIiJE/UYdZt+dbcsgIefzUTLT5EXNryINTLazypt1U4mtSrX6top3oNYsuMurM700
-	 33ZTOFlspx/66Fbsc3YIXfZXlpIm9MqfCr+yZMUg=
+	b=y6YfGf2tm/UT3BX/u80zdChAujRx3UcZsIsSTK8V4JOscBKZNwzCZvt4VEuSDr5bq
+	 VfiIBdbQlNSNfsq4BHdrfqNchSIalowPtblMul2aoKTh5b7g0WQy6hnomwsgc/NIEW
+	 9c29jGEqtuIjV7cHx508EXtiJbRx4JgU5Qw+F2gk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
+	David Carlier <devnexen@gmail.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	David Hildenbrand <david@kernel.org>,
+	Mina Almasry <almasrymina@google.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	yuehaibing <yuehaibing@huawei.com>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 503/522] mm/damon/core: use time_in_range_open() for damos quota window start
+Subject: [PATCH 6.18 254/325] mm/hugetlb: restore reservation on error in hugetlb folio copy paths
 Date: Tue, 16 Jun 2026 20:30:50 +0530
-Message-ID: <20260616145149.291410133@linuxfoundation.org>
+Message-ID: <20260616145111.210711054@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,92 +76,104 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265777-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:sj@kernel.org,m:akpm@linux-foundation.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.dev,kernel.org,google.com,suse.de,huawei.com,linux-foundation.org];
+	TAGGED_FROM(0.00)[bounces-264501-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:devnexen@gmail.com,m:muchun.song@linux.dev,m:david@kernel.org,m:almasrymina@google.com,m:osalvador@suse.de,m:yuehaibing@huawei.com,m:akpm@linux-foundation.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,linux-foundation.org:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,huawei.com:email,linux-foundation.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E5DBF693C0E
+X-Rspamd-Queue-Id: 422AB691C64
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: David Carlier <devnexen@gmail.com>
 
-commit 049a57421dd67a28c45ae7e92c36df758033e5fa upstream.
+commit 40c81856e622a9dc59294a90d169ac07ea25b0b0 upstream.
 
-damos_adjust_quota() uses time_after_eq() to show if it is time to start a
-new quota charge window, comparing the current jiffies and the scheduled
-next charge window start time.  If it is, the next charge window start
-time is updated and the new charge window starts.
+Two sites in mm/hugetlb.c allocate a hugetlb folio via
+alloc_hugetlb_folio() (consuming a VMA reservation) and then call
+copy_user_large_folio(), which became int-returning in commit 1cb9dc4b475c
+("mm: hwpoison: support recovery from HugePage copy-on-write faults") and
+can now fail (e.g.  -EHWPOISON on a hwpoisoned source page).  On the
+failure path, folio_put() restores the global hugetlb pool count through
+free_huge_folio(), but the per-VMA reservation map entry is left marked
+consumed:
 
-The time check and next window start time update is skipped while the
-scheme is deactivated by the watermarks.  Let's suppose the deactivation
-is kept more than LONG_MAX jiffies (assuming CONFIG_HZ of 250, more than
-99 days in 32 bit systems and more than one billion years in 64 bit
-systems), resulting in having the jiffies larger than the next charge
-window start time + LONG_MAX.  Then, the time_after_eq() call can return
-false until another LONG_MAX jiffies are passed.
+  - hugetlb_mfill_atomic_pte() resubmission path (UFFDIO_COPY)
+  - copy_hugetlb_page_range() fork-time CoW path when
+    hugetlb_try_dup_anon_rmap() fails (rare: pinned hugetlb anon
+    folio under fork)
 
-This means the scheme can continue working after being reactivated by the
-watermarks.  But, soon, the quota will be exceeded and the scheme will
-again effectively stop working until the next charge window starts.
-Because the current charge window is extended to up to LONG_MAX jiffies,
-however, it will look like it stopped unexpectedly and indefinitely, from
-the user's perspective.
+User-visible effect: on UFFDIO_COPY into a private hugetlb VMA where the
+resubmission copy fails, the reservation for that address is leaked from
+the VMA's reserve map.  A subsequent fault at the same address takes the
+no-reservation path, and under hugetlb pool pressure the task is SIGBUSed
+at an address it had previously reserved.  The fork-time CoW path leaks
+the same way in the child VMA's reserve map, though it requires the much
+rarer combination of pinned hugetlb anon page + hwpoisoned source.
 
-Fix this by using !time_in_range_open() instead.
+Add the missing restore_reserve_on_error() call before folio_put() on both
+error paths.
 
-The issue was discovered [1] by sashiko.
-
-Link: https://lore.kernel.org/20260329152306.45796-1-sj@kernel.org
-Link: https://lore.kernel.org/20260324040722.57944-1-sj@kernel.org [1]
-Fixes: ee801b7dd782 ("mm/damon/schemes: activate schemes based on a watermarks mechanism")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org> # 5.16.x
+Link: https://lore.kernel.org/20260520044912.6751-1-devnexen@gmail.com
+Fixes: 1cb9dc4b475c ("mm: hwpoison: support recovery from HugePage copy-on-write faults")
+Signed-off-by: David Carlier <devnexen@gmail.com>
+Reviewed-by: Muchun Song <muchun.song@linux.dev>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Mina Almasry <almasrymina@google.com>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: yuehaibing <yuehaibing@huawei.com>
+Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: SeongJae Park <sj@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/damon/core.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ mm/hugetlb.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -826,7 +826,8 @@ static void kdamond_apply_schemes(struct
- 			continue;
- 
- 		/* New charge window starts */
--		if (time_after_eq(jiffies, quota->charged_from +
-+		if (!time_in_range_open(jiffies, quota->charged_from,
-+					quota->charged_from +
- 					msecs_to_jiffies(
- 						quota->reset_interval))) {
- 			if (quota->esz && quota->charged_sz >= quota->esz)
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -5696,6 +5696,7 @@ again:
+ 							    addr, dst_vma);
+ 				folio_put(pte_folio);
+ 				if (ret) {
++					restore_reserve_on_error(h, dst_vma, addr, new_folio);
+ 					folio_put(new_folio);
+ 					break;
+ 				}
+@@ -6987,6 +6988,7 @@ int hugetlb_mfill_atomic_pte(pte_t *dst_
+ 		folio_put(*foliop);
+ 		*foliop = NULL;
+ 		if (ret) {
++			restore_reserve_on_error(h, dst_vma, dst_addr, folio);
+ 			folio_put(folio);
+ 			goto out;
+ 		}
 
 
 
