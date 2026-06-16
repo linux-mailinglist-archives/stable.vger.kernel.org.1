@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-266409-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264305-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id QVTtHbucMWrWoAUAu9opvQ
-	(envelope-from <stable+bounces-266409-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:58:03 +0200
+	id 9V0yJid2MWqujwUAu9opvQ
+	(envelope-from <stable+bounces-264305-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:13:27 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6834E6949CD
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:58:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9402C691D23
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:13:26 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=tceWapCR;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266409-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-266409-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="I9Hi+/jH";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264305-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-264305-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 4AB8A3002F67
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:57:56 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 903E6305E790
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:54:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AD4947CC96;
-	Tue, 16 Jun 2026 18:57:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DF9244CF52;
+	Tue, 16 Jun 2026 15:54:20 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 443033CEBBD;
-	Tue, 16 Jun 2026 18:57:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0B1E44B69C;
+	Tue, 16 Jun 2026 15:54:17 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781636274; cv=none; b=mPR7a5o78JktsYniR21e/2zc6JsOcH7SXkrfMAzmu0CxgujHVsaelzPBh65H8HVWd26Caxff2EE/yyAcPf0zp9vfJluqR/YmDeKtEaLkD7LriTWJ/uw0r/gqTHF7nwJr0XQNypQ51hDz5adXdMGB89upWwhmgx6Hg7SXCICylkM=
+	t=1781625260; cv=none; b=GujMkEgiVeGzI9kJ+YPgUf2fo5WaZuoFna6MKsyvpE2pOP2PIc+Q9PQrLC6WJLOo1zjeP3mdYsMStzp+8HKkpDEvRN9X+lWna96SlIbXTbIc4cB4rvNJycYb9SSQrRSIIw4Rp8nDfzFw1oKK1awiI5KEMBlPLTbLBwGymdgUo00=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781636274; c=relaxed/simple;
-	bh=NgcaKUP7sR6olnuj/krCprQzwRNIf0X4fVHK2+9LYsM=;
+	s=arc-20240116; t=1781625260; c=relaxed/simple;
+	bh=WbEPC6EilZVNVUB3cB81ouG5d1nmWX7BvsB5uP+Y/MY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KusSRhMxAlUN375Fc2csGiRzmeti3P/H3OGnmpIKGj+2uO2/gH/FVvc52vIKkfWPu+JZjwW7dpS1u8zeUash+VAi26itgrLwBRAEYOT5qS3QllWBukAYjWK1ITLuoVvr0OlwdRJFNtr0Ri+wLq+KDElY2aSnY9dgs1eGqyfyR8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tceWapCR; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1C0D1F000E9;
-	Tue, 16 Jun 2026 18:57:51 +0000 (UTC)
+	 MIME-Version; b=bGOKHqcEdGGu8l7euy4BqOH01jG0JSudRlYsIwY4BWkxsdVGgaa+pPcQg1J4lI4QDDC9pZtY3hsBKA2xl8J8GbehyK6QysB3VwcUgqDACPmCjRUtBtG1kPSHYFd5Ze50KKwoojjG1Cdx8y61Z2YxtVf+bUL2X/u4PuvCwKzMkWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I9Hi+/jH; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B35F1F000E9;
+	Tue, 16 Jun 2026 15:54:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781636272;
-	bh=JIPiivryfcDqjbKSIMWVB4yGYQ0ygh2cUqERnMqdzt4=;
+	s=korg; t=1781625257;
+	bh=S7Ux1RQrjRbQan2jkk6OQbiB22TL5VKWQl0xZoSqVsI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=tceWapCRwnwqqW7ppPN7byXkjIlKrTaQPXCNwZTlisRq+qeaA/pWHPY9+/X3KrV4N
-	 b+lPQaL2+x9iRhkaL1Y/DMJUsxc/drfdl4dM8fvWuln7saCMwDenc4G884Oqz/ti17
-	 DysXP+vIWzMFPCdjYRfDxLpYh43L8onSrlBy0fWo=
+	b=I9Hi+/jH6uKeFeOM0JqfCo0fI519z2HnHDDvYDBGBEDTjoCh+6z7BIw/hdV4t0ku2
+	 72/5fNAjgqtRSGLQ4q3Jy23DnRJ62KlhcQjEjwLIY8phrp8zKlC7tl0xhN3pCoemNu
+	 L30Z7v8O1u8R04mG2t7PQFY+pldds0IgPACygMy0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: [PATCH 5.10 207/342] thunderbolt: Reject zero-length property entries in validator
+	Kyle Zeng <kylebot@openai.com>,
+	Eric Dumazet <edumazet@google.com>,
+	syzbot+6eb9ca986d80f6f88cf9@syzkaller.appspotmail.com,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 107/325] ipv6: sit: reload inner IPv6 header after GSO offloads
 Date: Tue, 16 Jun 2026 20:28:23 +0530
-Message-ID: <20260616145057.825536683@linuxfoundation.org>
+Message-ID: <20260616145103.020327291@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,74 +79,84 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266409-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:mika.westerberg@linux.intel.com,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.intel.com];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264305-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kylebot@openai.com,m:edumazet@google.com,m:syzbot+6eb9ca986d80f6f88cf9@syzkaller.appspotmail.com,m:kuba@kernel.org,m:sashal@kernel.org,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,intel.com:email]
+	TAGGED_RCPT(0.00)[stable,6eb9ca986d80f6f88cf9];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,appspotmail.com:email,vger.kernel.org:from_smtp,openai.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 6834E6949CD
+X-Rspamd-Queue-Id: 9402C691D23
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Kyle Zeng <kylebot@openai.com>
 
-commit cff8eb65d1eafe7793e54b4d0cf6bf831644630b upstream.
+[ Upstream commit f0e42f0c4337b1f220de1ddd63f47197c7dee4de ]
 
-tb_property_entry_valid() accepts entries with length == 0 for
-DIRECTORY, DATA, and TEXT types.  A zero-length TEXT entry passes
-validation but causes an underflow in the null-termination logic:
+ipip6_tunnel_xmit() caches the inner IPv6 header pointer at function
+entry and continues using it after iptunnel_handle_offloads().
 
-  property->value.text[property->length * 4 - 1] = '\0';
+For GSO skbs, iptunnel_handle_offloads() calls skb_header_unclone().
+When the skb header is cloned, skb_header_unclone() can call
+pskb_expand_head(), which may move the skb head. The pskb_expand_head()
+contract requires pointers into the skb header to be reloaded after the
+call.
 
-When property->length is 0 this writes to offset -1 relative to
-the allocation.
+If the later skb_realloc_headroom() branch is not taken, SIT uses the
+stale iph6 pointer to read the inner hop limit and DS field. That can
+read from a freed skb head after the old head's remaining clone is
+released.
 
-Reject zero-length entries early in the validator since they have no
-valid representation in the XDomain property protocol.
+Reload iph6 after the offload helper succeeds and before subsequent
+reads from the inner IPv6 header. Keep the existing reload after
+skb_realloc_headroom(), since that branch can also replace the skb.
 
-Fixes: cdae7c07e3e3 ("thunderbolt: Add support for XDomain properties")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-7
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 14909664e4e1 ("sit: Setup and TX path for sit/UDP foo-over-udp encapsulation")
+Signed-off-by: Kyle Zeng <kylebot@openai.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reported-by: syzbot+6eb9ca986d80f6f88cf9@syzkaller.appspotmail.com
+Link: https://patch.msgid.link/20260605073448.6524-1-kylebot@openai.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thunderbolt/property.c |    2 ++
- 1 file changed, 2 insertions(+)
+ net/ipv6/sit.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/thunderbolt/property.c
-+++ b/drivers/thunderbolt/property.c
-@@ -59,6 +59,8 @@ static bool tb_property_entry_valid(cons
- 	case TB_PROPERTY_TYPE_DIRECTORY:
- 	case TB_PROPERTY_TYPE_DATA:
- 	case TB_PROPERTY_TYPE_TEXT:
-+		if (!entry->length)
-+			return false;
- 		if (entry->length > block_len)
- 			return false;
- 		if (check_add_overflow(entry->value, entry->length, &end) ||
+diff --git a/net/ipv6/sit.c b/net/ipv6/sit.c
+index cf37ad9686e698..6a833ee665e9b4 100644
+--- a/net/ipv6/sit.c
++++ b/net/ipv6/sit.c
+@@ -960,6 +960,7 @@ static netdev_tx_t ipip6_tunnel_xmit(struct sk_buff *skb,
+ 		ip_rt_put(rt);
+ 		goto tx_error;
+ 	}
++	iph6 = ipv6_hdr(skb);
+ 
+ 	if (df) {
+ 		mtu = dst_mtu(&rt->dst) - t_hlen;
+-- 
+2.53.0
+
 
 
 
