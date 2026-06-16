@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-266004-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264036-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ctlnBX2UMWpQnQUAu9opvQ
-	(envelope-from <stable+bounces-266004-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:22:53 +0200
+	id EjGWJJ1tMWpYjAUAu9opvQ
+	(envelope-from <stable+bounces-264036-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:37:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CDD269414B
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:22:52 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63F50691362
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:37:01 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=f3rhasL6;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266004-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266004-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=UFr23OFg;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264036-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-264036-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4DF473189820
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:22:34 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0BB4F30B3EF1
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:30:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D615B466B64;
-	Tue, 16 Jun 2026 18:22:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E02EC44102E;
+	Tue, 16 Jun 2026 15:29:46 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB5283D8105;
-	Tue, 16 Jun 2026 18:22:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B78E933263A;
+	Tue, 16 Jun 2026 15:29:45 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781634153; cv=none; b=N00rBlQLPa8nVPPU4TuDVNfxZs5SJjda2ARf6Xkha+B8Lo1NSMCPrOotQi02uGGE8K1zyraw5BVGeGuYVFV9pCIA6wb0XiUgzv7G8ociGyZ0XkFHYBG2+mZ4VKTTTs8c7pBNTA085YQopmyOfC/rgFA7LhKeT3/4YB/me0SViOw=
+	t=1781623786; cv=none; b=h3tpP3EiMFyavvxd8dZ9CyTACYvFO5C1GDuUd99hULFb5KI8GT04+xZeXndH1WzxGJ62ZhBTtdEO1H7podQSrirhv71qJe8P6RBgQD2FzUXuU/2UMO45a2G+z6rPyjvyspH9Y7Rnw+cQS6Q4DQdMXluCEYRxJLUUQylf3lKK5PE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781634153; c=relaxed/simple;
-	bh=A48O8uOXfF/He1aI6Cs88fWZZVWH1FxLpO3YGRxKItE=;
+	s=arc-20240116; t=1781623786; c=relaxed/simple;
+	bh=AYEFIYyJM93d8/NvNEtxiZMONS9fXGh16kN4hMtM0gA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SKx76PsDAWeT+dVmlL8r2l2LX2BfPqfFhsRqigEwWbcV5035VwkpwGd2XDvsdi6qLElptwD0IrD7CCEgmHtE/jTpcNY+XJhcLK0tACIuyMijTRyGckMsfyf50rzZs1+5fcPAO0jjd5kVnGFhTCTGCfgomhmEl3LEyWVqBfLP86g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f3rhasL6; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A0CF1F000E9;
-	Tue, 16 Jun 2026 18:22:31 +0000 (UTC)
+	 MIME-Version; b=gBB+uoEmnj3JVZVGE5pebfyZasA1bhAAOv5EzUrMOXLSKHuqr516g1HsmH2l6zEk1MvyIuj2jTXlk8/Ed1jFIcgqq+LEtZ+Ay/gKKbotNGI3jpGhTi8IDM0SO4lVGjI1aADNZZdIUAfSOQH05Hp4XYTfL7cNKQL0QMgxvdUeRS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UFr23OFg; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9247E1F000E9;
+	Tue, 16 Jun 2026 15:29:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781634152;
-	bh=nCuWDyiGdigfemAx8hjE59THoIUnCvaEXdcIGFUFxEM=;
+	s=korg; t=1781623785;
+	bh=OhASrVquR9JNQbJKzNG5pby32skt8IW9PjfW2whiXL4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=f3rhasL6AJeqHXxboW0Dh3W0d4i5Tr073dwzibOwJFkj5Aab0RQr8iuf8euD7mNcN
-	 bfWn9Al9Yv6NtX0A5M/dQbKgybePTutrAp5RCARG2unWLRHK0/WHsmTE2qV0rX92I2
-	 oq4bX1WFTd39wGycc87Fx34q35B/SrSV19VYRdyE=
+	b=UFr23OFgkarQS2MucanuEoDcgkSzF5ORkjiq8LW1y3SRx1bROBVfa1IZGInmOZLrV
+	 VYr3emIuCBhLh4kZCVCtz+YNDZwBsZALNLzc5qa6JooOsdrE64bK3omKWzn+fZCjF4
+	 4hRz5KkQvhWvm0z7h6xnrskDiFkYg5pWWWqLTyLw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tristan Madani <tristan@talencesecurity.com>,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 5.15 201/411] netfilter: nft_tunnel: fix use-after-free on object destroy
+	Adrian Korwel <adriank20047@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 7.0 208/378] USB: serial: io_ti: fix heap overflow in build_i2c_fw_hdr()
 Date: Tue, 16 Jun 2026 20:27:19 +0530
-Message-ID: <20260616145111.409077117@linuxfoundation.org>
+Message-ID: <20260616145121.321450895@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,81 +68,84 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-264036-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:adriank20047@gmail.com,m:johan@kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266004-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:tristan@talencesecurity.com,m:fmancera@suse.de,m:fw@strlen.de,m:pablo@netfilter.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,netfilter.org:email,suse.de:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5CDD269414B
+X-Rspamd-Queue-Id: 63F50691362
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tristan Madani <tristan@talencesecurity.com>
+From: Adrian Korwel <adriank20047@gmail.com>
 
-commit c32b26aaa2f9216520a38b3f4bfeec846eb3eb8a upstream.
+commit 0fd2b00b2d3d05e3eaa13342b3dfb0fa85c226ae upstream.
 
-nft_tunnel_obj_destroy() calls metadata_dst_free() which directly
-kfree()s the metadata_dst, ignoring the dst_entry refcount. Packets
-that took a reference via dst_hold() in nft_tunnel_obj_eval() and
-are still queued (e.g. in a netem qdisc) are left with a dangling
-pointer. When these packets are eventually dequeued, dst_release()
-operates on freed memory.
+build_i2c_fw_hdr() allocates a fixed-size buffer of
+(16*1024 - 512) + sizeof(struct ti_i2c_firmware_rec) bytes, then
+copies le16_to_cpu(img_header->Length) bytes into it without
+validating that Length fits within the available space after the
+firmware record header.
 
-Replace metadata_dst_free() with dst_release() so the metadata_dst
-is freed only after all references are dropped. The dst subsystem
-already handles metadata_dst cleanup in dst_destroy() when
-DST_METADATA is set.
+img_header->Length is a __le16 from the firmware file and can be
+up to 65535. check_fw_sanity() validates the total firmware size
+but not img_header->Length specifically.
 
-Fixes: af308b94a2a4 ("netfilter: nf_tables: add tunnel support")
+Fix by rejecting images where img_header->Length exceeds the
+available destination space.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Cc: stable@vger.kernel.org
-Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
-Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Adrian Korwel <adriank20047@gmail.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nft_tunnel.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/serial/io_ti.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/net/netfilter/nft_tunnel.c
-+++ b/net/netfilter/nft_tunnel.c
-@@ -669,7 +669,7 @@ static void nft_tunnel_obj_destroy(const
- {
- 	struct nft_tunnel_obj *priv = nft_obj_data(obj);
+--- a/drivers/usb/serial/io_ti.c
++++ b/drivers/usb/serial/io_ti.c
+@@ -844,6 +844,11 @@ static int build_i2c_fw_hdr(u8 *header,
+ 	/* Pointer to fw_down memory image */
+ 	img_header = (struct ti_i2c_image_header *)&fw->data[4];
  
--	metadata_dst_free(priv->md);
-+	dst_release(&priv->md->dst);
- }
- 
- static struct nft_object_type nft_tunnel_obj_type;
++	if (le16_to_cpu(img_header->Length) >
++			buffer_size - sizeof(struct ti_i2c_firmware_rec)) {
++		kfree(buffer);
++		return -EINVAL;
++	}
+ 	memcpy(buffer + sizeof(struct ti_i2c_firmware_rec),
+ 		&fw->data[4 + sizeof(struct ti_i2c_image_header)],
+ 		le16_to_cpu(img_header->Length));
 
 
 
