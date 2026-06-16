@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-265125-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264640-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id h/OlDNqDMWpzlQUAu9opvQ
-	(envelope-from <stable+bounces-265125-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:11:54 +0200
+	id ZN65FDZ6MWpskQUAu9opvQ
+	(envelope-from <stable+bounces-264640-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:30:46 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1301692D73
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:11:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BAB5A69226C
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:30:45 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=BUTxiYpj;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265125-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265125-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=RmxVNQuM;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264640-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264640-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D1FC3308F504
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:06:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B446930702D3
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:23:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0743247884F;
-	Tue, 16 Jun 2026 17:06:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 711F746AF1D;
+	Tue, 16 Jun 2026 16:23:16 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D121A376A19;
-	Tue, 16 Jun 2026 17:06:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F13846AF1B;
+	Tue, 16 Jun 2026 16:23:14 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781629594; cv=none; b=mlLGmbqzP2fGtO9Bnjm+1nxHiav4Gk+Am0cn7e1DCufsfcGIJlGi4wqHWJ3QSXr0Q31uNt+VNB+vag8/Xm1St83d2exPFaRVgSagu/v6gNo77RQztAwaomtzTS7t9Ngl99MbHc2PRGvo0muXzaaiJVvicJoM67WwXR3dEehoiIc=
+	t=1781626996; cv=none; b=Fi2S/HhIfUVjnS1B0QPezeRsjXCwSyAUigK7MHktn2TiIzKIjvZobruRVV7sNsip4pSxzbqKpTe9W0hbcBmhLk38Xh8oVnhBy9cA9/lz3E4mLyYngZqwgxEBQI7omEKKNRcoMnHkwqZXZb0ZxK27rtcWFE2RY7h6gEG73ocvNA0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781629594; c=relaxed/simple;
-	bh=KnxBCwMNateH4z7wcDQxseGTp2hf+aL3BJEPRyFje7c=;
+	s=arc-20240116; t=1781626996; c=relaxed/simple;
+	bh=MYAkQ4sIs9xsOFiZQLdGoIhytRvYHnxhPCbV6P5gEok=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ieq4LeEtpMiieKjj+84aMFd+P3ct0CrkdeLbfG7bAzrf+LLLWS3ZbAGygRRpo8eot27x724ApJFWKZf82Hw4pXE+0mPhIuaALz0LBfWlh/iIg8RDngRUcBbt7BZ3flVACqm2sfQAxnpnTKM0FCL7bF707WDAdfdVlzBWm2HkMT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BUTxiYpj; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C81DB1F000E9;
-	Tue, 16 Jun 2026 17:06:32 +0000 (UTC)
+	 MIME-Version; b=tPMhIxy8BV8b2PYZhdp6v1qIygfgn2KH997P5e0Q006E/+FY6PYgg+QZXHBj2H6i9vA7qa4/naq28k6RSDz8bGOlqt+O3XCnwmvxfUThl/8VwJxc1xUiQpKjDfx7rwrx3QkNnoxqoxtEgiRU50h+6w7Vw1wiMqC29Vb1mfiS87s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RmxVNQuM; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3D8E1F000E9;
+	Tue, 16 Jun 2026 16:23:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781629593;
-	bh=W21VEAvTSxDwLzMi2A0AJ/YbrN3YKzjaaqTLliqFUu0=;
+	s=korg; t=1781626994;
+	bh=X0TUvZ1NCOevEJgCmlXnBjTNyCGSO+tJBJhtuuvbK4U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=BUTxiYpjDU90MoLbVpWzGYpglb1j6YyMggnkNZcGOH3MMmQ/cruloOVUaDjqLpWOw
-	 TiJxl/4y1PYyjnXy1X77GxEcG4ZlcLftctiNa91QKKNq/zhnJPA90B6hNzWaIjRxrg
-	 8OD1zJbHqYOWvDko+mX6RZOnglgILtdxrAhRpXeU=
+	b=RmxVNQuMK+jE9XgjV5388zBgwi7AAA1elYfjsTf3/i4jHTbjy1qovfYuU4U8SY2BD
+	 /5MLAzm3ZfQYzedjQi2Wr1eq7za25/7NxrgEk+1aFYy6KMvxh8XipmW1IAXb0FimYu
+	 jLfYS8jkfvAwKEKIY3sSpevUIXpvW4cgN/W+oWng=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Til Kaiser <mail@tk154.de>,
 	Paolo Abeni <pabeni@redhat.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 316/452] mptcp: allow subflow rcv wnd to shrink
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 105/261] net: mvpp2: refill RX buffers before XDP or skb use
 Date: Tue, 16 Jun 2026 20:29:03 +0530
-Message-ID: <20260616145134.087017607@linuxfoundation.org>
+Message-ID: <20260616145049.912884168@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,12 +77,12 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265125-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264640-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:pabeni@redhat.com,m:matttbe@kernel.org,m:kuba@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mail@tk154.de,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
@@ -98,68 +98,135 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tk154.de:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E1301692D73
+X-Rspamd-Queue-Id: BAB5A69226C
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Til Kaiser <mail@tk154.de>
 
-commit da23be77e1292cd611e736c3aa17da633d7ddce7 upstream.
+[ Upstream commit 5e8e2a9624df72fca7c736b2966b2cbf6c9c3ff6 ]
 
-In MPTCP connection, the `window` field in the TCP header refers to the
-MPTCP-level rcv_nxt and it's right edge should not move backward. Such
-constraint is enforced at DSS option generation time.
+The RX error path returns the current descriptor buffer to the hardware
+BM pool. That is only valid while the driver still owns the buffer.
 
-At the same time, the TCP stack ensures independently that the TCP-level
-rcv wnd right's edge does not move backward. That in turn causes artificial
-inflating of the MPTCP rcv window when the incoming data is acked at the
-TCP level and is OoO in the MPTCP sequence space (or lands in the backlog).
+mvpp2_rx_refill() can fail after the current buffer has been handed to
+XDP or attached to an skb. In those cases mvpp2_run_xdp() may have
+recycled, redirected, or queued the page for XDP_TX, and an skb free also
+retires the data buffer. Returning such a buffer to BM lets hardware DMA
+into memory that is no longer owned by the RX ring.
 
-As a consequence, the incoming traffic can exceed the receiver rcvbuf size
-even when the sender is not misbehaving.
+Refill the BM pool before handing the current buffer to XDP or to the
+skb. If the allocation fails there, drop the packet and return the
+still-owned current buffer to BM, preserving the pool depth. Once the
+refill succeeds, later local drops retire/free the current buffer instead
+of returning it to BM.
 
-Prevent such scenario forcibly allowing the TCP subflow to shrink the
-TCP-level rcv wnd regardless of the current netns setting.
-
-Fixes: f3589be0c420 ("mptcp: never shrink offered window")
-Cc: stable@vger.kernel.org
+Fixes: 07dd0a7aae7f ("mvpp2: add basic XDP support")
+Fixes: d6526926de73 ("net: mvpp2: fix memory leak in mvpp2_rx")
+Signed-off-by: Til Kaiser <mail@tk154.de>
+Link: https://patch.msgid.link/20260607134943.21996-4-mail@tk154.de
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260602-net-mptcp-misc-fixes-7-1-rc7-v2-4-856831229976@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 77a6b90ce56b ("net: mvpp2: build skb from XDP-adjusted data on XDP_PASS")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/options.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ .../net/ethernet/marvell/mvpp2/mvpp2_main.c   | 43 +++++++++++--------
+ 1 file changed, 24 insertions(+), 19 deletions(-)
 
---- a/net/mptcp/options.c
-+++ b/net/mptcp/options.c
-@@ -567,6 +567,7 @@ static bool mptcp_established_options_ds
- {
- 	struct mptcp_subflow_context *subflow = mptcp_subflow_ctx(sk);
- 	struct mptcp_sock *msk = mptcp_sk(subflow->conn);
-+	struct tcp_sock *tp = tcp_sk(sk);
- 	unsigned int dss_size = 0;
- 	struct mptcp_ext *mpext;
- 	unsigned int ack_size;
-@@ -615,6 +616,12 @@ static bool mptcp_established_options_ds
- 	if (dss_size == 0)
- 		ack_size += TCPOLEN_MPTCP_DSS_BASE;
+diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
+index e43d844b14aaef..2c517f6ca39c40 100644
+--- a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
++++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
+@@ -3986,6 +3986,12 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
+ 		else
+ 			frag_size = bm_pool->frag_size;
  
-+	/* The caller is __tcp_transmit_skb(), and will compute the new rcv
-+	 * wnd soon: ensure that the window can shrink.
-+	 */
-+	if (skb)
-+		tp->rcv_wnd = tp->rcv_nxt - tp->rcv_wup;
++		err = mvpp2_rx_refill(port, bm_pool, pp, pool);
++		if (err) {
++			netdev_err(port->dev, "failed to refill BM pools\n");
++			goto err_drop_frame;
++		}
 +
- 	dss_size += ack_size;
+ 		if (xdp_prog) {
+ 			struct xdp_rxq_info *xdp_rxq;
  
- 	*size = ALIGN(dss_size, 4);
+@@ -4003,12 +4009,6 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
+ 
+ 			if (ret) {
+ 				xdp_ret |= ret;
+-				err = mvpp2_rx_refill(port, bm_pool, pp, pool);
+-				if (err) {
+-					netdev_err(port->dev, "failed to refill BM pools\n");
+-					goto err_drop_frame;
+-				}
+-
+ 				ps.rx_packets++;
+ 				ps.rx_bytes += rx_bytes;
+ 				continue;
+@@ -4023,8 +4023,21 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
+ 			skb = slab_build_skb(data);
+ 		if (!skb) {
+ 			netdev_warn(port->dev, "skb build failed\n");
+-			goto err_drop_frame;
++			if (pp) {
++				page_pool_put_page(pp, virt_to_head_page(data),
++						   rx_bytes + MVPP2_MH_SIZE,
++						   true);
++			} else {
++				dma_unmap_single_attrs(dev->dev.parent, dma_addr,
++						       bm_pool->buf_size,
++						       DMA_FROM_DEVICE,
++						       DMA_ATTR_SKIP_CPU_SYNC);
++				mvpp2_frag_free(bm_pool, pp, data);
++			}
++			goto err_drop_frame_retired;
+ 		}
++		if (pp)
++			skb_mark_for_recycle(skb);
+ 
+ 		/* If we have RX hardware timestamping enabled, grab the
+ 		 * timestamp from the queue and convert.
+@@ -4035,16 +4048,7 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
+ 					 skb_hwtstamps(skb));
+ 		}
+ 
+-		err = mvpp2_rx_refill(port, bm_pool, pp, pool);
+-		if (err) {
+-			netdev_err(port->dev, "failed to refill BM pools\n");
+-			dev_kfree_skb_any(skb);
+-			goto err_drop_frame;
+-		}
+-
+-		if (pp)
+-			skb_mark_for_recycle(skb);
+-		else
++		if (!pp)
+ 			dma_unmap_single_attrs(dev->dev.parent, dma_addr,
+ 					       bm_pool->buf_size, DMA_FROM_DEVICE,
+ 					       DMA_ATTR_SKIP_CPU_SYNC);
+@@ -4063,13 +4067,14 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
+ 		continue;
+ 
+ err_drop_frame:
+-		dev->stats.rx_errors++;
+-		mvpp2_rx_error(port, rx_desc);
+ 		/* Return the buffer to the pool */
+ 		if (rx_status & MVPP2_RXD_BUF_HDR)
+ 			mvpp2_buff_hdr_pool_put(port, rx_desc, pool, rx_status);
+ 		else
+ 			mvpp2_bm_pool_put(port, pool, dma_addr, phys_addr);
++err_drop_frame_retired:
++		dev->stats.rx_errors++;
++		mvpp2_rx_error(port, rx_desc);
+ 	}
+ 
+ 	if (xdp_ret & MVPP2_XDP_REDIR)
+-- 
+2.53.0
+
 
 
 
