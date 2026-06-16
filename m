@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-265094-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264329-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id L34QBgmCMWq4lAUAu9opvQ
-	(envelope-from <stable+bounces-265094-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:04:09 +0200
+	id fkFcBrJyMWpmjgUAu9opvQ
+	(envelope-from <stable+bounces-264329-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:58:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5BB3692B18
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:04:08 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F48C691955
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:58:41 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=qtFl9Adx;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265094-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-265094-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=2pU4k6oq;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264329-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264329-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 69961303BA93
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:04:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 72BE031E66AE
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:55:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC0E0478E41;
-	Tue, 16 Jun 2026 17:04:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C6FC44E04C;
+	Tue, 16 Jun 2026 15:55:36 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EB9043D4E9;
-	Tue, 16 Jun 2026 17:04:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 095B744E027;
+	Tue, 16 Jun 2026 15:55:35 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781629441; cv=none; b=TTyxxZ4JDjwaahuPJk97d2FfGI+oWWGkroBVAf258ZjHObqQ+2nUpNPSTM0AOPGA+zA0xyOXZm97qVMt3FceK7HMvvmhG0AdNECSPhibqG8ro0KFJ0GFF4tFL7OVfdfVBbYmnF0LaB9yrnXdcX6rjkgsqB2lqSqnFPs1rokTp9M=
+	t=1781625336; cv=none; b=ZLdbmib536ZBI0ghffYMLUsmd3o5o1fxcvjBimyu97vDcr5s1pLlbppTnAPWlOC6ZYbvcfkbgbitZUP7u36KQnnIWj8xRmcNW8jjXoT86clQzIsxqKV+RWJEv+4Hwoe3bTKggW2pm2XWyYPO7fWKjL7UPodkyxPhjRuO0SalXqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781629441; c=relaxed/simple;
-	bh=qM48HUDLx9hYN7LXQFx8xNVRg/4MToQaPnO3Ji2AvNo=;
+	s=arc-20240116; t=1781625336; c=relaxed/simple;
+	bh=XxvSTalwbUbDsoU7FzsvmQ5+sG3PYsawLqkCq0AVbzg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sk+NUhw62upU6wmUZWiFnJEPWVl3ix+zHscYCKjjS/NWGlJtbqcw02LU0/1iOcUMV92K+D11KcjNih95eVQTj2LA0NDL13bijNdAOhcpfARvDV0Z3OskcqyABrZ7/UWRDJvkLKbx7p2tj/5pnMlDz8mMLG836+HXeF5X/PcxgPU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qtFl9Adx; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46B891F000E9;
-	Tue, 16 Jun 2026 17:03:59 +0000 (UTC)
+	 MIME-Version; b=LDZZaEepKeG3hIWWcnEVo0jVfsMU6I55JM17xfFvdPywubwXS4IDtaqFXFkz6nRExzOHWl8Kxzaj4ze8WgZVda2YOpxnE1SnnvDp1u9PNlPwbfQZNVUdQowm7+CrbtFD0ecbP7rHMzJOK7bK1Q+Obh2iuQNki4zptYPIeCbYR/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2pU4k6oq; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E15AB1F000E9;
+	Tue, 16 Jun 2026 15:55:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781629440;
-	bh=eoaNuJKWrSGSnsjwneGPSMhCQ9Fg74M4hp54+oLStA4=;
+	s=korg; t=1781625334;
+	bh=Zx8tQ+VvrY6dJUNbHIu1m4OefYeUI5xWf1vkzJ3yhKo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=qtFl9Adxob4fcaHqGbamMXiEfkqonG+LGAPbOFz9CPVypQHhjibgHAmvgh0SpSQJR
-	 0jxs7hjclGMoxV9Xz0wS5U+dptcTkkC2j/Po7Dk5oZTZYh8Fe0/PnyFKWirT/2X/cW
-	 OsymAsdeJR12rdeWABpvOXIKBi3cdpNmH/6nb92c=
+	b=2pU4k6oqldok8ez/zD7T5Wffos8CoJECwA3rcpzkyuQY5o76lPvXN3ilADr3ACc1b
+	 6RFmYkqw2Uy1MlLGjTj308472Ol+sDnBJXjcvTh08GVT+8+zWSD1hZUWzhkoWGAmcu
+	 i2G8+KmqP1KnoHFzu9oRBABKSwM6i/zPwtJL0Oi8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Til Kaiser <mail@tk154.de>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 284/452] net: mvpp2: refill RX buffers before XDP or skb use
+Subject: [PATCH 6.18 115/325] sctp: fix uninit-value in __sctp_rcv_asconf_lookup()
 Date: Tue, 16 Jun 2026 20:28:31 +0530
-Message-ID: <20260616145132.527966946@linuxfoundation.org>
+Message-ID: <20260616145103.432539458@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,163 +68,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265094-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-264329-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mail@tk154.de,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:lucien.xin@gmail.com,m:kuba@kernel.org,m:sashal@kernel.org,m:michaelbommarito@gmail.com,m:lucienxin@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,tk154.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A5BB3692B18
+X-Rspamd-Queue-Id: 5F48C691955
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Til Kaiser <mail@tk154.de>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-[ Upstream commit 5e8e2a9624df72fca7c736b2966b2cbf6c9c3ff6 ]
+[ Upstream commit f8373d7090b745728de66308deeecc67e8d319ce ]
 
-The RX error path returns the current descriptor buffer to the hardware
-BM pool. That is only valid while the driver still owns the buffer.
+__sctp_rcv_asconf_lookup() in net/sctp/input.c only checks that the ASCONF
+chunk can hold the ADDIP header and a parameter header, then calls
+af->from_addr_param(), which reads the full address (16 bytes for IPv6)
+trusting the parameter's declared length.
 
-mvpp2_rx_refill() can fail after the current buffer has been handed to
-XDP or attached to an skb. In those cases mvpp2_run_xdp() may have
-recycled, redirected, or queued the page for XDP_TX, and an skb free also
-retires the data buffer. Returning such a buffer to BM lets hardware DMA
-into memory that is no longer owned by the RX ring.
+An unauthenticated peer can send a truncated trailing ASCONF chunk that
+declares an IPv6 address parameter but stops after the 4-byte parameter
+header; reached from the no-association lookup path, from_addr_param() then
+reads uninitialized bytes past the parameter.
 
-Refill the BM pool before handing the current buffer to XDP or to the
-skb. If the allocation fails there, drop the packet and return the
-still-owned current buffer to BM, preserving the pool depth. Once the
-refill succeeds, later local drops retire/free the current buffer instead
-of returning it to BM.
+Impact: an unauthenticated SCTP peer makes the receive path read up to 16
+bytes of uninitialized memory past a truncated ASCONF address parameter.
 
-Fixes: 07dd0a7aae7f ("mvpp2: add basic XDP support")
-Fixes: d6526926de73 ("net: mvpp2: fix memory leak in mvpp2_rx")
-Signed-off-by: Til Kaiser <mail@tk154.de>
-Link: https://patch.msgid.link/20260607134943.21996-4-mail@tk154.de
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Stable-dep-of: 77a6b90ce56b ("net: mvpp2: build skb from XDP-adjusted data on XDP_PASS")
+The sibling __sctp_rcv_init_lookup() bounds parameters with
+sctp_walk_params(); this path open-codes the fetch and omits the bound.
+Verify the whole address parameter lies within the chunk before
+from_addr_param() reads it, the same class of fix as commit 51e5ad549c43
+("net: sctp: fix KMSAN uninit-value in sctp_inq_pop").
+
+Fixes: df2185771439 ("[SCTP]: Update association lookup to look at ASCONF chunks as well")
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Acked-by: Xin Long <lucien.xin@gmail.com>
+Link: https://patch.msgid.link/20260608122234.459098-1-michael.bommarito@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/marvell/mvpp2/mvpp2_main.c   | 43 +++++++++++--------
- 1 file changed, 24 insertions(+), 19 deletions(-)
+ net/sctp/input.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-index 812c80d45859d5..5bdc26bebe4488 100644
---- a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-+++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-@@ -3973,6 +3973,12 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
- 		else
- 			frag_size = bm_pool->frag_size;
+diff --git a/net/sctp/input.c b/net/sctp/input.c
+index e119e460ccde0b..864741fae4187e 100644
+--- a/net/sctp/input.c
++++ b/net/sctp/input.c
+@@ -1204,6 +1204,14 @@ static struct sctp_association *__sctp_rcv_asconf_lookup(
+ 	/* Skip over the ADDIP header and find the Address parameter */
+ 	param = (union sctp_addr_param *)(asconf + 1);
  
-+		err = mvpp2_rx_refill(port, bm_pool, pp, pool);
-+		if (err) {
-+			netdev_err(port->dev, "failed to refill BM pools\n");
-+			goto err_drop_frame;
-+		}
++	/* The whole address parameter must lie within the chunk before
++	 * af->from_addr_param() reads the variable-length address; otherwise a
++	 * truncated trailing ASCONF chunk lets it read uninitialized bytes past
++	 * the parameter.
++	 */
++	if (sizeof(*asconf) + ntohs(param->p.length) > ntohs(ch->length))
++		return NULL;
 +
- 		if (xdp_prog) {
- 			struct xdp_rxq_info *xdp_rxq;
- 
-@@ -3990,12 +3996,6 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
- 
- 			if (ret) {
- 				xdp_ret |= ret;
--				err = mvpp2_rx_refill(port, bm_pool, pp, pool);
--				if (err) {
--					netdev_err(port->dev, "failed to refill BM pools\n");
--					goto err_drop_frame;
--				}
--
- 				ps.rx_packets++;
- 				ps.rx_bytes += rx_bytes;
- 				continue;
-@@ -4010,8 +4010,21 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
- 			skb = slab_build_skb(data);
- 		if (!skb) {
- 			netdev_warn(port->dev, "skb build failed\n");
--			goto err_drop_frame;
-+			if (pp) {
-+				page_pool_put_page(pp, virt_to_head_page(data),
-+						   rx_bytes + MVPP2_MH_SIZE,
-+						   true);
-+			} else {
-+				dma_unmap_single_attrs(dev->dev.parent, dma_addr,
-+						       bm_pool->buf_size,
-+						       DMA_FROM_DEVICE,
-+						       DMA_ATTR_SKIP_CPU_SYNC);
-+				mvpp2_frag_free(bm_pool, pp, data);
-+			}
-+			goto err_drop_frame_retired;
- 		}
-+		if (pp)
-+			skb_mark_for_recycle(skb);
- 
- 		/* If we have RX hardware timestamping enabled, grab the
- 		 * timestamp from the queue and convert.
-@@ -4022,16 +4035,7 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
- 					 skb_hwtstamps(skb));
- 		}
- 
--		err = mvpp2_rx_refill(port, bm_pool, pp, pool);
--		if (err) {
--			netdev_err(port->dev, "failed to refill BM pools\n");
--			dev_kfree_skb_any(skb);
--			goto err_drop_frame;
--		}
--
--		if (pp)
--			skb_mark_for_recycle(skb);
--		else
-+		if (!pp)
- 			dma_unmap_single_attrs(dev->dev.parent, dma_addr,
- 					       bm_pool->buf_size, DMA_FROM_DEVICE,
- 					       DMA_ATTR_SKIP_CPU_SYNC);
-@@ -4050,13 +4054,14 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
- 		continue;
- 
- err_drop_frame:
--		dev->stats.rx_errors++;
--		mvpp2_rx_error(port, rx_desc);
- 		/* Return the buffer to the pool */
- 		if (rx_status & MVPP2_RXD_BUF_HDR)
- 			mvpp2_buff_hdr_pool_put(port, rx_desc, pool, rx_status);
- 		else
- 			mvpp2_bm_pool_put(port, pool, dma_addr, phys_addr);
-+err_drop_frame_retired:
-+		dev->stats.rx_errors++;
-+		mvpp2_rx_error(port, rx_desc);
- 	}
- 
- 	if (xdp_ret & MVPP2_XDP_REDIR)
+ 	af = sctp_get_af_specific(param_type2af(param->p.type));
+ 	if (unlikely(!af))
+ 		return NULL;
 -- 
 2.53.0
 
