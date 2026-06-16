@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-264563-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266018-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id YLw+BVh5MWoGkQUAu9opvQ
-	(envelope-from <stable+bounces-264563-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:27:04 +0200
+	id jeCDO7iUMWpxnQUAu9opvQ
+	(envelope-from <stable+bounces-266018-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:23:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F391692157
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:27:03 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C338694189
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:23:52 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=KdKQMiOu;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264563-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264563-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=kg59vpyM;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266018-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-266018-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0CE8430780C6
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:16:26 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 50F233004404
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:23:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83F22466B57;
-	Tue, 16 Jun 2026 16:16:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D468466B5E;
+	Tue, 16 Jun 2026 18:23:47 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B0C346AEC5;
-	Tue, 16 Jun 2026 16:16:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BACA3BFE5A;
+	Tue, 16 Jun 2026 18:23:46 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781626583; cv=none; b=T/h7EnEZv5Kv6mkrdweYeztpI74M1o/iqU6ot5hMxkuO77LQSiLUpUbOmopqqWKA8v3v6P+KoxXJoqJVzM/TnVvDrUatd9WuZu70+PvNy3Cnvt7uKwQ01CelgL9w/WcuQWiYdNS/OtTnVW0HyyUF5g/KR+9Zerf9A9/wYEv8pD4=
+	t=1781634227; cv=none; b=m01KFy2pYC7BtJk9HKJriGFntvo/GrZ7F3TR67/AJw9DOSAk71zQ1H16JDfK/tmvHBfx9p18yDY2xZxltcsnAqQYi1m7ZQzKdOlUWo7nhZYmWAl/1ehD0hWzm2NrGg79XQNxcQkZkRRDaTt8cMyeMZUWNKueqN5fPhOD4m20ZJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781626583; c=relaxed/simple;
-	bh=MkogXLHjx4agOgTzuXsTl/cZ/2WinE7Jk8rZJcZujBQ=;
+	s=arc-20240116; t=1781634227; c=relaxed/simple;
+	bh=MDaJZ31nGWpfY/9fp3wkjMepzwsv5GrjesI+zkNV/Jg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=blZynaAp3rhG4MkLRQfDhZfqIARB+e4f9o5+XUSsPdKqeXjcRv5h45qlo+gcDbaKSE4PD+v9kI9/nBoYZHxFkeZQl547+7iPk8Si7JSLfyLqn8nubkcDirTzBookpF2rtdH7Xj785Yavm67KbExyT6KBtr9ToqQJmdAtp3PclHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KdKQMiOu; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B23C1F000E9;
-	Tue, 16 Jun 2026 16:16:20 +0000 (UTC)
+	 MIME-Version; b=LdPl20X0zQUxMUA7AFPuYwZ56S7PxUzLuSbYiQjR8YC1eZYviBAVMdtDu3tSbVq+kJTWR0iH65inFfRonYmXhMXBf01NhPD80yVSjQkgKythVYmHwuix45dlBLJBPnyySw2/227THHt8MBpf8KSNeZIukmxSXXSfZVDo78fBfQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kg59vpyM; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61E1C1F000E9;
+	Tue, 16 Jun 2026 18:23:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781626582;
-	bh=hjNaVkV5S0sHbObasAllgeH9G6t0XDjTSCCwvNad3b0=;
+	s=korg; t=1781634226;
+	bh=96KDvSyliv6Ls/VVH6586ozgvkjayVFR933lA6K+cz0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=KdKQMiOuJHTXqXTb7yqH+NVdm5CYMrO43QEEkfCzdbkEiesE0k120JsQrzopWdyju
-	 5jte7Lu2sXGiYs0FPgCiPdbC8CUmralytdeYwdifgcahdT3juxL6nx4ayok7OTJWCx
-	 WtB9Gmw52Sd7NrCZiJfwG+WAPe9ldwdSH61GXUp8=
+	b=kg59vpyMuncK6ClDRwpveUha/psQM3+2FIFIxrioLxuPAm2/KvxEw+GbxoCHegNvD
+	 L0WwWS3fegsO5zToVhZLdzr1MKO+r9Q6nJBd5aVvYasLc3btL82/k1iaB6EDq/+9ep
+	 HeGVSSUfVt1CJpiw7E6C6jc5CmCweAkWcjkrtbKw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 015/261] erofs: tidy up synchronous decompression
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 215/411] mptcp: sockopt: check timestamping ret value
 Date: Tue, 16 Jun 2026 20:27:33 +0530
-Message-ID: <20260616145045.723163477@linuxfoundation.org>
+Message-ID: <20260616145112.209960819@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
-References: <20260616145044.869532709@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,233 +68,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264563-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-266018-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:chao@kernel.org,m:hsiangkao@linux.alibaba.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:willemdebruijn.kernel@gmail.com,m:martineau@kernel.org,m:matttbe@kernel.org,m:kuba@kernel.org,m:willemdebruijnkernel@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,alibaba.com:email,oppo.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7F391692157
+X-Rspamd-Queue-Id: 2C338694189
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-[ Upstream commit cc831ab33644088c1eef78936de24701014d520a ]
+commit 57132affbc89c02e1bf73fdf5724311bdc9a29da upstream.
 
- - Get rid of `sbi->opt.max_sync_decompress_pages` since it's fixed as
-   3 all the time;
+sock_set_timestamping() can fail for different reasons. The returned
+value should then be checked.
 
- - Add Z_EROFS_MAX_SYNC_DECOMPRESS_BYTES in bytes instead of in pages,
-   since for non-4K pages, 3-page limitation makes no sense;
+If sock_set_timestamping() fails for at least one subflow, the first
+error is now reported to the userspace, similar to what is done with
+other socket options.
 
- - Move `sync_decompress` to sbi to avoid unexpected remount impact;
-
- - Fold z_erofs_is_sync_decompress() into its caller;
-
- - Better description of sysfs entry `sync_decompress`.
-
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Stable-dep-of: 1aee05e814d2 ("erofs: fix use-after-free on sbi->sync_decompress")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 9061f24bf82e ("mptcp: sockopt: propagate timestamp request to subflows")
+Cc: stable@vger.kernel.org
+Reported-by: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Closes: https://lore.kernel.org/willemdebruijn.kernel.178a41a53d041@gmail.com
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260602-net-mptcp-misc-fixes-7-1-rc7-v2-7-856831229976@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/ABI/testing/sysfs-fs-erofs | 14 ++++++----
- fs/erofs/internal.h                      |  5 +---
- fs/erofs/super.c                         |  3 +-
- fs/erofs/sysfs.c                         |  2 +-
- fs/erofs/zdata.c                         | 35 +++++++++---------------
- 5 files changed, 25 insertions(+), 34 deletions(-)
+ net/mptcp/sockopt.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/ABI/testing/sysfs-fs-erofs b/Documentation/ABI/testing/sysfs-fs-erofs
-index b134146d735bc5..d76de22b6ef31c 100644
---- a/Documentation/ABI/testing/sysfs-fs-erofs
-+++ b/Documentation/ABI/testing/sysfs-fs-erofs
-@@ -10,12 +10,16 @@ Description:	Shows all enabled kernel features.
- What:		/sys/fs/erofs/<disk>/sync_decompress
- Date:		November 2021
- Contact:	"Huang Jianan" <huangjianan@oppo.com>
--Description:	Control strategy of sync decompression:
-+Description:	Control strategy of synchronous decompression. Synchronous
-+		decompression tries to decompress in the reader thread for
-+		synchronous reads and small asynchronous reads (<= 12 KiB):
+--- a/net/mptcp/sockopt.c
++++ b/net/mptcp/sockopt.c
+@@ -231,15 +231,19 @@ static int mptcp_setsockopt_sol_socket_t
  
--		- 0 (default, auto): enable for readpage, and enable for
--		  readahead on atomic contexts only.
--		- 1 (force on): enable for readpage and readahead.
--		- 2 (force off): disable for all situations.
-+		- 0 (auto, default): apply to synchronous reads only, but will
-+		                     switch to 1 (force on) if any decompression
-+		                     request is detected in atomic contexts;
-+		- 1 (force on): apply to synchronous reads and small
-+		                asynchronous reads;
-+		- 2 (force off): disable synchronous decompression completely.
+ 	mptcp_for_each_subflow(msk, subflow) {
+ 		struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
++		int err;
  
- What:		/sys/fs/erofs/<disk>/drop_caches
- Date:		November 2024
-diff --git a/fs/erofs/internal.h b/fs/erofs/internal.h
-index 24e01d9135c60d..89dfb3736daa41 100644
---- a/fs/erofs/internal.h
-+++ b/fs/erofs/internal.h
-@@ -66,10 +66,6 @@ enum {
- struct erofs_mount_opts {
- 	/* current strategy of how to use managed cache */
- 	unsigned char cache_strategy;
--	/* strategy of sync decompression (0 - auto, 1 - force on, 2 - force off) */
--	unsigned int sync_decompress;
--	/* threshold for decompression synchronously */
--	unsigned int max_sync_decompress_pages;
- 	unsigned int mount_opt;
- };
- 
-@@ -123,6 +119,7 @@ struct erofs_sb_info {
- 	/* managed XArray arranged in physical block number */
- 	struct xarray managed_pslots;
- 
-+	unsigned int sync_decompress;	/* strategy for sync decompression */
- 	unsigned int shrinker_run_no;
- 	u16 available_compr_algs;
- 
-diff --git a/fs/erofs/super.c b/fs/erofs/super.c
-index bc968cf812bac4..1640ebc26ac9c4 100644
---- a/fs/erofs/super.c
-+++ b/fs/erofs/super.c
-@@ -370,8 +370,7 @@ static void erofs_default_options(struct erofs_sb_info *sbi)
- {
- #ifdef CONFIG_EROFS_FS_ZIP
- 	sbi->opt.cache_strategy = EROFS_ZIP_CACHE_READAROUND;
--	sbi->opt.max_sync_decompress_pages = 3;
--	sbi->opt.sync_decompress = EROFS_SYNC_DECOMPRESS_AUTO;
-+	sbi->sync_decompress = EROFS_SYNC_DECOMPRESS_AUTO;
- #endif
- #ifdef CONFIG_EROFS_FS_XATTR
- 	set_opt(&sbi->opt, XATTR_USER);
-diff --git a/fs/erofs/sysfs.c b/fs/erofs/sysfs.c
-index 19d586273b7091..3fbce0864a66f0 100644
---- a/fs/erofs/sysfs.c
-+++ b/fs/erofs/sysfs.c
-@@ -57,7 +57,7 @@ static struct erofs_attr erofs_attr_##_name = {			\
- #define ATTR_LIST(name) (&erofs_attr_##name.attr)
- 
- #ifdef CONFIG_EROFS_FS_ZIP
--EROFS_ATTR_RW_UI(sync_decompress, erofs_mount_opts);
-+EROFS_ATTR_RW_UI(sync_decompress, erofs_sb_info);
- EROFS_ATTR_FUNC(drop_caches, 0200);
- #endif
- 
-diff --git a/fs/erofs/zdata.c b/fs/erofs/zdata.c
-index 8192eb9b23bc7b..da421fe310df11 100644
---- a/fs/erofs/zdata.c
-+++ b/fs/erofs/zdata.c
-@@ -9,6 +9,7 @@
- #include <linux/cpuhotplug.h>
- #include <trace/events/erofs.h>
- 
-+#define Z_EROFS_MAX_SYNC_DECOMPRESS_BYTES	12288
- #define Z_EROFS_PCLUSTER_MAX_PAGES	(Z_EROFS_PCLUSTER_MAX_SIZE / PAGE_SIZE)
- #define Z_EROFS_INLINE_BVECS		2
- 
-@@ -1077,21 +1078,6 @@ static int z_erofs_scan_folio(struct z_erofs_frontend *f,
- 	return err;
- }
- 
--static bool z_erofs_is_sync_decompress(struct erofs_sb_info *sbi,
--				       unsigned int readahead_pages)
--{
--	/* auto: enable for read_folio, disable for readahead */
--	if ((sbi->opt.sync_decompress == EROFS_SYNC_DECOMPRESS_AUTO) &&
--	    !readahead_pages)
--		return true;
--
--	if ((sbi->opt.sync_decompress == EROFS_SYNC_DECOMPRESS_FORCE_ON) &&
--	    (readahead_pages <= sbi->opt.max_sync_decompress_pages))
--		return true;
--
--	return false;
--}
--
- static bool z_erofs_page_is_invalidated(struct page *page)
- {
- 	return !page_folio(page)->mapping && !z_erofs_is_shortlived_page(page);
-@@ -1454,9 +1440,9 @@ static void z_erofs_decompress_kickoff(struct z_erofs_decompressqueue *io,
- #else
- 		queue_work(z_erofs_workqueue, &io->u.work);
- #endif
--		/* enable sync decompression for readahead */
--		if (sbi->opt.sync_decompress == EROFS_SYNC_DECOMPRESS_AUTO)
--			sbi->opt.sync_decompress = EROFS_SYNC_DECOMPRESS_FORCE_ON;
-+		/* See `sync_decompress` in sysfs-fs-erofs for more details */
-+		if (sbi->sync_decompress == EROFS_SYNC_DECOMPRESS_AUTO)
-+			sbi->sync_decompress = EROFS_SYNC_DECOMPRESS_FORCE_ON;
- 		return;
- 	}
- 	gfp_flag = memalloc_noio_save();
-@@ -1777,16 +1763,21 @@ static void z_erofs_submit_queue(struct z_erofs_frontend *f,
- 	z_erofs_decompress_kickoff(q[JQ_SUBMIT], nr_bios);
- }
- 
--static int z_erofs_runqueue(struct z_erofs_frontend *f, unsigned int rapages)
-+static int z_erofs_runqueue(struct z_erofs_frontend *f, unsigned int rabytes)
- {
- 	struct z_erofs_decompressqueue io[NR_JOBQUEUES];
- 	struct erofs_sb_info *sbi = EROFS_I_SB(f->inode);
--	bool force_fg = z_erofs_is_sync_decompress(sbi, rapages);
-+	int syncmode = sbi->sync_decompress;
-+	bool force_fg;
- 	int err;
- 
-+	force_fg = (syncmode == EROFS_SYNC_DECOMPRESS_AUTO && !rabytes) ||
-+		(syncmode == EROFS_SYNC_DECOMPRESS_FORCE_ON &&
-+			(rabytes <= Z_EROFS_MAX_SYNC_DECOMPRESS_BYTES));
+ 		lock_sock(ssk);
+-		sock_set_timestamping(ssk, optname, timestamping);
++		err = sock_set_timestamping(ssk, optname, timestamping);
+ 		release_sock(ssk);
 +
- 	if (f->head == Z_EROFS_PCLUSTER_TAIL)
- 		return 0;
--	z_erofs_submit_queue(f, io, &force_fg, !!rapages);
-+	z_erofs_submit_queue(f, io, &force_fg, !!rabytes);
++		if (err < 0 && ret == 0)
++			ret = err;
+ 	}
  
- 	/* handle bypass queue (no i/o pclusters) immediately */
- 	err = z_erofs_decompress_queue(&io[JQ_BYPASS], &f->pagepool);
-@@ -1907,7 +1898,7 @@ static void z_erofs_readahead(struct readahead_control *rac)
- 	z_erofs_pcluster_readmore(&f, rac, false);
- 	z_erofs_pcluster_end(&f);
+ 	release_sock(sk);
  
--	(void)z_erofs_runqueue(&f, nrpages);
-+	(void)z_erofs_runqueue(&f, nrpages << PAGE_SHIFT);
- 	erofs_put_metabuf(&f.map.buf);
- 	erofs_release_pages(&f.pagepool);
+-	return 0;
++	return ret;
  }
--- 
-2.53.0
-
+ 
+ static int mptcp_setsockopt_sol_socket_linger(struct mptcp_sock *msk, sockptr_t optval,
 
 
 
