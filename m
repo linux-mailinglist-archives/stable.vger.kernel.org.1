@@ -1,220 +1,201 @@
-Return-Path: <stable+bounces-263639-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263662-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 2l8kEDYLMWoMawUAu9opvQ
-	(envelope-from <stable+bounces-263639-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 10:37:10 +0200
+	id qaRvDykpMWq3cwUAu9opvQ
+	(envelope-from <stable+bounces-263662-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 12:44:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD97A68D36A
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 10:37:08 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9058568E684
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 12:44:56 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Xnt4ysDa;
-	dkim=pass header.d=redhat.com header.s=google header.b=J8YLmXNn;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263639-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263639-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=SODLkC8E;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263662-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263662-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id DE98B30080B0
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 08:36:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 64AD7300B13C
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 10:44:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE3DA41C302;
-	Tue, 16 Jun 2026 08:36:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9896C42847F;
+	Tue, 16 Jun 2026 10:44:54 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f65.google.com (mail-ej1-f65.google.com [209.85.218.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 294E24183C9
-	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 08:36:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04DC63D75BF
+	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 10:44:52 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781599014; cv=none; b=lBttUBj1G2P+um3xu+h5AewACee4OfTK9tLN2sSEmeTgTQb0l9lb7HpusSJQFBv4xiivaYy/tAJOUOXGyWohzexEFQNpGFrhfQxZmQ1qMV8m21edI6WgOZhseAWcRihTqilEt9/9TBg5+70DjD/1WGy87JCh9EOVKc/GC9nLgcE=
+	t=1781606694; cv=none; b=HfPkEjI1Ab5YSsVC1qk4UK1FDGJRWuQ2npX0yvsWSOrw/nQ2FyzYAHbsVLk+E5lmV5NKy5So44lh4I+7TRYn5RGiLU0+tppZvt//T4g34sDh7LvPNNEiMyQBcpAUHw7yeRew5JSoVgEBFtO0PtiFdZvKYOpOiEVmVTssPs1SDIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781599014; c=relaxed/simple;
-	bh=FwTAhF0JYkOHxkz13m2r40n+x4FyPRy0WvVPbgp+ExU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=biFoH2fXVBBqJ0jJsoMRV26CTlYGmPKIKxNkGejAhTPWEqmQiYFO5QYSGUaZldSSDlIGzVjBNhNyJ6QRtn3D4isPww1FY2XFUvaWbI51+TLiMyQtp+sKguNANFx6ITPuqM6xwErhyoDaP115V7B64QgLlLTGhlQtGDDIJBwslH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Xnt4ysDa; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=J8YLmXNn; arc=none smtp.client-ip=170.10.133.124
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1781599012;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=T+g/POHWh6E6oKv6JZbkNinsYGjBRuvScxGF7a7jfc8=;
-	b=Xnt4ysDaanakPe0NXdSezpKrh1bq53sWL7ThFLgTwzPck6zRD9hcrG2T/88UIl5/BcXRJt
-	98Lye6PuZL0S3j1uYzlQoDfPuQtynug32XuG+iu/wN8OxrY/POHAy7qH31JIVljc5VPZMq
-	JBnzFhKzb2m4HhM1/KeS+tFX5iBXSYM=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-156-GjOcsY_bNd2Get2FKXBgUw-1; Tue, 16 Jun 2026 04:36:50 -0400
-X-MC-Unique: GjOcsY_bNd2Get2FKXBgUw-1
-X-Mimecast-MFC-AGG-ID: GjOcsY_bNd2Get2FKXBgUw_1781599009
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-45ef3aeeb41so2854506f8f.1
-        for <stable@vger.kernel.org>; Tue, 16 Jun 2026 01:36:50 -0700 (PDT)
+	s=arc-20240116; t=1781606694; c=relaxed/simple;
+	bh=BYiitEcXHhRh6eR+a46Lb8G8JNceCCN8CajnI0gLC0Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=faz8raMaKKjVBZVONeT08IE7lsMwLbVbT7HM4jhsOsaEkRCQtxaAPeA/Ycqszy559beD9MXGuqgcFTllNQ/XcFBJvGeV1VcIZ5gi4XyUO//uYs8/vjegZWYiyH2s/6cSI5EtD3dgDaChGBPBXnd+rMkVS2OlQ8FN0upvevRI/8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SODLkC8E; arc=none smtp.client-ip=209.85.218.65
+Received: by mail-ej1-f65.google.com with SMTP id a640c23a62f3a-beb7f26ed62so514648366b.0
+        for <stable@vger.kernel.org>; Tue, 16 Jun 2026 03:44:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1781599009; x=1782203809; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=T+g/POHWh6E6oKv6JZbkNinsYGjBRuvScxGF7a7jfc8=;
-        b=J8YLmXNn54RPAB0bfZ0a5kFDft8M3n+OVni/03gZuuoOCFWESn/1Ox8kUpOz7qu4ju
-         6OuBFdwQ6lf5SKuslog4AgdZKQCwsZQt7M33GTL7t30R1rFLw9s29YsKpUMfVgpQO72s
-         fOvz90LobC6AOPe1xn5gSxLBBKGpny+8wCHJ0+J0JIxEWzPMkXrAkt/j+jX6eZCFJoIg
-         bzIN8zm1f+oCSCdUJzjJb1dsnzsyiYjYdRvVQ1hHZCKD7NVMfrsPXOAbAIFkn9yffp9H
-         WcnncRhn3xTCEwUR95JXaEYHPqsj9zUpWozv3v1cmVdrJHEsWLqC2qeztuh7R58UqZSu
-         XhUw==
+        d=gmail.com; s=20251104; t=1781606691; x=1782211491; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=cBInyREsNJJq2tfrHgYP7popCDV3FF08GB9ZJkZM/f8=;
+        b=SODLkC8ExCxdSeOM4CHON0mknsnQhBl3MYJxfH7jkyyns9ovC3gvqqm/B3dEHY0Fb1
+         DUx2MbGPpKz8LH3GRoA8JwfZpVF6cDyvTcVvJnhh4PsUmCNG2J6U5+PegpOXPL8C4vI5
+         wDb1Q7aTUztwq3hF5TK/TXuup3wjTsRjvdo5F8hiSG17IuHC/OH0kWzee9Uuk3JJl1XD
+         SleN5VW4n0ckIuRiT6E766i9F3O549JFS6GJzNjzBK3mGq544Q2gJVWu2xxeSJ7GGOlw
+         DWADagJ6EMH62idj3qmNSUu3qoNkS+4NomczkS5mcHIdInICirMsBTH0aAckWTc0ak+B
+         idkQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781599009; x=1782203809;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=T+g/POHWh6E6oKv6JZbkNinsYGjBRuvScxGF7a7jfc8=;
-        b=atmVurYmDe88YVPV1jFH8DS8XD2Gt5HDqmWDjyVB8U2Xc+J0EknxCWRZ7zcBfr0pgK
-         ybBBdnkHguDxgFVo0K6T8dSZ68Judvq7RHGA7fDoo3ybgNC9NLRiDEJvCg+h4y/WeU33
-         8WmbPpycNLipdLtcjSrFxh4iwp8YJA87qw8C+VfhbxXKB/4FsGEeL5w1FeIL4eLHypeD
-         K1hMYQEKQIqRlonD+IF2Y/hG8GCGN4tx6AX/dFnhTsBuv5J0J6bT844WCZYLkPSgkZdc
-         LAWV9RtoMvf0UcTBBqZwuub8UVvhQs9HlUukz7gH/aktPt6bRy9y+5Ua048DE3Drhje0
-         +wTA==
-X-Forwarded-Encrypted: i=1; AFNElJ8QBiWIaLYpr7oNrTffDCD1bTqEaW1BXEPmknBMW+rVCVG3vRrcoJsYf79F6SmGWULoRG53uCc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwYFVbsTjHBgNiGyvGWVgtK410lFSxMYfDgn50E6Jmf98vQMSln
-	AdAp1UCC/Q/V4D468u3oPRoY0l9ekljtHm7OEnvCCwmMXHq01BO4c0cfkGeLT3jOHDnCFsyVCTb
-	8huq7XaNlAb163VfJPjN1LvfS1Nxpi1nxKKt/0b7AuoWRXDkuWWnwYDsbjQ==
-X-Gm-Gg: Acq92OHB6NL8NMRLCTlJRB+tk/qvr54m8ebAb4bTa7MVzLJekwtiPGoLdjjSjWledxw
-	NeCqtVQqWOk09/Teo6T73tWr6AGA/CayHczkgOGHnJaH2EsfWtrcknufyBIFvyk53NH0sYNxyS8
-	snGZVzeHyx84z5nFI1ZdXvDV+/x5kM1fMtN1Fh5zgCkxb0m6XXD1nciihoO2UPbjZRkRMwaDAQS
-	t80yf0zUrtSENpYWmrc9ULaqv6QuMnNfC6Fn3uAGg8/2LWyz811GlDiVVT9GBkwA3nxj89P5s+1
-	1ytzjoQYUpJPJ2BdzbVeH2LeeSW6dRajnEhS1ep/balsBkcsVuRUBfbFB5+4W2383prH2ozWsI2
-	G3BLbfxaowNgaFQUG4OtLklDSfeB9XA0fMJz+79tZJyGrezwLnFxay/C0SBlOliBBgH3Ybkg=
-X-Received: by 2002:a5d:59ab:0:b0:45e:64b3:af44 with SMTP id ffacd0b85a97d-4619f3b9ea7mr3616223f8f.36.1781599009371;
-        Tue, 16 Jun 2026 01:36:49 -0700 (PDT)
-X-Received: by 2002:a5d:59ab:0:b0:45e:64b3:af44 with SMTP id ffacd0b85a97d-4619f3b9ea7mr3616166f8f.36.1781599008675;
-        Tue, 16 Jun 2026 01:36:48 -0700 (PDT)
-Received: from sgarzare-redhat (host-82-53-135-12.retail.telecomitalia.it. [82.53.135.12])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4606f2ce361sm40648506f8f.31.2026.06.16.01.36.47
+        d=1e100.net; s=20251104; t=1781606691; x=1782211491;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cBInyREsNJJq2tfrHgYP7popCDV3FF08GB9ZJkZM/f8=;
+        b=gMBtrY0GgG7F4c0vuB7cVvXjtRMhg3Ry7LEJsyTzL7W1jlIwyDGBfodr4cLYPRweP1
+         D71aK6YuD+LPny2Oh4EgwvLACK5bArRiEsdkDYV5kmbYYYa7MwQNuiteBuIKpzAwK7gX
+         QaQhqkZS2/nWGRWdu6m+76a0i/e8qtk2ITsFQ6SGtQNpFrmk97kh2uN+mhkcYyV+I/XD
+         zGnO7mH0NbQ/EYc0z+I+ErZntGHtPoMuZ1DbZRP9bSGeeygphAKOGA84OxAztDYI8l2l
+         LkKoH0LjBt2LGROxLdkcqnfSaw0oSx3mcuaiDZhn4IhjH+4xB5S7QHdzIWWgQkK1F/Dw
+         ddBA==
+X-Gm-Message-State: AOJu0YwXWoZT85cKPEpm22yTrukRoMI1v8QqMVUtDv80ngew4GUVAT1P
+	QgGeP/cgy/7b/uiN9nOnapJ7HzANtlApTN+7p4GJ12nlC29Ttxy2Ar98BqLWDPQiDg/VvQ==
+X-Gm-Gg: Acq92OHQt3I4SL5OucTAeW2gpRH4fRe8VZu0QKCECR37IEJQvOqsIOJvIx4X0adSM9s
+	nMYC+4K0SMInPZzKTtaEK2RUbVOaxbP7XQqPaYMcP8z1IYHav0CC6K3aj2aQiQlq9NCSiYtqOxo
+	EYj7/ObW9c/mFkcxCs+aFKdHv+C5kLCxHFchWnqRzZFgULoq6j611bmEjrvSbP8raCrsFyEA7KH
+	OYdoUI5wQhHPXQBlRHmitbuVMIbwJ9ka0dmEr1ONJG0qGOXn43fEvB4UH3MGsD/r6z5/xFP4qqY
+	sP0jJBcj3FVYMaCrkuYgQSlFJPxRQk7YI7x25wVww9Oq9CkHTTB2Qofg8g0oM+PL0gS8q2R8XqS
+	IduNpUpyRTkK2la4k9qRKds+ujoK3Lsdr7EiRFGfRtrqiYBLam0PAIXpktEUb6LKWVM+Ky+XNM2
+	cbhDiIwd5uJOf+a8q/OK+1vHiJqj3mBPg5foBrosu+SVoJCRDeDKnXDTunYiKBqjvp0BQQ
+X-Received: by 2002:ac2:59cf:0:b0:5aa:6c2f:2a20 with SMTP id 2adb3069b0e04-5ad427a8bf2mr621532e87.30.1781600513392;
+        Tue, 16 Jun 2026 02:01:53 -0700 (PDT)
+Received: from cherrypc.astra-academy.ru (109-252-17-231.nat.spd-mgts.ru. [109.252.17.231])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5ad2e1715d4sm3301048e87.34.2026.06.16.02.01.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Jun 2026 01:36:48 -0700 (PDT)
-Date: Tue, 16 Jun 2026 10:36:43 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Sasha Levin <sashal@kernel.org>, "Michael S. Tsirkin" <mst@redhat.com>, 
-	AVKrasnov@sberdevices.ru, edumazet@google.com, eperezma@redhat.com, jasowang@redhat.com, 
-	kuba@kernel.org, leonardi@redhat.com, stefanha@redhat.com, 
-	virtualization@lists.linux.dev, xuanzhuo@linux.alibaba.com, stable-commits@vger.kernel.org, 
-	stable@vger.kernel.org
-Subject: Re: Patch "vsock/virtio: fix potential unbounded skb queue" has been
- added to the 6.6-stable tree
-Message-ID: <CAGxU2F6PDqHKLsW97qLUg+7hWq=iYk5qDAGUuxWSbdkyEDmsQw@mail.gmail.com>
-References: <2026051553-santa-unretired-a417@gregkh>
- <20260515113503-mutt-send-email-mst@kernel.org>
- <2026051526-banish-strife-6dba@gregkh>
- <20260515114521-mutt-send-email-mst@kernel.org>
- <20260516170159.vsock-virtio-unbounded-drop@kernel.org>
- <ag8EvTp29B-Q3nCq@sgarzare-redhat>
- <2026061624-harbor-capture-a5bf@gregkh>
- <ajD_FBEak8hKNdIK@sgarzare-redhat>
- <2026061607-risotto-getaway-c57f@gregkh>
+        Tue, 16 Jun 2026 02:01:52 -0700 (PDT)
+From: Nazar Kalashnikov <nazarkalashnikov0@gmail.com>
+To: stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Nazar Kalashnikov <nazarkalashnikov0@gmail.com>,
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Dongli Zhang <dongli.zhang@oracle.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	bpf@vger.kernel.org,
+	Si-Wei Liu <si-wei.liu@oracle.com>,
+	Willem de Bruijn <willemb@google.com>,
+	lvc-project@linuxtesting.org,
+	Xiang Mei <xmei5@asu.edu>,
+	Weiming Shi <bestswngs@gmail.com>
+Subject: [PATCH 5.10/5.15/6.1/6.6/6.12/6.18] tap: free page on error paths in tap_get_user_xdp()
+Date: Tue, 16 Jun 2026 12:02:01 +0300
+Message-ID: <20260616090202.693916-1-nazarkalashnikov0@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2026061607-risotto-getaway-c57f@gregkh>
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-263662-lists,stable=lfdr.de];
+	FORGED_SENDER(0.00)[nazarkalashnikov0@gmail.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[gmail.com,redhat.com,lunn.ch,davemloft.net,google.com,kernel.org,iogearbox.net,fomichev.me,oracle.com,vger.kernel.org,linuxtesting.org,asu.edu];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[24];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-263639-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:sashal@kernel.org,m:mst@redhat.com,m:AVKrasnov@sberdevices.ru,m:edumazet@google.com,m:eperezma@redhat.com,m:jasowang@redhat.com,m:kuba@kernel.org,m:leonardi@redhat.com,m:stefanha@redhat.com,m:virtualization@lists.linux.dev,m:xuanzhuo@linux.alibaba.com,m:stable-commits@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	FORGED_SENDER(0.00)[sgarzare@redhat.com,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:nazarkalashnikov0@gmail.com,m:willemdebruijn.kernel@gmail.com,m:jasowang@redhat.com,m:andrew+netdev@lunn.ch,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:ast@kernel.org,m:daniel@iogearbox.net,m:hawk@kernel.org,m:john.fastabend@gmail.com,m:sdf@fomichev.me,m:dongli.zhang@oracle.com,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:bpf@vger.kernel.org,m:si-wei.liu@oracle.com,m:willemb@google.com,m:lvc-project@linuxtesting.org,m:xmei5@asu.edu,m:bestswngs@gmail.com,m:willemdebruijnkernel@gmail.com,m:andrew@lunn.ch,m:johnfastabend@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	DKIM_TRACE(0.00)[redhat.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sgarzare@redhat.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[nazarkalashnikov0@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ALIAS_RESOLVED(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:email,vger.kernel.org:from_smtp,mail.gmail.com:mid]
+	TAGGED_RCPT(0.00)[stable,netdev];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: BD97A68D36A
+X-Rspamd-Queue-Id: 9058568E684
 
-On Tue, 16 Jun 2026 at 10:00, Greg KH <gregkh@linuxfoundation.org> wrote:
->
-> On Tue, Jun 16, 2026 at 09:52:32AM +0200, Stefano Garzarella wrote:
-> > On Tue, Jun 16, 2026 at 10:17:31AM +0530, Greg KH wrote:
-> > > On Thu, May 21, 2026 at 03:15:54PM +0200, Stefano Garzarella wrote:
-> > > > On Sun, May 17, 2026 at 09:33:06AM -0400, Sasha Levin wrote:
-> > > > > > > What's the status of that fix?
-> > > > > >
-> > > > > > Stefano posted v3 and is working on v4.
-> > > > > >
-> > > > > > >  Should it be reverted elsewhere?
-> > > > > >
-> > > > > > Donnu. With the change we have no DoS but the socket gets silently
-> > > > > > broken.  Eric felt given the brokenness is upstream already it's better
-> > > > > > to work on a fix on top, not revert.
-> > > > >
-> > > > > Dropped from the 6.6, 6.12, 6.18, and 7.0 queues. We'll pick up Stefano's
-> > > > > follow-up once it lands upstream.
-> > > >
-> > > > FYI v4 is now merged in the net tree, so I guess they will land upstream
-> > > > soon. I CCed stable on both patches:
-> > > >
-> > > > a4f0b001782b ("vsock/virtio: reset connection on receiving queue overflow")
-> > > > c6087c5aaad6 ("vsock/virtio: fix skb overhead accounting to preserve full
-> > > > buf_alloc")
-> > > >
-> > > > Both are related, but the second is the main fix of this patch.
-> > >
-> > > THe second one doesn't apply at all :(
-> > >
-> >
-> > The second one is the fix of the patch originally added to stable queue by
-> > this thread, so should be applied on top of it (commit 059b7dbd20a6
-> > ("vsock/virtio: fix potential unbounded skb queue")).
-> >
-> > I'm working on improving memory management, but for now I think it makes
-> > sense to backport all three to the stable branches.
-> >
-> > So, in summary:
-> > 059b7dbd20a6 ("vsock/virtio: fix potential unbounded skb queue")
-> > a4f0b001782b ("vsock/virtio: reset connection on receiving queue overflow")
-> > c6087c5aaad6 ("vsock/virtio: fix skb overhead accounting to preserve full buf_alloc")
->
-> Again, this last one fails to apply everywhere :(
+From: Weiming Shi <bestswngs@gmail.com>
 
-Again, c6087c5aaad6 depends on 059b7dbd20a6 (as also indicated by the 
-Fixes tag in the patch description).
+commit 3bcf7aec6a9d16438f2cec29f5d7c8d5b8edf9b2 upstream.
 
-I don't know what you meant with "everywhere", but I just run `git 
-cherry-pick 059b7dbd20a6 c6087c5aaad6` on linux-6.12.y, linux-6.18.y, 
-and linux-7.0.y without any issue.
+tap_get_user_xdp() rejects a frame shorter than ETH_HLEN with -EINVAL,
+and returns -ENOMEM when build_skb() fails. Both paths jump to the err
+label without freeing the page that vhost_net_build_xdp() allocated for
+the frame. tap_sendmsg() discards the per-buffer return value and always
+returns 0, so vhost_tx_batch() takes the success path and never frees
+the page; each rejected frame in a batch leaks one page-frag chunk.
 
-On linux-6.6.y it's failing because we are missing zero-copy support in 
-AF_VSOCK. So, I guess we didn't backport commit 45ca7e9f0730 
-("vsock/virtio: fix `rx_bytes` accounting for stream sockets") because 
-there were conflicts.  That patch is needed to apply commit 059b7dbd20a6 
-("vsock/virtio: fix potential unbounded skb queue") cleanly.
+Free the page on both error paths, before the skb is built. This is the
+tap counterpart of the same leak in tun_xdp_one().
 
-Stefano
+Fixes: 0efac27791ee ("tap: accept an array of XDP buffs through sendmsg()")
+Fixes: ed7f2afdd0e0 ("tap: add missing verification for short frame")
+Reported-by: Xiang Mei <xmei5@asu.edu>
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+Reviewed-by: Dongli Zhang <dongli.zhang@oracle.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20260521163230.1478627-2-bestswngs@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Nazar Kalashnikov <nazarkalashnikov0@gmail.com>
+---
+Backport fix for CVE-2026-46320
+ drivers/net/tap.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
+diff --git a/drivers/net/tap.c b/drivers/net/tap.c
+index 6fd3b14273b3..b51ce7af1b20 100644
+--- a/drivers/net/tap.c
++++ b/drivers/net/tap.c
+@@ -1052,6 +1052,7 @@ static int tap_get_user_xdp(struct tap_queue *q, struct xdp_buff *xdp)
+ 	int err, depth;
+ 
+ 	if (unlikely(xdp->data_end - xdp->data < ETH_HLEN)) {
++		put_page(virt_to_head_page(xdp->data));
+ 		err = -EINVAL;
+ 		goto err;
+ 	}
+@@ -1061,6 +1062,7 @@ static int tap_get_user_xdp(struct tap_queue *q, struct xdp_buff *xdp)
+ 
+ 	skb = build_skb(xdp->data_hard_start, buflen);
+ 	if (!skb) {
++		put_page(virt_to_head_page(xdp->data));
+ 		err = -ENOMEM;
+ 		goto err;
+ 	}
+-- 
+2.47.3
 
