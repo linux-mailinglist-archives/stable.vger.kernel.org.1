@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-265040-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266391-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 8xNHOECBMWp/lAUAu9opvQ
-	(envelope-from <stable+bounces-265040-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:00:48 +0200
+	id 9txRG1OcMWqqoAUAu9opvQ
+	(envelope-from <stable+bounces-266391-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:56:19 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A609692A72
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:00:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AD1E694963
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:56:19 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=OgH9pN9g;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265040-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-265040-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=aHwhEHrP;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266391-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-266391-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A4CF0304A4BB
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:59:39 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 79A0A303C9B6
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:56:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31CCF32E73E;
-	Tue, 16 Jun 2026 16:59:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79C9A47CC7A;
+	Tue, 16 Jun 2026 18:56:17 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D370C453486;
-	Tue, 16 Jun 2026 16:59:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47ECF3CC303;
+	Tue, 16 Jun 2026 18:56:16 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781629175; cv=none; b=IJa/y+Kty4kv0dpJeucDQJ9qLRNZvj9Mqu52UHIUZRY0jV1x8j+p9ahPX1qQwEbsbiZBAmsk4kOJm4qzSgsx6lDEl8SOBtpWFea610888DADdxRkS4D3u0CpbqilXtS3xJM64PpuOkEzF5tc295cG5Hc0pMWj2NmSyzcBmVhiMw=
+	t=1781636177; cv=none; b=Z/ERKCNRf/xoo7uI7G7ahbf4B+Ah1vYxaeVACG+sbMxQkkqdEQ8ogalD9q22NBP26dImf74rfBQ08Pfh0Ln3IiOPi4GcykkDk/3IYb4yrsky89JMirW6sVfFu2/4J73aPM207S+ZsoFXLf6HkBnpbRdFX/g1DnH1ECrwuvl1bI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781629175; c=relaxed/simple;
-	bh=KQiTREFfa9LpYeYs+/OUArmwaA8Yf7OdXgzuqPSX8gE=;
+	s=arc-20240116; t=1781636177; c=relaxed/simple;
+	bh=MYWtaAG87XhY6wzlU/62yvnIDUS91Rl79+igeIHYpa0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VQYZxmrsU+dNcq/C/fBrUNKmou+x4VX7ymE6tWGCb7Xvzg5JaQu7O026wSVCHGrp1HWtStGqpxYPNJ6y3k/5tSMCsWpd4OKgTy4UtrBKGmVJBl1D52OOVM3fw5Gq4k91cnJOQivlIogeeehwKfmfAXJiCIkIgatxlTVDto86bEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OgH9pN9g; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7557A1F000E9;
-	Tue, 16 Jun 2026 16:59:32 +0000 (UTC)
+	 MIME-Version; b=sibfUz0wf8cZJ7xkWsR5CWE3mNuPTnZHV/K2vQYhJUYK5Do4k62PdYeepn6gc324NWp4RZFKCtIhoNHaLWJ5IccGRurn5yT7EIzqThRKI2FxyDOe2Pquc4CT0nIKCawVSlkLn0zlUCEQHLriVy617DXErsZJKlA26BHPmGh2z64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aHwhEHrP; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DF2A1F000E9;
+	Tue, 16 Jun 2026 18:56:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781629173;
-	bh=KEO4mNUcznzQ0I70oW4M28c99eIjdIPPZ+HNXdmEFvI=;
+	s=korg; t=1781636176;
+	bh=I+gPakh/VFI6OKQp1i/zFE0AQ8Ek8piIhy6EDy5ft7o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OgH9pN9g3rbuXI8uSckrrH2G8O31/t/VzzxHRdk8lk9/unoy0ZlRLV4+mXFaIyW+w
-	 W8hRJm8WUPf0URQpeDydqJGz3DQLvwUaMmXFBOrx1keP2LI1ovH/8SSCY6GWw064QX
-	 nDrOk1aVeBI71ScXYQ46nwjEzhG3UFjkSI7Hscw0=
+	b=aHwhEHrPtJvU8TgcCpD+1fbQTw1rPd3xlkUXrjkIm9fVZ82F5m+AEGAJqYe2pOjyJ
+	 tCMD80byjs67SH9neHFM7NhMF0pI4Y3PncmqzTVqRb5IFIoKawrqYZ0MZGIAt5QMqX
+	 lY3ppHPQMT+6sBcObkWxoqetr+BL57gDJdEE1H6w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Cen <rollkingzzc@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Chenguang Zhao <zhaochenguang@kylinos.cn>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 235/452] Bluetooth: bnep: reject short frames before parsing
+Subject: [PATCH 5.10 166/342] netlabel: validate unlabeled address and mask attribute lengths
 Date: Tue, 16 Jun 2026 20:27:42 +0530
-Message-ID: <20260616145130.040157811@linuxfoundation.org>
+Message-ID: <20260616145055.923871108@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,199 +76,115 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-266391-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-265040-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:rollkingzzc@gmail.com,m:luiz.von.dentz@intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:zhaochenguang@kylinos.cn,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,intel.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,kylinos.cn:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8A609692A72
+X-Rspamd-Queue-Id: 0AD1E694963
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Cen <rollkingzzc@gmail.com>
+From: Chenguang Zhao <zhaochenguang@kylinos.cn>
 
-[ Upstream commit 6770d3a8acdf9151769180cc3710346c4cfbe6f0 ]
+[ Upstream commit 9772589b57e44aedc240211c5c3f7a684a034d3a ]
 
-A BNEP peer can send a short BNEP SDU. bnep_rx_frame() reads the
-packet type byte immediately and, for control packets, reads the control
-opcode and setup UUID-size byte before proving that those bytes are
-present. bnep_rx_control() also dereferences the control opcode without
-rejecting an empty control payload.
+netlbl_unlabel_addrinfo_get() used the address attribute length to
+determine whether the attribute data could be read as an IPv4 or IPv6
+address, but did not independently validate the corresponding mask
+attribute length.  A crafted Generic Netlink request could therefore
+provide a valid IPv4/IPv6 address attribute with a shorter mask
+attribute, which would later be read as a full struct in_addr or
+struct in6_addr.
 
-Use skb_pull_data() for the fixed fields in bnep_rx_frame() so a NULL
-return gates each dereference. Split the control handler so the frame
-path can pass an opcode that has already been pulled, and keep the
-byte-buffer wrapper for extension control payloads.
+NLA_BINARY policy lengths are maximum lengths by default, so use
+NLA_POLICY_EXACT_LEN() for the unlabeled IPv4/IPv6 address and mask
+attributes.  This rejects short attributes during policy validation and
+also exposes the exact length requirements through policy introspection.
 
-For BNEP_SETUP_CONN_REQ, name the UUID-size byte before pulling the
-setup payload. struct bnep_setup_conn_req carries destination and source
-service UUIDs after that byte, each uuid_size bytes, so the parser now
-documents that tuple explicitly instead of leaving the pull length as an
-opaque multiplication.
-
-Validation reproduced this kernel report:
-KASAN slab-out-of-bounds in bnep_rx_frame.isra.0+0x130c/0x1790
-The buggy address belongs to the object at ffff88800c0f7908 which belongs
-to the cache kmalloc-8 of size 8
-The buggy address is located 0 bytes to the right of allocated 1-byte
-region [ffff88800c0f7908, ffff88800c0f7909)
-Read of size 1
-Call trace:
-  dump_stack_lvl+0xb3/0x140 (?:?)
-  print_address_description+0x57/0x3a0 (?:?)
-  bnep_rx_frame+0x130c/0x1790 (net/bluetooth/bnep/core.c:306)
-  print_report+0xb9/0x2b0 (?:?)
-  __virt_addr_valid+0x1ba/0x3a0 (?:?)
-  srso_alias_return_thunk+0x5/0xfbef5 (?:?)
-  kasan_addr_to_slab+0x21/0x60 (?:?)
-  kasan_report+0xe0/0x110 (?:?)
-  process_one_work+0xfce/0x17e0 (kernel/workqueue.c:3200)
-  worker_thread+0x65c/0xe40 (?:?)
-  __kthread_parkme+0x184/0x230 (?:?)
-  kthread+0x35e/0x470 (?:?)
-  _raw_spin_unlock_irq+0x28/0x50 (?:?)
-  ret_from_fork+0x586/0x870 (?:?)
-  __switch_to+0x74f/0xdc0 (?:?)
-  ret_from_fork_asm+0x1a/0x30 (?:?)
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Assisted-by: Codex:gpt-5.5
-Signed-off-by: Zhang Cen <rollkingzzc@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: 8cc44579d1bd ("NetLabel: Introduce static network labels for unlabeled connections")
+Signed-off-by: Chenguang Zhao <zhaochenguang@kylinos.cn>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/bnep/core.c | 57 ++++++++++++++++++++++++---------------
- 1 file changed, 36 insertions(+), 21 deletions(-)
+ net/netlabel/netlabel_unlabeled.c | 30 ++++++++++--------------------
+ 1 file changed, 10 insertions(+), 20 deletions(-)
 
-diff --git a/net/bluetooth/bnep/core.c b/net/bluetooth/bnep/core.c
-index 9d804b08de88e0..45d0f84652fc60 100644
---- a/net/bluetooth/bnep/core.c
-+++ b/net/bluetooth/bnep/core.c
-@@ -206,14 +206,11 @@ static int bnep_ctrl_set_mcfilter(struct bnep_session *s, u8 *data, int len)
- 	return 0;
- }
- 
--static int bnep_rx_control(struct bnep_session *s, void *data, int len)
-+static int bnep_rx_control_cmd(struct bnep_session *s, u8 cmd, void *data,
-+			       int len)
+diff --git a/net/netlabel/netlabel_unlabeled.c b/net/netlabel/netlabel_unlabeled.c
+index 3049fff0b7f864..7bfccedbffe5aa 100644
+--- a/net/netlabel/netlabel_unlabeled.c
++++ b/net/netlabel/netlabel_unlabeled.c
+@@ -114,14 +114,14 @@ static struct genl_family netlbl_unlabel_gnl_family;
+ /* NetLabel Netlink attribute policy */
+ static const struct nla_policy netlbl_unlabel_genl_policy[NLBL_UNLABEL_A_MAX + 1] = {
+ 	[NLBL_UNLABEL_A_ACPTFLG] = { .type = NLA_U8 },
+-	[NLBL_UNLABEL_A_IPV6ADDR] = { .type = NLA_BINARY,
+-				      .len = sizeof(struct in6_addr) },
+-	[NLBL_UNLABEL_A_IPV6MASK] = { .type = NLA_BINARY,
+-				      .len = sizeof(struct in6_addr) },
+-	[NLBL_UNLABEL_A_IPV4ADDR] = { .type = NLA_BINARY,
+-				      .len = sizeof(struct in_addr) },
+-	[NLBL_UNLABEL_A_IPV4MASK] = { .type = NLA_BINARY,
+-				      .len = sizeof(struct in_addr) },
++	[NLBL_UNLABEL_A_IPV6ADDR] =
++		NLA_POLICY_EXACT_LEN(sizeof(struct in6_addr)),
++	[NLBL_UNLABEL_A_IPV6MASK] =
++		NLA_POLICY_EXACT_LEN(sizeof(struct in6_addr)),
++	[NLBL_UNLABEL_A_IPV4ADDR] =
++		NLA_POLICY_EXACT_LEN(sizeof(struct in_addr)),
++	[NLBL_UNLABEL_A_IPV4MASK] =
++		NLA_POLICY_EXACT_LEN(sizeof(struct in_addr)),
+ 	[NLBL_UNLABEL_A_IFACE] = { .type = NLA_NUL_STRING,
+ 				   .len = IFNAMSIZ - 1 },
+ 	[NLBL_UNLABEL_A_SECCTX] = { .type = NLA_BINARY }
+@@ -766,24 +766,14 @@ static int netlbl_unlabel_addrinfo_get(struct genl_info *info,
+ 				       void **mask,
+ 				       u32 *len)
  {
--	u8  cmd = *(u8 *)data;
- 	int err = 0;
- 
--	data++;
--	len--;
+-	u32 addr_len;
 -
- 	switch (cmd) {
- 	case BNEP_CMD_NOT_UNDERSTOOD:
- 	case BNEP_SETUP_CONN_RSP:
-@@ -254,6 +251,14 @@ static int bnep_rx_control(struct bnep_session *s, void *data, int len)
- 	return err;
- }
- 
-+static int bnep_rx_control(struct bnep_session *s, void *data, int len)
-+{
-+	if (len < 1)
-+		return -EILSEQ;
-+
-+	return bnep_rx_control_cmd(s, *(u8 *)data, data + 1, len - 1);
-+}
-+
- static int bnep_rx_extension(struct bnep_session *s, struct sk_buff *skb)
- {
- 	struct bnep_ext_hdr *h;
-@@ -299,19 +304,26 @@ static int bnep_rx_frame(struct bnep_session *s, struct sk_buff *skb)
- {
- 	struct net_device *dev = s->dev;
- 	struct sk_buff *nskb;
-+	u8 *data;
- 	u8 type, ctrl_type;
- 
- 	dev->stats.rx_bytes += skb->len;
- 
--	type = *(u8 *) skb->data;
--	skb_pull(skb, 1);
--	ctrl_type = *(u8 *)skb->data;
-+	data = skb_pull_data(skb, sizeof(type));
-+	if (!data)
-+		goto badframe;
-+	type = *data;
- 
- 	if ((type & BNEP_TYPE_MASK) >= sizeof(__bnep_rx_hlen))
- 		goto badframe;
- 
- 	if ((type & BNEP_TYPE_MASK) == BNEP_CONTROL) {
--		if (bnep_rx_control(s, skb->data, skb->len) < 0) {
-+		data = skb_pull_data(skb, sizeof(ctrl_type));
-+		if (!data)
-+			goto badframe;
-+		ctrl_type = *data;
-+
-+		if (bnep_rx_control_cmd(s, ctrl_type, skb->data, skb->len) < 0) {
- 			dev->stats.tx_errors++;
- 			kfree_skb(skb);
- 			return 0;
-@@ -324,24 +336,27 @@ static int bnep_rx_frame(struct bnep_session *s, struct sk_buff *skb)
- 
- 		/* Verify and pull ctrl message since it's already processed */
- 		switch (ctrl_type) {
--		case BNEP_SETUP_CONN_REQ:
--			/* Pull: ctrl type (1 b), len (1 b), data (len bytes) */
--			if (!skb_pull(skb, 2 + *(u8 *)(skb->data + 1) * 2))
-+		case BNEP_SETUP_CONN_REQ: {
-+			u8 uuid_size;
-+
-+			/* Pull uuid_size and the dst/src service UUIDs. */
-+			data = skb_pull_data(skb, sizeof(uuid_size));
-+			if (!data)
-+				goto badframe;
-+			uuid_size = *data;
-+			if (!skb_pull(skb, uuid_size + uuid_size))
- 				goto badframe;
- 			break;
-+		}
- 		case BNEP_FILTER_MULTI_ADDR_SET:
--		case BNEP_FILTER_NET_TYPE_SET: {
--			u8 *hdr;
--
--			/* Pull ctrl type (1 b) + len (2 b) */
--			hdr = skb_pull_data(skb, 3);
--			if (!hdr)
-+		case BNEP_FILTER_NET_TYPE_SET:
-+			/* Pull: len (2 b), data (len bytes) */
-+			data = skb_pull_data(skb, sizeof(u16));
-+			if (!data)
- 				goto badframe;
--			/* Pull data (len bytes); length is big-endian */
--			if (!skb_pull(skb, get_unaligned_be16(&hdr[1])))
-+			if (!skb_pull(skb, get_unaligned_be16(data)))
- 				goto badframe;
- 			break;
--		}
- 		default:
- 			kfree_skb(skb);
- 			return 0;
+ 	if (info->attrs[NLBL_UNLABEL_A_IPV4ADDR] &&
+ 	    info->attrs[NLBL_UNLABEL_A_IPV4MASK]) {
+-		addr_len = nla_len(info->attrs[NLBL_UNLABEL_A_IPV4ADDR]);
+-		if (addr_len != sizeof(struct in_addr) &&
+-		    addr_len != nla_len(info->attrs[NLBL_UNLABEL_A_IPV4MASK]))
+-			return -EINVAL;
+-		*len = addr_len;
++		*len = sizeof(struct in_addr);
+ 		*addr = nla_data(info->attrs[NLBL_UNLABEL_A_IPV4ADDR]);
+ 		*mask = nla_data(info->attrs[NLBL_UNLABEL_A_IPV4MASK]);
+ 		return 0;
+ 	} else if (info->attrs[NLBL_UNLABEL_A_IPV6ADDR]) {
+-		addr_len = nla_len(info->attrs[NLBL_UNLABEL_A_IPV6ADDR]);
+-		if (addr_len != sizeof(struct in6_addr) &&
+-		    addr_len != nla_len(info->attrs[NLBL_UNLABEL_A_IPV6MASK]))
+-			return -EINVAL;
+-		*len = addr_len;
++		*len = sizeof(struct in6_addr);
+ 		*addr = nla_data(info->attrs[NLBL_UNLABEL_A_IPV6ADDR]);
+ 		*mask = nla_data(info->attrs[NLBL_UNLABEL_A_IPV6MASK]);
+ 		return 0;
 -- 
 2.53.0
 
