@@ -1,72 +1,74 @@
-Return-Path: <stable+bounces-264317-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264319-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Ui9MJmN1MWpgjwUAu9opvQ
-	(envelope-from <stable+bounces-264317-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:10:11 +0200
+	id kPaUKBBzMWqXjgUAu9opvQ
+	(envelope-from <stable+bounces-264319-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:00:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3057E691C1D
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:10:11 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B3086919C6
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:00:16 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=google.com header.s=20251104 header.b=IYQGBYwS;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264317-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264317-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=google.com header.s=20251104 header.b=TEH8BfqJ;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264319-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-264319-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=reject) header.from=google.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9091F30DF63F
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:54:54 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 91F06304E161
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:54:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EE8444D6BD;
-	Tue, 16 Jun 2026 15:54:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D78A44E02A;
+	Tue, 16 Jun 2026 15:54:52 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 720CA44CF44
-	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 15:54:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAE0444CF4E
+	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 15:54:50 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781625291; cv=none; b=iEft5syrTuqnIDYZ6glH3E9/fIvjBO3I+sx7PfoifL1/Fg5jzJpXuglkXRzOJL6KSaQLBxOqmOpOhpH7XT3q6ac54SbEDBYJtJgRIVYO7uTShXENXyVDDsDRbu3+SSPJTRjUJYC0mxjmD3E8+Xc19s37qfVOjQXoKvYHMVNT3V0=
+	t=1781625292; cv=none; b=GBfVsl1KXId1FFvAF10NRw1QaiUiVVHxrPIrwCm0clwuUgdPKzzo3t1xLLNEFgsSto2+z8sNqLsOWPoSx1RjVr2hxkkkshPJ9yLINnppw9YN3BtHfPHNDa/Noawy17ab/Uy6qgABFphL4aNpVQGoOdtLaMGE+nbVQw4thJSsI0k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781625291; c=relaxed/simple;
-	bh=kPsBXBQZd4RSwEAJE0jh1oeFj5ht5bL87RD+a9y60iI=;
+	s=arc-20240116; t=1781625292; c=relaxed/simple;
+	bh=EA6WyWG10ZiYG3Ibe7F59PN3ZW0L1VzaSTTaHdsrgM0=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=iQiFo33ad6JUHrqdGqJCFcv9W7Agd7+wlg/iPMpMzhJxV2VLWIzZm27MlDFLGbprSp16ks+uktaE9tyrFFCgSct72kVx7+zPF3TWp1JlzsPLj7OyQV9LPlVwCINDh+FJq+JybUAK5zwx2rnYDhKwAbWtSrAnWjKNIBLHb+lN2Xk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kpberry.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IYQGBYwS; arc=none smtp.client-ip=209.85.215.201
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c859d79c10eso4472351a12.0
-        for <stable@vger.kernel.org>; Tue, 16 Jun 2026 08:54:49 -0700 (PDT)
+	 To:Cc:Content-Type; b=ukV32hpTPIZrVErM1DzuXbAgC+jEIGuJmp5lfXMOpQ+JXNfEpknPW9PH+MQY4KX9RunLaASLY/DjIKeYDIIRKMLFbYUJ2qbCjFEiDjvF4ZTTF3aWNgFBpBBJ64SMzbm03dcWejdazkgD62fGPhtsdCcsNC5g0jpcX/hjGzkH06U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kpberry.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TEH8BfqJ; arc=none smtp.client-ip=209.85.216.74
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-37c5bb1de23so574022a91.1
+        for <stable@vger.kernel.org>; Tue, 16 Jun 2026 08:54:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781625289; x=1782230089; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=qrS/vFPCdRwb3zPYLcwa3HFwaCgjcl+1WFfv9jwbE10=;
-        b=IYQGBYwS2aw8YJFU+VQm5Jrpx7qwJ70FmlYRpHxOrstndjpJE6f1HgOvxFWQcmndvM
-         CTp9w08YvhjNCrcKDff2ScE5aGT2/NUe39ytGCuh9sB89WT+8X9WW0TYSQRY1A+l6Bqc
-         6nO1mk5WeWnETRhd2N+xDMlh9YRwrBST8vooqQFCPh9iM1OdAs4L2QQP9nFE3n3zgL0G
-         hbUVzW/tCZciPwqr9OS3g83kiulJx/6BbaG6GaULa0y6lcoWPpB+XL7dBoib0RTxOqE8
-         vcR41dhonAPFcH4M50zaceO3US8e3c+ktWYIfJUmJQpnPomkSlSoVY34qmqBshfI6QRr
-         Rllg==
+        d=google.com; s=20251104; t=1781625290; x=1782230090; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=yC4/3ZYS5Vh/O2LjV/2TjbHuntR+M/N/R6QJ97IDDdA=;
+        b=TEH8BfqJzgt+EgXweLrcxxppYakWEtm5AkKExjKZ5V3h/lVQeTiZbvJBRogVFzTExB
+         /ETYZe17z+8KRXh5c3gTphn+Oc5SO4vjyDvkKQLb/EfCBm1PgI579Q/AAubt8eWeiGxH
+         ruStdZ+I9ZfxwJwMhF7EQAg79mLGyuolS+/m89jXg2AXcNte6EC+MQyU+GqNidHUkAGe
+         tWelA0Suyc7LVoSnNPoPuQzHci3eV3UdvqCXciYDwvL4ZtPwJh5aI/Y6xgHd/bSOmSC7
+         EXZQ7T3OSKTb85rnmYqlInRV42FRxh6KUmJvcliUBY2JfB+s9gqgM/R2SMCxRZTUgWdf
+         fMsw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781625289; x=1782230089;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=qrS/vFPCdRwb3zPYLcwa3HFwaCgjcl+1WFfv9jwbE10=;
-        b=nd8IKBKrSKk2IvbxT5gK1nJ3NsnC9v1gtInDrO/L59TTzJwkwZ7MbKlCglptJe0K+a
-         DRtMsE4GvJ2Bnyam4MMOLhsvRFo0eyfYQaC+oz2t/JzR6HzjUu9VchnaNgFB/NL86tWr
-         7F0qhorTV76+fWxWYNgsRj9UINzmBRG2epThkuuqM/Uug5ZotY6YkFcn1ti3K/ZuxaJJ
-         xEjcEgvQABcWRgKg1K6ERKpSKjfvHIp8zbzQIJdoXXBSNgn0g1Q2ALYlL2iSfoR6RTEu
-         qLvILK4xCn32iSHBqXolskS4UIhIU7HNjcVfDEMqkHXb+ijSROzM/Aa/xg+zztudBl/f
-         Gviw==
-X-Gm-Message-State: AOJu0YwQKDY5U4Rk1aTRJQgaXaaqSWQbixIsLYLoskvzdjAEQ7AtxalB
-	c/LG/ZDWycJAXyAd3ZRM9ZgKqG6QozGtFrai1Aq6W836jjaV3dCOzammA0bUE2zzdSmErmoWMpJ
-	wV/Oc7Rjsojh6vFQXbJUMW5nBd+2491ceKNvcWpE1XfaOSVrmL6by+bZ55Fug+POqclo5912Ehv
-	OPcQNBmJqvrw/H54gCdcg2EJA6nGUGFCeeFhqSNfvzVQ==
-X-Received: from pgla26.prod.google.com ([2002:a63:b5a:0:b0:c85:62f4:f188])
- (user=kpberry job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:350d:b0:3b4:8f18:326
- with SMTP id adf61e73a8af0-3b783dbce10mr22144982637.10.1781625288354; Tue, 16
- Jun 2026 08:54:48 -0700 (PDT)
-Date: Tue, 16 Jun 2026 15:54:29 +0000
+        d=1e100.net; s=20251104; t=1781625290; x=1782230090;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=yC4/3ZYS5Vh/O2LjV/2TjbHuntR+M/N/R6QJ97IDDdA=;
+        b=YnkhY9bIYSbUeUEkHVRbHVWYwA0zZh6cO7RKn1kbFcSRtq13wcA/eYCR9lybwOAdCT
+         Wo0pdyXe5SMvf21PV7CBgBt+V/i4oF/Ki+K53f24712pPXa5x85XvvqQ95Y9fnfOgbZZ
+         K6ztPRl2IE0yAsZd3Bi8rmxH6w/4MrRiuZ5vhB/aVxaEula1CODa60raRJ6WUfgmISfJ
+         Mzihi5Lu9IQsZJi4lu9acoQagd2Nj1kP15+CWh2SrMiwZDw7duYz8rHfhYj9vrtPc6pf
+         GvykfzBlrG1QZmkAmNl4BTW26vEmkhZ1WkX8yY3NLF//WB30Kj7xMJxLZb6p+6Jf46cV
+         605w==
+X-Gm-Message-State: AOJu0YxEHj1SRArThEi5Unb+opt4ny/xEvIe5Z3N9WarOFk76psB5aHx
+	qXh9wtwSD7tu2tTd+G/ANEyfRHDSoWD1T+x2ZUDzayOvEQxg8MXXVUJuOUfOT1jm4kgaUoRdFmb
+	BZtMDbGOq1EuoxI8bXXlaJQDOba8Gt4OrxLCD2Um3IFRofDB+9KcxCvucqFI7BadrFSmshiMrEd
+	Ct5MnH2Vd27wbwmTkZnXZnZiWdFRShtsYMPTTJmdZNpg==
+X-Received: from plbkm5.prod.google.com ([2002:a17:903:27c5:b0:2c0:b7cf:e7ab])
+ (user=kpberry job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2ec3:b0:366:3517:1a95
+ with SMTP id 98e67ed59e1d1-37c924904efmr107925a91.0.1781625289948; Tue, 16
+ Jun 2026 08:54:49 -0700 (PDT)
+Date: Tue, 16 Jun 2026 15:54:30 +0000
 In-Reply-To: <20260616155432.2093908-1-kpberry@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -76,137 +78,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260616155432.2093908-1-kpberry@google.com>
 X-Mailer: git-send-email 2.54.0.1136.gdb2ca164c4-goog
-Message-ID: <20260616155432.2093908-7-kpberry@google.com>
-Subject: [PATCH 6.12 6/7] net: bonding: fix use-after-free in bond_xmit_broadcast()
+Message-ID: <20260616155432.2093908-8-kpberry@google.com>
+Subject: [PATCH 6.12 7/7] bonding: fix NULL pointer dereference in
+ actor_port_prio setting
 From: Kevin Berry <kpberry@google.com>
 To: stable@vger.kernel.org
 Cc: gregkh@linuxfoundation.org, bestswngs@gmail.com, chenglongtang@google.com, 
 	joneslee@google.com, kpberry@google.com, pabeni@redhat.com, rnj@google.com, 
-	sashal@kernel.org, xmei5@asu.edu
+	sashal@kernel.org, xmei5@asu.edu, Hangbin Liu <liuhangbin@gmail.com>, 
+	Liang Li <liali@redhat.com>, Jakub Kicinski <kuba@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
 	MV_CASE(0.50)[];
 	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,gmail.com,google.com,redhat.com,kernel.org,asu.edu];
-	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-264317-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:bestswngs@gmail.com,m:chenglongtang@google.com,m:joneslee@google.com,m:kpberry@google.com,m:pabeni@redhat.com,m:rnj@google.com,m:sashal@kernel.org,m:xmei5@asu.edu,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[kpberry@google.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:bestswngs@gmail.com,m:chenglongtang@google.com,m:joneslee@google.com,m:kpberry@google.com,m:pabeni@redhat.com,m:rnj@google.com,m:sashal@kernel.org,m:xmei5@asu.edu,m:liuhangbin@gmail.com,m:liali@redhat.com,m:kuba@kernel.org,s:lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[kpberry@google.com,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264319-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[google.com:+];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[kpberry@google.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[google.com:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,gmail.com,google.com,redhat.com,kernel.org,asu.edu];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	MIME_TRACE(0.00)[0:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,asu.edu:email,vger.kernel.org:from_smtp,msgid.link:url]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3057E691C1D
+X-Rspamd-Queue-Id: 6B3086919C6
 
-From: Xiang Mei <xmei5@asu.edu>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-[ Upstream commit 2884bf72fb8f03409e423397319205de48adca16 ]
+[ Upstream commit 067bf016e99ad72aa4ff869d6dec1fd62a9c6202 ]
 
-bond_xmit_broadcast() reuses the original skb for the last slave
-(determined by bond_is_last_slave()) and clones it for others.
-Concurrent slave enslave/release can mutate the slave list during
-RCU-protected iteration, changing which slave is "last" mid-loop.
-This causes the original skb to be double-consumed (double-freed).
+Liang reported an issue where setting a slave=E2=80=99s actor_port_prio to
+predefined values such as 0, 255, or 65535 would cause a system crash.
 
-Replace the racy bond_is_last_slave() check with a simple index
-comparison (i + 1 == slaves_count) against the pre-snapshot slave
-count taken via READ_ONCE() before the loop.  This preserves the
-zero-copy optimization for the last slave while making the "last"
-determination stable against concurrent list mutations.
+The problem occurs because in bond_opt_parse(), when the provided value
+matches a predefined table entry, the function returns that table entry,
+which does not contain slave information. Later, in
+bond_option_actor_port_prio_set(), calling bond_slave_get_rtnl() leads
+to a NULL pointer dereference.
 
-The UAF can trigger the following crash:
+Since actor_port_prio is defined as a u16 and initialized to the default
+value of 255 in ad_initialize_port(), there is no need for the
+bond_actor_port_prio_tbl. Using the BOND_OPTFLAG_RAWVAL flag is sufficient.
 
-==================================================================
-BUG: KASAN: slab-use-after-free in skb_clone
-Read of size 8 at addr ffff888100ef8d40 by task exploit/147
-
-CPU: 1 UID: 0 PID: 147 Comm: exploit Not tainted 7.0.0-rc3+ #4 PREEMPTLAZY
-Call Trace:
- <TASK>
- dump_stack_lvl (lib/dump_stack.c:123)
- print_report (mm/kasan/report.c:379 mm/kasan/report.c:482)
- kasan_report (mm/kasan/report.c:597)
- skb_clone (include/linux/skbuff.h:1724 include/linux/skbuff.h:1792 include/linux/skbuff.h:3396 net/core/skbuff.c:2108)
- bond_xmit_broadcast (drivers/net/bonding/bond_main.c:5334)
- bond_start_xmit (drivers/net/bonding/bond_main.c:5567 drivers/net/bonding/bond_main.c:5593)
- dev_hard_start_xmit (include/linux/netdevice.h:5325 include/linux/netdevice.h:5334 net/core/dev.c:3871 net/core/dev.c:3887)
- __dev_queue_xmit (include/linux/netdevice.h:3601 net/core/dev.c:4838)
- ip6_finish_output2 (include/net/neighbour.h:540 include/net/neighbour.h:554 net/ipv6/ip6_output.c:136)
- ip6_finish_output (net/ipv6/ip6_output.c:208 net/ipv6/ip6_output.c:219)
- ip6_output (net/ipv6/ip6_output.c:250)
- ip6_send_skb (net/ipv6/ip6_output.c:1985)
- udp_v6_send_skb (net/ipv6/udp.c:1442)
- udpv6_sendmsg (net/ipv6/udp.c:1733)
- __sys_sendto (net/socket.c:730 net/socket.c:742 net/socket.c:2206)
- __x64_sys_sendto (net/socket.c:2209)
- do_syscall_64 (arch/x86/entry/syscall_64.c:63 arch/x86/entry/syscall_64.c:94)
- entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
- </TASK>
-
-Allocated by task 147:
-
-Freed by task 147:
-
-The buggy address belongs to the object at ffff888100ef8c80
- which belongs to the cache skbuff_head_cache of size 224
-The buggy address is located 192 bytes inside of
- freed 224-byte region [ffff888100ef8c80, ffff888100ef8d60)
-
-Memory state around the buggy address:
- ffff888100ef8c00: fb fb fb fb fc fc fc fc fc fc fc fc fc fc fc fc
- ffff888100ef8c80: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
->ffff888100ef8d00: fb fb fb fb fb fb fb fb fb fb fb fb fc fc fc fc
-                                                    ^
- ffff888100ef8d80: fc fc fc fc fc fc fc fc fa fb fb fb fb fb fb fb
- ffff888100ef8e00: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-==================================================================
-
-Fixes: 4e5bd03ae346 ("net: bonding: fix bond_xmit_broadcast return value error bug")
-Reported-by: Weiming Shi <bestswngs@gmail.com>
-Signed-off-by: Xiang Mei <xmei5@asu.edu>
-Link: https://patch.msgid.link/20260326075553.3960562-1-xmei5@asu.edu
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 6b6dc81ee7e8 ("bonding: add support for per-port LACP actor priority=
+")
+Reported-by: Liang Li <liali@redhat.com>
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Link: https://patch.msgid.link/20251105072620.164841-1-liuhangbin@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Kevin Berry <kpberry@google.com>
 ---
- drivers/net/bonding/bond_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/bonding/bond_options.c | 9 +--------
+ 1 file changed, 1 insertion(+), 8 deletions(-)
 
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index 5c57c841dadc..bb561621cbb8 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -5391,7 +5391,7 @@ static netdev_tx_t bond_xmit_broadcast(struct sk_buff *skb,
- 		if (!(bond_slave_is_up(slave) && slave->link == BOND_LINK_UP))
- 			continue;
- 
--		if (bond_is_last_slave(bond, slave)) {
-+		if (i + 1 == slaves_count) {
- 			skb2 = skb;
- 			skb_used = true;
- 		} else {
--- 
+diff --git a/drivers/net/bonding/bond_options.c b/drivers/net/bonding/bond_=
+options.c
+index ddb3f06cbb75..4d01f1081956 100644
+--- a/drivers/net/bonding/bond_options.c
++++ b/drivers/net/bonding/bond_options.c
+@@ -225,13 +225,6 @@ static const struct bond_opt_value bond_ad_actor_sys_p=
+rio_tbl[] =3D {
+ 	{ NULL,      -1,    0},
+ };
+=20
+-static const struct bond_opt_value bond_actor_port_prio_tbl[] =3D {
+-	{ "minval",  0,     BOND_VALFLAG_MIN},
+-	{ "maxval",  65535, BOND_VALFLAG_MAX},
+-	{ "default", 255,   BOND_VALFLAG_DEFAULT},
+-	{ NULL,      -1,    0},
+-};
+-
+ static const struct bond_opt_value bond_ad_user_port_key_tbl[] =3D {
+ 	{ "minval",  0,     BOND_VALFLAG_MIN | BOND_VALFLAG_DEFAULT},
+ 	{ "maxval",  1023,  BOND_VALFLAG_MAX},
+@@ -497,7 +490,7 @@ static const struct bond_option bond_opts[BOND_OPT_LAST=
+] =3D {
+ 		.id =3D BOND_OPT_ACTOR_PORT_PRIO,
+ 		.name =3D "actor_port_prio",
+ 		.unsuppmodes =3D BOND_MODE_ALL_EX(BIT(BOND_MODE_8023AD)),
+-		.values =3D bond_actor_port_prio_tbl,
++		.flags =3D BOND_OPTFLAG_RAWVAL,
+ 		.set =3D bond_option_actor_port_prio_set,
+ 	},
+ 	[BOND_OPT_AD_ACTOR_SYSTEM] =3D {
+--=20
 2.54.0.1136.gdb2ca164c4-goog
 
 
