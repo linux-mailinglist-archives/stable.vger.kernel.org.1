@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-266237-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265447-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id uozKBjKZMWpbnwUAu9opvQ
-	(envelope-from <stable+bounces-266237-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:42:58 +0200
+	id r608O3qKMWpimAUAu9opvQ
+	(envelope-from <stable+bounces-265447-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:40:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A48DA6945DA
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:42:57 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A239693595
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:40:10 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=0qXUcHbw;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266237-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266237-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=lalzleqK;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265447-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-265447-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1EC08302DA89
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:42:57 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 94A0A302B62C
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:34:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB330477982;
-	Tue, 16 Jun 2026 18:42:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 080443A3E78;
+	Tue, 16 Jun 2026 17:34:07 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A4D813777E;
-	Tue, 16 Jun 2026 18:42:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7801832E728;
+	Tue, 16 Jun 2026 17:34:05 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781635373; cv=none; b=ngeUQ8D0PbuY3AdADCGJVqr8OcoEgFwU0WezL1CI37FMmAv1cUhi6nhFJVvYCqs0F8ucmodNGRj3iRk7q3B1wMAdEFkOjnzfPNNlag/1PzcvYgfG0gmfnktduJd+UXVakaMZfszJyulxV0ToDscv34j5H6HWrERTxUV4XeQH0So=
+	t=1781631246; cv=none; b=gv7a9KHg6V7cS4fmP8VZNYf60WyTs29c8gHXXGDN/B4HJuHfp/C1LqjYuTbwQNinx8YLx3eESnKlWD6HaiOb/jQGz2jmTU63kc3oYNSu3rs+Kb243PR05qeompnGSpW3GJVZMJPeYYg/WkGaUszXOVOzffRgNn/vOQykZNUwxoQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781635373; c=relaxed/simple;
-	bh=q7pGBKRCbg5yk8YRyzD+/uvpYE30IUIp/Mhrte8uO7Q=;
+	s=arc-20240116; t=1781631246; c=relaxed/simple;
+	bh=Gi5mUBpqVK+d3T8hOoeQapHx/v3pkKCkhiMk2RWlLu0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J5W2lzdU4HvcRVuoimp/lqC+BRLfG+0ggTzpwTo73ig9wy/6x6Zhd4FTfWZDjbw4+Tqdv8SOI8ls3g2h8w+Nl7NU5yBjloRL+d2BjSFYzqkLlS6pmebyngb4g7Mu2c029oS8wLmfsdnmqeWqBeFlp56k65lx0eli9Vu9yOqUfz8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0qXUcHbw; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F30CF1F000E9;
-	Tue, 16 Jun 2026 18:42:50 +0000 (UTC)
+	 MIME-Version; b=MJ6/z5fH4iGf5dkTRK7QEnRMqdOvqnMvtxOmL+Nfb0iiY55rbx2z9pG07rZ6PdX62QR9Ux9ddy1srzVViBf6kzNUpH5+c0usM4RiJFhbiPFhrZiQqkcCPrQa2Ox0O0E/00XXLzjMTIT26Bsk7YL6Trzy3JdKCpYJKIiVn0elSU0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lalzleqK; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 627C61F000E9;
+	Tue, 16 Jun 2026 17:34:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781635372;
-	bh=ua4pnnsOAqyStsgwKmNxAPgAEdOGZymyOnI83HR8hyg=;
+	s=korg; t=1781631245;
+	bh=ZaSHEvXSaP8dh88dTbdQc7VNaTEyil2h0QIw5n2plto=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=0qXUcHbw0TAjAXTTTg+mDpOMwg5z6wBZAcYUMuQJT72JuXxfd4Nhi5+U17WjcSo4X
-	 nnLziZkZLKxOncpFLnnYkkkuCod2bPk5sF+shTeDeMyYa0MC3glbQ/n4fwjWUmzf23
-	 IhrViH6xYXWIgmsrWhQXgaRSJTQeGWNaIleVNQF4=
+	b=lalzleqKzp+jf/W2DpYWj8r04tOzGB+B9L1jcMKyai6XXO8ClV9NwHTmovSoqBkDh
+	 r38ZrGunhboC0tXmx8VSmi1UOBBlCHgyEnLaKKtrGwjyiazfBIv/UN8BMsNiWRy0jh
+	 pxzjumSDgBbfAC5RvVZG27OFSj4AudruBi6x7Qic=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Sven Eckelmann <sven@narfation.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Vegard Nossum <vegard.nossum@oracle.com>,
+	Jakub Acs <acsjakub@amazon.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 036/342] batman-adv: tp_meter: avoid role confusion in tp_list
+Subject: [PATCH 6.1 185/522] netfilter: nf_tables: restore set elements when delete set fails
 Date: Tue, 16 Jun 2026 20:25:32 +0530
-Message-ID: <20260616145049.935960564@linuxfoundation.org>
+Message-ID: <20260616145134.771219230@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,231 +70,359 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266237-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:sven@narfation.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265447-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:pablo@netfilter.org,m:vegard.nossum@oracle.com,m:acsjakub@amazon.de,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,narfation.org:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amazon.de:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,oracle.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,netfilter.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A48DA6945DA
+X-Rspamd-Queue-Id: 1A239693595
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit ff24f2ecfd94c07a2b89bac497433e3b23271cac upstream.
+[ Upstream commit e79b47a8615d42c68aaeb68971593333667382ed ]
 
-Session lookups in tp_list matched only on destination address (and
-optionally session ID), leaving role validation to the caller. If two
-sessions with the same other_end coexisted (one as sender, one as receiver)
-a lookup could silently return the wrong one, causing the caller's role to
-bail out early, potentially skipping necessary cleanup.
+>From abort path, nft_mapelem_activate() needs to restore refcounters to
+the original state. Currently, it uses the set->ops->walk() to iterate
+over these set elements. The existing set iterator skips inactive
+elements in the next generation, this does not work from the abort path
+to restore the original state since it has to skip active elements
+instead (not inactive ones).
 
-Move the role check into the lookup functions themselves so the correct
-entry is always returned, or none at all. Since batadv_tp_start()
-legitimately needs to detect any active session to a destination regardless
-of role, introduce a dedicated helper for that case rather than bending the
-existing lookup semantics.
+This patch moves the check for inactive elements to the set iterator
+callback, then it reverses the logic for the .activate case which
+needs to skip active elements.
 
-Cc: stable@kernel.org
-Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Toggle next generation bit for elements when delete set command is
+invoked and call nft_clear() from .activate (abort) path to restore the
+next generation bit.
+
+The splat below shows an object in mappings memleak:
+
+[43929.457523] ------------[ cut here ]------------
+[43929.457532] WARNING: CPU: 0 PID: 1139 at include/net/netfilter/nf_tables.h:1237 nft_setelem_data_deactivate+0xe4/0xf0 [nf_tables]
+[...]
+[43929.458014] RIP: 0010:nft_setelem_data_deactivate+0xe4/0xf0 [nf_tables]
+[43929.458076] Code: 83 f8 01 77 ab 49 8d 7c 24 08 e8 37 5e d0 de 49 8b 6c 24 08 48 8d 7d 50 e8 e9 5c d0 de 8b 45 50 8d 50 ff 89 55 50 85 c0 75 86 <0f> 0b eb 82 0f 0b eb b3 0f 1f 40 00 90 90 90 90 90 90 90 90 90 90
+[43929.458081] RSP: 0018:ffff888140f9f4b0 EFLAGS: 00010246
+[43929.458086] RAX: 0000000000000000 RBX: ffff8881434f5288 RCX: dffffc0000000000
+[43929.458090] RDX: 00000000ffffffff RSI: ffffffffa26d28a7 RDI: ffff88810ecc9550
+[43929.458093] RBP: ffff88810ecc9500 R08: 0000000000000001 R09: ffffed10281f3e8f
+[43929.458096] R10: 0000000000000003 R11: ffff0000ffff0000 R12: ffff8881434f52a0
+[43929.458100] R13: ffff888140f9f5f4 R14: ffff888151c7a800 R15: 0000000000000002
+[43929.458103] FS:  00007f0c687c4740(0000) GS:ffff888390800000(0000) knlGS:0000000000000000
+[43929.458107] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[43929.458111] CR2: 00007f58dbe5b008 CR3: 0000000123602005 CR4: 00000000001706f0
+[43929.458114] Call Trace:
+[43929.458118]  <TASK>
+[43929.458121]  ? __warn+0x9f/0x1a0
+[43929.458127]  ? nft_setelem_data_deactivate+0xe4/0xf0 [nf_tables]
+[43929.458188]  ? report_bug+0x1b1/0x1e0
+[43929.458196]  ? handle_bug+0x3c/0x70
+[43929.458200]  ? exc_invalid_op+0x17/0x40
+[43929.458211]  ? nft_setelem_data_deactivate+0xd7/0xf0 [nf_tables]
+[43929.458271]  ? nft_setelem_data_deactivate+0xe4/0xf0 [nf_tables]
+[43929.458332]  nft_mapelem_deactivate+0x24/0x30 [nf_tables]
+[43929.458392]  nft_rhash_walk+0xdd/0x180 [nf_tables]
+[43929.458453]  ? __pfx_nft_rhash_walk+0x10/0x10 [nf_tables]
+[43929.458512]  ? rb_insert_color+0x2e/0x280
+[43929.458520]  nft_map_deactivate+0xdc/0x1e0 [nf_tables]
+[43929.458582]  ? __pfx_nft_map_deactivate+0x10/0x10 [nf_tables]
+[43929.458642]  ? __pfx_nft_mapelem_deactivate+0x10/0x10 [nf_tables]
+[43929.458701]  ? __rcu_read_unlock+0x46/0x70
+[43929.458709]  nft_delset+0xff/0x110 [nf_tables]
+[43929.458769]  nft_flush_table+0x16f/0x460 [nf_tables]
+[43929.458830]  nf_tables_deltable+0x501/0x580 [nf_tables]
+
+Fixes: 628bd3e49cba ("netfilter: nf_tables: drop map element references from preparation phase")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+(cherry picked from commit e79b47a8615d42c68aaeb68971593333667382ed)
+[Vegard: CVE-2024-27012; fixed conflicts due to missing commits
+ 0e1ea651c9717ddcd8e0648d8468477a31867b0a ("netfilter: nf_tables: shrink
+ memory consumption of set elements") and
+ 9dad402b89e81a0516bad5e0ac009b7a0a80898f ("netfilter: nf_tables: expose
+ opaque set element as struct nft_elem_priv") so we pass the correct types
+ and values to nft_setelem_data_deactivate(), nft_setelem_validate(),
+ nft_set_elem_ext(), etc.]
+Signed-off-by: Vegard Nossum <vegard.nossum@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[acsjakub: clean cherry-pick of the commit 164936b2fc88
+ ("netfilter: nf_tables: restore set elements when delete set fails")
+ from 6.6.y. Plus, add "[ Upstream commit .." header to the message]
+Signed-off-by: Jakub Acs <acsjakub@amazon.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/batman-adv/tp_meter.c | 59 ++++++++++++++++++++++++---------------
- 1 file changed, 36 insertions(+), 23 deletions(-)
+ net/netfilter/nf_tables_api.c  | 41 ++++++++++++++++++++++++++++++----
+ net/netfilter/nft_set_bitmap.c |  4 +---
+ net/netfilter/nft_set_hash.c   |  8 ++-----
+ net/netfilter/nft_set_pipapo.c |  5 +----
+ net/netfilter/nft_set_rbtree.c |  4 +---
+ 5 files changed, 42 insertions(+), 20 deletions(-)
 
-diff --git a/net/batman-adv/tp_meter.c b/net/batman-adv/tp_meter.c
-index b93cb86129769c..ebefad5822eea0 100644
---- a/net/batman-adv/tp_meter.c
-+++ b/net/batman-adv/tp_meter.c
-@@ -253,6 +253,7 @@ static void batadv_tp_batctl_error_notify(enum batadv_tp_meter_reason reason,
-  * batadv_tp_list_find() - find a tp_vars object in the global list
-  * @bat_priv: the bat priv with all the soft interface information
-  * @dst: the other endpoint MAC address to look for
-+ * @role: role of the session
-  *
-  * Look for a tp_vars object matching dst as end_point and return it after
-  * having increment the refcounter. Return NULL is not found
-@@ -260,7 +261,8 @@ static void batadv_tp_batctl_error_notify(enum batadv_tp_meter_reason reason,
-  * Return: matching tp_vars or NULL when no tp_vars with @dst was found
-  */
- static struct batadv_tp_vars *batadv_tp_list_find(struct batadv_priv *bat_priv,
--						  const u8 *dst)
-+						  const u8 *dst,
-+						  enum batadv_tp_meter_role role)
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 0c422428263873..201e2cc0453992 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -594,6 +594,12 @@ static int nft_mapelem_deactivate(const struct nft_ctx *ctx,
+ 				  const struct nft_set_iter *iter,
+ 				  struct nft_set_elem *elem)
  {
- 	struct batadv_tp_vars *pos, *tp_vars = NULL;
++	struct nft_set_ext *ext = nft_set_elem_ext(set, elem->priv);
++
++	if (!nft_set_elem_active(ext, iter->genmask))
++		return 0;
++
++	nft_set_elem_change_active(ctx->net, set, ext);
+ 	nft_setelem_data_deactivate(ctx->net, set, elem);
  
-@@ -269,6 +271,9 @@ static struct batadv_tp_vars *batadv_tp_list_find(struct batadv_priv *bat_priv,
- 		if (!batadv_compare_eth(pos->other_end, dst))
+ 	return 0;
+@@ -619,6 +625,7 @@ static void nft_map_catchall_deactivate(const struct nft_ctx *ctx,
  			continue;
  
-+		if (pos->role != role)
-+			continue;
+ 		elem.priv = catchall->elem;
++		nft_set_elem_change_active(ctx->net, set, ext);
+ 		nft_setelem_data_deactivate(ctx->net, set, &elem);
+ 		break;
+ 	}
+@@ -3593,6 +3600,9 @@ int nft_setelem_validate(const struct nft_ctx *ctx, struct nft_set *set,
+ 	const struct nft_data *data;
+ 	int err;
+ 
++	if (!nft_set_elem_active(ext, iter->genmask))
++		return 0;
 +
- 		/* most of the time this function is invoked during the normal
- 		 * process..it makes sens to pay more when the session is
- 		 * finished and to speed the process up during the measurement
-@@ -284,12 +289,33 @@ static struct batadv_tp_vars *batadv_tp_list_find(struct batadv_priv *bat_priv,
- 	return tp_vars;
+ 	if (nft_set_ext_exists(ext, NFT_SET_EXT_FLAGS) &&
+ 	    *nft_set_ext_flags(ext) & NFT_SET_ELEM_INTERVAL_END)
+ 		return 0;
+@@ -3616,19 +3626,22 @@ int nft_setelem_validate(const struct nft_ctx *ctx, struct nft_set *set,
+ 
+ int nft_set_catchall_validate(const struct nft_ctx *ctx, struct nft_set *set)
+ {
+-	u8 genmask = nft_genmask_next(ctx->net);
++	struct nft_set_iter dummy_iter = {
++		.genmask	= nft_genmask_next(ctx->net),
++	};
+ 	struct nft_set_elem_catchall *catchall;
+ 	struct nft_set_elem elem;
++
+ 	struct nft_set_ext *ext;
+ 	int ret = 0;
+ 
+ 	list_for_each_entry_rcu(catchall, &set->catchall_list, list) {
+ 		ext = nft_set_elem_ext(set, catchall->elem);
+-		if (!nft_set_elem_active(ext, genmask))
++		if (!nft_set_elem_active(ext, dummy_iter.genmask))
+ 			continue;
+ 
+ 		elem.priv = catchall->elem;
+-		ret = nft_setelem_validate(ctx, set, NULL, &elem);
++		ret = nft_setelem_validate(ctx, set, &dummy_iter, &elem);
+ 		if (ret < 0)
+ 			return ret;
+ 	}
+@@ -5103,6 +5116,11 @@ static int nf_tables_bind_check_setelem(const struct nft_ctx *ctx,
+ 					const struct nft_set_iter *iter,
+ 					struct nft_set_elem *elem)
+ {
++	const struct nft_set_ext *ext = nft_set_elem_ext(set, elem->priv);
++
++	if (!nft_set_elem_active(ext, iter->genmask))
++		return 0;
++
+ 	return nft_setelem_data_validate(ctx, set, elem);
  }
  
-+/**
-+ * batadv_tp_list_active() - check if session from/to destination is ongoing
-+ * @bat_priv: the bat priv with all the mesh interface information
-+ * @dst: the other endpoint MAC address to look for
-+ *
-+ * Return: if matching session with @dst was found
-+ */
-+static bool batadv_tp_list_active(struct batadv_priv *bat_priv, const u8 *dst)
-+	__must_hold(&bat_priv->tp_list_lock)
-+{
-+	struct batadv_tp_vars *tp_vars;
-+
-+	hlist_for_each_entry_rcu(tp_vars, &bat_priv->tp_list, list) {
-+		if (batadv_compare_eth(tp_vars->other_end, dst))
-+			return true;
-+	}
-+
-+	return false;
-+}
-+
- /**
-  * batadv_tp_list_find_session() - find tp_vars session object in the global
-  *  list
-  * @bat_priv: the bat priv with all the soft interface information
-  * @dst: the other endpoint MAC address to look for
-  * @session: session identifier
-+ * @role: role of the session
-  *
-  * Look for a tp_vars object matching dst as end_point, session as tp meter
-  * session and return it after having increment the refcounter. Return NULL
-@@ -299,7 +325,7 @@ static struct batadv_tp_vars *batadv_tp_list_find(struct batadv_priv *bat_priv,
-  */
- static struct batadv_tp_vars *
- batadv_tp_list_find_session(struct batadv_priv *bat_priv, const u8 *dst,
--			    const u8 *session)
-+			    const u8 *session, enum batadv_tp_meter_role role)
+@@ -5197,6 +5215,13 @@ static int nft_mapelem_activate(const struct nft_ctx *ctx,
+ 				const struct nft_set_iter *iter,
+ 				struct nft_set_elem *elem)
  {
- 	struct batadv_tp_vars *pos, *tp_vars = NULL;
++	struct nft_set_ext *ext = nft_set_elem_ext(set, elem->priv);
++
++	/* called from abort path, reverse check to undo changes. */
++	if (nft_set_elem_active(ext, iter->genmask))
++		return 0;
++
++	nft_clear(ctx->net, ext);
+ 	nft_setelem_data_activate(ctx->net, set, elem);
  
-@@ -311,6 +337,9 @@ batadv_tp_list_find_session(struct batadv_priv *bat_priv, const u8 *dst,
- 		if (memcmp(pos->session, session, sizeof(pos->session)) != 0)
+ 	return 0;
+@@ -5215,6 +5240,7 @@ static void nft_map_catchall_activate(const struct nft_ctx *ctx,
+ 		if (nft_set_elem_active(ext, genmask))
  			continue;
  
-+		if (pos->role != role)
-+			continue;
++		nft_clear(ctx->net, ext);
+ 		elem.priv = catchall->elem;
+ 		nft_setelem_data_activate(ctx->net, set, &elem);
+ 		break;
+@@ -5488,6 +5514,9 @@ static int nf_tables_dump_setelem(const struct nft_ctx *ctx,
+ 	const struct nft_set_ext *ext = nft_set_elem_ext(set, elem->priv);
+ 	struct nft_set_dump_args *args;
+ 
++	if (!nft_set_elem_active(ext, iter->genmask))
++		return 0;
 +
- 		/* most of the time this function is invoked during the normal
- 		 * process..it makes sense to pay more when the session is
- 		 * finished and to speed the process up during the measurement
-@@ -654,13 +683,10 @@ static void batadv_tp_recv_ack(struct batadv_priv *bat_priv,
+ 	if (nft_set_elem_expired(ext) || nft_set_elem_is_dead(ext))
+ 		return 0;
  
- 	/* find the tp_vars */
- 	tp_vars = batadv_tp_list_find_session(bat_priv, icmp->orig,
--					      icmp->session);
-+					      icmp->session, BATADV_TP_SENDER);
- 	if (unlikely(!tp_vars))
- 		return;
+@@ -6220,7 +6249,7 @@ static void nft_setelem_activate(struct net *net, struct nft_set *set,
+ 	struct nft_set_ext *ext = nft_set_elem_ext(set, elem->priv);
  
--	if (unlikely(tp_vars->role != BATADV_TP_SENDER))
--		goto out;
--
- 	if (unlikely(batadv_tp_sender_stopped(tp_vars)))
- 		goto out;
- 
-@@ -972,10 +998,8 @@ void batadv_tp_start(struct batadv_priv *bat_priv, const u8 *dst,
- 		return;
- 	}
- 
--	tp_vars = batadv_tp_list_find(bat_priv, dst);
--	if (tp_vars) {
-+	if (batadv_tp_list_active(bat_priv, dst)) {
- 		spin_unlock_bh(&bat_priv->tp_list_lock);
--		batadv_tp_vars_put(tp_vars);
- 		batadv_dbg(BATADV_DBG_TP_METER, bat_priv,
- 			   "Meter: test to or from the same node already ongoing, aborting\n");
- 		batadv_tp_batctl_error_notify(BATADV_TP_REASON_ALREADY_ONGOING,
-@@ -1094,18 +1118,14 @@ void batadv_tp_stop(struct batadv_priv *bat_priv, const u8 *dst,
- 	if (!orig_node)
- 		return;
- 
--	tp_vars = batadv_tp_list_find(bat_priv, orig_node->orig);
-+	tp_vars = batadv_tp_list_find(bat_priv, orig_node->orig, BATADV_TP_SENDER);
- 	if (!tp_vars) {
- 		batadv_dbg(BATADV_DBG_TP_METER, bat_priv,
- 			   "Meter: trying to interrupt an already over connection\n");
- 		goto out_put_orig_node;
- 	}
- 
--	if (unlikely(tp_vars->role != BATADV_TP_SENDER))
--		goto out_put_tp_vars;
--
- 	batadv_tp_sender_shutdown(tp_vars, return_value);
--out_put_tp_vars:
- 	batadv_tp_vars_put(tp_vars);
- out_put_orig_node:
- 	batadv_orig_node_put(orig_node);
-@@ -1367,7 +1387,7 @@ batadv_tp_init_recv(struct batadv_priv *bat_priv,
- 		goto out_unlock;
- 
- 	tp_vars = batadv_tp_list_find_session(bat_priv, icmp->orig,
--					      icmp->session);
-+					      icmp->session, BATADV_TP_RECEIVER);
- 	if (tp_vars)
- 		goto out_unlock;
- 
-@@ -1435,7 +1455,7 @@ static void batadv_tp_recv_msg(struct batadv_priv *bat_priv,
- 		}
+ 	if (nft_setelem_is_catchall(set, elem)) {
+-		nft_set_elem_change_active(net, set, ext);
++		nft_clear(net, ext);
  	} else {
- 		tp_vars = batadv_tp_list_find_session(bat_priv, icmp->orig,
--						      icmp->session);
-+						      icmp->session, BATADV_TP_RECEIVER);
- 		if (!tp_vars) {
- 			batadv_dbg(BATADV_DBG_TP_METER, bat_priv,
- 				   "Unexpected packet from %pM!\n",
-@@ -1444,13 +1464,6 @@ static void batadv_tp_recv_msg(struct batadv_priv *bat_priv,
- 		}
+ 		set->ops->activate(net, set, elem);
  	}
+@@ -6902,9 +6931,13 @@ static int nft_setelem_flush(const struct nft_ctx *ctx,
+ 			     const struct nft_set_iter *iter,
+ 			     struct nft_set_elem *elem)
+ {
++	const struct nft_set_ext *ext = nft_set_elem_ext(set, elem->priv);
+ 	struct nft_trans *trans;
+ 	int err;
  
--	if (unlikely(tp_vars->role != BATADV_TP_RECEIVER)) {
--		batadv_dbg(BATADV_DBG_TP_METER, bat_priv,
--			   "Meter: dropping packet: not expected (role=%u)\n",
--			   tp_vars->role);
--		goto out;
--	}
++	if (!nft_set_elem_active(ext, iter->genmask))
++		return 0;
++
+ 	trans = nft_trans_alloc_gfp(ctx, NFT_MSG_DELSETELEM,
+ 				    sizeof(struct nft_trans_elem), GFP_ATOMIC);
+ 	if (!trans)
+diff --git a/net/netfilter/nft_set_bitmap.c b/net/netfilter/nft_set_bitmap.c
+index 1e5e7a181e0bc2..cbf7f7825f1b88 100644
+--- a/net/netfilter/nft_set_bitmap.c
++++ b/net/netfilter/nft_set_bitmap.c
+@@ -171,7 +171,7 @@ static void nft_bitmap_activate(const struct net *net,
+ 	nft_bitmap_location(set, nft_set_ext_key(&be->ext), &idx, &off);
+ 	/* Enter 11 state. */
+ 	priv->bitmap[idx] |= (genmask << off);
+-	nft_set_elem_change_active(net, set, &be->ext);
++	nft_clear(net, &be->ext);
+ }
+ 
+ static bool nft_bitmap_flush(const struct net *net,
+@@ -223,8 +223,6 @@ static void nft_bitmap_walk(const struct nft_ctx *ctx,
+ 	list_for_each_entry_rcu(be, &priv->list, head) {
+ 		if (iter->count < iter->skip)
+ 			goto cont;
+-		if (!nft_set_elem_active(&be->ext, iter->genmask))
+-			goto cont;
+ 
+ 		elem.priv = be;
+ 
+diff --git a/net/netfilter/nft_set_hash.c b/net/netfilter/nft_set_hash.c
+index 9ea4a09903186d..5a74ee4b7dfb35 100644
+--- a/net/netfilter/nft_set_hash.c
++++ b/net/netfilter/nft_set_hash.c
+@@ -196,7 +196,7 @@ static void nft_rhash_activate(const struct net *net, const struct nft_set *set,
+ {
+ 	struct nft_rhash_elem *he = elem->priv;
+ 
+-	nft_set_elem_change_active(net, set, &he->ext);
++	nft_clear(net, &he->ext);
+ }
+ 
+ static bool nft_rhash_flush(const struct net *net,
+@@ -285,8 +285,6 @@ static void nft_rhash_walk(const struct nft_ctx *ctx, struct nft_set *set,
+ 
+ 		if (iter->count < iter->skip)
+ 			goto cont;
+-		if (!nft_set_elem_active(&he->ext, iter->genmask))
+-			goto cont;
+ 
+ 		elem.priv = he;
+ 
+@@ -615,7 +613,7 @@ static void nft_hash_activate(const struct net *net, const struct nft_set *set,
+ {
+ 	struct nft_hash_elem *he = elem->priv;
+ 
+-	nft_set_elem_change_active(net, set, &he->ext);
++	nft_clear(net, &he->ext);
+ }
+ 
+ static bool nft_hash_flush(const struct net *net,
+@@ -669,8 +667,6 @@ static void nft_hash_walk(const struct nft_ctx *ctx, struct nft_set *set,
+ 		hlist_for_each_entry_rcu(he, &priv->table[i], node) {
+ 			if (iter->count < iter->skip)
+ 				goto cont;
+-			if (!nft_set_elem_active(&he->ext, iter->genmask))
+-				goto cont;
+ 
+ 			elem.priv = he;
+ 
+diff --git a/net/netfilter/nft_set_pipapo.c b/net/netfilter/nft_set_pipapo.c
+index cfd0d020f3382b..11473275c6e263 100644
+--- a/net/netfilter/nft_set_pipapo.c
++++ b/net/netfilter/nft_set_pipapo.c
+@@ -1849,7 +1849,7 @@ static void nft_pipapo_activate(const struct net *net,
+ {
+ 	struct nft_pipapo_elem *e = elem->priv;
+ 
+-	nft_set_elem_change_active(net, set, &e->ext);
++	nft_clear(net, &e->ext);
+ }
+ 
+ /**
+@@ -2151,9 +2151,6 @@ static void nft_pipapo_walk(const struct nft_ctx *ctx, struct nft_set *set,
+ 
+ 		e = f->mt[r].e;
+ 
+-		if (!nft_set_elem_active(&e->ext, iter->genmask))
+-			goto cont;
 -
- 	tp_vars->last_recv_time = jiffies;
+ 		elem.priv = e;
  
- 	/* if the packet is a duplicate, it may be the case that an ACK has been
+ 		iter->err = iter->fn(ctx, set, iter, &elem);
+diff --git a/net/netfilter/nft_set_rbtree.c b/net/netfilter/nft_set_rbtree.c
+index 426becaad1b94f..23e4e656f7f0cb 100644
+--- a/net/netfilter/nft_set_rbtree.c
++++ b/net/netfilter/nft_set_rbtree.c
+@@ -548,7 +548,7 @@ static void nft_rbtree_activate(const struct net *net,
+ {
+ 	struct nft_rbtree_elem *rbe = elem->priv;
+ 
+-	nft_set_elem_change_active(net, set, &rbe->ext);
++	nft_clear(net, &rbe->ext);
+ }
+ 
+ static bool nft_rbtree_flush(const struct net *net,
+@@ -618,8 +618,6 @@ static void nft_rbtree_walk(const struct nft_ctx *ctx,
+ 
+ 		if (iter->count < iter->skip)
+ 			goto cont;
+-		if (!nft_set_elem_active(&rbe->ext, iter->genmask))
+-			goto cont;
+ 
+ 		elem.priv = rbe;
+ 
 -- 
 2.53.0
 
