@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-265387-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264875-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id rzR8GAiJMWq+lwUAu9opvQ
-	(envelope-from <stable+bounces-265387-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:34:00 +0200
+	id vGL8IWZ/MWqQkwUAu9opvQ
+	(envelope-from <stable+bounces-264875-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:52:54 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFB60693433
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:33:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CBE516928AF
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:52:53 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=uMX5nfUf;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265387-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265387-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ct9vLaCs;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264875-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264875-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 471883068467
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:29:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A9170306B7CE
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:45:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B86847AF75;
-	Tue, 16 Jun 2026 17:29:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C4D13AA4E0;
+	Tue, 16 Jun 2026 16:45:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5476247AF6E;
-	Tue, 16 Jun 2026 17:28:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 021911A6803;
+	Tue, 16 Jun 2026 16:45:49 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781630943; cv=none; b=HuBy7hXZFhTsgxXp0Mfl8/Xo+iKX5lZ9Q+rEM5bLz89O+LLClkouJxVzqZhPwfGJG1sjphDFjIrun1TzQ2o+8Qbfa42oLgET1hAlxjJlCl9TvqQOq36CMR6TyclLiumDebMotDh/Wb/oqirrfxz6dC6hHoqFNZfIYPItQuNivD0=
+	t=1781628350; cv=none; b=U23964owDUcgE+itXqnjSxxyujxEzVZLCEzG6Ejj4jxqZK40tH3znNwyWErK/d/A6lCoE1mJjMU0A3AZ7fRu6LNHAhnyUqJTi6NyWUShDHGWGRDFYtscfyxCz1y7EJXy7iGzfMlns+pQUM6h7hcmH1NZZgBvo+zC/3/LrxMGkXU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781630943; c=relaxed/simple;
-	bh=q5cfg1ZmJ7/jmgwNB8i74IIoLnnh49YvZ82ftUfIDU4=;
+	s=arc-20240116; t=1781628350; c=relaxed/simple;
+	bh=jHOmaBOoBWbiQfMxX+W4CiOnKtau+DNO3/9Hdw0jiA0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OgvoyDC2rhKmkMoi+4/Q5KYQmjmVcl/j0yRhQaxEV0sJ5t+9K1zh27zQ9E906YCdZhWpO3G40Q3sMiLwwB1PPwTpgA3FsVh49oBy3z2X7KAkuZ+XdZ/XP7JG76ndlD0ZAkAxeszV2QWMqegikeMUISixlZbE0KjfE6TdVytluEQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uMX5nfUf; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF2D31F000E9;
-	Tue, 16 Jun 2026 17:28:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gKmacKZ7GDydaeK+BXgmGmgXFHfyS4J66F3Ixo0ZYy/+/uKInKSLuQyFaJ2LhqNKw6PuNpREpbFPFfy7PX8vlQgpX24jGPPJeAjnudim3Ni8M8McZXIr9EEWuL0qu5nX4/NA+v2P4aeyxSMJ1gZJDy5vPujxAzzdR2U6QKfewLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ct9vLaCs; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11B0C1F000E9;
+	Tue, 16 Jun 2026 16:45:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781630938;
-	bh=djzGkt9KzaaGH7TQn/qqI7hXVjdOLYY2x0WgpFt9do8=;
+	s=korg; t=1781628348;
+	bh=0IJwPwDgRjZcjKsqpJoJMpKe9Wo/bUbVG0bqIJ8yFeo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=uMX5nfUfBrNVvFr3A43BwCjnWfn68HSVzuLB2v103Dhd4jacUEB0nM5mhTQol9XIc
-	 9YWKXn8gOyverQXU+SzbD+m3XOw1499jfW6WWQisDnHmoe/Ojqnh/56uSZGP9yXXSq
-	 mcLFqK8gS0vV0wH4nry/TS6othGN1TBzC9imlrhU=
+	b=ct9vLaCs27U5M7f4/O5NHgHSnoTwyf2tm5znDcoxf/dHorQE4lexYWzo8VyRU1xCz
+	 bybxbX+Tp7sespEl6qrlvOG/s0MoMSkqtGaiqLSDA+L/4DZHhwX9S8IYpK/5z/qN7J
+	 v0PfDkgBvBn+xIXGIJ43hM4yxWdz4rCHTsCSZcys=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qi Tang <tpluszz77@gmail.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 125/522] ipv6: validate extension header length before copying to cmsg
+	Zhenghang Xiao <kipreyyy@gmail.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 045/452] sctp: fix race between sctp_wait_for_connect and peeloff
 Date: Tue, 16 Jun 2026 20:24:32 +0530
-Message-ID: <20260616145131.844315043@linuxfoundation.org>
+Message-ID: <20260616145120.305346195@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,209 +66,91 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-265387-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:tpluszz77@gmail.com,m:willemb@google.com,m:kuba@kernel.org,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264875-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kipreyyy@gmail.com,m:lucien.xin@gmail.com,m:kuba@kernel.org,m:sashal@kernel.org,m:lucienxin@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: EFB60693433
+X-Rspamd-Queue-Id: CBE516928AF
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qi Tang <tpluszz77@gmail.com>
+From: Zhenghang Xiao <kipreyyy@gmail.com>
 
-commit dd433671fef381fdaf7b530c631e6b782d66e224 upstream.
+[ Upstream commit f14fe6395a8b3d961a61e138ad7b36ba3626dd4e ]
 
-ip6_datagram_recv_specific_ctl() builds IPV6_{HOPOPTS,DSTOPTS,RTHDR}
-cmsgs (and their IPV6_2292* legacy counterparts) by trusting the
-on-wire hdrlen byte (ptr[1]) when computing the put_cmsg() length.
-The length was validated only at parse time (ipv6_parse_hopopts(),
-etc.).  An nftables payload-write expression can rewrite hdrlen after
-parsing and before the skb reaches recvmsg; the write itself is
-in-bounds but put_cmsg() then reads up to ((hdrlen+1) << 3) = 2040
-bytes from an 8-byte header.  nftables is reachable from an
-unprivileged user namespace, so this is an unprivileged
-slab-out-of-bounds read:
+sctp_wait_for_connect() drops and re-acquires the socket lock while
+waiting for the association to reach ESTABLISHED state. During this
+window, another thread can peeloff the association to a new socket via
+getsockopt(SCTP_SOCKOPT_PEELOFF), changing asoc->base.sk. After
+re-acquiring the old socket lock, sctp_wait_for_connect() returns
+success without noticing the migration — the caller then accesses
+the association under the wrong lock in sctp_datamsg_from_user().
 
-  BUG: KASAN: slab-out-of-bounds in put_cmsg+0x3ac/0x540
-   put_cmsg+0x3ac/0x540
-   udpv6_recvmsg+0xca0/0x1250
-   sock_recvmsg+0xdf/0x190
-   ____sys_recvmsg+0x1b1/0x620
+Add the same sk != asoc->base.sk check that sctp_wait_for_sndbuf()
+already has, returning an error if the association was migrated while
+we slept.
 
-Add ipv6_get_exthdr_len() which validates that at least two bytes
-are accessible before reading the hdrlen field, then checks the
-computed length against skb_tail_pointer(skb), returning 0 on
-failure.  Extension headers are kept in the linear skb area by
-pskb_may_pull() during input, so skb_tail_pointer() is the correct
-bound.
-
-Use ipv6_get_exthdr_len() at all non-AH call sites: the five
-standalone cmsg blocks (HbH, 2292HbH, 2292DSTOPTS x2, 2292RTHDR)
-and the three standard cases in the extension-header walk loop
-(DSTOPTS, ROUTING, default).  AH retains an inline bounds check
-because its length formula differs ((ptr[1]+2)<<2).
-
-The walk loop also gets a pre-read bounds check at the top to
-validate ptr before any case accesses ptr[0] or ptr[1].
-
-When the walk loop detects a corrupted header, return from the
-function instead of continuing to process later socket options.
-
-Cc: stable@vger.kernel.org
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Qi Tang <tpluszz77@gmail.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20260523143245.2281415-1-tpluszz77@gmail.com
+Fixes: 668c9beb9020 ("sctp: implement assign_number for sctp_stream_interleave")
+Signed-off-by: Zhenghang Xiao <kipreyyy@gmail.com>
+Acked-by: Xin Long <lucien.xin@gmail.com>
+Link: https://patch.msgid.link/20260527032411.60959-1-kipreyyy@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/datagram.c |   54 ++++++++++++++++++++++++++++++++++++++++++++--------
- 1 file changed, 46 insertions(+), 8 deletions(-)
+ net/sctp/socket.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/net/ipv6/datagram.c
-+++ b/net/ipv6/datagram.c
-@@ -616,6 +616,18 @@ void ip6_datagram_recv_common_ctl(struct
- 	}
- }
+diff --git a/net/sctp/socket.c b/net/sctp/socket.c
+index 98586bcf83cebe..a6a53b0c4ea324 100644
+--- a/net/sctp/socket.c
++++ b/net/sctp/socket.c
+@@ -9371,6 +9371,8 @@ static int sctp_wait_for_connect(struct sctp_association *asoc, long *timeo_p)
+ 		release_sock(sk);
+ 		current_timeo = schedule_timeout(current_timeo);
+ 		lock_sock(sk);
++		if (sk != asoc->base.sk)
++			goto do_error;
  
-+static u16 ipv6_get_exthdr_len(const struct sk_buff *skb, const u8 *ptr)
-+{
-+	u16 len;
-+
-+	if (ptr + 2 > skb_tail_pointer(skb))
-+		return 0;
-+
-+	len = (ptr[1] + 1) << 3;
-+
-+	return (len <= skb_tail_pointer(skb) - ptr) ? len : 0;
-+}
-+
- void ip6_datagram_recv_specific_ctl(struct sock *sk, struct msghdr *msg,
- 				    struct sk_buff *skb)
- {
-@@ -642,7 +654,10 @@ void ip6_datagram_recv_specific_ctl(stru
- 	/* HbH is allowed only once */
- 	if (np->rxopt.bits.hopopts && (opt->flags & IP6SKB_HOPBYHOP)) {
- 		u8 *ptr = nh + sizeof(struct ipv6hdr);
--		put_cmsg(msg, SOL_IPV6, IPV6_HOPOPTS, (ptr[1]+1)<<3, ptr);
-+		u16 len = ipv6_get_exthdr_len(skb, ptr);
-+
-+		if (len)
-+			put_cmsg(msg, SOL_IPV6, IPV6_HOPOPTS, len, ptr);
+ 		*timeo_p = current_timeo;
  	}
- 
- 	if (opt->lastopt &&
-@@ -663,26 +678,37 @@ void ip6_datagram_recv_specific_ctl(stru
- 			unsigned int len;
- 			u8 *ptr = nh + off;
- 
-+			if (ptr + 2 > skb_tail_pointer(skb))
-+				return;
-+
- 			switch (nexthdr) {
- 			case IPPROTO_DSTOPTS:
- 				nexthdr = ptr[0];
--				len = (ptr[1] + 1) << 3;
-+				len = ipv6_get_exthdr_len(skb, ptr);
-+				if (!len)
-+					return;
- 				if (np->rxopt.bits.dstopts)
- 					put_cmsg(msg, SOL_IPV6, IPV6_DSTOPTS, len, ptr);
- 				break;
- 			case IPPROTO_ROUTING:
- 				nexthdr = ptr[0];
--				len = (ptr[1] + 1) << 3;
-+				len = ipv6_get_exthdr_len(skb, ptr);
-+				if (!len)
-+					return;
- 				if (np->rxopt.bits.srcrt)
- 					put_cmsg(msg, SOL_IPV6, IPV6_RTHDR, len, ptr);
- 				break;
- 			case IPPROTO_AH:
- 				nexthdr = ptr[0];
- 				len = (ptr[1] + 2) << 2;
-+				if (ptr + len > skb_tail_pointer(skb))
-+					return;
- 				break;
- 			default:
- 				nexthdr = ptr[0];
--				len = (ptr[1] + 1) << 3;
-+				len = ipv6_get_exthdr_len(skb, ptr);
-+				if (!len)
-+					return;
- 				break;
- 			}
- 
-@@ -704,19 +730,31 @@ void ip6_datagram_recv_specific_ctl(stru
- 	}
- 	if (np->rxopt.bits.ohopopts && (opt->flags & IP6SKB_HOPBYHOP)) {
- 		u8 *ptr = nh + sizeof(struct ipv6hdr);
--		put_cmsg(msg, SOL_IPV6, IPV6_2292HOPOPTS, (ptr[1]+1)<<3, ptr);
-+		u16 len = ipv6_get_exthdr_len(skb, ptr);
-+
-+		if (len)
-+			put_cmsg(msg, SOL_IPV6, IPV6_2292HOPOPTS, len, ptr);
- 	}
- 	if (np->rxopt.bits.odstopts && opt->dst0) {
- 		u8 *ptr = nh + opt->dst0;
--		put_cmsg(msg, SOL_IPV6, IPV6_2292DSTOPTS, (ptr[1]+1)<<3, ptr);
-+		u16 len = ipv6_get_exthdr_len(skb, ptr);
-+
-+		if (len)
-+			put_cmsg(msg, SOL_IPV6, IPV6_2292DSTOPTS, len, ptr);
- 	}
- 	if (np->rxopt.bits.osrcrt && opt->srcrt) {
- 		struct ipv6_rt_hdr *rthdr = (struct ipv6_rt_hdr *)(nh + opt->srcrt);
--		put_cmsg(msg, SOL_IPV6, IPV6_2292RTHDR, (rthdr->hdrlen+1) << 3, rthdr);
-+		u16 len = ipv6_get_exthdr_len(skb, (u8 *)rthdr);
-+
-+		if (len)
-+			put_cmsg(msg, SOL_IPV6, IPV6_2292RTHDR, len, rthdr);
- 	}
- 	if (np->rxopt.bits.odstopts && opt->dst1) {
- 		u8 *ptr = nh + opt->dst1;
--		put_cmsg(msg, SOL_IPV6, IPV6_2292DSTOPTS, (ptr[1]+1)<<3, ptr);
-+		u16 len = ipv6_get_exthdr_len(skb, ptr);
-+
-+		if (len)
-+			put_cmsg(msg, SOL_IPV6, IPV6_2292DSTOPTS, len, ptr);
- 	}
- 	if (np->rxopt.bits.rxorigdstaddr) {
- 		struct sockaddr_in6 sin6;
+-- 
+2.53.0
+
 
 
 
