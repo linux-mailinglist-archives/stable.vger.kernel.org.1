@@ -1,60 +1,68 @@
-Return-Path: <stable+bounces-265406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265879-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id rFEnNZyJMWoFmAUAu9opvQ
-	(envelope-from <stable+bounces-265406-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:36:28 +0200
+	id +6gnGGuSMWpAnAUAu9opvQ
+	(envelope-from <stable+bounces-265879-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:14:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id E86826934D1
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:36:27 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC6DE693EDF
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:14:02 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=p0GeLwLQ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265406-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-265406-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=q2VDGr7H;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265879-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265879-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5FB7A302D00A
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:30:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4F1C531BA1A2
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:11:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A2BB47AF4D;
-	Tue, 16 Jun 2026 17:30:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD4D53D7D9F;
+	Tue, 16 Jun 2026 18:11:22 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D35D43D4ED;
-	Tue, 16 Jun 2026 17:30:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97C623D47CE;
+	Tue, 16 Jun 2026 18:11:21 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781631038; cv=none; b=L+HGPgIGOqzhb8VKWX5LsKSQxP9Ak0t4KKnCSjTX/QYzxdyWFVq0Z3BR2LshEHo60n9CP6zXv4kZkoyozHkVEYXVqRFj2Z5nSwuFAwaOd4GHKzojgMmgfFhFL5Cv2C/WgwSflIHJU2CO6obBEl12q0TpoGnng+r99FMdZJufJik=
+	t=1781633482; cv=none; b=i+JpSFInxwbUVeEG3WVseYAARKgL6ocO2/jYvSyJY08YLt93entjSjirEiGgiOcA//sLaib5cmttceV+aZTImGF2VrnnxGlIHjq5UJvAyPYwqGcLs3/hkSMEv/QqnNZE4pTh4bVEf4y8vcXyII1dXcgQ2h3ZHELWT8cRvLe7dRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781631038; c=relaxed/simple;
-	bh=61EZxgjvH65/y+DUWnmI8JieZA13BLk4hrKvTN2z/Kw=;
+	s=arc-20240116; t=1781633482; c=relaxed/simple;
+	bh=JUWl/6dYX5dbu/K+wW4U2ebys9tiZYE12oCuSZ5oX3w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r35vrpu/CJb6b9K5+OpoNvvDKmj1Oe/CgknFlv/DFlau6rDWyLTudaiY3WPci6kNalbhQNDD6f4Itr0FNN+vn5rqN2m3QBhfPeiFZo8eTxTWLlXikGqNk69hhmBn9vR/IFgF5WZ6j5nmBSNBTutHykdSVCGSqa9NOgRU8XcDZFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p0GeLwLQ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 106A81F000E9;
-	Tue, 16 Jun 2026 17:30:35 +0000 (UTC)
+	 MIME-Version; b=PuyDdpayABlaYaaheYCgieF4iX0BEZAPsUZFmazKR3nvNGtOEEhDwSLgEZcaP/CmI5hi4yeJ6UWkOmY1BkfJjvNJq3Wq3TiM3opWSJ+v7oBt7hENDp6GJnYFxj5ynTmHuHt+dYdike0qzw/9BiytlPxcwSVW38oRwgbT8IosAZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q2VDGr7H; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53CA11F000E9;
+	Tue, 16 Jun 2026 18:11:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781631036;
-	bh=GOFjKCa3tQUgW0EEXtBGvE4fGTXasMkpF0856w4hem0=;
+	s=korg; t=1781633481;
+	bh=dXWJTNQHGterfIO2xs2JEeNp16icmg7KOEs24T+OzK8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=p0GeLwLQ66ifXwNWDW29w6K3VzuNJB7NX1NIP54AsggtoMLBF6Q5CA7IP50YVUCue
-	 5jYjQlgBjsFDKAVa3iJ5clNKAYYW9gO4rXs1qR8aFTvbBs/ur+OZBVot1uVtWnOyj3
-	 XgB0V/sBXbltN0glxoL5oHsyi4dsoIthqK8Ttowg=
+	b=q2VDGr7HAWTxmpC3lp1hniSTV0AKe9yfFz73bRC6URaNH2ynP1WGSv/PC2s1kUYtq
+	 8RyLQj1DIr9x3hQ/sEN1hLzmBUkZCtpXj01UUTtVeowT8HM5gLLDm6Cu7t2fV8ZBlr
+	 AQplcD4irzprXIOYSzSva73VnvRsJJtbI25rfsKU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Stephen J. Fuhry" <fuhrysteve@gmail.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.1 145/522] USB: quirks: add NO_LPM for Lenovo ThinkPad USB-C Dock Gen2 hub controllers
+	Steve French <smfrench@gmail.com>,
+	Tom Talpey <tom@talpey.com>,
+	Long Li <longli@microsoft.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org,
+	Stefan Metzmacher <metze@samba.org>,
+	Steve French <stfrench@microsoft.com>,
+	Robert Garcia <rob_garcia@163.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 054/411] smb: client: fix smbdirect_recv_io leak in smbd_negotiate() error path
 Date: Tue, 16 Jun 2026 20:24:52 +0530
-Message-ID: <20260616145132.881803048@linuxfoundation.org>
+Message-ID: <20260616145103.161316998@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,21 +79,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-265406-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:fuhrysteve@gmail.com,m:stable@kernel.org,s:lists@lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	TAGGED_FROM(0.00)[bounces-265879-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:smfrench@gmail.com,m:tom@talpey.com,m:longli@microsoft.com,m:linkinjeon@kernel.org,m:linux-cifs@vger.kernel.org,m:samba-technical@lists.samba.org,m:metze@samba.org,m:stfrench@microsoft.com,m:rob_garcia@163.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,talpey.com,microsoft.com,kernel.org,vger.kernel.org,lists.samba.org,samba.org,163.com];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -94,53 +102,59 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,samba.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,talpey.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E86826934D1
+X-Rspamd-Queue-Id: AC6DE693EDF
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephen J. Fuhry <fuhrysteve@gmail.com>
+From: Stefan Metzmacher <metze@samba.org>
 
-commit 9ddb9c0deca48d2c2a22ebf4d2f35c925a520328 upstream.
+[ Upstream commit daac51c7032036a0ca5f1aa419ad1b0471d1c6e0 ]
 
-The Lenovo ThinkPad USB-C Dock Gen2 (17ef:a391, 17ef:a392) hub
-controllers exhibit link instability when USB Link Power Management
-is enabled, similar to the dock's Ethernet adapter (17ef:a387) which
-already carries USB_QUIRK_NO_LPM.
+During tests of another unrelated patch I was able to trigger this
+error: Objects remaining on __kmem_cache_shutdown()
 
-When the dock reconnects after a transient disconnect, the hub
-controllers enter LPM states between re-enumeration retries, causing
-repeated disconnect/reconnect cycles lasting up to two minutes.
-Disabling LPM for these devices restores stable enumeration.
-
-Signed-off-by: Stephen J. Fuhry <fuhrysteve@gmail.com>
-Cc: stable <stable@kernel.org>
-Link: https://patch.msgid.link/20260513171419.44849-1-fuhrysteve@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Steve French <smfrench@gmail.com>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: Long Li <longli@microsoft.com>
+Cc: Namjae Jeon <linkinjeon@kernel.org>
+Cc: linux-cifs@vger.kernel.org
+Cc: samba-technical@lists.samba.org
+Fixes: f198186aa9bb ("CIFS: SMBD: Establish SMB Direct connection")
+Signed-off-by: Stefan Metzmacher <metze@samba.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Robert Garcia <rob_garcia@163.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/quirks.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ fs/cifs/smbdirect.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/core/quirks.c
-+++ b/drivers/usb/core/quirks.c
-@@ -511,6 +511,10 @@ static const struct usb_device_id usb_qu
- 	/* Lenovo ThinkPad USB-C Dock Gen2 Ethernet (RTL8153 GigE) */
- 	{ USB_DEVICE(0x17ef, 0xa387), .driver_info = USB_QUIRK_NO_LPM },
+diff --git a/fs/cifs/smbdirect.c b/fs/cifs/smbdirect.c
+index 48bd879349fbe2..c9bda34fd2f573 100644
+--- a/fs/cifs/smbdirect.c
++++ b/fs/cifs/smbdirect.c
+@@ -1084,8 +1084,10 @@ static int smbd_negotiate(struct smbd_connection *info)
+ 	log_rdma_event(INFO, "smbd_post_recv rc=%d iov.addr=%llx iov.length=%x iov.lkey=%x\n",
+ 		       rc, response->sge.addr,
+ 		       response->sge.length, response->sge.lkey);
+-	if (rc)
++	if (rc) {
++		put_receive_buffer(info, response);
+ 		return rc;
++	}
  
-+	/* Lenovo ThinkPad USB-C Dock Gen2 USB 3.1 and USB 2.0 hub controllers */
-+	{ USB_DEVICE(0x17ef, 0xa391), .driver_info = USB_QUIRK_NO_LPM },
-+	{ USB_DEVICE(0x17ef, 0xa392), .driver_info = USB_QUIRK_NO_LPM },
-+
- 	/* BUILDWIN Photo Frame */
- 	{ USB_DEVICE(0x1908, 0x1315), .driver_info =
- 			USB_QUIRK_HONOR_BNUMINTERFACES },
+ 	init_completion(&info->negotiate_completion);
+ 	info->negotiate_done = false;
+-- 
+2.53.0
+
 
 
 
