@@ -1,60 +1,75 @@
-Return-Path: <stable+bounces-264431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264743-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id K885LQd3MWoMkAUAu9opvQ
-	(envelope-from <stable+bounces-264431-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:17:11 +0200
+	id fr8OHed8MWqhkgUAu9opvQ
+	(envelope-from <stable+bounces-264743-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:42:15 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 099A4691E43
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:17:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E5CDB6925C0
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:42:14 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=nW6cOEz9;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264431-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264431-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="Mg/Sgn4X";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264743-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264743-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 15234339135B
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:04:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 74C24300BCB2
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:34:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AA8D45BD71;
-	Tue, 16 Jun 2026 16:04:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 672A14779B3;
+	Tue, 16 Jun 2026 16:34:11 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47B50450915;
-	Tue, 16 Jun 2026 16:04:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1595A477E34;
+	Tue, 16 Jun 2026 16:34:10 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781625847; cv=none; b=LlDfQlOV/k6uNMvW62PqRpBXx/Wmh5JowTp4GR+XCf1i6Erim7PdlFrC3b/1dhynOAUUEktxLM/Ys/wvgLXm6VPFFvXui/EsPYD3v6SbYLb6vS5huXnMQfFxCsZgpyDql0vuIyZ2SlOTEW+kkHTae+b5P0sMxSJfTHK4/n/u4M0=
+	t=1781627651; cv=none; b=to64AnDG0ZV+M51TsrmtAaoAZN/ddXf/TlTiADq5hkCCTeX4yGr1NakvPhS3ehmOUAUgt/G5liv2+sQHp8XRxb0P/7/GBp9pBbNG3HGfCS0Tx78m79JjgKOE1lQslEBcq1E9aSas2Fo7VWfPgsagfNhVDTS2aix8Chc2oaF4ayY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781625847; c=relaxed/simple;
-	bh=cPqSIXISTM0qJZYlhrVAB4P31DFNJ+A3HWz4wuEEJs0=;
+	s=arc-20240116; t=1781627651; c=relaxed/simple;
+	bh=pNi4F6y8IrUKvAvmy9qXvqEms/zj6LtGJgoc0346Zjo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UV7+1Q2v7MdSHQi6Mq9ZXinF2KUdCEuZLYC5WTkGd0emjLFQt+0nA4SjC/5f9/oedz/kE5dx0/OME1cegS3EAUQR34BLXIL5deoZTOf3821J+bzKqJsqm6tA1w7s02vs4pnIra7PxK2JmQbG0OiLPCTjkae254W6yVZvfejvWEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nW6cOEz9; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 213DF1F000E9;
-	Tue, 16 Jun 2026 16:04:04 +0000 (UTC)
+	 MIME-Version; b=bIKVdfmjq/QzL8IYFh/oy5xqae/YvjqWMRU8CbzN3/ns57V7wNCH1KJbdMM+sjJdAqliU9WCuPMtJIKwkHvWoESZQCd2rJttvXNKtwruklwroQ/IIVbtE5k6eC8mD7jGJ632Rxz9lk3yhDFucfL6UGL1W16ke8Prynft1HGt7IE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mg/Sgn4X; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACC071F00A3D;
+	Tue, 16 Jun 2026 16:34:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781625846;
-	bh=ycAt/1vqeX6/0mc/eF95ZYX1uKXPvZKvwh6u7w6vThs=;
+	s=korg; t=1781627650;
+	bh=Y4QPJgveOPIasJpZnkqxPzWix6rieM/j2wsF0oysiVA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=nW6cOEz9VzRIULZTgX0xKaAmvTcUnq6za7I75tGRZiVBriKu1hlEg77Ksh0HbNAKl
-	 UtSBxGQ17Ht6YwE0+ersu72NPKbc6JXaXaRIGfxONUjjB3fWqx8wLrVEBfkASEAMay
-	 ppYSvy4SLSsrqvEDwmsZ3FBF07T4wWJJRPEk15Qs=
+	b=Mg/Sgn4XXosLIGTsFMAMcfYLyvwp3EaP08rejTEl6TQ/8rTL/Yjp2K//1Ydvdcotu
+	 BW7sIrUDABwvcKle6ytmfbb01+do7q3Y6rN1oubpvhrL7yPGeetg6V3sKjn6d8Wn8G
+	 JTbaAipiYhxI5YehWgHHErzq4CRnvmh2kJt0XWFc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jian Zhou <eilaimemedsnaimel@gmail.com>,
-	Thomas Gleixner <tglx@kernel.org>
-Subject: [PATCH 6.18 219/325] futex/requeue: Prevent NULL pointer dereference in remove_waiter() on self-deadlock
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Yilin Zhu <zylzyl2333@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Christian Brauner <brauner@kernel.org>,
+	Jeongjun Park <aha310510@gmail.com>,
+	Kees Cook <kees@kernel.org>,
+	Liam Howlett <liam@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Serge Hallyn <sergeh@kernel.org>,
+	Vasiliy Kulikov <segoon@openwall.com>,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Serge Hallyn <serge@hallyn.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 177/261] ipc/shm: serialize orphan cleanup with shm_nattch updates
 Date: Tue, 16 Jun 2026 20:30:15 +0530
-Message-ID: <20260616145109.119916624@linuxfoundation.org>
+Message-ID: <20260616145053.283056773@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,14 +91,14 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-264431-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:eilaimemedsnaimel@gmail.com,m:tglx@kernel.org,s:lists@lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	TAGGED_FROM(0.00)[bounces-264743-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:yuantan098@gmail.com,m:yifanwucs@gmail.com,m:tomapufckgml@gmail.com,m:bird@lzu.edu.cn,m:zylzyl2333@gmail.com,m:n05ec@lzu.edu.cn,m:brauner@kernel.org,m:aha310510@gmail.com,m:kees@kernel.org,m:liam@infradead.org,m:ljs@kernel.org,m:sergeh@kernel.org,m:segoon@openwall.com,m:dave@stgolabs.net,m:oleg@redhat.com,m:serge@hallyn.com,m:akpm@linux-foundation.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,kernel.org,infradead.org,openwall.com,stgolabs.net,redhat.com,hallyn.com,linux-foundation.org];
 	FORWARDED(0.00)[lists@lfdr.de];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -94,57 +109,81 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 099A4691E43
+X-Rspamd-Queue-Id: E5CDB6925C0
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ji'an Zhou <eilaimemedsnaimel@gmail.com>
+From: Yilin Zhu <zylzyl2333@gmail.com>
 
-commit 74e144274af39935b0f410c0ee4d2b91c3730414 upstream.
+commit 2e5c6f4fd4001562781e99bbfc7f1f0127187542 upstream.
 
-When FUTEX_CMP_REQUEUE_PI requeues a non-top waiter that already owns the
-target PI futex, task_blocks_on_rt_mutex() returns -EDEADLK before setting
-waiter->task.
+shm_destroy_orphaned() walks the shm idr under shm_ids(ns).rwsem, but that
+does not serialize all fields tested by shm_may_destroy().  In particular,
+shm_nattch is updated while holding shm_perm.lock, and attach paths can do
+that without holding the rwsem.
 
-The subsequent remove_waiter() in rt_mutex_start_proxy_lock() dereferences
-the NULL waiter->task, causing a kernel crash.
+Do not decide that an orphaned segment is unused before taking the object
+lock.  Move the shm_may_destroy() check under shm_perm.lock, matching the
+other destroy paths, and unlock the segment when it no longer qualifies
+for removal.
 
-Add a self-deadlock check for non-top waiters before calling
-rt_mutex_start_proxy_lock(), analogous to the top-waiter check in
-futex_lock_pi_atomic().
-
-Fixes: 3bfdc63936dd4773109b7b8c280c0f3b5ae7d349 ("rtmutex: Use waiter::task instead of current in remove_waiter()")
-Signed-off-by: Ji'an Zhou <eilaimemedsnaimel@gmail.com>
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/9d97cc1031de2d0bace0edf3a668818aa2f4eca6.1777410234.git.zylzyl2333@gmail.com
+Fixes: 4c677e2eefdb ("shm: optimize locking and ipc_namespace getting")
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Yilin Zhu <zylzyl2333@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Jeongjun Park <aha310510@gmail.com>
+Cc: Kees Cook <kees@kernel.org>
+Cc: Liam Howlett <liam@infradead.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Serge Hallyn <sergeh@kernel.org>
+Cc: Vasiliy Kulikov <segoon@openwall.com>
+Cc: Davidlohr Bueso <dave@stgolabs.net>
+Cc: Oleg Nesterov <oleg@redhat.com>
+Cc: Serge Hallyn <serge@hallyn.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/futex/requeue.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ ipc/shm.c |   10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
---- a/kernel/futex/requeue.c
-+++ b/kernel/futex/requeue.c
-@@ -643,6 +643,12 @@ retry_private:
- 				continue;
- 			}
+--- a/ipc/shm.c
++++ b/ipc/shm.c
+@@ -416,15 +416,17 @@ static int shm_try_destroy_orphaned(int
+ 	 * We want to destroy segments without users and with already
+ 	 * exit'ed originating process.
+ 	 *
+-	 * As shp->* are changed under rwsem, it's safe to skip shp locking.
++	 * shm_nattch can be changed under shm_perm.lock without holding the
++	 * rwsem, so take the object lock before checking shm_may_destroy().
+ 	 */
+ 	if (!list_empty(&shp->shm_clist))
+ 		return 0;
  
-+			/* Self-deadlock: non-top waiter already owns the PI futex. */
-+			if (rt_mutex_owner(&pi_state->pi_mutex) == this->task) {
-+				ret = -EDEADLK;
-+				break;
-+			}
-+
- 			ret = rt_mutex_start_proxy_lock(&pi_state->pi_mutex,
- 							this->rt_waiter,
- 							this->task);
+-	if (shm_may_destroy(shp)) {
+-		shm_lock_by_ptr(shp);
++	shm_lock_by_ptr(shp);
++	if (shm_may_destroy(shp))
+ 		shm_destroy(ns, shp);
+-	}
++	else
++		shm_unlock(shp);
+ 	return 0;
+ }
+ 
 
 
 
