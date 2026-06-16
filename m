@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-265521-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264222-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id QzR5BJeKMWpomAUAu9opvQ
-	(envelope-from <stable+bounces-265521-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:40:39 +0200
+	id UWJrJAByMWoAjgUAu9opvQ
+	(envelope-from <stable+bounces-264222-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:55:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B60E6935B0
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:40:38 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41494691843
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:55:44 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ZnOYla0F;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265521-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265521-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=vrZ98Awk;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264222-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264222-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 833F83014760
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:40:37 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 80EA330ADD47
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:47:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D647E47AF6E;
-	Tue, 16 Jun 2026 17:40:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B22C477981;
+	Tue, 16 Jun 2026 15:46:15 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6B363C4178;
-	Tue, 16 Jun 2026 17:40:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3469744D6AB;
+	Tue, 16 Jun 2026 15:46:12 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781631634; cv=none; b=H/ehvACFXam/WiZNaNA2ID7Jd7gcPBXuKU2tytZo67wrT/WmrMB6Ku2A+yY2TA3RyzHeOxQUPD8+SMo3x88k41AY2cMRu73O1hjrSVtcsapENhytaksDR9ZbIuigfz0++I/OiaPI9svUmbCzIqx+ywCe2evRuaLikoJ37cqTWVk=
+	t=1781624774; cv=none; b=tiq/fPJaO+mXg+cWG/m8GEJAj7gjAoiIne4u8WR6ZyKQnOFwWBza5HIIZtrLW4Bxtyr3l4T01l2knlDZX6gdac6iXY9y70DKkUaoudREqHKDf1RyIOkn3P82+/QqaTwDNm6dtQo6RZzM5A624VI5yPWptdozdC39rW8mIIDeW+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781631634; c=relaxed/simple;
-	bh=Z5DZ0Vryi4MiyGQbRTSO51KmGcBiYLkOIgJZov46t7Q=;
+	s=arc-20240116; t=1781624774; c=relaxed/simple;
+	bh=2WAtC2wJoKO+JpVe4Kh2plAV6R6qxEnYECO4MsBxekU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oTV8Dco0OCL+8wr/psXyttwSa25OKwYj4GbKakOZMX5t1oH0hC4iKXTXdk9rdr2Qq8X/SR2tSl64pF4y0mJ1PVGqVqOGp9ZG0EAl+XFWfHpSXA0HNYMnWba9s+tCTyCaYrVThwJCAAUiJZ0zkVEtirjSe7PSjoRL8brHAxyR1ug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZnOYla0F; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 829881F000E9;
-	Tue, 16 Jun 2026 17:40:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=U3AiZRa0UrnYyW2cXVruPQOxz0PaBLJPLzC5OMbqv1oPPLlbBSlF6LRp5Q+vvLvN0Ywyri8iN+TejL6tfpSfZmffpey2VpTa5mkVriistUMUF90S4v5iMsctLxaB984ySjDR7aYTu9I+EbGQ3pzrsgTv1sbUdUpvPT+LHxSUEtk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vrZ98Awk; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03DC71F000E9;
+	Tue, 16 Jun 2026 15:46:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781631633;
-	bh=90sYIe34XuvvkbX/lRbSfyx0CqekqEeQVIi/xeoMe4A=;
+	s=korg; t=1781624771;
+	bh=/PeP/gI/FZs4ADIw++d0ndwRxmNmtA1EIjSMo39eBMg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ZnOYla0FkBB9KVXsMzv4yxGfpKjff613tE7O1rzvK2A2ZqwIEHsU5G4JB0l1tEhy3
-	 cjLSObMkIcMlcGJ7GPETCAJaqC78TstWiPJeegKJ1I03X+63Ya5Fr4l3qwuEAXjYPv
-	 nL21k43kWjjx5kV40SsFzQLdyY1/m3JVgg8G/SAg=
+	b=vrZ98Awk6BleVaORdrRex5xN3LtXvp6QCvo6PTl5X4DuFxabszryrYSqD9jvrpBnJ
+	 L4kcS6IYLJq56IVvzKe6OwvDCPFOUJqHa1qRRdPFoeqe5nN79Y9OrQ3SIQCKhTke/6
+	 VSvXhQzhlosR9JL/1kzf6Aw+R55VES6hrTuG87X8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Weiming Shi <bestswngs@gmail.com>,
-	Xiang Mei <xmei5@asu.edu>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 258/522] netfilter: nf_log: validate MAC header was set before dumping it
+	=?UTF-8?q?Nicol=C3=B2=20Coccia?= <n.coccia96@gmail.com>,
+	Dust Li <dust.li@linux.alibaba.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.18 009/325] net/smc: fix sleep-inside-lock in __smc_setsockopt() causing local DoS
 Date: Tue, 16 Jun 2026 20:26:45 +0530
-Message-ID: <20260616145138.019371649@linuxfoundation.org>
+Message-ID: <20260616145058.287064614@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,113 +65,112 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,asu.edu,netfilter.org,kernel.org];
-	TAGGED_FROM(0.00)[bounces-265521-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bestswngs@gmail.com,m:xmei5@asu.edu,m:pablo@netfilter.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-264222-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:n.coccia96@gmail.com,m:dust.li@linux.alibaba.com,m:kuba@kernel.org,m:ncoccia96@gmail.com,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.alibaba.com,kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,asu.edu:email,netfilter.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[alibaba.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7B60E6935B0
+X-Rspamd-Queue-Id: 41494691843
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiang Mei <xmei5@asu.edu>
+From: Nicolò Coccia <n.coccia96@gmail.com>
 
-[ Upstream commit a84b6fedbc97078788be78dbdd7517d143ad1a77 ]
+commit a3fdd924d88c30b9f488636ce0e4696012cf5511 upstream.
 
-The fallback path of dump_mac_header() guards the MAC header access
-only with "skb->mac_header != skb->network_header", without checking
-skb_mac_header_was_set(). When the MAC header is unset, mac_header is
-0xffff, so the test passes and skb_mac_header(skb) returns
-skb->head + 0xffff, ~64 KiB past the buffer; the loop then reads
-dev->hard_header_len bytes out of bounds into the kernel log.
+A logic flaw in __smc_setsockopt() allows a local unprivileged user to
+cause a Denial of Service (DoS) by holding the socket lock indefinitely.
 
-This is reachable via the netdev logger: nf_log_unknown_packet() calls
-dump_mac_header() unconditionally, and an skb sent through AF_PACKET
-with PACKET_QDISC_BYPASS reaches the egress hook with mac_header still
-unset (__dev_queue_xmit(), which would reset it, is bypassed).
+The function __smc_setsockopt() calls copy_from_sockptr() while holding
+lock_sock(sk). By passing a userfaultfd-monitored memory page (or
+FUSE-backed memory on systems where unprivileged userfaultfd is disabled)
+as the optval, an attacker can halt execution during the copy operation,
+keeping the lock held.
 
-Add the skb_mac_header_was_set() check the ARPHRD_ETHER path already
-uses, and replace the open-coded MAC header length test with
-skb_mac_header_len(). Only skbs with an unset MAC header are affected;
-valid ones are dumped as before.
+Combined with asynchronous tear-down operations like shutdown(), this
+exhausts the kernel wq (kworkers) and triggers the hung task watchdog.
 
- BUG: KASAN: slab-out-of-bounds in dump_mac_header (net/netfilter/nf_log_syslog.c:831)
- Read of size 1 at addr ffff88800ea49d3f by task exploit/148
- Call Trace:
-  kasan_report (mm/kasan/report.c:595)
-  dump_mac_header (net/netfilter/nf_log_syslog.c:831)
-  nf_log_netdev_packet (net/netfilter/nf_log_syslog.c:938 net/netfilter/nf_log_syslog.c:963)
-  nf_log_packet (net/netfilter/nf_log.c:260)
-  nft_log_eval (net/netfilter/nft_log.c:60)
-  nft_do_chain (net/netfilter/nf_tables_core.c:285)
-  nft_do_chain_netdev (net/netfilter/nft_chain_filter.c:307)
-  nf_hook_slow (net/netfilter/core.c:619)
-  nf_hook_direct_egress (net/packet/af_packet.c:257)
-  packet_xmit (net/packet/af_packet.c:280)
-  packet_sendmsg (net/packet/af_packet.c:3114)
-  __sys_sendto (net/socket.c:2265)
+[  240.123456] INFO: task kworker/u8:2 blocked for more than 120 seconds.
+[  240.123489] Call Trace:
+[  240.123501]  smc_shutdown+...
+[  240.123512]  lock_sock_nested+...
 
-Fixes: 7eb9282cd0ef ("netfilter: ipt_LOG/ip6t_LOG: add option to print decoded MAC header")
-Reported-by: Weiming Shi <bestswngs@gmail.com>
-Assisted-by: Claude:claude-opus-4-8
-Signed-off-by: Xiang Mei <xmei5@asu.edu>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This patch moves the user-space copy outside the lock_sock() critical
+section to prevent the issue.
+
+Fixes: a6a6fe27bab4 ("net/smc: Dynamic control handshake limitation by socket options")
+Signed-off-by: Nicolò Coccia <n.coccia96@gmail.com>
+Reviewed-by: Dust Li <dust.li@linux.alibaba.com>
+Tested-by: Dust Li <dust.li@linux.alibaba.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_log_syslog.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/smc/af_smc.c |   17 ++++++++---------
+ 1 file changed, 8 insertions(+), 9 deletions(-)
 
-diff --git a/net/netfilter/nf_log_syslog.c b/net/netfilter/nf_log_syslog.c
-index 58402226045e84..09b9152e9e5492 100644
---- a/net/netfilter/nf_log_syslog.c
-+++ b/net/netfilter/nf_log_syslog.c
-@@ -799,8 +799,8 @@ static void dump_mac_header(struct nf_log_buf *m,
+--- a/net/smc/af_smc.c
++++ b/net/smc/af_smc.c
+@@ -3061,18 +3061,17 @@ static int __smc_setsockopt(struct socke
  
- fallback:
- 	nf_log_buf_add(m, "MAC=");
--	if (dev->hard_header_len &&
--	    skb->mac_header != skb->network_header) {
-+	if (dev->hard_header_len && skb_mac_header_was_set(skb) &&
-+	    skb_mac_header_len(skb) != 0) {
- 		const unsigned char *p = skb_mac_header(skb);
- 		unsigned int i;
+ 	smc = smc_sk(sk);
  
--- 
-2.53.0
-
++	/* pre-fetch user data outside the lock */
++	if (optname == SMC_LIMIT_HS) {
++		if (optlen < sizeof(int))
++			return -EINVAL;
++		if (copy_from_sockptr(&val, optval, sizeof(int)))
++			return -EFAULT;
++	}
++
+ 	lock_sock(sk);
+ 	switch (optname) {
+ 	case SMC_LIMIT_HS:
+-		if (optlen < sizeof(int)) {
+-			rc = -EINVAL;
+-			break;
+-		}
+-		if (copy_from_sockptr(&val, optval, sizeof(int))) {
+-			rc = -EFAULT;
+-			break;
+-		}
+-
+ 		smc->limit_smc_hs = !!val;
+ 		rc = 0;
+ 		break;
 
 
 
