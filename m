@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-266161-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266481-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id FVY9Ca2XMWqungUAu9opvQ
-	(envelope-from <stable+bounces-266161-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:36:29 +0200
+	id B2cwDDeeMWqfoQUAu9opvQ
+	(envelope-from <stable+bounces-266481-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:04:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38BE2694441
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:36:28 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1936694B7D
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:04:22 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=qzcOFUzr;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266161-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-266161-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=nzqaaU7Q;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266481-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266481-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 33CA63002532
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:36:25 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8A985304032E
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:04:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18B1843CEC7;
-	Tue, 16 Jun 2026 18:36:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE88F3DA5A8;
+	Tue, 16 Jun 2026 19:04:01 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF23F169AD2;
-	Tue, 16 Jun 2026 18:36:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 659803DEAD8;
+	Tue, 16 Jun 2026 19:04:00 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781634983; cv=none; b=guBDE6Sq6bM1dLp1reGjEiY8KtBLnVQRY7oyJga90UtqiR0MZX+Tl0L6oef/Sy+RcaoFOUI7ztT20A4MFKJRgxLpxySlyVerLHKAKtMv1J0qv4QQEomtBP+dXwfUozMuzCp7MGQ6adh2Fc4/kDk/mT/9Of5oT4iANn4bvIJEXlo=
+	t=1781636641; cv=none; b=U8GpnU9RwARagdTqPOQ1gcdEl9LvG5fQtY/HL1HhuupqNw7P3MvhSquIwsFXvQNOdgrsngsY4twn4SXpdx83t0YnN8kycaGl3XmciZk/GBMcGJ0rIKsSNo/3Q7w7M0gMG0HVtAOaJ2TnvvoJjB4oHcXYv/MLIAAKJVpJ4kZGkb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781634983; c=relaxed/simple;
-	bh=VTABQvrLYtRTW6/3Hbil/iUXNDGds53UXpWoUosia7k=;
+	s=arc-20240116; t=1781636641; c=relaxed/simple;
+	bh=ZqigasSOjEEe0hbCIm3CE02fiY9bL0cSMSyMD2lVFQ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ndcEGUg4RXA3f4/BQ8d6K4PKdt3r06FJKO4qVl9h+dzOUXEBRGFWUWJk3erqLExflPX10beNfHXBdscQP1x+ZrAnLyuNUDm+m6e5a2m/sG/mgcjvSjRq4ydp8Ld8JuiAHJCO6StyrNIxbiS+louT3ViPcHu1OEBbsWFUC0Gkvcg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qzcOFUzr; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4DD01F000E9;
-	Tue, 16 Jun 2026 18:36:21 +0000 (UTC)
+	 MIME-Version; b=Y3Nfi1PN2Bo3Cef08xBblgAnl3vPytsYyY9jvrusicncR9HdoH9Qom55i0bbk/kWg6Fo/KxsTQN8nK6/+3nEAXwn6A2o3S1DwKxE7jG2jt6EfNOy4guiYzuz66XP/pjYsj9b8A9xwH9DSZ4eOaI4mIR+v3O8b5F2Zj7rbtvR+QU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nzqaaU7Q; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 570B61F000E9;
+	Tue, 16 Jun 2026 19:03:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781634982;
-	bh=4/Fil8AjC7ylYcokLLy+Hw4v05OfhltIgBdjDXyzyhA=;
+	s=korg; t=1781636640;
+	bh=aajQ19UjW11YvDf8z1zgdTLrZ8ovXFHgpuzsYzgSlVU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=qzcOFUzr/bw+DWCWFn9/I01z5bUP7zI/9NNJ+Hsdl3pcc2CGKI5ihVDEVx4Ug5Jmk
-	 HzyGjhXE6n0q/j6SjpemBWp0maPbA5zOT7tc5ZgexN67lbYl/pIIyROev0lxam34mO
-	 N8YfOTFgt0H/n04uOLDKCxjipsOMJXAQwYD9vPXE=
+	b=nzqaaU7Qkc5Osuz3rsXMS4sdNtKgebXSaaKwR9HksEHjyXVtz/dtLz9flkqelI8+Z
+	 oZEIZWPxuJfdw0WoB/QOlJd02a6V++bx4rSeI6r0yD69WBeczx3MwnY11+gV9b5JaK
+	 6sLa2uVTwsUVvZQvzLBsoB/DekWj4d1U0aTxW2ic=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lee Jones <lee@kernel.org>,
+	Hauke Mehrtens <hauke@hauke-m.de>,
 	Johan Hovold <johan@kernel.org>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 335/411] spi: st-ssc4: fix controller deregistration
+Subject: [PATCH 5.10 277/342] spi: lantiq-ssc: fix controller deregistration
 Date: Tue, 16 Jun 2026 20:29:33 +0530
-Message-ID: <20260616145118.973957080@linuxfoundation.org>
+Message-ID: <20260616145101.285063242@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,22 +72,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266161-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-266481-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:lee@kernel.org,m:johan@kernel.org,m:broonie@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:hauke@hauke-m.de,m:johan@kernel.org,m:broonie@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -99,62 +99,65 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,msgid.link:url,hauke-m.de:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 38BE2694441
+X-Rspamd-Queue-Id: C1936694B7D
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 19857374010d06ca6a2f7c2c53464122eb804df0 ]
+[ Upstream commit b99206710d032c16b7f8b75e4bc18414d8e4b9f4 ]
 
-Make sure to deregister the controller before disabling underlying
+Make sure to deregister the controller before releasing underlying
 resources like clocks during driver unbind.
 
-Fixes: 9e862375c542 ("spi: Add new driver for STMicroelectronics' SPI Controller")
-Cc: stable@vger.kernel.org	# 4.0
-Cc: Lee Jones <lee@kernel.org>
+Fixes: 17f84b793c01 ("spi: lantiq-ssc: add support for Lantiq SSC SPI controller")
+Cc: stable@vger.kernel.org	# 4.11
+Cc: Hauke Mehrtens <hauke@hauke-m.de>
 Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260410081757.503099-18-johan@kernel.org
+Link: https://patch.msgid.link/20260409120419.388546-17-johan@kernel.org
 Signed-off-by: Mark Brown <broonie@kernel.org>
-[ changed spi_controller/host API calls to spi_master/master equivalents ]
+[ adapted spi_controller/host naming to spi_master/master and preserved the int-returning remove() with trailing return 0 ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-st-ssc4.c |    8 +++++++-
+ drivers/spi/spi-lantiq-ssc.c |    8 +++++++-
  1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/drivers/spi/spi-st-ssc4.c
-+++ b/drivers/spi/spi-st-ssc4.c
-@@ -372,7 +372,7 @@ static int spi_st_probe(struct platform_
+--- a/drivers/spi/spi-lantiq-ssc.c
++++ b/drivers/spi/spi-lantiq-ssc.c
+@@ -1003,7 +1003,7 @@ static int lantiq_ssc_probe(struct platf
+ 		"Lantiq SSC SPI controller (Rev %i, TXFS %u, RXFS %u, DMA %u)\n",
+ 		revision, spi->tx_fifo_size, spi->rx_fifo_size, supports_dma);
  
- 	platform_set_drvdata(pdev, master);
+-	err = devm_spi_register_master(dev, master);
++	err = spi_register_master(master);
+ 	if (err) {
+ 		dev_err(dev, "failed to register spi_master\n");
+ 		goto err_wq_destroy;
+@@ -1027,6 +1027,10 @@ static int lantiq_ssc_remove(struct plat
+ {
+ 	struct lantiq_ssc_spi *spi = platform_get_drvdata(pdev);
  
--	ret = devm_spi_register_master(&pdev->dev, master);
-+	ret = spi_register_master(master);
- 	if (ret) {
- 		dev_err(&pdev->dev, "Failed to register master\n");
- 		goto rpm_disable;
-@@ -394,10 +394,16 @@ static int spi_st_remove(struct platform
- 	struct spi_master *master = platform_get_drvdata(pdev);
- 	struct spi_st *spi_st = spi_master_get_devdata(master);
- 
-+	spi_master_get(master);
++	spi_master_get(spi->master);
 +
-+	spi_unregister_master(master);
++	spi_unregister_master(spi->master);
 +
- 	pm_runtime_disable(&pdev->dev);
+ 	lantiq_ssc_writel(spi, 0, LTQ_SPI_IRNEN);
+ 	lantiq_ssc_writel(spi, 0, LTQ_SPI_CLC);
+ 	rx_fifo_flush(spi);
+@@ -1037,6 +1041,8 @@ static int lantiq_ssc_remove(struct plat
+ 	clk_disable_unprepare(spi->spi_clk);
+ 	clk_put(spi->fpi_clk);
  
- 	clk_disable_unprepare(spi_st->clk);
- 
-+	spi_master_put(master);
++	spi_master_put(spi->master);
 +
- 	pinctrl_pm_select_sleep_state(&pdev->dev);
- 
  	return 0;
+ }
+ 
 
 
 
