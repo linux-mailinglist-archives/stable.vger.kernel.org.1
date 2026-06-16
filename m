@@ -1,70 +1,61 @@
-Return-Path: <stable+bounces-264165-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263773-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id QxyoJ9JwMWqHjQUAu9opvQ
-	(envelope-from <stable+bounces-264165-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:50:42 +0200
+	id CDq0OYxlMWriiQUAu9opvQ
+	(envelope-from <stable+bounces-263773-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:02:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 308FC6916FA
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:50:42 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E91C690BB3
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:02:35 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="N/tcLUvk";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264165-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264165-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=yFGpPyD1;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263773-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-263773-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 912603094359
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:41:58 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A18CF30117AE
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:00:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA4CE44CF59;
-	Tue, 16 Jun 2026 15:41:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F3B642B74A;
+	Tue, 16 Jun 2026 15:00:34 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7171944CF52;
-	Tue, 16 Jun 2026 15:41:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F81026CE05;
+	Tue, 16 Jun 2026 15:00:33 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781624464; cv=none; b=FAR0w9st/WoIg6vNv7h/Ky6opb2YFEV2FdhS59EP0aITxOkUmUhe/oQ2JdsmLCahy231kcNb6DkR9gHaU4kXjIx28wBphI7zqB2kTE3ro/uNE5Is8dOOPdyXMeBlv+n/aevJKpmDLv2V7Qlq8sYmMyM7T/wSlru7q7X6DXFY4D8=
+	t=1781622034; cv=none; b=Oc4BA73QeOkjWZ7mGDjm7Ogfc2rqzr2WsV4sIpqQcKNWwe1zoMQl2ChpAeyCpX8A3de2QM8vHMPP0H/QbhEzv/+Fz3cLM/EvdWxjXFDewsHaHvKWR4AyW3kjDJdnO1/eLuLTd8orsHI0oqrKLPT1Ac9Bj/JZ63JzeBnJOVrVplc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781624464; c=relaxed/simple;
-	bh=MZ3fmhY49bYU0yzHs8+QFgCeemb6jW7vby5t3Oa4Q1A=;
+	s=arc-20240116; t=1781622034; c=relaxed/simple;
+	bh=k+ddlx5dU6kxa+qm9FBI493RGoQzo3szNZt2SJOZMrQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pxe9JerQxmMse10hCFU6W5itPDBtQzaXpLXNQkasBfcx94VsiFG0g8Pf4WcDLQyxfK7uGFwFfhlURx+8x7WnBhLV0sdeYQaeuQ5qK4r6rYK+qeSq//0ztO1UxcIBO8FzKXI8iRFHKi+KZgEOjJxzhpMANW5k0C9ts1zkqgKp9Fk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N/tcLUvk; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 778561F000E9;
-	Tue, 16 Jun 2026 15:41:01 +0000 (UTC)
+	 MIME-Version; b=ohBvKByxbmXmiaAn4PZZLKymIXQe2fvZofuuzNVkee2cCMUoSLMdaYfqo5l22Lwe15BidvR7I6IduBnE4QLDjLiBQ9eLoBmIjTAeOVdSRuV8pzRUbuxsADsvAh78djZgz4icWJhpLKRoYig/DSqgQM0daJHhe9+9ZeIfw+N+xDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yFGpPyD1; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 366251F000E9;
+	Tue, 16 Jun 2026 15:00:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781624463;
-	bh=2zmgfyOM27uaon5bi3Kv68sJt57HZizZ/4GwdTfCBE8=;
+	s=korg; t=1781622033;
+	bh=nkGYYYOtXdTL2CvL7eWfMwCe1UY5CfGc88Br9BPrdGQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=N/tcLUvkJxkRsDODstrzjCQhQjrESC6ZG+KhCGNuUFTYSMbGSJwkiuIWuekYCzH4i
-	 ablcUqtETTOH65WYzrJK/CRDoFuG5eMtz1HcU5znjOL+ouadtrkJjF5LRPiO8ZLElh
-	 uctx4Wj4WzPH7A2c4WTqT4uXW1gg79C3pmGSZ/q8=
+	b=yFGpPyD1ofCCkOY2oOcJCEE3f1sCWuwMwFmMttI+r5uuEvn/2cR+GtqSCBwYwF8J+
+	 lQZThy7Ez5NqRQut7Ktk7VNswMkt6jvY9v6pOcufVxhlzPRjMw53Vdrb3rQzu/2BPP
+	 oYzk1iF2sksaPO/HCYuamf/fyHjizeIkJfeZbmkA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Muchun Song <songmuchun@bytedance.com>,
-	"Oscar Salvador (SUSE)" <osalvador@kernel.org>,
-	Usama Arif <usama.arif@linux.dev>,
-	David Hildenbrand <david@kernel.org>,
-	Frank van der Linden <fvdl@google.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 7.0 298/378] mm/cma: fix reserved page leak on activation failure
+	Mark Rutland <mark.rutland@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH 7.1 4/8] arm64: cputype: Add C1-Ultra definitions
 Date: Tue, 16 Jun 2026 20:28:49 +0530
-Message-ID: <20260616145125.748257933@linuxfoundation.org>
+Message-ID: <20260616145523.467856416@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145523.335696673@linuxfoundation.org>
+References: <20260616145523.335696673@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -81,22 +72,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264165-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-263773-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
+	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:songmuchun@bytedance.com,m:osalvador@kernel.org,m:usama.arif@linux.dev,m:david@kernel.org,m:fvdl@google.com,m:liam@infradead.org,m:ljs@kernel.org,m:mhocko@suse.com,m:rppt@kernel.org,m:surenb@google.com,m:vbabka@kernel.org,m:akpm@linux-foundation.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mark.rutland@arm.com,m:catalin.marinas@arm.com,m:will@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -107,77 +98,56 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,bytedance.com:email,suse.com:email,linux.dev:email,infradead.org:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,arm.com:url,arm.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 308FC6916FA
+X-Rspamd-Queue-Id: 3E91C690BB3
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+7.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Muchun Song <songmuchun@bytedance.com>
+From: Mark Rutland <mark.rutland@arm.com>
 
-commit 00739e4dd46dde2b39dd9dd19a27e3c8af4ca0d0 upstream.
+commit 60349e64a6c65f9f0aa118af711b3c7e137f07ff upstream.
 
-If cma_activate_area() fails after allocating only part of the range
-bitmaps, the cleanup path still has to release the reserved pages when
-CMA_RESERVE_PAGES_ON_ERROR is clear.
+Add cputype definitions for C1-Ultra. These will be used for errata
+detection in subsequent patches.
 
-That is still worth doing even in this __init path.  A bitmap_zalloc()
-failure does not necessarily mean the system cannot make further progress:
-freeing the reserved CMA pages can return a substantial amount of memory
-to the buddy allocator and may relieve the temporary memory shortage that
-caused the allocation failure in the first place.
+These values can be found in the C1-Ultra TRM:
 
-However, the cleanup path currently uses the bitmap-freeing bound for page
-release as well.  That is only correct for ranges whose bitmap allocation
-already succeeded.  The failed range and all later ranges still keep their
-reserved pages, so a partial bitmap allocation failure can permanently
-leak them.
+  https://developer.arm.com/documentation/108014/0100/
 
-Fix this by releasing reserved pages for all ranges.  Use the saved
-early_pfn[] value for ranges whose bitmap allocation already succeeded and
-for the failed range, and use cmr->early_pfn for later ranges whose bitmap
-allocation was never attempted.
+... in section A.5.1 ("MIDR_EL1, Main ID Register").
 
-Link: https://lore.kernel.org/20260523060123.2207992-1-songmuchun@bytedance.com
-Fixes: c009da4258f9 ("mm, cma: support multiple contiguous ranges, if requested")
-Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-Reviewed-by: Oscar Salvador (SUSE) <osalvador@kernel.org>
-Acked-by: Usama Arif <usama.arif@linux.dev>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Frank van der Linden <fvdl@google.com>
-Cc: Liam R. Howlett <liam@infradead.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Signed-off-by: Will Deacon <will@kernel.org>
+[Mark: backport to v7.1.y]
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/cma.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ arch/arm64/include/asm/cputype.h |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/mm/cma.c
-+++ b/mm/cma.c
-@@ -187,10 +187,13 @@ cleanup:
+--- a/arch/arm64/include/asm/cputype.h
++++ b/arch/arm64/include/asm/cputype.h
+@@ -97,6 +97,7 @@
+ #define ARM_CPU_PART_CORTEX_X925	0xD85
+ #define ARM_CPU_PART_CORTEX_A725	0xD87
+ #define ARM_CPU_PART_CORTEX_A720AE	0xD89
++#define ARM_CPU_PART_C1_ULTRA		0xD8C
+ #define ARM_CPU_PART_NEOVERSE_N3	0xD8E
+ #define ARM_CPU_PART_C1_PRO		0xD8B
  
- 	/* Expose all pages to the buddy, they are useless for CMA. */
- 	if (!test_bit(CMA_RESERVE_PAGES_ON_ERROR, &cma->flags)) {
--		for (r = 0; r < allocrange; r++) {
-+		for (r = 0; r < cma->nranges; r++) {
-+			unsigned long start_pfn;
-+
- 			cmr = &cma->ranges[r];
-+			start_pfn = r <= allocrange ? early_pfn[r] : cmr->early_pfn;
- 			end_pfn = cmr->base_pfn + cmr->count;
--			for (pfn = early_pfn[r]; pfn < end_pfn; pfn++)
-+			for (pfn = start_pfn; pfn < end_pfn; pfn++)
- 				free_reserved_page(pfn_to_page(pfn));
- 		}
- 	}
+@@ -189,6 +190,7 @@
+ #define MIDR_CORTEX_X925 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X925)
+ #define MIDR_CORTEX_A725 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A725)
+ #define MIDR_CORTEX_A720AE MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A720AE)
++#define MIDR_C1_ULTRA MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_C1_ULTRA)
+ #define MIDR_NEOVERSE_N3 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_N3)
+ #define MIDR_C1_PRO MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_C1_PRO)
+ #define MIDR_THUNDERX	MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX)
 
 
 
