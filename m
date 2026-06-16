@@ -1,116 +1,55 @@
-Return-Path: <stable+bounces-263657-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263659-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id pQugKDIkMWoPcgUAu9opvQ
-	(envelope-from <stable+bounces-263657-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 12:23:46 +0200
+	id rCIJCZImMWopcwUAu9opvQ
+	(envelope-from <stable+bounces-263659-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 12:33:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 050A568E31F
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 12:23:46 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D42168E569
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 12:33:53 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kroah.com header.s=fm1 header.b=KLRdeFA2;
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="AkG//VcB";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263657-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263657-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=kroah.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=S021kXW+;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263659-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-263659-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3723231D0234
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 10:16:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 271A6313A6DD
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 10:21:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 756AC43D4E9;
-	Tue, 16 Jun 2026 10:13:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D45B43B7B6B;
+	Tue, 16 Jun 2026 10:21:19 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh-a5-smtp.messagingengine.com (fhigh-a5-smtp.messagingengine.com [103.168.172.156])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F16E343CECD;
-	Tue, 16 Jun 2026 10:13:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B33FB35504D
+	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 10:21:18 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781604834; cv=none; b=e95vIZvJYSV4dISEAB+4W9sWusTSXHfa08C4bOYTBwf5ETK7u6J75NIKpyTxh2+VMe+uVPfLQsXPStyY/EpsJ9oRDSHRLTsOC7zbVJuGsJBpPj+tA7Fr57SCrgFMaWdPlmBDjGRnVPcYk0G1szI5k5Trn9QYgzh06xGtd3s+UKo=
+	t=1781605279; cv=none; b=Sxk2Hc1F7Elvpo9a2ye6hauxRGrjKckuFnh3hf7uBr5tlI2E5WFlzFpHhBPW++maqo+uarwzWpJbG0hxAwrUoUElSy1FkH9Sui5UrxFsDU/XTz4QlM5HKR7LPkv3snrsVW9ibmNvWHeBOYxgEk1W90Qyl/GtZgVMeGrCafVnqQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781604834; c=relaxed/simple;
-	bh=h39yfY9vKWcnHsup000s5QqqY2OYLsCc/BA54RYV6Fw=;
+	s=arc-20240116; t=1781605279; c=relaxed/simple;
+	bh=HV4HGFeV+reKZlhjdubbcImOwDCIEbYxNHDzgdHrvRE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EdELQyoRNjqnN13t/3t+nqhjRGZ8D9wehBXXq3wLUh27+RBWN3qK6JzX7wNPiyww2DSAZD8594O2jCOI7l0aCGOSN+pJBwNzk+LNYx6wJq0qACJOJjruCj2XsjXjrSZRN2SOiNGIsRQdDjLTJ44PInWiFbzgof+XclPxB3WsQ2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=KLRdeFA2; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=AkG//VcB; arc=none smtp.client-ip=103.168.172.156
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 32199140013C;
-	Tue, 16 Jun 2026 06:13:52 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-03.internal (MEProxy); Tue, 16 Jun 2026 06:13:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm1; t=1781604832; x=1781691232; bh=yscGnKM6Pn
-	1eN1WlHGZpo/1egnmUAfNS3O+ct8E0NcQ=; b=KLRdeFA2u+bknoVpi6wLPAu7Yt
-	iJdd2/Ii38ypS/HihS6Z208HihWl6c/A269wVfmNZUcYPRy3GjKQGkOU6gC1HxyP
-	2BUp6/woB2mslX+AU9Ho0gYMwxvcFE5p64q0CWPnBqZsatmqrd6lvrhXAclNpPka
-	qebzk6gT/6/oXGsthzXU43MbVuF1ZoTNub6E/rCc+Mh/Hb3o11fRbMGKaaHDQnkW
-	yZgJCWGQYI0QOG3RMmWA5ea0dX0dhcka3E1BwGV4ca1zS1Otyh772wajEB5/iW40
-	Y0WY/5C2T066kl8/Cw/jLhklnwm7p9trBzdOUuIa9GmAUmOhq/1Gx0nvF+3A==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1781604832; x=1781691232; bh=yscGnKM6Pn1eN1WlHGZpo/1egnmUAfNS3O+
-	ct8E0NcQ=; b=AkG//VcBlWPkGp5+QX0CqU957h5/2UEj/XMYVfh5TkBa5JAEwFD
-	GZ8so3d42RbYMkqnnoEzqiPcSJIGRn536ajBRJAI/4q/OKVIM+UpxSBtaPLzNUwV
-	lJtrA0FNiuhAUbnnGbSavDm5A2neCdBdjRhYIggcHSxvHWcerXwmZX1XrSC3Pcad
-	kmue6YuS+5uAhjahkx89P++vVaEXZ49ff/6J49vcIttgBpjtKp6p4Z4Y3S3jyjBo
-	mCBw3GcrZRNAZAyg7ZFfkpAFrb0+gxXM4VHkLmT3YxnqfLr//pzLvX31thfL64Vi
-	aEZ7t4WQHG4AgF1k9ymbDXashyytfdr6TNQ==
-X-ME-Sender: <xms:3yExasOq_hfD91-KgcnzcWI-InKHHQ9H-HHRzn9NZAoVno9NOjh6jA>
-    <xme:3yExauo0oR8mN_VBvyV2z1-LxDwp8eZq_lCpXCWi-YTr2iBxkchLqxEuY-6_EOc8a
-    r6WETbqjxZD-JCQ-kB--2PzVfIzJwjaT4rvI4k60d1ry0KMag>
-X-ME-Received: <xmr:3yExam5hIbugwhUOCO_yLy-bHdS_WgFM3aglR68GwbEZAhD7kNSGvV61>
-X-ME-Proxy-Cause: dmFkZTFXmFjhiZ/J01Wd7/tv5c36hbRy67DrxzHLzGUvqVoob6gyrI5rUk2TRsZF3TxXXy
-    Eqgfu+llVeu6X32bw3wTR93BrAokj6h+nD5mSFQR4EGjTjQgXkzrvdL1oZSrLLHJ5ZaEXP
-    eaW04bkL9ANOpZ7eqEK9sl2/phNYVie5S4DBbmqvXJ0eCIm06lqXVM0lQBIw/hHOkFNqfb
-    AydGSX9A4rVRRF1ozlS604g7aojkY6CaiA4+XH+1yJ6XUBOQRJQ5hCsI91GjHNRmhlzUQo
-    PVL9+m9l+5dHMCHIJ1uQ0rbTva8xA/YVRH20faRhiH6bLyY/lpTO7/3+HUanxXwMnE9Of5
-    q6wYPNxxCAigFA3VjxcRBu4F0rl7MLCy61b1Hco2V1UgkgiypxPIJIROEQcnjinGrDAz42
-    6lFtYSILqUoo/GUYk91Be7xYKOFGgSI5BD3CvpndRESrU3vmNpE/RaD4bUZbmB1UUtFGMx
-    ye/XEzKUNThptMfX88SZhVxjwt/wnco1txQiuCkWjjXst6uijKmWxjnYHlg47bqVb8sR3D
-    AlCdyKGyB24en+/TRzzXfEdyuh/kbAwuSDoIjBF7O75Ohd+l8rkFEahWX8+yNoIixeT4Pn
-    x8Z1W31Tk/QVtuv3+xtJIVxNI5hpbcDragT9TeS9YWwZL+1+N5CJgPZ13c7Q
-X-ME-Proxy: <xmx:3yExak8eKc29oJxfcfyK0Od4a-87_oCLG8W7UXqv6u5hrVb5PsXG_Q>
-    <xmx:3yExaicnt6lfrQcLSaZi-mmr0qYemsDudfJuWTVe2e4R7J3yeMRy-g>
-    <xmx:3yExag1XSy9XrCi1pGc5bJxCCqyfXk1xkzZBnsX_ihulF2q77cYF6A>
-    <xmx:3yExarpV1hTtDrxhQ9JhKiBTEVTSk53lv6J_cGdraz6-SgpZJDtotw>
-    <xmx:4CExauycks29AcIPDqsus0W6Sv8WnerBEUU0rBmVMLdUsXvbFirkjbpb>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 16 Jun 2026 06:13:49 -0400 (EDT)
-Date: Tue, 16 Jun 2026 15:42:45 +0530
-From: Greg KH <greg@kroah.com>
-To: Florian Fainelli <florian.fainelli@broadcom.com>
-Cc: stable@vger.kernel.org, Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ian Rogers <irogers@google.com>, Jiri Olsa <jolsa@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Tom Rix <trix@redhat.com>,
-	"open list:PERFORMANCE EVENTS SUBSYSTEM" <linux-perf-users@vger.kernel.org>,
-	"open list:PERFORMANCE EVENTS SUBSYSTEM" <linux-kernel@vger.kernel.org>,
-	"open list:BPF [MISC]" <bpf@vger.kernel.org>,
-	"open list:CLANG/LLVM BUILD SUPPORT" <llvm@lists.linux.dev>,
-	bcm-kernel-feedback-list@broadcom.com
-Subject: Re: [PATCH stable 6.1 v2 5/5] perf build: Remove
- -Wno-unused-but-set-variable from the flex flags when building with clang <
- 13.0.0
-Message-ID: <2026061639-curfew-hexagon-386b@gregkh>
-References: <20260520163320.3073037-1-florian.fainelli@broadcom.com>
- <20260520163320.3073037-6-florian.fainelli@broadcom.com>
- <6541a5f4-a150-44b9-af27-8712cdafc1ae@broadcom.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=QY/lIT9A47j/bZ+CtW5KV7xXiqh2/LmsMAFNFUBtVDseDIPbUkwZ1FBEDRDoZPgIjuyI704+gRGvw+gqAuB6LG15gCyUOb2Vyd0U2mTMkky3YrCYKHpKv9Rt5njr4MfhNVyRLdTeIhX3FDz7b5JKAhKF3DtUD9mQwIIxoGzy4Y8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S021kXW+; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D4121F000E9;
+	Tue, 16 Jun 2026 10:21:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1781605278;
+	bh=0S7NZbJ6OqdUsRfFey/fgDpfi+ywvfrUg345BHUcxgc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=S021kXW+0yoiScZqgxBGW08IRQvJbLg/e28gjKU2IKUoiSbMaLH7hg9a8sSYIhNVa
+	 GqJAFxGgQVnG4XzWSeTTCuyOCCFnlwob+hZzbQkSytEkcO+2ANnzq45IU7J7k071/k
+	 JvjNbB2sd+eg+EBll3GAumsmy3FLhZyvol3pCM3E=
+Date: Tue, 16 Jun 2026 15:49:49 +0530
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Clark Williams <clrkwllms@kernel.org>
+Cc: stable@vger.kernel.org, sashal@kernel.org
+Subject: Re: [PATCH linux-6.1.y 0/2]
+Message-ID: <2026061644-upstairs-reversion-7a16@gregkh>
+References: <20260616013306.3850069-1-clrkwllms@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -119,66 +58,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <6541a5f4-a150-44b9-af27-8712cdafc1ae@broadcom.com>
+In-Reply-To: <20260616013306.3850069-1-clrkwllms@kernel.org>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kroah.com,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kroah.com:s=fm1,messagingengine.com:s=fm1];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-263659-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-263657-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER(0.00)[greg@kroah.com,stable@vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	FORGED_RECIPIENTS(0.00)[m:florian.fainelli@broadcom.com,m:stable@vger.kernel.org,m:acme@redhat.com,m:adrian.hunter@intel.com,m:irogers@google.com,m:jolsa@kernel.org,m:namhyung@kernel.org,m:peterz@infradead.org,m:mingo@redhat.com,m:acme@kernel.org,m:mark.rutland@arm.com,m:alexander.shishkin@linux.intel.com,m:nathan@kernel.org,m:ndesaulniers@google.com,m:trix@redhat.com,m:linux-perf-users@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:bpf@vger.kernel.org,m:llvm@lists.linux.dev,m:bcm-kernel-feedback-list@broadcom.com,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	DKIM_TRACE(0.00)[kroah.com:+,messagingengine.com:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[greg@kroah.com,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:clrkwllms@kernel.org,m:stable@vger.kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[broadcom.com:email,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,gregkh:mid,intel.com:email,messagingengine.com:dkim]
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,gregkh:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 050A568E31F
+X-Rspamd-Queue-Id: 7D42168E569
 
-On Wed, May 20, 2026 at 09:35:02AM -0700, Florian Fainelli wrote:
-> On 5/20/26 09:33, Florian Fainelli wrote:
-> > From: Arnaldo Carvalho de Melo <acme@redhat.com>
-> > 
-> > clang < 13.0.0 doesn't grok -Wno-unused-but-set-variable, so just remove
-> > it to avoid:
-> > 
-> >    error: unknown warning option '-Wno-unused-but-set-variable'; did you mean '-Wno-unused-const-variable'? [-Werror,-Wunknown-warning-option]
-> >    make[4]: *** [/git/perf-6.5.0-rc4/tools/build/Makefile.build:128: /tmp/build/perf/util/pmu-flex.o] Error 1
-> >    make[4]: *** Waiting for unfinished jobs....
-> > 
-> > Fixes: ddc8e4c966923ad1 ("perf build: Disable fewer bison warnings")
-> > Cc: Adrian Hunter <adrian.hunter@intel.com>
-> > Cc: Ian Rogers <irogers@google.com>
-> > Cc: Jiri Olsa <jolsa@kernel.org>
-> > Cc: Namhyung Kim <namhyung@kernel.org>
-> > Link: https://lore.kernel.org/lkml/ZNUSWr52jUnVaaa%2F@kernel.org/
-> > Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-> > Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
-> > Change-Id: I8db8a372d1e83d26fbe8beda2bcf4d1a871a2b80
+On Mon, Jun 15, 2026 at 08:33:04PM -0500, Clark Williams wrote:
+> GCC 16.1.1 introduces stricter diagnostics that surface two latent issues
+> in the 6.1.y stable tree, both of which become hard errors under -Werror:
 > 
-> Argh, sorry the Change-Id snuck in there, let me know if you need me to
-> resubmit.
+> 1. -Wattributes on regparm(0) for x86-64
+> arch/x86/kvm/vmx/vmx_ops.h applies __attribute__((regparm(0))) to
+> vmread_error_trampoline(). On x86-32 this is intentional: it overrides
+> the kernel's -mregparm=3 convention so the trampoline receives its
+> arguments on the stack, matching the inline-asm callers that push args
+> before the call. On x86-64 the attribute has always been a no-op (the
+> SysV ABI already passes arguments in registers), but older GCC silently
+> accepted it. GCC 16.1.1 now warns, which -Werror promotes to a build
+> failure. The fix guards the attribute with #ifdef CONFIG_X86_32.
+> 
+> 2. -Wdiscarded-qualifiers in libbpf
+> In tools/lib/bpf/libbpf.c, resolve_full_path() assigns the result
+> of strchr() on a const char * to a plain char * variable. Newer
+> GCC/glibc combinations propagate the const qualifier through strchr(),
+> so this assignment now triggers -Werror=discarded-qualifiers. Since the
+> variable (next_path) is only used for pointer arithmetic and is never
+> written through, the fix is simply to declare it const char *.
+> 
+> Clark Williams (2):
+>   tools/lib/bpf: fix const-qualifier discard in resolve_full_path
+>   kvm/vmx: guard regparm(0) on vmread_error_trampoline for x86_32 only
+> 
+>  arch/x86/kvm/vmx/vmx_ops.h | 7 +++++--
+>  tools/lib/bpf/libbpf.c     | 2 +-
+>  2 files changed, 6 insertions(+), 3 deletions(-)
+> 
+> 
+> -- 
+> 2.54.0
+> 
+> 
 
-I got it, no worries.
+<formletter>
+
+This is not the correct way to submit patches for inclusion in the
+stable kernel tree.  Please read:
+    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+for how to do this properly.
+
+</formletter>
 
