@@ -1,63 +1,63 @@
-Return-Path: <stable+bounces-263693-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263692-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id iJ1+L0g/MWr8fAUAu9opvQ
-	(envelope-from <stable+bounces-263693-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 14:19:20 +0200
+	id lVfBD3o/MWo1fQUAu9opvQ
+	(envelope-from <stable+bounces-263692-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 14:20:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AD5B68F3B4
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 14:19:20 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E68F68F3D4
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 14:20:09 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TYaBYfqn;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263693-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263693-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YtKAdqUM;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263692-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263692-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C80433016759
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 12:19:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A5A373158C49
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 12:19:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F38B34751F;
-	Tue, 16 Jun 2026 12:19:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F31D31714C;
+	Tue, 16 Jun 2026 12:19:14 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE359349CD7
-	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 12:19:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2AD03168EE
+	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 12:19:12 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781612357; cv=none; b=lAcrbcBPKj6pYixigZftuv4PCbDoUqgxDMI4bYN761a79dpGCI9KfT0nPckln2SVRybT8Q5U067LdhRPSmjyLYLSFjcuToLXLkqQATVGBr1J2ySJgkrmikekIaxJs3blGew4q8qrWkQE+vv3l84QQgOzcVs5kAptJGIAKik+M/g=
+	t=1781612354; cv=none; b=V1FW1L0Va2Q6rJntx6Y1r933itfLey68C9D6RKmDoJJ8aOZZ0lghuEBcSoiFwWUHdhNMKFefwI5gIMm6fOPnJFW2VIQ3pV/M9KyAJoawNcknYKbL3gVZPWCINvyiQqpEyPuOO49msRGmM7Hr9IbBOYRNDwYR0ze05ty+ecm1jHw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781612357; c=relaxed/simple;
-	bh=dkJzNifqKsMMnDKQEaU5YxHh3cjwuASB4jqoT3w7o/I=;
+	s=arc-20240116; t=1781612354; c=relaxed/simple;
+	bh=K7ipEXNqsQaPVjK0xUePg8+vrau2oRgfOs4CQbakR2o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TC7VIQlBhzo1M6iAddWTb33g9WRHem3PWAb97jd4+A+m1nNzuAHp4SHo/t6JU4dRg89g3xd1uydPjTaI3gQU/JvCpN/O8/RrMw4SLBUZ2mIP6rSjg5OiW6IHvFOPovJe2s+FmqnQKEKnB7i9Eblc+XkCkHp49sqIpZG9aM7lrYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TYaBYfqn; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B0391F000E9;
+	 MIME-Version; b=V36EwT7M2GvgMAXdW1o6GAl5Ea/FFjMYCf3+Jp5F4ncYOD9l/tAaIij2bCVLVWZXSPtExwTLjzNMZ+J5MIkypOim+uZ4zFvKV7eUX0oltQ1pZwMUnphqDeB3Up1aIONspVMpUg2AVGo6Vf+SFQE1WjMM4/3rZKJhqviusVo2i14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YtKAdqUM; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FCBF1F00A3A;
 	Tue, 16 Jun 2026 12:19:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781612351;
-	bh=lnxnLQwVG9nxyJQ9QmfUPmLeGg/KqQa6jL638ZGBxO0=;
+	s=k20260515; t=1781612352;
+	bh=CqmxiHWNOamO8WySrrhA8wDUKJkOXod7lxqTlBFkYoQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=TYaBYfqnHVb0hYZVjP84FGUuSnmx7F1paL3I44Ey2JIZ6NFKddWUjlBavowKIY5S2
-	 zUbBame1nDSS80HoktLuQYNu/eATZCxLtQO84SMJASsMUFkFbc//DHqGKCb5Z6lI9T
-	 l8nLGxGItA/4GAxBq1l8rC3ty8SfzEhni8Xdn/JKzF+7pOXChmyeY8EnGYStFSMY+X
-	 5fodu0MdSsOknExLgqKcIk/98jRn4+BlsCP1lCD/Iej6oSF0wpMmkvci4VzRU5dnWL
-	 Xtxc8W9SrAsCMdmLWUkk/v7aoyg8wQXlqnE/EE2KOCdWQz/0Zb10bWJFHhHhApaXti
-	 Ttztx1oy5dR3A==
+	b=YtKAdqUMW0jVLzegFMZM2qYu9zj57Netnq9Idq+usghu6PyQ8vK+Yp2LUcjIe0+IZ
+	 14ywnr1ggXUMoSePvI3I7fagBMFdq96s3xhykffFgi/5EOm6iR/wMrIt/YO+aN8cN2
+	 wr49o1yhWGroRdg0S7s+UwNsmIs5vdLHMIrwhjkRhdABoP6J3U16IMqChsIJEUelkD
+	 ILvhjiU3/+FaOk91iGJFZHq3mzpwD5riy4J+1wvtUc79o/HPAUyJv7+W5S2SYg192E
+	 R96D60dgxGs3j2gP0VWmSAcF93nJu3XvlMYN4RQ5R9dfdOvqaHZruUGkkQQUhLeF61
+	 znhm0XF4IqkFQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Li Xiasong <lixiasong1@huawei.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+Cc: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y 1/2] mptcp: pm: fix ADD_ADDR timer infinite retry on option space insufficient
-Date: Tue, 16 Jun 2026 08:19:08 -0400
-Message-ID: <20260616121909.3134590-1-sashal@kernel.org>
+Subject: [PATCH 6.6.y 2/2] mptcp: add-addr: always drop other suboptions
+Date: Tue, 16 Jun 2026 08:19:09 -0400
+Message-ID: <20260616121909.3134590-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026061511-yearly-patronage-15bd@gregkh>
+In-Reply-To: <20260616121909.3134590-1-sashal@kernel.org>
 References: <2026061511-yearly-patronage-15bd@gregkh>
+ <20260616121909.3134590-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -70,24 +70,24 @@ X-Spamd-Result: default: False [-3.66 / 15.00];
 	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-263693-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:lixiasong1@huawei.com,m:matttbe@kernel.org,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-263692-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:matttbe@kernel.org,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	RCPT_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
@@ -96,158 +96,177 @@ X-Spamd-Result: default: False [-3.66 / 15.00];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5AD5B68F3B4
+X-Rspamd-Queue-Id: 7E68F68F3D4
 
-From: Li Xiasong <lixiasong1@huawei.com>
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 
-[ Upstream commit 51e398a3b8961b26a8c0a4ba9a777c5339791707 ]
+[ Upstream commit bd34fa0257261b76964df1c98f44b3cb4ee14620 ]
 
-When TCP option space is insufficient (e.g., when sending ADD_ADDR with an
-IPv6 address and port while tcp_timestamps is enabled), the original code
-jumped to out_unlock without clearing the addr_signal flag. This caused
-mptcp_pm_add_timer to keep rescheduling indefinitely, not sending ADD_ADDR,
-preventing subsequent addresses in the endpoint list from being announced.
+When an ADD_ADDR needs to be sent, it could be prepared if there is
+enough remaining space and even if the packet is not a pure ACK. But it
+would be dropped soon after.
 
-Handle this case by clearing the ADD_ADDR signal and skipping the matching
-ADD_ADDR retransmission entry. The skip path cancels the matching timer
-(with id check) and advances PM state progression, preserving forward
-progress to subsequent PM work.
+Indeed, in mptcp_pm_add_addr_signal(), there is enough space to fit a
+DSS of 20 octets and an ADD_ADDR echo containing an IPv4 address on 8
+octets for example. In this case, the packet would be prepared, the
+MPTCP_ADD_ADDR_ECHO bit would be removed from pm->addr_signal, but the
+option would be silently dropped in mptcp_established_options_add_addr()
+not to override DSS info in the union from 'struct mptcp_out_options',
+and also because mptcp_write_options() will enforce mutually exclusion
+with DSS.
 
-This cancellation is inherently best-effort. A concurrent add_timer
-callback may already be running and may acquire pm.lock before the
-cancel path updates entry state. In that case, one final ADD_ADDR
-transmit attempt can still be executed.
+Instead, don't even try to send an ADD_ADDR if it is not a pure ACK.
+Retry for each new packet until a pure-ACK is emitted. That's fine to do
+that, because each time an ADD_ADDR (echo) is scheduled, a pure ACK is
+queued.
 
-Once the cancel path sets entry->retrans_times to ADD_ADDR_RETRANS_MAX,
-the callback-side retrans_times check suppresses further ADD_ADDR
-retransmissions.
+This also simplifies the code, and the skb checks can be done earlier,
+before the lock.
 
-Note that when an ADD_ADDR is being prepared, a pure-ACK is queued. On
-the output side, it means that it is fine to skip non-pure-ACK packets,
-when drop_other_suboptions is set: a pure-ACK will be processed soon
-after.
+Note: also, since commit 6d0060f600ad ("mptcp: Write MPTCP DSS headers
+to outgoing data packets"), opts->ahmac would not have been set to 0
+when other suboptions were not dropped, and when sending an ADD_ADDR
+echo. That would have resulted in sending an ADD_ADDR using garbage
+info, where there was not enough space, instead of an echo one without
+the ADD_ADDR HMAC.
 
-Fixes: 00cfd77b9063 ("mptcp: retransmit ADD_ADDR when timeout")
+Fixes: 1bff1e43a30e ("mptcp: optimize out option generation")
 Cc: stable@vger.kernel.org
-Signed-off-by: Li Xiasong <lixiasong1@huawei.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260515-net-mptcp-misc-fixes-7-1-rc4-v2-2-701e96419f2f@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Stable-dep-of: bd34fa025726 ("mptcp: add-addr: always drop other suboptions")
+Link: https://patch.msgid.link/20260602-net-mptcp-misc-fixes-7-1-rc7-v2-11-856831229976@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/pm.c         | 40 +++++++++++++++++++++++++++++++++-------
- net/mptcp/pm_netlink.c | 16 +++++++++++++---
- 2 files changed, 46 insertions(+), 10 deletions(-)
+ net/mptcp/options.c  | 30 +++++++-----------------------
+ net/mptcp/pm.c       | 15 ++++-----------
+ net/mptcp/protocol.h |  7 +++----
+ 3 files changed, 14 insertions(+), 38 deletions(-)
 
+diff --git a/net/mptcp/options.c b/net/mptcp/options.c
+index b4f9c97af1b908..b6e2eddf0a3cad 100644
+--- a/net/mptcp/options.c
++++ b/net/mptcp/options.c
+@@ -659,7 +659,6 @@ static bool mptcp_established_options_add_addr(struct sock *sk, struct sk_buff *
+ {
+ 	struct mptcp_subflow_context *subflow = mptcp_subflow_ctx(sk);
+ 	struct mptcp_sock *msk = mptcp_sk(subflow->conn);
+-	bool drop_other_suboptions = false;
+ 	unsigned int opt_size = *size;
+ 	struct mptcp_addr_info addr;
+ 	bool echo;
+@@ -670,36 +669,20 @@ static bool mptcp_established_options_add_addr(struct sock *sk, struct sk_buff *
+ 	 */
+ 	if (!mptcp_pm_should_add_signal(msk) ||
+ 	    (opts->suboptions & (OPTION_MPTCP_MPJ_ACK | OPTION_MPTCP_MPC_ACK)) ||
+-	    !mptcp_pm_add_addr_signal(msk, skb, opt_size, remaining, &addr,
+-		    &echo, &drop_other_suboptions))
++	    !skb || !skb_is_tcp_pure_ack(skb) ||
++	    !mptcp_pm_add_addr_signal(msk, opt_size, remaining, &addr, &echo))
+ 		return false;
+ 
+-	/*
+-	 * Later on, mptcp_write_options() will enforce mutually exclusion with
+-	 * DSS, bail out if such option is set and we can't drop it.
+-	 */
+-	if (drop_other_suboptions)
+-		remaining += opt_size;
+-	else if (opts->suboptions & OPTION_MPTCP_DSS)
+-		return false;
++	remaining += opt_size;
+ 
+ 	len = mptcp_add_addr_len(addr.family, echo, !!addr.port);
+ 	if (remaining < len)
+ 		return false;
+ 
+ 	*size = len;
+-	if (drop_other_suboptions) {
+-		pr_debug("drop other suboptions\n");
+-		opts->suboptions = 0;
+-
+-		/* note that e.g. DSS could have written into the memory
+-		 * aliased by ahmac, we must reset the field here
+-		 * to avoid appending the hmac even for ADD_ADDR echo
+-		 * options
+-		 */
+-		opts->ahmac = 0;
+-		*size -= opt_size;
+-	}
++	pr_debug("drop other suboptions\n");
++	opts->suboptions = 0;
++	*size -= opt_size;
+ 	opts->addr = addr;
+ 	opts->suboptions |= OPTION_MPTCP_ADD_ADDR;
+ 	if (!echo) {
+@@ -709,6 +692,7 @@ static bool mptcp_established_options_add_addr(struct sock *sk, struct sk_buff *
+ 						     &opts->addr);
+ 	} else {
+ 		MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_ECHOADDTX);
++		opts->ahmac = 0;
+ 	}
+ 	pr_debug("addr_id=%d, ahmac=%llu, echo=%d, port=%d\n",
+ 		 opts->addr.id, opts->ahmac, echo, ntohs(opts->addr.port));
 diff --git a/net/mptcp/pm.c b/net/mptcp/pm.c
-index 8778a7211e4c54..501a4f04b3b6e0 100644
+index 501a4f04b3b6e0..a92b1d0fee1914 100644
 --- a/net/mptcp/pm.c
 +++ b/net/mptcp/pm.c
-@@ -335,6 +335,7 @@ bool mptcp_pm_add_addr_signal(struct mptcp_sock *msk, const struct sk_buff *skb,
- 			      struct mptcp_addr_info *addr, bool *echo,
- 			      bool *drop_other_suboptions)
+@@ -330,10 +330,9 @@ void mptcp_pm_mp_fail_received(struct sock *sk, u64 fail_seq)
+ 
+ /* path manager helpers */
+ 
+-bool mptcp_pm_add_addr_signal(struct mptcp_sock *msk, const struct sk_buff *skb,
+-			      unsigned int opt_size, unsigned int remaining,
+-			      struct mptcp_addr_info *addr, bool *echo,
+-			      bool *drop_other_suboptions)
++bool mptcp_pm_add_addr_signal(struct mptcp_sock *msk, unsigned int opt_size,
++			      unsigned int remaining,
++			      struct mptcp_addr_info *addr, bool *echo)
  {
-+	bool skip_add_addr = false;
+ 	bool skip_add_addr = false;
  	int ret = false;
- 	u8 add_addr;
- 	u8 family;
-@@ -356,24 +357,49 @@ bool mptcp_pm_add_addr_signal(struct mptcp_sock *msk, const struct sk_buff *skb,
- 	}
+@@ -351,10 +350,7 @@ bool mptcp_pm_add_addr_signal(struct mptcp_sock *msk, const struct sk_buff *skb,
+ 	 * plain dup-ack from TCP perspective. The other MPTCP-relevant info,
+ 	 * if any, will be carried by the 'original' TCP ack
+ 	 */
+-	if (skb && skb_is_tcp_pure_ack(skb)) {
+-		remaining += opt_size;
+-		*drop_other_suboptions = true;
+-	}
++	remaining += opt_size;
  
  	*echo = mptcp_pm_should_add_signal_echo(msk);
--	port = !!(*echo ? msk->pm.remote.port : msk->pm.local.port);
--
--	family = *echo ? msk->pm.remote.family : msk->pm.local.family;
--	if (remaining < mptcp_add_addr_len(family, *echo, port))
--		goto out_unlock;
--
  	if (*echo) {
- 		*addr = msk->pm.remote;
- 		add_addr = msk->pm.addr_signal & ~BIT(MPTCP_ADD_ADDR_ECHO);
-+		port = !!msk->pm.remote.port;
-+		family = msk->pm.remote.family;
- 	} else {
- 		*addr = msk->pm.local;
- 		add_addr = msk->pm.addr_signal & ~BIT(MPTCP_ADD_ADDR_SIGNAL);
-+		port = !!msk->pm.local.port;
-+		family = msk->pm.local.family;
- 	}
--	WRITE_ONCE(msk->pm.addr_signal, add_addr);
-+
-+	if (remaining < mptcp_add_addr_len(family, *echo, port)) {
-+		struct net *net = sock_net((struct sock *)msk);
-+
-+		if (!*drop_other_suboptions)
-+			goto out_unlock;
-+
-+		if (*echo) {
-+			MPTCP_INC_STATS(net, MPTCP_MIB_ECHOADDTXDROP);
-+		} else {
-+			skip_add_addr = true;
-+			MPTCP_INC_STATS(net, MPTCP_MIB_ADDADDRTXDROP);
-+		}
-+		goto drop_signal_mark;
-+	}
-+
- 	ret = true;
+@@ -372,9 +368,6 @@ bool mptcp_pm_add_addr_signal(struct mptcp_sock *msk, const struct sk_buff *skb,
+ 	if (remaining < mptcp_add_addr_len(family, *echo, port)) {
+ 		struct net *net = sock_net((struct sock *)msk);
  
-+drop_signal_mark:
-+	WRITE_ONCE(msk->pm.addr_signal, add_addr);
-+
- out_unlock:
- 	spin_unlock_bh(&msk->pm.lock);
-+
-+	/* On pure-ACK option-space exhaustion, stop retrying this ADD_ADDR:
-+	 * clear the signal bit, cancel the matching retransmission timer, and
-+	 * let the PM state machine progress.
-+	 */
-+	if (skip_add_addr) {
-+		mptcp_pm_del_add_timer(msk, addr, true);
-+		mptcp_pm_subflow_established(msk);
-+	}
- 	return ret;
+-		if (!*drop_other_suboptions)
+-			goto out_unlock;
+-
+ 		if (*echo) {
+ 			MPTCP_INC_STATS(net, MPTCP_MIB_ECHOADDTXDROP);
+ 		} else {
+diff --git a/net/mptcp/protocol.h b/net/mptcp/protocol.h
+index 2a33452715597a..40e006a40f9162 100644
+--- a/net/mptcp/protocol.h
++++ b/net/mptcp/protocol.h
+@@ -1046,10 +1046,9 @@ static inline int mptcp_rm_addr_len(const struct mptcp_rm_list *rm_list)
+ 	return TCPOLEN_MPTCP_RM_ADDR_BASE + roundup(rm_list->nr - 1, 4) + 1;
  }
  
-diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
-index 6e5570f97236ad..2b4ece1be3f4dd 100644
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -321,7 +321,13 @@ static void mptcp_pm_add_timer(struct timer_list *timer)
- 
- 	spin_lock_bh(&msk->pm.lock);
- 
--	if (!mptcp_pm_should_add_signal_addr(msk)) {
-+	/* The cancel path (mptcp_pm_del_add_timer()) can race with this
-+	 * callback. Once cancel updates retrans_times to MAX, suppress further
-+	 * retransmissions here. If this callback acquires pm.lock first, one
-+	 * final transmit attempt is still possible.
-+	 */
-+	if (entry->retrans_times < ADD_ADDR_RETRANS_MAX &&
-+	    !mptcp_pm_should_add_signal_addr(msk)) {
- 		pr_debug("retransmit ADD_ADDR id=%d\n", entry->addr.id);
- 		mptcp_pm_announce_addr(msk, &entry->addr, false);
- 		mptcp_pm_add_addr_send_ack(msk);
-@@ -369,8 +375,12 @@ mptcp_pm_del_add_timer(struct mptcp_sock *msk,
- 	/* Note: entry might have been removed by another thread.
- 	 * We hold rcu_read_lock() to ensure it is not freed under us.
- 	 */
--	if (stop_timer)
--		sk_stop_timer_sync(sk, &entry->add_timer);
-+	if (stop_timer) {
-+		if (check_id)
-+			sk_stop_timer(sk, &entry->add_timer);
-+		else
-+			sk_stop_timer_sync(sk, &entry->add_timer);
-+	}
- 
- 	rcu_read_unlock();
- 	return entry;
+-bool mptcp_pm_add_addr_signal(struct mptcp_sock *msk, const struct sk_buff *skb,
+-			      unsigned int opt_size, unsigned int remaining,
+-			      struct mptcp_addr_info *addr, bool *echo,
+-			      bool *drop_other_suboptions);
++bool mptcp_pm_add_addr_signal(struct mptcp_sock *msk, unsigned int opt_size,
++			      unsigned int remaining,
++			      struct mptcp_addr_info *addr, bool *echo);
+ bool mptcp_pm_rm_addr_signal(struct mptcp_sock *msk, unsigned int remaining,
+ 			     struct mptcp_rm_list *rm_list);
+ int mptcp_pm_get_local_id(struct mptcp_sock *msk, struct sock_common *skc);
 -- 
 2.53.0
 
