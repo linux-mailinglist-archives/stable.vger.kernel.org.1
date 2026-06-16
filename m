@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-265528-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265020-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 6PrpDSqMMWo/mQUAu9opvQ
-	(envelope-from <stable+bounces-265528-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:47:22 +0200
+	id bUkEH5yDMWpdlQUAu9opvQ
+	(envelope-from <stable+bounces-265020-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:10:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FE866937B0
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:47:21 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7487692D2B
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:10:51 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=LUkMxicU;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265528-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265528-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=iJ7v1OjJ;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265020-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265020-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EF5553078342
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:41:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C958F32003AA
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:57:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6845E46AF3C;
-	Tue, 16 Jun 2026 17:41:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59DB2466B4B;
+	Tue, 16 Jun 2026 16:57:55 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68DF247AF5D;
-	Tue, 16 Jun 2026 17:41:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25D8B43E9FE;
+	Tue, 16 Jun 2026 16:57:53 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781631671; cv=none; b=AYJ/sqrjoICCdKvI36/T5TszFlZvaSaJ6UaY9cRXIBJefDwxVYtpjbudTFlFPP8hBR3zP4MI4CCOyrrAjKXsRus5V8IvA/yEOcs7uqwOY6z6vXu4iS04qdHRCzJBLb1Iq2syCpo05T8YdLKNYNStNzT21fFGqr5ljCoqpymzxfw=
+	t=1781629075; cv=none; b=UdmnvL2TfjqQQT82PyPdYHJKCvC7C7CZqM8MRfkW/Gt43aYQDlNbTEePr6BXAQ/AiiFLAw0kP6RVJviPKJ1Kh/b8iXK0nBFfifRky2bTyKzQ+v2g9bKjdK9dkhClV8QYfvo3YDBz8+IcFbQ2a8k4F/bQm/PfE+PorTmTdY0Sais=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781631671; c=relaxed/simple;
-	bh=UyNre1VZ48nx7Ki86p8AuDx7gfB9rhgigSXIGvKKhYk=;
+	s=arc-20240116; t=1781629075; c=relaxed/simple;
+	bh=muX9/UnsyIvbtlsGN95hzJ+CnUQiiQ76GuRf6FwB/tw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P8JvbM7GB/uUGa/r7ls9ocPl6Jww40ySoTqMsWsJzVDFEm/xumzXNEOMyIO+iJ6w3QLSaFcTrZoqpELBea3Y/UMI8Cdm3QrGAeT+ZHI8sNeCyvH1LL/i/y8uD9JneHOVwE/Mai82U7T+tRnhoym5mgkogArPwreaxjqKIj6z7zo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LUkMxicU; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BA621F00A3A;
-	Tue, 16 Jun 2026 17:41:08 +0000 (UTC)
+	 MIME-Version; b=OVdgpVENeqRKo4TSpzkbM3mzsN5bQOvpHm+DLuPOaMv+21Br3T+dJ2gjwCX9hZgHwn7V5qpjFsaCqf04MtN9rkrsN2GdW2L25cdR8d4M2UGWzfIuLfHotmXDObD0jTYAU6dMz/GqX364dpW9A0q0G33lC9xWRsP0v2K0As4Eu+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iJ7v1OjJ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E91481F00A3A;
+	Tue, 16 Jun 2026 16:57:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781631669;
-	bh=NXHcrkk51pS01G/2R+yIIDXMxUdIOjNLNq82Unr5U54=;
+	s=korg; t=1781629073;
+	bh=HxpYuL1x1XtON/N8BeMNoL1s0DEVjA4Y4SlnE8VBKmU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=LUkMxicU4IO/vQ8vdbDpDPrSgx1wyGjc58fUQi8+dTT6ic5ZzWAk1A94J2CChXawD
-	 +r0xDoIul9pGuxhtiU9S079knaM9Zw6oO74cqedFRWXgpQcIZTvGbjYRFtKy882Qqs
-	 7mv8BzYrswiS/fOrVnMpYgj8J1cRfpP1uewB7Aa8=
+	b=iJ7v1OjJGWXxN7eUuMyjQT3jsOURGEOQxMv57lS+lx98C0abEunrbHbFkppY2KCaW
+	 1T5RZmBX04zDNvKZnl601GRk1UF41Sv+RCSmRJ8+fttGGj5KYdqz/hTJXdMQI5pANi
+	 abi4kx61F+nLBF50g2lHX4SpbClvjYIh9OOWpGvQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Til Kaiser <mail@tk154.de>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 264/522] net: mvpp2: build skb from XDP-adjusted data on XDP_PASS
+	stable <stable@kernel.org>,
+	Shitalkumar Gandhi <shitalkumar.gandhi@cambiumnetworks.com>,
+	Frank Li <Frank.Li@nxp.com>
+Subject: [PATCH 6.6 184/452] serial: fsl_lpuart: fix rx buffer and DMA map leaks in start_rx_dma
 Date: Tue, 16 Jun 2026 20:26:51 +0530
-Message-ID: <20260616145138.292568591@linuxfoundation.org>
+Message-ID: <20260616145127.503462715@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,21 +72,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265528-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265020-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mail@tk154.de,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:shitalkumar.gandhi@cambiumnetworks.com,m:Frank.Li@nxp.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -98,115 +98,99 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tk154.de:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,nxp.com:email,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,cambiumnetworks.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7FE866937B0
+X-Rspamd-Queue-Id: E7487692D2B
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Til Kaiser <mail@tk154.de>
+From: Shitalkumar Gandhi <shital.gandhi45@gmail.com>
 
-[ Upstream commit 77a6b90ce56bc982dcfa94229b8e28e6abb16e95 ]
+commit 9a9254c4a2a3ca2b3da16d173f3b0dd01f397ff6 upstream.
 
-When an XDP program uses bpf_xdp_adjust_head() or bpf_xdp_adjust_tail()
-and then returns XDP_PASS, mvpp2 still builds the skb from fixed offsets
-derived from the original RX descriptor. Packet geometry changes made by
-the XDP program are therefore discarded before the skb reaches the stack.
+lpuart_start_rx_dma() allocates sport->rx_ring.buf with kzalloc() and
+then maps a scatterlist via dma_map_sg().  On three subsequent error
+paths the function returns directly without releasing those resources:
 
-Update rx_offset and rx_bytes from xdp.data and xdp.data_end for
-XDP_PASS. This makes skb_reserve() and skb_put() reflect the packet seen
-by XDP, and makes RX byte accounting for XDP_PASS follow the length of the
-skb passed to the network stack.
+  - when dma_map_sg() returns 0 (-EINVAL):
+      ring->buf is leaked.
+  - when dmaengine_slave_config() fails:
+      ring->buf and the DMA mapping are leaked.
+  - when dmaengine_prep_dma_cyclic() returns NULL:
+      ring->buf and the DMA mapping are leaked.
 
-Keep a separate rx_sync_size for page-pool recycling on skb allocation
-failure, which must stay tied to the received buffer range.
+The sole cleanup path, lpuart_dma_rx_free(), is only reached when
+lpuart_dma_rx_use is set, and the caller lpuart_rx_dma_startup() clears
+that flag on failure of lpuart_start_rx_dma().  So these resources are
+permanently leaked on every failure in this function.  Repeated port
+open/close or termios changes under error conditions will slowly consume
+memory and leave stale streaming DMA mappings behind.
 
-Non-PASS verdicts continue to account the descriptor length because no skb
-is passed up in those cases.
+Fix it by introducing two error labels that unmap the scatterlist and
+free the ring buffer as appropriate.  While here, replace the misleading
+-EFAULT (bad userspace pointer) returned when dmaengine_prep_dma_cyclic()
+fails with the more accurate -ENOMEM, matching how other dmaengine users
+in the tree treat this failure.
 
-Fixes: 07dd0a7aae7f ("mvpp2: add basic XDP support")
-Signed-off-by: Til Kaiser <mail@tk154.de>
-Link: https://patch.msgid.link/20260607134943.21996-5-mail@tk154.de
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+No functional change on the success path.
+
+Fixes: 5887ad43ee02 ("tty: serial: fsl_lpuart: Use cyclic DMA for Rx")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Shitalkumar Gandhi <shitalkumar.gandhi@cambiumnetworks.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/20260420135903.2062024-1-shitalkumar.gandhi@cambiumnetworks.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/ethernet/marvell/mvpp2/mvpp2_main.c   | 21 +++++++++++++------
- 1 file changed, 15 insertions(+), 6 deletions(-)
+ drivers/tty/serial/fsl_lpuart.c |   15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-index fc16e577a10376..675616142c4f47 100644
---- a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-+++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-@@ -3919,10 +3919,10 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
- 		struct mvpp2_bm_pool *bm_pool;
- 		struct page_pool *pp = NULL;
- 		struct sk_buff *skb;
--		unsigned int frag_size;
-+		unsigned int frag_size, rx_sync_size;
- 		dma_addr_t dma_addr;
- 		phys_addr_t phys_addr;
--		int pool, rx_bytes, err, ret;
-+		int pool, rx_bytes, rx_offset, err, ret;
- 		struct page *page;
- 		void *data;
+--- a/drivers/tty/serial/fsl_lpuart.c
++++ b/drivers/tty/serial/fsl_lpuart.c
+@@ -1383,7 +1383,8 @@ static inline int lpuart_start_rx_dma(st
  
-@@ -3935,6 +3935,8 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
- 		rx_status = mvpp2_rxdesc_status_get(port, rx_desc);
- 		rx_bytes = mvpp2_rxdesc_size_get(port, rx_desc);
- 		rx_bytes -= MVPP2_MH_SIZE;
-+		rx_sync_size = rx_bytes + MVPP2_MH_SIZE;
-+		rx_offset = MVPP2_MH_SIZE + MVPP2_SKB_HEADROOM;
- 		dma_addr = mvpp2_rxdesc_dma_addr_get(port, rx_desc);
+ 	if (!nent) {
+ 		dev_err(sport->port.dev, "DMA Rx mapping error\n");
+-		return -EINVAL;
++		ret = -EINVAL;
++		goto err_free_buf;
+ 	}
  
- 		pool = (rx_status & MVPP2_RXD_BM_POOL_ID_MASK) >>
-@@ -3950,7 +3952,7 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
+ 	dma_rx_sconfig.src_addr = lpuart_dma_datareg_addr(sport);
+@@ -1395,7 +1396,7 @@ static inline int lpuart_start_rx_dma(st
+ 	if (ret < 0) {
+ 		dev_err(sport->port.dev,
+ 				"DMA Rx slave config failed, err = %d\n", ret);
+-		return ret;
++		goto err_unmap_sg;
+ 	}
  
- 		dma_sync_single_range_for_cpu(dev->dev.parent, dma_addr,
- 					      MVPP2_SKB_HEADROOM,
--					      rx_bytes + MVPP2_MH_SIZE,
-+					      rx_sync_size,
- 					      dma_dir);
+ 	sport->dma_rx_desc = dmaengine_prep_dma_cyclic(chan,
+@@ -1406,7 +1407,8 @@ static inline int lpuart_start_rx_dma(st
+ 				 DMA_PREP_INTERRUPT);
+ 	if (!sport->dma_rx_desc) {
+ 		dev_err(sport->port.dev, "Cannot prepare cyclic DMA\n");
+-		return -EFAULT;
++		ret = -ENOMEM;
++		goto err_unmap_sg;
+ 	}
  
- 		/* Buffer header not supported */
-@@ -4001,6 +4003,14 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
- 				continue;
- 			}
+ 	sport->dma_rx_desc->callback = lpuart_dma_rx_complete;
+@@ -1430,6 +1432,13 @@ static inline int lpuart_start_rx_dma(st
+ 	}
  
-+			rx_sync_size = max_t(unsigned int, rx_sync_size,
-+					     xdp.data_end - xdp.data_hard_start -
-+					     MVPP2_SKB_HEADROOM);
+ 	return 0;
 +
-+			/* Update offset and length to reflect any XDP adjustments. */
-+			rx_offset = xdp.data     - data;
-+			rx_bytes  = xdp.data_end - xdp.data;
-+
- 			metasize = xdp.data - xdp.data_meta;
- 		}
++err_unmap_sg:
++	dma_unmap_sg(chan->device->dev, &sport->rx_sgl, 1, DMA_FROM_DEVICE);
++err_free_buf:
++	kfree(ring->buf);
++	ring->buf = NULL;
++	return ret;
+ }
  
-@@ -4009,8 +4019,7 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
- 			netdev_warn(port->dev, "skb build failed\n");
- 			if (pp) {
- 				page_pool_put_page(pp, virt_to_head_page(data),
--						   rx_bytes + MVPP2_MH_SIZE,
--						   true);
-+						   rx_sync_size, true);
- 			} else {
- 				dma_unmap_single_attrs(dev->dev.parent, dma_addr,
- 						       bm_pool->buf_size,
-@@ -4040,7 +4049,7 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
- 		ps.rx_packets++;
- 		ps.rx_bytes += rx_bytes;
- 
--		skb_reserve(skb, MVPP2_MH_SIZE + MVPP2_SKB_HEADROOM);
-+		skb_reserve(skb, rx_offset);
- 		skb_put(skb, rx_bytes);
- 		if (metasize)
- 			skb_metadata_set(skb, metasize);
--- 
-2.53.0
-
+ static void lpuart_dma_rx_free(struct uart_port *port)
 
 
 
