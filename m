@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-266552-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266202-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id qGIAFkugMWpcogUAu9opvQ
-	(envelope-from <stable+bounces-266552-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:13:15 +0200
+	id mGsCG1SZMWp1nwUAu9opvQ
+	(envelope-from <stable+bounces-266202-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:43:32 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC1D9694DE9
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:13:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A2B1C694620
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:43:31 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=G0qVAuEu;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266552-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266552-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=wrwX+ptC;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266202-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266202-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AC6F73082C15
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:09:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BBC3831DC45C
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:39:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DA493DE422;
-	Tue, 16 Jun 2026 19:09:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8736B4779B0;
+	Tue, 16 Jun 2026 18:39:49 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0618D34751B;
-	Tue, 16 Jun 2026 19:09:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 615D6169AD2;
+	Tue, 16 Jun 2026 18:39:48 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781636982; cv=none; b=UKVzPcTXcQePvrRFF6JMegadBmHrfzjFA4NfjB+b/NiuBiduosUKTMDuEJ2D8ZWihMtnAPxk/6atKYcxPDuke2/6Z3Z35l6HLnaSvyrrNDvCySS1XLnX6IlgtvQYTZT0Kvk+yZdh1Jurz7XylpQkp9uEduh7KmRBJ5odEHG1KtM=
+	t=1781635189; cv=none; b=L6iJrMRZs3JQMpJSgQvywwcLMAfaHTnT9+5l9S0HVKH2MoDMYf0016P4PFZjCGarsA6XEvawB8cMB6GrAyilsGYEKYs4swPpZTtBWiRAVn1oPcz63Inks/W193YVN3pSuP0LpBW6Vouv8b71a0JZbtk1ADoMH2+rpDRaHnBSvY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781636982; c=relaxed/simple;
-	bh=PO7p62PbTmlTpAPLkOGSUa4yb7DtKByUHQc+ZnQCQBw=;
+	s=arc-20240116; t=1781635189; c=relaxed/simple;
+	bh=k2tkcCLateGmvsbTBNveypWOz3Zbq0B61AQU000BKrs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CFUPsZ2Swwt7i7p3vjpDXWihQGda7oqRKLA3RpaoouxPNbD7JNOtKTu+jMSMmYuSR30HG/G7EqnB+sh/HZMv3nlX46ebCl6nQmc/KUAcWcWbuchEkoOsRnrgsaazFYErJ/ykWuSVmC2mTDyA70A92ILyxU9E4AjO44OsmWpPJR8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G0qVAuEu; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0995C1F000E9;
-	Tue, 16 Jun 2026 19:09:39 +0000 (UTC)
+	 MIME-Version; b=SavAX1rAS7ON0eOET9LeAhxbHu28TAEws93/JW6VCP8DJjyeEiIIcooUTznWx5GnWm3AOlqETVLS11PvMgJVfOh4pd508Wkzu7v3PX77QCyyFZE5C0Ct+i5dObb+RuM/H7yiLpwMKwsYNDnUlaaTzzC3e9eSENfUFYueG/v3zG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wrwX+ptC; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49C771F000E9;
+	Tue, 16 Jun 2026 18:39:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781636980;
-	bh=pknKpH47+hbQGgl5w9OQ1UjGNok01MzfRXMpgrrptWY=;
+	s=korg; t=1781635188;
+	bh=x9oc5z29YPVamxKf0XnmpQGLTvsRwLsqCnyetmWHx1g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=G0qVAuEuYNewCmqZ65dbg5vsbn+kmyUIhzmdpc4hXjmTAmufJOU/L93+ds8Om8WA9
-	 aX3Mhw/7NSBJ/cHnxS65YsaRv0Wya1uM4O3xACQO+jL47kATVLdjuK9kRfbd5tZk71
-	 pNTtVL0QJUDnclk4JsFIZjz9/BdPAP75jw7l/MrY=
+	b=wrwX+ptCFXj1C36ZsSuwmMplI0LH8pwiLc43+iEG3CeHNyPHdIYrz3A0MHh1olJwp
+	 PoWm8/JmXB5yhup5dbVkruF5N9X6fqPcHyb1o0dPmQtDUqFOR1UpEYOnd9Yqfmd90o
+	 kC4tm/YhhP44rX/bA9CU2krGCLHlTAUbhOfke1fg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Nikolay Borisov <nik.borisov@suse.com>,
-	Ben Hutchings <benh@debian.org>
-Subject: [PATCH 5.10 342/342] x86/CPU/AMD: Move the Zen3 BTC_NO detection to the Zen3 init function
+	Aaron Erhardt <aer@tuxedocomputers.com>,
+	Werner Sembach <wse@tuxedocomputers.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.15 400/411] ALSA: hda/hdmi: Add quirk for TUXEDO IBS14G6
 Date: Tue, 16 Jun 2026 20:30:38 +0530
-Message-ID: <20260616145104.591363763@linuxfoundation.org>
+Message-ID: <20260616145122.446427603@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,12 +77,12 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266552-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-266202-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bp@alien8.de,m:nik.borisov@suse.com,m:benh@debian.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:aer@tuxedocomputers.com,m:wse@tuxedocomputers.com,m:tiwai@suse.de,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
@@ -98,66 +98,42 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,alien8.de:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,suse.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tuxedocomputers.com:email,suse.de:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: BC1D9694DE9
+X-Rspamd-Queue-Id: A2B1C694620
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Borislav Petkov (AMD) <bp@alien8.de>
+From: Aaron Erhardt <aer@tuxedocomputers.com>
 
-commit affc66cb96f865b3763a8e18add52e133d864f04 upstream.
+commit d649c58bcad8fb9b749e3837136a201632fa109d upstream.
 
-No functional changes.
+Depending on the timing during boot, the BIOS might report wrong pin
+capabilities, which can lead to HDMI audio being disabled. Therefore,
+force HDMI audio connection on TUXEDO InfinityBook S 14 Gen6.
 
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
-Link: http://lore.kernel.org/r/20231120104152.13740-4-bp@alien8.de
-Stable-dep-of: 7c81ad8e8bc2 ("x86/CPU/AMD: Rename init_amd_zn() to init_amd_zen_common()")
-[bwh: Adjusted to apply after backports of the above commit which actually
- depended on this]
-Signed-off-by: Ben Hutchings <benh@debian.org>
+Signed-off-by: Aaron Erhardt <aer@tuxedocomputers.com>
+Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
+Link: https://patch.msgid.link/20260218213234.429686-1-wse@tuxedocomputers.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/amd.c |   18 ++++++++++--------
- 1 file changed, 10 insertions(+), 8 deletions(-)
+ sound/pci/hda/patch_hdmi.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/x86/kernel/cpu/amd.c
-+++ b/arch/x86/kernel/cpu/amd.c
-@@ -1138,14 +1138,6 @@ static void init_amd_zen1(struct cpuinfo
- 		/* Erratum 1076: CPB feature bit not being set in CPUID. */
- 		if (!cpu_has(c, X86_FEATURE_CPB))
- 			set_cpu_cap(c, X86_FEATURE_CPB);
--
--		/*
--		 * Zen3 (Fam19 model < 0x10) parts are not susceptible to
--		 * Branch Type Confusion, but predate the allocation of the
--		 * BTC_NO bit.
--		 */
--		if (c->x86 == 0x19 && !cpu_has(c, X86_FEATURE_BTC_NO))
--			set_cpu_cap(c, X86_FEATURE_BTC_NO);
- 	}
- 
- 	pr_notice_once("AMD Zen1 FPDSS bug detected, enabling mitigation.\n");
-@@ -1205,6 +1197,16 @@ static void init_amd_zen2(struct cpuinfo
- static void init_amd_zen3(struct cpuinfo_x86 *c)
- {
- 	init_amd_zen_common();
-+
-+	if (!cpu_has(c, X86_FEATURE_HYPERVISOR)) {
-+		/*
-+		 * Zen3 (Fam19 model < 0x10) parts are not susceptible to
-+		 * Branch Type Confusion, but predate the allocation of the
-+		 * BTC_NO bit.
-+		 */
-+		if (!cpu_has(c, X86_FEATURE_BTC_NO))
-+			set_cpu_cap(c, X86_FEATURE_BTC_NO);
-+	}
- }
- 
- static void init_amd_zen4(struct cpuinfo_x86 *c)
+--- a/sound/pci/hda/patch_hdmi.c
++++ b/sound/pci/hda/patch_hdmi.c
+@@ -1970,6 +1970,7 @@ static const struct snd_pci_quirk force_
+ 	SND_PCI_QUIRK(0x1043, 0x86ae, "ASUS", 1),  /* Z170 PRO */
+ 	SND_PCI_QUIRK(0x1043, 0x86c7, "ASUS", 1),  /* Z170M PLUS */
+ 	SND_PCI_QUIRK(0x1462, 0xec94, "MS-7C94", 1),
++	SND_PCI_QUIRK(0x1558, 0x14a1, "TUXEDO InfinityBook S 14 Gen6", 1),
+ 	SND_PCI_QUIRK(0x8086, 0x2060, "Intel NUC5CPYB", 1),
+ 	SND_PCI_QUIRK(0x8086, 0x2081, "Intel NUC 10", 1),
+ 	{}
 
 
 
