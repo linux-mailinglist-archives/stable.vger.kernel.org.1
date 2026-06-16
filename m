@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-263947-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265959-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id mhEIMkRsMWrOiwUAu9opvQ
-	(envelope-from <stable+bounces-263947-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:31:16 +0200
+	id aCKKMYmTMWrknAUAu9opvQ
+	(envelope-from <stable+bounces-265959-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:18:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA44469118A
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:31:15 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DC4A69404F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:18:49 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=xaM3W0GQ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263947-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263947-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=jsdRHTLx;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265959-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265959-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 577C23092C2C
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:22:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9BEB93191871
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:18:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7578826B0A9;
-	Tue, 16 Jun 2026 15:22:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AAAE3D091A;
+	Tue, 16 Jun 2026 18:18:18 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5667334D90C;
-	Tue, 16 Jun 2026 15:22:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4976E3A5E91;
+	Tue, 16 Jun 2026 18:18:17 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781623334; cv=none; b=BXYHLnb1ri4xhs9qaQMLTRvvYyjj+CX/S6ZeNOxZdrKCo0RC0S+acpgajLMaumtI72XCr7RW6fGF/ng8x0Ajy36CpbgBs+MbPRPrgYf6x55YCZtW0Kiimr6kvAOOLxvrwId4+fSO0k3zWMNAruroUjnvT2HOsxloIn27e7IHcLE=
+	t=1781633898; cv=none; b=TyqewSkhYSi4LgGYFjjQog8EdEirUMNzDKKN9DvWJ0HW8k/Gm1d3WBWZXgiijBgMN8KclJlYzOJ0/MS4VqWdPzoVCialKu+g6annFr3D3lGHswO72LjaOq4mC8AqUic0hImOdw5TwCTCVl7DlC3WhFMl2kNiRs3JDmbQG8JxZ+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781623334; c=relaxed/simple;
-	bh=r7v6V+GKY9cYMb042Ybx7lSiWP0QF26/ekQGZ8TTGGc=;
+	s=arc-20240116; t=1781633898; c=relaxed/simple;
+	bh=wEd8JwzYHuKu4qp39h8IQTGdkmTimje/XveSDY1VhgY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EnBhk0wRXedPb8iPlNd7exSU/fXepVy49kYQ6eEGfAfh2LhjuznbGHSVPy7wMbKWnwIs0Q6Y2LfKJjxWr2y0Cf3C3iXGVF6HyE/D11Pid/iFKq8MXw/QU2hkFaOEcyE6enevm3jHiHQQzs/TCJ80+G6J5iu8MS1P4tO3Yfhkvis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xaM3W0GQ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41FCF1F000E9;
-	Tue, 16 Jun 2026 15:22:11 +0000 (UTC)
+	 MIME-Version; b=lAfq4iuEDcivPag+PQUtSdcU9ZGda+Pi2FTjZRkONPybT9iWphnSvjB1bE5aT1Ukj6u5xevQvZrw1f9Jmi59XskBetj704kzgN4LSPZxRK5ObBq+mrloaBYnxeaDZG7Ub9C37FvD58cc2KsR+/l4FCgVocvzliuF68oYtcT/vYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jsdRHTLx; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AA2C1F000E9;
+	Tue, 16 Jun 2026 18:18:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781623333;
-	bh=iVWgYD8tWdYlf+fEu/Q25HriO9b3cV8AmsAnRKAZOf8=;
+	s=korg; t=1781633897;
+	bh=Gr5TQnB6kJCAJpDIWjaVWt2IFIbgCru02gnDD2lNF/U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=xaM3W0GQAu1CnlaTopmNjGt9234Bd51wQQr/gqyhZExQCibnRdWzySEbVqQ8T7kCH
-	 Al2pGI26YS9p6kA0cVPJABf/0/vfRKsaKkE0CBQnbH90HXHb7lQSfsa9ANOkjEYLfe
-	 TbxrbPScpoPd6GcXZwJ6UBziyoEdK/7jXHosRM7s=
+	b=jsdRHTLxBl3R6kUd9obeziJuNYEMWmZPH1BnjyAhd1xC2/1IxJNek079fGETAkEtG
+	 wQSqAXVdtJ6wY91E668KFB3GI49kT0GaDUy9v+o/cFz66C06IfG41cfW1+d9Y1EfOx
+	 GETEgX0elo8kJUEPWNg2yU/EiuH8tAEriKIvzvEE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeremy Kerr <jk@codeconstruct.com.au>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 128/378] net: mctp: usb: dont fail mctp_usb_rx_queue on a deferred submission
+	stable <stable@kernel.org>,
+	Guangshuo Li <lgs201920130244@gmail.com>,
+	Alan Stern <stern@rowland.harvard.edu>
+Subject: [PATCH 5.15 121/411] usb: gadget: net2280: Fix double free in probe error path
 Date: Tue, 16 Jun 2026 20:25:59 +0530
-Message-ID: <20260616145117.066985454@linuxfoundation.org>
+Message-ID: <20260616145106.758480324@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,77 +72,84 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-263947-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265959-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:lgs201920130244@gmail.com,m:stern@rowland.harvard.edu,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jk@codeconstruct.com.au,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,rowland.harvard.edu];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,codeconstruct.com.au:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,harvard.edu:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: EA44469118A
+X-Rspamd-Queue-Id: 3DC4A69404F
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeremy Kerr <jk@codeconstruct.com.au>
+From: Guangshuo Li <lgs201920130244@gmail.com>
 
-[ Upstream commit 881a3113b74964918cdd72747e3bc119c02b0c0c ]
+commit c8547c74988e0b5f4cbb1b895e2a57aae084f070 upstream.
 
-In the ndo_open path, a deferred queue open will report a failure, and
-so the netdev will not be ndo_stop()ed, leaving us with the rx_retry
-work potentially pending.
+usb_initialize_gadget() installs gadget_release() as the release
+callback for the embedded gadget device.  The struct net2280 instance is
+therefore released through gadget_release() when the gadget device's last
+reference is dropped.
 
-Don't report a deferred queue as an error, as we are still operational.
-This means we use the ndo_stop() path for future cleanup, which handles
-rx_retry_work cancellation.
+The probe error path calls net2280_remove(), which tears down the
+partially initialized device and drops the gadget reference with
+usb_put_gadget().  Calling kfree(dev) afterwards can free the same object
+again.
 
-Fixes: 0791c0327a6e ("net: mctp: Add MCTP USB transport driver")
-Signed-off-by: Jeremy Kerr <jk@codeconstruct.com.au>
-Link: https://patch.msgid.link/20260608-dev-mctp-usb-rx-requeue-v2-2-29a3aa507609@codeconstruct.com.au
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Drop the explicit kfree() and let the gadget device release callback
+handle the final free.  This issue was found by a static analysis tool
+I am developing.
+
+Fixes: f770fbec4165 ("USB: UDC: net2280: Fix memory leaks")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://patch.msgid.link/20260427153651.337846-1-lgs201920130244@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/mctp/mctp-usb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/gadget/udc/net2280.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/net/mctp/mctp-usb.c b/drivers/net/mctp/mctp-usb.c
-index cf6f6a93a45112..fade65f2f26995 100644
---- a/drivers/net/mctp/mctp-usb.c
-+++ b/drivers/net/mctp/mctp-usb.c
-@@ -154,7 +154,7 @@ static int mctp_usb_rx_queue(struct mctp_usb *mctp_usb, gfp_t gfp)
- 	if (!mctp_usb->rx_stopped)
- 		schedule_delayed_work(&mctp_usb->rx_retry_work, RX_RETRY_DELAY);
- 	spin_unlock_irqrestore(&mctp_usb->rx_lock, flags);
--	return rc;
-+	return 0;
+--- a/drivers/usb/gadget/udc/net2280.c
++++ b/drivers/usb/gadget/udc/net2280.c
+@@ -3796,10 +3796,8 @@ static int net2280_probe(struct pci_dev
+ 	return 0;
+ 
+ done:
+-	if (dev) {
++	if (dev)
+ 		net2280_remove(pdev);
+-		kfree(dev);
+-	}
+ 	return retval;
  }
  
- static void mctp_usb_in_complete(struct urb *urb)
--- 
-2.53.0
-
 
 
 
