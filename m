@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-265404-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263857-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id l4vREniJMWr0lwUAu9opvQ
-	(envelope-from <stable+bounces-265404-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:35:52 +0200
+	id 8sxpF1BoMWqKigUAu9opvQ
+	(envelope-from <stable+bounces-263857-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:14:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C732E6934B0
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:35:51 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E6AF690D8F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:14:23 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=SJu7CMs0;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265404-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265404-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=YKbZZg2w;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263857-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-263857-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4E77E31CBF15
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:30:28 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8222B300F620
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:14:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 828EF47A0DA;
-	Tue, 16 Jun 2026 17:30:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BA8643D4E8;
+	Tue, 16 Jun 2026 15:13:58 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 602463A5E91;
-	Tue, 16 Jun 2026 17:30:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CD8A38C437;
+	Tue, 16 Jun 2026 15:13:57 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781631027; cv=none; b=ipK64ogK8e/S4zQp/pR8AFFqKZ9FbVGLgaErcMwdp/OUzS8/SwTQWzL1JNk37OPrOiW6mAFvovn2D1nEkt1NTxVNjpIKBGdVIzVzIfp47Of6/KfVU+SC5gocqYsEpn2oO9uUyP+xD6+IFY2Rsap7BcAuwMIZGa/IEye5iZtbnhI=
+	t=1781622838; cv=none; b=VqKDOi1fbogzpizLcctN1Fd24//fXWxMJ5zf46pnfGqyrxVbuZI7oPMVw60zm7KY+s7zzAyUTxUzSrzqLDRzAMRvLIyHA0blDbEF09zY8mOZhVdzdF8JIoWZObHPyGVxzTCuuRwtAbiPD0gzjOaZPH5g7pv0bzA7SacuwGJ/l0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781631027; c=relaxed/simple;
-	bh=R1cCXyE8ez2yB1GMCg1d2qq2kgbjvAYalr2Vzlw6iKM=;
+	s=arc-20240116; t=1781622838; c=relaxed/simple;
+	bh=837pyMGqmzIAzhLaDLswmZFwLBZY40zCO0egB7sA6MA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G+6hpUDUQiAd6OLt0/u3hhDs3URhyXQn1N+MkHsdBtzbRysXfVHbfdDIg45y/4oWz3uGUiBVmwoM/8FqYkgSlXxruPKwCI2YYdhtMjs9GX3tdnRXDeKv5CoP2CicoDjKuA0+24torxrTIDA8iM7ogh/l+FQ6bfRNhcJlVMFTBQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SJu7CMs0; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 532F91F000E9;
-	Tue, 16 Jun 2026 17:30:25 +0000 (UTC)
+	 MIME-Version; b=u4lEzU1KndPn4LwGnZgKqWPf9H2CvC2KF4bZxi4y6rlfM3FU6SFNIwm5TZ/DydIp9emt9bUUf8AZHnCR3POzcvy4y69zbYQNBwpyIGy2vnK2SUHqQMpxwkPDfKNAjrNuIGR5G8dW+8941fnIzu1t+iJXCm+j75MSr2M9QQWgHFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YKbZZg2w; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28EB81F00A3A;
+	Tue, 16 Jun 2026 15:13:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781631026;
-	bh=qDg23G/PId8UHXsl8m4iBj7eof5GO/eN08etvv+r774=;
+	s=korg; t=1781622837;
+	bh=8wJwcOMeXFRLq0fDCAC07UdBR42DdUg2k/ET6SxC9IM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=SJu7CMs0x22BpdXHjQJwR2AdEul0vIhj/1S8U/Sf6FFr0nzcFc9mpXt4R/QDfjKIi
-	 lOgRqs8KvjLYhkuphjDKP/o6CyVWpS2WC4trufk4iAtfsnJhAI6Ii5LujtCY+E5BrR
-	 qLdd5wq8tRe722QRf9ROjax3R1pXNAzVizy2yMeM=
+	b=YKbZZg2w3z9TjzS+auPP+6XEBmmOQbZ/bKWX8Ht3WuEQBMj2q69LUvvUP9KdrsZ4U
+	 7bMpoP6f9NDPDSfQdd6Xsl1vJfxmctN/7G6Md8lg+jcpab4PjL0L9jQR4AcZDEeOP6
+	 mrSscY/1D+hfSS88thZnIPrwAkzdnTgH5drHAAaw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Muhammad Bilal <meatuni001@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.1 099/522] Bluetooth: ISO: serialize iso_sock_clear_timer with socket lock
+	Linus Walleij <linusw@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 015/378] ARM: dts: gemini: Fix partition offsets
 Date: Tue, 16 Jun 2026 20:24:06 +0530
-Message-ID: <20260616145130.535032299@linuxfoundation.org>
+Message-ID: <20260616145110.606655860@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,95 +72,89 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-263857-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-265404-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:meatuni001@gmail.com,m:luiz.von.dentz@intel.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:linusw@kernel.org,m:arnd@arndb.de,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C732E6934B0
+X-Rspamd-Queue-Id: 8E6AF690D8F
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Muhammad Bilal <meatuni001@gmail.com>
+From: Linus Walleij <linusw@kernel.org>
 
-commit 4b5f8e608749b7e8fa386c6e4301cf9272595859 upstream.
+[ Upstream commit 66ac2df408ede627aaae588d4ce7e611dd25b4f9 ]
 
-iso_sock_close() calls iso_sock_clear_timer() before acquiring
-lock_sock(sk).
+These FIS partition offsets were never right: the comment clearly
+states the FIS index is at 0xfe0000 and 0x7f * 0x200000 is
+0xfe0000.
 
-iso_sock_clear_timer() reads iso_pi(sk)->conn twice without the
-socket lock held:
+Tested on the iTian SQ201.
 
-    if (!iso_pi(sk)->conn)
-        return;
-    cancel_delayed_work(&iso_pi(sk)->conn->timeout_work);
-
-Concurrently, iso_conn_del() executes under lock_sock(sk) and calls
-iso_chan_del(), which sets iso_pi(sk)->conn to NULL and may result in
-the final reference to the connection being dropped:
-
-    CPU0                         CPU1
-    ----                         ----
-    iso_sock_clear_timer()
-      if (conn != NULL) ...      lock_sock(sk)
-                                   iso_chan_del()
-                                   iso_pi(sk)->conn = NULL
-      cancel_delayed_work(conn)  /* NULL deref or UAF */
-
-iso_pi(sk)->conn is not stable across the unlock window, causing a
-NULL pointer dereference or use-after-free.
-
-Serialize iso_sock_clear_timer() with the socket lock by moving it
-inside lock_sock()/release_sock(), matching the pattern used in
-iso_conn_del() and all other call sites.
-
-Fixes: ccf74f2390d60a2f9a75ef496d2564abb478f46a ("Bluetooth: Add BTPROTO_ISO socket type")
-Cc: stable@vger.kernel.org
-Signed-off-by: Muhammad Bilal <meatuni001@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d88b11ef91b1 ("ARM: dts: Fix up SQ201 flash access")
+Fixes: b5a923f8c739 ("ARM: dts: gemini: Switch to redboot partition parsing")
+Signed-off-by: Linus Walleij <linusw@kernel.org>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/iso.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/boot/dts/gemini/gemini-sl93512r.dts | 2 +-
+ arch/arm/boot/dts/gemini/gemini-sq201.dts    | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
---- a/net/bluetooth/iso.c
-+++ b/net/bluetooth/iso.c
-@@ -666,8 +666,8 @@ static void __iso_sock_close(struct sock
- /* Must be called on unlocked socket. */
- static void iso_sock_close(struct sock *sk)
- {
--	iso_sock_clear_timer(sk);
- 	lock_sock(sk);
-+	iso_sock_clear_timer(sk);
- 	__iso_sock_close(sk);
- 	release_sock(sk);
- 	iso_sock_kill(sk);
+diff --git a/arch/arm/boot/dts/gemini/gemini-sl93512r.dts b/arch/arm/boot/dts/gemini/gemini-sl93512r.dts
+index 4992ec276de92e..341dec9b636a8b 100644
+--- a/arch/arm/boot/dts/gemini/gemini-sl93512r.dts
++++ b/arch/arm/boot/dts/gemini/gemini-sl93512r.dts
+@@ -146,7 +146,7 @@ flash@30000000 {
+ 			partitions {
+ 				compatible = "redboot-fis";
+ 				/* Eraseblock at 0xfe0000 */
+-				fis-index-block = <0x1fc>;
++				fis-index-block = <0x7f>;
+ 			};
+ 		};
+ 
+diff --git a/arch/arm/boot/dts/gemini/gemini-sq201.dts b/arch/arm/boot/dts/gemini/gemini-sq201.dts
+index f8c6f6e5cdea6a..bfd1e8581ad67c 100644
+--- a/arch/arm/boot/dts/gemini/gemini-sq201.dts
++++ b/arch/arm/boot/dts/gemini/gemini-sq201.dts
+@@ -134,7 +134,7 @@ flash@30000000 {
+ 			partitions {
+ 				compatible = "redboot-fis";
+ 				/* Eraseblock at 0xfe0000 */
+-				fis-index-block = <0x1fc>;
++				fis-index-block = <0x7f>;
+ 			};
+ 		};
+ 
+-- 
+2.53.0
+
 
 
 
