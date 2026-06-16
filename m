@@ -1,66 +1,62 @@
-Return-Path: <stable+bounces-266403-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264122-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ebxlNZ2cMWrKoAUAu9opvQ
-	(envelope-from <stable+bounces-266403-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:57:33 +0200
+	id PUBMJchvMWopjQUAu9opvQ
+	(envelope-from <stable+bounces-264122-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:46:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D3946949BB
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:57:33 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC8E56915F9
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:46:15 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=H0mQxzlI;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266403-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-266403-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=KqxRHnTC;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264122-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264122-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9DE56303EE1B
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:57:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 776B7314590B
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:37:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB2A147D92F;
-	Tue, 16 Jun 2026 18:57:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16C5944CAF9;
+	Tue, 16 Jun 2026 15:37:26 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EA1047D929;
-	Tue, 16 Jun 2026 18:57:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7B6344CF39;
+	Tue, 16 Jun 2026 15:37:24 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781636243; cv=none; b=ff4IGIAxaM1Q+itrG/40WRS5fQOovTrf9bKzIbC/qbN/6gRKY5XG+WXJTm6vX1quUhbOTXxHrLyqJvglcw3A/c4EYI0WNFh91uuZw8esZYO5VWsPrHQjPupqBR+wj3tXdwwrYbsjwTBGOUkpnE8cE7WqIhlZuomYDAco7DNMnGo=
+	t=1781624245; cv=none; b=H8KQXrJ0pO2k9+GP4HO1y7QHBDvwF799agYpLgMBtRdNR/ozqCXzas+sSeZETq5N/dWYuemWf7NN9LzHP/6iS3MeGWPzgEzdkiEG6F3Bv6x9q6kpFcpLgNqbG6UNUZpaAM+RD661vm5wMsTT0csPKbnKzSAP2tM+intAW+dce3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781636243; c=relaxed/simple;
-	bh=KEyVN9oOMXigMz/+oiTPZv4gZK2pJO9R6wKKg55S84Y=;
+	s=arc-20240116; t=1781624245; c=relaxed/simple;
+	bh=kkVfh2A4c4pdmV8WgtrEIo/HW1HPpzUmgyV5+BVzR68=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FZacyF0NekvpjU1DnrjHQtTDLMoU91CQyWxbB+BVLmkgK9XLCMc73H7Hdpx29KaweF6qdcBffgQjjzEjRoC+3CqR0H/Mlm7elfifFQ3+1IpawtKsUhVSL+BN0+ZOUQvsK9N7bUENgjWJmoNSHBjY+e/uSk8PXEiUI3gF6QJE8+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H0mQxzlI; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87CD81F000E9;
-	Tue, 16 Jun 2026 18:57:21 +0000 (UTC)
+	 MIME-Version; b=RY4+rrt+3MLbK6PSIOq5HjOw3WQaK3Jo5kpb4A3kaLaMPRKc/Zm50LKpBy3AlMAzNzjtlRO+Y7oy760Pph7irBq1InKFv9nZ8hfeaXxkkgnAotAYKiyAMGkRxWVoCu+mqHR/9/Weqo/jOsQdvb41uQVmMbs4B2bY04Btr34fIJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KqxRHnTC; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD1691F000E9;
+	Tue, 16 Jun 2026 15:37:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781636242;
-	bh=xPXOc6onNbJdavYNwFCcyvSatHrq0aNQ0Dw0bI6Py0c=;
+	s=korg; t=1781624244;
+	bh=s1iJLS0fn04HFCXhAMlhv+PDv070P+52DGV5XGPJifs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=H0mQxzlIv2R4M5JVFaziiduNLYLfnv2nWCFjeL1bKoI7qjs2MwzBHhbtPBycwRJu6
-	 4ZAD5l26cVz7QZU1oPbqL7s4xC/RHKthtAjd8k0Am0ePq1f1p9pG63nKfnjeOeaxku
-	 vwy1phcqIMTI7tUceRSfjThZN1jUXhYMzGfABVUE=
+	b=KqxRHnTCcLTwQ3Ag81QNqpv2Cc5JhaakBLc3oAtFEnxyTFrmxSgz/v3ACVhZwCqXA
+	 Lo/5FeHsE5YcyO8qJ7v6G+Nf2UTKDgoRiJ5zyuMqkTq93+ksMVJtmaTMIC9FKa+A0d
+	 5Z+3Ksh9qGk3kpN7XQ8Km6RW33fvlmErhSMJKNh8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Zhengchuan Liang <zcliangcn@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Yuqi Xu <xuyq21@lenovo.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Allison Henderson <achender@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10 202/342] net: rds: clear i_sends on setup unwind
+	Jann Horn <jannh@google.com>,
+	Miklos Szeredi <mszeredi@redhat.com>,
+	"Christian Brauner (Amutable)" <brauner@kernel.org>
+Subject: [PATCH 7.0 267/378] fuse: limit FUSE_NOTIFY_RETRIEVE to uptodate folios
 Date: Tue, 16 Jun 2026 20:28:18 +0530
-Message-ID: <20260616145057.600152381@linuxfoundation.org>
+Message-ID: <20260616145124.152289312@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,86 +70,81 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,lenovo.com];
-	TAGGED_FROM(0.00)[bounces-266403-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:yuantan098@gmail.com,m:zcliangcn@gmail.com,m:bird@lzu.edu.cn,m:xuyq21@lenovo.com,m:n05ec@lzu.edu.cn,m:achender@kernel.org,m:kuba@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264122-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:jannh@google.com,m:mszeredi@redhat.com,m:brauner@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lzu.edu.cn:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8D3946949BB
+X-Rspamd-Queue-Id: EC8E56915F9
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuqi Xu <xuyq21@lenovo.com>
+From: Jann Horn <jannh@google.com>
 
-commit 20cf0fb715c41111469577e85e35d15f099473e0 upstream.
+commit 4e3d1b2c48ca6c55f1e9ca7f8dccc76f120f276c upstream.
 
-The RDS IB connection teardown path is written so it can run during
-partial startup and on repeated shutdown attempts. It uses NULL
-pointers to distinguish resources that are still owned from resources
-that have already been released.
+FUSE_NOTIFY_RETRIEVE must be limited to uptodate folios; !uptodate folios
+can contain uninitialized data.
+Since FUSE_NOTIFY_RETRIEVE is intended to only return data that is already
+in the page cache and not wait for data from the FUSE daemon, treat
+!uptodate folios as if they weren't present.
 
-When rds_ib_setup_qp() fails after allocating i_sends but before
-allocating i_recvs, the sends_out path frees i_sends without clearing
-the pointer. A later shutdown pass can still treat that stale pointer
-as a live send ring allocation.
+This only has security impact on systems that don't enable automatic
+zero-initialization of all page allocations via
+CONFIG_INIT_ON_ALLOC_DEFAULT_ON or init_on_alloc=1.
 
-Clear i_sends after vfree() in the error unwind path so the existing
-shutdown logic continues to use the correct ownership state.
-
-Fixes: 3b12f73a5c29 ("rds: ib: add error handle")
 Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Zhengchuan Liang <zcliangcn@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Yuqi Xu <xuyq21@lenovo.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Reviewed-by: Allison Henderson <achender@kernel.org>
-Link: https://patch.msgid.link/5a0f7624bb9845a7b67d26166a150b59e7f394ce.1779632468.git.xuyq21@lenovo.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 2d45ba381a74 ("fuse: add retrieve request")
+Signed-off-by: Jann Horn <jannh@google.com>
+Link: https://patch.msgid.link/20260519-fuse-retrieve-uptodate-v1-1-a7a1912a37f9@google.com
+Acked-by: Miklos Szeredi <mszeredi@redhat.com>
+Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rds/ib_cm.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/fuse/dev.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/net/rds/ib_cm.c
-+++ b/net/rds/ib_cm.c
-@@ -690,6 +690,7 @@ static int rds_ib_setup_qp(struct rds_co
+--- a/fs/fuse/dev.c
++++ b/fs/fuse/dev.c
+@@ -1927,6 +1927,10 @@ static int fuse_retrieve(struct fuse_mou
+ 		folio = filemap_get_folio(mapping, index);
+ 		if (IS_ERR(folio))
+ 			break;
++		if (!folio_test_uptodate(folio)) {
++			folio_put(folio);
++			break;
++		}
  
- sends_out:
- 	vfree(ic->i_sends);
-+	ic->i_sends = NULL;
- 
- ack_dma_out:
- 	rds_dma_hdr_free(rds_ibdev->dev, ic->i_ack, ic->i_ack_dma,
+ 		folio_offset = ((index - folio->index) << PAGE_SHIFT) + offset;
+ 		nr_bytes = min(folio_size(folio) - folio_offset, num);
 
 
 
