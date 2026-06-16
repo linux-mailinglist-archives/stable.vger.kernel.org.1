@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-266349-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264047-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id aU3aEZWcMWq+oAUAu9opvQ
-	(envelope-from <stable+bounces-266349-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:57:25 +0200
+	id vNSPD+1tMWp3jAUAu9opvQ
+	(envelope-from <stable+bounces-264047-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:38:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CB846949A0
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:57:24 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DBA46913BD
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:38:20 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="W7wm/XEf";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266349-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266349-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=p5LLYTWn;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264047-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264047-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9496A31D8BAE
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:52:37 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id BA1DB308D33C
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:30:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41F1247B435;
-	Tue, 16 Jun 2026 18:52:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B7E943D504;
+	Tue, 16 Jun 2026 15:30:45 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19AFA46AEE1;
-	Tue, 16 Jun 2026 18:52:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35DC73CBE8B;
+	Tue, 16 Jun 2026 15:30:44 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781635956; cv=none; b=qk+twE8cl3lkCNQSjOsrS6r0YZfYT//wEeON5rM1J9ogy/yuNFBD1q77I6ZTQ9paONYwlJjkLCXEpFQ/sSAH22VlTjA5gUNguWtizw0T4jbNLkE4NxMjkWnC0s0Po/Ey87GqZlldmrm7WqPXXerrDIkMVPYyLqwPMH1fIsau1kc=
+	t=1781623845; cv=none; b=NSBYBOgSqz+v7BZx5ptSDCqgpxfD835/dOn5LsACGgvl3oNVEXrTww6qKbXqDyIxuXZNgVo/JdERcosEDINsUme9MS90JRP8aif7pl4K24qgP5sspOmNGD+JwaHhn8SUQbQ0VXJ0pzsyB6+4lnatASjc8BkLHHZMoJzuHBKAUk4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781635956; c=relaxed/simple;
-	bh=Lx1ckfmRVlp9yC5mYKJQAw//o3N6yo4szOwMPUiASN0=;
+	s=arc-20240116; t=1781623845; c=relaxed/simple;
+	bh=+v8EG2eZymHfVcT0tyN37My22ARnv24Cf7ExSTOGyGY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N9F6EsTvac54drol9NSFMovDdiUfw3vGpOzMpyxRT+Wa49VEjIfemo7C+GUn7GFmtBW1ms8Y6bxT3NaZFK8tdQVWjI9mznE0woBtJ6Xj+w9VucmRRjE1LOjcikqXsSsmbSvwDgsgFARDTm7sw7OmJboIJacpdfr7VcCWROSTy+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W7wm/XEf; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 010531F000E9;
-	Tue, 16 Jun 2026 18:52:33 +0000 (UTC)
+	 MIME-Version; b=DIydBkz8WeasLE8Y7T/nsOS5HcBFVlSr9/o4/R2pmWul24WDbgk7yn3H991K5IFTbOevyd6xyLakBgA3cWygNvwSsB2L5uJ0lwdLNWfE8V+0xtKa5yLJvfFa8qkM5fSScvpQXeDAuVdMvIu1ZwQxvpbz96tf1F5w5N3reoYv0kk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p5LLYTWn; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 222451F000E9;
+	Tue, 16 Jun 2026 15:30:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781635955;
-	bh=oWTTk0ud1skWDh+GBz8LXKuHXIo0mbdM6DQofqARkFo=;
+	s=korg; t=1781623844;
+	bh=rotieZyJCHj8D/yA4ZPNaJaNn2kUMKAS1bvEOBbslNM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=W7wm/XEfzVLod6W/3RdZp7Di0hhaVZNlPh6i8jUSumfrWf7BL5fzHZ4H4S6iKSqt4
-	 nM2yV37BkQGmKUxSMHBjo8Ng4GtxARVirRkVQXC4/z1m4dOe1zzCtR4qTDIJUG8Kna
-	 9rp9OLpbqk6H4z5JKnwmg8cwK5bxSuFEi6GC0hiw=
+	b=p5LLYTWnk9e9QkUpihlHJQXcvFUajOzE7BAVkDkMrcXrGwV3k8n+UgIfCAkxHYK4L
+	 w4+mePwLKndiw/pPbL0G5pMWfXAfmho04l4NM7J6QapYJMCYvAjqCizI+e2qctH1fj
+	 jxD9t5zQz7m0XGW8ZEjxyJw/jPHLtp6P4nYbAV7A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+f13c19f75e1097abd116@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 147/342] ieee802154: 6lowpan: only accept IPv6 packets in lowpan_xmit()
+	Kyle Zeng <kylebot@openai.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 7.0 212/378] ALSA: timer: Fix UAF at snd_timer_user_params()
 Date: Tue, 16 Jun 2026 20:27:23 +0530
-Message-ID: <20260616145055.020874708@linuxfoundation.org>
+Message-ID: <20260616145121.511580647@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,97 +66,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266349-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-264047-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:syzbot+f13c19f75e1097abd116@syzkaller.appspotmail.com,m:edumazet@google.com,m:miquel.raynal@bootlin.com,m:kuba@kernel.org,m:sashal@kernel.org,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kylebot@openai.com,m:tiwai@suse.de,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,f13c19f75e1097abd116];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,appspotmail.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,openai.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9CB846949A0
+X-Rspamd-Queue-Id: 7DBA46913BD
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 3a5f3f7aff18bcc36a57839cf50cf0cc8de707f3 ]
+commit 053a401b592be424fea9d57c789f66cd5d8cec11 upstream.
 
-The aoe driver (or similar) generates a non-IPv6 packet
-(e.g., ETH_P_AOE) and queues it for transmission via dev_queue_xmit()
-on a 6LoWPAN interface (configured by the user or test case).
+At releasing a timer object, e.g. when a userspace timer
+(CONFIG_SND_UTIMER) gets closed and snd_timer_free() is called, it
+tries to detach the timer instances and release the resources.
+However, it's still possible that other in-flight tasks are holding
+the timer instance where the to-be-deleted timer object is associated,
+and this may lead to racy accesses.
 
-Since the packet is not IPv6, the 6LoWPAN header_ops->create function
-(lowpan_header_create or header_create) returns early without initializing
-the lowpan_addr_info structure in the skb headroom.
+Fortunately, most of ioctls dealing with the timer instance list
+already have the protection with register_mutex, and this also avoids
+such races.  But, SNDRV_TIMER_IOCTL_PARAMS isn't protected, hence the
+concurrent ioctl may lead to use-after-free.
 
-In the transmit function (lowpan_xmit), the driver calls lowpan_header
-(or setup_header) which unconditionally copies and uses the lowpan_addr_info
-from the headroom, which contains uninitialized data.
+This patch just adds the guard with register_mutex to protect
+snd_timer_user_params() for covering the code path as a quick
+workaround.  It's no hot-path but rather a rarely issued ioctl, so the
+performance penalty doesn't matter.
 
-Fix this by dropping non IPv6 packets.
-
-A similar fix is needed in net/bluetooth/6lowpan.c bt_xmit().
-
-Fixes: 4dc315e267fe ("ieee802154: 6lowpan: move transmit functionality")
-Reported-by: syzbot+f13c19f75e1097abd116@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/6a1fd763.278b5b03.2bcf39.0049.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://patch.msgid.link/20260603072955.4032221-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Kyle Zeng <kylebot@openai.com>
+Tested-by: Kyle Zeng <kylebot@openai.com>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20260606161145.1933447-2-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ieee802154/6lowpan/tx.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ sound/core/timer.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/ieee802154/6lowpan/tx.c b/net/ieee802154/6lowpan/tx.c
-index 0c07662b44c0ca..4df76ff50699ed 100644
---- a/net/ieee802154/6lowpan/tx.c
-+++ b/net/ieee802154/6lowpan/tx.c
-@@ -255,6 +255,11 @@ netdev_tx_t lowpan_xmit(struct sk_buff *skb, struct net_device *ldev)
+--- a/sound/core/timer.c
++++ b/sound/core/timer.c
+@@ -1791,6 +1791,7 @@ static int snd_timer_user_params(struct
+ 	struct snd_timer *t;
+ 	int err;
  
- 	pr_debug("package xmit\n");
- 
-+	if (skb->protocol != htons(ETH_P_IPV6)) {
-+		kfree_skb(skb);
-+		return NET_XMIT_DROP;
-+	}
-+
- 	WARN_ON_ONCE(skb->len > IPV6_MIN_MTU);
- 
- 	/* We must take a copy of the skb before we modify/replace the ipv6
--- 
-2.53.0
-
++	guard(mutex)(&register_mutex);
+ 	tu = file->private_data;
+ 	if (!tu->timeri)
+ 		return -EBADFD;
 
 
 
