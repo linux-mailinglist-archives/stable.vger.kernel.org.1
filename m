@@ -1,68 +1,61 @@
-Return-Path: <stable+bounces-266407-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264125-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 3exKLRqeMWqQoQUAu9opvQ
-	(envelope-from <stable+bounces-266407-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:03:54 +0200
+	id 8d6IHAVvMWrjjAUAu9opvQ
+	(envelope-from <stable+bounces-264125-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:43:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12A43694B49
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:03:54 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E281269152E
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:43:00 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=0H1u2lEb;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266407-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266407-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=1DctTfuo;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264125-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264125-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B419531ECA2A
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:57:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A74F8301DACB
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:37:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CA8A47CC9C;
-	Tue, 16 Jun 2026 18:57:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E801744CAE6;
+	Tue, 16 Jun 2026 15:37:43 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D5FD3D810C;
-	Tue, 16 Jun 2026 18:57:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA1393AB267;
+	Tue, 16 Jun 2026 15:37:42 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781636263; cv=none; b=ss0eTJ7lO5jK37q6OIRprC8HISZj3SyyUHNpVOAisBRaAt0pqMx97u2Xgb1lFSWh8T2CUVNCmwMKOSZV/iouE95NTtLwk1s/You3f8CF+zVxdzUPQM3fNDu17LkvPQZ2enRc3LnJbf3vnfVm6rS85yHl9o/HkjCYMqzWwkv+RAc=
+	t=1781624263; cv=none; b=UY269gfRQSTBShlk6g6d6FF0v1nQEO/AR33OdMC1t9DvhfFQGDafLLD98Hy79YgAsAg174kpLHiRIhaUtdr8rJ3xuJaKJvnOqQl4Kyh3Dh5oXIb2pd8F4DMx40b9NUo4xqM4th7aHlC1GdqBU2Onf1Lwq2Cp3fY6zeX0ry+DJK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781636263; c=relaxed/simple;
-	bh=A79wyt1sFsTayb+Y6a5anQ5XbfJ7TQqct9Z4knlwJXk=;
+	s=arc-20240116; t=1781624263; c=relaxed/simple;
+	bh=Wxzh7ixPfitfX0MSEDtKI6K1LHZ4icUok+jr+YR2Qsk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K/hMK+byRd/nnaefbSxbKvRY1Fu1upmC24MhdRUKdsnnyoHzkEHrPevUl0v+6c0g6jYIPQu8DAPy9ma4MQZQGrhBJmAs5xfzeodV2chqU5Z/YMGWFSFtPI8RhHnCZt7YqX72zYLrM96JXobHLSs2moUBUKtxQOUHaHskqTkrmDs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0H1u2lEb; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10D691F000E9;
-	Tue, 16 Jun 2026 18:57:41 +0000 (UTC)
+	 MIME-Version; b=AqKHhcykDPN4141B7s3PM3eXig0rcGZkGRyJU8QAFsL2x+Iww3gHTVBb62gaQaPC3M+VwzEjLNz9P73wR76jS4ULn7M/oCRoIoizziQpNvt89iraZKYxIUV6jJAPs/VPhPEMF3d6G7QIAAlRuI4QiZTX9+2QhueX7c1e5kci3bQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1DctTfuo; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FDC81F000E9;
+	Tue, 16 Jun 2026 15:37:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781636262;
-	bh=St4KQZRRvQNATfiASgfiBdU2ZU3pwbTVyPYaS5VqEQs=;
+	s=korg; t=1781624262;
+	bh=wQDVSdHSeeOrLkjNMzkDR3FgNLigqfzwBYV2/cSS+dw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=0H1u2lEbNCsylOfuWinS3X5IRzu2syKYSlp1dJyb7khcJbfhZJf8aa6roex2ZkIEi
-	 0UYiV5iJofnZUSRD0FUi/8U4PGhMXGSgvmZPnt2IRQ6NRJZ+j+CdqFzQgOxnuBnaNE
-	 iefwTe6ie8dSeN9MZ1Lj6Z+KdGA5Lm8A3lTTYBgc=
+	b=1DctTfuo6MitJogqFGzxF2AjGhFdz2IwCcPCZW6+UPTZ+Nj82w1OWkBMGEFSIkB+7
+	 uaIOz8grcvjmlkWJcq7WfF4iqoVFwshNyaXZZFdi7pX0FcvRGoxuyZjZgNB+viGn/L
+	 BWJppbNp+UETU9mE4vIfEmiDu0zWi0PXFaOoyXnw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Zhengchuan Liang <zcliangcn@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Zhao Zhang <zzhan461@ucr.edu>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Xin Long <lucien.xin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10 205/342] sctp: diag: reject stale associations in dump_one path
+	Carlos Song <carlos.song@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Andi Shyti <andi.shyti@kernel.org>
+Subject: [PATCH 7.0 270/378] i2c: imx: fix clock and pinctrl state inconsistency in runtime PM
 Date: Tue, 16 Jun 2026 20:28:21 +0530
-Message-ID: <20260616145057.738342430@linuxfoundation.org>
+Message-ID: <20260616145124.322253930@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,120 +67,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266407-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:yuantan098@gmail.com,m:yifanwucs@gmail.com,m:tomapufckgml@gmail.com,m:zcliangcn@gmail.com,m:bird@lzu.edu.cn,m:zzhan461@ucr.edu,m:n05ec@lzu.edu.cn,m:lucien.xin@gmail.com,m:kuba@kernel.org,m:lucienxin@gmail.com,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,ucr.edu];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-264125-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:carlos.song@nxp.com,m:Frank.Li@nxp.com,m:andi.shyti@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ucr.edu:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,lzu.edu.cn:email,msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 12A43694B49
+X-Rspamd-Queue-Id: E281269152E
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhao Zhang <zzhan461@ucr.edu>
+From: Carlos Song <carlos.song@nxp.com>
 
-commit 5eba3e48d78edd7551b992cb7ba687019b3a78da upstream.
+commit 8783fb8031799f1230997c16df8c8dce9fcd1841 upstream.
 
-The SCTP exact sock_diag lookup can hold a transport reference, block on
-lock_sock(sk), and then resume after sctp_association_free() has marked
-the association dead and freed its bind address list.
+In i2c_imx_runtime_suspend(), the clock is disabled before switching
+the pinctrl state to sleep. If pinctrl_pm_select_sleep_state() fails,
+the runtime suspend is aborted but the clock remains disabled, causing
+a system crash when the hardware is subsequently accessed.
 
-When that happens, inet_assoc_attr_size() and
-inet_diag_msg_sctpasoc_fill() can still dereference association state
-that is no longer valid for reporting. In particular,
-inet_diag_msg_sctpasoc_fill() may read an empty bind-address list as a
-real sctp_sockaddr_entry and trigger an out-of-bounds read from
-unrelated association memory.
+Fix this by switching the pinctrl state before disabling the clock so
+that a pinctrl failure leaves the clock enabled and the hardware
+accessible.
 
-Reject the association after taking the socket lock if it has been
-reaped or detached from the endpoint, and report the lookup as stale.
-This keeps the exact dump-one path from formatting torn association
-state.
+In i2c_imx_runtime_resume(), restore the pinctrl state back to sleep
+if clk_enable() fails to keep the consistent.
 
-Fixes: 8f840e47f190 ("sctp: add the sctp_diag.c file")
-Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Zhengchuan Liang <zcliangcn@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Zhao Zhang <zzhan461@ucr.edu>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Acked-by: Xin Long <lucien.xin@gmail.com>
-Link: https://patch.msgid.link/fac6043fa20a2ff68e12958c431836f692c51268.1780113823.git.zzhan461@ucr.edu
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 576eba03c994 ("i2c: imx: switch different pinctrl state in different system power status")
+Signed-off-by: Carlos Song <carlos.song@nxp.com>
+Cc: <stable@vger.kernel.org> # v6.14+
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/20260521065038.2954998-1-carlos.song@oss.nxp.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sctp/diag.c |   17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ drivers/i2c/busses/i2c-imx.c |   15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
---- a/net/sctp/diag.c
-+++ b/net/sctp/diag.c
-@@ -266,15 +266,15 @@ static int sctp_sock_dump_one(struct sct
+--- a/drivers/i2c/busses/i2c-imx.c
++++ b/drivers/i2c/busses/i2c-imx.c
+@@ -1892,9 +1892,15 @@ static void i2c_imx_remove(struct platfo
+ static int i2c_imx_runtime_suspend(struct device *dev)
+ {
+ 	struct imx_i2c_struct *i2c_imx = dev_get_drvdata(dev);
++	int ret;
++
++	ret = pinctrl_pm_select_sleep_state(dev);
++	if (ret)
++		return ret;
  
- 	lock_sock(sk);
- 
--	rep = nlmsg_new(inet_assoc_attr_size(sk, assoc), GFP_KERNEL);
--	if (!rep) {
--		release_sock(sk);
--		return -ENOMEM;
-+	if (ep != assoc->ep || assoc->base.dead) {
-+		err = -ESTALE;
-+		goto out_unlock;
- 	}
- 
--	if (ep != assoc->ep) {
--		err = -EAGAIN;
--		goto out;
-+	rep = nlmsg_new(inet_assoc_attr_size(sk, assoc), GFP_KERNEL);
-+	if (!rep) {
-+		err = -ENOMEM;
-+		goto out_unlock;
- 	}
- 
- 	err = inet_sctp_diag_fill(sk, assoc, rep, req, sk_user_ns(NETLINK_CB(skb).sk),
-@@ -289,8 +289,9 @@ static int sctp_sock_dump_one(struct sct
- 	return nlmsg_unicast(sock_net(skb->sk)->diag_nlsk, rep, NETLINK_CB(skb).portid);
- 
- out:
--	release_sock(sk);
- 	kfree_skb(rep);
-+out_unlock:
-+	release_sock(sk);
- 	return err;
+ 	clk_disable(i2c_imx->clk);
+-	return pinctrl_pm_select_sleep_state(dev);
++
++	return 0;
  }
  
+ static int i2c_imx_runtime_resume(struct device *dev)
+@@ -1907,10 +1913,13 @@ static int i2c_imx_runtime_resume(struct
+ 		return ret;
+ 
+ 	ret = clk_enable(i2c_imx->clk);
+-	if (ret)
++	if (ret) {
+ 		dev_err(dev, "can't enable I2C clock, ret=%d\n", ret);
++		pinctrl_pm_select_sleep_state(dev);
++		return ret;
++	}
+ 
+-	return ret;
++	return 0;
+ }
+ 
+ static int i2c_imx_suspend(struct device *dev)
 
 
 
