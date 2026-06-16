@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-264829-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265373-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id lML9MF9/MWqNkwUAu9opvQ
-	(envelope-from <stable+bounces-264829-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:52:47 +0200
+	id WiQ/D6+HMWoglwUAu9opvQ
+	(envelope-from <stable+bounces-265373-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:28:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A5356928A3
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:52:47 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 045FA693294
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:28:15 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=hN436gcn;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264829-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264829-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=zHLWSyeJ;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265373-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265373-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 136B030555CE
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:41:52 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 836A6303E846
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:27:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28D4A47799B;
-	Tue, 16 Jun 2026 16:41:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A94047AF65;
+	Tue, 16 Jun 2026 17:27:48 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4EDD4508E4;
-	Tue, 16 Jun 2026 16:41:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CD46478E53;
+	Tue, 16 Jun 2026 17:27:44 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781628108; cv=none; b=YNlPN6faESQpWl0beQPz2fOayEn1DZhYaTvyXpzSIayKO1nlidBAecqG/9hNOYWZirIz04Di+L+14opnHzyogIDMTuZsK1xczgITH/LwCZpt1IIKqEE3bQQmMNIYM+qBOS92mddpPSoH9Xv/Dz2JDTGPQNbaX98oTX4SJyaPjsI=
+	t=1781630867; cv=none; b=mnYOzKp6irag2uZ0dTbQDY22fCTxeMUscYgFI2wt4NU8Kilnmoj4lTtF3pU6Q8/k1AIivKK2gWtmrha/JblI5tgM02f172vT7mGX99nN98B2FkvxZyRbLBdvkJHt6o6V33QL++a/EzizhuEa35U004/E1Eatu50Hx0uHGHaH5jY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781628108; c=relaxed/simple;
-	bh=pCZ3z7cGhBSRLLdq0KYULTKgnKv47hPY80nCFijrTzo=;
+	s=arc-20240116; t=1781630867; c=relaxed/simple;
+	bh=QF37R6HY+yvUoVzLyFyp0iTLGyNxEKuHRobGQeqcL0Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VJbHbiqNNrLYqFgLCA1STmaEiSCIPyjrl0TpJAEv9HzoIYG0yNTDyX4JnmnBLs8sNfk9JiDe7adcIrrfWlLnrp751pQu5psV8D3P6MHXqcfdpjC7b2BSGh1CinE4tHhQOKDgc1sM2t/d8KW07VjeWotEo/vRJU8h8PpOmhv71sg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hN436gcn; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4A471F000E9;
-	Tue, 16 Jun 2026 16:41:46 +0000 (UTC)
+	 MIME-Version; b=VpVC4hZfs0o3ZlTdHQ78JGPvC488wb7CdPkk1jWCILZW10SQTabeYChqqnUZE5WxwNEbBiWHsX2u2yzIx11//Y8iZUr1h/mU1vHCT8EWTpdKObuE8/26U6auYk0CgE5YZDxYVsPxs03AxDUFehOSk5NnZwXkce9T7mCA8dovy/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zHLWSyeJ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D7161F000E9;
+	Tue, 16 Jun 2026 17:27:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781628107;
-	bh=Z5YD2BwxtPeeLhfyl1WMBg1sMcdHLe3LYjihjuyxnyI=;
+	s=korg; t=1781630864;
+	bh=Tr8RXVdgfULstKpo4fjU3XgGqNBRMq/9DPFOCnfVfLw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hN436gcnnV3zr86RkXMstbBX2DBqW3/VU4TWldTB3PZaFTryGLad+t+1phjLLHUqt
-	 TfvGeVRG03MH9UU4vzjMe0H0F0pvOZtdEncjl9KPLUQ14FACw65IJg9ZkQXgIQr8ci
-	 LejA1VsizK6waAz12tPimOBsoeEi2XMmDvfW20dw=
+	b=zHLWSyeJ77iqO7jHk89QhGKVQFEitTE+8DLLNQv7u7iM0QYfdhBts1ce4/7TSJKLp
+	 45bkbGwaBjJ9LK4AMDbSwEKWYaM55eXmcdQl8Fxo7jO1NwGJ9dCKSucgQueMrkWDyc
+	 zPp8tDt3HIVSdoTu2X8xIWTPhvJjldNIdZuKbijk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damiano Melotti <melotti@google.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 032/452] tunnels: do not assume transport header in iptunnel_pmtud_check_icmp()
+	Aldo Conte <aldocontelk@gmail.com>,
+	Jonathan Cameron <jic23@kernel.org>
+Subject: [PATCH 6.1 112/522] iio: light: cm3323: fix reg_conf not being initialized correctly
 Date: Tue, 16 Jun 2026 20:24:19 +0530
-Message-ID: <20260616145119.601658576@linuxfoundation.org>
+Message-ID: <20260616145131.189152446@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,104 +68,105 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-265373-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:aldocontelk@gmail.com,m:jic23@kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264829-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:melotti@google.com,m:edumazet@google.com,m:kuniyu@google.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 0A5356928A3
+X-Rspamd-Queue-Id: 045FA693294
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Aldo Conte <aldocontelk@gmail.com>
 
-[ Upstream commit 509323077ef79a26ba0c60bb556e45c12c398b2d ]
+commit 1f4f0bcc5255dec5c4c3a1551bf49d8c33b69b20 upstream.
 
-In some cases, iptunnel_pmtud_check_icmp() can be called while
-skb transport header is not set.
+The code stores the return value of i2c_smbus_write_word_data()
+in data->reg_conf; however, this value represents the result
+of the write operation and not the value actually written to
+the configuration register. This meant that the contents of
+data->reg_conf did not truly reflect the contents
+of the hardware register.
 
-This triggers an out-of-bound access, because
-(typeof(skb->transport_header))~0U is 65535.
+Instead, save the value of the register before the write
+and use this value in the I2C write.
 
-Access the icmp header based on IPv4 network header,
-after making sure icmp->type is present in skb linear part.
+The bug was found by code inspection: i2c_smbus_write_word_data()
+returns 0 on success, not the value written to the register.
 
-Note that iptunnel_pmtud_check_icmpv6()) is fine.
+Tested using i2c-stub on a Raspberry Pi 3B running a custom 6.19.10
+kernel. Before loading the driver, the configuration register 0x00
+CM3323_CMD_CONF was populated with 0x0030 using
+`i2cset -y 11 0x10 0x00 0x0030 w`, encoding an integration time of 320ms
+in bits[6:4].
 
-Fixes: 4cb47a8644cc ("tunnels: PMTU discovery support for directly bridged IP packets")
-Reported-by: Damiano Melotti <melotti@google.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20260522115512.1519110-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Due to incorrect initialization of data->reg_conf in
+cm3323_init(), the print of integration_time returns 0.040000
+instead of the expected 0.320000. This happens because the read of the
+integration_time depends on cm3323_get_it_bits() that is based on the
+value of data->reg_conf, which is erroneously set to 0.
+
+With this fix applied, data->reg_conf correctly saves 0x0030 after init
+and the successive integration_time reports 0.320000 as expected.
+
+Fixes: 8b0544263761 ("iio: light: Add support for Capella CM3323 color sensor")
+Cc: stable@vger.kernel.org
+Signed-off-by: Aldo Conte <aldocontelk@gmail.com>
+Signed-off-by: Jonathan Cameron <jic23@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/ip_tunnel_core.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ drivers/iio/light/cm3323.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/net/ipv4/ip_tunnel_core.c b/net/ipv4/ip_tunnel_core.c
-index 5fb437f040ace7..9f6f1b435d8d72 100644
---- a/net/ipv4/ip_tunnel_core.c
-+++ b/net/ipv4/ip_tunnel_core.c
-@@ -262,7 +262,6 @@ static int iptunnel_pmtud_build_icmp(struct sk_buff *skb, int mtu)
-  */
- static int iptunnel_pmtud_check_icmp(struct sk_buff *skb, int mtu)
- {
--	const struct icmphdr *icmph = icmp_hdr(skb);
- 	const struct iphdr *iph = ip_hdr(skb);
+--- a/drivers/iio/light/cm3323.c
++++ b/drivers/iio/light/cm3323.c
+@@ -89,15 +89,14 @@ static int cm3323_init(struct iio_dev *i
  
- 	if (mtu < 576 || iph->frag_off != htons(IP_DF))
-@@ -273,9 +272,17 @@ static int iptunnel_pmtud_check_icmp(struct sk_buff *skb, int mtu)
- 	    ipv4_is_lbcast(iph->saddr)  || ipv4_is_multicast(iph->saddr))
- 		return 0;
+ 	/* enable sensor and set auto force mode */
+ 	ret &= ~(CM3323_CONF_SD_BIT | CM3323_CONF_AF_BIT);
++	data->reg_conf = ret;
  
--	if (iph->protocol == IPPROTO_ICMP && icmp_is_err(icmph->type))
--		return 0;
-+	if (iph->protocol == IPPROTO_ICMP) {
-+		const struct icmphdr *icmph;
+-	ret = i2c_smbus_write_word_data(data->client, CM3323_CMD_CONF, ret);
++	ret = i2c_smbus_write_word_data(data->client, CM3323_CMD_CONF, data->reg_conf);
+ 	if (ret < 0) {
+ 		dev_err(&data->client->dev, "Error writing reg_conf\n");
+ 		return ret;
+ 	}
  
-+		if (!pskb_network_may_pull(skb, iph->ihl * 4 +
-+						offsetofend(struct icmphdr, type)))
-+			return 0;
-+		iph = ip_hdr(skb);
-+		icmph = (void *)iph + iph->ihl * 4;
-+		if (icmp_is_err(icmph->type))
-+			return 0;
-+	}
- 	return iptunnel_pmtud_build_icmp(skb, mtu);
+-	data->reg_conf = ret;
+-
+ 	return 0;
  }
  
--- 
-2.53.0
-
 
 
 
