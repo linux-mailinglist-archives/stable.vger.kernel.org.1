@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-265201-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266553-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id hLjXMLaFMWpJlgUAu9opvQ
-	(envelope-from <stable+bounces-265201-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:19:50 +0200
+	id gyzkDpWfMWopogUAu9opvQ
+	(envelope-from <stable+bounces-266553-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:10:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68BEB693012
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:19:50 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4D7D694D2D
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:10:12 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=F8lid7ui;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265201-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-265201-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=eUQ2VTEB;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266553-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266553-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7E2893096A92
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:13:07 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0A2523050F20
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:09:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E0AF43D4E9;
-	Tue, 16 Jun 2026 17:13:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 717CA3DE422;
+	Tue, 16 Jun 2026 19:09:47 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A3F436E47E;
-	Tue, 16 Jun 2026 17:13:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5735935DA78;
+	Tue, 16 Jun 2026 19:09:46 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781629984; cv=none; b=R/drklC8bgKHJIz+0n1xY+EsErF3FxCz0jOfMp2yB8AG76Hnf9HYHov8en8e+X4F6GVhgCuP87zVrIHiQt37Uu1jd03klKNGl7L6znu1QwL7vTmZ3JjKHe8n6wzm8l8T3aevymxvordDJGuW/0hl7xoGlDGuC1xK+M+/PIxfLy8=
+	t=1781636987; cv=none; b=dzn2+Y4TUKt3YTLEgx9/6ah7FlIJ8KhxDS/iZS8aPnrkQosgYJW0ZOrF4dVYstQutWP2U7Qw6kK3awVTOmMff61g9sUQIC03Tu8wWFK/UruMchZnul31u3aAK4c3TV85LphfkV2MdCnOJ48gJM0WMKSUucCtSbSy0n3sb2EutuM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781629984; c=relaxed/simple;
-	bh=j7y1EkcRqxfTF/Cd4SskjXTgboYqobVg9nga2Did+Wo=;
+	s=arc-20240116; t=1781636987; c=relaxed/simple;
+	bh=CYl+JudXYw9QPWHxVMZI777FEZVmWqLhmdJivIMb7ko=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MpUMxUH0UeHDqjPeL4rb9m7pXYAyePNBpWY3TDzUMkHb0QECZodZ7iMNlppTYaVvyK8UEegT43U0g4NdKpa2IMSsTnec01SgMeoTEY9lOewUc+VxhM8a04jDrJsmJaWAq/bDgSJ/MP+gwYgCxjQVPx8PdXqGUJ3euH0+g1Tuj5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F8lid7ui; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC71D1F000E9;
-	Tue, 16 Jun 2026 17:13:01 +0000 (UTC)
+	 MIME-Version; b=UjHkGM9P9chIZ4ZnqfLqNUnGoZrqwwPtuZOUPPk5RlP+R0xjExQ76nxGd1jGtVA0Rp6tKf4Z4tU850IC9RbtqGKvaonxdjCk+lUXgzes5PAcXIC5R33PuOM0zyP0l1bHy2sXbucNmJNdDT0oOaohDKAp+CAvrrCH64lR7k+yGfk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eUQ2VTEB; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 599461F000E9;
+	Tue, 16 Jun 2026 19:09:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781629983;
-	bh=YtPxw4geeFgODUwe3HnyXocR1ODzatz+waBOZ88qD9g=;
+	s=korg; t=1781636986;
+	bh=IdejpBWN5C0rFAG6x6AM1zvK6myP6fnsGVJFI/nqBrs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=F8lid7uicUMfydP4g+FZO7yJHlIBdqtgV3PWgQkcQNgBLCDIVUJ67pU6veRkoVaZS
-	 sDvxG80syG6G3Nyj7kt4IfZHZ6T3hBbxkC1MR1MxkU/kQGKWL+DiiMUsc78wDjvRc3
-	 YN5VwjPNQRGMiAPEs7nD6tcPn/HdTbpXD1LOzZ/k=
+	b=eUQ2VTEBGAUog6P+wB7x9WJEiioQHc0rdtn9+FVh7W8zHBY6eac8YotluyElPoP9c
+	 CRiYZ2Fj/Gm7UWVV+ZhjJQIjbXcGLToWE2ZUXVpPV+Uedb/BZi7n0szxvuLdPhT9dN
+	 YrgnmdGbNa6J5RgpTAIuLUD1QBlvX53Rb8hC2/WA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Iurman <justin.iurman@gmail.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Antoniu Miclaus <antoniu.miclaus@analog.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <jic23@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 390/452] ipv6: ioam: add NULL check for idev in ipv6_hop_ioam()
-Date: Tue, 16 Jun 2026 20:30:17 +0530
-Message-ID: <20260616145137.408384987@linuxfoundation.org>
+Subject: [PATCH 5.10 322/342] iio: chemical: scd30: fix division by zero in write_raw
+Date: Tue, 16 Jun 2026 20:30:18 +0530
+Message-ID: <20260616145103.564003443@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,114 +68,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nvidia.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-265201-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:justin.iurman@gmail.com,m:idosch@nvidia.com,m:kuba@kernel.org,m:sashal@kernel.org,m:justiniurman@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-266553-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:antoniu.miclaus@analog.com,m:Stable@vger.kernel.org,m:jic23@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,nvidia.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,analog.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 68BEB693012
+X-Rspamd-Queue-Id: A4D7D694D2D
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Iurman <justin.iurman@gmail.com>
+From: Antoniu Miclaus <antoniu.miclaus@analog.com>
 
-[ Upstream commit d4ea0dfd75011b78cebf3808f98ac4c4f51a6fb9 ]
+[ Upstream commit 5aba4f94b225617a55fed442a70329b2ee19c0a5 ]
 
-Reported by Sashiko:
+Add a zero check for val2 before using it as a divisor when setting the
+sampling frequency. A user writing a zero fractional part to the
+sampling_frequency sysfs attribute triggers a division by zero in the
+kernel.
 
-The function ipv6_hop_ioam() accesses
-__in6_dev_get(skb->dev)->cnf.ioam6_enabled without validating the returned
-idev pointer. Because addrconf_ifdown() can concurrently clear dev->ip6_ptr
-via RCU, __in6_dev_get() can return NULL during interface teardown, which
-could cause a NULL pointer dereference when processing an IOAM Hop-by-Hop
-option.
-
-Let's add a check and use SKB_DROP_REASON_IPV6DISABLED accordingly.
-
-Fixes: 9ee11f0fff20 ("ipv6: ioam: Data plane support for Pre-allocated Trace")
-Cc: stable@vger.kernel.org
-Signed-off-by: Justin Iurman <justin.iurman@gmail.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20260517183059.29140-1-justin.iurman@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 64b3d8b1b0f5 ("iio: chemical: scd30: add core driver")
+Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <jic23@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/exthdrs.c |   15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ drivers/iio/chemical/scd30_core.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/ipv6/exthdrs.c
-+++ b/net/ipv6/exthdrs.c
-@@ -923,16 +923,27 @@ static bool ipv6_hop_ra(struct sk_buff *
+--- a/drivers/iio/chemical/scd30_core.c
++++ b/drivers/iio/chemical/scd30_core.c
+@@ -257,7 +257,7 @@ static int scd30_write_raw(struct iio_de
+ 	guard(mutex)(&state->lock);
+ 	switch (mask) {
+ 	case IIO_CHAN_INFO_SAMP_FREQ:
+-		if (val)
++		if (val || !val2)
+ 			return -EINVAL;
  
- static bool ipv6_hop_ioam(struct sk_buff *skb, int optoff)
- {
-+	enum skb_drop_reason drop_reason;
- 	struct ioam6_trace_hdr *trace;
- 	struct ioam6_namespace *ns;
-+	struct inet6_dev *idev;
- 	struct ioam6_hdr *hdr;
- 
-+	drop_reason = SKB_DROP_REASON_IP_INHDR;
-+
- 	/* Bad alignment (must be 4n-aligned) */
- 	if (optoff & 3)
- 		goto drop;
- 
-+	/* Does the device still have IPv6 configuration? */
-+	idev = __in6_dev_get(skb->dev);
-+	if (!idev) {
-+		drop_reason = SKB_DROP_REASON_IPV6DISABLED;
-+		goto drop;
-+	}
-+
- 	/* Ignore if IOAM is not enabled on ingress */
--	if (!READ_ONCE(__in6_dev_get(skb->dev)->cnf.ioam6_enabled))
-+	if (!READ_ONCE(idev->cnf.ioam6_enabled))
- 		goto ignore;
- 
- 	/* Truncated Option header */
-@@ -982,7 +993,7 @@ ignore:
- 	return true;
- 
- drop:
--	kfree_skb_reason(skb, SKB_DROP_REASON_IP_INHDR);
-+	kfree_skb_reason(skb, drop_reason);
- 	return false;
- }
- 
+ 		val = 1000000000 / val2;
 
 
 
