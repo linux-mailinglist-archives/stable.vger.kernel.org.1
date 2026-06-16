@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-265949-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264963-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 0qvKMzqTMWqznAUAu9opvQ
-	(envelope-from <stable+bounces-265949-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:17:30 +0200
+	id y3FUI02AMWoTlAUAu9opvQ
+	(envelope-from <stable+bounces-264963-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:56:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65A08693FE7
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:17:30 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D620692998
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:56:45 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Hny2Zu7B;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265949-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-265949-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ZMYWhDPL;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264963-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264963-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6E7E330449CE
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:17:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A0F363016285
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:53:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A53C93D75CE;
-	Tue, 16 Jun 2026 18:17:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 851CD1C5D72;
+	Tue, 16 Jun 2026 16:53:31 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F1E63CEBBD;
-	Tue, 16 Jun 2026 18:17:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FA7847279B;
+	Tue, 16 Jun 2026 16:53:30 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781633846; cv=none; b=iMkPbX7DiJ2O5cmPmORurduKxQ7wYLjzcpOkgxTN9oNr3d44uOEFcoYQFHtHeWxGvA1CUPFaNpcRuRKWHf7FaOMO0aGfOUTL1HkmikAyNSRivlYp9IuNdkG+P+atGEy8OJy4b/otTzMsOKS6EbKaGQeYHzHRFSgMgrxsGL6Lpz8=
+	t=1781628811; cv=none; b=hIVODz/YNk9WQd1+8DWtoeT3ePiqVG9g5vy/0uvujbEUvkADyKX36Z/DD7Ko8I8zhrrqVJOed0gQ9sZ6zEUJGYlMmu9bzQaZWrzuGCm7DfGae0UE9wgYn5oedsLrRjWilkul/33ODR0AzkUvyfjc0hTg5da4hySfNzdFNM0muV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781633846; c=relaxed/simple;
-	bh=xhQtiLHL3B+jHnqSoOvyMW2bk3bNbDvwwQdtuwJvEdI=;
+	s=arc-20240116; t=1781628811; c=relaxed/simple;
+	bh=f6rZ9wX6WJJJLyBnAPpQ3iqlJft0ViqHrrcG/gzoGf8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o1sUS0Qt1cExAL1exLxblcMv6PL54fUXHkOpvZTjj237KCrEejji317afbNT0BuNBW9s3G4x2YVyB8UpEwzLCjMbTCwLCmNrDF7t37yPt6tSDm46cMMLFBzo0MtuvkSx0n+BUgd8DWe7pu3J+QK6m5oxSdF9VMjgJtKV5Zw5G0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hny2Zu7B; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 591B21F000E9;
-	Tue, 16 Jun 2026 18:17:24 +0000 (UTC)
+	 MIME-Version; b=BDPnpHeYG7qoHj1+5CeBhY1igV/SZphUs5Pqq/n1UTo2Huc1ykBE7vwZANX0DnibUANA/W0B9dL57Qgksborr+SrBPGV+DTtluskECm2J7P1J61FWqwTMoa6kjPLkXjh/LQlj1qH2dJIDUjkrIGn4pL33ogiXOW/BZy4M4XsA8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZMYWhDPL; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39B801F000E9;
+	Tue, 16 Jun 2026 16:53:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781633845;
-	bh=HbyH/BqpI28WCKSDy/CMPzn0irlNlQ028SEXyk3sQVk=;
+	s=korg; t=1781628810;
+	bh=E/0isasNZXhrMqOw1BqOfOLho1KwhaqgKcj9pe7xSS0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Hny2Zu7B0C8qC6ojIUQFAY4KQdmBifBtn2BJA8IQ6+aoLRvEjD5RMh/MyZMU8yxcz
-	 QL9BC3we0rpyOdkxSiKEosfiMiLhOvQY8bIFFwcdIcwiw59SGGIVVMpW1tnx9tQsOB
-	 eP+T0Ktkr6UvEZg6nkNdCwZaliG2w0aHI2d2mzOo=
+	b=ZMYWhDPLk2HrHBMsj5EP4LLK5L5S1I+iOdGMeZnR3Ur1Q8MrKU/17SoAlIPBE2I4A
+	 TY0y2e4y5N9eTxX3n5HQTlrKk1oq4kuplWLmjOHddmkMU0BRBP1CUheqAZOqmZ6O0E
+	 yH1Tacjb3ORzWr85rw9g4A2YH5zJhniBIQlRcpd8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guangshuo Li <lgs201920130244@gmail.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 155/411] dm cache policy smq: check allocation under invalidate lock
+	stable <stable@kernel.org>,
+	Johan Hovold <johan@kernel.org>,
+	Guangshuo Li <lgs201920130244@gmail.com>
+Subject: [PATCH 6.6 166/452] usb: gadget: f_hid: fix device reference leak in hidg_alloc()
 Date: Tue, 16 Jun 2026 20:26:33 +0530
-Message-ID: <20260616145108.692471376@linuxfoundation.org>
+Message-ID: <20260616145126.583421411@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,21 +72,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-265949-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:lgs201920130244@gmail.com,m:mpatocka@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264963-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:johan@kernel.org,m:lgs201920130244@gmail.com,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com,kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -99,80 +99,62 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 65A08693FE7
+X-Rspamd-Queue-Id: 1D620692998
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Guangshuo Li <lgs201920130244@gmail.com>
 
-[ Upstream commit d3f0a606b9f278ece8a0df626ded9c4044071235 ]
+commit 4f88d65def6f3c90121601b4f62a4c967f3063a6 upstream.
 
-commit 2d1f7b65f5de ("dm cache policy smq: fix missing locks in
-invalidating cache blocks") added mq->lock around the destructive part of
-smq_invalidate_mapping(), but left the e->allocated check outside the
-critical section.
+hidg_alloc() initializes hidg->dev with device_initialize() before
+calling dev_set_name(). If dev_set_name() fails, the function currently
+jumps to err_unlock and returns without calling put_device().
 
-That leaves a check-then-act race. Two concurrent invalidators can both
-observe e->allocated as true before either of them takes mq->lock. The
-first invalidator that acquires the lock removes the entry from the
-queues and hash table and then calls free_entry(), which clears
-e->allocated and puts the entry back on the free list. The second
-invalidator can then acquire mq->lock and continue with the stale result
-of the unlocked check.
+This leaves the device reference unbalanced and prevents hidg_release()
+from being called. Calling put_device() here is also safe, since
+hidg_release() only frees resources owned by hidg.
 
-This can corrupt the SMQ queues or hash table by deleting an entry that
-is no longer on those structures. It can also hit the allocation check in
-free_entry() when the same entry is freed again.
+The issue was identified by a static analysis tool I developed and
+confirmed by manual review.
 
-Move the allocation check under mq->lock so the predicate and the
-destructive operations are serialized by the same lock.
+Route the dev_set_name() failure path through err_put_device so the
+device reference is dropped properly.
 
-Fixes: 2d1f7b65f5de ("dm cache policy smq: fix missing locks in invalidating cache blocks")
+Fixes: 89ff3dfac604 ("usb: gadget: f_hid: fix f_hidg lifetime vs cdev")
+Cc: stable <stable@kernel.org>
+Reviewed-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Johan Hovold johan@kernel.org
+Link: https://patch.msgid.link/20260413142119.2977716-1-lgs201920130244@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-cache-policy-smq.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ drivers/usb/gadget/function/f_hid.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/md/dm-cache-policy-smq.c b/drivers/md/dm-cache-policy-smq.c
-index 95b0670c32acda..e5c4d7ff2c655b 100644
---- a/drivers/md/dm-cache-policy-smq.c
-+++ b/drivers/md/dm-cache-policy-smq.c
-@@ -1585,18 +1585,22 @@ static int smq_invalidate_mapping(struct dm_cache_policy *p, dm_cblock_t cblock)
- 	struct smq_policy *mq = to_smq_policy(p);
- 	struct entry *e = get_entry(&mq->cache_alloc, from_cblock(cblock));
- 	unsigned long flags;
--
--	if (!e->allocated)
--		return -ENODATA;
-+	int r = 0;
+--- a/drivers/usb/gadget/function/f_hid.c
++++ b/drivers/usb/gadget/function/f_hid.c
+@@ -1282,7 +1282,7 @@ static struct usb_function *hidg_alloc(s
+ 	hidg->dev.devt = MKDEV(major, opts->minor);
+ 	ret = dev_set_name(&hidg->dev, "hidg%d", opts->minor);
+ 	if (ret)
+-		goto err_unlock;
++		goto err_put_device;
  
- 	spin_lock_irqsave(&mq->lock, flags);
-+	if (!e->allocated) {
-+		r = -ENODATA;
-+		goto out;
-+	}
- 	// FIXME: what if this block has pending background work?
- 	del_queue(mq, e);
- 	h_remove(&mq->table, e);
- 	free_entry(&mq->cache_alloc, e);
-+
-+out:
- 	spin_unlock_irqrestore(&mq->lock, flags);
+ 	hidg->bInterfaceSubClass = opts->subclass;
+ 	hidg->bInterfaceProtocol = opts->protocol;
+@@ -1317,7 +1317,6 @@ static struct usb_function *hidg_alloc(s
  
--	return 0;
-+	return r;
+ err_put_device:
+ 	put_device(&hidg->dev);
+-err_unlock:
+ 	mutex_unlock(&opts->lock);
+ 	return ERR_PTR(ret);
  }
- 
- static uint32_t smq_get_hint(struct dm_cache_policy *p, dm_cblock_t cblock)
--- 
-2.53.0
-
 
 
 
