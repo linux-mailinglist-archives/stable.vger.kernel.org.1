@@ -1,63 +1,63 @@
-Return-Path: <stable+bounces-266252-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263901-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 8qe3JJKZMWqrnwUAu9opvQ
-	(envelope-from <stable+bounces-266252-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:44:34 +0200
+	id LLTgAu9qMWpeiwUAu9opvQ
+	(envelope-from <stable+bounces-263901-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:25:35 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 101D76946A2
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:44:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 757C3691035
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:25:34 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=CK+P9V2H;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266252-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-266252-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=XBQoqc1Y;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263901-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-263901-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3E3D330A89CB
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:44:14 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9D6AE30B69A6
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:17:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB4AE478E5E;
-	Tue, 16 Jun 2026 18:44:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD2A343E486;
+	Tue, 16 Jun 2026 15:17:51 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81B1638C437;
-	Tue, 16 Jun 2026 18:44:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B51343C05C;
+	Tue, 16 Jun 2026 15:17:50 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781635451; cv=none; b=hnfkV5wgD1gif6fm3jhWjOTGiJ5VaZ30XDbNPNuyBn/yuGr6/6KRqWBKBYdLjKbgrGyi6o24TAE3jvFwQ7jPX7E8kZtbtJLyq9Xsqitkh+GosAmhgTny1bHI2GXCwChCC+YKOP99MmWR/IsUIa4N16Mp2A7deZQYuTrH1zCOnK0=
+	t=1781623071; cv=none; b=exJXuuEC3YZ/0194vXurwfVDEK0MO/tcRc7G63pPZe+sIIe774njCIdhbPrhfAAT1egfCV86tn9PNQF9N3mcFctHKeopg2QkLWpCJgvu801U2jLslKZf4fMDfmPwWLHswPo3cssiq38Lv36+J1a/Lww40KfKKSMGiKdc9ER25Kk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781635451; c=relaxed/simple;
-	bh=Bdoq9BWkdVKFSJJeoU0mG0w8v0M02a7nb6F+b+Mg1U0=;
+	s=arc-20240116; t=1781623071; c=relaxed/simple;
+	bh=2l/GB4iH4oxXhhKRExLwhcbBkbTPfCiCfpiBKb3XfQs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GSjaFgBodJyvr51jKLnX/h+WlHBU0+JLRl2it7v/JfTAsU55HgR7c7dIM/EfVuP8Ca3f6FM4rjXHr1G4BXNhi6N59IL9yX2tnSOdDML2z43o2zpnX1eLgtq9hgKPfJ2LIKBrSnrswoXKu6bHiSmA5CD1lqXeko2ROQvZ8D6f5aE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CK+P9V2H; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 835A31F000E9;
-	Tue, 16 Jun 2026 18:44:09 +0000 (UTC)
+	 MIME-Version; b=RiSYWlzNmSmL6GmcV8/2Jv3CfHJ24d8FUE2pGnIlaB4kJUe+9R4f7flvxoBDadOgw/nAGoEPFoLX+X72i8nmkGWnzvH1mGWNww0Wf234T18yXghVZqOH/Fsic8cGApyiCJjiey8MeOunlqDr7qSZvZczYHNL3k9cSXruekQ4PT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XBQoqc1Y; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D1D91F000E9;
+	Tue, 16 Jun 2026 15:17:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781635450;
-	bh=2sPQAMDj4dl9eIlPSxukx0VUBh4e6q5+ymPjP6RdgbA=;
+	s=korg; t=1781623070;
+	bh=duAPOTeNGWfCX7q9icvsGZEHWBj+Z/V4H0nkWE8GeO8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=CK+P9V2HQZG8DwpERycp4JLInBcwdsadYTYTO5cDaBvhaWBKHN/JPz6eqqbhmyQh+
-	 9+dprM+5bkOOvQth/OS98NG48cP4DjqJiWZGcHv0pKfBkVV1DLUINhpKzfVa+apalq
-	 ebj4LNY6rdv3QMLfETMSFeR4Zve78AVlyRnC0upc=
+	b=XBQoqc1YUlu9OMxYdYuLLzKAUaIBJMCtjVWfaVXphk2e3DtQqPeUwKcDPtCmk8MYp
+	 dRSr+jogTFTTPd0Y95oVPB4w82bDUxjuZddxQ4fk/UAwGcrafySjmAlYAFgpaYKmDu
+	 Cf/XmlZUY2Jm/1kGTpduNga8Vl8iyRj0hZ3PK0Pk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stanislav Fomichev <sdf.kernel@gmail.com>,
-	Breno Leitao <leitao@debian.org>,
-	Alexandra Winter <wintera@linux.ibm.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	syzbot+185a631927096f9da2fc@syzkaller.appspotmail.com,
+	Qing Wang <wangqing7171@gmail.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Mark Rutland <mark.rutland@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 018/342] net/iucv: fix locking in .getsockopt
+Subject: [PATCH 7.0 083/378] rseq: Fix using an uninitialized stack variable in rseq_exit_user_update()
 Date: Tue, 16 Jun 2026 20:25:14 +0530
-Message-ID: <20260616145049.122137648@linuxfoundation.org>
+Message-ID: <20260616145114.595434042@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -79,10 +79,10 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,debian.org,linux.ibm.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-266252-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,infradead.org,arm.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-263901-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:sdf.kernel@gmail.com,m:leitao@debian.org,m:wintera@linux.ibm.com,m:kuba@kernel.org,m:sashal@kernel.org,m:sdfkernel@gmail.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:syzbot+185a631927096f9da2fc@syzkaller.appspotmail.com,m:wangqing7171@gmail.com,m:peterz@infradead.org,m:mark.rutland@arm.com,m:sashal@kernel.org,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -101,94 +101,70 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	TAGGED_RCPT(0.00)[stable,185a631927096f9da2fc];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,msgid.link:url,syzkaller.appspot.com:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,appspotmail.com:email,arm.com:email,infradead.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 101D76946A2
+X-Rspamd-Queue-Id: 757C3691035
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Qing Wang <wangqing7171@gmail.com>
 
-[ Upstream commit 3589d20a666caf30ad100c960a2de7de390fce88 ]
+[ Upstream commit 6d99479799c69c3cb588fcda19c81d8f61d64ecd ]
 
-Mirror iucv_sock_setsockopt() and wrap the whole switch in
-lock_sock()/release_sock(). The pre-existing SO_MSGLIMIT-only lock
-becomes redundant and is removed.
+There is an bug in which an uninitialized stack variable is used in
+rseq_exit_user_update() as reported by syzbot:
 
-Any AF_IUCV HIPER user can potentially crash the kernel by racing
-recvmsg() with getsockopt(SO_MSGSIZE): the SO_MSGSIZE arm dereferences
-iucv->hs_dev->mtu after iucv_sock_close() (called from the racing
-recvmsg()) has set hs_dev to NULL, producing a NULL pointer dereference
-oops.
+BUG: KMSAN: kernel-infoleak in rseq_set_ids_get_csaddr include/linux/rseq_entry.h:502 [inline]
 
-Suggested-by: Stanislav Fomichev <sdf.kernel@gmail.com>
-Fixes: 51363b8751a6 ("af_iucv: allow retrieval of maximum message size")
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Reviewed-by: Alexandra Winter <wintera@linux.ibm.com>
-Tested-by: Alexandra Winter <wintera@linux.ibm.com>
-Link: https://patch.msgid.link/20260521-af_iucv_fix2-v1-1-f16b1c510aa9@debian.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+The local variable:
+
+	struct rseq_ids ids = {
+		.cpu_id	 = task_cpu(t),
+		.mm_cid	 = task_mm_cid(t),
+		.node_id = cpu_to_node(ids.cpu_id),
+	};
+
+According to the C standard, the evaluation order of expressions in an
+initializer list is indeterminately sequenced. The compiler (Clang, in
+this KMSAN build) evaluates `cpu_to_node(ids.cpu_id)` *before*
+`ids.cpu_id` is initialized with `task_cpu(t)`.
+
+This is fixed by moving the assignment of ids.node_id outside the
+structure initialization.
+
+Fixes: 82f572449cfe ("rseq: Implement read only ABI enforcement for optimized RSEQ V2 mode")
+Closes: https://syzkaller.appspot.com/bug?extid=185a631927096f9da2fc
+Reported-by: syzbot+185a631927096f9da2fc@syzkaller.appspotmail.com
+Signed-off-by: Qing Wang <wangqing7171@gmail.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Acked-by: Mark Rutland <mark.rutland@arm.com>
+Link: https://patch.msgid.link/20260602030854.574038-1-wangqing7171@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/iucv/af_iucv.c | 20 ++++++++++++++------
- 1 file changed, 14 insertions(+), 6 deletions(-)
+ include/linux/rseq_entry.h | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/net/iucv/af_iucv.c b/net/iucv/af_iucv.c
-index 3d0424e4ae6c9c..8c08f07ce46551 100644
---- a/net/iucv/af_iucv.c
-+++ b/net/iucv/af_iucv.c
-@@ -1550,7 +1550,7 @@ static int iucv_sock_getsockopt(struct socket *sock, int level, int optname,
- 	struct sock *sk = sock->sk;
- 	struct iucv_sock *iucv = iucv_sk(sk);
- 	unsigned int val;
--	int len;
-+	int len, rc;
- 
- 	if (level != SOL_IUCV)
- 		return -ENOPROTOOPT;
-@@ -1563,26 +1563,34 @@ static int iucv_sock_getsockopt(struct socket *sock, int level, int optname,
- 
- 	len = min_t(unsigned int, len, sizeof(int));
- 
-+	rc = 0;
-+
-+	lock_sock(sk);
- 	switch (optname) {
- 	case SO_IPRMDATA_MSG:
- 		val = (iucv->flags & IUCV_IPRMDATA) ? 1 : 0;
- 		break;
- 	case SO_MSGLIMIT:
--		lock_sock(sk);
- 		val = (iucv->path != NULL) ? iucv->path->msglim	/* connected */
- 					   : iucv->msglimit;	/* default */
--		release_sock(sk);
- 		break;
- 	case SO_MSGSIZE:
--		if (sk->sk_state == IUCV_OPEN)
--			return -EBADFD;
-+		if (sk->sk_state == IUCV_OPEN) {
-+			rc = -EBADFD;
-+			break;
-+		}
- 		val = (iucv->hs_dev) ? iucv->hs_dev->mtu -
- 				sizeof(struct af_iucv_trans_hdr) - ETH_HLEN :
- 				0x7fffffff;
- 		break;
- 	default:
--		return -ENOPROTOOPT;
-+		rc = -ENOPROTOOPT;
-+		break;
+diff --git a/include/linux/rseq_entry.h b/include/linux/rseq_entry.h
+index 413a3543fbe8ed..69bdb93951b904 100644
+--- a/include/linux/rseq_entry.h
++++ b/include/linux/rseq_entry.h
+@@ -625,10 +625,11 @@ static __always_inline bool rseq_exit_user_update(struct pt_regs *regs, struct t
+ 		return true;
  	}
-+	release_sock(sk);
-+
-+	if (rc)
-+		return rc;
  
- 	if (put_user(len, optlen))
- 		return -EFAULT;
++	int cpu = task_cpu(t);
+ 	struct rseq_ids ids = {
+-		.cpu_id	 = task_cpu(t),
++		.cpu_id	 = cpu,
+ 		.mm_cid	 = task_mm_cid(t),
+-		.node_id = cpu_to_node(ids.cpu_id),
++		.node_id = cpu_to_node(cpu),
+ 	};
+ 
+ 	return rseq_update_usr(t, regs, &ids);
 -- 
 2.53.0
 
