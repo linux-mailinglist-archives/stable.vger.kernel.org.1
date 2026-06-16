@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-266087-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264614-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ouHBGCSWMWoLngUAu9opvQ
-	(envelope-from <stable+bounces-266087-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:29:56 +0200
+	id Q0LXKJ58MWpvkgUAu9opvQ
+	(envelope-from <stable+bounces-264614-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:41:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 126CF6942E6
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:29:56 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id A88F9692565
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:41:01 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=jlRpnfr4;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266087-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-266087-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=VADd4W2n;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264614-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-264614-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8871B3036EE7
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:29:55 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7DFA6307C849
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:20:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 654F147AF43;
-	Tue, 16 Jun 2026 18:29:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0373E46AF02;
+	Tue, 16 Jun 2026 16:20:31 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33D3E43CEC7;
-	Tue, 16 Jun 2026 18:29:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B80214508E4;
+	Tue, 16 Jun 2026 16:20:29 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781634592; cv=none; b=tJGJH5WMITvTlC0ndA+scy45fuuIizuOorICvYLIbzxVuVW6jN+qFdCQic95AnLljwVTTVpiQDeGj8j98AEww9/GwRoc7FjtrZy+hkmPhL1bIX+M0suqKTs+DqktvpJwNGWyBZmH/4sgYw3pma+LIPX8Dq1BPnWhg3oUf5rpPus=
+	t=1781626830; cv=none; b=C+6bD3ucgcm852ZMki+CL6r+VtVGDFTPJYkIjXTz4daKdrOC90DaPAf+q6mN8xJDqLynYxaLEOOYN7nr6vPfu9JoScthJqtJj1/ohdcXuHC3tzYZlvKFFo2jhAhMqqlYUQKodQE785h+rDhiEjn3CMLMBlW56IGeCzcPpR3TTSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781634592; c=relaxed/simple;
-	bh=g6d5gk032qqSvfV0BTK8sFJhg80vXmKS6IGoFUUeMqI=;
+	s=arc-20240116; t=1781626830; c=relaxed/simple;
+	bh=MEYFawXtpU1BUN6Tu/B5//sQz9gR5fskgjfqJMGH34Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uNDS+sElMAmQ9/3I93PHFFot5oJg7OR04Wdzuxxt85iDilgzduxL4e49YZgIW05QiIT8HkjZourKPSsgdjc3QbzZQ2NSw7mEHIBw25O2sOYuBYt8ytbGfg71N16qcWjJCci6bKT+7Cp2DvSOP1xGakDfS2ex51V9hwrGAI1zNVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jlRpnfr4; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 095351F000E9;
-	Tue, 16 Jun 2026 18:29:49 +0000 (UTC)
+	 MIME-Version; b=ZDVkYlXADI6+U1+keQHO2tuXQBmlKErZ72iBPvp5Vyx6X2h9R/hgVzW90TXyoWVbSnF0Wg5QPge46tKvPK7Asdrr1fWPBUL7tQBwHmrtm86OvC8/m/nGn4MFQHTvSOQl3asswk0R1clgRae6mOuYLH2rNARPzkfqWUKCo4TdQgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VADd4W2n; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 780081F000E9;
+	Tue, 16 Jun 2026 16:20:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781634591;
-	bh=8zPRM29QWPF35KzS1T2t5l0XVVaU05vy0Hsgzlkght0=;
+	s=korg; t=1781626829;
+	bh=EbOwZKP+Ga2VqHy2UKzgVtdhVqrnM1kZktOTvYdrwGs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jlRpnfr4l81tFl6WwHIidA26i8hQDJ0mCRvRT/DvLeZPJQkf7+irmNv3TEItdUYM5
-	 a6e7EBbjiU4F4bvWoOCzDFifURITM2dORXBSStLdpPMcfJ1p0kPyf8OU8vJqhg4FC9
-	 aglSQhIOvEIjT/PbHYqyeOzyy0EojFvimH0atuQ0=
+	b=VADd4W2nkJvav2t939PldTPiDPYmi5spL3iD6Bf37ds/xpVsmrUXWnU3mWle/yBYV
+	 hX9DtaAh7oXsY1/2bcocXAL1cMMatDvh8RXB7/fkqcYTOX3ULK7xxUrsJE3AWQSk8i
+	 4wYqqI5fShcRIyl7pcEbnWUIqDrK9GTgdAialA20=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	syzbot+b109633ea805cac54a61@syzkaller.appspotmail.com,
+	Aleksandr Nogikh <nogikh@google.com>,
+	"Christian Brauner (Amutable)" <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 261/411] wifi: rtw88: check for PCI upstream bridge existence
+Subject: [PATCH 6.12 061/261] signal: clear JOBCTL_PENDING_MASK for caller in zap_other_threads()
 Date: Tue, 16 Jun 2026 20:28:19 +0530
-Message-ID: <20260616145114.902077275@linuxfoundation.org>
+Message-ID: <20260616145047.971968772@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,85 +68,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266087-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264614-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:pchelkin@ispras.ru,m:pkshih@realtek.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:syzbot+b109633ea805cac54a61@syzkaller.appspotmail.com,m:nogikh@google.com,m:brauner@kernel.org,m:sashal@kernel.org,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url]
+	TAGGED_RCPT(0.00)[stable,b109633ea805cac54a61];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,syzkaller.appspot.com:url,appspotmail.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 126CF6942E6
+X-Rspamd-Queue-Id: A88F9692565
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Aleksandr Nogikh <nogikh@google.com>
 
-[ Upstream commit eb101d2abdcccb514ca4fccd3b278dd8267374f6 ]
+[ Upstream commit 90918794a4e2c3b440f8fcf3847765a8b1d81b25 ]
 
-pci_upstream_bridge() returns NULL if the device is on a root bus.  If
-8821CE is installed in the system with such a PCI topology, the probing
-routine will crash.  This has probably been unnoticed as 8821CE is mostly
-supplied in laptops where there is a PCI-to-PCI bridge located upstream
-from the device.  However the card might be installed on a system with
-different configuration.
+When a multi-threaded process receives a stop signal (e.g., SIGSTOP),
+do_signal_stop() sets JOBCTL_STOP_PENDING and JOBCTL_STOP_CONSUME on all
+threads and sets signal->group_stop_count to the number of threads. If
+one of the threads concurrently calls execve(), de_thread() invokes
+zap_other_threads() to kill all other threads. zap_other_threads()
+aborts the pending group stop by resetting signal->group_stop_count to 0
+and clears the JOBCTL_PENDING_MASK for all other threads. However, it
+fails to clear the job control flags for the calling thread.
 
-Check if the bridge does exist for the specific workaround to be applied.
+When execve() completes, the calling thread returns to user mode and
+checks for pending signals. Seeing the stale JOBCTL_STOP_PENDING flag,
+it calls do_signal_stop(), which invokes task_participate_group_stop().
+Since JOBCTL_STOP_CONSUME is still set, it attempts to decrement the
+already-zero signal->group_stop_count, triggering a warning:
 
-Found by Linux Verification Center (linuxtesting.org) with Svace static
-analysis tool.
+sig->group_stop_count == 0
+WARNING: CPU: 1 PID: 6475 at kernel/signal.c:373
+task_participate_group_stop+0x215/0x2d0
+Call Trace:
+ <TASK>
+ do_signal_stop+0x3be/0x5c0 kernel/signal.c:2619
+ get_signal+0xa8c/0x1330 kernel/signal.c:2884
+ arch_do_signal_or_restart+0xbc/0x840 arch/x86/kernel/signal.c:337
+ exit_to_user_mode_loop+0x8c/0x4d0 kernel/entry/common.c:98
+ do_syscall_64+0x33e/0xf80 arch/x86/entry/syscall_64.c:100
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+ </TASK>
 
-Fixes: 24f5e38a13b5 ("rtw88: Disable PCIe ASPM while doing NAPI poll on 8821CE")
-Cc: stable@vger.kernel.org
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20260220094730.49791-1-pchelkin@ispras.ru
+Fix this race condition by clearing the JOBCTL_PENDING_MASK for the
+calling thread in zap_other_threads(), ensuring it does not retain any
+stale job control state after the thread group is destroyed. This aligns
+with other functions that tear down a thread group and abort group
+stops, such as zap_process() and complete_signal(), which correctly
+clear these flags for all threads including the current one.
+
+Fixes: 39efa3ef3a37 ("signal: Use GROUP_STOP_PENDING to stop once for a single group stop")
+Assisted-by: Gemini:gemini-3.1-pro-preview Gemini:gemini-3-flash-preview syzbot
+Reported-by: syzbot+b109633ea805cac54a61@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=b109633ea805cac54a61
+Link: https://syzkaller.appspot.com/ai_job?id=d70208cc-862b-4fe3-bf02-3031e10cd0b3
+Signed-off-by: Aleksandr Nogikh <nogikh@google.com>
+Link: https://patch.msgid.link/20260521142240.2973022-1-nogikh@google.com
+Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/realtek/rtw88/pci.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ kernel/signal.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/net/wireless/realtek/rtw88/pci.c
-+++ b/drivers/net/wireless/realtek/rtw88/pci.c
-@@ -1766,7 +1766,8 @@ int rtw_pci_probe(struct pci_dev *pdev,
- 	}
+diff --git a/kernel/signal.c b/kernel/signal.c
+index 468b589c39e695..b832158a9c4608 100644
+--- a/kernel/signal.c
++++ b/kernel/signal.c
+@@ -1371,6 +1371,7 @@ int zap_other_threads(struct task_struct *p)
+ 	int count = 0;
  
- 	/* Disable PCIe ASPM L1 while doing NAPI poll for 8821CE */
--	if (rtwdev->chip->id == RTW_CHIP_TYPE_8821C && bridge->vendor == PCI_VENDOR_ID_INTEL)
-+	if (rtwdev->chip->id == RTW_CHIP_TYPE_8821C &&
-+	    bridge && bridge->vendor == PCI_VENDOR_ID_INTEL)
- 		rtwpci->rx_no_aspm = true;
+ 	p->signal->group_stop_count = 0;
++	task_clear_jobctl_pending(p, JOBCTL_PENDING_MASK);
  
- 	rtw_pci_phy_cfg(rtwdev);
+ 	for_other_threads(p, t) {
+ 		task_clear_jobctl_pending(t, JOBCTL_PENDING_MASK);
+-- 
+2.53.0
+
 
 
 
