@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-264647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264381-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Kr/7LbB4MWrQkAUAu9opvQ
-	(envelope-from <stable+bounces-264647-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:24:16 +0200
+	id PnZKNFN3MWorkAUAu9opvQ
+	(envelope-from <stable+bounces-264381-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:18:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73E446920AF
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:24:16 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id E392C691EA0
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:18:26 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="zvZ6o0i/";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264647-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-264647-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=gFemlYZv;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264381-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-264381-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DFE9B3032093
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:24:15 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A5C9430D8921
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:01:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5205746AF11;
-	Tue, 16 Jun 2026 16:24:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7D4B451060;
+	Tue, 16 Jun 2026 15:59:46 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07BF246AF02;
-	Tue, 16 Jun 2026 16:24:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EAF64657CF;
+	Tue, 16 Jun 2026 15:59:45 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781627052; cv=none; b=bXuc9bhSIhKC9ojhbY1d//m8IvpI1aczhFMQ0byz8PE8uffos3T6zuKvQCAEq510kvxYNc9GLVv40EkgA2ghnN4gCKOz7c/3k9fl057lgeVGovhSzRYhqgVh3++Y9+q1ajXPwTecbevz7EpetjEXqavQ5tWMGY9f9KAquh/WOpo=
+	t=1781625586; cv=none; b=MMPYecRCnhRDf7vpE04aJCHGPffDiTTYahhFxiwvbFQNupBf3A9YsCMjpJEEYVo7X3+PrbqIxgVJpd3jZAcg/FiG6ETb4zRrpVVVr14fu7v7R/e5s2V7Mbh9gpPjHdLrd59XsHkMTZeY30B3IfovCTRemc9dsIKoUHpGyMO9S+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781627052; c=relaxed/simple;
-	bh=ErHzqwNw4ZSDd9h0ChRYOiBGuCPhHOQiXs0ITXgx0Fw=;
+	s=arc-20240116; t=1781625586; c=relaxed/simple;
+	bh=kXRkd8x5OsSG38KIpcpUZ/q+8tTIO2RQjgbjIqdNL/c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KNJ7tgWRcbKq1eICRWha3T3zvuzrdAjzvFy1TfhYDRIxgTNR+P/lrg9FlMbzP+RtUcx+GgF9jxSFV/0yRaL33PDOl07/2RpdjUIF4LWBRITeaJEi/XnyNAs/OWwdPpt723111ttMswp2c/qVOx8ej+YJNH2dPaX+OO63L3Tg3gk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zvZ6o0i/; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A1891F000E9;
-	Tue, 16 Jun 2026 16:24:09 +0000 (UTC)
+	 MIME-Version; b=uLVotwe7ZCm84Z8rQX9veQ8Tm8XLDzHAAJsPcojLfOLY3UuMiwZiCKnWLOvXM4CMoFwLLYRgHNlNQowYOwkWBUv0L2qxW37nWNe2BjQR1ErfQ1jCFifDLFS8fdaj0i017l8gD0BrPFeFoAVIUAuDa80WaAqlYVxw/UC+PgrnVOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gFemlYZv; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71CEF1F000E9;
+	Tue, 16 Jun 2026 15:59:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781627050;
-	bh=QJyIaYu8AWAk/XZbCizUI9XdyUYJZVuXLiXav/BWoMQ=;
+	s=korg; t=1781625585;
+	bh=Ytain+Mq9OvIooie6rHXRy1+V/HgQm14cxNYaJoXSm0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=zvZ6o0i/8GexuZBodXcRbM/XZMgW2gxmn1tvIwAx21BH45K0faJCXsE4/BZNK9Dcb
-	 LNEcj1b3tvqr2VT/lyJaHUSVS5tAr/5bKjyGdFloH46VyRoCZJxiOZpPV6wVlzs2Aq
-	 ekUXFukX8RXFQ1kSkatHJOgFDa9FghylkegBJJ48=
+	b=gFemlYZvSnqqY4oCI47KGNPBfW+kSL6GF8NOnx2K+Q1/eRJM6DwZ5c+7sDRuSdXJG
+	 siIJ/QIqevF01Boteedwr3IDdC3UWaWVTXUdDV9nqqsslpDVcn2GAUqlod6PBHWpNy
+	 FMU1LcAEcL10Guv8z6eW0kLfgDWKNv5a1+9EjkzQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Qi Tang <tpluszz77@gmail.com>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Simon Liebold <simonlie@amazon.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 112/261] xfrm: hold dev ref until after transport_finish NF_HOOK
+	Andrzej Kacprowski <andrzej.kacprowski@linux.intel.com>,
+	Karol Wachowski <karol.wachowski@linux.intel.com>
+Subject: [PATCH 6.18 154/325] accel/ivpu: Add bounds checks for firmware log indices
 Date: Tue, 16 Jun 2026 20:29:10 +0530
-Message-ID: <20260616145050.255860021@linuxfoundation.org>
+Message-ID: <20260616145105.396031396@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
-References: <20260616145044.869532709@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,181 +71,77 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,strlen.de,gmail.com,secunet.com,amazon.de,kernel.org];
-	TAGGED_FROM(0.00)[bounces-264647-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264381-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:fw@strlen.de,m:tpluszz77@gmail.com,m:steffen.klassert@secunet.com,m:simonlie@amazon.de,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:andrzej.kacprowski@linux.intel.com,m:karol.wachowski@linux.intel.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,amazon.de:email,strlen.de:email,secunet.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,intel.com:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 73E446920AF
+X-Rspamd-Queue-Id: E392C691EA0
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qi Tang <tpluszz77@gmail.com>
+From: Andrzej Kacprowski <andrzej.kacprowski@linux.intel.com>
 
-[ Upstream commit 1c428b03840094410c5fb6a5db30640486bbbfcb ]
+commit dd1311bcf0e62f0c515115f46a3813370f4a4bb1 upstream.
 
-After async crypto completes, xfrm_input_resume() calls dev_put()
-immediately on re-entry before the skb reaches transport_finish.
-The skb->dev pointer is then used inside NF_HOOK and its okfn,
-which can race with device teardown.
+Add validation that read and write indices in the firmware log buffer
+are within valid bounds (< data_size) before using them. If
+out-of-bounds indices are encountered (from firmware), clamp them to
+safe values instead of proceeding with invalid offsets.
 
-Remove the dev_put from the async resumption entry and instead
-drop the reference after the NF_HOOK call in transport_finish,
-using a saved device pointer since NF_HOOK may consume the skb.
-This covers NF_DROP, NF_QUEUE and NF_STOLEN paths that skip
-the okfn.
+This prevents potential out-of-bounds buffer access when firmware
+supplies invalid log indices.
 
-For non-transport exits (decaps, gro, drop) and secondary
-async return points, release the reference inline when
-async is set.
-
-Suggested-by: Florian Westphal <fw@strlen.de>
-Fixes: acf568ee859f ("xfrm: Reinject transport-mode packets through tasklet")
-Cc: stable@vger.kernel.org
-Signed-off-by: Qi Tang <tpluszz77@gmail.com>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
-[ xfrm_inner_mode_input() always completes synchronously in this kernel
-version and cannot return -EINPROGRESS. That requires
-7ac64f4598b4 ("xfrm: add mode_cbs module functionality"), which is not
-present, so the async dev_put path is unreachable and the hunk was
-omitted ]
-Signed-off-by: Simon Liebold <simonlie@amazon.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1fc1251149a7 ("accel/ivpu: Refactor functions in ivpu_fw_log.c")
+Cc: stable@vger.kernel.org # v6.18+
+Signed-off-by: Andrzej Kacprowski <andrzej.kacprowski@linux.intel.com>
+Reviewed-by: Karol Wachowski <karol.wachowski@linux.intel.com>
+Signed-off-by: Karol Wachowski <karol.wachowski@linux.intel.com>
+Link: https://patch.msgid.link/20260529115842.135378-1-andrzej.kacprowski@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/xfrm4_input.c |  5 ++++-
- net/ipv6/xfrm6_input.c |  5 ++++-
- net/xfrm/xfrm_input.c  | 12 ++++++++++--
- 3 files changed, 18 insertions(+), 4 deletions(-)
+ drivers/accel/ivpu/ivpu_fw_log.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/net/ipv4/xfrm4_input.c b/net/ipv4/xfrm4_input.c
-index 12a1a0f421956c..adf21d6b6076c1 100644
---- a/net/ipv4/xfrm4_input.c
-+++ b/net/ipv4/xfrm4_input.c
-@@ -50,6 +50,7 @@ int xfrm4_transport_finish(struct sk_buff *skb, int async)
- {
- 	struct xfrm_offload *xo = xfrm_offload(skb);
- 	struct iphdr *iph = ip_hdr(skb);
-+	struct net_device *dev = skb->dev;
+--- a/drivers/accel/ivpu/ivpu_fw_log.c
++++ b/drivers/accel/ivpu/ivpu_fw_log.c
+@@ -98,6 +98,11 @@ static void fw_log_print_buffer(struct v
+ 	u32 log_start = only_new_msgs ? READ_ONCE(log->read_index) : 0;
+ 	u32 log_end = READ_ONCE(log->write_index);
  
- 	iph->protocol = XFRM_MODE_SKB_CB(skb)->protocol;
- 
-@@ -73,8 +74,10 @@ int xfrm4_transport_finish(struct sk_buff *skb, int async)
- 	}
- 
- 	NF_HOOK(NFPROTO_IPV4, NF_INET_PRE_ROUTING,
--		dev_net(skb->dev), NULL, skb, skb->dev, NULL,
-+		dev_net(dev), NULL, skb, dev, NULL,
- 		xfrm4_rcv_encap_finish);
-+	if (async)
-+		dev_put(dev);
- 	return 0;
- }
- 
-diff --git a/net/ipv6/xfrm6_input.c b/net/ipv6/xfrm6_input.c
-index 9005fc156a20e6..699a001ac16629 100644
---- a/net/ipv6/xfrm6_input.c
-+++ b/net/ipv6/xfrm6_input.c
-@@ -43,6 +43,7 @@ static int xfrm6_transport_finish2(struct net *net, struct sock *sk,
- int xfrm6_transport_finish(struct sk_buff *skb, int async)
- {
- 	struct xfrm_offload *xo = xfrm_offload(skb);
-+	struct net_device *dev = skb->dev;
- 	int nhlen = -skb_network_offset(skb);
- 
- 	skb_network_header(skb)[IP6CB(skb)->nhoff] =
-@@ -68,8 +69,10 @@ int xfrm6_transport_finish(struct sk_buff *skb, int async)
- 	}
- 
- 	NF_HOOK(NFPROTO_IPV6, NF_INET_PRE_ROUTING,
--		dev_net(skb->dev), NULL, skb, skb->dev, NULL,
-+		dev_net(dev), NULL, skb, dev, NULL,
- 		xfrm6_transport_finish2);
-+	if (async)
-+		dev_put(dev);
- 	return 0;
- }
- 
-diff --git a/net/xfrm/xfrm_input.c b/net/xfrm/xfrm_input.c
-index 90a79558dca259..5d3633ce6ba329 100644
---- a/net/xfrm/xfrm_input.c
-+++ b/net/xfrm/xfrm_input.c
-@@ -492,7 +492,6 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
- 		/* An encap_type of -1 indicates async resumption. */
- 		if (encap_type == -1) {
- 			async = 1;
--			dev_put(skb->dev);
- 			seq = XFRM_SKB_CB(skb)->seq.input.low;
- 			goto resume;
- 		}
-@@ -645,8 +644,11 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
- 			dev_hold(skb->dev);
- 
- 			nexthdr = x->type->input(x, skb);
--			if (nexthdr == -EINPROGRESS)
-+			if (nexthdr == -EINPROGRESS) {
-+				if (async)
-+					dev_put(skb->dev);
- 				return 0;
-+			}
- 
- 			dev_put(skb->dev);
- 		}
-@@ -717,6 +719,8 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
- 			sp->olen = 0;
- 		if (skb_valid_dst(skb))
- 			skb_dst_drop(skb);
-+		if (async)
-+			dev_put(skb->dev);
- 		gro_cells_receive(&gro_cells, skb);
- 		return 0;
- 	} else {
-@@ -736,6 +740,8 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
- 				sp->olen = 0;
- 			if (skb_valid_dst(skb))
- 				skb_dst_drop(skb);
-+			if (async)
-+				dev_put(skb->dev);
- 			gro_cells_receive(&gro_cells, skb);
- 			return err;
- 		}
-@@ -746,6 +752,8 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
- drop_unlock:
- 	spin_unlock(&x->lock);
- drop:
-+	if (async)
-+		dev_put(skb->dev);
- 	xfrm_rcv_cb(skb, family, x && x->type ? x->type->proto : nexthdr, -1);
- 	kfree_skb(skb);
- 	return 0;
--- 
-2.53.0
-
++	if (log_start >= data_size)
++		log_start = 0;
++	if (log_end > data_size)
++		log_end = data_size;
++
+ 	if (log->wrap_count == log->read_wrap_count) {
+ 		if (log_end <= log_start) {
+ 			drm_printf(p, "==== %s \"%s\" log empty ====\n", prefix, log->name);
 
 
 
