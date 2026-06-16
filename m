@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-264013-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264014-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id KA0RBexsMWoRjAUAu9opvQ
-	(envelope-from <stable+bounces-264013-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:34:04 +0200
+	id gjLKHfptMWp4jAUAu9opvQ
+	(envelope-from <stable+bounces-264014-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:38:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A390B691277
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:34:03 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id D08B06913C2
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:38:33 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=LpMf23Zh;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264013-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264013-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=W2I66DQE;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264014-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264014-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7B11F303B3F3
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:27:47 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 16D4830316F9
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:27:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25AC33A8746;
-	Tue, 16 Jun 2026 15:27:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B293143E4BF;
+	Tue, 16 Jun 2026 15:27:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8B8837C912;
-	Tue, 16 Jun 2026 15:27:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 938DF36F8F1;
+	Tue, 16 Jun 2026 15:27:49 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781623665; cv=none; b=EjhcJr13joCq/NgG8nPOm487k+5Yxl5Vbc01RD/M5AmBw1gB+E/XTYwl2fn0fsRyJ0sHKHKs0MTQ75ChOeNhKKTi/WCyDXppkwDQt010lHcWEvN7d2AXmBlxdWamS9/KkZsgH7NUGUqbbOh+Ojq09Fsi2sRpbasRfALzLseNatk=
+	t=1781623670; cv=none; b=BRBuWR8syLRYQ1CuEBgbHNtifZYV3p0ZPPv+jEuTtlZHUxzHryM4h+mv6QHOhmORkY5j/ZiFSI2YTX7HvjDVoJIl22sc5GuIq112/PjQZfhoA3TTeVsK8fjMCt3RLiMROpSihwB1dg42S6hLDmEBreb/ZAn00x2aGYGlp+LpIZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781623665; c=relaxed/simple;
-	bh=I1tKj5yFxyi0kEwuX+U47wgb6oFnQOEyKfloF/lpvVc=;
+	s=arc-20240116; t=1781623670; c=relaxed/simple;
+	bh=/ynmUyEzMVMV9Ge6+qieCdU+mAKsyJe/av6EEcxJ/AQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FLl4h/hCis/Y0Xt0134j1X7Aem6yxFjSL7F9vfDiYc0Vqs0Pju0tRSYXapwi9e4fW0/hitt7Ybn81fTSgY43Edp+l4Z7TtRBjJvRRPgq57KnNGIvYU90SRa+xYch7rQ2+nZcSh29EjmHvC4OjjS8DO4e2VSslRepjwsdl3ANih8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LpMf23Zh; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E3DB1F000E9;
-	Tue, 16 Jun 2026 15:27:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=e+AOb20gzva7DJcpoSEvMrBTY+thtZubKUwmS6T+Z2xAfu8Ax+qAhMNsjqz/+1hqVwcF/CCyDxRmWAU9KMM7+6sjgHwaxqDRPYOScw5zsC57tgJ4szeWmssfxpGpjwe7vFc/kpyMxWGHbLgXg5KrkSUaiZqK++v1Y+NTVhLcxhY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W2I66DQE; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9289A1F000E9;
+	Tue, 16 Jun 2026 15:27:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781623664;
-	bh=/vNpK+Si4HszgvXwo8DBi7XQ4jcyRxuuxVoYHn8nDkU=;
+	s=korg; t=1781623669;
+	bh=cX7EtNWu6lT3AD5M+6HfPMES6/Z1WH8JbSpewuZGTEU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=LpMf23Zhz8YSeEIF6Htwja5F5EPzGPXBOrleTEQU89ijnodLbZPqJtQB2xMBpTLBY
-	 aqm5mgTSXoliz+tyfOQRKEIHE1YxRs3E7PFNlaCoLPgnzJgDXsXisyEX8s9EEQ4reT
-	 pjWYTnOUeebQGbijwkF0uiWBcqggExbdzXDdz740=
+	b=W2I66DQE8m37QL76qcJYlmTcPxRC31U+ki7SXjchFSYyuFRC6LprW01tlWdvNUzNo
+	 liWPIYXwZan9yrk5SR9BgwUeh7tP5E71clmtAttzx76oFJSVMQcRbpfFwSoqIu+gpt
+	 TE6cLcBEcZBCv6VI8zB/FU5ahE7UnXVoRvd/ybYo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 7.0 193/378] cfi: Include uaccess.h for get_kernel_nofault()
-Date: Tue, 16 Jun 2026 20:27:04 +0530
-Message-ID: <20260616145120.542363679@linuxfoundation.org>
+	=?UTF-8?q?Doru=20Bl=C3=A2nzeanu?= <dblanzeanu@linux.microsoft.com>,
+	Magnus Kulke <magnuskulke@linux.microsoft.com>,
+	stable@kernel.org,
+	Easwar Hariharan <easwar.hariharan@linux.microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>
+Subject: [PATCH 7.0 194/378] mshv: add a missing padding field
+Date: Tue, 16 Jun 2026 20:27:05 +0530
+Message-ID: <20260616145120.600529591@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
 References: <20260616145109.744539446@linuxfoundation.org>
@@ -66,94 +67,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264013-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264014-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:nathan@kernel.org,m:mhiramat@kernel.org,m:samitolvanen@google.com,m:torvalds@linux-foundation.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:dblanzeanu@linux.microsoft.com,m:magnuskulke@linux.microsoft.com,m:stable@kernel.org,m:easwar.hariharan@linux.microsoft.com,m:wei.liu@kernel.org,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A390B691277
+X-Rspamd-Queue-Id: D08B06913C2
 
 7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Wei Liu <wei.liu@kernel.org>
 
-commit 979c294509f9248fe1e7c358d582fb37dd5ca12d upstream.
+commit 48fcc895403cc97aa6c776cb65e6aa11290c0b44 upstream.
 
-After commit 0652a3daa787 ("tracing: Fix CFI violation in probestub
-being called by tprobes"), there are many build errors when building
-ARCH=arm multi_v7_defconfig + CONFIG_CFI=y like:
+That was missed when importing the header.
 
-  In file included from drivers/base/devres.c:17:
-  In file included from drivers/base/trace.h:16:
-  In file included from include/linux/tracepoint.h:23:
-  include/linux/cfi.h:44:6: error: call to undeclared function 'get_kernel_nofault'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-     44 |         if (get_kernel_nofault(hash, func - cfi_get_offset()))
-        |             ^
-  1 error generated.
-
-get_kernel_nofault() is called in the generic version of
-cfi_get_func_hash() but nothing ensures uaccess.h is always included for
-a proper expansion and prototype.  Include uaccess.h in cfi.h to clear
-up the errors.
-
-Cc: stable@vger.kernel.org
-Fixes: 0652a3daa787 ("tracing: Fix CFI violation in probestub being called by tprobes")
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Reported-by: Doru Blânzeanu <dblanzeanu@linux.microsoft.com>
+Reported-by: Magnus Kulke <magnuskulke@linux.microsoft.com>
+Fixes: e68bda71a2384 ("hyperv: Add new Hyper-V headers in include/hyperv")
+Cc: stable@kernel.org
+Reviewed-by: Easwar Hariharan <easwar.hariharan@linux.microsoft.com>
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/cfi.h | 1 +
+ include/hyperv/hvhdk.h |    1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/include/linux/cfi.h b/include/linux/cfi.h
-index 1fd22ea6eba4..0f220d29225c 100644
---- a/include/linux/cfi.h
-+++ b/include/linux/cfi.h
-@@ -9,6 +9,7 @@
+--- a/include/hyperv/hvhdk.h
++++ b/include/hyperv/hvhdk.h
+@@ -79,6 +79,7 @@ struct hv_vp_register_page {
  
- #include <linux/bug.h>
- #include <linux/module.h>
-+#include <linux/uaccess.h>
- #include <asm/cfi.h>
- 
- #ifdef CONFIG_CFI
--- 
-2.54.0
-
+ 		u64 registers[18];
+ 	};
++	u8 reserved[8];
+ 	/* Volatile XMM registers (HV_X64_REGISTER_CLASS_XMM) */
+ 	union {
+ 		struct {
 
 
 
