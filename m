@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-265495-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265932-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ZVMkD3aLMWr0mAUAu9opvQ
-	(envelope-from <stable+bounces-265495-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:44:22 +0200
+	id FOzJOPaSMWqInAUAu9opvQ
+	(envelope-from <stable+bounces-265932-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:16:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 987856936DB
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:44:21 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AC26693F92
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:16:22 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=DhiGdqHZ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265495-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265495-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=V6uvgHGS;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265932-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265932-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AA60F31F4C06
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:38:15 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 480353094799
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:15:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40C314611CF;
-	Tue, 16 Jun 2026 17:38:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DF393CEBBD;
+	Tue, 16 Jun 2026 18:15:56 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0CF5332EC1;
-	Tue, 16 Jun 2026 17:38:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54CFA35292A;
+	Tue, 16 Jun 2026 18:15:55 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781631495; cv=none; b=oUuycAp/AnLaP0O+LQOl+5qFkgFDD/2f+XhW4kgeMn+fcFO9udCGC2TgTeM2FAu6eLblkjyEWP63PN7wyuiTQ+NJAexg5kP01HYfBl0rHY6gwn6Ly98f7JMqQrOGQo6eEj/IJELBkoKMdGVE1LizvqOIb1RoiB64hbCc8DrUNwc=
+	t=1781633756; cv=none; b=GgoKHl8K91Djs2+2pnrDu/7IClgfgnIaM2n8yrGkbso0o7fYgWsTJgYeiJ+PcL/qrTKHs1SFm6aDtxGO1XwCnk1OGkkhOaRH/e/+6qJUBBrE54QFtbujhFRUghxsowxPeRICIz3joTaI2qumpK/DVn66L1ANU4knK5bi5rpHWug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781631495; c=relaxed/simple;
-	bh=LMWkHsPr7TjDyPdVDCDbzGClUAkYvvrCNIMMlIOd/Zw=;
+	s=arc-20240116; t=1781633756; c=relaxed/simple;
+	bh=hsaZ06rm0CYz9fkg6Yt7ZD804U5a15s8kfFBBG4Cb2A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RcNKautkWHE1Z6NCloX+AkyivC12yej4h3YfnXxMrIW5vLrPqVAle5P2foHHAo2WHdmlJM/LpJBpRZk08YT3TnRtNcdemRzFuCVs9fpWgrxCvsBzPVNak0BtBbwJWLMiCWUizToRwyUpWDhrxA9UBHvhEDTWLq/o2chJYgg8T3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DhiGdqHZ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B93411F000E9;
-	Tue, 16 Jun 2026 17:38:12 +0000 (UTC)
+	 MIME-Version; b=qX/rcoOCh63mxXGgTST4Dng0yHXRMkbIFzyAJoNdcXG/Zg2HZ0jofWfNu8q6BXo6FphRofzOE3zREoWkYtkoAzBdKI6C3L3lpKljErE6rrrzwaFkWF3juSAl+itmp1w6+Q+mnCGJaLyngX6guh3++5nzF4G1sSjDpUNFFmklU6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V6uvgHGS; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 642651F000E9;
+	Tue, 16 Jun 2026 18:15:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781631493;
-	bh=WkUenWCrKo6FgnmYCHAzqVEmLNxo15sDGzGfu9XnY3k=;
+	s=korg; t=1781633755;
+	bh=l2w7pSs3C1g09zXxecUFPUsfgHgdV08C2aW0cPLDsq4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=DhiGdqHZ1c3YnFpvnT7lC/l4T9qtchOgzQaYSINDvtHV51M2N/y2vDgnnw0u7MuGv
-	 IG6hxYmZo6vK+QLmLToyPxEtoYddoabQjud4ujJaOPPw+8VVRhg0OtWwGimzt/4EQh
-	 ENiFnpnIDhU+U41oP97R/EIgqHFTmA17WM6oS1as=
+	b=V6uvgHGS0OqzNoGA2vdnfbR1Z6dCWdR91NAV2t0suNMi4Zt60P4ZtY1yyKyCeXu+S
+	 GPSUuYOUxLrWf9dxMkaWflx5kDedRM5D60GlgmyOFme8ph1SnqyfNW1mTVL6TU0MHm
+	 B7QJ7MeBltlxlw0pWrtJPVt+0gwZeKRJFRXbGKxE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Edward Lo <loyuantsung@gmail.com>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Wei-Cheng Chen <weichengc@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 231/522] fs/ntfs3: Return error for inconsistent extended attributes
+Subject: [PATCH 5.15 140/411] xhci: tegra: Fix ghost USB device on dual-role port unplug
 Date: Tue, 16 Jun 2026 20:26:18 +0530
-Message-ID: <20260616145136.803769387@linuxfoundation.org>
+Message-ID: <20260616145107.815140877@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,140 +71,220 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265932-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-265495-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:loyuantsung@gmail.com,m:almaz.alexandrovich@paragon-software.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,paragon-software.com,kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:weichengc@nvidia.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,paragon-software.com:email,qemu.org:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,nvidia.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 987856936DB
+X-Rspamd-Queue-Id: 5AC26693F92
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Lo <loyuantsung@gmail.com>
+From: Wei-Cheng Chen <weichengc@nvidia.com>
 
-[ Upstream commit c9db0ff04649aa0b45f497183c957fe260f229f6 ]
+[ Upstream commit 5a4c828b8b29b47534814ade26d9aee09d5101fc ]
 
-ntfs_read_ea is called when we want to read extended attributes. There
-are some sanity checks for the validity of the EAs. However, it fails to
-return a proper error code for the inconsistent attributes, which might
-lead to unpredicted memory accesses after return.
+When a USB device is unplugged from the dual-role port, the device-mode
+path in tegra_xhci_id_work() explicitly clears both SS and HS port power
+via direct hub_control ClearPortFeature(POWER) calls. This preempts the
+xHCI controller's normal disconnect processing -- PORT_CSC is never
+generated, the USB core never sees the disconnect, and the device remains
+in its internal tree as a ghost visible in lsusb.
 
-[  138.916927] BUG: KASAN: use-after-free in ntfs_set_ea+0x453/0xbf0
-[  138.923876] Write of size 4 at addr ffff88800205cfac by task poc/199
-[  138.931132]
-[  138.933016] CPU: 0 PID: 199 Comm: poc Not tainted 6.2.0-rc1+ #4
-[  138.938070] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
-[  138.947327] Call Trace:
-[  138.949557]  <TASK>
-[  138.951539]  dump_stack_lvl+0x4d/0x67
-[  138.956834]  print_report+0x16f/0x4a6
-[  138.960798]  ? ntfs_set_ea+0x453/0xbf0
-[  138.964437]  ? kasan_complete_mode_report_info+0x7d/0x200
-[  138.969793]  ? ntfs_set_ea+0x453/0xbf0
-[  138.973523]  kasan_report+0xb8/0x140
-[  138.976740]  ? ntfs_set_ea+0x453/0xbf0
-[  138.980578]  __asan_store4+0x76/0xa0
-[  138.984669]  ntfs_set_ea+0x453/0xbf0
-[  138.988115]  ? __pfx_ntfs_set_ea+0x10/0x10
-[  138.993390]  ? kernel_text_address+0xd3/0xe0
-[  138.998270]  ? __kernel_text_address+0x16/0x50
-[  139.002121]  ? unwind_get_return_address+0x3e/0x60
-[  139.005659]  ? __pfx_stack_trace_consume_entry+0x10/0x10
-[  139.010177]  ? arch_stack_walk+0xa2/0x100
-[  139.013657]  ? filter_irq_stacks+0x27/0x80
-[  139.017018]  ntfs_setxattr+0x405/0x440
-[  139.022151]  ? __pfx_ntfs_setxattr+0x10/0x10
-[  139.026569]  ? kvmalloc_node+0x2d/0x120
-[  139.030329]  ? kasan_save_stack+0x41/0x60
-[  139.033883]  ? kasan_save_stack+0x2a/0x60
-[  139.037338]  ? kasan_set_track+0x29/0x40
-[  139.040163]  ? kasan_save_alloc_info+0x1f/0x30
-[  139.043588]  ? __kasan_kmalloc+0x8b/0xa0
-[  139.047255]  ? __kmalloc_node+0x68/0x150
-[  139.051264]  ? kvmalloc_node+0x2d/0x120
-[  139.055301]  ? vmemdup_user+0x2b/0xa0
-[  139.058584]  __vfs_setxattr+0x121/0x170
-[  139.062617]  ? __pfx___vfs_setxattr+0x10/0x10
-[  139.066282]  __vfs_setxattr_noperm+0x97/0x300
-[  139.070061]  __vfs_setxattr_locked+0x145/0x170
-[  139.073580]  vfs_setxattr+0x137/0x2a0
-[  139.076641]  ? __pfx_vfs_setxattr+0x10/0x10
-[  139.080223]  ? __kasan_check_write+0x18/0x20
-[  139.084234]  do_setxattr+0xce/0x150
-[  139.087768]  setxattr+0x126/0x140
-[  139.091250]  ? __pfx_setxattr+0x10/0x10
-[  139.094948]  ? __virt_addr_valid+0xcb/0x140
-[  139.097838]  ? __call_rcu_common.constprop.0+0x1c7/0x330
-[  139.102688]  ? debug_smp_processor_id+0x1b/0x30
-[  139.105985]  ? kasan_quarantine_put+0x5b/0x190
-[  139.109980]  ? putname+0x84/0xa0
-[  139.113886]  ? __kasan_slab_free+0x11e/0x1b0
-[  139.117961]  ? putname+0x84/0xa0
-[  139.121316]  ? preempt_count_sub+0x1c/0xd0
-[  139.124427]  ? __mnt_want_write+0xae/0x100
-[  139.127836]  ? mnt_want_write+0x8f/0x150
-[  139.130954]  path_setxattr+0x164/0x180
-[  139.133998]  ? __pfx_path_setxattr+0x10/0x10
-[  139.137853]  ? __pfx_ksys_pwrite64+0x10/0x10
-[  139.141299]  ? debug_smp_processor_id+0x1b/0x30
-[  139.145714]  ? fpregs_assert_state_consistent+0x6b/0x80
-[  139.150796]  __x64_sys_setxattr+0x71/0x90
-[  139.155407]  do_syscall_64+0x3f/0x90
-[  139.159035]  entry_SYSCALL_64_after_hwframe+0x72/0xdc
-[  139.163843] RIP: 0033:0x7f108cae4469
-[  139.166481] Code: 00 f3 c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 088
-[  139.183764] RSP: 002b:00007fff87588388 EFLAGS: 00000286 ORIG_RAX: 00000000000000bc
-[  139.190657] RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007f108cae4469
-[  139.196586] RDX: 00007fff875883b0 RSI: 00007fff875883d1 RDI: 00007fff875883b6
-[  139.201716] RBP: 00007fff8758c530 R08: 0000000000000001 R09: 00007fff8758c618
-[  139.207940] R10: 0000000000000006 R11: 0000000000000286 R12: 00000000004004c0
-[  139.214007] R13: 00007fff8758c610 R14: 0000000000000000 R15: 0000000000000000
+Add an otg_set_port_power flag to control whether the dual-role switch
+path performs explicit port power management. SoCs that need it
+(Tegra124 / Tegra210 / Tegra186) set the flag; later SoCs (Tegra194 and
+beyond) rely on the PHY mode change to handle disconnect naturally and
+skip all port power calls.
 
-Signed-off-by: Edward Lo <loyuantsung@gmail.com>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Within the port power path, otg_reset_sspi additionally gates the SSPI
+reset sequence on host-mode entry for SoCs that require it.
+
+Flags set per SoC:
+  Tegra124, Tegra186  -> otg_set_port_power
+  Tegra210            -> otg_set_port_power, otg_reset_sspi
+  Tegra194 and later  -> (none)
+
+[ Backport to 5.15.y: keep the host-mode snapshot in the existing
+  tegra->lock section, retain pm_runtime_mark_last_busy() in the host
+  port-power path, and omit the newer Tegra234 entry. ]
+
+Fixes: f836e7843036 ("usb: xhci-tegra: Add OTG support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Wei-Cheng Chen <weichengc@nvidia.com>
+Link: https://patch.msgid.link/20260505112630.217704-1-weichengc@nvidia.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/xattr.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/host/xhci-tegra.c | 78 ++++++++++++++++++++---------------
+ 1 file changed, 44 insertions(+), 34 deletions(-)
 
-diff --git a/fs/ntfs3/xattr.c b/fs/ntfs3/xattr.c
-index 2e4eea854bda59..7dc650b0b832c2 100644
---- a/fs/ntfs3/xattr.c
-+++ b/fs/ntfs3/xattr.c
-@@ -140,6 +140,7 @@ static int ntfs_read_ea(struct ntfs_inode *ni, struct EA_FULL **ea,
+diff --git a/drivers/usb/host/xhci-tegra.c b/drivers/usb/host/xhci-tegra.c
+index 14a772feab7946..0f936aeb88d064 100644
+--- a/drivers/usb/host/xhci-tegra.c
++++ b/drivers/usb/host/xhci-tegra.c
+@@ -210,6 +210,7 @@ struct tegra_xusb_soc {
+ 	bool has_ipfs;
+ 	bool lpm_support;
+ 	bool otg_reset_sspi;
++	bool otg_set_port_power;
+ };
  
- 	memset(Add2Ptr(ea_p, size), 0, add_bytes);
+ struct tegra_xusb_context {
+@@ -1211,14 +1212,17 @@ static void tegra_xhci_id_work(struct work_struct *work)
+ 	struct tegra_xusb_mbox_msg msg;
+ 	struct phy *phy = tegra_xusb_get_phy(tegra, "usb2",
+ 						    tegra->otg_usb2_port);
++	bool host_mode;
+ 	u32 status;
+ 	int ret;
  
-+	err = -EINVAL;
- 	/* Check all attributes for consistency. */
- 	for (off = 0; off < size; off += ea_size) {
- 		const struct EA_FULL *ef = Add2Ptr(ea_p, off);
+-	dev_dbg(tegra->dev, "host mode %s\n", tegra->host_mode ? "on" : "off");
+-
+ 	mutex_lock(&tegra->lock);
+ 
+-	if (tegra->host_mode)
++	host_mode = tegra->host_mode;
++
++	dev_dbg(tegra->dev, "host mode %s\n", host_mode ? "on" : "off");
++
++	if (host_mode)
+ 		phy_set_mode_ext(phy, PHY_MODE_USB_OTG, USB_ROLE_HOST);
+ 	else
+ 		phy_set_mode_ext(phy, PHY_MODE_USB_OTG, USB_ROLE_NONE);
+@@ -1229,42 +1233,44 @@ static void tegra_xhci_id_work(struct work_struct *work)
+ 								    tegra->otg_usb2_port);
+ 
+ 	pm_runtime_get_sync(tegra->dev);
+-	if (tegra->host_mode) {
+-		/* switch to host mode */
+-		if (tegra->otg_usb3_port >= 0) {
+-			if (tegra->soc->otg_reset_sspi) {
+-				/* set PP=0 */
+-				tegra_xhci_hc_driver.hub_control(
+-					xhci->shared_hcd, GetPortStatus,
+-					0, tegra->otg_usb3_port+1,
+-					(char *) &status, sizeof(status));
+-				if (status & USB_SS_PORT_STAT_POWER)
+-					tegra_xhci_set_port_power(tegra, false,
+-								  false);
+-
+-				/* reset OTG port SSPI */
+-				msg.cmd = MBOX_CMD_RESET_SSPI;
+-				msg.data = tegra->otg_usb3_port+1;
+-
+-				ret = tegra_xusb_mbox_send(tegra, &msg);
+-				if (ret < 0) {
+-					dev_info(tegra->dev,
+-						"failed to RESET_SSPI %d\n",
+-						ret);
++	if (tegra->soc->otg_set_port_power) {
++		if (host_mode) {
++			/* switch to host mode */
++			if (tegra->otg_usb3_port >= 0) {
++				if (tegra->soc->otg_reset_sspi) {
++					/* set PP=0 */
++					tegra_xhci_hc_driver.hub_control(
++						xhci->shared_hcd, GetPortStatus,
++						0, tegra->otg_usb3_port+1,
++						(char *) &status, sizeof(status));
++					if (status & USB_SS_PORT_STAT_POWER)
++						tegra_xhci_set_port_power(tegra, false,
++									  false);
++
++					/* reset OTG port SSPI */
++					msg.cmd = MBOX_CMD_RESET_SSPI;
++					msg.data = tegra->otg_usb3_port+1;
++
++					ret = tegra_xusb_mbox_send(tegra, &msg);
++					if (ret < 0) {
++						dev_info(tegra->dev,
++							"failed to RESET_SSPI %d\n",
++							ret);
++					}
+ 				}
+-			}
+ 
+-			tegra_xhci_set_port_power(tegra, false, true);
+-		}
++				tegra_xhci_set_port_power(tegra, false, true);
++			}
+ 
+-		tegra_xhci_set_port_power(tegra, true, true);
+-		pm_runtime_mark_last_busy(tegra->dev);
++			tegra_xhci_set_port_power(tegra, true, true);
++			pm_runtime_mark_last_busy(tegra->dev);
+ 
+-	} else {
+-		if (tegra->otg_usb3_port >= 0)
+-			tegra_xhci_set_port_power(tegra, false, false);
++		} else {
++			if (tegra->otg_usb3_port >= 0)
++				tegra_xhci_set_port_power(tegra, false, false);
+ 
+-		tegra_xhci_set_port_power(tegra, true, false);
++			tegra_xhci_set_port_power(tegra, true, false);
++		}
+ 	}
+ 	pm_runtime_put_autosuspend(tegra->dev);
+ }
+@@ -2289,6 +2295,7 @@ static const struct tegra_xusb_soc tegra124_soc = {
+ 	.scale_ss_clock = true,
+ 	.has_ipfs = true,
+ 	.otg_reset_sspi = false,
++	.otg_set_port_power = true,
+ 	.mbox = {
+ 		.cmd = 0xe4,
+ 		.data_in = 0xe8,
+@@ -2325,6 +2332,7 @@ static const struct tegra_xusb_soc tegra210_soc = {
+ 	.scale_ss_clock = false,
+ 	.has_ipfs = true,
+ 	.otg_reset_sspi = true,
++	.otg_set_port_power = true,
+ 	.mbox = {
+ 		.cmd = 0xe4,
+ 		.data_in = 0xe8,
+@@ -2366,6 +2374,7 @@ static const struct tegra_xusb_soc tegra186_soc = {
+ 	.scale_ss_clock = false,
+ 	.has_ipfs = false,
+ 	.otg_reset_sspi = false,
++	.otg_set_port_power = true,
+ 	.mbox = {
+ 		.cmd = 0xe4,
+ 		.data_in = 0xe8,
+@@ -2397,6 +2406,7 @@ static const struct tegra_xusb_soc tegra194_soc = {
+ 	.scale_ss_clock = false,
+ 	.has_ipfs = false,
+ 	.otg_reset_sspi = false,
++	.otg_set_port_power = false,
+ 	.mbox = {
+ 		.cmd = 0x68,
+ 		.data_in = 0x6c,
 -- 
 2.53.0
 
