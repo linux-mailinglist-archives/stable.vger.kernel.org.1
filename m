@@ -1,571 +1,233 @@
-Return-Path: <stable+bounces-263716-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263725-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id pa22MGlDMWqufgUAu9opvQ
-	(envelope-from <stable+bounces-263716-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 14:36:57 +0200
+	id wmMNNa9HMWr2fwUAu9opvQ
+	(envelope-from <stable+bounces-263725-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 14:55:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4E0468F673
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 14:36:56 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2383868FA75
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 14:55:11 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=sntech.de header.s=gloria202408 header.b=sUx0jDFk;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263716-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263716-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=sntech.de;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
+	dkim=pass header.d=foss.st.com header.s=selector2 header.b=UjkwBFCH;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263725-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263725-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=foss.st.com;
+	arc=reject ("cv is fail on i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5C6AA3009F08
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 12:36:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9EA2631ABE82
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 12:50:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6AFF35677C;
-	Tue, 16 Jun 2026 12:36:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A682369D6E;
+	Tue, 16 Jun 2026 12:50:02 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011061.outbound.protection.outlook.com [52.101.70.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3CF635E1BD
-	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 12:36:41 +0000 (UTC)
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781613404; cv=none; b=KQ0Bs5BlZoU3VS6vWksI+JN79mKXAx/BdqK/fSgFuxFrryz3kherHYm6/njtnuasWxeihcCqUCohK+HZwTv8ue6KvO+Y9twEB8GCxYdq6tVLtdE6TWfdXWb6UXB6+PYP9Zs7keSAFDZVq/EWJ2WkxsgPC1rBr2toTgqav1l4bpw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781613404; c=relaxed/simple;
-	bh=epzAyfRh0JYcOuzsJigCp/aMplR7ZPVKa4zBfK2PRjA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QePI/d8aOYVh9Bdeedc4/czECdW9S1rRxNdEp1DPw57ZtXCIyxWDSxfs0qwCJbF4ujwnWE2P2lIoLUhC6hhMQCQXumQlNMJwF7Pxb2kK9NRs+dhc4avy7iJrSh2IDhH07Ccavqj/wWb907B2AXydfccIsw6cp6yq3B3tRwIeijc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=sntech.de; spf=pass smtp.mailfrom=sntech.de; dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b=sUx0jDFk; arc=none smtp.client-ip=185.11.138.130
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=sntech.de;
-	s=gloria202408; h=Content-Transfer-Encoding:MIME-Version:References:
-	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type;
-	bh=b8NS6S6DU4RuopfIYzlKOKMuVwTtK++lu6UMX4IPLw0=; b=sUx0jDFknfKStzAuCxZH2DIfi+
-	owG7mG3XHPxHTXg+SSB9yKJxx2KmoG/ToX0msCroFbNbW4K3UBXxATpgI/xsxp3Jn5WsB0FV4cjHT
-	nJ+6qbcCFkCszHnLHrz6fSiRUgwStyoxH3JldX8mXbpaD2WHV52irW08A2SYF9OPvzzl1+o+x8jvZ
-	pRE/jSwBCh7ZUZRSHpuPm7zpEAS5iv5jOwzst9ozKHHpN7zieJb2xXkLbG7xPfrvjRNpAmYpYEKRg
-	gT59A5TC62vE+F+WzDHJrCh2fcSvFPodIMGJUkVDpYC/hNuQh7nsk1WGLeitrPLgAfuSSc5abUao6
-	BZmfZcbQ==;
-From: Heiko Stuebner <heiko@sntech.de>
-To: stable@vger.kernel.org
-Cc: heiko@sntech.de,
-	quentin.schulz@cherry.de,
-	edumazet@google.com,
-	Zhouyan Deng <dengzhouyan_nwpu@163.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Florian Westphal <fw@strlen.de>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Heiko Stuebner <heiko.stuebner@cherry.de>
-Subject: [PATCH 6.12.y 3/3] tcp: secure_seq: add back ports to TS offset
-Date: Tue, 16 Jun 2026 14:36:29 +0200
-Message-ID: <20260616123629.1218562-4-heiko@sntech.de>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260616123629.1218562-1-heiko@sntech.de>
-References: <20260616123629.1218562-1-heiko@sntech.de>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 522A5369234;
+	Tue, 16 Jun 2026 12:50:00 +0000 (UTC)
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781614201; cv=fail; b=p7ZH14iOd/jIsWeLpcQbDGPykPY6s+xKj0jzJmCMpusBZnnsOxEXFHLoLMIu3KBG3+Gd03NMUjyftpRJtktj/YrElKCDP6JKTGVxB7KQ+SEACfd8OO2Lpjaz/IfwY30y11dv0LHCga55ooQ4L7YJHvu6ycqUsr1p0StxpQg/H/Y=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781614201; c=relaxed/simple;
+	bh=bTwQNugrjDaGkIbXPzwnSQfZ431yF4tX8xt3x+x1ZkE=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:CC:References:
+	 In-Reply-To:Content-Type; b=VzPIf3+4a942Vlnq2A4dGOMog3qMeJVpKDwpfpS5lVQ9I8PNHKpnQ6P+Csl2ODOX1PEeUJu5B6tkn8ZY8GvZw+S6vMMfEKA1ottRcj35fR2PF6BaYqIRaKRRgKkuL/U6Suqw2aGLkIj+MS/QwRVMRDBpNKQneRYwvAf/Tu72/mk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=UjkwBFCH; arc=fail smtp.client-ip=52.101.70.61
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=YwKEcAc7DCW2td/Wu9rpolhValdSztw59g9LinVe6jDq9PpLyF+f2P/RB8FWEHoClMLdpudcmTB7P6Vvz4B8lhO0s06X8KRCX5xGRJgu8u4fLmg3cLdy7i/zhyu9I4wNDDm+eJywkk/dFJLnvrI/3WBa1vSs4A/enqTDAiOd3eM0rhopgjzAE5Oq3aUJ00BEXULt5GW7klY9V+EXvtimXxjHszkvSIX1ko/YsTjWXqWBBteUQvEG1hO9FuR83RGIO/RcTVGZ7pUcCjh24Z5jAQi22PH8cGpZVOCrXIyr9ZJ+b6CCdM9fLdyI5Ggmauj2UAy383v7OHT5d8TCYrIZzA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ARtL5GpDZXCklftGcgPhCYMNfTRiey75pCZCu9BB028=;
+ b=f1TGN7IC8FGqfvPAWeeavPyb3KSD26irCdSWt2iWg9yKWZMTkygw7Nw5F5G3bJvW1CoiFxGmLLUpIEK7VlyX8V6iUJ/BD/0OK4KhoV6wNNvdbdkwwIuQcBjnvFWYvK6kFqIDuH5B3ePeGK60pGPfeq+7mYt34TaB2W63iCtYTeRKbM8VZVBscvxQ7mPefMBQDzlxMUb/XQJE74qEr2NlrBnmeblF86rRrGSudmNqcwfqzworfO6SpZZJ42NYgh+Xg7DqytenGWjvTtrcnNaMAXSPeagyC6rZLlTWSgJ90fsx324hsx/o1xZWMnA7E/d/RfUEBtdNhuBHwiwhBJ6KTQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=fail (sender ip is
+ 164.130.1.59) smtp.rcpttodomain=gmail.com smtp.mailfrom=foss.st.com;
+ dmarc=fail (p=none sp=none pct=100) action=none header.from=foss.st.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ARtL5GpDZXCklftGcgPhCYMNfTRiey75pCZCu9BB028=;
+ b=UjkwBFCHBLb8sOpvjFfmormSEHkMfaKrgoD6I17hiavCGsDwzsyZJ7Tdgfa/7ZLnppHf4eji5DVFAo8dN0WYuUvoPiW1HhlPVAWmhuUXbMMNh9JMcwr+H/On37vPIHtrgkRIGVIqa3tgXo3Vr2ipkc7eqxW8Nv6KXvd0LqJ/8OqlRGEhsIpbc4yXuEhR2ehDY2F9JKlsPJB7qxW7+o1bKl/dTbdB4gImq51a9Caa9Q1FNAWTRBFdH++GrHnTTEU6CF1gfBmz+ydUhJnZmaQSgA4mN93QwTwkSwjSsvJK9dM9iXni76aID06m/IrLKxx8DWlwfrcnLX1GWtRDMDctIg==
+Received: from DU7P250CA0023.EURP250.PROD.OUTLOOK.COM (2603:10a6:10:54f::11)
+ by MI3PR10MB9922.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:290:74::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.113.16; Tue, 16 Jun
+ 2026 12:49:55 +0000
+Received: from DB1PEPF000509FA.eurprd03.prod.outlook.com
+ (2603:10a6:10:54f:cafe::82) by DU7P250CA0023.outlook.office365.com
+ (2603:10a6:10:54f::11) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.113.18 via Frontend Transport; Tue,
+ 16 Jun 2026 12:49:55 +0000
+X-MS-Exchange-Authentication-Results: spf=fail (sender IP is 164.130.1.59)
+ smtp.mailfrom=foss.st.com; dkim=none (message not signed)
+ header.d=none;dmarc=fail action=none header.from=foss.st.com;
+Received-SPF: Fail (protection.outlook.com: domain of foss.st.com does not
+ designate 164.130.1.59 as permitted sender) receiver=protection.outlook.com;
+ client-ip=164.130.1.59; helo=smtpO365.st.com;
+Received: from smtpO365.st.com (164.130.1.59) by
+ DB1PEPF000509FA.mail.protection.outlook.com (10.167.242.36) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.113.7 via Frontend Transport; Tue, 16 Jun 2026 12:49:55 +0000
+Received: from STKDAG1NODE2.st.com (10.75.128.133) by smtpo365.st.com
+ (10.250.44.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.35; Tue, 16 Jun
+ 2026 14:54:09 +0200
+Received: from [10.130.78.67] (10.130.78.67) by STKDAG1NODE2.st.com
+ (10.75.128.133) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.35; Tue, 16 Jun
+ 2026 14:49:51 +0200
+Message-ID: <c9c20bce-a1bb-4932-bfa0-c87f7156ff82@foss.st.com>
+Date: Tue, 16 Jun 2026 14:49:54 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+From: Benjamin Mugnier <benjamin.mugnier@foss.st.com>
+Subject: Re: [PATCH v2] media: i2c: vd56g3: clean up subdev state on probe
+ failure
+To: Myeonghun Pak <mhun512@gmail.com>, Sylvain Petinot
+	<sylvain.petinot@foss.st.com>, Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>
+CC: <linux-media@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<stable@vger.kernel.org>
+References: <20260424165238.31333-1-mhun512@gmail.com>
+Content-Language: fr
+In-Reply-To: <20260424165238.31333-1-mhun512@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: ENXCAS1NODE2.st.com (10.75.128.138) To STKDAG1NODE2.st.com
+ (10.75.128.133)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DB1PEPF000509FA:EE_|MI3PR10MB9922:EE_
+X-MS-Office365-Filtering-Correlation-Id: d29e93a7-c982-4edd-bd43-08decba5c44e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|376014|36860700016|1800799024|23010399003|56012099006|11063799006|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	RMuIDFrbNpBBuY0GfpVAiFOTd0GJt7S5T0EDWyJppdrHZEK+PPiK4ZQ49uxczW2FKMy6QAfmf6lF1n4Ut1gQhODsHQrBv1B3cGM1ezNW6daV/zRvSlDS7kj7wtdmcdorh/n5g5F/AlQypVGDi0aBc9HWankgLxP5PLjrshsC+flh81x7OPAW2XnmM8PBlhV5e9lYT2iisNx6EUdjck8ccIGAjl2pdrGiD3dqDE+NMTAOktI+Zb3GJURz/Tt4sEQbF0wqt8rcWhwRUiZV04Pw23aWAET4ptj/lY27xD2sr0sgdmsVp2XOo0unMHcOuJIv4njdno+GpXNM24G2lCriY3JjvbxIlb43tS8bbke08U3u6ZIhMRMP3ctUjUWoNBEL49dweNRIoDHPkIEpOABVRKqqtpR3ZbdLY+6H+doW5BBlMMnhzGm1YELE3WEs6lQrR2GzRzjJLiJM/WqAW5zRR4WInebTVu1qM49Mqry0Xejc4mdiZfE2KOROeko0/gCaKjSuAN+EBuD9sFT+C9mrQI7cPdhkiof1EKKCmIvg1nwaX9YEQHNTCsFcuiB97biAHjRJjpVi2hYdNbslEib78i8N7biybYzlXnEd/CbSkIM3GyI13HDLfl1kG0kc2TG8rbk9548AhVJcWGU+upIGZUJr55Z47pD7ayOdYb/GNA7b1Q4qazuySVOvuk78uORvlHx+wA8Q0gLJhQSMOMLFffEYK6CMgNCAXp6EYF5Xnug=
+X-Forefront-Antispam-Report:
+	CIP:164.130.1.59;CTRY:IT;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:smtpO365.st.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(376014)(36860700016)(1800799024)(23010399003)(56012099006)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	zZk0RT6Ksol+ruMo3fb+5wz3iYomibOPikqoCisMaA1FI7Ncpi6ioXfFdjrTAtkddUGvy2CRNIcrm/vZ94zWStIK4JDKyBP9GHCMspqW1x4qWNAa2omvL81oV5huHQUsvyX4lBQdUSiF+Cvgs57dAUKE2CQ33Ew83dUKpYlo+zU2wO2Oz0bOW3UuumrTsJDlUS9EK/s+9LlQOTGPeAWFrP05cHP+uFKMu9eH4ACC8ulZxWg0zpXgAND97NA3+T2lcCzjZBUUpXh3enF8mMWZAFmF7Ac97qowD+QdwMChJrmN5xOEz60B0Km3dFHCI92EbULrFI70tEtOJ7V6sh6DcqAXllXXnrQL2n98b81es60te5JLYL2DCI+VR2ibRuxwp4z6W4Cl5AdEz0TOGYPLhYkDroFpiTeO3hzQYeIxBYB7eNXKfQVLz5+/WGfo4RA5
+X-OriginatorOrg: foss.st.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jun 2026 12:49:55.5539
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: d29e93a7-c982-4edd-bd43-08decba5c44e
+X-MS-Exchange-CrossTenant-Id: 75e027c9-20d5-47d5-b82f-77d7cd041e8f
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=75e027c9-20d5-47d5-b82f-77d7cd041e8f;Ip=[164.130.1.59];Helo=[smtpO365.st.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DB1PEPF000509FA.eurprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MI3PR10MB9922
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[sntech.de,quarantine];
-	R_DKIM_ALLOW(-0.20)[sntech.de:s=gloria202408];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[foss.st.com,none];
+	R_DKIM_ALLOW(-0.20)[foss.st.com:s=selector2];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[sntech.de,cherry.de,google.com,163.com,strlen.de,kernel.org];
-	TAGGED_FROM(0.00)[bounces-263716-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[3];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-263725-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:mhun512@gmail.com,m:sylvain.petinot@foss.st.com,m:sakari.ailus@linux.intel.com,m:mchehab@kernel.org,m:linux-media@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,foss.st.com:dkim,foss.st.com:mid,foss.st.com:from_mime];
+	FORGED_SENDER(0.00)[benjamin.mugnier@foss.st.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_TO(0.00)[gmail.com,foss.st.com,linux.intel.com,kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:heiko@sntech.de,m:quentin.schulz@cherry.de,m:edumazet@google.com,m:dengzhouyan_nwpu@163.com,m:kuniyu@google.com,m:fw@strlen.de,m:kuba@kernel.org,m:heiko.stuebner@cherry.de,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[heiko@sntech.de,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[foss.st.com:+];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[heiko@sntech.de,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[benjamin.mugnier@foss.st.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[sntech.de:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,strlen.de:email]
+	RCVD_COUNT_SEVEN(0.00)[8]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C4E0468F673
+X-Rspamd-Queue-Id: 2383868FA75
 
-From: Eric Dumazet <edumazet@google.com>
+Hi,
 
-[ Upstream commit 165573e41f2f66ef98940cf65f838b2cb575d9d1 ]
+Thank you for your patch, and apologies for the delay.
 
-This reverts 28ee1b746f49 ("secure_seq: downgrade to per-host timestamp offsets")
+Le 24/04/2026 à 18:52, Myeonghun Pak a écrit :
+> vd56g3_subdev_init() calls v4l2_subdev_init_finalize(), which allocates
+> the subdev active state and requires v4l2_subdev_cleanup() to release it.
+> 
+> If vd56g3_update_controls() fails after finalize succeeds, the probe error
+> path currently skips v4l2_subdev_cleanup() and returns an error. The driver
+> .remove() callback is not called after a failed probe, so the active state
+> is leaked.
+> 
+> Route this error through a subdev cleanup label before freeing the control
+> handler and media entity.
+> 
+> Fixes: 87aa97fc3157 ("media: i2c: Add driver for ST VD56G3 camera sensor")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
+> ---
+> Changes in v2:
+> - Use a lowercase subject summary.
 
-tcp_tw_recycle went away in 2017.
+Please keep the first character uppercase, just like other commits on
+this module.
 
-Zhouyan Deng reported off-path TCP source port leakage via
-SYN cookie side-channel that can be fixed in multiple ways.
+> 
+>  drivers/media/i2c/vd56g3.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/media/i2c/vd56g3.c b/drivers/media/i2c/vd56g3.c
+> index 157acea9e2..43f792288a 100644
+> --- a/drivers/media/i2c/vd56g3.c
+> +++ b/drivers/media/i2c/vd56g3.c
+> @@ -1427,11 +1427,14 @@ static int vd56g3_subdev_init(struct vd56g3 *sensor)
+>  	v4l2_subdev_unlock_state(state);
+>  	if (ret) {
+>  		dev_err(sensor->dev, "Controls update failed: %d\n", ret);
+> -		goto err_ctrls;
+> +		goto err_subdev;
+>  	}
+>  
+>  	return 0;
+>  
+> +err_subdev:
+> +	v4l2_subdev_cleanup(&sensor->sd);
 
-One of them is to bring back TCP ports in TS offset randomization.
+v4l2_subdev_cleanup() is already performed in the caller (i.e.
+vd56g3_probe()), but as you noticed it is not called from this path. I'd
+rather have the return value route correctly through
+v4l2_subdev_cleanup() in  vd56g3_probe(), allowing to keep a unique call
+to v4l2_subdev_cleanup() instead.
 
-As a bonus, we perform a single siphash() computation
-to provide both an ISN and a TS offset.
+This patch looks like is LLM generated and sparks my curiosity. If so
+you must disclaim it using an Assisted-by tag [1]. Sorry if I’m mistaken.
 
-Fixes: 28ee1b746f49 ("secure_seq: downgrade to per-host timestamp offsets")
-Reported-by: Zhouyan Deng <dengzhouyan_nwpu@163.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Acked-by: Florian Westphal <fw@strlen.de>
-Link: https://patch.msgid.link/20260302205527.1982836-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-(cherry picked from commit 165573e41f2f66ef98940cf65f838b2cb575d9d1)
-[kept the DCCP functions in the header, as DCCP was not retired yet
- in 6.12]
-Signed-off-by: Heiko Stuebner <heiko.stuebner@cherry.de>
----
- include/net/secure_seq.h | 45 ++++++++++++++++++----
- include/net/tcp.h        |  6 ++-
- net/core/secure_seq.c    | 80 +++++++++++++++-------------------------
- net/ipv4/syncookies.c    | 11 ++++--
- net/ipv4/tcp_input.c     |  8 +++-
- net/ipv4/tcp_ipv4.c      | 37 +++++++++----------
- net/ipv6/syncookies.c    | 11 ++++--
- net/ipv6/tcp_ipv6.c      | 37 +++++++++----------
- 8 files changed, 127 insertions(+), 108 deletions(-)
+[1] https://docs.kernel.org/process/coding-assistants.html
 
-diff --git a/include/net/secure_seq.h b/include/net/secure_seq.h
-index 21e7fa2a1813..7f0fb564fed6 100644
---- a/include/net/secure_seq.h
-+++ b/include/net/secure_seq.h
-@@ -5,20 +5,51 @@
- #include <linux/types.h>
- 
- struct net;
-+extern struct net init_net;
-+
-+union tcp_seq_and_ts_off {
-+	struct {
-+		u32 seq;
-+		u32 ts_off;
-+	};
-+	u64 hash64;
-+};
- 
- u64 secure_ipv4_port_ephemeral(__be32 saddr, __be32 daddr, __be16 dport);
- u64 secure_ipv6_port_ephemeral(const __be32 *saddr, const __be32 *daddr,
- 			       __be16 dport);
--u32 secure_tcp_seq(__be32 saddr, __be32 daddr,
--		   __be16 sport, __be16 dport);
--u32 secure_tcp_ts_off(const struct net *net, __be32 saddr, __be32 daddr);
--u32 secure_tcpv6_seq(const __be32 *saddr, const __be32 *daddr,
--		     __be16 sport, __be16 dport);
--u32 secure_tcpv6_ts_off(const struct net *net,
--			const __be32 *saddr, const __be32 *daddr);
-+union tcp_seq_and_ts_off
-+secure_tcp_seq_and_ts_off(const struct net *net, __be32 saddr, __be32 daddr,
-+			  __be16 sport, __be16 dport);
- u64 secure_dccp_sequence_number(__be32 saddr, __be32 daddr,
- 				__be16 sport, __be16 dport);
- u64 secure_dccpv6_sequence_number(__be32 *saddr, __be32 *daddr,
- 				  __be16 sport, __be16 dport);
- 
-+static inline u32 secure_tcp_seq(__be32 saddr, __be32 daddr,
-+				 __be16 sport, __be16 dport)
-+{
-+	union tcp_seq_and_ts_off ts;
-+
-+	ts = secure_tcp_seq_and_ts_off(&init_net, saddr, daddr,
-+				       sport, dport);
-+
-+	return ts.seq;
-+}
-+
-+union tcp_seq_and_ts_off
-+secure_tcpv6_seq_and_ts_off(const struct net *net, const __be32 *saddr,
-+			    const __be32 *daddr,
-+			    __be16 sport, __be16 dport);
-+
-+static inline u32 secure_tcpv6_seq(const __be32 *saddr, const __be32 *daddr,
-+				   __be16 sport, __be16 dport)
-+{
-+	union tcp_seq_and_ts_off ts;
-+
-+	ts = secure_tcpv6_seq_and_ts_off(&init_net, saddr, daddr,
-+					 sport, dport);
-+
-+	return ts.seq;
-+}
- #endif /* _NET_SECURE_SEQ */
-diff --git a/include/net/tcp.h b/include/net/tcp.h
-index 3255a199ef60..5d39b0e8dd90 100644
---- a/include/net/tcp.h
-+++ b/include/net/tcp.h
-@@ -42,6 +42,7 @@
- #include <net/dst.h>
- #include <net/mptcp.h>
- #include <net/xfrm.h>
-+#include <net/secure_seq.h>
- 
- #include <linux/seq_file.h>
- #include <linux/memcontrol.h>
-@@ -2307,8 +2308,9 @@ struct tcp_request_sock_ops {
- 				       struct flowi *fl,
- 				       struct request_sock *req,
- 				       u32 tw_isn);
--	u32 (*init_seq)(const struct sk_buff *skb);
--	u32 (*init_ts_off)(const struct net *net, const struct sk_buff *skb);
-+	union tcp_seq_and_ts_off (*init_seq_and_ts_off)(
-+					const struct net *net,
-+					const struct sk_buff *skb);
- 	int (*send_synack)(const struct sock *sk, struct dst_entry *dst,
- 			   struct flowi *fl, struct request_sock *req,
- 			   struct tcp_fastopen_cookie *foc,
-diff --git a/net/core/secure_seq.c b/net/core/secure_seq.c
-index 568779d5a0ef..740642aeaf76 100644
---- a/net/core/secure_seq.c
-+++ b/net/core/secure_seq.c
-@@ -20,7 +20,6 @@
- #include <net/tcp.h>
- 
- static siphash_aligned_key_t net_secret;
--static siphash_aligned_key_t ts_secret;
- 
- #define EPHEMERAL_PORT_SHUFFLE_PERIOD (10 * HZ)
- 
-@@ -28,11 +27,6 @@ static __always_inline void net_secret_init(void)
- {
- 	net_get_random_once(&net_secret, sizeof(net_secret));
- }
--
--static __always_inline void ts_secret_init(void)
--{
--	net_get_random_once(&ts_secret, sizeof(ts_secret));
--}
- #endif
- 
- #ifdef CONFIG_INET
-@@ -53,28 +47,9 @@ static u32 seq_scale(u32 seq)
- #endif
- 
- #if IS_ENABLED(CONFIG_IPV6)
--u32 secure_tcpv6_ts_off(const struct net *net,
--			const __be32 *saddr, const __be32 *daddr)
--{
--	const struct {
--		struct in6_addr saddr;
--		struct in6_addr daddr;
--	} __aligned(SIPHASH_ALIGNMENT) combined = {
--		.saddr = *(struct in6_addr *)saddr,
--		.daddr = *(struct in6_addr *)daddr,
--	};
--
--	if (READ_ONCE(net->ipv4.sysctl_tcp_timestamps) != 1)
--		return 0;
--
--	ts_secret_init();
--	return siphash(&combined, offsetofend(typeof(combined), daddr),
--		       &ts_secret);
--}
--EXPORT_IPV6_MOD(secure_tcpv6_ts_off);
--
--u32 secure_tcpv6_seq(const __be32 *saddr, const __be32 *daddr,
--		     __be16 sport, __be16 dport)
-+union tcp_seq_and_ts_off
-+secure_tcpv6_seq_and_ts_off(const struct net *net, const __be32 *saddr,
-+			    const __be32 *daddr, __be16 sport, __be16 dport)
- {
- 	const struct {
- 		struct in6_addr saddr;
-@@ -87,14 +62,20 @@ u32 secure_tcpv6_seq(const __be32 *saddr, const __be32 *daddr,
- 		.sport = sport,
- 		.dport = dport
- 	};
--	u32 hash;
-+	union tcp_seq_and_ts_off st;
- 
- 	net_secret_init();
--	hash = siphash(&combined, offsetofend(typeof(combined), dport),
--		       &net_secret);
--	return seq_scale(hash);
-+
-+	st.hash64 = siphash(&combined, offsetofend(typeof(combined), dport),
-+			    &net_secret);
-+
-+	if (READ_ONCE(net->ipv4.sysctl_tcp_timestamps) != 1)
-+		st.ts_off = 0;
-+
-+	st.seq = seq_scale(st.seq);
-+	return st;
- }
--EXPORT_SYMBOL(secure_tcpv6_seq);
-+EXPORT_SYMBOL(secure_tcpv6_seq_and_ts_off);
- 
- u64 secure_ipv6_port_ephemeral(const __be32 *saddr, const __be32 *daddr,
- 			       __be16 dport)
-@@ -118,33 +99,30 @@ EXPORT_SYMBOL(secure_ipv6_port_ephemeral);
- #endif
- 
- #ifdef CONFIG_INET
--u32 secure_tcp_ts_off(const struct net *net, __be32 saddr, __be32 daddr)
--{
--	if (READ_ONCE(net->ipv4.sysctl_tcp_timestamps) != 1)
--		return 0;
--
--	ts_secret_init();
--	return siphash_2u32((__force u32)saddr, (__force u32)daddr,
--			    &ts_secret);
--}
--
- /* secure_tcp_seq_and_tsoff(a, b, 0, d) == secure_ipv4_port_ephemeral(a, b, d),
-  * but fortunately, `sport' cannot be 0 in any circumstances. If this changes,
-  * it would be easy enough to have the former function use siphash_4u32, passing
-  * the arguments as separate u32.
-  */
--u32 secure_tcp_seq(__be32 saddr, __be32 daddr,
--		   __be16 sport, __be16 dport)
-+union tcp_seq_and_ts_off
-+secure_tcp_seq_and_ts_off(const struct net *net, __be32 saddr, __be32 daddr,
-+			  __be16 sport, __be16 dport)
- {
--	u32 hash;
-+	u32 ports = (__force u32)sport << 16 | (__force u32)dport;
-+	union tcp_seq_and_ts_off st;
- 
- 	net_secret_init();
--	hash = siphash_3u32((__force u32)saddr, (__force u32)daddr,
--			    (__force u32)sport << 16 | (__force u32)dport,
--			    &net_secret);
--	return seq_scale(hash);
-+
-+	st.hash64 = siphash_3u32((__force u32)saddr, (__force u32)daddr,
-+				 ports, &net_secret);
-+
-+	if (READ_ONCE(net->ipv4.sysctl_tcp_timestamps) != 1)
-+		st.ts_off = 0;
-+
-+	st.seq = seq_scale(st.seq);
-+	return st;
- }
--EXPORT_SYMBOL_GPL(secure_tcp_seq);
-+EXPORT_SYMBOL_GPL(secure_tcp_seq_and_ts_off);
- 
- u64 secure_ipv4_port_ephemeral(__be32 saddr, __be32 daddr, __be16 dport)
- {
-diff --git a/net/ipv4/syncookies.c b/net/ipv4/syncookies.c
-index 75b5984e1721..facf0fa7d659 100644
---- a/net/ipv4/syncookies.c
-+++ b/net/ipv4/syncookies.c
-@@ -376,9 +376,14 @@ static struct request_sock *cookie_tcp_check(struct net *net, struct sock *sk,
- 	tcp_parse_options(net, skb, &tcp_opt, 0, NULL);
- 
- 	if (tcp_opt.saw_tstamp && tcp_opt.rcv_tsecr) {
--		tsoff = secure_tcp_ts_off(net,
--					  ip_hdr(skb)->daddr,
--					  ip_hdr(skb)->saddr);
-+		union tcp_seq_and_ts_off st;
-+
-+		st = secure_tcp_seq_and_ts_off(net,
-+					       ip_hdr(skb)->daddr,
-+					       ip_hdr(skb)->saddr,
-+					       tcp_hdr(skb)->dest,
-+					       tcp_hdr(skb)->source);
-+		tsoff = st.ts_off;
- 		tcp_opt.rcv_tsecr -= tsoff;
- 	}
- 
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index 53f58601815c..e57917aefd50 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -7209,6 +7209,7 @@ int tcp_conn_request(struct request_sock_ops *rsk_ops,
- 	struct tcp_sock *tp = tcp_sk(sk);
- 	struct net *net = sock_net(sk);
- 	struct sock *fastopen_sk = NULL;
-+	union tcp_seq_and_ts_off st;
- 	struct request_sock *req;
- 	bool want_cookie = false;
- 	struct dst_entry *dst;
-@@ -7278,9 +7279,12 @@ int tcp_conn_request(struct request_sock_ops *rsk_ops,
- 	if (!dst)
- 		goto drop_and_free;
- 
-+	if (tmp_opt.tstamp_ok || (!want_cookie && !isn))
-+		st = af_ops->init_seq_and_ts_off(net, skb);
-+
- 	if (tmp_opt.tstamp_ok) {
- 		tcp_rsk(req)->req_usec_ts = dst_tcp_usec_ts(dst);
--		tcp_rsk(req)->ts_off = af_ops->init_ts_off(net, skb);
-+		tcp_rsk(req)->ts_off = st.ts_off;
- 	}
- 	if (!want_cookie && !isn) {
- 		int max_syn_backlog = READ_ONCE(net->ipv4.sysctl_max_syn_backlog);
-@@ -7302,7 +7306,7 @@ int tcp_conn_request(struct request_sock_ops *rsk_ops,
- 			goto drop_and_release;
- 		}
- 
--		isn = af_ops->init_seq(skb);
-+		isn = st.seq;
- 	}
- 
- 	tcp_ecn_create_request(req, skb, sk, dst);
-diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
-index de5ada71ced4..89e8438ec9ed 100644
---- a/net/ipv4/tcp_ipv4.c
-+++ b/net/ipv4/tcp_ipv4.c
-@@ -100,17 +100,14 @@ static DEFINE_PER_CPU(struct sock_bh_locked, ipv4_tcp_sk) = {
- 
- static DEFINE_MUTEX(tcp_exit_batch_mutex);
- 
--static u32 tcp_v4_init_seq(const struct sk_buff *skb)
-+static union tcp_seq_and_ts_off
-+tcp_v4_init_seq_and_ts_off(const struct net *net, const struct sk_buff *skb)
- {
--	return secure_tcp_seq(ip_hdr(skb)->daddr,
--			      ip_hdr(skb)->saddr,
--			      tcp_hdr(skb)->dest,
--			      tcp_hdr(skb)->source);
--}
--
--static u32 tcp_v4_init_ts_off(const struct net *net, const struct sk_buff *skb)
--{
--	return secure_tcp_ts_off(net, ip_hdr(skb)->daddr, ip_hdr(skb)->saddr);
-+	return secure_tcp_seq_and_ts_off(net,
-+					 ip_hdr(skb)->daddr,
-+					 ip_hdr(skb)->saddr,
-+					 tcp_hdr(skb)->dest,
-+					 tcp_hdr(skb)->source);
- }
- 
- int tcp_twsk_unique(struct sock *sk, struct sock *sktw, void *twp)
-@@ -320,15 +317,16 @@ int tcp_v4_connect(struct sock *sk, struct sockaddr *uaddr, int addr_len)
- 	rt = NULL;
- 
- 	if (likely(!tp->repair)) {
-+		union tcp_seq_and_ts_off st;
-+
-+		st = secure_tcp_seq_and_ts_off(net,
-+					       inet->inet_saddr,
-+					       inet->inet_daddr,
-+					       inet->inet_sport,
-+					       usin->sin_port);
- 		if (!tp->write_seq)
--			WRITE_ONCE(tp->write_seq,
--				   secure_tcp_seq(inet->inet_saddr,
--						  inet->inet_daddr,
--						  inet->inet_sport,
--						  usin->sin_port));
--		WRITE_ONCE(tp->tsoffset,
--			   secure_tcp_ts_off(net, inet->inet_saddr,
--					     inet->inet_daddr));
-+			WRITE_ONCE(tp->write_seq, st.seq);
-+		WRITE_ONCE(tp->tsoffset, st.ts_off);
- 	}
- 
- 	atomic_set(&inet->inet_id, get_random_u16());
-@@ -1712,8 +1710,7 @@ const struct tcp_request_sock_ops tcp_request_sock_ipv4_ops = {
- 	.cookie_init_seq =	cookie_v4_init_sequence,
- #endif
- 	.route_req	=	tcp_v4_route_req,
--	.init_seq	=	tcp_v4_init_seq,
--	.init_ts_off	=	tcp_v4_init_ts_off,
-+	.init_seq_and_ts_off	=	tcp_v4_init_seq_and_ts_off,
- 	.send_synack	=	tcp_v4_send_synack,
- };
- 
-diff --git a/net/ipv6/syncookies.c b/net/ipv6/syncookies.c
-index 9d83eadd308b..b60bbc119c51 100644
---- a/net/ipv6/syncookies.c
-+++ b/net/ipv6/syncookies.c
-@@ -150,9 +150,14 @@ static struct request_sock *cookie_tcp_check(struct net *net, struct sock *sk,
- 	tcp_parse_options(net, skb, &tcp_opt, 0, NULL);
- 
- 	if (tcp_opt.saw_tstamp && tcp_opt.rcv_tsecr) {
--		tsoff = secure_tcpv6_ts_off(net,
--					    ipv6_hdr(skb)->daddr.s6_addr32,
--					    ipv6_hdr(skb)->saddr.s6_addr32);
-+		union tcp_seq_and_ts_off st;
-+
-+		st = secure_tcpv6_seq_and_ts_off(net,
-+						 ipv6_hdr(skb)->daddr.s6_addr32,
-+						 ipv6_hdr(skb)->saddr.s6_addr32,
-+						 tcp_hdr(skb)->dest,
-+						 tcp_hdr(skb)->source);
-+		tsoff = st.ts_off;
- 		tcp_opt.rcv_tsecr -= tsoff;
- 	}
- 
-diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
-index a79cd20d3d31..f1e0c2c232c9 100644
---- a/net/ipv6/tcp_ipv6.c
-+++ b/net/ipv6/tcp_ipv6.c
-@@ -104,18 +104,14 @@ static void inet6_sk_rx_dst_set(struct sock *sk, const struct sk_buff *skb)
- 	}
- }
- 
--static u32 tcp_v6_init_seq(const struct sk_buff *skb)
-+static union tcp_seq_and_ts_off
-+tcp_v6_init_seq_and_ts_off(const struct net *net, const struct sk_buff *skb)
- {
--	return secure_tcpv6_seq(ipv6_hdr(skb)->daddr.s6_addr32,
--				ipv6_hdr(skb)->saddr.s6_addr32,
--				tcp_hdr(skb)->dest,
--				tcp_hdr(skb)->source);
--}
--
--static u32 tcp_v6_init_ts_off(const struct net *net, const struct sk_buff *skb)
--{
--	return secure_tcpv6_ts_off(net, ipv6_hdr(skb)->daddr.s6_addr32,
--				   ipv6_hdr(skb)->saddr.s6_addr32);
-+	return secure_tcpv6_seq_and_ts_off(net,
-+					   ipv6_hdr(skb)->daddr.s6_addr32,
-+					   ipv6_hdr(skb)->saddr.s6_addr32,
-+					   tcp_hdr(skb)->dest,
-+					   tcp_hdr(skb)->source);
- }
- 
- static int tcp_v6_pre_connect(struct sock *sk, struct sockaddr *uaddr,
-@@ -316,14 +312,16 @@ static int tcp_v6_connect(struct sock *sk, struct sockaddr *uaddr,
- 	sk_set_txhash(sk);
- 
- 	if (likely(!tp->repair)) {
-+		union tcp_seq_and_ts_off st;
-+
-+		st = secure_tcpv6_seq_and_ts_off(net,
-+						 np->saddr.s6_addr32,
-+						 sk->sk_v6_daddr.s6_addr32,
-+						 inet->inet_sport,
-+						 inet->inet_dport);
- 		if (!tp->write_seq)
--			WRITE_ONCE(tp->write_seq,
--				   secure_tcpv6_seq(np->saddr.s6_addr32,
--						    sk->sk_v6_daddr.s6_addr32,
--						    inet->inet_sport,
--						    inet->inet_dport));
--		tp->tsoffset = secure_tcpv6_ts_off(net, np->saddr.s6_addr32,
--						   sk->sk_v6_daddr.s6_addr32);
-+			WRITE_ONCE(tp->write_seq, st.seq);
-+		tp->tsoffset = st.ts_off;
- 	}
- 
- 	if (tcp_fastopen_defer_connect(sk, &err))
-@@ -855,8 +853,7 @@ const struct tcp_request_sock_ops tcp_request_sock_ipv6_ops = {
- 	.cookie_init_seq =	cookie_v6_init_sequence,
- #endif
- 	.route_req	=	tcp_v6_route_req,
--	.init_seq	=	tcp_v6_init_seq,
--	.init_ts_off	=	tcp_v6_init_ts_off,
-+	.init_seq_and_ts_off	= tcp_v6_init_seq_and_ts_off,
- 	.send_synack	=	tcp_v6_send_synack,
- };
- 
+> +
+>  err_ctrls:
+>  	v4l2_ctrl_handler_free(sensor->sd.ctrl_handler);
+>  
+
 -- 
-2.53.0
+Regards,
+Benjamin
 
 
