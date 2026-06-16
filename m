@@ -1,61 +1,75 @@
-Return-Path: <stable+bounces-264306-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265600-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id xgbIET11MWpPjwUAu9opvQ
-	(envelope-from <stable+bounces-264306-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:09:33 +0200
+	id YvwfAx2MMWo7mQUAu9opvQ
+	(envelope-from <stable+bounces-265600-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:47:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C524F691BE3
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:09:32 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF5AC69379E
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:47:07 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=meR+vXCj;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264306-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264306-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=2EmdsVfz;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265600-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-265600-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DC62630CF58D
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:54:24 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0148B3001193
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:47:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0736D44D6B2;
-	Tue, 16 Jun 2026 15:54:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDF833D669A;
+	Tue, 16 Jun 2026 17:47:01 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C591A43D4F7;
-	Tue, 16 Jun 2026 15:54:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 932AC169AD2;
+	Tue, 16 Jun 2026 17:47:00 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781625263; cv=none; b=j+Jxn0pdi2n5I/pN2xFXZBvlvXaDnu4P/WuWbPWir8VrTSA43WzeHiRxCiIJH2UH1Z7VsCMfudZafQV65Qf5zBYEF/YQd6Srxoi4Qwp6n22Zg9CskdeoEr+iayiXhWv7Pc8g/Lo0KNYgh6W1/4O0hjnEvdK9j9EItZAIADbLxLk=
+	t=1781632021; cv=none; b=uFTUErXLVKwgPka29vJrbrccflq0+C9jDzhStgts2OpaClpvZbu2PJOBwhjKJHqFMbzhUSqoP38jEp4xCNm9uJg4q+CyuAX/8OxNx7hKcu1APr9RfgAlQY2ZS2z6oy6ItdylnNuUpP7+kznK5bdsH1TMYUzKOej/2nsqlZ/Grp0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781625263; c=relaxed/simple;
-	bh=5xdRT7hCtoyT+wM5W8B6058XUA+sUZ5iogCIR04/eV0=;
+	s=arc-20240116; t=1781632021; c=relaxed/simple;
+	bh=N+u8SnqgqqHfGYtMZFUGyzX9lu2glj1rHuel5nlAmxE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AJAkHDGQV+h5jjjKLmBPtNm/eU62hDBqm4lNyhMPENTIXWsPCw2+XE99tL6aWA/04Aq6NUNItzErcYGYQPNo+wARdoVwn3kmz1sLJLPoFhFV9n/bcR6DWgZjjG2lmdtv5HDEVL/VVWYdjRnqbwrQbAQ2JyzAm653D3iADQziJhY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=meR+vXCj; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A16EB1F000E9;
-	Tue, 16 Jun 2026 15:54:21 +0000 (UTC)
+	 MIME-Version; b=kT3sqdMfwBmkTl5BHOUaJPOR/ba1kn+PkMlaNZ9WJYPPW4qlHxiPHX6LgwEnWN36tai7wPIBHJ1exA2PLnWScxU3A9XgKgIpspHW469YAr3aH7KexDwYZ2mbewE+4vCmjNKA1xaQ4tdlllbtubS3UJmSdzsqnWhNIn7a+MGX/MM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2EmdsVfz; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36E2C1F000E9;
+	Tue, 16 Jun 2026 17:46:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781625262;
-	bh=lMoVLGy0C/CgX3MdPv+2qWWi4YqEr/01jqzgOy8xwt4=;
+	s=korg; t=1781632020;
+	bh=X8XC2p8hY3/tetbdECAxv+KMqP6olSeL+Ki56HLu3ak=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=meR+vXCjHTs9NCt9txgeE0/+ukew89M/4g0uoJHRpFdPkVaI9XSpDM+f2ybkXY1nq
-	 lN4KXOdQkOxaJTZgT+MAlrJGR5hp9PuIDCx4kOJHyQAM/PmozyqVv85yZLAROx3vWY
-	 Dny8aCl/x0Rc7Nb+jS/PoBEP5HtyawiRNdvpUAds=
+	b=2EmdsVfzo6a+WEhScNFazaNwVU2zifYI7I7XieKTyoX21zkvppDpXYHcms6BiDa1G
+	 SIkLcaLd7Jtz3IaCp8cT3GLVr5VuKAwirRIaE4eaK+tV+4iYz7poyS8SfcmDDzxPyB
+	 gyvzVAFNerRdnNEf8KnyIwukVaZtJuE5i4xB7hDE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nam Cao <namcao@linutronix.de>,
-	Gabriele Monaco <gmonaco@redhat.com>,
+	Yin Tirui <yintirui@huawei.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"David Hildenbrand (arm)" <david@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Dev Jain <dev.jain@arm.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Barry Song <baohua@kernel.org>,
+	Chen Jun <chenjun102@huawei.com>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Nico Pache <npache@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Yang Shi <yang.shi@linux.alibaba.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 081/325] tools/rv: Fix substring match when listing container monitors
+Subject: [PATCH 6.1 330/522] mm/huge_memory: update file PMD counter before folio_put()
 Date: Tue, 16 Jun 2026 20:27:57 +0530
-Message-ID: <20260616145101.763159970@linuxfoundation.org>
+Message-ID: <20260616145141.266216848@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,22 +86,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264306-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265600-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[20];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:namcao@linutronix.de,m:gmonaco@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:yintirui@huawei.com,m:ljs@kernel.org,m:david@kernel.org,m:lance.yang@linux.dev,m:dev.jain@arm.com,m:baolin.wang@linux.alibaba.com,m:baohua@kernel.org,m:chenjun102@huawei.com,m:wangkefeng.wang@huawei.com,m:liam@infradead.org,m:npache@redhat.com,m:ryan.roberts@arm.com,m:vbabka@kernel.org,m:yang.shi@linux.alibaba.com,m:ziy@nvidia.com,m:akpm@linux-foundation.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -98,54 +112,64 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linutronix.de:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C524F691BE3
+X-Rspamd-Queue-Id: EF5AC69379E
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabriele Monaco <gmonaco@redhat.com>
+From: Yin Tirui <yintirui@huawei.com>
 
-[ Upstream commit ba0247c5aa3fcb2890a92a97a88c70fe5ce704a6 ]
+[ Upstream commit 8d878059924f12c1bc24556a92ec56add74de3c8 ]
 
-When listing monitors within a specific container (rv list <container>),
-the tool incorrectly matched monitors if the requested container name
-was only a prefix of the actual container (e.g., 'rv list sche' would
-incorrectly list monitors from 'sched:').
+__split_huge_pmd_locked() updates the file/shmem RSS counter after
+dropping the PMD mapping's folio reference.  If folio_put() drops the last
+reference, mm_counter_file() can later read freed folio state via
+folio_test_swapbacked().
 
-Fix this by ensuring the container name is an exact match and is
-immediately followed by the ':' separator.
+Move the counter update before folio_put().
 
-Fixes: eba321a16fc6 ("tools/rv: Add support for nested monitors")
-Reviewed-by: Nam Cao <namcao@linutronix.de>
-Link: https://lore.kernel.org/r/20260514152055.229162-3-gmonaco@redhat.com
-Signed-off-by: Gabriele Monaco <gmonaco@redhat.com>
+Link: https://lore.kernel.org/20260526101337.1984081-1-yintirui@huawei.com
+Fixes: fadae2953072 ("thp: use mm_file_counter to determine update which rss counter")
+Signed-off-by: Yin Tirui <yintirui@huawei.com>
+Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
+Acked-by: David Hildenbrand (arm) <david@kernel.org>
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
+Reviewed-by: Dev Jain <dev.jain@arm.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Barry Song <baohua@kernel.org>
+Cc: Chen Jun <chenjun102@huawei.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Liam R. Howlett <liam@infradead.org>
+Cc: Nico Pache <npache@redhat.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Vlastimil Babka <vbabka@kernel.org>
+Cc: Yang Shi <yang.shi@linux.alibaba.com>
+Cc: Zi Yan <ziy@nvidia.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+[ changed folio API calls (folio_remove_rmap_pmd/mm_counter_file(folio)/folio_put) to page-based equivalents (page_remove_rmap/mm_counter_file(page)/put_page) ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/verification/rv/src/in_kernel.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ mm/huge_memory.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/tools/verification/rv/src/in_kernel.c b/tools/verification/rv/src/in_kernel.c
-index 95eac9ab148468..e4f35940374f5a 100644
---- a/tools/verification/rv/src/in_kernel.c
-+++ b/tools/verification/rv/src/in_kernel.c
-@@ -193,8 +193,12 @@ static int ikm_fill_monitor_definition(char *name, struct monitor *ikm, char *co
- 	nested_name = strstr(name, ":");
- 	if (nested_name) {
- 		/* it belongs in container if it starts with "container:" */
--		if (container && strstr(name, container) != name)
--			return 1;
-+		if (container) {
-+			int len = strlen(container);
-+
-+			if (strncmp(name, container, len) || name[len] != ':')
-+				return 1;
-+		}
- 		*nested_name = '/';
- 		++nested_name;
- 		ikm->nested = 1;
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 2c118713f77126..7023bdf4896055 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -2085,7 +2085,9 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
+ 			if (!PageReferenced(page) && pmd_young(old_pmd))
+ 				SetPageReferenced(page);
+ 			page_remove_rmap(page, vma, true);
++			add_mm_counter(mm, mm_counter_file(page), -HPAGE_PMD_NR);
+ 			put_page(page);
++			return;
+ 		}
+ 		add_mm_counter(mm, mm_counter_file(page), -HPAGE_PMD_NR);
+ 		return;
 -- 
 2.53.0
 
