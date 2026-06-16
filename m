@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-265690-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266475-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Hj2WKOaNMWo7mgUAu9opvQ
-	(envelope-from <stable+bounces-265690-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:54:46 +0200
+	id FAhgEX+fMWoYogUAu9opvQ
+	(envelope-from <stable+bounces-266475-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:09:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 458F46939FF
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:54:46 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0A5A694CE5
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:09:50 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=gcje19oJ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265690-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265690-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=yEEccKtL;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266475-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266475-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B47E83035CDA
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:54:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6B8C331A52B2
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:03:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3659F466B4B;
-	Tue, 16 Jun 2026 17:54:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCBE43DBD76;
+	Tue, 16 Jun 2026 19:03:29 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 052DB3A9627;
-	Tue, 16 Jun 2026 17:54:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB49B318EDA;
+	Tue, 16 Jun 2026 19:03:28 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781632482; cv=none; b=bW9UakRlmSco4qmNDaC+Np9c0iKHbd0kx9Jflna1ka9GBLatlRe2gqpdUydUSiR586tLQFTgESP4fwfUs4DC0kxiZ8ZBaU0zXvr7heirdDJWQ2KJ8VBEkyFa9/1PVifl8jXowyHLMUDv+IGZYWwqw0uJ+lXtReyspLQ5niorJl8=
+	t=1781636609; cv=none; b=RmhOuGXP3ZgkclaLVRYLtZCDchozeX3HeZ8ya4wRYkSZwcpbsyKSho3Jh7n9vjSBV3jHJzLysmcEqQh0Ey0W4FsRYc3Z4U3RNs2YnVk+sHZ90iRHMK7+cq6MHJZcpRZ/Pur9yK066nxZUHUGHyk34KTFE4AyOofHyLtsH0lcwQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781632482; c=relaxed/simple;
-	bh=MzdlHS1dw1CQknE8HSvgJ9tKgKq7zl/2ItS5bcFxTHo=;
+	s=arc-20240116; t=1781636609; c=relaxed/simple;
+	bh=OkM24r8u9eOA5sUtBf8+JYmFCMxTIfZovCk+lMph124=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nZ+b6vGR23f68OaqFI8WkoruBlo3fiQzwMoX5nwa0gBflsaZMU8VffMv5topnJe4se0aRHICVEqPxbN9D/45Ry00YmHgoZcwze8hmWXhbwJiU//NI2r5q3JSR0KChWh5H5hbhGS4b9Y+vKpXr9oLIEmOZ35dSwDa9f59n1UiOKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gcje19oJ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A69A91F000E9;
-	Tue, 16 Jun 2026 17:54:39 +0000 (UTC)
+	 MIME-Version; b=UQrP/R/XCcgVichOwq6ofAq2J2GifTq9kXAaUdCgso5q0hIGc7XcrTnqCbz7M33zfCbwTgmzqzUrrgmoHRYFUxYFZdmScfpS98TAWGkoeArSbfmlVNHN3P66fwRBroWanIeW5qpxg5D7oMLOMwuNbT7HbdYhLIwZzLibDud6hts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yEEccKtL; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F8251F000E9;
+	Tue, 16 Jun 2026 19:03:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781632480;
-	bh=3tl7nkCekVTLjYQ8iCmD44Z49iWXI+DbLiIh1vvgTRY=;
+	s=korg; t=1781636608;
+	bh=wuVzxsNFs0koJgmgJ6feEJ5SEUFx6Li6BMETIMvOfTA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gcje19oJ7hpo2FgpOflYKjQrKaC7ZoV3HC5HoYYm41JAQCdOEhMWJYY5DlGE07ohX
-	 gHB/Xfhi/NOZ6Onv1zxK/8n8g3RJe7f6eQ2Ce1emhoGEMp8d2nlHN9/y1H8IMo2QXp
-	 PgQUa83ZZ+wq0crqIIqQYTkvsRjSQpHZMgR2xytE=
+	b=yEEccKtLevah2ZgAhNUs3zDmUeyiot3n/yR1FJq7QviGT+R2LY+Awfqy4w7hUTthP
+	 HaiOrHd2ayj3zm9ClYXVQEl1I5s6bqtdFrlDg0bLiUhmJUbehB6G3XdaaoSbNV16AT
+	 0vgEa9D7SJyoh/bJuZg3ETN/23/eJPBS3RvTbQWA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lance Tuller <lance@lance0.com>,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Mikulas Patocka <mpatocka@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 420/522] mptcp: fastclose msk when linger time is 0
+Subject: [PATCH 5.10 271/342] dm-thin: fix metadata refcount underflow
 Date: Tue, 16 Jun 2026 20:29:27 +0530
-Message-ID: <20260616145145.648932248@linuxfoundation.org>
+Message-ID: <20260616145100.952988006@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,91 +68,94 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265690-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-266475-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:lance@lance0.com,m:martineau@kernel.org,m:matttbe@kernel.org,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mpatocka@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 458F46939FF
+X-Rspamd-Queue-Id: D0A5A694CE5
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-[ Upstream commit f14d6e9c3678a067f304abba561e0c5446c7e845 ]
+[ Upstream commit 09a65adc7d8bbfce06392cb6d375468e2728ead5 ]
 
-The SO_LINGER socket option has been supported for a while with MPTCP
-sockets [1], but it didn't cause the equivalent of a TCP reset as
-expected when enabled and its time was set to 0. This was causing some
-behavioural differences with TCP where some connections were not
-promptly stopped as expected.
+There's a bug in dm-thin in the function rebalance_children. If the
+internal btree node has one entry, the code tries to copy all btree
+entries from the node's child to the node itself and then decrement the
+child's reference count.
 
-To fix that, an extra condition is checked at close() time before
-sending an MP_FASTCLOSE, the MPTCP equivalent of a TCP reset.
+If the child node is shared (it has reference count > 1), we won't free
+it, so there would be two pointers to each of the grandchildren nodes.
+But the reference counts of the grandchildren is not increased, thus the
+reference count doesn't match the number of pointers that point to the
+grandchildren. This results in "device mapper: space map common: unable
+to decrement block" errors.
 
-Note that backporting up to [1] will be difficult as more changes are
-needed to be able to send MP_FASTCLOSE. It seems better to stop at [2],
-which was supposed to already imitate TCP.
+Fix this bug by incrementing reference counts on the grandchildren if the
+btree node is shared.
 
-Validated with MPTCP packetdrill tests [3].
-
-Fixes: 268b12387460 ("mptcp: setsockopt: support SO_LINGER") [1]
-Fixes: d21f83485518 ("mptcp: use fastclose on more edge scenarios") [2]
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Fixes: 3241b1d3e0aa ("dm: add persistent data library")
 Cc: stable@vger.kernel.org
-Reported-by: Lance Tuller <lance@lance0.com>
-Closes: https://github.com/lance0/xfr/pull/67
-Link: https://github.com/multipath-tcp/packetdrill/pull/196 [3]
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260427-net-mptcp-misc-fixes-7-1-rc2-v1-3-7432b7f279fa@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ kept `mptcp_check_readable()` name and explicit `inet_sk_state_store(sk, TCP_CLOSE)` ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/protocol.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/md/persistent-data/dm-btree-remove.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -3158,7 +3158,8 @@ bool __mptcp_close(struct sock *sk, long
- 		goto cleanup;
- 	}
+--- a/drivers/md/persistent-data/dm-btree-remove.c
++++ b/drivers/md/persistent-data/dm-btree-remove.c
+@@ -415,12 +415,20 @@ static int rebalance_children(struct sha
  
--	if (mptcp_check_readable(msk)) {
-+	if (mptcp_check_readable(msk) ||
-+	    (sock_flag(sk, SOCK_LINGER) && !sk->sk_lingertime)) {
- 		/* the msk has read data, do the MPTCP equivalent of TCP reset */
- 		inet_sk_state_store(sk, TCP_CLOSE);
- 		mptcp_do_fastclose(sk);
+ 	if (le32_to_cpu(n->header.nr_entries) == 1) {
+ 		struct dm_block *child;
++		int is_shared;
+ 		dm_block_t b = value64(n, 0);
+ 
++		r = dm_tm_block_is_shared(info->tm, b, &is_shared);
++		if (r)
++			return r;
++
+ 		r = dm_tm_read_lock(info->tm, b, &btree_node_validator, &child);
+ 		if (r)
+ 			return r;
+ 
++		if (is_shared)
++			inc_children(info->tm, dm_block_data(child), vt);
++
+ 		memcpy(n, dm_block_data(child),
+ 		       dm_bm_block_size(dm_tm_get_bm(info->tm)));
+ 
 
 
 
