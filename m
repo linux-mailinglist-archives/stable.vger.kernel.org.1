@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-264545-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264546-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id j2p8DWF5MWoKkQUAu9opvQ
-	(envelope-from <stable+bounces-264545-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:27:13 +0200
+	id HKc3CI95MWolkQUAu9opvQ
+	(envelope-from <stable+bounces-264546-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:27:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BA3A692160
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:27:12 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7388C6921A4
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:27:58 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=YKG8F5nU;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264545-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264545-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Lk8SaYyf;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264546-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264546-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C7C303064079
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:14:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A585C31E9698
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:14:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B73D6466B4C;
-	Tue, 16 Jun 2026 16:14:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 718AE4657FD;
+	Tue, 16 Jun 2026 16:14:55 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F0F544BCB8;
-	Tue, 16 Jun 2026 16:14:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28B19379EFC;
+	Tue, 16 Jun 2026 16:14:54 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781626490; cv=none; b=tf7j8IZINZK3TBRE34LbdQG/omOJOnhysZ42t9f7zqkqz27tWYjVMmEIVXV4uk2oU+FXanIe/ZXto0NXkJIDgDJulBVWrvc2JUNl0enWhHq2VWmuwaGboXJ5i+Tnwkf2lncs05Nbue0/YlU2Cv3gqcevhlTChaCG5ORPpP5/AlY=
+	t=1781626495; cv=none; b=cdacV4l+pfrI+QEjnxHm1xRxGrtwsiH6Wxgi+SnlC7/qmHYiL+OhT8iWVQhXSB3fjdG21x9/o/+/6YEUrVgnoz11cbKiqRemL9L4nfiEFf6pBtHhXlaOKk57zlmEB6Ft9Yqo5AHM6okE7VVlWTJtEfpD5wTLi+cPGREfZEgOLmk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781626490; c=relaxed/simple;
-	bh=PWsHMRTvFjN+igj8exi/8FxQZjaMq7uHdJst9rN0Kcw=;
+	s=arc-20240116; t=1781626495; c=relaxed/simple;
+	bh=M5p68jTHfuQmztPgWNG8xu43ymUkYc7gRHrk0W5RqPE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tu059Ax0+En9hfqeopAd765irsNNOCH0v5Sv/ewqEaqkY+U+hRaBL6GUVCNbrNAC0ksXr4KvjRU/FQ3+dc64dpBKMCn0uj13rljMGm/YeCf1qE8IxNfjEtEgfKJjlOw8Ws2+AtwghLy3k7DLNG/BjGF0SJOsJfn8XX3nk+2580I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YKG8F5nU; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 922371F000E9;
-	Tue, 16 Jun 2026 16:14:48 +0000 (UTC)
+	 MIME-Version; b=q1P4ukqtVeytl2CttiOvIFfx0P3pCBrNnG4Y3fAqGYJEYd/YV7cFI/nU4vlN3bI6LRK1cZveGGwjcVVjuGnev7nDkN6o6bPpprClC47xJ7kMV1bP+jqQdaE/+Itz2Wf1khzrg98KUhRANk2KqheYbvWqK1mGtqZMIOHwZMSJvqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lk8SaYyf; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 395881F000E9;
+	Tue, 16 Jun 2026 16:14:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781626489;
-	bh=n6wxijZQhXtFsc77M6PWqLRO8XulXBFYL3CHhA1hpFQ=;
+	s=korg; t=1781626494;
+	bh=zXhGIW3PqgIZqNo6C8CO5ObtzS/HJgWteijtUTt13Y0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=YKG8F5nUqFbeFSifq5gVB4GM7vNE92Q7PGhl9V5xixob0MDreS3pc+NTdyTByWn8r
-	 VNtQXtyIvAyFjhGuSzF7rS65tpUsnf/P+syf8MYj18B5R1ToG5YKgL7CFHrsmZE9JJ
-	 vZpvv4mbHOOP6mARejiZTw+ZjMWZnxW90tTsGEME=
+	b=Lk8SaYyfRrOxCbUsqL4E0X8YUj3JeQZ8eedQa5NIPCo0uYX2dyujCDB/3WiwvpAMX
+	 G6EJ9nvQP3K+HfFDFfEWFxco2JCwK4ptEaHhdyiQOXC+9lPpt2rP1P//os9W2Poaci
+	 hH7r6x2X+LnvxqQsZblGexUTLiKHUEUvjVKo/r/I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Will Deacon <will@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>
-Subject: [PATCH 6.18 324/325] arm64: errata: Mitigate TLBI errata on Microsoft Azure Cobalt 100 CPU
-Date: Tue, 16 Jun 2026 20:32:00 +0530
-Message-ID: <20260616145115.256127091@linuxfoundation.org>
+	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Gyokhan Kochmarla <gyokhan@amazon.de>
+Subject: [PATCH 6.18 325/325] block: fix handling of dead zone write plugs
+Date: Tue, 16 Jun 2026 20:32:01 +0530
+Message-ID: <20260616145115.311447041@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
 References: <20260616145057.827196531@linuxfoundation.org>
@@ -68,93 +70,140 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264545-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:will@kernel.org,m:mark.rutland@arm.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264546-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:shinichiro.kawasaki@wdc.com,m:dlemoal@kernel.org,m:axboe@kernel.dk,m:gyokhan@amazon.de,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,arm.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,amazon.de:email,vger.kernel.org:from_smtp,kernel.dk:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9BA3A692160
+X-Rspamd-Queue-Id: 7388C6921A4
 
 6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Will Deacon <will@kernel.org>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-commit 1940e70a8144bf75e6df26bf6f600862ea7f7ea1 upstream.
+commit 836efd35c472d89c838d7b17ef339ddb3286ffc5 upstream.
 
-Commit fb091ff39479 ("arm64: Subscribe Microsoft Azure Cobalt 100 to ARM
-Neoverse N2 errata") states that Microsoft Azure Cobalt 100 CPU "is a
-Microsoft implemented CPU based on r0p0 of the ARM Neoverse N2 CPU, and
-therefore suffers from all the same errata.".
+Shin'ichiro reported hard to reproduce unaligned write errors with zoned
+block devices. Under normal operation conditions (e.g. running XFS on an
+SMR disk), these errors are nearly impossible to trigger. But using a
+"slow" kernel with many debug options enables and some specific use
+cases (e.g. fio zbd test case 46), the errors can be reproduced fairly
+easily.
 
-So enable the workaround for the latest broadcast TLB invalidation bug
-on these parts.
+The unaligned write errors come from mishandling a valid reference
+counting pattern of zone write plugs. Such pattern triggers for instance
+if a process A writes a zone (not necessarilly to the full state),
+another process B immediately resets the zone and immediately following
+the completion of the zone reset, starts issuing writes to the zone.
+With such pattern, in some cases, the zone write plugs worker thread of
+the device may still be holding a reference to the zone write plug of
+the zone taken when process A was writing to the zone. The following
+zone reset from process B marks the zone as dead but does not remove the
+zone write plug from the device hash table as a reference to the plug
+still exist. Once process B starts issuing new writes, the zone write
+plug is seen as dead and the writes from process B are immediately
+failed, despite this write pattern being perfectly legal.
 
-Signed-off-by: Will Deacon <will@kernel.org>
-[Mark: backport to v6.18.y]
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Fix this by allowing restoring a dead zone write plug to a live state if
+a write is issued to the zone when the zone is: marked as dead, empty
+and the write sector corresponds to the first sector of the zone (that
+is, the write is aligned to the zone write pointer). This is done with
+the new helper function disk_check_zone_wplug_dead(), which restores a
+dead zone write plug to a live state by clearing the BLK_ZONE_WPLUG_DEAD
+flag and restoring the initial reference to the zone write plug taken
+when the plug was added to the device hash table.
+
+Reported-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+Fixes: b7d4ffb51037 ("block: fix zone write plug removal")
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Tested-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+Link: https://patch.msgid.link/20260513111129.108809-1-dlemoal@kernel.org
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+[ context conflict due to different line offsets in blk-zoned.c ]
+Signed-off-by: Gyokhan Kochmarla <gyokhan@amazon.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- Documentation/arch/arm64/silicon-errata.rst |    2 ++
- arch/arm64/Kconfig                          |    1 +
- arch/arm64/kernel/cpu_errata.c              |    1 +
- 3 files changed, 4 insertions(+)
 
---- a/Documentation/arch/arm64/silicon-errata.rst
-+++ b/Documentation/arch/arm64/silicon-errata.rst
-@@ -351,3 +351,5 @@ stable kernels.
- +----------------+-----------------+-----------------+-----------------------------+
- | Microsoft      | Azure Cobalt 100| #3324339        | ARM64_ERRATUM_3194386       |
- +----------------+-----------------+-----------------+-----------------------------+
-+| Microsoft      | Azure Cobalt 100| #4193789        | ARM64_ERRATUM_4118414       |
-++----------------+-----------------+-----------------+-----------------------------+
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -1194,6 +1194,7 @@ config ARM64_ERRATUM_4118414
- 	  * ARM Neoverse-V2 erratum 4193787
- 	  * ARM Neoverse-V3 erratum 4193784
- 	  * ARM Neoverse-V3AE erratum 4193784
-+	  * Microsoft Azure Cobalt 100 4193789
- 	  * NVIDIA Olympus erratum T410-OLY-1029
+---
+ block/blk-zoned.c |   32 +++++++++++++++++++++++++++-----
+ 1 file changed, 27 insertions(+), 5 deletions(-)
+
+--- a/block/blk-zoned.c
++++ b/block/blk-zoned.c
+@@ -505,6 +505,28 @@ static void disk_mark_zone_wplug_dead(st
+ 	}
+ }
  
- 	  On affected cores, some memory accesses might not be completed by
---- a/arch/arm64/kernel/cpu_errata.c
-+++ b/arch/arm64/kernel/cpu_errata.c
-@@ -341,6 +341,7 @@ static const struct arm64_cpu_capabiliti
- 			MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V3),
- 			MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V3AE),
- 			MIDR_ALL_VERSIONS(MIDR_NVIDIA_OLYMPUS),
-+			MIDR_ALL_VERSIONS(MIDR_MICROSOFT_AZURE_COBALT_100),
- 			{}
- 		})),
- 	},
++static inline bool disk_check_zone_wplug_dead(struct blk_zone_wplug *zwplug)
++{
++	if (!(zwplug->flags & BLK_ZONE_WPLUG_DEAD))
++		return false;
++
++	/*
++	 * If a new write is received right after a zone reset completes and
++	 * while the disk_zone_wplugs_worker() thread has not yet released the
++	 * reference on the zone write plug after processing the last write to
++	 * the zone, then the new write BIO will see the zone write plug marked
++	 * as dead. This case is however a false positive and a perfectly valid
++	 * pattern. In such case, restore the zone write plug to a live one.
++	 */
++	if (!zwplug->wp_offset && bio_list_empty(&zwplug->bio_list)) {
++		zwplug->flags &= ~BLK_ZONE_WPLUG_DEAD;
++		refcount_inc(&zwplug->ref);
++		return false;
++	}
++
++	return true;
++}
++
+ static void blk_zone_wplug_bio_work(struct work_struct *work);
+ 
+ /*
+@@ -1027,12 +1049,12 @@ static bool blk_zone_wplug_handle_write(
+ 	}
+ 
+ 	/*
+-	 * If we got a zone write plug marked as dead, then the user is issuing
+-	 * writes to a full zone, or without synchronizing with zone reset or
+-	 * zone finish operations. In such case, fail the BIO to signal this
+-	 * invalid usage.
++	 * Check if we got a zone write plug marked as dead. If yes, then the
++	 * user is likely issuing writes to a full zone, or without
++	 * synchronizing with zone reset or zone finish operations. In such
++	 * case, fail the BIO to signal this invalid usage.
+ 	 */
+-	if (zwplug->flags & BLK_ZONE_WPLUG_DEAD) {
++	if (disk_check_zone_wplug_dead(zwplug)) {
+ 		spin_unlock_irqrestore(&zwplug->lock, flags);
+ 		disk_put_zone_wplug(zwplug);
+ 		bio_io_error(bio);
 
 
 
