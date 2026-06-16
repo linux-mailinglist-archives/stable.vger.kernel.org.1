@@ -1,61 +1,64 @@
-Return-Path: <stable+bounces-263847-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264830-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 4Iz+CJ9pMWrtigUAu9opvQ
-	(envelope-from <stable+bounces-263847-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:19:59 +0200
+	id i++bEaV+MWpLkwUAu9opvQ
+	(envelope-from <stable+bounces-264830-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:49:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92394690EBE
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:19:58 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB9856927C3
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:49:40 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Zg+CPiW9;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263847-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263847-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="r3jS/3bG";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264830-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264830-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 046613110DC7
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:13:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 127D530759A6
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:41:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 391FC43C05C;
-	Tue, 16 Jun 2026 15:13:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2488546AF3C;
+	Tue, 16 Jun 2026 16:41:54 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9F7B42EEBB;
-	Tue, 16 Jun 2026 15:13:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C006947799B;
+	Tue, 16 Jun 2026 16:41:52 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781622788; cv=none; b=mn7opu4jx/1xXZcy0BV8r+a9+lXNjqILiLQg+Q4FPkCSV49XNMHctk6+RAJtkKjBGc7r3ted5gQZducN105tmugqkWDzMG5tuaZnuGtNxad7fh7/BYmqXbK6RTZufb/gciBI7mUs54qf7paew5WNZs7manXpwC2CzPb73QKBkSE=
+	t=1781628113; cv=none; b=QEr5IVjpgIUK6QBSxDA8s5PjObZ0Si2nytP99MmJ6UQFaGagRgYzC0XcIn92m/mz2QLiD9CYlC3PKWshL/InnJ5LTK42/NPpvTV5OujqCksJlZ3YH4h1oivQbJBZgOvrzflZaizVRBFWwDjXCMYChvY7RN7teHwcuas0IsWT5nw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781622788; c=relaxed/simple;
-	bh=7cLDdHCau6Y5jnDB028SBANUqYKEFYPxFeujzZ1z9a0=;
+	s=arc-20240116; t=1781628113; c=relaxed/simple;
+	bh=OwWmUw5lTLcSLpq0SQlZU4+dQc3MtkFR0eiSGmP4ops=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HRZkaRAB4kLC0K9M26CRmCJAX9c1cR/Y4TQlQw3AsCayMnBT71rMtWvoJ/si1L7jPIFUfOS5ioVlTG3vkly6gDWAnAhAUDhGSbXoMxHxrRs8y3t5s1nIseTvSgJ+r5MBriGgHlmr3hrOXm2oPSZR363lxUOh7KPCCIdyG9RE7L4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zg+CPiW9; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9ACD1F00A3A;
-	Tue, 16 Jun 2026 15:13:05 +0000 (UTC)
+	 MIME-Version; b=oZVXM/n8oyt04tM4yh1laPwl4MIhJuuxuTUpW/YRm/Vl3LfVLMvW1Sm+h+c/M/z/zocLoCXw3WnFzHq+ctRcCyPhJXJ/ZY/dOehlJopnwzinfy7JVl2cQjoIeTL2khrNCzoIU/wBy8bJPb+wKqx8we6LEgmLDwEbS68MapVpDAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r3jS/3bG; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C27971F000E9;
+	Tue, 16 Jun 2026 16:41:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781622786;
-	bh=lnlFaO6wXH6qbluIWhEHpYGh1E1J6EvorpS0OzpYqhE=;
+	s=korg; t=1781628112;
+	bh=M9qLHsuP217t9rEB+IrybvtTCFq8aaVYXGoq9FKzvI0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Zg+CPiW9bqH6adDczTdw87gHKIg68N9OGYgnRhTloFNhTxJbFVggDD09O2pex40BZ
-	 WXpyy/KTX0P3L7xurEOtlH39O1BRXfkJsqKtxD/7AtYfSbIrff0mJbr/DmeVCIi37K
-	 QJXVklOiVoTVSgrSqWIAoXG2SOB7UoUjDfX5ARrY=
+	b=r3jS/3bGf5bhPSsZwbmju9fSsRfWsJXHDccQbvuQF1efVFBHvXR1A8/efsOuDUmY0
+	 eYl8TzsIhmF02xTVR/80UFB4f58zjiQEu6yuXVOV5LI9XGfWdoQYM3+heKXfp5Z8Tk
+	 7J1h3zoPx/Cy6uxPQGPNEjHh+YaOP/nQQ5v/2quM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lee Jones <lee@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
+	Steve French <smfrench@gmail.com>,
+	Sean Shen <grayhat@foxmail.com>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 028/378] l2tp: pppol2tp: hold reference to session in pppol2tp_ioctl()
-Date: Tue, 16 Jun 2026 20:24:19 +0530
-Message-ID: <20260616145111.332787044@linuxfoundation.org>
+Subject: [PATCH 6.6 033/452] ksmbd: fix FSCTL permission bypass by adding a permission check for FSCTL_SET_SPARSE
+Date: Tue, 16 Jun 2026 20:24:20 +0530
+Message-ID: <20260616145119.661676678@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,213 +70,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-263847-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,foxmail.com,microsoft.com];
+	TAGGED_FROM(0.00)[bounces-264830-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:lee@kernel.org,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:linkinjeon@kernel.org,m:sergey.senozhatsky@gmail.com,m:smfrench@gmail.com,m:grayhat@foxmail.com,m:stfrench@microsoft.com,m:sashal@kernel.org,m:sergeysenozhatsky@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,foxmail.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 92394690EBE
+X-Rspamd-Queue-Id: CB9856927C3
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lee Jones <lee@kernel.org>
+From: Sean Shen <grayhat@foxmail.com>
 
-[ Upstream commit a213a8950414c684999dcf03edeea6c46ede172e ]
+[ Upstream commit cc57232cae23c0df91b4a59d0f519141ce9b5b02 ]
 
-pppol2tp_ioctl() read sock->sk->sk_user_data directly without any
-locks or reference counting.  If a controllable sleep was induced during
-copy_from_user() (e.g. via a userfaultfd page fault sleep), a concurrent
-socket close could trigger pppol2tp_session_close() asynchronously.  This
-frees the l2tp_session structure via the l2tp_session_del_work workqueue.
-Upon resuming, the ioctl thread dereferences the stale session pointer,
-resulting in a Use-After-Free (UAF).
+FSCTL_SET_SPARSE in fsctl_set_sparse() modifies the file's sparse
+attribute and saves it through xattr without any permission checks.
 
-Fix this by securely fetching the session reference using the RCU-safe,
-refcounted helper pppol2tp_sock_to_session(sk) on entry.  This locks the
-session's refcount across the sleep.  We structured the function to exit
-via standard err breaks, guaranteeing that l2tp_session_put() is cleanly
-called on all return paths to drop the reference.
+This exposes two issues:
 
-To preserve existing behavior we validate the session and its magic
-signature only for the specific L2TP commands that require it.  This
-ensures that generic/unknown ioctls called on an unconnected socket
-still return -ENOIOCTLCMD and correctly fall back to generic handlers
-(e.g. in sock_do_ioctl()).
+1) A client on a read-only share can change the sparse attribute
+   on files it opened, even though the share is read-only.
+   Other FSCTL write operations already check
+   test_tree_conn_flag(work->tcon, KSMBD_TREE_CONN_FLAG_WRITABLE),
+   but FSCTL_SET_SPARSE does not.
 
-Signed-off-by: Lee Jones <lee@kernel.org>
-Fixes: fd558d186df2 ("l2tp: Split pppol2tp patch into separate l2tp and ppp parts")
-Link: https://patch.msgid.link/20260527133630.2120612-1-lee@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+2) Even on writable shares, clients without FILE_WRITE_DATA or
+   FILE_WRITE_ATTRIBUTES access should not modify the sparse
+   attribute. Similar handle-level checks exist in other functions
+   but are missing here.
+
+Add both share-level writable check and per-handle access check.
+Use goto out on error to avoid leaking file references.
+
+Fixes: e2f34481b24d ("cifsd: add server-side procedures for SMB3")
+Cc: Namjae Jeon <linkinjeon@kernel.org>
+Cc: Sergey Senozhatsky <sergey.senozhatsky@gmail.com>
+Cc: Steve French <smfrench@gmail.com>
+Signed-off-by: Sean Shen <grayhat@foxmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/l2tp/l2tp_ppp.c | 82 +++++++++++++++++++++++++++------------------
- 1 file changed, 50 insertions(+), 32 deletions(-)
+ fs/smb/server/smb2pdu.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/net/l2tp/l2tp_ppp.c b/net/l2tp/l2tp_ppp.c
-index ae4543d5597b66..8ff8bf45dc2231 100644
---- a/net/l2tp/l2tp_ppp.c
-+++ b/net/l2tp/l2tp_ppp.c
-@@ -1044,64 +1044,76 @@ static int pppol2tp_ioctl(struct socket *sock, unsigned int cmd,
- {
- 	struct pppol2tp_ioc_stats stats;
- 	struct l2tp_session *session;
-+	int err = 0;
-+
-+	session = pppol2tp_sock_to_session(sock->sk);
+diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
+index 04d4a784deaf98..97b03f76741ef2 100644
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -8067,9 +8067,20 @@ static inline int fsctl_set_sparse(struct ksmbd_work *work, u64 id,
+ 	int ret = 0;
+ 	__le32 old_fattr;
  
-+	/* Validate session presence and magic integrity ONLY for commands
-+	 * that belong to L2TP and require a valid session.
-+	 */
- 	switch (cmd) {
- 	case PPPIOCGMRU:
- 	case PPPIOCGFLAGS:
--		session = sock->sk->sk_user_data;
-+	case PPPIOCSMRU:
-+	case PPPIOCSFLAGS:
-+	case PPPIOCGL2TPSTATS:
- 		if (!session)
- 			return -ENOTCONN;
- 
--		if (WARN_ON(session->magic != L2TP_SESSION_MAGIC))
-+		if (session->magic != L2TP_SESSION_MAGIC) {
-+			l2tp_session_put(session);
- 			return -EBADF;
-+		}
-+		break;
-+	default:
-+		break;
++	if (!test_tree_conn_flag(work->tcon, KSMBD_TREE_CONN_FLAG_WRITABLE)) {
++		ksmbd_debug(SMB, "User does not have write permission\n");
++		return -EACCES;
 +	}
- 
-+	switch (cmd) {
-+	case PPPIOCGMRU:
-+	case PPPIOCGFLAGS:
- 		/* Not defined for tunnels */
--		if (!session->session_id && !session->peer_session_id)
--			return -ENOSYS;
-+		if (!session->session_id && !session->peer_session_id) {
-+			err = -ENOSYS;
-+			break;
-+		}
- 
--		if (put_user(0, (int __user *)arg))
--			return -EFAULT;
-+		if (put_user(0, (int __user *)arg)) {
-+			err = -EFAULT;
-+			break;
-+		}
- 		break;
- 
- 	case PPPIOCSMRU:
- 	case PPPIOCSFLAGS:
--		session = sock->sk->sk_user_data;
--		if (!session)
--			return -ENOTCONN;
--
--		if (WARN_ON(session->magic != L2TP_SESSION_MAGIC))
--			return -EBADF;
--
- 		/* Not defined for tunnels */
--		if (!session->session_id && !session->peer_session_id)
--			return -ENOSYS;
-+		if (!session->session_id && !session->peer_session_id) {
-+			err = -ENOSYS;
-+			break;
-+		}
- 
--		if (!access_ok((int __user *)arg, sizeof(int)))
--			return -EFAULT;
-+		if (!access_ok((int __user *)arg, sizeof(int))) {
-+			err = -EFAULT;
-+			break;
-+		}
- 		break;
- 
- 	case PPPIOCGL2TPSTATS:
--		session = sock->sk->sk_user_data;
--		if (!session)
--			return -ENOTCONN;
--
--		if (WARN_ON(session->magic != L2TP_SESSION_MAGIC))
--			return -EBADF;
--
- 		/* Session 0 represents the parent tunnel */
- 		if (!session->session_id && !session->peer_session_id) {
- 			u32 session_id;
--			int err;
- 
- 			if (copy_from_user(&stats, (void __user *)arg,
--					   sizeof(stats)))
--				return -EFAULT;
-+					   sizeof(stats))) {
-+				err = -EFAULT;
-+				break;
-+			}
- 
- 			session_id = stats.session_id;
- 			err = pppol2tp_tunnel_copy_stats(&stats,
- 							 session->tunnel);
- 			if (err < 0)
--				return err;
-+				break;
- 
- 			stats.session_id = session_id;
- 		} else {
-@@ -1111,15 +1123,21 @@ static int pppol2tp_ioctl(struct socket *sock, unsigned int cmd,
- 		stats.tunnel_id = session->tunnel->tunnel_id;
- 		stats.using_ipsec = l2tp_tunnel_uses_xfrm(session->tunnel);
- 
--		if (copy_to_user((void __user *)arg, &stats, sizeof(stats)))
--			return -EFAULT;
-+		if (copy_to_user((void __user *)arg, &stats, sizeof(stats))) {
-+			err = -EFAULT;
-+			break;
-+		}
- 		break;
- 
- 	default:
--		return -ENOIOCTLCMD;
-+		err = -ENOIOCTLCMD;
-+		break;
- 	}
- 
--	return 0;
-+	if (session)
-+		l2tp_session_put(session);
 +
-+	return err;
- }
+ 	fp = ksmbd_lookup_fd_fast(work, id);
+ 	if (!fp)
+ 		return -ENOENT;
++
++	if (!(fp->daccess & (FILE_WRITE_DATA_LE | FILE_WRITE_ATTRIBUTES_LE))) {
++		ret = -EACCES;
++		goto out;
++	}
++
+ 	idmap = file_mnt_idmap(fp->filp);
  
- /*****************************************************************************
+ 	old_fattr = fp->f_ci->m_fattr;
 -- 
 2.53.0
 
