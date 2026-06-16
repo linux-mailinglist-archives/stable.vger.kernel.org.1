@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-263592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263593-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Mwv1KdDdMGqIYAUAu9opvQ
-	(envelope-from <stable+bounces-263592-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 07:23:28 +0200
+	id QpZ6E9XdMGqMYAUAu9opvQ
+	(envelope-from <stable+bounces-263593-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 07:23:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E32B68C21E
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 07:23:28 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7DDF68C22B
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 07:23:32 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=arm.com header.s=foss header.b=Km8THeBv;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263592-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-263592-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=arm.com header.s=foss header.b=tJhmcnFo;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263593-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263593-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=arm.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id AC96D30158AA
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 05:23:27 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 56076301474C
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 05:23:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEE053CF20F;
-	Tue, 16 Jun 2026 05:23:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47AC13CF1EA;
+	Tue, 16 Jun 2026 05:23:29 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A6371EEA49
-	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 05:23:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 817033CF050
+	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 05:23:27 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781587406; cv=none; b=rveiPMD2pbHrezBZ5HvuPJ47pZoUbuglGGf+E7706eojed4l+PSb1qEg3saZtu0cwdS7q91ZqfGh533oxj3oEvQ1dG6eDSEbloPWSMu1SfpDJduUzKNkynMN+o29GxqxMFiGHTWzqlUsGqZMOU5MVsk/dABDZ/1x6/Gi7EHtsCg=
+	t=1781587409; cv=none; b=NQb/mFbufPn25NPWrMvrrYB7SH9m/a75k6aO781GPWWoDonWOnFDfFxdw83cT5zd5AE+JD+VOMuVqweAcVAgtSa1wOS3+Jccxo4Sh9judWvhUTUvkLRRFGQRot57RA+tddVy7Go2qJ77EoUdN+OlQ7tVOOHm/52xaMbKRnlye+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781587406; c=relaxed/simple;
-	bh=hfQurs3SabBp5XtlL7+WbLabb2fndmFtpe7eIvok9rY=;
+	s=arc-20240116; t=1781587409; c=relaxed/simple;
+	bh=eirXywLudSJCj8d3LttODvUfxia3rn/aylPeykL0gUs=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ZGBO+wfGg5DgF4r+E18qcbYhmUi5JwBUMZgo42pUKHqUEKmT8PzIiRJQanCyH9Url05uzpjwaTaQN5TNCpIeMu8zb81aZ6OIdPS2JnXPtaBbd1/A6tqRgaXUGHnVwRYJiIPwnDJcUQtnrfwgTlTkrmJlSzZIT10NWxRZ834hqjg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=Km8THeBv; arc=none smtp.client-ip=217.140.110.172
+	 MIME-Version; b=dTMf7u2dmpMPNu9JkAg5nOhF/O1vMhx0D9Ha8gzut+k+R5rI3zosdym7R2zpAGP/dNuR1FpvHDYEaSCneE9D6kjCxnr7w/t62xx/PotiWOkcCopCtGDTTHkFvC48YiumWiRdTpH6/ExL0Q/f6tVS2C3uL0PzC4xdrqjZuZsw9DE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=tJhmcnFo; arc=none smtp.client-ip=217.140.110.172
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5535E4360;
-	Mon, 15 Jun 2026 22:23:20 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6B16B1A00;
+	Mon, 15 Jun 2026 22:23:22 -0700 (PDT)
 Received: from lakrids.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 4ACF43F763;
-	Mon, 15 Jun 2026 22:23:23 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 5CD043F763;
+	Mon, 15 Jun 2026 22:23:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1781587405; bh=hfQurs3SabBp5XtlL7+WbLabb2fndmFtpe7eIvok9rY=;
+	t=1781587407; bh=eirXywLudSJCj8d3LttODvUfxia3rn/aylPeykL0gUs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Km8THeBvA+WwdP9ok5ahymm3q7Gox70guLct8k2tnnfHv9XKGDIu4wB7pABigMkr6
-	 ggSi0WqMaE90Zsnj1MUDrHP7Bjx6GMYX90T9eH/hP1aL0ka/K+CSlc7kA262wtawcf
-	 8TTi1dP03DioXdRR8M5g1kabBZVleeqtSmymHJ1Q=
+	b=tJhmcnFohMYTF3Kkj5zApDcqaZO3r2SA9cca/5rlSEXhZyu55gFg6RK2yst2h1Jxy
+	 dpNOV3y2oHC/X/kqJt68ATjeRP0NLU+m9d2OO0DB/duA9qMIDKtCz05aRQ51WqjiZK
+	 edsAJM1iOnnTsHYMpPf0Tf6JpxIG/4IVOe+933/k=
 From: Mark Rutland <mark.rutland@arm.com>
 To: stable@vger.kernel.org
 Cc: anshuman.khandual@arm.com,
@@ -57,9 +57,9 @@ Cc: anshuman.khandual@arm.com,
 	sdonthineni@nvidia.com,
 	will@kernel.org,
 	yuzenghui@huawei.com
-Subject: [PATCH 5.15.y 5/9] arm64: cputype: Add C1-Ultra definitions
-Date: Tue, 16 Jun 2026 06:23:03 +0100
-Message-Id: <20260616052307.112083-6-mark.rutland@arm.com>
+Subject: [PATCH 5.15.y 6/9] arm64: cputype: Add C1-Premium definitions
+Date: Tue, 16 Jun 2026 06:23:04 +0100
+Message-Id: <20260616052307.112083-7-mark.rutland@arm.com>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20260616052307.112083-1-mark.rutland@arm.com>
 References: <20260616052307.112083-1-mark.rutland@arm.com>
@@ -76,13 +76,13 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[arm.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[arm.com:s=foss];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	TAGGED_FROM(0.00)[bounces-263592-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-263593-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:anshuman.khandual@arm.com,m:catalin.marinas@arm.com,m:gregkh@linuxfoundation.org,m:lee@kernel.org,m:mark.rutland@arm.com,m:maz@kernel.org,m:oupton@kernel.org,m:ryan.roberts@arm.com,m:sdonthineni@nvidia.com,m:will@kernel.org,m:yuzenghui@huawei.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[mark.rutland@arm.com,stable@vger.kernel.org];
@@ -100,20 +100,20 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	RCPT_COUNT_TWELVE(0.00)[12];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,arm.com:url,arm.com:from_mime,arm.com:dkim,arm.com:email,arm.com:mid,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3E32B68C21E
+X-Rspamd-Queue-Id: D7DDF68C22B
 
-commit 60349e64a6c65f9f0aa118af711b3c7e137f07ff upstream.
+commit d28413bfc5a255957241f1df5d7fd0c2cd74fe18 upstream.
 
-Add cputype definitions for C1-Ultra. These will be used for errata
+Add cputype definitions for C1-Premium. These will be used for errata
 detection in subsequent patches.
 
-These values can be found in the C1-Ultra TRM:
+These values can be found in the C1-Premium TRM:
 
-  https://developer.arm.com/documentation/108014/0100/
+  https://developer.arm.com/documentation/109416/0100/
 
 ... in section A.5.1 ("MIDR_EL1, Main ID Register").
 
@@ -128,25 +128,25 @@ Signed-off-by: Mark Rutland <mark.rutland@arm.com>
  1 file changed, 2 insertions(+)
 
 diff --git a/arch/arm64/include/asm/cputype.h b/arch/arm64/include/asm/cputype.h
-index d006b3e3cfc37..176d0c4b50f73 100644
+index 176d0c4b50f73..e2e3580441a5a 100644
 --- a/arch/arm64/include/asm/cputype.h
 +++ b/arch/arm64/include/asm/cputype.h
-@@ -97,6 +97,7 @@
- #define ARM_CPU_PART_NEOVERSE_V3	0xD84
- #define ARM_CPU_PART_CORTEX_X925	0xD85
+@@ -99,6 +99,7 @@
  #define ARM_CPU_PART_CORTEX_A725	0xD87
-+#define ARM_CPU_PART_C1_ULTRA		0xD8C
+ #define ARM_CPU_PART_C1_ULTRA		0xD8C
  #define ARM_CPU_PART_NEOVERSE_N3	0xD8E
++#define ARM_CPU_PART_C1_PREMIUM		0xD90
  
  #define APM_CPU_PART_POTENZA		0x000
-@@ -166,6 +167,7 @@
- #define MIDR_NEOVERSE_V3 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V3)
- #define MIDR_CORTEX_X925 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X925)
+ 
+@@ -169,6 +170,7 @@
  #define MIDR_CORTEX_A725 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A725)
-+#define MIDR_C1_ULTRA MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_C1_ULTRA)
+ #define MIDR_C1_ULTRA MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_C1_ULTRA)
  #define MIDR_NEOVERSE_N3 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_N3)
++#define MIDR_C1_PREMIUM MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_C1_PREMIUM)
  #define MIDR_THUNDERX	MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX)
  #define MIDR_THUNDERX_81XX MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX_81XX)
+ #define MIDR_THUNDERX_83XX MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX_83XX)
 -- 
 2.30.2
 
