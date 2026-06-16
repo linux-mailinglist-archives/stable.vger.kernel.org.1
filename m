@@ -1,65 +1,61 @@
-Return-Path: <stable+bounces-264993-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265976-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 0Yf8CxqBMWpzlAUAu9opvQ
-	(envelope-from <stable+bounces-264993-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:00:10 +0200
+	id WN+JL9uTMWoInQUAu9opvQ
+	(envelope-from <stable+bounces-265976-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:20:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 948A1692A4F
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:00:09 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37FB46940AD
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:20:11 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=K1j7QTSz;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264993-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264993-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ZWaFLAVu;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265976-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265976-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 988F430BEAA2
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:55:58 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 402E9308A327
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:20:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C7A247A0A1;
-	Tue, 16 Jun 2026 16:55:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94DDE3D091A;
+	Tue, 16 Jun 2026 18:20:07 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6939466B4B;
-	Tue, 16 Jun 2026 16:55:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62F3036A36C;
+	Tue, 16 Jun 2026 18:20:06 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781628955; cv=none; b=iDsxNqblnt1Nq3t8AlnZ8pY0N8kz28ngG7/eCb45AxAJS94iGhgsj6sbvrwPKs72z2hwi9el1mw3dhs3lojZzJPyub9WA1yiOBWl+NnftZfivCEQvHwTbvoF+Ac9lm4ROn+kMkB4pElCnTNJw9RD+VdoIX/MmPs6kRSOEgjfROU=
+	t=1781634007; cv=none; b=sVyVf3IHgpyP9Ef/DKuEZMVYY2EtaOB0+S5j0GYMn5TXfk/ySsxfhDPykzW5hVKgDKolqqckYKSXZyX5F1c/dci5i0jj/GT8axltEw2tJ+QPobkQZGg35Wsku8oc7C9Bptx4Z7NKgNJAWUNtXeffcQwsDjiXUMS/FXMSWL/QWL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781628955; c=relaxed/simple;
-	bh=u6rcEBdP5uiwK4xYO2eDGNpgI7XqYADMMQqSDjdk7HY=;
+	s=arc-20240116; t=1781634007; c=relaxed/simple;
+	bh=pf4HGBu33q9f8OpOUvNxR1SjOe465N1qAKnccfSVEcU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=P+N00S09SqWR7aUjjpmr38seOOkl4nrvC+LpqM77DO/KEFb+BGK/td/wktARXVsUt2nyXFwcLr8xw4koAx0+24tB+xKof9LfuondXFswEezvssIwDBAOTGUjEjnUfKM7WnJc66LPc/OhngjzUkiO7V6WuR2BDvhdscSARTogZi0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K1j7QTSz; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA59D1F000E9;
-	Tue, 16 Jun 2026 16:55:53 +0000 (UTC)
+	 MIME-Version; b=gEyqQ5aPNG7m5wQfyDYYYIZae3IIPtSON2H6YhETEkH7836lnPynwdCDzk/F7scEwEp2ohkzkXs/2198oiQPxC2o2dPv09uFIA/GbUS1tVAFUt6MxLxWacLjHkQFSBkAHBLIP990zUR2cr2HKmVltdUK1J1gPrRyoYn/5vHrFeE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZWaFLAVu; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C1D51F000E9;
+	Tue, 16 Jun 2026 18:20:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781628954;
-	bh=7VVmrtC1uZwFWm0E6jfYrzHNgAS3CSAuixMLl8TmnI0=;
+	s=korg; t=1781634006;
+	bh=WEIbF7l/96KtsoT29SaMyAeJV8G3RF5AIZOiQqKYTyw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=K1j7QTSzNu4rLFqkz1hKEfXVA/1PD6KK1HL85I8cxFm1N5yNgUuWWIqjnAksxWk/M
-	 W11bacLxLN5IUFXh0XZfW1+s056btfJEx2XCoxFgrWShPKXvPi2FqKxA+qZtEer0HF
-	 Jm8AQwcqPZPza1ZEGk6r0zWbZC62wwiiGOPjl1y8=
+	b=ZWaFLAVuLyIFzzMF58H56e8eRGHcwUKV1LDuVgUdDx72bSqPOiPMYqI9icoTin86Q
+	 YI6pAE3Go3oaL9URr14I2CVtgO/7XLFFraioSctYrUG9szfeYDuoW2vyBugBhMfbRe
+	 WvAU7ELQ6RLPkj4k22w/7v6XOPC73uxnJR9rf3io=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Brauner <brauner@kernel.org>,
-	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
-	Song Liu <song@kernel.org>,
-	Tingmao Wang <m@maowtm.org>,
-	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
-	Bin Lan <bin.lan.cn@windriver.com>,
+	Chenguang Zhao <zhaochenguang@kylinos.cn>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 194/452] landlock: Fix handling of disconnected directories
+Subject: [PATCH 5.15 183/411] netlabel: validate unlabeled address and mask attribute lengths
 Date: Tue, 16 Jun 2026 20:27:01 +0530
-Message-ID: <20260616145128.015202824@linuxfoundation.org>
+Message-ID: <20260616145110.427537145@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,208 +65,126 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-264993-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:brauner@kernel.org,m:gnoack@google.com,m:song@kernel.org,m:m@maowtm.org,m:mic@digikod.net,m:bin.lan.cn@windriver.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265976-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:zhaochenguang@kylinos.cn,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	TAGGED_RCPT(0.00)[stable];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,windriver.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,digikod.net:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[kylinos.cn:email,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 948A1692A4F
+X-Rspamd-Queue-Id: 37FB46940AD
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mickaël Salaün <mic@digikod.net>
+From: Chenguang Zhao <zhaochenguang@kylinos.cn>
 
-[ Upstream commit 49c9e09d961025b22e61ef9ad56aa1c21b6ce2f1 ]
+[ Upstream commit 9772589b57e44aedc240211c5c3f7a684a034d3a ]
 
-Disconnected files or directories can appear when they are visible and
-opened from a bind mount, but have been renamed or moved from the source
-of the bind mount in a way that makes them inaccessible from the mount
-point (i.e. out of scope).
+netlbl_unlabel_addrinfo_get() used the address attribute length to
+determine whether the attribute data could be read as an IPv4 or IPv6
+address, but did not independently validate the corresponding mask
+attribute length.  A crafted Generic Netlink request could therefore
+provide a valid IPv4/IPv6 address attribute with a shorter mask
+attribute, which would later be read as a full struct in_addr or
+struct in6_addr.
 
-Previously, access rights tied to files or directories opened through a
-disconnected directory were collected by walking the related hierarchy
-down to the root of the filesystem, without taking into account the
-mount point because it couldn't be found. This could lead to
-inconsistent access results, potential access right widening, and
-hard-to-debug renames, especially since such paths cannot be printed.
+NLA_BINARY policy lengths are maximum lengths by default, so use
+NLA_POLICY_EXACT_LEN() for the unlabeled IPv4/IPv6 address and mask
+attributes.  This rejects short attributes during policy validation and
+also exposes the exact length requirements through policy introspection.
 
-For a sandboxed task to create a disconnected directory, it needs to
-have write access (i.e. FS_MAKE_REG, FS_REMOVE_FILE, and FS_REFER) to
-the underlying source of the bind mount, and read access to the related
-mount point.   Because a sandboxed task cannot acquire more access
-rights than those defined by its Landlock domain, this could lead to
-inconsistent access rights due to missing permissions that should be
-inherited from the mount point hierarchy, while inheriting permissions
-from the filesystem hierarchy hidden by this mount point instead.
-
-Landlock now handles files and directories opened from disconnected
-directories by taking into account the filesystem hierarchy when the
-mount point is not found in the hierarchy walk, and also always taking
-into account the mount point from which these disconnected directories
-were opened.  This ensures that a rename is not allowed if it would
-widen access rights [1].
-
-The rationale is that, even if disconnected hierarchies might not be
-visible or accessible to a sandboxed task, relying on the collected
-access rights from them improves the guarantee that access rights will
-not be widened during a rename because of the access right comparison
-between the source and the destination (see LANDLOCK_ACCESS_FS_REFER).
-It may look like this would grant more access on disconnected files and
-directories, but the security policies are always enforced for all the
-evaluated hierarchies.  This new behavior should be less surprising to
-users and safer from an access control perspective.
-
-Remove a wrong WARN_ON_ONCE() canary in collect_domain_accesses() and
-fix the related comment.
-
-Because opened files have their access rights stored in the related file
-security properties, there is no impact for disconnected or unlinked
-files.
-
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Günther Noack <gnoack@google.com>
-Cc: Song Liu <song@kernel.org>
-Reported-by: Tingmao Wang <m@maowtm.org>
-Closes: https://lore.kernel.org/r/027d5190-b37a-40a8-84e9-4ccbc352bcdf@maowtm.org
-Closes: https://lore.kernel.org/r/09b24128f86973a6022e6aa8338945fcfb9a33e4.1749925391.git.m@maowtm.org
-Fixes: b91c3e4ea756 ("landlock: Add support for file reparenting with LANDLOCK_ACCESS_FS_REFER")
-Fixes: cb2c7d1a1776 ("landlock: Support filesystem access-control")
-Link: https://lore.kernel.org/r/b0f46246-f2c5-42ca-93ce-0d629702a987@maowtm.org [1]
-Reviewed-by: Tingmao Wang <m@maowtm.org>
-Link: https://lore.kernel.org/r/20251128172200.760753-2-mic@digikod.net
-Signed-off-by: Mickaël Salaün <mic@digikod.net>
-[ Adjust context ]
-Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
+Fixes: 8cc44579d1bd ("NetLabel: Introduce static network labels for unlabeled connections")
+Signed-off-by: Chenguang Zhao <zhaochenguang@kylinos.cn>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/landlock/errata/abi-1.h | 16 +++++++++++++
- security/landlock/fs.c           | 40 +++++++++++++++++++++++---------
- 2 files changed, 45 insertions(+), 11 deletions(-)
- create mode 100644 security/landlock/errata/abi-1.h
+ net/netlabel/netlabel_unlabeled.c | 30 ++++++++++--------------------
+ 1 file changed, 10 insertions(+), 20 deletions(-)
 
-diff --git a/security/landlock/errata/abi-1.h b/security/landlock/errata/abi-1.h
-new file mode 100644
-index 00000000000000..e8a2bff2e5b6a8
---- /dev/null
-+++ b/security/landlock/errata/abi-1.h
-@@ -0,0 +1,16 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
-+/**
-+ * DOC: erratum_3
-+ *
-+ * Erratum 3: Disconnected directory handling
-+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+ *
-+ * This fix addresses an issue with disconnected directories that occur when a
-+ * directory is moved outside the scope of a bind mount.  The change ensures
-+ * that evaluated access rights include both those from the disconnected file
-+ * hierarchy down to its filesystem root and those from the related mount point
-+ * hierarchy.  This prevents access right widening through rename or link
-+ * actions.
-+ */
-+LANDLOCK_ERRATUM(3)
-diff --git a/security/landlock/fs.c b/security/landlock/fs.c
-index fe4622d88eb15e..7145162f1e5971 100644
---- a/security/landlock/fs.c
-+++ b/security/landlock/fs.c
-@@ -616,19 +616,31 @@ static bool is_access_to_paths_allowed(
- 				break;
- 			}
- 		}
-+
- 		if (unlikely(IS_ROOT(walker_path.dentry))) {
-+			if (likely(walker_path.mnt->mnt_flags & MNT_INTERNAL)) {
-+				/*
-+				 * Stops and allows access when reaching disconnected root
-+				 * directories that are part of internal filesystems (e.g. nsfs,
-+				 * which is reachable through /proc/<pid>/ns/<namespace>).
-+				 */
-+				allowed_parent1 = true;
-+				allowed_parent2 = true;
-+				break;
-+			}
-+
- 			/*
--			 * Stops at disconnected root directories.  Only allows
--			 * access to internal filesystems (e.g. nsfs, which is
--			 * reachable through /proc/<pid>/ns/<namespace>).
-+			 * We reached a disconnected root directory from a bind mount.
-+			 * Let's continue the walk with the mount point we missed.
- 			 */
--			allowed_parent1 = allowed_parent2 =
--				!!(walker_path.mnt->mnt_flags & MNT_INTERNAL);
--			break;
-+			dput(walker_path.dentry);
-+			walker_path.dentry = walker_path.mnt->mnt_root;
-+			dget(walker_path.dentry);
-+		} else {
-+			parent_dentry = dget_parent(walker_path.dentry);
-+			dput(walker_path.dentry);
-+			walker_path.dentry = parent_dentry;
- 		}
--		parent_dentry = dget_parent(walker_path.dentry);
--		dput(walker_path.dentry);
--		walker_path.dentry = parent_dentry;
- 	}
- 	path_put(&walker_path);
- 
-@@ -705,6 +717,9 @@ static inline access_mask_t maybe_remove(const struct dentry *const dentry)
-  * file.  While walking from @dir to @mnt_root, we record all the domain's
-  * allowed accesses in @layer_masks_dom.
-  *
-+ * Because of disconnected directories, this walk may not reach @mnt_dir.  In
-+ * this case, the walk will continue to @mnt_dir after this call.
-+ *
-  * This is similar to is_access_to_paths_allowed() but much simpler because it
-  * only handles walking on the same mount point and only checks one set of
-  * accesses.
-@@ -744,8 +759,11 @@ static bool collect_domain_accesses(
- 			break;
- 		}
- 
--		/* We should not reach a root other than @mnt_root. */
--		if (dir == mnt_root || WARN_ON_ONCE(IS_ROOT(dir)))
-+		/*
-+		 * Stops at the mount point or the filesystem root for a disconnected
-+		 * directory.
-+		 */
-+		if (dir == mnt_root || unlikely(IS_ROOT(dir)))
- 			break;
- 
- 		parent_dentry = dget_parent(dir);
+diff --git a/net/netlabel/netlabel_unlabeled.c b/net/netlabel/netlabel_unlabeled.c
+index 566ba4397ee400..4c4b91ce446dfa 100644
+--- a/net/netlabel/netlabel_unlabeled.c
++++ b/net/netlabel/netlabel_unlabeled.c
+@@ -114,14 +114,14 @@ static struct genl_family netlbl_unlabel_gnl_family;
+ /* NetLabel Netlink attribute policy */
+ static const struct nla_policy netlbl_unlabel_genl_policy[NLBL_UNLABEL_A_MAX + 1] = {
+ 	[NLBL_UNLABEL_A_ACPTFLG] = { .type = NLA_U8 },
+-	[NLBL_UNLABEL_A_IPV6ADDR] = { .type = NLA_BINARY,
+-				      .len = sizeof(struct in6_addr) },
+-	[NLBL_UNLABEL_A_IPV6MASK] = { .type = NLA_BINARY,
+-				      .len = sizeof(struct in6_addr) },
+-	[NLBL_UNLABEL_A_IPV4ADDR] = { .type = NLA_BINARY,
+-				      .len = sizeof(struct in_addr) },
+-	[NLBL_UNLABEL_A_IPV4MASK] = { .type = NLA_BINARY,
+-				      .len = sizeof(struct in_addr) },
++	[NLBL_UNLABEL_A_IPV6ADDR] =
++		NLA_POLICY_EXACT_LEN(sizeof(struct in6_addr)),
++	[NLBL_UNLABEL_A_IPV6MASK] =
++		NLA_POLICY_EXACT_LEN(sizeof(struct in6_addr)),
++	[NLBL_UNLABEL_A_IPV4ADDR] =
++		NLA_POLICY_EXACT_LEN(sizeof(struct in_addr)),
++	[NLBL_UNLABEL_A_IPV4MASK] =
++		NLA_POLICY_EXACT_LEN(sizeof(struct in_addr)),
+ 	[NLBL_UNLABEL_A_IFACE] = { .type = NLA_NUL_STRING,
+ 				   .len = IFNAMSIZ - 1 },
+ 	[NLBL_UNLABEL_A_SECCTX] = { .type = NLA_BINARY }
+@@ -764,24 +764,14 @@ static int netlbl_unlabel_addrinfo_get(struct genl_info *info,
+ 				       void **mask,
+ 				       u32 *len)
+ {
+-	u32 addr_len;
+-
+ 	if (info->attrs[NLBL_UNLABEL_A_IPV4ADDR] &&
+ 	    info->attrs[NLBL_UNLABEL_A_IPV4MASK]) {
+-		addr_len = nla_len(info->attrs[NLBL_UNLABEL_A_IPV4ADDR]);
+-		if (addr_len != sizeof(struct in_addr) &&
+-		    addr_len != nla_len(info->attrs[NLBL_UNLABEL_A_IPV4MASK]))
+-			return -EINVAL;
+-		*len = addr_len;
++		*len = sizeof(struct in_addr);
+ 		*addr = nla_data(info->attrs[NLBL_UNLABEL_A_IPV4ADDR]);
+ 		*mask = nla_data(info->attrs[NLBL_UNLABEL_A_IPV4MASK]);
+ 		return 0;
+ 	} else if (info->attrs[NLBL_UNLABEL_A_IPV6ADDR]) {
+-		addr_len = nla_len(info->attrs[NLBL_UNLABEL_A_IPV6ADDR]);
+-		if (addr_len != sizeof(struct in6_addr) &&
+-		    addr_len != nla_len(info->attrs[NLBL_UNLABEL_A_IPV6MASK]))
+-			return -EINVAL;
+-		*len = addr_len;
++		*len = sizeof(struct in6_addr);
+ 		*addr = nla_data(info->attrs[NLBL_UNLABEL_A_IPV6ADDR]);
+ 		*mask = nla_data(info->attrs[NLBL_UNLABEL_A_IPV6MASK]);
+ 		return 0;
 -- 
 2.53.0
 
