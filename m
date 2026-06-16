@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-264945-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265459-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 7QxxHjiAMWoFlAUAu9opvQ
-	(envelope-from <stable+bounces-264945-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:56:24 +0200
+	id ZtbeAaqKMWpvmAUAu9opvQ
+	(envelope-from <stable+bounces-265459-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:40:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37A86692980
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:56:24 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64CFE6935CE
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:40:57 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="i/aHqDJk";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264945-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264945-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=RZezc1EX;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265459-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265459-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4DE9D307D994
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:52:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0D1753067093
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:35:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFF4747A0D1;
-	Tue, 16 Jun 2026 16:51:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD93C4611CF;
+	Tue, 16 Jun 2026 17:35:09 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0E494779BF;
-	Tue, 16 Jun 2026 16:51:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85B21332EC1;
+	Tue, 16 Jun 2026 17:35:08 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781628715; cv=none; b=gfK6BI0KpFllVUGAvcwtFGB4xCsyjpyrdA+4tBOaztYCZwhs/rz1Fkk61FtkDksCli3pZcNEEFljrUKrwlQrH4s+jJY0G5hdf8LznpPEIO7gn35ESPfyEjAWfE2c1dAKItHzDyDdhCREd8kSU6eNW3RBt5dH/xLZdnzPXsZ3lCw=
+	t=1781631309; cv=none; b=V6xzYwJXKlKCunZg0SJk6gHGahqqp9gqx5s+XDxGQI3QJ7OP7qtSQ8AVd6+k1ewiWK/LROA1HThGGtwV+s9I1U2noKBDElbQKk/OSEAzdwNm3GiyWDniJZCPdzw+nz/HOIh4mKGfVhbHVDn4nOBBRrppU62dAkSCX4rz+SI8Qqk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781628715; c=relaxed/simple;
-	bh=Ne1qM0g1EafaChAXJN2EkJzfZGDnxLN+F7qEAfC2MEs=;
+	s=arc-20240116; t=1781631309; c=relaxed/simple;
+	bh=xFuWk2KJIp+YL6O0cqCYUiFzKyUgHo12/fIIRz1Sft8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qzrALNQMkTs9eQkuT0we0eRc9MYvOAgFwgk3faaxK5uQM4S5XEkHjwtc9D6dpONqQoOqGrAFnoQVizgeE0T5wKxF5BckmQ90+ATtXfam6cjfNWMfXTmoDIf/pQgiNHIGVC902W8k9shrjiURidKhUCJjSTW2rV/UgkdERPJMKFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i/aHqDJk; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CD131F000E9;
-	Tue, 16 Jun 2026 16:51:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ifwBR5nApgFXkJF02tfhz0+bFM9XYhEc4uBC+ufcJN2u+w2bsO7yPgpjtziZ6tAXzGNBSzpFQDx9itwX37Ohg31r/N4e+lnRCT/qF5zQGC1sHSfBknQjNtr09e+d9hpbF3mHRWqo5WnMCN6ER7X1NpWBYylcbWBIUDZLc8xfOM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RZezc1EX; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F0051F000E9;
+	Tue, 16 Jun 2026 17:35:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781628714;
-	bh=r8b4/zkjaPT9tBLTk4N/Y+lBurx6sWfnpNN3sasJVN0=;
+	s=korg; t=1781631308;
+	bh=MbVmYUHWKGFhp4ZDKkjgDNY0jytBHw8JyBhWSvc7XwI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=i/aHqDJkZeBmdvo67REaiB4Ht6vGa6MaLKo/NbNR4PT8JOGAs+ag8tchJjPGhc3XN
-	 vNQk6RxudiFWKhbwfqnnXnLcnphG7EFnfb232fT1w2uIOfKuXUTgXzGcWUyHaydwKV
-	 L260rVR+i6FjjXBVQvRaLKwNs+QyFc0YSFbPH5Ls=
+	b=RZezc1EX8/rPD3uAgkeESvBP6uMSGoGUqaG6pPoQ1r6J5k9DiAZH7/J/u1w733fge
+	 GHBlrCnPo+vOh4wqlyePWgynvoAhkUxJZLz4Xqa3GLrkmTUS/ADKWXwa2Rd7sWsHTC
+	 HeKEZP4H0B8NiPE6zoR0b+Aw8d0rKn2kAeFhzGAw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Advait Dhamorikar <advaitd@mechasystems.com>,
-	Andy Shevchenko <andriy.shevchenko@intel.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <jic23@kernel.org>
-Subject: [PATCH 6.6 116/452] iio: magnetometer: st_magn: fix default DRDY pin selection for LIS2MDL
+	=?UTF-8?q?Nicol=C3=B2=20Coccia?= <n.coccia96@gmail.com>,
+	Dust Li <dust.li@linux.alibaba.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 196/522] net/smc: fix sleep-inside-lock in __smc_setsockopt() causing local DoS
 Date: Tue, 16 Jun 2026 20:25:43 +0530
-Message-ID: <20260616145123.802932899@linuxfoundation.org>
+Message-ID: <20260616145135.265447826@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,102 +65,112 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264945-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:advaitd@mechasystems.com,m:andriy.shevchenko@intel.com,m:Stable@vger.kernel.org,m:jic23@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-265459-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:n.coccia96@gmail.com,m:dust.li@linux.alibaba.com,m:kuba@kernel.org,m:ncoccia96@gmail.com,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.alibaba.com,kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,mechasystems.com:email]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 37A86692980
+X-Rspamd-Queue-Id: 64CFE6935CE
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Advait Dhamorikar <advaitd@mechasystems.com>
+From: Nicolò Coccia <n.coccia96@gmail.com>
 
-commit 49f79cd28f1e3333cbe0d616ce59ead0b24bf34e upstream.
+commit a3fdd924d88c30b9f488636ce0e4696012cf5511 upstream.
 
-The device tree binding for st,lis2mdl does not support
-st,drdy-int-pin property. However, when no platform data is provided
-and the property is absent, the driver falls back to default_magn_pdata
-which hardcodes drdy_int_pin = 2. This causes
-`st_sensors_set_drdy_int_pin` to fail with -EINVAL because the LIS2MDL
-sensor settings have no INT2 DRDY mask defined.
+A logic flaw in __smc_setsockopt() allows a local unprivileged user to
+cause a Denial of Service (DoS) by holding the socket lock indefinitely.
 
-Fix this by checking the sensor's INT2 DRDY mask availability at
-probe time and selecting the appropriate default pin. Sensors that
-do not support INT2 DRDY will default to INT1, while all others
-retain the existing default of INT2.
+The function __smc_setsockopt() calls copy_from_sockptr() while holding
+lock_sock(sk). By passing a userfaultfd-monitored memory page (or
+FUSE-backed memory on systems where unprivileged userfaultfd is disabled)
+as the optval, an attacker can halt execution during the copy operation,
+keeping the lock held.
 
-Fixes: 38934daf7b5c ("iio: magnetometer: st_magn: Provide default platform data")
-Signed-off-by: Advait Dhamorikar <advaitd@mechasystems.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <jic23@kernel.org>
+Combined with asynchronous tear-down operations like shutdown(), this
+exhausts the kernel wq (kworkers) and triggers the hung task watchdog.
+
+[  240.123456] INFO: task kworker/u8:2 blocked for more than 120 seconds.
+[  240.123489] Call Trace:
+[  240.123501]  smc_shutdown+...
+[  240.123512]  lock_sock_nested+...
+
+This patch moves the user-space copy outside the lock_sock() critical
+section to prevent the issue.
+
+Fixes: a6a6fe27bab4 ("net/smc: Dynamic control handshake limitation by socket options")
+Signed-off-by: Nicolò Coccia <n.coccia96@gmail.com>
+Reviewed-by: Dust Li <dust.li@linux.alibaba.com>
+Tested-by: Dust Li <dust.li@linux.alibaba.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/magnetometer/st_magn_core.c |   13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ net/smc/af_smc.c |   17 ++++++++---------
+ 1 file changed, 8 insertions(+), 9 deletions(-)
 
---- a/drivers/iio/magnetometer/st_magn_core.c
-+++ b/drivers/iio/magnetometer/st_magn_core.c
-@@ -506,6 +506,11 @@ static const struct st_sensors_platform_
- 	.drdy_int_pin = 2,
- };
+--- a/net/smc/af_smc.c
++++ b/net/smc/af_smc.c
+@@ -2947,18 +2947,17 @@ static int __smc_setsockopt(struct socke
  
-+/* LIS2MDL only supports DRDY on INT1 */
-+static const struct st_sensors_platform_data alt_magn_pdata = {
-+	.drdy_int_pin = 1,
-+};
-+
- static int st_magn_read_raw(struct iio_dev *indio_dev,
- 			struct iio_chan_spec const *ch, int *val,
- 							int *val2, long mask)
-@@ -628,8 +633,12 @@ int st_magn_common_probe(struct iio_dev
- 	mdata->current_fullscale = &mdata->sensor_settings->fs.fs_avl[0];
- 	mdata->odr = mdata->sensor_settings->odr.odr_avl[0].hz;
+ 	smc = smc_sk(sk);
  
--	if (!pdata)
--		pdata = (struct st_sensors_platform_data *)&default_magn_pdata;
-+	if (!pdata) {
-+		if (mdata->sensor_settings->drdy_irq.int2.mask)
-+			pdata = (struct st_sensors_platform_data *)&default_magn_pdata;
-+		else
-+			pdata = (struct st_sensors_platform_data *)&alt_magn_pdata;
++	/* pre-fetch user data outside the lock */
++	if (optname == SMC_LIMIT_HS) {
++		if (optlen < sizeof(int))
++			return -EINVAL;
++		if (copy_from_sockptr(&val, optval, sizeof(int)))
++			return -EFAULT;
 +	}
- 
- 	err = st_sensors_init_sensor(indio_dev, pdata);
- 	if (err < 0)
++
+ 	lock_sock(sk);
+ 	switch (optname) {
+ 	case SMC_LIMIT_HS:
+-		if (optlen < sizeof(int)) {
+-			rc = -EINVAL;
+-			break;
+-		}
+-		if (copy_from_sockptr(&val, optval, sizeof(int))) {
+-			rc = -EFAULT;
+-			break;
+-		}
+-
+ 		smc->limit_smc_hs = !!val;
+ 		rc = 0;
+ 		break;
 
 
 
