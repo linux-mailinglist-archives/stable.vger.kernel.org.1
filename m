@@ -1,61 +1,75 @@
-Return-Path: <stable+bounces-266559-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264440-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id su4QDL2fMWo5ogUAu9opvQ
-	(envelope-from <stable+bounces-266559-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:10:53 +0200
+	id QMDVEJ96MWqVkQUAu9opvQ
+	(envelope-from <stable+bounces-264440-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:32:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A3E6694D6D
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:10:52 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48CC56922DB
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:32:30 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="Xx3G0ZU/";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266559-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266559-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=U6KPt4fl;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264440-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-264440-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6506030A6256
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:10:20 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 58EBA303AEE4
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:05:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F374F3DE425;
-	Tue, 16 Jun 2026 19:10:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DF90453498;
+	Tue, 16 Jun 2026 16:04:54 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 716AF3DE428;
-	Tue, 16 Jun 2026 19:10:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5640244DB64;
+	Tue, 16 Jun 2026 16:04:53 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781637019; cv=none; b=IdZannwlZat03aREdzgF6ryl3b2p+8L2kHqQJBFs86A2gxAM9tgfsREEX/gwlHuo0M5Z4aBq2Hdm/m2Fa+8zSRzxyYCrHtQZ3o/eZYgJGMJ2dNt+fdyqoyR+8Bv5Wfk0zV1TjjqdnHyjufjjjyOa8XC7fjToL/Mm8RVvtSxP/yU=
+	t=1781625894; cv=none; b=Q7oLNw3I+V0ID8CqGPvLKtYNu8J6C62IkO5ez/tTGpD7JX2KPGt+rSqr1ZaypmZfQPGq3OufCli/XvMyEns1YGMNmaf1f+XI24On85C+sl14AXFkVU6nX0g9RRPz9m5jYmwlAEFX21vmFU7Zl8Vj3+Hr2TUHDzPa5A17sW8mzdA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781637019; c=relaxed/simple;
-	bh=c/dOxhIogakXzaljREY8zsHZay198n5OnPvRAMfW/qs=;
+	s=arc-20240116; t=1781625894; c=relaxed/simple;
+	bh=XNzqxF0NQ8rcUo1MbArExBpZcnjjv8wVmwHdrRZKnao=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XoB2sWNSxq9BhdUfvLL/hZz//2ga30UVNLDkVxCQkG30yDAVKOEw+7cHfkyi1mazgjPNJPMLtw2I6jl/ERLF7JSp9Crj4veWD/rHP/uT2ubXPJRmTyANA6VaL9/jPxu8VwOsnFzwNckMD38GHRgRq4KW+UUZKD0bftEuK5mYfIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xx3G0ZU/; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 756A71F000E9;
-	Tue, 16 Jun 2026 19:10:17 +0000 (UTC)
+	 MIME-Version; b=ViU8FLVZo9SR6g//WZESP+2zvNdezq3upbyMnvrE2DsPMlOT+zBy1Ww0fDIRwBrX3pI8sbkcYHjB3KoF3R+FLO3BNHYc6cwvlGBIQFnD3zyt6AOJqeNmy6oC3d9hrRvngBjg1ufSSCj/x+Ey7dNXz0R1PDnWrDK+svvRhKexCvI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U6KPt4fl; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 075171F000E9;
+	Tue, 16 Jun 2026 16:04:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781637018;
-	bh=ZRaHk94nfJw2hTW2hy3ay3fEeQ8lgnplCVK8zynxw9g=;
+	s=korg; t=1781625893;
+	bh=Gvrle3mQqD05KF5TFrVe3ebfvaDeseIh4V2/aRIHQOw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Xx3G0ZU/1m4AHRi7G+YkV8e6EHuwHZiDafLe0c8Hk7WliaGLlnOA6TSU2QBdDUx+5
-	 biAPc1jcGlH8iNWR6Ja6JNLggjKSATRGZYOYB8FFH0U8uq5pLo93RA/9WCcEeCwGnJ
-	 JmvXKzVBDsSVslftTWzz+v3mjPJYmYosVHcC8yCQ=
+	b=U6KPt4flf0o1Gm2DjaV3ATsB488wI8e0V2gZ0QFVDoTtC/DY7qSn6ZkKFpzZoTM4a
+	 42td3TPw2p0yTSVsHIiYMFlJSFFTt9J07WGRKHbteWyjrC+dfhmAlY+V16dfsMlFtq
+	 2uD2m4NccR8VALGmCtE3vxgPbBGzrI6QeBI9N/e4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sam Protsenko <semen.protsenko@linaro.org>,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 328/342] tty: serial: samsung: use u32 for register interactions
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Yilin Zhu <zylzyl2333@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Christian Brauner <brauner@kernel.org>,
+	Jeongjun Park <aha310510@gmail.com>,
+	Kees Cook <kees@kernel.org>,
+	Liam Howlett <liam@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Serge Hallyn <sergeh@kernel.org>,
+	Vasiliy Kulikov <segoon@openwall.com>,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Serge Hallyn <serge@hallyn.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.18 228/325] ipc/shm: serialize orphan cleanup with shm_nattch updates
 Date: Tue, 16 Jun 2026 20:30:24 +0530
-Message-ID: <20260616145103.869160173@linuxfoundation.org>
+Message-ID: <20260616145109.751425796@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,346 +86,104 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266559-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	TAGGED_FROM(0.00)[bounces-264440-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:yuantan098@gmail.com,m:yifanwucs@gmail.com,m:tomapufckgml@gmail.com,m:bird@lzu.edu.cn,m:zylzyl2333@gmail.com,m:n05ec@lzu.edu.cn,m:brauner@kernel.org,m:aha310510@gmail.com,m:kees@kernel.org,m:liam@infradead.org,m:ljs@kernel.org,m:sergeh@kernel.org,m:segoon@openwall.com,m:dave@stgolabs.net,m:oleg@redhat.com,m:serge@hallyn.com,m:akpm@linux-foundation.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:semen.protsenko@linaro.org,m:tudor.ambarus@linaro.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,kernel.org,infradead.org,openwall.com,stgolabs.net,redhat.com,hallyn.com,linux-foundation.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linaro.org:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9A3E6694D6D
+X-Rspamd-Queue-Id: 48CC56922DB
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tudor Ambarus <tudor.ambarus@linaro.org>
+From: Yilin Zhu <zylzyl2333@gmail.com>
 
-[ Upstream commit 032a725c16add79332d774348d7ad7d0d4b86479 ]
+commit 2e5c6f4fd4001562781e99bbfc7f1f0127187542 upstream.
 
-All registers of the IP have 32 bits. Use u32 variables when reading
-or writing from/to the registers. The purpose of those variables becomes
-clearer.
+shm_destroy_orphaned() walks the shm idr under shm_ids(ns).rwsem, but that
+does not serialize all fields tested by shm_may_destroy().  In particular,
+shm_nattch is updated while holding shm_perm.lock, and attach paths can do
+that without holding the rwsem.
 
-Reviewed-by: Sam Protsenko <semen.protsenko@linaro.org>
-Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-Link: https://lore.kernel.org/r/20240119104526.1221243-9-tudor.ambarus@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: a3bb136bff5e ("tty: serial: samsung: Remove redundant port lock acquisition in rx helpers")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Do not decide that an orphaned segment is unused before taking the object
+lock.  Move the shm_may_destroy() check under shm_perm.lock, matching the
+other destroy paths, and unlock the segment when it no longer qualifies
+for removal.
+
+Link: https://lore.kernel.org/9d97cc1031de2d0bace0edf3a668818aa2f4eca6.1777410234.git.zylzyl2333@gmail.com
+Fixes: 4c677e2eefdb ("shm: optimize locking and ipc_namespace getting")
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Yilin Zhu <zylzyl2333@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Jeongjun Park <aha310510@gmail.com>
+Cc: Kees Cook <kees@kernel.org>
+Cc: Liam Howlett <liam@infradead.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Serge Hallyn <sergeh@kernel.org>
+Cc: Vasiliy Kulikov <segoon@openwall.com>
+Cc: Davidlohr Bueso <dave@stgolabs.net>
+Cc: Oleg Nesterov <oleg@redhat.com>
+Cc: Serge Hallyn <serge@hallyn.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/samsung_tty.c |   67 +++++++++++++++++++--------------------
- 1 file changed, 34 insertions(+), 33 deletions(-)
+ ipc/shm.c |   10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
---- a/drivers/tty/serial/samsung_tty.c
-+++ b/drivers/tty/serial/samsung_tty.c
-@@ -186,7 +186,7 @@ static void wr_reg(struct uart_port *por
- /* Byte-order aware bit setting/clearing functions. */
- 
- static inline void s3c24xx_set_bit(struct uart_port *port, int idx,
--				   unsigned int reg)
-+				   u32 reg)
- {
- 	unsigned long flags;
- 	u32 val;
-@@ -199,7 +199,7 @@ static inline void s3c24xx_set_bit(struc
- }
- 
- static inline void s3c24xx_clear_bit(struct uart_port *port, int idx,
--				     unsigned int reg)
-+				     u32 reg)
- {
- 	unsigned long flags;
- 	u32 val;
-@@ -242,8 +242,8 @@ static void s3c24xx_serial_rx_enable(str
- {
- 	struct s3c24xx_uart_port *ourport = to_ourport(port);
- 	unsigned long flags;
--	unsigned int ucon, ufcon;
- 	int count = 10000;
-+	u32 ucon, ufcon;
- 
- 	uart_port_lock_irqsave(port, &flags);
- 
-@@ -266,7 +266,7 @@ static void s3c24xx_serial_rx_disable(st
- {
- 	struct s3c24xx_uart_port *ourport = to_ourport(port);
- 	unsigned long flags;
--	unsigned int ucon;
-+	u32 ucon;
- 
- 	uart_port_lock_irqsave(port, &flags);
- 
-@@ -551,7 +551,7 @@ static inline struct s3c2410_uartcfg
- }
- 
- static int s3c24xx_serial_rx_fifocnt(struct s3c24xx_uart_port *ourport,
--				     unsigned long ufstat)
-+				     u32 ufstat)
- {
- 	struct s3c24xx_uart_info *info = ourport->info;
- 
-@@ -623,7 +623,7 @@ static void s3c64xx_start_rx_dma(struct
- static void enable_rx_dma(struct s3c24xx_uart_port *ourport)
- {
- 	struct uart_port *port = &ourport->port;
--	unsigned int ucon;
-+	u32 ucon;
- 
- 	/* set Rx mode to DMA mode */
- 	ucon = rd_regl(port, S3C2410_UCON);
-@@ -646,7 +646,7 @@ static void enable_rx_dma(struct s3c24xx
- static void enable_rx_pio(struct s3c24xx_uart_port *ourport)
- {
- 	struct uart_port *port = &ourport->port;
--	unsigned int ucon;
-+	u32 ucon;
- 
- 	/* set Rx mode to DMA mode */
- 	ucon = rd_regl(port, S3C2410_UCON);
-@@ -667,7 +667,6 @@ static void s3c24xx_serial_rx_drain_fifo
- 
- static irqreturn_t s3c24xx_serial_rx_chars_dma(void *dev_id)
- {
--	unsigned int utrstat, received;
- 	struct s3c24xx_uart_port *ourport = dev_id;
- 	struct uart_port *port = &ourport->port;
- 	struct s3c24xx_uart_dma *dma = ourport->dma;
-@@ -675,6 +674,8 @@ static irqreturn_t s3c24xx_serial_rx_cha
- 	struct tty_port *t = &port->state->port;
- 	unsigned long flags;
- 	struct dma_tx_state state;
-+	unsigned int received;
-+	u32 utrstat;
- 
- 	utrstat = rd_regl(port, S3C2410_UTRSTAT);
- 	rd_regl(port, S3C2410_UFSTAT);
-@@ -716,9 +717,10 @@ finish:
- static void s3c24xx_serial_rx_drain_fifo(struct s3c24xx_uart_port *ourport)
- {
- 	struct uart_port *port = &ourport->port;
--	unsigned int ufcon, ch, flag, ufstat, uerstat;
-+	unsigned int ch, flag;
- 	unsigned int fifocnt = 0;
- 	int max_count = port->fifosize;
-+	u32 ufcon, ufstat, uerstat;
- 
- 	while (max_count-- > 0) {
- 		/*
-@@ -898,7 +900,7 @@ static irqreturn_t s3c64xx_serial_handle
- {
- 	struct s3c24xx_uart_port *ourport = id;
- 	struct uart_port *port = &ourport->port;
--	unsigned int pend = rd_regl(port, S3C64XX_UINTP);
-+	u32 pend = rd_regl(port, S3C64XX_UINTP);
- 	irqreturn_t ret = IRQ_HANDLED;
- 
- 	if (pend & S3C64XX_UINTM_RXD_MSK) {
-@@ -915,8 +917,8 @@ static irqreturn_t s3c64xx_serial_handle
- static unsigned int s3c24xx_serial_tx_empty(struct uart_port *port)
- {
- 	struct s3c24xx_uart_info *info = s3c24xx_port_to_info(port);
--	unsigned long ufstat = rd_regl(port, S3C2410_UFSTAT);
--	unsigned long ufcon = rd_regl(port, S3C2410_UFCON);
-+	u32 ufstat = rd_regl(port, S3C2410_UFSTAT);
-+	u32 ufcon = rd_regl(port, S3C2410_UFCON);
- 
- 	if (ufcon & S3C2410_UFCON_FIFOMODE) {
- 		if ((ufstat & info->tx_fifomask) != 0 ||
-@@ -931,7 +933,7 @@ static unsigned int s3c24xx_serial_tx_em
- /* no modem control lines */
- static unsigned int s3c24xx_serial_get_mctrl(struct uart_port *port)
- {
--	unsigned int umstat = rd_reg(port, S3C2410_UMSTAT);
-+	u32 umstat = rd_reg(port, S3C2410_UMSTAT);
- 
- 	if (umstat & S3C2410_UMSTAT_CTS)
- 		return TIOCM_CAR | TIOCM_DSR | TIOCM_CTS;
-@@ -941,7 +943,7 @@ static unsigned int s3c24xx_serial_get_m
- 
- static void s3c24xx_serial_set_mctrl(struct uart_port *port, unsigned int mctrl)
- {
--	unsigned int umcon = rd_regl(port, S3C2410_UMCON);
-+	u32 umcon = rd_regl(port, S3C2410_UMCON);
- 
- 	if (mctrl & TIOCM_RTS)
- 		umcon |= S3C2410_UMCOM_RTS_LOW;
-@@ -954,7 +956,7 @@ static void s3c24xx_serial_set_mctrl(str
- static void s3c24xx_serial_break_ctl(struct uart_port *port, int break_state)
- {
- 	unsigned long flags;
--	unsigned int ucon;
-+	u32 ucon;
- 
- 	uart_port_lock_irqsave(port, &flags);
- 
-@@ -1167,7 +1169,7 @@ static int s3c64xx_serial_startup(struct
- {
- 	struct s3c24xx_uart_port *ourport = to_ourport(port);
- 	unsigned long flags;
--	unsigned int ufcon;
-+	u32 ufcon;
- 	int ret;
- 
- 	wr_regl(port, S3C64XX_UINTM, 0xf);
-@@ -1210,6 +1212,7 @@ static int s3c64xx_serial_startup(struct
- 	return ret;
- }
- 
-+
- /* power power management control */
- 
- static void s3c24xx_serial_pm(struct uart_port *port, unsigned int level,
-@@ -1261,7 +1264,7 @@ static void s3c24xx_serial_pm(struct uar
- static inline int s3c24xx_serial_getsource(struct uart_port *port)
- {
- 	struct s3c24xx_uart_info *info = s3c24xx_port_to_info(port);
--	unsigned int ucon;
-+	u32 ucon;
- 
- 	if (info->num_clks == 1)
+--- a/ipc/shm.c
++++ b/ipc/shm.c
+@@ -418,15 +418,17 @@ static int shm_try_destroy_orphaned(int
+ 	 * We want to destroy segments without users and with already
+ 	 * exit'ed originating process.
+ 	 *
+-	 * As shp->* are changed under rwsem, it's safe to skip shp locking.
++	 * shm_nattch can be changed under shm_perm.lock without holding the
++	 * rwsem, so take the object lock before checking shm_may_destroy().
+ 	 */
+ 	if (!list_empty(&shp->shm_clist))
  		return 0;
-@@ -1275,7 +1278,7 @@ static void s3c24xx_serial_setsource(str
- 			unsigned int clk_sel)
- {
- 	struct s3c24xx_uart_info *info = s3c24xx_port_to_info(port);
--	unsigned int ucon;
-+	u32 ucon;
  
- 	if (info->num_clks == 1)
- 		return;
-@@ -1394,9 +1397,8 @@ static void s3c24xx_serial_set_termios(s
- 	struct clk *clk = ERR_PTR(-EINVAL);
- 	unsigned long flags;
- 	unsigned int baud, quot, clk_sel = 0;
--	unsigned int ulcon;
--	unsigned int umcon;
- 	unsigned int udivslot = 0;
-+	u32 ulcon, umcon;
- 
- 	/*
- 	 * We don't support modem control lines.
-@@ -1712,7 +1714,7 @@ static void s3c24xx_serial_resetport(str
- 				   struct s3c2410_uartcfg *cfg)
- {
- 	struct s3c24xx_uart_info *info = s3c24xx_port_to_info(port);
--	unsigned long ucon = rd_regl(port, S3C2410_UCON);
-+	u32 ucon = rd_regl(port, S3C2410_UCON);
- 	unsigned int ucon_mask;
- 
- 	ucon_mask = info->clksel_mask;
-@@ -2150,7 +2152,7 @@ static int s3c24xx_serial_resume_noirq(s
- 	if (port) {
- 		/* restore IRQ mask */
- 		if (s3c24xx_serial_has_interrupt_mask(port)) {
--			unsigned int uintm = 0xf;
-+			u32 uintm = 0xf;
- 
- 			if (ourport->tx_enabled)
- 				uintm &= ~S3C64XX_UINTM_TXD_MSK;
-@@ -2188,10 +2190,10 @@ static const struct dev_pm_ops s3c24xx_s
- static struct uart_port *cons_uart;
- 
- static int
--s3c24xx_serial_console_txrdy(struct uart_port *port, unsigned int ufcon)
-+s3c24xx_serial_console_txrdy(struct uart_port *port, u32 ufcon)
- {
- 	struct s3c24xx_uart_info *info = s3c24xx_port_to_info(port);
--	unsigned long ufstat, utrstat;
-+	u32 ufstat, utrstat;
- 
- 	if (ufcon & S3C2410_UFCON_FIFOMODE) {
- 		/* fifo mode - check amount of data in fifo registers... */
-@@ -2207,7 +2209,7 @@ s3c24xx_serial_console_txrdy(struct uart
+-	if (shm_may_destroy(shp)) {
+-		shm_lock_by_ptr(shp);
++	shm_lock_by_ptr(shp);
++	if (shm_may_destroy(shp))
+ 		shm_destroy(ns, shp);
+-	}
++	else
++		shm_unlock(shp);
+ 	return 0;
  }
  
- static bool
--s3c24xx_port_configured(unsigned int ucon)
-+s3c24xx_port_configured(u32 ucon)
- {
- 	/* consider the serial port configured if the tx/rx mode set */
- 	return (ucon & 0xf) != 0;
-@@ -2222,7 +2224,7 @@ s3c24xx_port_configured(unsigned int uco
- static int s3c24xx_serial_get_poll_char(struct uart_port *port)
- {
- 	struct s3c24xx_uart_port *ourport = to_ourport(port);
--	unsigned int ufstat;
-+	u32 ufstat;
- 
- 	ufstat = rd_regl(port, S3C2410_UFSTAT);
- 	if (s3c24xx_serial_rx_fifocnt(ourport, ufstat) == 0)
-@@ -2234,8 +2236,8 @@ static int s3c24xx_serial_get_poll_char(
- static void s3c24xx_serial_put_poll_char(struct uart_port *port,
- 		unsigned char c)
- {
--	unsigned int ufcon = rd_regl(port, S3C2410_UFCON);
--	unsigned int ucon = rd_regl(port, S3C2410_UCON);
-+	u32 ufcon = rd_regl(port, S3C2410_UFCON);
-+	u32 ucon = rd_regl(port, S3C2410_UCON);
- 
- 	/* not possible to xmit on unconfigured port */
- 	if (!s3c24xx_port_configured(ucon))
-@@ -2251,7 +2253,7 @@ static void s3c24xx_serial_put_poll_char
- static void
- s3c24xx_serial_console_putchar(struct uart_port *port, int ch)
- {
--	unsigned int ufcon = rd_regl(port, S3C2410_UFCON);
-+	u32 ufcon = rd_regl(port, S3C2410_UFCON);
- 
- 	while (!s3c24xx_serial_console_txrdy(port, ufcon))
- 		cpu_relax();
-@@ -2262,7 +2264,7 @@ static void
- s3c24xx_serial_console_write(struct console *co, const char *s,
- 			     unsigned int count)
- {
--	unsigned int ucon = rd_regl(cons_uart, S3C2410_UCON);
-+	u32 ucon = rd_regl(cons_uart, S3C2410_UCON);
- 
- 	/* not possible to xmit on unconfigured port */
- 	if (!s3c24xx_port_configured(ucon))
-@@ -2276,11 +2278,9 @@ s3c24xx_serial_get_options(struct uart_p
- 			   int *parity, int *bits)
- {
- 	struct clk *clk;
--	unsigned int ulcon;
--	unsigned int ucon;
--	unsigned int ubrdiv;
- 	unsigned long rate;
- 	unsigned int clk_sel;
-+	u32 ulcon, ucon, ubrdiv;
- 	char clk_name[MAX_CLK_NAME_LENGTH];
- 
- 	ulcon  = rd_regl(port, S3C2410_ULCON);
-@@ -2677,6 +2677,7 @@ static void samsung_early_write(struct c
- 	uart_console_write(&dev->port, s, n, samsung_early_putc);
- }
- 
-+
- static int __init samsung_early_console_setup(struct earlycon_device *device,
- 					      const char *opt)
- {
 
 
 
