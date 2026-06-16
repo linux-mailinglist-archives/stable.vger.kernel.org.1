@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-264092-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265578-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id dvKJOdBuMWrRjAUAu9opvQ
-	(envelope-from <stable+bounces-264092-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:42:08 +0200
+	id pk9xMKOLMWoGmQUAu9opvQ
+	(envelope-from <stable+bounces-265578-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:45:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05C996914E5
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:42:08 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65FF869370C
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:45:07 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=cvmq4S5k;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264092-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264092-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=wEye7asD;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265578-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265578-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E7D6C303001F
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:34:47 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6D1AF304B90C
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:45:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A60EB4418FF;
-	Tue, 16 Jun 2026 15:34:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC69043E4BE;
+	Tue, 16 Jun 2026 17:45:05 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 893AA357D14;
-	Tue, 16 Jun 2026 15:34:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6AFA466B5B;
+	Tue, 16 Jun 2026 17:45:04 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781624084; cv=none; b=FnPrIui/afEyuRCnePiDoZey4M5m/Z89C3e43sI9w9uQ4Z3DuikaCht3hA1ZD1EeOfmLyphnLLxSW4PKafzJS8/zRu4dkKXXQNJnuaYeRtGSvEzMpJ9x1Ry57iDUL+LyTHy6DfSFc8W2PfpwBJ1T4+N8UjwCdexUnQ+M9yqpJMY=
+	t=1781631905; cv=none; b=cyn6LwmSR741mk1L5GaFBk+BMogCqVRC7toEpme+SYCnozuORpOCccrG3vuZPHYKSoHGtMXYcAFFzXsdh4UEbu2/ZuDkxOGtVl1QJT8wSWLrPkeh5AdqLJADcUyrVgjRR3ZOQ9ioCdw1ZKUyaz68g8mSUpy8IKtAl+M+BgKt7qM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781624084; c=relaxed/simple;
-	bh=MdAGweEENpLFt/NTGTHA0l62i54K7LX8Z8mAKJ9kQhY=;
+	s=arc-20240116; t=1781631905; c=relaxed/simple;
+	bh=wSszrKdZryiwIT7NQhJ3/NOjMA0Z28C3weooqg8qIxU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OdcKtc7aUY8tqBkB6MjH8uSdsgaUzIN83UxdnH4uvQxHXDqSymS/oeIc54LGZvVcLHguuf6qZujan0GKgYTWzRMHEKSxuhGdXDIURzQDTuZFY8zZ9e+v8F7iGqlg9WtspUOwjY17H3fWyaQbnFse4Ecb5icW0CBauKFUpcKjDwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cvmq4S5k; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7133C1F000E9;
-	Tue, 16 Jun 2026 15:34:42 +0000 (UTC)
+	 MIME-Version; b=Gkztd4mS6jWBVPwpk9dFGNg1A7thjjeGxyId2UdgUVX7FyhBA0Eo0UgAb07NgxectoVLYQEJfTEu4W1dcemKfk8ca1myJV+g7kLMeMOgFtSOcFXl/O3DWv4UM80F8tx4zgFyYklt0OCixm5kr0DinJ+ViY8NsWDzbcsJAKxwsoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wEye7asD; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0CFD1F000E9;
+	Tue, 16 Jun 2026 17:45:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781624083;
-	bh=pcuTK/AFOJsr5RNXxON5RiBv6OE6ji6wY5syrXFPz/s=;
+	s=korg; t=1781631904;
+	bh=qWBoClFF0JxwMchntC96/YS48UBR9Y/sVBF71+wkNhc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=cvmq4S5k8wXhBq/n5shPsDKzYOiVyKSENjI96csntmq9mG65bpPLgwFIDqFJfKjrn
-	 ++hjGQmfoUazDsrFSCPipJBeO76Xp4T6D8Exm0G5c5z+UjD3BFBKmL8fAEbSOcdvs3
-	 gNVfsbg3MWfDOs9Uu3NNQ7mR0STHvwLIpLMGJTtc=
+	b=wEye7asDKdO995T394L9IkvPFJANNZaT7Gjzo1gqAOrUQbANT+e+G8RC1AgVxupuD
+	 hz01m5sT2hhXdUaQtsTPRIfwWG+P0lYY6qcZsOwp+dFUxuNl/xUbBJyu/LlLEzOkT/
+	 HBwCihn0EAOjoh7ZjEZYlksVpWllChjrc3GXoAhE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuho Choi <dbgh9129@gmail.com>,
-	Dinh Nguyen <dinguyen@kernel.org>
-Subject: [PATCH 7.0 226/378] ARM: socfpga: Fix OF node refcount leak in SMP setup
+	Inochi Amaoto <inochiama@gmail.com>,
+	Gabriel Somlo <gsomlo@gmail.com>,
+	Ulf Hansson <ulfh@kernel.org>
+Subject: [PATCH 6.1 310/522] mmc: litex_mmc: Set mandatory idle clocks before CMD0
 Date: Tue, 16 Jun 2026 20:27:37 +0530
-Message-ID: <20260616145122.185837430@linuxfoundation.org>
+Message-ID: <20260616145140.373368316@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,21 +72,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-264092-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:dbgh9129@gmail.com,m:dinguyen@kernel.org,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265578-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:inochiama@gmail.com,m:gsomlo@gmail.com,m:ulfh@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -94,52 +95,76 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 05C996914E5
+X-Rspamd-Queue-Id: 65FF869370C
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuho Choi <dbgh9129@gmail.com>
+From: Inochi Amaoto <inochiama@gmail.com>
 
-commit 63838c323924fe4a78b2323bd45aa1030f72ca60 upstream.
+commit 99982b743e5ba72bd1f5de0e03e3b96ae70b1e51 upstream.
 
-socfpga_smp_prepare_cpus() looks up the Cortex-A9 SCU node with
-of_find_compatible_node(), which returns a node reference that must be
-released with of_node_put().
+The litex_mmc driver assumes the card is already probed in the BIOS
+and skip the phy initialization. This will cause the command fail
+like the following when the old card is unplugged and then insert
+a new card:
 
-The function maps the SCU registers and then returns without dropping
-that reference, leaking the node on both the success path and the
-of_iomap() failure path.
+[   62.923593] litex-mmc f0004000.mmc: Command (cmd 8) error, status -110
+[   62.949717] litex-mmc f0004000.mmc: Command (cmd 55) error, status -110
+[   62.976606] litex-mmc f0004000.mmc: Command (cmd 55) error, status -110
+[   63.002516] litex-mmc f0004000.mmc: Command (cmd 55) error, status -110
+[   63.028442] litex-mmc f0004000.mmc: Command (cmd 55) error, status -110
 
-Drop the reference once the mapping attempt is complete. The returned
-MMIO mapping does not depend on keeping the device node reference held.
+Add required clock settings and initialization for the CMD 0, so it can
+probe the new card.
 
-Fixes: 122694a0c712 ("ARM: socfpga: use of_iomap to map the SCU")
+Fixes: 92e099104729 ("mmc: Add driver for LiteX's LiteSDCard interface")
+Signed-off-by: Inochi Amaoto <inochiama@gmail.com>
+Reviewed-by: Gabriel Somlo <gsomlo@gmail.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Yuho Choi <dbgh9129@gmail.com>
-Signed-off-by: Dinh Nguyen <dinguyen@kernel.org>
+Signed-off-by: Ulf Hansson <ulfh@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/mach-socfpga/platsmp.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/mmc/host/litex_mmc.c |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
---- a/arch/arm/mach-socfpga/platsmp.c
-+++ b/arch/arm/mach-socfpga/platsmp.c
-@@ -78,6 +78,7 @@ static void __init socfpga_smp_prepare_c
- 	}
+--- a/drivers/mmc/host/litex_mmc.c
++++ b/drivers/mmc/host/litex_mmc.c
+@@ -69,6 +69,9 @@
+ #define SD_SLEEP_US       5
+ #define SD_TIMEOUT_US 20000
  
- 	socfpga_scu_base_addr = of_iomap(np, 0);
-+	of_node_put(np);
- 	if (!socfpga_scu_base_addr)
- 		return;
- 	scu_enable(socfpga_scu_base_addr);
++#define SD_INIT_DELAY_US  1000
++#define SD_INIT_CLK_HZ    400000
++
+ #define SDIRQ_CARD_DETECT    1
+ #define SDIRQ_SD_TO_MEM_DONE 2
+ #define SDIRQ_MEM_TO_SD_DONE 4
+@@ -450,6 +453,17 @@ static void litex_mmc_set_ios(struct mmc
+ 	struct litex_mmc_host *host = mmc_priv(mmc);
+ 
+ 	/*
++	 * The SD specification requires at least 74 idle clocks before CMD0.
++	 * These dummy cycles is generated by writing LITEX_PHY_INITIALIZE.
++	 */
++	if (ios->chip_select == MMC_CS_HIGH) {
++		litex_mmc_setclk(host, SD_INIT_CLK_HZ);
++		litex_write8(host->sdphy + LITEX_PHY_INITIALIZE, 1);
++		fsleep(SD_INIT_DELAY_US);
++		return;
++	}
++
++	/*
+ 	 * NOTE: Ignore any ios->bus_width updates; they occur right after
+ 	 * the mmc core sends its own acmd6 bus-width change notification,
+ 	 * which is redundant since we snoop on the command flow and inject
 
 
 
