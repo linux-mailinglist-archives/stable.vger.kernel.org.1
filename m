@@ -1,60 +1,68 @@
-Return-Path: <stable+bounces-264063-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266027-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id IcXCKDFuMWqMjAUAu9opvQ
-	(envelope-from <stable+bounces-264063-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:39:29 +0200
+	id fPMvC+eUMWp/nQUAu9opvQ
+	(envelope-from <stable+bounces-266027-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:24:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 295AB6913EC
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:39:29 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7EA96941A8
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:24:38 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=hr9CQjwN;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264063-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264063-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=c1lba9ON;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266027-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-266027-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5281331F82B2
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:32:07 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 36837303131D
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:24:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E28334418FF;
-	Tue, 16 Jun 2026 15:32:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2305E478868;
+	Tue, 16 Jun 2026 18:24:35 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96A943CBE8B;
-	Tue, 16 Jun 2026 15:32:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA53B3D8114;
+	Tue, 16 Jun 2026 18:24:33 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781623926; cv=none; b=J2GMSQCJZ36YeykRdD1k9WxAX9E+DI2rWk7a5SAZtbaDnBOtYrS3gt41LzaW+hTlqSylqcG486qtCHAjYcD9SLVEV8JMEt3lzuUewdjHcL3qUOxtPqOsSJW/68crDYjC4agonxmpG99pwJzsdI/ZHxvK03ykycg3f3CEh/blRe0=
+	t=1781634274; cv=none; b=qY4jLUK43dQVBde83Ty+DaqAtUazYFzfx7mqykwTEbHbR4SPN8T1OyMZzd38z068lPRji2208iESCatJbOkh+So0ODe7J7L5hAOMNtukFUQ1LxN4ve/9S8qsUXUplGuLnLcDMErnSZDwNdSk6b+op/1yYIcH+x63+gsbbcUm1+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781623926; c=relaxed/simple;
-	bh=fd4bJSwXSAcd9/OASL/vzmvLMNXm2EPEEApfLpSrQlU=;
+	s=arc-20240116; t=1781634274; c=relaxed/simple;
+	bh=+HAXhjvS+g1gMBm/wsBj3IGv/GawbU8H5zKP19f+cQk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WSgVG/12KG1FbsnX6UIVNCwmiOFpdi7exqTa+MZCPYCNsd/m5ACmaZ0yI4Y/hJlir1vTVsk2zGeQwEdelqDwjhLjaNVrIEWQLauAzijITUeMN87s9s/w1gCM65um9pPzjwWlgzxf7Mr/vjtWbUl9zDFCFVI9bMTwm6tF0EsMz9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hr9CQjwN; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 713951F000E9;
-	Tue, 16 Jun 2026 15:32:04 +0000 (UTC)
+	 MIME-Version; b=PgZ4kItqrC6eIocaMTBDc9PDARnaXzKWag0X23gkL05KG1QDoubRbRhb10ttzt3CHFC+I5QeTUWmZhMw3gkOY82jgPNCjzTggCWw7Wb83bv4vTMsOfz9YOOGTXnY4d3Vxce8xLgt8xsOAzhAHGgFMpTE3+Bi2oYEoibDyNZJho0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c1lba9ON; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0A8C1F000E9;
+	Tue, 16 Jun 2026 18:24:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781623925;
-	bh=wwj/nXhCMBw8LwiJY54bdnv9iv1ozaxtoOcOuddWE1g=;
+	s=korg; t=1781634273;
+	bh=qLCdJR1jXmZz+1ft7S6XB4yaO4eG1bh0PzphnI35mNg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hr9CQjwN9hJmHGJUklMZk23PZwJXQUEt0qAhYHfIQ+7rBIu5uWZVW0pUQrtyaebO8
-	 kjkVPnPd8G+3jFv1K/dhMduf3TquMqjrd50+npipm//l+885C+C3cmY/q558XkkXP0
-	 4XsMIJD8jtJe2X2huKE/RqbzXA07OZWzlPa4EakU=
+	b=c1lba9ONDDUupuIfz15uRQ97Q+QIU/6wGxq9Ik5qSfBto6y2CLs0Ni3672js/Fzza
+	 lRVaXigUb5v3sEQiY3JpkqhCMB5K63r8Bhb3b39+TCeOwSlPtMj7p+Vpu7Qf12C7It
+	 StEOwv8Umg69Nfwfn28eGNVVfFgSMUMx3E7/2Wgg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Subject: [PATCH 7.0 242/378] wifi: iwlwifi: pcie: simplify the resume flow if fast resume is not used
+	stable@kernel.org,
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Zhengchuan Liang <zcliangcn@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Zhao Zhang <zzhan461@ucr.edu>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Xin Long <lucien.xin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 235/411] sctp: diag: reject stale associations in dump_one path
 Date: Tue, 16 Jun 2026 20:27:53 +0530
-Message-ID: <20260616145122.949422048@linuxfoundation.org>
+Message-ID: <20260616145113.326169303@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,141 +74,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264063-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:emmanuel.grumbach@intel.com,m:miriam.rachel.korenblit@intel.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-266027-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:yuantan098@gmail.com,m:yifanwucs@gmail.com,m:tomapufckgml@gmail.com,m:zcliangcn@gmail.com,m:bird@lzu.edu.cn,m:zzhan461@ucr.edu,m:n05ec@lzu.edu.cn,m:lucien.xin@gmail.com,m:kuba@kernel.org,m:lucienxin@gmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,ucr.edu];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,lzu.edu.cn:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 295AB6913EC
+X-Rspamd-Queue-Id: B7EA96941A8
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+From: Zhao Zhang <zzhan461@ucr.edu>
 
-commit 093305d801fae6ff9b8bb531fd78b579794c4f80 upstream.
+commit 5eba3e48d78edd7551b992cb7ba687019b3a78da upstream.
 
-In most distributions, NetworkManager shuts the device down before
-entering system suspend, so fast suspend is typically not used.
+The SCTP exact sock_diag lookup can hold a transport reference, block on
+lock_sock(sk), and then resume after sctp_association_free() has marked
+the association dead and freed its bind address list.
 
-On older devices, resume currently tries to grab NIC access to infer
-whether the device was powered off while suspended. That probe is only
-meaningful for the fast-suspend path where the device is expected to
-remain alive.
+When that happens, inet_assoc_attr_size() and
+inet_diag_msg_sctpasoc_fill() can still dereference association state
+that is no longer valid for reporting. In particular,
+inet_diag_msg_sctpasoc_fill() may read an empty bind-address list as a
+real sctp_sockaddr_entry and trigger an out-of-bounds read from
+unrelated association memory.
 
-Unfortunately, for unclear reasons, grabbing NIC access was harmful as
-reported in the bugzilla ticket below.
+Reject the association after taking the socket lock if it has been
+reaped or detached from the endpoint, and report the lookup as stale.
+This keeps the exact dump-one path from formatting torn association
+state.
 
-Workaround this issue by simply not grabbing NIC access if fast suspend
-is not used.
-
-Cc: stable@vger.kernel.org
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=221501
-Assisted-by: GitHub Copilot:gpt-5.3-codex
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Link: https://patch.msgid.link/20260531133005.e2ed9e0cd44f.If283625983a843933e0c01561a421daff184e9e9@changeid
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Fixes: 8f840e47f190 ("sctp: add the sctp_diag.c file")
+Cc: stable@kernel.org
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Zhengchuan Liang <zcliangcn@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Zhao Zhang <zzhan461@ucr.edu>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Acked-by: Xin Long <lucien.xin@gmail.com>
+Link: https://patch.msgid.link/fac6043fa20a2ff68e12958c431836f692c51268.1780113823.git.zzhan461@ucr.edu
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c |   56 ++++++++++++++------------
- 1 file changed, 32 insertions(+), 24 deletions(-)
+ net/sctp/diag.c |   17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
---- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-@@ -1225,33 +1225,41 @@ static int _iwl_pci_resume(struct device
- 	if (!trans->op_mode)
- 		return 0;
+--- a/net/sctp/diag.c
++++ b/net/sctp/diag.c
+@@ -266,15 +266,15 @@ static int sctp_sock_dump_one(struct sct
  
--	/*
--	 * Scratch value was altered, this means the device was powered off, we
--	 * need to reset it completely.
--	 * Note: MAC (bits 0:7) will be cleared upon suspend even with wowlan,
--	 * but not bits [15:8]. So if we have bits set in lower word, assume
--	 * the device is alive.
--	 * Alternatively, if the scratch value is 0xFFFFFFFF, then we no longer
--	 * have access to the device and consider it powered off.
--	 * For older devices, just try silently to grab the NIC.
--	 */
--	if (trans->mac_cfg->device_family >= IWL_DEVICE_FAMILY_BZ) {
--		u32 scratch = iwl_read32(trans, CSR_FUNC_SCRATCH);
--
--		if (!(scratch & CSR_FUNC_SCRATCH_POWER_OFF_MASK) ||
--		    scratch == ~0U)
--			device_was_powered_off = true;
--	} else {
-+	if (test_bit(STATUS_DEVICE_ENABLED, &trans->status)) {
- 		/*
--		 * bh are re-enabled by iwl_trans_pcie_release_nic_access,
--		 * so re-enable them if _iwl_trans_pcie_grab_nic_access fails.
-+		 * Scratch value was altered, this means the device was powered
-+		 * off, we need to reset it completely.
-+		 * Note: MAC (bits 0:7) will be cleared upon suspend even with
-+		 * wowlan, but not bits [15:8]. So if we have bits set in lower
-+		 * word, assume the device is alive.
-+		 * Alternatively, if the scratch value is 0xFFFFFFFF, then we
-+		 * no longer have access to the device and consider it powered
-+		 * off.
-+		 * For older devices, just try silently to grab the NIC.
- 		 */
--		local_bh_disable();
--		if (_iwl_trans_pcie_grab_nic_access(trans, true)) {
--			iwl_trans_pcie_release_nic_access(trans);
-+		if (trans->mac_cfg->device_family >= IWL_DEVICE_FAMILY_BZ) {
-+			u32 scratch = iwl_read32(trans, CSR_FUNC_SCRATCH);
-+
-+			if (!(scratch & CSR_FUNC_SCRATCH_POWER_OFF_MASK) ||
-+			    scratch == ~0U) {
-+				IWL_DEBUG_WOWLAN(trans,
-+						 "Scratch 0x%08x indicates device was powered off\n",
-+						 scratch);
-+				device_was_powered_off = true;
-+			}
- 		} else {
--			device_was_powered_off = true;
--			local_bh_enable();
-+			/*
-+			 * bh are re-enabled by iwl_trans_pcie_release_nic_access,
-+			 * so re-enable them if _iwl_trans_pcie_grab_nic_access
-+			 * fails.
-+			 */
-+			local_bh_disable();
-+			if (_iwl_trans_pcie_grab_nic_access(trans, true)) {
-+				iwl_trans_pcie_release_nic_access(trans);
-+			} else {
-+				device_was_powered_off = true;
-+				local_bh_enable();
-+			}
- 		}
+ 	lock_sock(sk);
+ 
+-	rep = nlmsg_new(inet_assoc_attr_size(sk, assoc), GFP_KERNEL);
+-	if (!rep) {
+-		release_sock(sk);
+-		return -ENOMEM;
++	if (ep != assoc->ep || assoc->base.dead) {
++		err = -ESTALE;
++		goto out_unlock;
  	}
+ 
+-	if (ep != assoc->ep) {
+-		err = -EAGAIN;
+-		goto out;
++	rep = nlmsg_new(inet_assoc_attr_size(sk, assoc), GFP_KERNEL);
++	if (!rep) {
++		err = -ENOMEM;
++		goto out_unlock;
+ 	}
+ 
+ 	err = inet_sctp_diag_fill(sk, assoc, rep, req, sk_user_ns(NETLINK_CB(skb).sk),
+@@ -289,8 +289,9 @@ static int sctp_sock_dump_one(struct sct
+ 	return nlmsg_unicast(sock_net(skb->sk)->diag_nlsk, rep, NETLINK_CB(skb).portid);
+ 
+ out:
+-	release_sock(sk);
+ 	kfree_skb(rep);
++out_unlock:
++	release_sock(sk);
+ 	return err;
+ }
  
 
 
