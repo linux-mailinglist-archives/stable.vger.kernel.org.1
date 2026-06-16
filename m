@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-264777-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264493-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 72WtOq5+MWpQkwUAu9opvQ
-	(envelope-from <stable+bounces-264777-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:49:50 +0200
+	id DqQmKIZ4MWq5kAUAu9opvQ
+	(envelope-from <stable+bounces-264493-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:23:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F6926927D6
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:49:50 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FC05692056
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:23:34 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=enUtRpz6;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264777-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264777-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=FfwLtVDX;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264493-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264493-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0725E305946D
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:37:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5E870323BDD2
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:09:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77CB047799E;
-	Tue, 16 Jun 2026 16:37:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDBBB44CAF5;
+	Tue, 16 Jun 2026 16:09:43 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 486E444DB64;
-	Tue, 16 Jun 2026 16:37:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6AB23A16AC;
+	Tue, 16 Jun 2026 16:09:42 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781627836; cv=none; b=m+rXJiw9YCUhnZ80xsCtDOfGAbztSeUnthtnggETKrzaqaLwfmRUEORcScREiVtN1VWM0X1Pcc3tXmAkYf7D8fnpo94FgZaSo967MRNwtFJtmDqGJB08qHD+hRcPp5ugj4n/AFKlm/fOW1acW+aIKNNlGizXG7SeW38jzsbVX+Y=
+	t=1781626183; cv=none; b=mAG9zHadgwjSiI4tTVMz5n2XCzvLH4Tts0kj2aJG0K2IpdkbQaBFiS0zmUN+7RtA2TZYgVbuT1MriVTEm1TNJ29gi5gFAAjepLaeYhAzuhDtN8h6/uV6tJYWUMLb94r+ttSZWKt7ByuHOSj3gmE9Y8FqC0sNtst4mxkQlMD7UQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781627836; c=relaxed/simple;
-	bh=rCIHOAOKdc6ZoncDo0MZiGstKB/inJIrDxi0KBNW1Q8=;
+	s=arc-20240116; t=1781626183; c=relaxed/simple;
+	bh=+tdX7ZCQ7RhNbV7HWmMtQwY98VAyrNpcUcepAanJ8fc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=owinU86UGFJURjE1JcChVaKr53EckZ+fBwo8CABACmSLsSUZ2lz2deB8RGzBp31w7lrIqOvXsWC1mD2zNgLRHYkKX6tPEcNRLFXcYjIOz0RC9cixcFE9KiGvxSturousfxALRpHDvQNJwoZQmctWP4e7ardnp/QXwIPPQCJDOOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=enUtRpz6; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F39F1F000E9;
-	Tue, 16 Jun 2026 16:37:13 +0000 (UTC)
+	 MIME-Version; b=G3xKKdO+DL2c4m5SXmwyhlG9NU18rldKklYUTOx2ze7yjixhhWASYFsmpdmQxEaO3ht1DfGS3y7tUKX3+eW71CqxrU5v33p6bEiLlVv6bqN/1eEIqzaetDnNTeGt5TRj/cdY54g6G/Mop7drjoJa8AedoJDiQWuqkTQbE39y/7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FfwLtVDX; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78C441F000E9;
+	Tue, 16 Jun 2026 16:09:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781627835;
-	bh=2q/I2ciIx/Cc6lmtpSB53dp9U/UWCx1XFXVMKLirgwk=;
+	s=korg; t=1781626182;
+	bh=AZ+rfh/6jSKnBLVduaT17yl5fhEwvEecuS7UewyeU/k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=enUtRpz6+SpItboXXZ+/EaDEnCXDGo2OnT1opoxT/hbfeHsWppar02RUgHSZ1OwSh
-	 WzEL1f2jlj/XDtp6ROVpUY+mYg1xNiHMHGoc6xePvg66KCn4vnnAt45JyMInSfrHCQ
-	 79urCIa9QrRUtO8X8JvUQmwo+QpPR5Fo8gNiqK2w=
+	b=FfwLtVDX+DCOK29IIlV6RYja5/rU8I+wPC+JGrRXeh46F7Lybq4ffATXhBYN7l6rb
+	 FGTgT4rGHyY54C0NoWtKz3LMp154QhwpCVZinK2uqiKRc2png7fhAvMvGeoLYHRfiJ
+	 Iq0RAf9kgM/jDpUDp1QlZtIQCAaVC8iSWhBk4WjU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacob Moroni <jmoroni@google.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 236/261] RDMA/umem: Add ib_umem_dmabuf_get_pinned_and_lock helper
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>,
+	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
+	Srinivas Kandagatla <srini@kernel.org>
+Subject: [PATCH 6.18 278/325] slimbus: qcom-ngd-ctrl: Initialize controller resources in controller
 Date: Tue, 16 Jun 2026 20:31:14 +0530
-Message-ID: <20260616145056.000963797@linuxfoundation.org>
+Message-ID: <20260616145112.579921666@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
-References: <20260616145044.869532709@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,125 +70,146 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264777-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jmoroni@google.com,m:leon@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264493-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:dmitry.baryshkov@oss.qualcomm.com,m:mukesh.ojha@oss.qualcomm.com,m:bjorn.andersson@oss.qualcomm.com,m:srini@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,qualcomm.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2F6926927D6
+X-Rspamd-Queue-Id: 2FC05692056
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacob Moroni <jmoroni@google.com>
+From: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
 
-[ Upstream commit 553dfa8cbd0c6d36adae042d9738ddf8f8765ac7 ]
+commit 07c564ea5fb859b7381429de935d5df4781947c6 upstream.
 
-Move the inner logic of ib_umem_dmabuf_get_pinned_with_dma_device()
-to a new static function that returns with the lock held upon success.
+The work structs and work queue are controller resources, create and
+destroy them in the controller context. Creating them as part of the
+child device's probe path seems to be okay now that the controller's
+probe has been updated, but if for some reason the child does not probe
+successfully a SSR or PDR notification will schedule_work() on an
+uninitialized "ngd_up_work".
 
-The intent is to allow reuse for the future get_pinned_revocable_and_lock
-function.
+Move the initialization of these controller resources to the controller
+probe function to avoid any issues, and to clarify the ownership.
 
-Signed-off-by: Jacob Moroni <jmoroni@google.com>
-Link: https://patch.msgid.link/20260305170826.3803155-2-jmoroni@google.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Stable-dep-of: badad6fad60d ("RDMA: During rereg_mr ensure that REREG_ACCESS is compatible")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 917809e2280b ("slimbus: ngd: Add qcom SLIMBus NGD driver")
+Cc: stable@vger.kernel.org
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
+Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
+Link: https://patch.msgid.link/20260530204421.116824-7-srini@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/core/umem_dmabuf.c |   35 +++++++++++++++++++++++++---------
- 1 file changed, 26 insertions(+), 9 deletions(-)
+ drivers/slimbus/qcom-ngd-ctrl.c |   38 ++++++++++++++++----------------------
+ 1 file changed, 16 insertions(+), 22 deletions(-)
 
---- a/drivers/infiniband/core/umem_dmabuf.c
-+++ b/drivers/infiniband/core/umem_dmabuf.c
-@@ -198,18 +198,19 @@ static struct dma_buf_attach_ops ib_umem
- 	.move_notify = ib_umem_dmabuf_unsupported_move_notify,
- };
+--- a/drivers/slimbus/qcom-ngd-ctrl.c
++++ b/drivers/slimbus/qcom-ngd-ctrl.c
+@@ -1588,25 +1588,8 @@ static int qcom_slim_ngd_probe(struct pl
+ 	pm_runtime_enable(dev);
+ 	pm_runtime_get_noresume(dev);
+ 	ret = qcom_slim_ngd_qmi_svc_event_init(ctrl);
+-	if (ret) {
++	if (ret)
+ 		dev_err(&pdev->dev, "QMI service registration failed:%d", ret);
+-		return ret;
+-	}
+-
+-	INIT_WORK(&ctrl->m_work, qcom_slim_ngd_master_worker);
+-	INIT_WORK(&ctrl->ngd_up_work, qcom_slim_ngd_up_worker);
+-	ctrl->mwq = create_singlethread_workqueue("ngd_master");
+-	if (!ctrl->mwq) {
+-		dev_err(&pdev->dev, "Failed to start master worker\n");
+-		ret = -ENOMEM;
+-		goto wq_err;
+-	}
+-
+-	return 0;
+-wq_err:
+-	qcom_slim_ngd_qmi_svc_event_deinit(&ctrl->qmi);
+-	if (ctrl->mwq)
+-		destroy_workqueue(ctrl->mwq);
  
--struct ib_umem_dmabuf *
--ib_umem_dmabuf_get_pinned_with_dma_device(struct ib_device *device,
--					  struct device *dma_device,
--					  unsigned long offset, size_t size,
--					  int fd, int access)
-+static struct ib_umem_dmabuf *
-+ib_umem_dmabuf_get_pinned_and_lock(struct ib_device *device,
-+				   struct device *dma_device,
-+				   unsigned long offset,
-+				   size_t size, int fd, int access,
-+				   const struct dma_buf_attach_ops *ops)
- {
- 	struct ib_umem_dmabuf *umem_dmabuf;
- 	int err;
- 
--	umem_dmabuf = ib_umem_dmabuf_get_with_dma_device(device, dma_device, offset,
--							 size, fd, access,
--							 &ib_umem_dmabuf_attach_pinned_ops);
-+	umem_dmabuf =
-+		ib_umem_dmabuf_get_with_dma_device(device, dma_device, offset,
-+						   size, fd, access, ops);
- 	if (IS_ERR(umem_dmabuf))
- 		return umem_dmabuf;
- 
-@@ -222,7 +223,6 @@ ib_umem_dmabuf_get_pinned_with_dma_devic
- 	err = ib_umem_dmabuf_map_pages(umem_dmabuf);
- 	if (err)
- 		goto err_release;
--	dma_resv_unlock(umem_dmabuf->attach->dmabuf->resv);
- 
- 	return umem_dmabuf;
- 
-@@ -231,6 +231,23 @@ err_release:
- 	ib_umem_release(&umem_dmabuf->umem);
- 	return ERR_PTR(err);
+ 	return ret;
  }
-+
-+struct ib_umem_dmabuf *
-+ib_umem_dmabuf_get_pinned_with_dma_device(struct ib_device *device,
-+					  struct device *dma_device,
-+					  unsigned long offset, size_t size,
-+					  int fd, int access)
-+{
-+	struct ib_umem_dmabuf *umem_dmabuf =
-+		ib_umem_dmabuf_get_pinned_and_lock(device, dma_device, offset,
-+						   size, fd, access,
-+						   &ib_umem_dmabuf_attach_pinned_ops);
-+	if (IS_ERR(umem_dmabuf))
-+		return umem_dmabuf;
-+
-+	dma_resv_unlock(umem_dmabuf->attach->dmabuf->resv);
-+	return umem_dmabuf;
-+}
- EXPORT_SYMBOL(ib_umem_dmabuf_get_pinned_with_dma_device);
+@@ -1659,9 +1642,18 @@ static int qcom_slim_ngd_ctrl_probe(stru
+ 	init_completion(&ctrl->qmi.qmi_comp);
+ 	init_completion(&ctrl->qmi_up);
  
- struct ib_umem_dmabuf *ib_umem_dmabuf_get_pinned(struct ib_device *device,
++	INIT_WORK(&ctrl->m_work, qcom_slim_ngd_master_worker);
++	INIT_WORK(&ctrl->ngd_up_work, qcom_slim_ngd_up_worker);
++
++	ctrl->mwq = create_singlethread_workqueue("ngd_master");
++	if (!ctrl->mwq)
++		return dev_err_probe(dev, -ENOMEM, "Failed to start master worker\n");
++
+ 	ctrl->pdr = pdr_handle_alloc(slim_pd_status, ctrl);
+-	if (IS_ERR(ctrl->pdr))
+-		return dev_err_probe(dev, PTR_ERR(ctrl->pdr), "Failed to init PDR handle\n");
++	if (IS_ERR(ctrl->pdr)) {
++		ret = dev_err_probe(dev, PTR_ERR(ctrl->pdr), "Failed to init PDR handle\n");
++		goto err_destroy_mwq;
++	}
+ 
+ 	ret = of_qcom_slim_ngd_register(dev, ctrl);
+ 	if (ret)
+@@ -1688,6 +1680,8 @@ err_unregister_ngd:
+ 	qcom_slim_ngd_unregister(ctrl);
+ err_pdr_release:
+ 	pdr_handle_release(ctrl->pdr);
++err_destroy_mwq:
++	destroy_workqueue(ctrl->mwq);
+ 
+ 	return ret;
+ }
+@@ -1697,6 +1691,8 @@ static void qcom_slim_ngd_ctrl_remove(st
+ 	struct qcom_slim_ngd_ctrl *ctrl = platform_get_drvdata(pdev);
+ 
+ 	qcom_slim_ngd_unregister(ctrl);
++
++	destroy_workqueue(ctrl->mwq);
+ }
+ 
+ static void qcom_slim_ngd_remove(struct platform_device *pdev)
+@@ -1709,8 +1705,6 @@ static void qcom_slim_ngd_remove(struct
+ 	qcom_slim_ngd_enable(ctrl, false);
+ 	qcom_slim_ngd_exit_dma(ctrl);
+ 	qcom_slim_ngd_qmi_svc_event_deinit(&ctrl->qmi);
+-	if (ctrl->mwq)
+-		destroy_workqueue(ctrl->mwq);
+ 
+ 	kfree(ctrl->ngd);
+ 	ctrl->ngd = NULL;
 
 
 
