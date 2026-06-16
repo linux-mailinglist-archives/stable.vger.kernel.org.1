@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-264917-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265465-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id YlRGKsiAMWpPlAUAu9opvQ
-	(envelope-from <stable+bounces-264917-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:58:48 +0200
+	id TlQWCZ6KMWpqmAUAu9opvQ
+	(envelope-from <stable+bounces-265465-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:40:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3315692A06
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:58:47 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AF0D6935B8
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:40:45 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=lVq1+7np;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264917-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264917-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=NgZZnVeV;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265465-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-265465-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6892231C53F9
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:50:33 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 763F13034A3C
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:35:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F80F478E39;
-	Tue, 16 Jun 2026 16:49:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0C14472767;
+	Tue, 16 Jun 2026 17:35:38 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EA6244CAF5;
-	Tue, 16 Jun 2026 16:49:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E0FC3A3E78;
+	Tue, 16 Jun 2026 17:35:37 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781628569; cv=none; b=dmS+KCzYw87MbGdZ/TvaJDsNfyJwKCQxDgNitRURj8nWxnhQW0M5LxwPluRkkqamDaUopBK8TVawRRHly30JFmHRnTsNGhiga6oRMIz875kiuEc9eViaIqou/iHIYKIcw4cePXvQMfeIIv8aHiYfgl/rfcAIWwV0k/qTBtqHjKY=
+	t=1781631338; cv=none; b=MLyxYZlXmQbd3+DyQKdsh37QfPCKL5djacdeVLzJHqawbaQ7wRoxY1Xr+c4u0LfAHCFkk7l3vuH6BlRpHkpHi+o338i3kOqp+4XAn18bihPQISM1qcYcYJ48KtM3pdFlp+3laMYW7qrGES2ipZWaHJ2ws0YC7HzTqRRTnaQ+YH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781628569; c=relaxed/simple;
-	bh=NA+4el4yLURW28R1bIOGtsZildizeOstb2VZvq8Ssfw=;
+	s=arc-20240116; t=1781631338; c=relaxed/simple;
+	bh=YYvtI3J8dMp3KHuEgURZ/DyMs3bcdNHm1l6csbZ6vQ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UTQcf/GDUdBRAaBjKCQk8jgWg/1PfXrxsmWrF14RWDtHWfyycFljkg1cI/eGUBY+PB4Q1c5xPrS6DaHoyUK/4gi638+Rr3u4sG5BgbjslLmUx/HBWbefyR37C0DLgfLLpLCthmEoj7iWlDsT65XhA5d/wG9TKGh/zvZxFl85tNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lVq1+7np; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6B6C1F000E9;
-	Tue, 16 Jun 2026 16:49:26 +0000 (UTC)
+	 MIME-Version; b=Z85LCiInE/2OGwAPtCJrdNxa+AU7t5XTIzKmbXQRDtoJ4ZDkVJ3k/msNGr7LssCSnkCfkEchA7IOxeinQzOcTwYBBn+y0J852deh/zkqaC9rjmnJo4P/4/XBvScVCBslI4ugS5T8eIuXFLqK0jCOhsqR2mQW1BH5u8T8gz48Dr4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NgZZnVeV; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A25C11F000E9;
+	Tue, 16 Jun 2026 17:35:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781628567;
-	bh=aQ4bjqEYubtysbKXwCyPAhFt+AWxVSrUuJA0sxRThi0=;
+	s=korg; t=1781631337;
+	bh=pqtwEUWGZbAJwn1sWfU81ftmdF5M80TcH6zP2qbCfHs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=lVq1+7npnxkGmpDe8yZ3mSNSVHgy+lO2f0AVqw0+OjPhoZhRyNiVwzrCGXwC/n2u6
-	 4wRa6AC20MlNkGHXltdfQHhjKB35q99zQgPVFpaBUyUu9XsuuND406zbQ9t9cTIo8F
-	 HQpYxIWhctV9d5iriM8Y8O8uQ3Sq5wSRJzP9LUXM=
+	b=NgZZnVeVnKINSTx7iBwTgtjV3o0qu4Hoy3U/uewGVezdjXGZrKgKeIlmjiLThdHI9
+	 +sFDy7NnLZg3wXw27/H6s5DF4ijBAvdnEAKv833PB5y0zBTKFnOqAO5qh6c5NKavao
+	 +VTu9M9ZPGZgNW0Q0jGtnii3QY6UhEk3MWDax7JY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	sashiko-bot <sashiko-bot@kernel.org>,
-	Peter Chen <peter.chen@cixtech.com>
-Subject: [PATCH 6.6 121/452] usb: cdns3: plat: fix unbalanced pm_runtime_forbid() call permanently leaks the runtime PM usage counter across bind/unbind cycles
+	Florian Westphal <fw@strlen.de>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 201/522] netfilter: conntrack_irc: fix possible out-of-bounds read
 Date: Tue, 16 Jun 2026 20:25:48 +0530
-Message-ID: <20260616145124.069325415@linuxfoundation.org>
+Message-ID: <20260616145135.486114978@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,73 +70,88 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264917-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:sashiko-bot@kernel.org,m:peter.chen@cixtech.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265465-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:fw@strlen.de,m:fmancera@suse.de,m:pablo@netfilter.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,cixtech.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,strlen.de:email,netfilter.org:email,sashiko.dev:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: F3315692A06
+X-Rspamd-Queue-Id: 1AF0D6935B8
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Chen <peter.chen@cixtech.com>
+From: Florian Westphal <fw@strlen.de>
 
-commit ae6f3b82324e4f39ad8443c9020787e6fc889637 upstream.
+[ Upstream commit 66eba0ffce3b7e11449946b4cbbef8ea36112f56 ]
 
-Call pm_runtime_allow(dev) conditionally at cdns3_plat_remove.
+When parsing fails after we've matched the command string we
+should bail out instead of trying to match a different command.
 
-Fixes: f738957277ba ("usb: cdns3: Split core.c into cdns3-plat and core.c file")
-Cc: stable <stable@kernel.org>
-Reported-by: sashiko-bot <sashiko-bot@kernel.org>
-Closes: https://lore.kernel.org/linux-devicetree/agKaEePSFknhDBg2@nchen-desktop/T/#m21e1d9c1574eb127ce03c0c2a1a49002ce435b52
-Signed-off-by: Peter Chen <peter.chen@cixtech.com>
-Link: https://patch.msgid.link/20260513085310.2217547-3-peter.chen@cixtech.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This helper should be deprecated, given prevalence of TLS I doubt it has
+any relevance in 2026.
+
+Fixes: 869f37d8e48f ("[NETFILTER]: nf_conntrack/nf_nat: add IRC helper port")
+Closes: https://sashiko.dev/#/patchset/20260525182924.28456-1-fw%40strlen.de
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/cdns3/cdns3-plat.c |    3 +++
- 1 file changed, 3 insertions(+)
+ net/netfilter/nf_conntrack_irc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/cdns3/cdns3-plat.c
-+++ b/drivers/usb/cdns3/cdns3-plat.c
-@@ -182,6 +182,9 @@ static void cdns3_plat_remove(struct pla
- 	struct device *dev = cdns->dev;
+diff --git a/net/netfilter/nf_conntrack_irc.c b/net/netfilter/nf_conntrack_irc.c
+index 5703846bea3b69..0f50ea92ced9df 100644
+--- a/net/netfilter/nf_conntrack_irc.c
++++ b/net/netfilter/nf_conntrack_irc.c
+@@ -208,7 +208,7 @@ static int help(struct sk_buff *skb, unsigned int protoff,
+ 			if (parse_dcc(data, data_limit, &dcc_ip,
+ 				       &dcc_port, &addr_beg_p, &addr_end_p)) {
+ 				pr_debug("unable to parse dcc command\n");
+-				continue;
++				goto out;
+ 			}
  
- 	pm_runtime_get_sync(dev);
-+	if (!(cdns->pdata && (cdns->pdata->quirks & CDNS3_DEFAULT_PM_RUNTIME_ALLOW)))
-+		pm_runtime_allow(dev);
-+
- 	pm_runtime_disable(dev);
- 	pm_runtime_put_noidle(dev);
- 	cdns_remove(cdns);
+ 			pr_debug("DCC bound ip/port: %pI4:%u\n",
+@@ -222,7 +222,7 @@ static int help(struct sk_buff *skb, unsigned int protoff,
+ 				net_warn_ratelimited("Forged DCC command from %pI4: %pI4:%u\n",
+ 						     &tuple->src.u3.ip,
+ 						     &dcc_ip, dcc_port);
+-				continue;
++				goto out;
+ 			}
+ 
+ 			exp = nf_ct_expect_alloc(ct);
+-- 
+2.53.0
+
 
 
 
