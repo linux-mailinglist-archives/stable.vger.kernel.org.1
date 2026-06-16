@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-265537-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264216-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id mbgfBDWLMWq6mAUAu9opvQ
-	(envelope-from <stable+bounces-265537-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:43:17 +0200
+	id cT2CBd9xMWrtjQUAu9opvQ
+	(envelope-from <stable+bounces-264216-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:55:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 206A8693670
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:43:16 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BEA669181B
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:55:10 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=JkdCvL+p;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265537-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265537-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=FrOX6zjq;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264216-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264216-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 340843022E1D
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:41:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4D1F930696D0
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:47:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE8E647CC65;
-	Tue, 16 Jun 2026 17:41:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BA0F47798F;
+	Tue, 16 Jun 2026 15:45:44 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 844B147CC80;
-	Tue, 16 Jun 2026 17:41:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A450361651;
+	Tue, 16 Jun 2026 15:45:41 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781631703; cv=none; b=BUqbsWy9gWLSKCJ3bTTnDqDM3YTyzQ/I4Ln+N0IYRk76UIWqDp7Fy3I28Jcv2QO1WxFa2x55+0Yqm0CFkK/jMHeCwR0ORlMdfsvcUFsA5796A4jXgTvM7b6nTE03/DUyFL1bNdzVjcqz7PkiZN1lZjIGUYfqIuYR2ILYN6Kr4hc=
+	t=1781624743; cv=none; b=IPLHOXh2u6HrX7wJ5Fi6X1rYIH5IzmvW0l1wBEsHU7WKPvcFFtI+FIbgTaB7n566314zzotNAgT5g1/flVxKkwQtFg3I8wpokH4Q+Rt1YEP54KArbPcNhdhn91+C+r0aOo24INNJEzJA/fQrQ4cj52n+1oVltUy+iG48gZf0Bug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781631703; c=relaxed/simple;
-	bh=JBd68w4Yvzmtt9WWMvAEST2HEPFXcBWBuRpMM9VtFhs=;
+	s=arc-20240116; t=1781624743; c=relaxed/simple;
+	bh=FIaTrvYL6E3x9JP22WTM0lYu6kyGZcfp/G7W6ySmlrA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DAWfj1GIrBcZNEh3toVsTBVLq6mQr0Dvf2b/wxeeRcFAzkRy/QAj5KQAH7JFf3MAj/P148rLJViienlgWGdMPIGBrOwEUcCljrMsCaNKG8meCQOkU532X4T6PvUEmdjSWVgYADk6rcCXDKXQVQdBIUPpozFiquKC7hOTdoEj6Yk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JkdCvL+p; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 597991F000E9;
-	Tue, 16 Jun 2026 17:41:39 +0000 (UTC)
+	 MIME-Version; b=a/Jtz8VQy402ZETYzhYlZAHWUVAqiJ5+9GnZnKYFYWvnd0pR0nVbkEu+i032YrOldxvjdxs+cWVb0HY9PECVKtyVpROUFaDlzo66e0SUMHopS0POej6t3CSiVj4vLGAkPlVHbAgQjJYJh4sqajSS9GPQYIBRzIdx0fIh602vFgA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FrOX6zjq; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02CA31F000E9;
+	Tue, 16 Jun 2026 15:45:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781631700;
-	bh=qYs4tJaiyF70KYg9vlVl0Wc4u5uK89jodWro78mnl7Q=;
+	s=korg; t=1781624740;
+	bh=DJ/JJngHQP7CiRVkzqBaqkfH5PAEk/EylES5fcDvmww=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=JkdCvL+pJYjjYXVP12cTjYYJi583DQCrnQdgpt0Ih2wCIkqtCtHGzFdJyz7AvJk+i
-	 Xp9bw8R7uv3io13Nie+rQJ1KWho4kBu1Cp2F+JzCv0oMtBAMRYKR99aaCX7WgMHnQS
-	 foFYoM1lVggm3bFV5JYq6OyB7krCrQf/xee2RpD8=
+	b=FrOX6zjqT1hvFjKWhuuGZ3Pkhx0jLMvLb9titzAwjI0ExUxICMXZfM1ClMRts1Een
+	 AlWBNe0JC152k0MMARYRScnvEiD9sTjK4etAKSsKAPu4LO5mE8HWAWc2Zl9e2n323J
+	 kTA+iCJEpRvU86/lHJjG57ZaHsbp9D2tqTYk4V3g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Inochi Amaoto <inochiama@gmail.com>,
-	Gabriel Somlo <gsomlo@gmail.com>,
-	Ulf Hansson <ulfh@kernel.org>
-Subject: [PATCH 6.1 270/522] mmc: litex_mmc: Use DIV_ROUND_UP for more accurate clock calculation
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 021/325] netfilter: xt_NFQUEUE: prefer raw_smp_processor_id
 Date: Tue, 16 Jun 2026 20:26:57 +0530
-Message-ID: <20260616145138.589392839@linuxfoundation.org>
+Message-ID: <20260616145058.842061688@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,88 +70,79 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-265537-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:inochiama@gmail.com,m:gsomlo@gmail.com,m:ulfh@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-264216-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:fmancera@suse.de,m:fw@strlen.de,m:pablo@netfilter.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,strlen.de:email,netfilter.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 206A8693670
+X-Rspamd-Queue-Id: 9BEA669181B
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Inochi Amaoto <inochiama@gmail.com>
+From: Fernando Fernandez Mancera <fmancera@suse.de>
 
-commit b837e38c255dd9f8b53511d52e87f1fda32b3dfe upstream.
+[ Upstream commit c6c5327dd18bec1e1bbf139b2cf5ae53608a9d30 ]
 
-The previous clock uses roundup_pow_of_two() to calculate the core
-clock frequency. It does not meet the actual hardware meaning.
-The actual frequency is calculated by "ref_clk / ((div >> 1) << 1)".
+With PREEMPT_RCU this triggers a splat because smp_processor_id() can be
+preempted while inside a RCU critical section. If xt_NFQUEUE target is
+invoked via nft_compat_eval() path, we are inside a RCU critical
+section.
 
-Fix the clock divider calculation.
+Just use the raw version instead.
 
-Fixes: 92e099104729 ("mmc: Add driver for LiteX's LiteSDCard interface")
-Signed-off-by: Inochi Amaoto <inochiama@gmail.com>
-Reviewed-by: Gabriel Somlo <gsomlo@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Ulf Hansson <ulfh@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0ca743a55991 ("netfilter: nf_tables: add compatibility layer for x_tables")
+Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/litex_mmc.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/netfilter/xt_NFQUEUE.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/mmc/host/litex_mmc.c
-+++ b/drivers/mmc/host/litex_mmc.c
-@@ -16,6 +16,7 @@
- #include <linux/interrupt.h>
- #include <linux/iopoll.h>
- #include <linux/litex.h>
-+#include <linux/math.h>
- #include <linux/mod_devicetable.h>
- #include <linux/module.h>
- #include <linux/platform_device.h>
-@@ -436,11 +437,10 @@ static void litex_mmc_setclk(struct lite
- 	struct device *dev = mmc_dev(host->mmc);
- 	u32 div;
+diff --git a/net/netfilter/xt_NFQUEUE.c b/net/netfilter/xt_NFQUEUE.c
+index 466da23e36ff47..b32d153e3a1862 100644
+--- a/net/netfilter/xt_NFQUEUE.c
++++ b/net/netfilter/xt_NFQUEUE.c
+@@ -91,7 +91,7 @@ nfqueue_tg_v3(struct sk_buff *skb, const struct xt_action_param *par)
  
--	div = freq ? host->ref_clk / freq : 256U;
--	div = roundup_pow_of_two(div);
-+	div = freq ? DIV_ROUND_UP(host->ref_clk, freq) : 256U;
- 	div = clamp(div, 2U, 256U);
- 	dev_dbg(dev, "sd_clk_freq=%d: set to %d via div=%d\n",
--		freq, host->ref_clk / div, div);
-+		freq, host->ref_clk / ((div + 1) & ~1U), div);
- 	litex_write16(host->sdphy + LITEX_PHY_CLOCKERDIV, div);
- 	host->sd_clk = freq;
- }
+ 	if (info->queues_total > 1) {
+ 		if (info->flags & NFQ_FLAG_CPU_FANOUT) {
+-			int cpu = smp_processor_id();
++			int cpu = raw_smp_processor_id();
+ 
+ 			queue = info->queuenum + cpu % info->queues_total;
+ 		} else {
+-- 
+2.53.0
+
 
 
 
