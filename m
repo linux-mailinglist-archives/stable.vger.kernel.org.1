@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-266152-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265180-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id OTfENreYMWoZnwUAu9opvQ
-	(envelope-from <stable+bounces-266152-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:40:55 +0200
+	id hrxACGGFMWoglgUAu9opvQ
+	(envelope-from <stable+bounces-265180-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:18:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5564E694530
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:40:55 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6ADF9692FA7
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:18:24 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=G9VylhaJ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266152-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266152-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ql+DPHq9;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265180-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265180-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9F4253210B9F
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:35:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A43753045EC6
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:11:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA17247799B;
-	Tue, 16 Jun 2026 18:35:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2322343D4E8;
+	Tue, 16 Jun 2026 17:11:25 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4177F3DF007;
-	Tue, 16 Jun 2026 18:35:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 004A838F930;
+	Tue, 16 Jun 2026 17:11:23 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781634936; cv=none; b=EDvFGxTtTfXqYU9b8Ssbm8KwDqwGOwHPnJvX7EtO2CsbIHK7IhnPh3VdIp/rOizxD6PLM90tSX/7WXLJVuRFhHcHRjQ7eEcUd/+ifzt+OFlMYPeEx+Bqj5RrgEro/xBQaR3/0ds6vGvY8FTrmebLOlPY3fiXKBSmv0xpKZ0PEy4=
+	t=1781629884; cv=none; b=GkeLd7TqCs4V3HHahEsO+N3eIIv3I1ZpkaFtpsop414MxnV8UgEMpE0k5Fc/ZIolIRK9Ir6YY/Ui1jfIpdQbyBcKJOyHlDCkiGfK0Sjd3U+963HlYz/bWVrEKp3dR53j4z2X4u0+CdumD8eQ7mjoCqXbdfpieXSsMb+YPO79poI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781634936; c=relaxed/simple;
-	bh=HPrUZC63hEb4FiF3BoPeIW1xb9Z2rmnHtZ8YSguqN50=;
+	s=arc-20240116; t=1781629884; c=relaxed/simple;
+	bh=yhpqLodPjvkYpFA9J/nSUYs1tvwqsAaFOh3APFaHUiY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SBsWbSPuPsbghklPxsvWsnBQ9mg+iy5c4nHn4HKhH8c5pHYqphOD4zcpxeFfBwiernyz8x1Xkdsde9wbc1Ax1WlRhH0jRcvrMUNeLwGnLfbGamaFPeCqOXCkMd2Z0N62lam8cQw/BD80pXuveQeFcHz0nH7vDat4TGFqGgJbzwA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G9VylhaJ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08A4D1F000E9;
-	Tue, 16 Jun 2026 18:35:33 +0000 (UTC)
+	 MIME-Version; b=el3Lg5lKQ6UcmqD2tad5rzizFTNxZ5/xdWB7lSBy1NPjoBVXW62yaMySC8Bd2oXw9bLQsTHTfd9jN/bcY+aJMwVtajtsPLHyc5fnZ4l+h8BgeYRp1O76pm0tBwPMYtChHdH3lD1F8lXKmqBuvNna3TSqtFZIAnp2AKB68KX1MQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ql+DPHq9; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E74E11F000E9;
+	Tue, 16 Jun 2026 17:11:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781634934;
-	bh=vP2t42+SHUbEK9W21bZkcnZut3GQJXmpoiV5QTDet9U=;
+	s=korg; t=1781629883;
+	bh=MU5BVzlNZmMNyJnL+XlrmBr+Y0dzuGlS2IYh1COHGpU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=G9VylhaJlutZNtrRQzbwFNioDbTccYF9BK12MWnv/KmnS4FXHGk9bh3Yiw9Bifq2v
-	 zUjZbR6nO/Nj82cQV72OaGEglBgjqp4OQQ8SWJWXeV/iFdSgFYFNn2Cxa18Ol9jw/w
-	 jEpc4hmI//j/cjr+WmmrFLOSX25IoQsG+2tKNyEg=
+	b=ql+DPHq9RzhESK+Ff5Z/psv84RFxJehHz4eyhPnpo5pYS0kA5PHor4hZYC2kPQRUu
+	 lyMzIvNgVlRf+Z1NcJNbNRg6tv4g4l2r1L9RBMaxoqWw4G5Nam120Y7SrurTcoacTs
+	 q4UEgkx0Nt7S9WEza+RhhpxatYkD7Cs+/c8kZJeI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Yingliang <yangyingliang@huawei.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 358/411] spi: qup: switch to use modern name
+	Johan Hovold <johan@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH 6.6 369/452] driver core: reject devices with unregistered buses
 Date: Tue, 16 Jun 2026 20:29:56 +0530
-Message-ID: <20260616145120.348726639@linuxfoundation.org>
+Message-ID: <20260616145136.425455872@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,22 +71,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266152-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265180-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:johan@kernel.org,m:dakr@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:yangyingliang@huawei.com,m:broonie@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -98,465 +97,71 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,huawei.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5564E694530
+X-Rspamd-Queue-Id: 6ADF9692FA7
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Yingliang <yangyingliang@huawei.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 597442ff4f6226206b7cc28b86eb2be0ae9c6418 ]
+commit 36f35b8df6972167102a1c3d4361e0afb6a84534 upstream.
 
-Change legacy name master to modern name host or controller.
+Trying to register a device on a bus which has not yet been registered
+used to trigger a NULL-pointer dereference, but since the const bus
+structure rework registration instead succeeds without the device being
+added to the bus.
 
-No functional changed.
+This specifically means that the device will never bind to a driver and
+that the bus sysfs attributes are not created (i.e. as if the device had
+no bus).
 
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
-Link: https://lore.kernel.org/r/20230818093154.1183529-10-yangyingliang@huawei.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: a7e8f3efd50a ("spi: qup: fix error pointer deref after DMA setup failure")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reject devices with unregistered buses to catch any callers that get
+the ordering wrong and to handle bus registration failures more
+gracefully.
+
+Fixes: 5221b82d46f2 ("driver core: bus: bus_add/probe/remove_device() cleanups")
+Cc: stable@vger.kernel.org	# 6.3
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260430091718.230228-1-johan@kernel.org
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-qup.c |  164 +++++++++++++++++++++++++-------------------------
- 1 file changed, 82 insertions(+), 82 deletions(-)
+ drivers/base/bus.c |   11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
---- a/drivers/spi/spi-qup.c
-+++ b/drivers/spi/spi-qup.c
-@@ -386,20 +386,20 @@ static void spi_qup_write(struct spi_qup
- 	} while (remainder);
- }
- 
--static int spi_qup_prep_sg(struct spi_master *master, struct scatterlist *sgl,
-+static int spi_qup_prep_sg(struct spi_controller *host, struct scatterlist *sgl,
- 			   unsigned int nents, enum dma_transfer_direction dir,
- 			   dma_async_tx_callback callback)
+--- a/drivers/base/bus.c
++++ b/drivers/base/bus.c
+@@ -503,10 +503,10 @@ static const struct attribute_group driv
+  */
+ int bus_add_device(struct device *dev)
  {
--	struct spi_qup *qup = spi_master_get_devdata(master);
-+	struct spi_qup *qup = spi_controller_get_devdata(host);
- 	unsigned long flags = DMA_PREP_INTERRUPT | DMA_PREP_FENCE;
- 	struct dma_async_tx_descriptor *desc;
- 	struct dma_chan *chan;
- 	dma_cookie_t cookie;
+-	struct subsys_private *sp = bus_to_subsys(dev->bus);
++	struct subsys_private *sp;
+ 	int error;
  
- 	if (dir == DMA_MEM_TO_DEV)
--		chan = master->dma_tx;
-+		chan = host->dma_tx;
- 	else
--		chan = master->dma_rx;
-+		chan = host->dma_rx;
+-	if (!sp) {
++	if (!dev->bus) {
+ 		/*
+ 		 * This is a normal operation for many devices that do not
+ 		 * have a bus assigned to them, just say that all went
+@@ -515,6 +515,13 @@ int bus_add_device(struct device *dev)
+ 		return 0;
+ 	}
  
- 	desc = dmaengine_prep_slave_sg(chan, sgl, nents, dir, flags);
- 	if (IS_ERR_OR_NULL(desc))
-@@ -413,13 +413,13 @@ static int spi_qup_prep_sg(struct spi_ma
- 	return dma_submit_error(cookie);
- }
- 
--static void spi_qup_dma_terminate(struct spi_master *master,
-+static void spi_qup_dma_terminate(struct spi_controller *host,
- 				  struct spi_transfer *xfer)
- {
- 	if (xfer->tx_buf)
--		dmaengine_terminate_all(master->dma_tx);
-+		dmaengine_terminate_all(host->dma_tx);
- 	if (xfer->rx_buf)
--		dmaengine_terminate_all(master->dma_rx);
-+		dmaengine_terminate_all(host->dma_rx);
- }
- 
- static u32 spi_qup_sgl_get_nents_len(struct scatterlist *sgl, u32 max,
-@@ -446,8 +446,8 @@ static int spi_qup_do_dma(struct spi_dev
- 			  unsigned long timeout)
- {
- 	dma_async_tx_callback rx_done = NULL, tx_done = NULL;
--	struct spi_master *master = spi->master;
--	struct spi_qup *qup = spi_master_get_devdata(master);
-+	struct spi_controller *host = spi->controller;
-+	struct spi_qup *qup = spi_controller_get_devdata(host);
- 	struct scatterlist *tx_sgl, *rx_sgl;
- 	int ret;
- 
-@@ -482,20 +482,20 @@ static int spi_qup_do_dma(struct spi_dev
- 			return ret;
- 		}
- 		if (rx_sgl) {
--			ret = spi_qup_prep_sg(master, rx_sgl, rx_nents,
-+			ret = spi_qup_prep_sg(host, rx_sgl, rx_nents,
- 					      DMA_DEV_TO_MEM, rx_done);
- 			if (ret)
- 				return ret;
--			dma_async_issue_pending(master->dma_rx);
-+			dma_async_issue_pending(host->dma_rx);
- 		}
- 
- 		if (tx_sgl) {
--			ret = spi_qup_prep_sg(master, tx_sgl, tx_nents,
-+			ret = spi_qup_prep_sg(host, tx_sgl, tx_nents,
- 					      DMA_MEM_TO_DEV, tx_done);
- 			if (ret)
- 				return ret;
- 
--			dma_async_issue_pending(master->dma_tx);
-+			dma_async_issue_pending(host->dma_tx);
- 		}
- 
- 		if (!wait_for_completion_timeout(&qup->done, timeout))
-@@ -514,8 +514,8 @@ static int spi_qup_do_dma(struct spi_dev
- static int spi_qup_do_pio(struct spi_device *spi, struct spi_transfer *xfer,
- 			  unsigned long timeout)
- {
--	struct spi_master *master = spi->master;
--	struct spi_qup *qup = spi_master_get_devdata(master);
-+	struct spi_controller *host = spi->controller;
-+	struct spi_qup *qup = spi_controller_get_devdata(host);
- 	int ret, n_words, iterations, offset = 0;
- 
- 	n_words = qup->n_words;
-@@ -660,7 +660,7 @@ static irqreturn_t spi_qup_qup_irq(int i
- /* set clock freq ... bits per word, determine mode */
- static int spi_qup_io_prep(struct spi_device *spi, struct spi_transfer *xfer)
- {
--	struct spi_qup *controller = spi_master_get_devdata(spi->master);
-+	struct spi_qup *controller = spi_controller_get_devdata(spi->controller);
- 	int ret;
- 
- 	if (spi->mode & SPI_LOOP && xfer->len > controller->in_fifo_sz) {
-@@ -681,9 +681,9 @@ static int spi_qup_io_prep(struct spi_de
- 
- 	if (controller->n_words <= (controller->in_fifo_sz / sizeof(u32)))
- 		controller->mode = QUP_IO_M_MODE_FIFO;
--	else if (spi->master->can_dma &&
--		 spi->master->can_dma(spi->master, spi, xfer) &&
--		 spi->master->cur_msg_mapped)
-+	else if (spi->controller->can_dma &&
-+		 spi->controller->can_dma(spi->controller, spi, xfer) &&
-+		 spi->controller->cur_msg_mapped)
- 		controller->mode = QUP_IO_M_MODE_BAM;
- 	else
- 		controller->mode = QUP_IO_M_MODE_BLOCK;
-@@ -694,7 +694,7 @@ static int spi_qup_io_prep(struct spi_de
- /* prep qup for another spi transaction of specific type */
- static int spi_qup_io_config(struct spi_device *spi, struct spi_transfer *xfer)
- {
--	struct spi_qup *controller = spi_master_get_devdata(spi->master);
-+	struct spi_qup *controller = spi_controller_get_devdata(spi->controller);
- 	u32 config, iomode, control;
- 	unsigned long flags;
- 
-@@ -842,11 +842,11 @@ static int spi_qup_io_config(struct spi_
- 	return 0;
- }
- 
--static int spi_qup_transfer_one(struct spi_master *master,
-+static int spi_qup_transfer_one(struct spi_controller *host,
- 			      struct spi_device *spi,
- 			      struct spi_transfer *xfer)
- {
--	struct spi_qup *controller = spi_master_get_devdata(master);
-+	struct spi_qup *controller = spi_controller_get_devdata(host);
- 	unsigned long timeout, flags;
- 	int ret;
- 
-@@ -880,21 +880,21 @@ static int spi_qup_transfer_one(struct s
- 	spin_unlock_irqrestore(&controller->lock, flags);
- 
- 	if (ret && spi_qup_is_dma_xfer(controller->mode))
--		spi_qup_dma_terminate(master, xfer);
-+		spi_qup_dma_terminate(host, xfer);
- 
- 	return ret;
- }
- 
--static bool spi_qup_can_dma(struct spi_master *master, struct spi_device *spi,
-+static bool spi_qup_can_dma(struct spi_controller *host, struct spi_device *spi,
- 			    struct spi_transfer *xfer)
- {
--	struct spi_qup *qup = spi_master_get_devdata(master);
-+	struct spi_qup *qup = spi_controller_get_devdata(host);
- 	size_t dma_align = dma_get_cache_alignment();
- 	int n_words;
- 
- 	if (xfer->rx_buf) {
- 		if (!IS_ALIGNED((size_t)xfer->rx_buf, dma_align) ||
--		    IS_ERR_OR_NULL(master->dma_rx))
-+		    IS_ERR_OR_NULL(host->dma_rx))
- 			return false;
- 		if (qup->qup_v1 && (xfer->len % qup->in_blk_sz))
- 			return false;
-@@ -902,7 +902,7 @@ static bool spi_qup_can_dma(struct spi_m
- 
- 	if (xfer->tx_buf) {
- 		if (!IS_ALIGNED((size_t)xfer->tx_buf, dma_align) ||
--		    IS_ERR_OR_NULL(master->dma_tx))
-+		    IS_ERR_OR_NULL(host->dma_tx))
- 			return false;
- 		if (qup->qup_v1 && (xfer->len % qup->out_blk_sz))
- 			return false;
-@@ -915,30 +915,30 @@ static bool spi_qup_can_dma(struct spi_m
- 	return true;
- }
- 
--static void spi_qup_release_dma(struct spi_master *master)
-+static void spi_qup_release_dma(struct spi_controller *host)
- {
--	if (!IS_ERR_OR_NULL(master->dma_rx))
--		dma_release_channel(master->dma_rx);
--	if (!IS_ERR_OR_NULL(master->dma_tx))
--		dma_release_channel(master->dma_tx);
-+	if (!IS_ERR_OR_NULL(host->dma_rx))
-+		dma_release_channel(host->dma_rx);
-+	if (!IS_ERR_OR_NULL(host->dma_tx))
-+		dma_release_channel(host->dma_tx);
- }
- 
--static int spi_qup_init_dma(struct spi_master *master, resource_size_t base)
-+static int spi_qup_init_dma(struct spi_controller *host, resource_size_t base)
- {
--	struct spi_qup *spi = spi_master_get_devdata(master);
-+	struct spi_qup *spi = spi_controller_get_devdata(host);
- 	struct dma_slave_config *rx_conf = &spi->rx_conf,
- 				*tx_conf = &spi->tx_conf;
- 	struct device *dev = spi->dev;
- 	int ret;
- 
- 	/* allocate dma resources, if available */
--	master->dma_rx = dma_request_chan(dev, "rx");
--	if (IS_ERR(master->dma_rx))
--		return PTR_ERR(master->dma_rx);
--
--	master->dma_tx = dma_request_chan(dev, "tx");
--	if (IS_ERR(master->dma_tx)) {
--		ret = PTR_ERR(master->dma_tx);
-+	host->dma_rx = dma_request_chan(dev, "rx");
-+	if (IS_ERR(host->dma_rx))
-+		return PTR_ERR(host->dma_rx);
++	sp = bus_to_subsys(dev->bus);
++	if (!sp) {
++		pr_err("%s: cannot add device '%s' to unregistered bus '%s'\n",
++		       __func__, dev_name(dev), dev->bus->name);
++		return -EINVAL;
++	}
 +
-+	host->dma_tx = dma_request_chan(dev, "tx");
-+	if (IS_ERR(host->dma_tx)) {
-+		ret = PTR_ERR(host->dma_tx);
- 		goto err_tx;
- 	}
- 
-@@ -953,13 +953,13 @@ static int spi_qup_init_dma(struct spi_m
- 	tx_conf->dst_addr = base + QUP_OUTPUT_FIFO;
- 	tx_conf->dst_maxburst = spi->out_blk_sz;
- 
--	ret = dmaengine_slave_config(master->dma_rx, rx_conf);
-+	ret = dmaengine_slave_config(host->dma_rx, rx_conf);
- 	if (ret) {
- 		dev_err(dev, "failed to configure RX channel\n");
- 		goto err;
- 	}
- 
--	ret = dmaengine_slave_config(master->dma_tx, tx_conf);
-+	ret = dmaengine_slave_config(host->dma_tx, tx_conf);
- 	if (ret) {
- 		dev_err(dev, "failed to configure TX channel\n");
- 		goto err;
-@@ -968,9 +968,9 @@ static int spi_qup_init_dma(struct spi_m
- 	return 0;
- 
- err:
--	dma_release_channel(master->dma_tx);
-+	dma_release_channel(host->dma_tx);
- err_tx:
--	dma_release_channel(master->dma_rx);
-+	dma_release_channel(host->dma_rx);
- 	return ret;
- }
- 
-@@ -980,7 +980,7 @@ static void spi_qup_set_cs(struct spi_de
- 	u32 spi_ioc;
- 	u32 spi_ioc_orig;
- 
--	controller = spi_master_get_devdata(spi->master);
-+	controller = spi_controller_get_devdata(spi->controller);
- 	spi_ioc = readl_relaxed(controller->base + SPI_IO_CONTROL);
- 	spi_ioc_orig = spi_ioc;
- 	if (!val)
-@@ -994,7 +994,7 @@ static void spi_qup_set_cs(struct spi_de
- 
- static int spi_qup_probe(struct platform_device *pdev)
- {
--	struct spi_master *master;
-+	struct spi_controller *host;
- 	struct clk *iclk, *cclk;
- 	struct spi_qup *controller;
- 	struct resource *res;
-@@ -1030,32 +1030,32 @@ static int spi_qup_probe(struct platform
- 		return -ENXIO;
- 	}
- 
--	master = spi_alloc_master(dev, sizeof(struct spi_qup));
--	if (!master) {
--		dev_err(dev, "cannot allocate master\n");
-+	host = spi_alloc_master(dev, sizeof(struct spi_qup));
-+	if (!host) {
-+		dev_err(dev, "cannot allocate host\n");
- 		return -ENOMEM;
- 	}
- 
- 	/* use num-cs unless not present or out of range */
- 	if (of_property_read_u32(dev->of_node, "num-cs", &num_cs) ||
- 	    num_cs > SPI_NUM_CHIPSELECTS)
--		master->num_chipselect = SPI_NUM_CHIPSELECTS;
-+		host->num_chipselect = SPI_NUM_CHIPSELECTS;
- 	else
--		master->num_chipselect = num_cs;
-+		host->num_chipselect = num_cs;
- 
--	master->bus_num = pdev->id;
--	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH | SPI_LOOP;
--	master->bits_per_word_mask = SPI_BPW_RANGE_MASK(4, 32);
--	master->max_speed_hz = max_freq;
--	master->transfer_one = spi_qup_transfer_one;
--	master->dev.of_node = pdev->dev.of_node;
--	master->auto_runtime_pm = true;
--	master->dma_alignment = dma_get_cache_alignment();
--	master->max_dma_len = SPI_MAX_XFER;
-+	host->bus_num = pdev->id;
-+	host->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH | SPI_LOOP;
-+	host->bits_per_word_mask = SPI_BPW_RANGE_MASK(4, 32);
-+	host->max_speed_hz = max_freq;
-+	host->transfer_one = spi_qup_transfer_one;
-+	host->dev.of_node = pdev->dev.of_node;
-+	host->auto_runtime_pm = true;
-+	host->dma_alignment = dma_get_cache_alignment();
-+	host->max_dma_len = SPI_MAX_XFER;
- 
--	platform_set_drvdata(pdev, master);
-+	platform_set_drvdata(pdev, host);
- 
--	controller = spi_master_get_devdata(master);
-+	controller = spi_controller_get_devdata(host);
- 
- 	controller->dev = dev;
- 	controller->base = base;
-@@ -1063,16 +1063,16 @@ static int spi_qup_probe(struct platform
- 	controller->cclk = cclk;
- 	controller->irq = irq;
- 
--	ret = spi_qup_init_dma(master, res->start);
-+	ret = spi_qup_init_dma(host, res->start);
- 	if (ret == -EPROBE_DEFER)
- 		goto error;
- 	else if (!ret)
--		master->can_dma = spi_qup_can_dma;
-+		host->can_dma = spi_qup_can_dma;
- 
- 	controller->qup_v1 = (uintptr_t)of_device_get_match_data(dev);
- 
- 	if (!controller->qup_v1)
--		master->set_cs = spi_qup_set_cs;
-+		host->set_cs = spi_qup_set_cs;
- 
- 	spin_lock_init(&controller->lock);
- 	init_completion(&controller->done);
-@@ -1150,7 +1150,7 @@ static int spi_qup_probe(struct platform
- 	pm_runtime_set_active(dev);
- 	pm_runtime_enable(dev);
- 
--	ret = devm_spi_register_master(dev, master);
-+	ret = devm_spi_register_controller(dev, host);
- 	if (ret)
- 		goto disable_pm;
- 
-@@ -1162,17 +1162,17 @@ error_clk:
- 	clk_disable_unprepare(cclk);
- 	clk_disable_unprepare(iclk);
- error_dma:
--	spi_qup_release_dma(master);
-+	spi_qup_release_dma(host);
- error:
--	spi_master_put(master);
-+	spi_controller_put(host);
- 	return ret;
- }
- 
- #ifdef CONFIG_PM
- static int spi_qup_pm_suspend_runtime(struct device *device)
- {
--	struct spi_master *master = dev_get_drvdata(device);
--	struct spi_qup *controller = spi_master_get_devdata(master);
-+	struct spi_controller *host = dev_get_drvdata(device);
-+	struct spi_qup *controller = spi_controller_get_devdata(host);
- 	u32 config;
- 
- 	/* Enable clocks auto gaiting */
-@@ -1188,8 +1188,8 @@ static int spi_qup_pm_suspend_runtime(st
- 
- static int spi_qup_pm_resume_runtime(struct device *device)
- {
--	struct spi_master *master = dev_get_drvdata(device);
--	struct spi_qup *controller = spi_master_get_devdata(master);
-+	struct spi_controller *host = dev_get_drvdata(device);
-+	struct spi_qup *controller = spi_controller_get_devdata(host);
- 	u32 config;
- 	int ret;
- 
-@@ -1214,8 +1214,8 @@ static int spi_qup_pm_resume_runtime(str
- #ifdef CONFIG_PM_SLEEP
- static int spi_qup_suspend(struct device *device)
- {
--	struct spi_master *master = dev_get_drvdata(device);
--	struct spi_qup *controller = spi_master_get_devdata(master);
-+	struct spi_controller *host = dev_get_drvdata(device);
-+	struct spi_qup *controller = spi_controller_get_devdata(host);
- 	int ret;
- 
- 	if (pm_runtime_suspended(device)) {
-@@ -1223,7 +1223,7 @@ static int spi_qup_suspend(struct device
- 		if (ret)
- 			return ret;
- 	}
--	ret = spi_master_suspend(master);
-+	ret = spi_controller_suspend(host);
- 	if (ret)
- 		return ret;
- 
-@@ -1238,8 +1238,8 @@ static int spi_qup_suspend(struct device
- 
- static int spi_qup_resume(struct device *device)
- {
--	struct spi_master *master = dev_get_drvdata(device);
--	struct spi_qup *controller = spi_master_get_devdata(master);
-+	struct spi_controller *host = dev_get_drvdata(device);
-+	struct spi_qup *controller = spi_controller_get_devdata(host);
- 	int ret;
- 
- 	ret = clk_prepare_enable(controller->iclk);
-@@ -1256,7 +1256,7 @@ static int spi_qup_resume(struct device
- 	if (ret)
- 		goto disable_clk;
- 
--	ret = spi_master_resume(master);
-+	ret = spi_controller_resume(host);
- 	if (ret)
- 		goto disable_clk;
- 
-@@ -1271,8 +1271,8 @@ disable_clk:
- 
- static int spi_qup_remove(struct platform_device *pdev)
- {
--	struct spi_master *master = dev_get_drvdata(&pdev->dev);
--	struct spi_qup *controller = spi_master_get_devdata(master);
-+	struct spi_controller *host = dev_get_drvdata(&pdev->dev);
-+	struct spi_qup *controller = spi_controller_get_devdata(host);
- 	int ret;
- 
- 	ret = pm_runtime_get_sync(&pdev->dev);
-@@ -1290,7 +1290,7 @@ static int spi_qup_remove(struct platfor
- 			 ERR_PTR(ret));
- 	}
- 
--	spi_qup_release_dma(master);
-+	spi_qup_release_dma(host);
- 
- 	pm_runtime_put_noidle(&pdev->dev);
- 	pm_runtime_disable(&pdev->dev);
+ 	/*
+ 	 * Reference in sp is now incremented and will be dropped when
+ 	 * the device is removed from the bus
 
 
 
