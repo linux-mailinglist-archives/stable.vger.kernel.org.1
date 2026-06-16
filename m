@@ -1,65 +1,62 @@
-Return-Path: <stable+bounces-264947-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265900-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id LJUVNjuAMWoIlAUAu9opvQ
-	(envelope-from <stable+bounces-264947-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:56:27 +0200
+	id k0XeBYSSMWpTnAUAu9opvQ
+	(envelope-from <stable+bounces-265900-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:14:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CEB769298D
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:56:27 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EB74693EF9
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:14:27 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Cslxy6pD;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264947-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-264947-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=U2otsd71;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265900-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-265900-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 485DF305DA44
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:52:39 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C6E123025AFB
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:13:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D04D47AF4D;
-	Tue, 16 Jun 2026 16:52:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B9503D7D9F;
+	Tue, 16 Jun 2026 18:13:09 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED7663BFE5B;
-	Tue, 16 Jun 2026 16:52:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 584313D5656;
+	Tue, 16 Jun 2026 18:13:08 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781628726; cv=none; b=mTXGI1rU5/qCW969ut4UNS3RvJ93J7gQ4gO5t55bYJAcw5mbwqLu0ji5TkGdwUnXFysbKLNso/vRLDOJTMr0fbIOnDiR7QpGSIIB6wkkkQYK9RwyA8dS0aS3OaXeR7xRzmbZ18FST5wHw4muCNtV+1oc0Gpfr4JHnsYqr1YYhR8=
+	t=1781633589; cv=none; b=BnT+2YiTSLYPZDWOHF6wc5EtEtMyzcYAs1HZI0KlV6R40DsSToi9HeDQZMMST5CggGwCFn5rg91wkqlBYCIhUSxcPLvgFCYTiDQz98wZ1VStH9ZvVgeXaEYEcoBoCMx9OiFr2n59/+c5fEbDIMVTwB/2l9fChGptUJg/WIJUV/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781628726; c=relaxed/simple;
-	bh=J7338RDpNNyVtmhMPFTkWqqMf8clmQjVO5U6p43NsHQ=;
+	s=arc-20240116; t=1781633589; c=relaxed/simple;
+	bh=yUbR3FUXgL08VPxoodLP/LI9GmqsJM1qVnTJdUY66XQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=REfiFD35Yq6k0ZRKfxuCoV7rj+ipaHsf7mNk8Z+Bbofgt9OxfzIMJNjxdTQ0PheJ4MZjYoXgI+lERAgRaBq1yHG/BKFlN61/sTNmK0Dhye+yE1DAjLSCP9WDeNuaV7wTxw4U2dfxeC3LVnGfkERSifNMT76n1ASEwii4CO5aORw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cslxy6pD; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9F111F000E9;
-	Tue, 16 Jun 2026 16:52:03 +0000 (UTC)
+	 MIME-Version; b=iJi6XpT3+pHyklDxNAugQTVKuFQE85t74pjkUTNRPPf02L7cupoUQ59IWwX64+CgAFVXmsmAX0Gdnvm5B3clUNoLKMW7nh6LB2XMwk4gfxD489N/h5872X1E5AVexsWiKzqCTNYy4nQYgv3C4dkzE2Z9WGyUbDbH/siaVMTNa14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U2otsd71; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B0551F000E9;
+	Tue, 16 Jun 2026 18:13:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781628724;
-	bh=6S9PjM9qt2a3hyeZ1KHGv5IceEHUWVplOxubH8L1cn4=;
+	s=korg; t=1781633588;
+	bh=YFvgeYXUs2f079bguzEVeFwD+GJz0qGEcQN+ozYIsfU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Cslxy6pDfxpKRMZBjHP4B0CdV6kfuCYfq1yT4Fd70Hb0zyTn7f0C/KAMwmm46Mxl8
-	 xwcdjYKbaLQY610VAk71HHot8phmRcACjCOpG+JiYrU4x63iHfdgHHKrTZg09c7aRh
-	 bYWXNFYs+d2J+XYOgMk18d7MAlsqdJ0YhHk7D5lc=
+	b=U2otsd71PfSx1pQKtsbR6TDpWXqFngAasaLeexJdvfBk/EF05sosYQ7wuCBlmFzCQ
+	 Twu2bGy12L+QeJAZj+/x1cE0HqAp8V7nR4qI9KjwjV15Rl20FoqIO9QywH1jLOhni/
+	 UIqnYrn8VJwGDwZn8h+tQ28pxJnWH7Ca+PxMOZjE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	sashiko <sashiko-bot@kernel.org>,
-	Felix Gu <ustc.gu@gmail.com>,
-	Andy Shevchenko <andriy.shevchenko@intel.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Maxwell Doose <m32285159@gmail.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <jic23@kernel.org>
-Subject: [PATCH 6.6 118/452] iio: buffer: hw-consumer: fix use-after-free in error path
+	stable <stable@kernel.org>,
+	Peter Chen <peter.chen@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Xu Yang <xu.yang_2@nxp.com>
+Subject: [PATCH 5.15 107/411] usb: chipidea: core: convert ci_role_switch to local variable
 Date: Tue, 16 Jun 2026 20:25:45 +0530
-Message-ID: <20260616145123.904709591@linuxfoundation.org>
+Message-ID: <20260616145105.945804342@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,95 +66,119 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-264947-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,intel.com,analog.com,vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:sashiko-bot@kernel.org,m:ustc.gu@gmail.com,m:andriy.shevchenko@intel.com,m:nuno.sa@analog.com,m:m32285159@gmail.com,m:Stable@vger.kernel.org,m:jic23@kernel.org,m:ustcgu@gmail.com,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265900-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:peter.chen@kernel.org,m:Frank.Li@nxp.com,m:xu.yang_2@nxp.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,analog.com:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9CEB769298D
+X-Rspamd-Queue-Id: 1EB74693EF9
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Gu <ustc.gu@gmail.com>
+From: Xu Yang <xu.yang_2@nxp.com>
 
-commit 6f5ed4f2c7c83f33344e0ba179f72a12e5dad4a4 upstream.
+commit 8f6aa392653e52a45858cff5c063df550028836b upstream.
 
-In the err_put_buffers cleanup path of iio_hw_consumer_alloc(), the code
-was using list_for_each_entry() to iterate through buffers while calling
-iio_buffer_put() which can free the current buffer if refcount drops to 0.
-The list_for_each_entry() loop macro then evaluates buf->head.next to
-continue iteration, accessing the freed buffer.
+When a system contains multiple USB controllers, the global ci_role_switch
+variable may be overwritten by subsequent driver initialization code.
 
-Fix this by using list_for_each_entry_safe().
+This can cause issues in the following cases:
+ - The 2nd ci_hdrc_probe() sees ci_role_switch.fwnode as non-NULL even
+   though the "usb-role-switch" property is not present for the controller.
+ - When the ci_hdrc device is unbound and bound again, ci_role_switch
+   fwnode will not be reassigned, and the old value will be used instead.
 
-Fixes: 48b66f8f936f ("iio: Add hardware consumer buffer support")
-Reported-by: sashiko <sashiko-bot@kernel.org>
-Closes: https://sashiko.dev/#/patchset/20260427-iio_buf-v1-1-2bbdac844647%40gmail.com
-Signed-off-by: Felix Gu <ustc.gu@gmail.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
-Reviewed-by: Maxwell Doose <m32285159@gmail.com>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <jic23@kernel.org>
+Convert ci_role_switch to a local variable to fix these issues.
+
+Fixes: 05559f10ed79 ("usb: chipidea: add role switch class support")
+Cc: stable <stable@kernel.org>
+Acked-by: Peter Chen <peter.chen@kernel.org>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Link: https://patch.msgid.link/20260427075755.3611217-1-xu.yang_2@nxp.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/buffer/industrialio-hw-consumer.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/chipidea/core.c |   16 ++++++----------
+ 1 file changed, 6 insertions(+), 10 deletions(-)
 
---- a/drivers/iio/buffer/industrialio-hw-consumer.c
-+++ b/drivers/iio/buffer/industrialio-hw-consumer.c
-@@ -82,7 +82,7 @@ static struct hw_consumer_buffer *iio_hw
-  */
- struct iio_hw_consumer *iio_hw_consumer_alloc(struct device *dev)
- {
--	struct hw_consumer_buffer *buf;
-+	struct hw_consumer_buffer *buf, *tmp;
- 	struct iio_hw_consumer *hwc;
- 	struct iio_channel *chan;
- 	int ret;
-@@ -113,7 +113,7 @@ struct iio_hw_consumer *iio_hw_consumer_
- 	return hwc;
+--- a/drivers/usb/chipidea/core.c
++++ b/drivers/usb/chipidea/core.c
+@@ -659,12 +659,6 @@ static int ci_usb_role_switch_set(struct
+ 	return 0;
+ }
  
- err_put_buffers:
--	list_for_each_entry(buf, &hwc->buffers, head)
-+	list_for_each_entry_safe(buf, tmp, &hwc->buffers, head)
- 		iio_buffer_put(&buf->buffer);
- 	iio_channel_release_all(hwc->channels);
- err_free_hwc:
+-static struct usb_role_switch_desc ci_role_switch = {
+-	.set = ci_usb_role_switch_set,
+-	.get = ci_usb_role_switch_get,
+-	.allow_userspace_control = true,
+-};
+-
+ static int ci_get_platdata(struct device *dev,
+ 		struct ci_hdrc_platform_data *platdata)
+ {
+@@ -791,9 +785,6 @@ static int ci_get_platdata(struct device
+ 			cable->connected = false;
+ 	}
+ 
+-	if (device_property_read_bool(dev, "usb-role-switch"))
+-		ci_role_switch.fwnode = dev->fwnode;
+-
+ 	platdata->pctl = devm_pinctrl_get(dev);
+ 	if (!IS_ERR(platdata->pctl)) {
+ 		struct pinctrl_state *p;
+@@ -1013,6 +1004,7 @@ ATTRIBUTE_GROUPS(ci);
+ 
+ static int ci_hdrc_probe(struct platform_device *pdev)
+ {
++	struct usb_role_switch_desc ci_role_switch = {};
+ 	struct device	*dev = &pdev->dev;
+ 	struct ci_hdrc	*ci;
+ 	struct resource	*res;
+@@ -1154,7 +1146,11 @@ static int ci_hdrc_probe(struct platform
+ 		}
+ 	}
+ 
+-	if (ci_role_switch.fwnode) {
++	if (device_property_read_bool(dev, "usb-role-switch")) {
++		ci_role_switch.set = ci_usb_role_switch_set;
++		ci_role_switch.get = ci_usb_role_switch_get;
++		ci_role_switch.allow_userspace_control = true;
++		ci_role_switch.fwnode = dev_fwnode(dev);
+ 		ci_role_switch.driver_data = ci;
+ 		ci->role_switch = usb_role_switch_register(dev,
+ 					&ci_role_switch);
 
 
 
