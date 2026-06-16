@@ -1,61 +1,64 @@
-Return-Path: <stable+bounces-264944-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265458-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id UnSHFlSCMWrKlAUAu9opvQ
-	(envelope-from <stable+bounces-264944-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:05:24 +0200
+	id 9BdcGqaKMWpumAUAu9opvQ
+	(envelope-from <stable+bounces-265458-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:40:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5E6A692B4D
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:05:23 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF2FF6935CB
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:40:53 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=vsk4PbOX;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264944-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264944-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=qRnrpDrw;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265458-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265458-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5F58832F0B11
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:52:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DE4C430580AB
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:35:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D061147AF57;
-	Tue, 16 Jun 2026 16:51:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C5BC332EC1;
+	Tue, 16 Jun 2026 17:35:05 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEB7447A0A6;
-	Tue, 16 Jun 2026 16:51:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E092B3A3E78;
+	Tue, 16 Jun 2026 17:35:03 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781628709; cv=none; b=a7eBzPh+PQduURJDMjlCMU+352q+8O4KAQLPygJJoBa7Qc2SYpam+Re1JjYys6bd7eiPCcgAOjQ6vKRtOqkyyuPfTtr4ppdY6SHo8BJQvUnV79SwoxTmiKoH9/+sl1hOWkELVSykPPSqav5QvuPDs61a8XOLU58rnbSfHNtJrjk=
+	t=1781631305; cv=none; b=VOyHsjOoUo9Z+m0NmddsLqMB7ajeuif5VAzxJQWhuHoluukH3DXE/MyWAru0HJS/Qszgio5wLv1SmuqQVPwC8cv07EJjbaQjLWyo1hSoFBFXVboUKm/ptBJ4r/2EHz5PDDhSr4cN3ZVDRbQlgd9ctfQmhWvXCUVX2N79n31tttY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781628709; c=relaxed/simple;
-	bh=vxuqhgk/noas0NUre/T+3uta0dV/Zl5geeKMt+w7tD8=;
+	s=arc-20240116; t=1781631305; c=relaxed/simple;
+	bh=kq4Y05VsFQaPFL4jGkB1vbu/KsctdwYCRn2dnv4pk2M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F+WYw+mE/MyGnPangMD7ToJ/Z+aJ8lMvnxuKPQC+W9riWEkSkEqYpCUX550ByEB5Ejt+gU/cuuHq2Hg29//XgLaTRV6lCjxD2+bgyHTCTQR/ZSovVLNCGm9UxfhZNpt+gv4EcGEB//L5qCR/oZ0nwRTsrQf+jplFq8MCdpvj9mY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vsk4PbOX; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDB5E1F000E9;
-	Tue, 16 Jun 2026 16:51:47 +0000 (UTC)
+	 MIME-Version; b=ECnt5D4DBq8uX6GLEZR3xcFo6l3SSdXs6TbZ+gpcNZGnoWtokQ70u/96k7Lq63m8DaTqojlOajxRQa5XIolFadn+RI8pVrjDeGYcOk02sPWE1K/AoyQtreRuhiAw8T0TXukLWB+LZJxrJFEYziRQRILnmORnZNiOtsliwxsW3gE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qRnrpDrw; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B83471F000E9;
+	Tue, 16 Jun 2026 17:35:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781628708;
-	bh=boGE8+iVfRihsnNTvBBuna3JrUiewHEsRm63OnGBFIo=;
+	s=korg; t=1781631303;
+	bh=t1TcbzoQPTBkUrzhA+hbs7fg4IdrVzgx178y/uKTRKs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=vsk4PbOX365godvp+7wU98A05XR5Md5VC2B9YrxqJCNivGXPcZFnv5a1m3QcJhuMV
-	 yU/i4TMbQiH9d6poM1+BUv7uW10uWa+4bYG+3hotMlWkBmLT18plye1Gx7e7HZRom3
-	 /8KASUkKv1rLfHE1YK9MfOQJmP/mW1ihM5BnPhZQ=
+	b=qRnrpDrwWr1VpbaakhY/IbONED9FiOdL7lJ5fAT2bw8J+bTWm67h8DFyHpu4b4LXF
+	 kfCBdlFThgOZ3KZoLfIlg1zcOairfKN84L269UJqHHX37ntBTc1QeBN/AlTG8Hxccv
+	 TRCx0pvUD+EbAuJxxQ/uDUiZDfKuDxY0/PgZZYTY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Salah Triki <salah.triki@gmail.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <jic23@kernel.org>
-Subject: [PATCH 6.6 115/452] iio: temperature: tsys01: fix broken PROM checksum validation
+	Leo Lin <leo@depthfirst.com>,
+	David Ahern <dahern@nvidia.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 195/522] ipv6: mcast: Fix use-after-free when processing MLD queries
 Date: Tue, 16 Jun 2026 20:25:42 +0530
-Message-ID: <20260616145123.758349719@linuxfoundation.org>
+Message-ID: <20260616145135.220566633@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,83 +70,142 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264944-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:salah.triki@gmail.com,m:Stable@vger.kernel.org,m:jic23@kernel.org,m:salahtriki@gmail.com,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265458-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:leo@depthfirst.com,m:dahern@nvidia.com,m:idosch@nvidia.com,m:edumazet@google.com,m:jiayuan.chen@linux.dev,m:kuba@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,vger.kernel.org,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,nvidia.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,depthfirst.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A5E6A692B4D
+X-Rspamd-Queue-Id: BF2FF6935CB
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Salah Triki <salah.triki@gmail.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-commit 4701e471c16866e7aa8f5e6a3a6b0d31e097e2c9 upstream.
+commit 791c91dc7a9dfb2457d5e29b8216a6484b9c4b40 upstream.
 
-The current implementation of tsys01_crc_valid() incorrectly sums the
-first word (n_prom[0]) repeatedly instead of iterating over the 8 words
-retrieved from the PROM. This leads to a checksum mismatch and probe
-failure on hardware.
+When processing an MLD query, a pointer to the multicast group address
+is retrieved when initially parsing the packet. This pointer is later
+dereferenced without being reloaded despite the fact that the skb header
+might have been reallocated following the pskb_may_pull() calls, leading
+to a use-after-free [1].
 
-According to the TSYS01 datasheet, the PROM consists of 8 words. A valid
-check must iterate through all 8 words to verify the integrity of the
-calibration data. The current driver only checks the first word 8 times.
+Fix by copying the multicast group address when the packet is initially
+parsed.
 
-Note: This fix was identified during a code audit and is based on
-datasheet specifications. It has not been tested on real hardware.
+[1]
+BUG: KASAN: slab-use-after-free in __mld_query_work (net/ipv6/mcast.c:1512)
+Read of size 8 at addr ffff8881154b8e90 by task kworker/4:1/118
 
-Fixes: 43e53407f680 ("Add tsys01 meas-spec driver support")
-Signed-off-by: Salah Triki <salah.triki@gmail.com>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <jic23@kernel.org>
+Workqueue: mld mld_query_work
+Call Trace:
+<TASK>
+dump_stack_lvl (lib/dump_stack.c:94 lib/dump_stack.c:120)
+print_address_description.constprop.0 (mm/kasan/report.c:378)
+print_report (mm/kasan/report.c:482)
+kasan_report (mm/kasan/report.c:595)
+__mld_query_work (net/ipv6/mcast.c:1512)
+mld_query_work (net/ipv6/mcast.c:1563)
+process_one_work (kernel/workqueue.c:3314)
+worker_thread (kernel/workqueue.c:3397 kernel/workqueue.c:3478)
+kthread (kernel/kthread.c:436)
+ret_from_fork (arch/x86/kernel/process.c:158)
+ret_from_fork_asm (arch/x86/entry/entry_64.S:245)
+</TASK>
+
+[...]
+
+Freed by task 118:
+kasan_save_stack (mm/kasan/common.c:57)
+kasan_save_track (mm/kasan/common.c:78)
+kasan_save_free_info (mm/kasan/generic.c:584)
+__kasan_slab_free (mm/kasan/common.c:253 mm/kasan/common.c:285)
+kfree (./include/linux/kasan.h:235 mm/slub.c:2689 mm/slub.c:6251 mm/slub.c:6566)
+pskb_expand_head (net/core/skbuff.c:2335)
+__pskb_pull_tail (net/core/skbuff.c:2878 (discriminator 4))
+__mld_query_work (net/ipv6/mcast.c:1495 (discriminator 1))
+mld_query_work (net/ipv6/mcast.c:1563)
+process_one_work (kernel/workqueue.c:3314)
+worker_thread (kernel/workqueue.c:3397 kernel/workqueue.c:3478)
+kthread (kernel/kthread.c:436)
+ret_from_fork (arch/x86/kernel/process.c:158)
+ret_from_fork_asm (arch/x86/entry/entry_64.S:245)
+
+Fixes: 97300b5fdfe2 ("[MCAST] IPv6: Check packet size when process Multicast")
+Reported-by: Leo Lin <leo@depthfirst.com>
+Reviewed-by: David Ahern <dahern@nvidia.com>
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Link: https://patch.msgid.link/20260603101811.612594-1-idosch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/temperature/tsys01.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv6/mcast.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/iio/temperature/tsys01.c
-+++ b/drivers/iio/temperature/tsys01.c
-@@ -119,7 +119,7 @@ static bool tsys01_crc_valid(u16 *n_prom
- 	u8 sum = 0;
+--- a/net/ipv6/mcast.c
++++ b/net/ipv6/mcast.c
+@@ -1392,9 +1392,9 @@ out:
+ static void __mld_query_work(struct sk_buff *skb)
+ {
+ 	struct mld2_query *mlh2 = NULL;
+-	const struct in6_addr *group;
+ 	unsigned long max_delay;
+ 	struct inet6_dev *idev;
++	struct in6_addr group;
+ 	struct ifmcaddr6 *ma;
+ 	struct mld_msg *mld;
+ 	int group_type;
+@@ -1426,8 +1426,8 @@ static void __mld_query_work(struct sk_b
+ 		goto kfree_skb;
  
- 	for (cnt = 0; cnt < TSYS01_PROM_WORDS_NB; cnt++)
--		sum += ((n_prom[0] >> 8) + (n_prom[0] & 0xFF));
-+		sum += ((n_prom[cnt] >> 8) + (n_prom[cnt] & 0xFF));
+ 	mld = (struct mld_msg *)icmp6_hdr(skb);
+-	group = &mld->mld_mca;
+-	group_type = ipv6_addr_type(group);
++	group = mld->mld_mca;
++	group_type = ipv6_addr_type(&group);
  
- 	return (sum == 0);
- }
+ 	if (group_type != IPV6_ADDR_ANY &&
+ 	    !(group_type&IPV6_ADDR_MULTICAST))
+@@ -1477,7 +1477,7 @@ static void __mld_query_work(struct sk_b
+ 		}
+ 	} else {
+ 		for_each_mc_mclock(idev, ma) {
+-			if (!ipv6_addr_equal(group, &ma->mca_addr))
++			if (!ipv6_addr_equal(&group, &ma->mca_addr))
+ 				continue;
+ 			if (ma->mca_flags & MAF_TIMER_RUNNING) {
+ 				/* gsquery <- gsquery && mark */
 
 
 
