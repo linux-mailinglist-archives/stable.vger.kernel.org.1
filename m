@@ -1,62 +1,73 @@
-Return-Path: <stable+bounces-264491-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264776-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id CAygOHR1MWpmjwUAu9opvQ
-	(envelope-from <stable+bounces-264491-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:10:28 +0200
+	id S+iHKIF9MWrikgUAu9opvQ
+	(envelope-from <stable+bounces-264776-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:44:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34575691C34
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:10:28 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 116006926AE
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:44:49 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=UOhD+ayS;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264491-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264491-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=G7XiYylz;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264776-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264776-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 61D3E3028AE8
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:09:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E4CA3311C743
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:37:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7714044CAF7;
-	Tue, 16 Jun 2026 16:09:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41B2C47799E;
+	Tue, 16 Jun 2026 16:37:11 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54E443C6A2B;
-	Tue, 16 Jun 2026 16:09:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D70832F745E;
+	Tue, 16 Jun 2026 16:37:09 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781626173; cv=none; b=GpKAoO8YU2m+PZo2gfTBpDuislnHHDi0dlURkzETIBHbOQ+vzYXEV0XFOwXUpL1wQi0fGtOUvK/qLtajZBSKVjlwHo7gyAW8tmrxNapr52o4j4H0T2DGbUqQWYHKILB3HTjWlY0nKoiDNkcNoljxwtu+G26pW1NvNhlRHX6e9/I=
+	t=1781627831; cv=none; b=qUTxWYO47KGGw8fpD9Ieuhk9nwB1HzAm5GYn3ZexCwTPWMT37I5vmnOBgvcsn87YSoViJMZFGk8VhLhZkvLH8HLOQ2SWgG0hd+hZ25R40Hmwp2ELxFqxm2xvuMd239cFJryyPAXBGP8YUsH7N8LlkvHE5fZtNp1Z/8RwXlmAhdM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781626173; c=relaxed/simple;
-	bh=zRAKgiSODwI7RCpuICPwdBGLjV7Xbz2Nu8SH/1q5sMw=;
+	s=arc-20240116; t=1781627831; c=relaxed/simple;
+	bh=Ovg3/AioKN6hY+pBJcvIL7dMJ3xnbTMrnCsPMZQBw0o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CnkMpLl0BWb1jiCXV7QwzCxs4oJC5M6Wom0KStKYuicJjH2Kwj7hixeTW3b0qgztqyMNc4alXMV2TsHEY9/0rUEF5OxHsDJSvp+uinb23Mayt6UY2wMI3gMPWZPEs+Os2NNr6NK25rmW+32K0C7tVMG3J6lQzAHJaOFVurGQAxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UOhD+ayS; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DCFA1F000E9;
-	Tue, 16 Jun 2026 16:09:31 +0000 (UTC)
+	 MIME-Version; b=QI84eY4vsHPce/i1Wqel1ZCMuVdx2Gu3rMPxivmyIyHi2W9mk25/eV1yJKcXuCXmQDZ6ngKDXdhe1gXuY+2fJ9b6ffo6TQhs1DVXh1sG9dMvZhaP5+0wZdY/n51+fWD2V8J1Dl0L2PzWBWqYWen3TULtggmEy5K1IT7PDdlcs0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G7XiYylz; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0172C1F000E9;
+	Tue, 16 Jun 2026 16:37:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781626172;
-	bh=80elVvSWK2mUq0+yoyF6w0zEmTrKTUutAIgA4Hx2xUw=;
+	s=korg; t=1781627829;
+	bh=ox/diqXt0xdPKfczppJjI/6wk6AqWkTHMsDzZMxXOiI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=UOhD+aySRJK6ss+voohTdpaQNNo/sTR6psKiQdkeSGnKLlqt7clQ5fDnUZ8/WW/3J
-	 h/p8Bpo4qnSj3huYpykZMAmlW1DlREkxZIxQCyPKw7rt53F53q67PUV9BHpvmrJNMj
-	 0dGqQ2tOVv6YMS8i261+JczxX+HTMdOFhgKFEbUQ=
+	b=G7XiYylzJttHxgCYUVoDVC3cJESKoPuQdYLLDsep8qojTlmdocozBTRHBtnXTkNjb
+	 DaFz+BieoT41T2ttbRGX5Sag2Z/A5mzUsrYKCurU2d5H3FVoRfr8tghXSElvMv0lni
+	 XlYEtVBVmsqqvbEktJs4y/ftdMTjcl1YZ7cWS4/k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>,
-	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
-	Srinivas Kandagatla <srini@kernel.org>
-Subject: [PATCH 6.18 276/325] slimbus: qcom-ngd-ctrl: Fix probe error path ordering
-Date: Tue, 16 Jun 2026 20:31:12 +0530
-Message-ID: <20260616145112.474656681@linuxfoundation.org>
+	Wupeng Ma <mawupeng1@huawei.com>,
+	"Oscar Salvador (SUSE)" <osalvador@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	David Hildenbrand <david@kernel.org>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 235/261] mm/memory-failure: fix hugetlb_lock AA deadlock in get_huge_page_for_hwpoison
+Date: Tue, 16 Jun 2026 20:31:13 +0530
+Message-ID: <20260616145055.948397200@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,95 +79,238 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264491-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:dmitry.baryshkov@oss.qualcomm.com,m:mukesh.ojha@oss.qualcomm.com,m:bjorn.andersson@oss.qualcomm.com,m:srini@kernel.org,s:lists@lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264776-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mawupeng1@huawei.com,m:osalvador@kernel.org,m:muchun.song@linux.dev,m:wangkefeng.wang@huawei.com,m:linmiaohe@huawei.com,m:david@kernel.org,m:liam.howlett@oracle.com,m:ljs@kernel.org,m:mhocko@suse.com,m:rppt@kernel.org,m:nao.horiguchi@gmail.com,m:surenb@google.com,m:vbabka@kernel.org,m:akpm@linux-foundation.org,m:sashal@kernel.org,m:naohoriguchi@gmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,huawei.com,kernel.org,linux.dev,oracle.com,suse.com,gmail.com,google.com,linux-foundation.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 34575691C34
+X-Rspamd-Queue-Id: 116006926AE
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+From: Wupeng Ma <mawupeng1@huawei.com>
 
-commit 2c22ff152d380ec3d3af099fa05d0ac5ca9b4c1e upstream.
+[ Upstream commit 3c2d42b8ee345b17a4ba56b0f6492d1ff4c1178e ]
 
-qcom_slim_ngd_ctrl_probe() first registers the SSR callback then
-allocates the PDR context, as such the error path needs to come in
-opposite order to allow us to unroll each step.
+Two concurrent madvise(MADV_HWPOISON) calls on the same hugetlb page can
+trigger a recursive spinlock self-deadlock (AA deadlock) on hugetlb_lock
+when racing with a concurrent unmap:
 
-Fixes: 16f14551d0df ("slimbus: qcom-ngd: cleanup in probe error path")
-Cc: stable@vger.kernel.org
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
-Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
-Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
-Link: https://patch.msgid.link/20260530204421.116824-4-srini@kernel.org
+  thread#0                              thread#1
+  --------                              --------
+  madvise(folio, MADV_HWPOISON)
+    -> poisons the folio successfully
+  madvise(folio, MADV_HWPOISON)         unmap(folio)
+    try_memory_failure_hugetlb
+      get_huge_page_for_hwpoison
+        spin_lock_irq(&hugetlb_lock)    <- held
+        __get_huge_page_for_hwpoison
+          hugetlb_update_hwpoison()
+            -> MF_HUGETLB_FOLIO_PRE_POISONED
+          goto out:
+            folio_put()
+              refcount: 1 -> 0
+              free_huge_folio()
+                spin_lock_irqsave(&hugetlb_lock)
+                  -> AA DEADLOCK!
+
+The out: path in __get_huge_page_for_hwpoison() calls folio_put() to drop
+the GUP reference while the hugetlb_lock is still held by the hugetlb.c
+wrapper get_huge_page_for_hwpoison().  If concurrent unmap has released
+the page table mapping reference, folio_put() drops the folio refcount to
+zero, triggering free_huge_folio() which attempts to re-acquire the
+non-recursive hugetlb_lock.
+
+Fix this by moving hugetlb_lock acquisition from the hugetlb.c wrapper
+into get_huge_page_for_hwpoison().  Place spin_unlock_irq() before the
+folio_put() at the out: label so the folio is always released outside the
+lock.
+
+[akpm@linux-foundation.org: fix race, rename label per Miaohe]
+  Link: https://sashiko.dev/#/patchset/20260522010305.4099834-1-mawupeng1@huawei.com
+  Link: https://lore.kernel.org/f39f405e-4b4b-8f79-70fe-a2b5b62114eb@huawei.com
+Link: https://lore.kernel.org/20260522010305.4099834-1-mawupeng1@huawei.com
+Fixes: 405ce051236c ("mm/hwpoison: fix race between hugetlb free/demotion and memory_failure_hugetlb()")
+Signed-off-by: Wupeng Ma <mawupeng1@huawei.com>
+Acked-by: Oscar Salvador (SUSE) <osalvador@kernel.org>
+Acked-by: Muchun Song <muchun.song@linux.dev>
+Reviewed-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+Acked-by: Miaohe Lin <linmiaohe@huawei.com>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/slimbus/qcom-ngd-ctrl.c |   11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ include/linux/hugetlb.h |    8 --------
+ include/linux/mm.h      |    8 --------
+ mm/hugetlb.c            |   11 -----------
+ mm/memory-failure.c     |   19 ++++++++++---------
+ 4 files changed, 10 insertions(+), 36 deletions(-)
 
---- a/drivers/slimbus/qcom-ngd-ctrl.c
-+++ b/drivers/slimbus/qcom-ngd-ctrl.c
-@@ -1666,22 +1666,21 @@ static int qcom_slim_ngd_ctrl_probe(stru
- 	if (IS_ERR(ctrl->pdr)) {
- 		ret = dev_err_probe(dev, PTR_ERR(ctrl->pdr),
- 				    "Failed to init PDR handle\n");
--		goto err_pdr_alloc;
-+		goto err_unregister_ssr;
- 	}
- 
- 	pds = pdr_add_lookup(ctrl->pdr, "avs/audio", "msm/adsp/audio_pd");
- 	if (IS_ERR(pds) && PTR_ERR(pds) != -EALREADY) {
- 		ret = dev_err_probe(dev, PTR_ERR(pds), "pdr add lookup failed\n");
--		goto err_pdr_lookup;
-+		goto err_pdr_release;
- 	}
- 
- 	return of_qcom_slim_ngd_register(dev, ctrl);
- 
--err_pdr_alloc:
--	qcom_unregister_ssr_notifier(ctrl->notifier, &ctrl->nb);
+--- a/include/linux/hugetlb.h
++++ b/include/linux/hugetlb.h
+@@ -155,8 +155,6 @@ long hugetlb_unreserve_pages(struct inod
+ 						long freed);
+ bool isolate_hugetlb(struct folio *folio, struct list_head *list);
+ int get_hwpoison_hugetlb_folio(struct folio *folio, bool *hugetlb, bool unpoison);
+-int get_huge_page_for_hwpoison(unsigned long pfn, int flags,
+-				bool *migratable_cleared);
+ void folio_putback_active_hugetlb(struct folio *folio);
+ void move_hugetlb_state(struct folio *old_folio, struct folio *new_folio, int reason);
+ void hugetlb_fix_reserve_counts(struct inode *inode);
+@@ -429,12 +427,6 @@ static inline int get_hwpoison_hugetlb_f
+ {
+ 	return 0;
+ }
 -
--err_pdr_lookup:
-+err_pdr_release:
- 	pdr_handle_release(ctrl->pdr);
-+err_unregister_ssr:
-+	qcom_unregister_ssr_notifier(ctrl->notifier, &ctrl->nb);
+-static inline int get_huge_page_for_hwpoison(unsigned long pfn, int flags,
+-					bool *migratable_cleared)
+-{
+-	return 0;
+-}
  
+ static inline void folio_putback_active_hugetlb(struct folio *folio)
+ {
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -3995,8 +3995,6 @@ extern int soft_offline_page(unsigned lo
+  */
+ extern const struct attribute_group memory_failure_attr_group;
+ extern void memory_failure_queue(unsigned long pfn, int flags);
+-extern int __get_huge_page_for_hwpoison(unsigned long pfn, int flags,
+-					bool *migratable_cleared);
+ void num_poisoned_pages_inc(unsigned long pfn);
+ void num_poisoned_pages_sub(unsigned long pfn, long i);
+ #else
+@@ -4004,12 +4002,6 @@ static inline void memory_failure_queue(
+ {
+ }
+ 
+-static inline int __get_huge_page_for_hwpoison(unsigned long pfn, int flags,
+-					bool *migratable_cleared)
+-{
+-	return 0;
+-}
+-
+ static inline void num_poisoned_pages_inc(unsigned long pfn)
+ {
+ }
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -7459,17 +7459,6 @@ int get_hwpoison_hugetlb_folio(struct fo
  	return ret;
  }
+ 
+-int get_huge_page_for_hwpoison(unsigned long pfn, int flags,
+-				bool *migratable_cleared)
+-{
+-	int ret;
+-
+-	spin_lock_irq(&hugetlb_lock);
+-	ret = __get_huge_page_for_hwpoison(pfn, flags, migratable_cleared);
+-	spin_unlock_irq(&hugetlb_lock);
+-	return ret;
+-}
+-
+ void folio_putback_active_hugetlb(struct folio *folio)
+ {
+ 	spin_lock_irq(&hugetlb_lock);
+--- a/mm/memory-failure.c
++++ b/mm/memory-failure.c
+@@ -2020,20 +2020,19 @@ void folio_clear_hugetlb_hwpoison(struct
+ 	folio_free_raw_hwp(folio, true);
+ }
+ 
+-/*
+- * Called from hugetlb code with hugetlb_lock held.
+- */
+-int __get_huge_page_for_hwpoison(unsigned long pfn, int flags,
++static int get_huge_page_for_hwpoison(unsigned long pfn, int flags,
+ 				 bool *migratable_cleared)
+ {
+ 	struct page *page = pfn_to_page(pfn);
+-	struct folio *folio = page_folio(page);
++	struct folio *folio;
+ 	bool count_increased = false;
+ 	int ret, rc;
+ 
++	spin_lock_irq(&hugetlb_lock);
++	folio = page_folio(page);
+ 	if (!folio_test_hugetlb(folio)) {
+ 		ret = MF_HUGETLB_NON_HUGEPAGE;
+-		goto out;
++		goto out_unlock;
+ 	} else if (flags & MF_COUNT_INCREASED) {
+ 		ret = MF_HUGETLB_IN_USED;
+ 		count_increased = true;
+@@ -2049,13 +2048,13 @@ int __get_huge_page_for_hwpoison(unsigne
+ 	} else {
+ 		ret = MF_HUGETLB_RETRY;
+ 		if (!(flags & MF_NO_RETRY))
+-			goto out;
++			goto out_unlock;
+ 	}
+ 
+ 	rc = hugetlb_update_hwpoison(folio, page);
+ 	if (rc >= MF_HUGETLB_FOLIO_PRE_POISONED) {
+ 		ret = rc;
+-		goto out;
++		goto out_unlock;
+ 	}
+ 
+ 	/*
+@@ -2067,8 +2066,10 @@ int __get_huge_page_for_hwpoison(unsigne
+ 		*migratable_cleared = true;
+ 	}
+ 
++	spin_unlock_irq(&hugetlb_lock);
+ 	return ret;
+-out:
++out_unlock:
++	spin_unlock_irq(&hugetlb_lock);
+ 	if (count_increased)
+ 		folio_put(folio);
+ 	return ret;
 
 
 
