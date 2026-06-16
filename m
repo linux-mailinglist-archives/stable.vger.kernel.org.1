@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-264513-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264798-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Ge3zCeV4MWrgkAUAu9opvQ
-	(envelope-from <stable+bounces-264513-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:25:09 +0200
+	id oWakA5V8MWpskgUAu9opvQ
+	(envelope-from <stable+bounces-264798-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:40:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E4256920DE
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:25:08 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC738692559
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:40:52 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=yuZzsw98;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264513-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264513-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=1r7r36FA;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264798-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-264798-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A6ECA32908FA
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:11:38 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 756433041C6E
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:39:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB9F24657D0;
-	Tue, 16 Jun 2026 16:11:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E58D331EAB;
+	Tue, 16 Jun 2026 16:39:06 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F7A833688F;
-	Tue, 16 Jun 2026 16:11:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C1583D890D;
+	Tue, 16 Jun 2026 16:39:04 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781626297; cv=none; b=kpZUsMcUx2tOu0B2O7awZf2r5sq/m7NikJ672faiGJZ7QMmBizpoSY2Ym6d6nFVENy5NuPiLrxgidUQkjkoz2J7OTS8tYvce1qNLWwFwb6gwXasOuEaEz4mYNnOmO77+8MosDFnZBo4+07ytsmNCBAOPYgm0yFqgupMd1KeRiGc=
+	t=1781627945; cv=none; b=bpyD1tdH48vAk7J8RBZtoCVOTcIOWkf71E9gLAqIyH4wG++veFSOLsfW+pUNHVshrVgIZfYScnx53b0+fSy467uAz8cx+Y0fMvGNY40E0zKdIVSAccAvYcGFTgr0UYbY5fgyLgGYHCfkwjR3SF0dEl9G/Az0gqwMnXdUCeSM+rE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781626297; c=relaxed/simple;
-	bh=MiKL/U7LHuc1wDulqXreuzc2c4Vv7KfScloidDszlrk=;
+	s=arc-20240116; t=1781627945; c=relaxed/simple;
+	bh=seVu0URsXwcjkyEmrBYuuj3AYJ4lqydQ47ERKQF+rm8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=joorcnVKp9y8LEAEFvRPrY1i1PD743I9hPeUQUsDaKsYliwEbxtsnoO939d5FdzSuvPNs6GodiBEGRi5mP47LIOvi/+1oxdZ1F4LDLlP+uSweFuiNIC1z6RrNacWk5H9hkeOsFbETYalw56UpxMgx4EAOkGlFvHg8LdpWNU+1N0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yuZzsw98; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 110551F000E9;
-	Tue, 16 Jun 2026 16:11:34 +0000 (UTC)
+	 MIME-Version; b=pDc2VbO+u+OMJirWYuen+pGjQQvwhhfy90VzVZX4RdSv1N2Wd0w9HAWJQpSG59qvEPmKoNjVEgdhX2NexgQCz85vcI03Aa7BTiaR82+Wam7wp2eICWd6WIHJnhAgNl+M0tM3lWrliVxaY9lOuYWX9HRWjWBXYBxTdzawK90D3dU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1r7r36FA; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3774B1F000E9;
+	Tue, 16 Jun 2026 16:39:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781626296;
-	bh=4w6WT6TTACHoeJtvIhMyqZxJn4YUS9G1cJJ2aroN6a4=;
+	s=korg; t=1781627944;
+	bh=RnUHdXYblUNXpGVThQe+xFl0kGZcBoOimZJHkYvSOps=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=yuZzsw98tw66mV/dz4Qji9d4ifravMAwmDspa6XKQ/I/yMiH2+ntVGNdVnEWn/Uf4
-	 CLJTiSQTAryzgTD19lWhE3ijAEcvXX4V8VT+NXkQAeEsMe9u/rduoBl1o+qF9Sbo7s
-	 uEyooRZFO/A7rZ2KKvli2sdm7qOHrB4Tqm8C8lGA=
+	b=1r7r36FAZW+u8veKYxcETsj8griwh/Tme7M6SqNn4+cRLdnBhrGbjTlFDHlr3dFX9
+	 WQ9Tgby6JK1jOT0GIhPhmhEI0hMRK1mUhJHktASZLBO23uD2lQjBJptRNJQPlp739I
+	 H68Zv43OR62l3nuz93zAt2WXXSQ+1Gcm1ymIKD1I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leorize <leorize+oss@disroot.org>,
-	Alex Hung <alex.hung@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.18 300/325] drm/amd/display: add missing CSC entries for BT.2020 for DCE IPs
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Mateusz Polchlopek <mateusz.polchlopek@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Heiko Stuebner <heiko.stuebner@cherry.de>
+Subject: [PATCH 6.12 258/261] tcp: use EXPORT_IPV6_MOD[_GPL]()
 Date: Tue, 16 Jun 2026 20:31:36 +0530
-Message-ID: <20260616145113.877235221@linuxfoundation.org>
+Message-ID: <20260616145057.019623571@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,110 +69,731 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-264513-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:leorize+oss@disroot.org,m:alex.hung@amd.com,m:alexander.deucher@amd.com,m:leorize@disroot.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264798-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:edumazet@google.com,m:kuniyu@amazon.com,m:mateusz.polchlopek@intel.com,m:kuba@kernel.org,m:heiko.stuebner@cherry.de,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,oss];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,gitlab.freedesktop.org:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,amd.com:email,disroot.org:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,intel.com:email,cherry.de:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8E4256920DE
+X-Rspamd-Queue-Id: BC738692559
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leorize <leorize+oss@disroot.org>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 6590fe323ce2807f5d9454e7fccf3fab875d4352 upstream.
+[ Upstream commit 6dc4c2526f6d11f36c4e26d0231b345eabab584c ]
 
-DCE-based hardware does not have the CSC matrices for BT.2020, which
-causes the driver to fallback to the GPU built-in matrices. This does
-not appear to cause any issues for RGB sinks, but causes major color
-artifacts for YCbCr ones (e.g. black becomes green).
+Use EXPORT_IPV6_MOD[_GPL]() for symbols that don't need
+to be exported unless CONFIG_IPV6=m
 
-This commit adds the missing CSC matrices (taken from DC common) to DCE
-CSC tables, resolving the issue.
+tcp_hashinfo and tcp_openreq_init_rwin() are no longer
+used from any module anyway.
 
-Closes: https://gitlab.freedesktop.org/drm/amd/-/work_items/3358
-Closes: https://gitlab.freedesktop.org/drm/amd/-/work_items/5333
-Assisted-by: oh-my-pi:GPT-5.5
-Signed-off-by: Leorize <leorize+oss@disroot.org>
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 51e6668ab4baf55b082c376318d51ef965757196)
-Cc: stable@vger.kernel.org
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Mateusz Polchlopek <mateusz.polchlopek@intel.com>
+Link: https://patch.msgid.link/20250212132418.1524422-4-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+(cherry picked from commit 6dc4c2526f6d11f36c4e26d0231b345eabab584c)
+[needed as dependency for tcp: secure_seq: add back ports to TS offset]
+Signed-off-by: Heiko Stuebner <heiko.stuebner@cherry.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/dce/dce_transform.c       |   10 +++++++++-
- drivers/gpu/drm/amd/display/dc/dce110/dce110_opp_csc_v.c |   10 +++++++++-
- 2 files changed, 18 insertions(+), 2 deletions(-)
+ net/core/secure_seq.c    |    2 +-
+ net/ipv4/syncookies.c    |    8 ++++----
+ net/ipv4/tcp.c           |   44 ++++++++++++++++++++++----------------------
+ net/ipv4/tcp_fastopen.c  |    2 +-
+ net/ipv4/tcp_input.c     |   14 +++++++-------
+ net/ipv4/tcp_ipv4.c      |   47 +++++++++++++++++++++++------------------------
+ net/ipv4/tcp_minisocks.c |   11 +++++------
+ net/ipv4/tcp_output.c    |   12 ++++++------
+ net/ipv4/tcp_timer.c     |    4 ++--
+ 9 files changed, 71 insertions(+), 73 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/dce/dce_transform.c
-+++ b/drivers/gpu/drm/amd/display/dc/dce/dce_transform.c
-@@ -110,7 +110,15 @@ static const struct out_csc_color_matrix
- { COLOR_SPACE_YCBCR601_LIMITED, { 0xE00, 0xF447, 0xFDB9, 0x1000, 0x991,
- 	0x12C9, 0x3A6, 0x200, 0xFB47, 0xF6B9, 0xE00, 0x1000} },
- { COLOR_SPACE_YCBCR709_LIMITED, { 0xE00, 0xF349, 0xFEB7, 0x1000, 0x6CE, 0x16E3,
--	0x24F, 0x200, 0xFCCB, 0xF535, 0xE00, 0x1000} }
-+	0x24F, 0x200, 0xFCCB, 0xF535, 0xE00, 0x1000} },
-+{ COLOR_SPACE_2020_RGB_FULLRANGE,
-+	{ 0x2000, 0, 0, 0, 0, 0x2000, 0, 0, 0, 0, 0x2000, 0} },
-+{ COLOR_SPACE_2020_RGB_LIMITEDRANGE,
-+	{ 0x1B67, 0, 0, 0x201, 0, 0x1B67, 0, 0x201, 0, 0, 0x1B67, 0x201} },
-+{ COLOR_SPACE_2020_YCBCR_LIMITED, { 0x1000, 0xF149, 0xFEB7, 0x1004, 0x0868,
-+	0x15B2, 0x01E6, 0x201, 0xFB88, 0xF478, 0x1000, 0x1004} },
-+{ COLOR_SPACE_2020_YCBCR_FULL, { 0x1000, 0xF149, 0xFEB7, 0x1004, 0x0868, 0x15B2,
-+	0x01E6, 0x201, 0xFB88, 0xF478, 0x1000, 0x1004} }
- };
+--- a/net/core/secure_seq.c
++++ b/net/core/secure_seq.c
+@@ -71,7 +71,7 @@ u32 secure_tcpv6_ts_off(const struct net
+ 	return siphash(&combined, offsetofend(typeof(combined), daddr),
+ 		       &ts_secret);
+ }
+-EXPORT_SYMBOL(secure_tcpv6_ts_off);
++EXPORT_IPV6_MOD(secure_tcpv6_ts_off);
  
- static bool setup_scaling_configuration(
---- a/drivers/gpu/drm/amd/display/dc/dce110/dce110_opp_csc_v.c
-+++ b/drivers/gpu/drm/amd/display/dc/dce110/dce110_opp_csc_v.c
-@@ -88,7 +88,15 @@ static const struct out_csc_color_matrix
- { COLOR_SPACE_YCBCR601_LIMITED, { 0xE00, 0xF447, 0xFDB9, 0x1000, 0x991,
- 	0x12C9, 0x3A6, 0x200, 0xFB47, 0xF6B9, 0xE00, 0x1000} },
- { COLOR_SPACE_YCBCR709_LIMITED, { 0xE00, 0xF349, 0xFEB7, 0x1000, 0x6CE, 0x16E3,
--	0x24F, 0x200, 0xFCCB, 0xF535, 0xE00, 0x1000} }
-+	0x24F, 0x200, 0xFCCB, 0xF535, 0xE00, 0x1000} },
-+{ COLOR_SPACE_2020_RGB_FULLRANGE,
-+	{ 0x2000, 0, 0, 0, 0, 0x2000, 0, 0, 0, 0, 0x2000, 0} },
-+{ COLOR_SPACE_2020_RGB_LIMITEDRANGE,
-+	{ 0x1B67, 0, 0, 0x201, 0, 0x1B67, 0, 0x201, 0, 0, 0x1B67, 0x201} },
-+{ COLOR_SPACE_2020_YCBCR_LIMITED, { 0x1000, 0xF149, 0xFEB7, 0x1004, 0x0868,
-+	0x15B2, 0x01E6, 0x201, 0xFB88, 0xF478, 0x1000, 0x1004} },
-+{ COLOR_SPACE_2020_YCBCR_FULL, { 0x1000, 0xF149, 0xFEB7, 0x1004, 0x0868, 0x15B2,
-+	0x01E6, 0x201, 0xFB88, 0xF478, 0x1000, 0x1004} }
- };
+ u32 secure_tcpv6_seq(const __be32 *saddr, const __be32 *daddr,
+ 		     __be16 sport, __be16 dport)
+--- a/net/ipv4/syncookies.c
++++ b/net/ipv4/syncookies.c
+@@ -222,7 +222,7 @@ struct sock *tcp_get_cookie_sock(struct
  
- enum csc_color_mode {
+ 	return NULL;
+ }
+-EXPORT_SYMBOL(tcp_get_cookie_sock);
++EXPORT_IPV6_MOD(tcp_get_cookie_sock);
+ 
+ /*
+  * when syncookies are in effect and tcp timestamps are enabled we stored
+@@ -259,7 +259,7 @@ bool cookie_timestamp_decode(const struc
+ 
+ 	return READ_ONCE(net->ipv4.sysctl_tcp_window_scaling) != 0;
+ }
+-EXPORT_SYMBOL(cookie_timestamp_decode);
++EXPORT_IPV6_MOD(cookie_timestamp_decode);
+ 
+ static int cookie_tcp_reqsk_init(struct sock *sk, struct sk_buff *skb,
+ 				 struct request_sock *req)
+@@ -309,7 +309,7 @@ struct request_sock *cookie_bpf_check(st
+ 
+ 	return req;
+ }
+-EXPORT_SYMBOL_GPL(cookie_bpf_check);
++EXPORT_IPV6_MOD_GPL(cookie_bpf_check);
+ #endif
+ 
+ struct request_sock *cookie_tcp_reqsk_alloc(const struct request_sock_ops *ops,
+@@ -351,7 +351,7 @@ struct request_sock *cookie_tcp_reqsk_al
+ 
+ 	return req;
+ }
+-EXPORT_SYMBOL_GPL(cookie_tcp_reqsk_alloc);
++EXPORT_IPV6_MOD_GPL(cookie_tcp_reqsk_alloc);
+ 
+ static struct request_sock *cookie_tcp_check(struct net *net, struct sock *sk,
+ 					     struct sk_buff *skb)
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -301,10 +301,10 @@ DEFINE_PER_CPU(u32, tcp_tw_isn);
+ EXPORT_PER_CPU_SYMBOL_GPL(tcp_tw_isn);
+ 
+ long sysctl_tcp_mem[3] __read_mostly;
+-EXPORT_SYMBOL(sysctl_tcp_mem);
++EXPORT_IPV6_MOD(sysctl_tcp_mem);
+ 
+ atomic_long_t tcp_memory_allocated ____cacheline_aligned_in_smp;	/* Current allocated memory. */
+-EXPORT_SYMBOL(tcp_memory_allocated);
++EXPORT_IPV6_MOD(tcp_memory_allocated);
+ DEFINE_PER_CPU(int, tcp_memory_per_cpu_fw_alloc);
+ EXPORT_PER_CPU_SYMBOL_GPL(tcp_memory_per_cpu_fw_alloc);
+ 
+@@ -317,7 +317,7 @@ EXPORT_SYMBOL(tcp_have_smc);
+  * Current number of TCP sockets.
+  */
+ struct percpu_counter tcp_sockets_allocated ____cacheline_aligned_in_smp;
+-EXPORT_SYMBOL(tcp_sockets_allocated);
++EXPORT_IPV6_MOD(tcp_sockets_allocated);
+ 
+ /*
+  * TCP splice context
+@@ -350,7 +350,7 @@ void tcp_enter_memory_pressure(struct so
+ 	if (!cmpxchg(&tcp_memory_pressure, 0, val))
+ 		NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPMEMORYPRESSURES);
+ }
+-EXPORT_SYMBOL_GPL(tcp_enter_memory_pressure);
++EXPORT_IPV6_MOD_GPL(tcp_enter_memory_pressure);
+ 
+ void tcp_leave_memory_pressure(struct sock *sk)
+ {
+@@ -363,7 +363,7 @@ void tcp_leave_memory_pressure(struct so
+ 		NET_ADD_STATS(sock_net(sk), LINUX_MIB_TCPMEMORYPRESSURESCHRONO,
+ 			      jiffies_to_msecs(jiffies - val));
+ }
+-EXPORT_SYMBOL_GPL(tcp_leave_memory_pressure);
++EXPORT_IPV6_MOD_GPL(tcp_leave_memory_pressure);
+ 
+ /* Convert seconds to retransmits based on initial and max timeout */
+ static u8 secs_to_retrans(int seconds, int timeout, int rto_max)
+@@ -476,7 +476,7 @@ void tcp_init_sock(struct sock *sk)
+ 	sk_sockets_allocated_inc(sk);
+ 	xa_init_flags(&sk->sk_user_frags, XA_FLAGS_ALLOC1);
+ }
+-EXPORT_SYMBOL(tcp_init_sock);
++EXPORT_IPV6_MOD(tcp_init_sock);
+ 
+ static void tcp_tx_timestamp(struct sock *sk, u16 tsflags)
+ {
+@@ -663,7 +663,7 @@ int tcp_ioctl(struct sock *sk, int cmd,
+ 	*karg = answ;
+ 	return 0;
+ }
+-EXPORT_SYMBOL(tcp_ioctl);
++EXPORT_IPV6_MOD(tcp_ioctl);
+ 
+ void tcp_mark_push(struct tcp_sock *tp, struct sk_buff *skb)
+ {
+@@ -879,7 +879,7 @@ ssize_t tcp_splice_read(struct socket *s
+ 
+ 	return ret;
+ }
+-EXPORT_SYMBOL(tcp_splice_read);
++EXPORT_IPV6_MOD(tcp_splice_read);
+ 
+ struct sk_buff *tcp_stream_alloc_skb(struct sock *sk, gfp_t gfp,
+ 				     bool force_schedule)
+@@ -1379,7 +1379,7 @@ void tcp_splice_eof(struct socket *sock)
+ 	tcp_push(sk, 0, mss_now, tp->nonagle, size_goal);
+ 	release_sock(sk);
+ }
+-EXPORT_SYMBOL_GPL(tcp_splice_eof);
++EXPORT_IPV6_MOD_GPL(tcp_splice_eof);
+ 
+ /*
+  *	Handle reading urgent data. BSD has very simple semantics for
+@@ -1689,7 +1689,7 @@ int tcp_read_skb(struct sock *sk, skb_re
+ 	}
+ 	return copied;
+ }
+-EXPORT_SYMBOL(tcp_read_skb);
++EXPORT_IPV6_MOD(tcp_read_skb);
+ 
+ void tcp_read_done(struct sock *sk, size_t len)
+ {
+@@ -1734,7 +1734,7 @@ int tcp_peek_len(struct socket *sock)
+ {
+ 	return tcp_inq(sock->sk);
+ }
+-EXPORT_SYMBOL(tcp_peek_len);
++EXPORT_IPV6_MOD(tcp_peek_len);
+ 
+ /* Make sure sk_rcvbuf is big enough to satisfy SO_RCVLOWAT hint */
+ int tcp_set_rcvlowat(struct sock *sk, int val)
+@@ -1764,7 +1764,7 @@ int tcp_set_rcvlowat(struct sock *sk, in
+ 	}
+ 	return 0;
+ }
+-EXPORT_SYMBOL(tcp_set_rcvlowat);
++EXPORT_IPV6_MOD(tcp_set_rcvlowat);
+ 
+ void tcp_update_recv_tstamps(struct sk_buff *skb,
+ 			     struct scm_timestamping_internal *tss)
+@@ -1797,7 +1797,7 @@ int tcp_mmap(struct file *file, struct s
+ 	vma->vm_ops = &tcp_vm_ops;
+ 	return 0;
+ }
+-EXPORT_SYMBOL(tcp_mmap);
++EXPORT_IPV6_MOD(tcp_mmap);
+ 
+ static skb_frag_t *skb_advance_to_frag(struct sk_buff *skb, u32 offset_skb,
+ 				       u32 *offset_frag)
+@@ -2883,7 +2883,7 @@ int tcp_recvmsg(struct sock *sk, struct
+ 	}
+ 	return ret;
+ }
+-EXPORT_SYMBOL(tcp_recvmsg);
++EXPORT_IPV6_MOD(tcp_recvmsg);
+ 
+ void tcp_set_state(struct sock *sk, int state)
+ {
+@@ -3013,7 +3013,7 @@ void tcp_shutdown(struct sock *sk, int h
+ 			tcp_send_fin(sk);
+ 	}
+ }
+-EXPORT_SYMBOL(tcp_shutdown);
++EXPORT_IPV6_MOD(tcp_shutdown);
+ 
+ int tcp_orphan_count_sum(void)
+ {
+@@ -3518,7 +3518,7 @@ static int tcp_repair_options_est(struct
+ }
+ 
+ DEFINE_STATIC_KEY_FALSE(tcp_tx_delay_enabled);
+-EXPORT_SYMBOL(tcp_tx_delay_enabled);
++EXPORT_IPV6_MOD(tcp_tx_delay_enabled);
+ 
+ static void tcp_enable_tx_delay(void)
+ {
+@@ -4056,7 +4056,7 @@ int tcp_setsockopt(struct sock *sk, int
+ 								optval, optlen);
+ 	return do_tcp_setsockopt(sk, level, optname, optval, optlen);
+ }
+-EXPORT_SYMBOL(tcp_setsockopt);
++EXPORT_IPV6_MOD(tcp_setsockopt);
+ 
+ static void tcp_get_info_chrono_stats(const struct tcp_sock *tp,
+ 				      struct tcp_info *info)
+@@ -4688,7 +4688,7 @@ bool tcp_bpf_bypass_getsockopt(int level
+ 
+ 	return false;
+ }
+-EXPORT_SYMBOL(tcp_bpf_bypass_getsockopt);
++EXPORT_IPV6_MOD(tcp_bpf_bypass_getsockopt);
+ 
+ int tcp_getsockopt(struct sock *sk, int level, int optname, char __user *optval,
+ 		   int __user *optlen)
+@@ -4702,11 +4702,11 @@ int tcp_getsockopt(struct sock *sk, int
+ 	return do_tcp_getsockopt(sk, level, optname, USER_SOCKPTR(optval),
+ 				 USER_SOCKPTR(optlen));
+ }
+-EXPORT_SYMBOL(tcp_getsockopt);
++EXPORT_IPV6_MOD(tcp_getsockopt);
+ 
+ #ifdef CONFIG_TCP_MD5SIG
+ int tcp_md5_sigpool_id = -1;
+-EXPORT_SYMBOL_GPL(tcp_md5_sigpool_id);
++EXPORT_IPV6_MOD_GPL(tcp_md5_sigpool_id);
+ 
+ int tcp_md5_alloc_sigpool(void)
+ {
+@@ -4752,7 +4752,7 @@ int tcp_md5_hash_key(struct tcp_sigpool
+ 	 */
+ 	return data_race(crypto_ahash_update(hp->req));
+ }
+-EXPORT_SYMBOL(tcp_md5_hash_key);
++EXPORT_IPV6_MOD(tcp_md5_hash_key);
+ 
+ /* Called with rcu_read_lock() */
+ static enum skb_drop_reason
+@@ -4872,7 +4872,7 @@ tcp_inbound_hash(struct sock *sk, const
+ 	return tcp_inbound_md5_hash(sk, skb, saddr, daddr, family,
+ 				    l3index, md5_location);
+ }
+-EXPORT_SYMBOL_GPL(tcp_inbound_hash);
++EXPORT_IPV6_MOD_GPL(tcp_inbound_hash);
+ 
+ void tcp_done(struct sock *sk)
+ {
+--- a/net/ipv4/tcp_fastopen.c
++++ b/net/ipv4/tcp_fastopen.c
+@@ -471,7 +471,7 @@ bool tcp_fastopen_defer_connect(struct s
+ 	}
+ 	return false;
+ }
+-EXPORT_SYMBOL(tcp_fastopen_defer_connect);
++EXPORT_IPV6_MOD(tcp_fastopen_defer_connect);
+ 
+ /*
+  * The following code block is to deal with middle box issues with TFO:
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -649,7 +649,7 @@ void tcp_initialize_rcv_mss(struct sock
+ 
+ 	inet_csk(sk)->icsk_ack.rcv_mss = hint;
+ }
+-EXPORT_SYMBOL(tcp_initialize_rcv_mss);
++EXPORT_IPV6_MOD(tcp_initialize_rcv_mss);
+ 
+ /* Receiver "autotuning" code.
+  *
+@@ -2911,7 +2911,7 @@ void tcp_simple_retransmit(struct sock *
+ 	 */
+ 	tcp_non_congestion_loss_retransmit(sk);
+ }
+-EXPORT_SYMBOL(tcp_simple_retransmit);
++EXPORT_IPV6_MOD(tcp_simple_retransmit);
+ 
+ void tcp_enter_recovery(struct sock *sk, bool ece_ack)
+ {
+@@ -4540,7 +4540,7 @@ void tcp_done_with_error(struct sock *sk
+ 	if (!sock_flag(sk, SOCK_DEAD))
+ 		sk_error_report(sk);
+ }
+-EXPORT_SYMBOL(tcp_done_with_error);
++EXPORT_IPV6_MOD(tcp_done_with_error);
+ 
+ /* When we get a reset we do this. */
+ void tcp_reset(struct sock *sk, struct sk_buff *skb)
+@@ -6302,7 +6302,7 @@ csum_error:
+ discard:
+ 	tcp_drop_reason(sk, skb, reason);
+ }
+-EXPORT_SYMBOL(tcp_rcv_established);
++EXPORT_IPV6_MOD(tcp_rcv_established);
+ 
+ void tcp_init_transfer(struct sock *sk, int bpf_op, struct sk_buff *skb)
+ {
+@@ -7016,7 +7016,7 @@ consume:
+ 	__kfree_skb(skb);
+ 	return 0;
+ }
+-EXPORT_SYMBOL(tcp_rcv_state_process);
++EXPORT_IPV6_MOD(tcp_rcv_state_process);
+ 
+ static inline void pr_drop_req(struct request_sock *req, __u16 port, int family)
+ {
+@@ -7198,7 +7198,7 @@ u16 tcp_get_syncookie_mss(struct request
+ 
+ 	return mss;
+ }
+-EXPORT_SYMBOL_GPL(tcp_get_syncookie_mss);
++EXPORT_IPV6_MOD_GPL(tcp_get_syncookie_mss);
+ 
+ int tcp_conn_request(struct request_sock_ops *rsk_ops,
+ 		     const struct tcp_request_sock_ops *af_ops,
+@@ -7378,4 +7378,4 @@ drop:
+ 	tcp_listendrop(sk);
+ 	return 0;
+ }
+-EXPORT_SYMBOL(tcp_conn_request);
++EXPORT_IPV6_MOD(tcp_conn_request);
+--- a/net/ipv4/tcp_ipv4.c
++++ b/net/ipv4/tcp_ipv4.c
+@@ -93,7 +93,6 @@ static int tcp_v4_md5_hash_hdr(char *md5
+ #endif
+ 
+ struct inet_hashinfo tcp_hashinfo;
+-EXPORT_SYMBOL(tcp_hashinfo);
+ 
+ static DEFINE_PER_CPU(struct sock_bh_locked, ipv4_tcp_sk) = {
+ 	.bh_lock = INIT_LOCAL_LOCK(bh_lock),
+@@ -198,7 +197,7 @@ int tcp_twsk_unique(struct sock *sk, str
+ 
+ 	return 0;
+ }
+-EXPORT_SYMBOL_GPL(tcp_twsk_unique);
++EXPORT_IPV6_MOD_GPL(tcp_twsk_unique);
+ 
+ static int tcp_v4_pre_connect(struct sock *sk, struct sockaddr *uaddr,
+ 			      int addr_len)
+@@ -358,7 +357,7 @@ failure:
+ 	inet->inet_dport = 0;
+ 	return err;
+ }
+-EXPORT_SYMBOL(tcp_v4_connect);
++EXPORT_IPV6_MOD(tcp_v4_connect);
+ 
+ /*
+  * This routine reacts to ICMP_FRAG_NEEDED mtu indications as defined in RFC1191.
+@@ -399,7 +398,7 @@ void tcp_v4_mtu_reduced(struct sock *sk)
+ 		tcp_simple_retransmit(sk);
+ 	} /* else let the usual retransmit timer handle it */
+ }
+-EXPORT_SYMBOL(tcp_v4_mtu_reduced);
++EXPORT_IPV6_MOD(tcp_v4_mtu_reduced);
+ 
+ static void do_redirect(struct sk_buff *skb, struct sock *sk)
+ {
+@@ -433,7 +432,7 @@ void tcp_req_err(struct sock *sk, u32 se
+ 	}
+ 	reqsk_put(req);
+ }
+-EXPORT_SYMBOL(tcp_req_err);
++EXPORT_IPV6_MOD(tcp_req_err);
+ 
+ /* TCP-LD (RFC 6069) logic */
+ void tcp_ld_RTO_revert(struct sock *sk, u32 seq)
+@@ -473,7 +472,7 @@ void tcp_ld_RTO_revert(struct sock *sk,
+ 		tcp_retransmit_timer(sk);
+ 	}
+ }
+-EXPORT_SYMBOL(tcp_ld_RTO_revert);
++EXPORT_IPV6_MOD(tcp_ld_RTO_revert);
+ 
+ /*
+  * This routine is called by the ICMP module when it gets some
+@@ -675,7 +674,7 @@ void tcp_v4_send_check(struct sock *sk,
+ 
+ 	__tcp_v4_send_check(skb, inet->inet_saddr, inet->inet_daddr);
+ }
+-EXPORT_SYMBOL(tcp_v4_send_check);
++EXPORT_IPV6_MOD(tcp_v4_send_check);
+ 
+ #define REPLY_OPTIONS_LEN      (MAX_TCP_OPTION_SPACE / sizeof(__be32))
+ 
+@@ -1230,7 +1229,7 @@ static void tcp_v4_reqsk_destructor(stru
+  */
+ 
+ DEFINE_STATIC_KEY_DEFERRED_FALSE(tcp_md5_needed, HZ);
+-EXPORT_SYMBOL(tcp_md5_needed);
++EXPORT_IPV6_MOD(tcp_md5_needed);
+ 
+ static bool better_md5_match(struct tcp_md5sig_key *old, struct tcp_md5sig_key *new)
+ {
+@@ -1289,7 +1288,7 @@ struct tcp_md5sig_key *__tcp_md5_do_look
+ 	}
+ 	return best_match;
+ }
+-EXPORT_SYMBOL(__tcp_md5_do_lookup);
++EXPORT_IPV6_MOD(__tcp_md5_do_lookup);
+ 
+ static struct tcp_md5sig_key *tcp_md5_do_lookup_exact(const struct sock *sk,
+ 						      const union tcp_md5_addr *addr,
+@@ -1336,7 +1335,7 @@ struct tcp_md5sig_key *tcp_v4_md5_lookup
+ 	addr = (const union tcp_md5_addr *)&addr_sk->sk_daddr;
+ 	return tcp_md5_do_lookup(sk, l3index, addr, AF_INET);
+ }
+-EXPORT_SYMBOL(tcp_v4_md5_lookup);
++EXPORT_IPV6_MOD(tcp_v4_md5_lookup);
+ 
+ static int tcp_md5sig_info_add(struct sock *sk, gfp_t gfp)
+ {
+@@ -1432,7 +1431,7 @@ int tcp_md5_do_add(struct sock *sk, cons
+ 	return __tcp_md5_do_add(sk, addr, family, prefixlen, l3index, flags,
+ 				newkey, newkeylen, GFP_KERNEL);
+ }
+-EXPORT_SYMBOL(tcp_md5_do_add);
++EXPORT_IPV6_MOD(tcp_md5_do_add);
+ 
+ int tcp_md5_key_copy(struct sock *sk, const union tcp_md5_addr *addr,
+ 		     int family, u8 prefixlen, int l3index,
+@@ -1464,7 +1463,7 @@ int tcp_md5_key_copy(struct sock *sk, co
+ 				key->flags, key->key, key->keylen,
+ 				sk_gfp_mask(sk, GFP_ATOMIC));
+ }
+-EXPORT_SYMBOL(tcp_md5_key_copy);
++EXPORT_IPV6_MOD(tcp_md5_key_copy);
+ 
+ int tcp_md5_do_del(struct sock *sk, const union tcp_md5_addr *addr, int family,
+ 		   u8 prefixlen, int l3index, u8 flags)
+@@ -1479,7 +1478,7 @@ int tcp_md5_do_del(struct sock *sk, cons
+ 	kfree_rcu(key, rcu);
+ 	return 0;
+ }
+-EXPORT_SYMBOL(tcp_md5_do_del);
++EXPORT_IPV6_MOD(tcp_md5_do_del);
+ 
+ void tcp_clear_md5_list(struct sock *sk)
+ {
+@@ -1658,7 +1657,7 @@ clear_hash_nostart:
+ 	memset(md5_hash, 0, 16);
+ 	return 1;
+ }
+-EXPORT_SYMBOL(tcp_v4_md5_hash_skb);
++EXPORT_IPV6_MOD(tcp_v4_md5_hash_skb);
+ 
+ #endif
+ 
+@@ -1731,7 +1730,7 @@ drop:
+ 	tcp_listendrop(sk);
+ 	return 0;
+ }
+-EXPORT_SYMBOL(tcp_v4_conn_request);
++EXPORT_IPV6_MOD(tcp_v4_conn_request);
+ 
+ 
+ /*
+@@ -1855,7 +1854,7 @@ put_and_exit:
+ 	tcp_done(newsk);
+ 	goto exit;
+ }
+-EXPORT_SYMBOL(tcp_v4_syn_recv_sock);
++EXPORT_IPV6_MOD(tcp_v4_syn_recv_sock);
+ 
+ static struct sock *tcp_v4_cookie_check(struct sock *sk, struct sk_buff *skb)
+ {
+@@ -2134,7 +2133,7 @@ no_coalesce:
+ 	}
+ 	return false;
+ }
+-EXPORT_SYMBOL(tcp_add_backlog);
++EXPORT_IPV6_MOD(tcp_add_backlog);
+ 
+ int tcp_filter(struct sock *sk, struct sk_buff *skb)
+ {
+@@ -2142,7 +2141,7 @@ int tcp_filter(struct sock *sk, struct s
+ 
+ 	return sk_filter_trim_cap(sk, skb, th->doff * 4);
+ }
+-EXPORT_SYMBOL(tcp_filter);
++EXPORT_IPV6_MOD(tcp_filter);
+ 
+ static void tcp_v4_restore_cb(struct sk_buff *skb)
+ {
+@@ -2451,7 +2450,7 @@ void inet_sk_rx_dst_set(struct sock *sk,
+ 		sk->sk_rx_dst_ifindex = skb->skb_iif;
+ 	}
+ }
+-EXPORT_SYMBOL(inet_sk_rx_dst_set);
++EXPORT_IPV6_MOD(inet_sk_rx_dst_set);
+ 
+ const struct inet_connection_sock_af_ops ipv4_specific = {
+ 	.queue_xmit	   = ip_queue_xmit,
+@@ -2467,7 +2466,7 @@ const struct inet_connection_sock_af_ops
+ 	.sockaddr_len	   = sizeof(struct sockaddr_in),
+ 	.mtu_reduced	   = tcp_v4_mtu_reduced,
+ };
+-EXPORT_SYMBOL(ipv4_specific);
++EXPORT_IPV6_MOD(ipv4_specific);
+ 
+ #if defined(CONFIG_TCP_MD5SIG) || defined(CONFIG_TCP_AO)
+ static const struct tcp_sock_af_ops tcp_sock_ipv4_specific = {
+@@ -2577,7 +2576,7 @@ void tcp_v4_destroy_sock(struct sock *sk
+ 
+ 	sk_sockets_allocated_dec(sk);
+ }
+-EXPORT_SYMBOL(tcp_v4_destroy_sock);
++EXPORT_IPV6_MOD(tcp_v4_destroy_sock);
+ 
+ #ifdef CONFIG_PROC_FS
+ /* Proc filesystem TCP sock list dumping. */
+@@ -2813,7 +2812,7 @@ out:
+ 	st->last_pos = *pos;
+ 	return rc;
+ }
+-EXPORT_SYMBOL(tcp_seq_start);
++EXPORT_IPV6_MOD(tcp_seq_start);
+ 
+ void *tcp_seq_next(struct seq_file *seq, void *v, loff_t *pos)
+ {
+@@ -2844,7 +2843,7 @@ out:
+ 	st->last_pos = *pos;
+ 	return rc;
+ }
+-EXPORT_SYMBOL(tcp_seq_next);
++EXPORT_IPV6_MOD(tcp_seq_next);
+ 
+ void tcp_seq_stop(struct seq_file *seq, void *v)
+ {
+@@ -2862,7 +2861,7 @@ void tcp_seq_stop(struct seq_file *seq,
+ 		break;
+ 	}
+ }
+-EXPORT_SYMBOL(tcp_seq_stop);
++EXPORT_IPV6_MOD(tcp_seq_stop);
+ 
+ static void get_openreq4(const struct request_sock *req,
+ 			 struct seq_file *f, int i)
+--- a/net/ipv4/tcp_minisocks.c
++++ b/net/ipv4/tcp_minisocks.c
+@@ -261,7 +261,7 @@ kill:
+ 	inet_twsk_put(tw);
+ 	return TCP_TW_SUCCESS;
+ }
+-EXPORT_SYMBOL(tcp_timewait_state_process);
++EXPORT_IPV6_MOD(tcp_timewait_state_process);
+ 
+ static void tcp_time_wait_init(struct sock *sk, struct tcp_timewait_sock *tcptw)
+ {
+@@ -389,7 +389,7 @@ void tcp_twsk_destructor(struct sock *sk
+ #endif
+ 	tcp_ao_destroy_sock(sk, true);
+ }
+-EXPORT_SYMBOL_GPL(tcp_twsk_destructor);
++EXPORT_IPV6_MOD_GPL(tcp_twsk_destructor);
+ 
+ void tcp_twsk_purge(struct list_head *net_exit_list)
+ {
+@@ -448,7 +448,6 @@ void tcp_openreq_init_rwin(struct reques
+ 		rcv_wnd);
+ 	ireq->rcv_wscale = rcv_wscale;
+ }
+-EXPORT_SYMBOL(tcp_openreq_init_rwin);
+ 
+ static void tcp_ecn_openreq_child(struct tcp_sock *tp,
+ 				  const struct request_sock *req)
+@@ -483,7 +482,7 @@ void tcp_ca_openreq_child(struct sock *s
+ 
+ 	tcp_set_ca_state(sk, TCP_CA_Open);
+ }
+-EXPORT_SYMBOL_GPL(tcp_ca_openreq_child);
++EXPORT_IPV6_MOD_GPL(tcp_ca_openreq_child);
+ 
+ static void smc_check_reset_syn_req(const struct tcp_sock *oldtp,
+ 				    struct request_sock *req,
+@@ -899,7 +898,7 @@ embryonic_reset:
+ 	}
+ 	return NULL;
+ }
+-EXPORT_SYMBOL(tcp_check_req);
++EXPORT_IPV6_MOD(tcp_check_req);
+ 
+ /*
+  * Queue segment on the new socket if the new socket is active,
+@@ -941,4 +940,4 @@ enum skb_drop_reason tcp_child_process(s
+ 	sock_put(child);
+ 	return reason;
+ }
+-EXPORT_SYMBOL(tcp_child_process);
++EXPORT_IPV6_MOD(tcp_child_process);
+--- a/net/ipv4/tcp_output.c
++++ b/net/ipv4/tcp_output.c
+@@ -250,7 +250,7 @@ void tcp_select_initial_window(const str
+ 	WRITE_ONCE(*__window_clamp,
+ 		   min_t(__u32, U16_MAX << (*rcv_wscale), window_clamp));
+ }
+-EXPORT_SYMBOL(tcp_select_initial_window);
++EXPORT_IPV6_MOD(tcp_select_initial_window);
+ 
+ /* Chose a new window to advertise, update state in tcp_sock for the
+  * socket, and return result with RFC1323 scaling applied.  The return
+@@ -1171,7 +1171,7 @@ void tcp_release_cb(struct sock *sk)
+ 	if ((flags & TCPF_ACK_DEFERRED) && inet_csk_ack_scheduled(sk))
+ 		tcp_send_ack(sk);
+ }
+-EXPORT_SYMBOL(tcp_release_cb);
++EXPORT_IPV6_MOD(tcp_release_cb);
+ 
+ void __init tcp_tasklet_init(void)
+ {
+@@ -1785,7 +1785,7 @@ int tcp_mtu_to_mss(struct sock *sk, int
+ 	return __tcp_mtu_to_mss(sk, pmtu) -
+ 	       (tcp_sk(sk)->tcp_header_len - sizeof(struct tcphdr));
+ }
+-EXPORT_SYMBOL(tcp_mtu_to_mss);
++EXPORT_IPV6_MOD(tcp_mtu_to_mss);
+ 
+ /* Inverse of above */
+ int tcp_mss_to_mtu(struct sock *sk, int mss)
+@@ -1859,7 +1859,7 @@ unsigned int tcp_sync_mss(struct sock *s
+ 
+ 	return mss_now;
+ }
+-EXPORT_SYMBOL(tcp_sync_mss);
++EXPORT_IPV6_MOD(tcp_sync_mss);
+ 
+ /* Compute the current effective MSS, taking SACKs and IP options,
+  * and even PMTU discovery events into account.
+@@ -3869,7 +3869,7 @@ struct sk_buff *tcp_make_synack(const st
+ 
+ 	return skb;
+ }
+-EXPORT_SYMBOL(tcp_make_synack);
++EXPORT_IPV6_MOD(tcp_make_synack);
+ 
+ static void tcp_ca_dst_init(struct sock *sk, const struct dst_entry *dst)
+ {
+@@ -4443,4 +4443,4 @@ int tcp_rtx_synack(const struct sock *sk
+ 	}
+ 	return res;
+ }
+-EXPORT_SYMBOL(tcp_rtx_synack);
++EXPORT_IPV6_MOD(tcp_rtx_synack);
+--- a/net/ipv4/tcp_timer.c
++++ b/net/ipv4/tcp_timer.c
+@@ -736,7 +736,7 @@ void tcp_syn_ack_timeout(const struct re
+ 
+ 	__NET_INC_STATS(net, LINUX_MIB_TCPTIMEOUTS);
+ }
+-EXPORT_SYMBOL(tcp_syn_ack_timeout);
++EXPORT_IPV6_MOD(tcp_syn_ack_timeout);
+ 
+ void tcp_set_keepalive(struct sock *sk, int val)
+ {
+@@ -748,7 +748,7 @@ void tcp_set_keepalive(struct sock *sk,
+ 	else if (!val)
+ 		inet_csk_delete_keepalive_timer(sk);
+ }
+-EXPORT_SYMBOL_GPL(tcp_set_keepalive);
++EXPORT_IPV6_MOD_GPL(tcp_set_keepalive);
+ 
+ 
+ static void tcp_keepalive_timer (struct timer_list *t)
 
 
 
