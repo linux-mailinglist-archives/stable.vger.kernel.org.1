@@ -1,80 +1,62 @@
-Return-Path: <stable+bounces-264901-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266216-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id x9q7Mu9/MWrSkwUAu9opvQ
-	(envelope-from <stable+bounces-264901-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:55:11 +0200
+	id XUELOqyZMWq6nwUAu9opvQ
+	(envelope-from <stable+bounces-266216-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:45:00 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24311692936
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:55:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8445A6946D6
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:45:00 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=adUEKCjD;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264901-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264901-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="R/ScRSrt";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266216-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266216-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2927531D6532
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:48:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D3A41320A23D
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:41:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADBD045348A;
-	Tue, 16 Jun 2026 16:48:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4888F38C437;
+	Tue, 16 Jun 2026 18:41:04 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71E5132B138;
-	Tue, 16 Jun 2026 16:48:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20F513DF007;
+	Tue, 16 Jun 2026 18:41:02 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781628485; cv=none; b=erNT5CVo6Sa6XTpvkonlBIo9123P2vEXSdX0MoaTssZ/ujvBsrPACDcn/IpBrZGrmCmTzISTTXmwEBeMOhBG+sZEKNHeQhZ9rkV6TXeUoVrKGSzYOvtHIR/dD5hVA/s8EQj58Zzme2pQ++4tGrTSdO2bJcqSapik1pljJn6modg=
+	t=1781635264; cv=none; b=L1FZn16+BelTrkbPk+0hRwsIgBfaiwbKg/qT7El+Fy6R+w4lkmdRM2gunOnLbydQqYU6pCCOewiqnlx7I7m+w58dQtbXpzU39TEWy+k8b7d3ng9zCvAsxclYZkg0YT1zioRfR89Pe98+jZbcfaBDrgeVGAzOitLtkMm1su3HHBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781628485; c=relaxed/simple;
-	bh=DjbJM50BFplQxj0walVx0WuXTTjNz4YpNbewKSYZGL4=;
+	s=arc-20240116; t=1781635264; c=relaxed/simple;
+	bh=H00Ygf3SBTVA6R1JyVQS1ilA6U1ZYTPsPsfPXcxDImw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZUVPc+wOH9CqoY3dGGKCDZPMvv4qM4tlwoaWjuC2GpUZkBPN9fsrMWFqZX1zV1wFDUPU4Pptnaoe++rVSUDmISRdL8RBM0cTOy0FezeI9mCBB2v/Dk9HNHNOWf5Tdyks7VmShPo0C9ehR8r/8ica0+J+OqltXEyJ3nngwOknu+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=adUEKCjD; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA4291F000E9;
-	Tue, 16 Jun 2026 16:48:02 +0000 (UTC)
+	 MIME-Version; b=tiek3KkfI8owGw3tioksJnYJd0G069QMdkrVJOmeR7wKwqsubXOK8O9NbyUkyhSOlFujHxQUFxzNIP7c1z/gcK5lb7JTVUicXxXH6LrfRhbe1YDeB1RNQlv/PSYUsE4kgEHogbeskWg0zs62ohYnOffS4JLMMlqnibyvj4dNIAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R/ScRSrt; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D44BA1F00A3A;
+	Tue, 16 Jun 2026 18:41:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781628484;
-	bh=TQFjMQSaD7y+9b5YxIDHsjv1N5pGDp18cwIvnMqzacQ=;
+	s=korg; t=1781635262;
+	bh=jTADwDiA2Iyb9pEmZmpJiJKH7+f2Er6uvQ/LfiSWpAA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=adUEKCjDGp5HnNvKW3lmiKjMkd4fY30WF1YODmubxpx2LdyIZ/yr2AlsnAQefu5Dc
-	 RDhPONRl4hhOrrRwze2VqWl3tYj1dzjwoPPNI4jEfwdr1vUOuub58/+NGOMIWbjVFM
-	 Lewznghnwr/T2CRH8as+OpJd9etS+clDc5F4fEj4=
+	b=R/ScRSrt5oe+dIklu77JCnjlbtQpFzYh++AISkNnshlrpje8IRJOvRMEFcjWxkUpb
+	 oNNj6eB5flj1eBnHGoASyuaWkKgeUUi2DSPhGnheKbUy4c7JK0qKLk98yDpqOzBysh
+	 VQ0ma0kvYJzxCY+5GhOrLKftUuWBWC059amlSl/A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
-	Mimi Zohar <zohar@linux.ibm.com>,
-	Alexander Graf <graf@amazon.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Baoquan He <bhe@redhat.com>,
-	Borislav Betkov <bp@alien8.de>,
-	guoweikang <guoweikang.kernel@gmail.com>,
-	Henry Willard <henry.willard@oracle.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jiri Bohac <jbohac@suse.cz>,
-	Joel Granados <joel.granados@kernel.org>,
-	Jonathan McDowell <noodles@fb.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Paul Webb <paul.x.webb@oracle.com>,
-	Sohil Mehta <sohil.mehta@intel.com>,
-	Sourabh Jain <sourabhjain@linux.ibm.com>,
-	Thomas Gleinxer <tglx@linutronix.de>,
-	Yifei Liu <yifei.l.liu@oracle.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Wenshan Lan <jetlan9@163.com>,
+	Lee Jones <lee@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	David Heidelberg <david@ixit.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 077/452] of/kexec: refactor ima_get_kexec_buffer() to use ima_validate_range()
+Subject: [PATCH 5.10 008/342] nfc: llcp: Fix use-after-free race in nfc_llcp_recv_cc()
 Date: Tue, 16 Jun 2026 20:25:04 +0530
-Message-ID: <20260616145121.942187679@linuxfoundation.org>
+Message-ID: <20260616145048.712218161@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -86,115 +68,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[25];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264901-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:harshit.m.mogalapalli@oracle.com,m:zohar@linux.ibm.com,m:graf@amazon.com,m:ardb@kernel.org,m:bhe@redhat.com,m:bp@alien8.de,m:guoweikang.kernel@gmail.com,m:henry.willard@oracle.com,m:hpa@zytor.com,m:mingo@redhat.com,m:jbohac@suse.cz,m:joel.granados@kernel.org,m:noodles@fb.com,m:rppt@kernel.org,m:paul.x.webb@oracle.com,m:sohil.mehta@intel.com,m:sourabhjain@linux.ibm.com,m:tglx@linutronix.de,m:yifei.l.liu@oracle.com,m:akpm@linux-foundation.org,m:jetlan9@163.com,m:sashal@kernel.org,m:guoweikangkernel@gmail.com,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-266216-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:lee@kernel.org,m:horms@kernel.org,m:david@ixit.cz,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,oracle.com,linux.ibm.com,amazon.com,kernel.org,redhat.com,alien8.de,gmail.com,zytor.com,suse.cz,fb.com,intel.com,linutronix.de,linux-foundation.org,163.com];
 	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,ixit.cz:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 24311692936
+X-Rspamd-Queue-Id: 8445A6946D6
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+From: Lee Jones <lee@kernel.org>
 
-[ Upstream commit 4d02233235ed0450de9c10fcdcf3484e3c9401ce ]
+[ Upstream commit b493ea2765cc17cb8aa7e7544a4b6dcb05b6ed77 ]
 
-Refactor the OF/DT ima_get_kexec_buffer() to use a generic helper to
-validate the address range.  No functional change intended.
+A race condition exists in the NFC LLCP connection state machine where
+the connection acceptance packet (CC) can be processed concurrently with
+socket release.  This can lead to a use-after-free of the socket object.
 
-Link: https://lkml.kernel.org/r/20251231061609.907170-3-harshit.m.mogalapalli@oracle.com
-Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
-Cc: Alexander Graf <graf@amazon.com>
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: Baoquan He <bhe@redhat.com>
-Cc: Borislav Betkov <bp@alien8.de>
-Cc: guoweikang <guoweikang.kernel@gmail.com>
-Cc: Henry Willard <henry.willard@oracle.com>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jiri Bohac <jbohac@suse.cz>
-Cc: Joel Granados <joel.granados@kernel.org>
-Cc: Jonathan McDowell <noodles@fb.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Paul Webb <paul.x.webb@oracle.com>
-Cc: Sohil Mehta <sohil.mehta@intel.com>
-Cc: Sourabh Jain <sourabhjain@linux.ibm.com>
-Cc: Thomas Gleinxer <tglx@linutronix.de>
-Cc: Yifei Liu <yifei.l.liu@oracle.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Wenshan Lan <jetlan9@163.com>
+When nfc_llcp_recv_cc() moves the socket from the connecting_sockets
+list to the sockets list, it does so without holding the socket lock.
+If llcp_sock_release() is executing concurrently, it might have already
+unlinked the socket and dropped its references, which can result in
+nfc_llcp_recv_cc() linking a freed socket into the live list.
+
+Fix this by holding lock_sock() during the state transition and list
+movement in nfc_llcp_recv_cc().  After acquiring the lock, check if
+the socket is still hashed to ensure it hasn't already been unlinked
+and marked for destruction by the release path.  This aligns the locking
+pattern with recv_hdlc() and recv_disc().
+
+Fixes: a69f32af86e3 ("NFC: Socket linked list")
+Signed-off-by: Lee Jones <lee@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260429134115.3558604-2-lee@kernel.org
+Signed-off-by: David Heidelberg <david@ixit.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/of/kexec.c | 15 +++------------
- 1 file changed, 3 insertions(+), 12 deletions(-)
+ net/nfc/llcp_core.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/of/kexec.c b/drivers/of/kexec.c
-index 3b98a57f1f0743..23fde2d032e6d9 100644
---- a/drivers/of/kexec.c
-+++ b/drivers/of/kexec.c
-@@ -128,7 +128,6 @@ int __init ima_get_kexec_buffer(void **addr, size_t *size)
- {
- 	int ret, len;
- 	unsigned long tmp_addr;
--	unsigned long start_pfn, end_pfn;
- 	size_t tmp_size;
- 	const void *prop;
+diff --git a/net/nfc/llcp_core.c b/net/nfc/llcp_core.c
+index e04634f22b49f4..c7de44637e0187 100644
+--- a/net/nfc/llcp_core.c
++++ b/net/nfc/llcp_core.c
+@@ -1225,6 +1225,15 @@ static void nfc_llcp_recv_cc(struct nfc_llcp_local *local,
  
-@@ -144,17 +143,9 @@ int __init ima_get_kexec_buffer(void **addr, size_t *size)
- 	if (!tmp_size)
- 		return -ENOENT;
+ 	sk = &llcp_sock->sk;
  
--	/*
--	 * Calculate the PFNs for the buffer and ensure
--	 * they are with in addressable memory.
--	 */
--	start_pfn = PHYS_PFN(tmp_addr);
--	end_pfn = PHYS_PFN(tmp_addr + tmp_size - 1);
--	if (!page_is_ram(start_pfn) || !page_is_ram(end_pfn)) {
--		pr_warn("IMA buffer at 0x%lx, size = 0x%zx beyond memory\n",
--			tmp_addr, tmp_size);
--		return -EINVAL;
--	}
-+	ret = ima_validate_range(tmp_addr, tmp_size);
-+	if (ret)
-+		return ret;
++	lock_sock(sk);
++
++	/* Check if socket was destroyed whilst waiting for the lock */
++	if (!sk_hashed(sk)) {
++		release_sock(sk);
++		nfc_llcp_sock_put(llcp_sock);
++		return;
++	}
++
+ 	/* Unlink from connecting and link to the client array */
+ 	nfc_llcp_sock_unlink(&local->connecting_sockets, sk);
+ 	nfc_llcp_sock_link(&local->sockets, sk);
+@@ -1236,6 +1245,8 @@ static void nfc_llcp_recv_cc(struct nfc_llcp_local *local,
+ 	sk->sk_state = LLCP_CONNECTED;
+ 	sk->sk_state_change(sk);
  
- 	*addr = __va(tmp_addr);
- 	*size = tmp_size;
++	release_sock(sk);
++
+ 	nfc_llcp_sock_put(llcp_sock);
+ }
+ 
 -- 
 2.53.0
 
