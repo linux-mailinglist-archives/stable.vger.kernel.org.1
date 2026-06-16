@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-264243-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264017-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id q53IGyJzMWqcjgUAu9opvQ
-	(envelope-from <stable+bounces-264243-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:00:34 +0200
+	id I1ZhGgdtMWoYjAUAu9opvQ
+	(envelope-from <stable+bounces-264017-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:34:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6371E6919DB
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:00:33 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03FF7691294
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:34:31 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=CnZVzfQU;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264243-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264243-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=tCjz2soZ;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264017-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264017-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id CB4FC303C77B
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:48:34 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 082203067B2B
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:28:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CB2F43D4F7;
-	Tue, 16 Jun 2026 15:48:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7A5E3A3E78;
+	Tue, 16 Jun 2026 15:28:06 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10BDD2EEE68;
-	Tue, 16 Jun 2026 15:48:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A39A30C360;
+	Tue, 16 Jun 2026 15:28:05 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781624892; cv=none; b=oCVcYXqqMHqyHfFKIQtAVs8Ih81qvoOrXnDKMrSQHACTyulT0GiqFDI44vaCw5ucrUSLqutTZO3XS9/f6V1KufPgtjaS9pZek5+tq8LYC0ZYtvzbSRqHHCbUeivWfRZBKmzx9Ri1SlDNwTF2QFgxzIMPHUgbiLVFvsKywshpWS0=
+	t=1781623686; cv=none; b=jIMCC2KjvOAh0YaKYoXxrelLXV+FJcacyKoUFGym6/NjihYDHZpikFC5J1j3yrXss5uxodT4jt+DIw1oGfddAH6rD7D6DzDuEDErM2bU2tS1IYYN+pp2+ZVJkOIYp9gTU2LxsazidQS29vzSNvlFQECOiy+jp8MalBV06k8T5cs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781624892; c=relaxed/simple;
-	bh=3RXR54x5P7dvzk5PmtAmU+LSkPAa0M3BYimzFvZFdgc=;
+	s=arc-20240116; t=1781623686; c=relaxed/simple;
+	bh=71sgXWGe2vK0+5IggJ/fBbZan+tWQnmJDMl3ZHSHXoc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N+NDHyM66PvnMpjT9QSFrcvKMPtdHEi8AaP7EHpJMz/fB4mS9T/lljdedRhFTkDvZkUBVZGBDKV4MO0Rdqjfst6QxVzk2VYAoSmLJ9Zc5sLx+PArLftppBSeNUwZcek6riAz0bOg48KvM+NLFY5kqDHDg/0hAsAPnXaFcrGWXvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CnZVzfQU; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 917A41F000E9;
-	Tue, 16 Jun 2026 15:48:09 +0000 (UTC)
+	 MIME-Version; b=WeY9I0AbwoxQvEc0gX0gqZpKMklXW+YGalSvtIasCNdzjv8FWKrBCyEEs/YPR1FfUVcTb0HUQy1s3HxfU7to+7IEE9zIsAGSQT6n0+yei+fCL5idz3ucUg4QtakXs2D/YtGStH0PcKfYLtrtp1oTXpF0ErjQN+twiUztnRam6nQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tCjz2soZ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8E081F000E9;
+	Tue, 16 Jun 2026 15:28:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781624890;
-	bh=WPUAHUfoFmAGbVZaYjlapZtpOJc0z0uQ7bXTEcQxUhc=;
+	s=korg; t=1781623685;
+	bh=DM2g3FEVlQ/jgjZhrkB+8uXzxmE4xJALpp8wqM6Rz9w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=CnZVzfQUoaNL8HRcN5PXhqZXGP/yPzwfG1u7fBwA13FLFxFAtZiaaEOBBzCTE/1FQ
-	 OvxIfB8wK+mK6741RnrnF1g/v4sJWnVtZURV9GM/11E/Irl08m2YVSvVKc28Nc+yFl
-	 +rXWDNS0SnRoLAGEuLtUgjJqiLuW0Ki8YrZVNUDA=
+	b=tCjz2soZ9Q/bWdCEL4WDJ+6nlZ5hvWnuUOxxNEP3gFDSthLP68xv9RaKUycbFq9tR
+	 4db8+Jdoitv6kLAr/r3lRsJ22B/mzJwXyr3IRKwQmU7mlYvNHu4TSGQFZ13C3CFQ1q
+	 okRf4Fu9uhsvkIUJlzdEp142rlxQfOMUr21tmF8o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sumit Garg <sumit.garg@oss.qualcomm.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 014/325] soc: qcom: ice: Return -ENODEV if the ICE platform device is not found
+	Muhammad Amirul Asyraf Mohamad Jamian <muhammad.amirul.asyraf.mohamad.jamian@altera.com>,
+	Dinh Nguyen <dinguyen@kernel.org>
+Subject: [PATCH 7.0 179/378] firmware: stratix10-svc: Dont fail probe when async ops unsupported
 Date: Tue, 16 Jun 2026 20:26:50 +0530
-Message-ID: <20260616145058.516250656@linuxfoundation.org>
+Message-ID: <20260616145119.800861687@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,81 +68,95 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264243-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264017-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:sumit.garg@oss.qualcomm.com,m:manivannan.sadhasivam@oss.qualcomm.com,m:andersson@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:muhammad.amirul.asyraf.mohamad.jamian@altera.com,m:dinguyen@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,qualcomm.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,altera.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 6371E6919DB
+X-Rspamd-Queue-Id: 03FF7691294
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+From: Muhammad Amirul Asyraf Mohamad Jamian <muhammad.amirul.asyraf.mohamad.jamian@altera.com>
 
-[ Upstream commit 5a4dc805a80e6fe303d6a4748cd451ea15987ffd ]
+commit 371aa062219a0af108fb8992f0759d1bac1e8c91 upstream.
 
-By the time the consumer driver calls devm_of_qcom_ice_get(), all the
-platform devices for ICE nodes would've been created by
-of_platform_default_populate().
+When the ATF version is too old to support SIP SVC v3 asynchronous
+operations (e.g. ATF 2.5), stratix10_svc_async_init() returns
+-EOPNOTSUPP. The probe function currently treats any non-zero return
+as fatal and aborts, logging:
 
-So for the absence of any platform device, -ENODEV should not returned, not
--EPROBE_DEFER.
+  stratix10-svc firmware:svc: Intel Service Layer Driver: ATF version \
+    is not compatible for async operation
+  stratix10-svc firmware:svc: probe with driver stratix10-svc failed \
+    with error -95
 
-Fixes: 2afbf43a4aec ("soc: qcom: Make the Qualcomm UFS/SDCC ICE a dedicated driver")
-Tested-by: Sumit Garg <sumit.garg@oss.qualcomm.com> # OP-TEE as TZ
-Acked-by: Sumit Garg <sumit.garg@oss.qualcomm.com>
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20260518-qcom-ice-fix-v7-2-2a595382185b@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This prevents the SVC driver from loading entirely, causing all
+dependent client drivers (hwmon, RSU, FCS) to also fail to probe even
+though they can operate correctly via the synchronous V1 SMC path.
+
+Fix this by treating -EOPNOTSUPP from stratix10_svc_async_init() as a
+non-fatal degraded condition. The driver loads in sync-only mode and
+logs:
+
+  stratix10-svc firmware:svc: Intel Service Layer Driver Initialized \
+    (sync-only mode)
+
+Fixes: bcb9f4f07061 ("firmware: stratix10-svc: Add support for async communication")
+Cc: stable@vger.kernel.org
+Signed-off-by: Muhammad Amirul Asyraf Mohamad Jamian <muhammad.amirul.asyraf.mohamad.jamian@altera.com>
+Signed-off-by: Dinh Nguyen <dinguyen@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soc/qcom/ice.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/firmware/stratix10-svc.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/soc/qcom/ice.c b/drivers/soc/qcom/ice.c
-index 05055e097ff8fb..ba53aea828ba76 100644
---- a/drivers/soc/qcom/ice.c
-+++ b/drivers/soc/qcom/ice.c
-@@ -622,7 +622,7 @@ static struct qcom_ice *of_qcom_ice_get(struct device *dev)
- 	pdev = of_find_device_by_node(node);
- 	if (!pdev) {
- 		dev_err(dev, "Cannot find device node %s\n", node->name);
--		return ERR_PTR(-EPROBE_DEFER);
-+		return ERR_PTR(-ENODEV);
+--- a/drivers/firmware/stratix10-svc.c
++++ b/drivers/firmware/stratix10-svc.c
+@@ -1952,10 +1952,14 @@ static int stratix10_svc_drv_probe(struc
+ 	init_completion(&controller->complete_status);
+ 
+ 	ret = stratix10_svc_async_init(controller);
+-	if (ret) {
++	if (ret == -EOPNOTSUPP) {
++		dev_info(dev, "Intel Service Layer Driver Initialized (sync-only mode)\n");
++	} else if (ret) {
+ 		dev_dbg(dev, "Intel Service Layer Driver: Error on stratix10_svc_async_init %d\n",
+ 			ret);
+ 		goto err_destroy_pool;
++	} else {
++		dev_info(dev, "Intel Service Layer Driver Initialized\n");
  	}
  
- 	ice = platform_get_drvdata(pdev);
--- 
-2.53.0
-
+ 	fifo_size = sizeof(struct stratix10_svc_data) * SVC_NUM_DATA_IN_FIFO;
 
 
 
