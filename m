@@ -1,63 +1,61 @@
-Return-Path: <stable+bounces-266096-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264358-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 25PLN7WWMWpZngUAu9opvQ
-	(envelope-from <stable+bounces-266096-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:32:21 +0200
+	id dc0UKc91MWqIjwUAu9opvQ
+	(envelope-from <stable+bounces-264358-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:11:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DCEE694382
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:32:21 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4746B691CAE
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:11:59 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=OqNqDLAy;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266096-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266096-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="qf+b1sr/";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264358-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264358-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 427D732009A5
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:30:41 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6848A312CF67
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:58:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 082CC46AEDB;
-	Tue, 16 Jun 2026 18:30:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF76E451062;
+	Tue, 16 Jun 2026 15:57:43 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 903644418D7;
-	Tue, 16 Jun 2026 18:30:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5F894657CF;
+	Tue, 16 Jun 2026 15:57:42 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781634640; cv=none; b=MoRad4+XuIzk3qpBOlEmyoeD5xUQPFTxSnpqtTmUuWOWyoa3Sbmmeng46BammokpaLA4e2hw1hIeEb649B1iYvAvzXhpSGDFdC/7pJAx1uZ8+YsYV486Ei6pBWIERQnUx25ct5OuS1Fsu634TuD0gbKJz9saMPwZZPPuDIHMCJU=
+	t=1781625463; cv=none; b=ukj+iZQ7nxYRi3sIPYs3PLwTf/Di6gb1Xbo3DWk6X+L3OD/CYIdZN2ut1QiagBtl0SSbnq6ZKAtGBQl7gYuX+ryyb9XOFrNTjjP6/tbHVTlMUo8a06S7u6SLhA/Gem/IooBtplEaZau82gpu5asoOWcz/YEyioPbqj7jMcWG8Zs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781634640; c=relaxed/simple;
-	bh=5UJH0UoqVZffacw4+0mLrjTnse9yxOlkSh7YunMWujc=;
+	s=arc-20240116; t=1781625463; c=relaxed/simple;
+	bh=Zp1Etvp3Jzn0crWdVoLBZg+ZC7eDMMQJC2OXeYS03PA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SpLGB19+H4VSsaP5q8ZUdWhGHBOh4SEkpQq+3kolqOvep1GXxUdumUv5mlQOXA2ULXPT43gYH/aLnkYHCJXyv0EJ1D/hcnarXK7CIKPmTUMSZtRHDa/Tq5VtYFTHnVw7haEwS3ZqUmdiav7TzosDpmFzYRG9KEtg5iSm5YdjdJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OqNqDLAy; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9457C1F000E9;
-	Tue, 16 Jun 2026 18:30:38 +0000 (UTC)
+	 MIME-Version; b=CyWwp+hOQ3mONVXTWCDmoq6gk2H802XAwhf9XziBgMFuLPHKnzxxlW6oFii0L/Dqzn3Q0QKEXIdDkKkujc0C9R5Ef1jBxDbEs02PZyHhBLOSVC7xvLuELac/ztkq6wsMgmNjDYXRUQQw9BDCdLc9abtt98rs5XeOT4iTOjXIETA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qf+b1sr/; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77DBF1F00A3D;
+	Tue, 16 Jun 2026 15:57:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781634639;
-	bh=G3taWQjl1BfsPxdjG5iodc2cSxnqUL9MLYVql2ioS6Y=;
+	s=korg; t=1781625462;
+	bh=QJ7RSujnJkIqaUQG9kNZUOPtXmix6uMYGopnAqzsmZg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OqNqDLAy1/9Suf7Cnh21ioWaKobXzYT/NuL39wzq3wwBCFnEZrmc7qxfEN3MWJVrx
-	 IKSBtPeQPE72oJgNeQ7EbTb3rZE7fa3HIUk0cLwV6Ao0M4AO1K2HZqa0dvFJUXVQHA
-	 WnBM1sy4/1/emyP4Aq9d8HrGdyry/0WHnKPddrCc=
+	b=qf+b1sr/hHaf3+kD9S4d/7HgCWTQFNlYcR7vfQKsyvwItvnmT7SDsHr/wGKK2841S
+	 dCwBGjmAkcopjeZktLPvq4xAgF6fIpBKHURl8XqkajXvwzKhBOiOWYzhn2rBYGo/rB
+	 zjxPByzaSwBnMPL2PSYzG5KvrUufTyUc9yiBbFQU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amit Sunil Dhamne <amitsd@google.com>,
-	stable <stable@kernel.org>,
-	Badhri Jagan Sridharan <badhri@google.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	"Mario Limonciello (AMD)" <superm1@kernel.org>,
+	Lizhi Hou <lizhi.hou@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 304/411] usb: typec: tcpm: reset internal port states on soft reset AMS
+Subject: [PATCH 6.18 146/325] accel/amdxdna: Fix mm_struct reference leak in aie2_populate_range()
 Date: Tue, 16 Jun 2026 20:29:02 +0530
-Message-ID: <20260616145117.309810031@linuxfoundation.org>
+Message-ID: <20260616145105.001175206@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,125 +69,90 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266096-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264358-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:amitsd@google.com,m:stable@kernel.org,m:badhri@google.com,m:heikki.krogerus@linux.intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:superm1@kernel.org,m:lizhi.hou@amd.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,vger.kernel.org:from_smtp,amd.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4DCEE694382
+X-Rspamd-Queue-Id: 4746B691CAE
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amit Sunil Dhamne <amitsd@google.com>
+From: Lizhi Hou <lizhi.hou@amd.com>
 
-[ Upstream commit 2909f0d4994fb4306bf116df5ccee797791fce2c ]
+[ Upstream commit 2f41af638c92bac6f1f9275ea2d1901baef578f3 ]
 
-Reset internal port states (such as vdm_sm_running and
-explicit_contract) on soft reset AMS as the port needs to negotiate a
-new contract. The consequence of leaving the states in as-is cond are as
-follows:
-  * port is in SRC power role and an explicit contract is negotiated
-    with the port partner (in sink role)
-  * port partner sends a Soft Reset AMS while VDM State Machine is
-    running
-  * port accepts the Soft Reset request and the port advertises src caps
-  * port partner sends a Request message but since the explicit_contract
-    and vdm_sm_running are true from previous negotiation, the port ends
-    up sending Soft Reset instead of Accept msg.
+aie2_populate_range() jumps back to the again label without calling
+mmput(mm), leaking a reference to the mm_struct.
 
-Stub Log:
-[  203.653942] AMS DISCOVER_IDENTITY start
-[  203.653947] PD TX, header: 0x176f
-[  203.655901] PD TX complete, status: 0
-[  203.657470] PD RX, header: 0x124f [1]
-[  203.657477] Rx VDM cmd 0xff008081 type 2 cmd 1 len 1
-[  203.657482] AMS DISCOVER_IDENTITY finished
-[  203.657484] cc:=4
-[  204.155698] PD RX, header: 0x144f [1]
-[  204.155718] Rx VDM cmd 0xeeee8001 type 0 cmd 1 len 1
-[  204.155741] PD TX, header: 0x196f
-[  204.157622] PD TX complete, status: 0
-[  204.160060] PD RX, header: 0x4d [1]
-[  204.160066] state change SRC_READY -> SOFT_RESET [rev2 SOFT_RESET_AMS]
-[  204.160076] PD TX, header: 0x163
-[  204.162486] PD TX complete, status: 0
-[  204.162832] AMS SOFT_RESET_AMS finished
-[  204.162840] cc:=4
-[  204.162891] AMS POWER_NEGOTIATION start
-[  204.162896] state change SOFT_RESET -> AMS_START [rev2 POWER_NEGOTIATION]
-[  204.162908] state change AMS_START -> SRC_SEND_CAPABILITIES [rev2 POWER_NEGOTIATION]
-[  204.162913] PD TX, header: 0x1361
-[  204.165529] PD TX complete, status: 0
-[  204.165571] pending state change SRC_SEND_CAPABILITIES -> SRC_SEND_CAPABILITIES_TIMEOUT @ 60 ms [rev2 POWER_NEGOTIATION]
-[  204.166996] PD RX, header: 0x1242 [1]
-[  204.167009] state change SRC_SEND_CAPABILITIES -> SRC_SOFT_RESET_WAIT_SNK_TX [rev2 POWER_NEGOTIATION]
-[  204.167019] AMS POWER_NEGOTIATION finished
-[  204.167020] cc:=4
-[  204.167083] AMS SOFT_RESET_AMS start
-[  204.167086] state change SRC_SOFT_RESET_WAIT_SNK_TX -> SOFT_RESET_SEND [rev2 SOFT_RESET_AMS]
-[  204.167092] PD TX, header: 0x16d
-[  204.168824] PD TX complete, status: 0
-[  204.168854] pending state change SOFT_RESET_SEND -> HARD_RESET_SEND @ 60 ms [rev2 SOFT_RESET_AMS]
-[  204.171876] PD RX, header: 0x43 [1]
-[  204.171879] AMS SOFT_RESET_AMS finished
+Add the missing mmput() before jumping to again.
 
-This causes COMMON.PROC.PD.11.2 check failure for
-TEST.PD.VDM.SRC.2_Rev2Src test on the PD compliance tester.
-
-Signed-off-by: Amit Sunil Dhamne <amitsd@google.com>
-Fixes: 8d3a0578ad1a ("usb: typec: tcpm: Respond Wait if VDM state machine is running")
-Fixes: f0690a25a140 ("staging: typec: USB Type-C Port Manager (tcpm)")
-Cc: stable <stable@kernel.org>
-Reviewed-by: Badhri Jagan Sridharan <badhri@google.com>
-Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://patch.msgid.link/20260414-fix-soft-reset-v1-1-01d7cb9764e2@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[ kept `tcpm_pd_send_control(port, PD_CTRL_ACCEPT)` call unchanged ]
+Fixes: e486147c912f ("accel/amdxdna: Add BO import and export")
+Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
+Signed-off-by: Lizhi Hou <lizhi.hou@amd.com>
+Link: https://patch.msgid.link/20260610151127.2994185-1-lizhi.hou@amd.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/tcpm/tcpm.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/accel/amdxdna/aie2_ctx.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/usb/typec/tcpm/tcpm.c
-+++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -4576,6 +4576,8 @@ static void run_state_machine(struct tcp
- 		port->message_id = 0;
- 		port->rx_msgid = -1;
- 		tcpm_pd_send_control(port, PD_CTRL_ACCEPT);
-+		port->vdm_sm_running = false;
-+		port->explicit_contract = false;
- 		tcpm_ams_finish(port);
- 		if (port->pwr_role == TYPEC_SOURCE) {
- 			port->upcoming_state = SRC_SEND_CAPABILITIES;
+diff --git a/drivers/accel/amdxdna/aie2_ctx.c b/drivers/accel/amdxdna/aie2_ctx.c
+index 4610f491f0881c..80de2906a26fcb 100644
+--- a/drivers/accel/amdxdna/aie2_ctx.c
++++ b/drivers/accel/amdxdna/aie2_ctx.c
+@@ -828,6 +828,7 @@ static int aie2_populate_range(struct amdxdna_gem_obj *abo)
+ 
+ 		if (ret == -EBUSY) {
+ 			amdxdna_umap_put(mapp);
++			mmput(mm);
+ 			goto again;
+ 		}
+ 
+@@ -838,11 +839,13 @@ static int aie2_populate_range(struct amdxdna_gem_obj *abo)
+ 	if (mmu_interval_read_retry(&mapp->notifier, mapp->range.notifier_seq)) {
+ 		up_write(&xdna->notifier_lock);
+ 		amdxdna_umap_put(mapp);
++		mmput(mm);
+ 		goto again;
+ 	}
+ 	mapp->invalid = false;
+ 	up_write(&xdna->notifier_lock);
+ 	amdxdna_umap_put(mapp);
++	mmput(mm);
+ 	goto again;
+ 
+ put_mm:
+-- 
+2.53.0
+
 
 
 
