@@ -1,39 +1,39 @@
-Return-Path: <stable+bounces-264994-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265531-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id t68wKyKDMWoblQUAu9opvQ
-	(envelope-from <stable+bounces-264994-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:08:50 +0200
+	id //04D0eMMWpKmQUAu9opvQ
+	(envelope-from <stable+bounces-265531-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:47:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 403B7692C73
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:08:50 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCCB66937CD
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:47:50 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
 	dkim=none;
 	dmarc=none;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264994-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264994-lists+stable=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265531-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265531-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2BA203219984
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:56:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CFE7B325E51B
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:41:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8218A478E39;
-	Tue, 16 Jun 2026 16:55:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26F3647CC64;
+	Tue, 16 Jun 2026 17:41:22 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from bregans-1.gladserv.net (bregans-1.gladserv.net [185.128.211.58])
+Received: from bregans-0.gladserv.net (bregans-0.gladserv.net [185.128.210.58])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 420FB4502F;
-	Tue, 16 Jun 2026 16:55:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8542C3101A7;
+	Tue, 16 Jun 2026 17:41:18 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781628959; cv=none; b=XGOsnzfPJ1mLN25OGirS3NX/8WFzt9mjfbotOPXewiXVNphnDYxBvq0OpJpdNIV26L+Qqcdlmibm4CfeZOj/H147RxdlkIcJi/RWva7ss79sR0y6hTrAjIbwXo/zRZkGxoBlDGy/BhLkfjERu/FDLfCSEezm91kmIP2Jv2FoM1w=
+	t=1781631681; cv=none; b=ohnPAKj5ER+zAvn3UFdWSZ+AODjyQm3LM870ewoPKyjEvvXtAxzK4gP3c3BY4N1Vc7FtfRkGkFo+9FDZbfTXnUSTyWApEAeBm8F6JhWPxfN62p7+0ZphGxllN1jq1oNsaB18mtI1jzutpRSLqjp85lQGO+o0W6TCorhdUGDw7Uw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781628959; c=relaxed/simple;
-	bh=QKM1zheAVKbCNAXTe+GsGaotgBMey1uLgBGkLNlHvc4=;
+	s=arc-20240116; t=1781631681; c=relaxed/simple;
+	bh=0tJY2ayqFdidT+0J3VjTpzcv6OlBqbRGhMS1fJlHxqg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A6MJM8y4IaHCRCBADprVW88arQ72zTaYx/hpW2/Jp0ewx5i6HuJQk+2ps1orw+vQ3znXYVGJdtddCWxI9GGRD0PjbH29FI/HlkyvVeo/60Gef//GYOpz/2uzHy6FX/O7PSrqOaYJDfwSfTytGEuKFPnUkPzMiMqg1H8ygTWt9Q4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net; spf=pass smtp.mailfrom=librecast.net; arc=none smtp.client-ip=185.128.211.58
+	 MIME-Version; b=cZTupIPA3Q0ST/A7NsuKP7nZXDcOWYHvwvE8U8B3vZMX+YIzMhr2YAHnfSiNH/lIrt86xllY4SnAbhqpnLg7adBjrsQ+Sf4CSRx0OmbIs91LZ/xp3lkEYZsY7r9G3KJMG3BB8uPcUL6w4r99si+RJxvN963IB0Ai8987o89s7P4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net; spf=pass smtp.mailfrom=librecast.net; arc=none smtp.client-ip=185.128.210.58
 From: Brett A C Sheffield <bacs@librecast.net>
 To: gregkh@linuxfoundation.org
 Cc: stable@vger.kernel.org,
@@ -56,12 +56,12 @@ Cc: stable@vger.kernel.org,
 	achill@achill.org,
 	sr@sladewatkins.com,
 	Brett A C Sheffield <bacs@librecast.net>
-Subject: Re: [PATCH 6.18 000/325] 6.18.36-rc1 review
-Date: Tue, 16 Jun 2026 16:55:48 +0000
-Message-ID: <20260616165552.26705-1-bacs@librecast.net>
+Subject: Re: [PATCH 6.6 000/452] 6.6.143-rc1 review
+Date: Tue, 16 Jun 2026 16:55:54 +0000
+Message-ID: <20260616165557.26744-1-bacs@librecast.net>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -75,14 +75,14 @@ X-Spamd-Result: default: False [1.54 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	DMARC_NA(0.00)[librecast.net];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-264994-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265531-lists,stable=lfdr.de];
 	RCPT_COUNT_TWELVE(0.00)[21];
 	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,m:patches@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:torvalds@linux-foundation.org,m:akpm@linux-foundation.org,m:linux@roeck-us.net,m:shuah@kernel.org,m:patches@kernelci.org,m:lkft-triage@lists.linaro.org,m:pavel@nabladev.com,m:jonathanh@nvidia.com,m:f.fainelli@gmail.com,m:sudipm.mukherjee@gmail.com,m:rwarsow@gmx.de,m:conor@kernel.org,m:hargar@microsoft.com,m:broonie@kernel.org,m:achill@achill.org,m:sr@sladewatkins.com,m:bacs@librecast.net,m:ffainelli@gmail.com,m:sudipmmukherjee@gmail.com,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
@@ -100,10 +100,10 @@ X-Spamd-Result: default: False [1.54 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	R_DKIM_NA(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,librecast.net:email,librecast.net:mid,librecast.net:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,librecast.net:email,librecast.net:mid,librecast.net:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 403B7692C73
+X-Rspamd-Queue-Id: CCCB66937CD
 
 # Librecast Test Results
 
@@ -111,7 +111,7 @@ X-Rspamd-Queue-Id: 403B7692C73
 010/010 [ OK ] libmld
 120/120 [ OK ] liblibrecast
 
-CPU/kernel: Linux auntie 6.18.36-rc1-g1b6356bc9016 #1 SMP PREEMPT_DYNAMIC Tue Jun 16 16:02:41 -00 2026 x86_64 AMD Ryzen 9 9950X 16-Core Processor AuthenticAMD GNU/Linux
+CPU/kernel: Linux auntie 6.6.143-rc1-gc3a40fddacf0 #1 SMP PREEMPT_DYNAMIC Tue Jun 16 16:05:43 -00 2026 x86_64 AMD Ryzen 9 9950X 16-Core Processor AuthenticAMD GNU/Linux
 
 Tested-by: Brett A C Sheffield <bacs@librecast.net>
 
