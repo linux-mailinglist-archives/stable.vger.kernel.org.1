@@ -1,64 +1,61 @@
-Return-Path: <stable+bounces-264160-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265656-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id tQvLEV5wMWpZjQUAu9opvQ
-	(envelope-from <stable+bounces-264160-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:48:46 +0200
+	id EjdWIs2NMWoqmgUAu9opvQ
+	(envelope-from <stable+bounces-265656-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:54:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id D813C691670
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:48:45 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3AF76939D7
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:54:20 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=j8R8KW8t;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264160-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-264160-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=gXD9bKjL;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265656-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265656-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8A58C3041C57
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:41:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7EB29300679B
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:51:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5716645348D;
-	Tue, 16 Jun 2026 15:40:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 679E047CC79;
+	Tue, 16 Jun 2026 17:51:55 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D013644D681;
-	Tue, 16 Jun 2026 15:40:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33DD5478E53;
+	Tue, 16 Jun 2026 17:51:51 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781624439; cv=none; b=mQcwtlYOOIt64tAMK/rc1RH3Ke6kmf1w46pkdTOjVVSmrJ7j7PhyBLRxVkV0cRmkPlZZ6vy7nGMTUIEw1fQbPUW7KGqrbdnOvIkcEgHHA60q1gMCu0Yd1CzIXHNSes9LihRpS5D0UvYA+akjorK6fvgBBFAnNPCYNetkPSlUNeE=
+	t=1781632314; cv=none; b=PrqvcFlGwTmTVlk0Lt3J7IdzikwKcmqmHuLlfJjLjkgpMNpfsKrcAjjlhrAtHJC/RJcFeJlDoJzHIGgOuew+o/K5wNWGT6PzDJKw3AcAbe4Aq1EWcatfrZ/fl80tyGuhcrkQO1LzNFS0SZx0GNBRRzPUrG+zm80nLHM3tuNYvJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781624439; c=relaxed/simple;
-	bh=+TeXKGA34u+Fgco+aArB1JFBlQPXRCR2FKGoL19X9g8=;
+	s=arc-20240116; t=1781632314; c=relaxed/simple;
+	bh=CXSEUOusNmPETEY8PVEfgXVIhHzp7uTu231O3Ojgn70=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U8ZCS7gim4hPqGPbPKWYQlTHSXHFRSvj+9yYxmKTXuKXYi/Y3nEPnJ3TH6T5SVExeoMHybFsKJQiKCZNJNuAj0Nlvj1dFlxXEw3bXlXOhVOyELwNm92+HmEtxjYHdZ16OgF24xCO1O9L233OraErn216bvNFMzdIaS5iLJWj8lg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j8R8KW8t; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F40E1F000E9;
-	Tue, 16 Jun 2026 15:40:36 +0000 (UTC)
+	 MIME-Version; b=adPENYp/pRueZDEtBEEvLjNA9SLJvTjw/kKE9FabBvkq2MSDc2UkxAMc6Hiwd6KBmSUjw7FMFwo89IyDe/kWAOhX5uJPnLJMaqHacYsgZfkekpOue/PXynCEoCwKHIpzU4Zkfp4BRkjMFHCqpR4OR/BMqrOQ6705TJn5YisHxCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gXD9bKjL; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF0A81F00A3A;
+	Tue, 16 Jun 2026 17:51:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781624437;
-	bh=yrZAr0r4ITMA1zTMxVJT7yXIcAyAKghqnNM8moiiHhw=;
+	s=korg; t=1781632310;
+	bh=N1aH2MkRxsMi9GnDwvnbmAC9PvfqHq44Wp5uVrOGtI8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=j8R8KW8tXRym02huNEqMCLVIBdNphg3dKVt1AJdzQjDaVbxBD38XSpUpK3aezYaHa
-	 P8vWFznO5x4dEbWvWH1zhz/Xl2ojQFmUcCFd2X7UN7PzR++h2zyDgBaFrh2l6RIxJ5
-	 BJDONPjMoNL/dpl+8v7x9Bgrud8wLjQdPUqIKhrw=
+	b=gXD9bKjLOI17Zh83PmLBMVdb3RO+T6AhuKyPLzRHqsX76O0SB7LfOWSTuWasnny08
+	 MrsrbSMKI5f43Ki58p9sE5pIsZIDP0bcKtibzWDZcTBXY7W31VD2cxShaCfaOS4c/T
+	 sIfbsOVj9VVRCH3cZTPh2udB/zFY4jqcVAxpVvU8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Oscar Salvador <osalvador@suse.de>,
-	Jann Horn <jannh@google.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 7.0 303/378] mm/hugetlb: avoid false positive lockdep assertion
+	Yang Yingliang <yangyingliang@huawei.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 387/522] spi: spi-ti-qspi: switch to use modern name
 Date: Tue, 16 Jun 2026 20:28:54 +0530
-Message-ID: <20260616145126.075943714@linuxfoundation.org>
+Message-ID: <20260616145143.903234192@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,287 +69,328 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264160-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265656-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:ljs@kernel.org,m:david@kernel.org,m:osalvador@suse.de,m:jannh@google.com,m:muchun.song@linux.dev,m:akpm@linux-foundation.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:yangyingliang@huawei.com,m:broonie@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linux-foundation.org:email,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,huawei.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D813C691670
+X-Rspamd-Queue-Id: D3AF76939D7
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Stoakes <ljs@kernel.org>
+From: Yang Yingliang <yangyingliang@huawei.com>
 
-commit b4aea43cd37afad714b5684fe9fdfcb0e78dba26 upstream.
+[ Upstream commit 9d93c8d97b4cdb5edddb4c5530881c90eecb7e44 ]
 
-Commit 081056dc00a2 ("mm/hugetlb: unshare page tables during VMA split,
-not before") changed the locking model around hugetlbfs PMD unsharing on
-VMA split, but did not update the function which asserts the locks,
-hugetlb_vma_assert_locked().
+Change legacy name master to modern name host or controller.
 
-This function asserts that either the hugetlb VMA lock is held (if a
-shared mapping) or that the reservation map lock is held (if private).
+No functional changed.
 
-If you get an unfortunate race between something which results in one of
-these locks being released and a hugetlb VMA split and you have
-CONFIG_LOCKDEP enabled, you can therefore see a false positive assertion
-arise when there is in fact no issue.
-
-Since this change introduced a new take_locks parameter to
-hugetlb_unshare_pmds(), which, when set to false, indicates that locking
-is sufficient, simply pass this to the unsharing logic and predicate the
-lock assertions on this.
-
-This is safe, as we already asserted the file rmap lock and the VMA write
-lock prior to this (implying exclusive mmap write lock), so we cannot be
-raced by either rmap or page fault page table walkers which the asserted
-locks are intended to protect against (we don't mind GUP-fast).
-
-Separate out huge_pmd_unshare() into __huge_pmd_unshare() to add a
-check_locks parameter, and update hugetlb_unshare_pmds() to pass this
-parameter to it.
-
-This leaves all other callers of huge_pmd_unshare() still correctly
-asserting the locks.
-
-The below reproducer will trigger the assert in a kernel with
-CONFIG_LOCKDEP enabled by racing process teardown (which will release the
-hugetlb lock) against a hugetlb split.
-
-void execute_one(void)
-{
-	void *ptr;
-	pid_t pid;
-
-	/*
-	 * Create a hugetlb mapping spanning a PUD entry.
-	 *
-	 * We force the hugetlb page allocation with populate and
-	 * noreserve.
-	 *
-	 * |---------------------|
-	 * |                     |
-	 * |---------------------|
-	 * 0                 PUD boundary
-	 */
-	ptr = mmap(0, PUD_SIZE, PROT_READ | PROT_WRITE,
-		   MAP_FIXED | MAP_SHARED | MAP_ANON |
-		   MAP_NORESERVE | MAP_HUGETLB | MAP_POPULATE,
-		   -1, 0);
-	if (ptr == MAP_FAILED) {
-		perror("mmap");
-		exit(EXIT_FAILURE);
-	}
-
-	/*
-	 * Fork but with a bogus stack pointer so we try to execute code in
-	 * a non-VM_EXEC VMA, causing segfault + teardown via exit_mmap().
-	 *
-	 * The clone will cause PMD page table sharing between the
-	 * processes first via:
-	 * copy_process() -> ... -> huge_pte_alloc() -> huge_pmd_share()
-	 *
-	 * Then tear down and release the hugetlb 'VMA' lock via:
-	 * exit_mmap() -> ... -> vma_close() -> hugetlb_vma_lock_free()
-	 */
-	pid = syscall(__NR_clone, 0, 2 * PMD_SIZE, 0, 0, 0);
-	if (pid < 0) {
-		perror("clone");
-		exit(EXIT_FAILURE);
-	} if (pid == 0) {
-		/* Pop stack... */
-		return;
-	}
-
-	/*
-	 * We are the parent process.
-	 *
-	 * Race the child process's teardown with a PMD unshare.
-	 *
-	 * We do this by triggering:
-	 *
-	 * __split_vma() -> hugetlb_split() -> hugetlb_unshare_pmds()
-	 *
-	 * Which, importantly, doesn't hold the hugetlb VMA lock (nor can
-	 * it), meaning we assert in hugetlb_vma_assert_locked().
-	 *
-	 *            .
-	 * |----------.----------|
-	 * |          .          |
-	 * |----------.----------|
-	 * 0          .     PUD boundary
-	 */
-	mmap(0, PUD_SIZE / 2, PROT_READ | PROT_WRITE,
-	     MAP_FIXED | MAP_ANON | MAP_PRIVATE, -1, 0);
-}
-
-int main(void)
-{
-	int i;
-
-	/* Kick off fork children. */
-	for (i = 0; i < NUM_FORKS; i++) {
-		pid_t pid = fork();
-
-		if (pid < 0) {
-			perror("fork");
-			exit(EXIT_FAILURE);
-		}
-
-		/* Fork children do their work and exit. */
-		if (!pid) {
-			int j;
-
-			for (j = 0; j < NUM_ITERS; j++)
-				execute_one();
-			return EXIT_SUCCESS;
-		}
-	}
-
-	/* If we succeeded, wait on children. */
-	for (i = 0; i < NUM_FORKS; i++)
-		wait(NULL);
-
-	return EXIT_SUCCESS;
-}
-
-[ljs@kernel.org: account for the !CONFIG_HUGETLB_PMD_PAGE_TABLE_SHARING case]
-  Link: https://lore.kernel.org/agWZsPGYid08uU6O@lucifer
-Link: https://lore.kernel.org/20260513085658.45264-1-ljs@kernel.org
-Fixes: 081056dc00a2 ("mm/hugetlb: unshare page tables during VMA split, not before")
-Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-Acked-by: Oscar Salvador <osalvador@suse.de>
-Cc: Jann Horn <jannh@google.com>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+Link: https://msgid.link/r/20231128093031.3707034-16-yangyingliang@huawei.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 0c18a1bacbb1 ("spi: ti-qspi: fix controller deregistration")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/hugetlb.c |   56 +++++++++++++++++++++++++++++++++++++-------------------
- 1 file changed, 37 insertions(+), 19 deletions(-)
+ drivers/spi/spi-ti-qspi.c |   88 +++++++++++++++++++++++-----------------------
+ 1 file changed, 44 insertions(+), 44 deletions(-)
 
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -118,6 +118,9 @@ static int hugetlb_acct_memory(struct hs
- static void hugetlb_vma_lock_free(struct vm_area_struct *vma);
- static void hugetlb_vma_lock_alloc(struct vm_area_struct *vma);
- static void __hugetlb_vma_unlock_write_free(struct vm_area_struct *vma);
-+static int __huge_pmd_unshare(struct mmu_gather *tlb,
-+		struct vm_area_struct *vma, unsigned long addr, pte_t *ptep,
-+		bool check_locks);
- static void hugetlb_unshare_pmds(struct vm_area_struct *vma,
- 		unsigned long start, unsigned long end, bool take_locks);
- static struct resv_map *vma_resv_map(struct vm_area_struct *vma);
-@@ -6910,6 +6913,31 @@ out:
- 	return pte;
- }
+--- a/drivers/spi/spi-ti-qspi.c
++++ b/drivers/spi/spi-ti-qspi.c
+@@ -41,7 +41,7 @@ struct ti_qspi {
+ 	/* list synchronization */
+ 	struct mutex            list_lock;
  
-+static int __huge_pmd_unshare(struct mmu_gather *tlb,
-+		struct vm_area_struct *vma, unsigned long addr, pte_t *ptep,
-+		bool check_locks)
-+{
-+	unsigned long sz = huge_page_size(hstate_vma(vma));
-+	struct mm_struct *mm = vma->vm_mm;
-+	pgd_t *pgd = pgd_offset(mm, addr);
-+	p4d_t *p4d = p4d_offset(pgd, addr);
-+	pud_t *pud = pud_offset(p4d, addr);
-+
-+	if (sz != PMD_SIZE)
-+		return 0;
-+	if (!ptdesc_pmd_is_shared(virt_to_ptdesc(ptep)))
-+		return 0;
-+	i_mmap_assert_write_locked(vma->vm_file->f_mapping);
-+	if (check_locks)
-+		hugetlb_vma_assert_locked(vma);
-+	pud_clear(pud);
-+
-+	tlb_unshare_pmd_ptdesc(tlb, virt_to_ptdesc(ptep), addr);
-+
-+	mm_dec_nr_pmds(mm);
-+	return 1;
-+}
-+
- /**
-  * huge_pmd_unshare - Unmap a pmd table if it is shared by multiple users
-  * @tlb: the current mmu_gather.
-@@ -6929,24 +6957,7 @@ out:
- int huge_pmd_unshare(struct mmu_gather *tlb, struct vm_area_struct *vma,
- 		unsigned long addr, pte_t *ptep)
+-	struct spi_master	*master;
++	struct spi_controller	*host;
+ 	void __iomem            *base;
+ 	void __iomem            *mmap_base;
+ 	size_t			mmap_size;
+@@ -138,20 +138,20 @@ static inline void ti_qspi_write(struct
+ 
+ static int ti_qspi_setup(struct spi_device *spi)
  {
--	unsigned long sz = huge_page_size(hstate_vma(vma));
--	struct mm_struct *mm = vma->vm_mm;
--	pgd_t *pgd = pgd_offset(mm, addr);
--	p4d_t *p4d = p4d_offset(pgd, addr);
--	pud_t *pud = pud_offset(p4d, addr);
--
--	if (sz != PMD_SIZE)
--		return 0;
--	if (!ptdesc_pmd_is_shared(virt_to_ptdesc(ptep)))
--		return 0;
--	i_mmap_assert_write_locked(vma->vm_file->f_mapping);
--	hugetlb_vma_assert_locked(vma);
--	pud_clear(pud);
--
--	tlb_unshare_pmd_ptdesc(tlb, virt_to_ptdesc(ptep), addr);
--
--	mm_dec_nr_pmds(mm);
--	return 1;
-+	return __huge_pmd_unshare(tlb, vma, addr, ptep, /*check_locks=*/true);
- }
+-	struct ti_qspi	*qspi = spi_master_get_devdata(spi->master);
++	struct ti_qspi	*qspi = spi_controller_get_devdata(spi->controller);
+ 	int ret;
  
- /*
-@@ -6980,6 +6991,13 @@ pte_t *huge_pmd_share(struct mm_struct *
- 	return NULL;
- }
- 
-+static int __huge_pmd_unshare(struct mmu_gather *tlb,
-+		struct vm_area_struct *vma, unsigned long addr, pte_t *ptep,
-+		bool check_locks)
-+{
-+	return 0;
-+}
-+
- int huge_pmd_unshare(struct mmu_gather *tlb, struct vm_area_struct *vma,
- 		unsigned long addr, pte_t *ptep)
- {
-@@ -7277,7 +7295,7 @@ static void hugetlb_unshare_pmds(struct
- 		if (!ptep)
- 			continue;
- 		ptl = huge_pte_lock(h, mm, ptep);
--		huge_pmd_unshare(&tlb, vma, address, ptep);
-+		__huge_pmd_unshare(&tlb, vma, address, ptep, take_locks);
- 		spin_unlock(ptl);
+-	if (spi->master->busy) {
+-		dev_dbg(qspi->dev, "master busy doing other transfers\n");
++	if (spi->controller->busy) {
++		dev_dbg(qspi->dev, "host busy doing other transfers\n");
+ 		return -EBUSY;
  	}
- 	huge_pmd_unshare_flush(&tlb, vma);
+ 
+-	if (!qspi->master->max_speed_hz) {
++	if (!qspi->host->max_speed_hz) {
+ 		dev_err(qspi->dev, "spi max frequency not defined\n");
+ 		return -EINVAL;
+ 	}
+ 
+-	spi->max_speed_hz = min(spi->max_speed_hz, qspi->master->max_speed_hz);
++	spi->max_speed_hz = min(spi->max_speed_hz, qspi->host->max_speed_hz);
+ 
+ 	ret = pm_runtime_resume_and_get(qspi->dev);
+ 	if (ret < 0) {
+@@ -527,7 +527,7 @@ static int ti_qspi_dma_xfer_sg(struct ti
+ 
+ static void ti_qspi_enable_memory_map(struct spi_device *spi)
+ {
+-	struct ti_qspi  *qspi = spi_master_get_devdata(spi->master);
++	struct ti_qspi  *qspi = spi_controller_get_devdata(spi->controller);
+ 
+ 	ti_qspi_write(qspi, MM_SWITCH, QSPI_SPI_SWITCH_REG);
+ 	if (qspi->ctrl_base) {
+@@ -541,7 +541,7 @@ static void ti_qspi_enable_memory_map(st
+ 
+ static void ti_qspi_disable_memory_map(struct spi_device *spi)
+ {
+-	struct ti_qspi  *qspi = spi_master_get_devdata(spi->master);
++	struct ti_qspi  *qspi = spi_controller_get_devdata(spi->controller);
+ 
+ 	ti_qspi_write(qspi, 0, QSPI_SPI_SWITCH_REG);
+ 	if (qspi->ctrl_base)
+@@ -555,7 +555,7 @@ static void ti_qspi_setup_mmap_read(stru
+ 				    u8 data_nbits, u8 addr_width,
+ 				    u8 dummy_bytes)
+ {
+-	struct ti_qspi  *qspi = spi_master_get_devdata(spi->master);
++	struct ti_qspi  *qspi = spi_controller_get_devdata(spi->controller);
+ 	u32 memval = opcode;
+ 
+ 	switch (data_nbits) {
+@@ -577,7 +577,7 @@ static void ti_qspi_setup_mmap_read(stru
+ 
+ static int ti_qspi_adjust_op_size(struct spi_mem *mem, struct spi_mem_op *op)
+ {
+-	struct ti_qspi *qspi = spi_controller_get_devdata(mem->spi->master);
++	struct ti_qspi *qspi = spi_controller_get_devdata(mem->spi->controller);
+ 	size_t max_len;
+ 
+ 	if (op->data.dir == SPI_MEM_DATA_IN) {
+@@ -607,7 +607,7 @@ static int ti_qspi_adjust_op_size(struct
+ static int ti_qspi_exec_mem_op(struct spi_mem *mem,
+ 			       const struct spi_mem_op *op)
+ {
+-	struct ti_qspi *qspi = spi_master_get_devdata(mem->spi->master);
++	struct ti_qspi *qspi = spi_controller_get_devdata(mem->spi->controller);
+ 	u32 from = 0;
+ 	int ret = 0;
+ 
+@@ -634,10 +634,10 @@ static int ti_qspi_exec_mem_op(struct sp
+ 		struct sg_table sgt;
+ 
+ 		if (virt_addr_valid(op->data.buf.in) &&
+-		    !spi_controller_dma_map_mem_op_data(mem->spi->master, op,
++		    !spi_controller_dma_map_mem_op_data(mem->spi->controller, op,
+ 							&sgt)) {
+ 			ret = ti_qspi_dma_xfer_sg(qspi, sgt, from);
+-			spi_controller_dma_unmap_mem_op_data(mem->spi->master,
++			spi_controller_dma_unmap_mem_op_data(mem->spi->controller,
+ 							     op, &sgt);
+ 		} else {
+ 			ret = ti_qspi_dma_bounce_buffer(qspi, from,
+@@ -659,10 +659,10 @@ static const struct spi_controller_mem_o
+ 	.adjust_op_size = ti_qspi_adjust_op_size,
+ };
+ 
+-static int ti_qspi_start_transfer_one(struct spi_master *master,
++static int ti_qspi_start_transfer_one(struct spi_controller *host,
+ 		struct spi_message *m)
+ {
+-	struct ti_qspi *qspi = spi_master_get_devdata(master);
++	struct ti_qspi *qspi = spi_controller_get_devdata(host);
+ 	struct spi_device *spi = m->spi;
+ 	struct spi_transfer *t;
+ 	int status = 0, ret;
+@@ -721,7 +721,7 @@ static int ti_qspi_start_transfer_one(st
+ 
+ 	ti_qspi_write(qspi, qspi->cmd | QSPI_INVAL, QSPI_SPI_CMD_REG);
+ 	m->status = status;
+-	spi_finalize_current_message(master);
++	spi_finalize_current_message(host);
+ 
+ 	return status;
+ }
+@@ -757,33 +757,33 @@ MODULE_DEVICE_TABLE(of, ti_qspi_match);
+ static int ti_qspi_probe(struct platform_device *pdev)
+ {
+ 	struct  ti_qspi *qspi;
+-	struct spi_master *master;
++	struct spi_controller *host;
+ 	struct resource         *r, *res_mmap;
+ 	struct device_node *np = pdev->dev.of_node;
+ 	u32 max_freq;
+ 	int ret = 0, num_cs, irq;
+ 	dma_cap_mask_t mask;
+ 
+-	master = spi_alloc_master(&pdev->dev, sizeof(*qspi));
+-	if (!master)
++	host = spi_alloc_host(&pdev->dev, sizeof(*qspi));
++	if (!host)
+ 		return -ENOMEM;
+ 
+-	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_RX_DUAL | SPI_RX_QUAD;
++	host->mode_bits = SPI_CPOL | SPI_CPHA | SPI_RX_DUAL | SPI_RX_QUAD;
+ 
+-	master->flags = SPI_CONTROLLER_HALF_DUPLEX;
+-	master->setup = ti_qspi_setup;
+-	master->auto_runtime_pm = true;
+-	master->transfer_one_message = ti_qspi_start_transfer_one;
+-	master->dev.of_node = pdev->dev.of_node;
+-	master->bits_per_word_mask = SPI_BPW_MASK(32) | SPI_BPW_MASK(16) |
+-				     SPI_BPW_MASK(8);
+-	master->mem_ops = &ti_qspi_mem_ops;
++	host->flags = SPI_CONTROLLER_HALF_DUPLEX;
++	host->setup = ti_qspi_setup;
++	host->auto_runtime_pm = true;
++	host->transfer_one_message = ti_qspi_start_transfer_one;
++	host->dev.of_node = pdev->dev.of_node;
++	host->bits_per_word_mask = SPI_BPW_MASK(32) | SPI_BPW_MASK(16) |
++				   SPI_BPW_MASK(8);
++	host->mem_ops = &ti_qspi_mem_ops;
+ 
+ 	if (!of_property_read_u32(np, "num-cs", &num_cs))
+-		master->num_chipselect = num_cs;
++		host->num_chipselect = num_cs;
+ 
+-	qspi = spi_master_get_devdata(master);
+-	qspi->master = master;
++	qspi = spi_controller_get_devdata(host);
++	qspi->host = host;
+ 	qspi->dev = &pdev->dev;
+ 	platform_set_drvdata(pdev, qspi);
+ 
+@@ -793,7 +793,7 @@ static int ti_qspi_probe(struct platform
+ 		if (r == NULL) {
+ 			dev_err(&pdev->dev, "missing platform data\n");
+ 			ret = -ENODEV;
+-			goto free_master;
++			goto free_host;
+ 		}
+ 	}
+ 
+@@ -813,7 +813,7 @@ static int ti_qspi_probe(struct platform
+ 	irq = platform_get_irq(pdev, 0);
+ 	if (irq < 0) {
+ 		ret = irq;
+-		goto free_master;
++		goto free_host;
+ 	}
+ 
+ 	mutex_init(&qspi->list_lock);
+@@ -821,7 +821,7 @@ static int ti_qspi_probe(struct platform
+ 	qspi->base = devm_ioremap_resource(&pdev->dev, r);
+ 	if (IS_ERR(qspi->base)) {
+ 		ret = PTR_ERR(qspi->base);
+-		goto free_master;
++		goto free_host;
+ 	}
+ 
+ 
+@@ -831,7 +831,7 @@ static int ti_qspi_probe(struct platform
+ 						"syscon-chipselects");
+ 		if (IS_ERR(qspi->ctrl_base)) {
+ 			ret = PTR_ERR(qspi->ctrl_base);
+-			goto free_master;
++			goto free_host;
+ 		}
+ 		ret = of_property_read_u32_index(np,
+ 						 "syscon-chipselects",
+@@ -839,7 +839,7 @@ static int ti_qspi_probe(struct platform
+ 		if (ret) {
+ 			dev_err(&pdev->dev,
+ 				"couldn't get ctrl_mod reg index\n");
+-			goto free_master;
++			goto free_host;
+ 		}
+ 	}
+ 
+@@ -854,7 +854,7 @@ static int ti_qspi_probe(struct platform
+ 	pm_runtime_enable(&pdev->dev);
+ 
+ 	if (!of_property_read_u32(np, "spi-max-frequency", &max_freq))
+-		master->max_speed_hz = max_freq;
++		host->max_speed_hz = max_freq;
+ 
+ 	dma_cap_zero(mask);
+ 	dma_cap_set(DMA_MEMCPY, mask);
+@@ -878,7 +878,7 @@ static int ti_qspi_probe(struct platform
+ 		qspi->rx_chan = NULL;
+ 		goto no_dma;
+ 	}
+-	master->dma_rx = qspi->rx_chan;
++	host->dma_rx = qspi->rx_chan;
+ 	init_completion(&qspi->transfer_complete);
+ 	if (res_mmap)
+ 		qspi->mmap_phys_base = (dma_addr_t)res_mmap->start;
+@@ -891,21 +891,21 @@ no_dma:
+ 				 "mmap failed with error %ld using PIO mode\n",
+ 				 PTR_ERR(qspi->mmap_base));
+ 			qspi->mmap_base = NULL;
+-			master->mem_ops = NULL;
++			host->mem_ops = NULL;
+ 		}
+ 	}
+ 	qspi->mmap_enabled = false;
+ 	qspi->current_cs = -1;
+ 
+-	ret = devm_spi_register_master(&pdev->dev, master);
++	ret = devm_spi_register_controller(&pdev->dev, host);
+ 	if (!ret)
+ 		return 0;
+ 
+ 	ti_qspi_dma_cleanup(qspi);
+ 
+ 	pm_runtime_disable(&pdev->dev);
+-free_master:
+-	spi_master_put(master);
++free_host:
++	spi_controller_put(host);
+ 	return ret;
+ }
+ 
+@@ -914,9 +914,9 @@ static void ti_qspi_remove(struct platfo
+ 	struct ti_qspi *qspi = platform_get_drvdata(pdev);
+ 	int rc;
+ 
+-	rc = spi_master_suspend(qspi->master);
++	rc = spi_controller_suspend(qspi->host);
+ 	if (rc) {
+-		dev_alert(&pdev->dev, "spi_master_suspend() failed (%pe)\n",
++		dev_alert(&pdev->dev, "spi_controller_suspend() failed (%pe)\n",
+ 			  ERR_PTR(rc));
+ 		return;
+ 	}
 
 
 
