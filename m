@@ -1,70 +1,61 @@
-Return-Path: <stable+bounces-264140-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264379-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id p87EKX1vMWoXjQUAu9opvQ
-	(envelope-from <stable+bounces-264140-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:45:01 +0200
+	id eu9LHrd1MWp/jwUAu9opvQ
+	(envelope-from <stable+bounces-264379-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:11:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D56D6915C8
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:45:01 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE844691C8B
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:11:34 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=AKidPHRl;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264140-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264140-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=AkNfOUiS;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264379-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264379-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C0BB0308DFD6
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:39:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 25C1532A39B6
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:00:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0712D44CF25;
-	Tue, 16 Jun 2026 15:38:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 643DD466B77;
+	Tue, 16 Jun 2026 15:59:35 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C00934889F;
-	Tue, 16 Jun 2026 15:38:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17A96451056;
+	Tue, 16 Jun 2026 15:59:34 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781624336; cv=none; b=KoqD+Y+nk/8ya4+iwL5+EFCyiqPT3MKL7Jerf26nrCiFwlhlyj/TYiRR8S1Fl5NYVyQE9tkeFkVADacxWZVIdoXOMb+g69O/f/HxAB4JvNHIk/iNdz9igtitB0lKOF2MEFC4lf1Bg+aBWmwGgCKouWdTRxLt3M4ZzY60Sf3ohMc=
+	t=1781625575; cv=none; b=XKZ/5f/K1mMlsSqogjU2ddzmV+2+zRlGzI9obTmPA8DA7WKiJrDXfeQuOvkxxxoHKKBVIzQgffULJ91FqVEraHqBhRxu4l6tqQ27LjW6qQat+9ReWA7Xf85RJ4SLWowS/034cAs9GKRZEMlWOT6zmhrEJb3wGX9CSA19tZEPPvo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781624336; c=relaxed/simple;
-	bh=Yd+8gkZvuBf6TELS3hA7y+TKR7gkefGaMvb0p0Jkgho=;
+	s=arc-20240116; t=1781625575; c=relaxed/simple;
+	bh=DLDrx//RJVgk1Clkg04mwOz8TjSeRNRWBRTbl3UsJV8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nlHmDeaH93AthLeU6+TJmhObCeLZ+D7EaHQnaLvlLpsWD7aMVdcMFXp4HkoYXW/pH8N74y4mtk3AJMeuPgsO0ssaRhIM91tNPZwtYlt/N2WCEGI0gPp1k+3fBl7eXDrr60q4fysxf9REtH5STa6Jsa6Od300bjRKSvWPCggPA9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AKidPHRl; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 820ED1F000E9;
-	Tue, 16 Jun 2026 15:38:54 +0000 (UTC)
+	 MIME-Version; b=mtaUNfiw8+1llf0nkgCvUhJxiViRrG2Cfj475Tjh5AyA+khzplvNlyn6QLDNjA93u2kTAAln/MvtWe/ZINgeb+dXls61NVHJw0kuKc3YTcI/4QRST1ngMGc+4U3HIsIbOqJgdL7FzEPSH1USVxZ4MDG0yfgpP1fnbnDnxImpoL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AkNfOUiS; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0A8D1F000E9;
+	Tue, 16 Jun 2026 15:59:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781624335;
-	bh=QPwG/1zga6N4eayrk9XWciA/NcnISqRcg3qJiO78OwU=;
+	s=korg; t=1781625574;
+	bh=hLI7b3AtbnOD0CWPhD5rtZ9dVUBmqc5aIorsck1tKbk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=AKidPHRlV36aAkEf0N1ArCRo+IZGDMLQ4OqHxOfV7/X8TU/zL0Gm9MbWEVF/4fgO/
-	 jVDLssoEbD9G2Igj6fEwq/gKH8YSZoIbF/va/FbvaoMT49/7VX3duv1lbtOaWYNd8B
-	 yikasAeeh1P7s/r2W1WRRn0OnvtkN7H7JEk6fO/I=
+	b=AkNfOUiSZhXEsMfo37Yyiv4HdVHhYvwuBN5ThntejFuwQ/io69lPlBVDj4iD5ej2Z
+	 NhOFKZFp8FlWRrEzBSGw4KL+p4mJ3E3iHJxazEQQyNBLbm2baYfL+zTUvA2XH/A+qF
+	 1Xd+tsDBkE7lX2nWVpFyTMRjQ71TrKl6AWEgIrkM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Jeffrey Altman <jaltman@auristor.com>,
-	Eric Dumazet <edumazet@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
-	netdev@vger.kernel.org,
-	stable@kernel.org
-Subject: [PATCH 7.0 317/378] rxrpc: Fix the ACK parser to extract the SACK table for parsing
+	Sumit Garg <sumit.garg@oss.qualcomm.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.18 152/325] soc: qcom: ice: Fix race between qcom_ice_probe() and of_qcom_ice_get()
 Date: Tue, 16 Jun 2026 20:29:08 +0530
-Message-ID: <20260616145126.942134948@linuxfoundation.org>
+Message-ID: <20260616145105.291598709@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,142 +67,190 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264140-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com,auristor.com,google.com,davemloft.net,kernel.org,lists.infradead.org,vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:dhowells@redhat.com,m:marc.dionne@auristor.com,m:jaltman@auristor.com,m:edumazet@google.com,m:davem@davemloft.net,m:kuba@kernel.org,m:pabeni@redhat.com,m:horms@kernel.org,m:linux-afs@lists.infradead.org,m:netdev@vger.kernel.org,m:stable@kernel.org,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-264379-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:sumit.garg@oss.qualcomm.com,m:manivannan.sadhasivam@oss.qualcomm.com,m:andersson@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,infradead.org:email,msgid.link:url,vger.kernel.org:from_smtp,auristor.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,qualcomm.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4D56D6915C8
+X-Rspamd-Queue-Id: DE844691C8B
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
 
-commit 333b6d5bb9f87827ac2639c737bf9613dbae7253 upstream.
+commit d922113ef91e6e7e8065e9070f349365341ba32e upstream.
 
-Fix modification of the received skbuff in rxrpc_input_soft_acks() and a
-potential incorrect access of the buffer in a fragmented UDP packet (the
-packet would probably have to be deliberately pre-generated as fragmented)
-when AF_RXRPC tries to extract the contents of the SACK table by copying
-out the contents of the SACK table into a buffer before attempting to parse
+The current platform driver design causes probe ordering races with
+consumers (UFS, eMMC) due to ICE's dependency on SCM firmware calls. If ICE
+probe fails (missing ICE SCM or DT registers), devm_of_qcom_ice_get() loops
+with -EPROBE_DEFER, leaving consumers non-functional even when ICE should
+be gracefully disabled. devm_of_qcom_ice_get() doesn't know if the ICE
+driver probe has failed due to above reasons or it is waiting for the SCM
+driver.
 
-AF_RXRPC assumes that it can just call skb_condense() and then validly
-access the SACK table from skb->data and that it will be a flat buffer -
-but skb_condense() can silently fail to do anything under some
-circumstances.
+Moreover, there is no devlink dependency between ICE and consumer drivers
+as 'qcom,ice' is not considered as a DT 'supplier'. So the consumer drivers
+have no idea of when the ICE driver is going to probe.
 
-Note that whilst rxrpc_input_soft_acks() should be able to parse extended
-ACKs, the rest of AF_RXRPC doesn't currently support that.
+To address these issues, store the error pointer in a global xarray with
+ice node phandle as a key during probe in addition to the valid ice pointer
+and synchronize both qcom_ice_probe() and of_qcom_ice_get() using a mutex.
 
-Further, there's then no need to call skb_condense() in rxrpc_input_ack(),
-so don't.
+If the xarray entry is NULL, then it implies that the driver is not
+probed yet, so return -EPROBE_DEFER. If it has any error pointer, return
+that error pointer directly. Otherwise, add the devlink as usual and return
+the valid pointer to the consumer.
 
-Fixes: d57a3a151660 ("rxrpc: Save last ACK's SACK table rather than marking txbufs")
-Reported-by: Michael Bommarito <michael.bommarito@gmail.com>
-Link: https://lore.kernel.org/r/20260513180907.2061972-1-michael.bommarito@gmail.com
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Jeffrey Altman <jaltman@auristor.com>
-cc: Eric Dumazet <edumazet@google.com>
-cc: "David S. Miller" <davem@davemloft.net>
-cc: Jakub Kicinski <kuba@kernel.org>
-cc: Paolo Abeni <pabeni@redhat.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: netdev@vger.kernel.org
-cc: stable@kernel.org
-Link: https://patch.msgid.link/105362.1780573560@warthog.procyon.org.uk
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Xarray is used instead of platform drvdata, since driver core frees the
+drvdata during probe failure. So it cannot be used to pass the error
+pointer to the consumers.
+
+Note that this change only fixes the standalone ICE DT node bindings and
+not the ones with 'ice' range embedded in the consumer nodes, where there
+is no issue.
+
+Fixes: 2afbf43a4aec ("soc: qcom: Make the Qualcomm UFS/SDCC ICE a dedicated driver")
+Reported-by: Sumit Garg <sumit.garg@oss.qualcomm.com>
+Tested-by: Sumit Garg <sumit.garg@oss.qualcomm.com> # OP-TEE as TZ
+Acked-by: Sumit Garg <sumit.garg@oss.qualcomm.com>
+Cc: stable@vger.kernel.org # 6.4
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20260518-qcom-ice-fix-v7-1-2a595382185b@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rxrpc/input.c |   26 +++++++++++++++++---------
- 1 file changed, 17 insertions(+), 9 deletions(-)
+ drivers/soc/qcom/ice.c |   38 +++++++++++++++++++++++++++++++-------
+ 1 file changed, 31 insertions(+), 7 deletions(-)
 
---- a/net/rxrpc/input.c
-+++ b/net/rxrpc/input.c
-@@ -963,23 +963,34 @@ static void rxrpc_input_soft_acks(struct
- 	struct rxrpc_skb_priv *sp = rxrpc_skb(skb);
- 	struct rxrpc_txqueue *tq = call->tx_queue;
- 	unsigned long extracted = ~0UL;
--	unsigned int nr = 0;
-+	unsigned int nr = 0, nsack;
- 	rxrpc_seq_t seq = call->acks_hard_ack + 1;
- 	rxrpc_seq_t lowest_nak = seq + sp->ack.nr_acks;
--	u8 *acks = skb->data + sizeof(struct rxrpc_wire_header) + sizeof(struct rxrpc_ackpacket);
-+	u8 sack[256] __aligned(sizeof(unsigned long));
-+	u8 *acks = sack;
+--- a/drivers/soc/qcom/ice.c
++++ b/drivers/soc/qcom/ice.c
+@@ -16,6 +16,7 @@
+ #include <linux/of.h>
+ #include <linux/of_platform.h>
+ #include <linux/platform_device.h>
++#include <linux/xarray.h>
  
- 	_enter("%x,%x,%u", tq->qbase, seq, sp->ack.nr_acks);
+ #include <linux/firmware/qcom/qcom_scm.h>
  
- 	while (after(seq, tq->qbase + RXRPC_NR_TXQUEUE - 1))
- 		tq = tq->next;
+@@ -100,6 +101,9 @@ struct qcom_ice {
+ 	bool hwkm_init_complete;
+ };
  
-+	/* Extract an individual SACK table.  A normal SACK table is up to 255
-+	 * bytes with 1 ACK flag per byte, but an extended SACK table can be up
-+	 * to 256 bytes with up to 8 ACK/NACK flags per byte.  The ACK flags go
-+	 * across all bit 0's then all bit 1's, then all bit 2's, ...
-+	 */
-+	memset(sack, 0, sizeof(sack));
-+	nsack = umin(sp->ack.nr_acks, 256);
-+	if (skb_copy_bits(skb,
-+			  sizeof(struct rxrpc_wire_header) + sizeof(struct rxrpc_ackpacket),
-+			  sack, nsack) < 0)
-+		return;
++static DEFINE_XARRAY(ice_handles);
++static DEFINE_MUTEX(ice_mutex);
 +
- 	for (unsigned int i = 0; i < sp->ack.nr_acks; i++) {
- 		/* Decant ACKs until we hit a txqueue boundary. */
-+		if ((i & 255) == 0)
-+			acks = sack;
- 		shiftr_adv_rotr(acks, extracted);
--		if (i == 256) {
--			acks -= i;
--			i = 0;
--		}
- 		seq++;
- 		nr++;
- 		if ((seq & RXRPC_TXQ_MASK) != 0)
-@@ -1117,9 +1128,6 @@ static void rxrpc_input_ack(struct rxrpc
- 	    skb_copy_bits(skb, ioffset, &trailer, sizeof(trailer)) < 0)
- 		return rxrpc_proto_abort(call, 0, rxrpc_badmsg_short_ack_trailer);
+ static bool qcom_ice_check_supported(struct qcom_ice *ice)
+ {
+ 	u32 regval = qcom_ice_readl(ice, QCOM_ICE_REG_VERSION);
+@@ -609,6 +613,8 @@ static struct qcom_ice *of_qcom_ice_get(
+ 		return qcom_ice_create(&pdev->dev, base);
+ 	}
  
--	if (nr_acks > 0)
--		skb_condense(skb);
--
- 	call->acks_latest_ts = ktime_get_real();
- 	call->acks_hard_ack = hard_ack;
- 	call->acks_prev_seq = prev_pkt;
++	guard(mutex)(&ice_mutex);
++
+ 	/*
+ 	 * If the consumer node does not provider an 'ice' reg range
+ 	 * (legacy DT binding), then it must at least provide a phandle
+@@ -625,12 +631,13 @@ static struct qcom_ice *of_qcom_ice_get(
+ 		return ERR_PTR(-ENODEV);
+ 	}
+ 
+-	ice = platform_get_drvdata(pdev);
+-	if (!ice) {
+-		dev_err(dev, "Cannot get ice instance from %s\n",
+-			dev_name(&pdev->dev));
++	ice = xa_load(&ice_handles, pdev->dev.of_node->phandle);
++	if (IS_ERR_OR_NULL(ice)) {
+ 		platform_device_put(pdev);
+-		return ERR_PTR(-EPROBE_DEFER);
++		if (!ice)
++			return ERR_PTR(-EPROBE_DEFER);
++		else
++			return ice;
+ 	}
+ 
+ 	link = device_link_add(dev, &pdev->dev, DL_FLAG_AUTOREMOVE_SUPPLIER);
+@@ -694,24 +701,40 @@ EXPORT_SYMBOL_GPL(devm_of_qcom_ice_get);
+ 
+ static int qcom_ice_probe(struct platform_device *pdev)
+ {
++	unsigned long phandle = pdev->dev.of_node->phandle;
+ 	struct qcom_ice *engine;
+ 	void __iomem *base;
+ 
++	guard(mutex)(&ice_mutex);
++
+ 	base = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(base)) {
+ 		dev_warn(&pdev->dev, "ICE registers not found\n");
++		/* Store the error pointer for devm_of_qcom_ice_get() */
++		xa_store(&ice_handles, phandle, (__force void *)base, GFP_KERNEL);
+ 		return PTR_ERR(base);
+ 	}
+ 
+ 	engine = qcom_ice_create(&pdev->dev, base);
+-	if (IS_ERR(engine))
++	if (IS_ERR(engine)) {
++		/* Store the error pointer for devm_of_qcom_ice_get() */
++		xa_store(&ice_handles, phandle, engine, GFP_KERNEL);
+ 		return PTR_ERR(engine);
++	}
+ 
+-	platform_set_drvdata(pdev, engine);
++	xa_store(&ice_handles, phandle, engine, GFP_KERNEL);
+ 
+ 	return 0;
+ }
+ 
++static void qcom_ice_remove(struct platform_device *pdev)
++{
++	unsigned long phandle = pdev->dev.of_node->phandle;
++
++	guard(mutex)(&ice_mutex);
++	xa_store(&ice_handles, phandle, NULL, GFP_KERNEL);
++}
++
+ static const struct of_device_id qcom_ice_of_match_table[] = {
+ 	{ .compatible = "qcom,inline-crypto-engine" },
+ 	{ },
+@@ -720,6 +743,7 @@ MODULE_DEVICE_TABLE(of, qcom_ice_of_matc
+ 
+ static struct platform_driver qcom_ice_driver = {
+ 	.probe	= qcom_ice_probe,
++	.remove	= qcom_ice_remove,
+ 	.driver = {
+ 		.name = "qcom-ice",
+ 		.of_match_table = qcom_ice_of_match_table,
 
 
 
