@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-265808-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264817-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ZyCTIkuQMWpSmwUAu9opvQ
-	(envelope-from <stable+bounces-265808-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:04:59 +0200
+	id K95WAMd8MWqQkgUAu9opvQ
+	(envelope-from <stable+bounces-264817-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:41:43 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43647693C9A
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:04:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B66D692592
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:41:42 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=kWWZKsif;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265808-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-265808-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=dDjJWBLc;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264817-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-264817-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B2A3E302983A
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:04:58 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E46003046736
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:40:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC6353C09E1;
-	Tue, 16 Jun 2026 18:04:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFE8A478868;
+	Tue, 16 Jun 2026 16:40:46 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F9412F12AE;
-	Tue, 16 Jun 2026 18:04:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06236478E42;
+	Tue, 16 Jun 2026 16:40:45 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781633095; cv=none; b=CuJJPU2c1YPOXkNiA82P1ACcRjvrjsg6VdAWmaBG4O7ryXEHBdcpi4s05w1J/MdXwPujvpsxe+atrgq4J8c2F7cRakFHcSn1UGd5bukMTf/Gwd5TIqoubvP6kt+KUVUqw8QNp1pY2W+GdXa+VDs44NGWPkmFpMjqm/EKk8HqPF8=
+	t=1781628046; cv=none; b=NcrmJJlVxe8cuZBpycf3hb4iXQinCQs06QRtVOuVG38txVOF5BbiLDtbSQJRiTfDZ0pCjPRIhlGihCa1Bs37HbX5Nm1fvCLFc/Qd7JROY2NoOMQHV2MjDkgHDZq1n2cRR0j2RJx1X1hxBhqVafVA0Agpq+CWwLv2YVwajtBeTNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781633095; c=relaxed/simple;
-	bh=EzfQfrPzWCoauAWHx7lLfOflTDvEqIzfvDDfO+HEGMs=;
+	s=arc-20240116; t=1781628046; c=relaxed/simple;
+	bh=HPtCm2RoXxMzIGDjIw4Wf5oDEVP9HNkbnL2n1RG43IE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MX+8bdUoxb9G7VAlKJIPcz6+F4UyH5R09D3rP1KRbDQcoW2ECJhpaV7xBkpHfAsAFV26iw0pRSA1x7JHRzrlwHnAlXjSVIfX7MQ0espQtfETTRYS810ZP+DKc/izRphiLEoUQT0MIenuosEvKx83aAUkNNW4Y7xcKvImeWrptW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kWWZKsif; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 927C61F00A3A;
-	Tue, 16 Jun 2026 18:04:53 +0000 (UTC)
+	 MIME-Version; b=fe2m/HWgQGldZ1zgVV8kr+wGhgneoCMAP9jqIVKG6RPq32tM2jn9wej/mLr0p/TRxxSwSDbYWjnp2drN2Zci2UTq/7Bcp93eb1nT5hiLy76apH9e1luN9CpEa/IU9RcSWynrJt8IpNLSvji+WHZnOgZOiFq6y4QhS4Wm8+cTqR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dDjJWBLc; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07B5A1F000E9;
+	Tue, 16 Jun 2026 16:40:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781633094;
-	bh=zeFgJZ1zh3WNzSfHHTl5LcqqymBFMkWTwkbpJkSkEDY=;
+	s=korg; t=1781628044;
+	bh=pUj2cR1ZT6kd7sYlj4Qmp7+74HAWt2dgYjDJcnOcvLE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=kWWZKsifVHOY/mlNeLrwHu4j5SYDOc3ZjIrVwZhW2xXWRb+XDP25KXZM/IHN/RXv6
-	 9bIoQjYdadcs8GMS5N2lpnWLqOXFGhtqm2FY4NDb7fIcs0BtrZMRNPjfWtsTwplV8V
-	 cywYz4nayXh/fSrr52sUolu7Ss1zgbRaTgkztEl4=
+	b=dDjJWBLcegCYObpvtozDy1D85T/z46KFwMVBMI2h8obVgUBdUFHYoASzhiI1EE5bU
+	 +wm8Usfnuf8T1nS+kvLwo4+J7M9IY0ibvtCI85+G8x9M1pCGSTJ5OcL7NCGwV+DO1U
+	 NibuaqRzcc8uUSgamPY3zRBBbMhdZ6x1Dgex1OIQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leo Lin <leo@depthfirst.com>,
-	David Ahern <dahern@nvidia.com>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
+	Ilya Maximets <i.maximets@ovn.org>,
+	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 010/411] xfrm: Check for underflow in xfrm_state_mtu
+Subject: [PATCH 6.6 021/452] net: netlink: fix sending unassigned nsid after assigned one
 Date: Tue, 16 Jun 2026 20:24:08 +0530
-Message-ID: <20260616145100.907747061@linuxfoundation.org>
+Message-ID: <20260616145118.932497691@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -79,10 +79,10 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265808-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264817-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:leo@depthfirst.com,m:dahern@nvidia.com,m:steffen.klassert@secunet.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:i.maximets@ovn.org,m:nicolas.dichtel@6wind.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
@@ -99,91 +99,51 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,nvidia.com:email,secunet.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 43647693C9A
+X-Rspamd-Queue-Id: 3B66D692592
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Ahern <dahern@nvidia.com>
+From: Ilya Maximets <i.maximets@ovn.org>
 
-[ Upstream commit 742b04d0550b0ec89dcbc99537ec88653bd1ad90 ]
+[ Upstream commit 70f8592ee90585272018a725054b6eb2ab7e99ca ]
 
-Leo Lin reported OOB write issue in esp component:
+If the current skb is not shared, it is re-used directly for all the
+sockets subscribed to the notification.  If we have remote all-nsid
+socket receiving a message first, then the 'nsid_is_set' will be
+set to 'true'.  If the nsid is NOT_ASSIGNED for the next socket in
+the list, the 'nsid_is_set' will remain 'true' and the negative value
+is be delivered to the user space.  All subsequent nsid values will be
+delivered as well, since there is no code path that sets the flag
+back to 'false'.
 
-  xfrm_state_mtu() returns u32 but performs its arithmetic in unsigned
-  modulo-2^32 space using an attacker-influenced "header_len + authsize +
-  net_adj" subtracted from a small "mtu" argument. A nobody user can
-  install an IPv4 ESP tunnel SA with a large authentication key
-  (XFRMA_ALG_AUTH_TRUNC, e.g. hmac(sha512), 64-byte key, 64-byte trunc),
-  configure a small interface MTU (68 bytes), and set XFRMA_TFCPAD to a
-  large value. When a single UDP datagram is then sent through the
-  tunnel, xfrm_state_mtu() underflows to a near-2^32 value, and
-  esp_output() consumes it as a signed int via:
+Fix that by always dropping the flag to 'false' first.
 
-        padto      = min(x->tfcpad, xfrm_state_mtu(x, mtu_cached))
-        esp.tfclen = padto - skb->len   (assigned to int)
-
-  esp.tfclen ends up negative (e.g. -207). It is sign-extended to size_t
-  when passed to memset() inside esp_output_fill_trailer(), producing a
-  ~16 EB write of zeroes at skb_tail_pointer(skb). KASAN logs it as
-  "Write of size 18446744073709551537 at addr ffff888...".
-
-Check for underflow and return 1. This causes the sendmsg attempt to
-fail with ENETUNREACH.
-
-Fixes: c5c252389374 ("[XFRM]: Optimize MTU calculation")
-Reported-by: Leo Lin <leo@depthfirst.com>
-Assisted-by: Codex:26.506.31004
-Signed-off-by: David Ahern <dahern@nvidia.com>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Fixes: 7212462fa6fd ("netlink: don't send unknown nsid")
+Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
+Acked-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Link: https://patch.msgid.link/20260520172317.175168-2-i.maximets@ovn.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/xfrm/xfrm_state.c | 19 ++++++++++++++++---
- 1 file changed, 16 insertions(+), 3 deletions(-)
+ net/netlink/af_netlink.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
-index f7f568bfb93a80..9593fcc7508c94 100644
---- a/net/xfrm/xfrm_state.c
-+++ b/net/xfrm/xfrm_state.c
-@@ -2581,10 +2581,14 @@ u32 xfrm_state_mtu(struct xfrm_state *x, int mtu)
- 	const struct xfrm_type *type = READ_ONCE(x->type);
- 	struct crypto_aead *aead;
- 	u32 blksize, net_adj = 0;
-+	u32 overhead, payload_mtu;
- 
- 	if (x->km.state != XFRM_STATE_VALID ||
--	    !type || type->proto != IPPROTO_ESP)
-+	    !type || type->proto != IPPROTO_ESP) {
-+		if (mtu <= x->props.header_len)
-+			return 1;
- 		return mtu - x->props.header_len;
-+	}
- 
- 	aead = x->data;
- 	blksize = ALIGN(crypto_aead_blocksize(aead), 4);
-@@ -2604,8 +2608,17 @@ u32 xfrm_state_mtu(struct xfrm_state *x, int mtu)
- 		break;
+diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
+index a5ffda87daf63b..f8d9a04d5d8b11 100644
+--- a/net/netlink/af_netlink.c
++++ b/net/netlink/af_netlink.c
+@@ -1484,6 +1484,7 @@ static void do_one_broadcast(struct sock *sk,
+ 		p->skb2 = NULL;
+ 		goto out;
  	}
- 
--	return ((mtu - x->props.header_len - crypto_aead_authsize(aead) -
--		 net_adj) & ~(blksize - 1)) + net_adj - 2;
-+	overhead = x->props.header_len + crypto_aead_authsize(aead) + net_adj;
-+	if (mtu <= overhead)
-+		return 1;
-+
-+	payload_mtu = mtu - overhead;
-+	payload_mtu &= ~(blksize - 1);
-+	if (payload_mtu <= 2)
-+		return 1;
-+
-+	return payload_mtu + net_adj - 2;
-+
- }
- EXPORT_SYMBOL_GPL(xfrm_state_mtu);
- 
++	NETLINK_CB(p->skb2).nsid_is_set = false;
+ 	NETLINK_CB(p->skb2).nsid = peernet2id(sock_net(sk), p->net);
+ 	if (NETLINK_CB(p->skb2).nsid != NETNSA_NSID_NOT_ASSIGNED)
+ 		NETLINK_CB(p->skb2).nsid_is_set = true;
 -- 
 2.53.0
 
