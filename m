@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-264190-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264693-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id LAhwEk1xMWq2jQUAu9opvQ
-	(envelope-from <stable+bounces-264190-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:52:45 +0200
+	id l6YkHQB8MWopkgUAu9opvQ
+	(envelope-from <stable+bounces-264693-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:38:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC2E3691757
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:52:44 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF98A69249C
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:38:23 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ri+E28DH;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264190-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-264190-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=WxxpGQk9;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264693-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264693-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 67B41309958C
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:45:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 73DE631F5A0F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:28:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C8BB45BD5F;
-	Tue, 16 Jun 2026 15:43:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01E9846AEE0;
+	Tue, 16 Jun 2026 16:28:55 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ECC24534A9;
-	Tue, 16 Jun 2026 15:43:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2224425CEE;
+	Tue, 16 Jun 2026 16:28:53 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781624607; cv=none; b=bkWCXflYogJl4Gmxny2aZ09nHGKrLoRgzTT17KIXYRoW4cBwhr1OJ7HvxxyeZdWkaVeG2joFQMyaxU0RLmKYLB4rxqKIjysj6S6Bt+YSPyzeUsvr2G7Oh9dguOOtHLdByUz2gSWXlW8d+8I4ntKcbbVUPH7Z2Dm7v+E/hZJszYU=
+	t=1781627334; cv=none; b=DhAbZcKlPJhcR+gNEDQXn3nKOEBmoKYn8ZNYxOsqeSjFC2gUvYKULg2S0pIpKMzH/3woCGwvUiXPwnLecsQAoq1zT2jxxefRYk6+vqhiI+DV45N3QuTS0CpHcuVhVuhZN+Nnc7e/GJjn3a4/4mQMI74zU/YFzIoefD1Q+XkTrL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781624607; c=relaxed/simple;
-	bh=20ucPT++1iz7zJUhsN2En6yz2abNkH4NUVc0so7ncfA=;
+	s=arc-20240116; t=1781627334; c=relaxed/simple;
+	bh=RHWRvJ4WqM7ERxE0aE+kaj0XMg+xYyPiA9e0p8tPWMs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sK+caSv7lbhps+Y3VA3D0+p9+Y7fe9LTtobA67wWHQslbMAWA5XCfNSvJHrJd3XUfUZBO9GY5ir3RF744XMvXi6Uj5SfvnNpguoIB6wnwX3hfUGTx1J9jpZJp3de4G1w83S+0jJNoXc39JNnkN7h5Jy5TOPlU++ylpNU37JUCcM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ri+E28DH; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2EC01F000E9;
-	Tue, 16 Jun 2026 15:43:24 +0000 (UTC)
+	 MIME-Version; b=WHSL+l1mcviaCqmzFj7zCKP6jWxmfWm+nBgUn5dgw82AepYk1kHMwGyi+o+eeNCkYuqbAqZvxiyOchsPFBjoPdpkymNE60rPTf0STHW5ymJcoW2Gn3CEdSrQaFzEMWr814vWrlnrT38wC5A3Y3zwiHUytP85iTJzXeGqmsNf8qc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WxxpGQk9; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D43591F000E9;
+	Tue, 16 Jun 2026 16:28:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781624605;
-	bh=HzxqTJAtjeXt5XvEHUGgtgpUF86MORjoSBvzVJrXJO4=;
+	s=korg; t=1781627333;
+	bh=qBF6TDHqnUzcQH9yLqxSp+2yHIH1EeMiG1Afm2INx1w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ri+E28DHbHIodlU8mQyEteKWjaNUOC45nlAW0PTmg8OLWTyB8/BCvaGUEa5pNUUMu
-	 DQpoWji2d3KeodlVO3I4Gi/201zfIwrGJuQZ4U8q5SdZeGaRDLrTHU+0t2AJiO+PNq
-	 WD4rL03AS9i/4qrwzH+9273SDMX9vHiO6T3OdcAk=
+	b=WxxpGQk9CIaZ55wdNVRGfFvtf10RsvLQzRpEm0CagPcn+vlQMKx/cr27X6NDggk4b
+	 tEqqhCSk4jyJH1Skb+jsl8StMdu4yBT9TOk2gB1ctVH3RXulOR0UPKVurKCgGmyIOu
+	 zZ7YlwMjMr6vtb2f3UiXwWofbqz0UWgiMoTwIF2Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rio Liu <rio@r26.me>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 7.0 365/378] wifi: mac80211: skip ieee80211_verify_sta_ht_mcs_support check in non-strict mode
+	Paolo Abeni <pabeni@redhat.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 158/261] mptcp: allow subflow rcv wnd to shrink
 Date: Tue, 16 Jun 2026 20:29:56 +0530
-Message-ID: <20260616145129.348733831@linuxfoundation.org>
+Message-ID: <20260616145052.397991004@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,22 +72,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264190-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264693-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:rio@r26.me,m:johannes.berg@intel.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:pabeni@redhat.com,m:matttbe@kernel.org,m:kuba@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -97,51 +98,68 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,vger.kernel.org:from_smtp,r26.me:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: CC2E3691757
+X-Rspamd-Queue-Id: CF98A69249C
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rio Liu <rio@r26.me>
+From: Paolo Abeni <pabeni@redhat.com>
 
-commit 711a9c018ad252b2807f85d44e1267b595644f9b upstream.
+commit da23be77e1292cd611e736c3aa17da633d7ddce7 upstream.
 
-Some Xfinity XB8 firmware advertises >1 spatial stream MCS indexes in
-their basic HT-MCS set. On cards with lower spatial streams, the check
-would fail, and we'd be stuck with no HT when in fact work fine with its
-own supported rate. This change makes it so the check is only performed
-in strict mode.
+In MPTCP connection, the `window` field in the TCP header refers to the
+MPTCP-level rcv_nxt and it's right edge should not move backward. Such
+constraint is enforced at DSS option generation time.
 
-Fixes: 574faa0e936d ("wifi: mac80211: add HT and VHT basic set verification")
-Signed-off-by: Rio Liu <rio@r26.me>
-Link: https://patch.msgid.link/99Mv9QEceyPrQhSP52MtAVmz0_kWJmzqotJjD9YW6LGLqk-AZloAueUyHCURilFkuqOh6Ecv8i2KKdSE1ujP3AnbU5QEouVisT1w_V3xdfc=@r26.me
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+At the same time, the TCP stack ensures independently that the TCP-level
+rcv wnd right's edge does not move backward. That in turn causes artificial
+inflating of the MPTCP rcv window when the incoming data is acked at the
+TCP level and is OoO in the MPTCP sequence space (or lands in the backlog).
+
+As a consequence, the incoming traffic can exceed the receiver rcvbuf size
+even when the sender is not misbehaving.
+
+Prevent such scenario forcibly allowing the TCP subflow to shrink the
+TCP-level rcv wnd regardless of the current netns setting.
+
+Fixes: f3589be0c420 ("mptcp: never shrink offered window")
+Cc: stable@vger.kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260602-net-mptcp-misc-fixes-7-1-rc7-v2-4-856831229976@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mac80211/mlme.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ net/mptcp/options.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -420,6 +420,15 @@ ieee80211_verify_sta_ht_mcs_support(stru
- 	ieee80211_apply_htcap_overrides(sdata, &sta_ht_cap);
+--- a/net/mptcp/options.c
++++ b/net/mptcp/options.c
+@@ -567,6 +567,7 @@ static bool mptcp_established_options_ds
+ {
+ 	struct mptcp_subflow_context *subflow = mptcp_subflow_ctx(sk);
+ 	struct mptcp_sock *msk = mptcp_sk(subflow->conn);
++	struct tcp_sock *tp = tcp_sk(sk);
+ 	unsigned int dss_size = 0;
+ 	struct mptcp_ext *mpext;
+ 	unsigned int ack_size;
+@@ -615,6 +616,12 @@ static bool mptcp_established_options_ds
+ 	if (dss_size == 0)
+ 		ack_size += TCPOLEN_MPTCP_DSS_BASE;
  
- 	/*
-+	 * Some Xfinity XB8 firmware advertises >1 spatial stream MCS indexes in
-+	 * their basic HT-MCS set. On cards with lower spatial streams, the check
-+	 * would fail, and we'd be stuck with no HT when it in fact work fine with
-+	 * its own supported rate. So check it only in strict mode.
++	/* The caller is __tcp_transmit_skb(), and will compute the new rcv
++	 * wnd soon: ensure that the window can shrink.
 +	 */
-+	if (!ieee80211_hw_check(&sdata->local->hw, STRICT))
-+		return true;
++	if (skb)
++		tp->rcv_wnd = tp->rcv_nxt - tp->rcv_wup;
 +
-+	/*
- 	 * P802.11REVme/D7.0 - 6.5.4.2.4
- 	 * ...
- 	 * If the MLME of an HT STA receives an MLME-JOIN.request primitive
+ 	dss_size += ack_size;
+ 
+ 	*size = ALIGN(dss_size, 4);
 
 
 
