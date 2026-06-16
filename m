@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-264752-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266171-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id JAQFNfN8MWqnkgUAu9opvQ
-	(envelope-from <stable+bounces-264752-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:42:27 +0200
+	id CZWNKuKXMWrFngUAu9opvQ
+	(envelope-from <stable+bounces-266171-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:37:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41CB36925D9
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:42:27 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id A915B69445F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:37:21 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="jk/sx8dA";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264752-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264752-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ovxwj27o;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266171-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-266171-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A3CBA301F18B
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:35:07 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id CE12E3004615
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:37:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 629E04779B3;
-	Tue, 16 Jun 2026 16:35:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDF0A3D8105;
+	Tue, 16 Jun 2026 18:37:15 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 384AA47798F;
-	Tue, 16 Jun 2026 16:35:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9939F169AD2;
+	Tue, 16 Jun 2026 18:37:14 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781627706; cv=none; b=WJjzAggntAwOnYtCwfO/08jhmkZYBcCmwVTKLFyxfYvYjLXqLJ5+Zn1NQJHYxZi+n21kBafkhe5xF1I02XGna4+yWwmwCQ7JWYq48xq4ec7xu1g4KbePWNFlcaAGEKyzEGb5Bc02pBDmXmBtnylyf9Vr/nmwentIKVDe9mY5H1Q=
+	t=1781635035; cv=none; b=M8IVQrEF440+mCAhJYbNQhwvI7yfTnlGSxMAEkqDTXOhLJzpOegTC03248F34UMl0PP4egSI3J4vsdwGW23NK5f9d2h29PJQzhMlrEAfEqaUvYMdiwTEaiA1wrQrb4bDuTtwO8gOvCbWBW7Zzhld68xSzdoystHxFzqJtDR2Jqg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781627706; c=relaxed/simple;
-	bh=7jIU0df49x1N8DaK5lgknXg0/PAp2NCLtQcYMD7JxLk=;
+	s=arc-20240116; t=1781635035; c=relaxed/simple;
+	bh=9y0YRrQ17nHpQWlaEJBzX1GuWuPpuizERA0MTZYQw/w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BABAeOyg95oDpURZr683e7xIhI/OMVim9yb7tio0MYQ2iTIgcelSl9kN6Yu4DOdu95fnDQTvputBRQXL6ryp0jEciQtYseVNY6tnzMGKDzmNUTBKIz5cSYA+RZ+TEz/HHGCbfHSyaTO2kgJ6UHrnh/p/hhI1pUzl/96AJrnCRQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jk/sx8dA; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8054D1F000E9;
-	Tue, 16 Jun 2026 16:35:03 +0000 (UTC)
+	 MIME-Version; b=DrUKl29yGtNqVD5nAUO6A5JQMlVy1r9RpUcMeOsyUWyZgupmFzQoTwXml8R/1qJGUe8rzAdKwpDV8GYiNxnsBVxJayusQOpbRp7R64BCh9gBKimX8jnxrF3mcEMp6obZ/iHCbxSOOPLUQPHmmbtBD54zHZQQj/x7TVFM8Z5s6XY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ovxwj27o; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7856B1F000E9;
+	Tue, 16 Jun 2026 18:37:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781627704;
-	bh=sVLBhgXGU7QHXeL8NhbvNVcTQxqcfqn5RywARWIH9v0=;
+	s=korg; t=1781635034;
+	bh=/n4xd2TZY20MOdWFffiewBUlD/gNM2D5ma7iHOfAvGY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jk/sx8dA8HSssXm0LItx9OfeFFLmvJmtLqzZUtcbYac9+TxlYCC/OlO9PnVV5Vm76
-	 qhhGcIusL4XrjChT5hN2oCG9k5dHjzqEOr1w3Uu7ZuoDgngV5amQcWikwwgX+4pQSW
-	 0zMgHH/59Y3EZD+5pn5kmIY4KHWuW+T9J05dPQrY=
+	b=ovxwj27olRrjCvYnmWYd110QW2M36nIbZwmKCBLkJgIOHhx7gBpYA6N+fylWwZBuS
+	 fWe1B6kKNaym4R8SHObGdxuhtf6XkT7HcMh4+9NmEl0Atg50iiwNe636QkZEWh2LDj
+	 z7NsAcUhiyGqmQ3N7m+f3mOCxWSL5YCVLBVynhu4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhenghang Xiao <kipreyyy@gmail.com>,
-	Srinivas Kandagatla <srini@kernel.org>
-Subject: [PATCH 6.12 179/261] misc: fastrpc: fix use-after-free race in fastrpc_map_create
+	Michael Kelley <mikelley@microsoft.com>,
+	Deepak Rawat <drawat.floss@gmail.com>,
+	"Andrea Parri (Microsoft)" <parri.andrea@gmail.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 379/411] drm/hyperv: Remove support for Hyper-V 2008 and 2008R2/Win7
 Date: Tue, 16 Jun 2026 20:30:17 +0530
-Message-ID: <20260616145053.371310099@linuxfoundation.org>
+Message-ID: <20260616145121.434658929@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
-References: <20260616145044.869532709@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,126 +69,132 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,microsoft.com,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-266171-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-264752-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kipreyyy@gmail.com,m:srini@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mikelley@microsoft.com,m:drawat.floss@gmail.com,m:parri.andrea@gmail.com,m:wei.liu@kernel.org,m:sashal@kernel.org,m:drawatfloss@gmail.com,m:parriandrea@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 41CB36925D9
+X-Rspamd-Queue-Id: A915B69445F
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhenghang Xiao <kipreyyy@gmail.com>
+From: Michael Kelley <mikelley@microsoft.com>
 
-commit 07ebe87915d8accdaba20c4f88c5ae430fe62fbb upstream.
+[ Upstream commit ac6811a9b36f3ceb549d8b84bd8aeedf6026df02 ]
 
-fastrpc_map_lookup returns a raw pointer after releasing fl->lock. The
-caller fastrpc_map_create then calls fastrpc_map_get (kref_get_unless_zero)
-on this unprotected pointer. A concurrent MEM_UNMAP can free the map
-between the lock release and the kref operation, resulting in a
-use-after-free on the freed slab object.
+The DRM Hyper-V driver has special case code for running on the first
+released versions of Hyper-V: 2008 and 2008 R2/Windows 7.  These versions
+are now out of support (except for extended security updates) and lack
+support for performance features that are needed for effective production
+usage of Linux guests.
 
-Restore the take_ref parameter to fastrpc_map_lookup so the reference
-is acquired atomically under fl->lock before the pointer is exposed to
-the caller.
+The negotiation of the VMbus protocol versions required by these old
+Hyper-V versions has been removed from the VMbus driver.  So now remove
+the handling of these VMbus protocol versions from the DRM Hyper-V
+driver.
 
-Fixes: 10df039834f8 ("misc: fastrpc: Skip reference for DMA handles")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zhenghang Xiao <kipreyyy@gmail.com>
-Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
-Link: https://patch.msgid.link/20260530204528.116920-5-srini@kernel.org
+Signed-off-by: Michael Kelley <mikelley@microsoft.com>
+Reviewed-by: Deepak Rawat <drawat.floss@gmail.com>
+Reviewed-by: Andrea Parri (Microsoft) <parri.andrea@gmail.com>
+Link: https://lore.kernel.org/r/1651509391-2058-5-git-send-email-mikelley@microsoft.com
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Stable-dep-of: 13d33b9ef670 ("drm/hyperv: validate resolution_count and fix WIN8 fallback")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/fastrpc.c |   25 +++++++++++--------------
- 1 file changed, 11 insertions(+), 14 deletions(-)
+ drivers/gpu/drm/hyperv/hyperv_drm_proto.c |   23 +++++++----------------
+ 1 file changed, 7 insertions(+), 16 deletions(-)
 
---- a/drivers/misc/fastrpc.c
-+++ b/drivers/misc/fastrpc.c
-@@ -365,7 +365,7 @@ static int fastrpc_map_get(struct fastrp
- 
- 
- static int fastrpc_map_lookup(struct fastrpc_user *fl, int fd,
--			    struct fastrpc_map **ppmap)
-+			    struct fastrpc_map **ppmap, bool take_ref)
- {
- 	struct fastrpc_map *map = NULL;
- 	struct dma_buf *buf;
-@@ -380,6 +380,12 @@ static int fastrpc_map_lookup(struct fas
- 		if (map->fd != fd || map->buf != buf)
- 			continue;
- 
-+		if (take_ref) {
-+			ret = fastrpc_map_get(map);
-+			if (ret)
-+				break;
-+		}
+--- a/drivers/gpu/drm/hyperv/hyperv_drm_proto.c
++++ b/drivers/gpu/drm/hyperv/hyperv_drm_proto.c
+@@ -18,16 +18,16 @@
+ #define SYNTHVID_VERSION(major, minor) ((minor) << 16 | (major))
+ #define SYNTHVID_VER_GET_MAJOR(ver) (ver & 0x0000ffff)
+ #define SYNTHVID_VER_GET_MINOR(ver) ((ver & 0xffff0000) >> 16)
 +
- 		*ppmap = map;
- 		ret = 0;
++/* Support for VERSION_WIN7 is removed. #define is retained for reference. */
+ #define SYNTHVID_VERSION_WIN7 SYNTHVID_VERSION(3, 0)
+ #define SYNTHVID_VERSION_WIN8 SYNTHVID_VERSION(3, 2)
+ #define SYNTHVID_VERSION_WIN10 SYNTHVID_VERSION(3, 5)
+ 
+-#define SYNTHVID_DEPTH_WIN7 16
+ #define SYNTHVID_DEPTH_WIN8 32
+-#define SYNTHVID_FB_SIZE_WIN7 (4 * 1024 * 1024)
++#define SYNTHVID_WIDTH_WIN8 1600
++#define SYNTHVID_HEIGHT_WIN8 1200
+ #define SYNTHVID_FB_SIZE_WIN8 (8 * 1024 * 1024)
+-#define SYNTHVID_WIDTH_MAX_WIN7 1600
+-#define SYNTHVID_HEIGHT_MAX_WIN7 1200
+ 
+ enum pipe_msg_type {
+ 	PIPE_MSG_INVALID,
+@@ -570,12 +570,6 @@ int hyperv_connect_vsp(struct hv_device
+ 	case VERSION_WIN8:
+ 	case VERSION_WIN8_1:
+ 		ret = hyperv_negotiate_version(hdev, SYNTHVID_VERSION_WIN8);
+-		if (!ret)
+-			break;
+-		fallthrough;
+-	case VERSION_WS2008:
+-	case VERSION_WIN7:
+-		ret = hyperv_negotiate_version(hdev, SYNTHVID_VERSION_WIN7);
  		break;
-@@ -894,19 +900,10 @@ get_err:
- static int fastrpc_map_create(struct fastrpc_user *fl, int fd,
- 			      u64 len, u32 attr, struct fastrpc_map **ppmap)
- {
--	struct fastrpc_session_ctx *sess = fl->sctx;
--	int err = 0;
-+	if (!fastrpc_map_lookup(fl, fd, ppmap, true))
-+		return 0;
- 
--	if (!fastrpc_map_lookup(fl, fd, ppmap)) {
--		if (!fastrpc_map_get(*ppmap))
--			return 0;
--		dev_dbg(sess->dev, "%s: Failed to get map fd=%d\n",
--			__func__, fd);
--	}
--
--	err = fastrpc_map_attach(fl, fd, len, attr, ppmap);
--
--	return err;
-+	return fastrpc_map_attach(fl, fd, len, attr, ppmap);
- }
- 
- /*
-@@ -1176,7 +1173,7 @@ cleanup_fdlist:
- 	for (i = 0; i < FASTRPC_MAX_FDLIST; i++) {
- 		if (!fdlist[i])
- 			break;
--		if (!fastrpc_map_lookup(fl, (int)fdlist[i], &mmap))
-+		if (!fastrpc_map_lookup(fl, (int)fdlist[i], &mmap, false))
- 			fastrpc_map_put(mmap);
+ 	default:
+ 		ret = hyperv_negotiate_version(hdev, SYNTHVID_VERSION_WIN10);
+@@ -587,18 +581,15 @@ int hyperv_connect_vsp(struct hv_device
+ 		goto error;
  	}
  
+-	if (hv->synthvid_version == SYNTHVID_VERSION_WIN7)
+-		hv->screen_depth = SYNTHVID_DEPTH_WIN7;
+-	else
+-		hv->screen_depth = SYNTHVID_DEPTH_WIN8;
++	hv->screen_depth = SYNTHVID_DEPTH_WIN8;
+ 
+ 	if (hyperv_version_ge(hv->synthvid_version, SYNTHVID_VERSION_WIN10)) {
+ 		ret = hyperv_get_supported_resolution(hdev);
+ 		if (ret)
+ 			drm_err(dev, "Failed to get supported resolution from host, use default\n");
+ 	} else {
+-		hv->screen_width_max = SYNTHVID_WIDTH_MAX_WIN7;
+-		hv->screen_height_max = SYNTHVID_HEIGHT_MAX_WIN7;
++		hv->screen_width_max = SYNTHVID_WIDTH_WIN8;
++		hv->screen_height_max = SYNTHVID_HEIGHT_WIN8;
+ 	}
+ 
+ 	hv->mmio_megabytes = hdev->channel->offermsg.offer.mmio_megabytes;
 
 
 
