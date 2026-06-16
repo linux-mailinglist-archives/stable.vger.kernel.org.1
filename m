@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-265794-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264771-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Au/bG/6PMWosmwUAu9opvQ
-	(envelope-from <stable+bounces-265794-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:03:42 +0200
+	id KteVAnh9MWrekgUAu9opvQ
+	(envelope-from <stable+bounces-264771-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:44:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15431693C3D
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:03:42 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CDA569269F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:44:39 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=X7jw4Jgf;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265794-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265794-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=VFFVx1qy;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264771-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264771-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 841F8300D1D1
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:03:41 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 05F48305706E
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:37:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B659B3CEBBD;
-	Tue, 16 Jun 2026 18:03:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB27D4779A8;
+	Tue, 16 Jun 2026 16:36:43 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DAC63CE4BA;
-	Tue, 16 Jun 2026 18:03:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD4074779AA;
+	Tue, 16 Jun 2026 16:36:42 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781633019; cv=none; b=RBo8KrvMwQVc9+Jg37HohdYdFu/BJVe7Z63DqzIxVgyYR55Xl2ocECpF/XMSZR2Mt+e/UPnxJ5x+o4RdXAK6ZOQtwYiHmE/CpM3E9Rz4gPlIejqnk/sMOhZ1CAzG7T9RVs3thY8RYFRUiKXRR38INei7TtNG4BdpVUMaEbpFsKY=
+	t=1781627803; cv=none; b=V1nOE5uHja45EyFQqUCiQva36MT3RC9N235tlAr/wpBa3bpIy5qAV9SFLodjgplJdG/7wtYAP2OzCCoptWYuzfvUdCJ2diuEB0nhIIvadqAyC4j+jSV093X4V2H3zDcy2Lkn3+mMSzSUNqkmWkiTrmSY/uzEVyFxIOQjvC+jj7s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781633019; c=relaxed/simple;
-	bh=QnOjdhaYH9AinWLDnVXJ1vkN8W2jv5jqVLPLV3h8KXU=;
+	s=arc-20240116; t=1781627803; c=relaxed/simple;
+	bh=IaFXzbZRNB0/TJwX/4JENdk7kIJ43V88Q8RO4jXGSI8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eo9D5pIIkikAq8pEiEaB2PZXut2bTPuv3gjm7vIPHZ2mwRkz3JlaTRunEqygf53+4YDuvtngdFMpMIiEZVwpqNbMDhZUwE/HJac9tEjTYpQbMB0ROzKBsIBXAqP7XrkpNzRX44f6EzOL7GKisMMcR6CyZokA4esfsU1cMSi5MY4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X7jw4Jgf; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D9771F000E9;
-	Tue, 16 Jun 2026 18:03:37 +0000 (UTC)
+	 MIME-Version; b=mTQDmrR9YrLaEGVgguTpaGC7QdSTe6PnfGqR8NOUu4hJXSk/+KP1nG+yxL65H1viHmHZIwjpvTmm+7MjjtfRKUGEsD0tccbECce4bCnx2Utc3FM02yBplRnT04D6Zj1aF7KljbhKxsz4bFxE1ZYS59JVUicNBE5nx5ofdyO9t2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VFFVx1qy; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEF321F00A3A;
+	Tue, 16 Jun 2026 16:36:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781633018;
-	bh=LOLnL+PxyjH5gq0zC9QilhxKAqc0KtAC+ZopHc8lyCY=;
+	s=korg; t=1781627802;
+	bh=lA9O+n/ZqgFCvbOek+8J6tQ6ZE0AchJOfz7zbFY4uOA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=X7jw4JgfMo+wlHzwPN5uMgCJmttUgtg+DhMZpx73H8XT7VpJzTRQ8qbMfa1CoraGp
-	 SyGAtv9baaR23TUn5ekpwJqJJ2Oug3X97uPF4foTUz4kbbT0AX0l5ipOegnWjnPIxh
-	 NNr8kAnAitfebXGkuPxnS196zBCHXLB4/skj245c=
+	b=VFFVx1qyFtDgv5Pn9ce+/buGyYFjo8RtkiZVWsJ/P7Wr2vzAcD5dsPni94pufJwVb
+	 ++5lkHZ6keiF8Bsav9Fpr37qir6jivS5XnJYRbpBtCs1sydmYmZhto0Jf9i4nkCQEW
+	 H6Or77D1bIz5Q9RCEgMJSWnQgmAdKIkNu0yTaStA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ben Hutchings <benh@debian.org>
-Subject: [PATCH 6.1 521/522] apparmor: validate default DFA states are in bounds
+	Johan Hovold <johan@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH 6.12 230/261] driver core: reject devices with unregistered buses
 Date: Tue, 16 Jun 2026 20:31:08 +0530
-Message-ID: <20260616145150.082886843@linuxfoundation.org>
+Message-ID: <20260616145055.695465124@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,113 +71,97 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-265794-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264771-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:benh@debian.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:johan@kernel.org,m:dakr@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 15431693C3D
+X-Rspamd-Queue-Id: 5CDA569269F
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ben Hutchings <benh@debian.org>
+From: Johan Hovold <johan@kernel.org>
 
-Some backports of commit 9063d7e2615f ("apparmor: validate DFA start
-states are in bounds in unpack_pdb") limited the bounds checks on DFA
-start states to the case where the start state was explicit in the
-policy.  However, the default DFA start state (DFA_START = 1) could
-also be out-of-bounds.
+commit 36f35b8df6972167102a1c3d4361e0afb6a84534 upstream.
 
-Move these checks out of the else-branches so that they are applied
-regardless of how the start state was initialised.
+Trying to register a device on a bus which has not yet been registered
+used to trigger a NULL-pointer dereference, but since the const bus
+structure rework registration instead succeeds without the device being
+added to the bus.
 
-Fixes: 5443c027ec16 ("apparmor: validate DFA start states are in bounds in unpack_pdb")
-Signed-off-by: Ben Hutchings <benh@debian.org>
+This specifically means that the device will never bind to a driver and
+that the bus sysfs attributes are not created (i.e. as if the device had
+no bus).
+
+Reject devices with unregistered buses to catch any callers that get
+the ordering wrong and to handle bus registration failures more
+gracefully.
+
+Fixes: 5221b82d46f2 ("driver core: bus: bus_add/probe/remove_device() cleanups")
+Cc: stable@vger.kernel.org	# 6.3
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260430091718.230228-1-johan@kernel.org
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/apparmor/policy_unpack.c |   27 +++++++++++++++------------
- 1 file changed, 15 insertions(+), 12 deletions(-)
+ drivers/base/bus.c |   11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
---- a/security/apparmor/policy_unpack.c
-+++ b/security/apparmor/policy_unpack.c
-@@ -829,6 +829,8 @@ static struct aa_profile *unpack_profile
+--- a/drivers/base/bus.c
++++ b/drivers/base/bus.c
+@@ -503,10 +503,10 @@ static const struct attribute_group driv
+  */
+ int bus_add_device(struct device *dev)
+ {
+-	struct subsys_private *sp = bus_to_subsys(dev->bus);
++	struct subsys_private *sp;
+ 	int error;
+ 
+-	if (!sp) {
++	if (!dev->bus) {
+ 		/*
+ 		 * This is a normal operation for many devices that do not
+ 		 * have a bus assigned to them, just say that all went
+@@ -515,6 +515,13 @@ int bus_add_device(struct device *dev)
+ 		return 0;
  	}
  
- 	if (aa_unpack_nameX(e, AA_STRUCT, "policydb")) {
-+		size_t state_count;
++	sp = bus_to_subsys(dev->bus);
++	if (!sp) {
++		pr_err("%s: cannot add device '%s' to unregistered bus '%s'\n",
++		       __func__, dev_name(dev), dev->bus->name);
++		return -EINVAL;
++	}
 +
- 		/* generic policy dfa - optional and may be NULL */
- 		info = "failed to unpack policydb";
- 		profile->policy.dfa = unpack_dfa(e);
-@@ -843,13 +845,12 @@ static struct aa_profile *unpack_profile
- 		if (!aa_unpack_u32(e, &profile->policy.start[0], "start")) {
- 			/* default start state */
- 			profile->policy.start[0] = DFA_START;
--		} else {
--			size_t state_count = profile->policy.dfa->tables[YYTD_ID_BASE]->td_lolen;
-+		}
- 
--			if (profile->policy.start[0] >= state_count) {
--				info = "invalid dfa start state";
--				goto fail;
--			}
-+		state_count = profile->policy.dfa->tables[YYTD_ID_BASE]->td_lolen;
-+		if (profile->policy.start[0] >= state_count) {
-+			info = "invalid dfa start state";
-+			goto fail;
- 		}
- 
- 		/* setup class index */
-@@ -872,16 +873,18 @@ static struct aa_profile *unpack_profile
- 		info = "failed to unpack profile file rules";
- 		goto fail;
- 	} else if (profile->file.dfa) {
-+		size_t state_count;
-+
- 		if (!aa_unpack_u32(e, &profile->file.start, "dfa_start")) {
- 			/* default start state */
- 			profile->file.start = DFA_START;
--		} else {
--			size_t state_count = profile->file.dfa->tables[YYTD_ID_BASE]->td_lolen;
-+		}
-+
-+		state_count = profile->file.dfa->tables[YYTD_ID_BASE]->td_lolen;
- 
--			if (profile->file.start >= state_count) {
--				info = "invalid dfa start state";
--				goto fail;
--			}
-+		if (profile->file.start >= state_count) {
-+			info = "invalid dfa start state";
-+			goto fail;
- 		}
- 	} else if (profile->policy.dfa &&
- 		   profile->policy.start[AA_CLASS_FILE]) {
+ 	/*
+ 	 * Reference in sp is now incremented and will be dropped when
+ 	 * the device is removed from the bus
 
 
 
