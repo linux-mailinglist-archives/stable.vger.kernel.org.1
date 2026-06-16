@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-266089-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265081-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Ws91MCyWMWoNngUAu9opvQ
-	(envelope-from <stable+bounces-266089-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:30:04 +0200
+	id 3fKzBsqBMWqolAUAu9opvQ
+	(envelope-from <stable+bounces-265081-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:03:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 402746942EE
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:30:04 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F76B692AE4
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:03:05 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=j9mu2AJk;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266089-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-266089-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=rSt2aFXi;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265081-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-265081-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4A41630759B6
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:30:03 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B9AE43035CEE
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:03:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E54DE40E8C1;
-	Tue, 16 Jun 2026 18:30:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57F494657CF;
+	Tue, 16 Jun 2026 17:03:03 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8FF63D813F;
-	Tue, 16 Jun 2026 18:30:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C03035675A;
+	Tue, 16 Jun 2026 17:03:02 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781634602; cv=none; b=uJ0sPRPfQGJTEuWNRl8MLGsIO59QngKQoQKQy8Ouo6pJtTHNMWJxjCtkpw24x3rFN6+DLzaGlo4OBWWhfksw5UcMDTxXJs1GJPHu2pTg6xXypqv0XBcsyOkhzUJETWkdljy3JGABFvnJveB3rhhHrPe7e4dh24bzeNVMHz5faYc=
+	t=1781629383; cv=none; b=abWipSmrlwZBclBdYkfBidyL73JCPeUTuJT6JbixDiLI96VZHURlB5hNr8nur0GEZhP7M7EBEIY3sQbWIeujIhLdLoobTjlhvCZJsR0fD9P3pkbNXoyrOGJGqCMSIPXq6FXZKr7PUihyyRJ0Uc/UnYPftlbQuX/GuYiprrFNW3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781634602; c=relaxed/simple;
-	bh=4faNniaUzROoGJkksre3TKFJfRCZ0JvLO1NiSe608f8=;
+	s=arc-20240116; t=1781629383; c=relaxed/simple;
+	bh=IpVfi7gvvIH6KKSWsGFI2X4GIPZbzzvxr0B0FFKdn8k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QEGImCDlXKWro2oWdDGKB5Qmvj/jbd5zI34g2Enk1J1LsCmnmjxpYGO98krmBO7KMr2eCNayu8UzOwUc/Rz9mgaRP1nJxPxHbxt9z9WAyVETu6HB5si67cqy5iOj3mIAZP2gwgZ3mHICEw2rD8BSS/md86WNCkL7pGhdLqWLzRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j9mu2AJk; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FACD1F000E9;
-	Tue, 16 Jun 2026 18:30:00 +0000 (UTC)
+	 MIME-Version; b=e08z2c9KiuGAts8IzGd9oG2Pbf/B2DLhUr/6kiFPABwHL5oo4KETondRxBYshj7OKlKUk5ZVKcf64ZJ14OC7Js3VehHdqT+knS5YLfaYmGdXsou7xC2nYOYrymwf4voC0Ne+oQ8A4f3zuTuhWvGKCNCBAYkDDel+CuLNTinJhpE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rSt2aFXi; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 036AC1F000E9;
+	Tue, 16 Jun 2026 17:03:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781634601;
-	bh=SIq6m6FCsQVYBs2gfkbn9ldp9PsNH8Uk9MdVolBecBE=;
+	s=korg; t=1781629382;
+	bh=/D33JY0z7IWH/J21OFfw0C3HgaTMX4flQT9pn8kKOXk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=j9mu2AJkUQyGfReAvAs2mSdlETVHzM2vNEY+fvX9WPryBjgafW5ITexiil+IrH0T8
-	 wh0GKnPW+WXYduiLy0SZa4ScbQATvFRPxiMYun4ID+M1Eb2qn4CcbijleRIYBzXBbl
-	 ttZceg1JjR9shOOUleKXrgb5kO3DolI1qjuvYKN4=
+	b=rSt2aFXiO6LreudO+R6gczaXMqS6T0n5qYja55j8T0FOkF5krrHWWHLrc79aYOCIb
+	 8sm+HmkV+cK+iyuXn75pUDvnTSxFdjvH29WUgChEQ/IlxBn0jnXBFx2qcvoNaGg7lm
+	 XQ5sN6EPRYyqHkvTwnUnPxAh2bElfVtJ/TBIpWcg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Hodges <git@danielhodges.dev>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Xiang Mei <xmei5@asu.edu>,
+	Weiming Shi <bestswngs@gmail.com>,
+	Allison Henderson <achender@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 263/411] wifi: mwifiex: fix use-after-free in mwifiex_adapter_cleanup()
+Subject: [PATCH 6.6 274/452] net/rds: fix NULL deref in rds_ib_send_cqe_handler() on masked atomic completion
 Date: Tue, 16 Jun 2026 20:28:21 +0530
-Message-ID: <20260616145115.021300179@linuxfoundation.org>
+Message-ID: <20260616145131.965303465@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,81 +74,103 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266089-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-265081-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:git@danielhodges.dev,m:johannes.berg@intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:xmei5@asu.edu,m:bestswngs@gmail.com,m:achender@kernel.org,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,danielhodges.dev:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 402746942EE
+X-Rspamd-Queue-Id: 4F76B692AE4
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Hodges <git@danielhodges.dev>
+From: Weiming Shi <bestswngs@gmail.com>
 
-[ Upstream commit ae5e95d4157481693be2317e3ffcd84e36010cbb ]
+[ Upstream commit 34080db3e70ddf94c38512ad2331e3c3afca6cc1 ]
 
-The mwifiex_adapter_cleanup() function uses timer_delete()
-(non-synchronous) for the wakeup_timer before the adapter structure is
-freed. This is incorrect because timer_delete() does not wait for any
-running timer callback to complete.
+rds_ib_xmit_atomic() always programs a masked atomic opcode
+(IB_WR_MASKED_ATOMIC_CMP_AND_SWP or IB_WR_MASKED_ATOMIC_FETCH_AND_ADD)
+for every RDS atomic cmsg.  But the completion-side switch in
+rds_ib_send_unmap_op() only handles the non-masked opcodes, so a masked
+atomic completion falls through to default and returns rm == NULL while
+send->s_op is left set.  rds_ib_send_cqe_handler() then dereferences the
+NULL rm via rm->m_final_op, oopsing in softirq context.  An unprivileged
+AF_RDS sendmsg() of an atomic cmsg over an active RDS/IB connection
+triggers it; on hardware that natively accepts masked atomics (mlx4,
+mlx5) no extra setup is needed.
 
-If the wakeup_timer callback (wakeup_timer_fn) is executing when
-mwifiex_adapter_cleanup() is called, the callback will continue to
-access adapter fields (adapter->hw_status, adapter->if_ops.card_reset,
-etc.) which may be freed by mwifiex_free_adapter() called later in the
-mwifiex_remove_card() path.
+  RDS/IB: rds_ib_send_unmap_op: unexpected opcode 0xd in WR!
+  Oops: general protection fault [#1] SMP KASAN
+  KASAN: null-ptr-deref in range [0x0000000000000190-0x0000000000000197]
+  RIP: rds_ib_send_cqe_handler+0x25c/0xb10 (net/rds/ib_send.c:282)
+  Call Trace:
+   <IRQ>
+   rds_ib_send_cqe_handler (net/rds/ib_send.c:282)
+   poll_scq (net/rds/ib_cm.c:274)
+   rds_ib_tasklet_fn_send (net/rds/ib_cm.c:294)
+   tasklet_action_common (kernel/softirq.c:943)
+   handle_softirqs (kernel/softirq.c:573)
+   run_ksoftirqd (kernel/softirq.c:479)
+   </IRQ>
+  Kernel panic - not syncing: Fatal exception in interrupt
 
-Use timer_delete_sync() instead to ensure any running timer callback has
-completed before returning.
+Handle the masked atomic opcodes in the same case as the non-masked
+ones: they map to the same struct rds_message.atomic union member, so
+the existing container_of()/rds_ib_send_unmap_atomic() body is correct
+for them.
 
-Fixes: 4636187da60b ("mwifiex: add wakeup timer based recovery mechanism")
-Cc: stable@vger.kernel.org
-Signed-off-by: Daniel Hodges <git@danielhodges.dev>
-Link: https://patch.msgid.link/20260206194401.2346-1-git@danielhodges.dev
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-[ changed `timer_delete_sync(&adapter->wakeup_timer)` to `del_timer_sync(&adapter->wakeup_timer)` ]
+Fixes: 20c72bd5f5f9 ("RDS: Implement masked atomic operations")
+Reported-by: Xiang Mei <xmei5@asu.edu>
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+Reviewed-by: Allison Henderson <achender@kernel.org>
+Link: https://patch.msgid.link/20260606192447.1179255-2-bestswngs@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/marvell/mwifiex/init.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/rds/ib_send.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/net/wireless/marvell/mwifiex/init.c
-+++ b/drivers/net/wireless/marvell/mwifiex/init.c
-@@ -399,7 +399,7 @@ static void mwifiex_invalidate_lists(str
- static void
- mwifiex_adapter_cleanup(struct mwifiex_adapter *adapter)
- {
--	del_timer(&adapter->wakeup_timer);
-+	del_timer_sync(&adapter->wakeup_timer);
- 	del_timer_sync(&adapter->devdump_timer);
- 	mwifiex_cancel_all_pending_cmd(adapter);
- 	wake_up_interruptible(&adapter->cmd_wait_q.wait);
+diff --git a/net/rds/ib_send.c b/net/rds/ib_send.c
+index 4190b90ff3b18a..1909cd440a4b66 100644
+--- a/net/rds/ib_send.c
++++ b/net/rds/ib_send.c
+@@ -170,6 +170,8 @@ static struct rds_message *rds_ib_send_unmap_op(struct rds_ib_connection *ic,
+ 		break;
+ 	case IB_WR_ATOMIC_FETCH_AND_ADD:
+ 	case IB_WR_ATOMIC_CMP_AND_SWP:
++	case IB_WR_MASKED_ATOMIC_FETCH_AND_ADD:
++	case IB_WR_MASKED_ATOMIC_CMP_AND_SWP:
+ 		if (send->s_op) {
+ 			rm = container_of(send->s_op, struct rds_message, atomic);
+ 			rds_ib_send_unmap_atomic(ic, send->s_op, wc_status);
+-- 
+2.53.0
+
 
 
 
