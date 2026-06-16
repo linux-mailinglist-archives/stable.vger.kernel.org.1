@@ -1,68 +1,61 @@
-Return-Path: <stable+bounces-265354-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264839-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 16U+LjuHMWrslgUAu9opvQ
-	(envelope-from <stable+bounces-265354-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:26:19 +0200
+	id Qe45BO59MWr/kgUAu9opvQ
+	(envelope-from <stable+bounces-264839-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:46:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB41C6931F4
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:26:18 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DB9969270D
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:46:37 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=HQrpeV6r;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265354-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265354-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=TnD9iy1U;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264839-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264839-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 07D383011C56
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:26:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8B2C1315B3CC
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:42:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50515466B5E;
-	Tue, 16 Jun 2026 17:26:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2FD845BD6F;
+	Tue, 16 Jun 2026 16:42:40 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B9EC478E50;
-	Tue, 16 Jun 2026 17:26:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC8772F745E;
+	Tue, 16 Jun 2026 16:42:39 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781630777; cv=none; b=kEe/LBsAvbxm0fgATznujejan+ujUZTmN9crinb9Dk+bKsTgngY/C1yeTv1KMsqycaQZfcjy4cTHKUNBdIpEcdUMm3EdwXNdk5+iquXlUY3tEqKsaJN/t3yPS8vnqxQCTypfbC96Vi8F8dnNRRaJxTn+TcAf5QNO432ig62Nkr0=
+	t=1781628160; cv=none; b=doI6mEmFh23cI5YUIvGmQEjzKhQ/L8/ci7dR3ByTqX0ggcvWn/GEp3Ku4TCDjYXyTteXRxbzjvWzqQzCbfxYh5XqhurzzSKeF2bq2Lmh55+374+Y9+2jF2f9cyyy1XnZeYE7uohz8EnIPYPMOSQRQE2W/KEZcliF/B2Ze6LLX/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781630777; c=relaxed/simple;
-	bh=+72kxMoxomPc3MNxknzL9fMQTKkdOMDJlksHRttEEAI=;
+	s=arc-20240116; t=1781628160; c=relaxed/simple;
+	bh=jGBfkKm6E2ABxyZBtG68BDK7IvIBBWXBrSOhITUHUvs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iM1ZoMSJw4SD+AEi16TT12lOmPbG3mpu9WPOul2hxpXZrcBShi8hKTSWfvxt3RdjK5ZplQDaCaHd1DXB8SSiW1LfHmWmOAGpn5xCm5V+cMnxsfQZYqGn4l3fNo+x02g1fAqlbGjG3R3Qm7zo+T9arDjc2K5uv4eAy9WuiYiSkAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HQrpeV6r; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECD4E1F000E9;
-	Tue, 16 Jun 2026 17:26:14 +0000 (UTC)
+	 MIME-Version; b=WpdxZDKQ09iwCUKDQiPZeBkI3BzV/q7LEjqQEVKKgE7LcMpos7mZ2H8ELNrJPsP79rIiPJFRxUOAIbbXPUk9m0ipCyvWogeatHT8PhYJCHwf6yOhJ6Z7eT5TByS89ZZzZ9JTAW12j5SfqkrzJs3KIgwbUpeV5N5JeiMSIgQfgxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TnD9iy1U; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE97E1F000E9;
+	Tue, 16 Jun 2026 16:42:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781630775;
-	bh=hQhhQsWKl7zW4XEStj6tMvu96Fw8/Zz5/BB3AOlEq00=;
+	s=korg; t=1781628159;
+	bh=Qr4FHtaI+eiPrrZEt9JbV3jiK7QEGIYCKKOpYLT3TZw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=HQrpeV6rOK2d6fNs0y+5jRo/9U9tGozByK+9GG/PsZvAYBEq1GjFqNA5BpT8vYVfd
-	 OSq/n7LO4hBo5JF7yNfOZjZ+BYrtggRytwG/NhD1y5iofUXsekLzeg+8IRYHW7UwYS
-	 4annuOV2p/K9cfmyRnHxjUoBK7XqzpbxDWCIc0v0=
+	b=TnD9iy1U4nfJBgS1yapUyCgRd2Jhf2MSsyq6dUWtxdgtegRCY+77Cl6CaiKZ3s7rU
+	 ojBesdMgpD21D7FF43g3mBvyfdXqVdA0vAdkTJkypbD2YR/VHQoyqfq3uoZm3UjHZr
+	 VpRQg1jsNxq8ckFLeSBUy1D9sGtCrrtLhgUlqU5g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linpu Yu <linpu5433@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Kees Cook <kees@kernel.org>,
-	Stanislav Kinsbursky <skinsbursky@parallels.com>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 093/522] ipc: limit next_id allocation to the valid ID range
+	syzbot+690d3e3ffa7335ac10eb@syzkaller.appspotmail.com,
+	Florian Westphal <fw@strlen.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 013/452] netfilter: xt_cpu: prefer raw_smp_processor_id
 Date: Tue, 16 Jun 2026 20:24:00 +0530
-Message-ID: <20260616145130.245143082@linuxfoundation.org>
+Message-ID: <20260616145118.499126620@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,26 +67,26 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	TAGGED_FROM(0.00)[bounces-265354-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:linpu5433@gmail.com,m:n05ec@lzu.edu.cn,m:yuantan098@gmail.com,m:yifanwucs@gmail.com,m:tomapufckgml@gmail.com,m:bird@lzu.edu.cn,m:kees@kernel.org,m:skinsbursky@parallels.com,m:dave@stgolabs.net,m:akpm@linux-foundation.org,s:lists@lfdr.de];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-264839-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:syzbot+690d3e3ffa7335ac10eb@syzkaller.appspotmail.com,m:fw@strlen.de,m:sashal@kernel.org,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,kernel.org,parallels.com,stgolabs.net,linux-foundation.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -102,94 +95,61 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,lzu.edu.cn:email,linux-foundation.org:email,stgolabs.net:email,parallels.com:email]
+	TAGGED_RCPT(0.00)[stable,690d3e3ffa7335ac10eb];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,strlen.de:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: EB41C6931F4
+X-Rspamd-Queue-Id: 5DB9969270D
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linpu Yu <linpu5433@gmail.com>
+From: Florian Westphal <fw@strlen.de>
 
-commit fa0b9b2b7ae3539908d69c2b9ac0d144d9bc5139 upstream.
+[ Upstream commit c376f07e16c02239ed44cabb97145d03f65b4d15 ]
 
-The checkpoint/restore sysctl path can request the next SysV IPC id
-through ids->next_id.  ipc_idr_alloc() currently forwards that request to
-idr_alloc() with an open-ended upper bound.
+With PREEMPT_RCU we get splat:
 
-If the valid tail of the SysV IPC id space is full, the allocation can
-spill beyond ipc_mni.  The returned SysV IPC id still uses the normal
-index encoding, so later lookup and removal can target the wrong slot.
-This leaves the real IDR entry behind and breaks the IDR state for the
-object.
+BUG: using smp_processor_id() in preemptible [..]
+caller is cpu_mt+0x53/0xd0 net/netfilter/xt_cpu.c:37
+CPU: 1 .. Comm: syz.3.1377 #0 PREEMPT(full)
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
+ check_preemption_disabled+0xd3/0xe0 lib/smp_processor_id.c:47
+ cpu_mt+0x53/0xd0 net/netfilter/xt_cpu.c:37
+ [..]
 
-The bug is in ipc_idr_alloc() in the checkpoint/restore path.
+Just use raw version instead.
+This is similar to 14d14a5d2957 ("netfilter: nft_meta: use raw_smp_processor_id()").
 
-1. ids->next_id is passed to:
-
-       idr_alloc(&ids->ipcs_idr, new, ipcid_to_idx(next_id), 0, ...)
-
-2. The zero upper bound makes the allocation effectively open-ended.
-   Once the valid SysV IPC tail is occupied, idr_alloc() can spill past
-   ipc_mni and allocate an entry beyond the valid IPC id range.
-
-3. The new object id is still encoded with the narrower SysV IPC index
-   width:
-
-       new->id = (new->seq << ipcmni_seq_shift()) + idx
-
-4. Later removal goes through ipc_rmid(), which uses:
-
-       ipcid_to_idx(ipcp->id)
-
-   That truncates the real IDR index. An object actually stored at a
-   high index can then be removed as if it lived at a low in-range
-   index.
-
-5. For shared memory, shm_destroy() frees the current object anyway, but
-   the real high IDR slot is left behind as a dangling pointer.
-
-6. A subsequent walk of /proc/sysvipc/shm reaches the stale IDR entry
-   and dereferences freed memory.
-
-Prevent this by bounding the requested allocation to ipc_mni so the
-checkpoint/restore path fails once the valid range is exhausted.
-
-Link: https://lore.kernel.org/cover.1778336914.git.linpu5433@gmail.com
-Link: https://lore.kernel.org/2eebe949bfa7d1f6e13b5be6a92c64c850ce9d45.1778336914.git.linpu5433@gmail.com
-Fixes: 03f595668017 ("ipc: add sysctl to specify desired next object id")
-Signed-off-by: Linpu Yu <linpu5433@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Cc: Kees Cook <kees@kernel.org>
-Cc: Stanislav Kinsbursky <skinsbursky@parallels.com>
-Cc: Davidlohr Bueso <dave@stgolabs.net>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0ca743a55991 ("netfilter: nf_tables: add compatibility layer for x_tables")
+Reported-by: syzbot+690d3e3ffa7335ac10eb@syzkaller.appspotmail.com
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- ipc/util.c |    2 +-
+ net/netfilter/xt_cpu.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/ipc/util.c
-+++ b/ipc/util.c
-@@ -253,7 +253,7 @@ static inline int ipc_idr_alloc(struct i
- 	} else {
- 		new->seq = ipcid_to_seqx(next_id);
- 		idx = idr_alloc(&ids->ipcs_idr, new, ipcid_to_idx(next_id),
--				0, GFP_NOWAIT);
-+				ipc_mni, GFP_NOWAIT);
- 	}
- 	if (idx >= 0)
- 		new->id = (new->seq << ipcmni_seq_shift()) + idx;
+diff --git a/net/netfilter/xt_cpu.c b/net/netfilter/xt_cpu.c
+index 3bdc302a0f9137..9cb259902a586b 100644
+--- a/net/netfilter/xt_cpu.c
++++ b/net/netfilter/xt_cpu.c
+@@ -34,7 +34,7 @@ static bool cpu_mt(const struct sk_buff *skb, struct xt_action_param *par)
+ {
+ 	const struct xt_cpu_info *info = par->matchinfo;
+ 
+-	return (info->cpu == smp_processor_id()) ^ info->invert;
++	return (info->cpu == raw_smp_processor_id()) ^ info->invert;
+ }
+ 
+ static struct xt_match cpu_mt_reg __read_mostly = {
+-- 
+2.53.0
+
 
 
 
