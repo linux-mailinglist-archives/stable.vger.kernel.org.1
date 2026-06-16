@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-264625-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264303-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Wh4HMgR6MWpbkQUAu9opvQ
-	(envelope-from <stable+bounces-264625-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:29:56 +0200
+	id 8csRGTR1MWpJjwUAu9opvQ
+	(envelope-from <stable+bounces-264303-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:09:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DFAA692231
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:29:56 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 182BA691BD6
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:09:24 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=iK8xoUqH;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264625-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264625-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=eTtxrUCt;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264303-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264303-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0FF8930EE133
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:21:31 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0A52D30C7AE9
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:54:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04DA34508E4;
-	Tue, 16 Jun 2026 16:21:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0D5444B69C;
+	Tue, 16 Jun 2026 15:54:08 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCA2744DB64;
-	Tue, 16 Jun 2026 16:21:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA78B44CAE6;
+	Tue, 16 Jun 2026 15:54:07 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781626887; cv=none; b=NI8sf5kMR3rui3x6XdwevzrompJ3kghvAf4MQJ+CIRJPunWZz9gn62gqYw0FyZcMGhu/Kfp2Ti5R5gsFnxL5EOSNdap/AtGGwbF3MTVPsxg17ZV2cjs8krRkYeY9yWZTC/nZX85S6ZsKWtwlqTbrZ820XNRF/KYgx0iXqerB4WY=
+	t=1781625248; cv=none; b=Pfl8SNlNIg4+/ss01uUUiKSYGkW4s+D/MUN8mzpnI+6WaXQu6tDuxvmhoLPc8RLHLNLf+BUV7Zp4slIyZXpb32K2i7Qn3diaTIFDy8LexfqsHBcC1Esc4dkjqhXk2Q/FVIeGvgw5vBibSpuemhIVp0AxmsXW2H5OPwuUSHBi1eQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781626887; c=relaxed/simple;
-	bh=Pva2e0e5mSgmj7YIz0EcK2kIOYcVfIBBACnOoyagKo8=;
+	s=arc-20240116; t=1781625248; c=relaxed/simple;
+	bh=aPlCMUv0Xu157Bt7vFdlOSZ7hvwJxusXlzbUbbhpP7E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MNQGfoTZS9BY3F7cYrdbKfYL+7aOHXFOnUBHYwMUFfMP0vMFnMCkvhwcYKGu2yWNlSl4FR9BVJ5tC1dpxOHLdjRQEE5I7EPKycTyfCgEMx1jKwTKCrZZHiY6tG42jVqA+kkNvpt63GhQgYmx7Oh5GcYWyws75kY73yCCtQNpGGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iK8xoUqH; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6FDE1F00A3A;
-	Tue, 16 Jun 2026 16:21:25 +0000 (UTC)
+	 MIME-Version; b=nuyyhL6ejOoscE1hRFPkmZpO0CyWJEuZcqR/N25wEEI/bvm6JY+C4kvPTQZHmBBgzfp0ro9SE42R1BjvbboCOxC6hOaFYXrF/aV2HJ7iyhtxSx21m+/ims7iLGCTM5p7aOxWrBmqdTtsDK95J/8xPXVoJp8ZVAB90p43UqgbeR4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eTtxrUCt; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F4791F000E9;
+	Tue, 16 Jun 2026 15:54:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781626886;
-	bh=RD91tzjCYZoNTTjrkXmlcsQX0sOt8rhX54tLhYvRWPk=;
+	s=korg; t=1781625247;
+	bh=IqDPaFyuZGvKfCWvNK06HepiFQOk4AsU5RhGapnt9Go=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=iK8xoUqH9Pq/sL5+x1AiZubXRKUAMk66Aj1TH9E9nyxQPcHHAeQiG9E6dMpZCFsFH
-	 TG8E1+ySscqHhyAcqPYbbPrSc/qeBl5Z+NQEFwMA8TOmXbAknxQZC4ijFu0tbZSypL
-	 W+2eY0M3+SS3rxQiAariOhyGdEB0QLdqY/2bSLdU=
+	b=eTtxrUCtHMo51tKcFqmD1z5YQ691yx3xQxD8jdOrt2qPb6y9OVv6X998lnGyehpBj
+	 0MpgDuFdPCtUUma9iCkzW0p2e2AbPzNVhyb8Nprj4GZ/M7i0ElQ7kzbnkg/kDjYGrH
+	 7R3rHMF598cwfAmnTtVtPhTBW8pGlwb4FZvvw3PY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Naveen Kumar Chaudhary <naveen.osdev@gmail.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	John Stultz <jstultz@google.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 062/261] time: Fix off-by-one in settimeofday() usec validation
-Date: Tue, 16 Jun 2026 20:28:20 +0530
-Message-ID: <20260616145048.012377400@linuxfoundation.org>
+Subject: [PATCH 6.18 105/325] net/mlx5e: xsk: Fix DMA and xdp_frame leak on XDP_TX xmit failure
+Date: Tue, 16 Jun 2026 20:28:21 +0530
+Message-ID: <20260616145102.913243360@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
-References: <20260616145044.869532709@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,83 +68,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,google.com];
-	TAGGED_FROM(0.00)[bounces-264625-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:naveen.osdev@gmail.com,m:tglx@kernel.org,m:jstultz@google.com,m:sashal@kernel.org,m:naveenosdev@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264303-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:dtatulea@nvidia.com,m:tariqt@nvidia.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,nvidia.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3DFAA692231
+X-Rspamd-Queue-Id: 182BA691BD6
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Naveen Kumar Chaudhary <naveen.osdev@gmail.com>
+From: Dragos Tatulea <dtatulea@nvidia.com>
 
-[ Upstream commit ce4abda5e12622f33450159e76c8f56d28d7f03d ]
+[ Upstream commit b69004f5a6ad32da84d8aa5b23b9c0caafe6252e ]
 
-The validation check uses '>' instead of '>=' when comparing tv_usec
-against USEC_PER_SEC, allowing the value 1000000 through. After
-conversion to nanoseconds (*= 1000), this produces tv_nsec ==
-NSEC_PER_SEC, violating the timespec invariant that tv_nsec must be
-less than NSEC_PER_SEC.
+In the XSK branch of mlx5e_xmit_xdp_buff(), when sq->xmit_xdp_frame()
+returns false (e.g. XDPSQ is full), the function returns without
+unmapping the DMA address or freeing the xdp_frame allocated by
+xdp_convert_zc_to_xdp_frame(). The xdpi_fifo push only happens on
+success, so the completion path cannot recover these entries.
 
-Use '>=' to reject tv_usec values that are not in the valid range of
-0 to 999999.
+With CONFIG_DMA_API_DEBUG=y, the leak surfaces on driver unbind:
 
-Fixes: 5e0fb1b57bea ("y2038: time: avoid timespec usage in settimeofday()")
-Signed-off-by: Naveen Kumar Chaudhary <naveen.osdev@gmail.com>
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Acked-by: John Stultz <jstultz@google.com>
-Link: https://patch.msgid.link/4rikk44zew3s6577dugmx4jyblz7o5c57niuap6ct3td5yfm6w@gh7pcumg7qor
+  DMA-API: pci 0000:08:00.0: device driver has pending DMA
+  allocations while released from device [count=1116]
+  One of leaked entries details: [device address=0x000000010ffd7028]
+  [size=1534 bytes] [mapped with DMA_TO_DEVICE] [mapped as phy]
+  WARNING: kernel/dma/debug.c:881 at dma_debug_device_change+0x127/0x180
+  ...
+  DMA-API: Mapped at:
+   debug_dma_map_phys+0x4b/0xd0
+   dma_map_phys+0xfd/0x2d0
+   mlx5e_xdp_handle+0x5ae/0xac0 [mlx5_core]
+   mlx5e_xsk_skb_from_cqe_mpwrq_linear+0xc4/0x170 [mlx5_core]
+   mlx5e_handle_rx_cqe_mpwrq+0xc1/0x290 [mlx5_core]
+
+Add the missing unmap + xdp_return_frame, matching the cleanup already
+done in mlx5e_xdp_xmit(). has_frags is rejected earlier in this branch,
+so no per-frag unmap is needed.
+
+Fixes: 84a0a2310d6d ("net/mlx5e: XDP_TX from UMEM support")
+Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20260604135446.456119-1-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/time/time.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/time/time.c b/kernel/time/time.c
-index da7e8a02a0964f..a6261fadb92b15 100644
---- a/kernel/time/time.c
-+++ b/kernel/time/time.c
-@@ -207,7 +207,7 @@ SYSCALL_DEFINE2(settimeofday, struct __kernel_old_timeval __user *, tv,
- 		    get_user(new_ts.tv_nsec, &tv->tv_usec))
- 			return -EFAULT;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c b/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
+index 5d51600935a6f8..5322964214b22e 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
+@@ -102,9 +102,15 @@ mlx5e_xmit_xdp_buff(struct mlx5e_xdpsq *sq, struct mlx5e_rq *rq,
  
--		if (new_ts.tv_nsec > USEC_PER_SEC || new_ts.tv_nsec < 0)
-+		if (new_ts.tv_nsec >= USEC_PER_SEC || new_ts.tv_nsec < 0)
- 			return -EINVAL;
+ 		xdptxd->dma_addr = dma_addr;
  
- 		new_ts.tv_nsec *= NSEC_PER_USEC;
+-		if (unlikely(!INDIRECT_CALL_2(sq->xmit_xdp_frame, mlx5e_xmit_xdp_frame_mpwqe,
+-					      mlx5e_xmit_xdp_frame, sq, xdptxd, 0, NULL)))
++		if (unlikely(!INDIRECT_CALL_2(sq->xmit_xdp_frame,
++					      mlx5e_xmit_xdp_frame_mpwqe,
++					      mlx5e_xmit_xdp_frame,
++					      sq, xdptxd, 0, NULL))) {
++			dma_unmap_single(sq->pdev, dma_addr, xdptxd->len,
++					 DMA_TO_DEVICE);
++			xdp_return_frame(xdpf);
+ 			return false;
++		}
+ 
+ 		/* xmit_mode == MLX5E_XDP_XMIT_MODE_FRAME */
+ 		mlx5e_xdpi_fifo_push(&sq->db.xdpi_fifo,
 -- 
 2.53.0
 
