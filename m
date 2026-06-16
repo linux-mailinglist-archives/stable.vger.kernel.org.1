@@ -1,63 +1,61 @@
-Return-Path: <stable+bounces-264248-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265059-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id w/teHiB1MWo/jwUAu9opvQ
-	(envelope-from <stable+bounces-264248-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:09:04 +0200
+	id 4rgFOjaEMWqblQUAu9opvQ
+	(envelope-from <stable+bounces-265059-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:13:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72032691BB0
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:09:03 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B82E692E06
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:13:26 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="H00w/70q";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264248-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-264248-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=vPgqdi4V;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265059-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265059-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 04B033037AB4
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:48:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EB6F131FB9D1
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:01:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3015364024;
-	Tue, 16 Jun 2026 15:48:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C524F478E26;
+	Tue, 16 Jun 2026 17:01:14 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B821F1A682B;
-	Tue, 16 Jun 2026 15:48:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71D1F47799B;
+	Tue, 16 Jun 2026 17:01:13 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781624924; cv=none; b=ZiMq88brlABQXOBbUOZGplbfLQzRBBl7M/4M8G97R5ES+BHo0F890vg5jY04c/Jb6SSYs1RimLpX6LtlRqUmSyz0VqGbeqz+i1NCmLo1WlpB1Ym9lsfMcTk0WmGiSFeLeFCuQwyNCW7HzvVFbGz0EAUNaB1DSuHzFkSUY3VNpSE=
+	t=1781629274; cv=none; b=Lg8FJJrIf1CJEHa24aNykLrhXBM2V35y4JgQkg+9XugLrzPfHDTi0ohvsFBQ7NrTfczlnGZ1VAWmTmdZ9RLHwkx2FMmpzcFbmyDZOXNpCvF46gD20Qan8/0Q+09dOCaB5nEhHsYAaVlNvabdODuJ3pTU1qp6ZTmN3ekzbHpaawo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781624924; c=relaxed/simple;
-	bh=sKxeKpCY0BsFxvbd4lZx0r9PmHJxReZDEFCsnrD6r8g=;
+	s=arc-20240116; t=1781629274; c=relaxed/simple;
+	bh=bH5yXlurwmAkwYzikqZvXjlKv0P0/fMPlUSFDvr7DQo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XcfAmJ9PwWh0LXcrctySnRRY163xGh55dYdrmcYD7Xf33hhKJtsP2TsGay5NcOhKRoELMggtT0MU2G/02gX/7icushIrPPIqjaFEVvA3T0YnYVfpn57Np/AhBYzi08aAWrHWzSAsnWrbmHrIIy8ncpNgw07gSPNg0zq2swXRr/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H00w/70q; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 706DD1F000E9;
-	Tue, 16 Jun 2026 15:48:42 +0000 (UTC)
+	 MIME-Version; b=kIhpsM9JGbZpZuwat0mrqGQ6KL7FKtnPCxuw7Jh9klnPehPzTUK8xYK6kkhG83zZAiIN3tM+7pz8bns7DZDOaELfxg8+5LhNOq1J6Zzp0ykifR0zeMbHmF6+SfXdXPBYtBiJ+BGrzZL+GCfuEBCJcMnqdxQmkKWDhbkHQO6o+rQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vPgqdi4V; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C7A21F000E9;
+	Tue, 16 Jun 2026 17:01:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781624923;
-	bh=a1Qo5uh3W5a8j7WUybVJi723XhGQmq9/3IY8/0ZhlUU=;
+	s=korg; t=1781629273;
+	bh=EZHYQfqUuhi9tuAtW+ApleCbVBbxTWzmnKVjaW8o/do=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=H00w/70q08IQR9WeM7hvoILl/ik2zd6iVeJlhQWRdEGRMX4ZWVl6rTs+f7jXkFsG/
-	 nyeTJIZWmuVi4+jkDhqKHx+a0cOrLwJoaKxEcdohArNtj3bq5ACGQEX9FBi7WgTFD3
-	 BDAIpLrBsCWPVBKKfnMfSTpEn9Mu1xCpWaYjwFnw=
+	b=vPgqdi4VBBpfRmfO0mDoDr0/e/VfCuEOqHx50K7FH0Tt8bEqgFsXWsIY/MF1RxApS
+	 Z3akrQu0In3nRJHbOqkG75dc6rnx3A1yEbTR8db2RwPNG2u7zXdyMbphqGgD7IHRcN
+	 VE2LOGP1YNg8O8n3yBMAsxpOjUTuYCvsglZIgPyY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	Jason Xing <kernelxing@tencent.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Guangshuo Li <lgs201920130244@gmail.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 052/325] xsk: cache csum_start/csum_offset to fix TOCTOU in xsk_skb_metadata()
+Subject: [PATCH 6.6 221/452] dm cache policy smq: check allocation under invalidate lock
 Date: Tue, 16 Jun 2026 20:27:28 +0530
-Message-ID: <20260616145100.297940577@linuxfoundation.org>
+Message-ID: <20260616145129.376107073@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,108 +69,107 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-265059-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:lgs201920130244@gmail.com,m:mpatocka@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264248-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:maciej.fijalkowski@intel.com,m:kernelxing@tencent.com,m:sdf@fomichev.me,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com,kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,tencent.com:email,intel.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,fomichev.me:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 72032691BB0
+X-Rspamd-Queue-Id: 5B82E692E06
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Xing <kernelxing@tencent.com>
+From: Guangshuo Li <lgs201920130244@gmail.com>
 
-[ Upstream commit 22ba97ea9cc1f63a0d0244fae38057ed452b6ac7 ]
+[ Upstream commit d3f0a606b9f278ece8a0df626ded9c4044071235 ]
 
-The TX metadata area resides in the UMEM buffer which is memory-mapped
-and concurrently writable by userspace. In xsk_skb_metadata(),
-csum_start and csum_offset are read from shared memory for bounds
-validation, then read again for skb assignment. A malicious userspace
-application can race to overwrite these values between the two reads,
-bypassing the bounds check and causing out-of-bounds memory access
-during checksum computation in the transmit path.
+commit 2d1f7b65f5de ("dm cache policy smq: fix missing locks in
+invalidating cache blocks") added mq->lock around the destructive part of
+smq_invalidate_mapping(), but left the e->allocated check outside the
+critical section.
 
-Fix this by reading csum_start and csum_offset into local variables
-once, then using the local copies for both validation and assignment.
+That leaves a check-then-act race. Two concurrent invalidators can both
+observe e->allocated as true before either of them takes mq->lock. The
+first invalidator that acquires the lock removes the entry from the
+queues and hash table and then calls free_entry(), which clears
+e->allocated and puts the entry back on the free list. The second
+invalidator can then acquire mq->lock and continue with the stale result
+of the unlocked check.
 
-Note that other metadata fields (flags, launch_time) and the cached
-csum fields may be mutually inconsistent due to concurrent userspace
-writes, but this is benign: the only security-critical invariant is
-that each field's validated value is the same one used, which local
-caching guarantees.
+This can corrupt the SMQ queues or hash table by deleting an entry that
+is no longer on those structures. It can also hit the allocation check in
+free_entry() when the same entry is freed again.
 
-Closes: https://lore.kernel.org/all/20260503200927.73EA1C2BCB4@smtp.kernel.org/
-Reviewed-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Signed-off-by: Jason Xing <kernelxing@tencent.com>
-Acked-by: Stanislav Fomichev <sdf@fomichev.me>
-Fixes: 48eb03dd2630 ("xsk: Add TX timestamp and TX checksum offload support")
-Link: https://patch.msgid.link/20260530042630.80626-1-kerneljasonxing@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Move the allocation check under mq->lock so the predicate and the
+destructive operations are serialized by the same lock.
+
+Fixes: 2d1f7b65f5de ("dm cache policy smq: fix missing locks in invalidating cache blocks")
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/xdp/xsk.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/md/dm-cache-policy-smq.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
-index 259ad9a3abcc42..9e0a486d54fb33 100644
---- a/net/xdp/xsk.c
-+++ b/net/xdp/xsk.c
-@@ -685,6 +685,7 @@ static int xsk_skb_metadata(struct sk_buff *skb, void *buffer,
- 			    u32 hr)
- {
- 	struct xsk_tx_metadata *meta = NULL;
-+	u16 csum_start, csum_offset;
+diff --git a/drivers/md/dm-cache-policy-smq.c b/drivers/md/dm-cache-policy-smq.c
+index 1566e040f7aac7..c4bc5016840c25 100644
+--- a/drivers/md/dm-cache-policy-smq.c
++++ b/drivers/md/dm-cache-policy-smq.c
+@@ -1590,18 +1590,22 @@ static int smq_invalidate_mapping(struct dm_cache_policy *p, dm_cblock_t cblock)
+ 	struct smq_policy *mq = to_smq_policy(p);
+ 	struct entry *e = get_entry(&mq->cache_alloc, from_cblock(cblock));
+ 	unsigned long flags;
+-
+-	if (!e->allocated)
+-		return -ENODATA;
++	int r = 0;
  
- 	if (unlikely(pool->tx_metadata_len == 0))
- 		return -EINVAL;
-@@ -694,13 +695,15 @@ static int xsk_skb_metadata(struct sk_buff *skb, void *buffer,
- 		return -EINVAL;
- 
- 	if (meta->flags & XDP_TXMD_FLAGS_CHECKSUM) {
--		if (unlikely(meta->request.csum_start +
--			     meta->request.csum_offset +
-+		csum_start = READ_ONCE(meta->request.csum_start);
-+		csum_offset = READ_ONCE(meta->request.csum_offset);
+ 	spin_lock_irqsave(&mq->lock, flags);
++	if (!e->allocated) {
++		r = -ENODATA;
++		goto out;
++	}
+ 	// FIXME: what if this block has pending background work?
+ 	del_queue(mq, e);
+ 	h_remove(&mq->table, e);
+ 	free_entry(&mq->cache_alloc, e);
 +
-+		if (unlikely(csum_start + csum_offset +
- 			     sizeof(__sum16) > desc->len))
- 			return -EINVAL;
++out:
+ 	spin_unlock_irqrestore(&mq->lock, flags);
  
--		skb->csum_start = hr + meta->request.csum_start;
--		skb->csum_offset = meta->request.csum_offset;
-+		skb->csum_start = hr + csum_start;
-+		skb->csum_offset = csum_offset;
- 		skb->ip_summed = CHECKSUM_PARTIAL;
+-	return 0;
++	return r;
+ }
  
- 		if (unlikely(pool->tx_sw_csum)) {
+ static uint32_t smq_get_hint(struct dm_cache_policy *p, dm_cblock_t cblock)
 -- 
 2.53.0
 
