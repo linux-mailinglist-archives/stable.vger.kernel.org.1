@@ -1,63 +1,61 @@
-Return-Path: <stable+bounces-265729-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264704-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id c6aWIrWOMWqKmgUAu9opvQ
-	(envelope-from <stable+bounces-265729-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:58:13 +0200
+	id UUJbO5l7MWoCkgUAu9opvQ
+	(envelope-from <stable+bounces-264704-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:36:41 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 059B5693AA4
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:58:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98F58692422
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:36:41 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=sJOOvxqM;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265729-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-265729-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=hn4+svQV;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264704-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264704-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1046230633BB
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:58:12 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E7175303B4C4
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:30:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52CBA478E55;
-	Tue, 16 Jun 2026 17:58:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E07C547277E;
+	Tue, 16 Jun 2026 16:30:27 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E04A27FD49;
-	Tue, 16 Jun 2026 17:58:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B36B744BCB8;
+	Tue, 16 Jun 2026 16:30:26 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781632689; cv=none; b=i5EGyFNXp9hyXYsSAPod2APCQ+kpuigJzPsQRNpZ1eLq1TB48I4Jadq7fM9d9KYsKV//xJkZI/eUjZhNOb81dXwZwkbIk25/8hyoeUHm8/Ux8LZEsjSeIc5nIBMyRgJP79S/0VeDq/tTZlsbp2/9oTZulapUzH5Kax5vQurkU7Y=
+	t=1781627427; cv=none; b=osZCeC2qcneVF6iIUJXimCuujWpx+jYACQ3puHI/QuwEVJpEyER0Rcf5MHMhnlYU210i8qFvOtuXVdHrzDLnbmprjSBbtzO/z8Lf7YmIMFSdRzyq1spCivoMK2tK9Cb1ra2cCXeBzbqA14G6fUlSTrT3jx/Y9oNxI6NZ4EQNwGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781632689; c=relaxed/simple;
-	bh=qM4Afy0GbrnJKP02Y8p6O2RvZcHHyS4iolmAcwUjnVA=;
+	s=arc-20240116; t=1781627427; c=relaxed/simple;
+	bh=EDaX+vHNuu/Rzauk1AHZgym4tSio4k/xdOdwH5YkYSA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CMqHriMtur+jo9N6hth6k4s5RWMx+zpIk2I3vwK67BWqwKutq5dzH/GLB3Ou1WvHj6pbhRFWaPYk1CSDMyMlVcTYMAEBO5HuaBwidrTcKO/sU+wzI328BNQCjXnK4GwvUGMo7XON78GFfTfHSxaboRwclNCjBzTFvnzEXUcU7Os=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sJOOvxqM; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 217BE1F000E9;
-	Tue, 16 Jun 2026 17:58:06 +0000 (UTC)
+	 MIME-Version; b=Fb6vpMb0J87X95+gHiDhS2JCSoianhNofmNGdrQucKKHZbD8sBxE1OTMoyYYRp0gMh5KPJVCJXuNc8p9PSEczPHKRj/2872sbjXwylE9/E5HVaCHjhnXbAZqRsnOEe0PxE1tV9IcA2gBtbJNJcFyoOjjVT9JNDjAxJTZDutLJEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hn4+svQV; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 577FA1F000E9;
+	Tue, 16 Jun 2026 16:30:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781632688;
-	bh=izUve0ZN93nrPxVif14ShyPJJ3m7JklNDYY+rXZgx0Y=;
+	s=korg; t=1781627426;
+	bh=CrbCbEE1NI8yDonYoQ+BenftR0OU88BRCjmYw1Jfoo4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=sJOOvxqMk69pL1SxqzDXXIVpikN4wtTv8dMs6OPV1eu1ctaeNw3EIg22MVwInWQqI
-	 EGs89EdAW0a08DcslIt2CyQmaNlommwCsGZsmvMV88d0s+0H/+8qz2JNQHM5laHIqD
-	 C9HeK9776dZTWlYb9jfeztuaEn2IdMvSnJGItXmg=
+	b=hn4+svQVwQQqc3Z3+TNDHRm83ESkAWsalh59NE1WgoE/njgo0OCb40PjwrQW6/97r
+	 xfahKUj/GhQtiipZsK6TtLdldVlP2OYghswZV/SYlBWoeBi+9KKI5H8GoAC1CRtzY0
+	 07bJ/+5+z8Gsqi3xpkXl1E507AvKiRIojsgJ3wHI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Carlier <devnexen@gmail.com>,
-	Andy Shevchenko <andriy.shevchenko@intel.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <jic23@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 459/522] iio: adc: npcm: fix unbalanced clk_disable_unprepare()
+	Eric Dumazet <edumazet@google.com>,
+	Hyunwoo Kim <imv4bel@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 168/261] inet: frags: fix use-after-free caused by the fqdir_pre_exit() flush
 Date: Tue, 16 Jun 2026 20:30:06 +0530
-Message-ID: <20260616145147.367983692@linuxfoundation.org>
+Message-ID: <20260616145052.857670306@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,141 +76,102 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,vger.kernel.org,kernel.org];
-	TAGGED_FROM(0.00)[bounces-265729-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:devnexen@gmail.com,m:andriy.shevchenko@intel.com,m:Stable@vger.kernel.org,m:jic23@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-264704-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:edumazet@google.com,m:imv4bel@gmail.com,m:kuba@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,gmail.com,kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 059B5693AA4
+X-Rspamd-Queue-Id: 98F58692422
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Carlier <devnexen@gmail.com>
+From: Hyunwoo Kim <imv4bel@gmail.com>
 
-[ Upstream commit 0d42e2c0bd6ceb89e44c6e065f9bdf9b1df3ef0c ]
+commit 32594b09854970d7ba83eb2dc8c69a2edd158c8e upstream.
 
-The driver acquired the ADC clock with devm_clk_get() and read its
-rate, but never called clk_prepare_enable(). The probe error path and
-npcm_adc_remove() both called clk_disable_unprepare() unconditionally,
-causing the clk framework's enable/prepare counts to underflow on
-probe failure or module unbind.
+On netns teardown, fqdir_pre_exit() walks the fqdir rhashtable and
+flushes every fragment queue that is not yet complete using
+inet_frag_queue_flush(). That helper frees all the skbs queued on the
+fragment queue but does not set INET_FRAG_COMPLETE, and leaves
+q->fragments_tail and q->last_run_head pointing at the freed skbs.
+The queue itself stays in the rhashtable.
 
-The issue went unnoticed because NPCM BMC firmware leaves the ADC
-clock enabled at boot, so the driver happened to work in practice.
+fqdir_pre_exit() first lowers high_thresh to 0 to stop new queue lookups,
+but it cannot stop a fragment that already obtained the queue through
+inet_frag_find() earlier and stalled just before taking the queue lock.
+Once that fragment resumes after the flush and takes the queue lock,
+it passes the INET_FRAG_COMPLETE check and then dereferences the freed
+fragments_tail. inet_frag_queue_insert() reads FRAG_CB() and ->len of
+that pointer and, on the append path, writes ->next_frag, causing a
+slab use-after-free. IPv6, nf_conntrack_reasm6 and 6lowpan reassembly
+share the same flush path and are affected as well.
 
-Switch to devm_clk_get_enabled() so the clock is properly enabled
-during probe and automatically released by the device-managed
-cleanup, and drop the now-redundant clk_disable_unprepare() from
-both the probe error path and remove().
+Reset rb_fragments, fragments_tail and last_run_head in
+inet_frag_queue_flush() so a flushed queue no longer points at the
+freed skbs. A fragment that resumes after the flush and takes the
+queue lock then finds an empty queue and starts a new run instead of
+dereferencing the freed fragments_tail. ip_frag_reinit() already
+performed this reset after its own flush, so drop the now duplicate
+code there.
 
-While at it, drop the duplicate error message on devm_request_irq()
-failure since the IRQ core already logs it.
-
-Fixes: 9bf85fbc9d8f ("iio: adc: add NPCM ADC driver")
-Signed-off-by: David Carlier <devnexen@gmail.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <jic23@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 006a5035b495 ("inet: frags: flush pending skbs in fqdir_pre_exit()")
+Suggested-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
+Link: https://patch.msgid.link/ah6ukYq5G98LshdA@v4bel
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/npcm_adc.c |   25 ++++++++-----------------
- 1 file changed, 8 insertions(+), 17 deletions(-)
+ net/ipv4/inet_fragment.c |    3 +++
+ net/ipv4/ip_fragment.c   |    3 ---
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/iio/adc/npcm_adc.c
-+++ b/drivers/iio/adc/npcm_adc.c
-@@ -231,7 +231,7 @@ static int npcm_adc_probe(struct platfor
- 	if (IS_ERR(info->reset))
- 		return PTR_ERR(info->reset);
- 
--	info->adc_clk = devm_clk_get(&pdev->dev, NULL);
-+	info->adc_clk = devm_clk_get_enabled(&pdev->dev, NULL);
- 	if (IS_ERR(info->adc_clk)) {
- 		dev_warn(&pdev->dev, "ADC clock failed: can't read clk\n");
- 		return PTR_ERR(info->adc_clk);
-@@ -244,17 +244,13 @@ static int npcm_adc_probe(struct platfor
- 	info->adc_sample_hz = clk_get_rate(info->adc_clk) / ((div + 1) * 2);
- 
- 	irq = platform_get_irq(pdev, 0);
--	if (irq < 0) {
--		ret = irq;
--		goto err_disable_clk;
--	}
-+	if (irq < 0)
-+		return irq;
- 
- 	ret = devm_request_irq(&pdev->dev, irq, npcm_adc_isr, 0,
- 			       "NPCM_ADC", indio_dev);
--	if (ret < 0) {
--		dev_err(dev, "failed requesting interrupt\n");
--		goto err_disable_clk;
--	}
-+	if (ret < 0)
-+		return ret;
- 
- 	reg_con = ioread32(info->regs + NPCM_ADCCON);
- 	info->vref = devm_regulator_get_optional(&pdev->dev, "vref");
-@@ -262,7 +258,7 @@ static int npcm_adc_probe(struct platfor
- 		ret = regulator_enable(info->vref);
- 		if (ret) {
- 			dev_err(&pdev->dev, "Can't enable ADC reference voltage\n");
--			goto err_disable_clk;
-+			return ret;
- 		}
- 
- 		iowrite32(reg_con & ~NPCM_ADCCON_REFSEL,
-@@ -272,10 +268,8 @@ static int npcm_adc_probe(struct platfor
- 		 * Any error which is not ENODEV indicates the regulator
- 		 * has been specified and so is a failure case.
- 		 */
--		if (PTR_ERR(info->vref) != -ENODEV) {
--			ret = PTR_ERR(info->vref);
--			goto err_disable_clk;
--		}
-+		if (PTR_ERR(info->vref) != -ENODEV)
-+			return PTR_ERR(info->vref);
- 
- 		/* Use internal reference */
- 		iowrite32(reg_con | NPCM_ADCCON_REFSEL,
-@@ -314,8 +308,6 @@ err_iio_register:
- 	iowrite32(reg_con & ~NPCM_ADCCON_ADC_EN, info->regs + NPCM_ADCCON);
- 	if (!IS_ERR(info->vref))
- 		regulator_disable(info->vref);
--err_disable_clk:
--	clk_disable_unprepare(info->adc_clk);
- 
- 	return ret;
+--- a/net/ipv4/inet_fragment.c
++++ b/net/ipv4/inet_fragment.c
+@@ -329,6 +329,9 @@ void inet_frag_queue_flush(struct inet_f
+ 	reason = reason ?: SKB_DROP_REASON_FRAG_REASM_TIMEOUT;
+ 	sum = inet_frag_rbtree_purge(&q->rb_fragments, reason);
+ 	sub_frag_mem_limit(q->fqdir, sum);
++	q->rb_fragments = RB_ROOT;
++	q->fragments_tail = NULL;
++	q->last_run_head = NULL;
  }
-@@ -332,7 +324,6 @@ static void npcm_adc_remove(struct platf
- 	iowrite32(regtemp & ~NPCM_ADCCON_ADC_EN, info->regs + NPCM_ADCCON);
- 	if (!IS_ERR(info->vref))
- 		regulator_disable(info->vref);
--	clk_disable_unprepare(info->adc_clk);
- }
+ EXPORT_SYMBOL(inet_frag_queue_flush);
  
- static struct platform_driver npcm_adc_driver = {
+--- a/net/ipv4/ip_fragment.c
++++ b/net/ipv4/ip_fragment.c
+@@ -265,9 +265,6 @@ static int ip_frag_reinit(struct ipq *qp
+ 	qp->q.flags = 0;
+ 	qp->q.len = 0;
+ 	qp->q.meat = 0;
+-	qp->q.rb_fragments = RB_ROOT;
+-	qp->q.fragments_tail = NULL;
+-	qp->q.last_run_head = NULL;
+ 	qp->iif = 0;
+ 	qp->ecn = 0;
+ 
 
 
 
