@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-266543-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264728-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id vxLbAVWfMWoAogUAu9opvQ
-	(envelope-from <stable+bounces-266543-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:09:09 +0200
+	id Ncw5Crh9MWrzkgUAu9opvQ
+	(envelope-from <stable+bounces-264728-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:45:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7303694CA0
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:09:08 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18C4B6926DC
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:45:43 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=piuH7FtX;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266543-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266543-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=LvFZFuOk;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264728-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264728-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C35F7306C9AD
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:08:58 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4C5923038BF1
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:32:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23CBA3DE425;
-	Tue, 16 Jun 2026 19:08:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 186B6477993;
+	Tue, 16 Jun 2026 16:32:33 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2FAD3DDDA1;
-	Tue, 16 Jun 2026 19:08:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E53B74502F;
+	Tue, 16 Jun 2026 16:32:31 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781636935; cv=none; b=ZvYLO5uD2j02aZ0MyEf7R1nnHDkyp9IHugfZWFc06D2RfIIRst5xugxVdKV5yvtq9xWJLyT3XD18aRykidt2hgpH7UwCO4VzEHlDAJBAiQtHySc78uIyyaSsdU7L92VdF5gdgL580pJcQ7WsBHBobh2HVtdro9KChsxwu5VwvR8=
+	t=1781627552; cv=none; b=fEtFxYnICS8+cf7XpHfb6dnV6I4N7MfCrh6/XolFPtr3oU8hXXF6AvdKARG3IQM+QgDHEctJrA0Yx2YP5H8y0VNP9w7wFDShtLs05P41YZ4lwQZJhA/544MYvcj0cvQibii9guGfoUmVVPjr6HSn3cz+aPw8PVLlq5HR31KB9eY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781636935; c=relaxed/simple;
-	bh=nDCNN4hNFxbsFTZDoN1jBL4zpfF68E5Qt+QqD8vOSP8=;
+	s=arc-20240116; t=1781627552; c=relaxed/simple;
+	bh=5bYjoi2PlNhuyADBsRt0iJ5jGgK89HwF5Br39vihBWs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T9x9HrL5LFsG/KrHvZiVQkvFD1ryTLInZoT4njLhQkSGZ3HQLOxzTlozM0LShK3bEfuEu2Moa81L7ZUViJcZyFhswIMOuMUR1aFchCJ/YGFpMRQ6n5zNblt4k8cxZ+8RQe4yl/jDrIvfN56kBJTIYxKMSIDissJlsn/NXPU/aoA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=piuH7FtX; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA5401F000E9;
-	Tue, 16 Jun 2026 19:08:53 +0000 (UTC)
+	 MIME-Version; b=Ol5Coi/VODGpihpAUEYTRY8iucSpifx/gHWP08s9gDbuEq03j9TJ7vblZ+Ph9lmqUaEY9bjZKpeCUtULfQgKIu/FMLem3yvB/f9TO1K4o6DoeRVApRKwvQAFMQZG3G3ds6LnFgy4oyQyWItgTRr1/NsMuKJy+Sdt1eXA+Am8CB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LvFZFuOk; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9848C1F00A3A;
+	Tue, 16 Jun 2026 16:32:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781636934;
-	bh=t+CF0Q+HhoNvmAHOGZGkPlYpyAo3TVGfR8MoPoWmp7Q=;
+	s=korg; t=1781627551;
+	bh=76Jt9NjE2aADoKkztSOFkp8Cb06OJcQcfsaQ756kZmM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=piuH7FtX8jbyAFZ3/kTzjg9Tw/Q1r/gH82tyBrr9HvZry36yD19t71y8AL2i56om+
-	 FV/sQ2tD4ysQdvGy5BVEIV4FTYbPHOhpYn306i9JstwevDcg3q2nZdRovqv+DQn23a
-	 orPS+ViaUynZB96Wx2t2+N5nO0pyg5jij2dWOVm4=
+	b=LvFZFuOkCYRT8UZA8lOb0D6c8gpgfuwCYylHVpCSBfojQU25aQFk0P+uWEhk2GQI4
+	 HUs3lRrbWrRrSkQ3Y+BkJNF3XMsZkVtj5yQPbsLbyVwyc4yaHc/JpB+jXxuhuH7V7d
+	 pAHL7O33cEe7QOeY+P0ltDY4AWRG9uqFa7mYSdEw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shanker Donthineni <sdonthineni@nvidia.com>,
-	Will Deacon <will@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>
-Subject: [PATCH 5.10 334/342] arm64: cputype: Add NVIDIA Olympus definitions
+	Kamal Dasu <kamal.dasu@broadcom.com>,
+	Shawn Lin <shawn.lin@rock-chips.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.12 192/261] mmc: core: Fix host controller programming for fixed driver type
 Date: Tue, 16 Jun 2026 20:30:30 +0530
-Message-ID: <20260616145104.179524410@linuxfoundation.org>
+Message-ID: <20260616145053.960237881@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,21 +72,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266543-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264728-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kamal.dasu@broadcom.com,m:shawn.lin@rock-chips.com,m:ulf.hansson@linaro.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:sdonthineni@nvidia.com,m:will@kernel.org,m:mark.rutland@arm.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -98,47 +98,55 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,nvidia.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,broadcom.com:email,linaro.org:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,rock-chips.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A7303694CA0
+X-Rspamd-Queue-Id: 18C4B6926DC
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shanker Donthineni <sdonthineni@nvidia.com>
+From: Kamal Dasu <kamal.dasu@broadcom.com>
 
-commit e185c8a0d84236d14af61faff8147c953a878a77 upstream.
+commit 5a52c5701a67d5176eb1afbf1bdaf7d6dfeec597 upstream.
 
-Add cpu part and model macro definitions for NVIDIA Olympus core.
+When using the fixed-emmc-driver-type device tree property, the MMC core
+correctly selects the driver strength for the card but fails to program
+the host controller accordingly. This causes a mismatch where the card
+uses the specified driver type while the host controller defaults to
+Type B (since ios->drv_type remains zero).
 
-Signed-off-by: Shanker Donthineni <sdonthineni@nvidia.com>
-Signed-off-by: Will Deacon <will@kernel.org>
-[Mark: backport to v5.10.y]
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Split the driver type programming logic to handle both fixed and dynamic
+driver type selection paths. For fixed driver types, program the host
+controller with the selected drive_strength value. For dynamic selection,
+use the existing drv_type as before.
+
+This ensures both the eMMC device and host controller use matching driver
+strengths, preventing potential signal integrity issues.
+
+Fixes: 6186d06c519e ("mmc: parse new binding for eMMC fixed driver type")
+Signed-off-by: Kamal Dasu <kamal.dasu@broadcom.com>
+Reviewed-by: Shawn Lin <shawn.lin@rock-chips.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/include/asm/cputype.h |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/mmc/core/mmc.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/arch/arm64/include/asm/cputype.h
-+++ b/arch/arm64/include/asm/cputype.h
-@@ -121,6 +121,7 @@
+--- a/drivers/mmc/core/mmc.c
++++ b/drivers/mmc/core/mmc.c
+@@ -1348,7 +1348,9 @@ static void mmc_select_driver_type(struc
  
- #define NVIDIA_CPU_PART_DENVER		0x003
- #define NVIDIA_CPU_PART_CARMEL		0x004
-+#define NVIDIA_CPU_PART_OLYMPUS		0x010
+ 	card->drive_strength = drive_strength;
  
- #define FUJITSU_CPU_PART_A64FX		0x001
+-	if (drv_type)
++	if (fixed_drv_type >= 0 && drive_strength)
++		mmc_set_driver_type(card->host, drive_strength);
++	else if (drv_type)
+ 		mmc_set_driver_type(card->host, drv_type);
+ }
  
-@@ -183,6 +184,7 @@
- #define MIDR_QCOM_KRYO_4XX_SILVER MIDR_CPU_MODEL(ARM_CPU_IMP_QCOM, QCOM_CPU_PART_KRYO_4XX_SILVER)
- #define MIDR_NVIDIA_DENVER MIDR_CPU_MODEL(ARM_CPU_IMP_NVIDIA, NVIDIA_CPU_PART_DENVER)
- #define MIDR_NVIDIA_CARMEL MIDR_CPU_MODEL(ARM_CPU_IMP_NVIDIA, NVIDIA_CPU_PART_CARMEL)
-+#define MIDR_NVIDIA_OLYMPUS MIDR_CPU_MODEL(ARM_CPU_IMP_NVIDIA, NVIDIA_CPU_PART_OLYMPUS)
- #define MIDR_FUJITSU_A64FX MIDR_CPU_MODEL(ARM_CPU_IMP_FUJITSU, FUJITSU_CPU_PART_A64FX)
- #define MIDR_HISI_TSV110 MIDR_CPU_MODEL(ARM_CPU_IMP_HISI, HISI_CPU_PART_TSV110)
- #define MIDR_APPLE_M1_ICESTORM MIDR_CPU_MODEL(ARM_CPU_IMP_APPLE, APPLE_CPU_PART_M1_ICESTORM)
 
 
 
