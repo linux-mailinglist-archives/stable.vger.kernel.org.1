@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-265180-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266153-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id hrxACGGFMWoglgUAu9opvQ
-	(envelope-from <stable+bounces-265180-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:18:25 +0200
+	id /X/tJrmYMWoanwUAu9opvQ
+	(envelope-from <stable+bounces-266153-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:40:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6ADF9692FA7
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:18:24 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21595694535
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:40:57 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ql+DPHq9;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265180-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265180-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=bQJ8597t;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266153-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266153-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A43753045EC6
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:11:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C9C91321180D
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:35:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2322343D4E8;
-	Tue, 16 Jun 2026 17:11:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C6794418D7;
+	Tue, 16 Jun 2026 18:35:41 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 004A838F930;
-	Tue, 16 Jun 2026 17:11:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D46A169AD2;
+	Tue, 16 Jun 2026 18:35:40 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781629884; cv=none; b=GkeLd7TqCs4V3HHahEsO+N3eIIv3I1ZpkaFtpsop414MxnV8UgEMpE0k5Fc/ZIolIRK9Ir6YY/Ui1jfIpdQbyBcKJOyHlDCkiGfK0Sjd3U+963HlYz/bWVrEKp3dR53j4z2X4u0+CdumD8eQ7mjoCqXbdfpieXSsMb+YPO79poI=
+	t=1781634941; cv=none; b=uRc8eKWbTVDkBib4GfksX9NHdEvTFS2UIqav//0xm+uIgMzHbly50jzMbr0fUurR+fhc+7O75eq8W0YpgHzNpYJ60wZt3YE436Dph0VveBvUl6UMpMzmw2NvaFWeOI/OlwJi4kTaYCTzvoRf7vRAUN46Z32lFWGItGYCW/xHj10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781629884; c=relaxed/simple;
-	bh=yhpqLodPjvkYpFA9J/nSUYs1tvwqsAaFOh3APFaHUiY=;
+	s=arc-20240116; t=1781634941; c=relaxed/simple;
+	bh=gg2YkY/VgueBvaaEY4XCEd24Q8WHh3QuwgJeta00f4I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=el3Lg5lKQ6UcmqD2tad5rzizFTNxZ5/xdWB7lSBy1NPjoBVXW62yaMySC8Bd2oXw9bLQsTHTfd9jN/bcY+aJMwVtajtsPLHyc5fnZ4l+h8BgeYRp1O76pm0tBwPMYtChHdH3lD1F8lXKmqBuvNna3TSqtFZIAnp2AKB68KX1MQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ql+DPHq9; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E74E11F000E9;
-	Tue, 16 Jun 2026 17:11:22 +0000 (UTC)
+	 MIME-Version; b=chM0rSHzGC5l/Qq53glXSO5IELNYSs8tC+Uat5KHnSd8VDEUTw8dem5wvUYbLmVEQvnGW1/kGkM30/vhF+wMyiyQnhEYqXhcuCJt9xf5utcXIPpJS/iWZ8bxV7jXDS5JVhhD2dLVjI42Aufqr4hZM3CTI3G+4FoUJSfLQdshlC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bQJ8597t; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1755B1F000E9;
+	Tue, 16 Jun 2026 18:35:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781629883;
-	bh=MU5BVzlNZmMNyJnL+XlrmBr+Y0dzuGlS2IYh1COHGpU=;
+	s=korg; t=1781634940;
+	bh=0AVdeZZPlG4Hrz2w4N1G8udxL5nvQxL/Gyvwpt1In8g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ql+DPHq9RzhESK+Ff5Z/psv84RFxJehHz4eyhPnpo5pYS0kA5PHor4hZYC2kPQRUu
-	 lyMzIvNgVlRf+Z1NcJNbNRg6tv4g4l2r1L9RBMaxoqWw4G5Nam120Y7SrurTcoacTs
-	 q4UEgkx0Nt7S9WEza+RhhpxatYkD7Cs+/c8kZJeI=
+	b=bQJ8597tAGGUFzEA4QnYc3VGQvavBMj/rYwxbOfWGLb+WJSUgY5BclV78I/ZhaJBf
+	 x/wa4B9QtWbD1Ccvodsb07P8e6gQao7DEhRRS24+jPKA385ub/M6yUzh1zGmON5Hhw
+	 HxP3Vqe+xIxC5nS3+3yFliUbDucF9b8+5Cvu9CyY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Johan Hovold <johan@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH 6.6 369/452] driver core: reject devices with unregistered buses
-Date: Tue, 16 Jun 2026 20:29:56 +0530
-Message-ID: <20260616145136.425455872@linuxfoundation.org>
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 359/411] spi: qup: fix error pointer deref after DMA setup failure
+Date: Tue, 16 Jun 2026 20:29:57 +0530
+Message-ID: <20260616145120.404059649@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,22 +72,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265180-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-266153-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:johan@kernel.org,m:dakr@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:johan@kernel.org,m:broonie@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -97,71 +98,53 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sashiko.dev:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 6ADF9692FA7
+X-Rspamd-Queue-Id: 21595694535
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Johan Hovold <johan@kernel.org>
 
-commit 36f35b8df6972167102a1c3d4361e0afb6a84534 upstream.
+[ Upstream commit a7e8f3efd50a165ba0189f6dc57f7e51a7d149db ]
 
-Trying to register a device on a bus which has not yet been registered
-used to trigger a NULL-pointer dereference, but since the const bus
-structure rework registration instead succeeds without the device being
-added to the bus.
+The driver falls back to PIO mode if DMA setup fails during probe.
 
-This specifically means that the device will never bind to a driver and
-that the bus sysfs attributes are not created (i.e. as if the device had
-no bus).
+Make sure to the clear the DMA channel pointers on setup failure to
+avoid dereferencing an error pointer (or attempting to release a channel
+a second time) on later probe errors or driver unbind.
 
-Reject devices with unregistered buses to catch any callers that get
-the ordering wrong and to handle bus registration failures more
-gracefully.
+This issue was flagged by Sashiko when reviewing a devres allocation
+conversion patch.
 
-Fixes: 5221b82d46f2 ("driver core: bus: bus_add/probe/remove_device() cleanups")
-Cc: stable@vger.kernel.org	# 6.3
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 612762e82ae6 ("spi: qup: Add DMA capabilities")
+Link: https://sashiko.dev/#/patchset/20260505072909.618363-1-johan%40kernel.org?part=4
+Cc: stable@vger.kernel.org	# 4.1
 Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260430091718.230228-1-johan@kernel.org
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Link: https://patch.msgid.link/20260512074334.914735-1-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/bus.c |   11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/spi/spi-qup.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/base/bus.c
-+++ b/drivers/base/bus.c
-@@ -503,10 +503,10 @@ static const struct attribute_group driv
-  */
- int bus_add_device(struct device *dev)
- {
--	struct subsys_private *sp = bus_to_subsys(dev->bus);
-+	struct subsys_private *sp;
- 	int error;
+--- a/drivers/spi/spi-qup.c
++++ b/drivers/spi/spi-qup.c
+@@ -969,8 +969,11 @@ static int spi_qup_init_dma(struct spi_c
  
--	if (!sp) {
-+	if (!dev->bus) {
- 		/*
- 		 * This is a normal operation for many devices that do not
- 		 * have a bus assigned to them, just say that all went
-@@ -515,6 +515,13 @@ int bus_add_device(struct device *dev)
- 		return 0;
- 	}
- 
-+	sp = bus_to_subsys(dev->bus);
-+	if (!sp) {
-+		pr_err("%s: cannot add device '%s' to unregistered bus '%s'\n",
-+		       __func__, dev_name(dev), dev->bus->name);
-+		return -EINVAL;
-+	}
+ err:
+ 	dma_release_channel(host->dma_tx);
++	host->dma_tx = NULL;
+ err_tx:
+ 	dma_release_channel(host->dma_rx);
++	host->dma_rx = NULL;
 +
- 	/*
- 	 * Reference in sp is now incremented and will be dropped when
- 	 * the device is removed from the bus
+ 	return ret;
+ }
+ 
 
 
 
