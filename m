@@ -1,66 +1,62 @@
-Return-Path: <stable+bounces-264162-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264661-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id LfZAKdBwMWqEjQUAu9opvQ
-	(envelope-from <stable+bounces-264162-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:50:40 +0200
+	id zZ72Cbd6MWqhkQUAu9opvQ
+	(envelope-from <stable+bounces-264661-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:32:55 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BBEA6916ED
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:50:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96305692311
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:32:54 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=SHVmoUSz;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264162-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264162-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=qrE0fCgI;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264661-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264661-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D04F830A66AD
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:41:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A595630316DF
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:25:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B660944DB7B;
-	Tue, 16 Jun 2026 15:40:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB88146AF1B;
+	Tue, 16 Jun 2026 16:25:31 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6016744D01E;
-	Tue, 16 Jun 2026 15:40:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C3BE43E4BA;
+	Tue, 16 Jun 2026 16:25:30 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781624449; cv=none; b=Us4T48n4MM+ln70blUZpLpUeb1eSX6mBE38j6AP29gq+qG5T8HQ4R8a6655Uac/NZYrU1GK6h2xey8xaXrLpfKkaf60gUlMesHkInNp7V4dEi0VAvR3IyZDWH2LUgdCRg/RliYZCF3nCm015uG+vSC2FDcmM/11iY+J6eg94mvI=
+	t=1781627131; cv=none; b=U2klXLM+legrzAeiIwtYfEJNucznw2rbrDMFp2+UUhd/7+jPn+gOLEw5Qfi2LIGeG4ENu7sW6sVyCJaj82Licyj1zSdrXfSZ4WbLyb0XHIxhZvQaZifIrkMjmbFTNTJsTXNt/BgqptewvC7z6Qf3b7LCtjPqvYeZsq5GZ3cM71E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781624449; c=relaxed/simple;
-	bh=VMZDBK5lYTxe3yrY0NocEQ4e8cTZXMHCmd8UrEoD6uc=;
+	s=arc-20240116; t=1781627131; c=relaxed/simple;
+	bh=m7eY3Z9YArHfN3BKXMI6x/CP1+MdSm7vPvjk3lEbeMo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A5NKQiP+Nigkt0dac0VQWcyTmM8dx0kr/fbXW5axz32FP6R+KWrL6KJqnQjquzTTnNzWjuPyXkl3aFpzHBpjkNXOkrivDzWD056dVQA0EIDn+3G7ZRHPG0fsz1FTJ/m4vG+dCSiqmfRn94lOT2WV9bvG+jTCOTcqMRqvTguu9aw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SHVmoUSz; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 697BE1F000E9;
-	Tue, 16 Jun 2026 15:40:47 +0000 (UTC)
+	 MIME-Version; b=ooUIS5aj/BeeskUZWStzi/DvzwGjuGWg5Sq2ZVbJx9hTIxkBeQIW/XspuDuTIaBrcKTavtXybtzKAkvuuFI8LGChDd0kYm1vWWu45565yUQ/FsXJQPU5jyu6NaDgtw7CHz4mTdUa0OifUBG6wTgIw5nMbSUWyzPveHzNkcmkG9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qrE0fCgI; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 187391F000E9;
+	Tue, 16 Jun 2026 16:25:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781624448;
-	bh=NNZ1GDsRRyVxnze96yu2F76elkxTK9DJB7XreqDRXl4=;
+	s=korg; t=1781627130;
+	bh=cJIBC/+YkZjwOFslUDUrq6QsYUrthSUj0mdmyUh/qb4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=SHVmoUSzTn2vCMptk2Ad6F7tDVifJugdUIPVifLhYfRh/EdxwoMB2lKTGjMo8+AYS
-	 R8cg0fiTf5Ovm4GfFDbPf4A8f9p4WFTGpx6D6u1qEapTLedbfqw8ujo6E6jotSitPD
-	 EvswN4K0+mFoF8LzJ2z0D54GaAnQGXQQchshk4Ws=
+	b=qrE0fCgI30UE3/1X6D5Za6AP1VZZ27FmFJgouNSIQ304pBoD9G01jPqn859J3pK8U
+	 +OcQ5ODp7DszbTI2DA2Hv7Xs0JTF9/s1ezljAZSr5SBhPdtaja1gUs5cVyCF08bpx7
+	 xqxnz1YyKt0n5l9zRYVDdWYTuMsNLzv8MZeTGuTI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Chris Mason <clm@fb.com>,
-	Kairui Song <kasong@tencent.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Dave Chinner <david@fromorbit.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 7.0 305/378] mm/list_lru: drain before clearing xarray entry on reparent
+	Xiang Mei <xmei5@asu.edu>,
+	Weiming Shi <bestswngs@gmail.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 098/261] netfilter: nf_conntrack: destroy stale expectfn expectations on unregister
 Date: Tue, 16 Jun 2026 20:28:56 +0530
-Message-ID: <20260616145126.213771637@linuxfoundation.org>
+Message-ID: <20260616145049.581306411@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,124 +70,188 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264162-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,netfilter.org,kernel.org];
+	TAGGED_FROM(0.00)[bounces-264661-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:shakeel.butt@linux.dev,m:clm@fb.com,m:kasong@tencent.com,m:muchun.song@linux.dev,m:david@fromorbit.com,m:hannes@cmpxchg.org,m:roman.gushchin@linux.dev,m:akpm@linux-foundation.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:xmei5@asu.edu,m:bestswngs@gmail.com,m:pablo@netfilter.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tencent.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linux-foundation.org:email,cmpxchg.org:email,linux.dev:email,fromorbit.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[netfilter.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,asu.edu:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 1BBEA6916ED
+X-Rspamd-Queue-Id: 96305692311
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shakeel Butt <shakeel.butt@linux.dev>
+From: Weiming Shi <bestswngs@gmail.com>
 
-commit 98733f3f0becb1ae0701d021c1748e974e5fa55c upstream.
+[ Upstream commit c3009418f9fa1dcb3eb86f4d8c92583537b5faa3 ]
 
-memcg_reparent_list_lrus() clears the dying memcg's xarray entry with
-xas_store(&xas, NULL) before reparenting its per-node lists into the
-parent.  This opens a window where a concurrent list_lru_del() arriving
-for the dying memcg sees xa_load() == NULL, walks to the parent in
-lock_list_lru_of_memcg(), takes the parent's per-node lock, and calls
-list_del_init() on an item still physically linked on the dying memcg's
-list.
+NAT helpers such as nf_nat_h323 store a raw pointer to module text in
+exp->expectfn (e.g. ip_nat_q931_expect). nf_ct_helper_expectfn_unregister()
+only unlinks the callback descriptor and never walks the expectation table,
+so an expectation pending at module removal survives with a dangling
+exp->expectfn into freed module text.
 
-If another in-flight thread holds the dying memcg's per-node lock at the
-same moment (another list_lru_del, or a list_lru_walk_one running an
-isolate callback), both threads modify ->next/->prev pointers on the same
-physical list under different locks.  Adjacent items can corrupt each
-other's links.
+When the expected connection arrives, init_conntrack() invokes
+exp->expectfn(), now a stale pointer into the unloaded module. Reproduced
+on a KASAN build by loading the H.323 helpers, creating a Q.931
+expectation, unloading nf_nat_h323, then connecting to the expected port:
 
-Fix it by reversing the order: reparent each per-node list and mark the
-child's list lru dead and then clear the xarray entry.  Any concurrent
-list_lru op that finds the still-set xarray entry either takes the dying
-memcg's per-node lock (synchronizing with the drain) or sees LONG_MIN and
-walks to the parent, where the items now live.
+ Oops: int3: 0000 [#1] SMP KASAN NOPTI
+ RIP: 0010:0xffffffffa06102d1
+  init_conntrack.isra.0 (net/netfilter/nf_conntrack_core.c:1862)
+  nf_conntrack_in (net/netfilter/nf_conntrack_core.c:2049)
+  ipv4_conntrack_local (net/netfilter/nf_conntrack_proto.c:223)
+  nf_hook_slow (net/netfilter/core.c:619)
+  __ip_local_out (net/ipv4/ip_output.c:120)
+  __tcp_transmit_skb (net/ipv4/tcp_output.c:1715)
+  tcp_connect (net/ipv4/tcp_output.c:4374)
+  tcp_v4_connect (net/ipv4/tcp_ipv4.c:345)
+  __sys_connect (net/socket.c:2167)
+ Modules linked in: nf_conntrack_h323 [last unloaded: nf_nat_h323]
 
-Link: https://lore.kernel.org/20260601161501.1444829-1-shakeel.butt@linux.dev
-Fixes: fb56fdf8b9a2 ("mm/list_lru: split the lock to per-cgroup scope")
-Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
-Reported-by: Chris Mason <clm@fb.com>
-Reviewed-by: Kairui Song <kasong@tencent.com>
-Acked-by: Muchun Song <muchun.song@linux.dev>
-Cc: Dave Chinner <david@fromorbit.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reaching the dangling state requires CAP_SYS_MODULE in the initial user
+namespace to remove a NAT helper that still has live expectations, so this
+is a robustness fix; leaving an expectation pointing at freed text is wrong
+regardless.
+
+Add nf_ct_helper_expectfn_destroy(), which walks the expectation table and
+drops every expectation whose ->expectfn matches the descriptor being torn
+down. Call it from each NAT helper's exit path after the existing RCU grace
+period, so no expectation outlives the code it points at and no extra
+synchronize_rcu() is introduced. With the fix, the same reproducer runs to
+completion without the Oops.
+
+Fixes: f587de0e2feb ("[NETFILTER]: nf_conntrack/nf_nat: add H.323 helper port")
+Reported-by: Xiang Mei <xmei5@asu.edu>
+Assisted-by: Claude:claude-opus-4-8
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/list_lru.c |   21 ++++++++++++---------
- 1 file changed, 12 insertions(+), 9 deletions(-)
+ include/net/netfilter/nf_conntrack_helper.h |  1 +
+ net/ipv4/netfilter/nf_nat_h323.c            |  2 ++
+ net/netfilter/nf_conntrack_helper.c         | 19 +++++++++++++++++++
+ net/netfilter/nf_nat_core.c                 |  2 ++
+ net/netfilter/nf_nat_sip.c                  |  1 +
+ 5 files changed, 25 insertions(+)
 
---- a/mm/list_lru.c
-+++ b/mm/list_lru.c
-@@ -472,26 +472,29 @@ void memcg_reparent_list_lrus(struct mem
- 	mutex_lock(&list_lrus_mutex);
- 	list_for_each_entry(lru, &memcg_list_lrus, list) {
- 		struct list_lru_memcg *mlru;
--		XA_STATE(xas, &lru->xa, memcg->kmemcg_id);
+diff --git a/include/net/netfilter/nf_conntrack_helper.h b/include/net/netfilter/nf_conntrack_helper.h
+index de2f956abf3480..24cf3d2d97450f 100644
+--- a/include/net/netfilter/nf_conntrack_helper.h
++++ b/include/net/netfilter/nf_conntrack_helper.h
+@@ -155,6 +155,7 @@ void nf_ct_helper_log(struct sk_buff *skb, const struct nf_conn *ct,
  
- 		/*
--		 * Lock the Xarray to ensure no on going list_lru_memcg
--		 * allocation and further allocation will see css_is_dying().
-+		 * css_is_dying() check in memcg_list_lru_alloc() avoids
-+		 * allocating a new mlru since CSS_DYING is already set for this
-+		 * memcg a rcu grace period ago.
- 		 */
--		xas_lock_irq(&xas);
--		mlru = xas_store(&xas, NULL);
--		xas_unlock_irq(&xas);
-+		mlru = xa_load(&lru->xa, memcg->kmemcg_id);
- 		if (!mlru)
- 			continue;
+ void nf_ct_helper_expectfn_register(struct nf_ct_helper_expectfn *n);
+ void nf_ct_helper_expectfn_unregister(struct nf_ct_helper_expectfn *n);
++void nf_ct_helper_expectfn_destroy(const struct nf_ct_helper_expectfn *n);
+ struct nf_ct_helper_expectfn *
+ nf_ct_helper_expectfn_find_by_name(const char *name);
+ struct nf_ct_helper_expectfn *
+diff --git a/net/ipv4/netfilter/nf_nat_h323.c b/net/ipv4/netfilter/nf_nat_h323.c
+index faee20af485613..10e1b0837731b7 100644
+--- a/net/ipv4/netfilter/nf_nat_h323.c
++++ b/net/ipv4/netfilter/nf_nat_h323.c
+@@ -555,6 +555,8 @@ static void __exit nf_nat_h323_fini(void)
+ 	nf_ct_helper_expectfn_unregister(&q931_nat);
+ 	nf_ct_helper_expectfn_unregister(&callforwarding_nat);
+ 	synchronize_rcu();
++	nf_ct_helper_expectfn_destroy(&q931_nat);
++	nf_ct_helper_expectfn_destroy(&callforwarding_nat);
+ }
  
- 		/*
--		 * With Xarray value set to NULL, holding the lru lock below
--		 * prevents list_lru_{add,del,isolate} from touching the lru,
--		 * safe to reparent.
-+		 * Reparent each per-node list and mark the child dead
-+		 * (LONG_MIN) before clearing xarray entry otherwise a
-+		 * concurrent list_lru_del() may corrupt the list if it arrives
-+		 * after xarray clear but before reparenting as
-+		 * lock_list_lru_of_memcg will acquire parent's lock while the
-+		 * item is still on child's list.
- 		 */
- 		for_each_node(i)
- 			memcg_reparent_list_lru_one(lru, i, &mlru->node[i], parent);
+ /****************************************************************************/
+diff --git a/net/netfilter/nf_conntrack_helper.c b/net/netfilter/nf_conntrack_helper.c
+index a715304a53d8c2..9150bcfd7ca83b 100644
+--- a/net/netfilter/nf_conntrack_helper.c
++++ b/net/netfilter/nf_conntrack_helper.c
+@@ -283,6 +283,25 @@ void nf_ct_helper_expectfn_unregister(struct nf_ct_helper_expectfn *n)
+ }
+ EXPORT_SYMBOL_GPL(nf_ct_helper_expectfn_unregister);
  
-+		xa_erase_irq(&lru->xa, memcg->kmemcg_id);
++static bool expect_iter_expectfn(struct nf_conntrack_expect *exp, void *data)
++{
++	const struct nf_ct_helper_expectfn *n = data;
 +
- 		/*
- 		 * Here all list_lrus corresponding to the cgroup are guaranteed
- 		 * to remain empty, we can safely free this lru, any further
++	/* Relies on registered expectfn descriptors having unique ->expectfn
++	 * pointers, which holds for the in-tree NAT helpers.
++	 */
++	return exp->expectfn == n->expectfn;
++}
++
++/* Destroy expectations still pointing at @n->expectfn; call after the
++ * caller's RCU grace period so none outlives the (often modular) callback.
++ */
++void nf_ct_helper_expectfn_destroy(const struct nf_ct_helper_expectfn *n)
++{
++	nf_ct_expect_iterate_destroy(expect_iter_expectfn, (void *)n);
++}
++EXPORT_SYMBOL_GPL(nf_ct_helper_expectfn_destroy);
++
+ /* Caller should hold the rcu lock */
+ struct nf_ct_helper_expectfn *
+ nf_ct_helper_expectfn_find_by_name(const char *name)
+diff --git a/net/netfilter/nf_nat_core.c b/net/netfilter/nf_nat_core.c
+index 746acd124ea285..6ba7733355df39 100644
+--- a/net/netfilter/nf_nat_core.c
++++ b/net/netfilter/nf_nat_core.c
+@@ -1353,6 +1353,7 @@ static int __init nf_nat_init(void)
+ 		RCU_INIT_POINTER(nf_nat_hook, NULL);
+ 		nf_ct_helper_expectfn_unregister(&follow_master_nat);
+ 		synchronize_net();
++		nf_ct_helper_expectfn_destroy(&follow_master_nat);
+ 		unregister_pernet_subsys(&nat_net_ops);
+ 		kvfree(nf_nat_bysource);
+ 	}
+@@ -1370,6 +1371,7 @@ static void __exit nf_nat_cleanup(void)
+ 	RCU_INIT_POINTER(nf_nat_hook, NULL);
+ 
+ 	synchronize_net();
++	nf_ct_helper_expectfn_destroy(&follow_master_nat);
+ 	kvfree(nf_nat_bysource);
+ 	unregister_pernet_subsys(&nat_net_ops);
+ }
+diff --git a/net/netfilter/nf_nat_sip.c b/net/netfilter/nf_nat_sip.c
+index 9fbfc6bff0c221..00838c0cc5bb28 100644
+--- a/net/netfilter/nf_nat_sip.c
++++ b/net/netfilter/nf_nat_sip.c
+@@ -655,6 +655,7 @@ static void __exit nf_nat_sip_fini(void)
+ 	RCU_INIT_POINTER(nf_nat_sip_hooks, NULL);
+ 	nf_ct_helper_expectfn_unregister(&sip_nat);
+ 	synchronize_rcu();
++	nf_ct_helper_expectfn_destroy(&sip_nat);
+ }
+ 
+ static const struct nf_nat_sip_hooks sip_hooks = {
+-- 
+2.53.0
+
 
 
 
