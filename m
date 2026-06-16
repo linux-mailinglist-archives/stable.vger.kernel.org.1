@@ -1,61 +1,67 @@
-Return-Path: <stable+bounces-266003-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266344-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id c9Q/BnmUMWpPnQUAu9opvQ
-	(envelope-from <stable+bounces-266003-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:22:49 +0200
+	id e2AEC4WcMWq5oAUAu9opvQ
+	(envelope-from <stable+bounces-266344-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:57:09 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69B95694146
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:22:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A1AC69498A
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:57:08 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=gMrb4JVp;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266003-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266003-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=N5Cr4nCq;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266344-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266344-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5369E3185D8E
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:22:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 86157305453E
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:52:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF0FD466B5E;
-	Tue, 16 Jun 2026 18:22:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F8D247AF68;
+	Tue, 16 Jun 2026 18:52:10 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 892F63D8105;
-	Tue, 16 Jun 2026 18:22:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4592C46AEE1;
+	Tue, 16 Jun 2026 18:52:09 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781634148; cv=none; b=CXFXnfGBEbVE8yV/6w1dRq0xgxv1m5HuprwkEbqNvlwVsPWbQ7n86O4+CKIA8xQv6nyxxcr9fLTNyBTYuLsnas1Uvdv8X6z37LrwnNp8VqDDpUAXcQJuStVv3G+TkBGWRafTBdaAhe2svwzLViAPCXnAb83Fodg2FLx11Dlhwjs=
+	t=1781635930; cv=none; b=sQHF1Gu61zc6rpHS4oLFziWZCx15m0i9Y8+FxuG86VT35SzL9MrRthOQtItN6/yQZIgq1hGDbKlwSjGz/M+dVxBkWdVPMYxidY61OjQZVp/NO6gFfSGMok3+Fc21r6dn0Fw8CTWtf0guGlsA/V5AsEJBO0Bxo58WOCBmhFkbcrY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781634148; c=relaxed/simple;
-	bh=8xwW6XRRIJVQrocD7fGfVvhpTNYVJP0BxHuGCaPbdK0=;
+	s=arc-20240116; t=1781635930; c=relaxed/simple;
+	bh=XU0pJOWYSAh+VCFmV6hSwp2aZM0uNrZ9riyJbygAVPc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tZRTm26eRHuOw1qYKh9X1m59ixsOtmFHbVsjQmhzPZb1gT+MKT1q5dQPJjk3sNzUZ0+wP5ka0hgbqbDkcI/plS1JAuGYCauBamuNp3O3Q/mpRx5z1QWiUuwTqA4mcLS0bjLgR5jPgiznUnpgn7CI4oRXx57p8IDXP+D9hbwMrIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gMrb4JVp; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7123C1F000E9;
-	Tue, 16 Jun 2026 18:22:26 +0000 (UTC)
+	 MIME-Version; b=REJA3pgsFepfltmr6gwmyJcO50/COPRp4UWQt/1jo0k6XUuLjRyVw+S1MS0wpCmNi3YellPAXctJuhAflVAfWDmnu5bn0LX4vfZ7LE3aNm19rA0hmItySWLttIRzanEVYwC3vzwIu9v+JtCdnpqeByBDKI5aC95YbZwrLh7IODM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N5Cr4nCq; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00E041F000E9;
+	Tue, 16 Jun 2026 18:52:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781634147;
-	bh=lJe5kHEghRH2OS1z21fYzozDYGcSvDBTyk1uz0BjzfU=;
+	s=korg; t=1781635928;
+	bh=1pDFQa4Fi8BXL1IFXUTIOWbfeF3ORRNOV/2RVN/zIf0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gMrb4JVpcCfq2P0vRDfFOpetcvU/JCBRJm3MwS2aDA84PFU7zU01bBdS0npCkGyp4
-	 IF3SbuANAx7Ke6qEphxsdNgqotefO889gF2h18RdEX4R0hDmb//VbrEKOD0twzyLrb
-	 ENl1+HdJz0NMaJ8inxWBTd7nZ8Djh59/1Q+y702Q=
+	b=N5Cr4nCqK4epLX3OM01Pz1R7Lzrgfrgd9oqVt/qiUv7beyJBh3PnYw9HB1R3RAvzu
+	 cvbLdvlhkvmbrnsTZj4AzG4jOVcjqfTesQKv9GGTD7hEXresLHgdKaxE1GWJUOOSZy
+	 83W+95uNcTpl1qm9vYENMdcc21qJLuPLSPeiXp7I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Alexander A. Klimov" <grandmaster@al2klimov.de>,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
+	Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>,
+	Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>,
+	Ao Wang <wangao@seu.edu.cn>,
+	Xuewei Feng <fengxw06@126.com>,
+	Qi Li <qli01@tsinghua.edu.cn>,
+	Ke Xu <xuke@tsinghua.edu.cn>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 200/411] drm/vc4: fix krealloc() memory leak
+Subject: [PATCH 5.10 142/342] net: garp: fix unsigned integer underflow in garp_pdu_parse_attr
 Date: Tue, 16 Jun 2026 20:27:18 +0530
-Message-ID: <20260616145111.354025498@linuxfoundation.org>
+Message-ID: <20260616145054.798107219@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,103 +71,98 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:grandmaster@al2klimov.de,m:mcanal@igalia.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	TAGGED_FROM(0.00)[bounces-266344-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:zhaoyz24@mails.tsinghua.edu.cn,m:yangyx22@mails.tsinghua.edu.cn,m:wangao@seu.edu.cn,m:fengxw06@126.com,m:qli01@tsinghua.edu.cn,m:xuke@tsinghua.edu.cn,m:horms@kernel.org,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-266003-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,mails.tsinghua.edu.cn,seu.edu.cn,126.com,tsinghua.edu.cn,kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,al2klimov.de:email,igalia.com:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,seu.edu.cn:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,tsinghua.edu.cn:email,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 69B95694146
+X-Rspamd-Queue-Id: 7A1AC69498A
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander A. Klimov <grandmaster@al2klimov.de>
+From: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
 
-[ Upstream commit 5d563a5da8717629ae72f9eadf1e0e340bd1658b ]
+[ Upstream commit 16e408e607a94b646fb14a2a98422c6877ae4b3c ]
 
-Don't just overwrite the original pointer passed to krealloc()
-with its return value without checking latter:
+The receive-side GARP attribute parser computes dlen with reversed
+operands:
 
-    MEM = krealloc(MEM, SZ, GFP);
+        dlen = sizeof(*ga) - ga->len;
 
-If krealloc() returns NULL, that erases the pointer
-to the still allocated memory, hence leaks this memory.
-Instead, use a temporary variable, check it's not NULL
-and only then assign it to the original pointer:
+ga->len is the on-wire attribute length and includes the GARP attribute
+header. For normal attributes with data, ga->len is larger than
+sizeof(*ga), so the subtraction underflows in unsigned arithmetic.
 
-    TMP = krealloc(MEM, SZ, GFP);
-    if (!TMP) return;
-    MEM = TMP;
+The resulting value is later passed to garp_attr_lookup(), whose length
+argument is u8. After truncation, the parsed data length usually no
+longer matches the length stored for locally registered attributes, so
+received Join/Leave events are ignored. This breaks the GARP receive path
+for common attributes, such as GVRP VLAN registration attributes.
 
-While on it, use krealloc_array().
+Compute the data length as the attribute length minus the header length.
 
-Fixes: 6d45c81d229d ("drm/vc4: Add support for branching in shader validation.")
-Signed-off-by: Alexander A. Klimov <grandmaster@al2klimov.de>
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
-Link: https://patch.msgid.link/20260606123817.37222-1-grandmaster@al2klimov.de
+Fixes: eca9ebac651f ("net: Add GARP applicant-only participant")
+Reported-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+Reported-by: Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>
+Reported-by: Ao Wang <wangao@seu.edu.cn>
+Reported-by: Xuewei Feng <fengxw06@126.com>
+Reported-by: Qi Li <qli01@tsinghua.edu.cn>
+Reported-by: Ke Xu <xuke@tsinghua.edu.cn>
+Signed-off-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260527083200.42861-1-zhaoyz24@mails.tsinghua.edu.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vc4/vc4_validate_shaders.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ net/802/garp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/vc4/vc4_validate_shaders.c b/drivers/gpu/drm/vc4/vc4_validate_shaders.c
-index 7cf82b071de290..82543a23ec0638 100644
---- a/drivers/gpu/drm/vc4/vc4_validate_shaders.c
-+++ b/drivers/gpu/drm/vc4/vc4_validate_shaders.c
-@@ -288,15 +288,16 @@ static bool require_uniform_address_uniform(struct vc4_validated_shader_info *va
- {
- 	uint32_t o = validated_shader->num_uniform_addr_offsets;
- 	uint32_t num_uniforms = validated_shader->uniforms_size / 4;
-+	u32 *offsets;
+diff --git a/net/802/garp.c b/net/802/garp.c
+index f6012f8e59f005..2c456b362621e6 100644
+--- a/net/802/garp.c
++++ b/net/802/garp.c
+@@ -452,7 +452,7 @@ static int garp_pdu_parse_attr(struct garp_applicant *app, struct sk_buff *skb,
+ 	if (!pskb_may_pull(skb, ga->len))
+ 		return -1;
+ 	skb_pull(skb, ga->len);
+-	dlen = sizeof(*ga) - ga->len;
++	dlen = ga->len - sizeof(*ga);
  
--	validated_shader->uniform_addr_offsets =
--		krealloc(validated_shader->uniform_addr_offsets,
--			 (o + 1) *
--			 sizeof(*validated_shader->uniform_addr_offsets),
--			 GFP_KERNEL);
--	if (!validated_shader->uniform_addr_offsets)
-+	offsets = krealloc_array(validated_shader->uniform_addr_offsets,
-+				 o + 1,
-+				 sizeof(*validated_shader->uniform_addr_offsets),
-+				 GFP_KERNEL);
-+	if (!offsets)
- 		return false;
- 
-+	validated_shader->uniform_addr_offsets = offsets;
- 	validated_shader->uniform_addr_offsets[o] = num_uniforms;
- 	validated_shader->num_uniform_addr_offsets++;
- 
+ 	if (attrtype > app->app->maxattr)
+ 		return 0;
 -- 
 2.53.0
 
