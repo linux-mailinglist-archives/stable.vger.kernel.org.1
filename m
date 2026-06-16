@@ -1,62 +1,63 @@
-Return-Path: <stable+bounces-265977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266361-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id TC0UKfeTMWoTnQUAu9opvQ
-	(envelope-from <stable+bounces-265977-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:20:39 +0200
+	id Jub2FuqcMWr0oAUAu9opvQ
+	(envelope-from <stable+bounces-266361-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:58:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2950A6940BF
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:20:39 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C50A2694A13
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:58:49 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=H7JhWAnO;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265977-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265977-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=WNGcVaDI;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266361-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266361-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BE35B30A09C9
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:20:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 16CC03210B89
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:53:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C0413EB0F5;
-	Tue, 16 Jun 2026 18:20:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E8804779BF;
+	Tue, 16 Jun 2026 18:53:39 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECFA23CEBBD;
-	Tue, 16 Jun 2026 18:20:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7494D46AEE1;
+	Tue, 16 Jun 2026 18:53:38 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781634013; cv=none; b=a6FbqnqvtDv9RuWizQxxCniw0INlztenPtlirR+f5FpnxDbHvJfYU3xxHsemhaV15AV9gOYDLXofDC5GWOSF5+B2i99ScEy7cA6pP5gQOjT4ssilQc0rQOO3gOMViNZWxOrsV0Tx4j+izOTe3aqOjKtKOtaiH6GXZxpsp3/3+jI=
+	t=1781636019; cv=none; b=KsEwXTocKRQfswOvkxtVbS6gO5CqZ1MpbAk0osE5P/tSTL6XXOXPwkQGfA4EqbdaGWWE/KumMNCnbia9+JvcqyFUwBfp7RJakoK9jGVzpLX85kBEKuAgg9bL0QwsscHYPTK6UE6c7u578+G4dradh2Y6v/H5T3brDXrGqM3JIKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781634013; c=relaxed/simple;
-	bh=HB6tSEhyo+TSqad4x2ZFl5Wmqw5zyGw9oTP93ggtI1Q=;
+	s=arc-20240116; t=1781636019; c=relaxed/simple;
+	bh=cgHxm+tfkyzqHO3BY6XW51Ydeg3vFnJv4E9K/hhTzdE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fEkWIedZvnf545xwmt9xNzBPnwldtHG4HEeQB7CBZGqBxnpB9tBXv/OSvrNJ8sgppl02y8DZinpNiQx1krHlC6c20F+LSlBvGOqYaNDFd2miHmMvaygL0/4kR3FxpwuYQ8zujBGHCtz9t1dHFsVp4SU9XflshugG6huMajbax9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H7JhWAnO; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD3871F000E9;
-	Tue, 16 Jun 2026 18:20:10 +0000 (UTC)
+	 MIME-Version; b=HVlSNTyxXKOir9/fvt4JLJktH3f+Vkkw3gGzcDnWFAddUlCGGA9Nme2IatcFdecK7Ef58fEZfWng70MD9OqgV1UuOHQIM4w5CYv1BS0EDcT/AuOfQlqBVDy9YTRFf2By75ngeurbGasmhYtBKVq/XNNWocZi5a8/yhSMC+HDFYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WNGcVaDI; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A0FE1F000E9;
+	Tue, 16 Jun 2026 18:53:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781634011;
-	bh=b3wVfaVsq6/iCYIz5R/CKbSz5oB3UbxBjZs8LsvgUdg=;
+	s=korg; t=1781636018;
+	bh=0YfDrzxJPb/fFeDOxaNbW+duebOomVxrbtqfMpndDH4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=H7JhWAnOL8HeToow2jNUJokovO7UFj6B+I135UMFJyA0AdTB3IstO0hCWwvxZ3/XY
-	 eFHeTXKiAbgt5Y0bRHXNOx2VEHaRBYfi76D/fYEyJHLmrUqhwv6Ggbig8N54GpS/t6
-	 KARaUTBvOMpc44J7312yea6Ea0HotKef4zUbGOXg=
+	b=WNGcVaDI4IBee+P8Fk1XMySUFoHVB37LyHv0cs1JecFCX6Ur/rD5FzlRnaZNVyahR
+	 LdzwYUzwxU/v4ue+i4Dbm4Jpq+ORBMZSIQCVKY1J2Ss+R426RBZHs5ohzad7g1/YOt
+	 BhSNmCOCUwgUz/1rXub29d3Uvhzs+wD0Xk0uaWtQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mingyu Wang <25181214217@stu.xidian.edu.cn>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 184/411] net: qrtr: fix refcount saturation and potential UAF in qrtr_port_remove
+	Miguel Ojeda <ojeda@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 5.10 126/342] HID: core: Fix size_t specifier in hid_report_raw_event()
 Date: Tue, 16 Jun 2026 20:27:02 +0530
-Message-ID: <20260616145110.479511279@linuxfoundation.org>
+Message-ID: <20260616145054.073804480@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,22 +73,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265977-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-266361-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:25181214217@stu.xidian.edu.cn,m:horms@kernel.org,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:ojeda@kernel.org,m:nathan@kernel.org,m:torvalds@linux-foundation.org,m:sashal@kernel.org,m:lee@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -96,88 +97,81 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[xidian.edu.cn:email,vger.kernel.org:from_smtp,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linux-foundation.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2950A6940BF
+X-Rspamd-Queue-Id: C50A2694A13
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mingyu Wang <25181214217@stu.xidian.edu.cn>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit a2171131ecda1ed61a594a1eb715e75fdad0fef5 ]
+[ Upstream commit 4d3a2a466b8d68d852a1f3bbf11204b718428dc4 ]
 
-In qrtr_port_remove(), the socket reference count is decremented via
-__sock_put() before the port is removed from the qrtr_ports XArray and
-before the RCU grace period elapses.
+When building for 32-bit platforms, for which 'size_t' is
+'unsigned int', there are warnings around using the incorrect format
+specifier to print bsize in hid_report_raw_event():
 
-This breaks the fundamental RCU update paradigm. It exposes a race
-window where a concurrent RCU reader (such as qrtr_reset_ports() or
-qrtr_port_lookup()) can obtain a pointer to the socket from the XArray,
-and attempt to call sock_hold() on a socket whose reference count has
-already dropped to zero.
+  drivers/hid/hid-core.c:2054:29: error: format specifies type 'long' but the argument has type 'size_t' (aka 'unsigned int') [-Werror,-Wformat]
+   2053 |                 hid_warn_ratelimited(hid, "Event data for report %d is incorrect (%d vs %ld)\n",
+        |                                                                                         ~~~
+        |                                                                                         %zu
+   2054 |                                      report->id, csize, bsize);
+        |                                                         ^~~~~
+  drivers/hid/hid-core.c:2076:29: error: format specifies type 'long' but the argument has type 'size_t' (aka 'unsigned int') [-Werror,-Wformat]
+   2075 |                 hid_warn_ratelimited(hid, "Event data for report %d was too short (%d vs %ld)\n",
+        |                                                                                          ~~~
+        |                                                                                          %zu
+   2076 |                                      report->id, rsize, bsize);
+        |                                                         ^~~~~
 
-This exact race condition was hit during syzkaller fuzzing, leading to
-the following refcount saturation warning and a potential Use-After-Free:
+Use the proper 'size_t' format specifier, '%zu', to clear up the
+warnings.
 
-  refcount_t: saturated; leaking memory.
-  WARNING: CPU: 3 PID: 1273 at lib/refcount.c:22 refcount_warn_saturate+0xae/0x1d0
-  Modules linked in: qrtr(+) bochs drm_shmem_helper ...
-  Call Trace:
-   <TASK>
-   qrtr_reset_ports net/qrtr/af_qrtr.c:768 [inline] [qrtr]
-   __qrtr_bind.isra.0+0x48b/0x570 net/qrtr/af_qrtr.c:805 [qrtr]
-   qrtr_bind+0x17d/0x210 net/qrtr/af_qrtr.c:901 [qrtr]
-   kernel_bind+0xe4/0x120 net/socket.c:3592
-   qrtr_ns_init+0x1a6/0x380 net/qrtr/ns.c:715 [qrtr]
-   qrtr_proto_init+0x3b/0xff0 net/qrtr/af_qrtr.c:169 [qrtr]
-   do_one_initcall+0xf5/0x5e0 init/main.c:1283
-   ...
-   </TASK>
-
-Fix this by deferring the reference count decrement until after the
-xa_erase() and the synchronize_rcu() complete.
-
-(Note: The v1 of this patch incorrectly replaced __sock_put() with
-sock_put(). As Simon Horman pointed out, the callers of qrtr_port_remove()
-still hold a reference to the socket, so freeing the socket memory here
-would lead to a subsequent UAF in the caller. Thus, the __sock_put() is
-kept, but only repositioned to close the RCU race.)
-
-Fixes: bdabad3e363d ("net: Add Qualcomm IPC router")
-Signed-off-by: Mingyu Wang <25181214217@stu.xidian.edu.cn>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260604064801.1180388-1-w15303746062@163.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 2c85c61d1332 ("HID: pass the buffer size to hid_report_raw_event")
+Reported-by: Miguel Ojeda <ojeda@kernel.org>
+Closes: https://lore.kernel.org/20260516020430.110135-1-ojeda@kernel.org/
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+(cherry picked from commit 3ab135238832446399614e7a4bb796d620717806)
+Signed-off-by: Lee Jones <lee@kernel.org>
+(cherry picked from commit 0f77a993b5426cca1b046c9ab4b2f8355a4d45dc)
+Signed-off-by: Lee Jones <lee@kernel.org>
+(cherry picked from commit 70333a8f866aad8cbd6956e2ec4ace159fa4243b)
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/qrtr/af_qrtr.c | 4 ++--
+ drivers/hid/hid-core.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/qrtr/af_qrtr.c b/net/qrtr/af_qrtr.c
-index 431fd1f2b80c18..6f4b901afc330c 100644
---- a/net/qrtr/af_qrtr.c
-+++ b/net/qrtr/af_qrtr.c
-@@ -702,13 +702,13 @@ static void qrtr_port_remove(struct qrtr_sock *ipc)
- 	if (port == QRTR_PORT_CTRL)
- 		port = 0;
+diff --git a/drivers/hid/hid-core.c b/drivers/hid/hid-core.c
+index c73f4ac16fdf24..918c66d5bc93f6 100644
+--- a/drivers/hid/hid-core.c
++++ b/drivers/hid/hid-core.c
+@@ -1793,7 +1793,7 @@ int hid_report_raw_event(struct hid_device *hid, int type, u8 *data,
+ 		return 0;
  
--	__sock_put(&ipc->sk);
--
- 	xa_erase(&qrtr_ports, port);
+ 	if (unlikely(bsize < csize)) {
+-		hid_warn_ratelimited(hid, "Event data for report %d is incorrect (%d vs %ld)\n",
++		hid_warn_ratelimited(hid, "Event data for report %d is incorrect (%d vs %zu)\n",
+ 				     report->id, csize, bsize);
+ 		return -EINVAL;
+ 	}
+@@ -1815,7 +1815,7 @@ int hid_report_raw_event(struct hid_device *hid, int type, u8 *data,
+ 		rsize = max_buffer_size;
  
- 	/* Ensure that if qrtr_port_lookup() did enter the RCU read section we
- 	 * wait for it to up increment the refcount */
- 	synchronize_rcu();
-+
-+	__sock_put(&ipc->sk);
- }
- 
- /* Assign port number to socket.
+ 	if (bsize < rsize) {
+-		hid_warn_ratelimited(hid, "Event data for report %d was too short (%d vs %ld)\n",
++		hid_warn_ratelimited(hid, "Event data for report %d was too short (%d vs %zu)\n",
+ 				     report->id, rsize, bsize);
+ 		return -EINVAL;
+ 	}
 -- 
 2.53.0
 
