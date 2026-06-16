@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-266019-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264254-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id s+GOBMqUMWp1nQUAu9opvQ
-	(envelope-from <stable+bounces-266019-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:24:10 +0200
+	id a22sCHZ0MWoCjwUAu9opvQ
+	(envelope-from <stable+bounces-264254-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:06:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 546DE69418F
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:24:09 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id B191A691AEF
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:06:13 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Qh3kWVRy;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266019-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266019-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=N3p521Xn;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264254-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264254-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 17B8D3194160
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:23:53 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DAAFA31805E1
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:49:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A83683BFE5A;
-	Tue, 16 Jun 2026 18:23:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA194361651;
+	Tue, 16 Jun 2026 15:49:24 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78396478E3E;
-	Tue, 16 Jun 2026 18:23:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A59CB3C414F;
+	Tue, 16 Jun 2026 15:49:23 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781634232; cv=none; b=Npbg785Lih22bfFadBypMtSQqVk6Y1Xeam2azQq6cm6gqjGwAvOqhJeyjYz1BdhsfAAQ3LNgrNQ7heO0ZwYfd1uEkHUDdhDhipOC4rCCx4EM4sJV5/01Qs+VxMiU62ebUVkYFZNVA0DhsqDYm9BmDgsKegjVf6JXM17tFKM/fmY=
+	t=1781624964; cv=none; b=bCqm17y3y8+xzAX21b2QkGGAPgAUE7zhCOaeRnntMceiEN/cHrT3tLDn448kfIXGtHPCuM4gyLqCczGK7t9Ar0sXHV1LH1eNjV8VSR7Ro8x8PXn/vlWkIYaJknh7GAE8Oanj4Yxi4qpKt8UTj2iiJdhRcNCkwYv/t+w/gjEyC/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781634232; c=relaxed/simple;
-	bh=fe8RyQyyM4ZDhVquYXYXQRJWn+rYq3zguD1AnzhH+GY=;
+	s=arc-20240116; t=1781624964; c=relaxed/simple;
+	bh=vSxeP5VtksRWW6pr8QXiM/mPhqKCz8rTpZu2H37wNlg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tu8Ah0rE229PqeUgU/AE+jTb5N7tNhDORo3JPmSwa63KGIANAyzZ9090qRRfBzV1YJCTW7gWSQAuPwFnTcnBOFWREND3XUEAA4Keb31bbVNFNVwLv2tONoWF13JZ9OaZ3H06+SUYpYUuQ8nqYPTpGe5DQIp9CdCjydGjxpyUXsk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qh3kWVRy; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 724D21F000E9;
-	Tue, 16 Jun 2026 18:23:50 +0000 (UTC)
+	 MIME-Version; b=k8sukgrh7iTowAMMmdGqMfqAKxrT9zfm/JKC7dFYc9zqAG+SIrKjUp0/Oiq1PM1myY6rEoIkS50FdtcwcAQmgeMY+dHqWChwbN2OCeSfCAGEgKTDg9uc962X290Dd0DCI7tVH+JjkgkLbPWWoqHmBRGHbIcPK9tcoVC69w+dPwg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N3p521Xn; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30A8A1F000E9;
+	Tue, 16 Jun 2026 15:49:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781634231;
-	bh=cQkbnJBP+vXLfMw7lTNDAxqQtC4YrRJB2KGT4rcbrOY=;
+	s=korg; t=1781624963;
+	bh=WlaaXlVcbvaIZwSvvNPmZmz4fUYVQUWNVpiA6D6ReVU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Qh3kWVRyq6yJBQjRO7Lf4vnhFBXq2qJh9NFJVW5NffLTB3tEfe0DsGS+kiWTwVlRc
-	 UPfj6foegt6pcFO0fCP/D/biO5Rgrv13LPULBMLlR+tydZUsNeqfk2z0Dy/LdrdWM1
-	 tHuPodXJgPVOVk0UHf2uoyXcihKHQOyYVw2tDvWo=
+	b=N3p521XnGtCAI+33YOyYPB+HepbOX93rb4cBSie1a36dutnbpGia06tKa9C+FVFFK
+	 hY4V6JGTqIR+63rhgLJsF8Ih3i0drAuLG1lPATUsSITKhb0jKEen5vQJcyWtAVDhAb
+	 a4O+7CSKkiIvAzgmQf4zBnr66/P3aL2pPKA9l69M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Raf Dickson <rafdog35@gmail.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 5.15 216/411] vsock/vmci: fix sk_ack_backlog leak on failed handshake
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 058/325] net: airoha: Fix use-after-free in metadata dst teardown
 Date: Tue, 16 Jun 2026 20:27:34 +0530
-Message-ID: <20260616145112.265070616@linuxfoundation.org>
+Message-ID: <20260616145100.584047052@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,89 +72,82 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264254-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-266019-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:rafdog35@gmail.com,m:sgarzare@redhat.com,m:pabeni@redhat.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:lorenzo@kernel.org,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 546DE69418F
+X-Rspamd-Queue-Id: B191A691AEF
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raf Dickson <rafdog35@gmail.com>
+From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-commit c05fa14db43ebef3bd862ca9d073981c0358b3f0 upstream.
+[ Upstream commit b38cae85d1c45ff189d7ecb6ac36f41cdc3d84d0 ]
 
-When vmci_transport_recv_connecting_server() returns an error,
-vmci_transport_recv_listen() calls vsock_remove_pending() but never
-calls sk_acceptq_removed(). This leaves sk_ack_backlog incremented
-permanently.
+airoha_metadata_dst_free() runs metadata_dst_free() which frees the
+metadata_dst with kfree() immediately, bypassing the RCU grace period.
+In the RX path, skb_dst_set_noref() sets a non-refcounted pointer from
+the skb to the metadata_dst. This function requires RCU read-side
+protection and the dst must remain valid until all RCU readers complete.
+Since metadata_dst_free() calls kfree() directly, an use-after-free can
+occur if any skb still holds a noref pointer to the dst when the driver
+tears it down.
+Replace metadata_dst_free() with dst_release() which properly goes
+through the refcount path: when the refcount drops to zero, it schedules
+the actual free via call_rcu_hurry(), ensuring all RCU readers have
+completed before the memory is freed.
 
-Repeated handshake failures (malformed packets, queue pair alloc
-failure, event subscribe failure) cause sk_ack_backlog to climb
-toward sk_max_ack_backlog. Once it reaches the limit the listener
-permanently refuses all new connections with -ECONNREFUSED, a
-silent denial of service requiring a process restart to recover.
-
-The two existing sk_acceptq_removed() calls in af_vsock.c do not
-cover this path: line 764 checks vsock_is_pending() which returns
-false after vsock_remove_pending(), and line 1889 is only reached
-on successful accept().
-
-Fix by balancing sk_acceptq_added() with sk_acceptq_removed() on
-the error path.
-
-Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
-Cc: stable@vger.kernel.org
-Signed-off-by: Raf Dickson <rafdog35@gmail.com>
-Acked-by: Stefano Garzarella <sgarzare@redhat.com>
-Link: https://patch.msgid.link/20260526104356.469928-1-rafdog35@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: af3cf757d5c9 ("net: airoha: Move DSA tag in DMA descriptor")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Link: https://patch.msgid.link/20260602-airoha-mtk-metadata-uaf-fix-v1-1-3aaa99d83351@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/vmw_vsock/vmci_transport.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/airoha/airoha_eth.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/vmw_vsock/vmci_transport.c
-+++ b/net/vmw_vsock/vmci_transport.c
-@@ -972,8 +972,10 @@ static int vmci_transport_recv_listen(st
- 			err = -EINVAL;
- 		}
+diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
+index 9781a6fc9bf9a8..f30bace944d694 100644
+--- a/drivers/net/ethernet/airoha/airoha_eth.c
++++ b/drivers/net/ethernet/airoha/airoha_eth.c
+@@ -2933,7 +2933,7 @@ static void airoha_metadata_dst_free(struct airoha_gdm_port *port)
+ 		if (!port->dsa_meta[i])
+ 			continue;
  
--		if (err < 0)
-+		if (err < 0) {
- 			vsock_remove_pending(sk, pending);
-+			sk_acceptq_removed(sk);
-+		}
+-		metadata_dst_free(port->dsa_meta[i]);
++		dst_release(&port->dsa_meta[i]->dst);
+ 	}
+ }
  
- 		release_sock(pending);
- 		vmci_transport_release_pending(pending);
+-- 
+2.53.0
+
 
 
 
