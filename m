@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-264274-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266026-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ogX2AZFyMWpbjgUAu9opvQ
-	(envelope-from <stable+bounces-264274-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:58:09 +0200
+	id C+v9L+uUMWqBnQUAu9opvQ
+	(envelope-from <stable+bounces-266026-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:24:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3114691928
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:58:08 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 300986941B0
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:24:43 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=KjXSBhFJ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264274-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264274-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=IjLyjmYg;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266026-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266026-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D1A893004DF8
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:51:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3874E318AEC3
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:24:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A84644CAE6;
-	Tue, 16 Jun 2026 15:51:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B453478E3E;
+	Tue, 16 Jun 2026 18:24:30 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44E6715B998;
-	Tue, 16 Jun 2026 15:51:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4E913BFE5A;
+	Tue, 16 Jun 2026 18:24:28 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781625101; cv=none; b=WvIJClFvob9qoc+la081JR3PaUqBejOez2ubc0ATXIFPdNWpT5qrtXasCkJNPCL9552TMGytRzoLRXv6xQbkUO0fIt01ikQQhGA/HynPVt9Byrx4sv61A47fEzPCuzTvBszKH/5lccOoIiUv7kMWGFx7XIq3+z9t7NQK04Gf16k=
+	t=1781634269; cv=none; b=UUTwpVCSEZAWWBY+3FSPjCcX2eCCzZsyX4xQMIp2w8bOPqdhVYmjcHae/6nr+Rr5D7U5PB8IasAXwtgVa1ZXUCwpG2q+076yaLMs/W9tWWVtJR/oedB+Iuhce3ELktxoBhdI5FyS8o1WrYIOwXi/24eYya9ZhUJ1+u6KC3QX2Rw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781625101; c=relaxed/simple;
-	bh=Kt0Y6VPiOCOhmYo4m5c2f4ReD1iOBpUO2yHvoZ4UZc4=;
+	s=arc-20240116; t=1781634269; c=relaxed/simple;
+	bh=buGdPnRouGWSh89J1AVPamkvJIdrX4JGHHYWmKc2Nhw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iVk/2FNINFmRS6uDiTqX5HLOipy5XCcUDQbuqTdGi9CVw6rUffYzRMnUIz2Xf0tOFnY/ZcmeioA3NwqJFh62nP07ukRU0Vo9cEqTC5eWKm8uY5Y4s6aOnjRF9Z7pVf9hAkyWTyt+inMQ1CUMcasTz9ZJdj+17vRMyjALuwkwyhE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KjXSBhFJ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A89A1F000E9;
-	Tue, 16 Jun 2026 15:51:39 +0000 (UTC)
+	 MIME-Version; b=Hnt5Boo/BLxYsVHN+yaiPUgk0DwHTP7HupEnJyMDbkFm+IqTnkRkadoDqM4qDrUnwdy3U1p+G5aTRqgwANq35grIdeS/hWrFGsdDYVdeXF7wGmj4vd/TLbaxk2lcNuXgQLBF2pL6lTlhXR2JhLEULSy8Ez0SFNLt6j9t5oxdEOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IjLyjmYg; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D07A41F000E9;
+	Tue, 16 Jun 2026 18:24:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781625100;
-	bh=vz+M3NA7IwTBqPitIEx3lhPTi4lRvDqsA3UWNtHHaiY=;
+	s=korg; t=1781634268;
+	bh=Pnrtw/h7lqk8l3Pq90xjLLRfsNPNvK+4wwC818Wr/w8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=KjXSBhFJPV7uX+t4bkQ12UL09o//RTAoglqmjYxaWwSsBu8K/ais8v7EDm156pw/+
-	 PrGXyh0eIcCMYbZLK/+Wl3tky1N3qGoYdXMsMKQGlrmv9B+pAyStM9+ycZdO6ubG4f
-	 9KNnEnpZeL3Z8vTTbVj7dQRNSsLgzOLkse3wObTQ=
+	b=IjLyjmYgXE/GUzxuMd6stVS0ZyEt1FmmCr1vm/xa4fVdHy4Sy5KKQxWq2tnG/MYZG
+	 yZV9ovbL/M+TGVtZHKyDnGXo5sNMR9P0ZBFENv5FnspZIYHmcAqiv10b3HkCoIADLt
+	 /RIZdnu/JiFzrnVdYvTBfB70Mt25De1Olq8R7mZw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kyle Zeng <kylebot@openai.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 076/325] ALSA: seq: dummy: fix UMP event stack overread
+	Jisheng Zhang <jszhang@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulfh@kernel.org>
+Subject: [PATCH 5.15 234/411] mmc: sdhci: add signal voltage switch in sdhci_resume_host
 Date: Tue, 16 Jun 2026 20:27:52 +0530
-Message-ID: <20260616145101.519441355@linuxfoundation.org>
+Message-ID: <20260616145113.269476833@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,21 +72,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264274-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-266026-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kylebot@openai.com,m:tiwai@suse.de,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jszhang@kernel.org,m:adrian.hunter@intel.com,m:ulfh@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -98,86 +98,56 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,vger.kernel.org:from_smtp,suse.de:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A3114691928
+X-Rspamd-Queue-Id: 300986941B0
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kyle Zeng <kylebot@openai.com>
+From: Jisheng Zhang <jszhang@kernel.org>
 
-[ Upstream commit 2b5ff4db5d7aa5b981d966df02e687f79ad7b311 ]
+commit f595e8e77a51eee35e331f69321766593a845ef2 upstream.
 
-The dummy sequencer port forwards events by copying an incoming
-struct snd_seq_event into a stack temporary, rewriting source and
-destination, and dispatching the temporary to subscribers. That legacy
-event storage is smaller than struct snd_seq_ump_event.
+I met one suspend/resume issue with sdr104 capable sdio wifi card (with
+"keep-power-in-suspend" set in DT property):
+After resuming from suspend to ram, the sdio wifi card stops working.
+Further debug shows that although ios shows the sdio card is at sdr104
+mode, the voltage is still at 3V3. This is due to missing the calling
+of ->start_signal_voltage_switch() in sdhci_resume_host().
 
-When a UMP event reaches the dummy client, the copy leaves the UMP flag
-set but only provides legacy-sized stack storage. The subscriber
-delivery path then uses snd_seq_event_packet_size() and copies a
-UMP-sized packet from that stack object, reading past the end of the
-temporary.
+Fix this issue by adding ->start_signal_voltage_switch() in
+sdhci_resume_host(). This also matches what we do for
+sdhci_runtime_resume_host().
 
-Use the existing union __snd_seq_event storage and copy the packet size
-reported for the incoming event before rewriting the common routing
-fields. This preserves the full UMP packet for UMP events while keeping
-legacy event handling unchanged.
+Then the question is: why this issue hasn't reported and fixed for so
+long time. IMHO, several reasons: Some host controllers just kick off
+the runtime resume for system resume, so they benefit from the well
+supported runtime pm code; Some platforms just use the old sdio wifi
+card which doesn't need signal voltage switch at all, the default
+voltage is 3v3 after resuming.
 
-Fixes: 32cb23a0f911 ("ALSA: seq: dummy: Allow UMP conversion")
-Signed-off-by: Kyle Zeng <kylebot@openai.com>
-Link: https://patch.msgid.link/20260605080204.32045-1-kylebot@openai.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 6308d2905bd3 ("mmc: sdhci: add quirk for keeping card power during suspend")
+Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Ulf Hansson <ulfh@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/core/seq/seq_dummy.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ drivers/mmc/host/sdhci.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/core/seq/seq_dummy.c b/sound/core/seq/seq_dummy.c
-index 783fc72c2ef673..bc11e4d1edd956 100644
---- a/sound/core/seq/seq_dummy.c
-+++ b/sound/core/seq/seq_dummy.c
-@@ -9,6 +9,7 @@
- #include <linux/module.h>
- #include <sound/core.h>
- #include "seq_clientmgr.h"
-+#include "seq_memory.h"
- #include <sound/initval.h>
- #include <sound/asoundef.h>
- 
-@@ -81,19 +82,21 @@ dummy_input(struct snd_seq_event *ev, int direct, void *private_data,
- 	    int atomic, int hop)
- {
- 	struct snd_seq_dummy_port *p;
--	struct snd_seq_event tmpev;
-+	union __snd_seq_event tmpev;
-+	size_t size;
- 
- 	p = private_data;
- 	if (ev->source.client == SNDRV_SEQ_CLIENT_SYSTEM ||
- 	    ev->type == SNDRV_SEQ_EVENT_KERNEL_ERROR)
- 		return 0; /* ignore system messages */
--	tmpev = *ev;
-+	size = snd_seq_event_packet_size(ev);
-+	memcpy(&tmpev, ev, size);
- 	if (p->duplex)
--		tmpev.source.port = p->connect;
-+		tmpev.legacy.source.port = p->connect;
- 	else
--		tmpev.source.port = p->port;
--	tmpev.dest.client = SNDRV_SEQ_ADDRESS_SUBSCRIBERS;
--	return snd_seq_kernel_client_dispatch(p->client, &tmpev, atomic, hop);
-+		tmpev.legacy.source.port = p->port;
-+	tmpev.legacy.dest.client = SNDRV_SEQ_ADDRESS_SUBSCRIBERS;
-+	return snd_seq_kernel_client_dispatch(p->client, &tmpev.legacy, atomic, hop);
- }
- 
- /*
--- 
-2.53.0
-
+--- a/drivers/mmc/host/sdhci.c
++++ b/drivers/mmc/host/sdhci.c
+@@ -3760,6 +3760,7 @@ int sdhci_resume_host(struct sdhci_host
+ 		host->pwr = 0;
+ 		host->clock = 0;
+ 		host->reinit_uhs = true;
++		mmc->ops->start_signal_voltage_switch(mmc, &mmc->ios);
+ 		mmc->ops->set_ios(mmc, &mmc->ios);
+ 	} else {
+ 		sdhci_init(host, (mmc->pm_flags & MMC_PM_KEEP_POWER));
 
 
 
