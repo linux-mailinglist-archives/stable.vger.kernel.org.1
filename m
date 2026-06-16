@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-266178-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264437-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id b+IzLRCYMWrdngUAu9opvQ
-	(envelope-from <stable+bounces-266178-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:38:08 +0200
+	id SP9KBYR0MWoHjwUAu9opvQ
+	(envelope-from <stable+bounces-264437-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:06:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FE08694499
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:38:08 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4224691B07
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:06:27 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Fbnu58JO;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266178-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-266178-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=zY50jjDf;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264437-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-264437-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 974E43093649
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:37:43 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0F08D304CA8C
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:04:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3204846AF3C;
-	Tue, 16 Jun 2026 18:37:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 509644611C1;
+	Tue, 16 Jun 2026 16:04:39 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F3143DF007;
-	Tue, 16 Jun 2026 18:37:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B7A8453498;
+	Tue, 16 Jun 2026 16:04:38 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781635062; cv=none; b=MukJIZqnbDTm+KmcR8DTaqOBaN1K/6DF05U8ifc2wWQIsw1MOPRZHYWnzfJN4LMbzn1y6KAAR+ZYRzYCAJ9wGuZhw3tf2qGAupNNVwlkJBQExp43AHLkMzwXeoaimUF/p+jDo92k8ikwjqtLenbp7qorPB0zgGyWwWEzWrAxL2s=
+	t=1781625879; cv=none; b=Ux3EJiR2ef3p3cpH4o05ZdO3471PyWWYmGhsGAYiW2vkhaovwaLR9T6xHaKpA05UM85TV+Oqp53sheXD6LbuDQrtTs4retIfwKGbIi2qmprQFW3n9ah1q/Zukv4puiO0U0o9LF18UG924/6ch+gCccgQlk1HZkOLwDdC0zuEb64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781635062; c=relaxed/simple;
-	bh=gWKOkM7klhBiW3nJIHwSLuqJq6w2bPd3PnSb0Gwbrak=;
+	s=arc-20240116; t=1781625879; c=relaxed/simple;
+	bh=+BXmkhU312P4O8q3jdgVRJT4cvMZPq8wqD0ILQWUuYo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nbdUUIHEZRv2eB3QT89KTAfFaG+QIVtLWQ32vJZcLvYSohogbdHaZk4yzZRhdverZZIusr4wWqwiP8Vuueo+0ajTTc67nVaGvArrCJ4rCp7Gyeh/0MIM6lngVlLG0GU/9zRhWNuDTE/Mc120APNCG50P4mhVN6nV1jE+klQjnIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fbnu58JO; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DBD71F000E9;
-	Tue, 16 Jun 2026 18:37:39 +0000 (UTC)
+	 MIME-Version; b=cX8fsn1JJ708tymN4O70rT9s5KtaDw2qeyuiJBD3vUzgE1c+yTj6/iD593VR7G4NlJ/fheBhHTRm1IQZJz0pyILh/uJj8S6VANLtsChsYcXinDwKuG43ZNuxw1XadocJHiSa0CpXkmRF7jfPG3l0SB7x5VRMHrW/EPdUh/6BUCM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zY50jjDf; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D39B1F00A3A;
+	Tue, 16 Jun 2026 16:04:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781635061;
-	bh=m7lJe6K+BFVNi7iDfDIApk1d60csjTpmbv3fEL9Sjrk=;
+	s=korg; t=1781625878;
+	bh=rb78q51MqzMd0jbVapoRrB68x+bqdjQJito7Wlr14uQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Fbnu58JODUDtEbpZqpdygYHT/MTzPxQGpEGPnMGrY9BVxK1Ig5nWezwwVS3y2RexZ
-	 4S1VYI9VMTe2JnNc7oRQ2ZYSu0CD3hQkVlUpOFl5I2XE+/c2KeQRcDfU/Uh9Ag5zfc
-	 MS7K5dO9Cal9IrbJ7xgK+WmRdRH+88JbJPXB+in0=
+	b=zY50jjDfX1O5hAevcjYKS2z/qqPh4Hh9l9Nv1BWTZhPCgOyIsITgBp0dXCydZYyOu
+	 BdT7N8XTTaGbsKBpAiccnHtkZNQa0W6pJ63i2PDPKPKEQ3rX8AwCuYuaPRDXp3yLIB
+	 bJpOIermlO3VR7LnMNLEC6gOZrfA2U8mgcxm6dyQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 383/411] tty: serial: qcom-geni-serial: remove unused symbols
+	Zeyu WANG <zeyu.thomas.wang@gmail.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.18 225/325] Input: atkbd - add DMI quirk for Lenovo Yoga Air 14 (83QK)
 Date: Tue, 16 Jun 2026 20:30:21 +0530
-Message-ID: <20260616145121.623115772@linuxfoundation.org>
+Message-ID: <20260616145109.584875857@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,110 +66,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266178-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bartosz.golaszewski@linaro.org,m:konrad.dybcio@linaro.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264437-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:zeyu.thomas.wang@gmail.com,m:dmitry.torokhov@gmail.com,m:zeyuthomaswang@gmail.com,m:dmitrytorokhov@gmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,linaro.org:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2FE08694499
+X-Rspamd-Queue-Id: C4224691B07
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+From: Zeyu WANG <zeyu.thomas.wang@gmail.com>
 
-[ Upstream commit 68c6bd92c86cbc4937834c79963b27c77ee3bf51 ]
+commit ad0979fe053e9f2db82da82188256ef6eb41095a upstream.
 
-Drop all unused symbols from the driver.
+The Lenovo Yoga Air 14 (83QK) laptop keyboard becomes unresponsive
+after the standard atkbd init sequence. Controlled testing on the
+actual hardware shows the F5 (ATKBD_CMD_RESET_DIS / deactivate)
+command specifically corrupts the EC state, causing zero IRQ1
+interrupts after init.
 
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20221229155030.418800-4-brgl@bgdev.pl
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: ca2584d841b6 ("serial: qcom-geni: fix UART_RX_PAR_EN bit position")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Skipping only the deactivate command (while keeping F4 ENABLE)
+resolves the issue completely: both keystroke input and CapsLock
+LED toggle work correctly. The reverse test - skipping only F4
+while keeping F5 - makes the problem worse (zero keystroke
+interrupts), confirming F5 is the sole culprit.
+
+Add a DMI quirk entry for LENOVO/83QK using the existing
+atkbd_deactivate_fixup callback, consistent with the existing
+entries for LG Electronics and HONOR FMB-P that address the
+same EC F5 deactivate issue.
+
+Signed-off-by: Zeyu WANG <zeyu.thomas.wang@gmail.com>
+Link: https://patch.msgid.link/20260602170909.14725-1-zeyu.thomas.wang@gmail.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/qcom_geni_serial.c |   15 ---------------
- 1 file changed, 15 deletions(-)
+ drivers/input/keyboard/atkbd.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/tty/serial/qcom_geni_serial.c
-+++ b/drivers/tty/serial/qcom_geni_serial.c
-@@ -38,20 +38,11 @@
- #define UART_TX_PAR_EN		BIT(0)
- #define UART_CTS_MASK		BIT(1)
+--- a/drivers/input/keyboard/atkbd.c
++++ b/drivers/input/keyboard/atkbd.c
+@@ -1937,6 +1937,14 @@ static const struct dmi_system_id atkbd_
+ 		},
+ 		.callback = atkbd_deactivate_fixup,
+ 	},
++	{
++		/* Lenovo Yoga Air 14 (83QK) */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "83QK"),
++		},
++		.callback = atkbd_deactivate_fixup,
++	},
+ 	{ }
+ };
  
--/* SE_UART_TX_WORD_LEN */
--#define TX_WORD_LEN_MSK		GENMASK(9, 0)
--
- /* SE_UART_TX_STOP_BIT_LEN */
--#define TX_STOP_BIT_LEN_MSK	GENMASK(23, 0)
- #define TX_STOP_BIT_LEN_1	0
--#define TX_STOP_BIT_LEN_1_5	1
- #define TX_STOP_BIT_LEN_2	2
- 
--/* SE_UART_TX_TRANS_LEN */
--#define TX_TRANS_LEN_MSK	GENMASK(23, 0)
--
- /* SE_UART_RX_TRANS_CFG */
--#define UART_RX_INS_STATUS_BIT	BIT(2)
- #define UART_RX_PAR_EN		BIT(3)
- 
- /* SE_UART_RX_WORD_LEN */
-@@ -62,12 +53,9 @@
- 
- /* SE_UART_TX_PARITY_CFG/RX_PARITY_CFG */
- #define PAR_CALC_EN		BIT(0)
--#define PAR_MODE_MSK		GENMASK(2, 1)
--#define PAR_MODE_SHFT		1
- #define PAR_EVEN		0x00
- #define PAR_ODD			0x01
- #define PAR_SPACE		0x10
--#define PAR_MARK		0x11
- 
- /* SE_UART_MANUAL_RFR register fields */
- #define UART_MANUAL_RFR_EN	BIT(31)
-@@ -76,11 +64,8 @@
- 
- /* UART M_CMD OP codes */
- #define UART_START_TX		0x1
--#define UART_START_BREAK	0x4
--#define UART_STOP_BREAK		0x5
- /* UART S_CMD OP codes */
- #define UART_START_READ		0x1
--#define UART_PARAM		0x1
- 
- #define UART_OVERSAMPLING	32
- #define STALE_TIMEOUT		16
 
 
 
