@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-263908-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264889-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id d3ADIsNqMWpNiwUAu9opvQ
-	(envelope-from <stable+bounces-263908-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:24:51 +0200
+	id shPDHLN/MWqzkwUAu9opvQ
+	(envelope-from <stable+bounces-264889-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:54:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 116FD691004
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:24:51 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA38E6928F8
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:54:10 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=HdAbgaD7;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263908-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-263908-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=vV4aUYAD;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264889-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264889-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7251531F5D27
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:18:31 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E92E63061005
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:47:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED38F43E486;
-	Tue, 16 Jun 2026 15:18:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63A223AA4E0;
+	Tue, 16 Jun 2026 16:47:04 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60BD643E4A1;
-	Tue, 16 Jun 2026 15:18:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3519335DA6A;
+	Tue, 16 Jun 2026 16:47:03 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781623110; cv=none; b=neZKd/RDiLovzcCL9bz/3eNqibDkpDPSrGFdnijqT/RaSrxdHFKIoAryiT4i9RwpPKjPfIV9BrO747VCS7t03M++iR2Ksr7FAv9z9uQf2R3DAWudPRBSJxEDNn5X+unyPdLSol9oDeYwe3eYsyKdj5ysY13jHHhSR7+LK8hTnYQ=
+	t=1781628424; cv=none; b=bHfWED+3/SzmJebbaqZT75KEsQWdltUCKJ8wR5QSKMH0Uj8Xt/oB9V+jsbiQBrWjFw8v2JgZaaznuNkO+Vfc8FyjbDeqok73tf1+IbphR+/hZF7+gTdzXc9oe8FpMS2bWTISkxuNAnFA9M+dMH49kPX6VM2WBID4IdelT1opeyA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781623110; c=relaxed/simple;
-	bh=yT4G5Ciwrov4YPAJjotMdzFOY/XpcsTp1v+4U0QaUMY=;
+	s=arc-20240116; t=1781628424; c=relaxed/simple;
+	bh=qmh1EERdYnLn6Dbjw5O1ek9N02DFx2eKvVJHjC1S6sE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TqyT4MCUxTs/i2XtGjv1XayE5+1MfjFOFiyUY6RKP3WWLw6A/jE+UqUok/E3ilTPdU3CPO429KJsp7vwu7op15htzeJepLtKqSkmamN4z8TXYxWx2ncVAdqtV4TWlXGo0fXmiObcZR28cK2hDzEE8OJIlw+zb418tSMiZT6T0a8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HdAbgaD7; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A41E1F000E9;
-	Tue, 16 Jun 2026 15:18:27 +0000 (UTC)
+	 MIME-Version; b=hApk4UcQgJI9No+rSSHdh1KpK7ZyT3XyrlZ9XMjoQFCykRuvY9BnLU5Lcx/6X+Oe9AJ+wWsYWe3+EWA7eb87jISRnCQw82KwlUk/MD70BRO08iOAJXihFPTbgJnDnkDO4olNM0GOJi0M6YqcncodsdkV3fFPXToCi88qB+9y6EM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vV4aUYAD; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AF751F000E9;
+	Tue, 16 Jun 2026 16:47:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781623109;
-	bh=diQc9+U4wrcwZwo694zEt86ZxOHDIeQRXDwDTM0RDJY=;
+	s=korg; t=1781628423;
+	bh=/Xf8V4r50JQ+yEfKMj0+ye1lEcIZ7eUUSGad4vHKr3A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=HdAbgaD7cXnhAUVJzAZwowSQtarLFQeUkD/GXZN3VgFof5rPBNGYOEN11i9Yvv0B1
-	 tcT/htG/1rvc/9D1MmO4Osw70g72r4xs7b96zFtyn/7aFKxJWG1eVVnl86KkHmKJad
-	 9k6tXxF+Wt6o2fluPH5o1bjGi30jsupbQvSBuHrc=
+	b=vV4aUYADnomdsNgdDkUQ9QGk61f0IRxFB8OEkB/aS/83Xds9Bber12CxxR6rVyXgR
+	 HRDqn08nW3Ew/TvJXJGJG4ZwNsc2UU5XaC5mu33LOwPD3E2BlVwCwybSsGvkg10Eq3
+	 Esy9w7gs3uk4h5lrs4VI9yMllFtuak+WPuQE4LI8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Kacur <jkacur@redhat.com>,
-	Tomas Glozar <tglozar@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 089/378] rtla: Fix parsing of multi-character short options
+	Shuai Zhang <shuai.zhang@oss.qualcomm.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.6 093/452] Bluetooth: btusb: Allow firmware re-download when version matches
 Date: Tue, 16 Jun 2026 20:25:20 +0530
-Message-ID: <20260616145114.947575865@linuxfoundation.org>
+Message-ID: <20260616145122.710043021@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,22 +71,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-263908-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264889-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jkacur@redhat.com,m:tglozar@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:shuai.zhang@oss.qualcomm.com,m:luiz.von.dentz@intel.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -98,271 +97,66 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,qualcomm.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 116FD691004
+X-Rspamd-Queue-Id: EA38E6928F8
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomas Glozar <tglozar@redhat.com>
+From: Shuai Zhang <shuai.zhang@oss.qualcomm.com>
 
-[ Upstream commit e9e41d3035032ed6053d8bad7b7077e1cb3a6540 ]
+commit 82855073c1081732656734b74d7d1d5e4cfd0da7 upstream.
 
-A bug was reported where the parsing of multi-character short options,
-be it a short option with an argument specified without space (e.g.
-"-p100") or multiple short options in one argument (e.g. -un), ignores
-options specific to individual tools.
+The Bluetooth host decides whether to download firmware by reading the
+controller firmware download completion flag and firmware version
+information.
 
-Furthermore, if the rest of the option is supposed to be an argument, it
-gets reinterpreted as a string of options. For example, -p100 gets
-interpreted as -100, which is due to hackish implementation read as
---no-thread --no-irq --no-irq with timerlat hist, causing rtla to error
-out:
+If a USB error occurs during the firmware download process (for example
+due to a USB disconnect), the download is aborted immediately. An
+incomplete firmware transfer does not cause the controller to set the
+download completion flag, but the firmware version information may be
+updated at an early stage of the download process.
 
-$ rtla timerlat hist -p100
-no-irq and no-thread set, there is nothing to do here
+In this case, after USB reconnection, the host attempts to re-download
+the firmware because the download completion flag is not set. However,
+since the controller reports the same firmware version as the target
+firmware, the download is skipped. This ultimately results in the
+firmware not being properly updated on the controller.
 
-This behavior is caused by getopt_long() being called twice on each
-argument, once in common_parse_options(), once in [tool]_parse_args():
+This change removes the restriction that skips firmware download when
+the versions are equal. It covers scenarios where the USB connection
+can be disconnected at any time and ensures that firmware download can
+be retriggered after USB reconnection, allowing the Bluetooth firmware
+to be correctly and completely updated.
 
-- common_parse_options() calls getopt_long() with an array of options
-  common for all rtla tools, while suppressing errors (opterr = 0).
-- If the option fails to parse, common_parse_options() returns 0.
-- If 0 is returned from common_parse_options(), [tool]_parse_args()
-  calls getopt_long() again, with its own set of options.
-
-* [tool] means one of {osnoise,timerlat}_{top,hist}
-
-At least in glibc, getopt_long() increments its internal nextchar
-variable even if the option is not recognized. That means that in the
-case of "-p100", common_parse_options() sets nextchar pointing to '1',
-and timerlat_hist_parse_args() sees '1', not 'p'; the same then repeats
-for the first and second '0'.
-
-As there is no way to restore the correct internal state of
-getopt_long() reliably, fix the issue by merging the common options back
-to the longopt array and option string of the [tool]_parse_args()
-functions using a macro; only the switch part is left in the original
-function, which is renamed to set_common_option().
-
-Fixes: 850cd24cb6d6 ("tools/rtla: Add common_parse_options()")
-Reported-by: John Kacur <jkacur@redhat.com>
-Tested-by: John Kacur <jkacur@redhat.com>
-Link: https://lore.kernel.org/r/20260602125506.3325345-1-tglozar@redhat.com
-Signed-off-by: Tomas Glozar <tglozar@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 3267c884cefa ("Bluetooth: btusb: Add support for QCA ROME chipset family")
+Cc: stable@vger.kernel.org
+Signed-off-by: Shuai Zhang <shuai.zhang@oss.qualcomm.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/tracing/rtla/src/common.c        | 28 +++++---------------------
- tools/tracing/rtla/src/common.h        | 12 ++++++++++-
- tools/tracing/rtla/src/osnoise_hist.c  |  7 ++++---
- tools/tracing/rtla/src/osnoise_top.c   |  7 ++++---
- tools/tracing/rtla/src/timerlat_hist.c |  7 ++++---
- tools/tracing/rtla/src/timerlat_top.c  |  7 ++++---
- 6 files changed, 32 insertions(+), 36 deletions(-)
+ drivers/bluetooth/btusb.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/tools/tracing/rtla/src/common.c b/tools/tracing/rtla/src/common.c
-index 839c78c065e12f..01d5b8d5aeaf2e 100644
---- a/tools/tracing/rtla/src/common.c
-+++ b/tools/tracing/rtla/src/common.c
-@@ -82,37 +82,20 @@ int getopt_auto(int argc, char **argv, const struct option *long_opts)
- }
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -3667,7 +3667,13 @@ static int btusb_setup_qca_load_rampatch
+ 		    "firmware rome 0x%x build 0x%x",
+ 		    rver_rom, rver_patch, ver_rom, ver_patch);
  
- /*
-- * common_parse_options - parse common command line options
-+ * set_common_option - set common options
-  *
-+ * @c: option character
-  * @argc: argument count
-  * @argv: argument vector
-  * @common: common parameters structure
-  *
-  * Parse command line options that are common to all rtla tools.
-  *
-- * Returns: non zero if a common option was parsed, or 0
-- * if the option should be handled by tool-specific parsing.
-+ * Returns: 1 if the option was set, 0 otherwise.
-  */
--int common_parse_options(int argc, char **argv, struct common_params *common)
-+int set_common_option(int c, int argc, char **argv, struct common_params *common)
- {
- 	struct trace_events *tevent;
--	int saved_state = optind;
--	int c;
--
--	static struct option long_options[] = {
--		{"cpus",                required_argument,      0, 'c'},
--		{"cgroup",              optional_argument,      0, 'C'},
--		{"debug",               no_argument,            0, 'D'},
--		{"duration",            required_argument,      0, 'd'},
--		{"event",               required_argument,      0, 'e'},
--		{"house-keeping",       required_argument,      0, 'H'},
--		{"priority",            required_argument,      0, 'P'},
--		{0, 0, 0, 0}
--	};
--
--	opterr = 0;
--	c = getopt_auto(argc, argv, long_options);
--	opterr = 1;
- 
- 	switch (c) {
- 	case 'c':
-@@ -152,11 +135,10 @@ int common_parse_options(int argc, char **argv, struct common_params *common)
- 		common->set_sched = 1;
- 		break;
- 	default:
--		optind = saved_state;
- 		return 0;
- 	}
- 
--	return c;
-+	return 1;
- }
- 
- /*
-diff --git a/tools/tracing/rtla/src/common.h b/tools/tracing/rtla/src/common.h
-index d4b3715700be73..e00e3930ddb0b5 100644
---- a/tools/tracing/rtla/src/common.h
-+++ b/tools/tracing/rtla/src/common.h
-@@ -158,7 +158,17 @@ int osnoise_set_stop_total_us(struct osnoise_context *context,
- 			      long long stop_total_us);
- 
- int getopt_auto(int argc, char **argv, const struct option *long_opts);
--int common_parse_options(int argc, char **argv, struct common_params *common);
-+
-+#define COMMON_OPTIONS \
-+	{"cpus",                required_argument,      0, 'c'},\
-+	{"cgroup",              optional_argument,      0, 'C'},\
-+	{"debug",               no_argument,            0, 'D'},\
-+	{"duration",            required_argument,      0, 'd'},\
-+	{"event",               required_argument,      0, 'e'},\
-+	{"house-keeping",       required_argument,      0, 'H'},\
-+	{"priority",            required_argument,      0, 'P'}
-+int set_common_option(int c, int argc, char **argv, struct common_params *common);
-+
- int common_apply_config(struct osnoise_tool *tool, struct common_params *params);
- int top_main_loop(struct osnoise_tool *tool);
- int hist_main_loop(struct osnoise_tool *tool);
-diff --git a/tools/tracing/rtla/src/osnoise_hist.c b/tools/tracing/rtla/src/osnoise_hist.c
-index 5c863e7aad28b4..5dd1d4ba0b887d 100644
---- a/tools/tracing/rtla/src/osnoise_hist.c
-+++ b/tools/tracing/rtla/src/osnoise_hist.c
-@@ -480,6 +480,7 @@ static struct common_params
- 
- 	while (1) {
- 		static struct option long_options[] = {
-+			COMMON_OPTIONS,
- 			{"auto",		required_argument,	0, 'a'},
- 			{"bucket-size",		required_argument,	0, 'b'},
- 			{"entries",		required_argument,	0, 'E'},
-@@ -503,15 +504,15 @@ static struct common_params
- 			{0, 0, 0, 0}
- 		};
- 
--		if (common_parse_options(argc, argv, &params->common))
--			continue;
--
- 		c = getopt_auto(argc, argv, long_options);
- 
- 		/* detect the end of the options. */
- 		if (c == -1)
- 			break;
- 
-+		if (set_common_option(c, argc, argv, &params->common))
-+			continue;
-+
- 		switch (c) {
- 		case 'a':
- 			/* set sample stop to auto_thresh */
-diff --git a/tools/tracing/rtla/src/osnoise_top.c b/tools/tracing/rtla/src/osnoise_top.c
-index b7aed40fd2164f..5c278c68b1a2c8 100644
---- a/tools/tracing/rtla/src/osnoise_top.c
-+++ b/tools/tracing/rtla/src/osnoise_top.c
-@@ -337,6 +337,7 @@ struct common_params *osnoise_top_parse_args(int argc, char **argv)
- 
- 	while (1) {
- 		static struct option long_options[] = {
-+			COMMON_OPTIONS,
- 			{"auto",		required_argument,	0, 'a'},
- 			{"help",		no_argument,		0, 'h'},
- 			{"period",		required_argument,	0, 'p'},
-@@ -355,15 +356,15 @@ struct common_params *osnoise_top_parse_args(int argc, char **argv)
- 			{0, 0, 0, 0}
- 		};
- 
--		if (common_parse_options(argc, argv, &params->common))
--			continue;
--
- 		c = getopt_auto(argc, argv, long_options);
- 
- 		/* Detect the end of the options. */
- 		if (c == -1)
- 			break;
- 
-+		if (set_common_option(c, argc, argv, &params->common))
-+			continue;
-+
- 		switch (c) {
- 		case 'a':
- 			/* set sample stop to auto_thresh */
-diff --git a/tools/tracing/rtla/src/timerlat_hist.c b/tools/tracing/rtla/src/timerlat_hist.c
-index 096de8ba3efbb6..5089b72c7a9439 100644
---- a/tools/tracing/rtla/src/timerlat_hist.c
-+++ b/tools/tracing/rtla/src/timerlat_hist.c
-@@ -789,6 +789,7 @@ static struct common_params
- 
- 	while (1) {
- 		static struct option long_options[] = {
-+			COMMON_OPTIONS,
- 			{"auto",		required_argument,	0, 'a'},
- 			{"bucket-size",		required_argument,	0, 'b'},
- 			{"entries",		required_argument,	0, 'E'},
-@@ -822,11 +823,11 @@ static struct common_params
- 			{0, 0, 0, 0}
- 		};
- 
--		if (common_parse_options(argc, argv, &params->common))
--			continue;
--
- 		c = getopt_auto(argc, argv, long_options);
- 
-+		if (set_common_option(c, argc, argv, &params->common))
-+			continue;
-+
- 		/* detect the end of the options. */
- 		if (c == -1)
- 			break;
-diff --git a/tools/tracing/rtla/src/timerlat_top.c b/tools/tracing/rtla/src/timerlat_top.c
-index 27c14aa71a8bc8..1311afc981e24c 100644
---- a/tools/tracing/rtla/src/timerlat_top.c
-+++ b/tools/tracing/rtla/src/timerlat_top.c
-@@ -558,6 +558,7 @@ static struct common_params
- 
- 	while (1) {
- 		static struct option long_options[] = {
-+			COMMON_OPTIONS,
- 			{"auto",		required_argument,	0, 'a'},
- 			{"help",		no_argument,		0, 'h'},
- 			{"irq",			required_argument,	0, 'i'},
-@@ -585,11 +586,11 @@ static struct common_params
- 			{0, 0, 0, 0}
- 		};
- 
--		if (common_parse_options(argc, argv, &params->common))
--			continue;
--
- 		c = getopt_auto(argc, argv, long_options);
- 
-+		if (set_common_option(c, argc, argv, &params->common))
-+			continue;
-+
- 		/* detect the end of the options. */
- 		if (c == -1)
- 			break;
--- 
-2.53.0
-
+-	if (rver_rom != ver_rom || rver_patch <= ver_patch) {
++	/* Allow rampatch when the patch version equals the firmware version.
++	 * A firmware download may be aborted by a transient USB error (e.g.
++	 * disconnect) after the controller updates version info but before
++	 * completion.
++	 * Allowing equal versions enables re-flashing during recovery.
++	 */
++	if (rver_rom != ver_rom || rver_patch < ver_patch) {
+ 		bt_dev_err(hdev, "rampatch file version did not match with firmware");
+ 		err = -EINVAL;
+ 		goto done;
 
 
 
