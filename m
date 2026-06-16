@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-265335-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265336-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id uWzeIMOIMWqXlwUAu9opvQ
-	(envelope-from <stable+bounces-265335-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:32:51 +0200
+	id l4urNsWIMWqZlwUAu9opvQ
+	(envelope-from <stable+bounces-265336-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:32:53 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 741466933D0
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:32:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CA256933D4
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:32:53 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=oUQlAeDb;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265335-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265335-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Gd+OUBxB;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265336-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265336-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E8DA13036740
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:24:45 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 94A7C3036825
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:24:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B9C047A0D4;
-	Tue, 16 Jun 2026 17:24:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 990F947A0A9;
+	Tue, 16 Jun 2026 17:24:44 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD0CD47AF67;
-	Tue, 16 Jun 2026 17:24:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 701C9478E26;
+	Tue, 16 Jun 2026 17:24:43 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781630679; cv=none; b=tHPo0eYDjMpc6dJLAc+IjAhyZXKs0Rfu1juoREgGuxJ6nnGgtrKnRyMEyUV4mATMpe/YmQwzpqxt+ogsCFllbIaVWq5EWUkET6+LSi/6jPwYKYA7DHISrsAH5nQpYd7XjgiusiX5llC+K/WXTNJSgsbkq3mW6jJV4xU6DmZPTcY=
+	t=1781630684; cv=none; b=SbzOrt/bV+j0Ywl/leZqb5Ot33A69zJ1ylm6aZXVfd1fucs45sDb7n9jYf9LszCN1/ZOKeDvbIew1cP4QCxooFCUsy3h0lzTu0clak/dL2K9j0d9tTxsr8/rjYqik5JTWQDm5yRXmzllqsZHkRhXrjCfXBGdioTm8/nG3g5PnAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781630679; c=relaxed/simple;
-	bh=u+sfRQKgPzkaX2LpEMJReCL1YSLBSCzCB0bqrQBdmos=;
+	s=arc-20240116; t=1781630684; c=relaxed/simple;
+	bh=5rOGyOjGKr0e9muRsLHdfD3z0bxmkWMAvsyyS6eRvY4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=epu5OtYeqbcpRAD7q+v7Cu5xoZRmAdoGVQcrkv5RGuyudeKp6BnZOXxpWFcnH3/OSpETnbfo56U7zQ2bLTKMTIsFKICoXdSI4BRWTsAa3FWMHqRFjBsC7S9EN60dj8SauxaIjaVMfyby7We+EEPbzvD66ATCPPWpJNmM2eZ1rfk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oUQlAeDb; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A76AC1F000E9;
-	Tue, 16 Jun 2026 17:24:37 +0000 (UTC)
+	 MIME-Version; b=rNCi9CVwdB6C1UZVkLnI8OhxKnM9pUDwfG9PAY8pbHgGxmOMYZ5LeOG+NVIOLhVQ3ggRn+aidVxtMMF2dG/Is6OI9u2Gb/20OU4tQhgeGqSbc8hJcYASUkf1nLz/vFNJ8CD6x0XVBIlHv3ek82DQuauwU3RDH1wZs2Ryl9CknrM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gd+OUBxB; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73E2A1F000E9;
+	Tue, 16 Jun 2026 17:24:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781630678;
-	bh=Rf2Myay6RTuJYBdNDNCnslpsIHT4aNGGgA6JupM0Anw=;
+	s=korg; t=1781630683;
+	bh=3kdt+7MQX/usK+aWmKho+bJaflraJ0A2ZeulKs3lQ+Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=oUQlAeDbHW9bDRQFEX1cfKwm+VKXhHi3/RhbJ58/lRT3RKacZWMEQRkcRCCj1T9Jd
-	 lO9tQLu5cIujFDW6S7fslE6wxBEv6HsP9kgs+mWh8mvT8605JLcbAKOIOv8jfQdjw3
-	 q1Uym0/9iU89EintFOfnxdKiSSbgCokMqCq2kowg=
+	b=Gd+OUBxBt7dG8KduvbPne9/fF1S0OOp1E8y2XDwmNIQg/1GdtreiaDS2PCzt2N8rc
+	 xnXX+Z6th8Q0HPUKSZOdYeqkN9mv045OTTK1RHLIx+hy8THAHvvca9EQafBSH2yhaZ
+	 LdClStIS+BzolOdrs5SNNBXrUQuWAx397uRomMyQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Huzaifa Sidhpurwala <huzaifas@redhat.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Willem de Bruijn <willemb@google.com>,
+	Harini Katakam <harini.katakam@amd.com>,
+	Andrew Lunn <andrew@lunn.ch>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Salvatore Bonaccorso <carnil@debian.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 076/522] net: gro: dont merge zcopy skbs
-Date: Tue, 16 Jun 2026 20:23:43 +0530
-Message-ID: <20260616145129.398854587@linuxfoundation.org>
+Subject: [PATCH 6.1 077/522] phy: mscc: Use PHY_ID_MATCH_VENDOR to minimize PHY ID table
+Date: Tue, 16 Jun 2026 20:23:44 +0530
+Message-ID: <20260616145129.447910333@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
 References: <20260616145125.307082728@linuxfoundation.org>
@@ -81,10 +79,10 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265335-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265336-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:huzaifas@redhat.com,m:sd@queasysnail.net,m:willemb@google.com,m:kuba@kernel.org,m:carnil@debian.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:harini.katakam@amd.com,m:andrew@lunn.ch,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
@@ -98,59 +96,73 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,lunn.ch:email,amd.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 741466933D0
+X-Rspamd-Queue-Id: 0CA256933D4
 
 6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sabrina Dubroca <sd@queasysnail.net>
+From: Harini Katakam <harini.katakam@amd.com>
 
-[ Upstream commit 4db79a322db8c97f7b73b8a347395ef4d685eb40 ]
+[ Upstream commit 31605c01fb242806f5b8c9d08abe11328d514206 ]
 
-skb_gro_receive() can currently copy frags between the source and GRO
-skb, without checking the zerocopy status, and in particular the
-SKBFL_MANAGED_FRAG_REFS flag.
+All the PHY devices variants specified have the same mask and
+hence can be simplified to one vendor look up for 0x00070400.
+Any individual config can be identified by PHY_ID_MATCH_EXACT
+in the respective structure.
 
-When SKBFL_MANAGED_FRAG_REFS is set, the skb doesn't hold a reference
-on the pages in shinfo->frags. Appending those frags to another skb's
-frags without fixing up the page refcount can lead to UAF.
-
-When either the last skb in the GRO chain (the one we would append
-frags to) or the source skb is zerocopy, don't merge the skbs.
-
-Fixes: 753f1ca4e1e5 ("net: introduce managed frags infrastructure")
-Reported-by: Huzaifa Sidhpurwala <huzaifas@redhat.com>
-Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/c3b7f906bbfcbdfd7b4fa9d6c18a438870df85be.1779307748.git.sd@queasysnail.net
+Signed-off-by: Harini Katakam <harini.katakam@amd.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[Salvatore Bonaccorso: Adjust for context in 6.1.y series without
-e8d4d34df715 ("net: Add netif_get_gro_max_size helper for GRO")]
-Signed-off-by: Salvatore Bonaccorso <carnil@debian.org>
+Stable-dep-of: 1bc80d673087 ("phy: mscc: Use PHY_ID_MATCH_EXACT for VSC8584, VSC8582, VSC8575, VSC856X")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/gro.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/phy/mscc/mscc.h      |  1 +
+ drivers/net/phy/mscc/mscc_main.c | 15 +--------------
+ 2 files changed, 2 insertions(+), 14 deletions(-)
 
-diff --git a/net/core/gro.c b/net/core/gro.c
-index ea6571c01faa9e..c5a9733d929a95 100644
---- a/net/core/gro.c
-+++ b/net/core/gro.c
-@@ -171,6 +171,9 @@ int skb_gro_receive(struct sk_buff *p, struct sk_buff *skb)
- 	if (p->pp_recycle != skb->pp_recycle)
- 		return -ETOOMANYREFS;
+diff --git a/drivers/net/phy/mscc/mscc.h b/drivers/net/phy/mscc/mscc.h
+index fcfbff691b3c6b..4a9c12516f2057 100644
+--- a/drivers/net/phy/mscc/mscc.h
++++ b/drivers/net/phy/mscc/mscc.h
+@@ -291,6 +291,7 @@ enum rgmii_clock_delay {
+ #define PHY_ID_VSC8575			  0x000707d0
+ #define PHY_ID_VSC8582			  0x000707b0
+ #define PHY_ID_VSC8584			  0x000707c0
++#define PHY_VENDOR_MSCC			0x00070400
  
-+	if (skb_zcopy(p) || skb_zcopy(skb))
-+		return -ETOOMANYREFS;
-+
- 	/* pairs with WRITE_ONCE() in netif_set_gro_max_size() */
- 	gro_max_size = READ_ONCE(p->dev->gro_max_size);
+ #define MSCC_VDDMAC_1500		  1500
+ #define MSCC_VDDMAC_1800		  1800
+diff --git a/drivers/net/phy/mscc/mscc_main.c b/drivers/net/phy/mscc/mscc_main.c
+index d9ad8aac580982..dd3b102fb4eec9 100644
+--- a/drivers/net/phy/mscc/mscc_main.c
++++ b/drivers/net/phy/mscc/mscc_main.c
+@@ -2676,20 +2676,7 @@ static struct phy_driver vsc85xx_driver[] = {
+ module_phy_driver(vsc85xx_driver);
+ 
+ static struct mdio_device_id __maybe_unused vsc85xx_tbl[] = {
+-	{ PHY_ID_VSC8502, 0xfffffff0, },
+-	{ PHY_ID_VSC8504, 0xfffffff0, },
+-	{ PHY_ID_VSC8514, 0xfffffff0, },
+-	{ PHY_ID_VSC8530, 0xfffffff0, },
+-	{ PHY_ID_VSC8531, 0xfffffff0, },
+-	{ PHY_ID_VSC8540, 0xfffffff0, },
+-	{ PHY_ID_VSC8541, 0xfffffff0, },
+-	{ PHY_ID_VSC8552, 0xfffffff0, },
+-	{ PHY_ID_VSC856X, 0xfffffff0, },
+-	{ PHY_ID_VSC8572, 0xfffffff0, },
+-	{ PHY_ID_VSC8574, 0xfffffff0, },
+-	{ PHY_ID_VSC8575, 0xfffffff0, },
+-	{ PHY_ID_VSC8582, 0xfffffff0, },
+-	{ PHY_ID_VSC8584, 0xfffffff0, },
++	{ PHY_ID_MATCH_VENDOR(PHY_VENDOR_MSCC) },
+ 	{ }
+ };
  
 -- 
 2.53.0
