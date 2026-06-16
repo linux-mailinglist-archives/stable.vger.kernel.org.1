@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-265925-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266276-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id YKBLGciSMWp2nAUAu9opvQ
-	(envelope-from <stable+bounces-265925-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:15:36 +0200
+	id NJ+iIf6ZMWrfnwUAu9opvQ
+	(envelope-from <stable+bounces-266276-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:46:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9B7F693F6A
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:15:35 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED0BC694749
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:46:21 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=n7qCaZ6Q;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265925-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265925-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=tt65BNEw;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266276-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266276-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2581C318229E
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:15:21 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0742D304920F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:46:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE02347A0CD;
-	Tue, 16 Jun 2026 18:15:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E47E35AC3E;
+	Tue, 16 Jun 2026 18:46:20 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78A2347A0A9;
-	Tue, 16 Jun 2026 18:15:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FF69331A44;
+	Tue, 16 Jun 2026 18:46:18 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781633720; cv=none; b=e+uw2OQ9mA1m3/Hf+2vdlmbCMZif4PRWj+DxZxnczlrUaG8p3KC6+QHzl5q5DGXJ+AvKUEH4sqYhexTJoNGohBgdXphG0oGawb+MUyKkmMgaRtDZK3kCxbqXZW7VOyXRh3tidoO3YRUknEaYg70Vwyistv9dud8AYUDxb1bq27M=
+	t=1781635580; cv=none; b=s3goEHTlftTOxUIm45Z21/dHH0IAfoCSPd9Z3j8tQk39bRCxApL7pjcFpsVzhpCdRnL3PdCAURB6eRx/ggWbWCp9R27C5UJI0V/cSWl0reuzzJiL/OXpeNOOgo9nbp5AZBN2oU/Kccb5Qap7pF/81+mPSXRePCSNynkb9CaJj6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781633720; c=relaxed/simple;
-	bh=BlYDcyWB8Lkef9dxKeTALnqGN/yAH7oeWln5zgJUAh8=;
+	s=arc-20240116; t=1781635580; c=relaxed/simple;
+	bh=ys23uhD38OrleZ/NywCcb6wIkKsk+H0j/niiPw5BpWA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m8bF8fR9iARykKVjyZwA3hjQzoOnzFHs87AaBfcc+kiwQxOB33vETrZ2t9iU9nz9jg6fQFMU3yaMR6nbOr+Vabgz49AZQH6uZyn/dnEnJkNPI4yfDK0cegBNuLQxaOj8EJwPmmc0Skf9tlTX5J5jKRiywKHda5v4wWppEh7g3f4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n7qCaZ6Q; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BF8E1F000E9;
-	Tue, 16 Jun 2026 18:15:18 +0000 (UTC)
+	 MIME-Version; b=TaGstag7m0yQGk3RGBr6hBTfJssKDkG4r7INmM0weQRK2cAOXR75NjBpQTAY4IG4LmyWtg4Idr4sw9VujM9xbQyG8UXuxlyZkTUUirOKOOiRhsLw8moRSywSbzC7TExWDC2FTyGWV1y1Vg5Z+D/SEPJ/fTGgrq9+mnBDWas2uG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tt65BNEw; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9A2C1F000E9;
+	Tue, 16 Jun 2026 18:46:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781633719;
-	bh=I5h7AwfcMrfFaDRgTbPOnhelQVeaGDMHlH2K03IfnfE=;
+	s=korg; t=1781635578;
+	bh=NJZcb/fJ5fNmH1css+K2vN/U3rsNFya80BBRr+XYrXg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=n7qCaZ6QC/yyYIvoU0clpLmLucKFkpVAg2pWB9BKK/+mrzePCha+YI19DVtQ8xzgX
-	 ka1miuFPXp9zRiaOLyudbNSu1xUh2MCxLmXVwfE9OvSM4BUstA31eEB2umdHnNC5rt
-	 WQFGkRrCb7q/YPT0+zkoQ0m+bp4s8YEdzlNp68PU=
+	b=tt65BNEwmO+Hzp8mAfOusviSXfewPYqHkqgtwheFMHLPjeLnAyQNumRDj5FHMf80L
+	 6NSPCUr5MH6dcP3By3lFae1vEJtFf1u3ZhgKEn+i5udKV3pmytZCEb/WgNmNoMsCXk
+	 eFMJbTpGxFLH0Lsmmu0a4kvqqWsUjdlPWHwmlNoM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>
-Subject: [PATCH 5.15 133/411] serial: zs: Fix bootconsole handover lockup
+	Maoyi Xie <maoyi.xie@ntu.edu.sg>,
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 5.10 075/342] ip6: vti: Use ip6_tnl.net in vti6_changelink().
 Date: Tue, 16 Jun 2026 20:26:11 +0530
-Message-ID: <20260616145107.413697537@linuxfoundation.org>
+Message-ID: <20260616145051.738373650@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,138 +70,114 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-265925-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:macro@orcam.me.uk,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-266276-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:maoyi.xie@ntu.edu.sg,m:edumazet@google.com,m:kuniyu@google.com,m:pabeni@redhat.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[orcam.me.uk:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,ntu.edu.sg:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B9B7F693F6A
+X-Rspamd-Queue-Id: ED0BC694749
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej W. Rozycki <macro@orcam.me.uk>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-commit 6c05cf72e13314ce9b770b5951695dc5a2152920 upstream.
+commit 11b326fb0a374f4654f9be22d0f0f7abd9f7d3fe upstream.
 
-Calling zs_reset() in the course of setting up the serial device causes
-line parameters to be reset and the transmitter disabled.  We've been
-lucky in that no message is usually produced to the kernel log between
-this call and the later call to uart_set_options() in the course of
-console setup done by zs_serial_console_init(), or the system would hang
-as the console output handler in the firmware tried to access a port the
-transmitter of which has been disabled and line parameters messed up.
+ip netns add ns1
+ip netns add ns2
+ip -n ns1 link add vti6_test type vti6 remote ::1 local ::2 key 7
+ip -n ns1 link set vti6_test netns ns2
+ip -n ns2 link set vti6_test type vti6 remote ::3 local ::4 key 9
+ip netns del ns2
+ip netns del ns1
+[  132.495484] ------------[ cut here ]------------
+[  132.497609] kernel BUG at net/core/dev.c:12376!
 
-This will change with the next change to the driver, so fix zs_reset()
-such that line parameters are set for 9600n8 console operation as with
-the system firmware and the transmitter re-enabled after reset.  This
-also means zs_pm() serves no purpose anymore, so drop it.
+Commit 61220ab34948 ("vti6: Enable namespace changing") dropped
+NETIF_F_NETNS_LOCAL from vti6 devices. A vti6 tunnel can then
+move through IFLA_NET_NS_FD. After the move dev_net(dev) points
+at the new netns while t->net stays at the creation netns.
 
-Fixes: 8b4a40809e53 ("zs: move to the serial subsystem")
-Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Cc: stable@vger.kernel.org # v2.6.23+
-Link: https://patch.msgid.link/alpine.DEB.2.21.2605062308040.46195@angie.orcam.me.uk
+vti6_changelink() and vti6_update() still use dev_net(dev) and
+dev_net(t->dev). They unlink from one per netns hash and relink
+into another. The creation netns is left with a stale entry.
+cleanup_net() of that netns later walks freed memory.
+
+Reachable from an unprivileged user namespace (unshare --user
+--map-root-user --net). Cross tenant scope on container hosts.
+
+Fixes: 61220ab34948 ("vti6: Enable namespace changing")
+Reported-by: Maoyi Xie <maoyi.xie@ntu.edu.sg>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Cc: stable@vger.kernel.org # v5.15+
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20260521130555.3421684-2-maoyixie.tju@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/zs.c |   29 ++++++++---------------------
- 1 file changed, 8 insertions(+), 21 deletions(-)
+ net/ipv6/ip6_vti.c |   12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
---- a/drivers/tty/serial/zs.c
-+++ b/drivers/tty/serial/zs.c
-@@ -105,18 +105,24 @@ struct zs_parms {
- 
- static struct zs_scc zs_sccs[ZS_NUM_SCCS];
- 
-+/*
-+ * Set parameters in WR5, WR12, WR13 such as not to interfere
-+ * with the initial PROM-based console.  Otherwise any output
-+ * produced before the console handover would cause the system
-+ * firmware to hang (TxENAB) or produce rubbish (Tx8, B9600).
-+ */
- static u8 zs_init_regs[ZS_NUM_REGS] __initdata = {
- 	0,				/* write 0 */
- 	PAR_SPEC,			/* write 1 */
- 	0,				/* write 2 */
- 	0,				/* write 3 */
- 	X16CLK | SB1,			/* write 4 */
--	0,				/* write 5 */
-+	Tx8 | TxENAB,			/* write 5 */
- 	0, 0, 0,			/* write 6, 7, 8 */
- 	MIE | DLC | NV,			/* write 9 */
- 	NRZ,				/* write 10 */
- 	TCBR | RCBR,			/* write 11 */
--	0, 0,				/* BRG time constant, write 12 + 13 */
-+	0x16, 0x00,			/* BRG time constant, write 12 + 13 */
- 	BRSRC | BRENABL,		/* write 14 */
- 	0,				/* write 15 */
- };
-@@ -955,23 +961,6 @@ static void zs_set_termios(struct uart_p
- 	spin_unlock_irqrestore(&scc->zlock, flags);
- }
- 
--/*
-- * Hack alert!
-- * Required solely so that the initial PROM-based console
-- * works undisturbed in parallel with this one.
-- */
--static void zs_pm(struct uart_port *uport, unsigned int state,
--		  unsigned int oldstate)
--{
--	struct zs_port *zport = to_zport(uport);
--
--	if (state < 3)
--		zport->regs[5] |= TxENAB;
--	else
--		zport->regs[5] &= ~TxENAB;
--	write_zsreg(zport, R5, zport->regs[5]);
--}
--
- 
- static const char *zs_type(struct uart_port *uport)
+--- a/net/ipv6/ip6_vti.c
++++ b/net/ipv6/ip6_vti.c
+@@ -725,10 +725,11 @@ vti6_tnl_change(struct ip6_tnl *t, const
+ static int vti6_update(struct ip6_tnl *t, struct __ip6_tnl_parm *p,
+ 		       bool keep_mtu)
  {
-@@ -1054,7 +1043,6 @@ static const struct uart_ops zs_ops = {
- 	.startup	= zs_startup,
- 	.shutdown	= zs_shutdown,
- 	.set_termios	= zs_set_termios,
--	.pm		= zs_pm,
- 	.type		= zs_type,
- 	.release_port	= zs_release_port,
- 	.request_port	= zs_request_port,
-@@ -1209,7 +1197,6 @@ static int __init zs_console_setup(struc
- 		return ret;
+-	struct net *net = dev_net(t->dev);
+-	struct vti6_net *ip6n = net_generic(net, vti6_net_id);
++	struct net *net = t->net;
++	struct vti6_net *ip6n;
+ 	int err;
  
- 	zs_reset(zport);
--	zs_pm(uport, 0, -1);
++	ip6n = net_generic(net, vti6_net_id);
+ 	vti6_tnl_unlink(ip6n, t);
+ 	synchronize_net();
+ 	err = vti6_tnl_change(t, p, keep_mtu);
+@@ -1040,11 +1041,12 @@ static int vti6_changelink(struct net_de
+ 			   struct nlattr *data[],
+ 			   struct netlink_ext_ack *extack)
+ {
+-	struct ip6_tnl *t;
++	struct ip6_tnl *t = netdev_priv(dev);
++	struct net *net = t->net;
+ 	struct __ip6_tnl_parm p;
+-	struct net *net = dev_net(dev);
+-	struct vti6_net *ip6n = net_generic(net, vti6_net_id);
++	struct vti6_net *ip6n;
  
- 	if (options)
- 		uart_parse_options(options, &baud, &parity, &bits, &flow);
++	ip6n = net_generic(net, vti6_net_id);
+ 	if (dev == ip6n->fb_tnl_dev)
+ 		return -EINVAL;
+ 
 
 
 
