@@ -1,62 +1,65 @@
-Return-Path: <stable+bounces-266162-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265156-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id lyGyNK+XMWqvngUAu9opvQ
-	(envelope-from <stable+bounces-266162-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:36:31 +0200
+	id gP7SKj2FMWoTlgUAu9opvQ
+	(envelope-from <stable+bounces-265156-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:17:49 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BDFD694446
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:36:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D9B0692F77
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:17:49 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=IMj3WntF;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266162-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266162-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=uv6BqyBd;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265156-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265156-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 652FF308A33F
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:36:30 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 57E9A30DCF0B
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:09:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4967D4418D7;
-	Tue, 16 Jun 2026 18:36:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C47FF47AF56;
+	Tue, 16 Jun 2026 17:09:17 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26D0232E13B;
-	Tue, 16 Jun 2026 18:36:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89C5647A0A1;
+	Tue, 16 Jun 2026 17:09:16 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781634989; cv=none; b=Kv/LBUH5iRcKIsSv7NhcSAj91EuDsSTKVVpNbhYpUxLYDIwbIPElWgMGr0Xmf75KE2B/GLz4DYbDpeLAeBlkwjFA3iHNFcKtHkgL3MatBYkIdAKn6LPpTK/vpHpMhu1o02ws+8z7yiZt9ENLKRqO08coMTA57R64ch40A520wXI=
+	t=1781629757; cv=none; b=sgirTSrGhPHIH4amhm7kag7/RrjI2N6d3BSZI5V3nt0lk9C+cxZCKbOPMVEgmPwm22IuVJHyw2XXYn3tn9K/t3TlkZLju2go0hUkJXeH7KwjxNmu+dwMM33Y/3Z8hB5ohQBlg0WEb9AZZgZssnlEyy6+AmycYw+JMlbFVon11mo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781634989; c=relaxed/simple;
-	bh=E5WW6cwY+cT5j8Ka/rF8Y59RJWLv+rKjE0DFTrruYKk=;
+	s=arc-20240116; t=1781629757; c=relaxed/simple;
+	bh=kkuE/xUdTikCeJgzh/xcQHLqcxgKOC/zvFq0XziSE04=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M//GomM3cZoWwTDCpK15apLpuk39iD2DDnUsxYcsss7qGhSK6XNmzP83VYbyWUuU/gQ6tyKA9Ql+LTE6OCuyYQN3BSAVWWa3WjvVCna3S5OZ6p67Xqfit4Rz7bOggtb7dZt/HEfyjnCIczqWv4FogqG6FxdxIjaSlCGzn4vOYwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IMj3WntF; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBE001F00A3A;
-	Tue, 16 Jun 2026 18:36:26 +0000 (UTC)
+	 MIME-Version; b=APeojr9hJWLA1nCyPphAMbVhsWoRdL5D1mIMqhdR7HckbFs8PaCJzz8FCsbwnq1MP/gEoaMdtGSpCqqnXXIQYB9XCMSNIeFzgoxGze7kdNApv0g9yv7mieJZSWoHgnkAxSlQHjvOqbFXmptOCK0t8Yo1KLMrF1kwNHMrLahKiz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uv6BqyBd; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93D421F000E9;
+	Tue, 16 Jun 2026 17:09:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781634987;
-	bh=wH9QXsBmtDdQZgeNFc5gRmpJE4LJZtpzFt0lWprSyGw=;
+	s=korg; t=1781629756;
+	bh=jZ2o9Jdvc5z3DMcIGtSQDuQQAy1Mq+H0zzqwnp+FpHc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=IMj3WntFkymyA2ygIKCSutLNunEErGz09B9WUJDq++PfxN07rS7tvFSSEGYUX1976
-	 e2RptdICxGys2Uoximm/qiqKawVVn+DT6dp4w2N6PpTkugJFrEm4b3tdyQhw3D776d
-	 jmCoOAlH3x8jbSsCCt4djMKzodMR8Fepb047luKE=
+	b=uv6BqyBdQYbBnehc5W5iveGdwSj57GK2x/0N0/nshbFD/yM83fCcfZoNgckBxdklh
+	 ITf2DZlm8oXgdtcW1lBml0REjD0nrQe6duOxCULk8Ey0CGZeiDaniPyjvQc+V/I73M
+	 BWLRt63ys1xLrr8fX8ylulZVYVDpJY0tE0K1L0xE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hauke Mehrtens <hauke@hauke-m.de>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 336/411] spi: lantiq-ssc: fix controller deregistration
+	David Carlier <devnexen@gmail.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	David Hildenbrand <david@kernel.org>,
+	Mina Almasry <almasrymina@google.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	yuehaibing <yuehaibing@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 347/452] mm/hugetlb: restore reservation on error in hugetlb folio copy paths
 Date: Tue, 16 Jun 2026 20:29:34 +0530
-Message-ID: <20260616145119.038612784@linuxfoundation.org>
+Message-ID: <20260616145135.465001191@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,94 +73,107 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266162-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.dev,kernel.org,google.com,suse.de,huawei.com,linux-foundation.org];
+	TAGGED_FROM(0.00)[bounces-265156-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:hauke@hauke-m.de,m:johan@kernel.org,m:broonie@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:devnexen@gmail.com,m:muchun.song@linux.dev,m:david@kernel.org,m:almasrymina@google.com,m:osalvador@suse.de,m:yuehaibing@huawei.com,m:akpm@linux-foundation.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,hauke-m.de:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,linux-foundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,huawei.com:email,suse.de:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5BDFD694446
+X-Rspamd-Queue-Id: 1D9B0692F77
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: David Carlier <devnexen@gmail.com>
 
-[ Upstream commit b99206710d032c16b7f8b75e4bc18414d8e4b9f4 ]
+commit 40c81856e622a9dc59294a90d169ac07ea25b0b0 upstream.
 
-Make sure to deregister the controller before releasing underlying
-resources like clocks during driver unbind.
+Two sites in mm/hugetlb.c allocate a hugetlb folio via
+alloc_hugetlb_folio() (consuming a VMA reservation) and then call
+copy_user_large_folio(), which became int-returning in commit 1cb9dc4b475c
+("mm: hwpoison: support recovery from HugePage copy-on-write faults") and
+can now fail (e.g.  -EHWPOISON on a hwpoisoned source page).  On the
+failure path, folio_put() restores the global hugetlb pool count through
+free_huge_folio(), but the per-VMA reservation map entry is left marked
+consumed:
 
-Fixes: 17f84b793c01 ("spi: lantiq-ssc: add support for Lantiq SSC SPI controller")
-Cc: stable@vger.kernel.org	# 4.11
-Cc: Hauke Mehrtens <hauke@hauke-m.de>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260409120419.388546-17-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-[ adapted spi_controller/host naming to spi_master/master and preserved the int-returning remove() with trailing return 0 ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  - hugetlb_mfill_atomic_pte() resubmission path (UFFDIO_COPY)
+  - copy_hugetlb_page_range() fork-time CoW path when
+    hugetlb_try_dup_anon_rmap() fails (rare: pinned hugetlb anon
+    folio under fork)
+
+User-visible effect: on UFFDIO_COPY into a private hugetlb VMA where the
+resubmission copy fails, the reservation for that address is leaked from
+the VMA's reserve map.  A subsequent fault at the same address takes the
+no-reservation path, and under hugetlb pool pressure the task is SIGBUSed
+at an address it had previously reserved.  The fork-time CoW path leaks
+the same way in the child VMA's reserve map, though it requires the much
+rarer combination of pinned hugetlb anon page + hwpoisoned source.
+
+Add the missing restore_reserve_on_error() call before folio_put() on both
+error paths.
+
+Link: https://lore.kernel.org/20260520044912.6751-1-devnexen@gmail.com
+Fixes: 1cb9dc4b475c ("mm: hwpoison: support recovery from HugePage copy-on-write faults")
+Signed-off-by: David Carlier <devnexen@gmail.com>
+Reviewed-by: Muchun Song <muchun.song@linux.dev>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Mina Almasry <almasrymina@google.com>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: yuehaibing <yuehaibing@huawei.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-lantiq-ssc.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ mm/hugetlb.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/spi/spi-lantiq-ssc.c
-+++ b/drivers/spi/spi-lantiq-ssc.c
-@@ -1003,7 +1003,7 @@ static int lantiq_ssc_probe(struct platf
- 		"Lantiq SSC SPI controller (Rev %i, TXFS %u, RXFS %u, DMA %u)\n",
- 		revision, spi->tx_fifo_size, spi->rx_fifo_size, supports_dma);
- 
--	err = devm_spi_register_master(dev, master);
-+	err = spi_register_master(master);
- 	if (err) {
- 		dev_err(dev, "failed to register spi_master\n");
- 		goto err_wq_destroy;
-@@ -1027,6 +1027,10 @@ static int lantiq_ssc_remove(struct plat
- {
- 	struct lantiq_ssc_spi *spi = platform_get_drvdata(pdev);
- 
-+	spi_master_get(spi->master);
-+
-+	spi_unregister_master(spi->master);
-+
- 	lantiq_ssc_writel(spi, 0, LTQ_SPI_IRNEN);
- 	lantiq_ssc_writel(spi, 0, LTQ_SPI_CLC);
- 	rx_fifo_flush(spi);
-@@ -1037,6 +1041,8 @@ static int lantiq_ssc_remove(struct plat
- 	clk_disable_unprepare(spi->spi_clk);
- 	clk_put(spi->fpi_clk);
- 
-+	spi_master_put(spi->master);
-+
- 	return 0;
- }
- 
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -5174,6 +5174,7 @@ again:
+ 							    addr, dst_vma);
+ 				folio_put(pte_folio);
+ 				if (ret) {
++					restore_reserve_on_error(h, dst_vma, addr, new_folio);
+ 					folio_put(new_folio);
+ 					break;
+ 				}
+@@ -6383,6 +6384,7 @@ int hugetlb_mfill_atomic_pte(pte_t *dst_
+ 		folio_put(*foliop);
+ 		*foliop = NULL;
+ 		if (ret) {
++			restore_reserve_on_error(h, dst_vma, dst_addr, folio);
+ 			folio_put(folio);
+ 			goto out;
+ 		}
 
 
 
