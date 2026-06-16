@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-263861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264877-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id z9NRH9JpMWoFiwUAu9opvQ
-	(envelope-from <stable+bounces-263861-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:20:50 +0200
+	id yZRUFnJ/MWqSkwUAu9opvQ
+	(envelope-from <stable+bounces-264877-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:53:06 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6D15690F17
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:20:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F2516928B7
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:53:05 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=RrdfjwnZ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263861-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-263861-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Qv43xW4K;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264877-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264877-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4DD3E31A89F0
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:14:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 732A630799D1
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:46:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26D6043D4E9;
-	Tue, 16 Jun 2026 15:14:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 029D03AE71F;
+	Tue, 16 Jun 2026 16:46:01 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01D8438C437;
-	Tue, 16 Jun 2026 15:14:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA72F32C302;
+	Tue, 16 Jun 2026 16:45:59 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781622858; cv=none; b=jgSKMlpq59ZJUbI5uGIwe2fugxYf+2Jw5lIPSr7WKZeVD7lJ+NePxU8rQubgxAfw8J5KwpalECA+ORsCWEfnVo1kZyn0pgytiZHnTD5fpwFVLJqeAVhD7X2SHe5BBvHXslA04Zg/WJBLP3iCYhL3mcd8vDsK27OVez4C6oXt87c=
+	t=1781628360; cv=none; b=Gg+ZVvQ8YyBDa5W6tNqZlIrYwrAAoKbQ2392T7BYx+mc61UV7C/bEQvK65GVJW8He5lA3wpuYL4qzdu2rTUrD4yxTc3tXgwjHaiEt0iRgED6n5L+8DcLQeqfSrv6YEUFw4T+4LWVtAO/CeDkRBradT4+scuZ8f1LGH8wMf5cvc4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781622858; c=relaxed/simple;
-	bh=nuIsfejA+IUDJTQluutFwWVqlforFS2qjTHy4u1czMs=;
+	s=arc-20240116; t=1781628360; c=relaxed/simple;
+	bh=cKYf2ocrecxspyjH9wMfbVxv0q/YZtxPDzJtC6MA3Is=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mr4jehJ5oi7MuROucqIETsfbkuPxbDU+272f218qzEkQOtl1nXpaNqFZGIMNyocFVhEvgVzCURCph6v5BQFRcL1tB+0io4vMqWs770bhNVThfyCQ7SQ7FZNKjX6BIXMOR7G31b+PRHFaN6NhPh2ISrFyHdT7J9OUVOSgBwC9tIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RrdfjwnZ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0BDE1F000E9;
-	Tue, 16 Jun 2026 15:14:16 +0000 (UTC)
+	 MIME-Version; b=QsK/Se9V6z/7xdCmPZpk7mRpGMxqhgSn6epW5jJk7XoTbBX8bRSLFoxpdcDKzcv7Ik82PtOuMgy6g7KlpqsIdSryOGp7g8Gew3SD1bXz+gf346zfsgX08+I78OEchoUxjeYS7nOqeGY+YsiXDvdqH8kV4rbe4Z2gNAgVhBmu1DU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qv43xW4K; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B8041F000E9;
+	Tue, 16 Jun 2026 16:45:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781622857;
-	bh=8rkZHbdl6yPIxxTPbiRgc6cIMS3123y6GilUk+d+gbs=;
+	s=korg; t=1781628359;
+	bh=UcgdNLlX6u6rJwKIUdTILMxPFBE0+iDk+DcFcFIHSuM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=RrdfjwnZYewcMDaGL4aJBwJpYkXqGWyP3I5mXReNfuJlF5EmYtbGVY4My0/ZfEqwc
-	 cZCKSw9BNzKxjkyLM02Wv2/g1kJP/xWakfRpt1GT8lmQokX4EUlgLGMlct0AmzRezS
-	 67gJNQTRCiuQU3ruUccs/znlwejeWY95hA7tn/os=
+	b=Qv43xW4KuSdVx0HrY372bQHHZW+8LLODZIbHxfbxlc6WOhQWCLJvpA8QOWKSdIYu/
+	 4+btP/Py4u+GtT4I9hjWFJhIJZnnbaVxADR449rq3X6e+QrXGXPox4kUib0wwiaAec
+	 Uhsm0zI3jL79swc7dE5ow8aWfwh5OGI5DIDeshYg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang Mei <xmei5@asu.edu>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 043/378] wifi: cfg80211: enforce HE/EHT cap/oper consistency
+Subject: [PATCH 6.6 047/452] ipv6: fix possible infinite loop in fib6_select_path()
 Date: Tue, 16 Jun 2026 20:24:34 +0530
-Message-ID: <20260616145112.175519570@linuxfoundation.org>
+Message-ID: <20260616145120.404984557@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,77 +70,84 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-263861-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:xmei5@asu.edu,m:johannes.berg@intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264877-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jiayuan.chen@linux.dev,m:idosch@nvidia.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux.dev:email,sashiko.dev:url,msgid.link:url,nvidia.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C6D15690F17
+X-Rspamd-Queue-Id: 9F2516928B7
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
 
-[ Upstream commit cb9959ab5f99611d27a06586add84811fe8102dc ]
+[ Upstream commit 9c7da87c2dc860bb17ca1ece942495d28b1ce3b9 ]
 
-Xiang Mei reports that mac80211 could crash if eht_cap is set
-but eht_oper isn't. Rather than fixing that for the individual
-user(s), enforce that both HE/EHT have consistent elements.
+Found while auditing the same pattern Sashiko reported in
+rt6_fill_node() [1]. Apply the same fix as
+commit f8d8ce1b515a ("ipv6: fix possible infinite loop in fib6_info_uses_dev()").
 
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Fixes: 22c64f37e1d4 ("wifi: mac80211: Update MCS15 support in link_conf")
-Link: https://patch.msgid.link/20260603091812.101894-2-johannes@sipsolutions.net
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Writers holding tb6_lock can list_del_rcu(&first->fib6_siblings)
+without waiting for RCU readers; first->fib6_siblings.next then
+still points into the old ring and this softirq-side walker never
+reaches &first->fib6_siblings as its terminator. fib6_purge_rt()
+always WRITE_ONCE()s first->fib6_nsiblings to 0 before
+list_del_rcu(), so an inside-loop check is a reliable detach signal.
+
+[1] https://sashiko.dev/#/patchset/20260526020227.4857-1-jiayuan.chen%40linux.dev
+
+Fixes: d9ccb18f83ea ("ipv6: Fix soft lockups in fib6_select_path under high next hop churn")
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20260527053133.180695-2-jiayuan.chen@linux.dev
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/nl80211.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ net/ipv6/route.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 84fcfb1e53a156..fe0c0c198b2526 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -6499,6 +6499,12 @@ static int nl80211_calculate_ap_params(struct cfg80211_ap_settings *params)
- 			return -EINVAL;
- 	}
+diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+index 69659f2a6aea96..6d80e17c04c0d8 100644
+--- a/net/ipv6/route.c
++++ b/net/ipv6/route.c
+@@ -484,6 +484,9 @@ void fib6_select_path(const struct net *net, struct fib6_result *res,
+ 		const struct fib6_nh *nh = sibling->fib6_nh;
+ 		int nh_upper_bound;
  
-+	if (!!params->he_cap != !!params->he_oper)
-+		return -EINVAL;
++		if (!READ_ONCE(first->fib6_nsiblings))
++			break;
 +
-+	if (!!params->eht_cap != !!params->eht_oper)
-+		return -EINVAL;
-+
- 	return 0;
- }
- 
+ 		nh_upper_bound = atomic_read(&nh->fib_nh_upper_bound);
+ 		if (hash > nh_upper_bound)
+ 			continue;
 -- 
 2.53.0
 
