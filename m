@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-264339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264119-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id tdnrK+1yMWqGjgUAu9opvQ
-	(envelope-from <stable+bounces-264339-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:59:41 +0200
+	id 64uYOLNvMWoljQUAu9opvQ
+	(envelope-from <stable+bounces-264119-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:45:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06E9469199D
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:59:41 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5072F6915E9
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:45:55 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=JayIVQJb;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264339-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264339-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=uBcL0aAu;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264119-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264119-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A1C84305A5EE
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:56:13 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7775F311A476
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:37:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C1A744E025;
-	Tue, 16 Jun 2026 15:56:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EBC244CAE0;
+	Tue, 16 Jun 2026 15:37:07 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE77744CAF9;
-	Tue, 16 Jun 2026 15:56:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7C6544BCB0;
+	Tue, 16 Jun 2026 15:37:05 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781625372; cv=none; b=sdqR9+kWhrecekXUxptjhURuiMaZVb0xQawnOmWZc4OlxclA63zzDn0xSX7eQLEX0F2KHdv+QvzMVevVpvvzGMl+5PW0yoTWWR3CVB+LDsDUH22iDbioArP5jZrYJmCjrOajFRAoETypO3UCV8SSjcAw/DJgYtIJIigQxB4eJsI=
+	t=1781624226; cv=none; b=jwpZ2ZuEbiNjItXPmSxtBvKmP0A7J5TMvhEz6FPRVSfI07qbgOBGC9JxiZO3vakUJuyapsmzv1wx4dULHYERBKtlDgpFDBSvtaRy4PcnzjgxDo3TnWsy5XAAefZCiHZDhQovUhePanVqk31Uo/Cmm7eUjm86uq8XIjDO8ugAD7U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781625372; c=relaxed/simple;
-	bh=IZ7GFdIo2VI5q6w8QD4NEe19ckuks7f3bjdBdb8NESM=;
+	s=arc-20240116; t=1781624226; c=relaxed/simple;
+	bh=TSmged4tdxUG2a9JsFVUIkMNO9gJ3ebGfCLa0DR/4G0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mxQod7qzUm8eFJNXuA4On7xNWCYCV0DfTiWCf4o/Gu9MZxhzGNXEnU123TuRej4PN9IWWYB4UHa856a75ESwo4PWnM0YjIpjbGsFBfybIYyxJHbbiSKIwMI0TTFLLfWUwPmV06YUkX8/ufDgG+i9//88soY4eG6jep10i7YH2ZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JayIVQJb; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C87D21F000E9;
-	Tue, 16 Jun 2026 15:56:10 +0000 (UTC)
+	 MIME-Version; b=RMM0WKBgiJna/ARN+0aObjkbvCGGR5V78ekw5aGc3CpNnREpAX/PT82LjPJJdUpLpc7dts0Fa+a0YRvriArmp+AffVemjcLlQOmo8hWwEo57ljfRr3b7WG6QZ5oEXNBoQJXAhk/gU6V/Hr4rjAH8/hHuZeXS0mRTOsViEapGxfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uBcL0aAu; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB0341F00A3A;
+	Tue, 16 Jun 2026 15:37:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781625371;
-	bh=6cncp2XO25urVt+2rD97ZuujWfrPNp9IRCTOheP6gPs=;
+	s=korg; t=1781624225;
+	bh=z1fD4P1Stsk+Z6E430S7KrkuCwu15b7kck0Bsbmde1k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=JayIVQJbaV0TX9CT7h8JDaMb6wfPP2ArUr0KrgHcumSxbDx9S8BUM1+M9RshGPLNZ
-	 sAN2whA4dgUacvpcHPx86cr5yJPaAPxDFshBTHOG3lW27hgXYL9NTMkKraXcjfq/2T
-	 zzjuo6dW1HTDUiY/aFX9aY8pW9zLnVEE0TjrgXwI=
+	b=uBcL0aAu6povUrElsUsEVhBwqulPUYsQTn/5EBd2ZUxf2u2pp2ChiD561P8FHFNqK
+	 dRsRsS46+c5F6L+XXReVhB3egbUUh2t49wL2/TLuPE0NTm+DWUpEbJlbBmCArAb2Ub
+	 rZ6C+mihpmTBYTyo0fR6Wz/PEcGOP79GeaMcAAt8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Til Kaiser <mail@tk154.de>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 130/325] net: mvpp2: limit XDP frame size to the RX buffer
+	Stable@vger.kernel.org,
+	Andre Heider <a.heider@gmail.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Srinivas Kandagatla <srini@kernel.org>
+Subject: [PATCH 7.0 295/378] nvmem: layouts: onie-tlv: fix hang on unknown types
 Date: Tue, 16 Jun 2026 20:28:46 +0530
-Message-ID: <20260616145104.203684813@linuxfoundation.org>
+Message-ID: <20260616145125.589210554@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,86 +68,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264339-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,vger.kernel.org,gmail.com,bootlin.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-264119-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mail@tk154.de,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:Stable@vger.kernel.org,m:a.heider@gmail.com,m:miquel.raynal@bootlin.com,m:srini@kernel.org,m:aheider@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,tk154.de:email,msgid.link:url,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,bootlin.com:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 06E9469199D
+X-Rspamd-Queue-Id: 5072F6915E9
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Til Kaiser <mail@tk154.de>
+From: Andre Heider <a.heider@gmail.com>
 
-[ Upstream commit f3c6aa078927e6fe8121c9c591ddee8716c5305a ]
+commit ea41020b9018e31c2ea7e9d89021e3e6d7470883 upstream.
 
-mvpp2 has short and long BM pools, and short pool buffers can be smaller
-than PAGE_SIZE. The XDP path nevertheless initializes every xdp_buff with
-PAGE_SIZE as frame size.
+The EEPROM on my board has a vendor specific entry of type 0x41. When
+stumbling upon that, this driver hangs in an endless loop.
 
-XDP helpers use frame_sz to validate tail growth and to derive the hard
-end of the data area. Advertising PAGE_SIZE for short buffers can let
-bpf_xdp_adjust_tail() grow a packet past the real allocation, corrupting
-memory or later tripping skb tailroom checks.
+Fix it by keep incrementing the offset on unknown entries, so the loop
+will eventually stop.
 
-Initialize the XDP buffer with bm_pool->frag_size so XDP tailroom matches
-the actual buffer backing the packet.
-
-Fixes: 07dd0a7aae7f ("mvpp2: add basic XDP support")
-Signed-off-by: Til Kaiser <mail@tk154.de>
-Link: https://patch.msgid.link/20260607134943.21996-3-mail@tk154.de
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: d3c0d12f6474 ("nvmem: layouts: onie-tlv: Add new layout driver")
+Cc: Stable@vger.kernel.org
+Signed-off-by: Andre Heider <a.heider@gmail.com>
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
+Link: https://patch.msgid.link/20260530204340.116743-2-srini@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/nvmem/layouts/onie-tlv.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-index 5ef8637d408015..814b60b16a23dc 100644
---- a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-+++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-@@ -3981,7 +3981,7 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
- 			else
- 				xdp_rxq = &rxq->xdp_rxq_long;
+--- a/drivers/nvmem/layouts/onie-tlv.c
++++ b/drivers/nvmem/layouts/onie-tlv.c
+@@ -119,7 +119,7 @@ static int onie_tlv_add_cells(struct dev
  
--			xdp_init_buff(&xdp, PAGE_SIZE, xdp_rxq);
-+			xdp_init_buff(&xdp, bm_pool->frag_size, xdp_rxq);
- 			xdp_prepare_buff(&xdp, data,
- 					 MVPP2_MH_SIZE + MVPP2_SKB_HEADROOM,
- 					 rx_bytes, true);
--- 
-2.53.0
-
+ 		cell.name = onie_tlv_cell_name(tlv.type);
+ 		if (!cell.name)
+-			continue;
++			goto next;
+ 
+ 		cell.offset = hdr_len + offset + sizeof(tlv.type) + sizeof(tlv.len);
+ 		cell.bytes = tlv.len;
+@@ -132,6 +132,7 @@ static int onie_tlv_add_cells(struct dev
+ 			return ret;
+ 		}
+ 
++next:
+ 		offset += sizeof(tlv) + tlv.len;
+ 	}
+ 
 
 
 
