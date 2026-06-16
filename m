@@ -1,65 +1,62 @@
-Return-Path: <stable+bounces-265973-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264217-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id FH43AcyTMWoDnQUAu9opvQ
-	(envelope-from <stable+bounces-265973-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:19:56 +0200
+	id K8VFNuhxMWr0jQUAu9opvQ
+	(envelope-from <stable+bounces-264217-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:55:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id B98026940A2
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:19:55 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 838E369182E
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:55:20 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=H0vwMQ7t;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265973-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-265973-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=a+cHhUtL;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264217-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264217-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 37C04302B3B4
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:19:55 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 81AA2306D1A8
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:47:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2619E3D091A;
-	Tue, 16 Jun 2026 18:19:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EFBD43E486;
+	Tue, 16 Jun 2026 15:45:49 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0111335292A;
-	Tue, 16 Jun 2026 18:19:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C9D339282C;
+	Tue, 16 Jun 2026 15:45:46 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781633991; cv=none; b=uAoqFdmSdkOruxnrdr33uyPAIH8cwgClfOwABk08HS0ZLW2SDwCQMJwjqCgoisZEZ5sxJqXPdt7k20CTcBCuN+dMKCYsZy4wXuah7TNVTNDw00nEt5ABXUWQrz+3fxaKe/jqg9QhYv+d+2OgCM/pw73ncB0Fvt8G+Nn81qB4dSE=
+	t=1781624748; cv=none; b=G88KZqTL+4tzD13ZNSVtJk3fSRqW+3+9OTDYp1l6RV3c979Vv9/p9cLLW7VDBbLBJPN1HqX7VeBD+kkJ+8bxg0XnZkbwTnLlwX5gbi3gCJzckGxFmismzglcdPaYge1arzXQBUc1d5FF0gHXjaKhdNIsxXDhENq49Q87YEnzqgM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781633991; c=relaxed/simple;
-	bh=VQAlbRMxjo75P2T/Ue1ccTkHDVqu1wDFxRBMS/4szmc=;
+	s=arc-20240116; t=1781624748; c=relaxed/simple;
+	bh=19jUO1OS5CZWkP5seLCcyLgshPGAjXYz5WNtY8zQ9tA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lbnA8srnIORzrp241EKMk9rvGna+TBcIIAZJU2gyXG7lUg0ErXLl6jt9TrWVdIqPqENBnIc7uHWDZmlDxdD69t90VC3ZxGrK9l71yjtizX24jOULWlDeJHbuKDcs+2B4W+vShI3t6adL/QWLVoOkJ5+Ur6EfTHlogAmg4a/WZek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H0vwMQ7t; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 021941F000E9;
-	Tue, 16 Jun 2026 18:19:49 +0000 (UTC)
+	 MIME-Version; b=OT+kwSQ5hmJU74NMPMMJG8/IBYxyacEZk3cQE5KeCRK/aeKAQbfoSjtoX/cVcczB30Nro2/ADAZSZ0TCSLwv9SMuFU/sClk3NfXuSKf11FoOOAnleTi7MPEKTgZywuknDsWdPR1SLf0nAb5YHvaYdIIeXiDZW7/e5RUxawRgASU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a+cHhUtL; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E9751F000E9;
+	Tue, 16 Jun 2026 15:45:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781633990;
-	bh=BDUpPjA49aiP8u/qeUBk093g69A+smrkOjMQmeu/f+Y=;
+	s=korg; t=1781624746;
+	bh=5GkpRsX7OQQkW8G9cp8paZ5pxNxeHeiKrKdfjACPd3U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=H0vwMQ7tDp8Jrb7DrgFr+KjC/4STdr/cvb80PUz66OvuLzk1X3ELt/jZLZ+SfYeYC
-	 3zCpLm845UfitlvrETSV9CXQEvv6ei2zD+c/zNKIKqhVnKQzmZefNYecfFhIylhOhC
-	 BILU8twR1Bi3JPn2ewKhpgyAO3HNgeZKfmgCFNps=
+	b=a+cHhUtLcOGiXJpvUy2P/IbpGJsrE3WAkwLsM1qbPMRlWp9tmjd6D4ukaDI77JNkT
+	 +EYX9iQU5k8yB+X9wAIkaK4K2wQqGdVJ31+e4HqcUkt5rvXUq1UkfDjh/4sub93bDg
+	 Dy26VzVv5iLUon80U6EkLDj7NMdXaXitDn3ILlOg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Oliver Upton <oupton@kernel.org>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Will Deacon <will@kernel.org>,
+	Julian Anastasov <ja@ssi.bg>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 180/411] arm64: tlb: Allow XZR argument to TLBI ops
+Subject: [PATCH 6.18 022/325] ipvs: clear the svc scheduler ptr early on edit
 Date: Tue, 16 Jun 2026 20:26:58 +0530
-Message-ID: <20260616145110.253135580@linuxfoundation.org>
+Message-ID: <20260616145058.887657637@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,22 +72,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265973-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264217-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mark.rutland@arm.com,m:catalin.marinas@arm.com,m:maz@kernel.org,m:oupton@kernel.org,m:ryan.roberts@arm.com,m:will@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:ja@ssi.bg,m:fw@strlen.de,m:pablo@netfilter.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -99,70 +96,135 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,arm.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,netfilter.org:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,sashiko.dev:url,strlen.de:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B98026940A2
+X-Rspamd-Queue-Id: 838E369182E
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Julian Anastasov <ja@ssi.bg>
 
-commit bfd9c931d19aa59fb8371d557774fa169b15db9a upstream.
+[ Upstream commit 193989cc6d80dd8e0460fb3992e69fa03bf0ff9b ]
 
-The TLBI instruction accepts XZR as a register argument, and for TLBI
-operations with a register argument, there is no functional difference
-between using XZR or another GPR which contains zeroes. Operations
-without a register argument are encoded as if XZR were used.
+ip_vs_edit_service() while unbinding the old scheduler clears
+the svc->scheduler ptr after the scheduler module initiates
+RCU callbacks. This can cause packets to use the old
+scheduler at the time when svc->sched_data is already freed
+after RCU grace period.
 
-Allow the __TLBI_1() macro to use XZR when a register argument is all
-zeroes.
+Fix it by clearing the ptr early in ip_vs_unbind_scheduler(),
+before the done_service method schedules any RCU callbacks.
 
-Today this only results in a trivial code saving in
-__do_compat_cache_op()'s workaround for Neoverse-N1 erratum #1542419. In
-subsequent patches this pattern will be used more generally.
+Also, if the new scheduler fails to initialize when replacing
+the old scheduler, try to restore the old scheduler while still
+returning the error code.
 
-There should be no functional change as a result of this patch.
-
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Marc Zyngier <maz@kernel.org>
-Cc: Oliver Upton <oupton@kernel.org>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[Mark: Backport to v5.15.y]
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Link: https://sashiko.dev/#/patchset/20260519015506.634185-1-rosenp%40gmail.com
+Fixes: 05f00505a89a ("ipvs: fix crash if scheduler is changed")
+Signed-off-by: Julian Anastasov <ja@ssi.bg>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/tlbflush.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ include/net/ip_vs.h              |  3 +--
+ net/netfilter/ipvs/ip_vs_ctl.c   | 13 ++++++++-----
+ net/netfilter/ipvs/ip_vs_sched.c | 14 +++++++-------
+ 3 files changed, 16 insertions(+), 14 deletions(-)
 
-diff --git a/arch/arm64/include/asm/tlbflush.h b/arch/arm64/include/asm/tlbflush.h
-index 412a3b9a3c25dc..2626a45849c241 100644
---- a/arch/arm64/include/asm/tlbflush.h
-+++ b/arch/arm64/include/asm/tlbflush.h
-@@ -37,12 +37,12 @@
- 			    : : )
+diff --git a/include/net/ip_vs.h b/include/net/ip_vs.h
+index 29a36709e7f35c..2163f32ef6abc1 100644
+--- a/include/net/ip_vs.h
++++ b/include/net/ip_vs.h
+@@ -1519,8 +1519,7 @@ int register_ip_vs_scheduler(struct ip_vs_scheduler *scheduler);
+ int unregister_ip_vs_scheduler(struct ip_vs_scheduler *scheduler);
+ int ip_vs_bind_scheduler(struct ip_vs_service *svc,
+ 			 struct ip_vs_scheduler *scheduler);
+-void ip_vs_unbind_scheduler(struct ip_vs_service *svc,
+-			    struct ip_vs_scheduler *sched);
++void ip_vs_unbind_scheduler(struct ip_vs_service *svc);
+ struct ip_vs_scheduler *ip_vs_scheduler_get(const char *sched_name);
+ void ip_vs_scheduler_put(struct ip_vs_scheduler *scheduler);
+ struct ip_vs_conn *
+diff --git a/net/netfilter/ipvs/ip_vs_ctl.c b/net/netfilter/ipvs/ip_vs_ctl.c
+index e442ba6033d5f8..a3b509908b8c0e 100644
+--- a/net/netfilter/ipvs/ip_vs_ctl.c
++++ b/net/netfilter/ipvs/ip_vs_ctl.c
+@@ -1497,7 +1497,7 @@ ip_vs_add_service(struct netns_ipvs *ipvs, struct ip_vs_service_user_kern *u,
+ 	if (ret_hooks >= 0)
+ 		ip_vs_unregister_hooks(ipvs, u->af);
+ 	if (svc != NULL) {
+-		ip_vs_unbind_scheduler(svc, sched);
++		ip_vs_unbind_scheduler(svc);
+ 		ip_vs_service_free(svc);
+ 	}
+ 	ip_vs_scheduler_put(sched);
+@@ -1559,9 +1559,8 @@ ip_vs_edit_service(struct ip_vs_service *svc, struct ip_vs_service_user_kern *u)
+ 	old_sched = rcu_dereference_protected(svc->scheduler, 1);
+ 	if (sched != old_sched) {
+ 		if (old_sched) {
+-			ip_vs_unbind_scheduler(svc, old_sched);
+-			RCU_INIT_POINTER(svc->scheduler, NULL);
+-			/* Wait all svc->sched_data users */
++			ip_vs_unbind_scheduler(svc);
++			/* Wait all svc->scheduler/sched_data users */
+ 			synchronize_rcu();
+ 		}
+ 		/* Bind the new scheduler */
+@@ -1569,6 +1568,10 @@ ip_vs_edit_service(struct ip_vs_service *svc, struct ip_vs_service_user_kern *u)
+ 			ret = ip_vs_bind_scheduler(svc, sched);
+ 			if (ret) {
+ 				ip_vs_scheduler_put(sched);
++				/* Try to restore the old_sched */
++				if (old_sched &&
++				    !ip_vs_bind_scheduler(svc, old_sched))
++					old_sched = NULL;
+ 				goto out;
+ 			}
+ 		}
+@@ -1625,7 +1628,7 @@ static void __ip_vs_del_service(struct ip_vs_service *svc, bool cleanup)
  
- #define __TLBI_1(op, arg) asm (ARM64_ASM_PREAMBLE			       \
--			       "tlbi " #op ", %0\n"			       \
-+			       "tlbi " #op ", %x0\n"			       \
- 		   ALTERNATIVE("nop\n			nop",		       \
--			       "dsb ish\n		tlbi " #op ", %0",     \
-+			       "dsb ish\n		tlbi " #op ", %x0",    \
- 			       ARM64_WORKAROUND_REPEAT_TLBI,		       \
- 			       CONFIG_ARM64_WORKAROUND_REPEAT_TLBI)	       \
--			    : : "r" (arg))
-+			    : : "rZ" (arg))
+ 	/* Unbind scheduler */
+ 	old_sched = rcu_dereference_protected(svc->scheduler, 1);
+-	ip_vs_unbind_scheduler(svc, old_sched);
++	ip_vs_unbind_scheduler(svc);
+ 	ip_vs_scheduler_put(old_sched);
  
- #define __TLBI_N(op, arg, n, ...) __TLBI_##n(op, arg)
+ 	/* Unbind persistence engine, keep svc->pe */
+diff --git a/net/netfilter/ipvs/ip_vs_sched.c b/net/netfilter/ipvs/ip_vs_sched.c
+index d4903723be7e90..49b2e5d2b2c837 100644
+--- a/net/netfilter/ipvs/ip_vs_sched.c
++++ b/net/netfilter/ipvs/ip_vs_sched.c
+@@ -57,19 +57,19 @@ int ip_vs_bind_scheduler(struct ip_vs_service *svc,
+ /*
+  *  Unbind a service with its scheduler
+  */
+-void ip_vs_unbind_scheduler(struct ip_vs_service *svc,
+-			    struct ip_vs_scheduler *sched)
++void ip_vs_unbind_scheduler(struct ip_vs_service *svc)
+ {
+-	struct ip_vs_scheduler *cur_sched;
++	struct ip_vs_scheduler *sched;
+ 
+-	cur_sched = rcu_dereference_protected(svc->scheduler, 1);
+-	/* This check proves that old 'sched' was installed */
+-	if (!cur_sched)
++	sched = rcu_dereference_protected(svc->scheduler, 1);
++	if (!sched)
+ 		return;
+ 
++	/* Reset the scheduler before initiating any RCU callbacks */
++	rcu_assign_pointer(svc->scheduler, NULL);
++	smp_wmb();	/* paired with smp_rmb() in ip_vs_schedule() */
+ 	if (sched->done_service)
+ 		sched->done_service(svc);
+-	/* svc->scheduler can be set to NULL only by caller */
+ }
+ 
  
 -- 
 2.53.0
