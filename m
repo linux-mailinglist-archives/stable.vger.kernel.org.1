@@ -1,169 +1,194 @@
-Return-Path: <stable+bounces-266581-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266582-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id WkWmI3HNMWoiqQUAu9opvQ
-	(envelope-from <stable+bounces-266581-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 00:25:53 +0200
+	id S3EYLazOMWqNqQUAu9opvQ
+	(envelope-from <stable+bounces-266582-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 00:31:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2DBA695901
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 00:25:52 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66558695937
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 00:31:07 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=google.com header.s=20251104 header.b=e2utSYpf;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266581-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266581-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
+	dkim=pass header.d=shazbot.org header.s=fm3 header.b=cOjqQwdU;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="A o7hB8o";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266582-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266582-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=shazbot.org;
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 106EF3185D87
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 22:25:31 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A2BBE300CF09
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 22:31:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F2E23AD510;
-	Tue, 16 Jun 2026 22:25:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A0773ACEF1;
+	Tue, 16 Jun 2026 22:31:03 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fout-a4-smtp.messagingengine.com (fout-a4-smtp.messagingengine.com [103.168.172.147])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF1A639C637
-	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 22:25:26 +0000 (UTC)
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781648728; cv=pass; b=q4yJ7e0woTTMXFDer3YyKXoJTUopyfFrw2H//76ZDGzJFXrKHsgmhdqZOrMXSme2UkKF6nuGBy5O/2I+yloEdZcM8rSSTuTd17Uqo9ZwKJMK29UwZP0wa9NWhXA6iMCd0qM6e4H+xdQx5UOcDtOmDhDnqmvc7OMFIcc8ducX3Tw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781648728; c=relaxed/simple;
-	bh=jKgvyKk7P9bNKSoGDvu/vOprsRoiXdKCkcTH/POdpsw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FWbCthu8DLbtfEIlHEsoQ8KHiIcicUe64RHSMS30rZAjHFAyT5EqgygzNvuWjrYMEYYps5X5k+SXsYDHfh/xF5Q+emb365WHYr6JPgaL2XDPfr5JUgXad2D4+sIRukfaywlFsawl98CC38+oG2t2K4K3UDCy9AjhCOHveuxthn4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=e2utSYpf; arc=pass smtp.client-ip=209.85.208.50
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-695469b574eso1875a12.1
-        for <stable@vger.kernel.org>; Tue, 16 Jun 2026 15:25:26 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781648725; cv=none;
-        d=google.com; s=arc-20240605;
-        b=cbgUy9Vh94Z3/Pa+t2+M8TeoYvYlhakHyi2sZLOCPvIjhwkWvoynHv0Z4MYomyXf+Y
-         9cHbi/osjpl7CVWPmdOESSZkW9SXu3PviGCkzyGlz2BKza+6KjYrZQ3HzGCK85PfOKf8
-         wecO/uQR8I7ExkDrnP/rRfoUJ70iNbdfAQ1K2h2tXY7J5rhxS3f1uWcl9xuAtpCn91IW
-         jFG3OToLF+z/2Bk0yOb7P+YaLDd+AxQugZrO5MCzNHrblm91bx4V8ObcoLlaTdmtX/Z/
-         wXClyfE6lbnau1LAOWcpid8b78xERjuf0jeFj3dlYouJ3aNIdWC8IRqkMYIdRjKqEOF7
-         1TIg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=MV2HmtTBtTO8uZxXNcBM0C7QSI5cDV9ze8SL4kFOQSU=;
-        fh=fN6cuuRRtRJjk1VSa0ZkR/Zo2pl0eyjJ3f3jsvqXqcI=;
-        b=QnOd+c0fCfRic6a+KYxN4WXSrYyPyQ0OYnKe9DeWyzHCbD6gijfHdsz2BViQ0vMDq3
-         wwD2OgNQCQBuUJa2hG1KfYP52jIInEGUdmVF34xNJwkhMSpfIN+6PpD/bq182QG2JBUc
-         TL0iHR1VleJzIWNr+V/BlOpW5iKA3D1Z1vkVpCGhSWejnebDgnAJTQ/iKfMgCQ1ftx+V
-         Ca9Rf7GoL4vb2FNIhumtV0EeIlw3oqJjJ1Yd4T3suIdqH68+l8QIq7FXctsLkwky/9pL
-         LePpp6txNS8x12AQcFceBHyV3sn0CwArn87KjctsRq7vP4MIqxADW9IzrKkYrmKxzIXI
-         4d+Q==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781648725; x=1782253525; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=MV2HmtTBtTO8uZxXNcBM0C7QSI5cDV9ze8SL4kFOQSU=;
-        b=e2utSYpfSuR3d2QIao9J1KDrBHAJtsE59G5p89sdZGExutjIx1WMXdfdkGBVhP4ahe
-         +ImdluIKfy7lk1M3SteXG6h9Kt7Qd9iNAoCDBuI8GZf+1sAnYz7hSWsSeEeuOvbabV1i
-         rP8MHOQ7QXkXNc8KSxdpzHmVnXl5EIST49+QaN98F616SqL3UKV5rxFxekSXQtQNMqX2
-         kiNFgMK0rbHLs5kzwdIIP57JVo3uDqGsMwe2Xu8W7flUsGaLenmOVwilUozY4zEbAA7Z
-         upyeNXDElcNgUpyr50cV33uD1A9dIzMTjh9snOWNRmYLaho1MBZ7xZa9zj/hlPFo8jxT
-         C2dw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781648725; x=1782253525;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=MV2HmtTBtTO8uZxXNcBM0C7QSI5cDV9ze8SL4kFOQSU=;
-        b=VDy8cYvTBvk3onY59Iu4PJL9OTiQisJIC1VDW0lbLQiAolfBuF0rITFtWL5pyT14ln
-         diw56LyG+JMhAKMeNLiDjPthi4ezmgnotlTZcB5roE25jM1nNChPMI/ZY+M5tFjWHrKc
-         r2Chcl112DoQ1rgo8AipGxLWnUZxJIQ4b+6hLS4E5gOia5JI+pQqsvE2/SXopmcfCFTv
-         FRRX2JpFserLKoVsIpRGM6sYEBJbVbQivikpnzMmWfkaIWyqTnO/asr2oq+Jj5sGdSux
-         zftiOJ3v6uitT+lwAmMoWQTQleyzofaWAOqk3DPCE0ZE7cw2PI5uTZ0gC+ryV6P226Ni
-         nlyQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+6ywba0QwX+sK4J0ttEOmjmvfR8gGzdym51j7qMTSvT6HVWUn8YhoPLQqoTPwY5oIDu9ctokc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxMSWuC5o9RgDekWwDZLvWpW43q3rDcvn3paU/ZRM7WtzwMPT7m
-	QOujMvqadmms+Skh5Pc+yK00nbay6aqPsZ4npDs+bmKberHNPySM5SO0Kn60v2VqF011k9+u0cZ
-	x/U/wjOA0U01wKmqC8/R8u1FtuTGHpYHVZyBV34P6
-X-Gm-Gg: Acq92OGIovTWNF/P/R8KiiMi86SGCkSkuBJTv87dSZhFFdxUqsUnFTSUEcDlcAuDtft
-	gsjrflHdqX5SCk2YeBPzhVV3abPlb76ypvxZF6gsEipolRmRD4hW2w6gP9n38StAlckUceeHSQS
-	pjopMs8TGOn5TKE1zCSl4XLIwF8uAjNbaP9D1dYOrbpmrQqwC0CtQA8N+pErA4/cKUa70H7mXId
-	4c3H6sX35cqnPvSLZRfZTd4zWOl4UaoWIdM8nWFZpvRs+0kLP54WDbYKY3vI669Xwnm1A0x96/W
-	NKFfeig=
-X-Received: by 2002:a05:6402:a244:20b0:672:117e:55d4 with SMTP id
- 4fb4d7f45d1cf-695475741cdmr17062a12.0.1781648724795; Tue, 16 Jun 2026
- 15:25:24 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9C3D3AB5B8;
+	Tue, 16 Jun 2026 22:30:59 +0000 (UTC)
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781649062; cv=none; b=QKlBaYSFtOubu1PdiQbYRgvHe+3DqR0MmqGw3S2kIKiAsCv2qh61jC1SkJAA83CggIcyVOhTin8BqAcYq8sJEk4sJGURw1MdmgSA2OKk6JdwOziM4SLJKLJ0YG9qes9f3S1V2/nNDNGKPOrZcL03DQh5Swupv7suUJqEZ7Mm5rU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781649062; c=relaxed/simple;
+	bh=u+EjfXEtMOWobmqbeSfAKWQoHPaxuk50sDJrW1KXnIg=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=AE7oc0vC+CQNYKCoFqx4WYuUsN3MhzFbvzk/otcfHwdbbIIgaLGP5d9bHQOd9QOcHT0I+C+8egRRZtArEwO82lqJ01/bTWtNMDe3emPfaHw/rwyePPA9sSMApaYd/jO1/zJ3kKGP7bK+LLN8poyLjtGT0q66INxiOfOWQgiQ3Us=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=cOjqQwdU; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Ao7hB8oP; arc=none smtp.client-ip=103.168.172.147
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfout.phl.internal (Postfix) with ESMTP id C03BFEC02B0;
+	Tue, 16 Jun 2026 18:30:58 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-05.internal (MEProxy); Tue, 16 Jun 2026 18:30:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1781649058;
+	 x=1781735458; bh=+rHioyxYKaAJ4voYMnnaD3/bRBJeekx7zwdVkQIQUaU=; b=
+	cOjqQwdUNOXO8ALbDbO5Z0Ln8eTHl5wyQqsu6jgkiIl7qzfprtLp7llSYBgg0Wvx
+	wvIlv7kOo5MjD9cimT+e5Vu7AUQX+CXcajBbiNvmkNGdDrW9E1lTE6c/ItJw81xD
+	ucJdRc8LxDBOKkxc+FAAZmn9Ld27t2Y3OyDj4btQs+U5xyYe9Sw0YZxdndm9ZeV4
+	vZlG7NbxRV3ejpqjYK5wxOEra8ZbLBinXXhOa8BnLogXG5UX7QFXGYD1GbcFdkR7
+	u3jHHhSLiHCSzZmaGSWABHIgXhwDOxDFc5F4/VKHgwFKuXL5ThYwvZRBE226j4Ku
+	EB3VAUA1773mkEkC8eTVrw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1781649058; x=
+	1781735458; bh=+rHioyxYKaAJ4voYMnnaD3/bRBJeekx7zwdVkQIQUaU=; b=A
+	o7hB8oPpV6BUt0hX9ngV85lw8YaKLaTf3jVFxOJ6cJIVl1xHpHg84X/Zfeo8EWCB
+	GrbZtkpXdHpHFqsIgp6XhS3Nx9Mg4akEo8tMkm2wJ0/ZI93HuUI64U31JJVtSGUB
+	IGDdmZ9vR7yDocDwlXnOGX3oAA1hFInebb6NrGpJa8Ycd8brxggat1/HRH6iri8h
+	F4e3jsu2Mdm90J9uR9Uj4dLR9aFkM4QQrke4xrbAesv3dYnAQ7NvZX7lyEKKJwh5
+	fpqUYRzjJbfcFKqmt1g9H8FfpMbibnAzEv3uhUNM/MGoFS767LNQ48CR3vJxH7Tl
+	LDGwX0btEFAeSXQkG3BbQ==
+X-ME-Sender: <xms:oc4xasSCgAyl4jtUB7Xl5wUysUgATze-_wqVO4njVfw32fccAcur4g>
+    <xme:oc4xalqYyEO8ZAxdLI6whZg8q3F7oari7gni07ii4g94dikVbntIvV9DgPMPqqlmM
+    XogChvxAXRNkO-Ddi0XjV1L8Pmrcc8TLfNlTWRAVTu7CDDFvAGm>
+X-ME-Received: <xmr:oc4xam3VDGQtUREFgIvJBX9B7fMqFMAfT2a1iamlQQMfRqb-si-AoYwGGKU>
+X-ME-Proxy-Cause: dmFkZTEQIFPA4DQ+IouZXdl4nSL5KRmpBGJ3LtjyzM/GA31zC1k73CGibn8xX7GbuoPEQH
+    oUVqqCdVPKY60sTREchsl+HrmfPRF2QiEsb2Wji/gNsSR2FgRPcUYKPCFbtTQ64kL5iQuM
+    7Ave/+wa27MixGbGt2a6e9N5roePRyYb14CpYGgQX8pg5f5enPj/CARpjhzVd5ghDW/Y33
+    3o7CsWsim4sddyGENQ5mlsl1S7NNxDm7JLGRXjh3kBc6FJokPdNxC/B7r/8iy4kJKkPTR/
+    zh2ysrQ4usOcEpOAMY+tXkbR5FDKAJdoMG/JTDW8LwPYdG77yApNnK8Khs4RgGZvJqxWCU
+    Sx60sepY32PnQgNSPKEOqxkworrp2jrMr9hjGttSQMiRnsDoyOjFq6jU3KP+vaZTWiHrda
+    09u4ZplXGHZ1PjuucjmtF8GuiW9GdYa7ZPRYzJyp6PbiLjm3DMywDCLSJW3eaWfR5Q3UmQ
+    JcZLCgNjlh1sO1TkV9HqUStnWjsc3rIXLrNwdNWHQEsG9v/VTToRCHbKfBuDhshpb7W+0j
+    eia862X0khMn38HSTycGBw8o5+tuJPiNhFbYAWmQaRYtjBWeHsZwC4Auyghag1gHek0BUv
+    dAs6qZJ5uB6kYs5SNUW2vqTdWBxYZASA25IIQKNQK++QbEV4hGsd556i+HwA
+X-ME-Proxy: <xmx:oc4xak445CRRPh97mIcTJKdDCKjLqE9LN3rAAvxcXJdEcO6LNNhJrA>
+    <xmx:oc4xaqRG-xMhniFjEg-nkFA_6wRqzeMp1PDFZXk-7KD7hP6rbIvLlg>
+    <xmx:oc4xahWpUs3ZYUjBUz6J8aIjBa4_hykahb73R278jz20t4xmqvNQEA>
+    <xmx:oc4xanFyAQydMqPW_Z5omgpFRXnZQkZ_bNL0wtvk3HgWvdMexKbD1A>
+    <xmx:os4xanbm7eaPWslPJ7D7bqGPJWEYDzdDbkT72KcoWnZ0W00l1MJEh7zS>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 16 Jun 2026 18:30:56 -0400 (EDT)
+Date: Tue, 16 Jun 2026 16:30:54 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: Anthony Pighin <anthony.pighin@nokia.com>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, Kefeng Wang
+ <wangkefeng.wang@huawei.com>, Vlastimil Babka <vbabka@kernel.org>, Andrew
+ Morton <akpm@linux-foundation.org>, kvm@vger.kernel.org, alex@shazbot.org,
+ Matthew Wilcox <willy@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>, Peter
+ Xu <peterx@redhat.com>
+Subject: Re: [PATCH] vfio: Request THP-aligned mmap for device fds
+Message-ID: <20260616163054.77fdb61a@shazbot.org>
+In-Reply-To: <20260616180129.160016-1-anthony.pighin@nokia.com>
+References: <20260616180129.160016-1-anthony.pighin@nokia.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260616214652.2157032-1-yosry@kernel.org> <20260616214652.2157032-2-yosry@kernel.org>
-In-Reply-To: <20260616214652.2157032-2-yosry@kernel.org>
-From: Jim Mattson <jmattson@google.com>
-Date: Tue, 16 Jun 2026 15:25:12 -0700
-X-Gm-Features: AVVi8CcXw57Fy4yvePc-el3RpLouLJgA5KfacL6pFCwGL-zOTuYKp6Sw3PIaXR8
-Message-ID: <CALMp9eS0=dKsYvVwRpBy0dxv_Zn79L0UM6k+x7ezeiUTZdSzFQ@mail.gmail.com>
-Subject: Re: [PATCH 1/3] KVM: nVMX: Always flush vpid02 on first use
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[shazbot.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[shazbot.org:s=fm3,messagingengine.com:s=fm1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:yosry@kernel.org,m:seanjc@google.com,m:pbonzini@redhat.com,m:kvm@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[jmattson@google.com,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-266581-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[shazbot.org:+,messagingengine.com:+];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-266582-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[alex@shazbot.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:anthony.pighin@nokia.com,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:wangkefeng.wang@huawei.com,m:vbabka@kernel.org,m:akpm@linux-foundation.org,m:kvm@vger.kernel.org,m:alex@shazbot.org,m:willy@infradead.org,m:jgg@ziepe.ca,m:peterx@redhat.com,s:lists@lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jmattson@google.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[google.com:+];
-	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,mail.gmail.com:mid]
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[alex@shazbot.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ALIAS_RESOLVED(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: F2DBA695901
+X-Rspamd-Queue-Id: 66558695937
 
-On Tue, Jun 16, 2026 at 2:47=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> wrot=
-e:
->
-> Make sure vpid02 is always flushed on first use by setting last_vpid=3D0
-> when allocating vpid02.  nested_vmx_transition_tlb_flush() will always
-> detect a VPID change on first VM-Enter after VMXON, because VPID=3D0 in
-> vmcb12 is not allowed if L1 enables VPID.
->
-> This avoids using stale TLB entries from a previous lifetime of the
-> VPID, that might have been associated with a different vCPU (or a
-> completely different VM).
->
-> Note that last_vpid is already being initialized as 0 when the vCPU is
-> created, but it is not reset when vpid02 is freed on VMXOFF. Hence, the
-> problem can only occur if L1 does VMXOFF -> VMXON, runs an L2, and KVM
-> happens to reuse a VPID that has TLB entries on the physical CPU.
->
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Yosry Ahmed <yosry@kernel.org>
-> ---
-Reviewed-by: Jim Mattson <jmattson@google.com>
+On Tue, 16 Jun 2026 14:01:29 -0400
+Anthony Pighin <anthony.pighin@nokia.com> wrote:
+
+> VFIO PCI devices support PMD-sized page table entries for BAR mappings
+> via their huge_fault handler (vfio_pci_mmap_huge_fault).  However, the
+> VFIO device file_operations never provided a get_unmapped_area callback
+> to request PMD-aligned virtual address placement from the mmap address
+> allocator.
+> 
+> Before commit 34d7cf637c43 ("mm: don't try THP alignment for FS without
+> get_unmapped_area"), this was masked by a bug introduced in commit
+> ed48e87c7df3 ("thp: add thp_get_unmapped_area_vmflags()") which
+> inadvertently applied THP alignment to all file-backed mappings,
+> regardless of whether they provided a get_unmapped_area callback.
+> 
+> When commit 34d7cf637c43 ("mm: don't try THP alignment for FS without
+> get_unmapped_area") correctly restricted THP alignment to anonymous
+> mappings and files that explicitly opt in via get_unmapped_area, VFIO BAR
+> mappings lost their PMD-aligned placement.  Since the huge_fault handler
+> requires both the VMA start address and the physical PFN to be
+> PMD-aligned, unaligned VMAs force a fallback to 4KB page faults.
+> 
+> For example, a 2GiB BAR results in 524,288 individual page faults
+> instead of 1,024 PMD-sized faults, increasing the VFIO_IOMMU_MAP_DMA
+> pinning time by orders of magnitude -- a regression directly visible to
+> KVM guests during PCI device initialization.
+> 
+> Fix this by providing a get_unmapped_area callback in vfio_device_fops,
+> following the same pattern used by ext4, xfs, btrfs, fuse, and other
+> subsystems that benefit from THP-aligned placement.
+
+The trouble is that PMD alignment isn't right either, your 1024 PMD
+faults on a 2GiB BAR would be 2 faults on x86_64 with PUD mappings.
+QEMU has forced the alignment to make it optimal for some time[1], so
+there are userspace VMM options.  Seems like you were previously
+getting lucky.
+
+Peter Xu was working on a more comprehensive solution[2] late last
+year, but it seems there was an objection to the
+file_operations.get_mapping_order() proposal before Plumbers and the
+thread hasn't rekindled.
+
+Gentle bump to Peter and Willy that maybe we could resurrect that
+effort.  Thanks,
+
+Alex
+
+[1]https://gitlab.com/qemu-project/qemu/-/commit/00b519c0bca0
+[2]https://lore.kernel.org/all/20251204151003.171039-1-peterx@redhat.com/
 
