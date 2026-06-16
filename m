@@ -1,64 +1,63 @@
-Return-Path: <stable+bounces-264558-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264052-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id vP8xLN52MWr2jwUAu9opvQ
-	(envelope-from <stable+bounces-264558-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:16:30 +0200
+	id 9ZaPCqRtMWpejAUAu9opvQ
+	(envelope-from <stable+bounces-264052-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:37:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EC14691E03
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:16:30 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CC9169136D
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:37:07 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="DOOXnG/4";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264558-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264558-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="koEd8c/k";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264052-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264052-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 930D2303C99D
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:16:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 213A6312B7EB
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:31:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABCCD46AF10;
-	Tue, 16 Jun 2026 16:15:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BE9B43D513;
+	Tue, 16 Jun 2026 15:31:11 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AE4644CF37;
-	Tue, 16 Jun 2026 16:15:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FCD835E923;
+	Tue, 16 Jun 2026 15:31:09 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781626557; cv=none; b=IiHJ7NU1T/fA7oesRONCygbxsdTYoWrj63Qcn3gYT4FEdo+IaaJY6INIqh7C79HphTAhF7qlEkJq0vq/9QvfxU+c98IsF4lMhVc10g8Fo4HucPbfUHtxLdY4pYtwnY8TXVWhtUvKyGGLlCsXW6rn9DptyX9mzBpwYA3kuTqNmW4=
+	t=1781623871; cv=none; b=oLiArNJOd6etNoDG88YyqohhekJoh0lbd/+VUqIVrWce8XM1os5GLgWivJSvrbhauxqVYjw4ij8tcSfHP2LuO5kKVgdq1bneM+y1715gTvOrXiPe1rt/zQtrmohIh92Za+GyVAx7aiGqsj0aTOZDSyUSpqiC6KKg1cF8MhTOnEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781626557; c=relaxed/simple;
-	bh=lSziNGWMuy+bYZYJSMuKnv6h5ib/09CDTHkFlz8kT1o=;
+	s=arc-20240116; t=1781623871; c=relaxed/simple;
+	bh=9yAqH23JhJnuQFa9gkAddypDn+QFs1aT9CMuYB0/6xU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JOwsnKZAfu0S6JEu25y5z9asha0BcCSwMxQiElRrhBtI8fbE7p/s1K0rJ3WMfqm3kxjVVnjooOoblu+61FWg0UBuux/7+9i1M3jMr3zgb4iiTwta2OJOePzlr1qlqtkdzUTF1JYpgeQ4bYCTo9u6dxH9af9kRJDMVCEDSIywoNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DOOXnG/4; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 791F41F000E9;
-	Tue, 16 Jun 2026 16:15:55 +0000 (UTC)
+	 MIME-Version; b=moL5nVrePsyYIeyZyoIlLqE/YEjU+kDe6xfz8X+P5COCD8SEpmwlul8o7izP9tpTi90wzGGDwVvLNgV6Ou3SshHuuJmaMSEZJmOEACp7urA+bs7XYbyc9sruunTEbjdVHivCe0i0acUjFXQZGcXihhfHhQfV6hxWyxohh6TH/tc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=koEd8c/k; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E46BF1F000E9;
+	Tue, 16 Jun 2026 15:31:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781626556;
-	bh=THXdBMOrnDz+BqIDcT4drLssfWfOTH5No6/KYKZSaYU=;
+	s=korg; t=1781623869;
+	bh=oG6kBxq34mq4++jOQfgzVQ896XlOU6KeDzDkKRxYls8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=DOOXnG/4X1YxfbWnzkz4rSEVy6W97u/qGNC96gL7z6kgjBToP7DTo6zOf2Byev+00
-	 1CJ6Bo2dwFNahOLfB7y220s9RBfDR3MplrB1e4LGBDjWcrIxCxHjvcpebnyZJ+zEOm
-	 UxsI35cRLyvBwpivkeFapnby+lYYFmXRuQP7lZuI=
+	b=koEd8c/k6F5m88YxkGDr8QGC2GFT5yeEx1vxh1djemnpImefAsoLxGYS8wWJyZg7b
+	 zmt7bTrW8lOCirikKPoEY0X+kVheR5/WM2IitFZPceP974ELRZHRw+Yrrul/kwMfuP
+	 bg/H08IXOLsFnt/UzRoTA3Bu9eaz2NihFdePr95Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leo Lin <leo@depthfirst.com>,
-	David Ahern <dahern@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 010/261] ipv6: mcast: Fix use-after-free when processing MLD queries
+	Alex Hung <alex.hung@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Ray Wu <ray.wu@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 7.0 217/378] drm/amd/display: Reject gpio_bitshift >= 32 in bios_parser_get_gpio_pin_info()
 Date: Tue, 16 Jun 2026 20:27:28 +0530
-Message-ID: <20260616145045.502149634@linuxfoundation.org>
+Message-ID: <20260616145121.754848087@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
-References: <20260616145044.869532709@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,22 +73,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264558-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264052-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:leo@depthfirst.com,m:dahern@nvidia.com,m:idosch@nvidia.com,m:edumazet@google.com,m:jiayuan.chen@linux.dev,m:kuba@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:alex.hung@amd.com,m:harry.wentland@amd.com,m:ray.wu@amd.com,m:daniel.wheeler@amd.com,m:alexander.deucher@amd.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -98,114 +97,60 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,vger.kernel.org:from_smtp,msgid.link:url,linux.dev:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5EC14691E03
+X-Rspamd-Queue-Id: 6CC9169136D
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Harry Wentland <harry.wentland@amd.com>
 
-commit 791c91dc7a9dfb2457d5e29b8216a6484b9c4b40 upstream.
+commit 49c3da65961fe9857c831d47fa1989084e87514a upstream.
 
-When processing an MLD query, a pointer to the multicast group address
-is retrieved when initially parsing the packet. This pointer is later
-dereferenced without being reloaded despite the fact that the skb header
-might have been reallocated following the pskb_may_pull() calls, leading
-to a use-after-free [1].
+[Why & How]
+gpio_bitshift is a uint8_t read directly from the VBIOS GPIO pin table.
+If the value is >= 32, the expression "1 << gpio_bitshift" triggers
+undefined behaviour in C (shift count exceeds type width). On x86 the
+shift is silently masked to 5 bits, producing an incorrect GPIO mask
+that may cause wrong MMIO register bits to be toggled.
 
-Fix by copying the multicast group address when the packet is initially
-parsed.
+Validate gpio_bitshift before use and return BP_RESULT_BADBIOSTABLE for
+out-of-range values.
 
-[1]
-BUG: KASAN: slab-use-after-free in __mld_query_work (net/ipv6/mcast.c:1512)
-Read of size 8 at addr ffff8881154b8e90 by task kworker/4:1/118
-
-Workqueue: mld mld_query_work
-Call Trace:
-<TASK>
-dump_stack_lvl (lib/dump_stack.c:94 lib/dump_stack.c:120)
-print_address_description.constprop.0 (mm/kasan/report.c:378)
-print_report (mm/kasan/report.c:482)
-kasan_report (mm/kasan/report.c:595)
-__mld_query_work (net/ipv6/mcast.c:1512)
-mld_query_work (net/ipv6/mcast.c:1563)
-process_one_work (kernel/workqueue.c:3314)
-worker_thread (kernel/workqueue.c:3397 kernel/workqueue.c:3478)
-kthread (kernel/kthread.c:436)
-ret_from_fork (arch/x86/kernel/process.c:158)
-ret_from_fork_asm (arch/x86/entry/entry_64.S:245)
-</TASK>
-
-[...]
-
-Freed by task 118:
-kasan_save_stack (mm/kasan/common.c:57)
-kasan_save_track (mm/kasan/common.c:78)
-kasan_save_free_info (mm/kasan/generic.c:584)
-__kasan_slab_free (mm/kasan/common.c:253 mm/kasan/common.c:285)
-kfree (./include/linux/kasan.h:235 mm/slub.c:2689 mm/slub.c:6251 mm/slub.c:6566)
-pskb_expand_head (net/core/skbuff.c:2335)
-__pskb_pull_tail (net/core/skbuff.c:2878 (discriminator 4))
-__mld_query_work (net/ipv6/mcast.c:1495 (discriminator 1))
-mld_query_work (net/ipv6/mcast.c:1563)
-process_one_work (kernel/workqueue.c:3314)
-worker_thread (kernel/workqueue.c:3397 kernel/workqueue.c:3478)
-kthread (kernel/kthread.c:436)
-ret_from_fork (arch/x86/kernel/process.c:158)
-ret_from_fork_asm (arch/x86/entry/entry_64.S:245)
-
-Fixes: 97300b5fdfe2 ("[MCAST] IPv6: Check packet size when process Multicast")
-Reported-by: Leo Lin <leo@depthfirst.com>
-Reviewed-by: David Ahern <dahern@nvidia.com>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Link: https://patch.msgid.link/20260603101811.612594-1-idosch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: ae79c310b1a6 ("drm/amd/display: Add DCE12 bios parser support")
+Assisted-by: Copilot:claude-opus-4.6
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Ray Wu <ray.wu@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit eadf438ab8d370b9d19acee9359918c85afeb80d)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/mcast.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/net/ipv6/mcast.c
-+++ b/net/ipv6/mcast.c
-@@ -1393,9 +1393,9 @@ out:
- static void __mld_query_work(struct sk_buff *skb)
- {
- 	struct mld2_query *mlh2 = NULL;
--	const struct in6_addr *group;
- 	unsigned long max_delay;
- 	struct inet6_dev *idev;
-+	struct in6_addr group;
- 	struct ifmcaddr6 *ma;
- 	struct mld_msg *mld;
- 	int group_type;
-@@ -1427,8 +1427,8 @@ static void __mld_query_work(struct sk_b
- 		goto kfree_skb;
+--- a/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
++++ b/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
+@@ -700,8 +700,10 @@ static enum bp_result bios_parser_get_gp
+ 		info->offset_en = info->offset + 1;
+ 		info->offset_mask = info->offset - 1;
  
- 	mld = (struct mld_msg *)icmp6_hdr(skb);
--	group = &mld->mld_mca;
--	group_type = ipv6_addr_type(group);
-+	group = mld->mld_mca;
-+	group_type = ipv6_addr_type(&group);
- 
- 	if (group_type != IPV6_ADDR_ANY &&
- 	    !(group_type&IPV6_ADDR_MULTICAST))
-@@ -1478,7 +1478,7 @@ static void __mld_query_work(struct sk_b
- 		}
- 	} else {
- 		for_each_mc_mclock(idev, ma) {
--			if (!ipv6_addr_equal(group, &ma->mca_addr))
-+			if (!ipv6_addr_equal(&group, &ma->mca_addr))
- 				continue;
- 			if (ma->mca_flags & MAF_TIMER_RUNNING) {
- 				/* gsquery <- gsquery && mark */
+-		info->mask = (uint32_t) (1 <<
+-			header->gpio_pin[i].gpio_bitshift);
++		if (header->gpio_pin[i].gpio_bitshift >= 32)
++			return BP_RESULT_BADBIOSTABLE;
++
++		info->mask = 1u << header->gpio_pin[i].gpio_bitshift;
+ 		info->mask_y = info->mask + 2;
+ 		info->mask_en = info->mask + 1;
+ 		info->mask_mask = info->mask - 1;
 
 
 
