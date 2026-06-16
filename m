@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-266310-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265992-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id uuwYEKyaMWoZoAUAu9opvQ
-	(envelope-from <stable+bounces-266310-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:49:16 +0200
+	id GCExEzuUMWounQUAu9opvQ
+	(envelope-from <stable+bounces-265992-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:21:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFAC66947ED
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:49:15 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D759694104
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:21:46 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=E4EDam8p;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266310-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-266310-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Tt9sxVLg;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265992-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265992-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 69241303BED3
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:49:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 82E33317C7CF
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:21:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC39243D4E8;
-	Tue, 16 Jun 2026 18:49:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D806C46AEFC;
+	Tue, 16 Jun 2026 18:21:30 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8311E3CFF55;
-	Tue, 16 Jun 2026 18:49:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD730466B5D;
+	Tue, 16 Jun 2026 18:21:29 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781635753; cv=none; b=gHVcgVoi/1Q/D+2wamS3/ytfkAizU70Qnw3M2c50xtei7vO1Deb6Q6OAJqTXgUl9yL3ugN+JaJg3sZ39fsjZLhP+GATB0j7WTVSbw2WT5E9V0gjc2ImCf1WOq4zfvJ0A67ojEkGacRc6tdSufGr13aXM4vGmSNm1jdQongJZmNA=
+	t=1781634090; cv=none; b=jxclCv8ysySUBvRwhoXmD10bvsAAb/4h15Gsd/7HmNHc1W5kgOjzkajL9+hu75oDahRfrv8BIubFIFs8FBtZHBg35391AVFXsmx1GlBBtRoCyzGmIKHAwKdC4msCfnhz3nYoKLobA0Z+5bfjza5YzmAtlYkMB/Yfa+nzxaINuSc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781635753; c=relaxed/simple;
-	bh=eaOH1dtJ8W803KgwKSgt1CdliQAnWe95OtzfQ7MkB7o=;
+	s=arc-20240116; t=1781634090; c=relaxed/simple;
+	bh=UFW123sAkX8D8mLv4T26/RK6RVov0pMrSppoV7wWf2o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gi1eSycKpWU96pTkSYTpzm3EqNMhby7HXEg3OoJJSCLIhRuyimjErLk/iyYXXw/RfqdHY5xQYhRbMOjt14QZ1MvhVNl2cdj1+3UgeiLKUo2TRvCvOERalhspD0WpcMuSncrYx6IhHgYF5MMEwostvn36eLS026SycrHDRjs9YLY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E4EDam8p; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 859E71F000E9;
-	Tue, 16 Jun 2026 18:49:11 +0000 (UTC)
+	 MIME-Version; b=Dq9GPafGwaIKmDRnFm6Ajt6JRPyfPoFCYHDHNev4DU0+K5bGjD4XgNFSTqbnONVdZ4WefnWXZkvFwj/OsYcUcLfZAWFfWfgxNQ+h1lMA8dL37euAPhsLa7ZgUrJMNcNiJPiVxIPGW5lNcCNTqOxHFw4Z8U3aEzi0guM4YKe7OF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tt9sxVLg; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A023A1F000E9;
+	Tue, 16 Jun 2026 18:21:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781635752;
-	bh=ToKQjgsBB8ER0c0LO+yACi7r1F0SXCkHKGIF9qSp13Q=;
+	s=korg; t=1781634089;
+	bh=djkMczJou+fvfkQ6/y1SL4gEa4gYkC5XYTBmO2egKyg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=E4EDam8pkCFn17/5USaXSuKlDf0KzvUixRBJ9sO+c48e6RA9VvOfYghPqnTz674qn
-	 dbfDxoGZZt1Bxy0BxlFmWqM7QiwBrbe2XTYFLHfOPOcRgVf0aNCuCz7yNk+pl72WKH
-	 pPVbS0HZmmauQL8xWHKe0vyrzEnAS2uA5ukhVvxs=
+	b=Tt9sxVLgygiLTutDHKD0MaTRPWyGViegw5bvxJfodmGsw9OOS/VZf+Nokv8YMHP7P
+	 03q7uHxyBTnH9vrU25OXgyWby49bq0v8OPe0a4n0hEqGPY2TY+uA8VAH93QtrIYMk7
+	 NM4neCdPgLONDGsNZp2+O4YlbvW/jmDKlELzwLVY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Hannes Reinecke <hare@kernel.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 5.10 108/342] scsi: fcoe: Reject FIP descriptors with zero fip_dlen in CVL walker
-Date: Tue, 16 Jun 2026 20:26:44 +0530
-Message-ID: <20260616145053.256934948@linuxfoundation.org>
+	syzbot+535ecc844591e50588a5@syzkaller.appspotmail.com,
+	Bharath Reddy <kbreddy.rpbc@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 167/411] Bluetooth: fix memory leak in error path of hci_alloc_dev()
+Date: Tue, 16 Jun 2026 20:26:45 +0530
+Message-ID: <20260616145109.477970021@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,90 +73,95 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,intel.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-265992-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266310-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:hare@kernel.org,m:martin.petersen@oracle.com,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:syzbot+535ecc844591e50588a5@syzkaller.appspotmail.com,m:kbreddy.rpbc@gmail.com,m:luiz.von.dentz@intel.com,m:sashal@kernel.org,m:syzbot@syzkaller.appspotmail.com,m:kbreddyrpbc@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,oracle.com];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,oracle.com:email]
+	TAGGED_RCPT(0.00)[stable,535ecc844591e50588a5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,appspotmail.com:email,intel.com:email,syzkaller.appspot.com:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: EFAC66947ED
+X-Rspamd-Queue-Id: 8D759694104
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Bharath Reddy <kbreddy.rpbc@gmail.com>
 
-commit 9eed1bd59937e6828b00d2f2dfef631d964f3636 upstream.
+[ Upstream commit 37b3009bf5976e8ab77c8b9a9bc3bbd7ff49e37f ]
 
-drivers/scsi/fcoe/fcoe_ctlr.c::fcoe_ctlr_recv_clr_vlink() advanced the
-descriptor cursor by an attacker-supplied fip_dlen without ever
-requiring dlen >= sizeof(struct fip_desc) in the default branch.  The
-named descriptor cases (FIP_DT_MAC, FIP_DT_NAME, FIP_DT_VN_ID) checked
-their per-type minimum lengths, but a FIP_DT_NON_CRITICAL descriptor
-(fip_dtype >= 128, which the standard requires receivers to silently
-ignore) skipped that check entirely.
+Early failures in Bluetooth HCI UART configuration leak SRCU percpu
+memory.
 
-An unauthenticated L2 peer on the FCoE control VLAN could hang
-fcoe_ctlr_recv_work on an fcoe, qedf, or bnx2fc initiator indefinitely
-by emitting one FIP CVL frame whose single descriptor had fip_dtype ==
-FIP_DT_NON_CRITICAL and fip_dlen == 0: the cursor advanced zero bytes
-per iteration and the loop condition rlen >= sizeof(*desc) stayed true
-forever, blocking every subsequent FIP frame on that controller.
+When device initialization fails before hci_register_dev() completes,
+the HCI_UNREGISTER flag is never set. As a result, when the device
+reference count reaches zero, bt_host_release() evaluates this flag as
+false and falls back to a direct kfree(hdev).
 
-Tighten the outer dlen guard to also reject dlen < sizeof(struct
-fip_desc), so a malformed descriptor whose length cannot even cover the
-descriptor header is rejected before the switch.  This is the same
-lower-bound the named cases already apply and is the minimum scope that
-closes the loop.
+Because hci_release_dev() is bypassed, the SRCU struct initialized
+early in hci_alloc_dev() is never cleaned up, resulting in a leak of
+percpu memory.
 
-Fixes: 97c8389d54b9 ("[SCSI] fcoe, libfcoe: Add support for FIP. FCoE discovery and keep-alive.")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-7
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Reviewed-by: Hannes Reinecke <hare@kernel.org>
-Link: https://patch.msgid.link/20260518144307.2820961-1-michael.bommarito@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix the leak by explicitly calling cleanup_srcu_struct() in the
+fallback (unregistered) branch of bt_host_release() before freeing
+the device.
+
+Reported-by: syzbot+535ecc844591e50588a5@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=535ecc844591e50588a5
+Tested-by: syzbot+535ecc844591e50588a5@syzkaller.appspotmail.com
+Fixes: 1d6123102e9f ("Bluetooth: hci_core: Fix use-after-free in vhci_flush()")
+Signed-off-by: Bharath Reddy <kbreddy.rpbc@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/fcoe/fcoe_ctlr.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/bluetooth/hci_sysfs.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/scsi/fcoe/fcoe_ctlr.c
-+++ b/drivers/scsi/fcoe/fcoe_ctlr.c
-@@ -1391,7 +1391,7 @@ static void fcoe_ctlr_recv_clr_vlink(str
+diff --git a/net/bluetooth/hci_sysfs.c b/net/bluetooth/hci_sysfs.c
+index cc7d4a8ed8ce24..b1886e517a78bc 100644
+--- a/net/bluetooth/hci_sysfs.c
++++ b/net/bluetooth/hci_sysfs.c
+@@ -81,10 +81,12 @@ static void bt_host_release(struct device *dev)
+ {
+ 	struct hci_dev *hdev = to_hci_dev(dev);
  
- 	while (rlen >= sizeof(*desc)) {
- 		dlen = desc->fip_dlen * FIP_BPW;
--		if (dlen > rlen)
-+		if (dlen < sizeof(*desc) || dlen > rlen)
- 			goto err;
- 		/* Drop CVL if there are duplicate critical descriptors */
- 		if ((desc->fip_dtype < 32) &&
+-	if (hci_dev_test_flag(hdev, HCI_UNREGISTER))
++	if (hci_dev_test_flag(hdev, HCI_UNREGISTER)) {
+ 		hci_release_dev(hdev);
+-	else
++	} else {
++		cleanup_srcu_struct(&hdev->srcu);
+ 		kfree(hdev);
++	}
+ 	module_put(THIS_MODULE);
+ }
+ 
+-- 
+2.53.0
+
 
 
 
