@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-265857-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265420-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Al6jMWORMWq5mwUAu9opvQ
-	(envelope-from <stable+bounces-265857-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:09:39 +0200
+	id YoUpBseJMWohmAUAu9opvQ
+	(envelope-from <stable+bounces-265420-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:37:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 655F6693D89
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:09:39 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EF2F69350F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:37:10 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=UaqXRy2S;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265857-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265857-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Dq99FJFc;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265420-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265420-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E8C753036092
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:09:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B6213310EFCC
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:31:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDD8B3D45D0;
-	Tue, 16 Jun 2026 18:09:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 353EA47A0DA;
+	Tue, 16 Jun 2026 17:31:51 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF82F3D45CB;
-	Tue, 16 Jun 2026 18:09:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10802478E41;
+	Tue, 16 Jun 2026 17:31:49 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781633373; cv=none; b=JdXuRdIUkkKH9aefNViq2M0c2Nd/pnRc94Ik7U8/ZiymGUYfucAihx0bGirq3mZWLEffocXvC3auFcRrozqYs9P90aUb+n/5UYb22TPZDrJ0Hf8Duc6DI8wxWHowUe6IsylkBgz2MNDcULSZYNGSFVBriI+CpVBV/s0J/IELMMk=
+	t=1781631111; cv=none; b=rTGHqQLLisOgxruT9z6s3J7N5tMSpIR3hMlSWjnvCJ0WhCDLXUqBnuydyOYFjGBDLWSqgPpPAt8nFo9yEXk2h0Y+k7flmxdCgjvmVeTrIdIiAnO4JQO0FCq+rdhuOPMOoI74NuOTNoTDm91r/bfDXs2sgHac8Bwn7dpMFK63AyY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781633373; c=relaxed/simple;
-	bh=SNCt+cBrJXgkvIJ0lpE3oVsqGWRhknvYHSc9vl8Yb4Q=;
+	s=arc-20240116; t=1781631111; c=relaxed/simple;
+	bh=ubisNW+mGIjO1ECwq4cStsE+b5D/0iDX6jo+RwJ65eU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bpVKJD7/p5a0U1MuuKIS91e6VHLdFGqVFd1tfEOynLS1Y8vTcwUtgy1sMrhHEZ1LW1IsSIpKoXphEPXJHBydjb6MfcyPLJQMgbZiESD/6GcuTuC/0wC5fztpTuP/4i4xk74oOFGFw6tbhCwbODkuytybpYkZffeSDcGVN1zf2ig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UaqXRy2S; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 978261F000E9;
-	Tue, 16 Jun 2026 18:09:31 +0000 (UTC)
+	 MIME-Version; b=rQ60PNLvQmYiHLUkfGvD7fw7b26mu08i2kZBcY6sVqizoNlr/I9rX/b7JnAd8ACjt8mMNPI88q13/vYM9lojwKCY7n7aHtNFpXNRP1ot0Syqw7qzMhLhWhpIo1JZjL8K4cPa3CR9vCjVLgVOBEtwdIhWglhhv5+nuDT+4Cch9kA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dq99FJFc; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6A641F000E9;
+	Tue, 16 Jun 2026 17:31:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781633372;
-	bh=cue1zg8pZ0opkEoayGgHbI6zLuVP5Zf+d6D3b47lOEk=;
+	s=korg; t=1781631109;
+	bh=Hmlo8Y05tMrt61lO7R7j7yY9iawLSm/MNF/K6SvGDho=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=UaqXRy2SPQFxftFuH+cOUkyDBkgmy6fG4jcgOwdDYIJAUIMniHYZlo7jEajlBY11z
-	 cBx6LubW4ibkDj0/Bf5bIO8y5atCnKAdWi5TvOTt5pjVCJU0Nj/e5JENjJc8ha6kaz
-	 OR5DvT+mg3rIXgPQ//BfIbjRet61XJj42/pczX1s=
+	b=Dq99FJFcJnkQ6qhC42tceW3EN2w77mBycUcctKMXn9FpDlDWeykBxEmMOEZqa3BkU
+	 M0ewOJXqqi+pfWPX/j1whOI1NqdPdB3DmCzrzZhv3Fmledmk1HxRlQ4u6OZmJ1bWfd
+	 xrj2EpxjOS6EVwEaIs3VIu/kxNX2QcblkIiTjIOU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	stable <stable@kernel.org>,
-	Ben Hutchings <benh@debian.org>,
-	Sudip Mukherjee <sudipm.mukherjee@gmail.com>
-Subject: [PATCH 5.15 067/411] parport: Fix race between port and client registration
+	Alan Stern <stern@rowland.harvard.edu>,
+	Seungjin Bae <eeodqql09@gmail.com>
+Subject: [PATCH 6.1 158/522] usb: gadget: dummy_hcd: Reject hub port requests for non-existent ports
 Date: Tue, 16 Jun 2026 20:25:05 +0530
-Message-ID: <20260616145103.845505561@linuxfoundation.org>
+Message-ID: <20260616145133.504037019@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,28 +67,27 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265857-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:benh@debian.org,m:sudipm.mukherjee@gmail.com,m:sudipmmukherjee@gmail.com,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,debian.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-265420-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:stern@rowland.harvard.edu,m:eeodqql09@gmail.com,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,rowland.harvard.edu,gmail.com];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -96,122 +95,63 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,harvard.edu:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 655F6693D89
+X-Rspamd-Queue-Id: 8EF2F69350F
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ben Hutchings <benh@debian.org>
+From: Seungjin Bae <eeodqql09@gmail.com>
 
-commit ef15ccbb3e8640a723c42ad90eaf81d66ae02017 upstream.
+commit 7d9633528dd40e33964d2dc74a5abbf5c4d116ce upstream.
 
-The parport subsystem registers port devices before they are fully
-initialised, resulting in a race condition where client drivers such
-as lp can attach to ports that are not completely initialised or even
-being torn down.
+The `dummy_hub_control()` function handles USB hub class requests
+to the virtual root hub. The `GetPortStatus` case returns -EPIPE for
+requests with `wIndex != 1`, since the virtual root hub has only a
+single port. However, the `ClearPortFeature` and `SetPortFeature`
+cases lack the same check.
 
-When the port and client drivers are built as modules and loaded
-around the same time during boot, this occasionally results in a
-crash.  I was able to make this happen reliably in a VM with a
-PC-style parallel port by patching parport_pc to fail probing:
+Fix this by extending the `wIndex != 1` rejection to both cases,
+matching the existing behavior of `GetPortStatus`.
 
-> --- a/drivers/parport/parport_pc.c
-> +++ b/drivers/parport/parport_pc.c
-> @@ -2069,7 +2069,7 @@ static struct parport *__parport_pc_probe_port(unsigned long int base,
->  	if (!p)
->  		goto out3;
->
-> -	base_res = request_region(base, 3, p->name);
-> +	base_res = NULL;
->  	if (!base_res)
->  		goto out4;
->
-
-and then running:
-
-    while true; do
-        modprobe lp & modprobe parport_pc
-	wait
-	rmmod lp parport_pc
-    done
-
-for a few seconds.
-
-In the long term I think port registration should be changed to put
-the call to device_add() inside parport_announce_port(), but since the
-latter currently cannot fail this will require changing all port
-drivers.
-
-For now, add a flag to indicate whether a port has been "announced"
-and only try to attach client drivers to ports when the flag is set.
-
-Fixes: 6fa45a226897 ("parport: add device-model to parport subsystem")
-Closes: https://bugs.debian.org/1130365
-Closes: https://lore.kernel.org/all/6ba903ad-9897-42bb-8c2d-337385cc3746@molgen.mpg.de/
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Cc: stable <stable@kernel.org>
-Signed-off-by: Ben Hutchings <benh@debian.org>
-Acked-by: Sudip Mukherjee <sudipm.mukherjee@gmail.com>
-Link: https://patch.msgid.link/afo6uBv68GDevbMD@decadent.org.uk
+Suggested-by: Alan Stern <stern@rowland.harvard.edu>
+Signed-off-by: Seungjin Bae <eeodqql09@gmail.com>
+Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://patch.msgid.link/20260518234314.1889396-1-eeodqql09@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/parport/share.c |   11 +++++++++--
- include/linux/parport.h |    1 +
- 2 files changed, 10 insertions(+), 2 deletions(-)
+ drivers/usb/gadget/udc/dummy_hcd.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/parport/share.c
-+++ b/drivers/parport/share.c
-@@ -223,10 +223,14 @@ static void get_lowlevel_driver(void)
- static int port_check(struct device *dev, void *dev_drv)
- {
- 	struct parport_driver *drv = dev_drv;
-+	struct parport *port;
- 
- 	/* only send ports, do not send other devices connected to bus */
--	if (is_parport(dev))
--		drv->match_port(to_parport_dev(dev));
-+	if (is_parport(dev)) {
-+		port = to_parport_dev(dev);
-+		if (test_bit(PARPORT_ANNOUNCED, &port->devflags))
-+			drv->match_port(port);
-+	}
- 	return 0;
- }
- 
-@@ -553,6 +557,7 @@ void parport_announce_port(struct parpor
- 		if (slave)
- 			attach_driver_chain(slave);
- 	}
-+	set_bit(PARPORT_ANNOUNCED, &port->devflags);
- 	mutex_unlock(&registration_lock);
- }
- EXPORT_SYMBOL(parport_announce_port);
-@@ -582,6 +587,8 @@ void parport_remove_port(struct parport
- 
- 	mutex_lock(&registration_lock);
- 
-+	clear_bit(PARPORT_ANNOUNCED, &port->devflags);
-+
- 	/* Spread the word. */
- 	detach_driver_chain(port);
- 
---- a/include/linux/parport.h
-+++ b/include/linux/parport.h
-@@ -245,6 +245,7 @@ struct parport {
- 
- 	unsigned long devflags;
- #define PARPORT_DEVPROC_REGISTERED	0
-+#define PARPORT_ANNOUNCED		1
- 	struct pardevice *proc_device;	/* Currently register proc device */
- 
- 	struct list_head full_list;
+--- a/drivers/usb/gadget/udc/dummy_hcd.c
++++ b/drivers/usb/gadget/udc/dummy_hcd.c
+@@ -2133,6 +2133,8 @@ static int dummy_hub_control(
+ 	case ClearHubFeature:
+ 		break;
+ 	case ClearPortFeature:
++		if (wIndex != 1)
++			goto error;
+ 		switch (wValue) {
+ 		case USB_PORT_FEAT_SUSPEND:
+ 			if (hcd->speed == HCD_USB3) {
+@@ -2247,6 +2249,8 @@ static int dummy_hub_control(
+ 		retval = -EPIPE;
+ 		break;
+ 	case SetPortFeature:
++		if (wIndex != 1)
++			goto error;
+ 		switch (wValue) {
+ 		case USB_PORT_FEAT_LINK_STATE:
+ 			if (hcd->speed != HCD_USB3) {
 
 
 
