@@ -1,63 +1,61 @@
-Return-Path: <stable+bounces-265837-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264852-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id OMthD/qQMWqSmwUAu9opvQ
-	(envelope-from <stable+bounces-265837-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:07:54 +0200
+	id Q/IPCmx9MWrXkgUAu9opvQ
+	(envelope-from <stable+bounces-264852-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:44:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D293693D27
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:07:53 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC10E692681
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:44:27 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=i0+wcGUO;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265837-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265837-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=H9lVrzp7;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264852-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-264852-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0F97F3141F6B
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:07:51 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 67B8E30345E6
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:43:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89E0D3D525E;
-	Tue, 16 Jun 2026 18:07:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED85D45BD6F;
+	Tue, 16 Jun 2026 16:43:48 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABF972F12AE;
-	Tue, 16 Jun 2026 18:07:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D11813777E;
+	Tue, 16 Jun 2026 16:43:47 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781633270; cv=none; b=hyoa2GU92r9Zk4YQ0x9hYC3kWAboqdYWhYn6DiWiCU4lIj+Ch6STufIxC4fhUUxqW63sYFRRRnDt/fOuhOmO/FhA7J1U2XkzHQ03uA5UlPqAivhQlVonhsGPDaCPT9xKrjrMvwUM25+hlQp7JDhcpinvhWoTwHy4Zog9o6ENQ6A=
+	t=1781628228; cv=none; b=ofo4VA/7CRDt0QgJVE2q4GBRajespC7R4NJtTnWUJMH4f673ADYBeSQ3Uty73KAQMKQxsxBIfdTbrvw1wkdYL7QAYWpJdF6hHBg6+M0eQvO86P00VAKi2p+z8UgC0PIf74e7q5iddjGgaufsiq61khYbqXKsIyEu2Q1SWEGWKuo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781633270; c=relaxed/simple;
-	bh=Vzab/oHcckDVULrZkIDls+deQBuaFlBl61domnfZmb4=;
+	s=arc-20240116; t=1781628228; c=relaxed/simple;
+	bh=d2bzyVSG2B4I5kmN7jtc4X+STVGEJ4w5v7UhSA/emGw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ELOK5Q5PytUfRrscgi/h+jGBOf6PfSMX5VPFF9Gfkzq5kbSivreAPkAU3Sppiclcq+BcuDnPZ+k02BDlUdCLi1CZyHPTB6WqBmI/LV4yrYbFivHgPiemIscvYwicChaS46iUNE2MrmQwBoxM6qtZU0vnxo8G0vt24D4x7yqwpH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i0+wcGUO; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9451D1F000E9;
-	Tue, 16 Jun 2026 18:07:47 +0000 (UTC)
+	 MIME-Version; b=qPOqS9+q3WaeyYMMeSsxCNvSboRekbPl/UYn29kfCJWcJVaBNBGdYwJ0qxr6rl/G01PUGkBNIAPyvM/gqRMyiJ45UHXOyFGRulvXUWPimARUdbjyGFxY+dvsQBDG9Sg9qcyrlNUrVbeWHjDvUwx+isiwHgy0dmGK86WC7/4+7Zc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H9lVrzp7; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9424A1F000E9;
+	Tue, 16 Jun 2026 16:43:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781633268;
-	bh=gLk9sHLt18IUVHAX2M/nNWGN7XrEcy0qwLgeTU+/2n8=;
+	s=korg; t=1781628227;
+	bh=6NKboUbeYnqlzDbJnDaW4LBDPtav4v0OkhxKrJ4Ep8k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=i0+wcGUOMzAVfjyd8Z1fXW0qwYmMwHJrFyxdQ3bdZQBbfsY8B2IymUl4sNAZRPENt
-	 UopbkC0FKtPRjOmAnrJJA/OLGoW1twTyf5VbhHo5b9fwXuSiiWBaqaGWV1JKYoj8jM
-	 neMEIxUCnTbkCt34l/KvPTQeXXJa4DzQZSlNSN60=
+	b=H9lVrzp7+FUmdeYUL9z4lR0wCO/3/tJcNnD+pMm8QTTnFpfoF470gYxFiUqcvRSoZ
+	 MXDFqhcNtv8Mcy0mfpVVjc6CVOLaueFmF3NuDDimrfw0FM3Bh2oFPmTv723OebAWz2
+	 WZCkYwYpvvO4yNVG1uz/CAR4kJ1AxAZAGV98QcL4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arend van Spriel <arend.vanspriel@broadcom.com>,
-	Duoming Zhou <duoming@zju.edu.cn>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Robert Garcia <rob_garcia@163.com>,
+	stable@kernel.org,
+	Sven Eckelmann <sven@narfation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 045/411] wifi: brcmfmac: fix use-after-free when rescheduling brcmf_btcoex_info work
+Subject: [PATCH 6.6 056/452] batman-adv: tp_meter: avoid role confusion in tp_list
 Date: Tue, 16 Jun 2026 20:24:43 +0530
-Message-ID: <20260616145102.682627807@linuxfoundation.org>
+Message-ID: <20260616145120.912078755@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,143 +65,235 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,broadcom.com,zju.edu.cn,intel.com,163.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-265837-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:arend.vanspriel@broadcom.com,m:duoming@zju.edu.cn,m:johannes.berg@intel.com,m:rob_garcia@163.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264852-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:sven@narfation.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	TAGGED_RCPT(0.00)[stable];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[broadcom.com:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,intel.com:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,narfation.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8D293693D27
+X-Rspamd-Queue-Id: DC10E692681
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Duoming Zhou <duoming@zju.edu.cn>
+From: Sven Eckelmann <sven@narfation.org>
 
-[ Upstream commit 9cb83d4be0b9b697eae93d321e0da999f9cdfcfc ]
+commit ff24f2ecfd94c07a2b89bac497433e3b23271cac upstream.
 
-The brcmf_btcoex_detach() only shuts down the btcoex timer, if the
-flag timer_on is false. However, the brcmf_btcoex_timerfunc(), which
-runs as timer handler, sets timer_on to false. This creates critical
-race conditions:
+Session lookups in tp_list matched only on destination address (and
+optionally session ID), leaving role validation to the caller. If two
+sessions with the same other_end coexisted (one as sender, one as receiver)
+a lookup could silently return the wrong one, causing the caller's role to
+bail out early, potentially skipping necessary cleanup.
 
-1.If brcmf_btcoex_detach() is called while brcmf_btcoex_timerfunc()
-is executing, it may observe timer_on as false and skip the call to
-timer_shutdown_sync().
+Move the role check into the lookup functions themselves so the correct
+entry is always returned, or none at all. Since batadv_tp_start()
+legitimately needs to detect any active session to a destination regardless
+of role, introduce a dedicated helper for that case rather than bending the
+existing lookup semantics.
 
-2.The brcmf_btcoex_timerfunc() may then reschedule the brcmf_btcoex_info
-worker after the cancel_work_sync() has been executed, resulting in
-use-after-free bugs.
-
-The use-after-free bugs occur in two distinct scenarios, depending on
-the timing of when the brcmf_btcoex_info struct is freed relative to
-the execution of its worker thread.
-
-Scenario 1: Freed before the worker is scheduled
-
-The brcmf_btcoex_info is deallocated before the worker is scheduled.
-A race condition can occur when schedule_work(&bt_local->work) is
-called after the target memory has been freed. The sequence of events
-is detailed below:
-
-CPU0                           | CPU1
-brcmf_btcoex_detach            | brcmf_btcoex_timerfunc
-                               |   bt_local->timer_on = false;
-  if (cfg->btcoex->timer_on)   |
-    ...                        |
-  cancel_work_sync();          |
-  ...                          |
-  kfree(cfg->btcoex); // FREE  |
-                               |   schedule_work(&bt_local->work); // USE
-
-Scenario 2: Freed after the worker is scheduled
-
-The brcmf_btcoex_info is freed after the worker has been scheduled
-but before or during its execution. In this case, statements within
-the brcmf_btcoex_handler() — such as the container_of macro and
-subsequent dereferences of the brcmf_btcoex_info object will cause
-a use-after-free access. The following timeline illustrates this
-scenario:
-
-CPU0                            | CPU1
-brcmf_btcoex_detach             | brcmf_btcoex_timerfunc
-                                |   bt_local->timer_on = false;
-  if (cfg->btcoex->timer_on)    |
-    ...                         |
-  cancel_work_sync();           |
-  ...                           |   schedule_work(); // Reschedule
-                                |
-  kfree(cfg->btcoex); // FREE   |   brcmf_btcoex_handler() // Worker
-  /*                            |     btci = container_of(....); // USE
-   The kfree() above could      |     ...
-   also occur at any point      |     btci-> // USE
-   during the worker's execution|
-   */                           |
-
-To resolve the race conditions, drop the conditional check and call
-timer_shutdown_sync() directly. It can deactivate the timer reliably,
-regardless of its current state. Once stopped, the timer_on state is
-then set to false.
-
-Fixes: 61730d4dfffc ("brcmfmac: support critical protocol API for DHCP")
-Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
-Link: https://patch.msgid.link/20250822050839.4413-1-duoming@zju.edu.cn
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Robert Garcia <rob_garcia@163.com>
+Cc: stable@kernel.org
+Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/btcoex.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ net/batman-adv/tp_meter.c | 59 ++++++++++++++++++++++++---------------
+ 1 file changed, 36 insertions(+), 23 deletions(-)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/btcoex.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/btcoex.c
-index f9f18ff451ea7c..f46e4090021777 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/btcoex.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/btcoex.c
-@@ -392,10 +392,8 @@ void brcmf_btcoex_detach(struct brcmf_cfg80211_info *cfg)
- 	if (!cfg->btcoex)
+diff --git a/net/batman-adv/tp_meter.c b/net/batman-adv/tp_meter.c
+index 04a83d6be45bc0..bc3dc377f0bfd0 100644
+--- a/net/batman-adv/tp_meter.c
++++ b/net/batman-adv/tp_meter.c
+@@ -255,6 +255,7 @@ static void batadv_tp_batctl_error_notify(enum batadv_tp_meter_reason reason,
+  * batadv_tp_list_find() - find a tp_vars object in the global list
+  * @bat_priv: the bat priv with all the soft interface information
+  * @dst: the other endpoint MAC address to look for
++ * @role: role of the session
+  *
+  * Look for a tp_vars object matching dst as end_point and return it after
+  * having increment the refcounter. Return NULL is not found
+@@ -262,7 +263,8 @@ static void batadv_tp_batctl_error_notify(enum batadv_tp_meter_reason reason,
+  * Return: matching tp_vars or NULL when no tp_vars with @dst was found
+  */
+ static struct batadv_tp_vars *batadv_tp_list_find(struct batadv_priv *bat_priv,
+-						  const u8 *dst)
++						  const u8 *dst,
++						  enum batadv_tp_meter_role role)
+ {
+ 	struct batadv_tp_vars *pos, *tp_vars = NULL;
+ 
+@@ -271,6 +273,9 @@ static struct batadv_tp_vars *batadv_tp_list_find(struct batadv_priv *bat_priv,
+ 		if (!batadv_compare_eth(pos->other_end, dst))
+ 			continue;
+ 
++		if (pos->role != role)
++			continue;
++
+ 		/* most of the time this function is invoked during the normal
+ 		 * process..it makes sens to pay more when the session is
+ 		 * finished and to speed the process up during the measurement
+@@ -286,12 +291,33 @@ static struct batadv_tp_vars *batadv_tp_list_find(struct batadv_priv *bat_priv,
+ 	return tp_vars;
+ }
+ 
++/**
++ * batadv_tp_list_active() - check if session from/to destination is ongoing
++ * @bat_priv: the bat priv with all the mesh interface information
++ * @dst: the other endpoint MAC address to look for
++ *
++ * Return: if matching session with @dst was found
++ */
++static bool batadv_tp_list_active(struct batadv_priv *bat_priv, const u8 *dst)
++	__must_hold(&bat_priv->tp_list_lock)
++{
++	struct batadv_tp_vars *tp_vars;
++
++	hlist_for_each_entry_rcu(tp_vars, &bat_priv->tp_list, list) {
++		if (batadv_compare_eth(tp_vars->other_end, dst))
++			return true;
++	}
++
++	return false;
++}
++
+ /**
+  * batadv_tp_list_find_session() - find tp_vars session object in the global
+  *  list
+  * @bat_priv: the bat priv with all the soft interface information
+  * @dst: the other endpoint MAC address to look for
+  * @session: session identifier
++ * @role: role of the session
+  *
+  * Look for a tp_vars object matching dst as end_point, session as tp meter
+  * session and return it after having increment the refcounter. Return NULL
+@@ -301,7 +327,7 @@ static struct batadv_tp_vars *batadv_tp_list_find(struct batadv_priv *bat_priv,
+  */
+ static struct batadv_tp_vars *
+ batadv_tp_list_find_session(struct batadv_priv *bat_priv, const u8 *dst,
+-			    const u8 *session)
++			    const u8 *session, enum batadv_tp_meter_role role)
+ {
+ 	struct batadv_tp_vars *pos, *tp_vars = NULL;
+ 
+@@ -313,6 +339,9 @@ batadv_tp_list_find_session(struct batadv_priv *bat_priv, const u8 *dst,
+ 		if (memcmp(pos->session, session, sizeof(pos->session)) != 0)
+ 			continue;
+ 
++		if (pos->role != role)
++			continue;
++
+ 		/* most of the time this function is invoked during the normal
+ 		 * process..it makes sense to pay more when the session is
+ 		 * finished and to speed the process up during the measurement
+@@ -671,13 +700,10 @@ static void batadv_tp_recv_ack(struct batadv_priv *bat_priv,
+ 
+ 	/* find the tp_vars */
+ 	tp_vars = batadv_tp_list_find_session(bat_priv, icmp->orig,
+-					      icmp->session);
++					      icmp->session, BATADV_TP_SENDER);
+ 	if (unlikely(!tp_vars))
  		return;
  
--	if (cfg->btcoex->timer_on) {
--		cfg->btcoex->timer_on = false;
--		del_timer_sync(&cfg->btcoex->timer);
+-	if (unlikely(tp_vars->role != BATADV_TP_SENDER))
+-		goto out;
+-
+ 	if (unlikely(batadv_tp_sender_stopped(tp_vars)))
+ 		goto out;
+ 
+@@ -986,10 +1012,8 @@ void batadv_tp_start(struct batadv_priv *bat_priv, const u8 *dst,
+ 		return;
+ 	}
+ 
+-	tp_vars = batadv_tp_list_find(bat_priv, dst);
+-	if (tp_vars) {
++	if (batadv_tp_list_active(bat_priv, dst)) {
+ 		spin_unlock_bh(&bat_priv->tp_list_lock);
+-		batadv_tp_vars_put(tp_vars);
+ 		batadv_dbg(BATADV_DBG_TP_METER, bat_priv,
+ 			   "Meter: test to or from the same node already ongoing, aborting\n");
+ 		batadv_tp_batctl_error_notify(BATADV_TP_REASON_ALREADY_ONGOING,
+@@ -1110,18 +1134,14 @@ void batadv_tp_stop(struct batadv_priv *bat_priv, const u8 *dst,
+ 	if (!orig_node)
+ 		return;
+ 
+-	tp_vars = batadv_tp_list_find(bat_priv, orig_node->orig);
++	tp_vars = batadv_tp_list_find(bat_priv, orig_node->orig, BATADV_TP_SENDER);
+ 	if (!tp_vars) {
+ 		batadv_dbg(BATADV_DBG_TP_METER, bat_priv,
+ 			   "Meter: trying to interrupt an already over connection\n");
+ 		goto out_put_orig_node;
+ 	}
+ 
+-	if (unlikely(tp_vars->role != BATADV_TP_SENDER))
+-		goto out_put_tp_vars;
+-
+ 	batadv_tp_sender_shutdown(tp_vars, return_value);
+-out_put_tp_vars:
+ 	batadv_tp_vars_put(tp_vars);
+ out_put_orig_node:
+ 	batadv_orig_node_put(orig_node);
+@@ -1377,7 +1397,7 @@ batadv_tp_init_recv(struct batadv_priv *bat_priv,
+ 		goto out_unlock;
+ 
+ 	tp_vars = batadv_tp_list_find_session(bat_priv, icmp->orig,
+-					      icmp->session);
++					      icmp->session, BATADV_TP_RECEIVER);
+ 	if (tp_vars)
+ 		goto out_unlock;
+ 
+@@ -1448,7 +1468,7 @@ static void batadv_tp_recv_msg(struct batadv_priv *bat_priv,
+ 		}
+ 	} else {
+ 		tp_vars = batadv_tp_list_find_session(bat_priv, icmp->orig,
+-						      icmp->session);
++						      icmp->session, BATADV_TP_RECEIVER);
+ 		if (!tp_vars) {
+ 			batadv_dbg(BATADV_DBG_TP_METER, bat_priv,
+ 				   "Unexpected packet from %pM!\n",
+@@ -1457,13 +1477,6 @@ static void batadv_tp_recv_msg(struct batadv_priv *bat_priv,
+ 		}
+ 	}
+ 
+-	if (unlikely(tp_vars->role != BATADV_TP_RECEIVER)) {
+-		batadv_dbg(BATADV_DBG_TP_METER, bat_priv,
+-			   "Meter: dropping packet: not expected (role=%u)\n",
+-			   tp_vars->role);
+-		goto out;
 -	}
-+	del_timer_sync(&cfg->btcoex->timer);
-+	cfg->btcoex->timer_on = false;
+-
+ 	tp_vars->last_recv_time = jiffies;
  
- 	cancel_work_sync(&cfg->btcoex->work);
- 
+ 	/* if the packet is a duplicate, it may be the case that an ACK has been
 -- 
 2.53.0
 
