@@ -1,65 +1,61 @@
-Return-Path: <stable+bounces-264686-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265730-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id kRlPOPV7MWomkgUAu9opvQ
-	(envelope-from <stable+bounces-264686-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:38:13 +0200
+	id IWKjIrqOMWqLmgUAu9opvQ
+	(envelope-from <stable+bounces-265730-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:58:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BF16692494
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:38:13 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E04C693AA9
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:58:18 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=p6IpzbG+;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264686-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264686-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=lwrtGqAi;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265730-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265730-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2CF9D31AF6B9
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:28:21 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9D26F3035B81
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:58:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 660BB46AEDB;
-	Tue, 16 Jun 2026 16:28:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C75D1477E51;
+	Tue, 16 Jun 2026 17:58:14 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AEAA44E037;
-	Tue, 16 Jun 2026 16:28:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EC9A27FD49;
+	Tue, 16 Jun 2026 17:58:13 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781627300; cv=none; b=vEJNYV2IPh0CFXT7QGDmhdoObjRPdSXdVECzODkRRvFqdznnnC7npAbR0VnWM3/BOxGU0mYngxaPOX29/VDHouVnkumnxZ0lNOdzSiAcqHinUWREwm50TbcUi5tXCjd7fXWGluJ0oU8HrHZkap0T9M1A7Yco7iXtikLl8er41ws=
+	t=1781632694; cv=none; b=tdHUO8rMhqLawCC+m9Cdj2vMIRTznxORIE2xanrKESVqOOM7HnSst1SsGRevGaNn0NauPieZd4mK86Qpg9/h0mmBg5eEiXgP6tzod1r5P75XU/bfchhC0+HowR5vrxYVi7qVu4+UNIgjWSgBCK4wJ/XYxXhAiVeBkISnuJRSfAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781627300; c=relaxed/simple;
-	bh=aklafguPbIqyh5qUMP04wbVxtJEM8tHN4DvRAr5O4uY=;
+	s=arc-20240116; t=1781632694; c=relaxed/simple;
+	bh=+gE9uVhY4/7ieo8V8sN+ixhXEHKRY7F5EcbRSVOGBI0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fKK8uARzW3dx4sfB7bRFcmxdI6AwFnwdbThduq+M6nSc1HUBbRMjH5opCkqivkkTVJnQDQlCp8thf0e11egBQ5zob1b1lS3ZdbFNgiMW0Q1QnEQ1NMf9nIu/zVUf5wT6gcr9d/WMSm150WloS3d1bR3JqZozkZ29GHT0BD6+NY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p6IpzbG+; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E767D1F000E9;
-	Tue, 16 Jun 2026 16:28:17 +0000 (UTC)
+	 MIME-Version; b=hOLXPsmpK30m2dTLlFYPsPx5ieTIRwEKGG4XJ+JuII1GiwVY/shS2cFsKR70YHq9mmbGasaQfvPz0i3VllUQTT6k1g6ODCkYEVSGRXPTZvkN/072KbNbE7cn0y+hTe8EAjbzrNk+iMlV8NYFxdkP+FQezssP5y6U1b6MAmX+L6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lwrtGqAi; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DC2E1F000E9;
+	Tue, 16 Jun 2026 17:58:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781627298;
-	bh=Qt+dbm62CwYGvwHV0SF47v/PMePhSfHvKb7/jsjmdgo=;
+	s=korg; t=1781632693;
+	bh=ax1K0O63NFuZOExYMmgYS88n4NbCtKa5k1pwmCIq7E0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=p6IpzbG+T8lUUFRHFY7pvreeW/qwhEP7S6kYbnmmOsQgKtISz1yFjhkCR5B8p45eL
-	 EXichnSHATUc/2e4e+eBRmyLVApEjPWjlg1aK8kdmmjTenc3tSQispombm66Iv1e4M
-	 LXFBDSnWLEVFVB7JDfhnmDDGrnOGvayHtyHPC9SI=
+	b=lwrtGqAi4ov5lgrIAxoIEeVlOX3Il+Cw9sq+kqicfDkoY3bKwfWTpz9vMri+OWouD
+	 X/OSbdx/eLcW468aly+rQxopcWC8WO5+htGvubzexwbKvB0uqU/ufWQVeXXodVy/DT
+	 QVwFmCpmRx3VgcpFS8rkj5OgZzz18iYJ3kZNqLnI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Cunlong Li <shenxiaogll@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Minchan Kim <minchan@kernel.org>,
-	Yisheng Xie <xieyisheng1@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 151/261] zram: fix use-after-free in zram_bvec_write_partial()
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 442/522] selftests: mptcp: drop nanoseconds width specifier
 Date: Tue, 16 Jun 2026 20:29:49 +0530
-Message-ID: <20260616145052.077793534@linuxfoundation.org>
+Message-ID: <20260616145146.619899299@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
-References: <20260616145044.869532709@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,83 +72,101 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,lst.de,chromium.org,gmail.com,kernel.dk,kernel.org,huawei.com,linux-foundation.org];
-	TAGGED_FROM(0.00)[bounces-264686-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265730-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:hch@lst.de,m:senozhatsky@chromium.org,m:shenxiaogll@gmail.com,m:axboe@kernel.dk,m:minchan@kernel.org,m:xieyisheng1@huawei.com,m:akpm@linux-foundation.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:matttbe@kernel.org,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,huawei.com:email,lst.de:email,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,kernel.dk:email,linux-foundation.org:email,chromium.org:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5BF16692494
+X-Rspamd-Queue-Id: 2E04C693AA9
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cunlong Li <shenxiaogll@gmail.com>
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 
-commit 732fd9f0b9c1cdc6dfd77162ded60df005182cc0 upstream.
+[ Upstream commit 01ff78e4b3d98689184c52d97f9575dfbdc3b10f ]
 
-zram_read_page() picks the sync or async backing device read path based on
-whether the parent bio is NULL.  zram_bvec_write_partial() passes its
-parent bio down, so for ZRAM_WB slots the read is dispatched
-asynchronously and zram_read_page() returns 0 while the bio is still in
-flight.  The caller then runs memcpy_from_bvec(), zram_write_page() and
-__free_page() on the buffer, leaving the async read to write into a freed
-page.
+Using the format specifier +%s%3N with GNU date is honoured, and only
+prints 3 digits of the nanoseconds portion of the seconds since epoch,
+which corresponds to the milliseconds.
 
-zram_bvec_read_partial() was switched to NULL in commit 4e3c87b9421d
-("zram: fix synchronous reads") for the same reason; the write_partial
-counterpart was missed.
+The uutils implementation of date currently does not honour this, and
+always prints all 9 digits. This is a known issue [1], but can be worked
+around by adapting this test to use nanoseconds instead of microseconds,
+and then divide it by 1e6.
 
-Link: https://lore.kernel.org/20260528-zram-v3-1-cab86eef8764@gmail.com
-Fixes: 8e654f8fbff5 ("zram: read page from backing device")
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Signed-off-by: Cunlong Li <shenxiaogll@gmail.com>
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: Minchan Kim <minchan@kernel.org>
-Cc: Yisheng Xie <xieyisheng1@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+This fix is similar to what has been done on systemd side [2], and it is
+needed to run the selftests on Ubuntu 26.04, containing uutils 0.8.0.
+
+Note that the Fixes tag is there even if this patch doesn't fix an issue
+in the kernel selftests, but it is useful for those using uutils 0.8.0.
+
+Fixes: 048d19d444be ("mptcp: add basic kselftest for mptcp")
+Cc: stable@vger.kernel.org
+Link: https://github.com/uutils/coreutils/issues/11658 [1]
+Link: https://github.com/systemd/systemd/pull/41627 [2]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260515-net-mptcp-misc-fixes-7-1-rc4-v2-6-701e96419f2f@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/block/zram/zram_drv.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/net/mptcp/mptcp_connect.sh |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/block/zram/zram_drv.c
-+++ b/drivers/block/zram/zram_drv.c
-@@ -1661,7 +1661,7 @@ static int zram_bvec_write_partial(struc
- 	if (!page)
- 		return -ENOMEM;
+--- a/tools/testing/selftests/net/mptcp/mptcp_connect.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_connect.sh
+@@ -450,7 +450,7 @@ do_transfer()
+ 	wait_local_port_listen "${listener_ns}" "${port}"
  
--	ret = zram_read_page(zram, page, index, bio);
-+	ret = zram_read_page(zram, page, index, NULL);
- 	if (!ret) {
- 		memcpy_from_bvec(page_address(page) + offset, bvec);
- 		ret = zram_write_page(zram, page, index);
+ 	local start
+-	start=$(date +%s%3N)
++	start=$(date +%s%N)
+ 	timeout ${timeout_test} \
+ 		ip netns exec ${connector_ns} \
+ 			./mptcp_connect -t ${timeout_poll} -p $port -s ${cl_proto} \
+@@ -463,7 +463,7 @@ do_transfer()
+ 	local rets=$?
+ 
+ 	local stop
+-	stop=$(date +%s%3N)
++	stop=$(date +%s%N)
+ 
+ 	if $capture; then
+ 		sleep 1
+@@ -479,7 +479,7 @@ do_transfer()
+ 	fi
+ 
+ 	local duration
+-	duration=$((stop-start))
++	duration=$(((stop-start) / 1000000))
+ 	printf "(duration %05sms) " "${duration}"
+ 	if [ ${rets} -ne 0 ] || [ ${retc} -ne 0 ]; then
+ 		echo "[ FAIL ] client exit code $retc, server $rets" 1>&2
 
 
 
