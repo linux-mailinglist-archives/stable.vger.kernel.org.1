@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-266272-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265483-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id WgeRKeiZMWrZnwUAu9opvQ
-	(envelope-from <stable+bounces-266272-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:46:00 +0200
+	id 7WXnFUuLMWrRmAUAu9opvQ
+	(envelope-from <stable+bounces-265483-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:43:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5114C69473C
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:46:00 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5BB2693689
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:43:38 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=StCF6Yrq;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266272-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-266272-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=VNzGsLvD;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265483-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265483-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B886030398A7
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:45:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BC62930F0E9F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:37:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4D913AE1A2;
-	Tue, 16 Jun 2026 18:45:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 129DE477E57;
+	Tue, 16 Jun 2026 17:37:10 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC10A331A44;
-	Tue, 16 Jun 2026 18:45:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4E024611CF;
+	Tue, 16 Jun 2026 17:37:08 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781635558; cv=none; b=inGh2M3+sum9qrdrKWEzWYVLDF73u15ZWO8XO7jY4bvRkTUC+S4FiN8hY32XGTZOB8lJvkMIFJWbxYqhD/CCwaS2c3oQ+nwPWCKul5pGWP0tWYkQX1eYXSNeQnags+D49jEUhiRp1u8w/pC7M0RAWvQU1KIw+DyJ2+/dCMSH30g=
+	t=1781631429; cv=none; b=Q2tDBSdQapubXA0PdL08Bx34yLHkQTRqxy9gryc/8egSOaRhJsV3iALV2YoERXkIHhy1MHdvoI1S48xWki212w8GD7rri8LLtBx95DszWNPq5wxF64C/TItD6II0u6Dr4J0XhBawqml3fdL9o7ZneB+pbWC8hL4RQ+rcmuKmVfA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781635558; c=relaxed/simple;
-	bh=K9livzCbYihpEE/GXmzrT2URNp4J+43vcRgvrFdC48s=;
+	s=arc-20240116; t=1781631429; c=relaxed/simple;
+	bh=mrosaReMLBLtnQOa67SRauUNlMa9MueLEXYe89sNBqc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NU1joIj1CVZFhZEo0Uk5iijMz+/W5qyeVbTRDTaCgtnd9kf1vA7PSQZgxUOPu0B+5y2Etnbocxu1kDQtRcwOShUkm3EhQI+HNVioCSJMNotH8esrX9A1eoonWmT4ZM6+p5g+s+HRCQ0H8u5Uw2IGfvSsZVkKpsrxlDFYmzJluQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=StCF6Yrq; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E6D31F000E9;
-	Tue, 16 Jun 2026 18:45:56 +0000 (UTC)
+	 MIME-Version; b=hPd1xmC7JBMk+9l8OZSrFW2fFkVJNDR0jBktLRiG4q84tuD7OqVR4mVGOraBXSK+FUYTCe1YXNnMe29flZGLqIfIr5YLhOgEGVMP55/MuRYkS6EZOiMF9cry1HCCwdsXFmVgr57l6e+7SZnWqonFtUHmPL6U6nwW/Xmo4koRajc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VNzGsLvD; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7F701F000E9;
+	Tue, 16 Jun 2026 17:37:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781635557;
-	bh=UsTaJ98iTFRr6Nv5gT7A5eMvPECUItBWKcLTolF+CYM=;
+	s=korg; t=1781631428;
+	bh=1p934KGyhoxJdNp402YN5XGSsN++ZwKcHai43pet5SU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=StCF6Yrq5hxrp0TXT1TQhWMBjKLAzmlyqRRPd65pB97uxhZwk/2nqxBkgPD/pfAbb
-	 zpyn09c+siHu5VUtVd7dP7DI7MpXnXX3217QJJDBAN9088q94WdEe0UABGowYXIoPU
-	 4++FMtMHULrhoehEZHgMPhcjwMiRvHeNr4mwEiC8=
+	b=VNzGsLvDL7e+QBzICwwqWhTNHOwFTBww0Vn6dEoN9+OnWVBJ2xagIFWDDjNRHYckX
+	 RtmdX6CXqsRxPyIBZg1//txm6HhQ49vWyCRMCTsJ9w9OaVO3h4ZgWPqo5fTgmrtiae
+	 KLYrqi+Yu0lSfVYflN6R/6yOvsNMgZ0HyZs2VH0c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Iurman <justin.iurman@gmail.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10 071/342] ipv6: exthdrs: refresh nh pointer after ipv6_hop_jumbo()
+	Florian Zeitz <florian.zeitz@schettke.com>,
+	Kurt Kanzenbach <kurt@linutronix.de>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 220/522] ptp: vclock: Switch from RCU to SRCU
 Date: Tue, 16 Jun 2026 20:26:07 +0530
-Message-ID: <20260616145051.552189303@linuxfoundation.org>
+Message-ID: <20260616145136.318477611@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,76 +69,125 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266272-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:justin.iurman@gmail.com,m:idosch@nvidia.com,m:kuba@kernel.org,m:justiniurman@gmail.com,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265483-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:florian.zeitz@schettke.com,m:kurt@linutronix.de,m:bigeasy@linutronix.de,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nvidia.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,nvidia.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linutronix.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5114C69473C
+X-Rspamd-Queue-Id: C5BB2693689
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Iurman <justin.iurman@gmail.com>
+From: Kurt Kanzenbach <kurt@linutronix.de>
 
-commit d47548a36639095939f4747d4c43f2271366f565 upstream.
+[ Upstream commit 672bd0519e27c357c43b7f8c0d653fce3817d06e ]
 
-ipv6_hop_jumbo() calls pskb_trim_rcsum(), which can change skb pointers.
-Let's recompute nh pointer to make sure any change won't mess things up.
+The usage of PTP vClocks leads immediately to the following issues with
+ptp4l with LOCKDEP and DEBUG_ATOMIC_SLEEP enabled: "BUG: sleeping function
+called from invalid context".
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Justin Iurman <justin.iurman@gmail.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20260522112013.12342-1-justin.iurman@gmail.com
+ptp_convert_timestamp() acquires a mutex_t within a RCU read section.  This
+is illegal, because acquiring a mutex_t can result in voluntary scheduling
+request which is not allowed within a RCU read section.
+
+Replace the RCU usage with SRCU where sleeping is allowed.
+
+Reported-by: Florian Zeitz <florian.zeitz@schettke.com>
+Closes: https://lore.kernel.org/all/00a8cce8-410e-4038-98af-49be6d93d7bd@schettke.com/
+Fixes: 67d93ffc0f3c ("ptp: vclock: use mutex to fix "sleep on atomic" bug")
+Signed-off-by: Kurt Kanzenbach <kurt@linutronix.de>
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Link: https://patch.msgid.link/20260529-vclock_rcu-v2-1-02a5531fab92@linutronix.de
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/exthdrs.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/ptp/ptp_vclock.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
---- a/net/ipv6/exthdrs.c
-+++ b/net/ipv6/exthdrs.c
-@@ -180,6 +180,8 @@ static bool ip6_parse_tlv(const struct t
- 					   func(). */
- 					if (curr->func(skb, off) == false)
- 						return false;
+diff --git a/drivers/ptp/ptp_vclock.c b/drivers/ptp/ptp_vclock.c
+index dcf752c9e04506..eb57338a32414a 100644
+--- a/drivers/ptp/ptp_vclock.c
++++ b/drivers/ptp/ptp_vclock.c
+@@ -19,6 +19,8 @@ static DEFINE_SPINLOCK(vclock_hash_lock);
+ 
+ static DEFINE_READ_MOSTLY_HASHTABLE(vclock_hash, 8);
+ 
++DEFINE_STATIC_SRCU(vclock_srcu);
 +
-+					nh = skb_network_header(skb);
- 					break;
- 				}
- 			}
+ static void ptp_vclock_hash_add(struct ptp_vclock *vclock)
+ {
+ 	spin_lock(&vclock_hash_lock);
+@@ -37,7 +39,7 @@ static void ptp_vclock_hash_del(struct ptp_vclock *vclock)
+ 
+ 	spin_unlock(&vclock_hash_lock);
+ 
+-	synchronize_rcu();
++	synchronize_srcu(&vclock_srcu);
+ }
+ 
+ static int ptp_vclock_adjfine(struct ptp_clock_info *ptp, long scaled_ppm)
+@@ -269,14 +271,16 @@ ktime_t ptp_convert_timestamp(const ktime_t *hwtstamp, int vclock_index)
+ {
+ 	unsigned int hash = vclock_index % HASH_SIZE(vclock_hash);
+ 	struct ptp_vclock *vclock;
+-	u64 ns;
+ 	u64 vclock_ns = 0;
++	int srcu_idx;
++	u64 ns;
+ 
+ 	ns = ktime_to_ns(*hwtstamp);
+ 
+-	rcu_read_lock();
++	srcu_idx = srcu_read_lock(&vclock_srcu);
+ 
+-	hlist_for_each_entry_rcu(vclock, &vclock_hash[hash], vclock_hash_node) {
++	hlist_for_each_entry_srcu(vclock, &vclock_hash[hash], vclock_hash_node,
++				  srcu_read_lock_held(&vclock_srcu)) {
+ 		if (vclock->clock->index != vclock_index)
+ 			continue;
+ 
+@@ -287,7 +291,7 @@ ktime_t ptp_convert_timestamp(const ktime_t *hwtstamp, int vclock_index)
+ 		break;
+ 	}
+ 
+-	rcu_read_unlock();
++	srcu_read_unlock(&vclock_srcu, srcu_idx);
+ 
+ 	return ns_to_ktime(vclock_ns);
+ }
+-- 
+2.53.0
+
 
 
 
