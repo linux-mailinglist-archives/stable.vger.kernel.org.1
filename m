@@ -1,60 +1,73 @@
-Return-Path: <stable+bounces-264696-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264428-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 1ChjIwl8MWoukgUAu9opvQ
-	(envelope-from <stable+bounces-264696-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:38:33 +0200
+	id OC8vOO92MWr+jwUAu9opvQ
+	(envelope-from <stable+bounces-264428-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:16:47 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 061436924A9
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:38:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 602E4691E18
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:16:47 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=DngJBl9Y;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264696-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264696-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=kBButCO+;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264428-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264428-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 670503202496
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:29:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1311B337C40C
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:04:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE347466B57;
-	Tue, 16 Jun 2026 16:29:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B3E74611F4;
+	Tue, 16 Jun 2026 16:03:51 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACC8244E037;
-	Tue, 16 Jun 2026 16:29:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3551744CF40;
+	Tue, 16 Jun 2026 16:03:50 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781627349; cv=none; b=HDHBZSWh9jtzdUnLmQoPgCSBSI+ifR/28ykVTCSCtxESq34U2HiSJbHKaes9nm8FQq2N5ct1CWAShRCTYyeXCVPvQpJ9sVWuJNqBhxT1PwVfObku+K4/dgf9vs215hIjMDPQi8YNmbcCq67E8szJWMuvlOLBXfBRG4XR7buwMD8=
+	t=1781625831; cv=none; b=B2Mr2uzgxnYShqz6j6kw2gHbtHZ7s3lHyb/zhlBEr9od+9XVJ4DJE2QyLOafRpwG2jxt8SLBH0lUwgL6SgkhXoarOkfFhslsalgqCrxBFS9xGIFoQHAHsPQAaGHs1AFnMeNmLPVp+a2XMHDgdWbqSb7I35u26vjW8zh7SkeuGAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781627349; c=relaxed/simple;
-	bh=qAWZDt6Q5Z4fHTeOFCf50GwOOpVfXV0LR2s2sJZngaM=;
+	s=arc-20240116; t=1781625831; c=relaxed/simple;
+	bh=M2L1jkDksnbzm6KSk2I/A24pzOW4T1GuW/+5vULVYv8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C2Kgu5d2MBa59JoziKFmxhzV+2ka1SCG1n0MpKCRFqgDTblkAywJ5uOiI4/O48si3Le2AsUhbTnydynbWWwVOL2+lYkyi11znvahgG9H5WY/z5OMUEJp8sJe2oFia1QDLUJeUXBoPgi7Cs8TMqkngbv32jkr6m/2P8KBDORgjHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DngJBl9Y; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B198D1F000E9;
-	Tue, 16 Jun 2026 16:29:07 +0000 (UTC)
+	 MIME-Version; b=lK6h/QmZmi/Tzi/bPqawTuhmi3DZICZrSRm+P/87kDgTt6fU7GSUjJ0SQZRFypsMjgqG74yPZ7r0op7eiKV32VOZJ07MbKsOCh4OQ5TmByuxFpSitb0NL78yW3E0dXWUTrR/BCkqeV0DzbNpe5s9W6cKChQLIw66KqgRt/O5Y3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kBButCO+; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F9171F000E9;
+	Tue, 16 Jun 2026 16:03:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781627348;
-	bh=ZhTWTS4o3qa8eMuOk8gzdsbkhOG3JcX2v4R43saIWz0=;
+	s=korg; t=1781625830;
+	bh=bOB28OeZuFWPX3h0iogA9kju60mBaupG4GztPBIWAFo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=DngJBl9YYAJjXWHUas746pcGdOGB4W14q9ajjJi9wRZ5oxwM6gDgn6DoZpCbhMnFG
-	 SPXlKm2592PpEG+4a/oh5RwnP14/5tggCxgiOgpnSfZlSBNAStYzhDepSro9AHZD15
-	 AbjoAR39Np7BVobkW+rpD8G7m7WXayMsoQu+QlE4=
+	b=kBButCO+CSWJV5vxhc1h0etf2JBD2QHYdcrhfS43quzdPAHrtiIBu8CvVG9vdj5EC
+	 2lQe9/nyOydNBqaFmxgecKl8Q+9ZLycFg6MSNBzodurSz7ybFS6lctU82o/GirmmqB
+	 waQMrVko0sGXolxFy7tw1mjQgXRi3FqtA1fzjI7w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kyle Zeng <kylebot@openai.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.12 143/261] ALSA: timer: Forcibly close timer instances at closing
+	Yin Tirui <yintirui@huawei.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"David Hildenbrand (arm)" <david@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Dev Jain <dev.jain@arm.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Barry Song <baohua@kernel.org>,
+	Chen Jun <chenjun102@huawei.com>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Nico Pache <npache@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.18 185/325] mm/huge_memory: update file PUD counter before folio_put()
 Date: Tue, 16 Jun 2026 20:29:41 +0530
-Message-ID: <20260616145051.707335208@linuxfoundation.org>
+Message-ID: <20260616145107.114786014@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
-References: <20260616145044.869532709@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,17 +89,17 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264696-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264428-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[18];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kylebot@openai.com,m:tiwai@suse.de,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:yintirui@huawei.com,m:ljs@kernel.org,m:david@kernel.org,m:lance.yang@linux.dev,m:dev.jain@arm.com,m:apopple@nvidia.com,m:baolin.wang@linux.alibaba.com,m:baohua@kernel.org,m:chenjun102@huawei.com,m:wangkefeng.wang@huawei.com,m:liam@infradead.org,m:npache@redhat.com,m:ryan.roberts@arm.com,m:ziy@nvidia.com,m:akpm@linux-foundation.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -97,86 +110,61 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,suse.de:email,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 061436924A9
+X-Rspamd-Queue-Id: 602E4691E18
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Yin Tirui <yintirui@huawei.com>
 
-commit da3039e91d1f835874ed6e9a33ea19ee80c2cb92 upstream.
+commit 40990c87a26e371594475acdc560c93cfae308a1 upstream.
 
-When snd_timer object is freed via snd_timer_free() and still pending
-snd_timer_instance objects are assigned to the timer object, it tries
-to unlink all instances and just set NULL to each ti->timer, then
-releases the resources immediately.  The problem is, however, when
-there are slave timer instances that are associated with a master
-instance linked to this timer: namely, those slave instances still
-point to the freed timer object although the master instance is
-unlinked, which may lead to user-after-free.  The bug can be easily
-triggered particularly when a new userspace-driven timers
-(CONFIG_SND_UTIMER) is involved, since it can create and delete the
-timer object via a simple file open/close, while the other
-applications may keep accessing to that timer.
+__split_huge_pud_locked() updates the file/shmem RSS counter after
+dropping the PUD mapping's folio reference.  If folio_put() drops the last
+reference, mm_counter_file() can later read freed folio state via
+folio_test_swapbacked().
 
-This patch is an attempt to paper over the problem above: now instead
-of just unlinking, call snd_timer_close[_locked]() forcibly for each
-pending timer instance, so that all assigned slave timer instances are
-properly detached, too.  Since snd_timer_close() might be called later
-by the driver that created that instance, the check of
-SNDRV_TIMER_IFLG_DEAD is added at the beginning, too.
+Move the counter update before folio_put().
 
-Reported-by: Kyle Zeng <kylebot@openai.com>
-Tested-by: Kyle Zeng <kylebot@openai.com>
-Fixes: 37745918e0e7 ("ALSA: timer: Introduce virtual userspace-driven timers")
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260606161145.1933447-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://lore.kernel.org/20260526101355.1984244-1-yintirui@huawei.com
+Fixes: dbe54153296d ("mm/huge_memory: add vmf_insert_folio_pud()")
+Signed-off-by: Yin Tirui <yintirui@huawei.com>
+Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
+Acked-by: David Hildenbrand (arm) <david@kernel.org>
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
+Reviewed-by: Dev Jain <dev.jain@arm.com>
+Cc: Alistair Popple <apopple@nvidia.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Barry Song <baohua@kernel.org>
+Cc: Chen Jun <chenjun102@huawei.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Liam R. Howlett <liam@infradead.org>
+Cc: Nico Pache <npache@redhat.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Zi Yan <ziy@nvidia.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/core/timer.c |   16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ mm/huge_memory.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/core/timer.c
-+++ b/sound/core/timer.c
-@@ -422,6 +422,8 @@ static void snd_timer_close_locked(struc
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -2759,9 +2759,9 @@ static void __split_huge_pud_locked(stru
+ 	if (!folio_test_referenced(folio) && pud_young(old_pud))
+ 		folio_set_referenced(folio);
+ 	folio_remove_rmap_pud(folio, page, vma);
+-	folio_put(folio);
+ 	add_mm_counter(vma->vm_mm, mm_counter_file(folio),
+ 		-HPAGE_PUD_NR);
++	folio_put(folio);
+ }
  
- 	if (timer) {
- 		guard(spinlock_irq)(&timer->lock);
-+		if (timeri->flags & SNDRV_TIMER_IFLG_DEAD)
-+			return; /* already closed */
- 		timeri->flags |= SNDRV_TIMER_IFLG_DEAD;
- 	}
- 
-@@ -964,18 +966,18 @@ EXPORT_SYMBOL(snd_timer_new);
- 
- static int snd_timer_free(struct snd_timer *timer)
- {
-+	struct snd_timer_instance *ti, *n;
-+
- 	if (!timer)
- 		return 0;
- 
- 	guard(mutex)(&register_mutex);
- 	if (! list_empty(&timer->open_list_head)) {
--		struct list_head *p, *n;
--		struct snd_timer_instance *ti;
--		pr_warn("ALSA: timer %p is busy?\n", timer);
--		list_for_each_safe(p, n, &timer->open_list_head) {
--			list_del_init(p);
--			ti = list_entry(p, struct snd_timer_instance, open_list);
--			ti->timer = NULL;
-+		list_for_each_entry_safe(ti, n, &timer->open_list_head, open_list) {
-+			struct device *card_dev_to_put = NULL;
-+
-+			snd_timer_close_locked(ti, &card_dev_to_put);
-+			put_device(card_dev_to_put);
- 		}
- 	}
- 	list_del(&timer->device_list);
+ void __split_huge_pud(struct vm_area_struct *vma, pud_t *pud,
 
 
 
