@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-266069-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265119-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id YoxZLMSVMWrbnQUAu9opvQ
-	(envelope-from <stable+bounces-266069-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:28:20 +0200
+	id +txoNa2EMWrMlQUAu9opvQ
+	(envelope-from <stable+bounces-265119-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:15:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59479694283
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:28:20 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0452D692EB4
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:15:25 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=R5AFVWuW;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266069-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-266069-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=pwhteU75;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265119-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-265119-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C8E6130320BE
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:28:19 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id DB35930243C9
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:06:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98038472798;
-	Tue, 16 Jun 2026 18:28:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D36B8477E21;
+	Tue, 16 Jun 2026 17:06:03 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C20F477E33;
-	Tue, 16 Jun 2026 18:28:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A04C376A19;
+	Tue, 16 Jun 2026 17:06:02 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781634498; cv=none; b=qNeg20tk+58RcnbovvKHoxjCSqCzo01nJdaaAgEEm7TQCgnGzdd250+qqIEO1ruJgha2ODN7z8pRIGA6TxQM6LLaivt9ihYsiYgfO7T1bK5BJ8e6weDXs2pWiWdBOxWPrFyrHaj/vGhCVqSm2Iy9i5vnM38z4HCa7noJ12vwhL8=
+	t=1781629563; cv=none; b=jlb2P3ZLpM2o12o7+SPFeCK1iMiRv4NJWVEfUAJZ6b9h187MtgPSqTkMxXzy/S7ZSKinMCJ01Pm8bS324VwbdsysqMuLBGCOgJKq1+gnDQTQkN5n5/jQIce0xM407CWsrovCLBje6zw8u1ITrQNchZpdcUtYD2ovpnU1viaOHQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781634498; c=relaxed/simple;
-	bh=O/wWyg+Ocbv/Rd6ezFKMKDM/o6xDUWuYq0KeFO+NjIE=;
+	s=arc-20240116; t=1781629563; c=relaxed/simple;
+	bh=clKSvFisqjLm6P2ALulTn75OyUkBgA6FSSWWjZxQR4M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XGYe5aiiays3coJU19QLqMx33LSxpquYQBbt3QZt5om5X/Vg4Kpx2A8pfcfl255iElSL2qCfK0R2mbpV56tOYF+XgsYpOmVIkRSibcsDwdnoUlZI8+l5Ng2LmDZQRMO6LyjEMyfzVg9q0cisp299G6DR7S+usPP1+UjdzbK7eBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R5AFVWuW; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4014D1F000E9;
-	Tue, 16 Jun 2026 18:28:15 +0000 (UTC)
+	 MIME-Version; b=gZw39hf3VypRsmoywRRTeMM1pWY7IFzzNEy205bfJLSFMImXpK4pM1qEozjnLeCfxE9UO9TVUrIVjc5S1T2qgnIxJ/OmMLPRHeZMKxG9fbJrjT8BWNT3W69EsqKnqrhi1UQu2CSAnm89pGkmEFqWvSKhxjVgz01AV+3erAHC3Bw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pwhteU75; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6222C1F000E9;
+	Tue, 16 Jun 2026 17:06:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781634497;
-	bh=3QwQICISKxM+5Z83O/t1Dw/8BNNafBY9wrSjzW2V4cM=;
+	s=korg; t=1781629562;
+	bh=aPwNYZTSXKeTQLz5G/yL59hnM4fRUj7JHzXTZ3KbQ8o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=R5AFVWuWRwIoJYSzSWZVKNF5xrs+f3n9ok4Xqv/eZicmBeDECOy8/rau90r2SKyak
-	 dhGpGsHazqM6vux2+HwHNCSWnhjWT+/b0r5Kly1grTenorEabkqxzOmErfP0VGVHv3
-	 hdRs5gCRBcCh6qhXylQICKT2JwkaVOGDyp5IgV70=
+	b=pwhteU75qxkQDwD7DwJydJI0DHO/TqRhTNyb/sjznYdqRHDIkjURXPSrHT4IPSsnl
+	 wlwQeEp1QArb5E3SSFAdisoluTbJPQ6ReY24F0RxWDJw5BsZEuMae9OevmKDhQcqU8
+	 esjzHfUj5N4JdjI3FZy4sOOGc8AhvHoXbg/ov8rA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Mark Bundschuh <mkbund@amazon.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 276/411] net: qrtr: ns: Free the node during ctrl_cmd_bye()
+Subject: [PATCH 6.6 287/452] netfilter: ctnetlink: ensure safe access to master conntrack
 Date: Tue, 16 Jun 2026 20:28:34 +0530
-Message-ID: <20260616145115.796109547@linuxfoundation.org>
+Message-ID: <20260616145132.660167058@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,112 +70,259 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266069-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:manivannan.sadhasivam@oss.qualcomm.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265119-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:fw@strlen.de,m:pablo@netfilter.org,m:mkbund@amazon.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,qualcomm.com:email,vger.kernel.org:from_smtp,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,strlen.de:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,netfilter.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 59479694283
+X-Rspamd-Queue-Id: 0452D692EB4
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 68efba36446a7774ea5b971257ade049272a07ac ]
+[ Upstream commit bffcaad9afdfe45d7fc777397d3b83c1e3ebffe5 ]
 
-A node sends the BYE packet when it is about to go down. So the nameserver
-should advertise the removal of the node to all remote and local observers
-and free the node finally. But currently, the nameserver doesn't free the
-node memory even after processing the BYE packet. This causes the node
-memory to leak.
+Holding reference on the expectation is not sufficient, the master
+conntrack object can just go away, making exp->master invalid.
 
-Hence, remove the node from Xarray list and free the node memory during
-both success and failure case of ctrl_cmd_bye().
+To access exp->master safely:
 
-Cc: stable@vger.kernel.org
-Fixes: 0c2204a4ad71 ("net: qrtr: Migrate nameservice to kernel from userspace")
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260409-qrtr-fix-v3-3-00a8a5ff2b51@oss.qualcomm.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+- Grab the nf_conntrack_expect_lock, this gets serialized with
+  clean_from_lists() which also holds this lock when the master
+  conntrack goes away.
+
+- Hold reference on master conntrack via nf_conntrack_find_get().
+  Not so easy since the master tuple to look up for the master conntrack
+  is not available in the existing problematic paths.
+
+This patch goes for extending the nf_conntrack_expect_lock section
+to address this issue for simplicity, in the cases that are described
+below this is just slightly extending the lock section.
+
+The add expectation command already holds a reference to the master
+conntrack from ctnetlink_create_expect().
+
+However, the delete expectation command needs to grab the spinlock
+before looking up for the expectation. Expand the existing spinlock
+section to address this to cover the expectation lookup. Note that,
+the nf_ct_expect_iterate_net() calls already grabs the spinlock while
+iterating over the expectation table, which is correct.
+
+The get expectation command needs to grab the spinlock to ensure master
+conntrack does not go away. This also expands the existing spinlock
+section to cover the expectation lookup too. I needed to move the
+netlink skb allocation out of the spinlock to keep it GFP_KERNEL.
+
+For the expectation events, the IPEXP_DESTROY event is already delivered
+under the spinlock, just move the delivery of IPEXP_NEW under the
+spinlock too because the master conntrack event cache is reached through
+exp->master.
+
+While at it, add lockdep notations to help identify what codepaths need
+to grab the spinlock.
+
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+[ fix timer_delete -> del_timer in diff context lines since 8fa7292
+("treewide: Switch/rename to timer_delete[_sync]()") landed in 6.15 ]
+Signed-off-by: Mark Bundschuh <mkbund@amazon.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/qrtr/ns.c |   20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
+ include/net/netfilter/nf_conntrack_core.h |  5 ++++
+ net/netfilter/nf_conntrack_ecache.c       |  2 ++
+ net/netfilter/nf_conntrack_expect.c       | 10 +++++++-
+ net/netfilter/nf_conntrack_netlink.c      | 28 +++++++++++++++--------
+ 4 files changed, 35 insertions(+), 10 deletions(-)
 
---- a/net/qrtr/ns.c
-+++ b/net/qrtr/ns.c
-@@ -344,7 +344,7 @@ static int ctrl_cmd_bye(struct sockaddr_
- 	struct qrtr_node *node;
- 	unsigned long index;
- 	struct kvec iv;
--	int ret;
-+	int ret = 0;
+diff --git a/include/net/netfilter/nf_conntrack_core.h b/include/net/netfilter/nf_conntrack_core.h
+index 3384859a892101..8883575adcc1e7 100644
+--- a/include/net/netfilter/nf_conntrack_core.h
++++ b/include/net/netfilter/nf_conntrack_core.h
+@@ -83,6 +83,11 @@ void nf_conntrack_lock(spinlock_t *lock);
  
- 	iv.iov_base = &pkt;
- 	iv.iov_len = sizeof(pkt);
-@@ -359,8 +359,10 @@ static int ctrl_cmd_bye(struct sockaddr_
+ extern spinlock_t nf_conntrack_expect_lock;
  
- 	/* Advertise the removal of this client to all local servers */
- 	local_node = node_get(qrtr_ns.local_node);
--	if (!local_node)
--		return 0;
-+	if (!local_node) {
-+		ret = 0;
-+		goto delete_node;
++static inline void lockdep_nfct_expect_lock_held(void)
++{
++	lockdep_assert_held(&nf_conntrack_expect_lock);
++}
++
+ /* ctnetlink code shared by both ctnetlink and nf_conntrack_bpf */
+ 
+ static inline void __nf_ct_set_timeout(struct nf_conn *ct, u64 timeout)
+diff --git a/net/netfilter/nf_conntrack_ecache.c b/net/netfilter/nf_conntrack_ecache.c
+index 69948e1d6974e3..6526bdcca580fd 100644
+--- a/net/netfilter/nf_conntrack_ecache.c
++++ b/net/netfilter/nf_conntrack_ecache.c
+@@ -237,6 +237,8 @@ void nf_ct_expect_event_report(enum ip_conntrack_expect_events event,
+ 	struct nf_ct_event_notifier *notify;
+ 	struct nf_conntrack_ecache *e;
+ 
++	lockdep_nfct_expect_lock_held();
++
+ 	rcu_read_lock();
+ 	notify = rcu_dereference(net->ct.nf_conntrack_event_cb);
+ 	if (!notify)
+diff --git a/net/netfilter/nf_conntrack_expect.c b/net/netfilter/nf_conntrack_expect.c
+index 70bcddfc17ccc2..379711ea5ab67e 100644
+--- a/net/netfilter/nf_conntrack_expect.c
++++ b/net/netfilter/nf_conntrack_expect.c
+@@ -51,6 +51,7 @@ void nf_ct_unlink_expect_report(struct nf_conntrack_expect *exp,
+ 	struct net *net = nf_ct_exp_net(exp);
+ 	struct nf_conntrack_net *cnet;
+ 
++	lockdep_nfct_expect_lock_held();
+ 	WARN_ON(!master_help);
+ 	WARN_ON(timer_pending(&exp->timeout));
+ 
+@@ -118,6 +119,8 @@ nf_ct_exp_equal(const struct nf_conntrack_tuple *tuple,
+ 
+ bool nf_ct_remove_expect(struct nf_conntrack_expect *exp)
+ {
++	lockdep_nfct_expect_lock_held();
++
+ 	if (del_timer(&exp->timeout)) {
+ 		nf_ct_unlink_expect(exp);
+ 		nf_ct_expect_put(exp);
+@@ -177,6 +180,8 @@ nf_ct_find_expectation(struct net *net,
+ 	struct nf_conntrack_expect *i, *exp = NULL;
+ 	unsigned int h;
+ 
++	lockdep_nfct_expect_lock_held();
++
+ 	if (!cnet->expect_count)
+ 		return NULL;
+ 
+@@ -459,6 +464,8 @@ static inline int __nf_ct_expect_check(struct nf_conntrack_expect *expect,
+ 	unsigned int h;
+ 	int ret = 0;
+ 
++	lockdep_nfct_expect_lock_held();
++
+ 	if (!master_help) {
+ 		ret = -ESHUTDOWN;
+ 		goto out;
+@@ -515,8 +522,9 @@ int nf_ct_expect_related_report(struct nf_conntrack_expect *expect,
+ 
+ 	nf_ct_expect_insert(expect);
+ 
+-	spin_unlock_bh(&nf_conntrack_expect_lock);
+ 	nf_ct_expect_event_report(IPEXP_NEW, expect, portid, report);
++	spin_unlock_bh(&nf_conntrack_expect_lock);
++
+ 	return 0;
+ out:
+ 	spin_unlock_bh(&nf_conntrack_expect_lock);
+diff --git a/net/netfilter/nf_conntrack_netlink.c b/net/netfilter/nf_conntrack_netlink.c
+index 255996f43d854c..eff5008f5e9d4e 100644
+--- a/net/netfilter/nf_conntrack_netlink.c
++++ b/net/netfilter/nf_conntrack_netlink.c
+@@ -3326,31 +3326,37 @@ static int ctnetlink_get_expect(struct sk_buff *skb,
+ 	if (err < 0)
+ 		return err;
+ 
++	skb2 = nlmsg_new(NLMSG_DEFAULT_SIZE, GFP_KERNEL);
++	if (!skb2)
++		return -ENOMEM;
++
++	spin_lock_bh(&nf_conntrack_expect_lock);
+ 	exp = nf_ct_expect_find_get(info->net, &zone, &tuple);
+-	if (!exp)
++	if (!exp) {
++		spin_unlock_bh(&nf_conntrack_expect_lock);
++		kfree_skb(skb2);
+ 		return -ENOENT;
 +	}
  
- 	memset(&pkt, 0, sizeof(pkt));
- 	pkt.cmd = cpu_to_le32(QRTR_TYPE_BYE);
-@@ -377,10 +379,18 @@ static int ctrl_cmd_bye(struct sockaddr_
- 		ret = kernel_sendmsg(qrtr_ns.sock, &msg, &iv, 1, sizeof(pkt));
- 		if (ret < 0) {
- 			pr_err("failed to send bye cmd\n");
--			return ret;
-+			goto delete_node;
+ 	if (cda[CTA_EXPECT_ID]) {
+ 		__be32 id = nla_get_be32(cda[CTA_EXPECT_ID]);
+ 
+ 		if (id != nf_expect_get_id(exp)) {
+ 			nf_ct_expect_put(exp);
++			spin_unlock_bh(&nf_conntrack_expect_lock);
++			kfree_skb(skb2);
+ 			return -ENOENT;
  		}
  	}
--	return 0;
-+
-+	/* Ignore -ENODEV */
-+	ret = 0;
-+
-+delete_node:
-+	xa_erase(&nodes, from->sq_node);
-+	kfree(node);
-+
-+	return ret;
- }
  
- static int ctrl_cmd_del_client(struct sockaddr_qrtr *from,
+-	skb2 = nlmsg_new(NLMSG_DEFAULT_SIZE, GFP_KERNEL);
+-	if (!skb2) {
+-		nf_ct_expect_put(exp);
+-		return -ENOMEM;
+-	}
+-
+ 	rcu_read_lock();
+ 	err = ctnetlink_exp_fill_info(skb2, NETLINK_CB(skb).portid,
+ 				      info->nlh->nlmsg_seq, IPCTNL_MSG_EXP_NEW,
+ 				      exp);
+ 	rcu_read_unlock();
+ 	nf_ct_expect_put(exp);
++	spin_unlock_bh(&nf_conntrack_expect_lock);
++
+ 	if (err <= 0) {
+ 		kfree_skb(skb2);
+ 		return -ENOMEM;
+@@ -3397,22 +3403,26 @@ static int ctnetlink_del_expect(struct sk_buff *skb,
+ 		if (err < 0)
+ 			return err;
+ 
++		spin_lock_bh(&nf_conntrack_expect_lock);
++
+ 		/* bump usage count to 2 */
+ 		exp = nf_ct_expect_find_get(info->net, &zone, &tuple);
+-		if (!exp)
++		if (!exp) {
++			spin_unlock_bh(&nf_conntrack_expect_lock);
+ 			return -ENOENT;
++		}
+ 
+ 		if (cda[CTA_EXPECT_ID]) {
+ 			__be32 id = nla_get_be32(cda[CTA_EXPECT_ID]);
+ 
+ 			if (id != nf_expect_get_id(exp)) {
+ 				nf_ct_expect_put(exp);
++				spin_unlock_bh(&nf_conntrack_expect_lock);
+ 				return -ENOENT;
+ 			}
+ 		}
+ 
+ 		/* after list removal, usage count == 1 */
+-		spin_lock_bh(&nf_conntrack_expect_lock);
+ 		if (del_timer(&exp->timeout)) {
+ 			nf_ct_unlink_expect_report(exp, NETLINK_CB(skb).portid,
+ 						   nlmsg_report(info->nlh));
+-- 
+2.53.0
+
 
 
 
