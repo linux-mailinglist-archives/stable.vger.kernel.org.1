@@ -1,226 +1,253 @@
-Return-Path: <stable+bounces-264238-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264301-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id t2gbCPx0MWoyjwUAu9opvQ
-	(envelope-from <stable+bounces-264238-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:08:28 +0200
+	id IAeBKSx1MWpEjwUAu9opvQ
+	(envelope-from <stable+bounces-264301-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:09:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F8CB691B82
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:08:27 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37FB4691BC3
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:09:16 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=EC372epp;
-	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=EzaSqc3+;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264238-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-264238-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=reject) header.from=qualcomm.com;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
+	dkim=pass header.d=arm.com header.s=selector1 header.b=rcPCTLvV;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=rcPCTLvV;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264301-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264301-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=arm.com;
+	arc=reject ("cv is fail on i=3")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 4696A30BD53F
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:48:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0F16630B0A7F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:54:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FEC944E055;
-	Tue, 16 Jun 2026 15:47:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26EC844CAE6;
+	Tue, 16 Jun 2026 15:54:03 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013067.outbound.protection.outlook.com [40.107.162.67])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5D8744CF40
-	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 15:47:42 +0000 (UTC)
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781624864; cv=none; b=VwTDitnF5hXrCdlddlnAJWdjg1DT9hzJXd0mPrBbT4oYtx5kHWNIIlTwCzju1OISwpd1MKUrG0hspyoCS5ajEbGgJCY/bDCByNQQQCjHbOHaUj5QLPDWHWz4MhI6cEXI1qvyz1Z4flmj9hMLVko0wk5rj9+tRyKbwhIWKsA8KsM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781624864; c=relaxed/simple;
-	bh=e1pGdssdQsaRpIBh+4JFRNHi4dhtOKvcr+672dc0fYo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=K+VPZLT300uXTku9X6OGC12N1j6mg2ajK1Ql/dtcvsiAQq4jcAQl9vApxy1R2NbmbnukVFVUHsjW7gM4KhBG43ve5a/S6IOuZI0/PjfcuJVOUrHXbMOqTacHY+QNNqtoE05EEaMjunZaFdRHa2/elHXdcNxP/PW/GQ6rPo2Ya8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=EC372epp; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=EzaSqc3+; arc=none smtp.client-ip=205.220.180.131
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65GFeKSo029066
-	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 15:47:41 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=qcppdkim1; bh=eJW0DORVNViUcs7XgxbuIXaC6bb6dBOgIPg
-	icankNzk=; b=EC372eppeUcYA6AlOW+1agnLRrMAoU89X2U8ZHgfWSmNA4GWZcP
-	+VnthYRIZ0fpePnfUj5NPG20VD3QShj+Bmpe9BnBHUqad+ioYma2cQ5c+0VVY4wB
-	vxQCrrMZYIwMYNmqF+4nFqC7TZi50/kIcJtPk8XHYH0JAxuFAm3wOsYf4Q/Id0Pl
-	sObjOeSJmXLYuSBfaIZfIYm61dpqDT+fHHQRUn8V0n3TBL/jfOkVZtZ8yW2XqizR
-	m8V+mZK1micVsP6UBOcalPA8oxZPVDdT0OK+jVPtj6gfhZDSUeW/iLdkpG6vBHIa
-	LCzcJcvgbSS2Vg+keGzrzSoQKGUwgaWH0Ew==
-Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4ety52u08s-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 15:47:41 +0000 (GMT)
-Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-84233efcaadso3393110b3a.1
-        for <stable@vger.kernel.org>; Tue, 16 Jun 2026 08:47:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1781624861; x=1782229661; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=eJW0DORVNViUcs7XgxbuIXaC6bb6dBOgIPgicankNzk=;
-        b=EzaSqc3++LQKMmfgpoF0xlb9lMxaCfxu1WQNEkHI5LoQlUjdNWK9oW8DczEwQLXns8
-         o4Ia5ROk7OlIZXkeEYCDYbqc/2/rpvWwE+Ly92sL/CyWfanVZnCGzduWNgymXk7YTQTj
-         RWeo5H/KFl/P+6XFvNxk9IjDT9kWg4YHEXDGbN1w3yOnmT9snptr4qWZ+FpdVVnN9mT8
-         3VLRml+4kRCtqIWrTwiHZrc/HE5oRbvwejO2E7aDPN6s3xOUCMWmrQW8Q7SwMqQ2XNqc
-         Hua/gD5s5+Xuo7xEDikU+wkT7E0uf5RhhYIVKEa0oG0bipiBCXkRlqe3MYrqbWdxtdTD
-         3k6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781624861; x=1782229661;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=eJW0DORVNViUcs7XgxbuIXaC6bb6dBOgIPgicankNzk=;
-        b=fLfhCX4osWL+bD+RXgdD/pa3jYsi6AegZVtI8Z17x6f9c1MveLIKB7fFv4M+Wu0n2E
-         3B3a1FC7P2ER6i7z2XaqHyKb2+Fl672ER6LHIxKFlidn2XBZTUmT+wIwSTheLRD8XtxL
-         mp2w8QQu8urkIXkT1PeO7eZQmK7jsRnyobgmT9RMYMNp3Jliyr3RaPjsHOftxppwaAEQ
-         Ul4vD3qPGdoJozEYn3HLAZQE1QVL4cnmC9I4BxS5aZ8sj/LwCZjp2O+V2aq0VYwSoqtm
-         GMMnY44WiiDqPxM4WwCQUleeI5bnS3uGZdpsbbF5yQOGnEKKRNdQxaI1dPSo4qRfBDPp
-         8KXg==
-X-Forwarded-Encrypted: i=1; AFNElJ9PeEh4OfqSxkbiM9bkdF6/I2SSxUfsq1ge8hVe0SZ9bDiHZs2lYxoaeeT1cDlDBkz2cTy2Fho=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxCViCBTsBORUc1nrZJrBYi2YSJTm64vx5HS4pPtbEmhL8favEu
-	AHhIUAlG1PIOX1Q5xu6J2Q+8xlKmtOTXIQ2bHWGO/rGm08sX8QmwU2X36okIeGC3leM2nfii6+w
-	899u93+aphX8xHCl9haDdWT2Aja6eKCnKL1Jp/g9JN4d5GmXDsztlebpVSbM=
-X-Gm-Gg: Acq92OHw0tMAEg2RX0nc9l3RC3SiEN0fjd3h694Gc7rlCHZVj6NErsqw81PO94YCmlK
-	B0z1YObaXVTKC8bOe36lYHPhIUrOLl6FJWGg0qBeunsxfwlZEX4IoQ+WW7fV5Sp3ck83guN5cTk
-	xUZZmV2K06ChjAVa5oP03+YicvSAH7tqAh8STOx+9NnKzlc5SNqysFauiznkHpAZK5lNDF+ToUu
-	8c7y7p9NGWXssnZ5WmBzRFbfK92zZuocOhDxUOfbRknp5Rc75uy8irT7l4BGJnqkfgOv8lrhVpn
-	6p0vu8SXfnFemqOLwzt1NAhakQQe7Cp/idFEwHA4BfVbHfrba4Clu9eh8ZhUitYoq/NY+yW+Ttd
-	qszAvgrDv/dhsFrVceiZbXqxE7wACfhSXzycUoFiEE4RPYZ9//xgH3kpc6Wm6xecPLEtozfkgaC
-	JxWoeKS1i9alpq
-X-Received: by 2002:a05:6a00:3a16:b0:842:33f3:da68 with SMTP id d2e1a72fcca58-8434cd0b4d2mr20606362b3a.8.1781624860400;
-        Tue, 16 Jun 2026 08:47:40 -0700 (PDT)
-X-Received: by 2002:a05:6a00:3a16:b0:842:33f3:da68 with SMTP id d2e1a72fcca58-8434cd0b4d2mr20606306b3a.8.1781624859917;
-        Tue, 16 Jun 2026 08:47:39 -0700 (PDT)
-Received: from zhonhan-gv.qualcomm.com (tpe-colo-wan-fw-bordernet.qualcomm.com. [103.229.16.4])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8434acf039fsm13163418b3a.20.2026.06.16.08.47.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Jun 2026 08:47:39 -0700 (PDT)
-From: Zhongqiu Han <zhongqiu.han@oss.qualcomm.com>
-To: rafael@kernel.org, viresh.kumar@linaro.org, mingo@redhat.com,
-        peterz@infradead.org, juri.lelli@redhat.com,
-        vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
-        rostedt@goodmis.org, bsegall@google.com, mgorman@suse.de,
-        vschneid@redhat.com, kprateek.nayak@amd.com, christian.loehle@arm.com
-Cc: linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        zhongqiu.han@oss.qualcomm.com, stable@vger.kernel.org
-Subject: [PATCH] cpufreq: schedutil: Fix uncleared need_freq_update on the adjust_perf path
-Date: Tue, 16 Jun 2026 23:47:33 +0800
-Message-ID: <20260616154733.2405236-1-zhongqiu.han@oss.qualcomm.com>
-X-Mailer: git-send-email 2.43.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAEC544CF52
+	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 15:53:59 +0000 (UTC)
+ARC-Seal:i=3; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781625242; cv=fail; b=cXtiz+13KJRmI+mxzK0i2EQQBFObs/9OHdFLEyuqzABLmNFl+dgX5UDuQa1aC6smHnT2pLPZ94DZXATf8NrAH1sshW0Oe0h2RkuYULdfDRzIGTGhu8d5i9KrntMYS7TVeaz2Ji7hi2DoqR/2qnTGloG0wUSZuoqrYdMFU/5+9wE=
+ARC-Message-Signature:i=3; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781625242; c=relaxed/simple;
+	bh=1lOM5lyLquwvLwv0GHfA9aCl0qnfhP6/ZTETdNb3Kxs=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=GyPXn8g0prcOv1N2aWiozUQYEzubR66NzsNJjI+XwQs2Z3O9DqMbG6hZy2L2p72SjFT5n2adkkdcEROwm5ehJFTFsj/ThTBWk7ukTzgR2O2uTrc/anCIcK1T/zwhkm9dLplju85gvNBuk0dG4E0pF2Gq7bzNE56868rqSCEMi5k=
+ARC-Authentication-Results:i=3; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=rcPCTLvV; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=rcPCTLvV; arc=fail smtp.client-ip=40.107.162.67
+ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
+ b=HVc2wh35aCs/eAATck+iiPdX2fyIgdQqjWEKC4kelbCI5P2U3HKe3B+GGfBq1n+Gz9jj9cvrlc7JaEVpSHDoCv6nbSLSxPY2uATqd1PHcEijpp4uMmZUyREJJwO4lvcG2dRDzcPpDFti+fFATcPtW0FGh6w+RrCTopXdbMplZ1W/J80QvMh/tSw7/8YL8/QgPPXL0f1CZXKnQQuVUjOQ11hFu1MNuY4rTSDz+dlde5UyCdoiHA8KWxEyWuM3n9qVeQ43IStfzG0NTsMcUVc5HWX+2RXZgGXIA5wgWHgWAwIud9PUKzKr0Tp+k5PkGOpLcP5qn8a6+eafBl/PMpLa+g==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=HBu5/7/nW42CXAUQW1Hoijr+feKzD6WmYiJh35qkma4=;
+ b=Ixk22xvxNrDSQtyDFpW2JoqT42QTlUuuB4Qy4o94H1G59g19sh70hJWJgQc/JeTJMTAizSlXVDRoTPy5dCJ3rkvqZUw1ZtnL/tc+GdMdkVAw88fWLpJ/k030ul1bUosqE4Xq6j/AT723wNQDrHZ2lwF0YPost22cFy1tbx0KgUG+2cdxbDBEwBsj0Pc3GXnSImYNYyaSh5PQuqoT5xcS6xAX+jrjqTIYp/PWuY7Eg3SGRU7gNfh4sSxfKCaoNjHMp9dl0CKG1GqvunyIATtUmztS/tZpRGiJJ7Z3vsennYNzvSXINh/cJ4nI32Qo5SflIwqu88iPfXgyUhycESpH6w==
+ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
+ 4.158.2.129) smtp.rcpttodomain=gmail.com smtp.mailfrom=arm.com; dmarc=pass
+ (p=none sp=none pct=100) action=none header.from=arm.com; dkim=pass
+ (signature was verified) header.d=arm.com; arc=pass (0 oda=1 ltdi=1
+ spf=[1,1,smtp.mailfrom=arm.com] dkim=[1,1,header.d=arm.com]
+ dmarc=[1,1,header.from=arm.com])
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=HBu5/7/nW42CXAUQW1Hoijr+feKzD6WmYiJh35qkma4=;
+ b=rcPCTLvVBKhDoB6essXzVQxgLsIVlV8m+MJOmbquxYHeLsyyNf/S5loFWpCcU/EhdqkXsv4/sA/CvNupQ3N2BqCECGnVi7w8SuQj8CU5DU1qJoKpS4ukfx3if8O7xSPJ0532hgxTYNZ/NdVDATtuqGEohBhA4FKD+ifcV7g6G+8=
+Received: from DU7P195CA0005.EURP195.PROD.OUTLOOK.COM (2603:10a6:10:54d::24)
+ by DU0PR08MB7906.eurprd08.prod.outlook.com (2603:10a6:10:3b2::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.113.16; Tue, 16 Jun
+ 2026 15:53:53 +0000
+Received: from DB3PEPF0000885F.eurprd02.prod.outlook.com
+ (2603:10a6:10:54d:cafe::69) by DU7P195CA0005.outlook.office365.com
+ (2603:10a6:10:54d::24) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.113.18 via Frontend Transport; Tue,
+ 16 Jun 2026 15:53:52 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 4.158.2.129)
+ smtp.mailfrom=arm.com; dkim=pass (signature was verified)
+ header.d=arm.com;dmarc=pass action=none header.from=arm.com;
+Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
+ 4.158.2.129 as permitted sender) receiver=protection.outlook.com;
+ client-ip=4.158.2.129; helo=outbound-uk1.az.dlp.m.darktrace.com; pr=C
+Received: from outbound-uk1.az.dlp.m.darktrace.com (4.158.2.129) by
+ DB3PEPF0000885F.mail.protection.outlook.com (10.167.242.10) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.21.139.8
+ via Frontend Transport; Tue, 16 Jun 2026 15:53:51 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=BRsPzCghiX6jHKhz90Y3HGEjb0I9Bjy+Yc/toKIXm6oMfv2NC5SkcJ5Hyh4M/hXQLauwz6b/XhXnycE65oZuIHTMVOIE+ZHs4DHy/UaQV9169NK5Jr9BHKu4sEqW84OXAfdR/6tATThujqaCurpGXaWgx7qwO9ijADBM+ldIfJHHFmJLdUuLlsik9HVQUc9V8yys4hzsZlxGt6k1X9/jPJfW05s+RvymmAwqNJamaRQO4y6iBBFJdWBSYXJh7yzaHKaj1x1WBvKztujWndUbv8Bdcvr/YUENvWFfUFrxhC/uPFvpu3ZnM8onz/35NXQz1TtrQRHPuCKKF/Kig+9fOA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=HBu5/7/nW42CXAUQW1Hoijr+feKzD6WmYiJh35qkma4=;
+ b=Zwmbwy+IeIG61nLx8QtCUheHQvW7k5de5cg68YNmIKnlZUFpZSEpgUd1WHoD/+vRy5XiEhyhy5g8fLrgQFFKYN0ZqJI88OGD/0JgTwuWYkXJHGFFbL92VA7vFRv0a5FkP9gvYG5QWs9MpvOuZm+ZUkiVO40XAz0/facIiZXfNDvIKNt31WcBf5tYcbBH2p4kyoHra/PoR5jyLZZtg0yFbODmnVndOQZmiA0VbsFU0ulhmgNJHNWvVCmhZgvL7MRaBoA3ah3bJpGb01ecZs/ESoQfxamxJ1T0HL46uZJlsOLiijL29nj4smKCo3QKeCZoPmCfuA/rY318HqcL7YAxxg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
+ header.d=arm.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=HBu5/7/nW42CXAUQW1Hoijr+feKzD6WmYiJh35qkma4=;
+ b=rcPCTLvVBKhDoB6essXzVQxgLsIVlV8m+MJOmbquxYHeLsyyNf/S5loFWpCcU/EhdqkXsv4/sA/CvNupQ3N2BqCECGnVi7w8SuQj8CU5DU1qJoKpS4ukfx3if8O7xSPJ0532hgxTYNZ/NdVDATtuqGEohBhA4FKD+ifcV7g6G+8=
+Authentication-Results-Original: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=arm.com;
+Received: from AM0PR08MB11733.eurprd08.prod.outlook.com
+ (2603:10a6:20b:740::16) by VI1PR08MB9981.eurprd08.prod.outlook.com
+ (2603:10a6:800:1c5::5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.113.18; Tue, 16 Jun
+ 2026 15:52:49 +0000
+Received: from AM0PR08MB11733.eurprd08.prod.outlook.com
+ ([fe80::29d7:e9ba:ff69:a0c3]) by AM0PR08MB11733.eurprd08.prod.outlook.com
+ ([fe80::29d7:e9ba:ff69:a0c3%3]) with mapi id 15.21.0113.015; Tue, 16 Jun 2026
+ 15:52:48 +0000
+Message-ID: <521c5907-cdbf-4603-a24f-405d30741e28@arm.com>
+Date: Tue, 16 Jun 2026 17:52:48 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] net: cdp: reject CDP TLVs with a length below the 4-byte
+ header
+To: Piyush Paliwal <piyushthepal@gmail.com>, u-boot@lists.denx.de
+Cc: trini@konsulko.com, fberder@outlook.fr, stable@vger.kernel.org, nd@arm.com
+References: <20260612074730.82719-1-piyushthepal@gmail.com>
+Content-Language: en-US
+From: Jerome Forissier <jerome.forissier@arm.com>
+In-Reply-To: <20260612074730.82719-1-piyushthepal@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: LO4P123CA0542.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:319::7) To AM0PR08MB11733.eurprd08.prod.outlook.com
+ (2603:10a6:20b:740::16)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjE2MDE2MCBTYWx0ZWRfX5GWuL+XPn2qG
- 4Np9UB/M+Ckgg2zVmV/b0EPsV41KIzJ06clzNx+p7ysfpDSRE0uxAf4x4nnljZhAMCi8uDJn1VU
- 2WLHzePNKcswB/YLVGKpemUwIEPwAJQ=
-X-Authority-Analysis: v=2.4 cv=FJwrAeos c=1 sm=1 tr=0 ts=6a31701d cx=c_pps
- a=mDZGXZTwRPZaeRUbqKGCBw==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
- a=FelO9ux0wxsA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=gowsoOTTUOVcmtlkKump:22 a=VwQbUJbxAAAA:8
- a=EUspDBNiAAAA:8 a=4H1OJQDQ-noEIwH9yNQA:9 a=zc0IvFSfCIW2DFIPzwfm:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjE2MDE2MCBTYWx0ZWRfX5MQuOhVVK5lY
- I28xzheKivkeJqmBO02UJSMzGIltTWQJhYjT79W5NcvYxs4qogy7F1Jcv8kDkrWKFF5sD5jvBoM
- F4zY9r5MGFa0u2tzF1gc9OV82mMqoThebKCssvnh67CmHuRmTBD2d1ryL99y69fYKIkejRoI/yK
- pgDdNHMjsXENiHZliotiNQeqRNzF9ZhJ0K55H05CMgXfmfSi7MAanbtJmR1aBudMt8mytJiv6Q5
- ovM1LmPln1DWkJPMVVKAsP0wxuJkavz8DSLPGATYxFgQtLVb1//WoRJgqWRMQpg91DubNarKlEL
- wjxnhIpJRwcZ8287hmnRTbM5zRBh1i+nuUHFutqCURXvBnSK9tXsksGojAYt490VFYCv23t+epa
- Tly7AfJmZ2NWlr+kHpj/emhN+UlMbSLnuyWxYmxViA1/M60ur7OAfLGdFN5BPVJtIPL+0QuWfpd
- 99pk1a93VR4B9O05Rjw==
-X-Proofpoint-ORIG-GUID: C8mAwX4mru7j9agbb2QcEoXYyKHa220P
-X-Proofpoint-GUID: C8mAwX4mru7j9agbb2QcEoXYyKHa220P
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-16_05,2026-06-15_04,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 lowpriorityscore=0 spamscore=0 phishscore=0 malwarescore=0
- impostorscore=0 adultscore=0 suspectscore=0 bulkscore=0 priorityscore=1501
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606040000 definitions=main-2606160160
+X-MS-TrafficTypeDiagnostic:
+	AM0PR08MB11733:EE_|VI1PR08MB9981:EE_|DB3PEPF0000885F:EE_|DU0PR08MB7906:EE_
+X-MS-Office365-Filtering-Correlation-Id: 805d8129-8043-4fcb-0047-08decbbf7685
+x-checkrecipientrouted: true
+NoDisclaimer: true
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam-Untrusted:
+ BCL:0;ARA:13230040|1800799024|366016|23010399003|376014|22082099003|18002099003|6133799003|56012099006|3023799007|11063799006;
+X-Microsoft-Antispam-Message-Info-Original:
+ jLq6dSCXEnxDYxirvadEAfgd7KCuHZFUg3uo4hSrHmDKTjxczsM9aDad6XWO/inclwkvfyc4ndIq46NqFSdGoYcRYj9YmCClvx3ZJvAKd/l7WtN/RATA9cE59EN73XeagOl1T5iZ0fmrNTpbjbUU4yOx1MEjqsYqvAQYUpbwefYAGMXMkPRVlqan1CjLNvi8CE95AH8Sj9rJCtrd1n0ueB9GA9b4+UzA34Q0/P5f4uE2FWKMmkWVBrUwdua6c0FQ3nSwfSWIVNDKqRUhijo6P696rv3rUZ7P7PNPp10Rh64uVBQB7w6cFnxo+20TpknkvQ+FO657J6EP+ksYTbcTdkuowUlUevNMVTr1q6huB271fNlJArY6z1Ou5kAFccMWAr3B8MhVplGonQ5DO2/vxqpHw1k0tCLhjfZP4+FA7TdqXgqy03F4wc3aHItuAvDM54TZLjFV1UNepldIp4JZGyOJNdCCVjze3RUbTmpy0i8/732q3H1ahecKaTI47uBfXnuwkb//KFrPMr3gVDKShR01nEFmH3JWmfEzzFIViRhA6kjgyawwPZVBTNWK8wWYOiFDR80SlCipTzX9f//V9yoVvgRSLTw0wDLIFhDITOJueixUM1uBoqxGGxDVbijgEClAND3m7XIsKowm+bfoQYUS3fE4XmNxXs1Gj5zGvKNhYu4ArZTpiVw8/6KiOMzF
+X-Forefront-Antispam-Report-Untrusted:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR08MB11733.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(23010399003)(376014)(22082099003)(18002099003)(6133799003)(56012099006)(3023799007)(11063799006);DIR:OUT;SFP:1101;
+X-Exchange-RoutingPolicyChecked:
+ lJ67a7PP36q/B6e/VMPVbxT32nCkKVGFrzEy+nFxTXe+zlrPQRLjjzHc0vFr+oNIcJutPuZtrSZ6alzmoNLsZ6xqIN21fSd9Zevx1vXw29o6ep2H30IGJS5n/cNhUtkhoUo4/pD6SOBJ0DQOL3y5SKrwSrnWoQz/7O7dC+fABvLx8/iVQQlW/yo32qI6aCopNVcO4tsZrvhtCFEduU04sv00TBoB9UUwgF4O+WSQnQ2nCrgMOUhw/HjyYEPWDrCrw7CQBv12RKNXJulqRlkf+A2Fi5rAoyhhTRDHXhTRzoF8T22SHsmVchpBN9uYUu8aLWeTwSG912WxYTYfaov/jw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR08MB9981
+X-EOPAttributedMessage: 0
+X-MS-Exchange-Transport-CrossTenantHeadersStripped:
+ DB3PEPF0000885F.eurprd02.prod.outlook.com
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id-Prvs:
+	f91c7c4d-3800-4487-7d3f-08decbbf50ce
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|14060799003|23010399003|376014|82310400026|35042699022|36860700016|32650700020|18002099003|22082099003|3023799007|11063799006|6133799003|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	BZZk9NfgcnXCGCt//j4ASaluC0/3KFmNXWaGuMutZGiFAvI0IDs8kypvBLC13komU6eJda+BMGKrYc8n9lV39qXXbT9RCSjkD4wL4mDqolccBtjyvzxTvQXVvqcFis55kP7E+tfmUX92l+jqmv9rmiIO7lJtfn6zqD+CsiGDlXazJ8zQV6TP6ie9xvzp44uLIE0U36qD9Kcj0SJWrC4UYkcchq1U/ZcpPlMosIKmPgpkkJQTSw/k7+rxu3X50VzkTx7sn+14qNSw4YInAFjYsSCmgtp2huJIZnOAk412/p0kYZPNRq1O9F6ln5KaYu7ulkjTryCFGGyvDyd8wVGqd9YsvWU3WYV5hOnPeiPysGYwadRhZhbs9JwyeVH/f9wu4+RtTwbxeeTRlVHYrNj7crTnJe7ZPSgOAwCmtakHGkJAGcgtCqKQ5CDYUHE+RtN4BVlkTbQr2RpV3YPYp9Pvkp+NPd/+ZgWT2zNQ35ziL6AREEi0HoJxWI4TnJo48rMOmIPI8yskqEtd7DPQnNtZEOi14lGVRvSt6tmqvhYMn3o6R/GEgdS4w3u6XhYGv+WhRqSru0s4Lrw9N/v4vLsPjTnAl1ap7Qj5cvA+8AIxL0hhPUpEIhFh+MkWyZxeh1tinl+9wZj6yfCnltvTDE0SvFljq7LGBuQTGML1YmhkiQMeXoq1hCYtxc+FmPNomFny8qBqZcP07POhOJoo5+JEmwmkN3Wdm3ek4jFnU297jDA=
+X-Forefront-Antispam-Report:
+	CIP:4.158.2.129;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:outbound-uk1.az.dlp.m.darktrace.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(14060799003)(23010399003)(376014)(82310400026)(35042699022)(36860700016)(32650700020)(18002099003)(22082099003)(3023799007)(11063799006)(6133799003)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	6TccuUgs2sd6pPC0WaxwZsdRup/9pCZbcONPNWJXyxiJCoZLCbWqKM0Uv3TWHNnQMqUiap8zkWNjF32Gs4NIOUteO7zdLr47ImYbG+SYy9Psk241NxmG/Y/Ea6utqZYVwCSvY4wOXa7/Xp//7q27A5OX2r6NWdZe+MKDycLbl91ZMap7FaFTlsR7jI+CDlNdLWNbyF/t4quh1GkiTqSTuq/ThO28+sLuQ5Hb+YQBGZLMml6weUUtYrnw6ndl2Img1HT027NM1p2t2SIlRSxeQ8kCStHGU5a6D96uIEUIfQg1S1XSyAhhKOwQsrg905LrjRF9Gm0Y+l1HJnDgROy5ACxoHqMFMu2D5sg0AVz4sf+utdscVdKlZWJqqu+be2DO8fRmE3QCiu//ccBzZQoMYGHyQ89U/OjqBQOQBep8HYi4M2AbNiT2sRW5Ak+mg4Rp
+X-OriginatorOrg: arm.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jun 2026 15:53:51.9797
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 805d8129-8043-4fcb-0047-08decbbf7685
+X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[4.158.2.129];Helo=[outbound-uk1.az.dlp.m.darktrace.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DB3PEPF0000885F.eurprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR08MB7906
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=3];
+	DMARC_POLICY_ALLOW(-0.50)[arm.com,none];
+	R_DKIM_ALLOW(-0.20)[arm.com:s=selector1];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	TAGGED_FROM(0.00)[bounces-264238-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:rafael@kernel.org,m:viresh.kumar@linaro.org,m:mingo@redhat.com,m:peterz@infradead.org,m:juri.lelli@redhat.com,m:vincent.guittot@linaro.org,m:dietmar.eggemann@arm.com,m:rostedt@goodmis.org,m:bsegall@google.com,m:mgorman@suse.de,m:vschneid@redhat.com,m:kprateek.nayak@amd.com,m:christian.loehle@arm.com,m:linux-pm@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:zhongqiu.han@oss.qualcomm.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[zhongqiu.han@oss.qualcomm.com,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-264301-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:piyushthepal@gmail.com,m:u-boot@lists.denx.de,m:trini@konsulko.com,m:fberder@outlook.fr,m:stable@vger.kernel.org,m:nd@arm.com,s:lists@lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,arm.com:dkim,arm.com:email,arm.com:mid,arm.com:from_mime];
+	FORGED_SENDER(0.00)[jerome.forissier@arm.com,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com,lists.denx.de];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[zhongqiu.han@oss.qualcomm.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[konsulko.com,outlook.fr,vger.kernel.org,arm.com];
+	DKIM_TRACE(0.00)[arm.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jerome.forissier@arm.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	ALIAS_RESOLVED(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,oss.qualcomm.com:dkim,oss.qualcomm.com:mid,oss.qualcomm.com:from_mime,qualcomm.com:dkim,qualcomm.com:email];
-	TO_DN_NONE(0.00)[];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	RCVD_COUNT_SEVEN(0.00)[8]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 1F8CB691B82
+X-Rspamd-Queue-Id: 37FB4691BC3
 
-The need_freq_update flag makes sugov_should_update_freq() return true
-regardless of the rate_limit_us throttling, and is cleared in
-sugov_update_next_freq(). sugov_update_single_freq() and
-sugov_update_shared() go through that helper, so the flag does not
-persist there.
+On 12/06/2026 09:47, Piyush Paliwal wrote:
+> cdp_receive() reads a 16-bit TLV length (tlen) from the packet and only
+> checks that it does not exceed the remaining buffer (tlen > len). It then
+> unconditionally does "tlen -= 4" to skip the TLV header. As tlen is a
+> u16, a crafted TLV with a length of 0..3 underflows tlen to ~65532-65535.
+> 
+> For a CDP_APPLIANCE_VLAN_TLV the underflowed length then drives the inner
+> "while (tlen > 0)" loop, which walks ~64KB past the receive buffer reading
+> *ss each step -> out-of-bounds read (crash / info-influence). A length of
+> 0 additionally fails to advance pkt/len, hanging the parse loop.
+> 
+> Reject any TLV whose declared length is smaller than its own 4-byte
+> header. This is the same class of bug as the recent bootp/dhcpv6/sntp/nfs
+> fixes (unchecked length field), in a sibling LAN parser that was missed.
+> 
+> Verified with a standalone AddressSanitizer harness using the verbatim
+> cdp_receive()/cdp_compute_csum() routines: a 16-byte CDP frame with an
+> appliance-VLAN TLV of length 3 triggers a heap-buffer-overflow READ that
+> the check eliminates.
+> 
+> Fixes: f575ae1f7d39 ("net: Move CDP out of net.c")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Piyush Paliwal <piyushthepal@gmail.com>
+> ---
+>  net/cdp.c | 8 +++++++-
+>  1 file changed, 7 insertions(+), 1 deletion(-)
+> 
+> diff --git a/net/cdp.c b/net/cdp.c
+> index 6e404981d4a..300b3d5c409 100644
+> --- a/net/cdp.c
+> +++ b/net/cdp.c
+> @@ -276,7 +276,13 @@ void cdp_receive(const uchar *pkt, unsigned len)
+>  		ss = (const ushort *)pkt;
+>  		type = ntohs(ss[0]);
+>  		tlen = ntohs(ss[1]);
+> -		if (tlen > len)
+> +		/*
+> +		 * tlen includes the 4-byte TLV header, so it must be at
+> +		 * least 4.  Without this check a crafted tlen < 4 makes the
+> +		 * "tlen -= 4" below underflow (tlen is a ushort), and a tlen
+> +		 * of 0 also fails to advance pkt/len, hanging the loop.
+> +		 */
+> +		if (tlen < 4 || tlen > len)
+>  			goto pkt_short;
+>  
+>  		pkt += tlen;
 
-However, sugov_update_single_perf() (used by drivers implementing the
-->adjust_perf() callback, e.g. intel_pstate or amd-pstate in passive mode)
-calls cpufreq_driver_adjust_perf() directly and never goes through
-sugov_update_next_freq(), so the need_freq_update flag is not cleared in
-that path.
+Reviewed-by: Jerome Forissier <jerome.forissier@arm.com>
 
-Before commit 75da043d8f88 ("cpufreq/sched: Set need_freq_update in
-ignore_dl_rate_limit()"), this was effectively harmless because
-sugov_should_update_freq() still honoured the rate limit even when
-need_freq_update was set. After that change, the flag forces
-sugov_should_update_freq() to always return true, so once set, it stays
-effective indefinitely on the adjust_perf path.
+Added to my net queue for master, thanks!
 
-As a result, cpufreq_driver_adjust_perf() gets called on every scheduler
-utilization update (with the runqueue lock held) rather than being
-throttled by rate_limit_us, even if the driver itself may skip redundant
-hardware updates.
-
-Clear need_freq_update at the end of the adjust_perf path as well.
-
-Fixes: 75da043d8f88 ("cpufreq/sched: Set need_freq_update in ignore_dl_rate_limit()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zhongqiu Han <zhongqiu.han@oss.qualcomm.com>
----
- kernel/sched/cpufreq_schedutil.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/kernel/sched/cpufreq_schedutil.c b/kernel/sched/cpufreq_schedutil.c
-index ae9fd211cec1..a4e689eefdfb 100644
---- a/kernel/sched/cpufreq_schedutil.c
-+++ b/kernel/sched/cpufreq_schedutil.c
-@@ -486,6 +486,7 @@ static void sugov_update_single_perf(struct update_util_data *hook, u64 time,
- 	cpufreq_driver_adjust_perf(sg_policy->policy, sg_cpu->bw_min,
- 				   sg_cpu->util, max_cap);
- 
-+	sg_policy->need_freq_update = false;
- 	sg_policy->last_freq_update_time = time;
- }
- 
 -- 
-2.43.0
-
+Jerome
 
