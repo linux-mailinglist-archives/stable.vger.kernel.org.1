@@ -1,62 +1,66 @@
-Return-Path: <stable+bounces-266506-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266509-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id TPgqF7WeMWrGoQUAu9opvQ
-	(envelope-from <stable+bounces-266506-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:06:29 +0200
+	id tNHjHq+eMWrCoQUAu9opvQ
+	(envelope-from <stable+bounces-266509-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:06:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF98B694C00
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:06:28 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93066694BEE
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:06:22 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mGDTOKE8;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266506-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-266506-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dCz2pfp1;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266509-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266509-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E9646306C6C0
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:06:00 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D915D301A5AF
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:06:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 383FD3DDDBA;
-	Tue, 16 Jun 2026 19:05:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CB003D813F;
+	Tue, 16 Jun 2026 19:06:06 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F9233DD51C
-	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 19:05:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED0F43DD51C
+	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 19:06:03 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781636759; cv=none; b=bxEhYMyvMjv6kWJj9afSQNp0YWkDfE424tZKoAUoyyiyXg2IS+SMGAUUHGMgQa8HmZaS02MauTfxegq4T+ol6vE1rk5EAQuzugTrIvbzTqAqlQp/93KxIVQZjYBeqo7UIZHvIjLzwm2IhnifhWaWdzy1rESLs5Swzpv3xMZGCbk=
+	t=1781636766; cv=none; b=rY+t1s5pd4AVnisls/i8lBQez3hvkvAYAXIwBWU/Geoj5RbayaxNVNOQ8HgsO1x4mQaV0qY0PT7U2jC3drvj0lltcQy6u3fCmE54h9i3twM1mg7yppciqP6tsOupCncOnWTwaioYZ5tSM9CoKk1TLIYpAaMYYjKp0b2LyAYaiW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781636759; c=relaxed/simple;
-	bh=U1q2DgZVIv1pjekVdsy4WkcPcZzHcaC8S2CJ0AUGZvc=;
+	s=arc-20240116; t=1781636766; c=relaxed/simple;
+	bh=UV1f6JeATN4njMPKPPoRcN2PNwj5o72RPTpSNAT46cA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ub9JI32uWhMMAUBMbeYN9gT7iHXgXvsNDs/tnB0K18b1lngEHNYjFjL4bPVnL3iVGzKGW91vaMyey+gWjevtVQtJM4idoaBxHctvmJfAC5xsAuqSvqYq4zzMrccz/EfYEH5kZSYzJfSU44qLL+ewTNgz4Vv8OJC/zKWiZELgPD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mGDTOKE8; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 893DE1F00A3A;
-	Tue, 16 Jun 2026 19:05:57 +0000 (UTC)
+	 MIME-Version; b=FK9HebEPoMXfHJbgvQW5ve/RICeij+Ed0ba9b1TTJ4DNHCNZ3kjruCpj4ml/8MnBRzBjQFexgQZGiUfJNgZK+MnOp2cxMQOgKTDfCxRZKav0bbuxizzymq1UIgbXBbCwBek2Qbl6uK0NAxgW7YEDHIl1SRNMQFL9afggWvViTuA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dCz2pfp1; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E55581F00A3A;
+	Tue, 16 Jun 2026 19:06:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781636758;
-	bh=kNUVV42dGovCqlARfdhHKA5hbu+SZiEkX55SybJQUo0=;
+	s=k20260515; t=1781636763;
+	bh=/2Si6s6qIMuIzIyJbmJ3nYaIiEosI+P0N1wkRdIsRBA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=mGDTOKE8piB9VlFpKt5ADc2GQU3ahC2Xtq08JtCf2W4HDmis786hgpua58S5jloI6
-	 sN+5p6sNQfN1G3NkbXci+0t3WZTlNxuxcBUbq+J0QV2JSYFWVyf6F7lx5OC9j5NrTg
-	 ogKh7ku8TdklgJyYkVm/ztwaEz7HiRrfQZ+p6Au39Jk0itTbsS+MEs/6xj+ZrxVPeX
-	 LC0nZDlCDo9SLVY9mDLH44e8Cd8fj9m/QEIG8STiri/Xr3xt9jaKVga0tCRNOHwlIu
-	 ctoRsEUswCWks6Ns9K/1n79u4P/ySgWISC+ZTNOsoXBzxX1wPy8KA8CBWqZ/fOLKD2
-	 XxAJbGj5VIguQ==
+	b=dCz2pfp1evZOUTxxT75L2/myg+uj6g0aZyaEiB8ChJ0GxGSdN2FVwOhp5gA5AMgvO
+	 j0G/V69DtugIk0PrpSK+RY28o0qTywMERFn0hTINsJ6FDfzwCXmH/ph8NLc/SkaOQ6
+	 gUmTglA9n6TAJeuWXC2wX52pCcJnXsP/h8Mg9zQNhsDYHfkW1hBkATkayXvRXnBr8u
+	 hLKOs73LCzT/RVByDl71Duyh0IWDpn+vTXkBEwUFQuKsTXCjjvpKvyfcFl4t9OHZ7O
+	 ppZ45cHdnI7HNnJPTT1pkvis/QmU0tdKVQ1o7DUl3twMYxZ3tlQy6IpOvD+pC7Rbad
+	 lUFFaxomKGtaQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Ji'an Zhou <eilaimemedsnaimel@gmail.com>,
-	Thomas Gleixner <tglx@kernel.org>,
+Cc: Peter Zijlstra <peterz@infradead.org>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	John Stultz <jstultz@google.com>,
+	Metin Kaya <metin.kaya@arm.com>,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y] futex/requeue: Prevent NULL pointer dereference in remove_waiter() on self-deadlock
-Date: Tue, 16 Jun 2026 15:05:55 -0400
-Message-ID: <20260616190556.3487341-1-sashal@kernel.org>
+Subject: [PATCH 6.12.y 1/2] locking/mutex: Remove wakeups from under mutex::wait_lock
+Date: Tue, 16 Jun 2026 15:06:00 -0400
+Message-ID: <20260616190601.3487860-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026061525-groggily-boxlike-3e46@gregkh>
-References: <2026061525-groggily-boxlike-3e46@gregkh>
+In-Reply-To: <2026061513-dating-gaining-4f76@gregkh>
+References: <2026061513-dating-gaining-4f76@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -71,78 +75,595 @@ X-Spamd-Result: default: False [-3.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-266506-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:peterz@infradead.org,m:juri.lelli@redhat.com,m:jstultz@google.com,m:metin.kaya@arm.com,m:dave@stgolabs.net,m:kprateek.nayak@amd.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:eilaimemedsnaimel@gmail.com,m:tglx@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-266509-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,amd.com:email,vger.kernel.org:from_smtp,infradead.org:email,stgolabs.net:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: BF98B694C00
+X-Rspamd-Queue-Id: 93066694BEE
 
-From: Ji'an Zhou <eilaimemedsnaimel@gmail.com>
+From: Peter Zijlstra <peterz@infradead.org>
 
-[ Upstream commit 74e144274af39935b0f410c0ee4d2b91c3730414 ]
+[ Upstream commit 894d1b3db41cf7e6ae0304429a1747b3c3f390bc ]
 
-When FUTEX_CMP_REQUEUE_PI requeues a non-top waiter that already owns the
-target PI futex, task_blocks_on_rt_mutex() returns -EDEADLK before setting
-waiter->task.
+In preparation to nest mutex::wait_lock under rq::lock we need
+to remove wakeups from under it.
 
-The subsequent remove_waiter() in rt_mutex_start_proxy_lock() dereferences
-the NULL waiter->task, causing a kernel crash.
+Do this by utilizing wake_qs to defer the wakeup until after the
+lock is dropped.
 
-Add a self-deadlock check for non-top waiters before calling
-rt_mutex_start_proxy_lock(), analogous to the top-waiter check in
-futex_lock_pi_atomic().
+[Heavily changed after 55f036ca7e74 ("locking: WW mutex cleanup") and
+08295b3b5bee ("locking: Implement an algorithm choice for Wound-Wait
+mutexes")]
+[jstultz: rebased to mainline, added extra wake_up_q & init
+ to avoid hangs, similar to Connor's rework of this patch]
 
-Fixes: 3bfdc63936dd4773109b7b8c280c0f3b5ae7d349 ("rtmutex: Use waiter::task instead of current in remove_waiter()")
-Signed-off-by: Ji'an Zhou <eilaimemedsnaimel@gmail.com>
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Cc: stable@vger.kernel.org
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Juri Lelli <juri.lelli@redhat.com>
+Signed-off-by: John Stultz <jstultz@google.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Metin Kaya <metin.kaya@arm.com>
+Acked-by: Davidlohr Bueso <dave@stgolabs.net>
+Tested-by: K Prateek Nayak <kprateek.nayak@amd.com>
+Tested-by: Metin Kaya <metin.kaya@arm.com>
+Link: https://lore.kernel.org/r/20241009235352.1614323-2-jstultz@google.com
+Stable-dep-of: 40a25d59e85b ("locking/rtmutex: Skip remove_waiter() when waiter is not enqueued")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/futex/requeue.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ kernel/futex/pi.c               |  6 +++-
+ kernel/locking/mutex.c          | 16 ++++++++---
+ kernel/locking/rtmutex.c        | 51 ++++++++++++++++++++++++---------
+ kernel/locking/rtmutex_api.c    | 12 ++++++--
+ kernel/locking/rtmutex_common.h |  3 +-
+ kernel/locking/rwbase_rt.c      |  8 +++++-
+ kernel/locking/rwsem.c          |  4 +--
+ kernel/locking/spinlock_rt.c    |  5 ++--
+ kernel/locking/ww_mutex.h       | 30 ++++++++++++-------
+ 9 files changed, 96 insertions(+), 39 deletions(-)
 
-diff --git a/kernel/futex/requeue.c b/kernel/futex/requeue.c
-index f4a69942780f61..b5464a8608ed4a 100644
---- a/kernel/futex/requeue.c
-+++ b/kernel/futex/requeue.c
-@@ -633,6 +633,12 @@ int futex_requeue(u32 __user *uaddr1, unsigned int flags1,
- 			continue;
+diff --git a/kernel/futex/pi.c b/kernel/futex/pi.c
+index b4cdda1ea13086..ccd5d19dea68a7 100644
+--- a/kernel/futex/pi.c
++++ b/kernel/futex/pi.c
+@@ -922,6 +922,7 @@ int futex_lock_pi(u32 __user *uaddr, unsigned int flags, ktime_t *time, int tryl
+ 	struct rt_mutex_waiter rt_waiter;
+ 	struct futex_hash_bucket *hb;
+ 	struct futex_q q = futex_q_init;
++	DEFINE_WAKE_Q(wake_q);
+ 	int res, ret;
+ 
+ 	if (!IS_ENABLED(CONFIG_FUTEX_PI))
+@@ -1019,8 +1020,11 @@ int futex_lock_pi(u32 __user *uaddr, unsigned int flags, ktime_t *time, int tryl
+ 	 * such that futex_unlock_pi() is guaranteed to observe the waiter when
+ 	 * it sees the futex_q::pi_state.
+ 	 */
+-	ret = __rt_mutex_start_proxy_lock(&q.pi_state->pi_mutex, &rt_waiter, current);
++	ret = __rt_mutex_start_proxy_lock(&q.pi_state->pi_mutex, &rt_waiter, current, &wake_q);
++	preempt_disable();
+ 	raw_spin_unlock_irq(&q.pi_state->pi_mutex.wait_lock);
++	wake_up_q(&wake_q);
++	preempt_enable();
+ 
+ 	if (ret) {
+ 		if (ret == 1)
+diff --git a/kernel/locking/mutex.c b/kernel/locking/mutex.c
+index cbae8c0b89ab2b..6c94da061ec259 100644
+--- a/kernel/locking/mutex.c
++++ b/kernel/locking/mutex.c
+@@ -575,6 +575,7 @@ __mutex_lock_common(struct mutex *lock, unsigned int state, unsigned int subclas
+ 		    struct lockdep_map *nest_lock, unsigned long ip,
+ 		    struct ww_acquire_ctx *ww_ctx, const bool use_ww_ctx)
+ {
++	DEFINE_WAKE_Q(wake_q);
+ 	struct mutex_waiter waiter;
+ 	struct ww_mutex *ww;
+ 	int ret;
+@@ -625,7 +626,7 @@ __mutex_lock_common(struct mutex *lock, unsigned int state, unsigned int subclas
+ 	 */
+ 	if (__mutex_trylock(lock)) {
+ 		if (ww_ctx)
+-			__ww_mutex_check_waiters(lock, ww_ctx);
++			__ww_mutex_check_waiters(lock, ww_ctx, &wake_q);
+ 
+ 		goto skip_wait;
+ 	}
+@@ -645,7 +646,7 @@ __mutex_lock_common(struct mutex *lock, unsigned int state, unsigned int subclas
+ 		 * Add in stamp order, waking up waiters that must kill
+ 		 * themselves.
+ 		 */
+-		ret = __ww_mutex_add_waiter(&waiter, lock, ww_ctx);
++		ret = __ww_mutex_add_waiter(&waiter, lock, ww_ctx, &wake_q);
+ 		if (ret)
+ 			goto err_early_kill;
+ 	}
+@@ -681,6 +682,10 @@ __mutex_lock_common(struct mutex *lock, unsigned int state, unsigned int subclas
  		}
  
-+		/* Self-deadlock: non-top waiter already owns the PI futex. */
-+		if (rt_mutex_owner(&pi_state->pi_mutex) == this->task) {
-+			ret = -EDEADLK;
-+			break;
-+		}
+ 		raw_spin_unlock(&lock->wait_lock);
++		/* Make sure we do wakeups before calling schedule */
++		wake_up_q(&wake_q);
++		wake_q_init(&wake_q);
 +
- 		ret = rt_mutex_start_proxy_lock(&pi_state->pi_mutex,
- 						this->rt_waiter,
- 						this->task);
+ 		schedule_preempt_disabled();
+ 
+ 		first = __mutex_waiter_is_first(lock, &waiter);
+@@ -714,7 +719,7 @@ __mutex_lock_common(struct mutex *lock, unsigned int state, unsigned int subclas
+ 		 */
+ 		if (!ww_ctx->is_wait_die &&
+ 		    !__mutex_waiter_is_first(lock, &waiter))
+-			__ww_mutex_check_waiters(lock, ww_ctx);
++			__ww_mutex_check_waiters(lock, ww_ctx, &wake_q);
+ 	}
+ 
+ 	__mutex_remove_waiter(lock, &waiter);
+@@ -730,6 +735,7 @@ __mutex_lock_common(struct mutex *lock, unsigned int state, unsigned int subclas
+ 		ww_mutex_lock_acquired(ww, ww_ctx);
+ 
+ 	raw_spin_unlock(&lock->wait_lock);
++	wake_up_q(&wake_q);
+ 	preempt_enable();
+ 	return 0;
+ 
+@@ -741,6 +747,7 @@ __mutex_lock_common(struct mutex *lock, unsigned int state, unsigned int subclas
+ 	raw_spin_unlock(&lock->wait_lock);
+ 	debug_mutex_free_waiter(&waiter);
+ 	mutex_release(&lock->dep_map, ip);
++	wake_up_q(&wake_q);
+ 	preempt_enable();
+ 	return ret;
+ }
+@@ -951,9 +958,10 @@ static noinline void __sched __mutex_unlock_slowpath(struct mutex *lock, unsigne
+ 	if (owner & MUTEX_FLAG_HANDOFF)
+ 		__mutex_handoff(lock, next);
+ 
++	preempt_disable();
+ 	raw_spin_unlock(&lock->wait_lock);
+-
+ 	wake_up_q(&wake_q);
++	preempt_enable();
+ }
+ 
+ #ifndef CONFIG_DEBUG_LOCK_ALLOC
+diff --git a/kernel/locking/rtmutex.c b/kernel/locking/rtmutex.c
+index 66f9fb25d4be80..8fdbd293180130 100644
+--- a/kernel/locking/rtmutex.c
++++ b/kernel/locking/rtmutex.c
+@@ -34,13 +34,15 @@
+ 
+ static inline int __ww_mutex_add_waiter(struct rt_mutex_waiter *waiter,
+ 					struct rt_mutex *lock,
+-					struct ww_acquire_ctx *ww_ctx)
++					struct ww_acquire_ctx *ww_ctx,
++					struct wake_q_head *wake_q)
+ {
+ 	return 0;
+ }
+ 
+ static inline void __ww_mutex_check_waiters(struct rt_mutex *lock,
+-					    struct ww_acquire_ctx *ww_ctx)
++					    struct ww_acquire_ctx *ww_ctx,
++					    struct wake_q_head *wake_q)
+ {
+ }
+ 
+@@ -1201,7 +1203,8 @@ static int __sched task_blocks_on_rt_mutex(struct rt_mutex_base *lock,
+ 					   struct rt_mutex_waiter *waiter,
+ 					   struct task_struct *task,
+ 					   struct ww_acquire_ctx *ww_ctx,
+-					   enum rtmutex_chainwalk chwalk)
++					   enum rtmutex_chainwalk chwalk,
++					   struct wake_q_head *wake_q)
+ {
+ 	struct task_struct *owner = rt_mutex_owner(lock);
+ 	struct rt_mutex_waiter *top_waiter = waiter;
+@@ -1245,7 +1248,10 @@ static int __sched task_blocks_on_rt_mutex(struct rt_mutex_base *lock,
+ 
+ 		/* Check whether the waiter should back out immediately */
+ 		rtm = container_of(lock, struct rt_mutex, rtmutex);
+-		res = __ww_mutex_add_waiter(waiter, rtm, ww_ctx);
++		preempt_disable();
++		res = __ww_mutex_add_waiter(waiter, rtm, ww_ctx, wake_q);
++		wake_up_q(wake_q);
++		preempt_enable();
+ 		if (res) {
+ 			raw_spin_lock(&task->pi_lock);
+ 			rt_mutex_dequeue(lock, waiter);
+@@ -1677,12 +1683,14 @@ static void __sched rt_mutex_handle_deadlock(int res, int detect_deadlock,
+  * @state:	The task state for sleeping
+  * @chwalk:	Indicator whether full or partial chainwalk is requested
+  * @waiter:	Initializer waiter for blocking
++ * @wake_q:	The wake_q to wake tasks after we release the wait_lock
+  */
+ static int __sched __rt_mutex_slowlock(struct rt_mutex_base *lock,
+ 				       struct ww_acquire_ctx *ww_ctx,
+ 				       unsigned int state,
+ 				       enum rtmutex_chainwalk chwalk,
+-				       struct rt_mutex_waiter *waiter)
++				       struct rt_mutex_waiter *waiter,
++				       struct wake_q_head *wake_q)
+ {
+ 	struct rt_mutex *rtm = container_of(lock, struct rt_mutex, rtmutex);
+ 	struct ww_mutex *ww = ww_container_of(rtm);
+@@ -1693,7 +1701,7 @@ static int __sched __rt_mutex_slowlock(struct rt_mutex_base *lock,
+ 	/* Try to acquire the lock again: */
+ 	if (try_to_take_rt_mutex(lock, current, NULL)) {
+ 		if (build_ww_mutex() && ww_ctx) {
+-			__ww_mutex_check_waiters(rtm, ww_ctx);
++			__ww_mutex_check_waiters(rtm, ww_ctx, wake_q);
+ 			ww_mutex_lock_acquired(ww, ww_ctx);
+ 		}
+ 		return 0;
+@@ -1703,7 +1711,7 @@ static int __sched __rt_mutex_slowlock(struct rt_mutex_base *lock,
+ 
+ 	trace_contention_begin(lock, LCB_F_RT);
+ 
+-	ret = task_blocks_on_rt_mutex(lock, waiter, current, ww_ctx, chwalk);
++	ret = task_blocks_on_rt_mutex(lock, waiter, current, ww_ctx, chwalk, wake_q);
+ 	if (likely(!ret))
+ 		ret = rt_mutex_slowlock_block(lock, ww_ctx, state, NULL, waiter);
+ 
+@@ -1711,7 +1719,7 @@ static int __sched __rt_mutex_slowlock(struct rt_mutex_base *lock,
+ 		/* acquired the lock */
+ 		if (build_ww_mutex() && ww_ctx) {
+ 			if (!ww_ctx->is_wait_die)
+-				__ww_mutex_check_waiters(rtm, ww_ctx);
++				__ww_mutex_check_waiters(rtm, ww_ctx, wake_q);
+ 			ww_mutex_lock_acquired(ww, ww_ctx);
+ 		}
+ 	} else {
+@@ -1733,7 +1741,8 @@ static int __sched __rt_mutex_slowlock(struct rt_mutex_base *lock,
+ 
+ static inline int __rt_mutex_slowlock_locked(struct rt_mutex_base *lock,
+ 					     struct ww_acquire_ctx *ww_ctx,
+-					     unsigned int state)
++					     unsigned int state,
++					     struct wake_q_head *wake_q)
+ {
+ 	struct rt_mutex_waiter waiter;
+ 	int ret;
+@@ -1742,7 +1751,7 @@ static inline int __rt_mutex_slowlock_locked(struct rt_mutex_base *lock,
+ 	waiter.ww_ctx = ww_ctx;
+ 
+ 	ret = __rt_mutex_slowlock(lock, ww_ctx, state, RT_MUTEX_MIN_CHAINWALK,
+-				  &waiter);
++				  &waiter, wake_q);
+ 
+ 	debug_rt_mutex_free_waiter(&waiter);
+ 	return ret;
+@@ -1758,6 +1767,7 @@ static int __sched rt_mutex_slowlock(struct rt_mutex_base *lock,
+ 				     struct ww_acquire_ctx *ww_ctx,
+ 				     unsigned int state)
+ {
++	DEFINE_WAKE_Q(wake_q);
+ 	unsigned long flags;
+ 	int ret;
+ 
+@@ -1779,8 +1789,11 @@ static int __sched rt_mutex_slowlock(struct rt_mutex_base *lock,
+ 	 * irqsave/restore variants.
+ 	 */
+ 	raw_spin_lock_irqsave(&lock->wait_lock, flags);
+-	ret = __rt_mutex_slowlock_locked(lock, ww_ctx, state);
++	ret = __rt_mutex_slowlock_locked(lock, ww_ctx, state, &wake_q);
++	preempt_disable();
+ 	raw_spin_unlock_irqrestore(&lock->wait_lock, flags);
++	wake_up_q(&wake_q);
++	preempt_enable();
+ 	rt_mutex_post_schedule();
+ 
+ 	return ret;
+@@ -1806,8 +1819,10 @@ static __always_inline int __rt_mutex_lock(struct rt_mutex_base *lock,
+ /**
+  * rtlock_slowlock_locked - Slow path lock acquisition for RT locks
+  * @lock:	The underlying RT mutex
++ * @wake_q:	The wake_q to wake tasks after we release the wait_lock
+  */
+-static void __sched rtlock_slowlock_locked(struct rt_mutex_base *lock)
++static void __sched rtlock_slowlock_locked(struct rt_mutex_base *lock,
++					   struct wake_q_head *wake_q)
+ {
+ 	struct rt_mutex_waiter waiter;
+ 	struct task_struct *owner;
+@@ -1824,7 +1839,7 @@ static void __sched rtlock_slowlock_locked(struct rt_mutex_base *lock)
+ 
+ 	trace_contention_begin(lock, LCB_F_RT);
+ 
+-	task_blocks_on_rt_mutex(lock, &waiter, current, NULL, RT_MUTEX_MIN_CHAINWALK);
++	task_blocks_on_rt_mutex(lock, &waiter, current, NULL, RT_MUTEX_MIN_CHAINWALK, wake_q);
+ 
+ 	for (;;) {
+ 		/* Try to acquire the lock again */
+@@ -1835,7 +1850,11 @@ static void __sched rtlock_slowlock_locked(struct rt_mutex_base *lock)
+ 			owner = rt_mutex_owner(lock);
+ 		else
+ 			owner = NULL;
++		preempt_disable();
+ 		raw_spin_unlock_irq(&lock->wait_lock);
++		wake_up_q(wake_q);
++		wake_q_init(wake_q);
++		preempt_enable();
+ 
+ 		if (!owner || !rtmutex_spin_on_owner(lock, &waiter, owner))
+ 			schedule_rtlock();
+@@ -1860,10 +1879,14 @@ static void __sched rtlock_slowlock_locked(struct rt_mutex_base *lock)
+ static __always_inline void __sched rtlock_slowlock(struct rt_mutex_base *lock)
+ {
+ 	unsigned long flags;
++	DEFINE_WAKE_Q(wake_q);
+ 
+ 	raw_spin_lock_irqsave(&lock->wait_lock, flags);
+-	rtlock_slowlock_locked(lock);
++	rtlock_slowlock_locked(lock, &wake_q);
++	preempt_disable();
+ 	raw_spin_unlock_irqrestore(&lock->wait_lock, flags);
++	wake_up_q(&wake_q);
++	preempt_enable();
+ }
+ 
+ #endif /* RT_MUTEX_BUILD_SPINLOCKS */
+diff --git a/kernel/locking/rtmutex_api.c b/kernel/locking/rtmutex_api.c
+index a6974d04459301..2bc14c049a644c 100644
+--- a/kernel/locking/rtmutex_api.c
++++ b/kernel/locking/rtmutex_api.c
+@@ -275,6 +275,7 @@ void __sched rt_mutex_proxy_unlock(struct rt_mutex_base *lock)
+  * @lock:		the rt_mutex to take
+  * @waiter:		the pre-initialized rt_mutex_waiter
+  * @task:		the task to prepare
++ * @wake_q:		the wake_q to wake tasks after we release the wait_lock
+  *
+  * Starts the rt_mutex acquire; it enqueues the @waiter and does deadlock
+  * detection. It does not wait, see rt_mutex_wait_proxy_lock() for that.
+@@ -291,7 +292,8 @@ void __sched rt_mutex_proxy_unlock(struct rt_mutex_base *lock)
+  */
+ int __sched __rt_mutex_start_proxy_lock(struct rt_mutex_base *lock,
+ 					struct rt_mutex_waiter *waiter,
+-					struct task_struct *task)
++					struct task_struct *task,
++					struct wake_q_head *wake_q)
+ {
+ 	int ret;
+ 
+@@ -302,7 +304,7 @@ int __sched __rt_mutex_start_proxy_lock(struct rt_mutex_base *lock,
+ 
+ 	/* We enforce deadlock detection for futexes */
+ 	ret = task_blocks_on_rt_mutex(lock, waiter, task, NULL,
+-				      RT_MUTEX_FULL_CHAINWALK);
++				      RT_MUTEX_FULL_CHAINWALK, wake_q);
+ 
+ 	if (ret && !rt_mutex_owner(lock)) {
+ 		/*
+@@ -341,12 +343,16 @@ int __sched rt_mutex_start_proxy_lock(struct rt_mutex_base *lock,
+ 				      struct task_struct *task)
+ {
+ 	int ret;
++	DEFINE_WAKE_Q(wake_q);
+ 
+ 	raw_spin_lock_irq(&lock->wait_lock);
+-	ret = __rt_mutex_start_proxy_lock(lock, waiter, task);
++	ret = __rt_mutex_start_proxy_lock(lock, waiter, task, &wake_q);
+ 	if (unlikely(ret))
+ 		remove_waiter(lock, waiter);
++	preempt_disable();
+ 	raw_spin_unlock_irq(&lock->wait_lock);
++	wake_up_q(&wake_q);
++	preempt_enable();
+ 
+ 	return ret;
+ }
+diff --git a/kernel/locking/rtmutex_common.h b/kernel/locking/rtmutex_common.h
+index 1162e07cdaea13..c38a2d2d4a7eef 100644
+--- a/kernel/locking/rtmutex_common.h
++++ b/kernel/locking/rtmutex_common.h
+@@ -83,7 +83,8 @@ extern void rt_mutex_init_proxy_locked(struct rt_mutex_base *lock,
+ extern void rt_mutex_proxy_unlock(struct rt_mutex_base *lock);
+ extern int __rt_mutex_start_proxy_lock(struct rt_mutex_base *lock,
+ 				     struct rt_mutex_waiter *waiter,
+-				     struct task_struct *task);
++				     struct task_struct *task,
++				     struct wake_q_head *);
+ extern int rt_mutex_start_proxy_lock(struct rt_mutex_base *lock,
+ 				     struct rt_mutex_waiter *waiter,
+ 				     struct task_struct *task);
+diff --git a/kernel/locking/rwbase_rt.c b/kernel/locking/rwbase_rt.c
+index 34a59569db6bed..9f4322c0748622 100644
+--- a/kernel/locking/rwbase_rt.c
++++ b/kernel/locking/rwbase_rt.c
+@@ -69,6 +69,7 @@ static int __sched __rwbase_read_lock(struct rwbase_rt *rwb,
+ 				      unsigned int state)
+ {
+ 	struct rt_mutex_base *rtm = &rwb->rtmutex;
++	DEFINE_WAKE_Q(wake_q);
+ 	int ret;
+ 
+ 	rwbase_pre_schedule();
+@@ -110,7 +111,7 @@ static int __sched __rwbase_read_lock(struct rwbase_rt *rwb,
+ 	 * For rwlocks this returns 0 unconditionally, so the below
+ 	 * !ret conditionals are optimized out.
+ 	 */
+-	ret = rwbase_rtmutex_slowlock_locked(rtm, state);
++	ret = rwbase_rtmutex_slowlock_locked(rtm, state, &wake_q);
+ 
+ 	/*
+ 	 * On success the rtmutex is held, so there can't be a writer
+@@ -121,7 +122,12 @@ static int __sched __rwbase_read_lock(struct rwbase_rt *rwb,
+ 	 */
+ 	if (!ret)
+ 		atomic_inc(&rwb->readers);
++
++	preempt_disable();
+ 	raw_spin_unlock_irq(&rtm->wait_lock);
++	wake_up_q(&wake_q);
++	preempt_enable();
++
+ 	if (!ret)
+ 		rwbase_rtmutex_unlock(rtm);
+ 
+diff --git a/kernel/locking/rwsem.c b/kernel/locking/rwsem.c
+index 2bbb6eca51445b..2ddb827e3bea03 100644
+--- a/kernel/locking/rwsem.c
++++ b/kernel/locking/rwsem.c
+@@ -1413,8 +1413,8 @@ static inline void __downgrade_write(struct rw_semaphore *sem)
+ #define rwbase_rtmutex_lock_state(rtm, state)		\
+ 	__rt_mutex_lock(rtm, state)
+ 
+-#define rwbase_rtmutex_slowlock_locked(rtm, state)	\
+-	__rt_mutex_slowlock_locked(rtm, NULL, state)
++#define rwbase_rtmutex_slowlock_locked(rtm, state, wq)	\
++	__rt_mutex_slowlock_locked(rtm, NULL, state, wq)
+ 
+ #define rwbase_rtmutex_unlock(rtm)			\
+ 	__rt_mutex_unlock(rtm)
+diff --git a/kernel/locking/spinlock_rt.c b/kernel/locking/spinlock_rt.c
+index 38e292454fccb5..014143934e0012 100644
+--- a/kernel/locking/spinlock_rt.c
++++ b/kernel/locking/spinlock_rt.c
+@@ -162,9 +162,10 @@ rwbase_rtmutex_lock_state(struct rt_mutex_base *rtm, unsigned int state)
+ }
+ 
+ static __always_inline int
+-rwbase_rtmutex_slowlock_locked(struct rt_mutex_base *rtm, unsigned int state)
++rwbase_rtmutex_slowlock_locked(struct rt_mutex_base *rtm, unsigned int state,
++			       struct wake_q_head *wake_q)
+ {
+-	rtlock_slowlock_locked(rtm);
++	rtlock_slowlock_locked(rtm, wake_q);
+ 	return 0;
+ }
+ 
+diff --git a/kernel/locking/ww_mutex.h b/kernel/locking/ww_mutex.h
+index 76d204b7d29c9b..a54bd16d0f17de 100644
+--- a/kernel/locking/ww_mutex.h
++++ b/kernel/locking/ww_mutex.h
+@@ -275,7 +275,7 @@ __ww_ctx_less(struct ww_acquire_ctx *a, struct ww_acquire_ctx *b)
+  */
+ static bool
+ __ww_mutex_die(struct MUTEX *lock, struct MUTEX_WAITER *waiter,
+-	       struct ww_acquire_ctx *ww_ctx)
++	       struct ww_acquire_ctx *ww_ctx, struct wake_q_head *wake_q)
+ {
+ 	if (!ww_ctx->is_wait_die)
+ 		return false;
+@@ -284,7 +284,7 @@ __ww_mutex_die(struct MUTEX *lock, struct MUTEX_WAITER *waiter,
+ #ifndef WW_RT
+ 		debug_mutex_wake_waiter(lock, waiter);
+ #endif
+-		wake_up_process(waiter->task);
++		wake_q_add(wake_q, waiter->task);
+ 	}
+ 
+ 	return true;
+@@ -299,7 +299,8 @@ __ww_mutex_die(struct MUTEX *lock, struct MUTEX_WAITER *waiter,
+  */
+ static bool __ww_mutex_wound(struct MUTEX *lock,
+ 			     struct ww_acquire_ctx *ww_ctx,
+-			     struct ww_acquire_ctx *hold_ctx)
++			     struct ww_acquire_ctx *hold_ctx,
++			     struct wake_q_head *wake_q)
+ {
+ 	struct task_struct *owner = __ww_mutex_owner(lock);
+ 
+@@ -331,7 +332,7 @@ static bool __ww_mutex_wound(struct MUTEX *lock,
+ 		 * wakeup pending to re-read the wounded state.
+ 		 */
+ 		if (owner != current)
+-			wake_up_process(owner);
++			wake_q_add(wake_q, owner);
+ 
+ 		return true;
+ 	}
+@@ -352,7 +353,8 @@ static bool __ww_mutex_wound(struct MUTEX *lock,
+  * The current task must not be on the wait list.
+  */
+ static void
+-__ww_mutex_check_waiters(struct MUTEX *lock, struct ww_acquire_ctx *ww_ctx)
++__ww_mutex_check_waiters(struct MUTEX *lock, struct ww_acquire_ctx *ww_ctx,
++			 struct wake_q_head *wake_q)
+ {
+ 	struct MUTEX_WAITER *cur;
+ 
+@@ -364,8 +366,8 @@ __ww_mutex_check_waiters(struct MUTEX *lock, struct ww_acquire_ctx *ww_ctx)
+ 		if (!cur->ww_ctx)
+ 			continue;
+ 
+-		if (__ww_mutex_die(lock, cur, ww_ctx) ||
+-		    __ww_mutex_wound(lock, cur->ww_ctx, ww_ctx))
++		if (__ww_mutex_die(lock, cur, ww_ctx, wake_q) ||
++		    __ww_mutex_wound(lock, cur->ww_ctx, ww_ctx, wake_q))
+ 			break;
+ 	}
+ }
+@@ -377,6 +379,8 @@ __ww_mutex_check_waiters(struct MUTEX *lock, struct ww_acquire_ctx *ww_ctx)
+ static __always_inline void
+ ww_mutex_set_context_fastpath(struct ww_mutex *lock, struct ww_acquire_ctx *ctx)
+ {
++	DEFINE_WAKE_Q(wake_q);
++
+ 	ww_mutex_lock_acquired(lock, ctx);
+ 
+ 	/*
+@@ -405,8 +409,11 @@ ww_mutex_set_context_fastpath(struct ww_mutex *lock, struct ww_acquire_ctx *ctx)
+ 	 * die or wound us.
+ 	 */
+ 	lock_wait_lock(&lock->base);
+-	__ww_mutex_check_waiters(&lock->base, ctx);
++	__ww_mutex_check_waiters(&lock->base, ctx, &wake_q);
++	preempt_disable();
+ 	unlock_wait_lock(&lock->base);
++	wake_up_q(&wake_q);
++	preempt_enable();
+ }
+ 
+ static __always_inline int
+@@ -488,7 +495,8 @@ __ww_mutex_check_kill(struct MUTEX *lock, struct MUTEX_WAITER *waiter,
+ static inline int
+ __ww_mutex_add_waiter(struct MUTEX_WAITER *waiter,
+ 		      struct MUTEX *lock,
+-		      struct ww_acquire_ctx *ww_ctx)
++		      struct ww_acquire_ctx *ww_ctx,
++		      struct wake_q_head *wake_q)
+ {
+ 	struct MUTEX_WAITER *cur, *pos = NULL;
+ 	bool is_wait_die;
+@@ -532,7 +540,7 @@ __ww_mutex_add_waiter(struct MUTEX_WAITER *waiter,
+ 		pos = cur;
+ 
+ 		/* Wait-Die: ensure younger waiters die. */
+-		__ww_mutex_die(lock, cur, ww_ctx);
++		__ww_mutex_die(lock, cur, ww_ctx, wake_q);
+ 	}
+ 
+ 	__ww_waiter_add(lock, waiter, pos);
+@@ -550,7 +558,7 @@ __ww_mutex_add_waiter(struct MUTEX_WAITER *waiter,
+ 		 * such that either we or the fastpath will wound @ww->ctx.
+ 		 */
+ 		smp_mb();
+-		__ww_mutex_wound(lock, ww_ctx, ww->ctx);
++		__ww_mutex_wound(lock, ww_ctx, ww->ctx, wake_q);
+ 	}
+ 
+ 	return 0;
 -- 
 2.53.0
 
