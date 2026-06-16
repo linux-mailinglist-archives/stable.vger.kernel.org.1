@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-264011-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265977-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id z8TOH+hsMWoPjAUAu9opvQ
-	(envelope-from <stable+bounces-264011-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:34:00 +0200
+	id TC0UKfeTMWoTnQUAu9opvQ
+	(envelope-from <stable+bounces-265977-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:20:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 561FA69126F
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:34:00 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2950A6940BF
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:20:39 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=se4o1ayp;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264011-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-264011-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=H7JhWAnO;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265977-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265977-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1942930604AE
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:27:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BE35B30A09C9
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:20:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1854518859B;
-	Tue, 16 Jun 2026 15:27:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C0413EB0F5;
+	Tue, 16 Jun 2026 18:20:13 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C10D43DA2C;
-	Tue, 16 Jun 2026 15:27:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECFA23CEBBD;
+	Tue, 16 Jun 2026 18:20:11 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781623655; cv=none; b=VslE5REhF0LYkFdsNf3n16T0cTEabktUhcFnGID7tdzUrgpBxvaYIADuP0GZEOavlq3R95FXIgcFdExEbfPvGitm7XH5m3doUPKQrnhq21TMYWRuGdz4hCMvmSiHDkuAXNKMrwF70zShVT6wi06HFzYjYjAR1Fgzxd2jSOWZFig=
+	t=1781634013; cv=none; b=a6FbqnqvtDv9RuWizQxxCniw0INlztenPtlirR+f5FpnxDbHvJfYU3xxHsemhaV15AV9gOYDLXofDC5GWOSF5+B2i99ScEy7cA6pP5gQOjT4ssilQc0rQOO3gOMViNZWxOrsV0Tx4j+izOTe3aqOjKtKOtaiH6GXZxpsp3/3+jI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781623655; c=relaxed/simple;
-	bh=9ODJL55irshWtOSSHpqaZA5nAHi3YLnM0mCNc7jgWOk=;
+	s=arc-20240116; t=1781634013; c=relaxed/simple;
+	bh=HB6tSEhyo+TSqad4x2ZFl5Wmqw5zyGw9oTP93ggtI1Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=abgXyHk4NaY3eqmgrhxWWXtAGV44xhLgq0+MHucWV5CzhJ3zfCj+QNJoxD5acbT6QGu3cLqndneb2Yoc9IAOgj2vSo4TuHAUeLBqqdTqoM6YjALD961kv104BLQuFdmID0YW+REhQ8s/LCgYXushjJsCld34s+W0UBCra2DClT0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=se4o1ayp; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3BBE1F000E9;
-	Tue, 16 Jun 2026 15:27:33 +0000 (UTC)
+	 MIME-Version; b=fEkWIedZvnf545xwmt9xNzBPnwldtHG4HEeQB7CBZGqBxnpB9tBXv/OSvrNJ8sgppl02y8DZinpNiQx1krHlC6c20F+LSlBvGOqYaNDFd2miHmMvaygL0/4kR3FxpwuYQ8zujBGHCtz9t1dHFsVp4SU9XflshugG6huMajbax9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H7JhWAnO; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD3871F000E9;
+	Tue, 16 Jun 2026 18:20:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781623654;
-	bh=MkloERE88vPO7bQKPxIT+JqW9LiGCAu+na2InM3rr/U=;
+	s=korg; t=1781634011;
+	bh=b3wVfaVsq6/iCYIz5R/CKbSz5oB3UbxBjZs8LsvgUdg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=se4o1aypFYUU0+nhFVtsImH2bt/ID0K10SFcoIVhte9iFK6uwGpFu0/vSsGtL4faV
-	 Cw4M95wDdqj2cNUbQvaX2m1MM4kabdF1Tlpj/ajiFpe8hg2G2tPShJHuhn7GngGZoQ
-	 NAU10u1vBn+Nyl/nMx2ie854GSMQq4izuPt8en+M=
+	b=H7JhWAnOL8HeToow2jNUJokovO7UFj6B+I135UMFJyA0AdTB3IstO0hCWwvxZ3/XY
+	 eFHeTXKiAbgt5Y0bRHXNOx2VEHaRBYfi76D/fYEyJHLmrUqhwv6Ggbig8N54GpS/t6
+	 KARaUTBvOMpc44J7312yea6Ea0HotKef4zUbGOXg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alice Ryhl <aliceryhl@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 7.0 191/378] rust: kasan/kbuild: fix rustc-option when cross-compiling
+	Mingyu Wang <25181214217@stu.xidian.edu.cn>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 184/411] net: qrtr: fix refcount saturation and potential UAF in qrtr_port_remove
 Date: Tue, 16 Jun 2026 20:27:02 +0530
-Message-ID: <20260616145120.433180599@linuxfoundation.org>
+Message-ID: <20260616145110.479511279@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,159 +70,117 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264011-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:aliceryhl@google.com,m:ojeda@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265977-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:25181214217@stu.xidian.edu.cn,m:horms@kernel.org,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[xidian.edu.cn:email,vger.kernel.org:from_smtp,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 561FA69126F
+X-Rspamd-Queue-Id: 2950A6940BF
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alice Ryhl <aliceryhl@google.com>
+From: Mingyu Wang <25181214217@stu.xidian.edu.cn>
 
-commit 4a44b17406cb5a93f90af3df9392b3a45eb336fb upstream.
+[ Upstream commit a2171131ecda1ed61a594a1eb715e75fdad0fef5 ]
 
-The Makefile version of rustc-option currently checks whether the option
-exists for the host target instead of the target actually being compiled
-for. It was done this way in commit 46e24a545cdb ("rust: kasan/kbuild:
-fix missing flags on first build") to avoid a circular dependency on
-target.json. However, because of this, rustc-option currently does not
-function when cross-compiling from x86_64 to aarch64 if
-CONFIG_SHADOW_CALL_STACK is enabled. This is because KBUILD_RUSTFLAGS
-contains -Zfixed-x18 under this configuration. Since that flag does not
-exist on the host target, rustc-option runs into a compilation failure
-every time, leading to all flags being rejected as unsupported.
+In qrtr_port_remove(), the socket reference count is decremented via
+__sock_put() before the port is removed from the qrtr_ports XArray and
+before the RCU grace period elapses.
 
-To fix this, update rustc-option to pass a --target parameter so that
-the host target is not used. For targets using target.json, use a
-built-in target that is as close as possible to the target created with
-target.json to avoid the circular dependency on target.json.
+This breaks the fundamental RCU update paradigm. It exposes a race
+window where a concurrent RCU reader (such as qrtr_reset_ports() or
+qrtr_port_lookup()) can obtain a pointer to the socket from the XArray,
+and attempt to call sock_hold() on a socket whose reference count has
+already dropped to zero.
 
-One scenario where this causes a boot failure:
-* Cross-compiled from x86_64 to aarch64.
-* With CONFIG_SHADOW_CALL_STACK=y
-* With CONFIG_KASAN_SW_TAGS=y
-* With CONFIG_KASAN_INLINE=n
-Then the resulting kernel image will fail to boot when it first calls
-into Rust code with a crash along the lines of "Unable to handle kernel
-paging request at virtual address 0ffffffc08541796". This is because the
-call threshold is not specified, so rustc will inline kasan operations,
-but the kasan shadow offset is not specified, which leads to the inlined
-kasan instructions being incorrect.
+This exact race condition was hit during syzkaller fuzzing, leading to
+the following refcount saturation warning and a potential Use-After-Free:
 
-Note that the -Zsanitizer=kernel-hwaddress parameter itself does not
-lead to a rustc-option failure despite being aarch64-specific because
-RUSTFLAGS_KASAN has not yet been added to KBUILD_RUSTFLAGS when
-rustc-option is evaluated by the kasan Makefile.
+  refcount_t: saturated; leaking memory.
+  WARNING: CPU: 3 PID: 1273 at lib/refcount.c:22 refcount_warn_saturate+0xae/0x1d0
+  Modules linked in: qrtr(+) bochs drm_shmem_helper ...
+  Call Trace:
+   <TASK>
+   qrtr_reset_ports net/qrtr/af_qrtr.c:768 [inline] [qrtr]
+   __qrtr_bind.isra.0+0x48b/0x570 net/qrtr/af_qrtr.c:805 [qrtr]
+   qrtr_bind+0x17d/0x210 net/qrtr/af_qrtr.c:901 [qrtr]
+   kernel_bind+0xe4/0x120 net/socket.c:3592
+   qrtr_ns_init+0x1a6/0x380 net/qrtr/ns.c:715 [qrtr]
+   qrtr_proto_init+0x3b/0xff0 net/qrtr/af_qrtr.c:169 [qrtr]
+   do_one_initcall+0xf5/0x5e0 init/main.c:1283
+   ...
+   </TASK>
 
-Cc: stable@vger.kernel.org
-Fixes: 46e24a545cdb ("rust: kasan/kbuild: fix missing flags on first build")
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-Link: https://patch.msgid.link/20260507-rustc-option-cross-v2-1-2f650a49c2b5@google.com
-[ Edited slightly:
-    - Reset variable to avoid using the environment.
-    - Use a simply expanded variable flavor for simplicity.
-    - Export variable so that behavior in sub-`make`s is consistent.
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix this by deferring the reference count decrement until after the
+xa_erase() and the synchronize_rcu() complete.
 
-  This matches other variables. - Miguel ]
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+(Note: The v1 of this patch incorrectly replaced __sock_put() with
+sock_put(). As Simon Horman pointed out, the callers of qrtr_port_remove()
+still hold a reference to the socket, so freeing the socket memory here
+would lead to a subsequent UAF in the caller. Thus, the __sock_put() is
+kept, but only repositioned to close the RCU race.)
+
+Fixes: bdabad3e363d ("net: Add Qualcomm IPC router")
+Signed-off-by: Mingyu Wang <25181214217@stu.xidian.edu.cn>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260604064801.1180388-1-w15303746062@163.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Makefile                  |    3 ++-
- arch/x86/Makefile         |    4 ++++
- arch/x86/Makefile.um      |    8 ++++++++
- scripts/Makefile.compiler |    2 +-
- 4 files changed, 15 insertions(+), 2 deletions(-)
+ net/qrtr/af_qrtr.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/Makefile
-+++ b/Makefile
-@@ -606,6 +606,7 @@ KBUILD_RUSTFLAGS := $(rust_common_flags)
- 		    -Crelocation-model=static \
- 		    -Zfunction-sections=n \
- 		    -Wclippy::float_arithmetic
-+KBUILD_RUSTFLAGS_OPTION_CHKS :=
+diff --git a/net/qrtr/af_qrtr.c b/net/qrtr/af_qrtr.c
+index 431fd1f2b80c18..6f4b901afc330c 100644
+--- a/net/qrtr/af_qrtr.c
++++ b/net/qrtr/af_qrtr.c
+@@ -702,13 +702,13 @@ static void qrtr_port_remove(struct qrtr_sock *ipc)
+ 	if (port == QRTR_PORT_CTRL)
+ 		port = 0;
  
- KBUILD_AFLAGS_KERNEL :=
- KBUILD_CFLAGS_KERNEL :=
-@@ -642,7 +643,7 @@ export KBUILD_USERCFLAGS KBUILD_USERLDFL
+-	__sock_put(&ipc->sk);
+-
+ 	xa_erase(&qrtr_ports, port);
  
- export KBUILD_CPPFLAGS NOSTDINC_FLAGS LINUXINCLUDE OBJCOPYFLAGS KBUILD_LDFLAGS
- export KBUILD_CFLAGS CFLAGS_KERNEL CFLAGS_MODULE
--export KBUILD_RUSTFLAGS RUSTFLAGS_KERNEL RUSTFLAGS_MODULE
-+export KBUILD_RUSTFLAGS RUSTFLAGS_KERNEL RUSTFLAGS_MODULE KBUILD_RUSTFLAGS_OPTION_CHKS
- export KBUILD_AFLAGS AFLAGS_KERNEL AFLAGS_MODULE
- export KBUILD_AFLAGS_MODULE KBUILD_CFLAGS_MODULE KBUILD_RUSTFLAGS_MODULE KBUILD_LDFLAGS_MODULE
- export KBUILD_AFLAGS_KERNEL KBUILD_CFLAGS_KERNEL KBUILD_RUSTFLAGS_KERNEL
---- a/arch/x86/Makefile
-+++ b/arch/x86/Makefile
-@@ -81,6 +81,10 @@ KBUILD_CFLAGS += -mno-sse -mno-mmx -mno-
- KBUILD_RUSTFLAGS += --target=$(objtree)/scripts/target.json
- KBUILD_RUSTFLAGS += -Ctarget-feature=-sse,-sse2,-sse3,-ssse3,-sse4.1,-sse4.2,-avx,-avx2
- 
-+# The target.json file is not available when invoking rustc-option, so use the
-+# built-in target when checking whether flags are supported instead.
-+KBUILD_RUSTFLAGS_OPTION_CHKS += --target=x86_64-unknown-none
+ 	/* Ensure that if qrtr_port_lookup() did enter the RCU read section we
+ 	 * wait for it to up increment the refcount */
+ 	synchronize_rcu();
 +
- #
- # CFLAGS for compiling floating point code inside the kernel.
- #
---- a/arch/x86/Makefile.um
-+++ b/arch/x86/Makefile.um
-@@ -14,6 +14,14 @@ endif
++	__sock_put(&ipc->sk);
+ }
  
- KBUILD_RUSTFLAGS += --target=$(objtree)/scripts/target.json
- 
-+# The target.json file is not available when invoking rustc-option, so use the
-+# built-in target when checking whether flags are supported instead.
-+ifeq ($(CONFIG_X86_32),y)
-+KBUILD_RUSTFLAGS_OPTION_CHKS += --target=i686-unknown-linux-gnu
-+else
-+KBUILD_RUSTFLAGS_OPTION_CHKS += --target=x86_64-unknown-linux-gnu
-+endif
-+
- ifeq ($(CONFIG_X86_32),y)
- START := 0x8048000
- 
---- a/scripts/Makefile.compiler
-+++ b/scripts/Makefile.compiler
-@@ -80,7 +80,7 @@ ld-option = $(call try-run, $(LD) $(KBUI
- # TODO: remove RUSTC_BOOTSTRAP=1 when we raise the minimum GNU Make version to 4.4
- __rustc-option = $(call try-run,\
- 	echo '$(pound)![allow(missing_docs)]$(pound)![feature(no_core)]$(pound)![no_core]' | RUSTC_BOOTSTRAP=1\
--	$(1) --sysroot=/dev/null $(filter-out --sysroot=/dev/null --target=%,$(2)) $(3)\
-+	$(1) --sysroot=/dev/null $(KBUILD_RUSTFLAGS_OPTION_CHKS) $(filter-out --sysroot=/dev/null --target=%target.json,$(2)) $(3)\
- 	--crate-type=rlib --out-dir=$(TMPOUT) --emit=obj=- - >/dev/null,$(3),$(4))
- 
- # rustc-option
+ /* Assign port number to socket.
+-- 
+2.53.0
+
 
 
 
