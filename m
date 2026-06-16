@@ -1,62 +1,63 @@
-Return-Path: <stable+bounces-265955-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263953-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 4I8ZGH2TMWrgnAUAu9opvQ
-	(envelope-from <stable+bounces-265955-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:18:37 +0200
+	id mcIrBqNqMWpCiwUAu9opvQ
+	(envelope-from <stable+bounces-263953-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:24:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8EDF69403C
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:18:36 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 101A8690FD4
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:24:18 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=qMyyzVoF;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265955-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265955-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=RzfBM9jl;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263953-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-263953-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 19A50317F446
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:17:59 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0B85F30163B6
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:22:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C625F3BFE5A;
-	Tue, 16 Jun 2026 18:17:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3A5538B135;
+	Tue, 16 Jun 2026 15:22:46 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8145635292A;
-	Tue, 16 Jun 2026 18:17:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA31C26B0A9;
+	Tue, 16 Jun 2026 15:22:45 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781633877; cv=none; b=AqfQsRTZHJYD9vL/5ir3X3wlNedtsI9oN0sgnLYrhFvrl/1+6xq6/m5DqQH9kNOISqLvSkMq+B3kkfvboq7AD9MPbFWoLK0vulln66pxFuYwXl5TkjIXAQPdxWMxzyRHI5RsA9AkmmxCKmwUXcDqfDkCYMu/DZziqG5pqftTz0o=
+	t=1781623366; cv=none; b=Y12KyA6xQ2+//hCzX+Qi+DFwcmLo3u17kJphrHKXSP0AeP0mDtCQ/oM/+HZNhJiYat3WTrTma013HWeKD1mz+pTcPmm0qK2QJBN0ujxS0mrL0F2zVC5I7avowHZpnjGZ66+ffkOwdp3h/hFfigrYmH34inzB7aV0oO1sBfCIWsQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781633877; c=relaxed/simple;
-	bh=iomo3Hmug3felJfXA60SDPvkPzZoe69683/MGr0uSiI=;
+	s=arc-20240116; t=1781623366; c=relaxed/simple;
+	bh=gJTyFlcZxJP2gKEooHNSt2QTqbyozHx+nmSUpXm/Mto=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g1EKYJjJcs6SbwO2rdQCDttF+lWtQK0T8dQLzNTS6mgGN5ZuYo+Kd8vzzGRLfcZyWKoXr9+6pKl1wkgZMb6Gb4VqsUONTKt98yc/QR4dT8hfR2wlVMhYOE1//lKD+HxKbSishdfqlLQUvlIXTlAAK+LbTZhrqokGAu6h1i2EHMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qMyyzVoF; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65B7B1F000E9;
-	Tue, 16 Jun 2026 18:17:55 +0000 (UTC)
+	 MIME-Version; b=HEwXmpmrzuVva3MTU9rpFF/CB7uFovjgcsYolUeaaa/g3UFeigTar76OOsmU9I86Cv316SW1F0PPGGKPVO3cdFCXZGkPUG+nCsoawUbvAiR8YyWK+1iytN9FEcBTPF7OHUhCgs0MP14CwXWKhGzMQOUb897Ng63rpfbki0Cs5l4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RzfBM9jl; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E4B51F000E9;
+	Tue, 16 Jun 2026 15:22:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781633876;
-	bh=MKSvfolhYfKwZVVyy/OAHdGzQaZvNZAzf59o3J7/Prs=;
+	s=korg; t=1781623365;
+	bh=nBAUxTZHFvIBLwCUXM3h6WmLxNXDyHishc8xTYstPkM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=qMyyzVoFKxmjWrp5Lmv/4sV96pZAxT8mVWkqMyAhwPpD4SU+Kfl+wt2T25BDwBCcU
-	 Du/obclwmCn+e8M254m/wk0/49fmYbCdiFj4XNuArrD+5rsMq++VEtEeAePObBpxdr
-	 bGO5KiLe1L9HC7DLT7zXoH4YdW2J6kYRDa3q4YjY=
+	b=RzfBM9jljTq/wUZ6e2rSB2ytPm9qigEe5HNEv73hbMxTMyjvymX0+7dwySzcLMJOz
+	 sNIfOpqk1ofF4EJkllnl0uzZNK8z6GcZc+fp8Hb7tNxfzv74dmzYlCueT2qvasOr0S
+	 LJVwiJTeD+x0lTq+h7dtgTjkJaQAZazLTrkIC0p0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Christoph Hellwig <hch@lst.de>,
-	John Garry <john.g.garry@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 5.15 127/411] scsi: scsi_transport_fc: Widen FPIN pname walker counter to u32
+	Kyle Zeng <kylebot@openai.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 134/378] net: guard timestamp cmsgs to real error queue skbs
 Date: Tue, 16 Jun 2026 20:26:05 +0530
-Message-ID: <20260616145107.079362866@linuxfoundation.org>
+Message-ID: <20260616145117.355784729@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,205 +69,145 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lst.de,oracle.com];
-	TAGGED_FROM(0.00)[bounces-265955-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:hch@lst.de,m:john.g.garry@oracle.com,m:martin.petersen@oracle.com,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-263953-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kylebot@openai.com,m:kuniyu@google.com,m:willemb@google.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,oracle.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,openai.com:email,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D8EDF69403C
+X-Rspamd-Queue-Id: 101A8690FD4
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Kyle Zeng <kylebot@openai.com>
 
-commit a9a39233ec1fc9f97ea1340a4d09bb7ec2be5153 upstream.
+[ Upstream commit 1ee90b77b727df903033db873c75caac5c27ec98 ]
 
-An adjacent Fibre Channel fabric actor that can deliver an FPIN ELS
-frame to an lpfc or qla2xxx Linux initiator can trigger a non-return in
-the generic FC transport. This is not a local userspace or IP network
-path; the attacker must be able to inject fabric traffic, for example as
-a compromised switch or fabric controller, or as a same-zone N_Port on a
-fabric that permits source spoofing.
+skb_is_err_queue() treats PACKET_OUTGOING as the sole marker for an skb
+from sk_error_queue. That assumption is not true for AF_PACKET sockets:
+outgoing packet taps are also delivered to packet sockets with
+skb->pkt_type == PACKET_OUTGOING, but their skb->cb is owned by AF_PACKET
+instead of struct sock_exterr_skb.
 
-The Link-Integrity and Peer-Congestion FPIN walkers used a u8 loop
-counter against the 32-bit on-wire pname_count field, and did not bound
-pname_count by the descriptor body already validated by the TLV walker.
-A pname_count of 256 therefore wraps the counter and keeps the loop
-condition true indefinitely.
+If such an skb is received with timestamping enabled, the generic
+timestamp cmsg path can read AF_PACKET control-buffer state as
+sock_exterr_skb::opt_stats. With SO_RXQ_OVFL enabled, the packet drop
+counter overlaps opt_stats. An odd drop count makes the path emit
+SCM_TIMESTAMPING_OPT_STATS with skb->len and skb->data. For non-linear
+skbs this copies past the linear head and can trigger hardened usercopy or
+disclose adjacent heap contents.
 
-Factor the shared pname_list[] walk into one helper, widen the counter
-to u32, and clamp pname_count against the entries that fit in the
-descriptor body before iterating.
+Keep skb_is_err_queue() local to net/socket.c, but make it verify that
+the PACKET_OUTGOING marker is paired with the sock_rmem_free destructor
+installed by sock_queue_err_skb(). AF_PACKET receive skbs use normal
+receive ownership and no longer pass as error-queue skbs, while legitimate
+sk_error_queue entries keep the PACKET_OUTGOING marker and sock_rmem_free
+ownership.
 
-Fixes: 3dcfe0de5a97 ("scsi: fc: Parse FPIN packets and update statistics")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-7
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: John Garry <john.g.garry@oracle.com>
-Link: https://patch.msgid.link/20260520133015.1018937-1-michael.bommarito@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8605330aac5a ("tcp: fix SCM_TIMESTAMPING_OPT_STATS for normal skbs")
+Signed-off-by: Kyle Zeng <kylebot@openai.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20260607021819.49698-1-kylebot@openai.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/scsi_transport_fc.c |   77 ++++++++++++++++++++-------------------
- 1 file changed, 41 insertions(+), 36 deletions(-)
+ include/net/sock.h |  1 +
+ net/core/skbuff.c  |  6 +++---
+ net/socket.c       | 11 ++++++-----
+ 3 files changed, 10 insertions(+), 8 deletions(-)
 
---- a/drivers/scsi/scsi_transport_fc.c
-+++ b/drivers/scsi/scsi_transport_fc.c
-@@ -744,6 +744,37 @@ fc_cn_stats_update(u16 event_type, struc
- 	}
+diff --git a/include/net/sock.h b/include/net/sock.h
+index 6c9a83016e9551..24aab97f1bcae7 100644
+--- a/include/net/sock.h
++++ b/include/net/sock.h
+@@ -1853,6 +1853,7 @@ struct sk_buff *sock_omalloc(struct sock *sk, unsigned long size,
+ 			     gfp_t priority);
+ void skb_orphan_partial(struct sk_buff *skb);
+ void sock_rfree(struct sk_buff *skb);
++void sock_rmem_free(struct sk_buff *skb);
+ void sock_efree(struct sk_buff *skb);
+ #ifdef CONFIG_INET
+ void sock_edemux(struct sk_buff *skb);
+diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+index 9edad9b88433bb..6bee1a9d128bf2 100644
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -5474,7 +5474,7 @@ int skb_cow_data(struct sk_buff *skb, int tailbits, struct sk_buff **trailer)
+ }
+ EXPORT_SYMBOL_GPL(skb_cow_data);
+ 
+-static void sock_rmem_free(struct sk_buff *skb)
++void sock_rmem_free(struct sk_buff *skb)
+ {
+ 	struct sock *sk = skb->sk;
+ 
+@@ -5483,8 +5483,8 @@ static void sock_rmem_free(struct sk_buff *skb)
+ 
+ static void skb_set_err_queue(struct sk_buff *skb)
+ {
+-	/* pkt_type of skbs received on local sockets is never PACKET_OUTGOING.
+-	 * So, it is safe to (mis)use it to mark skbs on the error queue.
++	/* The error-queue test in skb_is_err_queue() matches this marker
++	 * with the sock_rmem_free destructor installed by sock_queue_err_skb().
+ 	 */
+ 	skb->pkt_type = PACKET_OUTGOING;
+ 	BUILD_BUG_ON(PACKET_OUTGOING == 0);
+diff --git a/net/socket.c b/net/socket.c
+index 05952188127f5b..86dc88f5b76983 100644
+--- a/net/socket.c
++++ b/net/socket.c
+@@ -792,12 +792,13 @@ EXPORT_SYMBOL(kernel_sendmsg);
+ 
+ static bool skb_is_err_queue(const struct sk_buff *skb)
+ {
+-	/* pkt_type of skbs enqueued on the error queue are set to
+-	 * PACKET_OUTGOING in skb_set_err_queue(). This is only safe to do
+-	 * in recvmsg, since skbs received on a local socket will never
+-	 * have a pkt_type of PACKET_OUTGOING.
++	/* Error-queue skbs are marked as PACKET_OUTGOING in
++	 * skb_set_err_queue() and use the destructor installed by
++	 * sock_queue_err_skb(). PACKET_OUTGOING alone is not unique:
++	 * AF_PACKET outgoing taps use the same pkt_type.
+ 	 */
+-	return skb->pkt_type == PACKET_OUTGOING;
++	return skb->pkt_type == PACKET_OUTGOING &&
++	       skb->destructor == sock_rmem_free;
  }
  
-+static void
-+fc_fpin_pname_stats_update(struct Scsi_Host *shost,
-+			   struct fc_rport *attach_rport, u16 event_type,
-+			   u32 desc_len, u32 fixed_len, u32 pname_count,
-+			   __be64 *pname_list,
-+			   void (*stats_update)(u16 event_type,
-+						struct fc_fpin_stats *stats))
-+{
-+	u32 i;
-+	struct fc_rport *rport;
-+	u64 wwpn;
-+
-+	if (desc_len < fixed_len)
-+		pname_count = 0;
-+	else
-+		pname_count = min(pname_count, (desc_len - fixed_len) /
-+				   sizeof(pname_list[0]));
-+
-+	for (i = 0; i < pname_count; i++) {
-+		wwpn = be64_to_cpu(pname_list[i]);
-+		rport = fc_find_rport_by_wwpn(shost, wwpn);
-+		if (rport &&
-+		    (rport->roles & FC_PORT_ROLE_FCP_TARGET ||
-+		     rport->roles & FC_PORT_ROLE_NVME_TARGET)) {
-+			if (rport == attach_rport)
-+				continue;
-+			stats_update(event_type, &rport->fpin_stats);
-+		}
-+	}
-+}
-+
- /*
-  * fc_fpin_li_stats_update - routine to update Link Integrity
-  * event statistics.
-@@ -754,13 +785,11 @@ fc_cn_stats_update(u16 event_type, struc
- static void
- fc_fpin_li_stats_update(struct Scsi_Host *shost, struct fc_tlv_desc *tlv)
- {
--	u8 i;
- 	struct fc_rport *rport = NULL;
- 	struct fc_rport *attach_rport = NULL;
- 	struct fc_host_attrs *fc_host = shost_to_fc_host(shost);
- 	struct fc_fn_li_desc *li_desc = (struct fc_fn_li_desc *)tlv;
- 	u16 event_type = be16_to_cpu(li_desc->event_type);
--	u64 wwpn;
- 
- 	rport = fc_find_rport_by_wwpn(shost,
- 				      be64_to_cpu(li_desc->attached_wwpn));
-@@ -771,22 +800,11 @@ fc_fpin_li_stats_update(struct Scsi_Host
- 		fc_li_stats_update(event_type, &attach_rport->fpin_stats);
- 	}
- 
--	if (be32_to_cpu(li_desc->pname_count) > 0) {
--		for (i = 0;
--		    i < be32_to_cpu(li_desc->pname_count);
--		    i++) {
--			wwpn = be64_to_cpu(li_desc->pname_list[i]);
--			rport = fc_find_rport_by_wwpn(shost, wwpn);
--			if (rport &&
--			    (rport->roles & FC_PORT_ROLE_FCP_TARGET ||
--			    rport->roles & FC_PORT_ROLE_NVME_TARGET)) {
--				if (rport == attach_rport)
--					continue;
--				fc_li_stats_update(event_type,
--						   &rport->fpin_stats);
--			}
--		}
--	}
-+	fc_fpin_pname_stats_update(shost, attach_rport, event_type,
-+				   be32_to_cpu(li_desc->desc_len),
-+				   FC_TLV_DESC_LENGTH_FROM_SZ(*li_desc),
-+				   be32_to_cpu(li_desc->pname_count),
-+				   li_desc->pname_list, fc_li_stats_update);
- 
- 	if (fc_host->port_name == be64_to_cpu(li_desc->attached_wwpn))
- 		fc_li_stats_update(event_type, &fc_host->fpin_stats);
-@@ -834,13 +852,11 @@ static void
- fc_fpin_peer_congn_stats_update(struct Scsi_Host *shost,
- 				struct fc_tlv_desc *tlv)
- {
--	u8 i;
- 	struct fc_rport *rport = NULL;
- 	struct fc_rport *attach_rport = NULL;
- 	struct fc_fn_peer_congn_desc *pc_desc =
- 	    (struct fc_fn_peer_congn_desc *)tlv;
- 	u16 event_type = be16_to_cpu(pc_desc->event_type);
--	u64 wwpn;
- 
- 	rport = fc_find_rport_by_wwpn(shost,
- 				      be64_to_cpu(pc_desc->attached_wwpn));
-@@ -851,22 +867,11 @@ fc_fpin_peer_congn_stats_update(struct S
- 		fc_cn_stats_update(event_type, &attach_rport->fpin_stats);
- 	}
- 
--	if (be32_to_cpu(pc_desc->pname_count) > 0) {
--		for (i = 0;
--		    i < be32_to_cpu(pc_desc->pname_count);
--		    i++) {
--			wwpn = be64_to_cpu(pc_desc->pname_list[i]);
--			rport = fc_find_rport_by_wwpn(shost, wwpn);
--			if (rport &&
--			    (rport->roles & FC_PORT_ROLE_FCP_TARGET ||
--			     rport->roles & FC_PORT_ROLE_NVME_TARGET)) {
--				if (rport == attach_rport)
--					continue;
--				fc_cn_stats_update(event_type,
--						   &rport->fpin_stats);
--			}
--		}
--	}
-+	fc_fpin_pname_stats_update(shost, attach_rport, event_type,
-+				   be32_to_cpu(pc_desc->desc_len),
-+				   FC_TLV_DESC_LENGTH_FROM_SZ(*pc_desc),
-+				   be32_to_cpu(pc_desc->pname_count),
-+				   pc_desc->pname_list, fc_cn_stats_update);
- }
- 
- /*
+ /* On transmit, software and hardware timestamps are returned independently.
+-- 
+2.53.0
+
 
 
 
