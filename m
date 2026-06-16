@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-265055-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266030-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 1jXMOO6CMWr/lAUAu9opvQ
-	(envelope-from <stable+bounces-265055-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:07:58 +0200
+	id zjN+CPeUMWqGnQUAu9opvQ
+	(envelope-from <stable+bounces-266030-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:24:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 661E0692C10
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:07:58 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81D3F6941BC
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:24:54 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=BeUt++kN;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265055-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265055-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=WJYEzw63;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266030-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-266030-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 87D3530BC03A
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:00:53 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8C89D30767B6
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:24:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAFBA47799B;
-	Tue, 16 Jun 2026 17:00:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9C1E46AF1B;
+	Tue, 16 Jun 2026 18:24:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D10064657CF;
-	Tue, 16 Jun 2026 17:00:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDB373BFE5A;
+	Tue, 16 Jun 2026 18:24:49 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781629252; cv=none; b=B5HkIyhsrNmEd4tk4O+vbsxj3EP3fravHPt1APZ6j15GxOvi3HAConiLRZ2kzuXXKCuJPjf6KZ/7v/HeVSK/n7b2tGC//q1XF7GmjbZe4g6ptkPwI53C4x/W+6g5boq5LIaksX7lTXnPWeX0yE5fOkkutotroAztEdvAgsj3nDE=
+	t=1781634290; cv=none; b=TvquwpoI1blq5rEl08XjR1oTcYbvWsW584mI5ZH+qdGXVMseg6DexwmIUUvH83mAa423XYfxwAspoLkuhmtrdQy6qbVwBHoOxEP3Y5bPQphcK1DGdnXLWHVVNDFc+4W9a1dRKtbs4RMTXUJ+KyjJLPdbMCIy4uE67o4k+McNzUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781629252; c=relaxed/simple;
-	bh=sXvAZYDYe15xeScwtl7ohGskrlHbn5UI4Ud3kEBbV+w=;
+	s=arc-20240116; t=1781634290; c=relaxed/simple;
+	bh=5IMemjpgcxfmh+4m7IvY/x10iALAeeJfUlks8QAzYxE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UF5IkBj1yqWdJ47VUmtKiKd183gTeHVgD9jBuKv6OvqI53eTt2UxIgFKdTYwMBFRcV2/4x1pR54HAoVMYHqbBSEaDBsRYiDoQ//qe6hocVz21DxZYcX4fVNvZtdb/PVSkP4+ZoJV7NKnA67nKlqXcOfjqy58dzKCg7YJIHwC4MI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BeUt++kN; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8E711F000E9;
-	Tue, 16 Jun 2026 17:00:50 +0000 (UTC)
+	 MIME-Version; b=mI8rFe50HRL3UGbo1HuzyE7DwjAOWGNijY1sbrDnRiJKQbNGJ02NhQkz2l1DxGMK5KSfRgiM52R+yPL2r0FVhtNDF3++8WaT8HKWx0IfeTPoqDOsfIOzmCDLfMlMEW8TXBKgEJ94dZQaNp9ba07FOm5NhOw5v4EocRgnZFBbJZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WJYEzw63; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C133C1F000E9;
+	Tue, 16 Jun 2026 18:24:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781629251;
-	bh=GnDSSocBEgRlSGzNPWQap3vkicdd0DopCJ5KqRANQPs=;
+	s=korg; t=1781634289;
+	bh=yjzRsMPDU/a0kvANg6/PcPyulI+3mBvMj3nJitOiNd4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=BeUt++kNUGgZdjUyHeV71SvAj4XS3zxBsQT4Qe1rdgYERnJfMb7IUN+sErPTqV51U
-	 kuIadEYMeLekewP0zdtMTjycsRBImfcDHL1FGT/7E/ME4Q3UB9sEKor7+Rwb8g4Ha5
-	 jihtyftDXRu1QOJqHuEzm4QPtB1prXsGwr9DeI74=
+	b=WJYEzw63AoShfmwB8UmJ3jrvkbVONVSzapWVYwrIWuVAMIHTWq4+Hv4L0IQzFkbo0
+	 YL7pE2XYmijU+17owlS10+GVnAbbOqWkdgxGzK/bTmA1rI66n4nMnfXcBpSXRvLHaQ
+	 Ng2AMXHAwZlV/LKswP72uEwcVIShOFU3qiXyKC6Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Naveen Kumar Chaudhary <naveen.osdev@gmail.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	John Stultz <jstultz@google.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 249/452] time: Fix off-by-one in settimeofday() usec validation
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: [PATCH 5.15 238/411] thunderbolt: Bound root directory content to block size
 Date: Tue, 16 Jun 2026 20:27:56 +0530
-Message-ID: <20260616145130.747238739@linuxfoundation.org>
+Message-ID: <20260616145113.502046684@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,81 +71,77 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,google.com];
-	TAGGED_FROM(0.00)[bounces-265055-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:naveen.osdev@gmail.com,m:tglx@kernel.org,m:jstultz@google.com,m:sashal@kernel.org,m:naveenosdev@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-266030-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:mika.westerberg@linux.intel.com,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.intel.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,intel.com:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 661E0692C10
+X-Rspamd-Queue-Id: 81D3F6941BC
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Naveen Kumar Chaudhary <naveen.osdev@gmail.com>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-[ Upstream commit ce4abda5e12622f33450159e76c8f56d28d7f03d ]
+commit 65423079c7420e3dbf9a7aa345c243a3f5752e5d upstream.
 
-The validation check uses '>' instead of '>=' when comparing tv_usec
-against USEC_PER_SEC, allowing the value 1000000 through. After
-conversion to nanoseconds (*= 1000), this produces tv_nsec ==
-NSEC_PER_SEC, violating the timespec invariant that tv_nsec must be
-less than NSEC_PER_SEC.
+__tb_property_parse_dir() does not check that content_offset +
+content_len fits within block_len for the root directory case.
+When rootdir->length equals or exceeds block_len - 2, the entry
+loop reads past the allocated property block.
 
-Use '>=' to reject tv_usec values that are not in the valid range of
-0 to 999999.
+Add a bounds check after computing content_offset and content_len
+to reject directories whose content extends past the block.
 
-Fixes: 5e0fb1b57bea ("y2038: time: avoid timespec usage in settimeofday()")
-Signed-off-by: Naveen Kumar Chaudhary <naveen.osdev@gmail.com>
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Acked-by: John Stultz <jstultz@google.com>
-Link: https://patch.msgid.link/4rikk44zew3s6577dugmx4jyblz7o5c57niuap6ct3td5yfm6w@gh7pcumg7qor
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: cdae7c07e3e3 ("thunderbolt: Add support for XDomain properties")
+Cc: stable@vger.kernel.org
+Assisted-by: Claude:claude-opus-4-7
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/time/time.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/thunderbolt/property.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/kernel/time/time.c b/kernel/time/time.c
-index da7e8a02a0964f..a6261fadb92b15 100644
---- a/kernel/time/time.c
-+++ b/kernel/time/time.c
-@@ -207,7 +207,7 @@ SYSCALL_DEFINE2(settimeofday, struct __kernel_old_timeval __user *, tv,
- 		    get_user(new_ts.tv_nsec, &tv->tv_usec))
- 			return -EFAULT;
- 
--		if (new_ts.tv_nsec > USEC_PER_SEC || new_ts.tv_nsec < 0)
-+		if (new_ts.tv_nsec >= USEC_PER_SEC || new_ts.tv_nsec < 0)
- 			return -EINVAL;
- 
- 		new_ts.tv_nsec *= NSEC_PER_USEC;
--- 
-2.53.0
-
+--- a/drivers/thunderbolt/property.c
++++ b/drivers/thunderbolt/property.c
+@@ -181,6 +181,10 @@ static struct tb_property_dir *__tb_prop
+ 	if (is_root) {
+ 		content_offset = dir_offset + 2;
+ 		content_len = dir_len;
++		if (content_offset + content_len > block_len) {
++			tb_property_free_dir(dir);
++			return NULL;
++		}
+ 	} else {
+ 		if (dir_len < 4) {
+ 			tb_property_free_dir(dir);
 
 
 
