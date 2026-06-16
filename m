@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-264977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266312-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id N3jFHquCMWrmlAUAu9opvQ
-	(envelope-from <stable+bounces-264977-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:06:51 +0200
+	id lhQ+DraaMWocoAUAu9opvQ
+	(envelope-from <stable+bounces-266312-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:49:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1352692BBA
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:06:50 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCC1A6947F5
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:49:25 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=NVTDh6FX;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264977-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264977-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ChgaVF74;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266312-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-266312-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 326C732051CF
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:54:48 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 38386303BA9B
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:49:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8F51169AD2;
-	Tue, 16 Jun 2026 16:54:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 334A33D813F;
+	Tue, 16 Jun 2026 18:49:24 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4D6544CAF5;
-	Tue, 16 Jun 2026 16:54:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 194243AE1A2;
+	Tue, 16 Jun 2026 18:49:23 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781628886; cv=none; b=enn+eKFurN3W64+2grGf3xqQDRqL2vD0r5rD2QL9M21u15HVC2wnrrDpgYvTVE60P1Adf9tG0UFaM26cCkN2pUfnX5anF2lIjz24X1lsu8Im++ewuNLZE2w7pi6TZgFQGlSxw/nRftBY2f0l742uu9C7Nnp3gNpLp6qmberqdv8=
+	t=1781635764; cv=none; b=EBFjZVoY79/7tCegDQYEF0YiHCoSHYgBiW3093K9hyP5koPxKt+Pqgpe3PvilrDW2jJ1IaMcFdP7Oh/2J/PC+vnr4SlKegy+SaJxNG6NeR6wd9wSXvYN8QE1/+EO13VTOxFfc96sICUWbisxT4FJAiTSH7lkp1NQU64gHxzf6b0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781628886; c=relaxed/simple;
-	bh=msDjPLtyyQi3vbjV/z282oEwxkyzvUKX/2Yr17nm7SM=;
+	s=arc-20240116; t=1781635764; c=relaxed/simple;
+	bh=SB0kWsVwVHdQxTPI3CSsPNbsVjyAxIugE1GP+PE4+q4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qdGgaFzBF15UI6Tr+G16rYsQpToqd3vuQeaLsCRj6bXU8hdVr6u1LKnEo/H0M8jSiXc2hFpdRX3m4SooHlaeAozSiKGXSV95m5erPYSy4JOFVUdvmVFn6boc/bEXw/1z1PK36JxY41LkSDGzzR8xAQR0oOQFEFlSNs/BBwFDEHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NVTDh6FX; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C7991F00A3D;
-	Tue, 16 Jun 2026 16:54:44 +0000 (UTC)
+	 MIME-Version; b=GIQ3MvU7TEY2eodYd76E4jSv4mUfxoZyWqXHvPDibDUhlbTFOmcRnauMASXq/lk0UVHmYID2IYAtfktwfWLcXaMAjp01nIwehbGsOfKBtM3thapMqPqHNXME3aO4nh05ZFE4Qt2R58/skepjHIxtckU1KHb1vPLuWkyDJIKABDI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ChgaVF74; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2579B1F000E9;
+	Tue, 16 Jun 2026 18:49:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781628885;
-	bh=rw4hYbe4ipEVYlKQurrjXQjPkcMvM1j8v0ysgV0w6hM=;
+	s=korg; t=1781635763;
+	bh=C/Ds43zYnaB7CUJObEYyr/CmYrNH730YSwLoZzllViY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=NVTDh6FXY8860IMFdA7WUYX1JWgZHe9IedodgWSiDzoSUoc4GME+6CXjPG0UPBGU+
-	 Zo4cbhMjC5GUcaa3WpV0jxiVd3x2Rj4fDSA2Zd1vJlyTtDlBQe4v3w4FiimLlP2pep
-	 7bSysZyI/moUcmQpDWn6AIlDfU86K82jKYPCPElc=
+	b=ChgaVF74jLo1qmg74ORh2yyL6jUWBARGaahhWg/86XCrnrEWIRSV00g9sfZ3jXb0H
+	 6XHSV8uTPhgOnXpaBw7CdPuRRiw+FqgH9gBBfbz/uaTRUuO+TPWF4oX5wRherBcz5m
+	 sBMA2CLIn5IiBCTMhXMVeQPpoGoKglIoZxhamL9g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Jeremy Klarenbeek <jeremy.klarenbeek99@gmail.com>,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>
-Subject: [PATCH 6.6 179/452] drm/amd/pm/si: Disregard vblank time when no displays are connected
+	stable <stable@kernel.org>,
+	"Maciej W. Rozycki" <macro@orcam.me.uk>
+Subject: [PATCH 5.10 110/342] serial: zs: Fix swapped RI/DSR modem line transition counting
 Date: Tue, 16 Jun 2026 20:26:46 +0530
-Message-ID: <20260616145127.266629262@linuxfoundation.org>
+Message-ID: <20260616145053.348037797@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,87 +64,78 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-264977-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:alexander.deucher@amd.com,m:jeremy.klarenbeek99@gmail.com,m:timur.kristof@gmail.com,m:jeremyklarenbeek99@gmail.com,m:timurkristof@gmail.com,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-266312-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,amd.com,gmail.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:macro@orcam.me.uk,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,amd.com:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,orcam.me.uk:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E1352692BBA
+X-Rspamd-Queue-Id: BCC1A6947F5
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Maciej W. Rozycki <macro@orcam.me.uk>
 
-commit dd4f3ee535b3b0ac027f75dbf9dc5fc88733c765 upstream.
+commit d15cd40cb1858f75846eaafa9a6bca841b790a92 upstream.
 
-When no displays are connected, there is no vblank
-happening so the power management code shouldn't
-worry about it.
+Fix a thinko in the status interrupt handler that has caused counters
+for the RI and DSR modem line transitions to be used for the other line
+each.
 
-This fixes a regression that caused the memory clock
-to be stuck at maximum when there were no displays
-connected to a SI GPU.
-
-Fixes: 9003a0746864 ("drm/amd/pm: Treat zero vblank time as too short in si_dpm (v3)")
-Fixes: 9d73b107a61b ("drm/amd/pm: Use pm_display_cfg in legacy DPM (v2)")
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Tested-by: Jeremy Klarenbeek <jeremy.klarenbeek99@gmail.com>
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 6d87e0199f7b83735b56e422d59f170a201897a8)
-Cc: stable@vger.kernel.org
+Fixes: 8b4a40809e53 ("zs: move to the serial subsystem")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Link: https://patch.msgid.link/alpine.DEB.2.21.2604101747110.29980@angie.orcam.me.uk
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/tty/serial/zs.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
-+++ b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
-@@ -3062,6 +3062,10 @@ static bool si_dpm_vblank_too_short(void
- 	/* we never hit the non-gddr5 limit so disable it */
- 	u32 switch_limit = adev->gmc.vram_type == AMDGPU_VRAM_TYPE_GDDR5 ? 450 : 0;
+--- a/drivers/tty/serial/zs.c
++++ b/drivers/tty/serial/zs.c
+@@ -679,9 +679,9 @@ static void zs_status_handle(struct zs_p
+ 			uart_handle_dcd_change(uport,
+ 					       zport->mctrl & TIOCM_CAR);
+ 		if (delta & TIOCM_RNG)
+-			uport->icount.dsr++;
+-		if (delta & TIOCM_DSR)
+ 			uport->icount.rng++;
++		if (delta & TIOCM_DSR)
++			uport->icount.dsr++;
  
-+	/* Disregard vblank time when there are no displays connected */
-+	if (!adev->pm.pm_display_cfg.num_display)
-+		return false;
-+
- 	/* Consider zero vblank time too short and disable MCLK switching.
- 	 * Note that the vblank time is set to maximum when no displays are attached,
- 	 * so we'll still enable MCLK switching in that case.
+ 		if (delta)
+ 			wake_up_interruptible(&uport->state->port.delta_msr_wait);
 
 
 
