@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-264672-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265124-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id G+GqIlB5MWoFkQUAu9opvQ
-	(envelope-from <stable+bounces-264672-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:26:56 +0200
+	id s/ydHdaDMWpylQUAu9opvQ
+	(envelope-from <stable+bounces-265124-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:11:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34181692154
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:26:56 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3DCC692D6C
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:11:49 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=h4mAy2KY;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264672-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264672-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=X6SmTf7l;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265124-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265124-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4688A3036ED2
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:26:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6441C308E13C
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:06:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EDAE46AF36;
-	Tue, 16 Jun 2026 16:26:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78248472767;
+	Tue, 16 Jun 2026 17:06:29 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4467746AF2E;
-	Tue, 16 Jun 2026 16:26:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 445CF43E4BC;
+	Tue, 16 Jun 2026 17:06:28 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781627207; cv=none; b=A8si2GedAjSH0M9lbDfLC1ooIl8yxsD5EAurh6QyuQtQzGjNeGuVxtHVQatEM/Kmm4utUeXAE88O1wrN9011QIL9TnP5XqX2e9KSXRZrKQUiuEvc5qlVKgs+j0nFwouF5eLhzzZn9njgRt0kP0Dyu+tuyxf0SSSw1UzSZPKRicE=
+	t=1781629589; cv=none; b=CmVnDrTKVoK71xjhIyhQXvVkiA+35a44bBHAlG81zYhU6BMSIM7DRVBfduS95jbJFktSaj6C6Wb/lL4TD6e3cDX9urMxC3ozUBnEG/wJmMRAF6Dqy8UVek/A4pU8s3FVPbStWc4rvtbSIJfNiSB24Wl0YQ9O98PVOsjSfxwLbGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781627207; c=relaxed/simple;
-	bh=YmzAG44FQdDaPiG5tDxmHOmA61LKxMqNMBfNJ/tUl/M=;
+	s=arc-20240116; t=1781629589; c=relaxed/simple;
+	bh=DntLDfFYAXgF1fHDvrQqg2/CtAhZMSKvRjf5qm8WvVE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YuKxxF8672K0z1buMGvJxAca7JAbQnZbuj+oldXeK51ammveNblyrEMAeDYpo6cRq8EtjmSaqr97CO1QANri5EKTUuaiTnhxGKI/xOcxXxfYeo3LUEaKYMV4N+NaOJMYlp9ziZvuPkYltQt0NLZEUwH0axFrzl6kV3fMSmISREs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h4mAy2KY; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5373A1F000E9;
-	Tue, 16 Jun 2026 16:26:44 +0000 (UTC)
+	 MIME-Version; b=kXJXjTEXdmyRgnhmbbGamS5PghhzCWhLkI/KciH8xyAQC7gKm+DXVlNn1nJiOh9rX5MEBJUoMoFF/6ATxlT3dHfYvVfOPmL5PSKe4wbwGbab7S1WXrZgj904cNdVeYf3X+pV857M3rX/DLcaLr+uMEnSP6ttQutRD2hPoJRAEtk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X6SmTf7l; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 544861F000E9;
+	Tue, 16 Jun 2026 17:06:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781627206;
-	bh=eQ1huwpOu3o2fMFPSF1GUSoi321Pa3PYJ3chn/SYCMA=;
+	s=korg; t=1781629588;
+	bh=zFEYZJWToI4ajaU09afYg0pK9fn/WMpkIkwPF6ssgdo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=h4mAy2KYIlniuJ2cQWluJhx3oAN53kCywwptI8/UFUSJ4+8mEIlm5efuoDjG0EksO
-	 pX0BYjTuFbW3VllzTBe0KVtRyYcF1RN5gDVFYFe+tLKnlueCe1Vxc9jtXHPbatQrAd
-	 UK5YsC2TL4/EOBvBFPPW/bTYQE3Mx4znZAdIOtj4=
+	b=X6SmTf7loHx/EHEv1a2G3xwGdnbZMUO1c5Fd97tdmLxp/Y0OdwkQke9uOxjPQhcXw
+	 I69M6QqymnfcLfgYf7d96vqTrRuSoSYtoiWuPBSJPeD9co7st2lCN4Gccp7kWeJrUi
+	 aXw7s3CLK3ZSSp3yaz6xHjwmdn0JUAn5PcmsdqnE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Kubiak <michal.kubiak@intel.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 104/261] net: mvpp2: Add metadata support for xdp mode
+	Paolo Abeni <pabeni@redhat.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 315/452] mptcp: close TOCTOU race while computing rcv_wnd
 Date: Tue, 16 Jun 2026 20:29:02 +0530
-Message-ID: <20260616145049.865717419@linuxfoundation.org>
+Message-ID: <20260616145134.043606294@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
-References: <20260616145044.869532709@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,119 +69,163 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264672-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265124-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michal.kubiak@intel.com,m:lorenzo@kernel.org,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:pabeni@redhat.com,m:matttbe@kernel.org,m:kuba@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,intel.com:email,vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 34181692154
+X-Rspamd-Queue-Id: F3DCC692D6C
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Bianconi <lorenzo@kernel.org>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit 9a45e193c88a55a536d7fd0ebfa29823d588c2cf ]
+commit 8ab24fdebc369c0dfb90f82c1650b1e66662bb45 upstream.
 
-Set metadata size building the skb from xdp_buff in mvpp2 driver
-mvpp2 driver sets xdp headroom to:
+The MPTCP output path access locklessly the MPTCP-level ack_seq
+in multiple times, using possibly different values for the data_ack
+in the DSS option and to compute the announced rcv wnd for the same
+packet.
 
-MVPP2_MH_SIZE + MVPP2_SKB_HEADROOM
+Refactor the cote to avoid inconsistencies which may confuse the
+peer. Also ensure that the MPTCP level rcv wnd is updated only when
+the egress packet actually contains a DSS ack.
 
-where
-
-MVPP2_MH_SIZE 2
-MVPP2_SKB_HEADROOM min(max(XDP_PACKET_HEADROOM, NET_SKB_PAD), 224)
-
-so the headroom is large enough to contain xdp_frame and xdp metadata.
-Please note this patch is just compiled tested.
-
-Reviewed-by: Michal Kubiak <michal.kubiak@intel.com>
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://patch.msgid.link/20250318-mvneta-xdp-meta-v2-2-b6075778f61f@kernel.org
+Fixes: fa3fe2b15031 ("mptcp: track window announced to peer")
+Cc: stable@vger.kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260602-net-mptcp-misc-fixes-7-1-rc7-v2-3-856831229976@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 77a6b90ce56b ("net: mvpp2: build skb from XDP-adjusted data on XDP_PASS")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ net/mptcp/options.c |   36 ++++++++++++++++++------------------
+ 1 file changed, 18 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-index d5d2cbe127b0e7..e43d844b14aaef 100644
---- a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-+++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-@@ -3928,13 +3928,13 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
+--- a/net/mptcp/options.c
++++ b/net/mptcp/options.c
+@@ -571,7 +571,6 @@ static bool mptcp_established_options_ds
+ 	struct mptcp_ext *mpext;
+ 	unsigned int ack_size;
+ 	bool ret = false;
+-	u64 ack_seq;
  
- 	while (rx_done < rx_todo) {
- 		struct mvpp2_rx_desc *rx_desc = mvpp2_rxq_next_desc_get(rxq);
-+		u32 rx_status, timestamp, metasize = 0;
- 		struct mvpp2_bm_pool *bm_pool;
- 		struct page_pool *pp = NULL;
- 		struct sk_buff *skb;
- 		unsigned int frag_size;
- 		dma_addr_t dma_addr;
- 		phys_addr_t phys_addr;
--		u32 rx_status, timestamp;
- 		int pool, rx_bytes, err, ret;
- 		struct page *page;
- 		void *data;
-@@ -3997,7 +3997,7 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
- 			xdp_init_buff(&xdp, bm_pool->frag_size, xdp_rxq);
- 			xdp_prepare_buff(&xdp, data,
- 					 MVPP2_MH_SIZE + MVPP2_SKB_HEADROOM,
--					 rx_bytes, false);
-+					 rx_bytes, true);
+ 	opts->csum_reqd = READ_ONCE(msk->csum_enabled);
+ 	mpext = skb ? mptcp_get_ext(skb) : NULL;
+@@ -602,14 +601,11 @@ static bool mptcp_established_options_ds
+ 		return ret;
+ 	}
  
- 			ret = mvpp2_run_xdp(port, xdp_prog, &xdp, pp, &ps);
+-	ack_seq = READ_ONCE(msk->ack_seq);
+ 	if (READ_ONCE(msk->use_64bit_ack)) {
+ 		ack_size = TCPOLEN_MPTCP_DSS_ACK64;
+-		opts->ext_copy.data_ack = ack_seq;
+ 		opts->ext_copy.ack64 = 1;
+ 	} else {
+ 		ack_size = TCPOLEN_MPTCP_DSS_ACK32;
+-		opts->ext_copy.data_ack32 = (uint32_t)ack_seq;
+ 		opts->ext_copy.ack64 = 0;
+ 	}
+ 	opts->ext_copy.use_ack = 1;
+@@ -1295,19 +1291,14 @@ bool mptcp_incoming_options(struct sock
+ 	return true;
+ }
  
-@@ -4013,6 +4013,8 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
- 				ps.rx_bytes += rx_bytes;
- 				continue;
- 			}
+-static void mptcp_set_rwin(struct tcp_sock *tp, struct tcphdr *th)
++static u64 mptcp_set_rwin(struct mptcp_sock *msk, struct tcp_sock *tp,
++			  struct tcphdr *th, u64 ack_seq)
+ {
+ 	const struct sock *ssk = (const struct sock *)tp;
+-	struct mptcp_subflow_context *subflow;
+-	u64 ack_seq, rcv_wnd_old, rcv_wnd_new;
+-	struct mptcp_sock *msk;
++	u64 rcv_wnd_old, rcv_wnd_new;
+ 	u32 new_win;
+ 	u64 win;
+ 
+-	subflow = mptcp_subflow_ctx(ssk);
+-	msk = mptcp_sk(subflow->conn);
+-
+-	ack_seq = READ_ONCE(msk->ack_seq);
+ 	rcv_wnd_new = ack_seq + tp->rcv_wnd;
+ 
+ 	rcv_wnd_old = atomic64_read(&msk->rcv_wnd_sent);
+@@ -1359,7 +1350,7 @@ raise_win:
+ 
+ update_wspace:
+ 	WRITE_ONCE(msk->old_wspace, tp->rcv_wnd);
+-	subflow->rcv_wnd_sent = rcv_wnd_new;
++	return rcv_wnd_new;
+ }
+ 
+ static void mptcp_track_rwin(struct tcp_sock *tp)
+@@ -1471,13 +1462,25 @@ void mptcp_write_options(struct tcphdr *
+ 		*ptr++ = mptcp_option(MPTCPOPT_DSS, len, 0, flags);
+ 
+ 		if (mpext->use_ack) {
++			struct mptcp_sock *msk;
++			u64 ack_seq;
 +
-+			metasize = xdp.data - xdp.data_meta;
++			/* DSS option is set only by mptcp_established_options,
++			 * the caller is __tcp_transmit_skb() and ssk is always
++			 * not NULL.
++			 */
++			subflow = mptcp_subflow_ctx(ssk);
++			msk = mptcp_sk(subflow->conn);
++			ack_seq = READ_ONCE(msk->ack_seq);
+ 			if (mpext->ack64) {
+-				put_unaligned_be64(mpext->data_ack, ptr);
++				put_unaligned_be64(ack_seq, ptr);
+ 				ptr += 2;
+ 			} else {
+-				put_unaligned_be32(mpext->data_ack32, ptr);
++				put_unaligned_be32(ack_seq, ptr);
+ 				ptr += 1;
+ 			}
++			subflow->rcv_wnd_sent = mptcp_set_rwin(msk, tp, th,
++							       ack_seq);
  		}
  
- 		if (frag_size)
-@@ -4052,6 +4054,8 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
+ 		if (mpext->use_map) {
+@@ -1705,9 +1708,6 @@ mp_capable_done:
+ 			i += 4;
+ 		}
+ 	}
+-
+-	if (tp)
+-		mptcp_set_rwin(tp, th);
+ }
  
- 		skb_reserve(skb, MVPP2_MH_SIZE + MVPP2_SKB_HEADROOM);
- 		skb_put(skb, rx_bytes);
-+		if (metasize)
-+			skb_metadata_set(skb, metasize);
- 		skb->ip_summed = mvpp2_rx_csum(port, rx_status);
- 		skb->protocol = eth_type_trans(skb, dev);
- 
--- 
-2.53.0
-
+ __be32 mptcp_get_reset_option(const struct sk_buff *skb)
 
 
 
