@@ -1,160 +1,161 @@
-Return-Path: <stable+bounces-263733-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263734-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 0orDGvlMMWopgQUAu9opvQ
-	(envelope-from <stable+bounces-263733-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:17:45 +0200
+	id 2tOTNelNMWpigQUAu9opvQ
+	(envelope-from <stable+bounces-263734-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:21:45 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC0B568FD55
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:17:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F9A568FDE1
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:21:45 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aW71+EDm;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263733-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263733-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=none;
+	dmarc=none;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263734-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263734-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1A8733065348
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 13:17:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 29E07306FC0B
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 13:21:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA8B7311C2F;
-	Tue, 16 Jun 2026 13:17:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B5DB3264D9;
+	Tue, 16 Jun 2026 13:21:40 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 990471FE47B
-	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 13:17:34 +0000 (UTC)
+Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [207.46.229.174])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 319923195FC;
+	Tue, 16 Jun 2026 13:21:33 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781615857; cv=none; b=n2Um599hXKxe42gYFSIylwO9r3M/4oBSbAKZVd6gkMVlUZVp5T9UZ09en2q4/SucxJz7O5FByOWsDNeRHdeeTGfHOEtPHkFkVvuDJ2FH1JmVXR6LCE5r0hQCqDpmbt1nszOzxfRXMSYuOx53qIxPu/0AUPaQgtWss3g5DzLoDaQ=
+	t=1781616100; cv=none; b=G2h3nlzlQ5EpPAkT8Ad4LA2mb9RYDo8qmjgqfgeAtEWCaI+x3X2WZfryfCl6hfmg3HmUas5R9rg1AvEL+Mm2MSAoIZ7aEXUrOizlSO5OZOn8fBIPV7dvN5vkpPUOZGauSJa59BkB9VWXE/sBxUHOrj5FC+uOomgSf4VBDhAZKiw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781615857; c=relaxed/simple;
-	bh=EM4/3d2ND1Vqe0ECw+jS0Rvh0VL7yVDqyMiSuG9ky/g=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JbTXRH9yXGzaOMiMwnPy/CvmYfVX7YpE33V7hUxd/LAX1KfBjg5z+4nJFp64PWWd5GbjR8gynh7obPS+ZeTYuuH/jMBQz9ZA/vEChFmZP0W05McxIBBzp6h2LPwv9UG0a0qo7m7Rwa0nLaOr3ydhARTnNTP7ILAGhFBWIDMav8A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aW71+EDm; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B6181F000E9
-	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 13:17:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781615854;
-	bh=CN657zUEBuZTy0QAI2PyjBlS7abDzoX5DB3vaiofMYU=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=aW71+EDm/vR05HkpCK4bFnRkQ0+DgXWz4Fga0CsyC9oGma0204yQAnOxYeDtUxHkw
-	 j/BN5ubAZFQvkbCYAXEGNBHadHft6dXrLKMXRDs+sgw8fse94g1rbjm4SguBXocRKq
-	 8295JAtj8mbMmbxkFad0B545ARRzzqKrOUCDmAQQFe02V/isQYF2aj1WFXrDt2x/tP
-	 wzbK2g8oUaNlyqUuJq5vJhI2zxvsHSH7b+ke5+h7wpmWY6+2QjAe3xEs9uQhXvOomj
-	 T1WWBE+5SZ07IxQSOdyXdn96Q/H4GYOVWeLx32laC6SR++pYzVvKVs5ASRJrWCur87
-	 XWa/WBhpsEeNQ==
-Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-396775c2720so37058361fa.2
-        for <stable@vger.kernel.org>; Tue, 16 Jun 2026 06:17:34 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ9z9UJ8RhANRy9qtKKRXbV3AdeltF8xK+nRQA39rM9lJDTxbH8yToL491vYOWBz2nWyXlkWnCE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwAHnbDqdNBfzPNT4rDBB+N+gSztUtNxHACLs3DSIRt+MJSC8RO
-	Q0hZPYo9Eri6Yc4JY5A9feuizho9LDLEPoOnbuFnuEfkdmuoLZeQQqcXdLP2odq5t9hdZzsXKUx
-	52x/PgF0kkh3wADTnpat+4+Xvi5IaAQYdRYJTEtwTgw==
-X-Received: by 2002:ac2:5ed0:0:b0:5a8:fbe1:15a3 with SMTP id
- 2adb3069b0e04-5ad30dd6babmr2978224e87.39.1781615852832; Tue, 16 Jun 2026
- 06:17:32 -0700 (PDT)
+	s=arc-20240116; t=1781616100; c=relaxed/simple;
+	bh=xYo44AF5Yfod+StgKVtatg/QGVfjn4U6Fl5uwbcFhDE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=AuXzZTFqqlJG9f86Vr87MkJLqnzsLQaoRP7ZS6zHXnU3SiXnoAhVXPDZveUNTe8PJNkgBqR5o5i2ZX4/A3iZoVYeGiAG5eWZP5iwsvMc3WjZWanQwPBgKWbMs7Eo+oe7XK0NUO9QgL2aU0negSAAo9prw8Mu/Vz+qw2N9sJNQSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn; spf=pass smtp.mailfrom=zju.edu.cn; arc=none smtp.client-ip=207.46.229.174
+Received: from zju.edu.cn (unknown [10.98.66.117])
+	by mtasvr (Coremail) with SMTP id _____wB3nKbVTTFqEG2wAg--.61962S3;
+	Tue, 16 Jun 2026 21:21:26 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.98.66.117])
+	by mail-app4 (Coremail) with SMTP id zi_KCgDH+TDUTTFqiguXAQ--.44550S2;
+	Tue, 16 Jun 2026 21:21:24 +0800 (CST)
+From: Fan Wu <fanwu01@zju.edu.cn>
+To: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Johan Hovold <johan@kernel.org>,
+	Pooja Katiyar <pooja.katiyar@intel.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Fan Wu <fanwu01@zju.edu.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] usb: typec: ucsi: ccg: Fix use-after-free of ucsi on remove
+Date: Tue, 16 Jun 2026 13:20:11 +0000
+Message-Id: <20260616132011.103279-1-fanwu01@zju.edu.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260616131514.1677558-1-vulab@iscas.ac.cn>
-In-Reply-To: <20260616131514.1677558-1-vulab@iscas.ac.cn>
-From: Bartosz Golaszewski <brgl@kernel.org>
-Date: Tue, 16 Jun 2026 15:17:18 +0200
-X-Gmail-Original-Message-ID: <CAMRc=MchoNo0eu4hf7jMXXiM-RTiM5AzheUNXU6vRdrw19vfSA@mail.gmail.com>
-X-Gm-Features: AVVi8CeEb27hnDocnhrZjAFLoAL7S5Tlx8hr40F2SvR4FmHI3gBPfUipGGqGnD8
-Message-ID: <CAMRc=MchoNo0eu4hf7jMXXiM-RTiM5AzheUNXU6vRdrw19vfSA@mail.gmail.com>
-Subject: Re: [PATCH v2] pwrseq: core: fix use-after-free in pwrseq_debugfs_seq_next()
-To: Wentao Liang <vulab@iscas.ac.cn>
-Cc: linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:zi_KCgDH+TDUTTFqiguXAQ--.44550S2
+X-CM-SenderInfo: qrstjiaswqq6lmxovvfxof0/
+X-CM-DELIVERINFO: =?B?ND0nYAXKKxbFmtjJiESix3B1w3vZ3A9ovKVTomAyoQazvoRs/NHSP8GI2EvgeEEW7R
+	sfnXz+g1OQfMo27QHy5TwQyZwohKw2SZcbPewIttoX0xtNb7pduqu6xNQ7nX8+qX39pR2n
+	mPgDSnrqtblu1gT9C2HN5RPxYw6l01w8CbPzC/8w
+X-Coremail-Antispam: 1Uk129KBj93XoWxJr43JrWrGFy5KFyrtr4DJrc_yoW8Cr18pr
+	y2y3y2krW8XF1aga1DZ3Z8XFy8uF4DAry2k3y2gwnxGan8Aw1j9a40ka4YgFy5Xr9rGF1q
+	yr43J3y5AFW5CwcCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUU9Gb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AK
+	xVW0oVCq3wAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc804V
+	CY07AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AK
+	xVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48Icx
+	kI7VAKI48JM4x0Y48IcxkI7VAKI48G6xCjnVAKz4kxMxAIw28IcxkI7VAKI48JMxC20s02
+	6xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_Jr
+	I_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v2
+	6r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj4
+	0_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8
+	JrUvcSsGvfC2KfnxnUUI43ZEXa7IU85l1PUUUUU==
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-5.16 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [0.04 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-263733-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER(0.00)[brgl@kernel.org,stable@vger.kernel.org];
+	DMARC_NA(0.00)[zju.edu.cn];
+	TAGGED_FROM(0.00)[bounces-263734-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:heikki.krogerus@linux.intel.com,m:gregkh@linuxfoundation.org,m:johan@kernel.org,m:pooja.katiyar@intel.com,m:dmitry.baryshkov@oss.qualcomm.com,m:linux-usb@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:fanwu01@zju.edu.cn,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[fanwu01@zju.edu.cn,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:vulab@iscas.ac.cn,m:linux-pm@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[brgl@kernel.org,stable@vger.kernel.org];
-	RCPT_COUNT_THREE(0.00)[4];
-	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,iscas.ac.cn:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,mail.gmail.com:mid]
+	FROM_NEQ_ENVFROM(0.00)[fanwu01@zju.edu.cn,stable@vger.kernel.org];
+	ALIAS_RESOLVED(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	R_DKIM_NA(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: BC0B568FD55
+X-Rspamd-Queue-Id: 0F9A568FDE1
 
-On Tue, Jun 16, 2026 at 3:15=E2=80=AFPM Wentao Liang <vulab@iscas.ac.cn> wr=
-ote:
->
-> pwrseq_debugfs_seq_next() declares the 'next' device pointer with
-> __free(put_device), which causes put_device() to drop the reference
-> as soon as the variable goes out of scope. Returning 'next' directly
-> thus gives the caller a pointer whose reference has already been
-> decremented, resulting in a use-after-free.
->
-> Fix this by removing the automatic cleanup and returning the pointer
-> directly. The reference is now properly released in the stop() callback
-> of the seq_file operations.
->
-> Cc: stable@vger.kernel.org
-> Fixes: 249ebf3f65f8 ("power: sequencing: implement the pwrseq core")
-> Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
->
-> ---
-> v2: Drop __free() and no_free_ptr().
-> ---
->  drivers/power/sequencing/core.c | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
->
-> diff --git a/drivers/power/sequencing/core.c b/drivers/power/sequencing/c=
-ore.c
-> index 4dff71be11b6..e8721368f08a 100644
-> --- a/drivers/power/sequencing/core.c
-> +++ b/drivers/power/sequencing/core.c
-> @@ -1008,9 +1008,7 @@ static void *pwrseq_debugfs_seq_next(struct seq_fil=
-e *seq, void *data,
->
->         ++*pos;
->
-> -       struct device *next __free(put_device) =3D
-> -                       bus_find_next_device(&pwrseq_bus, curr);
-> -       return next;
-> +       return bus_find_next_device(&pwrseq_bus, curr);
->  }
->
->  static void pwrseq_debugfs_seq_show_target(struct seq_file *seq,
-> --
-> 2.34.1
->
+The threaded IRQ handler ccg_irq_handler() calls ucsi_notify_common(),
+which on a connector-change event calls ucsi_connector_change() and
+schedules connector work.  In ucsi_ccg_remove(), ucsi_destroy() frees
+uc->ucsi (kfree) before free_irq() is called, so a handler invocation
+already in flight may access the freed object after ucsi_destroy().
 
-Where will the new reference be dropped now?
+  CPU 0 (remove)            | CPU 1 (threaded IRQ)
+    ucsi_destroy(uc->ucsi)  |   ccg_irq_handler()
+      kfree(ucsi) // FREE   |     ucsi_notify_common(uc->ucsi) // USE
 
-Bart
+Move free_irq() before ucsi_destroy() in the remove path.  It is kept
+after ucsi_unregister(): ucsi_unregister() cancels connector work whose
+handler issues GET_CONNECTOR_STATUS through ucsi_send_command_common(),
+which waits for a completion that is signalled from the IRQ handler, so
+the IRQ must stay active until that work has been cancelled.
+
+The probe error path already orders free_irq() before ucsi_destroy().
+
+This bug was found by static analysis.
+
+Fixes: e32fd989ac1c ("usb: typec: ucsi: ccg: Move to the new API")
+Cc: stable@vger.kernel.org
+Signed-off-by: Fan Wu <fanwu01@zju.edu.cn>
+---
+ drivers/usb/typec/ucsi/ucsi_ccg.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/usb/typec/ucsi/ucsi_ccg.c b/drivers/usb/typec/ucsi/ucsi_ccg.c
+index d83a0051c737..c089000bd448 100644
+--- a/drivers/usb/typec/ucsi/ucsi_ccg.c
++++ b/drivers/usb/typec/ucsi/ucsi_ccg.c
+@@ -1513,8 +1513,8 @@ static void ucsi_ccg_remove(struct i2c_client *client)
+ 	cancel_work_sync(&uc->work);
+ 	pm_runtime_disable(uc->dev);
+ 	ucsi_unregister(uc->ucsi);
+-	ucsi_destroy(uc->ucsi);
+ 	free_irq(uc->irq, uc);
++	ucsi_destroy(uc->ucsi);
+ }
+
+ static const struct of_device_id ucsi_ccg_of_match_table[] = {
+--
+2.45.2
+
 
