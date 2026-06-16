@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-266294-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265461-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id tzsaNfyaMWoxoAUAu9opvQ
-	(envelope-from <stable+bounces-266294-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:50:36 +0200
+	id cbhgMlmJMWrnlwUAu9opvQ
+	(envelope-from <stable+bounces-265461-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:35:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 524D3694829
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:50:36 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3666B693487
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:35:21 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="2c8/UxTQ";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266294-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266294-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=l4PPYSq9;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265461-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265461-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 22D493227749
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:47:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 41E0E3039A29
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:35:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91B2543D4E8;
-	Tue, 16 Jun 2026 18:47:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C4F147A0DA;
+	Tue, 16 Jun 2026 17:35:19 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 776803CFF55;
-	Tue, 16 Jun 2026 18:47:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DF39332EC1;
+	Tue, 16 Jun 2026 17:35:18 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781635669; cv=none; b=a3bHJ+8cs+58/nDTzNbiVD8u+0GAMS37r5oJ2RYyEtf1KgswtrQzEdtJ31+O51R2Mch+wEQSrX3s0dmjVyDHXsrwtcH1TA/UOvb7T7WEABQ8DLGWR+y72/laQFZbCtorKEfmh0/4e0PU+p1pvZyq50+Dz8/10R3aX82uLqNZnMw=
+	t=1781631319; cv=none; b=GqIGl4vVZUFzQYslpQaQecwYuxHN8m+9cJb0Q5vIKkbtQd6eUoqjWTyBHChwd6x5aehqsDcHd4cVe/tO+lqhydWuzsz1kpi+AiLV7ambB6ntBPerZ4JPilkMHJMyUsz3uDkRYfTGooYL5kVID6NvV/ft+5KamHZKNBDlaSrOAVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781635669; c=relaxed/simple;
-	bh=2iHp9pp9P2efIlr+nNURPvNWQMUjpAxZGOV5mLCPNAc=;
+	s=arc-20240116; t=1781631319; c=relaxed/simple;
+	bh=f7jKSeSRQjPsFej3vptQOBynOUaN993iOpEq8mbEa34=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hnHiU3DmkWpNqrjeIHpQgaRWA/5JAjsI61UCs/dCRcB+uw/xxfEELiB9HXNhPAnSHQOOxX/59PM6ym3031VkMxgLQ+n6oVnn2C9f6No3IFTmWkDoxuowTK9A+IEiU74fBWEG0BTvsMlgnRKaulnvA0wDRESVbLuaMklHwDZ0W+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2c8/UxTQ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D22D1F000E9;
-	Tue, 16 Jun 2026 18:47:47 +0000 (UTC)
+	 MIME-Version; b=HJnkx1e+my+2N/ciUFebhPnAGEWbr2/D1/wvX2h/cEaXdwMoWbjoZpPYlaeSCjMnu/phO7RqUtCoWuM6L0pXLpEnpr/oeq+Ckw555cHDDZsRDyOnKKwU0eyAv9lYyhg5WJHc+kMsIQWTAiYp7Ykm4YJgbwHLnkwsmKpfS2Eiqz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l4PPYSq9; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61F741F000E9;
+	Tue, 16 Jun 2026 17:35:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781635668;
-	bh=BnNJYS47TqI/3bwX2vqv/opG/rzC7RVBsxF/E5ssCy8=;
+	s=korg; t=1781631318;
+	bh=Fv2qNwuWIlvxEBN1z5VMZjruRjda+TuGWk1rNIuo6l4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=2c8/UxTQt0tUbCCIxWZDkpGhIXxH0SICyHGrhcIoG9MzAbDJauwfHfY3qof3vkEf4
-	 p8Zqchj5evfYmPuZ/3RfM0uTiNQkPJlC2S19ebC7WhjilFAdORXhwTD8gmvLS+und1
-	 wcWBX00Sj0CZrDJ8AnoXoNPYIWWENihbzEqz2iNs=
+	b=l4PPYSq9LxPst9iY220MrG3ErQpxBazDQoNtT83KNbpC64MlQKi3WGfGPcuHeDGJ7
+	 xbtcn0BUknjqvE/2OYxTjxh9nvpfHP0GrstfP75Jbz0oAwrT53CivG8krEGz9/CBam
+	 mj0d/PCV+bzDLqRjDAlSnWACxMun7maAL3xWPAjw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 5.10 049/342] USB: serial: safe_serial: fix memory corruption with small endpoint
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 198/522] netfilter: xt_NFQUEUE: prefer raw_smp_processor_id
 Date: Tue, 16 Jun 2026 20:25:45 +0530
-Message-ID: <20260616145050.542019924@linuxfoundation.org>
+Message-ID: <20260616145135.353970669@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,87 +70,79 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-266294-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:johan@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265461-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:fmancera@suse.de,m:fw@strlen.de,m:pablo@netfilter.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[strlen.de:email,suse.de:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,netfilter.org:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 524D3694829
+X-Rspamd-Queue-Id: 3666B693487
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Fernando Fernandez Mancera <fmancera@suse.de>
 
-commit 438061ed1ad85e6743e2dce826671772d81089ec upstream.
+[ Upstream commit c6c5327dd18bec1e1bbf139b2cf5ae53608a9d30 ]
 
-Make sure that the bulk-out buffer size is at least eight bytes to avoid
-user-controlled slab corruption in "safe" mode should a malicious device
-report a smaller size.
+With PREEMPT_RCU this triggers a splat because smp_processor_id() can be
+preempted while inside a RCU critical section. If xt_NFQUEUE target is
+invoked via nft_compat_eval() path, we are inside a RCU critical
+section.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Just use the raw version instead.
+
+Fixes: 0ca743a55991 ("netfilter: nf_tables: add compatibility layer for x_tables")
+Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/safe_serial.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ net/netfilter/xt_NFQUEUE.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/serial/safe_serial.c
-+++ b/drivers/usb/serial/safe_serial.c
-@@ -259,6 +259,7 @@ static int safe_prepare_write_buffer(str
- static int safe_startup(struct usb_serial *serial)
- {
- 	struct usb_interface_descriptor	*desc;
-+	int bulk_out_size;
+diff --git a/net/netfilter/xt_NFQUEUE.c b/net/netfilter/xt_NFQUEUE.c
+index 466da23e36ff47..b32d153e3a1862 100644
+--- a/net/netfilter/xt_NFQUEUE.c
++++ b/net/netfilter/xt_NFQUEUE.c
+@@ -91,7 +91,7 @@ nfqueue_tg_v3(struct sk_buff *skb, const struct xt_action_param *par)
  
- 	if (serial->dev->descriptor.bDeviceClass != CDC_DEVICE_CLASS)
- 		return -ENODEV;
-@@ -279,6 +280,16 @@ static int safe_startup(struct usb_seria
- 	default:
- 		return -EINVAL;
- 	}
-+
-+	/*
-+	 * The bulk-out buffer needs to be large enough for the two-byte
-+	 * trailer in safe mode, but assume anything smaller than eight bytes
-+	 * is broken.
-+	 */
-+	bulk_out_size = serial->port[0]->bulk_out_size;
-+	if (bulk_out_size > 0 && bulk_out_size < 8)
-+		return -EINVAL;
-+
- 	return 0;
- }
+ 	if (info->queues_total > 1) {
+ 		if (info->flags & NFQ_FLAG_CPU_FANOUT) {
+-			int cpu = smp_processor_id();
++			int cpu = raw_smp_processor_id();
  
+ 			queue = info->queuenum + cpu % info->queues_total;
+ 		} else {
+-- 
+2.53.0
+
 
 
 
