@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-264521-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264522-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id MNvUHhV5MWrvkAUAu9opvQ
-	(envelope-from <stable+bounces-264521-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:25:57 +0200
+	id pcH0Eh95MWrykAUAu9opvQ
+	(envelope-from <stable+bounces-264522-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:26:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1486369210F
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:25:57 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB6E569211C
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:26:06 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=xw5XYs9X;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264521-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264521-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=OuXaGOKl;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264522-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264522-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AA262316CFEC
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:12:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CD1F43193976
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:12:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14DBF4657D0;
-	Tue, 16 Jun 2026 16:12:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68CFA45BD6F;
+	Tue, 16 Jun 2026 16:12:52 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5E5E44CF44;
-	Tue, 16 Jun 2026 16:12:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34A5F44BCB8;
+	Tue, 16 Jun 2026 16:12:51 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781626364; cv=none; b=LaTohRdVi/Jq3MYcAtMYubU9FV7LKJCymV/0YosdS5lIvF1x3QM2Z/Gnsiia+Ar8oCaKk0r5Pfcx4Jz169GZHJo3NXyJIJ65Tzkn9AKMLSzktkNvhMFlJNypDlvYBgMFkqPd55gpfJj4GdSHkCxsip+OQkAYGDCU94gwWO/BeFc=
+	t=1781626372; cv=none; b=TW4ACjdx/QuKJQYdKNLWUqWhLUaSzs4XV5pQpg7cfB2qsSR7pft8QxflTyk+OhISxqeMD4LXRPxLLMp3VkV7Zwq6Oi94UxMqBC+VSSQYNEuj0d6lbMLhHrQ6NsotgQrWuU/RyrhoeUc2Yr30nJSl6DtMuel5S2gmRgUYYHUyEek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781626364; c=relaxed/simple;
-	bh=f4o8MGSgJXmNp3Ev+sbAog8wGSTot0KdnEHDaVzJ90Y=;
+	s=arc-20240116; t=1781626372; c=relaxed/simple;
+	bh=334CMkdeOz5Wv6CngRxIOn5va7hFczmOJEa9RMvCh/4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lGX1QCmEnQp8+KLzZrtlXy9q/Xwp8I7HSoYl0GzFt3/7HJ6g5Rdp6LaQ8DlyCNhsYI7WsIWmRhJXLVEbPxSTp+oZqIdg+0ko/MJrwNldigx0TfnLjGCMrgHicEGvUvUIhYrhKAgv4vYhfNoatqfmuq8+enwubKqlMTLTT/7nfOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xw5XYs9X; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AC221F000E9;
-	Tue, 16 Jun 2026 16:12:42 +0000 (UTC)
+	 MIME-Version; b=jVawS0sF9JgZEuZJr2S/jd2jW6KuFjd0uoaBNakRRb4E9tbauxGo7UxlXtNudF2Pb9eWO6qpqfoceedj0ZMaTf5CNBab6PvcTwItaJvPUrVAo0tW8dzZFtgvB15WHDPGmm+RKsgu1MhPODqpO73epLddIbN0ffy2Zxo3QdWjSBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OuXaGOKl; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3758D1F000E9;
+	Tue, 16 Jun 2026 16:12:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781626363;
-	bh=1RDT6R4K7TLD9+2rSQtG9/jCYb6fAZftPPOGJY7TuO8=;
+	s=korg; t=1781626371;
+	bh=ybCEnGGIfpG5BApttri1QzaHY3Ypl1NbAoVX4H8HFnc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=xw5XYs9XRjiOdmhZnSWdYe0OUodLOsb2Bukt8sfpAL/qXQFlAVKjqggJh/1oD3wpS
-	 GjqKrzP0QTHu738QygOdX67yNFmNBhsIOiyArfeM5UEONaB8UY3kP20YW7r6eSVukt
-	 AIBfc5jwyxXWt3yBkE2nZj6vlPsWNJIcYy8/ITUw=
+	b=OuXaGOKlBlxIC5WolSfw6HBuX5P6xYWDGTHGpKA/Cdj2Tdsfg67+qOIFDUEgZWbFv
+	 /xX1kb8fxwB16jWHUmXvjhyo2tDmWFf9UNcMWB6he1tDs3OkBuMcCAU2xNvDH0j68Y
+	 z2zU+q473i12mlDannVV3vJIxhEDmBuF9p0XmcfI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.18 307/325] wifi: mac80211: tests: mark HT check strict
-Date: Tue, 16 Jun 2026 20:31:43 +0530
-Message-ID: <20260616145114.290726111@linuxfoundation.org>
+	Matt Fleming <mfleming@cloudflare.com>,
+	Tejun Heo <tj@kernel.org>,
+	Andrea Righi <arighi@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 308/325] sched_ext: Dont warn on NULL cgrp_moving_from in scx_cgroup_move_task()
+Date: Tue, 16 Jun 2026 20:31:44 +0530
+Message-ID: <20260616145114.353125941@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
 References: <20260616145057.827196531@linuxfoundation.org>
@@ -67,67 +70,117 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-264521-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:johannes.berg@intel.com,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264522-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mfleming@cloudflare.com,m:tj@kernel.org,m:arighi@nvidia.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,intel.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,cloudflare.com:email,nvidia.com:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 1486369210F
+X-Rspamd-Queue-Id: CB6E569211C
 
 6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Tejun Heo <tj@kernel.org>
 
-commit 0cfff13c94cb5fa818bb374945ff280e08dc1bb9 upstream.
+commit 02e545c4297a26dbbc41df81b831e7f605bcd306 upstream.
 
-The HT check now only applies in strict mode since APs
-were found to be broken. Mark it as such.
+A WARN fires when systemd's user manager writes "+cpu +memory +pids" to
+its own subtree_control while a sched_ext scheduler is loaded:
 
-Fixes: 711a9c018ad2 ("wifi: mac80211: skip ieee80211_verify_sta_ht_mcs_support check in non-strict mode")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  WARNING: at kernel/sched/ext.c:3227 scx_cgroup_move_task+0xa8/0xb0
+   scx_cgroup_move_task+0xa8/0xb0
+   sched_move_task+0x134/0x290
+   cpu_cgroup_attach+0x39/0x70
+   cgroup_migrate_execute+0x37d/0x450
+   cgroup_update_dfl_csses+0x1e3/0x270
+   cgroup_subtree_control_write+0x3e7/0x440
+
+scx_cgroup_can_attach() arms cgrp_moving_from only when a task's cpu
+cgroup changes. It can still be NULL when scx_cgroup_move_task() runs,
+through this sequence:
+
+  Step                               Result
+  ---------------------------------  ----------------------------------
+  1. cpu enabled on cgroup G         cpu css = A
+  2. cpu toggled off then on for G   A killed, B created (same cgroup)
+  3. an exiting task keeps A alive   migration skips it, A now stale
+  4. +memory migrates G              stale A vs current B pulls cpu in
+  5. cpu attach runs for all tasks   hits a live, cpu-unchanged task
+  6. scx_cgroup_move_task() on it    cgrp_moving_from NULL -> WARN
+
+The mismatch is that scx_cgroup_can_attach() keys on cgroup identity
+while migration drives the move on css identity, so a NULL cgrp_moving_from
+here is a legitimate css-only migration, not a missing prep.
+
+The call is already gated on cgrp_moving_from, so just drop the warning.
+ops.cgroup_prep_move() and ops.cgroup_move() stay paired.
+
+Fixes: 819513666966 ("sched_ext: Add cgroup support")
+Cc: stable@vger.kernel.org # v6.12+
+Reported-by: Matt Fleming <mfleming@cloudflare.com>
+Closes: https://lore.kernel.org/all/20260601124156.2205704-1-mfleming@cloudflare.com/
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Reviewed-by: Andrea Righi <arighi@nvidia.com>
+[ mfleming: keep the 6.18.y SCX_KF_REST argument in the
+  SCX_CALL_OP_TASK() call. ]
+Signed-off-by: Matt Fleming <mfleming@cloudflare.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/tests/chan-mode.c |    1 +
- 1 file changed, 1 insertion(+)
+ kernel/sched/ext.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
---- a/net/mac80211/tests/chan-mode.c
-+++ b/net/mac80211/tests/chan-mode.c
-@@ -65,6 +65,7 @@ static const struct determine_chan_mode_
- 		.ht_capa_mask = {
- 			.mcs.rx_mask[0] = 0xf7,
- 		},
-+		.strict = true,
- 	}, {
- 		.desc = "Masking out a RX rate in VHT capabilities",
- 		.conn_mode = IEEE80211_CONN_MODE_EHT,
+diff --git a/kernel/sched/ext.c b/kernel/sched/ext.c
+index 7b750bf42698cc..d8280f87443310 100644
+--- a/kernel/sched/ext.c
++++ b/kernel/sched/ext.c
+@@ -3221,11 +3221,13 @@ void scx_cgroup_move_task(struct task_struct *p)
+ 		return;
+ 
+ 	/*
+-	 * @p must have ops.cgroup_prep_move() called on it and thus
+-	 * cgrp_moving_from set.
++	 * scx_cgroup_can_attach() sets cgrp_moving_from only when the task's
++	 * cgroup changes. Migration keys off css rather than cgroup identity,
++	 * so it can hand an unchanged-cgroup task here with cgrp_moving_from
++	 * NULL. Nothing to report to the BPF scheduler then, so skip it and
++	 * keep prep_move and move paired.
+ 	 */
+-	if (SCX_HAS_OP(sch, cgroup_move) &&
+-	    !WARN_ON_ONCE(!p->scx.cgrp_moving_from))
++	if (SCX_HAS_OP(sch, cgroup_move) && p->scx.cgrp_moving_from)
+ 		SCX_CALL_OP_TASK(sch, SCX_KF_REST, cgroup_move, task_rq(p),
+ 				 p, p->scx.cgrp_moving_from,
+ 				 tg_cgrp(task_group(p)));
+-- 
+2.53.0
+
 
 
 
