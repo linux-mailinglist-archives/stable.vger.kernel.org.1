@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-264782-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265263-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Yi/aAPJ9MWoAkwUAu9opvQ
-	(envelope-from <stable+bounces-264782-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:46:42 +0200
+	id jz6nCEmHMWr2lgUAu9opvQ
+	(envelope-from <stable+bounces-265263-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:26:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E52A692712
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:46:41 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FA12693207
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:26:32 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="EC/ahIA9";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264782-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264782-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=PHODQUM6;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265263-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265263-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C8C62304E40A
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:37:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1329D3225703
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:18:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A848A47799B;
-	Tue, 16 Jun 2026 16:37:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A56DD4611CF;
+	Tue, 16 Jun 2026 17:18:34 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BECD2F745E;
-	Tue, 16 Jun 2026 16:37:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 809DC4657D0;
+	Tue, 16 Jun 2026 17:18:33 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781627862; cv=none; b=NYuvuMHVdQ4/JNmrii/QlWDruZ7vKum3Nrm/gpug5UgY/FVlpXM0jJYnLL26Ge3aCcfTdSz0iaPf0HRM2j1WbrUW0KsPnbomPYD2lGxV0EeaFOt/Cjvy90yuCJKUipJc9ZnEEa8ezu9uBmNI2MUNPYT+XoS3y6CKJkHUwyOMSr4=
+	t=1781630314; cv=none; b=fgiZw6c9as68G0PxmhRxr1GjvoQNqxn66qLPbFwviYJIqVq5G1ifKt9OBn/LccRUMP8eoLwaccVU/PTU620U0vaz7ysi/kJqFflc8iAfKVYotwvMXbPGqTPOzB1+JSXHv6vrSH4YM/pxL6GVXXEMKnHrKW1MZUZebjVCRJ34rnU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781627862; c=relaxed/simple;
-	bh=2P2Loo3nnTjsA4i1pHx9XIYwrwwNqWYjfzwXN9rFs7g=;
+	s=arc-20240116; t=1781630314; c=relaxed/simple;
+	bh=ixLNc2U9WfxLqZX7YJnKze21Ly+o77Zz/MuHHIUDAqg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cR7RTpqxB6xRL4sIk+jVSBQSv6uQII+X8DbETADQMIwYiuy7It4///6GahUsIQ4MDDcQTcvrFH4RKZ1w23DBGEYT5GffBNwsNdHGUb2bX7WJGAMce2HChn6k/B6OYic8mdsDEoOZ5b9xnEF3yfTP7ZuPlrqxZ7nnTiIw+UyEPBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EC/ahIA9; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 871E41F000E9;
-	Tue, 16 Jun 2026 16:37:40 +0000 (UTC)
+	 MIME-Version; b=tahB9u3R9AhJ+OEzHwKsNFaslYhF8lNeqfbZ7hjop5/LpsBZaH+zczQe+pmex3dsJMB5z4xvaVRVK3yt6g9PKxcOEoYK0g1rrydcSrbrnGLKfW/Rqzks20Ie36D64Vm2/O/sA+X1E1RCv08+vKGQIhHJQmKMURISr2+EcfEnu9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PHODQUM6; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DD151F000E9;
+	Tue, 16 Jun 2026 17:18:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781627861;
-	bh=7FYIqr9DS1mEZQXYnmzI4Y2o5H9JGSN+g1wIlILrW/c=;
+	s=korg; t=1781630313;
+	bh=o1zoFjfXu+lJDPJLq//GyY3enKm+xU2QL9gj3HoZ5xQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=EC/ahIA9LEzRR9+yZedZ+flodQPSEMv2ig9GYmrPdCXXUFpZtlmvPbHwcqZwMjJHy
-	 m54/AxAcuMDM8QFhqr2KHLgWQf25Ebhc+y49gRzhLaLch3RXN3iZuLJVp2tzA2a8J7
-	 l6JJXK9KMRgiEylH7brO4HWahzmrZnof1xSPes48=
+	b=PHODQUM65ZZIc4zG+YHQWEQPqXLrZm87WUUZ5h9UolvU/jjIaz4CXbkdNqi6t560v
+	 NDEj1ITJRphj2gDBK40/hqLU3LHNPt8/+rflogs05Tp7oJ09jUDfk4e4CgtpowFAf8
+	 tJAQiE0Vx1TnvXnZU//GGoqlJEnJeOdwOJR2wJ18=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 240/261] RDMA/umem: fix kernel-doc warnings
-Date: Tue, 16 Jun 2026 20:31:18 +0530
-Message-ID: <20260616145056.194692260@linuxfoundation.org>
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Nikolay Borisov <nik.borisov@suse.com>
+Subject: [PATCH 6.6 452/452] x86/CPU/AMD: Rename init_amd_zn() to init_amd_zen_common()
+Date: Tue, 16 Jun 2026 20:31:19 +0530
+Message-ID: <20260616145140.220414169@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
-References: <20260616145044.869532709@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,22 +71,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264782-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265263-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bp@alien8.de,m:nik.borisov@suse.com,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:rdunlap@infradead.org,m:leon@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -98,66 +97,87 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,infradead.org:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[alien8.de:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,suse.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5E52A692712
+X-Rspamd-Queue-Id: 7FA12693207
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Borislav Petkov (AMD) <bp@alien8.de>
 
-[ Upstream commit ff46d1392750444fab5ae5a0194764ffdc4ac0d2 ]
+commit 7c81ad8e8bc28a1847e87c5afe1bae6bffb2f73e upstream.
 
-Add or correct kernel-doc comments to eliminate warnings:
+Call it from all Zen init functions.
 
-Warning: include/rdma/ib_umem.h:104 function parameter 'biter' not
- described in 'rdma_umem_for_each_dma_block'
-Warning: include/rdma/ib_umem.h:140 function parameter 'pgsz_bitmap' not
- described in 'ib_umem_find_best_pgoff'
-Warning: include/rdma/ib_umem.h:141 No description found for return
- value of 'ib_umem_find_best_pgoff'
-
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Link: https://patch.msgid.link/20260224003120.3173892-1-rdunlap@infradead.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Stable-dep-of: 15fe76e23615 ("RDMA/umem: Fix truncation for block sizes >= 4G")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
+Link: http://lore.kernel.org/r/20231120104152.13740-7-bp@alien8.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/rdma/ib_umem.h |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ arch/x86/kernel/cpu/amd.c |   11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
---- a/include/rdma/ib_umem.h
-+++ b/include/rdma/ib_umem.h
-@@ -90,6 +90,7 @@ static inline bool __rdma_umem_block_ite
- /**
-  * rdma_umem_for_each_dma_block - iterate over contiguous DMA blocks of the umem
-  * @umem: umem to iterate over
-+ * @biter: block iterator variable
-  * @pgsz: Page size to split the list into
-  *
-  * pgsz must be <= PAGE_SIZE or computed by ib_umem_find_best_pgsz(). The
-@@ -117,7 +118,7 @@ unsigned long ib_umem_find_best_pgsz(str
-  * ib_umem_find_best_pgoff - Find best HW page size
-  *
-  * @umem: umem struct
-- * @pgsz_bitmap bitmap of HW supported page sizes
-+ * @pgsz_bitmap: bitmap of HW supported page sizes
-  * @pgoff_bitmask: Mask of bits that can be represented with an offset
-  *
-  * This is very similar to ib_umem_find_best_pgsz() except instead of accepting
-@@ -130,6 +131,9 @@ unsigned long ib_umem_find_best_pgsz(str
-  *
-  * If the pgoff_bitmask requires either alignment in the low bit or an
-  * unavailable page size for the high bits, this function returns 0.
-+ *
-+ * Returns: best HW page size for the parameters or 0 if none available
-+ *   for the given parameters.
-  */
- static inline unsigned long ib_umem_find_best_pgoff(struct ib_umem *umem,
- 						    unsigned long pgsz_bitmap,
+--- a/arch/x86/kernel/cpu/amd.c
++++ b/arch/x86/kernel/cpu/amd.c
+@@ -1070,7 +1070,7 @@ void init_spectral_chicken(struct cpuinf
+ #endif
+ }
+ 
+-static void init_amd_zn(struct cpuinfo_x86 *c)
++static void init_amd_zen_common(void)
+ {
+ 	setup_force_cpu_cap(X86_FEATURE_ZEN);
+ #ifdef CONFIG_NUMA
+@@ -1080,6 +1080,7 @@ static void init_amd_zn(struct cpuinfo_x
+ 
+ static void init_amd_zen1(struct cpuinfo_x86 *c)
+ {
++	init_amd_zen_common();
+ 	fix_erratum_1386(c);
+ 
+ 	/* Fix up CPUID bits, but only if not virtualised. */
+@@ -1143,10 +1144,12 @@ static void zen2_zenbleed_check(struct c
+ 	} else {
+ 		msr_clear_bit(MSR_AMD64_DE_CFG, MSR_AMD64_DE_CFG_ZEN2_FP_BACKUP_FIX_BIT);
+ 	}
++
+ }
+ 
+ static void init_amd_zen2(struct cpuinfo_x86 *c)
+ {
++	init_amd_zen_common();
+ 	init_spectral_chicken(c);
+ 	fix_erratum_1386(c);
+ 	zen2_zenbleed_check(c);
+@@ -1164,6 +1167,8 @@ static void init_amd_zen2(struct cpuinfo
+ 
+ static void init_amd_zen3(struct cpuinfo_x86 *c)
+ {
++	init_amd_zen_common();
++
+ 	if (!cpu_has(c, X86_FEATURE_HYPERVISOR)) {
+ 		/*
+ 		 * Zen3 (Fam19 model < 0x10) parts are not susceptible to
+@@ -1177,6 +1182,7 @@ static void init_amd_zen3(struct cpuinfo
+ 
+ static void init_amd_zen4(struct cpuinfo_x86 *c)
+ {
++	init_amd_zen_common();
+ }
+ 
+ static void init_amd(struct cpuinfo_x86 *c)
+@@ -1212,9 +1218,6 @@ static void init_amd(struct cpuinfo_x86
+ 	case 0x12: init_amd_ln(c); break;
+ 	case 0x15: init_amd_bd(c); break;
+ 	case 0x16: init_amd_jg(c); break;
+-	case 0x17:
+-		   fallthrough;
+-	case 0x19: init_amd_zn(c); break;
+ 	}
+ 
+ 	if (boot_cpu_has(X86_FEATURE_ZEN1))
 
 
 
