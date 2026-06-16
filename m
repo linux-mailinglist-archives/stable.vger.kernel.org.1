@@ -1,61 +1,65 @@
-Return-Path: <stable+bounces-266065-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264102-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id +U+XLbKVMWrLnQUAu9opvQ
-	(envelope-from <stable+bounces-266065-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:28:02 +0200
+	id MhvuF+5uMWrajAUAu9opvQ
+	(envelope-from <stable+bounces-264102-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:42:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 579DD69424D
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:28:02 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6E96691504
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:42:37 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Zvg7P0YW;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266065-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-266065-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=CQ2ncvlg;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264102-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264102-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BC00430345D8
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:28:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 38572324F3A6
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:35:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F85D472798;
-	Tue, 16 Jun 2026 18:27:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 112AD44BCB0;
+	Tue, 16 Jun 2026 15:35:32 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54FBA3D75A4;
-	Tue, 16 Jun 2026 18:27:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A896E43DA2C;
+	Tue, 16 Jun 2026 15:35:30 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781634478; cv=none; b=gVAojEBCpVtirR3jxFqpIpuqgTZeCSczVyetkujXPj9YpQKPxeUdd33CWq5qnNUHqIfxux1eSdoMIMBCk5g2y+FPK3b7XsKahXTHMDNDMnWCFb9BxZPeEpNB6KlVyecAs9nKfldEBupkQIsvM+Fj8qE0T885VFAKT0gznyBKPBU=
+	t=1781624131; cv=none; b=hng1hGqTriyLawQO70BdC86ZO5g8P5hXVkfUN0SnvgHdXEDQDmeytdL+b3WKYQ3YzhYl7vg7j6Dj7PAT8gzjzdERnfaDAsiPryZ6iXTBcBXFriJWeRRIZuhyHY5gAU6oa3315ju9xwfzZEVBF9Iaz9H27sVdS1cbBft2fLFDBAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781634478; c=relaxed/simple;
-	bh=Kw8j68MUfaw1dNnx7oKFgQS6L/klvz65r5Z7sJ+UI4Y=;
+	s=arc-20240116; t=1781624131; c=relaxed/simple;
+	bh=9Gd019rsNybPUSo2k1RMqvqsc0fxkvZ/yfiFT/fS4EM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eBpl1e36DH+PV98P6EopZae0TFQY2MejPixqailhtcWwr+HQL+8GMmKAB1qENIYuHtMlk9KvYLTNWFhc1L/2F8eAviFDUMuXdiU60NeLzmhqfPOOPzvRA6rVjO2mwgjVZuyvH1+hDXr6bY3FcFWbQB/OdOSPcY78oGZYx8Xer/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zvg7P0YW; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FA141F000E9;
-	Tue, 16 Jun 2026 18:27:55 +0000 (UTC)
+	 MIME-Version; b=ftLpViJeOT0obQ4CjynTXu7uzXRliuOIV+Rb6g6Zhe5UWUaaKkOzZi0O2wy9Qs17UrErZbkP7XJyiFAX9aP3CXYEVL/5VucP00zBXV+HU2TK8Zb/qBxkWG2lb4Q3JdAwjIZWR4hIpWmfO3sgJQtPzVqtA2xrxpQeRiBHGYec0wk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CQ2ncvlg; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACD8A1F000E9;
+	Tue, 16 Jun 2026 15:35:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781634477;
-	bh=DneBzZ0NbR0t6pixUfdpeUbsMRIyAe3WW43vAUxMAsY=;
+	s=korg; t=1781624130;
+	bh=NT38UhiihVPZgos/IJ43lzbnLFefT2ryXFWJDQbwd7I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Zvg7P0YWhOPvudAFh9L0jlqbRPtCr8+IpOaV1FJiPCMV5Tcsl1U+iJJyf3zyzB0aD
-	 CRv8t1AsebqxhbAI88CU97XrYVAAImwUOIpwqilBU+39S935YSQoU1jL/Aj0xX08oN
-	 3w0rXIhv4wSUu90lIhLKj25Gc8hSpS/URHuJeGdM=
+	b=CQ2ncvlgnG27jYv340ebBWNlDR07oR32ZUEF/JwBAykH9NcpIBtsbQE5oKrcghb2k
+	 wPCQUVVaS9CGkLY8kd9tJeiLyWtQjPyKsDxfb9pS1iO2lmBhZTQEfDEEnXLIfjLZqe
+	 btQFFiiFuaZIGEZ+u1OVFzy/mvSkx10iCSz2WH+Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jake Lamberson <lamberson.jake@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 273/411] ALSA: core: Fix potential data race at fasync handling
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Harry Yoo <harry@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 7.0 280/378] memcg: use round-robin victim selection in refill_stock
 Date: Tue, 16 Jun 2026 20:28:31 +0530
-Message-ID: <20260616145115.627507951@linuxfoundation.org>
+Message-ID: <20260616145124.848793756@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,115 +71,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266065-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:lamberson.jake@gmail.com,m:tiwai@suse.de,m:sashal@kernel.org,m:lambersonjake@gmail.com,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264102-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:shakeel.butt@linux.dev,m:harry@kernel.org,m:mhocko@suse.com,m:hannes@cmpxchg.org,m:muchun.song@linux.dev,m:roman.gushchin@linux.dev,m:akpm@linux-foundation.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,linux.dev:email,suse.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux-foundation.org:email,cmpxchg.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 579DD69424D
+X-Rspamd-Queue-Id: D6E96691504
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Shakeel Butt <shakeel.butt@linux.dev>
 
-[ Upstream commit 8146cd333d235ed32d48bb803fdf743472d7c783 ]
+commit c0cafe24d3f6534294c4b2bc2d47734ff7cbd313 upstream.
 
-In snd_fasync_work_fn(), which is the offload work for traversing and
-processing the pending fasync list, the call of kill_fasync() is done
-outside the snd_fasync_lock for avoiding deadlocks.  The problem is
-that its the references of fasync->on, fasync->signal and fasync->poll
-are done there also outside the lock.  Since these may be modified by
-snd_kill_fasync() call concurrently from other process, inconsistent
-values might be passed to kill_fasync().  Although there shouldn't be
-critical UAF, it's still better to be addressed.
+Harry Yoo reported that get_random_u32_below() is not safe to call in the
+nmi context and memcg charge draining can happen in nmi context.
 
-This patch moves the kill_fasync() argument evaluations inside the
-snd_fasync_lock for avoiding the data races above.  The handling in
-fasync->on flag is optimized in the loop to skip directly.
+More specifically get_random_u32_below() is neither reentrant- nor
+NMI-safe: it acquires a per-cpu local_lock via local_lock_irqsave() on the
+batched_entropy_u32 state.  An NMI that lands on a CPU mid-update of the
+ChaCha batch state and recurses into the random subsystem would corrupt
+that state.  The memcg_stock local_trylock prevents re-entry on the percpu
+stock itself, but cannot protect an unrelated subsystem's per-cpu lock.
 
-Also, for more clarity, snd_fasync_free() takes the lock and unlink
-the pending entry more directly instead of clearing fasync->on flag.
+Replace the random pick with a per-cpu round-robin counter stored in
+memcg_stock_pcp and serialized by the same local_trylock that already
+guards cached[] and nr_pages[].  No atomics, no random calls, no extra
+locks needed.
 
-Reported-by: Jake Lamberson <lamberson.jake@gmail.com>
-Fixes: ef34a0ae7a26 ("ALSA: core: Add async signal helpers")
+Link: https://lore.kernel.org/20260521223751.3794625-1-shakeel.butt@linux.dev
+Fixes: f735eebe55f8f ("memcg: multi-memcg percpu charge cache")
+Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+Reported-by: Harry Yoo <harry@kernel.org>
+Closes: https://lore.kernel.org/4e20f643-6983-4b6e-b12d-c6c4eb20ae0c@kernel.org/
+Acked-by: Harry Yoo (Oracle) <harry@kernel.org>
+Acked-by: Michal Hocko <mhocko@suse.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>
 Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20260420061721.3253644-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-[ replaced scoped_guard(spinlock_irq, &snd_fasync_lock) with explicit spin_lock_irq()/spin_unlock_irq() ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/core/misc.c |   14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ mm/memcontrol.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/sound/core/misc.c
-+++ b/sound/core/misc.c
-@@ -171,14 +171,18 @@ static LIST_HEAD(snd_fasync_list);
- static void snd_fasync_work_fn(struct work_struct *work)
- {
- 	struct snd_fasync *fasync;
-+	int signal, poll;
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -1799,6 +1799,7 @@ struct memcg_stock_pcp {
  
- 	spin_lock_irq(&snd_fasync_lock);
- 	while (!list_empty(&snd_fasync_list)) {
- 		fasync = list_first_entry(&snd_fasync_list, struct snd_fasync, list);
- 		list_del_init(&fasync->list);
-+		if (!fasync->on)
-+			continue;
-+		signal = fasync->signal;
-+		poll = fasync->poll;
- 		spin_unlock_irq(&snd_fasync_lock);
--		if (fasync->on)
--			kill_fasync(&fasync->fasync, fasync->signal, fasync->poll);
-+		kill_fasync(&fasync->fasync, signal, poll);
- 		spin_lock_irq(&snd_fasync_lock);
- 	}
- 	spin_unlock_irq(&snd_fasync_lock);
-@@ -234,7 +238,11 @@ void snd_fasync_free(struct snd_fasync *
- {
- 	if (!fasync)
- 		return;
--	fasync->on = 0;
-+
-+	spin_lock_irq(&snd_fasync_lock);
-+	list_del_init(&fasync->list);
-+	spin_unlock_irq(&snd_fasync_lock);
-+
- 	flush_work(&snd_fasync_work);
- 	kfree(fasync);
- }
+ 	struct work_struct work;
+ 	unsigned long flags;
++	uint8_t drain_idx;
+ };
+ 
+ static DEFINE_PER_CPU_ALIGNED(struct memcg_stock_pcp, memcg_stock) = {
+@@ -1982,7 +1983,9 @@ static void refill_stock(struct mem_cgro
+ 	if (!success) {
+ 		i = empty_slot;
+ 		if (i == -1) {
+-			i = get_random_u32_below(NR_MEMCG_STOCK);
++			i = stock->drain_idx++;
++			if (stock->drain_idx == NR_MEMCG_STOCK)
++				stock->drain_idx = 0;
+ 			drain_stock(stock, i);
+ 		}
+ 		css_get(&memcg->css);
 
 
 
