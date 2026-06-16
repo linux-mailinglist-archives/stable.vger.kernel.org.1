@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-265684-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264651-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ofIDG9GNMWotmgUAu9opvQ
-	(envelope-from <stable+bounces-265684-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:54:25 +0200
+	id cLS+JEd7MWrZkQUAu9opvQ
+	(envelope-from <stable+bounces-264651-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:35:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 330B56939E0
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:54:25 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 036B16923AC
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:35:19 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=aFCNUdkm;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265684-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-265684-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=TZk9AI8X;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264651-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264651-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 89012303EE12
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:54:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1B948324ED9F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:24:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7057B47AF68;
-	Tue, 16 Jun 2026 17:54:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A787646AF1D;
+	Tue, 16 Jun 2026 16:24:34 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18C783C276B;
-	Tue, 16 Jun 2026 17:54:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F43731D367;
+	Tue, 16 Jun 2026 16:24:33 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781632451; cv=none; b=E6gcyzCiWsIH9Dg/ftxD+H8ZAyhhjEnWju8Ri7DvcxKQQz0TWiNjXBAmxofWFHJ1oP0/54BYuPmuB6tSP7ohNRTSVxvmfv7CvPaxedHQOEuTQ/EhAAzaZ/WYnSRVcjHyePFTqK3Cdxsr1rvfwZfNFzHkS2am7yARrafh95Jw5bI=
+	t=1781627074; cv=none; b=MgIa4Z/s+MB+c2AeA3dgrLKfx8cvw6KxJxU+1zVMTlnDUNNFXq080wrBcic2DsqDpJRfy/CxHS3+DlussvwtxmSa5bBSPY9EIZathEUoEYG0XLXMOmkNPPrs56HjFnAq4CVv0/plnhonsQEKRbXej6brd9p3a5ZYtDiO7/X1lQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781632451; c=relaxed/simple;
-	bh=C5/jKjHwJLO8/qloBZ6SGuv7uWrM/cOVNcFFZZKstjc=;
+	s=arc-20240116; t=1781627074; c=relaxed/simple;
+	bh=OimzjarTHQfRTJiPKiVzCxodyoF7Pv+SYAz5cX1ZPes=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ozuMGex/6ooLts9nfo7JXQHQuw67I7s1DYfWSYrjn8h0PvFU+d8wM5x8WlzLdDr7QExwdFsuIEw+wxJjUwXnLatMTAC/v4iUXn2MJ64gXF7jJpiq8EBB35joxFnwT7uBzMUcV1fpNzvjpDobJ1u+XkeAPfGA/TPsnX+AmwlHjEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aFCNUdkm; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7F2D1F000E9;
-	Tue, 16 Jun 2026 17:54:08 +0000 (UTC)
+	 MIME-Version; b=B9/huff/mZLagwmKzIL7mjKvjO5397aM5lVF8Utvl1t+rfgKkoR94P3NEi/9ruDqCBV6pbLJIqXo/8x+cQSiGZ6GZGep3HLoXq0pER9HTTBrvNnmDLVQOEzOBZVWDxEM80nAT8panoIjFbfgfQcPbLStsZpNKUIpnSHKVO37nGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TZk9AI8X; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FDD21F000E9;
+	Tue, 16 Jun 2026 16:24:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781632450;
-	bh=F/xn5xfHK+yPF/h8VWEelRk6GXD0tFCwgXhEsza7BCY=;
+	s=korg; t=1781627073;
+	bh=K7PuSwPkxyxg4N+IGMguTcXkFCJxjwjRlCbJCZVXWXc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=aFCNUdkmkGurDzilhezGoc5+o9mXpBT3ryjyNHC/GvlELsiAJlJsxbdk6JdRWSRjM
-	 MLYkgVXOYzFNll0OZe8SYD1l71JtjA5utdpiUg5bI5MSfCTNqQvsP8tMe2WXywkKST
-	 DeVPpcpdrJ//xgzkS+EA9/Qog5I75yXDwWVUefCI=
+	b=TZk9AI8X+FBGDf4Wgvry5q642hwyJMQmo+x0rODVNcNiOaojiOpQnqDhX315Ydvn9
+	 Q4oTruSmc/wkywoxyBr0K7ndDcBR5hPpreqHruzNdsbp5PBIUa7iNIQ7EVDTVAraqn
+	 mNZDaTQ5SPqVexR/y4G4scgaJJuiWnvgGS6zNgr8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavitra Jha <jhapavitra98@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Kuan-Wei Chiu <visitorckw@gmail.com>,
+	Peter Griffin <peter.griffin@linaro.org>,
+	Tudor Ambarus <tudor.ambarus@linaro.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 406/522] net: wwan: t7xx: validate port_count against message length in t7xx_port_enum_msg_handler
+Subject: [PATCH 6.12 115/261] clk: samsung: gs101: Fix missing USI7_USI DIV clock in peric0_clk_regs
 Date: Tue, 16 Jun 2026 20:29:13 +0530
-Message-ID: <20260616145145.058362428@linuxfoundation.org>
+Message-ID: <20260616145050.394131994@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,174 +74,82 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-265684-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jhapavitra98@gmail.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linaro.org,kernel.org];
+	TAGGED_FROM(0.00)[bounces-264651-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:visitorckw@gmail.com,m:peter.griffin@linaro.org,m:tudor.ambarus@linaro.org,m:krzk@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linaro.org:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 330B56939E0
+X-Rspamd-Queue-Id: 036B16923AC
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavitra Jha <jhapavitra98@gmail.com>
+From: Kuan-Wei Chiu <visitorckw@gmail.com>
 
-[ Upstream commit 0e7c074cfcd9bd93765505f9eb8b42f03ed2a744 ]
+[ Upstream commit 78ee734b36284d82454e87a92094fdb926985b47 ]
 
-t7xx_port_enum_msg_handler() uses the modem-supplied port_count field as
-a loop bound over port_msg->data[] without checking that the message buffer
-contains sufficient data. A modem sending port_count=65535 in a 12-byte
-buffer triggers a slab-out-of-bounds read of up to 262140 bytes.
+In the peric0_clk_regs array, the divider register offset for USI6 was
+accidentally listed twice, while the divider for USI7 was omitted.
 
-Add a sizeof(*port_msg) check before accessing the port message header
-fields to guard against undersized messages.
+Missing this DIV register causes the USI7 clock divider setting to be
+lost and reset to its hardware default value during a suspend/resume
+cycle.
 
-Add a struct_size() check after extracting port_count and before the loop.
+Replace the duplicated USI6 DIV entry with the correct USI7 DIV
+register.
 
-In t7xx_parse_host_rt_data(), guard the rt_feature header read with a
-remaining-buffer check before accessing data_len, validate feat_data_len
-against the actual remaining buffer to prevent OOB reads and signed
-integer overflow on offset.
-
-Pass msg_len from both call sites: skb->len at the DPMAIF path after
-skb_pull(), and the validated feat_data_len at the handshake path.
-
-Fixes: da45d2566a1d ("net: wwan: t7xx: Add control port")
-Cc: stable@vger.kernel.org
-Signed-off-by: Pavitra Jha <jhapavitra98@gmail.com>
-Link: https://patch.msgid.link/20260501110713.145563-1-jhapavitra98@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 893f133a040b ("clk: samsung: gs101: add support for cmu_peric0")
+Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
+Reviewed-by: Peter Griffin <peter.griffin@linaro.org>
+Reviewed-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+Link: https://patch.msgid.link/20260505171457.1960837-1-visitorckw@gmail.com
+Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wwan/t7xx/t7xx_modem_ops.c     |   17 +++++++++++++++--
- drivers/net/wwan/t7xx/t7xx_port_ctrl_msg.c |   18 ++++++++++++++++--
- drivers/net/wwan/t7xx/t7xx_port_proxy.h    |    2 +-
- 3 files changed, 32 insertions(+), 5 deletions(-)
+ drivers/clk/samsung/clk-gs101.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/wwan/t7xx/t7xx_modem_ops.c
-+++ b/drivers/net/wwan/t7xx/t7xx_modem_ops.c
-@@ -415,8 +415,20 @@ static int t7xx_parse_host_rt_data(struc
- 
- 	offset = sizeof(struct feature_query);
- 	for (i = 0; i < FEATURE_COUNT && offset < data_length; i++) {
-+		size_t remaining = data_length - offset;
-+		size_t feat_data_len, feat_total;
-+
-+		if (remaining < sizeof(*rt_feature))
-+			break;
-+
- 		rt_feature = data + offset;
--		offset += sizeof(*rt_feature) + le32_to_cpu(rt_feature->data_len);
-+		feat_data_len = le32_to_cpu(rt_feature->data_len);
-+
-+		if (feat_data_len > remaining - sizeof(*rt_feature))
-+			break;
-+
-+		feat_total = sizeof(*rt_feature) + feat_data_len;
-+		offset += feat_total;
- 
- 		ft_spt_cfg = FIELD_GET(FEATURE_MSK, core->feature_set[i]);
- 		if (ft_spt_cfg != MTK_FEATURE_MUST_BE_SUPPORTED)
-@@ -427,7 +439,8 @@ static int t7xx_parse_host_rt_data(struc
- 			return -EINVAL;
- 
- 		if (i == RT_ID_MD_PORT_ENUM)
--			t7xx_port_enum_msg_handler(ctl->md, rt_feature->data);
-+			t7xx_port_enum_msg_handler(ctl->md, rt_feature->data,
-+						   feat_data_len);
- 	}
- 
- 	return 0;
---- a/drivers/net/wwan/t7xx/t7xx_port_ctrl_msg.c
-+++ b/drivers/net/wwan/t7xx/t7xx_port_ctrl_msg.c
-@@ -117,6 +117,7 @@ static int fsm_ee_message_handler(struct
-  * t7xx_port_enum_msg_handler() - Parse the port enumeration message to create/remove nodes.
-  * @md: Modem context.
-  * @msg: Message.
-+ * @msg_len:	Length of @msg in bytes.
-  *
-  * Used to control create/remove device node.
-  *
-@@ -124,12 +125,18 @@ static int fsm_ee_message_handler(struct
-  * * 0		- Success.
-  * * -EFAULT	- Message check failure.
-  */
--int t7xx_port_enum_msg_handler(struct t7xx_modem *md, void *msg)
-+int t7xx_port_enum_msg_handler(struct t7xx_modem *md, void *msg, size_t msg_len)
- {
- 	struct device *dev = &md->t7xx_dev->pdev->dev;
- 	unsigned int version, port_count, i;
- 	struct port_msg *port_msg = msg;
- 
-+	if (msg_len < sizeof(*port_msg)) {
-+		dev_err(dev, "Port enum msg too short for header: need %zu, have %zu\n",
-+			sizeof(*port_msg), msg_len);
-+		return -EINVAL;
-+	}
-+
- 	version = FIELD_GET(PORT_MSG_VERSION, le32_to_cpu(port_msg->info));
- 	if (version != PORT_ENUM_VER ||
- 	    le32_to_cpu(port_msg->head_pattern) != PORT_ENUM_HEAD_PATTERN ||
-@@ -141,6 +148,13 @@ int t7xx_port_enum_msg_handler(struct t7
- 	}
- 
- 	port_count = FIELD_GET(PORT_MSG_PRT_CNT, le32_to_cpu(port_msg->info));
-+
-+	if (msg_len < struct_size(port_msg, data, port_count)) {
-+		dev_err(dev, "Port enum msg too short: need %zu, have %zu\n",
-+			struct_size(port_msg, data, port_count), msg_len);
-+		return -EINVAL;
-+	}
-+
- 	for (i = 0; i < port_count; i++) {
- 		u32 port_info = le32_to_cpu(port_msg->data[i]);
- 		unsigned int ch_id;
-@@ -187,7 +201,7 @@ static int control_msg_handler(struct t7
- 
- 	case CTL_ID_PORT_ENUM:
- 		skb_pull(skb, sizeof(*ctrl_msg_h));
--		ret = t7xx_port_enum_msg_handler(ctl->md, (struct port_msg *)skb->data);
-+		ret = t7xx_port_enum_msg_handler(ctl->md, (struct port_msg *)skb->data, skb->len);
- 		if (!ret)
- 			ret = port_ctl_send_msg_to_md(port, CTL_ID_PORT_ENUM, 0);
- 		else
---- a/drivers/net/wwan/t7xx/t7xx_port_proxy.h
-+++ b/drivers/net/wwan/t7xx/t7xx_port_proxy.h
-@@ -91,7 +91,7 @@ void t7xx_port_proxy_reset(struct port_p
- void t7xx_port_proxy_uninit(struct port_proxy *port_prox);
- int t7xx_port_proxy_init(struct t7xx_modem *md);
- void t7xx_port_proxy_md_status_notify(struct port_proxy *port_prox, unsigned int state);
--int t7xx_port_enum_msg_handler(struct t7xx_modem *md, void *msg);
-+int t7xx_port_enum_msg_handler(struct t7xx_modem *md, void *msg, size_t msg_len);
- int t7xx_port_proxy_chl_enable_disable(struct port_proxy *port_prox, unsigned int ch_id,
- 				       bool en_flag);
- 
+diff --git a/drivers/clk/samsung/clk-gs101.c b/drivers/clk/samsung/clk-gs101.c
+index fa628fab28ac4e..7cc6a1173d44fb 100644
+--- a/drivers/clk/samsung/clk-gs101.c
++++ b/drivers/clk/samsung/clk-gs101.c
+@@ -3602,7 +3602,7 @@ static const unsigned long peric0_clk_regs[] __initconst = {
+ 	CLK_CON_DIV_DIV_CLK_PERIC0_USI4_USI,
+ 	CLK_CON_DIV_DIV_CLK_PERIC0_USI5_USI,
+ 	CLK_CON_DIV_DIV_CLK_PERIC0_USI6_USI,
+-	CLK_CON_DIV_DIV_CLK_PERIC0_USI6_USI,
++	CLK_CON_DIV_DIV_CLK_PERIC0_USI7_USI,
+ 	CLK_CON_DIV_DIV_CLK_PERIC0_USI8_USI,
+ 	CLK_CON_BUF_CLKBUF_PERIC0_IP,
+ 	CLK_CON_GAT_CLK_BLK_PERIC0_UID_PERIC0_CMU_PERIC0_IPCLKPORT_PCLK,
+-- 
+2.53.0
+
 
 
 
