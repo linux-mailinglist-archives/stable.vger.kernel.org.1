@@ -1,167 +1,179 @@
-Return-Path: <stable+bounces-263516-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263518-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ZeBVJ8W1MGr8WQUAu9opvQ
-	(envelope-from <stable+bounces-263516-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 04:32:37 +0200
+	id q0otHaG3MGo7WgUAu9opvQ
+	(envelope-from <stable+bounces-263518-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 04:40:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FCF268B7E7
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 04:32:36 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D49BD68B843
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 04:40:32 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ZRQmG+zF;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263516-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263516-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=linux.dev;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=1880ZYxu;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263518-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263518-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id AB8C930074DA
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 02:32:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 153EE30356E0
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 02:37:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC0663ABD98;
-	Tue, 16 Jun 2026 02:32:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D8693ABD98;
+	Tue, 16 Jun 2026 02:37:54 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 275DE37C91C
-	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 02:32:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9547530BF67;
+	Tue, 16 Jun 2026 02:37:52 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781577150; cv=none; b=XnNK+TKGRxlV4GvVk+TwArhRrY5XtctH8Fgby4IMAMZXHtaebBiwrRxMzVrhmW/6Rnspe50kkcMPjTKBXo6xXd6ok30vPlBzKuEHw/RTuyJua59prvAILK2TiPcjykAtfB08bb/IyIdbwhdWyTpiHLBYNn56Avw+TJTe8FnLEYI=
+	t=1781577474; cv=none; b=RpM3WWyYmAcXC9SbN1ZcUf7xm+5Yq8tdOQtSCvuPmzt1nTdVh2mIiH/MHTyImVjYFJu4CLGzXfB0/ygTEp7nWPyhy6ObYY1/u5c0MuoBXVsnSsFONht52V+d1SHG53Kd63QBzhPMUgdRw1ShCPEojLk4YrMDpVbpILEWv8kPv1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781577150; c=relaxed/simple;
-	bh=Sopc87+5q7eR7VJtTx+KVoE2M/UJom9Vu1PK0A1rLVU=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qNu226HVKIu76x8U3J/i+xxM6EDQberTztAIX7x2IJkewkpiuXPB2hVEuHKpaQEw1zYtj6bb0vluOjjRgoHTWe24pJ83z0SEylLhZlpp1P1u0Dho2YvBPexNb0sm2gvB9p9qBYbtH82oa60U+FWp7YaHLs2htq4wlz7PETDXDAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=ZRQmG+zF; arc=none smtp.client-ip=95.215.58.174
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1781577137;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/oQp60CeS2OqPkQlb+GAaqqk2o9SM+Ljd8d+w6AQvZ0=;
-	b=ZRQmG+zFarn/PCSzk9dhXskN9MMAgbLgLtc8e1+KicSk+DS/IClkIrjnBGq49lziVpg4if
-	S50fUr+Q5BZ9Fzq5RvEtmUyjchStVLuDGSUhJzQJnKyvdiPiPzT+3iGLHrgHLrIq8quWTq
-	/nCsbHdjZaTRpCbi60EfU7rvFudjzk4=
-From: Lance Yang <lance.yang@linux.dev>
-To: leitao@debian.org
-Cc: catalin.marinas@arm.com,
-	akpm@linux-foundation.org,
-	lance.yang@linux.dev,
-	dave@stgolabs.net,
-	oleg@redhat.com,
-	cai@lca.pw,
-	sj@kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	kernel-team@meta.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v3 1/3] mm/kmemleak: avoid soft lockup when scanning task stacks
-Date: Tue, 16 Jun 2026 10:31:53 +0800
-Message-Id: <20260616023153.20399-1-lance.yang@linux.dev>
-In-Reply-To: <20260615-kmemleak-stack-resched-v3-1-acecd7d7fd92@debian.org>
-References: <20260615-kmemleak-stack-resched-v3-1-acecd7d7fd92@debian.org>
+	s=arc-20240116; t=1781577474; c=relaxed/simple;
+	bh=4BnT4gm5t+ZU6Ek6UEMjioOb2BIYJuqQonldwNGGFsk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ganFVtQxikccIhmuRb9ySVlQRtJOUeBs03nOHcaEEj4ld6L+tvylDYalXLaGZfkrNUq8cqAaXLDMwd9+Lm6GiXVBYzemtm32uy/IlqRxs3d6sGukP0LgNIEp38OVBDRrJGBCZ9+klcdUmMHA9yHJbYn9W+vgYr+XLZNZPopmBm0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1880ZYxu; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4145A1F000E9;
+	Tue, 16 Jun 2026 02:37:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1781577472;
+	bh=ViaFrLbrc82d7O4k7T9xRDpbbrH3Q0H1tROvLSFc/So=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=1880ZYxuqGw1us+IfQ96KMIVEyDT2nhk/zn55s/zsdZ/dnHRYsL4JTzg4STI5IoRh
+	 mM6o/rbRs7sF1f/hh6mjSJzQdlS72atgF/wsHj2thGV2sfTrDf/sHJ6mwedrLx3Roh
+	 Sk/EYEEZJA70NEwfgLC1nl5LwwKvNpxsyTA5DN48=
+Date: Tue, 16 Jun 2026 08:06:46 +0530
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Bernard Pidoux <bernard.f6bvp@gmail.com>
+Cc: Jakub Kicinski <kuba@kernel.org>, stable@vger.kernel.org,
+	linux-hams@vger.kernel.org
+Subject: Re: [stable request] ROSE memory-safety fixes for 7.0.y and earlier
+ (merged out-of-tree in linux-netdev/mod-orphan)
+Message-ID: <2026061625-starless-mascot-691a@gregkh>
+References: <CAFAa3YBfk2UOjAktrLq3_9+563m6UZuKv9XdBjfp2aB1twV1HQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAFAa3YBfk2UOjAktrLq3_9+563m6UZuKv9XdBjfp2aB1twV1HQ@mail.gmail.com>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-263516-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:leitao@debian.org,m:catalin.marinas@arm.com,m:akpm@linux-foundation.org,m:lance.yang@linux.dev,m:dave@stgolabs.net,m:oleg@redhat.com,m:cai@lca.pw,m:sj@kernel.org,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:kernel-team@meta.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	FORGED_SENDER(0.00)[lance.yang@linux.dev,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	TAGGED_FROM(0.00)[bounces-263518-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:bernard.f6bvp@gmail.com,m:kuba@kernel.org,m:stable@vger.kernel.org,m:linux-hams@vger.kernel.org,m:bernardf6bvp@gmail.com,s:lists@lfdr.de];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lance.yang@linux.dev,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linux.dev:+];
 	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linux.dev:dkim,linux.dev:email,linux.dev:mid,linux.dev:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,gregkh:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8FCF268B7E7
+X-Rspamd-Queue-Id: D49BD68B843
 
-
-On Mon, Jun 15, 2026 at 10:49:06AM -0700, Breno Leitao wrote:
->kmemleak_scan() walks every thread and scans its kernel stack under a
->single rcu_read_lock() with no reschedule point. On a host with very
->many threads -- amplified by KASAN/lockdep in debug builds -- this loop
->can hog a CPU long enough to trip the soft lockup watchdog:
->
->  watchdog: BUG: soft lockup - CPU#35 stuck for 22s! [kmemleak:537]
->   scan_block
->   kmemleak_scan
->   kmemleak_scan_thread
->   kthread
->
->A cond_resched() cannot be added directly: the loop runs inside an RCU
->read-side critical section.
->
->Walk the tasks one PID at a time with find_ge_pid(), taking the RCU read
->lock only to look up and pin each task. The stack is then scanned with no
->lock held, so cond_resched() runs between tasks and the scan stops early
->on scan_should_stop(). This follows the next_tgid()/task_seq_get_next()
->iteration pattern and keeps each RCU critical section short.
->
->Fixes: c4b28963fd79 ("mm/kmemleak: rely on rcu for task stack scanning")
->Cc: stable@vger.kernel.org
->Signed-off-by: Breno Leitao <leitao@debian.org>
->---
-> mm/kmemleak.c | 51 ++++++++++++++++++++++++++++++++++++++-------------
-> 1 file changed, 38 insertions(+), 13 deletions(-)
->
->diff --git a/mm/kmemleak.c b/mm/kmemleak.c
->index 7c7ba17ce7af0..a7786b6bc174e 100644
->--- a/mm/kmemleak.c
->+++ b/mm/kmemleak.c
->@@ -1695,6 +1695,42 @@ static void kmemleak_cond_resched(struct kmemleak_object *object)
-> 	put_object(object);
-> }
+On Mon, Jun 15, 2026 at 07:21:21PM +0200, Bernard Pidoux wrote:
+> Hello Jakub, Greg, and stable maintainers,
 > 
->+/*
->+ * Scan all task kernel stacks, rescheduling between tasks. Each task is looked
->+ * up and pinned within its own RCU read-side section, so no lock is held across
->+ * the scan and the walk cannot trip the soft lockup watchdog.
->+ */
->+static void kmemleak_scan_task_stacks(void)
->+{
->+	struct pid *pid;
->+	int nr = 1;
->+
->+	do {
->+		struct task_struct *p = NULL;
->+
->+		rcu_read_lock();
->+		pid = find_ge_pid(nr, &init_pid_ns);
+> (Resending in plain text; the previous copy was rejected by the lists
+> because it carried an HTML part.)
+> 
+> I am Bernard Pidoux, F6BVP, an old-timer ham radio user of the Linux
+> ROSE implementation. ROSE and AX.25 no longer have an official kernel
+> maintainer; I am one of the people still running this code on real
+> nodes and fixing it when it breaks.
+> 
+> Over the past weeks a series of fifteen memory-safety fixes for
+> net/rose that I wrote was reviewed and merged by Jakub Kicinski into
+> linux-netdev/mod-orphan. They fix real, reproducible kernel bugs that
+> affect any node running AX.25 networking over the ROSE protocol:
+> 
+> - several use-after-free conditions in the ROSE teardown paths
+> (neighbour timers fired after free, socket freed under an open fd,
+> sockets reaped from the heartbeat while still owned by userspace);
+> - a rose_neigh refcount underflow in rose_kill_by_device();
+> - netdev reference double-holds in rose_make_new() and
+> rose_rx_call_request();
+> - dev_put()/neighbour reference leaks in the loopback timer path;
+> - a notifier unregistered too early in rose_exit().
+> 
+> These are crash bugs (use-after-free writes, refcount underflow) that a
+> remote peer or normal session teardown can trigger. They have been
+> soak-tested on production ROSE nodes and confirmed to remove the
+> crashes and the kmemleak reports.
+> 
+> The problem is the path to the stable trees. ROSE was removed from
+> mainline in 7.1 and is now unmaintained, so these fixes were merged
+> into the out-of-tree mod-orphan repository rather than into Linus'
+> tree, and therefore have no mainline commit ID. The normal
+> "cherry-pick from upstream SHA" stable procedure cannot apply.
+> 
+> However the affected code is still present and still buggy in every
+> stable series that predates the removal: 7.0.y first of all (the last
+> line that ships net/rose), and the older long-term branches that carry
+> essentially the same ROSE code. Distributions tracking those kernels
+> currently ship the crashes with no official way to receive the fix.
+> 
+> My request: would you accept these as stable-only patches applied to
+> 7.0.y and to the earlier stable series that still contain net/rose, so
+> that distributions pick them up? If a stable-only submission is the
+> right vehicle, I will send the series rebased per target branch, each
+> patch with a proper changelog and the bug it fixes; if you would rather
+> route them another way, please tell me and I will prepare whatever form
+> you need.
 
-I wasn't aware of find_ge_pid() before. It walks the pid IDR, not every
-possible pid number :) LGTM.
+Great questions, I was waiting for something like this to eventually
+happen :)
 
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
+Ideally, we would just backport the "delete the code" changes, and then
+distros can use your external module for their older systems, if they
+care/want to, BUT that will increase the load on you to support older
+kernel versions, which isn't very fair for you as in the end, you will
+be getting bizarre requests from dead^Wenterprise distros asking you to
+support 10+ year old kernels...
+
+So let's try the other way, yes, I'll gladly take patches that you have
+applied to your tree to fix issues in older kernels.  One request,
+please use the same git id that you use in your repo as the "backported
+from" git id that is in the stable message, so that we can track them
+properly across different stable releases (the ecosystem has lots of
+tools that rely on this.)
+
+As for the format, whatever works for you is fine for us.  Ideally a
+mbox full of patches, but we can take anything as long as we can
+eventually turn it into a patch that we can apply.  How about trying one
+set of backports first so we can see how well the process works to
+smooth out the details?
+
+Oh, and of course, thanks for stepping up and offering to do this work,
+it's much appreciated.
+
+greg k-h
 
