@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-264932-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263950-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id I8hPAhSCMWq6lAUAu9opvQ
-	(envelope-from <stable+bounces-264932-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:04:20 +0200
+	id ZvgNDlJsMWrRiwUAu9opvQ
+	(envelope-from <stable+bounces-263950-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:31:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55AB0692B20
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:04:19 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A764B691196
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:31:29 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=bLBnSJKH;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264932-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264932-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=16mqIhBF;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263950-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263950-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CB3113292419
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:51:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3F2283097A8F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:22:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09D95466B4B;
-	Tue, 16 Jun 2026 16:50:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE21743E4BA;
+	Tue, 16 Jun 2026 15:22:29 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2EF1449EC3;
-	Tue, 16 Jun 2026 16:50:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C22982E612E;
+	Tue, 16 Jun 2026 15:22:28 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781628646; cv=none; b=no832EcNXw7KTxbt3i4MuO+dEbPHCvm0Rs/C9LiV1tlty4E0Oo7s9HCpEt2d53t6cmjPQO16LEd6mv/y7QWYj1NP3yXeamCWTldWerqMwVpmlz1nZJjmvhJfhyKXa8DntuSzDpA4M3NHt/i5BKTMTzfTtoCferhdK1+ehZoCx1Y=
+	t=1781623349; cv=none; b=MgoNNJdXebtsj+7h99trHZx2+iL45NiY0lxRfWN5WHWlQGRPYMX2dgl0prN4S81sTgbbS0WHgK5tMUu9aFYbmD8CgjnGdukiRfwbQDSCNY1YEFOr271DRGiBG311qs8eDDoyNMcrAtXSsv1rj3amspA0r4cqpz2QZHWY3g1mA8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781628646; c=relaxed/simple;
-	bh=qJdrgxyf4oy3z+UfOIvwK/b9hIPliyxdGV/NhyZsvwQ=;
+	s=arc-20240116; t=1781623349; c=relaxed/simple;
+	bh=OGCBqsySlWD3z3GPini0xp1QW1aaD0zS2i6eW/P6dvo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZgnQkvcfA79bvQYmPIrZdCv7Ia0AL3v4eRMcrN3/ZFL9aggxtc7LZit1/XwYuc8SFG1lO7juR5AClC2G6qtyI0uV2a3jg6E9SbQiWcHGDKiZGf+juJqqqHLr0SbaRsJcWHysmPOmzfrVcBzNthacquMV5sa1yelwHF2IJ2QLLys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bLBnSJKH; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0B751F000E9;
-	Tue, 16 Jun 2026 16:50:44 +0000 (UTC)
+	 MIME-Version; b=BHJAITQGnmW+GxN1sYthuWvJ2GAPMMwiz5RaPkxqoQ2VuuaVfar5Q4QVeDcxifkkOF9ThpPT5FW8FlXcmVBH4Oq66y7vmAlgS4YL06F5Cc/osIGf9JCyln9V6zvkiNmPdv7qKxdnLY8mg9L8Qqn/XKK9mJOsvYzkJ8LlG8EK/ig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=16mqIhBF; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C833A1F000E9;
+	Tue, 16 Jun 2026 15:22:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781628645;
-	bh=fzLNSi93zWpwk3VBtULl8ppT7HnMc8OIszlZo/++F5E=;
+	s=korg; t=1781623348;
+	bh=7inY/t2TEiBgEUyvJCFpuDwfPpOBHcRE//z6AeDQ+o8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=bLBnSJKHN3y78UUnIUcw5RsUyuM5NcTyZ2k12VGeATmuNaN0DgbC4Hvakq6rqBOWs
-	 59Kxsn5hl/KQOR//pApF2eQUrwl1fz08/NCyMd5gRp8RP2YJOmjdvQVX3mU0FQrsJy
-	 sZoUETFzJJD5jARCRdYXe+q4N2s9aSQdZDjeP7Do=
+	b=16mqIhBFJOWVDrLsaYGrJeaYQi8GZJqdDL+VFSishsEYlZV+x3OF7YsJzl9nZjV1U
+	 O2/dD1KvxunD5EXzdCRUkJi3V4LLsfXzFac24Wt5gTOtNkRPzyTS/KGrCCzDODItBC
+	 BLUnAadnqKVUPGwNOX1DFTBXCBtBa9Uwa7gG3Txk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Horman <horms@kernel.org>,
-	Ashutosh Desai <ashutoshdesai993@gmail.com>,
-	David Heidelberg <david@ixit.cz>
-Subject: [PATCH 6.6 135/452] nfc: hci: fix out-of-bounds read in HCP header parsing
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 131/378] sctp: fix uninit-value in __sctp_rcv_asconf_lookup()
 Date: Tue, 16 Jun 2026 20:26:02 +0530
-Message-ID: <20260616145124.822756229@linuxfoundation.org>
+Message-ID: <20260616145117.209984075@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,130 +68,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-263950-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-264932-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:horms@kernel.org,m:ashutoshdesai993@gmail.com,m:david@ixit.cz,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:lucien.xin@gmail.com,m:kuba@kernel.org,m:sashal@kernel.org,m:michaelbommarito@gmail.com,m:lucienxin@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,ixit.cz];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,ixit.cz:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 55AB0692B20
+X-Rspamd-Queue-Id: A764B691196
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ashutosh Desai <ashutoshdesai993@gmail.com>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-commit f040e590c035bfd9553fe79ee9585caf1b14d67b upstream.
+[ Upstream commit f8373d7090b745728de66308deeecc67e8d319ce ]
 
-Both nfc_hci_recv_from_llc() and nci_hci_data_received_cb() read
-packet->header from skb->data at function entry without first checking
-that the buffer holds at least one byte. A malicious NFC peer can send
-a 0-byte HCP frame that passes through the SHDLC layer and reaches
-these functions, causing an out-of-bounds heap read of packet->header.
-The same 0-byte frame, if queued as a non-final fragment, also causes
-the reassembly loop to underflow msg_len to UINT_MAX, triggering
-skb_over_panic() when the reassembled skb is written.
+__sctp_rcv_asconf_lookup() in net/sctp/input.c only checks that the ASCONF
+chunk can hold the ADDIP header and a parameter header, then calls
+af->from_addr_param(), which reads the full address (16 bytes for IPv6)
+trusting the parameter's declared length.
 
-Fix this by adding a pskb_may_pull() check at the entry of each
-function before packet->header is first accessed. The existing
-pskb_may_pull() checks before the reassembled hcp_skb is cast to
-struct hcp_packet remain in place to guard the 2-byte HCP message
-header.
+An unauthenticated peer can send a truncated trailing ASCONF chunk that
+declares an IPv6 address parameter but stops after the 4-byte parameter
+header; reached from the no-association lookup path, from_addr_param() then
+reads uninitialized bytes past the parameter.
 
-Fixes: 8b8d2e08bf0d ("NFC: HCI support")
-Fixes: 11f54f228643 ("NFC: nci: Add HCI over NCI protocol support")
-Cc: stable@vger.kernel.org
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Ashutosh Desai <ashutoshdesai993@gmail.com>
-Link: https://patch.msgid.link/20260505170712.96560-1-ashutoshdesai993@gmail.com
-Signed-off-by: David Heidelberg <david@ixit.cz>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Impact: an unauthenticated SCTP peer makes the receive path read up to 16
+bytes of uninitialized memory past a truncated ASCONF address parameter.
+
+The sibling __sctp_rcv_init_lookup() bounds parameters with
+sctp_walk_params(); this path open-codes the fetch and omits the bound.
+Verify the whole address parameter lies within the chunk before
+from_addr_param() reads it, the same class of fix as commit 51e5ad549c43
+("net: sctp: fix KMSAN uninit-value in sctp_inq_pop").
+
+Fixes: df2185771439 ("[SCTP]: Update association lookup to look at ASCONF chunks as well")
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Acked-by: Xin Long <lucien.xin@gmail.com>
+Link: https://patch.msgid.link/20260608122234.459098-1-michael.bommarito@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/nfc/hci/core.c |   10 ++++++++++
- net/nfc/nci/hci.c  |   10 ++++++++++
- 2 files changed, 20 insertions(+)
+ net/sctp/input.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/net/nfc/hci/core.c
-+++ b/net/nfc/hci/core.c
-@@ -861,6 +861,11 @@ static void nfc_hci_recv_from_llc(struct
- 	struct sk_buff *frag_skb;
- 	int msg_len;
+diff --git a/net/sctp/input.c b/net/sctp/input.c
+index e119e460ccde0b..864741fae4187e 100644
+--- a/net/sctp/input.c
++++ b/net/sctp/input.c
+@@ -1204,6 +1204,14 @@ static struct sctp_association *__sctp_rcv_asconf_lookup(
+ 	/* Skip over the ADDIP header and find the Address parameter */
+ 	param = (union sctp_addr_param *)(asconf + 1);
  
-+	if (!pskb_may_pull(skb, NFC_HCI_HCP_PACKET_HEADER_LEN)) {
-+		kfree_skb(skb);
-+		return;
-+	}
++	/* The whole address parameter must lie within the chunk before
++	 * af->from_addr_param() reads the variable-length address; otherwise a
++	 * truncated trailing ASCONF chunk lets it read uninitialized bytes past
++	 * the parameter.
++	 */
++	if (sizeof(*asconf) + ntohs(param->p.length) > ntohs(ch->length))
++		return NULL;
 +
- 	packet = (struct hcp_packet *)skb->data;
- 	if ((packet->header & ~NFC_HCI_FRAGMENT) == 0) {
- 		skb_queue_tail(&hdev->rx_hcp_frags, skb);
-@@ -904,6 +909,11 @@ static void nfc_hci_recv_from_llc(struct
- 	 * unblock waiting cmd context. Otherwise, enqueue to dispatch
- 	 * in separate context where handler can also execute command.
- 	 */
-+	if (!pskb_may_pull(hcp_skb, NFC_HCI_HCP_HEADER_LEN)) {
-+		kfree_skb(hcp_skb);
-+		return;
-+	}
-+
- 	packet = (struct hcp_packet *)hcp_skb->data;
- 	type = HCP_MSG_GET_TYPE(packet->message.header);
- 	if (type == NFC_HCI_HCP_RESPONSE) {
---- a/net/nfc/nci/hci.c
-+++ b/net/nfc/nci/hci.c
-@@ -439,6 +439,11 @@ void nci_hci_data_received_cb(void *cont
- 		return;
- 	}
- 
-+	if (!pskb_may_pull(skb, NCI_HCI_HCP_PACKET_HEADER_LEN)) {
-+		kfree_skb(skb);
-+		return;
-+	}
-+
- 	packet = (struct nci_hcp_packet *)skb->data;
- 	if ((packet->header & ~NCI_HCI_FRAGMENT) == 0) {
- 		skb_queue_tail(&ndev->hci_dev->rx_hcp_frags, skb);
-@@ -482,6 +487,11 @@ void nci_hci_data_received_cb(void *cont
- 	 * unblock waiting cmd context. Otherwise, enqueue to dispatch
- 	 * in separate context where handler can also execute command.
- 	 */
-+	if (!pskb_may_pull(hcp_skb, NCI_HCI_HCP_HEADER_LEN)) {
-+		kfree_skb(hcp_skb);
-+		return;
-+	}
-+
- 	packet = (struct nci_hcp_packet *)hcp_skb->data;
- 	type = NCI_HCP_MSG_GET_TYPE(packet->message.header);
- 	if (type == NCI_HCI_HCP_RESPONSE) {
+ 	af = sctp_get_af_specific(param_type2af(param->p.type));
+ 	if (unlikely(!af))
+ 		return NULL;
+-- 
+2.53.0
+
 
 
 
