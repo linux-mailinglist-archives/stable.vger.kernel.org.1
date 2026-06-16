@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-264970-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265982-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Rj/bBkqDMWoxlQUAu9opvQ
-	(envelope-from <stable+bounces-264970-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:09:30 +0200
+	id 0RE/KA+UMWoenQUAu9opvQ
+	(envelope-from <stable+bounces-265982-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:21:03 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D1EA692CA1
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:09:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E61F6940DD
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:21:02 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=P4ng96tC;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264970-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-264970-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=i21jD+lD;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265982-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-265982-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C379E301E1BF
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:54:13 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E96813017CD9
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:20:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F243435DA6A;
-	Tue, 16 Jun 2026 16:54:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B75D3D45CB;
+	Tue, 16 Jun 2026 18:20:38 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB26F4502F;
-	Tue, 16 Jun 2026 16:54:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66DD33D091A;
+	Tue, 16 Jun 2026 18:20:37 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781628850; cv=none; b=KGHjfjVOIIixmlkk0+7WWVdl1XrjketF7wzQmpD6AhJqwmBXfHkAlZr4AZWATp8zkIorhDCLctFkDWoRvPebwJbtm9RDMXgZkfHhDsK7FkXVfgE28ea6XicuA0yDgARE+iFc4ea9vwH0E0nxDW3PrZCoDfCdbXJpKTzWCcd3IRA=
+	t=1781634038; cv=none; b=jQAvgtYnjcUBdGWopxTkCPY/ragXtY5vMWfboPdVeJMxoLrpIVA0pyxtlpXcHCqQNp7ufvaGyGkPgL6Z/RyJbSMIdbUlUtvAqCphcNsq63Z1pO42LX8qgog9xTinKfzhZAxUQa+5MtZjcmDX/dw7yTyqjVSjeX6HBYu2Dg2DH4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781628850; c=relaxed/simple;
-	bh=VmiuldhHAgDXlpAqRYdiTEDaxTPJ+cOkz1HdRS+AA4A=;
+	s=arc-20240116; t=1781634038; c=relaxed/simple;
+	bh=iGDtajNVL2YwHq5stSIp5x2I3L6Zn2/805p2SPFXEqs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LGtkWtQleyyKuasV4xo/wY7BNRZAjc+X5V8tM5vodJ48L/pwN8nWK4dH7+nEALqcKUv01e+pRS1XLmSZJCsuo5qbshDdFMuKkyLvgQlxbPlJ9rwR0240duOV/71N8/U44sJ+Ag/gyi/OY8QXNKFllM6KQyB0xH1cFjx7yzNP2ow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P4ng96tC; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF29B1F000E9;
-	Tue, 16 Jun 2026 16:54:08 +0000 (UTC)
+	 MIME-Version; b=gRpHYxBjixVRj3Wb2t8GoBk6gcznlwUIYgTaHfeMJt6REhfjctS4T+e6PeSd3/vBoEDgknRnDAm8KdmOc47NQqTgandn7ZoJJAr0riSwum3jbzCB17I/QFJ2KhvBr64pwmQxIB7aumIc/duDsLGjrkSyZYVNcJI8MhFBzTxU8Ao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i21jD+lD; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70C1F1F000E9;
+	Tue, 16 Jun 2026 18:20:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781628849;
-	bh=JIo2NFd0cSUYgEyXZ15/CpHe/0zrYQ8r0NHC3SaEjho=;
+	s=korg; t=1781634037;
+	bh=HB0aXEs+4ZLyKLRHd3P80SR6zKkmBQaGT5m2e6272eo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=P4ng96tCToKXNmLBQwDna9bGNdJzCf/j78vpGsFeSLDWXjgQ1zgXgPOtXrhie8zS7
-	 76AHon9TiFoiOsjmBCfIKQ1yt8pIQZ1Ew2DxEc6M+PKXj3kGOXjVJhFVQnV9RXJliE
-	 HBUzMB4m7KWBx50VcYWZYs2T2UlHHsaWy9L2a0O8=
+	b=i21jD+lDkZc95fHiTq6pQZsSvsOIiojoSQDCVsbCiwzx3wPzPuGJ2DkwEmp/stnCC
+	 sXq59kQAwhN7Q1MQWTIE1s4RTeK8y1mRj9WmQs4TMG/ACN16wx8Lh+A53Bvqrf+n6b
+	 1ihpIMBWBoGvfvvHQ9KxUUX0B0mBlLdzJuGrgaqU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Christoph Hellwig <hch@lst.de>,
-	John Garry <john.g.garry@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.6 173/452] scsi: scsi_transport_fc: Widen FPIN pname walker counter to u32
+	Zhang Cen <rollkingzzc@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 162/411] Bluetooth: RFCOMM: hold listener socket in rfcomm_connect_ind()
 Date: Tue, 16 Jun 2026 20:26:40 +0530
-Message-ID: <20260616145126.977819302@linuxfoundation.org>
+Message-ID: <20260616145109.120228884@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,205 +67,167 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lst.de,oracle.com];
-	TAGGED_FROM(0.00)[bounces-264970-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:hch@lst.de,m:john.g.garry@oracle.com,m:martin.petersen@oracle.com,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-265982-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:rollkingzzc@gmail.com,m:luiz.von.dentz@intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,oracle.com:email,lst.de:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,intel.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2D1EA692CA1
+X-Rspamd-Queue-Id: 9E61F6940DD
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Zhang Cen <rollkingzzc@gmail.com>
 
-commit a9a39233ec1fc9f97ea1340a4d09bb7ec2be5153 upstream.
+[ Upstream commit 43c441edacf953b39517a44f5e5e10a93618b226 ]
 
-An adjacent Fibre Channel fabric actor that can deliver an FPIN ELS
-frame to an lpfc or qla2xxx Linux initiator can trigger a non-return in
-the generic FC transport. This is not a local userspace or IP network
-path; the attacker must be able to inject fabric traffic, for example as
-a compromised switch or fabric controller, or as a same-zone N_Port on a
-fabric that permits source spoofing.
+rfcomm_get_sock_by_channel() scans rfcomm_sk_list under the list lock,
+but returns the selected listener after dropping that lock without
+taking a reference. rfcomm_connect_ind() then locks the listener,
+queues a child socket on it, and may notify it after unlocking it.
 
-The Link-Integrity and Peer-Congestion FPIN walkers used a u8 loop
-counter against the 32-bit on-wire pname_count field, and did not bound
-pname_count by the descriptor body already validated by the TLV walker.
-A pname_count of 256 therefore wraps the counter and keeps the loop
-condition true indefinitely.
+The buggy scenario involves two paths, with each column showing the
+order within that path:
 
-Factor the shared pname_list[] walk into one helper, widen the counter
-to u32, and clamp pname_count against the entries that fit in the
-descriptor body before iterating.
+rfcomm_connect_ind():            listener close:
+  1. Find parent in              1. close() enters
+     rfcomm_get_sock_by_channel()   rfcomm_sock_release().
+  2. Drop rfcomm_sk_list.lock    2. rfcomm_sock_shutdown()
+     without pinning parent.        closes the listener.
+  3. Call lock_sock(parent) and  3. rfcomm_sock_kill()
+     bt_accept_enqueue(parent,      unlinks and puts parent.
+     sk, true).
+  4. Read parent flags and may   4. parent can be freed.
+     call sk_state_change().
 
-Fixes: 3dcfe0de5a97 ("scsi: fc: Parse FPIN packets and update statistics")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-7
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: John Garry <john.g.garry@oracle.com>
-Link: https://patch.msgid.link/20260520133015.1018937-1-michael.bommarito@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+If close wins the race, parent can be freed before
+rfcomm_connect_ind() reaches lock_sock(), bt_accept_enqueue(), or the
+deferred-setup callback.
+
+Take a reference on the listener before leaving rfcomm_sk_list.lock.
+After lock_sock() succeeds, recheck that it is still in BT_LISTEN
+before queueing a child, cache the deferred-setup bit while the parent
+is locked, and drop the reference after the last parent use.
+
+KASAN reported a slab-use-after-free in lock_sock_nested() from
+rfcomm_connect_ind(), with the freeing stack going through
+rfcomm_sock_kill() and rfcomm_sock_release().
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Zhang Cen <rollkingzzc@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/scsi_transport_fc.c |   77 ++++++++++++++++++++-------------------
- 1 file changed, 41 insertions(+), 36 deletions(-)
+ net/bluetooth/rfcomm/sock.c | 26 ++++++++++++++++++++++----
+ 1 file changed, 22 insertions(+), 4 deletions(-)
 
---- a/drivers/scsi/scsi_transport_fc.c
-+++ b/drivers/scsi/scsi_transport_fc.c
-@@ -747,6 +747,37 @@ fc_cn_stats_update(u16 event_type, struc
- 	}
+diff --git a/net/bluetooth/rfcomm/sock.c b/net/bluetooth/rfcomm/sock.c
+index d1f2c936a8a811..2f091f134a606c 100644
+--- a/net/bluetooth/rfcomm/sock.c
++++ b/net/bluetooth/rfcomm/sock.c
+@@ -122,7 +122,7 @@ static struct sock *__rfcomm_get_listen_sock_by_addr(u8 channel, bdaddr_t *src)
  }
  
-+static void
-+fc_fpin_pname_stats_update(struct Scsi_Host *shost,
-+			   struct fc_rport *attach_rport, u16 event_type,
-+			   u32 desc_len, u32 fixed_len, u32 pname_count,
-+			   __be64 *pname_list,
-+			   void (*stats_update)(u16 event_type,
-+						struct fc_fpin_stats *stats))
-+{
-+	u32 i;
-+	struct fc_rport *rport;
-+	u64 wwpn;
-+
-+	if (desc_len < fixed_len)
-+		pname_count = 0;
-+	else
-+		pname_count = min(pname_count, (desc_len - fixed_len) /
-+				   sizeof(pname_list[0]));
-+
-+	for (i = 0; i < pname_count; i++) {
-+		wwpn = be64_to_cpu(pname_list[i]);
-+		rport = fc_find_rport_by_wwpn(shost, wwpn);
-+		if (rport &&
-+		    (rport->roles & FC_PORT_ROLE_FCP_TARGET ||
-+		     rport->roles & FC_PORT_ROLE_NVME_TARGET)) {
-+			if (rport == attach_rport)
-+				continue;
-+			stats_update(event_type, &rport->fpin_stats);
-+		}
-+	}
-+}
-+
- /*
-  * fc_fpin_li_stats_update - routine to update Link Integrity
-  * event statistics.
-@@ -757,13 +788,11 @@ fc_cn_stats_update(u16 event_type, struc
- static void
- fc_fpin_li_stats_update(struct Scsi_Host *shost, struct fc_tlv_desc *tlv)
+ /* Find socket with channel and source bdaddr.
+- * Returns closest match.
++ * Returns closest match with an extra reference held.
+  */
+ static struct sock *rfcomm_get_sock_by_channel(int state, u8 channel, bdaddr_t *src)
  {
--	u8 i;
- 	struct fc_rport *rport = NULL;
- 	struct fc_rport *attach_rport = NULL;
- 	struct fc_host_attrs *fc_host = shost_to_fc_host(shost);
- 	struct fc_fn_li_desc *li_desc = (struct fc_fn_li_desc *)tlv;
- 	u16 event_type = be16_to_cpu(li_desc->event_type);
--	u64 wwpn;
+@@ -136,15 +136,25 @@ static struct sock *rfcomm_get_sock_by_channel(int state, u8 channel, bdaddr_t *
  
- 	rport = fc_find_rport_by_wwpn(shost,
- 				      be64_to_cpu(li_desc->attached_wwpn));
-@@ -774,22 +803,11 @@ fc_fpin_li_stats_update(struct Scsi_Host
- 		fc_li_stats_update(event_type, &attach_rport->fpin_stats);
+ 		if (rfcomm_pi(sk)->channel == channel) {
+ 			/* Exact match. */
+-			if (!bacmp(&rfcomm_pi(sk)->src, src))
++			if (!bacmp(&rfcomm_pi(sk)->src, src)) {
++				sock_hold(sk);
+ 				break;
++			}
+ 
+ 			/* Closest match */
+-			if (!bacmp(&rfcomm_pi(sk)->src, BDADDR_ANY))
++			if (!bacmp(&rfcomm_pi(sk)->src, BDADDR_ANY)) {
++				if (sk1)
++					sock_put(sk1);
++
+ 				sk1 = sk;
++				sock_hold(sk1);
++			}
+ 		}
  	}
  
--	if (be32_to_cpu(li_desc->pname_count) > 0) {
--		for (i = 0;
--		    i < be32_to_cpu(li_desc->pname_count);
--		    i++) {
--			wwpn = be64_to_cpu(li_desc->pname_list[i]);
--			rport = fc_find_rport_by_wwpn(shost, wwpn);
--			if (rport &&
--			    (rport->roles & FC_PORT_ROLE_FCP_TARGET ||
--			    rport->roles & FC_PORT_ROLE_NVME_TARGET)) {
--				if (rport == attach_rport)
--					continue;
--				fc_li_stats_update(event_type,
--						   &rport->fpin_stats);
--			}
--		}
--	}
-+	fc_fpin_pname_stats_update(shost, attach_rport, event_type,
-+				   be32_to_cpu(li_desc->desc_len),
-+				   FC_TLV_DESC_LENGTH_FROM_SZ(*li_desc),
-+				   be32_to_cpu(li_desc->pname_count),
-+				   li_desc->pname_list, fc_li_stats_update);
++	if (sk && sk1)
++		sock_put(sk1);
++
+ 	read_unlock(&rfcomm_sk_list.lock);
  
- 	if (fc_host->port_name == be64_to_cpu(li_desc->attached_wwpn))
- 		fc_li_stats_update(event_type, &fc_host->fpin_stats);
-@@ -837,13 +855,11 @@ static void
- fc_fpin_peer_congn_stats_update(struct Scsi_Host *shost,
- 				struct fc_tlv_desc *tlv)
+ 	return sk ? sk : sk1;
+@@ -941,6 +951,7 @@ int rfcomm_connect_ind(struct rfcomm_session *s, u8 channel, struct rfcomm_dlc *
  {
--	u8 i;
- 	struct fc_rport *rport = NULL;
- 	struct fc_rport *attach_rport = NULL;
- 	struct fc_fn_peer_congn_desc *pc_desc =
- 	    (struct fc_fn_peer_congn_desc *)tlv;
- 	u16 event_type = be16_to_cpu(pc_desc->event_type);
--	u64 wwpn;
+ 	struct sock *sk, *parent;
+ 	bdaddr_t src, dst;
++	bool defer_setup = false;
+ 	int result = 0;
  
- 	rport = fc_find_rport_by_wwpn(shost,
- 				      be64_to_cpu(pc_desc->attached_wwpn));
-@@ -854,22 +870,11 @@ fc_fpin_peer_congn_stats_update(struct S
- 		fc_cn_stats_update(event_type, &attach_rport->fpin_stats);
- 	}
+ 	BT_DBG("session %p channel %d", s, channel);
+@@ -954,6 +965,11 @@ int rfcomm_connect_ind(struct rfcomm_session *s, u8 channel, struct rfcomm_dlc *
  
--	if (be32_to_cpu(pc_desc->pname_count) > 0) {
--		for (i = 0;
--		    i < be32_to_cpu(pc_desc->pname_count);
--		    i++) {
--			wwpn = be64_to_cpu(pc_desc->pname_list[i]);
--			rport = fc_find_rport_by_wwpn(shost, wwpn);
--			if (rport &&
--			    (rport->roles & FC_PORT_ROLE_FCP_TARGET ||
--			     rport->roles & FC_PORT_ROLE_NVME_TARGET)) {
--				if (rport == attach_rport)
--					continue;
--				fc_cn_stats_update(event_type,
--						   &rport->fpin_stats);
--			}
--		}
--	}
-+	fc_fpin_pname_stats_update(shost, attach_rport, event_type,
-+				   be32_to_cpu(pc_desc->desc_len),
-+				   FC_TLV_DESC_LENGTH_FROM_SZ(*pc_desc),
-+				   be32_to_cpu(pc_desc->pname_count),
-+				   pc_desc->pname_list, fc_cn_stats_update);
+ 	lock_sock(parent);
+ 
++	if (parent->sk_state != BT_LISTEN)
++		goto done;
++
++	defer_setup = test_bit(BT_SK_DEFER_SETUP, &bt_sk(parent)->flags);
++
+ 	/* Check for backlog size */
+ 	if (sk_acceptq_is_full(parent)) {
+ 		BT_DBG("backlog full %d", parent->sk_ack_backlog);
+@@ -981,9 +997,11 @@ int rfcomm_connect_ind(struct rfcomm_session *s, u8 channel, struct rfcomm_dlc *
+ done:
+ 	release_sock(parent);
+ 
+-	if (test_bit(BT_SK_DEFER_SETUP, &bt_sk(parent)->flags))
++	if (defer_setup)
+ 		parent->sk_state_change(parent);
+ 
++	sock_put(parent);
++
+ 	return result;
  }
  
- /*
+-- 
+2.53.0
+
 
 
 
