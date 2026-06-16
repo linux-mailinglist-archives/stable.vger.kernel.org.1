@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-265882-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263884-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 2emwK92RMWrwmwUAu9opvQ
-	(envelope-from <stable+bounces-265882-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:11:41 +0200
+	id R/NAMfVpMWoSiwUAu9opvQ
+	(envelope-from <stable+bounces-263884-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:21:25 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F461693DFF
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:11:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34973690F3F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:21:25 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=1tT5HAPU;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265882-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265882-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=UVRSLWqR;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263884-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263884-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id EB204308A063
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:11:38 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 56BE6306B641
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:16:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFC333D811A;
-	Tue, 16 Jun 2026 18:11:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE31A43E4A1;
+	Tue, 16 Jun 2026 15:16:19 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F3FD3D8125;
-	Tue, 16 Jun 2026 18:11:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C49F643DA56;
+	Tue, 16 Jun 2026 15:16:18 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781633498; cv=none; b=b6xe+hk3xTSLaEGtfezONcNRNavCgrKSkGprDu82wROb8UGBSDSSSQGd+5BY0/kZLeu3UFHPyahqQ8aReIgqFzbpP6cFlsdr8gsdHwj4D1UrLuDEEqA7ugVE1dN96TMogJIZyB1zYYatDtk18bde0qxMFR4L2+mKVi8A2zElCTU=
+	t=1781622979; cv=none; b=khVZSDOXkyJbKKkgSEMIWqUWXEmhf7D2/4v0JIMpRKWB0+CKdPTHF5Kfi8YN8vU8hwxLaV0ouvxNPIPIdeVz62JBd0wukGvGa/BsfeKeb2oH1qDnYEtzUc79J8cIJE/5xuKwoLPmZcrnlf72T1KGVELHtyjAEkNcZwvOwLnWTws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781633498; c=relaxed/simple;
-	bh=nN12wk0370q6BTku3SLslm6dT0VA/tb/+YPOo3lAcoA=;
+	s=arc-20240116; t=1781622979; c=relaxed/simple;
+	bh=FH+Bpg34dxsiKk/ut7ahbxLkuzBwxn5zvIZTG5jbImU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sOuZf/Nd1M0zzW5Z4snBQDlS7WIuOE4RPGuIZpOfxMNf32pR7OtLNSBKg1pObWXV+CNSbMtWC0MPU5GjXtrMBoNndnFZeUHvOAkRRyXsF5pG7Mo50Hp3QGT528tHjd/LgiEoT3OTa6OlllfeQ5onB7YkaUCTE5rnEab6gp47YsE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1tT5HAPU; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B0E11F000E9;
-	Tue, 16 Jun 2026 18:11:35 +0000 (UTC)
+	 MIME-Version; b=hHd3+HmASAxsbdxog1FUoyaN4flBZWM9cnw90ilFDkeF9UYm9FsVIK7Sew4JFpaJzsAFRvz4N+45KJ/wbuc5vE9eh3mXph6ykDInAEm6JZ8/hQu1suqCcpznL+O37UVXhWfp96KQywnGnFDolUO3WkXaB4zkL651KACoUnSxLjY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UVRSLWqR; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C96211F00A3D;
+	Tue, 16 Jun 2026 15:16:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781633497;
-	bh=2Li4RzrfXdeQO8miKKoACVpfnoGFjrEDdZK3UWa4xUo=;
+	s=korg; t=1781622978;
+	bh=bcMnjSkIPr/lirGiFQ2BE8EKdCcb8S+R/ezVm3ZjIUE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=1tT5HAPUNjpIEAOSCZbA4Gg6+dQiJb4CeOO8f+58Jw1zVV3UCiwXlSbgsuNc1k/Dc
-	 62f2NttaXMG4xP96wFOnpVQmL/RgxUIu96Sbd8gqBl007CxIJG7aiUtWge2pnBk2dB
-	 2d1GgZxwfFr5KAbSX6qBvnBITAQ0/9d26uTwf8N8=
+	b=UVRSLWqRC6WsbZZCuezTnMYoOKVNnM3TDOBdSuaGAXhaq+WLzKo53WWMfL5o0sNlk
+	 0RtWxNtP7VQPszjM2rp8HzYWfPaT9hGdKE3R8liYej69JRQymrPka7ndxr8X1ocbvM
+	 vgio2ydkCw00qu1eYCP+0yLMulu9ZnOn8s6Z0NNU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pooja Katiyar <pooja.katiyar@intel.com>,
-	Johan Hovold <johan@kernel.org>,
-	stable <stable@kernel.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 5.15 057/411] usb: typec: ucsi: displayport: NAK DP_CMD_CONFIGURE without a payload VDO
+	Brian Geffon <bgeffon@google.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 064/378] sctp: validate cached peer INIT chunk length in COOKIE_ECHO processing
 Date: Tue, 16 Jun 2026 20:24:55 +0530
-Message-ID: <20260616145103.311911976@linuxfoundation.org>
+Message-ID: <20260616145113.386211152@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,83 +68,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265882-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-263884-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bgeffon@google.com,m:lucien.xin@gmail.com,m:kuba@kernel.org,m:sashal@kernel.org,m:lucienxin@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:pooja.katiyar@intel.com,m:johan@kernel.org,m:stable@kernel.org,m:heikki.krogerus@linux.intel.com,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,intel.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2F461693DFF
+X-Rspamd-Queue-Id: 34973690F3F
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Xin Long <lucien.xin@gmail.com>
 
-commit 167dd8d12226587ee554f520aed0256b7769cd5d upstream.
+[ Upstream commit 0861615c28de668669d748ef4eb913ea9262d13b ]
 
-ucsi_displayport_vdm() handles a DP_CMD_CONFIGURE by copying the first
-payload VDO from data[], but unlike the equivalent handler in
-altmodes/displayport.c it does not check that count covers a VDO beyond
-the header.  A header-only Configure VDM (count == 1) would read one u32
-past the caller's array.
+When a listening SCTP server processes a COOKIE_ECHO chunk, the cached
+peer INIT chunk embedded after the cookie is parsed and its parameters
+are later walked by sctp_process_init() using sctp_walk_params().
 
-In the normal UCSI path the caller controls count, so this is hardening
-for non-standard delivery paths.  NAK and bail when no configuration VDO
-is present, matching the generic DP altmode driver's existing guard.
+However, the chunk header length of this cached INIT chunk was not
+validated against the remaining buffer in the COOKIE_ECHO payload. If
+the length field is inflated, the parameter walk can run beyond the
+actual received data, leading to out-of-bounds reads and potential
+memory corruption during later parameter handling (e.g. STATE_COOKIE
+processing and kmemdup() copies).
 
-Assisted-by: gkh_clanker_t1000
-Cc: Pooja Katiyar <pooja.katiyar@intel.com>
-Cc: Johan Hovold <johan@kernel.org>
-Cc: stable <stable@kernel.org>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://patch.msgid.link/2026051351-vividly-flattered-eb3d@gregkh
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Add a bounds check in sctp_unpack_cookie() to ensure the cached INIT
+chunk length does not exceed the available data in the COOKIE_ECHO
+buffer before it is used.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: Brian Geffon <bgeffon@google.com>
+Signed-off-by: Xin Long <lucien.xin@gmail.com>
+Link: https://patch.msgid.link/eb60825fa22d6f9e663c7d4dbb69f397b5d34d42.1780362366.git.lucien.xin@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/ucsi/displayport.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ net/sctp/sm_make_chunk.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/usb/typec/ucsi/displayport.c
-+++ b/drivers/usb/typec/ucsi/displayport.c
-@@ -240,6 +240,10 @@ static int ucsi_displayport_vdm(struct t
- 				dp->header |= VDO_CMDT(CMDT_RSP_ACK);
- 			break;
- 		case DP_CMD_CONFIGURE:
-+			if (count < 2) {
-+				dp->header |= VDO_CMDT(CMDT_RSP_NAK);
-+				break;
-+			}
- 			dp->data.conf = *data;
- 			if (ucsi_displayport_configure(dp)) {
- 				dp->header |= VDO_CMDT(CMDT_RSP_NAK);
+diff --git a/net/sctp/sm_make_chunk.c b/net/sctp/sm_make_chunk.c
+index 2c0017d058d409..9014b095f52ddb 100644
+--- a/net/sctp/sm_make_chunk.c
++++ b/net/sctp/sm_make_chunk.c
+@@ -1730,6 +1730,7 @@ struct sctp_association *sctp_unpack_cookie(
+ 	struct sctp_signed_cookie *cookie;
+ 	struct sk_buff *skb = chunk->skb;
+ 	struct sctp_cookie *bear_cookie;
++	struct sctp_chunkhdr *ch;
+ 	enum sctp_scope scope;
+ 	unsigned int len;
+ 	ktime_t kt;
+@@ -1759,6 +1760,10 @@ struct sctp_association *sctp_unpack_cookie(
+ 	cookie = chunk->subh.cookie_hdr;
+ 	bear_cookie = &cookie->c;
+ 
++	ch = (struct sctp_chunkhdr *)(bear_cookie + 1);
++	if (ntohs(ch->length) > len - fixed_size)
++		goto malformed;
++
+ 	/* Verify the cookie's MAC, if cookie authentication is enabled. */
+ 	if (sctp_sk(ep->base.sk)->cookie_auth_enable) {
+ 		u8 mac[SHA256_DIGEST_SIZE];
+-- 
+2.53.0
+
 
 
 
