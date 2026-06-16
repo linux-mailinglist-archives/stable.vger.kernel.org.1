@@ -1,64 +1,67 @@
-Return-Path: <stable+bounces-263891-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265385-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 1DEyGC1pMWrCigUAu9opvQ
-	(envelope-from <stable+bounces-263891-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:18:05 +0200
+	id 1TAfLOOHMWpAlwUAu9opvQ
+	(envelope-from <stable+bounces-265385-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:29:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECD02690E33
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:18:04 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41BAD6932E3
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:29:07 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Qq6pxMMu;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263891-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263891-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=0nGF45zw;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265385-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-265385-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1A3A4303B6EA
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:17:10 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B9BD4302668B
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:28:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7BB643DA53;
-	Tue, 16 Jun 2026 15:16:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B086947B413;
+	Tue, 16 Jun 2026 17:28:52 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B8F643E9FD;
-	Tue, 16 Jun 2026 15:16:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB96447AF49;
+	Tue, 16 Jun 2026 17:28:48 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781623016; cv=none; b=qPT6kmeW1IhWKrIQJeOgal9y7Xs4I7w4S79PeoIXFzYXAoIIiilfIA30Gk74FXWeJH/tcA0D6i+473OeHO9BTQsVKOgmpaTGk/ilzKM97ZK0VMmltpm2xQGVV08jmA9IRpE8zIMmsbHDjDq+PY4dDBe5V7/kSo2247wyqO/Uvew=
+	t=1781630932; cv=none; b=ntbXNH7Y+tF/k4f9dCw/DXDH4fI1JQhXCZJzEqBhQ9J9XOs24f3+F/4gAv/RbMSC77u90QuFWXrjdnc4MlQJWbobGtXbyCBiFC3SkvnPB1geVVeOAyFe0yFXJDHbO1DaXHCbHobK5g3L3xMreV+6JioGBhT700m1ZfzwUHvp8ig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781623016; c=relaxed/simple;
-	bh=dOGQkbE3NU/PzLl6z3B4fbUasK221LAgvLiFb0MfpBM=;
+	s=arc-20240116; t=1781630932; c=relaxed/simple;
+	bh=nq9TLO5wRXKB+LUBk/6y6O0qLkJwSUF5jLfvv4HGj/U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fie+UWxan9YYUs51U39tVwPTFEtDQDUwV5NljmWoxTMu8/pQ9LyTd/jKQlJ+6mGg8RO9gTGUstPfaa+nqBinqzhp1+MknxKl/cLauk9zTmUC7wD0oqHdgjN2OfEQNyfS0pUdOVz6Q+t6fkHHE2hWGR+mEfvlrDlp2RDDzIQwCmc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qq6pxMMu; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DED1A1F000E9;
-	Tue, 16 Jun 2026 15:16:53 +0000 (UTC)
+	 MIME-Version; b=pg5spopkwTA0C4oULr7MIpdKT1Hma0+9Y77kyuOuBJMM859SQPOnaCWll+hT4/YFwYEG5BNxaghX9yXZWHnQyORDJrTgqAJYI54n5krTFBSiElFNMF9hI4Sh4VE7DNISE+PSO+rTNJoBM8bOSPFBBxIP0mZL4ZOJLPPc0wYam98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0nGF45zw; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DF0C1F000E9;
+	Tue, 16 Jun 2026 17:28:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781623014;
-	bh=sBQ53rtrG0C9ZUQKXO3w12OUAiYTSBx/g29sn3f28Yk=;
+	s=korg; t=1781630928;
+	bh=z5OYg9b+aHEW9al0Sakus8at2M0tpu90h3+40RACqNo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Qq6pxMMuueFFFJ8na/BLBHLU3NePkgSgcwd7hhEstpgoP9QfXw4pJ4RiESbrcYf0q
-	 jX7euucDGfYFpakmtw6/bgqSDGtjeFCjHuLZYKOLRozILJc5i7AJDz5Ta3gtGNgfWW
-	 kM2rjXbxV3FpFJj14uLi3ER0rTGLnq3TEJmRlVOk=
+	b=0nGF45zwqu5dLZ9NjGbyojS/F3Qm/id2tIkuaI/d6gudsatAZbwW+cICcANr1cj2b
+	 wBpBVEDgrIMX+ZEUlHESirrWFY6pZVCnM91Ckzz4aIzBC87gK3o5HmCbbTcQxEXNxu
+	 HJKLo07S+hwNzX5Fr80E4IyPpunyO9fSpys63Ojg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+819eb928d120d2bdad0e@syzkaller.appspotmail.com,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	stable@kernel.org,
+	Yuan Tan <yuantan098@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Luxing Yin <tr0jan@lzu.edu.cn>,
+	Zhengchuan Liang <zcliangcn@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Justin Iurman <justin.iurman@gmail.com>,
 	Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 039/378] ipv6: anycast: insert aca into global hash under idev->lock
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 123/522] ipv6: exthdrs: refresh nh after handling HAO option
 Date: Tue, 16 Jun 2026 20:24:30 +0530
-Message-ID: <20260616145111.953967878@linuxfoundation.org>
+Message-ID: <20260616145131.745615837@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,159 +79,84 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-263891-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:syzbot+819eb928d120d2bdad0e@syzkaller.appspotmail.com,m:kuniyu@google.com,m:jiayuan.chen@linux.dev,m:idosch@nvidia.com,m:kuba@kernel.org,m:sashal@kernel.org,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265385-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:yuantan098@gmail.com,m:bird@lzu.edu.cn,m:tr0jan@lzu.edu.cn,m:zcliangcn@gmail.com,m:n05ec@lzu.edu.cn,m:justin.iurman@gmail.com,m:idosch@nvidia.com,m:kuba@kernel.org,m:justiniurman@gmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,nvidia.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,819eb928d120d2bdad0e];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,syzkaller.appspot.com:url,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,nvidia.com:email,linux.dev:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,nvidia.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,lzu.edu.cn:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: ECD02690E33
+X-Rspamd-Queue-Id: 41BAD6932E3
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
+From: Zhengchuan Liang <zcliangcn@gmail.com>
 
-[ Upstream commit f723ccaff2fb72b71ae8a9fd283f0dee4d9ae7a3 ]
+commit f7b52afe3592eae66e160586b45a3f2242972c63 upstream.
 
-syzbot reported a splat [1]: a slab-use-after-free in
-ipv6_chk_acast_addr(), which walks the global inet6_acaddr_lst[] hash
-under RCU and dereferences a struct ifacaddr6 that has already been
-freed while still linked in the hash, so a later reader walks into a
-dangling node.
+ip6_parse_tlv() caches skb_network_header(skb) in nh while walking
+IPv6 TLVs.
 
-In __ipv6_dev_ac_inc() the aca is allocated with refcount 1, then
-aca_get() bumps it to 2 to keep it alive across the unlocked region.
-It is published to idev->ac_list under idev->lock, but
-ipv6_add_acaddr_hash() runs after write_unlock_bh(). A concurrent
-teardown (ipv6_ac_destroy_dev() from addrconf_ifdown(), under RTNL)
-can slip into that window:
+ipv6_dest_hao() may call pskb_expand_head() for a cloned skb, which can
+move the skb head and invalidate the cached network header pointer.
+Refresh nh after ipv6_dest_hao() returns so any trailing padding or TLVs
+are parsed from the current skb head.
 
-  CPU0 __ipv6_dev_ac_inc           CPU1 ipv6_ac_destroy_dev (RTNL)
-  ------------------------------   ------------------------------------
-  aca_alloc()              refcnt 1
-  aca_get()               refcnt 2
-  write_lock_bh(idev->lock)
-    add aca to ac_list
-  write_unlock_bh(idev->lock)
-                                   write_lock_bh(idev->lock)
-                                     pull aca off ac_list
-                                   write_unlock_bh(idev->lock)
-                                   ipv6_del_acaddr_hash(aca)
-                                     hlist_del_init_rcu() is a no-op,
-                                     aca is not in the hash yet
-                                   aca_put()           refcnt 2->1
-  ipv6_add_acaddr_hash(aca)
-    aca now inserted into the hash
-  aca_put()                refcnt 1->0
-    call_rcu(aca_free_rcu) -> kfree(aca)
+This matches the existing pattern used in ip6_parse_tlv() after helpers
+that can modify skb header storage.
 
-The hash removal becomes a no-op because the insertion has not
-happened yet, so once CPU0 inserts and drops the last reference, the
-aca is freed while still linked in inet6_acaddr_lst[], and readers
-dereference freed memory after the slab slot is reused.
-
-This window opened once RTNL stopped serializing the join path against
-device teardown. Move ipv6_add_acaddr_hash() inside the idev->lock
-section so the ac_list and hash insertions are atomic with respect to
-teardown: a racing remover now either misses the aca entirely or finds
-it in both lists.
-
-acaddr_hash_lock is now nested under idev->lock, which is acquired in
-softirq context, so switch all acaddr_hash_lock sites to spin_lock_bh()
-to avoid the irq lock inversion reported in [2].
-
-[1] https://syzkaller.appspot.com/bug?extid=a01df04303c131efbf3a
-[2] https://lore.kernel.org/netdev/6a194ef7.ba3b1513.1890b4.0000.GAE@google.com/
-
-Reported-by: syzbot+819eb928d120d2bdad0e@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/6a191f87.ce022c6e.138e56.0003.GAE@google.com/T/
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Fixes: eb1ac9ff6c4a ("ipv6: anycast: Don't hold RTNL for IPV6_JOIN_ANYCAST.")
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Fixes: a831f5bbc89a ("[IPV6] MIP6: Add inbound interface of home address option.")
+Cc: stable@kernel.org
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Co-developed-by: Luxing Yin <tr0jan@lzu.edu.cn>
+Signed-off-by: Luxing Yin <tr0jan@lzu.edu.cn>
+Signed-off-by: Zhengchuan Liang <zcliangcn@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Reviewed-by: Justin Iurman <justin.iurman@gmail.com>
 Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20260529152219.235475-1-jiayuan.chen@linux.dev
+Link: https://patch.msgid.link/7aba1debc2196189172499e5769802b026f8caf8.1779247873.git.zcliangcn@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/anycast.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ net/ipv6/exthdrs.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/ipv6/anycast.c b/net/ipv6/anycast.c
-index 67a42e01dfc3f0..be6dac8a8566a1 100644
---- a/net/ipv6/anycast.c
-+++ b/net/ipv6/anycast.c
-@@ -243,16 +243,16 @@ static void ipv6_add_acaddr_hash(struct net *net, struct ifacaddr6 *aca)
- {
- 	unsigned int hash = inet6_acaddr_hash(net, &aca->aca_addr);
- 
--	spin_lock(&acaddr_hash_lock);
-+	spin_lock_bh(&acaddr_hash_lock);
- 	hlist_add_head_rcu(&aca->aca_addr_lst, &inet6_acaddr_lst[hash]);
--	spin_unlock(&acaddr_hash_lock);
-+	spin_unlock_bh(&acaddr_hash_lock);
- }
- 
- static void ipv6_del_acaddr_hash(struct ifacaddr6 *aca)
- {
--	spin_lock(&acaddr_hash_lock);
-+	spin_lock_bh(&acaddr_hash_lock);
- 	hlist_del_init_rcu(&aca->aca_addr_lst);
--	spin_unlock(&acaddr_hash_lock);
-+	spin_unlock_bh(&acaddr_hash_lock);
- }
- 
- static void aca_get(struct ifacaddr6 *aca)
-@@ -371,10 +371,10 @@ int __ipv6_dev_ac_inc(struct inet6_dev *idev, const struct in6_addr *addr)
- 	aca->aca_next = idev->ac_list;
- 	rcu_assign_pointer(idev->ac_list, aca);
- 
--	write_unlock_bh(&idev->lock);
--
- 	ipv6_add_acaddr_hash(net, aca);
- 
-+	write_unlock_bh(&idev->lock);
+--- a/net/ipv6/exthdrs.c
++++ b/net/ipv6/exthdrs.c
+@@ -205,6 +205,8 @@ static bool ip6_parse_tlv(bool hopbyhop,
+ 				case IPV6_TLV_HAO:
+ 					if (!ipv6_dest_hao(skb, off))
+ 						return false;
 +
- 	ip6_ins_rt(net, f6i);
- 
- 	addrconf_join_solict(idev->dev, &aca->aca_addr);
-@@ -649,8 +649,8 @@ void ipv6_anycast_cleanup(void)
- {
- 	int i;
- 
--	spin_lock(&acaddr_hash_lock);
-+	spin_lock_bh(&acaddr_hash_lock);
- 	for (i = 0; i < IN6_ADDR_HSIZE; i++)
- 		WARN_ON(!hlist_empty(&inet6_acaddr_lst[i]));
--	spin_unlock(&acaddr_hash_lock);
-+	spin_unlock_bh(&acaddr_hash_lock);
- }
--- 
-2.53.0
-
++					nh = skb_network_header(skb);
+ 					break;
+ #endif
+ 				default:
 
 
 
