@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-264703-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266195-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id F0GLLpV7MWoAkgUAu9opvQ
-	(envelope-from <stable+bounces-264703-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:36:37 +0200
+	id uoB1KTyZMWpenwUAu9opvQ
+	(envelope-from <stable+bounces-266195-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:43:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B8F569241A
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:36:37 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23A5F6945E9
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:43:08 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=xnj9kuJD;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264703-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264703-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="2I727+p/";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266195-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266195-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CA1F53036E75
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:30:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D8DFE31C98C8
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:39:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41D2747277E;
-	Tue, 16 Jun 2026 16:30:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7090347A0CD;
+	Tue, 16 Jun 2026 18:39:12 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1184244DB64;
-	Tue, 16 Jun 2026 16:30:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48F6146AF3C;
+	Tue, 16 Jun 2026 18:39:11 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781627422; cv=none; b=s8Ppymokz9KmNVqs4sOiOMzSaiZdr6lR4WA92aXOEbCO6y6k3fj2qLKY6atgDWkVner3JGVb6iRpS/LQqdQScEKir8nYaQF7OePqsNtpWaY7JqB/FWczeCtP0jjs6hjvPX8yzlDCV68ETGaLj1VWhlUC5qt6MVS8xCcIE7gKLVY=
+	t=1781635152; cv=none; b=FeKbeNsdFPKOux/ajmJa7cjFkzbM2c3ZGL8UzhN+StMaBR5s9VQVTqQ2CGFtV0KXOjQ7Rq8YfGFLfLLwU4bm2BaCnk7u38UwapKLMtiPmwo+c4eHVrS89PfpX0ug1Z6J3qs4kAIdszWQ68CW/Itw+L6PMY/FECdjltJAHhvcdCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781627422; c=relaxed/simple;
-	bh=yWeVEOgN5U/lvRPtSr+0SO8OZjmTuZAuWV/rbtzv7+g=;
+	s=arc-20240116; t=1781635152; c=relaxed/simple;
+	bh=7EKvgTa8IBexcidKWNcWcrcXCdvB3Tem1xBGhfmhcR8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cNMZZPHyjCXH/TnlnZ8j+aYOERm3aForthDF2s+CjuhvWRkGAMYYR4CQjqNpPDXpwF8LsKlQa7adb2Cr/8kCate3QpZhbuzvx3a95dPOwYLjuKk2hIzQQXnQtfUsIfNdXSQqYKlv4XhUTFrQb52cnhLMTGJcnbPO8h2JYZ0F7So=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xnj9kuJD; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D38DB1F000E9;
-	Tue, 16 Jun 2026 16:30:19 +0000 (UTC)
+	 MIME-Version; b=lW2O0RgvbkB6JAzQztT4BibtKc1DWwiq60L8vsAO/iggQ0z1LcfYcCN3hsyeGWRW1E+KVlZN2fd/RxKcOpzv5Ordn9IWWhiQIi2+jQiPbkVpY1R0aOa5KNxvyWJ4PhOEs4OawOKcknClHkiSBquwWKA4AX9+WMtcX6ab4UU595Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2I727+p/; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C7B61F000E9;
+	Tue, 16 Jun 2026 18:39:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781627420;
-	bh=QkplR6xhXshjYGi/p5daHpeVLPJW94T91uuf8mAlO6A=;
+	s=korg; t=1781635151;
+	bh=ioCV9p3+DfeXoBnKtjG77+UcF3C61T+TdV6ttjolBcA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=xnj9kuJDQvAbweXHRLNA8goirGTIRnRaaEbgy+6x29BwE79QH4bP3WhGZP52lOAqL
-	 +oYnPzacP0pr2AVojDCvAyPtIHik0xQFL1Z4JakcE+sGy+IuBWTLsjrtA/kC9mibwh
-	 +7LBKYrWNPC5zrEXa93Cjt0cVgjXDVSGbaA15RQU=
+	b=2I727+p/Loh3mGS9kqQanJ23uoxyYFlYmRMeMnP4bbc6RB519pTyIiv4uCg5LUz8X
+	 wvV3h+KqMA8SYtgSwCeuTJrtZmXOtyMG3vq3+yWm+kuyNl3/wewsRDYEVpnNvjpHsB
+	 gz1djnd2fKFFSf7InT1cpEuawU/MSG4KUnrQt6cI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Jason Gunthorpe <jgg@nvidia.com>
-Subject: [PATCH 6.12 167/261] IB/isert: Reject login PDUs shorter than ISER_HEADERS_LEN
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Rodrigo Alencar <rodrigo.alencar@analog.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <jic23@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 367/411] iio: dac: ad5686: fix ref bit initialization for single-channel parts
 Date: Tue, 16 Jun 2026 20:30:05 +0530
-Message-ID: <20260616145052.812635952@linuxfoundation.org>
+Message-ID: <20260616145120.837321488@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
-References: <20260616145044.869532709@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,100 +69,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264703-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-266195-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:andriy.shevchenko@intel.com,m:rodrigo.alencar@analog.com,m:Stable@vger.kernel.org,m:jic23@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nvidia.com];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:jgg@nvidia.com,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,nvidia.com:email,vger.kernel.org:from_smtp,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,intel.com:email,vger.kernel.org:from_smtp,analog.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5B8F569241A
+X-Rspamd-Queue-Id: 23A5F6945E9
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Rodrigo Alencar <rodrigo.alencar@analog.com>
 
-commit 29e7b925ae6df64894e82ab6419994dc25580a8a upstream.
+[ Upstream commit ecae2ae606d493cf11457946436335bd0e726663 ]
 
-In drivers/infiniband/ulp/isert/ib_isert.c, isert_login_recv_done()
-computes the login request payload length as wc->byte_len minus
-ISER_HEADERS_LEN with no lower bound, and login_req_len is a signed int.
-A remote iSER initiator can post a login Send work request carrying
-fewer than ISER_HEADERS_LEN (76) bytes, so the subtraction underflows
-and login_req_len becomes negative.
+The reference bit position was ignored when writing the register at the
+probe() function (!!val was used). When such bit is 1, internal voltage
+reference is disabled so that an external one can be used. For
+multi-channel devices, bit 0 of the Internal Reference Setup command
+behaves the same way, so AD5686_REF_BIT_MSK is created. The issue exists
+since support for single-channel devices were first introduced.
 
-isert_rx_login_req() then reads that negative length back into a signed
-int, takes size = min(rx_buflen, MAX_KEY_VALUE_PAIRS), and because the
-min() is signed it keeps the negative value; the value is then passed as
-the memcpy() length and sign-extended to a multi-gigabyte size_t. The
-copy into the 8192-byte login->req_buf runs far out of bounds and
-faults, crashing the target node. The login phase precedes iSCSI
-authentication, so no credentials are required to reach this path.
-
-Reject any login PDU shorter than ISER_HEADERS_LEN before the
-subtraction, mirroring the existing early return on a failed work
-completion, so login_req_len can never go negative. The upper bound was
-already safe: a posted login buffer cannot deliver more than
-ISER_RX_PAYLOAD_SIZE, so the difference stays at or below
-MAX_KEY_VALUE_PAIRS and the existing min() clamps it; only the missing
-lower bound needs to be added.
-
-Fixes: b8d26b3be8b3 ("iser-target: Add iSCSI Extensions for RDMA (iSER) target driver")
-Link: https://patch.msgid.link/r/20260602194642.2273217-1-michael.bommarito@gmail.com
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-8
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Fixes: be1b24d24541 ("iio:dac:ad5686: Add AD5691R/AD5692R/AD5693/AD5693R support")
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Signed-off-by: Rodrigo Alencar <rodrigo.alencar@analog.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <jic23@kernel.org>
+[ adapted `has_external_vref` to the in-tree equivalent `voltage_uv` variable in the `val =` computation ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/ulp/isert/ib_isert.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/iio/dac/ad5686.c |    6 +++---
+ drivers/iio/dac/ad5686.h |    1 +
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
---- a/drivers/infiniband/ulp/isert/ib_isert.c
-+++ b/drivers/infiniband/ulp/isert/ib_isert.c
-@@ -1385,6 +1385,12 @@ isert_login_recv_done(struct ib_cq *cq,
- 	ib_dma_sync_single_for_cpu(ib_dev, isert_conn->login_desc->dma_addr,
- 			ISER_RX_SIZE, DMA_FROM_DEVICE);
+--- a/drivers/iio/dac/ad5686.c
++++ b/drivers/iio/dac/ad5686.c
+@@ -513,7 +513,7 @@ int ad5686_probe(struct device *dev,
+ 		break;
+ 	case AD5686_REGMAP:
+ 		cmd = AD5686_CMD_INTERNAL_REFER_SETUP;
+-		ref_bit_msk = 0;
++		ref_bit_msk = AD5686_REF_BIT_MSK;
+ 		break;
+ 	case AD5693_REGMAP:
+ 		cmd = AD5686_CMD_CONTROL_REG;
+@@ -525,9 +525,9 @@ int ad5686_probe(struct device *dev,
+ 		goto error_disable_reg;
+ 	}
  
-+	if (unlikely(wc->byte_len < ISER_HEADERS_LEN)) {
-+		isert_dbg("login request length %u is too short\n",
-+			  wc->byte_len);
-+		return;
-+	}
-+
- 	isert_conn->login_req_len = wc->byte_len - ISER_HEADERS_LEN;
+-	val = (voltage_uv | ref_bit_msk);
++	val = voltage_uv ? ref_bit_msk : 0;
  
- 	if (isert_conn->conn) {
+-	ret = st->write(st, cmd, 0, !!val);
++	ret = st->write(st, cmd, 0, val);
+ 	if (ret)
+ 		goto error_disable_reg;
+ 
+--- a/drivers/iio/dac/ad5686.h
++++ b/drivers/iio/dac/ad5686.h
+@@ -44,6 +44,7 @@
+ 
+ #define AD5310_REF_BIT_MSK			BIT(8)
+ #define AD5683_REF_BIT_MSK			BIT(12)
++#define AD5686_REF_BIT_MSK			BIT(0)
+ #define AD5693_REF_BIT_MSK			BIT(12)
+ 
+ /**
 
 
 
