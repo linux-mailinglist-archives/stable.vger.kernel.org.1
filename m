@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-264404-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265172-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id STyiBup2MWr8jwUAu9opvQ
-	(envelope-from <stable+bounces-264404-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:16:42 +0200
+	id j+F6GSSFMWoElgUAu9opvQ
+	(envelope-from <stable+bounces-265172-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:17:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 796A1691E10
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:16:41 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9A2A692F64
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:17:23 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=UHBg0VbV;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264404-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264404-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=qNeLZGRF;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265172-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265172-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0DB5630AE76C
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:01:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 948F93030B08
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:10:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D2C7322C88;
-	Tue, 16 Jun 2026 16:01:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D86974418D7;
+	Tue, 16 Jun 2026 17:10:41 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83EDC44DB6D;
-	Tue, 16 Jun 2026 16:01:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91D821A6803;
+	Tue, 16 Jun 2026 17:10:40 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781625709; cv=none; b=hnZQKAt66E/MkmN8OnS3U0mXQzWGwf0XTXnIXCvkf3vicQZ+3/+7BtE9TgPHswQYbhhnkozOBlY6mDuced7JfvggBDsrUhoxxCKXTzg7ajDUHFbxO4eCB+Ka7z8ffAa4OHZTNDMHbjBiqsOAwzWYUdClaF6UIQ48n6qKQmrkMLE=
+	t=1781629841; cv=none; b=oG2QGj7YqlNsgysjSzQnp9pvyUCSyng52xSSwV6nEPGQvJ5jw/r3ta49ZqAmNnCCZxkg05Y64L6CLLg+iOb0JdaPjOkQP1ANMye3rBRwZYPERBj8z4vxLZmiGFbscnP3Tyd4RJuK70T/clpMsozekxu36GpC1kwTo92Y00TA+jA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781625709; c=relaxed/simple;
-	bh=a6B4GWbq384A8MguOu3ailFtK7lOyC6bf8jEfiivRpE=;
+	s=arc-20240116; t=1781629841; c=relaxed/simple;
+	bh=GiXOC16vJRKglNbf6Kep0F/ec7ZMdND4/dnaPN0T0dw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Or3lbQxhA6qcjIKYIFkDoxEPzQ5ZQ5GN+SnzDc8SkvKsMmYWhtKAHr6/K6gaSMgRqR6S7KlqVbP3/8dDUtupbUUnP74G8WgDe3Xl0IQCVII7uLbFGnO5FCH0Pz3lBtYz4OEa+JtqJp4kabYPFuaiigtTj+0p3L+rJ8OoQXWfdEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UHBg0VbV; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 542121F000E9;
-	Tue, 16 Jun 2026 16:01:46 +0000 (UTC)
+	 MIME-Version; b=PXtX5zi0qq10KzfreO00SAlAzuEi+oOQOwZ9B/ZI3AHUYeWEddluCXU8u/TmOOumiCaUc63zcBX5JJrSM2Wn3e52aibXoyJYHxbgAD/7SFZPCbhfRaWRv8ke57H9Ac6mLE3ivC9OsK+ED9phIsHfjxY2/TDv1995k2bB8TPr2FA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qNeLZGRF; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B4781F000E9;
+	Tue, 16 Jun 2026 17:10:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781625708;
-	bh=4G0UAZ+/dW01jFpHP62e9hCO+qGctuvJbgcNdN2Bg5c=;
+	s=korg; t=1781629840;
+	bh=VBed1+aCQBqWoaJqwssnXfRd/ESx+D2+8XqBkQdEEfM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=UHBg0VbVT3JvmFkcwf/3dvXVVNCldAHhI0ERM0eBFjB/Bwv6NQa8DD99c0CpYE0Uz
-	 KZ87kKYhdSOFyG6AGxc/7hHRbiKQVQZKVjfaM/0JpVHzbuxHmmG7xcqc8dzfptmDis
-	 L6uiPzIxNemKcT4KexBgHysGEfON6+y5DkSFSNhI=
+	b=qNeLZGRFyn0CtowG9zRPGv37vB3Plbe9vcbydMIjVGh/x/h2QdkD2qm4z8Cn+Uzpu
+	 I/df3lKacSJ7MGa4fQf/5Oohu8mo7wsaNpEM68YSyeWyODd3EP4tp/RsJ3eK6z5CdR
+	 OREtYvbuxVj6xkeFEiU7SU1w34AUj6biXzyIut/s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Karl Mehltretter <kmehltretter@gmail.com>,
-	Linus Walleij <linusw@kernel.org>,
-	Russell King <rmk+kernel@armlinux.org.uk>
-Subject: [PATCH 6.18 193/325] ARM: 9475/1: entry: use byte load for KASAN VMAP stack shadow
+	Andrew Martin <andrew.martin@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.6 362/452] drm/amdkfd: Fix buffer overflow in SDMA queue checkpoint/restore on GFX11
 Date: Tue, 16 Jun 2026 20:29:49 +0530
-Message-ID: <20260616145107.572899265@linuxfoundation.org>
+Message-ID: <20260616145136.114274772@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,85 +66,158 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265172-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264404-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kmehltretter@gmail.com,m:linusw@kernel.org,m:rmk+kernel@armlinux.org.uk,m:rmk@armlinux.org.uk,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,armlinux.org.uk];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:andrew.martin@amd.com,m:alexander.deucher@amd.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,kernel];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[armlinux.org.uk:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,amd.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 796A1691E10
+X-Rspamd-Queue-Id: B9A2A692F64
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Karl Mehltretter <kmehltretter@gmail.com>
+From: Andrew Martin <andrew.martin@amd.com>
 
-commit 77a1f6883dc6e837bb2cb30b9b02e2f94338e2c6 upstream.
+commit 352ea59028ea48a6fff77f19ae28f98f71946a80 upstream.
 
-Commit 44e9a3bb76e5 ("ARM: 9430/1: entry: Do a dummy read from
-VMAP shadow") added a dummy read from the KASAN VMAP stack shadow in
-__switch_to(). The read uses ldr, but the KASAN shadow address is
-byte-granular and is not guaranteed to be word aligned.
+The v11 MQD manager incorrectly assigned the CP-compute variants of
+checkpoint_mqd/restore_mqd for KFD_MQD_TYPE_SDMA queues. These functions
+use sizeof(struct v11_compute_mqd) (2048 bytes) instead of sizeof(struct
+v11_sdma_mqd) (512 bytes), causing a 1536-byte overflow.
 
-ARMv5 faults unaligned word loads. With CONFIG_KASAN_VMALLOC and
-CONFIG_VMAP_STACK enabled, ARM926/VersatilePB crashes in __switch_to()
-with an alignment exception before reaching init.
+During CRIU checkpoint of an SDMA queue on Navi3x:
+- checkpoint_mqd() reads 2048 bytes from a 512-byte SDMA MQD buffer,
+  leaking 1536 bytes of adjacent GTT memory to userspace
 
-Use ldrb for the dummy shadow access. The code only needs to fault in the
-shadow mapping if the stack shadow is missing, so a byte load is sufficient
-and matches the granularity of KASAN shadow memory.
+During CRIU restore:
+- restore_mqd() writes 2048 bytes into a 512-byte SDMA MQD buffer,
+  corrupting 1536 bytes of adjacent GTT memory (often the ring buffer
+  or neighboring MQDs)
 
-Fixes: 44e9a3bb76e5 ("ARM: 9430/1: entry: Do a dummy read from VMAP shadow")
-Cc: stable@vger.kernel.org # v6.13+
-Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
-Reviewed-by: Linus Walleij <linusw@kernel.org>
-Signed-off-by: Russell King <rmk+kernel@armlinux.org.uk>
+This is a copy-paste regression unique to v11. All other ASIC backends
+(cik, vi, v9, v10, v12) correctly use the SDMA-specific variants.
+
+Add checkpoint_mqd_sdma() and restore_mqd_sdma() functions that properly
+handle the smaller v11_sdma_mqd structure, matching the pattern used in
+other MQD managers.
+
+Fixes: cc009e613de6 ("drm/amdkfd: Add KFD support for soc21 v3")
+Assisted-by: Claude:Sonnet 4-5
+Signed-off-by: Andrew Martin <andrew.martin@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 6fa41db7ffdec97d62433adf03b7b9b759af8c2c)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/kernel/entry-armv.S |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v11.c |   49 +++++++++++++++++++----
+ 1 file changed, 41 insertions(+), 8 deletions(-)
 
---- a/arch/arm/kernel/entry-armv.S
-+++ b/arch/arm/kernel/entry-armv.S
-@@ -567,7 +567,7 @@ ENTRY(__switch_to)
- 	@ are using KASAN
- 	mov_l	r2, KASAN_SHADOW_OFFSET
- 	add	r2, r2, ip, lsr #KASAN_SHADOW_SCALE_SHIFT
--	ldr	r2, [r2]
-+	ldrb	r2, [r2]
- #endif
- #endif
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v11.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v11.c
+@@ -333,8 +333,7 @@ static void checkpoint_mqd(struct mqd_ma
  
+ static void restore_mqd(struct mqd_manager *mm, void **mqd,
+ 			struct kfd_mem_obj *mqd_mem_obj, uint64_t *gart_addr,
+-			struct queue_properties *qp,
+-			const void *mqd_src,
++			struct queue_properties *qp, const void *mqd_src,
+ 			const void *ctl_stack_src, const u32 ctl_stack_size)
+ {
+ 	uint64_t addr;
+@@ -350,14 +349,48 @@ static void restore_mqd(struct mqd_manag
+ 		*gart_addr = addr;
+ 
+ 	m->cp_hqd_pq_doorbell_control =
+-		qp->doorbell_off <<
+-			CP_HQD_PQ_DOORBELL_CONTROL__DOORBELL_OFFSET__SHIFT;
+-	pr_debug("cp_hqd_pq_doorbell_control 0x%x\n",
+-			m->cp_hqd_pq_doorbell_control);
++		qp->doorbell_off << CP_HQD_PQ_DOORBELL_CONTROL__DOORBELL_OFFSET__SHIFT;
++	pr_debug("cp_hqd_pq_doorbell_control 0x%x\n", m->cp_hqd_pq_doorbell_control);
+ 
+ 	qp->is_active = 0;
+ }
+ 
++static void checkpoint_mqd_sdma(struct mqd_manager *mm,
++				void *mqd,
++				void *mqd_dst,
++				void *ctl_stack_dst)
++{
++	struct v11_sdma_mqd *m;
++
++	m = get_sdma_mqd(mqd);
++
++	memcpy(mqd_dst, m, sizeof(struct v11_sdma_mqd));
++}
++
++static void restore_mqd_sdma(struct mqd_manager *mm, void **mqd,
++			     struct kfd_mem_obj *mqd_mem_obj, uint64_t *gart_addr,
++			     struct queue_properties *qp,
++			     const void *mqd_src,
++			     const void *ctl_stack_src,
++			     const u32 ctl_stack_size)
++{
++	uint64_t addr;
++	struct v11_sdma_mqd *m;
++
++	m = (struct v11_sdma_mqd *) mqd_mem_obj->cpu_ptr;
++	addr = mqd_mem_obj->gpu_addr;
++
++	memcpy(m, mqd_src, sizeof(*m));
++
++	m->sdmax_rlcx_doorbell_offset =
++		qp->doorbell_off << SDMA0_QUEUE0_DOORBELL_OFFSET__OFFSET__SHIFT;
++
++	*mqd = m;
++	if (gart_addr)
++		*gart_addr = addr;
++
++	qp->is_active = 0;
++}
+ 
+ static void init_mqd_hiq(struct mqd_manager *mm, void **mqd,
+ 			struct kfd_mem_obj *mqd_mem_obj, uint64_t *gart_addr,
+@@ -542,8 +575,8 @@ struct mqd_manager *mqd_manager_init_v11
+ 		mqd->update_mqd = update_mqd_sdma;
+ 		mqd->destroy_mqd = kfd_destroy_mqd_sdma;
+ 		mqd->is_occupied = kfd_is_occupied_sdma;
+-		mqd->checkpoint_mqd = checkpoint_mqd;
+-		mqd->restore_mqd = restore_mqd;
++		mqd->checkpoint_mqd = checkpoint_mqd_sdma;
++		mqd->restore_mqd = restore_mqd_sdma;
+ 		mqd->mqd_size = sizeof(struct v11_sdma_mqd);
+ 		mqd->mqd_stride = kfd_mqd_stride;
+ #if defined(CONFIG_DEBUG_FS)
 
 
 
