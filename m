@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-264796-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264797-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 2qRaLZF8MWppkgUAu9opvQ
-	(envelope-from <stable+bounces-264796-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:40:49 +0200
+	id 9E9SNtB+MWplkwUAu9opvQ
+	(envelope-from <stable+bounces-264797-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:50:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F9AA69254C
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:40:49 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD6AD69280E
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:50:23 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=TdzleOxE;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264796-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264796-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=xE5EvGEm;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264797-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-264797-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C04A33040E7A
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:38:57 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 91750302C877
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:39:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5B7446AF17;
-	Tue, 16 Jun 2026 16:38:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81E2C331EAB;
+	Tue, 16 Jun 2026 16:39:00 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F0E5331EAB;
-	Tue, 16 Jun 2026 16:38:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 561053D890D;
+	Tue, 16 Jun 2026 16:38:59 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781627934; cv=none; b=DS7JB3o7DstaYevXXmLCZubUKqwS0xWZlRTURa+UC5FAHGaEJsuracI8x7ZzZEEBrdX9nnI8v1ogWcr99SiHhJJ6T1uJLB3Qm4hjoaCr9wiRH0+ZxRhWDGKDVVTw8myJ64htmELdbJtQGsWJdrFvcSxRFjspY4eNpIU8Eg8Zr2Y=
+	t=1781627940; cv=none; b=qwYKeyi5uk5+jcmEZCywvSApOiG/eKFEUlamF1QtnQbuPibwrVlOo1uJD6XiZLRAbUEpV9UXNTTey2FzBXilsdUa9fj6Jfp4TPi9NEQsYEgPvxoV04gCL/gpxI4Lf7y7cwFD7JjPVCn+w0qHPgjfxZPAiK4/Uc/Mwepe3bMlPjE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781627934; c=relaxed/simple;
-	bh=Qciand+vu0zUf+EGy3whlLsm1ULaQkkuy9PjmlGYqME=;
+	s=arc-20240116; t=1781627940; c=relaxed/simple;
+	bh=62jtgpS7XQxlXDvd229IWR9548txxhccbpFNPCO03LE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fP/9bO4YTwizrQVXse5c4+QyFcj4YTCGVmWNlcteBjI07/JDpgzh6EEgtoupg/gHo2uLXQynkvlIuEdGhmjDGsLSiAi9brUmOCqoQP1KJX+OiY0oV0PFP9fVUhwaG3q9M6Qy3EViNC9Gn6iIsS2qMmT1VBXUnZ2IfPeR9K5hE/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TdzleOxE; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E2801F000E9;
-	Tue, 16 Jun 2026 16:38:52 +0000 (UTC)
+	 MIME-Version; b=aa6hlgUIpPcMe6JtWmWz5OQ8raazeiPJpBow8+ztHTZFrU2/sbrE/xb9ZFb+T7TiJ2Segg9VVUKGgDbK/U08TDcTiQxcxvikBJVgL1p5VLf9SSGnDcoqQNY4sMuwFRKUS3dP1tjxVwZdSeF9FXgMMO2Mvwv5taLMcn6e9TZTUWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xE5EvGEm; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F6001F000E9;
+	Tue, 16 Jun 2026 16:38:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781627933;
-	bh=aRIhOPZKWi9ucDYurQFct58K9nncbb5RKn8CzHTxoyE=;
+	s=korg; t=1781627939;
+	bh=z4I7DQJ8VlOTfUYz3mRlBZPEjeLXuczEDlIl2N+oWUU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=TdzleOxEthd3QyJJia9ZxbTmi1t743Y2ubhnY/JuH1k7k/1opdjYSAG1KHs4lhe0q
-	 Pu6sXyOjHsNQfag+lRzb05DuhNzN6wlx9tUT/yJ7+vTxfdClwp12BJjczUSfOg1v5c
-	 jf0o0nhiLwWRm8IUAYoytlfEfIHTTlpIhn9xkUuk=
+	b=xE5EvGEmX3QjFTwknHBB5EmAModLDfDTYnM6Gzujfeg4onHrkLjlTdXYklXdDJZqN
+	 gphTeO2+B0dyHcc1szye2qD0pvIE1FHJxIIj7cxmSI93W9pQTJzPRWEL3RKOXKjGOL
+	 4KBJhEx3jtS+OC2hGiZrWlpxKRHN0zzg6DVE9y5k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Will Deacon <will@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>
-Subject: [PATCH 6.12 256/261] arm64: errata: Mitigate TLBI errata on Microsoft Azure Cobalt 100 CPU
-Date: Tue, 16 Jun 2026 20:31:34 +0530
-Message-ID: <20260616145056.929364893@linuxfoundation.org>
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Mateusz Polchlopek <mateusz.polchlopek@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Heiko Stuebner <heiko.stuebner@cherry.de>
+Subject: [PATCH 6.12 257/261] net: introduce EXPORT_IPV6_MOD() and EXPORT_IPV6_MOD_GPL()
+Date: Tue, 16 Jun 2026 20:31:35 +0530
+Message-ID: <20260616145056.972300098@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
 References: <20260616145044.869532709@linuxfoundation.org>
@@ -68,93 +71,87 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264796-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:will@kernel.org,m:mark.rutland@arm.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264797-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:edumazet@google.com,m:kuniyu@amazon.com,m:mateusz.polchlopek@intel.com,m:kuba@kernel.org,m:heiko.stuebner@cherry.de,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,arm.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,cherry.de:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5F9AA69254C
+X-Rspamd-Queue-Id: DD6AD69280E
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Will Deacon <will@kernel.org>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 1940e70a8144bf75e6df26bf6f600862ea7f7ea1 upstream.
+[ Upstream commit 54568a84c95bdea20227cf48d41f198d083e78dd ]
 
-Commit fb091ff39479 ("arm64: Subscribe Microsoft Azure Cobalt 100 to ARM
-Neoverse N2 errata") states that Microsoft Azure Cobalt 100 CPU "is a
-Microsoft implemented CPU based on r0p0 of the ARM Neoverse N2 CPU, and
-therefore suffers from all the same errata.".
+We have many EXPORT_SYMBOL(x) in networking tree because IPv6
+can be built as a module.
 
-So enable the workaround for the latest broadcast TLB invalidation bug
-on these parts.
+CONFIG_IPV6=y is becoming the norm.
 
-Signed-off-by: Will Deacon <will@kernel.org>
-[Mark: backport to v6.12.y]
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Define a EXPORT_IPV6_MOD(x) which only exports x
+for modular IPv6.
+
+Same principle applies to EXPORT_IPV6_MOD_GPL()
+
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Mateusz Polchlopek <mateusz.polchlopek@intel.com>
+Link: https://patch.msgid.link/20250212132418.1524422-2-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+(cherry picked from commit 54568a84c95bdea20227cf48d41f198d083e78dd)
+[needed as dependency for tcp: secure_seq: add back ports to TS offset]
+Signed-off-by: Heiko Stuebner <heiko.stuebner@cherry.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/arch/arm64/silicon-errata.rst |    2 ++
- arch/arm64/Kconfig                          |    1 +
- arch/arm64/kernel/cpu_errata.c              |    1 +
- 3 files changed, 4 insertions(+)
+ include/net/ip.h |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/Documentation/arch/arm64/silicon-errata.rst
-+++ b/Documentation/arch/arm64/silicon-errata.rst
-@@ -346,3 +346,5 @@ stable kernels.
- +----------------+-----------------+-----------------+-----------------------------+
- | Microsoft      | Azure Cobalt 100| #3324339        | ARM64_ERRATUM_3194386       |
- +----------------+-----------------+-----------------+-----------------------------+
-+| Microsoft      | Azure Cobalt 100| #4193789        | ARM64_ERRATUM_4118414       |
-++----------------+-----------------+-----------------+-----------------------------+
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -1166,6 +1166,7 @@ config ARM64_ERRATUM_4118414
- 	  * ARM Neoverse-V2 erratum 4193787
- 	  * ARM Neoverse-V3 erratum 4193784
- 	  * ARM Neoverse-V3AE erratum 4193784
-+	  * Microsoft Azure Cobalt 100 4193789
- 	  * NVIDIA Olympus erratum T410-OLY-1029
+--- a/include/net/ip.h
++++ b/include/net/ip.h
+@@ -675,6 +675,14 @@ static inline void ip_ipgre_mc_map(__be3
+ 		memcpy(buf, &naddr, sizeof(naddr));
+ }
  
- 	  On affected cores, some memory accesses might not be completed by
---- a/arch/arm64/kernel/cpu_errata.c
-+++ b/arch/arm64/kernel/cpu_errata.c
-@@ -250,6 +250,7 @@ static const struct arm64_cpu_capabiliti
- 			MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V3),
- 			MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V3AE),
- 			MIDR_ALL_VERSIONS(MIDR_NVIDIA_OLYMPUS),
-+			MIDR_ALL_VERSIONS(MIDR_MICROSOFT_AZURE_COBALT_100),
- 			{}
- 		})),
- 	},
++#if IS_MODULE(CONFIG_IPV6)
++#define EXPORT_IPV6_MOD(X) EXPORT_SYMBOL(X)
++#define EXPORT_IPV6_MOD_GPL(X) EXPORT_SYMBOL_GPL(X)
++#else
++#define EXPORT_IPV6_MOD(X)
++#define EXPORT_IPV6_MOD_GPL(X)
++#endif
++
+ #if IS_ENABLED(CONFIG_IPV6)
+ #include <linux/ipv6.h>
+ #endif
 
 
 
