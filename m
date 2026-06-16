@@ -1,68 +1,60 @@
-Return-Path: <stable+bounces-263907-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265417-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id MXlcO7ZqMWpIiwUAu9opvQ
-	(envelope-from <stable+bounces-263907-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:24:38 +0200
+	id qDjPNr6JMWocmAUAu9opvQ
+	(envelope-from <stable+bounces-265417-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:37:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B07B690FEE
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:24:38 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34B4C6934FF
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:37:02 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=RNlglCIh;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263907-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-263907-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ddwk2N0w;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265417-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265417-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CA2AA31F5869
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:18:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7DA2730FF97C
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:31:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F223943E49F;
-	Tue, 16 Jun 2026 15:18:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 836C447AF4D;
+	Tue, 16 Jun 2026 17:31:35 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6E6D43E484;
-	Tue, 16 Jun 2026 15:18:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 599CB47B422;
+	Tue, 16 Jun 2026 17:31:34 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781623104; cv=none; b=M1DFp7oTZbpBiIdyiZjViCb/gLjKoYyJkdhtDCZlDE+VSnwJ/tykNsBARH3pJCrE9XbcTk/E5oSwJsz+H7468xH2PYABLEnmJEuRXemx3BngSBhWelGvZvafesPjR/rCNwq1SOTIgTIp8okK6SA8IChG0sAwM9oUIARnwZIlbcI=
+	t=1781631095; cv=none; b=Lh86DWF+n4bMLF+W3Fir+y9RQ5nHpf/VzYyKEhM816ACTLSsxZaHGfAxpNt+WrpqD41vogqcrI6d86kwMaPtRqSfPvgdKUauLCC6GIM9Z/z+Inb8MGNdFJdwwO8OhUCwDJrNPaH04un6cgh+1C+ip/iN3aLnDqhhOhQyyacMVtU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781623104; c=relaxed/simple;
-	bh=mDT0SIB8A1Ol2n1rnHzJeCu8vnm1f5e9WmvD3PLrL4s=;
+	s=arc-20240116; t=1781631095; c=relaxed/simple;
+	bh=TvUxwqGNO9UzerTS/wEV0oDvLlBq6wNxuFW3V/5iDMw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IiTfBbG/XXkidF0p2+IqIfxoYaJDP0DwlyX5h4tukJHl5nPjzUS5pCW+OorYYaKivMYeDEyimOaELSbqO8F7EaMngh97n3wep62tIaJQhZ+4c2GtUu4EBSkssRlRx8OC384/2nNQfKO+CKs+PU4O49XeiBGxht5cS+2EXwhYKwQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RNlglCIh; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3DD01F000E9;
-	Tue, 16 Jun 2026 15:18:22 +0000 (UTC)
+	 MIME-Version; b=o3ZT+UOi9e6P5WXFqlzwTdtvmsc+UeTdDK4QZKDCUUkw/Ol+x29AvdA3yB8idMN3dpnou1dUWRTSzjFS1ykIdvKkHe9DbvQ7/st1LjAjM5v1nABFbhcaGEBvG1fnpysRwdJVC1DwkBckIjqVdqmLM4D2hjECHCxtiqYqYKmO9a8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ddwk2N0w; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12BE01F00A3A;
+	Tue, 16 Jun 2026 17:31:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781623103;
-	bh=pyj49m6iztPEy4UXR9vY8AS8QWZ/Hadi976r9vlC2WM=;
+	s=korg; t=1781631094;
+	bh=PSW77uzTO3uornqDQBFrEiydl70qdFAMMjbK9Ya2YqM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=RNlglCIhP5A8tSe/2SF05Mow3N2kVljvWX1SByP6pc6GfkzxzbciTRhim9hlv4TOL
-	 3LFDRkqvxNgD1OexZz5EgHpeYQCzlkUB+2wLofSzwK4UrRcxXVyVAfUQxFFk1X8YPJ
-	 UhBeubFu/zdfHznPz1R/u4S//FOb7lezxHpZ9DI8=
+	b=ddwk2N0w3CeFMu8odBNYNQ1bcEYUlgBck2iHqRdhdPHY43TeZk4rRtNlDorGw1aIO
+	 ujLW7GbHWytvB4Xmf3S3bGybVLXmo7e6CqNHdgREp28Z8PnF0tsTV+5BkIcwq9NDiY
+	 kN4BDcIYW/hnlguA/Oz0WJ3hHgXPngwIDpfMdA/s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Zhengchuan Liang <zcliangcn@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Yuqi Xu <xuyq21@lenovo.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Xin Long <lucien.xin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 071/378] sctp: purge outqueue on stale COOKIE-ECHO handling
+	Andrew Lunn <andrew@lunn.ch>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.1 155/522] USB: serial: mxuport: fix memory corruption with small endpoint
 Date: Tue, 16 Jun 2026 20:25:02 +0530
-Message-ID: <20260616145113.875101640@linuxfoundation.org>
+Message-ID: <20260616145133.355296606@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,129 +66,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-263907-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:yuantan098@gmail.com,m:yifanwucs@gmail.com,m:tomapufckgml@gmail.com,m:zcliangcn@gmail.com,m:bird@lzu.edu.cn,m:xuyq21@lenovo.com,m:n05ec@lzu.edu.cn,m:lucien.xin@gmail.com,m:kuba@kernel.org,m:sashal@kernel.org,m:lucienxin@gmail.com,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,lenovo.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-265417-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:andrew@lunn.ch,m:johan@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lunn.ch:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4B07B690FEE
+X-Rspamd-Queue-Id: 34B4C6934FF
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xin Long <lucien.xin@gmail.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit e374b22e9b07b72a25909621464ff74096151bfb ]
+commit 4085f0dbb1ce2251c9a5938d693de6593f0ab2bd upstream.
 
-sctp_stream_update() is only invoked when the association is moved into
-COOKIE_WAIT during association setup/reconfiguration. In this path, the
-outbound stream scheduler state (stream->out_curr) is expected to be
-clean, since no user data should have been transmitted yet unless the
-state machine has already partially progressed.
+Make sure that the bulk-out endpoint max packet size is at least eight
+bytes to avoid user-controlled slab corruption should a malicious device
+report a smaller size.
 
-However, a corner case exists in sctp_sf_do_5_2_6_stale(): when a
-Stale Cookie ERROR is received, the association is rolled back from
-COOKIE_ECHOED to COOKIE_WAIT. In this scenario, user data may already
-have been queued and even bundled with the COOKIE-ECHO chunk.
-
-During the rollback, sctp_stream_update() frees the old stream table
-and installs a new one, but it does not invalidate stream->out_curr.
-As a result, out_curr may still point to a freed sctp_stream_out
-entry from the previous stream state.
-
-Later, SCTP scheduler dequeue paths (FCFS, RR, PRIO, etc.) rely on
-stream->out_curr->ext, which can lead to use-after-free once the old
-stream state has been released via sctp_stream_free().
-
-This results in crashes such as (reported by Yuqi):
-
-  BUG: KASAN: slab-use-after-free in sctp_sched_fcfs_dequeue+0x13a/0x140
-  Read of size 8 at addr ff1100004d4d3208 by task mini_poc/9312
-  CPU: 1 UID: 1001 PID: 9312 Comm: mini_poc Not tainted
-     7.1.0-rc1-00305-gbd3a4795d574 #5 PREEMPT(full)
-   sctp_sched_fcfs_dequeue+0x13a/0x140
-   sctp_outq_flush+0x1603/0x33e0
-   sctp_do_sm+0x31c9/0x5d30
-   sctp_assoc_bh_rcv+0x392/0x6f0
-   sctp_inq_push+0x1db/0x270
-   sctp_rcv+0x138d/0x3c10
-
-Fix this by fully purging the association outqueue when handling the
-Stale Cookie case. This ensures all pending transmit and retransmit
-state is dropped, and any scheduler cached pointers are invalidated,
-making it safe to rebuild stream state during COOKIE_WAIT restart.
-
-Updating only stream->out_curr would be insufficient, since queued
-and retransmittable data would still reference the old stream state and
-trigger later use-after-free in dequeue paths.
-
-Fixes: 5bbbbe32a431 ("sctp: introduce stream scheduler foundations")
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Zhengchuan Liang <zcliangcn@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Reported-by: Yuqi Xu <xuyq21@lenovo.com>
-Reported-by: Ren Wei <n05ec@lzu.edu.cn>
-Signed-off-by: Xin Long <lucien.xin@gmail.com>
-Link: https://patch.msgid.link/94318159b9052907a6cbb7256aee8b5f8dfbfccb.1780510304.git.lucien.xin@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: ee467a1f2066 ("USB: serial: add Moxa UPORT 12XX/14XX/16XX driver")
+Cc: stable@vger.kernel.org	# 3.14
+Cc: Andrew Lunn <andrew@lunn.ch>
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sctp/sm_statefuns.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ drivers/usb/serial/mxuport.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/net/sctp/sm_statefuns.c b/net/sctp/sm_statefuns.c
-index 8e89a870780c49..9b23c11cbb9ea4 100644
---- a/net/sctp/sm_statefuns.c
-+++ b/net/sctp/sm_statefuns.c
-@@ -2598,11 +2598,7 @@ static enum sctp_disposition sctp_sf_do_5_2_6_stale(
+--- a/drivers/usb/serial/mxuport.c
++++ b/drivers/usb/serial/mxuport.c
+@@ -962,6 +962,14 @@ static int mxuport_calc_num_ports(struct
  	 */
- 	sctp_add_cmd_sf(commands, SCTP_CMD_DEL_NON_PRIMARY, SCTP_NULL());
+ 	BUILD_BUG_ON(ARRAY_SIZE(epds->bulk_out) < 16);
  
--	/* If we've sent any data bundled with COOKIE-ECHO we will need to
--	 * resend
--	 */
--	sctp_add_cmd_sf(commands, SCTP_CMD_T1_RETRAN,
--			SCTP_TRANSPORT(asoc->peer.primary_path));
-+	sctp_add_cmd_sf(commands, SCTP_CMD_PURGE_OUTQUEUE, SCTP_NULL());
++	/*
++	 * The bulk-out buffers must be large enough for the four-byte header
++	 * (and following data), but assume anything smaller than eight bytes
++	 * is broken.
++	 */
++	if (usb_endpoint_maxp(epds->bulk_out[0]) < 8)
++		return -EINVAL;
++
+ 	for (i = 1; i < num_ports; ++i)
+ 		epds->bulk_out[i] = epds->bulk_out[0];
  
- 	/* Cast away the const modifier, as we want to just
- 	 * rerun it through as a sideffect.
--- 
-2.53.0
-
 
 
 
