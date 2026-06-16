@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-264394-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266479-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id pXe3MeR1MWqVjwUAu9opvQ
-	(envelope-from <stable+bounces-264394-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:12:20 +0200
+	id LGA7MRqeMWqRoQUAu9opvQ
+	(envelope-from <stable+bounces-266479-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:03:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25B7A691CDC
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:12:20 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E211694B4A
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:03:54 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=K+BW8ygB;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264394-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264394-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=SgRsCbz6;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266479-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-266479-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E71C232D9167
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:01:43 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5CC8C302AF1A
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:03:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAFD94657F6;
-	Tue, 16 Jun 2026 16:00:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB8B33DD51C;
+	Tue, 16 Jun 2026 19:03:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5EF14534B4;
-	Tue, 16 Jun 2026 16:00:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA93F3ACA5A;
+	Tue, 16 Jun 2026 19:03:49 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781625656; cv=none; b=Fi9n62SftpQvQ1tFLuGbwtQyZTdMMhxBnXaPVVn1pHU3ctuxuJ02SPvc76aMTkTqQ5Z8gM/QJ9h3OXE8tXhAepDvfraruIE7Wg49dEllKJ+KkKqWdhF2lGkC6Vgq2d2CIcTvLLnlTMfMWQqFD6p8VL/eSYYAZtCMZiZwuDOAXHs=
+	t=1781636630; cv=none; b=iYsjnPgmrfsXYlV3ECrEzCAuAuJ9ksj6XQty2B17YwNDbwvWr0OGffbWp8xLQ1+a9Ipb+6iavlrICSZFtiq4Bp6L2O4BnJroW7VNB9cF53cQCTDAPTwu1/8OMPmyrC4JD5IoCNxy53NNlgxm6ohGs5IUjMmkxpt2dmwLQbBfI08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781625656; c=relaxed/simple;
-	bh=LYQPiueEOTdcq3rCwsu88gr3P+gLHLCvZ5H6JOwguhc=;
+	s=arc-20240116; t=1781636630; c=relaxed/simple;
+	bh=3wBseRu2ayxH6m2RDqAGObWfYxiH5HeMxApS337o0oA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hAgFaDC4Rwtob8RTkQYy5jRZ8rtqbNoJUH62eMAQlMgN+/+DZ9/MoY9dCjpvL+V6AVsOgsMK1HoC8QOM5S7/xe2cLyCN9p73zvixZnqEhtDV+HG+3Gi/ZV13KESAIoHgzFBm5rXQhdRvujRiFBNGmHPhr6v4ujDxrYoVCoDA5us=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K+BW8ygB; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA38A1F000E9;
-	Tue, 16 Jun 2026 16:00:54 +0000 (UTC)
+	 MIME-Version; b=WLFNjsGctlARFv5bxbZ5N3CfYK0/sf9UclEtSUHEUUU/8KpD/9dMpAmrTfwceLMSdpa5wFVGPFLOWZcRLGeJUqRhb08ryrLAWZ6jCoaYVS/I1bC4MQ2W+b+KAqPYZYr8gVSLfz89MPayk2I9FQAda3RZOYoK1+kPXLx4IMsnNjI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SgRsCbz6; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F2861F000E9;
+	Tue, 16 Jun 2026 19:03:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781625655;
-	bh=eApYK67iYOuxziXzRRVJMLk/5hyiF11q8G6cs+rkjRQ=;
+	s=korg; t=1781636629;
+	bh=N5u9//6vff88tpi+BbmMGn/IIrZTrSunnllSclr/vnM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=K+BW8ygB2lhIOVmdIXfzHGsVU8d3Lu1HizoPeUwCgE8BPNRZulNlL4SMAi3VMIT6A
-	 DHlQCOn6W9A3VHQC+9qnm2rG5dkxSxV/keDAMy1yVb9+6N3aryxrpnKxKwJq/Bb8H1
-	 gEVjy9UrVlVatbZmqkNhxnhtG6tzIlKp//P8LCJ8=
+	b=SgRsCbz6ACJTdllWBzHaU6mCClUHMCYBm+OMCTqxrB6NOqxiyIiXhlSf7WDRMFGZD
+	 SBL4b+OzWnvBbfoQipVIDS7fCqtDbTB3MZOGwubWIixGkIA4lrvMN4eo4rwmIPdx27
+	 0uu7xCnNinXiTsqwFi2WkpEZS7kmFKNHJ5vLLmSA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Korwel <adriank20047@gmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.18 175/325] USB: serial: io_ti: fix heap overflow in build_i2c_fw_hdr()
+	stable@kernel.org,
+	Yongpeng Yang <yangyongpeng@xiaomi.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 275/342] f2fs: fix incorrect file address mapping when inline inode is unwritten
 Date: Tue, 16 Jun 2026 20:29:31 +0530
-Message-ID: <20260616145106.579565825@linuxfoundation.org>
+Message-ID: <20260616145101.171458650@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,84 +71,103 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-264394-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:adriank20047@gmail.com,m:johan@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-266479-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:yangyongpeng@xiaomi.com,m:chao@kernel.org,m:jaegeuk@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,xiaomi.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 25B7A691CDC
+X-Rspamd-Queue-Id: 4E211694B4A
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Korwel <adriank20047@gmail.com>
+From: Yongpeng Yang <yangyongpeng@xiaomi.com>
 
-commit 0fd2b00b2d3d05e3eaa13342b3dfb0fa85c226ae upstream.
+[ Upstream commit 68a0178981a0f493295afa29f8880246e561494c ]
 
-build_i2c_fw_hdr() allocates a fixed-size buffer of
-(16*1024 - 512) + sizeof(struct ti_i2c_firmware_rec) bytes, then
-copies le16_to_cpu(img_header->Length) bytes into it without
-validating that Length fits within the available space after the
-firmware record header.
+When `fileinfo->fi_flags` does not have the `FIEMAP_FLAG_SYNC` bit set
+and inline data has not been persisted yet, the physical address of the
+extent is calculated incorrectly for unwritten inline inodes.
 
-img_header->Length is a __le16 from the firmware file and can be
-up to 65535. check_fw_sanity() validates the total firmware size
-but not img_header->Length specifically.
+root@vm:/mnt/f2fs# dd if=/dev/zero of=data.3k bs=3k count=1
+root@vm:/mnt/f2fs# f2fs_io fiemap 0 100 data.3k
+Fiemap: offset = 0 len = 100
+	logical addr.    physical addr.   length           flags
+0	0000000000000000 00000ffffffff16c 0000000000000c00 00000301
 
-Fix by rejecting images where img_header->Length exceeds the
-available destination space.
+This patch fixes the issue by checking if the inode's address is valid.
+If the inline inode is unwritten, set the physical address to 0 and
+mark the extent with `FIEMAP_EXTENT_UNKNOWN | FIEMAP_EXTENT_DELALLOC`
+flags.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Adrian Korwel <adriank20047@gmail.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Cc: stable@kernel.org
+Fixes: 67f8cf3cee6f ("f2fs: support fiemap for inline_data")
+Signed-off-by: Yongpeng Yang <yangyongpeng@xiaomi.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+[ renamed `ifolio` to `ipage` in `inline_data_addr()` and `F2FS_INODE()` calls ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/io_ti.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ fs/f2fs/inline.c |   13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
---- a/drivers/usb/serial/io_ti.c
-+++ b/drivers/usb/serial/io_ti.c
-@@ -844,6 +844,11 @@ static int build_i2c_fw_hdr(u8 *header,
- 	/* Pointer to fw_down memory image */
- 	img_header = (struct ti_i2c_image_header *)&fw->data[4];
+--- a/fs/f2fs/inline.c
++++ b/fs/f2fs/inline.c
+@@ -761,7 +761,7 @@ int f2fs_read_inline_dir(struct file *fi
+ int f2fs_inline_data_fiemap(struct inode *inode,
+ 		struct fiemap_extent_info *fieinfo, __u64 start, __u64 len)
+ {
+-	__u64 byteaddr, ilen;
++	__u64 byteaddr = 0, ilen;
+ 	__u32 flags = FIEMAP_EXTENT_DATA_INLINE | FIEMAP_EXTENT_NOT_ALIGNED |
+ 		FIEMAP_EXTENT_LAST;
+ 	struct node_info ni;
+@@ -794,9 +794,14 @@ int f2fs_inline_data_fiemap(struct inode
+ 	if (err)
+ 		goto out;
  
-+	if (le16_to_cpu(img_header->Length) >
-+			buffer_size - sizeof(struct ti_i2c_firmware_rec)) {
-+		kfree(buffer);
-+		return -EINVAL;
+-	byteaddr = (__u64)ni.blk_addr << inode->i_sb->s_blocksize_bits;
+-	byteaddr += (char *)inline_data_addr(inode, ipage) -
+-					(char *)F2FS_INODE(ipage);
++	if (__is_valid_data_blkaddr(ni.blk_addr)) {
++		byteaddr = (__u64)ni.blk_addr << inode->i_sb->s_blocksize_bits;
++		byteaddr += (char *)inline_data_addr(inode, ipage) -
++						(char *)F2FS_INODE(ipage);
++	} else {
++		f2fs_bug_on(F2FS_I_SB(inode), ni.blk_addr != NEW_ADDR);
++		flags |= FIEMAP_EXTENT_DELALLOC | FIEMAP_EXTENT_UNKNOWN;
 +	}
- 	memcpy(buffer + sizeof(struct ti_i2c_firmware_rec),
- 		&fw->data[4 + sizeof(struct ti_i2c_image_header)],
- 		le16_to_cpu(img_header->Length));
+ 	err = fiemap_fill_next_extent(fieinfo, start, byteaddr, ilen, flags);
+ 	trace_f2fs_fiemap(inode, start, byteaddr, ilen, flags, err);
+ out:
 
 
 
