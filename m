@@ -1,66 +1,62 @@
-Return-Path: <stable+bounces-266424-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264617-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id R4HyK2aeMWqtoQUAu9opvQ
-	(envelope-from <stable+bounces-266424-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:05:10 +0200
+	id Z/8CBcl8MWqSkgUAu9opvQ
+	(envelope-from <stable+bounces-264617-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:41:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11627694BA5
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:05:10 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3691E69259F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:41:44 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=s4wF1Tjs;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266424-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266424-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=pWA3CFbc;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264617-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-264617-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AE06031BC97A
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:59:13 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7C9E93038571
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:20:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FFBE47CC96;
-	Tue, 16 Jun 2026 18:59:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 437A746AEC5;
+	Tue, 16 Jun 2026 16:20:46 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D95BA472798;
-	Tue, 16 Jun 2026 18:59:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 163BF43E4BA;
+	Tue, 16 Jun 2026 16:20:45 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781636352; cv=none; b=Z4FqLN6zPRG8FQLp90acukmVCQBCKDmwxFAAwz9Ds734YJmUJJ7EPJ1xpWyUVQXiokj8YFg1F3AQ/elHJVu6lr7tEFQFb4L5Anq+ioSwtRyzhmYCnr9bmm4JCEjG+B5ju3wU8VS73TYlHvoS7TE/KXNjDc766HnwzBhwircPqMY=
+	t=1781626846; cv=none; b=r8suoLIFgqpHil4l7jIyFzXDf+xrymb5jL00+dfglettJb/vJh90o49SV5bagxYTu5G0D4HsA8qbYYD7DCfH/ziodQTb72+J/8a80qdloPRjR3C+fzKKsD6siDwL4knjKBW9R/yWdyWsOOhD61jOWvm6uJNMNBSXwEpyINL3KRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781636352; c=relaxed/simple;
-	bh=/ZjBbvbDX6DSQaIB50xh/t9zv9VG0s8e+F+vCm0szWs=;
+	s=arc-20240116; t=1781626846; c=relaxed/simple;
+	bh=UcqZoBqAoDMoWCr9ZofjmonFx0iI3ft8EVNCVvadvOA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pux+J+D7v1+g7uWY3xshwvFwsBNlohbxRptN8h6IQUPOYJD70fcyJMQ2h6OZultyLk87hOJ1X8rLDATIbZ+1LZI7svCckQaKGHEOiD7PHncUpdTKMu3QgN/e3PUuGMXm0wenztIdqkwRF2wCvCwFgh8Bp4KpDpq15aLM4A1P1sQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s4wF1Tjs; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEA901F000E9;
-	Tue, 16 Jun 2026 18:59:09 +0000 (UTC)
+	 MIME-Version; b=rl3kY1mnXko+uGn47943NOZ+tD2W3uz2ymPxc3IiuDRwcviVZmy35ZKv+nj1YGaescwTDK25eZJGPyEiI/3jMt0eRUs7QLWtBocla/llIbkfHicqH8TKQOkI6nxzUUjDmVkseYIcevmtTNjXWxaGrAs4PgQ7F2JEkV6aA2HiGL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pWA3CFbc; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 219031F000E9;
+	Tue, 16 Jun 2026 16:20:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781636350;
-	bh=N1mzZMy7A3cALvWXRjZDWukE6Ir9SaE4nRs0XNeW2Nw=;
+	s=korg; t=1781626845;
+	bh=1xsj1NJeUx9JS78XJe6siuG2XDkmbi8s4oVn92jGyig=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=s4wF1TjswcJi8ebu6Mde6w+Vy5OH8LukiOf1FYGKPu7bMlDxzVuE/vjvp5H3y/V21
-	 P85VSqWpsWVBaXuF76we+MyERofSN4KS18WtCwo8qIJkwGJJYP/OOdjIlaaMSewtod
-	 Bb6qX7+2cy0OWrdgw9HunfNvU00zbXfshb+2Jjlw=
+	b=pWA3CFbccfm0qO6ZdJUIAcrbeQ7QUTUeXoj25GMCPjQCv59pZ5DPU0VhtehNNoUCS
+	 vwK2k2abPt0XDSYeOv/kP/guzbGJYTG2f9NK1R5qsFOwgLbkRKZhUIeypJeQ9oo+un
+	 opAXxy60ZCVl4qt3Gp6IQPbYj1qa6JicYrv3MmPw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Will Deacon <will@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
+	Rosen Penev <rosenp@gmail.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 223/342] arm64/mm: Enable batched TLB flush in unmap_hotplug_range()
+Subject: [PATCH 6.12 081/261] net: ibm: emac: Fix use-after-free during device removal
 Date: Tue, 16 Jun 2026 20:28:39 +0530
-Message-ID: <20260616145058.588020672@linuxfoundation.org>
+Message-ID: <20260616145048.826509014@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,172 +70,112 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266424-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-264617-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:will@kernel.org,m:linux-arm-kernel@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:david@kernel.org,m:ryan.roberts@arm.com,m:anshuman.khandual@arm.com,m:catalin.marinas@arm.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:rosenp@gmail.com,m:jacob.e.keller@intel.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,arm.com:email,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 11627694BA5
+X-Rspamd-Queue-Id: 3691E69259F
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anshuman Khandual <anshuman.khandual@arm.com>
+From: Rosen Penev <rosenp@gmail.com>
 
-[ Upstream commit 48478b9f791376b4b89018d7afdfd06865498f65 ]
+[ Upstream commit a0130d682222ae21afc395aead7cd2d87e1a8358 ]
 
-During a memory hot remove operation, both linear and vmemmap mappings for
-the memory range being removed, get unmapped via unmap_hotplug_range() but
-mapped pages get freed only for vmemmap mapping. This is just a sequential
-operation where each table entry gets cleared, followed by a leaf specific
-TLB flush, and then followed by memory free operation when applicable.
+The driver was using devm_register_netdev() which causes unregister_netdev()
+to be deferred until the devres cleanup phase, which runs after emac_remove()
+returns. This creates a use-after-free window where:
 
-This approach was simple and uniform both for vmemmap and linear mappings.
-But linear mapping might contain CONT marked block memory where it becomes
-necessary to first clear out all entire in the range before a TLB flush.
-This is as per the architecture requirement. Hence batch all TLB flushes
-during the table tear down walk and finally do it in unmap_hotplug_range().
+1. emac_remove() is called, which tears down hardware (cancels work, detaches
+   modules, unregisters from MAL)
+2. emac_remove() returns
+3. devres cleanup runs and finally calls unregister_netdev()
 
-Prior to this fix, it was hypothetically possible for a speculative access
-to a higher address in the contiguous block to fill the TLB with shattered
-entries for the entire contiguous range after a lower address had already
-been cleared and invalidated. Due to the table entries being shattered, the
-subsequent TLB invalidation for the higher address would not then clear the
-TLB entries for the lower address, meaning stale TLB entries could persist.
+During step 3, the network stack might still process packets, triggering
+emac_irq(), emac_poll(), or other handlers that access now-freed hardware
+resources (dev->emacp, dev->mal, etc.).
 
-Besides it also helps in improving the performance via TLBI range operation
-along with reduced synchronization instructions. The time spent executing
-unmap_hotplug_range() improved 97% measured over a 2GB memory hot removal
-in KVM guest.
+Fix this by replacing devm_register_netdev() with manual register_netdev()
+and calling unregister_netdev() at the beginning of emac_remove(), before
+any hardware teardown. This ensures the network device is fully stopped and
+unregistered before hardware resources are released.
 
-This scheme is not applicable during vmemmap mapping tear down where memory
-needs to be freed and hence a TLB flush is required after clearing out page
-table entry.
+The change is safe because:
+- dev->ndev is assigned very early in probe (before any error paths that
+  could bypass emac_remove)
+- platform_set_drvdata() is only called after successful registration, so
+  emac_remove() only runs for fully registered devices
+- unregister_netdev() is idempotent and safe to call on any registered device
 
-Cc: Will Deacon <will@kernel.org>
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org
-Closes: https://lore.kernel.org/all/aWZYXhrT6D2M-7-N@willie-the-truck/
-Fixes: bbd6ec605c0f ("arm64/mm: Enable memory hot remove")
-Cc: stable@vger.kernel.org
-Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
-Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
-Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
-Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-[ renamed `__pte_clear()` to `pte_clear()` and inlined `pmd_cont(pmd)` as `pmd_val(pmd) & PMD_SECT_CONT` ]
+Fixes: a4dd8535a527 ("net: ibm: emac: use devm for register_netdev")
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/mm/mmu.c |   36 ++++++++++++++++++++----------------
- 1 file changed, 20 insertions(+), 16 deletions(-)
+ drivers/net/ethernet/ibm/emac/core.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
---- a/arch/arm64/mm/mmu.c
-+++ b/arch/arm64/mm/mmu.c
-@@ -862,10 +862,14 @@ static void unmap_hotplug_pte_range(pmd_
+diff --git a/drivers/net/ethernet/ibm/emac/core.c b/drivers/net/ethernet/ibm/emac/core.c
+index dac570f3c11036..0db3f558c95bb1 100644
+--- a/drivers/net/ethernet/ibm/emac/core.c
++++ b/drivers/net/ethernet/ibm/emac/core.c
+@@ -3147,7 +3147,7 @@ static int emac_probe(struct platform_device *ofdev)
  
- 		WARN_ON(!pte_present(pte));
- 		pte_clear(&init_mm, addr, ptep);
--		flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
--		if (free_mapped)
-+		if (free_mapped) {
-+			/* CONT blocks are not supported in the vmemmap */
-+			WARN_ON(pte_cont(pte));
-+			flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
- 			free_hotplug_page_range(pte_page(pte),
- 						PAGE_SIZE, altmap);
-+		}
-+		/* unmap_hotplug_range() flushes TLB for !free_mapped */
- 	} while (addr += PAGE_SIZE, addr < end);
- }
+ 	netif_carrier_off(ndev);
  
-@@ -886,15 +890,14 @@ static void unmap_hotplug_pmd_range(pud_
- 		WARN_ON(!pmd_present(pmd));
- 		if (pmd_sect(pmd)) {
- 			pmd_clear(pmdp);
--
--			/*
--			 * One TLBI should be sufficient here as the PMD_SIZE
--			 * range is mapped with a single block entry.
--			 */
--			flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
--			if (free_mapped)
-+			if (free_mapped) {
-+				/* CONT blocks are not supported in the vmemmap */
-+				WARN_ON(pmd_val(pmd) & PMD_SECT_CONT);
-+				flush_tlb_kernel_range(addr, addr + PMD_SIZE);
- 				free_hotplug_page_range(pmd_page(pmd),
- 							PMD_SIZE, altmap);
-+			}
-+			/* unmap_hotplug_range() flushes TLB for !free_mapped */
- 			continue;
- 		}
- 		WARN_ON(!pmd_table(pmd));
-@@ -919,15 +922,12 @@ static void unmap_hotplug_pud_range(p4d_
- 		WARN_ON(!pud_present(pud));
- 		if (pud_sect(pud)) {
- 			pud_clear(pudp);
--
--			/*
--			 * One TLBI should be sufficient here as the PUD_SIZE
--			 * range is mapped with a single block entry.
--			 */
--			flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
--			if (free_mapped)
-+			if (free_mapped) {
-+				flush_tlb_kernel_range(addr, addr + PUD_SIZE);
- 				free_hotplug_page_range(pud_page(pud),
- 							PUD_SIZE, altmap);
-+			}
-+			/* unmap_hotplug_range() flushes TLB for !free_mapped */
- 			continue;
- 		}
- 		WARN_ON(!pud_table(pud));
-@@ -957,6 +957,7 @@ static void unmap_hotplug_p4d_range(pgd_
- static void unmap_hotplug_range(unsigned long addr, unsigned long end,
- 				bool free_mapped, struct vmem_altmap *altmap)
- {
-+	unsigned long start = addr;
- 	unsigned long next;
- 	pgd_t *pgdp, pgd;
+-	err = devm_register_netdev(&ofdev->dev, ndev);
++	err = register_netdev(ndev);
+ 	if (err) {
+ 		printk(KERN_ERR "%pOF: failed to register net device (%d)!\n",
+ 		       np, err);
+@@ -3200,6 +3200,13 @@ static void emac_remove(struct platform_device *ofdev)
  
-@@ -978,6 +979,9 @@ static void unmap_hotplug_range(unsigned
- 		WARN_ON(!pgd_present(pgd));
- 		unmap_hotplug_p4d_range(pgdp, addr, next, free_mapped, altmap);
- 	} while (addr = next, addr < end);
+ 	DBG(dev, "remove" NL);
+ 
++	/* Unregister network device before tearing down hardware
++	 * to prevent use-after-free during deferred cleanup. This ensures
++	 * the network stack stops all operations before hardware resources
++	 * are released.
++	 */
++	unregister_netdev(dev->ndev);
 +
-+	if (!free_mapped)
-+		flush_tlb_kernel_range(start, end);
- }
+ 	cancel_work_sync(&dev->reset_work);
  
- static void free_empty_pte_table(pmd_t *pmdp, unsigned long addr,
+ 	if (emac_has_feature(dev, EMAC_FTR_HAS_TAH))
+-- 
+2.53.0
+
 
 
 
