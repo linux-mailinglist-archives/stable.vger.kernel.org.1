@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-264644-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266101-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id JAqcHp54MWrMkAUAu9opvQ
-	(envelope-from <stable+bounces-264644-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:23:58 +0200
+	id mgEoLZCWMWpKngUAu9opvQ
+	(envelope-from <stable+bounces-266101-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:31:44 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 194CF69209D
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:23:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E54269435E
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:31:44 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=oDhBp4K8;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264644-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-264644-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=L5hSSbug;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266101-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-266101-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 885D8302F4CD
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:23:57 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E6F4E3041D22
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:31:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7245146AF1B;
-	Tue, 16 Jun 2026 16:23:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BF2A47CC62;
+	Tue, 16 Jun 2026 18:31:11 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 030CE46AF02;
-	Tue, 16 Jun 2026 16:23:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE63047A0CD;
+	Tue, 16 Jun 2026 18:31:04 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781627034; cv=none; b=Q+cY+TsxRhsShTQ9PYWKztu7zGNWAjSNzeTmwJR9tciaPwsaVPNQr5G9JqymWWjfdJKtpTTmlfgG7dkD4Jx3uIQODLdSWiwsQRCXAUjChiMmgyeMPBkCaoVpwP1V0G05Zt8XZyeVvnOp7TFU3+kqc9MoLdDldfYnzZtkAGFRiBk=
+	t=1781634671; cv=none; b=kE8JnypX/XZ6ayLcSqyWG2zKKUejJZwr6cB6zfan8hmnIe/7hTOdmOeSUVDy3K9DarUT4eJZpHZMieqF6v+nnPCJvGRaB1I9iQ6fM2rky1x4ObXPMEMviOab923zug01hP7JqR9grW3I4JnQ5VZsxr68Ra+CJ88KVGyJ39Kb8+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781627034; c=relaxed/simple;
-	bh=IrxJuMra34XPHXpGP+BGE5tUgfZSc20Jg/a9mZ9X+X0=;
+	s=arc-20240116; t=1781634671; c=relaxed/simple;
+	bh=d+Ph706PxCHWcByROpRr9WiO88Gk5CQN9HOXJA+ibG4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oBoGg5qJjTYakIsqIXOfjyF29YE//T9WacvmOFVBk6NuxNJRiTh2AAWck9iClD6SbstPkcx5hfGS80cUdXZqy2RszKk8ev1uZR5IiPAGPzrnpHpYeSfj7Zk8skn19tSSU7VyYJRHdewc8/PzSePjU5DKjradYICjPs8pOKdGuOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oDhBp4K8; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FE181F000E9;
-	Tue, 16 Jun 2026 16:23:46 +0000 (UTC)
+	 MIME-Version; b=hzM0bsW00SJ3ssI80/J4vSu+MTJ+35tPSo/fAVgv0dCIv2D1h9xU7HXpMxt8uzPROsEaCto/RDBTSwcIvhI3EuwehQGC8zy2PeT1x+mQmGk4ccqg4/SQU58MGOCXGrxKiCe78e0BUGu6bDWxT4LAqHJRsIynguOzsXPm9MsmFsw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L5hSSbug; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A70771F00A3A;
+	Tue, 16 Jun 2026 18:31:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781627032;
-	bh=T4TxMq67KxMxtWjaeG3CxhJtuBInT0qz8mVTTXyJGu8=;
+	s=korg; t=1781634664;
+	bh=oTvMACBva5Bq3QI6SDPyUX5D6Wu57tKLUQA0QrqVGAU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=oDhBp4K8dACEUUx1+HzXh92JhPvPji3lBIMDEcsUa0/itTzjnhVYL/MkU4Hxm293G
-	 6hbDof2r9DmC7PXv+fMHEmhD350L7nYC5oeI2AhILDHRbQnARxcqcILuU7tV03uVnP
-	 2mK5LEmysQKF2c0aZgQJCe5YyMHI8A2M+C3wnTl8=
+	b=L5hSSbugOHfoNEryk8WcfyuwsCMYBYpb9BlpPezClIiW9J5cZcgZrN9sXyw2XzZzM
+	 wtUzbpuVo6JmeQyVJu8T/gtUZpVF6mP81Ye2GiRLdHSimCroOXYxo3IccAVRazSSbC
+	 73u82qeShqTzQi4eI5HZlu5YGe/aVTFuSPH1wrq8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tejun Heo <tj@kernel.org>,
-	Jan Kara <jack@suse.cz>,
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 109/261] writeback: Avoid contention on wb->list_lock when switching inodes
+Subject: [PATCH 5.15 309/411] xfrm: ah: account for ESN high bits in async callbacks
 Date: Tue, 16 Jun 2026 20:29:07 +0530
-Message-ID: <20260616145050.111347590@linuxfoundation.org>
+Message-ID: <20260616145117.573077569@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
-References: <20260616145044.869532709@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +67,8 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
@@ -76,331 +77,161 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264644-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:tj@kernel.org,m:jack@suse.cz,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-266101-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,secunet.com,kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:steffen.klassert@secunet.com,m:sashal@kernel.org,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,secunet.com:email,vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 194CF69209D
+X-Rspamd-Queue-Id: 7E54269435E
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-[ Upstream commit e1b849cfa6b61f1c866a908c9e8dd9b5aaab820b ]
+[ Upstream commit ec54093e6a8f87e800bb6aa15eb7fc1e33faa524 ]
 
-There can be multiple inode switch works that are trying to switch
-inodes to / from the same wb. This can happen in particular if some
-cgroup exits which owns many (thousands) inodes and we need to switch
-them all. In this case several inode_switch_wbs_work_fn() instances will
-be just spinning on the same wb->list_lock while only one of them makes
-forward progress. This wastes CPU cycles and quickly leads to softlockup
-reports and unusable system.
+AH allocates its temporary auth/ICV layout differently when ESN is enabled:
+the async ahash setup appends a 4-byte seqhi slot before the ICV or
+auth_data area, but the async completion callbacks still reconstruct the
+temporary layout as if seqhi were absent.
 
-Instead of running several inode_switch_wbs_work_fn() instances in
-parallel switching to the same wb and contending on wb->list_lock, run
-just one work item per wb and manage a queue of isw items switching to
-this wb.
+With an async AH implementation selected, that makes AH copy or compare
+the wrong bytes on both the IPv4 and IPv6 paths. In UML repro on IPv4 AH
+with ESN and forced async hmac(sha1), ping fails with 100% packet loss,
+and the callback logs show the pre-fix drift:
 
-Acked-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Jan Kara <jack@suse.cz>
+  ah4 output_done: esn=1 err=0 icv_off=20 expected_off=24
+  ah4 input_done: esn=1 auth_off=20 expected_auth_off=24 icv_off=32 expected_icv_off=36
+
+Reconstruct the callback-side layout the same way the setup path built it
+by skipping the ESN seqhi slot before locating the saved auth_data or ICV.
+Per RFC 4302, the ESN high-order 32 bits participate in the AH ICV
+computation, so the async callbacks must account for the seqhi slot.
+
+Post-fix, the same IPv4 AH+ESN+forced-async-hmac(sha1) UML repro shows
+the corrected offset (ah4 output_done: esn=1 err=0 icv_off=24
+expected_off=24) and ping succeeds; net/ipv4/ah4.o and net/ipv6/ah6.o
+build clean at W=1. IPv6 AH+ESN was not exercised at runtime, and the
+change has not been tested against a real async hardware AH engine.
+
+Fixes: d4d573d0334d ("{IPv4,xfrm} Add ESN support for AH egress part")
+Fixes: d8b2a8600b0e ("{IPv4,xfrm} Add ESN support for AH ingress part")
+Fixes: 26dd70c3fad3 ("{IPv6,xfrm} Add ESN support for AH egress part")
+Fixes: 8d6da6f32557 ("{IPv6,xfrm} Add ESN support for AH ingress part")
+Cc: stable@vger.kernel.org
+Assisted-by: Codex:gpt-5-4
+Assisted-by: Claude:claude-opus-4-7
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/fs-writeback.c                | 99 ++++++++++++++++++++------------
- include/linux/backing-dev-defs.h |  4 ++
- include/linux/writeback.h        |  2 +
- mm/backing-dev.c                 |  5 ++
- 4 files changed, 74 insertions(+), 36 deletions(-)
+ net/ipv4/ah4.c |   14 ++++++++++++--
+ net/ipv6/ah6.c |   14 ++++++++++++--
+ 2 files changed, 24 insertions(+), 4 deletions(-)
 
-diff --git a/fs/fs-writeback.c b/fs/fs-writeback.c
-index 45e90338fbb2df..a8d21a5f354859 100644
---- a/fs/fs-writeback.c
-+++ b/fs/fs-writeback.c
-@@ -369,7 +369,8 @@ static struct bdi_writeback *inode_to_wb_and_lock_list(struct inode *inode)
- }
+--- a/net/ipv4/ah4.c
++++ b/net/ipv4/ah4.c
+@@ -124,9 +124,14 @@ static void ah_output_done(struct crypto
+ 	struct iphdr *top_iph = ip_hdr(skb);
+ 	struct ip_auth_hdr *ah = ip_auth_hdr(skb);
+ 	int ihl = ip_hdrlen(skb);
++	int seqhi_len = 0;
++	__be32 *seqhi;
  
- struct inode_switch_wbs_context {
--	struct rcu_work		work;
-+	/* List of queued switching contexts for the wb */
-+	struct llist_node	list;
++	if (x->props.flags & XFRM_STATE_ESN)
++		seqhi_len = sizeof(*seqhi);
+ 	iph = AH_SKB_CB(skb)->tmp;
+-	icv = ah_tmp_icv(iph, ihl);
++	seqhi = (__be32 *)((char *)iph + ihl);
++	icv = ah_tmp_icv(seqhi, seqhi_len);
+ 	memcpy(ah->auth_data, icv, ahp->icv_trunc_len);
  
- 	/*
- 	 * Multiple inodes can be switched at once.  The switching procedure
-@@ -379,7 +380,6 @@ struct inode_switch_wbs_context {
- 	 * array embedded into struct inode_switch_wbs_context.  Otherwise
- 	 * an inode could be left in a non-consistent state.
- 	 */
--	struct bdi_writeback	*new_wb;
- 	struct inode		*inodes[];
- };
+ 	top_iph->tos = iph->tos;
+@@ -270,12 +275,17 @@ static void ah_input_done(struct crypto_
+ 	struct ip_auth_hdr *ah = ip_auth_hdr(skb);
+ 	int ihl = ip_hdrlen(skb);
+ 	int ah_hlen = (ah->hdrlen + 2) << 2;
++	int seqhi_len = 0;
++	__be32 *seqhi;
  
-@@ -488,13 +488,11 @@ static bool inode_do_switch_wbs(struct inode *inode,
- 	return switched;
- }
+ 	if (err)
+ 		goto out;
  
--static void inode_switch_wbs_work_fn(struct work_struct *work)
-+static void process_inode_switch_wbs(struct bdi_writeback *new_wb,
-+				     struct inode_switch_wbs_context *isw)
- {
--	struct inode_switch_wbs_context *isw =
--		container_of(to_rcu_work(work), struct inode_switch_wbs_context, work);
- 	struct backing_dev_info *bdi = inode_to_bdi(isw->inodes[0]);
- 	struct bdi_writeback *old_wb = isw->inodes[0]->i_wb;
--	struct bdi_writeback *new_wb = isw->new_wb;
- 	unsigned long nr_switched = 0;
- 	struct inode **inodep;
++	if (x->props.flags & XFRM_STATE_ESN)
++		seqhi_len = sizeof(*seqhi);
+ 	work_iph = AH_SKB_CB(skb)->tmp;
+-	auth_data = ah_tmp_auth(work_iph, ihl);
++	seqhi = (__be32 *)((char *)work_iph + ihl);
++	auth_data = ah_tmp_auth(seqhi, seqhi_len);
+ 	icv = ah_tmp_icv(auth_data, ahp->icv_trunc_len);
  
-@@ -554,6 +552,38 @@ static void inode_switch_wbs_work_fn(struct work_struct *work)
- 	atomic_dec(&isw_nr_in_flight);
- }
+ 	err = crypto_memneq(icv, auth_data, ahp->icv_trunc_len) ? -EBADMSG : 0;
+--- a/net/ipv6/ah6.c
++++ b/net/ipv6/ah6.c
+@@ -320,14 +320,19 @@ static void ah6_output_done(struct crypt
+ 	struct ipv6hdr *top_iph = ipv6_hdr(skb);
+ 	struct ip_auth_hdr *ah = ip_auth_hdr(skb);
+ 	struct tmp_ext *iph_ext;
++	int seqhi_len = 0;
++	__be32 *seqhi;
  
-+void inode_switch_wbs_work_fn(struct work_struct *work)
-+{
-+	struct bdi_writeback *new_wb = container_of(work, struct bdi_writeback,
-+						    switch_work);
-+	struct inode_switch_wbs_context *isw, *next_isw;
-+	struct llist_node *list;
-+
-+	/*
-+	 * Grab out reference to wb so that it cannot get freed under us
-+	 * after we process all the isw items.
-+	 */
-+	wb_get(new_wb);
-+	while (1) {
-+		list = llist_del_all(&new_wb->switch_wbs_ctxs);
-+		/* Nothing to do? */
-+		if (!list)
-+			break;
-+		/*
-+		 * In addition to synchronizing among switchers, I_WB_SWITCH
-+		 * tells the RCU protected stat update paths to grab the i_page
-+		 * lock so that stat transfer can synchronize against them.
-+		 * Let's continue after I_WB_SWITCH is guaranteed to be
-+		 * visible.
-+		 */
-+		synchronize_rcu();
-+
-+		llist_for_each_entry_safe(isw, next_isw, list, list)
-+			process_inode_switch_wbs(new_wb, isw);
-+	}
-+	wb_put(new_wb);
-+}
-+
- static bool inode_prepare_wbs_switch(struct inode *inode,
- 				     struct bdi_writeback *new_wb)
- {
-@@ -583,6 +613,13 @@ static bool inode_prepare_wbs_switch(struct inode *inode,
- 	return true;
- }
+ 	extlen = skb_network_header_len(skb) - sizeof(struct ipv6hdr);
+ 	if (extlen)
+ 		extlen += sizeof(*iph_ext);
  
-+static void wb_queue_isw(struct bdi_writeback *wb,
-+			 struct inode_switch_wbs_context *isw)
-+{
-+	if (llist_add(&isw->list, &wb->switch_wbs_ctxs))
-+		queue_work(isw_wq, &wb->switch_work);
-+}
-+
- /**
-  * inode_switch_wbs - change the wb association of an inode
-  * @inode: target inode
-@@ -596,6 +633,7 @@ static void inode_switch_wbs(struct inode *inode, int new_wb_id)
- 	struct backing_dev_info *bdi = inode_to_bdi(inode);
- 	struct cgroup_subsys_state *memcg_css;
- 	struct inode_switch_wbs_context *isw;
-+	struct bdi_writeback *new_wb = NULL;
++	if (x->props.flags & XFRM_STATE_ESN)
++		seqhi_len = sizeof(*seqhi);
+ 	iph_base = AH_SKB_CB(skb)->tmp;
+ 	iph_ext = ah_tmp_ext(iph_base);
+-	icv = ah_tmp_icv(iph_ext, extlen);
++	seqhi = (__be32 *)((char *)iph_ext + extlen);
++	icv = ah_tmp_icv(seqhi, seqhi_len);
  
- 	/* noop if seems to be already in progress */
- 	if (inode->i_state & I_WB_SWITCH)
-@@ -620,40 +658,34 @@ static void inode_switch_wbs(struct inode *inode, int new_wb_id)
- 	if (!memcg_css)
- 		goto out_free;
+ 	memcpy(ah->auth_data, icv, ahp->icv_trunc_len);
+ 	memcpy(top_iph, iph_base, IPV6HDR_BASELEN);
+@@ -474,13 +479,18 @@ static void ah6_input_done(struct crypto
+ 	struct ip_auth_hdr *ah = ip_auth_hdr(skb);
+ 	int hdr_len = skb_network_header_len(skb);
+ 	int ah_hlen = ipv6_authlen(ah);
++	int seqhi_len = 0;
++	__be32 *seqhi;
  
--	isw->new_wb = wb_get_create(bdi, memcg_css, GFP_ATOMIC);
-+	new_wb = wb_get_create(bdi, memcg_css, GFP_ATOMIC);
- 	css_put(memcg_css);
--	if (!isw->new_wb)
-+	if (!new_wb)
- 		goto out_free;
+ 	if (err)
+ 		goto out;
  
--	if (!inode_prepare_wbs_switch(inode, isw->new_wb))
-+	if (!inode_prepare_wbs_switch(inode, new_wb))
- 		goto out_free;
++	if (x->props.flags & XFRM_STATE_ESN)
++		seqhi_len = sizeof(*seqhi);
+ 	work_iph = AH_SKB_CB(skb)->tmp;
+ 	auth_data = ah_tmp_auth(work_iph, hdr_len);
+-	icv = ah_tmp_icv(auth_data, ahp->icv_trunc_len);
++	seqhi = (__be32 *)(auth_data + ahp->icv_trunc_len);
++	icv = ah_tmp_icv(seqhi, seqhi_len);
  
- 	isw->inodes[0] = inode;
- 
--	/*
--	 * In addition to synchronizing among switchers, I_WB_SWITCH tells
--	 * the RCU protected stat update paths to grab the i_page
--	 * lock so that stat transfer can synchronize against them.
--	 * Let's continue after I_WB_SWITCH is guaranteed to be visible.
--	 */
--	INIT_RCU_WORK(&isw->work, inode_switch_wbs_work_fn);
--	queue_rcu_work(isw_wq, &isw->work);
-+	wb_queue_isw(new_wb, isw);
- 	return;
- 
- out_free:
- 	atomic_dec(&isw_nr_in_flight);
--	if (isw->new_wb)
--		wb_put(isw->new_wb);
-+	if (new_wb)
-+		wb_put(new_wb);
- 	kfree(isw);
- }
- 
--static bool isw_prepare_wbs_switch(struct inode_switch_wbs_context *isw,
-+static bool isw_prepare_wbs_switch(struct bdi_writeback *new_wb,
-+				   struct inode_switch_wbs_context *isw,
- 				   struct list_head *list, int *nr)
- {
- 	struct inode *inode;
- 
- 	list_for_each_entry(inode, list, i_io_list) {
--		if (!inode_prepare_wbs_switch(inode, isw->new_wb))
-+		if (!inode_prepare_wbs_switch(inode, new_wb))
- 			continue;
- 
- 		isw->inodes[*nr] = inode;
-@@ -677,6 +709,7 @@ bool cleanup_offline_cgwb(struct bdi_writeback *wb)
- {
- 	struct cgroup_subsys_state *memcg_css;
- 	struct inode_switch_wbs_context *isw;
-+	struct bdi_writeback *new_wb;
- 	int nr;
- 	bool restart = false;
- 
-@@ -689,12 +722,12 @@ bool cleanup_offline_cgwb(struct bdi_writeback *wb)
- 
- 	for (memcg_css = wb->memcg_css->parent; memcg_css;
- 	     memcg_css = memcg_css->parent) {
--		isw->new_wb = wb_get_create(wb->bdi, memcg_css, GFP_KERNEL);
--		if (isw->new_wb)
-+		new_wb = wb_get_create(wb->bdi, memcg_css, GFP_KERNEL);
-+		if (new_wb)
- 			break;
- 	}
--	if (unlikely(!isw->new_wb))
--		isw->new_wb = &wb->bdi->wb; /* wb_get() is noop for bdi's wb */
-+	if (unlikely(!new_wb))
-+		new_wb = &wb->bdi->wb; /* wb_get() is noop for bdi's wb */
- 
- 	nr = 0;
- 	spin_lock(&wb->list_lock);
-@@ -706,27 +739,21 @@ bool cleanup_offline_cgwb(struct bdi_writeback *wb)
- 	 * bandwidth restrictions, as writeback of inode metadata is not
- 	 * accounted for.
- 	 */
--	restart = isw_prepare_wbs_switch(isw, &wb->b_attached, &nr);
-+	restart = isw_prepare_wbs_switch(new_wb, isw, &wb->b_attached, &nr);
- 	if (!restart)
--		restart = isw_prepare_wbs_switch(isw, &wb->b_dirty_time, &nr);
-+		restart = isw_prepare_wbs_switch(new_wb, isw, &wb->b_dirty_time,
-+						 &nr);
- 	spin_unlock(&wb->list_lock);
- 
- 	/* no attached inodes? bail out */
- 	if (nr == 0) {
- 		atomic_dec(&isw_nr_in_flight);
--		wb_put(isw->new_wb);
-+		wb_put(new_wb);
- 		kfree(isw);
- 		return restart;
- 	}
- 
--	/*
--	 * In addition to synchronizing among switchers, I_WB_SWITCH tells
--	 * the RCU protected stat update paths to grab the i_page
--	 * lock so that stat transfer can synchronize against them.
--	 * Let's continue after I_WB_SWITCH is guaranteed to be visible.
--	 */
--	INIT_RCU_WORK(&isw->work, inode_switch_wbs_work_fn);
--	queue_rcu_work(isw_wq, &isw->work);
-+	wb_queue_isw(new_wb, isw);
- 
- 	return restart;
- }
-diff --git a/include/linux/backing-dev-defs.h b/include/linux/backing-dev-defs.h
-index 2ad261082bba5f..c5c9d89c73edcc 100644
---- a/include/linux/backing-dev-defs.h
-+++ b/include/linux/backing-dev-defs.h
-@@ -152,6 +152,10 @@ struct bdi_writeback {
- 	struct list_head blkcg_node;	/* anchored at blkcg->cgwb_list */
- 	struct list_head b_attached;	/* attached inodes, protected by list_lock */
- 	struct list_head offline_node;	/* anchored at offline_cgwbs */
-+	struct work_struct switch_work;	/* work used to perform inode switching
-+					 * to this wb */
-+	struct llist_head switch_wbs_ctxs;	/* queued contexts for
-+						 * writeback switching */
- 
- 	union {
- 		struct work_struct release_work;
-diff --git a/include/linux/writeback.h b/include/linux/writeback.h
-index 641a057e041329..b6bf90a7052599 100644
---- a/include/linux/writeback.h
-+++ b/include/linux/writeback.h
-@@ -293,6 +293,8 @@ static inline void wbc_init_bio(struct writeback_control *wbc, struct bio *bio)
- 		bio_associate_blkg_from_css(bio, wbc->wb->blkcg_css);
- }
- 
-+void inode_switch_wbs_work_fn(struct work_struct *work);
-+
- #else	/* CONFIG_CGROUP_WRITEBACK */
- 
- static inline void inode_attach_wb(struct inode *inode, struct folio *folio)
-diff --git a/mm/backing-dev.c b/mm/backing-dev.c
-index bf0594ceb3ff87..956a7e23b5d634 100644
---- a/mm/backing-dev.c
-+++ b/mm/backing-dev.c
-@@ -634,6 +634,7 @@ static void cgwb_release_workfn(struct work_struct *work)
- 	wb_exit(wb);
- 	bdi_put(bdi);
- 	WARN_ON_ONCE(!list_empty(&wb->b_attached));
-+	WARN_ON_ONCE(work_pending(&wb->switch_work));
- 	call_rcu(&wb->rcu, cgwb_free_rcu);
- }
- 
-@@ -710,6 +711,8 @@ static int cgwb_create(struct backing_dev_info *bdi,
- 	wb->memcg_css = memcg_css;
- 	wb->blkcg_css = blkcg_css;
- 	INIT_LIST_HEAD(&wb->b_attached);
-+	INIT_WORK(&wb->switch_work, inode_switch_wbs_work_fn);
-+	init_llist_head(&wb->switch_wbs_ctxs);
- 	INIT_WORK(&wb->release_work, cgwb_release_workfn);
- 	set_bit(WB_registered, &wb->state);
- 	bdi_get(bdi);
-@@ -840,6 +843,8 @@ static int cgwb_bdi_init(struct backing_dev_info *bdi)
- 	if (!ret) {
- 		bdi->wb.memcg_css = &root_mem_cgroup->css;
- 		bdi->wb.blkcg_css = blkcg_root_css;
-+		INIT_WORK(&bdi->wb.switch_work, inode_switch_wbs_work_fn);
-+		init_llist_head(&bdi->wb.switch_wbs_ctxs);
- 	}
- 	return ret;
- }
--- 
-2.53.0
-
+ 	err = crypto_memneq(icv, auth_data, ahp->icv_trunc_len) ? -EBADMSG : 0;
+ 	if (err)
 
 
 
