@@ -1,60 +1,73 @@
-Return-Path: <stable+bounces-264745-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265769-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id qkL5Kj57MWrRkQUAu9opvQ
-	(envelope-from <stable+bounces-264745-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:35:10 +0200
+	id MgvfJ6OPMWr9mgUAu9opvQ
+	(envelope-from <stable+bounces-265769-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:02:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DC5F69239B
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:35:10 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 186A6693BDE
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:02:11 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ffyNZECK;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264745-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264745-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=U6uOP3Ou;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265769-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265769-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2A71B303CC04
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:34:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 23BB8314A01D
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:01:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C56D54779AA;
-	Tue, 16 Jun 2026 16:34:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FF5D3CFF55;
+	Tue, 16 Jun 2026 18:01:30 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 938B72F745E;
-	Tue, 16 Jun 2026 16:34:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA1B13D5252;
+	Tue, 16 Jun 2026 18:01:28 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781627663; cv=none; b=Vuaj8xPfefcEMWW2rhTIe6vxS79qz6AWgKJxarSEBDR9gRUfZYu97q2+m8XfXApl6Toyi3XGU7C6tvCrRhhSv11QVar9seaFHGZtamWA2e8NlAvjVEs7NRgWBBVJQHtog0BvcYQ6HV7HF0NzFVYlP+uHgtJVQVyND2cLuutK79w=
+	t=1781632890; cv=none; b=RsTTtHcnZ9/kWDYZ01wmFKeu+ajtULEvetKs5HMRZsv0c/abx+MSGbMO/rz+HyPsoHJuk94vYEEL9JXicejovkRCdHm7hg9jb3qR5f0oJijkCsxKsQceiJ2eKMWhiS3xTmZ0KYD0WLaXnL3TbJs5g873wlGWkkBwa3uCwVBnfa8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781627663; c=relaxed/simple;
-	bh=rVXmsTgRwDS0oXJqFviyBtxRrY4E96jd7Ds9a/4kBJA=;
+	s=arc-20240116; t=1781632890; c=relaxed/simple;
+	bh=gEzo6PX+pZyDdKnRiLVsGHUWEwmsPDFKC+mr1hmdnXs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vEerTUmWJoMwvMvOU2moUe+qLrZx9u5tV4wLnwo/tvTg5O+Kd1eLcPzN/rG5ZDnFsFGrOVe8+zSvTZQvgKoGLxlfuCu9FsL9YPNmUQAj6ZhPINBS5nUfeJH88GQGXMgXOXWMQadurzsHj7BIu9laLWLfTITon0XqB89OsgDBM9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ffyNZECK; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99BFE1F000E9;
-	Tue, 16 Jun 2026 16:34:21 +0000 (UTC)
+	 MIME-Version; b=AiLwRnzcjtI5RdD1T+oUnoWigAl1fjbTXj+V0c6ELZ2JlA4G/HSuL7t+tLHK/vOsJ2U9EH/nlXBP9ni/MlcdljRiJSFmRZ7UMsRCCW9qcwd//vHyfZZVcG3FIR7AC56h9R58c4KBk/la6ft1/+2DlnfoBjqLNUQt4qm2ozJKvOg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U6uOP3Ou; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54F051F000E9;
+	Tue, 16 Jun 2026 18:01:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781627662;
-	bh=T9TB81g/BvNlcj60jn41lOQ5ACWnYZFLRosovmdVA/8=;
+	s=korg; t=1781632888;
+	bh=9h0Ae3l0e9qvOLqUnYa5749jo2bKZivW9H+cAeO7Aik=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ffyNZECKlYPZ9FkuGtjGDAOCczgTYbwTU7IAm6e+ebii2c6NxdxP768tJav7TCSt5
-	 PYbXaqqotCQycQq17FgYkbDZB3MUsaHwCppQ7RUkhyW4PV7Fb6MZlZNu7yV6NeRD+R
-	 CZbJAzF9Pv4W4DMLh8qZxXvnmgSPChHd6cXXnBhc=
+	b=U6uOP3OuA0Ig8eE8QIf48KvuZd+g3q2ll3DJGiXiYTUcNiaMcqb9FsaGGg3EEbHF/
+	 LgJsV96RVfHF1v6jaCJuf+yJpm2TKjcDa4HtvzWQiqgHVLeIFe1wo4dxTkoE6pkpNH
+	 RvAPsmKP1v1ru7R+lruos79+dF88akAPlhE9HyCM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: [PATCH 6.12 205/261] thunderbolt: Validate XDomain request packet size before type cast
+	Ian Rogers <irogers@google.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Gaosheng Cui <cuigaosheng1@huawei.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	James Clark <james.clark@arm.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Rob Herring <robh@kernel.org>,
+	bpf@vger.kernel.org,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>
+Subject: [PATCH 6.1 496/522] perf parse-events: Make YYDEBUG dependent on doing a debug build
 Date: Tue, 16 Jun 2026 20:30:43 +0530
-Message-ID: <20260616145054.547597238@linuxfoundation.org>
+Message-ID: <20260616145148.984816767@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
-References: <20260616145044.869532709@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,117 +79,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264745-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-265769-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[18];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:irogers@google.com,m:namhyung@kernel.org,m:adrian.hunter@intel.com,m:alexander.shishkin@linux.intel.com,m:cuigaosheng1@huawei.com,m:mingo@redhat.com,m:james.clark@arm.com,m:jolsa@kernel.org,m:kan.liang@linux.intel.com,m:mark.rutland@arm.com,m:peterz@infradead.org,m:robh@kernel.org,m:bpf@vger.kernel.org,m:acme@redhat.com,m:florian.fainelli@broadcom.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.intel.com];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:mika.westerberg@linux.intel.com,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,intel.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,vger.kernel.org:from_smtp,huawei.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4DC5F69239B
+X-Rspamd-Queue-Id: 186A6693BDE
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Ian Rogers <irogers@google.com>
 
-commit a504b9f2797b739e0304d537e8aa4ce883ecce39 upstream.
+commit d4ce60190e08d84f88937019defa5e3d23409ac1 upstream
 
-tb_xdp_handle_request() casts the received packet buffer to
-protocol-specific structs without verifying that the allocation
-is large enough for the target type.  A peer can send a minimal
-XDomain packet that passes the generic header length check but is
-shorter than the struct accessed after the cast, causing out-of-
-bounds reads from the kmemdup allocation.
+YYDEBUG enables line numbers and other error helpers in the generated
+parse-events-bison.c. These shouldn't be generated when debugging
+isn't enabled.
 
-Plumb the packet length through xdomain_request_work and validate
-it against the expected struct size before each cast.
-
-Fixes: 8e1de7042596 ("thunderbolt: Add support for XDomain lane bonding")
-Fixes: cdae7c07e3e3 ("thunderbolt: Add support for XDomain properties")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-7
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Signed-off-by: Ian Rogers <irogers@google.com>
+Acked-by: Namhyung Kim <namhyung@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Gaosheng Cui <cuigaosheng1@huawei.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: James Clark <james.clark@arm.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Rob Herring <robh@kernel.org>
+Cc: bpf@vger.kernel.org
+Link: https://lore.kernel.org/r/20230911170559.4037734-2-irogers@google.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/thunderbolt/xdomain.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ tools/perf/util/parse-events.y |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/thunderbolt/xdomain.c
-+++ b/drivers/thunderbolt/xdomain.c
-@@ -55,6 +55,7 @@ static const char * const state_names[]
- struct xdomain_request_work {
- 	struct work_struct work;
- 	struct tb_xdp_header *pkg;
-+	size_t pkg_len;
- 	struct tb *tb;
- };
+--- a/tools/perf/util/parse-events.y
++++ b/tools/perf/util/parse-events.y
+@@ -6,7 +6,9 @@
  
-@@ -731,6 +732,7 @@ static void tb_xdp_handle_request(struct
- 	struct xdomain_request_work *xw = container_of(work, typeof(*xw), work);
- 	const struct tb_xdp_header *pkg = xw->pkg;
- 	const struct tb_xdomain_header *xhdr = &pkg->xd_hdr;
-+	size_t pkg_len = xw->pkg_len;
- 	struct tb *tb = xw->tb;
- 	struct tb_ctl *ctl = tb->ctl;
- 	struct tb_xdomain *xd;
-@@ -762,7 +764,7 @@ static void tb_xdp_handle_request(struct
- 	switch (pkg->type) {
- 	case PROPERTIES_REQUEST:
- 		tb_dbg(tb, "%llx: received XDomain properties request\n", route);
--		if (xd) {
-+		if (xd && pkg_len >= sizeof(struct tb_xdp_properties)) {
- 			ret = tb_xdp_properties_response(tb, ctl, xd, sequence,
- 				(const struct tb_xdp_properties *)pkg);
- 		}
-@@ -816,7 +818,8 @@ static void tb_xdp_handle_request(struct
- 		tb_dbg(tb, "%llx: received XDomain link state change request\n",
- 		       route);
+ %{
  
--		if (xd && xd->state == XDOMAIN_STATE_BONDING_UUID_HIGH) {
-+		if (xd && xd->state == XDOMAIN_STATE_BONDING_UUID_HIGH &&
-+		    pkg_len >= sizeof(struct tb_xdp_link_state_change)) {
- 			const struct tb_xdp_link_state_change *lsc =
- 				(const struct tb_xdp_link_state_change *)pkg;
++#ifndef NDEBUG
+ #define YYDEBUG 1
++#endif
  
-@@ -868,6 +871,7 @@ tb_xdp_schedule_request(struct tb *tb, c
- 		kfree(xw);
- 		return false;
- 	}
-+	xw->pkg_len = size;
- 	xw->tb = tb_domain_get(tb);
- 
- 	schedule_work(&xw->work);
+ #include <fnmatch.h>
+ #include <stdio.h>
 
 
 
