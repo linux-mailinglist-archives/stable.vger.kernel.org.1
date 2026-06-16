@@ -1,63 +1,61 @@
-Return-Path: <stable+bounces-264304-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264633-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id EpH9HzZ1MWpKjwUAu9opvQ
-	(envelope-from <stable+bounces-264304-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:09:26 +0200
+	id ae3MORJ6MWpgkQUAu9opvQ
+	(envelope-from <stable+bounces-264633-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:30:10 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0465B691BDB
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:09:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 600B2692244
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:30:10 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=oF96E9Pl;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264304-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264304-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=H7HLEADv;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264633-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264633-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E44FB30C82EC
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:54:16 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8F0FD303F247
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:22:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8F5644CF44;
-	Tue, 16 Jun 2026 15:54:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D90D046AEC5;
+	Tue, 16 Jun 2026 16:22:09 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B96D044CAE6;
-	Tue, 16 Jun 2026 15:54:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD5461E8320;
+	Tue, 16 Jun 2026 16:22:08 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781625253; cv=none; b=l8XTEnS2ieqm745/l03wB+N2STlgO1aZnafbSmgfSPu50rIJqhe4/F+6zmTei8ZQesMXmBL9F2g0cUX5mQN0dONK0IQcHY7QpiCm/viVJERfl/7+vlrRz5ZI+G+PBLFyMsyWc3rCtljT6EoBavvhxtVrSAuGPjzWG/3Nuwdg8wM=
+	t=1781626929; cv=none; b=iNFL31tHgIvAsjGlJzfwzx/EiAoFHqmnWIkfnKmEvBblPUIV4kLp9z6vteuBboxrAhCuKt1s55M+4ctyXLTxuEJut/AsRbaGqlkqJumxe9tkBsEZk5DpOwIaAO9Nafxf1XCl8qShAB/NdA/LeQrlJ6nZGWIMBEM5KbFlHvRdpsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781625253; c=relaxed/simple;
-	bh=QeQvugYOFZqrYB6+jUSGdnwYPOQytznt9pFVKmY1Hdk=;
+	s=arc-20240116; t=1781626929; c=relaxed/simple;
+	bh=Wh6TXmoWIG9E8X2t9bmtjnQ/wJW30qxlkyiXjNwDFSM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=evA1oSnlUV7v6CFAnROoERXdRPvfeDE8+Vsrs8/6Ieqr42DiCP43G9HJN70G8RPCyl9AZbVARZxmcGddZRfVBM6PjlJg1GRANh8UsaaEQJyPDDcpfie16jQvkfMQ0ec1NSEMdGsNq6g7OBQmGjKSTehd4hAdBQLZkQjtedbLOPk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oF96E9Pl; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAC5E1F000E9;
-	Tue, 16 Jun 2026 15:54:11 +0000 (UTC)
+	 MIME-Version; b=k+Bep8u6UGwiDRBaEeO5eeFRhVuGihqCtMyx+Z0OmRx8STzw2c5N3WB3MLaVlnyCIxVwxSCWGkBg+7beD7IY6PNbh3mm5U64hT81JdvjpACFdZxQC7RyqYvfknvV/o9RY/sub64xoBYFXC32JxhKIUZ8oERRPwebY/8PWEWD9tw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H7HLEADv; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE27D1F000E9;
+	Tue, 16 Jun 2026 16:22:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781625252;
-	bh=0I+hgkfjNdD5Svl1zGzfPf+1CEoTBoFWSZa8tS199Mw=;
+	s=korg; t=1781626928;
+	bh=gA3sqH9vbhftDkuQghgC96NnVh6uXLGA+GI/E9UZ5UU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=oF96E9PlcpBkubCg6HIKzqq+fZ0yg4Wdi6L5oomX2qbicW/noXiI1vvsaGzEYsS19
-	 KImEc9GninIzdGvo9XhYpE5+1r7mGH95cw69HQZBxdicaarzOvZF52nhhHBuvUrL2a
-	 3EYqDYEKi2rj6tRDl4L+TlsucwunV7B/O2aMr3cw=
+	b=H7HLEADvLAqk3Mrw4gyMsB1Ckah2k2F9YxFQpFdfkzWuw7Fpk3ePdvI+7RTJBZlIH
+	 pO2ksseLC1mWvxA/HhAFZZYLbOgAjYhRZgTq0KlTdhogVKxBIFM5NANQCCmYIdKh/d
+	 DiggUrRggGYBVe6fOqk2fy1iPT6pHOFlAMaMKC0A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shay Drory <shayd@nvidia.com>,
-	Fushuai Wang <wangfushuai@baidu.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Kyle Zeng <kylebot@openai.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 106/325] net/mlx5: Use effective affinity mask for IRQ selection
+Subject: [PATCH 6.12 064/261] ALSA: seq: dummy: fix UMP event stack overread
 Date: Tue, 16 Jun 2026 20:28:22 +0530
-Message-ID: <20260616145102.965530941@linuxfoundation.org>
+Message-ID: <20260616145048.098750039@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,107 +65,116 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-264304-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:shayd@nvidia.com,m:wangfushuai@baidu.com,m:tariqt@nvidia.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264633-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kylebot@openai.com,m:tiwai@suse.de,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	TAGGED_RCPT(0.00)[stable];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,vger.kernel.org:from_smtp,nvidia.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[openai.com:email,vger.kernel.org:from_smtp,msgid.link:url,suse.de:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 0465B691BDB
+X-Rspamd-Queue-Id: 600B2692244
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fushuai Wang <wangfushuai@baidu.com>
+From: Kyle Zeng <kylebot@openai.com>
 
-[ Upstream commit a7767290e77ca2e926b49f8bfa29daa12262c612 ]
+[ Upstream commit 2b5ff4db5d7aa5b981d966df02e687f79ad7b311 ]
 
-When a sf is created after a CPU has been taken offline, the IRQ pool may
-contain IRQs with affinity masks that include the offline CPU. Since only
-online CPUs should be considered for IRQ placement, cpumask_subset() check
-would fail because the iter_mask contains offline CPUs that are not present
-in req_mask, causing sf creation to fail.
+The dummy sequencer port forwards events by copying an incoming
+struct snd_seq_event into a stack temporary, rewriting source and
+destination, and dispatching the temporary to subscribers. That legacy
+event storage is smaller than struct snd_seq_ump_event.
 
-This is an example:
-  1. When mlx5 driver loads, it initializes the IRQ pools.
-     For sf_ctrl_pool with ≤64 sf:
-     - xa_num_irqs = {N, N} (There is only one slot)
-  2. When the first SF is created:
-     - The ctrl IRQ is allocated with mask=cpu_online_mask={0-191}
-  2. We take CPU 20 offline
-  3. Existing ctl irq still have mask={0-191}
-  4. Create a new SF:
-     - req_mask={0-19,21-191}
-     - iter_mask={0-191}
-     - {0-191} is NOT a subset of {0-19,21-191}
-     - least_loaded_irq=NULL
-  5. Try to allocate a new irq via irq_pool_request_irq()
-  6. xa_alloc() fails because the pool is full(There is only one slot)
-  7. sf creation fails with error
+When a UMP event reaches the dummy client, the copy leaves the UMP flag
+set but only provides legacy-sized stack storage. The subscriber
+delivery path then uses snd_seq_event_packet_size() and copies a
+UMP-sized packet from that stack object, reading past the end of the
+temporary.
 
-Use irq_get_effective_affinity_mask() instead, which returns the IRQ's
-actual effective affinity that already excludes offline CPUs.
+Use the existing union __snd_seq_event storage and copy the packet size
+reported for the incoming event before rewriting the common routing
+fields. This preserves the full UMP packet for UMP events while keeping
+legacy event handling unchanged.
 
-Fixes: 061f5b23588a ("net/mlx5: SF, Use all available cpu for setting cpu affinity")
-Suggested-by: Shay Drory <shayd@nvidia.com>
-Signed-off-by: Fushuai Wang <wangfushuai@baidu.com>
-Reviewed-by: Shay Drory <shayd@nvidia.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20260605102112.91772-1-fushuai.wang@linux.dev
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 32cb23a0f911 ("ALSA: seq: dummy: Allow UMP conversion")
+Signed-off-by: Kyle Zeng <kylebot@openai.com>
+Link: https://patch.msgid.link/20260605080204.32045-1-kylebot@openai.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/irq_affinity.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ sound/core/seq/seq_dummy.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/irq_affinity.c b/drivers/net/ethernet/mellanox/mlx5/core/irq_affinity.c
-index 14d339eceb92d5..cc63b091b70e8a 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/irq_affinity.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/irq_affinity.c
-@@ -105,9 +105,12 @@ irq_pool_find_least_loaded(struct mlx5_irq_pool *pool, const struct cpumask *req
+diff --git a/sound/core/seq/seq_dummy.c b/sound/core/seq/seq_dummy.c
+index 783fc72c2ef673..bc11e4d1edd956 100644
+--- a/sound/core/seq/seq_dummy.c
++++ b/sound/core/seq/seq_dummy.c
+@@ -9,6 +9,7 @@
+ #include <linux/module.h>
+ #include <sound/core.h>
+ #include "seq_clientmgr.h"
++#include "seq_memory.h"
+ #include <sound/initval.h>
+ #include <sound/asoundef.h>
  
- 	lockdep_assert_held(&pool->lock);
- 	xa_for_each_range(&pool->irqs, index, iter, start, end) {
--		struct cpumask *iter_mask = mlx5_irq_get_affinity_mask(iter);
- 		int iter_refcount = mlx5_irq_read_locked(iter);
-+		const struct cpumask *iter_mask;
+@@ -81,19 +82,21 @@ dummy_input(struct snd_seq_event *ev, int direct, void *private_data,
+ 	    int atomic, int hop)
+ {
+ 	struct snd_seq_dummy_port *p;
+-	struct snd_seq_event tmpev;
++	union __snd_seq_event tmpev;
++	size_t size;
  
-+		iter_mask = irq_get_effective_affinity_mask(mlx5_irq_get_irq(iter));
-+		if (!iter_mask)
-+			continue;
- 		if (!cpumask_subset(iter_mask, req_mask))
- 			/* skip IRQs with a mask which is not subset of req_mask */
- 			continue;
+ 	p = private_data;
+ 	if (ev->source.client == SNDRV_SEQ_CLIENT_SYSTEM ||
+ 	    ev->type == SNDRV_SEQ_EVENT_KERNEL_ERROR)
+ 		return 0; /* ignore system messages */
+-	tmpev = *ev;
++	size = snd_seq_event_packet_size(ev);
++	memcpy(&tmpev, ev, size);
+ 	if (p->duplex)
+-		tmpev.source.port = p->connect;
++		tmpev.legacy.source.port = p->connect;
+ 	else
+-		tmpev.source.port = p->port;
+-	tmpev.dest.client = SNDRV_SEQ_ADDRESS_SUBSCRIBERS;
+-	return snd_seq_kernel_client_dispatch(p->client, &tmpev, atomic, hop);
++		tmpev.legacy.source.port = p->port;
++	tmpev.legacy.dest.client = SNDRV_SEQ_ADDRESS_SUBSCRIBERS;
++	return snd_seq_kernel_client_dispatch(p->client, &tmpev.legacy, atomic, hop);
+ }
+ 
+ /*
 -- 
 2.53.0
 
