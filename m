@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-265206-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266557-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id RPJLOfCFMWpVlgUAu9opvQ
-	(envelope-from <stable+bounces-265206-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:20:48 +0200
+	id 3+xYIJSfMWooogUAu9opvQ
+	(envelope-from <stable+bounces-266557-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:10:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A7E8693038
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:20:48 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C484694D26
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:10:12 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=JedYAvoF;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265206-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265206-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="EtoKF/Mm";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266557-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266557-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 87A8F30378B0
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:13:31 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 89A4D30302C3
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:10:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEE1F3BFE5B;
-	Tue, 16 Jun 2026 17:13:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB3E034751B;
+	Tue, 16 Jun 2026 19:10:08 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C566D33A9EB;
-	Tue, 16 Jun 2026 17:13:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A37623DDDAE;
+	Tue, 16 Jun 2026 19:10:07 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781630010; cv=none; b=GYnlCuIA8IuBVmlx7LF+MvUxM1uNwPVuO+8ISfznSz80XRlZcOqn/6sT1ZczUspJKAoGhHkiFb3LvK3EiC5isYCZS8F6Jf4nV2OsNTUrgFQsn0wUYzgbyaLjBDlw923KwDnCXWPXP0Xleq4PUruXNDd4LzKEkr6RS4ObZrin9G0=
+	t=1781637008; cv=none; b=XAn2m/z4g3DpVDK1YU1adh2We3pIRiiuGpXOKq8RDYej9xQFKgDQa/vDFt7qGqmkub4BFZOnt2vsWyzvjDhMRq5hY9j5ZWdsSYRf9/2rB+MLzOrxmtP1RaFn2QnWL60gZExQej8rq7Vo7sgPKa/+u6Mrx68DGAP20SHQBSFelJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781630010; c=relaxed/simple;
-	bh=eSAqxV/ZOT4nmZM8u/gCNiQhCiP18HJcwqAuE0YbR+Q=;
+	s=arc-20240116; t=1781637008; c=relaxed/simple;
+	bh=Tf8UN8Ai8Fm69NaWR5J1WNsOfR+2yzepZsIr5yDvPWs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r2uxiqyhQRhIFB8Lftg76tgBkm88H6U/52VL8t1TB0Bh3WxR3glwc7fLQYzdstFS0HF86ZyeAnovjBjXRNJa5G/rjDsNZnGMsnnAvzxlNlJ0jXdfps4QY7GVDpatiPclTWg3p58GN5CXAz8bhRgFf7GpMJRz5qKUF7JMnjnQSLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JedYAvoF; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5B881F000E9;
-	Tue, 16 Jun 2026 17:13:28 +0000 (UTC)
+	 MIME-Version; b=SMTK/EBBAxq+F85A9f3a4VXn/Lso2syM0kIoYIfqpmz6M1XO45qzcgEUc0YQclrnX69XiWiIWrkMBuxvCHZ2RMiECMNwBGsk9mHML2RrKaZJ1Wlhvh9LTL6zc7G16/5T1wiFnRh++ajOr13BMcQBrk3bdPE6l8eRYPaZUzS5w1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EtoKF/Mm; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 976111F000E9;
+	Tue, 16 Jun 2026 19:10:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781630009;
-	bh=ytjgjCsqC6X48ivAzQn5eOebks5EYbPYJq4/1AM9q64=;
+	s=korg; t=1781637007;
+	bh=UQ3zsYkMyGoYsvTHGdODHd9FUIqfvbzvGhEuu5qRc3A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=JedYAvoFlS+KD4bJUE0EUNJVNHVBMXHCs6/HSORmh8Sp/Q5Ma8EI98OmXYpxLJ8lI
-	 def7EgjYgJDu0yhWTSAB/9KgTUCVKzBNU63D7JfIVYH0ZwWK/v1EqD5GMk8j+H4R8T
-	 Uk+X/g1nDwJNguSDFr4/YdYnpBpgfLWvyqg2rytI=
+	b=EtoKF/MmhDWQ5v8Abf9Ny6ZB6kQBCjXV6d79N2/O0gT+p/Uz1QHWh/4TZS1v9B4BS
+	 tMnbINjvgJ6PxIo8zf1/Thd/uFvu990Q9tWVsn+navMQ2TJnEBCkm9MxRobmAa3zxt
+	 Ut8Le9xLI+Oj2ztW8i1GBmMmO9E7BCzk62yY3qUM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Minh Nguyen <minhnguyen.080505@gmail.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 394/452] af_unix: Cache state->msg in unix_stream_read_generic().
-Date: Tue, 16 Jun 2026 20:30:21 +0530
-Message-ID: <20260616145137.591747118@linuxfoundation.org>
+Subject: [PATCH 5.10 326/342] net: skbuff: fix missing zerocopy reference in pskb_carve helpers
+Date: Tue, 16 Jun 2026 20:30:22 +0530
+Message-ID: <20260616145103.774785120@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,129 +68,131 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265206-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,redhat.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-266557-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kuniyu@google.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:minhnguyen.080505@gmail.com,m:willemb@google.com,m:pabeni@redhat.com,m:sashal@kernel.org,m:minhnguyen080505@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4A7E8693038
+X-Rspamd-Queue-Id: 1C484694D26
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Minh Nguyen <minhnguyen.080505@gmail.com>
 
-[ Upstream commit 8b77338eb2af74bb93986e4a8cfd86724168fe39 ]
+[ Upstream commit 98d0912e9f841e5529a5b89a972805f34cb1c69d ]
 
-In unix_stream_read_generic(), state->msg is fetched multiple times.
+pskb_carve_inside_header() and pskb_carve_inside_nonlinear() both copy
+the old skb_shared_info header into a new buffer via memcpy(), which
+includes the destructor_arg pointer (uarg) for MSG_ZEROCOPY skbs.
+Neither function calls net_zcopy_get() for the new shinfo, creating an
+unaccounted holder: every skb_shared_info with destructor_arg set will
+call skb_zcopy_clear() once when freed, but the corresponding
+net_zcopy_get() was never called for the new copy. Repeated calls
+drive uarg->refcnt to zero prematurely, freeing ubuf_info_msgzc while
+TX skbs still hold live destructor_arg pointers.
 
-Let's cache it in a local variable.
+KASAN reports use-after-free on a freed ubuf_info_msgzc:
 
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20250702223606.1054680-6-kuniyu@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: be309f8eae8b ("af_unix: Fix UAF read of tail->len in unix_stream_data_wait()")
+  BUG: KASAN: slab-use-after-free in skb_release_data+0x77b/0x810
+  Read of size 8 at addr ffff88801574d3e8 by task poc/220
+
+  Call Trace:
+   skb_release_data+0x77b/0x810
+   kfree_skb_list_reason+0x13e/0x610
+   skb_release_data+0x4cd/0x810
+   sk_skb_reason_drop+0xf3/0x340
+   skb_queue_purge_reason+0x282/0x440
+   rds_tcp_inc_free+0x1e/0x30
+   rds_recvmsg+0x354/0x1780
+   __sys_recvmsg+0xdf/0x180
+
+  Allocated by task 219:
+   msg_zerocopy_realloc+0x157/0x7b0
+   tcp_sendmsg_locked+0x2892/0x3ba0
+
+  Freed by task 219:
+   ip_recv_error+0x74a/0xb10
+   tcp_recvmsg+0x475/0x530
+
+The skb consuming the late access still referenced the same uarg via
+shinfo->destructor_arg copied by pskb_carve_inside_nonlinear() without
+a refcount bump. This has been verified to be reliably exploitable: a
+working proof-of-concept achieves full root privilege escalation from
+an unprivileged local user on a default kernel configuration.
+
+The fix follows the pattern of pskb_expand_head() which has the same
+memcpy/cloned structure. For pskb_carve_inside_header(), net_zcopy_get()
+is placed after skb_orphan_frags() succeeds, so the orphan error path
+needs no cleanup. For pskb_carve_inside_nonlinear(), net_zcopy_get() is
+placed after all failure points and just before skb_release_data(), so
+no error path needs cleanup at all -- matching pskb_expand_head() more
+closely and avoiding the need for a balancing net_zcopy_put().
+
+Fixes: 6fa01ccd8830 ("skbuff: Add pskb_extract() helper function")
+Cc: stable@vger.kernel.org
+Assisted-by: Claude:claude-sonnet-4-6
+Signed-off-by: Minh Nguyen <minhnguyen.080505@gmail.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20260526041240.329462-1-minhnguyen.080505@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/unix/af_unix.c |   29 ++++++++++++++++-------------
- 1 file changed, 16 insertions(+), 13 deletions(-)
+ net/core/skbuff.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -2714,20 +2714,21 @@ static int unix_stream_read_skb(struct s
- static int unix_stream_read_generic(struct unix_stream_read_state *state,
- 				    bool freezable)
- {
--	struct scm_cookie scm;
-+	int noblock = state->flags & MSG_DONTWAIT;
- 	struct socket *sock = state->socket;
-+	struct msghdr *msg = state->msg;
- 	struct sock *sk = sock->sk;
--	struct unix_sock *u = unix_sk(sk);
--	int copied = 0;
-+	size_t size = state->size;
- 	int flags = state->flags;
--	int noblock = flags & MSG_DONTWAIT;
- 	bool check_creds = false;
--	int target;
-+	struct scm_cookie scm;
-+	unsigned int last_len;
-+	struct unix_sock *u;
-+	int copied = 0;
- 	int err = 0;
- 	long timeo;
-+	int target;
- 	int skip;
--	size_t size = state->size;
--	unsigned int last_len;
- 
- 	if (unlikely(READ_ONCE(sk->sk_state) != TCP_ESTABLISHED)) {
- 		err = -EINVAL;
-@@ -2747,6 +2748,8 @@ static int unix_stream_read_generic(stru
- 
- 	memset(&scm, 0, sizeof(scm));
- 
-+	u = unix_sk(sk);
-+
- 	/* Lock the socket to prevent queue disordering
- 	 * while sleeps in memcpy_tomsg
- 	 */
-@@ -2840,10 +2843,10 @@ unlock:
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -6058,6 +6058,8 @@ static int pskb_carve_inside_header(stru
+ 			kfree(data);
+ 			return -ENOMEM;
  		}
++		if (skb_zcopy(skb))
++			refcount_inc(&skb_uarg(skb)->refcnt);
+ 		for (i = 0; i < skb_shinfo(skb)->nr_frags; i++)
+ 			skb_frag_ref(skb, i);
+ 		if (skb_has_frag_list(skb))
+@@ -6210,6 +6212,8 @@ static int pskb_carve_inside_nonlinear(s
+ 		kfree(data);
+ 		return -ENOMEM;
+ 	}
++	if (skb_zcopy(skb))
++		refcount_inc(&skb_uarg(skb)->refcnt);
+ 	skb_release_data(skb);
  
- 		/* Copy address just once */
--		if (state->msg && state->msg->msg_name) {
--			DECLARE_SOCKADDR(struct sockaddr_un *, sunaddr,
--					 state->msg->msg_name);
--			unix_copy_addr(state->msg, skb->sk);
-+		if (msg && msg->msg_name) {
-+			DECLARE_SOCKADDR(struct sockaddr_un *, sunaddr, msg->msg_name);
-+
-+			unix_copy_addr(msg, skb->sk);
- 			sunaddr = NULL;
- 		}
- 
-@@ -2916,8 +2919,8 @@ unlock:
- 	} while (size);
- 
- 	mutex_unlock(&u->iolock);
--	if (state->msg)
--		scm_recv_unix(sock, state->msg, &scm, flags);
-+	if (msg)
-+		scm_recv_unix(sock, msg, &scm, flags);
- 	else
- 		scm_destroy(&scm);
- out:
+ 	skb->head = data;
 
 
 
