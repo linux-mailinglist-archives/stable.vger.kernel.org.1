@@ -1,63 +1,61 @@
-Return-Path: <stable+bounces-265698-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264200-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id lLJyCySOMWpImgUAu9opvQ
-	(envelope-from <stable+bounces-265698-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:55:48 +0200
+	id AI8wAGRxMWq8jQUAu9opvQ
+	(envelope-from <stable+bounces-264200-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:53:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BAF2693A23
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:55:47 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD915691772
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:53:07 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=O7Y9hvTn;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265698-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265698-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="tz/uxdxR";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264200-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264200-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id F1A773002926
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:55:26 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 97E6A30A57BB
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:45:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B28624779B1;
-	Tue, 16 Jun 2026 17:55:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ABAF44E053;
+	Tue, 16 Jun 2026 15:44:18 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ACA1257827;
-	Tue, 16 Jun 2026 17:55:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66B2244CAF9;
+	Tue, 16 Jun 2026 15:44:17 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781632525; cv=none; b=R1XWz/lpq2PtOwy6gFv3IYxBbC+9q920h0t9ztC9gBc+b1eqUPE1/jiea4ksgUY+9X7awpMrAqAeN6JzccwDOFYbBX1ZzrP1aAgVJOptg8dKkDNtsRHVbOpvqCJMBifb2x1UDj8eYnrUj4UxrZGp6bE9++ENUwCwF2zcjfq+TDM=
+	t=1781624658; cv=none; b=aTSBDcXEXnBjWw+DsR7qYwz7W/wIt80LUr7uOPqEtEQt94yFW1vShXVQwchYqDYiaBgBHGPYs/0sy1LedrMqvFExT1As8sfvrd6t+1ujA0jp9OcRsmbGGlxjifpsNC6+uV364KuibY8bk/sCKXe7StV9aJN0JTLEfxRuwAvOVBs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781632525; c=relaxed/simple;
-	bh=zphiyY3nkib69TGv9Q0bTIA/Lf/1lvTqOJvp3/VgPhA=;
+	s=arc-20240116; t=1781624658; c=relaxed/simple;
+	bh=9YhiUTzNabBq38bqVCdPLxmsnG/fbT9eGKQqnH/f2lI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DWStETucwwwbucUTbLkeIvBYhoFSLJaQkV9UtAij5RCZt4BPFVJLfOQjcj42o4yyG7oyvEEJU+bBAi4tzI2BPYHzz8tHgYvo+blQI10DtmbYfg+5fPW8LM7EgftdkcBsVHvV5lRgkA9xq1aOto5Q+9Wm6rl1e2ytOPuDBcWjjz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O7Y9hvTn; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B1B91F000E9;
-	Tue, 16 Jun 2026 17:55:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Pu54/+mFEdPiRADYK+WBF01KGPeMCC08kg0FpSuFBg8kVgU/VOTsVrLlCRC98kEWGfHgkcv63bCGPycd4ZPC/a4praPIM3ZE/QsTu3T5+5z3N0AbncF+N+xWCBTelMKImof1AmTnE6wUWhcnuWyHBjgaGiogg44sprSIYsk63EM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tz/uxdxR; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 079831F00A3A;
+	Tue, 16 Jun 2026 15:44:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781632524;
-	bh=KeuQsRp4+Olz9J+8ihk++1CiLwCtcWf0nra41ufI2Es=;
+	s=korg; t=1781624657;
+	bh=1eOwyxhXxzXYj9tZORPAN9u9VJ0Uz8h73HxhojrwEME=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=O7Y9hvTnp5VnnNg0CIoCFgwjZLwRKaPHG858XlC7MpLInocAAMueBCdCMz9fNa0yT
-	 wghWhNikF0Mya+1nGycainngbRecKRxqMTXaf9MpcuPHymvEphTxJsUq3EV6xESyz7
-	 KOhd9oBnTaqR0L0RivgVEQeSQ54Pd/ghrdhCi/aI=
+	b=tz/uxdxRNZPAr1SHoVBgDjCmST3LZrmOJQBA8BFo3jUkrW90HAe9eRabPZJWUFYsp
+	 BxZUbRQzhDVXET5mo8THGayJ5oN1BjZOiTVGm61L28BmsEaebixKcFV/L82h1n1NP5
+	 ioPoU61AXTBUO8wJme0C+Df69prlYch6Wmn1Pjd4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 427/522] f2fs: fix false alarm of lockdep on cp_global_sem lock
+	Jose Maria Casanova Crespo <jmcasanova@igalia.com>,
+	Iago Toral Quiroga <itoral@igalia.com>,
+	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
+Subject: [PATCH 7.0 343/378] drm/v3d: Skip CSD when it has zeroed workgroups
 Date: Tue, 16 Jun 2026 20:29:34 +0530
-Message-ID: <20260616145145.957037049@linuxfoundation.org>
+Message-ID: <20260616145128.238600770@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,141 +65,114 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265698-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:shinichiro.kawasaki@wdc.com,m:chao@kernel.org,m:jaegeuk@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jmcasanova@igalia.com,m:itoral@igalia.com,m:mcanal@igalia.com,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-264200-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[igalia.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 1BAF2693A23
+X-Rspamd-Queue-Id: AD915691772
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Maíra Canal <mcanal@igalia.com>
 
-[ Upstream commit 6a5e3de9c2bb0b691d16789a5d19e9276a09b308 ]
+commit 7f93fad5ea0affc9e1505dd0f7596c0fdb496213 upstream.
 
-lockdep reported a potential deadlock:
+A compute shader dispatch encodes its workgroup counts in the CFG0..CFG2
+registers. Kicking off a dispatch with a zero count in any of the three
+dimensions is invalid. First, the hardware will process 0 as 65536,
+while the user-space driver exposes a maximum of 65535. Over that, a
+submission with a zeroed workgroup dimension should be a no-op.
 
-a) TCMU device removal context:
- - call del_gendisk() to get q->q_usage_counter
- - call start_flush_work() to get work_completion of wb->dwork
-b) f2fs writeback context:
- - in wb_workfn(), which holds work_completion of wb->dwork
- - call f2fs_balance_fs() to get sbi->gc_lock
-c) f2fs vfs_write context:
- - call f2fs_gc() to get sbi->gc_lock
- - call f2fs_write_checkpoint() to get sbi->cp_global_sem
-d) f2fs mount context:
- - call recover_fsync_data() to get sbi->cp_global_sem
- - call f2fs_check_and_fix_write_pointer() to call blkdev_report_zones()
-   that goes down to blk_mq_alloc_request and get q->q_usage_counter
+These zeroed counts can reach the dispatch path through an indirect CSD
+job, whose workgroup counts are only known once the indirect buffer is
+read and may legitimately be zero, but such scenario should only result in
+a no-op.
 
-Original callstack is in Closes tag.
+Overwrite the indirect CSD job workgroup counts with the indirect BO
+ones, even if they are zeroed, and don't submit the job to the hardware
+when any of the workgroup counts is zero, so the job completes immediately
+instead of running the shader.
 
-However, I think this is a false alarm due to before mount returns
-successfully (context d), we can not access file therein via vfs_write
-(context c).
-
-Let's introduce per-sb cp_global_sem_key, and assign the key for
-cp_global_sem, so that lockdep can recognize cp_global_sem from
-different super block correctly.
-
-A lot of work are done by Shin'ichiro Kawasaki, thanks a lot for
-the work.
-
-Fixes: c426d99127b1 ("f2fs: Check write pointer consistency of open zones")
-Cc: stable@kernel.org
-Reported-and-tested-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-Closes: https://lore.kernel.org/linux-f2fs-devel/20260218125237.3340441-1-shinichiro.kawasaki@wdc.com
-Signed-off-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-[ re-anchored lockdep_register_key after init_f2fs_rwsem and placed lockdep_unregister_key before kfree(sbi) in f2fs_put_super instead of kill_f2fs_super ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: d223f98f0209 ("drm/v3d: Add support for compute shader dispatch.")
+Suggested-by: Jose Maria Casanova Crespo <jmcasanova@igalia.com>
+Reviewed-by: Iago Toral Quiroga <itoral@igalia.com>
+Link: https://patch.msgid.link/20260602-v3d-fix-indirect-csd-v4-2-654309e32bc0@igalia.com
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/f2fs.h  |    3 +++
- fs/f2fs/super.c |   11 +++++++++++
- 2 files changed, 14 insertions(+)
+ drivers/gpu/drm/v3d/v3d_sched.c |   16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
---- a/fs/f2fs/f2fs.h
-+++ b/fs/f2fs/f2fs.h
-@@ -1853,6 +1853,9 @@ struct f2fs_sb_info {
- 	spinlock_t iostat_lat_lock;
- 	struct iostat_lat_info *iostat_io_lat;
- #endif
-+#ifdef CONFIG_DEBUG_LOCK_ALLOC
-+	struct lock_class_key cp_global_sem_key;
-+#endif
- };
+--- a/drivers/gpu/drm/v3d/v3d_sched.c
++++ b/drivers/gpu/drm/v3d/v3d_sched.c
+@@ -378,6 +378,16 @@ v3d_csd_job_run(struct drm_sched_job *sc
+ 		return NULL;
+ 	}
  
- #ifdef CONFIG_F2FS_FAULT_INJECTION
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -1687,6 +1687,9 @@ static void f2fs_put_super(struct super_
- #if IS_ENABLED(CONFIG_UNICODE)
- 	utf8_unload(sb->s_encoding);
- #endif
-+#ifdef CONFIG_DEBUG_LOCK_ALLOC
-+	lockdep_unregister_key(&sbi->cp_global_sem_key);
-+#endif
- 	kfree(sbi);
- }
++	/* The HW interprets a workgroup size of 0 as 65536; however, the
++	 * user-space driver exposes a maximum of 65535. Therefore, a 0 in
++	 * any dimension means that we have no workgroups and the compute
++	 * shader should not be dispatched.
++	 */
++	if (!V3D_GET_FIELD(job->args.cfg[0], V3D_CSD_QUEUED_CFG0_NUM_WGS_X) ||
++	    !V3D_GET_FIELD(job->args.cfg[1], V3D_CSD_QUEUED_CFG1_NUM_WGS_Y) ||
++	    !V3D_GET_FIELD(job->args.cfg[2], V3D_CSD_QUEUED_CFG2_NUM_WGS_Z))
++		return NULL;
++
+ 	v3d->queue[V3D_CSD].active_job = &job->base;
  
-@@ -4188,6 +4191,11 @@ try_onemore:
- 	init_f2fs_rwsem(&sbi->gc_lock);
- 	mutex_init(&sbi->writepages);
- 	init_f2fs_rwsem(&sbi->cp_global_sem);
-+#ifdef CONFIG_DEBUG_LOCK_ALLOC
-+	lockdep_register_key(&sbi->cp_global_sem_key);
-+	lockdep_set_class(&sbi->cp_global_sem.internal_rwsem,
-+					&sbi->cp_global_sem_key);
-+#endif
- 	init_f2fs_rwsem(&sbi->node_write);
- 	init_f2fs_rwsem(&sbi->node_change);
- 	spin_lock_init(&sbi->stat_lock);
-@@ -4651,6 +4659,9 @@ free_sb_buf:
- free_sbi:
- 	if (sbi->s_chksum_driver)
- 		crypto_free_shash(sbi->s_chksum_driver);
-+#ifdef CONFIG_DEBUG_LOCK_ALLOC
-+	lockdep_unregister_key(&sbi->cp_global_sem_key);
-+#endif
- 	kfree(sbi);
+ 	v3d_invalidate_caches(v3d);
+@@ -428,13 +438,13 @@ v3d_rewrite_csd_job_wg_counts_from_indir
  
- 	/* give only one another chance */
+ 	wg_counts = (uint32_t *)(bo->vaddr + indirect_csd->offset);
+ 
+-	if (wg_counts[0] == 0 || wg_counts[1] == 0 || wg_counts[2] == 0)
+-		goto unmap_bo;
+-
+ 	args->cfg[0] = wg_counts[0] << V3D_CSD_CFG012_WG_COUNT_SHIFT;
+ 	args->cfg[1] = wg_counts[1] << V3D_CSD_CFG012_WG_COUNT_SHIFT;
+ 	args->cfg[2] = wg_counts[2] << V3D_CSD_CFG012_WG_COUNT_SHIFT;
+ 
++	if (wg_counts[0] == 0 || wg_counts[1] == 0 || wg_counts[2] == 0)
++		goto unmap_bo;
++
+ 	num_batches = DIV_ROUND_UP(indirect_csd->wg_size, 16) *
+ 		      (wg_counts[0] * wg_counts[1] * wg_counts[2]);
+ 
 
 
 
