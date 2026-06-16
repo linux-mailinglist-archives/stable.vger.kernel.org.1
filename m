@@ -1,64 +1,60 @@
-Return-Path: <stable+bounces-266542-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266186-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 7z6FI1OfMWr/oQUAu9opvQ
-	(envelope-from <stable+bounces-266542-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:09:07 +0200
+	id NBV/MySYMWringUAu9opvQ
+	(envelope-from <stable+bounces-266186-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:38:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 101A3694C9B
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:09:07 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74B2F6944A1
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:38:28 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Q+fBh3eR;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266542-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266542-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Sb2bh2+g;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266186-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-266186-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 587A03068EA2
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:08:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 808FA3092C06
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:38:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3217C3DE422;
-	Tue, 16 Jun 2026 19:08:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27F1746AF3C;
+	Tue, 16 Jun 2026 18:38:26 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05BBC3DDDD5;
-	Tue, 16 Jun 2026 19:08:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0823F169AD2;
+	Tue, 16 Jun 2026 18:38:25 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781636931; cv=none; b=dDCIeCDc2/pJxnAwLuZBcY+/B+a6++ioHmisPXFtDpe8A6HDI9jxLlnM1dEOBS9HGPiSv49nMr4jLyoTghw5UMRq161WlXqOlHvK55Qjw5/tQyYSg3KBNEciUg29sqZ/AbHlzCpKl/7Zku1ztPJkCCiNH9W7MPsZg3kB6V66RYo=
+	t=1781635105; cv=none; b=YP7bphREpons3uQtD0XZIOJEJUG7j3JIQKRLmgak6sfXWy0GyP8E47zbuQB8Ec6n0u+UreXEnHPM3FPRjfFrZzD2TcJuKiyQMCGwUkzXiZ2LMHwz89Y4ypoo0dcp7R5pjo5Nck/EF1QxcwgpmmSFFpVVcdJ7szsdnKhND7lto18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781636931; c=relaxed/simple;
-	bh=lWGHJNCFcHUtimLclq5ie4IUeteOK+tqvf/0/cc9zp8=;
+	s=arc-20240116; t=1781635105; c=relaxed/simple;
+	bh=w92bNZWeM0ut3gghqjW7bImH+i9H8ZG5RAPXdRJftRw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rqXTCiviagPLLSvUm02hhS3WJUHMWed3r/2LaMzg007xA5q7IKl3fbsU18uDhfNcvLUap/nAdYhJZk2W6Bt5W9Cr9QMwTmCQvELSZ7Wj2Gq8mkXCYYE0YRzfgnQg0HNDTxLeY02OwD9VbK3zyoc0vSAWcR2GGkNF/1IWB3u/l6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q+fBh3eR; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CFD31F000E9;
-	Tue, 16 Jun 2026 19:08:48 +0000 (UTC)
+	 MIME-Version; b=SZrhKzvRWTG0HL01/ywq2exqMYQy+VJPhVshSZzO4Xp/GMh6i9HLDh3xs30Gy6P8sqn+6xtMhNv762uhGKOvZq9vuVdZR+RZGKeXp4BF5a29b3y9iItRU0fpr03klwwiuMY9WRdE2rVj5bRzyXGcLmiMTDEdYdxWPkTi8YMy4Q0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sb2bh2+g; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E46D11F000E9;
+	Tue, 16 Jun 2026 18:38:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781636929;
-	bh=iw1Ddu5yYRbMX6sKIIi8SsyCWcI2BxVQokF49SOyTOk=;
+	s=korg; t=1781635104;
+	bh=ZI3Q4FGEsIRH91Ee122uGTVdIzzUqBTXdiueANJlCgE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Q+fBh3eRS62ZGMtZzq15MYaevUrxO5zsGENNPkYis/cQpZWQOmZqGLlenevCuMX6A
-	 QhvYQcyn/KrmqWYBGRUpYjGQLkP3fhg5EtKwlm3Xy31jDFmGg/OMKBJvQhyfX/vm2T
-	 B3reFFx85wdjJpu5ShHJSkNf16NDR6mvsmVFxQuw=
+	b=Sb2bh2+g6Crh/DicM834dRIYdphq+X9Sv1XWyG8WfgF4m5lilS+jU0QBvK/HQ8ULW
+	 EuP1P5a4b40GpfuAVsFZAfMHkqvERVvWZJJCHZJ7OPhmTUZZbPhf6YCFbVWGaAQ9+N
+	 896PLnKbsbexV7e5nG33wmzuDGVIKkJ7bijb+E0I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Easwar Hariharan <eahariha@linux.microsoft.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 5.10 333/342] arm64: Subscribe Microsoft Azure Cobalt 100 to ARM Neoverse N2 errata
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 391/411] RDMA/umem: Fix truncation for block sizes >= 4G
 Date: Tue, 16 Jun 2026 20:30:29 +0530
-Message-ID: <20260616145104.124777926@linuxfoundation.org>
+Message-ID: <20260616145122.015546304@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,95 +68,79 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266542-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-266186-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:eahariha@linux.microsoft.com,m:anshuman.khandual@arm.com,m:mark.rutland@arm.com,m:maz@kernel.org,m:oliver.upton@linux.dev,m:will@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jgg@nvidia.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,linux.dev:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,nvidia.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 101A3694C9B
+X-Rspamd-Queue-Id: 74B2F6944A1
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Easwar Hariharan <eahariha@linux.microsoft.com>
+From: Jason Gunthorpe <jgg@nvidia.com>
 
-commit fb091ff394792c018527b3211bbdfae93ea4ac02 upstream.
+[ Upstream commit 15fe76e23615f502d051ef0768f86babaf08746c ]
 
-Add the MIDR value of Microsoft Azure Cobalt 100, which is a Microsoft
-implemented CPU based on r0p0 of the ARM Neoverse N2 CPU, and therefore
-suffers from all the same errata.
+When the iommu is used the linearization of the mapping can give a single
+block that is very large split across multiple SG entries.
 
-CC: stable@vger.kernel.org # 5.15+
-Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Acked-by: Mark Rutland <mark.rutland@arm.com>
-Acked-by: Marc Zyngier <maz@kernel.org>
-Reviewed-by: Oliver Upton <oliver.upton@linux.dev>
-Link: https://lore.kernel.org/r/20240214175522.2457857-1-eahariha@linux.microsoft.com
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[Mark: backport to v5.10.y; only the MIDR is relevant to v5.10.y]
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+When __rdma_block_iter_next() reassembles the split SG entries it is
+overflowing the 32 bit stack values and computed the wrong DMA addresses
+for blocks after the truncation.
+
+Use the right types to hold DMA addresses.
+
+Link: https://patch.msgid.link/r/1-v1-88303e9e509f+f7-ib_umem_types_jgg@nvidia.com
+Cc: stable@vger.kernel.org
+Fixes: a808273a495c ("RDMA/verbs: Add a DMA iterator to return aligned contiguous memory blocks")
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/include/asm/cputype.h |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/infiniband/core/iter.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/arm64/include/asm/cputype.h
-+++ b/arch/arm64/include/asm/cputype.h
-@@ -61,6 +61,7 @@
- #define ARM_CPU_IMP_HISI		0x48
- #define ARM_CPU_IMP_APPLE		0x61
- #define ARM_CPU_IMP_AMPERE		0xC0
-+#define ARM_CPU_IMP_MICROSOFT		0x6D
+--- a/drivers/infiniband/core/iter.c
++++ b/drivers/infiniband/core/iter.c
+@@ -19,8 +19,8 @@ EXPORT_SYMBOL(__rdma_block_iter_start);
  
- #define ARM_CPU_PART_AEM_V8		0xD0F
- #define ARM_CPU_PART_FOUNDATION		0xD00
-@@ -130,6 +131,8 @@
+ bool __rdma_block_iter_next(struct ib_block_iter *biter)
+ {
+-	unsigned int block_offset;
+-	unsigned int delta;
++	dma_addr_t block_offset;
++	dma_addr_t delta;
  
- #define AMPERE_CPU_PART_AMPERE1		0xAC3
- 
-+#define MICROSOFT_CPU_PART_AZURE_COBALT_100	0xD49 /* Based on r0p0 of ARM Neoverse N2 */
-+
- #define MIDR_CORTEX_A53 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A53)
- #define MIDR_CORTEX_A57 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A57)
- #define MIDR_CORTEX_A72 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A72)
-@@ -185,6 +188,7 @@
- #define MIDR_APPLE_M1_ICESTORM MIDR_CPU_MODEL(ARM_CPU_IMP_APPLE, APPLE_CPU_PART_M1_ICESTORM)
- #define MIDR_APPLE_M1_FIRESTORM MIDR_CPU_MODEL(ARM_CPU_IMP_APPLE, APPLE_CPU_PART_M1_FIRESTORM)
- #define MIDR_AMPERE1 MIDR_CPU_MODEL(ARM_CPU_IMP_AMPERE, AMPERE_CPU_PART_AMPERE1)
-+#define MIDR_MICROSOFT_AZURE_COBALT_100 MIDR_CPU_MODEL(ARM_CPU_IMP_MICROSOFT, MICROSOFT_CPU_PART_AZURE_COBALT_100)
- 
- /* Fujitsu Erratum 010001 affects A64FX 1.0 and 1.1, (v0r0 and v1r0) */
- #define MIDR_FUJITSU_ERRATUM_010001		MIDR_FUJITSU_A64FX
+ 	if (!biter->__sg_nents || !biter->__sg)
+ 		return false;
 
 
 
