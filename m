@@ -1,62 +1,65 @@
-Return-Path: <stable+bounces-265670-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265128-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id jUqQHYeNMWoCmgUAu9opvQ
-	(envelope-from <stable+bounces-265670-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:53:11 +0200
+	id b85qHCSFMWoFlgUAu9opvQ
+	(envelope-from <stable+bounces-265128-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:17:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 658F769395C
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:53:10 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61825692F63
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:17:23 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=xwPUZ50t;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265670-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265670-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=koslB25P;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265128-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-265128-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 76C07300107A
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:53:07 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4620F30638F3
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:07:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F908466B4B;
-	Tue, 16 Jun 2026 17:53:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5C1647AF5F;
+	Tue, 16 Jun 2026 17:06:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F922472771;
-	Tue, 16 Jun 2026 17:53:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0F7647AF61;
+	Tue, 16 Jun 2026 17:06:49 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781632385; cv=none; b=rpojrThySgZuhGmqLDQYlr8DILrwEUfwV2d384LsFwsLQerwCkWgKNbHDOjF5Oq/OQW10X83HCLgnjwG+xxrUSqMt6pqh11Q6hoLrGK+IieghfT6VI/vf58hJh6H5uPnuK5KSd41xX0S5RY8PpTmIQFsYvhmiw8uCxvlyXOcAmA=
+	t=1781629610; cv=none; b=OIT5VvBGnGjzOcVjQ+0ZFu84Z3Iy3iu7MLa9911Pqm26YFJ15sM7eBoPPAGm3VZvHkFK0coFC8yBWJwslv9LXgry6g9isZfSREJsld5WKxoC3JztI8d58X1zWzzSiRBTFV3251aWx1peT9DQcDaUnd1HjM21NTnQwRQPDySR8F8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781632385; c=relaxed/simple;
-	bh=DGcKTBDXGDTbSa3t0vzwQFNOazXpHYFsUhgLCOO/ui4=;
+	s=arc-20240116; t=1781629610; c=relaxed/simple;
+	bh=vxbhufDvWRsyZvSKgflR5Zf7q/HxMEz2bmhTrnsY9ao=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mwYAXTD5GHvf3jsBjFNYiLoz+NZPUXUWpQSs6Kr0fHYsXwFts807+LIPtz4EpzrBZA1zhE1uV9g3MIn6PI8SPbFTxyV00cUb3UD53zbU9SyOVKUpfYyxINgFKdkSiuo5mx5+TdUy7PMWs5BJG8yj3nt3jk71Pu6JJLv8c3Pu4QM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xwPUZ50t; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DB361F000E9;
-	Tue, 16 Jun 2026 17:53:01 +0000 (UTC)
+	 MIME-Version; b=M2vM5ts3Zx+Rh2h7E8caVlqtym/yeRLlwZZkntwkCR0g9Vzr2p/Ngy24SK8CANu3e8IVtN3IiygB0vvPS1Z62f97HQUTv/FYuhzUaTyKeP1hRSwyaoNYW7yjRln5u+44lSuWxP/jCFMuzHaqzsFBgOhfUyF/IX4iHNU7eBgYP5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=koslB25P; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A237A1F000E9;
+	Tue, 16 Jun 2026 17:06:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781632383;
-	bh=lDLa9YYWIQO/HQJnpKwjN/T1rT41q3hOdi+4Buzi2X0=;
+	s=korg; t=1781629609;
+	bh=+pHMK1yp9qfweNH8hmqTqx9mmJVCcO4jbQuyTRsmGyA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=xwPUZ50tozcaUIoa9WtieBDIFgI8j1oxCcw7O1ZGEUFF8hMBa1QrSQIGUQmDhh+FB
-	 JZv0wFLDsH4kxOHVzGU8GVaZAXjUZZV/Bjgy+Mm811nlDbBAA1IbnSaNFh69m9x817
-	 ajpoiAmtyoFC2mm0B342WYL7Qkui43kJV6iWntE8=
+	b=koslB25PkOIc3+YCzGM8F1LDYGYyq/vEpfcPfTDIgXPrND5UVIzywWNUFeh/jjTH9
+	 oAWQNSTTSVAk2kXvo3odChpDvfbm5LSWFHcf7qG0o2BMUtrEZ8XQVTWcg3OV9CMfcf
+	 qVvAjVnlUJY9pq4VsC1HdC0FlAlQvre7zCQ2+84w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jingoo Han <jg1.han@samsung.com>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 399/522] spi: tegra114: fix controller deregistration
+	stable@kernel.org,
+	Yuan Tan <yuantan098@gmail.com>,
+	Zhengchuan Liang <zcliangcn@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Yuqi Xu <xuyuqiabc@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.6 319/452] wifi: nl80211: reject oversized EMA RNR lists
 Date: Tue, 16 Jun 2026 20:29:06 +0530
-Message-ID: <20260616145144.739112425@linuxfoundation.org>
+Message-ID: <20260616145134.221050913@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,93 +73,83 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265670-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,intel.com];
+	TAGGED_FROM(0.00)[bounces-265128-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jg1.han@samsung.com,m:johan@kernel.org,m:broonie@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:yuantan098@gmail.com,m:zcliangcn@gmail.com,m:bird@lzu.edu.cn,m:xuyuqiabc@gmail.com,m:n05ec@lzu.edu.cn,m:johannes.berg@intel.com,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,samsung.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,lzu.edu.cn:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,intel.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 658F769395C
+X-Rspamd-Queue-Id: 61825692F63
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Yuqi Xu <xuyuqiabc@gmail.com>
 
-[ Upstream commit 9c9c27ff2058142d8f800de3186d6864184958de ]
+commit 4cd92957e8f8cc4ebfe8a5d4203c14c592fde6b1 upstream.
 
-Make sure to deregister the controller before disabling underlying
-resources like clocks during driver unbind.
+nl80211_parse_rnr_elems() stores the parsed element count in a
+u8-backed cfg80211_rnr_elems::cnt field and uses that count to size
+the flexible array allocation.
 
-Fixes: 5c8096439600 ("spi: tegra114: use devm_spi_register_master()")
-Cc: stable@vger.kernel.org	# 3.13
-Cc: Jingoo Han <jg1.han@samsung.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260410081757.503099-22-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-[ renamed spi_controller/host APIs to spi_master/master equivalents and placed spi_master_put() before the existing return 0 in remove ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reject nested NL80211_ATTR_EMA_RNR_ELEMS input once the count reaches
+255, before incrementing it again. This keeps the parser aligned with
+the data structure it fills and matches the existing bound check used
+by nl80211_parse_mbssid_elems().
+
+Fixes: dbbb27e183b1 ("cfg80211: support RNR for EMA AP")
+Cc: stable@kernel.org
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Zhengchuan Liang <zcliangcn@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Assisted-by: Codex:gpt-5.4
+Signed-off-by: Yuqi Xu <xuyuqiabc@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Link: https://patch.msgid.link/20260529152542.1412734-1-n05ec@lzu.edu.cn
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-tegra114.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ net/wireless/nl80211.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/spi/spi-tegra114.c
-+++ b/drivers/spi/spi-tegra114.c
-@@ -1415,7 +1415,7 @@ static int tegra_spi_probe(struct platfo
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -5498,6 +5498,9 @@ nl80211_parse_rnr_elems(struct wiphy *wi
+ 		if (ret)
+ 			return ERR_PTR(ret);
+ 
++		if (num_elems >= 255)
++			return ERR_PTR(-EINVAL);
++
+ 		num_elems++;
  	}
- 
- 	master->dev.of_node = pdev->dev.of_node;
--	ret = devm_spi_register_master(&pdev->dev, master);
-+	ret = spi_register_master(master);
- 	if (ret < 0) {
- 		dev_err(&pdev->dev, "can not register to master err %d\n", ret);
- 		goto exit_free_irq;
-@@ -1441,6 +1441,10 @@ static int tegra_spi_remove(struct platf
- 	struct spi_master *master = platform_get_drvdata(pdev);
- 	struct tegra_spi_data	*tspi = spi_master_get_devdata(master);
- 
-+	spi_master_get(master);
-+
-+	spi_unregister_master(master);
-+
- 	free_irq(tspi->irq, tspi);
- 
- 	if (tspi->tx_dma_chan)
-@@ -1453,6 +1457,8 @@ static int tegra_spi_remove(struct platf
- 	if (!pm_runtime_status_suspended(&pdev->dev))
- 		tegra_spi_runtime_suspend(&pdev->dev);
- 
-+	spi_master_put(master);
-+
- 	return 0;
- }
  
 
 
