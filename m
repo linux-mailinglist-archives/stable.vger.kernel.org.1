@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-266082-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266431-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id uvOrGQ2WMWr+nQUAu9opvQ
-	(envelope-from <stable+bounces-266082-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:29:33 +0200
+	id hX3AASmdMWoOoQUAu9opvQ
+	(envelope-from <stable+bounces-266431-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:59:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA2AE6942CD
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:29:32 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id B37DB694A4A
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:59:52 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=dV2MxqCf;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266082-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266082-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=h+QMx+ZV;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266431-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-266431-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C0AE23056970
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:29:27 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 32DA730338C2
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:59:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E48547A0CD;
-	Tue, 16 Jun 2026 18:29:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1683947CC7E;
+	Tue, 16 Jun 2026 18:59:49 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15FED472798;
-	Tue, 16 Jun 2026 18:29:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D89CF3EB0F5;
+	Tue, 16 Jun 2026 18:59:47 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781634566; cv=none; b=pGi9Tegwy6hizjKV7ZO8zNyDWsHfMnv2dnJvnYAhuZ72cyVIrdrRKqpVawaRBrlpflcLIAfiXFngb0Gp8zg2q0qJ1HeZ2+QgK7feOmb4NFtb0x30CBXRmSHxwHWPNrBTXQRUhA/R+87WuCi5R7mblx9QsDTNvZgdsBY7tLMAWhA=
+	t=1781636388; cv=none; b=dyJ3JdBJNMFeRySZRPjNIGVb3RwqgNXDDJGDKKY1JVjF9zYXtgKayFmF4skoHwO2gb9OXMsqM7CYisBuwQyulnDly4WuV7YYart2OSOt9QnFbxMsZJ6EtMhnmGfobFlzOP7RKdSPRV9mONW/kmxZvz0ePXxM8bNM0Xvcxj7pQgk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781634566; c=relaxed/simple;
-	bh=gluFOxKHsgfM9iSOyqSpzxeLGc+6auKzgql6/9+IxzY=;
+	s=arc-20240116; t=1781636388; c=relaxed/simple;
+	bh=fpUqcsWcSuPwurLOKxMK3/5ELq/5o8AM+etUVGgnJ2c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NjUmAezSPic4r5GzjzpluMr454lfwFNohcV6LLwTeUmkhTXgNqTZKXwJncfO5ifSck+bxqraBPJdWZk4Mkxtj6SoKhJ73WujFnsee+T5yRpXqL4GMnUnUKyWMP1tgjTvhvN9qSG/gusJJqKttUYRrTGy9UBiIuUOMXb20JhozRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dV2MxqCf; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 061DE1F000E9;
-	Tue, 16 Jun 2026 18:29:23 +0000 (UTC)
+	 MIME-Version; b=PCbsrbNcyryZJkOHoXa/6gON98+oHB/qq+8HTdCQRH4SiZN5VuV45nNJZ70ErD3fS7Kv80YJPZsoKDuY49nVAeyC0Lqb7nLdhdQthA8UF9qOcKbbxlEdlcn6AkiMgNEn/9XahEkUsKZomu0xFgJwzjJD4QDzhpMxKOkYaxBmc2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h+QMx+ZV; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C20C81F000E9;
+	Tue, 16 Jun 2026 18:59:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781634565;
-	bh=VbINFwIA9arGYw8+3ETc7HsJXv7QT+MWKMVJfsV1OaQ=;
+	s=korg; t=1781636387;
+	bh=anpk9jAuhVIaBXtTgi+Ko9Nx0rq4c3+Twz9p3EnZq6g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dV2MxqCfcDRAlgRIbaqsvvC5kIECPMJTBkFdcjKlTrP/MYat+tz0xafGfJd5T1sRC
-	 ZF2+CrLEgr4zQpnntg+RdiOW8TYe0e3PKsU9e2oH9eVNzHb1CXIhvTxzj49rwOMxFI
-	 h0auYjgvPAC8wun2rv2aXgEbav2H6hOOefv9mEiw=
+	b=h+QMx+ZV26nK+faf8LfLZJOOjvWakdsiC6LZ3WqUR3kemN9y9ICW8hbB39XS1pg4l
+	 3732WWq1+LD4M367JbyAMX98gp1qfymdsQCAG9TdFtu9gEZ8ehHuYPkY1jyIm7X9zp
+	 Pg5+3Sdj9uUt1LOgkqlGVO7QB/qEVJLVDwusMD7Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Julia Lawall <Julia.Lawall@inria.fr>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Yuhao Jiang <danisjiang@gmail.com>,
+	Junrui Luo <moonafterrain@outlook.com>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Chao Yu <chao@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 288/411] can: ucan: fix typos in comments
+Subject: [PATCH 5.10 230/342] erofs: fix the out-of-bounds nameoff handling for trailing dirents
 Date: Tue, 16 Jun 2026 20:28:46 +0530
-Message-ID: <20260616145116.462920762@linuxfoundation.org>
+Message-ID: <20260616145058.915038002@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,78 +74,128 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266082-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:Julia.Lawall@inria.fr,m:mkl@pengutronix.de,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,outlook.com,linux.alibaba.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-266431-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:danisjiang@gmail.com,m:moonafterrain@outlook.com,m:hsiangkao@linux.alibaba.com,m:chao@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,inria.fr:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sashiko.dev:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,outlook.com:email,alibaba.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: CA2AE6942CD
+X-Rspamd-Queue-Id: B37DB694A4A
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Julia Lawall <Julia.Lawall@inria.fr>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
 
-[ Upstream commit c34983c94166689358372d4af8d5def57752860c ]
+[ Upstream commit d18a3b5d337fa412a38e776e6b4b857a58836575 ]
 
-Various spelling mistakes in comments.
-Detected with the help of Coccinelle.
+Currently we already have boundary-checks for nameoffs, but the trailing
+dirents are special since the namelens are calculated with strnlen()
+with unchecked nameoffs.
 
-Link: https://lore.kernel.org/all/20220314115354.144023-28-Julia.Lawall@inria.fr
-Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
-Acked-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Stable-dep-of: fed4626501c8 ("can: ucan: fix devres lifetime")
+If a crafted EROFS has a trailing dirent with nameoff >= maxsize,
+maxsize - nameoff can underflow, causing strnlen() to read past the
+directory block.
+
+nameoff0 should also be verified to be a multiple of
+`sizeof(struct erofs_dirent)` as well [1].
+
+[1] https://sashiko.dev/#/patchset/20260416063511.3173774-1-hsiangkao%40linux.alibaba.com
+
+Fixes: 3aa8ec716e52 ("staging: erofs: add directory operations")
+Fixes: 33bac912840f ("staging: erofs: keep corrupted fs from crashing kernel in erofs_readdir()")
+Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+Reported-by: Junrui Luo <moonafterrain@outlook.com>
+Closes: https://lore.kernel.org/r/A0FD7E0F-7558-49B0-8BC8-EB1ECDB2479A@outlook.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+[ replaced upstream `bsz` with `PAGE_SIZE` and `sizeof(*de)` with `sizeof(struct erofs_dirent)` ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/usb/ucan.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/erofs/dir.c |   30 ++++++++++++++++--------------
+ 1 file changed, 16 insertions(+), 14 deletions(-)
 
---- a/drivers/net/can/usb/ucan.c
-+++ b/drivers/net/can/usb/ucan.c
-@@ -1395,7 +1395,7 @@ static int ucan_probe(struct usb_interfa
- 	 * Stage 3 for the final driver initialisation.
- 	 */
+--- a/fs/erofs/dir.c
++++ b/fs/erofs/dir.c
+@@ -38,20 +38,18 @@ static int erofs_fill_dentries(struct in
+ 		nameoff = le16_to_cpu(de->nameoff);
+ 		de_name = (char *)dentry_blk + nameoff;
  
--	/* Prepare Memory for control transferes */
-+	/* Prepare Memory for control transfers */
- 	ctl_msg_buffer = devm_kzalloc(&udev->dev,
- 				      sizeof(union ucan_ctl_payload),
- 				      GFP_KERNEL);
-@@ -1529,7 +1529,7 @@ static int ucan_probe(struct usb_interfa
- 	ret = ucan_device_request_in(up, UCAN_DEVICE_GET_FW_STRING, 0,
- 				     sizeof(union ucan_ctl_payload));
- 	if (ret > 0) {
--		/* copy string while ensuring zero terminiation */
-+		/* copy string while ensuring zero termination */
- 		strncpy(firmware_str, up->ctl_msg_buffer->raw,
- 			sizeof(union ucan_ctl_payload));
- 		firmware_str[sizeof(union ucan_ctl_payload)] = '\0';
+-		/* the last dirent in the block? */
+-		if (de + 1 >= end)
+-			de_namelen = strnlen(de_name, maxsize - nameoff);
+-		else
++		/* non-trailing dirent in the directory block? */
++		if (de + 1 < end)
+ 			de_namelen = le16_to_cpu(de[1].nameoff) - nameoff;
++		else if (maxsize <= nameoff)
++			goto err_bogus;
++		else
++			de_namelen = strnlen(de_name, maxsize - nameoff);
+ 
+-		/* a corrupted entry is found */
+-		if (nameoff + de_namelen > maxsize ||
+-		    de_namelen > EROFS_NAME_LEN) {
+-			erofs_err(dir->i_sb, "bogus dirent @ nid %llu",
+-				  EROFS_I(dir)->nid);
+-			DBG_BUGON(1);
+-			return -EFSCORRUPTED;
+-		}
++		/* a corrupted entry is found (including negative namelen) */
++		if (!in_range32(de_namelen, 1, EROFS_NAME_LEN) ||
++		    nameoff + de_namelen > maxsize)
++			goto err_bogus;
+ 
+ 		debug_one_dentry(d_type, de_name, de_namelen);
+ 		if (!dir_emit(ctx, de_name, de_namelen,
+@@ -63,6 +61,10 @@ static int erofs_fill_dentries(struct in
+ 	}
+ 	*ofs = maxsize;
+ 	return 0;
++err_bogus:
++	erofs_err(dir->i_sb, "bogus dirent @ nid %llu", EROFS_I(dir)->nid);
++	DBG_BUGON(1);
++	return -EFSCORRUPTED;
+ }
+ 
+ static int erofs_readdir(struct file *f, struct dir_context *ctx)
+@@ -96,8 +98,8 @@ static int erofs_readdir(struct file *f,
+ 
+ 		nameoff = le16_to_cpu(de->nameoff);
+ 
+-		if (nameoff < sizeof(struct erofs_dirent) ||
+-		    nameoff >= PAGE_SIZE) {
++		if (!nameoff || nameoff >= PAGE_SIZE ||
++		    (nameoff % sizeof(struct erofs_dirent))) {
+ 			erofs_err(dir->i_sb,
+ 				  "invalid de[0].nameoff %u @ nid %llu",
+ 				  nameoff, EROFS_I(dir)->nid);
 
 
 
