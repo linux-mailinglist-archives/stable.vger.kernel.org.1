@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-264806-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264507-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id IAZND0F9MWrAkgUAu9opvQ
-	(envelope-from <stable+bounces-264806-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:43:45 +0200
+	id 4yNJEL94MWrUkAUAu9opvQ
+	(envelope-from <stable+bounces-264507-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:24:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E683692636
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:43:44 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A1C96920BD
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:24:30 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=IN4xut+P;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264806-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264806-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=X8EBtB5Y;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264507-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264507-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7F1D030FA8E3
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:39:48 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A0728313C7C3
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:11:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DD0647799B;
-	Tue, 16 Jun 2026 16:39:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C152133688F;
+	Tue, 16 Jun 2026 16:10:58 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77ADA4508E4;
-	Tue, 16 Jun 2026 16:39:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FFF5339858;
+	Tue, 16 Jun 2026 16:10:57 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781627987; cv=none; b=NdznTKWswf97WmVNubGEupUzq7VDwS5ZewTA+dJQzr05YUeygNaUJdTwYxuRLYC+RvX7lyUzc5eReXgySs6CNbP91k7vf1e+z90ULsc+uK4h/NeV08jeuF8f+4zpbIuCrI1KRkQUWwgRbkJzDQtdRESsC9ioWzo/Q03zmq6whvQ=
+	t=1781626258; cv=none; b=ar6qSoWaqxDHyGUgT6kuf7yEswpNHeCIirc1yuJrR/zRn1jdF0IuYrbWRTQo746Z3CyUYdPB+EhifBMstgi7YNWI895Nn4NttMdZBPQy3QNs/l8rHJpACt5ZMHvTZSVdLRebDbDvOQ99oigv+6rQ08WDNxI9/Geuz4XC+4CtOG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781627987; c=relaxed/simple;
-	bh=DBoZplrhweZ5MUkFfcBsrJ93cWfL0TXPsAkGjFC3nwo=;
+	s=arc-20240116; t=1781626258; c=relaxed/simple;
+	bh=JMv1W7ajB/lOFK8YE0soSlYySb4VIJyG7JmqEMkbt64=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pOZcJAM8+v4e5ccn4aalNPOnTYnou+AkIjPr6P8w5XHHDa3zp24g6UrE+j2+4jnxbHsptHgoTr5ahh1hYiOMyziNNyFH44Nx/mn87hupnnholRWGE3FGY+pYgSFLh0KArNVQz0DMBvIz38dZW9U+PEotaXCHqpQvM6zCRBAFSmQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IN4xut+P; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 760FA1F00A3A;
-	Tue, 16 Jun 2026 16:39:45 +0000 (UTC)
+	 MIME-Version; b=AVPbupZuGtppGeogknceSLQJmOOD6bzApHJk2Kn7Zndf8KZD4HNEXy2tU2JiMnf46+S/cH7KXOZKGzXp+y6uzOGGhai3z2v21mN9AGAExHh4xoHOUh5ubtu+hkGbaek6FoLo5ylrb9HNV7salMJptLvX1ysYNYPih6LXNrI0CXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X8EBtB5Y; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 081F41F000E9;
+	Tue, 16 Jun 2026 16:10:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781627986;
-	bh=Bv8PniPjDe36SwqpYLBOGRaXmaM0qxoH4f0F1fT2/3M=;
+	s=korg; t=1781626257;
+	bh=4fXgPexXcRs6W/u1qfg7AzkmSnLUQdMwvhdyqJzxG14=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=IN4xut+PrD47uXdAbtMTdja03jHlfQS/sRXwuCWWUKQYZDi90pOzyL30SSCYAh6Tz
-	 KhQRYpdHG4a86RhWNtpshqvmbR1V+kQ3ooNIF+58XCYEOC/Gv/JVDWQPJZV22HX1Lu
-	 GcA3sFN/iY4dipranwcrUthpC4+1lIBkzlRwX/FQ=
+	b=X8EBtB5YlbEg5/2MGzaisM6vV2zFkQ3V5eKnyDxDWHr5AEPjuij3ew3xN4hfRsK0I
+	 kl4MxpNKI+hqeaGybrFqeAsCHE3G0bybH3nzjj6FCpPgJrPY8/hhHeWpozdZs6m7HY
+	 r04ZpFv+kf0jAy0xj5ymmEK2TcqzlZ+BRQWyDJdA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 6.12 252/261] arm64: cputype: Add C1-Ultra definitions
+	Yang Wang <kevinyang.wang@amd.com>,
+	Kenneth Feng <kenneth.feng@amd.com>,
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.18 294/325] drm/amd/pm: fix smu13 power limit default/cap calculation
 Date: Tue, 16 Jun 2026 20:31:30 +0530
-Message-ID: <20260616145056.754159525@linuxfoundation.org>
+Message-ID: <20260616145113.472662154@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
-References: <20260616145044.869532709@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,85 +70,200 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264806-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mark.rutland@arm.com,m:catalin.marinas@arm.com,m:will@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264507-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kevinyang.wang@amd.com,m:kenneth.feng@amd.com,m:lijo.lazar@amd.com,m:alexander.deucher@amd.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,arm.com:url,arm.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,gitlab.freedesktop.org:url,amd.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9E683692636
+X-Rspamd-Queue-Id: 9A1C96920BD
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Yang Wang <kevinyang.wang@amd.com>
 
-commit 60349e64a6c65f9f0aa118af711b3c7e137f07ff upstream.
+commit bb204f19e4a115f094a6a3c4d82fcf48862d0766 upstream.
 
-Add cputype definitions for C1-Ultra. These will be used for errata
-detection in subsequent patches.
+smu_v13_0_0_get_power_limit() and smu_v13_0_7_get_power_limit() mix
+runtime power_limit with PP table limits when reporting default/min/max.
 
-These values can be found in the C1-Ultra TRM:
+When current power limit query succeeds, default_power_limit was set to the
+runtime value instead of the PP table default, and min/max could be derived
+from inconsistent bases (MsgLimits/runtime), leading to incorrect cap info.
 
-  https://developer.arm.com/documentation/108014/0100/
+Use SocketPowerLimitAc/Dc as the PP default base (pp_limit), keep
+current_power_limit as runtime value, and derive min/max from pp_limit with
+OD percentages.
 
-... in section A.5.1 ("MIDR_EL1, Main ID Register").
-
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Signed-off-by: Will Deacon <will@kernel.org>
-[Mark: backport to v6.12.y]
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/work_items/5227
+Signed-off-by: Yang Wang <kevinyang.wang@amd.com>
+Reviewed-by: Kenneth Feng <kenneth.feng@amd.com>
+Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 1eaf26db95901ca70737503a89b831dd763c8453)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/include/asm/cputype.h |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c |   32 ++++++++++---------
+ drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c |   32 ++++++++++---------
+ 2 files changed, 35 insertions(+), 29 deletions(-)
 
---- a/arch/arm64/include/asm/cputype.h
-+++ b/arch/arm64/include/asm/cputype.h
-@@ -97,6 +97,7 @@
- #define ARM_CPU_PART_NEOVERSE_V3	0xD84
- #define ARM_CPU_PART_CORTEX_X925	0xD85
- #define ARM_CPU_PART_CORTEX_A725	0xD87
-+#define ARM_CPU_PART_C1_ULTRA		0xD8C
- #define ARM_CPU_PART_NEOVERSE_N3	0xD8E
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
+@@ -2468,28 +2468,30 @@ static int smu_v13_0_0_enable_mgpu_fan_b
+ }
  
- #define APM_CPU_PART_XGENE		0x000
-@@ -186,6 +187,7 @@
- #define MIDR_NEOVERSE_V3 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V3)
- #define MIDR_CORTEX_X925 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X925)
- #define MIDR_CORTEX_A725 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A725)
-+#define MIDR_C1_ULTRA MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_C1_ULTRA)
- #define MIDR_NEOVERSE_N3 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_N3)
- #define MIDR_THUNDERX	MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX)
- #define MIDR_THUNDERX_81XX MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX_81XX)
+ static int smu_v13_0_0_get_power_limit(struct smu_context *smu,
+-						uint32_t *current_power_limit,
+-						uint32_t *default_power_limit,
+-						uint32_t *max_power_limit,
+-						uint32_t *min_power_limit)
++				       uint32_t *current_power_limit,
++				       uint32_t *default_power_limit,
++				       uint32_t *max_power_limit,
++				       uint32_t *min_power_limit)
+ {
+ 	struct smu_table_context *table_context = &smu->smu_table;
+ 	struct smu_13_0_0_powerplay_table *powerplay_table =
+ 		(struct smu_13_0_0_powerplay_table *)table_context->power_play_table;
+ 	PPTable_t *pptable = table_context->driver_pptable;
+ 	SkuTable_t *skutable = &pptable->SkuTable;
+-	uint32_t power_limit, od_percent_upper = 0, od_percent_lower = 0;
+-	uint32_t msg_limit = skutable->MsgLimits.Power[PPT_THROTTLER_PPT0][POWER_SOURCE_AC];
+-
+-	if (smu_v13_0_get_current_power_limit(smu, &power_limit))
+-		power_limit = smu->adev->pm.ac_power ?
++	uint32_t pp_limit = smu->adev->pm.ac_power ?
+ 			      skutable->SocketPowerLimitAc[PPT_THROTTLER_PPT0] :
+ 			      skutable->SocketPowerLimitDc[PPT_THROTTLER_PPT0];
++	uint32_t power_limit = 0, od_percent_upper = 0, od_percent_lower = 0;
++	int ret;
++
++	if (current_power_limit) {
++		ret = smu_v13_0_get_current_power_limit(smu, &power_limit);
++		if (ret)
++			*current_power_limit = pp_limit;
++	}
+ 
+-	if (current_power_limit)
+-		*current_power_limit = power_limit;
+ 	if (default_power_limit)
+-		*default_power_limit = power_limit;
++		*default_power_limit = pp_limit;
+ 
+ 	if (powerplay_table) {
+ 		if (smu->od_enabled &&
+@@ -2503,15 +2505,15 @@ static int smu_v13_0_0_get_power_limit(s
+ 	}
+ 
+ 	dev_dbg(smu->adev->dev, "od percent upper:%d, od percent lower:%d (default power: %d)\n",
+-					od_percent_upper, od_percent_lower, power_limit);
++		od_percent_upper, od_percent_lower, pp_limit);
+ 
+ 	if (max_power_limit) {
+-		*max_power_limit = msg_limit * (100 + od_percent_upper);
++		*max_power_limit = pp_limit * (100 + od_percent_upper);
+ 		*max_power_limit /= 100;
+ 	}
+ 
+ 	if (min_power_limit) {
+-		*min_power_limit = power_limit * (100 - od_percent_lower);
++		*min_power_limit = pp_limit * (100 - od_percent_lower);
+ 		*min_power_limit /= 100;
+ 	}
+ 
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c
+@@ -2429,28 +2429,32 @@ static int smu_v13_0_7_enable_mgpu_fan_b
+ }
+ 
+ static int smu_v13_0_7_get_power_limit(struct smu_context *smu,
+-						uint32_t *current_power_limit,
+-						uint32_t *default_power_limit,
+-						uint32_t *max_power_limit,
+-						uint32_t *min_power_limit)
++				       uint32_t *current_power_limit,
++				       uint32_t *default_power_limit,
++				       uint32_t *max_power_limit,
++				       uint32_t *min_power_limit)
+ {
+ 	struct smu_table_context *table_context = &smu->smu_table;
+ 	struct smu_13_0_7_powerplay_table *powerplay_table =
+ 		(struct smu_13_0_7_powerplay_table *)table_context->power_play_table;
+ 	PPTable_t *pptable = table_context->driver_pptable;
+ 	SkuTable_t *skutable = &pptable->SkuTable;
+-	uint32_t power_limit, od_percent_upper = 0, od_percent_lower = 0;
+-	uint32_t msg_limit = skutable->MsgLimits.Power[PPT_THROTTLER_PPT0][POWER_SOURCE_AC];
+-
+-	if (smu_v13_0_get_current_power_limit(smu, &power_limit))
+-		power_limit = smu->adev->pm.ac_power ?
++	uint32_t pp_limit = smu->adev->pm.ac_power ?
+ 			      skutable->SocketPowerLimitAc[PPT_THROTTLER_PPT0] :
+ 			      skutable->SocketPowerLimitDc[PPT_THROTTLER_PPT0];
++	uint32_t power_limit = 0, od_percent_upper = 0, od_percent_lower = 0;
++	int ret;
++
++	if (current_power_limit) {
++		ret = smu_v13_0_get_current_power_limit(smu, &power_limit);
++		if (ret)
++			power_limit = pp_limit;
+ 
+-	if (current_power_limit)
+ 		*current_power_limit = power_limit;
++	}
++
+ 	if (default_power_limit)
+-		*default_power_limit = power_limit;
++		*default_power_limit = pp_limit;
+ 
+ 	if (powerplay_table) {
+ 		if (smu->od_enabled &&
+@@ -2464,15 +2468,15 @@ static int smu_v13_0_7_get_power_limit(s
+ 	}
+ 
+ 	dev_dbg(smu->adev->dev, "od percent upper:%d, od percent lower:%d (default power: %d)\n",
+-					od_percent_upper, od_percent_lower, power_limit);
++		od_percent_upper, od_percent_lower, pp_limit);
+ 
+ 	if (max_power_limit) {
+-		*max_power_limit = msg_limit * (100 + od_percent_upper);
++		*max_power_limit = pp_limit * (100 + od_percent_upper);
+ 		*max_power_limit /= 100;
+ 	}
+ 
+ 	if (min_power_limit) {
+-		*min_power_limit = power_limit * (100 - od_percent_lower);
++		*min_power_limit = pp_limit * (100 - od_percent_lower);
+ 		*min_power_limit /= 100;
+ 	}
+ 
 
 
 
