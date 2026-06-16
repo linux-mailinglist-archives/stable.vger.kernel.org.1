@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-264136-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266494-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ZcteL2lvMWoMjQUAu9opvQ
-	(envelope-from <stable+bounces-264136-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:44:41 +0200
+	id YdcjBrKfMWo3ogUAu9opvQ
+	(envelope-from <stable+bounces-266494-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:10:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52F3E6915B9
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:44:41 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A168B694D65
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:10:41 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="0iRh/+uy";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264136-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264136-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=eRCnbjCj;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266494-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266494-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id F09DC302B3BE
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:38:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CF39D31D8B94
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:05:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA56344CAE0;
-	Tue, 16 Jun 2026 15:38:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40C0E3DC87A;
+	Tue, 16 Jun 2026 19:05:11 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD09043E9C6;
-	Tue, 16 Jun 2026 15:38:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 008373DA5A8;
+	Tue, 16 Jun 2026 19:05:10 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781624315; cv=none; b=uuvrYdYnUzNciK4IjY+VJO5BEBj5EU/Lk6AmNKGupyAhJfZBPfGt+nPuCVyoaCky37Wx9YYttoAeiJw0T7OLgeHJFfW6c87pmjxRc7Wq5XSAU7wjofy2L0u3c7HKY7EXM2KqOCfNbu+wtqJopSvPZA9aTPzFKcllsKu7aGpfJ1Q=
+	t=1781636711; cv=none; b=jJ+ax9xu+oPKXnMjpUKqH+Yh3qZIyEQmq98LVwOYgqXFgW8x1H3mBpChvzhQXeIHOpkxttexnTuuMMUUJ7+w3XvHtQD3TC1MUbn55n7ZUHnt+PesfTVMIxeCO/j5LWrRshgU/weMXtjAbkcp7J73Uywc2UeLU29gC5WRXFxuA2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781624315; c=relaxed/simple;
-	bh=cwe31C5EpgOsUmLx//eyNcnHbfoIt7uFTfieVkJTvzM=;
+	s=arc-20240116; t=1781636711; c=relaxed/simple;
+	bh=tE1jMWTkkNdKZcYRP1Z2jPLWy1m2TjkaIdnceIFmOfs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NqI5IJfEQN2ZSNbB+1YZxLfjes4EvNLrFWXeU7gai6CTkcUbwM/Izj6c6gI5Vkyp6FFB9oflSdU+FOCu+Q3XjqbF8Yljc8Iivq3iGuNJ39IF3tHucXmfYBZcH9dLm6GZnPQUWBWo3SmY3MkRQ9ee0v0A9L4cg5lQ3GIdzr+xZlw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0iRh/+uy; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF7F51F000E9;
-	Tue, 16 Jun 2026 15:38:33 +0000 (UTC)
+	 MIME-Version; b=dquaakdax6bPpCgpc9v5rdoacKY/fDU+11KlCR25Mk696UIy3ICVXW/nWg0yD1lpB2TLOYo+FFcxzGSAq/e4MPRg3whN6Vten5Ru7aV8zlc/gltuyc6KLfRTj2zskv9PPgkQVCSihM8ACda7hmf7tuYlaLGlssb0n5pX6UKoKME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eRCnbjCj; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08EC81F000E9;
+	Tue, 16 Jun 2026 19:05:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781624314;
-	bh=ksM0UTeX+f2XUVkEd8VdgRw5NGZaVl2nDU2pMMJBYRk=;
+	s=korg; t=1781636709;
+	bh=g2nDv6+/FxUVRnsBvKZnsiU512YVzdOrX1CteChstyc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=0iRh/+uyoqubaUhB/HX87QSjfJdrdXPj/Uj3U99KN1B3MZjoulmt4VjEBp0rPYxsP
-	 /I5jZF+HOm1ixLTWAq4E3dKRett2BAMu8BbZKv9ADU0hSg9p+/Bk1EGpDubTomt1L4
-	 4Mi7nJM5G70WIOV2Qy1LrnKlFGJuVSDbMCgCubLw=
+	b=eRCnbjCjsc0sEcglM2l5TS+qUkqHD1YCiiH4s/QJsO8M1CcI61K2UhAMx6plDsFgf
+	 mHn2blzFmDD+XOCrQoIAbD7/xl2KUDWZtUuOSRuGYDaSgX7wQq9xdmiSFowUHRO4o7
+	 NYLzM4aXEzVMzxS8YYmVzPGcudQFj7D8zbMSV6og=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
-	Ulf Hansson <ulfh@kernel.org>
-Subject: [PATCH 7.0 313/378] pmdomain: imx: fix OF node refcount
+	Max Kellermann <max.kellermann@ionos.com>,
+	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
+	Ilya Dryomov <idryomov@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 248/342] ceph: only d_add() negative dentries when they are unhashed
 Date: Tue, 16 Jun 2026 20:29:04 +0530
-Message-ID: <20260616145126.722619479@linuxfoundation.org>
+Message-ID: <20260616145059.781630544@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,69 +73,146 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264136-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bartosz.golaszewski@oss.qualcomm.com,m:ulfh@kernel.org,s:lists@lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,ionos.com,ibm.com,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-266494-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:max.kellermann@ionos.com,m:Slava.Dubeyko@ibm.com,m:idryomov@gmail.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,qualcomm.com:email,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,ionos.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 52F3E6915B9
+X-Rspamd-Queue-Id: A168B694D65
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+From: Max Kellermann <max.kellermann@ionos.com>
 
-commit fba0510cd62666951dcc0221527edc0c47ae6599 upstream.
+[ Upstream commit 803447f93d75ab6e40c85e6d12b5630d281d70d6 ]
 
-for_each_child_of_node_scoped() decrements the reference count of the
-nod after each iteration. Assigning it without incrementing the refcount
-to a dynamically allocated platform device will result in a double put
-in platform_device_release(). Add the missing call to of_node_get().
+Ceph can call d_add(dentry, NULL) on a negative dentry that is already
+present in the primary dcache hash.
+
+In the current VFS that is not safe.  d_add() goes through __d_add()
+to __d_rehash(), which unconditionally reinserts dentry->d_hash into
+the hlist_bl bucket.  If the dentry is already hashed, reinserting the
+same node can corrupt the bucket, including creating a self-loop.
+Once that happens, __d_lookup() can spin forever in the hlist_bl walk,
+typically looping only on the d_name.hash mismatch check and
+eventually triggering RCU stall reports like this one:
+
+ rcu: INFO: rcu_sched self-detected stall on CPU
+ rcu:         87-....: (2100 ticks this GP) idle=3a4c/1/0x4000000000000000 softirq=25003319/25003319 fqs=829
+ rcu:         (t=2101 jiffies g=79058445 q=698988 ncpus=192)
+ CPU: 87 UID: 2952868916 PID: 3933303 Comm: php-cgi8.3 Not tainted 6.18.17-i1-amd #950 NONE
+ Hardware name: Dell Inc. PowerEdge R7615/0G9DHV, BIOS 1.6.6 09/22/2023
+ RIP: 0010:__d_lookup+0x46/0xb0
+ Code: c1 e8 07 48 8d 04 c2 48 8b 00 49 89 fc 49 89 f5 48 89 c3 48 83 e3 fe 48 83 f8 01 77 0f eb 2d 0f 1f 44 00 00 48 8b 1b 48 85 db <74> 20 39 6b 18 75 f3 48 8d 7b 78 e8 ba 85 d0 00 4c 39 63 10 74 1f
+ RSP: 0018:ff745a70c8253898 EFLAGS: 00000282
+ RAX: ff26e470054cb208 RBX: ff26e470054cb208 RCX: 000000006e958966
+ RDX: ff26e48267340000 RSI: ff745a70c82539b0 RDI: ff26e458f74655c0
+ RBP: 000000006e958966 R08: 0000000000000180 R09: 9cd08d909b919a89
+ R10: ff26e458f74655c0 R11: 0000000000000000 R12: ff26e458f74655c0
+ R13: ff745a70c82539b0 R14: d0d0d0d0d0d0d0d0 R15: 2f2f2f2f2f2f2f2f
+ FS:  00007f5770896980(0000) GS:ff26e482c5d88000(0000) knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 00007f5764de50c0 CR3: 000000a72abb5001 CR4: 0000000000771ef0
+ PKRU: 55555554
+ Call Trace:
+  <TASK>
+  lookup_fast+0x9f/0x100
+  walk_component+0x1f/0x150
+  link_path_walk+0x20e/0x3d0
+  path_lookupat+0x68/0x180
+  filename_lookup+0xdc/0x1e0
+  vfs_statx+0x6c/0x140
+  vfs_fstatat+0x67/0xa0
+  __do_sys_newfstatat+0x24/0x60
+  do_syscall_64+0x6a/0x230
+  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+This is reachable with reused cached negative dentries.  A Ceph lookup
+or atomic_open can be handed a negative dentry that is already hashed,
+and fs/ceph/dir.c then hits one of two paths that incorrectly assume
+"negative" also means "unhashed":
+
+  - ceph_finish_lookup():
+      MDS reply is -ENOENT with no trace
+      -> d_add(dentry, NULL)
+
+  - ceph_lookup():
+      local ENOENT fast path for a complete directory with shared caps
+      -> d_add(dentry, NULL)
+
+Both paths can therefore re-add an already-hashed negative dentry.
+
+Ceph already uses the correct pattern elsewhere: ceph_fill_trace() only
+calls d_add(dn, NULL) for a negative null-dentry reply when d_unhashed(dn)
+is true.
+
+Fix both fs/ceph/dir.c sites the same way: only call d_add() for a
+negative dentry when it is actually unhashed.  If the negative dentry
+is already hashed, leave it in place and reuse it as-is.
+
+This preserves the existing behavior for unhashed dentries while
+avoiding d_hash list corruption for reused hashed negatives.
 
 Cc: stable@vger.kernel.org
-Fixes: 3e4d109ee8fc ("pmdomain: imx: gpc: Simplify with scoped for each OF child loop")
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Signed-off-by: Ulf Hansson <ulfh@kernel.org>
+Fixes: 2817b000b02c ("ceph: directory operations")
+Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
+Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+[ kept existing dout() debug call instead of upstream's doutc() form when adding the d_unhashed() guard around d_add() ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pmdomain/imx/gpc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ceph/dir.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/pmdomain/imx/gpc.c
-+++ b/drivers/pmdomain/imx/gpc.c
-@@ -487,7 +487,7 @@ static int imx_gpc_probe(struct platform
- 			domain->ipg_rate_mhz = ipg_rate_mhz;
- 
- 			pd_pdev->dev.parent = &pdev->dev;
--			pd_pdev->dev.of_node = np;
-+			pd_pdev->dev.of_node = of_node_get(np);
- 			pd_pdev->dev.fwnode = of_fwnode_handle(np);
- 
- 			ret = platform_device_add(pd_pdev);
+--- a/fs/ceph/dir.c
++++ b/fs/ceph/dir.c
+@@ -719,7 +719,8 @@ struct dentry *ceph_finish_lookup(struct
+ 				d_drop(dentry);
+ 				err = -ENOENT;
+ 			} else {
+-				d_add(dentry, NULL);
++				if (d_unhashed(dentry))
++					d_add(dentry, NULL);
+ 			}
+ 		}
+ 	}
+@@ -775,7 +776,8 @@ static struct dentry *ceph_lookup(struct
+ 			__ceph_touch_fmode(ci, mdsc, CEPH_FILE_MODE_RD);
+ 			spin_unlock(&ci->i_ceph_lock);
+ 			dout(" dir %p complete, -ENOENT\n", dir);
+-			d_add(dentry, NULL);
++			if (d_unhashed(dentry))
++				d_add(dentry, NULL);
+ 			di->lease_shared_gen = atomic_read(&ci->i_shared_gen);
+ 			return NULL;
+ 		}
 
 
 
