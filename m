@@ -1,60 +1,68 @@
-Return-Path: <stable+bounces-264209-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265193-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 4vKxLL5yMWpyjgUAu9opvQ
-	(envelope-from <stable+bounces-264209-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:58:54 +0200
+	id AXMsIJKEMWrAlQUAu9opvQ
+	(envelope-from <stable+bounces-265193-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:14:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4274691965
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:58:53 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6D92692E91
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:14:57 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=kdbGCTxz;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264209-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-264209-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=e3LPEEiR;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265193-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-265193-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 90BFB306A183
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:46:58 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id BE8E9303F002
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:12:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD06746AF2B;
-	Tue, 16 Jun 2026 15:45:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86FB844DB64;
+	Tue, 16 Jun 2026 17:12:22 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E8E646AEEF;
-	Tue, 16 Jun 2026 15:45:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 545C23AE71F;
+	Tue, 16 Jun 2026 17:12:21 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781624706; cv=none; b=iJIkOs+ZuZIeiMcp9ane5EIBIijcKuMOg+UADKqwrU+nLZOER40yWo6HALNAcy2PxmgxDXGjQSatvWPetWpvMxh/INZKVPLsQE3/FX28wY5xv20WGtpAa9j7qkI5d12wb9ntWV9X8V9iT3sC6YFQu4300vo8LT+9jRiompCz09o=
+	t=1781629942; cv=none; b=KzJZ8FbTyC2JuTJcNTyDNl8WwLrU83KOqfdROaZWM+ORiQRYaWFNxrpwK5LWyyOWyCZwbq549vW0I/0DUTxnQM7T+4Q7Wpp0vqAjVrG01tOFLUnHyN4kIm5PGyA4VEq32taW9Ix/BKb6g4KjKlC8n+1djqMWg39lFL/KosZSyXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781624706; c=relaxed/simple;
-	bh=tOeX/Hb8RXTkhCs2CixhiMSAjwLpZyf/9Mn3bFnm43g=;
+	s=arc-20240116; t=1781629942; c=relaxed/simple;
+	bh=NLLr70/uNjGphFmTiqABfGAimwCdVbFhiwGgdZqjoJE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dd2T4fG5xSuvDnALLzMxd0n5S4ZI1n/cVi2MASJdr4Ays1gVOhW9HNocYaIsfb9B6H58GTQJBlOb1kceat8Z44xTxO1mSOVIj5ojEq33Z+VG0X00J+HRFn6Ev+HCQc0K+d0HdefGIolODIcFfYOSVEvfmq8NtQgRwvIq0HnfwYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kdbGCTxz; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D45E41F000E9;
-	Tue, 16 Jun 2026 15:45:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BxMFB+XZQ9IFXTDm5JY3HserwCaBB3YnPH1jlGlt+3w9vw6mXx9TeYhSnuhiZtk+EP4XzqnEkGwlj3KPiLRVTE0K/rm92VVxC+fCBhj4Hfyy91qW2RoaQM0pcMlkP2AUDVvKHwPMctzqZWxqBPOlbTsysekQVA9zijL6U0iMtvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e3LPEEiR; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 617F51F000E9;
+	Tue, 16 Jun 2026 17:12:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781624703;
-	bh=I7U8sPHMCW0RylV/BW/SW1koEmkthQwjmOtOM1Q/RCI=;
+	s=korg; t=1781629941;
+	bh=7WAo3vrAYY/yg2C8EK1XjQf6engIT5O3zu8sUcGs28k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=kdbGCTxzXkpjmgxSK0SmGt2NMURLXa8r7qbgYaG6jkPT3y9TotdFqA+GEglZ3xcxr
-	 uJWdOlK7Z0ObRXCbXKRXme6QqR3NEAmvzT0deW17ii4Z5ddJTDl/79PB2KN0xdt85d
-	 GhuySYdl4pEYg7zPjVkxPYfWynOGzPuBwTUDaOCM=
+	b=e3LPEEiRU/fIsI4HCvfOyG3+x+gRML8xXgxCV7FwcPt8rRW7dS795aCcn08dkOt9p
+	 pbCsiomOphHkBMRJDZlGHpUI3xvwaN66SZ56FLtqffkmRFm+aB/Hd5zWzDpXQj4ji/
+	 BJrr07mmyF3pgTjJ5zgwxe9jyWuwxN8NYrDPiZrc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Will Deacon <will@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>
-Subject: [PATCH 7.0 378/378] arm64: errata: Mitigate TLBI errata on Microsoft Azure Cobalt 100 CPU
+	Sunil Goutham <sgoutham@marvell.com>,
+	Linu Cherian <lcherian@marvell.com>,
+	Geetha sowjanya <gakula@marvell.com>,
+	hariprasad <hkelam@marvell.com>,
+	Subbaraya Sundeep <sbhatta@marvell.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	stable <stable@kernel.org>,
+	Sam Daly <sam@samdaly.ie>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 382/452] octeontx2-af: CGX: add bounds check to cgx_speed_mbps index
 Date: Tue, 16 Jun 2026 20:30:09 +0530
-Message-ID: <20260616145129.968969573@linuxfoundation.org>
+Message-ID: <20260616145137.009392238@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,97 +72,97 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264209-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:will@kernel.org,m:mark.rutland@arm.com,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265193-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:sgoutham@marvell.com,m:lcherian@marvell.com,m:gakula@marvell.com,m:hkelam@marvell.com,m:sbhatta@marvell.com,m:andrew+netdev@lunn.ch,m:stable@kernel.org,m:sam@samdaly.ie,m:kuba@kernel.org,m:sashal@kernel.org,m:andrew@lunn.ch,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,arm.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,lunn.ch:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,marvell.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C4274691965
+X-Rspamd-Queue-Id: E6D92692E91
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Will Deacon <will@kernel.org>
+From: Sam Daly <sam@samdaly.ie>
 
-commit 1940e70a8144bf75e6df26bf6f600862ea7f7ea1 upstream.
+[ Upstream commit c0bf0a4f3f1f5f57aa83e1400ba4f56f0abfd542 ]
 
-Commit fb091ff39479 ("arm64: Subscribe Microsoft Azure Cobalt 100 to ARM
-Neoverse N2 errata") states that Microsoft Azure Cobalt 100 CPU "is a
-Microsoft implemented CPU based on r0p0 of the ARM Neoverse N2 CPU, and
-therefore suffers from all the same errata.".
+cgx_speed_mbps has 13 elements but RESP_LINKSTAT_SPEED can yield values
+0-15. If it returns a value >= 13, this causes an out-of-bounds array
+access. Add a bounds check and default to speed 0 if the index is out of
+range.
 
-So enable the workaround for the latest broadcast TLB invalidation bug
-on these parts.
-
-Signed-off-by: Will Deacon <will@kernel.org>
-[Mark: backport to v7.0.y]
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Fixes: 61071a871ea6 ("octeontx2-af: Forward CGX link notifications to PFs")
+Cc: Sunil Goutham <sgoutham@marvell.com>
+Cc: Linu Cherian <lcherian@marvell.com>
+Cc: Geetha sowjanya <gakula@marvell.com>
+Cc: hariprasad <hkelam@marvell.com>
+Cc: Subbaraya Sundeep <sbhatta@marvell.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: stable <stable@kernel.org>
+Signed-off-by: Sam Daly <sam@samdaly.ie>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://patch.msgid.link/2026051352-refined-demise-e88d@gregkh
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/arch/arm64/silicon-errata.rst |    2 ++
- arch/arm64/Kconfig                          |    1 +
- arch/arm64/kernel/cpu_errata.c              |    1 +
- 3 files changed, 4 insertions(+)
+ drivers/net/ethernet/marvell/octeontx2/af/cgx.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/Documentation/arch/arm64/silicon-errata.rst
-+++ b/Documentation/arch/arm64/silicon-errata.rst
-@@ -352,3 +352,5 @@ stable kernels.
- +----------------+-----------------+-----------------+-----------------------------+
- | Microsoft      | Azure Cobalt 100| #3324339        | ARM64_ERRATUM_3194386       |
- +----------------+-----------------+-----------------+-----------------------------+
-+| Microsoft      | Azure Cobalt 100| #4193789        | ARM64_ERRATUM_4118414       |
-++----------------+-----------------+-----------------+-----------------------------+
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -1204,6 +1204,7 @@ config ARM64_ERRATUM_4118414
- 	  * ARM Neoverse-V2 erratum 4193787
- 	  * ARM Neoverse-V3 erratum 4193784
- 	  * ARM Neoverse-V3AE erratum 4193784
-+	  * Microsoft Azure Cobalt 100 4193789
- 	  * NVIDIA Olympus erratum T410-OLY-1029
+--- a/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
+@@ -1286,13 +1286,18 @@ static inline void link_status_user_form
+ 					   struct cgx_link_user_info *linfo,
+ 					   struct cgx *cgx, u8 lmac_id)
+ {
++	unsigned int speed;
++
+ 	linfo->link_up = FIELD_GET(RESP_LINKSTAT_UP, lstat);
+ 	linfo->full_duplex = FIELD_GET(RESP_LINKSTAT_FDUPLEX, lstat);
+-	linfo->speed = cgx_speed_mbps[FIELD_GET(RESP_LINKSTAT_SPEED, lstat)];
+ 	linfo->an = FIELD_GET(RESP_LINKSTAT_AN, lstat);
+ 	linfo->fec = FIELD_GET(RESP_LINKSTAT_FEC, lstat);
+ 	linfo->lmac_type_id = FIELD_GET(RESP_LINKSTAT_LMAC_TYPE, lstat);
  
- 	  On affected cores, some memory accesses might not be completed by
---- a/arch/arm64/kernel/cpu_errata.c
-+++ b/arch/arm64/kernel/cpu_errata.c
-@@ -364,6 +364,7 @@ static const struct arm64_cpu_capabiliti
- 			MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V3),
- 			MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V3AE),
- 			MIDR_ALL_VERSIONS(MIDR_NVIDIA_OLYMPUS),
-+			MIDR_ALL_VERSIONS(MIDR_MICROSOFT_AZURE_COBALT_100),
- 			{}
- 		})),
- 	},
++	speed = FIELD_GET(RESP_LINKSTAT_SPEED, lstat);
++	linfo->speed = speed < ARRAY_SIZE(cgx_speed_mbps) ?
++		       cgx_speed_mbps[speed] : 0;
++
+ 	if (linfo->lmac_type_id >= LMAC_MODE_MAX) {
+ 		dev_err(&cgx->pdev->dev, "Unknown lmac_type_id %d reported by firmware on cgx port%d:%d",
+ 			linfo->lmac_type_id, cgx->cgx_id, lmac_id);
 
 
 
