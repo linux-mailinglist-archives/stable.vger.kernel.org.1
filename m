@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-266026-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265594-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id C+v9L+uUMWqBnQUAu9opvQ
-	(envelope-from <stable+bounces-266026-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:24:43 +0200
+	id dmfOIeSMMWqYmQUAu9opvQ
+	(envelope-from <stable+bounces-265594-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:50:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 300986941B0
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:24:43 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1725469387E
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:50:28 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=IjLyjmYg;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266026-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266026-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=M7uRHIPZ;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265594-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265594-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3874E318AEC3
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:24:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 39E3031901E7
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:46:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B453478E3E;
-	Tue, 16 Jun 2026 18:24:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D8324418E3;
+	Tue, 16 Jun 2026 17:46:31 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4E913BFE5A;
-	Tue, 16 Jun 2026 18:24:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60C8D246762;
+	Tue, 16 Jun 2026 17:46:29 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781634269; cv=none; b=UUTwpVCSEZAWWBY+3FSPjCcX2eCCzZsyX4xQMIp2w8bOPqdhVYmjcHae/6nr+Rr5D7U5PB8IasAXwtgVa1ZXUCwpG2q+076yaLMs/W9tWWVtJR/oedB+Iuhce3ELktxoBhdI5FyS8o1WrYIOwXi/24eYya9ZhUJ1+u6KC3QX2Rw=
+	t=1781631990; cv=none; b=MXBqbXBzJ+ainVKOKiwb9Isay7ba3POTFFFwTarEc9QJ9jihjhNgC3g8uGEB32s9t8G/ZmZRsBcIYdu7DCfmMhCd0x14KRI++IkqoE1Ss6sz12Mn1hPNOgGITBzaGehEY1D0daM35Ygbh72my8+Ws6C5k83rgrQsu/QuwDeAGQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781634269; c=relaxed/simple;
-	bh=buGdPnRouGWSh89J1AVPamkvJIdrX4JGHHYWmKc2Nhw=;
+	s=arc-20240116; t=1781631990; c=relaxed/simple;
+	bh=xBt2Yv2POEUp+VZixRFAluzs85ZHZqqGsvOw5sXo45o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hnt5Boo/BLxYsVHN+yaiPUgk0DwHTP7HupEnJyMDbkFm+IqTnkRkadoDqM4qDrUnwdy3U1p+G5aTRqgwANq35grIdeS/hWrFGsdDYVdeXF7wGmj4vd/TLbaxk2lcNuXgQLBF2pL6lTlhXR2JhLEULSy8Ez0SFNLt6j9t5oxdEOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IjLyjmYg; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D07A41F000E9;
-	Tue, 16 Jun 2026 18:24:27 +0000 (UTC)
+	 MIME-Version; b=vF9KvY4/jwfodmOqgV2qC6OtfbFBYA7GMAiCjN6ARy4JAfoKYQKDgyNN+k+qobg7nh9ukYwRj+RqKdHu0RBD1vnnfO/kLaU+41vGnogiTqHyoLqEw1x4tm7TI0s/IWY3kHo9w979TnEPWsg4jbij9XnRQvVFDOGYcnuf31HO3wE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M7uRHIPZ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3811B1F00A3A;
+	Tue, 16 Jun 2026 17:46:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781634268;
-	bh=Pnrtw/h7lqk8l3Pq90xjLLRfsNPNvK+4wwC818Wr/w8=;
+	s=korg; t=1781631989;
+	bh=+SkNGYYzV+YvjrUvmeo3V2VLHtLbi7Kb3FOgVDMLyd4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=IjLyjmYgXE/GUzxuMd6stVS0ZyEt1FmmCr1vm/xa4fVdHy4Sy5KKQxWq2tnG/MYZG
-	 yZV9ovbL/M+TGVtZHKyDnGXo5sNMR9P0ZBFENv5FnspZIYHmcAqiv10b3HkCoIADLt
-	 /RIZdnu/JiFzrnVdYvTBfB70Mt25De1Olq8R7mZw=
+	b=M7uRHIPZe9zJzGkMBevxt5bRI+nXpi0r//vyRAZewN/YO/rwxaUPl5nxj/7RUea9J
+	 NX8IiD03Ga81pt+dh03fWLc09h+FWh4ehh4NMR0oF2qBbs+fE/L/P4b+MrFR+hrSLl
+	 ECVMnQ0SwChp3h8tRfyh4i5LOnuDS3oo55/28n3w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jisheng Zhang <jszhang@kernel.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulfh@kernel.org>
-Subject: [PATCH 5.15 234/411] mmc: sdhci: add signal voltage switch in sdhci_resume_host
+	Alex Hung <alex.hung@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Ray Wu <ray.wu@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.1 325/522] drm/amd/display: Fix NULL deref and buffer over-read in SDP debugfs
 Date: Tue, 16 Jun 2026 20:27:52 +0530
-Message-ID: <20260616145113.269476833@linuxfoundation.org>
+Message-ID: <20260616145141.045195880@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,85 +71,91 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266026-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jszhang@kernel.org,m:adrian.hunter@intel.com,m:ulfh@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265594-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:alex.hung@amd.com,m:harry.wentland@amd.com,m:ray.wu@amd.com,m:daniel.wheeler@amd.com,m:alexander.deucher@amd.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,amd.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 300986941B0
+X-Rspamd-Queue-Id: 1725469387E
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jisheng Zhang <jszhang@kernel.org>
+From: Harry Wentland <harry.wentland@amd.com>
 
-commit f595e8e77a51eee35e331f69321766593a845ef2 upstream.
+commit adf67034b1f61f7119295208085bfd43f85f56af upstream.
 
-I met one suspend/resume issue with sdr104 capable sdio wifi card (with
-"keep-power-in-suspend" set in DT property):
-After resuming from suspend to ram, the sdio wifi card stops working.
-Further debug shows that although ios shows the sdio card is at sdr104
-mode, the voltage is still at 3V3. This is due to missing the calling
-of ->start_signal_voltage_switch() in sdhci_resume_host().
+[Why & How]
+dp_sdp_message_debugfs_write() dereferences connector->base.state->crtc
+without checking for NULL. A connector can be connected but not bound to
+any CRTC (e.g. after hot-plug before the next atomic commit), causing a
+kernel crash when writing to the sdp_message debugfs node.
 
-Fix this issue by adding ->start_signal_voltage_switch() in
-sdhci_resume_host(). This also matches what we do for
-sdhci_runtime_resume_host().
+The function also ignores the user-provided size argument and always
+passes 36 bytes to copy_from_user(), reading past the user buffer when
+size < 36.
 
-Then the question is: why this issue hasn't reported and fixed for so
-long time. IMHO, several reasons: Some host controllers just kick off
-the runtime resume for system resume, so they benefit from the well
-supported runtime pm code; Some platforms just use the old sdio wifi
-card which doesn't need signal voltage switch at all, the default
-voltage is 3v3 after resuming.
+Fix both issues by:
+- Returning -ENODEV when connector->base.state or state->crtc is NULL
+- Clamping write_size to min(size, sizeof(data))
 
-Fixes: 6308d2905bd3 ("mmc: sdhci: add quirk for keeping card power during suspend")
-Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Fixes: c7ba3653e977 ("drm/amd/display: Generic SDP message access in amdgpu")
+Assisted-by: Copilot:claude-opus-4.6
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Ray Wu <ray.wu@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 6ab4c36a522842ff70474a1c0af2e40e50fc8300)
 Cc: stable@vger.kernel.org
-Signed-off-by: Ulf Hansson <ulfh@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/sdhci.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/mmc/host/sdhci.c
-+++ b/drivers/mmc/host/sdhci.c
-@@ -3760,6 +3760,7 @@ int sdhci_resume_host(struct sdhci_host
- 		host->pwr = 0;
- 		host->clock = 0;
- 		host->reinit_uhs = true;
-+		mmc->ops->start_signal_voltage_switch(mmc, &mmc->ios);
- 		mmc->ops->set_ios(mmc, &mmc->ios);
- 	} else {
- 		sdhci_init(host, (mmc->pm_flags & MMC_PM_KEEP_POWER));
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c
+@@ -1053,8 +1053,13 @@ static ssize_t dp_sdp_message_debugfs_wr
+ 	if (size == 0)
+ 		return 0;
+ 
++	if (!connector->base.state || !connector->base.state->crtc)
++		return -ENODEV;
++
+ 	acrtc_state = to_dm_crtc_state(connector->base.state->crtc->state);
+ 
++	write_size = min_t(size_t, size, sizeof(data));
++
+ 	r = copy_from_user(data, buf, write_size);
+ 
+ 	write_size -= r;
 
 
 
