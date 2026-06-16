@@ -1,68 +1,62 @@
-Return-Path: <stable+bounces-264738-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265257-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id EI0jB7h8MWp9kgUAu9opvQ
-	(envelope-from <stable+bounces-264738-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:41:28 +0200
+	id UwESBj6HMWrtlgUAu9opvQ
+	(envelope-from <stable+bounces-265257-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:26:22 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6733B692587
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:41:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59DED6931F7
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:26:21 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=RWORgFYZ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264738-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264738-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=aeZgpgzi;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265257-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265257-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4CB3830107E8
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:33:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 67CF43219997
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:18:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4EEF4779B1;
-	Tue, 16 Jun 2026 16:33:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 048674611CF;
+	Tue, 16 Jun 2026 17:18:02 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B58C477994;
-	Tue, 16 Jun 2026 16:33:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D82423A5E91;
+	Tue, 16 Jun 2026 17:18:00 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781627625; cv=none; b=ruQRH8fTDe71QHPDmbyLzNMTtqvadVDOdf2zWjupT15A33rPaSSKnPVoXDkgM6vwo0Y25s++CnbFWx4E0pYYDrLnAB2+pjtcgPW4cDVM+mW7tQz3X7dO6IDui/N7wo0TwN78PiiuMDet/U+Xd8Lv6LtHgDYR/R4NjJfHBbf9VtE=
+	t=1781630281; cv=none; b=J3MRleNruUtTDH5Fqr+0qNqiFrOTElN2ytv142uHNs4n3X247i3lPXW4qlEtnWpTgIE+ldi+aaA6V1YNHb/m0t0UyCKEiia7Q1EXi4xiO2fsuanrOZGgW4lbk2p8Zsj797G65ASYvNK6aLypBf2BTwP0J2H0u5oHcu8OdRca1TI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781627625; c=relaxed/simple;
-	bh=vqu/JqR55US0KfIUNgloBTojPt59v9INnAe1pUtlL5k=;
+	s=arc-20240116; t=1781630281; c=relaxed/simple;
+	bh=W6N3lHffJu3R/UekuC5k9mCDQduYsfO+eHFkYA46KL0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uIFO4slnPqcRbUmauPQXlfP+c0H778g5Ey/hGHizpDnIMb4jjDBXJtu2/8HSHLDti232+C0xuNm69dIKCoQ2cij98m6L1ELKUag/vlbXoae8Metopgrdp7fOiqIgEMxtWkpUOBHsMrw5odLH7/eSu72lyms04P8sOAbhglEnWUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RWORgFYZ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 351E11F000E9;
-	Tue, 16 Jun 2026 16:33:43 +0000 (UTC)
+	 MIME-Version; b=JMHg6wMBly5Gw6tdHaVQmHuKMLaCMnPztE73WFAwB6A/qr9m+J/czCvD7UVuSzBjRnjlKUsoZZLZ6zio8dGcc6+0F0FOH3hB5B+doeXfrqZ9Yx5eMcuRLCVb4g8c3kwlunf//g+ksuCGygYlh6t7PfTCxp5gWvD79Q42T6LydUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aeZgpgzi; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B25031F000E9;
+	Tue, 16 Jun 2026 17:17:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781627624;
-	bh=WqRg7FkMGZa8PCXynu2yKRhni4r//pj/sApQt6HzQsk=;
+	s=korg; t=1781630280;
+	bh=48MwtnqeuGY7A7rK062wh0FCNEjCA8evbCMyBSXndFs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=RWORgFYZVbd0TMld+LOJR3GVPr1xyo62jh5YvaA74RapddaRBM3CHfz47YHvxrY8/
-	 pBoaVXhbIGhmDQKN6Jlw0V3hIOMc7pwv7QFophX1QE+d9DiVseAUZboOkOknkC4HK9
-	 1SxJuQ0Wg8WH267iSFCeL/aNQmcC+KEfoezkbESQ=
+	b=aeZgpgzi5FSvE08bAW7X4kzgZ78dK6+B3hVp1xZO6LJ6aFGT4WpLTeLjGLTIbFgQG
+	 h2HNZUZW2Iwn01Ow4PekVDieq7ncEVsLlGa+3tO29iOiEbgleI6cVZo+edL34ByRG6
+	 i+rN7loJYxOCd0u0H/3bE7jhtsiKbWvbpM1clG10=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Zhengchuan Liang <zcliangcn@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Zhao Zhang <zzhan461@ucr.edu>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Xin Long <lucien.xin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 200/261] sctp: diag: reject stale associations in dump_one path
-Date: Tue, 16 Jun 2026 20:30:38 +0530
-Message-ID: <20260616145054.321432879@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	sashiko-bot <sashiko-bot@kernel.org>,
+	Peter Chen <peter.chen@cixtech.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 412/452] usb: cdns3: plat: fix leaked usb2_phy initialization on usb3_phy acquisition failure
+Date: Tue, 16 Jun 2026 20:30:39 +0530
+Message-ID: <20260616145138.429566590@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
-References: <20260616145044.869532709@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,120 +68,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264738-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:yuantan098@gmail.com,m:yifanwucs@gmail.com,m:tomapufckgml@gmail.com,m:zcliangcn@gmail.com,m:bird@lzu.edu.cn,m:zzhan461@ucr.edu,m:n05ec@lzu.edu.cn,m:lucien.xin@gmail.com,m:kuba@kernel.org,m:lucienxin@gmail.com,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265257-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:sashiko-bot@kernel.org,m:peter.chen@cixtech.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,ucr.edu];
 	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,lzu.edu.cn:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,cixtech.com:email,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 6733B692587
+X-Rspamd-Queue-Id: 59DED6931F7
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhao Zhang <zzhan461@ucr.edu>
+From: Peter Chen <peter.chen@cixtech.com>
 
-commit 5eba3e48d78edd7551b992cb7ba687019b3a78da upstream.
+[ Upstream commit e6970cda63fd4b4546aeed9d0e2f53a7c95cd09c ]
 
-The SCTP exact sock_diag lookup can hold a transport reference, block on
-lock_sock(sk), and then resume after sctp_association_free() has marked
-the association dead and freed its bind address list.
+Move usb2_phy initialization after usb3_phy acquisition.
 
-When that happens, inet_assoc_attr_size() and
-inet_diag_msg_sctpasoc_fill() can still dereference association state
-that is no longer valid for reporting. In particular,
-inet_diag_msg_sctpasoc_fill() may read an empty bind-address list as a
-real sctp_sockaddr_entry and trigger an out-of-bounds read from
-unrelated association memory.
-
-Reject the association after taking the socket lock if it has been
-reaped or detached from the endpoint, and report the lookup as stale.
-This keeps the exact dump-one path from formatting torn association
-state.
-
-Fixes: 8f840e47f190 ("sctp: add the sctp_diag.c file")
-Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Zhengchuan Liang <zcliangcn@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Zhao Zhang <zzhan461@ucr.edu>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Acked-by: Xin Long <lucien.xin@gmail.com>
-Link: https://patch.msgid.link/fac6043fa20a2ff68e12958c431836f692c51268.1780113823.git.zzhan461@ucr.edu
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: f738957277ba ("usb: cdns3: Split core.c into cdns3-plat and core.c file")
+Cc: stable <stable@kernel.org>
+Reported-by: sashiko-bot <sashiko-bot@kernel.org>
+Closes: https://lore.kernel.org/linux-devicetree/agKaEePSFknhDBg2@nchen-desktop/T/#m21e1d9c1574eb127ce03c0c2a1a49002ce435b52
+Signed-off-by: Peter Chen <peter.chen@cixtech.com>
+Link: https://patch.msgid.link/20260513085310.2217547-2-peter.chen@cixtech.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sctp/diag.c |   17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ drivers/usb/cdns3/cdns3-plat.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/net/sctp/diag.c
-+++ b/net/sctp/diag.c
-@@ -266,15 +266,15 @@ static int sctp_sock_dump_one(struct sct
+--- a/drivers/usb/cdns3/cdns3-plat.c
++++ b/drivers/usb/cdns3/cdns3-plat.c
+@@ -121,14 +121,14 @@ static int cdns3_plat_probe(struct platf
+ 	if (IS_ERR(cdns->usb2_phy))
+ 		return PTR_ERR(cdns->usb2_phy);
  
- 	lock_sock(sk);
+-	ret = phy_init(cdns->usb2_phy);
+-	if (ret)
+-		return ret;
+-
+ 	cdns->usb3_phy = devm_phy_optional_get(dev, "cdns3,usb3-phy");
+ 	if (IS_ERR(cdns->usb3_phy))
+ 		return PTR_ERR(cdns->usb3_phy);
  
--	rep = nlmsg_new(inet_assoc_attr_size(sk, assoc), GFP_KERNEL);
--	if (!rep) {
--		release_sock(sk);
--		return -ENOMEM;
-+	if (ep != assoc->ep || assoc->base.dead) {
-+		err = -ESTALE;
-+		goto out_unlock;
- 	}
- 
--	if (ep != assoc->ep) {
--		err = -EAGAIN;
--		goto out;
-+	rep = nlmsg_new(inet_assoc_attr_size(sk, assoc), GFP_KERNEL);
-+	if (!rep) {
-+		err = -ENOMEM;
-+		goto out_unlock;
- 	}
- 
- 	err = inet_sctp_diag_fill(sk, assoc, rep, req, sk_user_ns(NETLINK_CB(skb).sk),
-@@ -289,8 +289,9 @@ static int sctp_sock_dump_one(struct sct
- 	return nlmsg_unicast(sock_net(skb->sk)->diag_nlsk, rep, NETLINK_CB(skb).portid);
- 
- out:
--	release_sock(sk);
- 	kfree_skb(rep);
-+out_unlock:
-+	release_sock(sk);
- 	return err;
- }
- 
++	ret = phy_init(cdns->usb2_phy);
++	if (ret)
++		return ret;
++
+ 	ret = phy_init(cdns->usb3_phy);
+ 	if (ret)
+ 		goto err_phy3_init;
 
 
 
