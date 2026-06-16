@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-265260-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264466-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id HDxkBZuHMWoXlwUAu9opvQ
-	(envelope-from <stable+bounces-265260-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:27:55 +0200
+	id Zjj+BCl4MWqHkAUAu9opvQ
+	(envelope-from <stable+bounces-264466-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:22:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34D6E69326B
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:27:54 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99C90691FB6
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:22:00 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=DNKovTCg;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265260-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-265260-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=NsSae9oV;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264466-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264466-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1D670304AE59
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:18:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4A63D306C6D4
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:07:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27DA0478E2B;
-	Tue, 16 Jun 2026 17:18:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9648D44D031;
+	Tue, 16 Jun 2026 16:07:11 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC9AC4657D0;
-	Tue, 16 Jun 2026 17:18:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7345B3A8746;
+	Tue, 16 Jun 2026 16:07:10 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781630297; cv=none; b=Fb3KCJA7tD8qkOwA65ciO4T5ATOOfiB7l5P7PHvLEFNG+GNKXkiLXaUwVWI6YyuS9cuWlAZZsO4CpWvJVCw5Iz+YUzqCgJFrM42Rw+Wa8J3YzMJXeAtEWEY/k/LZB3nZgNMmFUty34ZozQ+mTFvtZ2tjfVIxuLN7eIUMnaWLAHI=
+	t=1781626031; cv=none; b=WDktOhpqNHMHbnkA0KtiSaPpnyNzz7Ran+BI4Eu69wyD7T7OyjAAzsiCzgZqvWFm2YPod4ay5lLLCKf2Fdp6gtflXF1KfDtE5xXXFON9J9NWcs0BAA1jQNNyeA4h5mNAoyATAifEvhdXboUfADJb0OPCKlttqW/4oppL0x6bwlM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781630297; c=relaxed/simple;
-	bh=cFqaA0iGsj57JQv//R+7D/nvXHqA0TIFk2vLKCu1f/0=;
+	s=arc-20240116; t=1781626031; c=relaxed/simple;
+	bh=m2niFnxl6FuSUucQoPdInz6UfWhW687IA40aqmftt3I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lPpHmaEFH7NT318n2ZV8Y3rXRqhAcahp9SExd31I36DVBZjzr7fR7ZM4TL745gqZW8sqqgKCLe1qsw0LkCo8DFiqKXCwcbpwFmW6sS2y4VkiOWgmgnYsIMFXBpFp+kQ9NE3A9PwCNKDOrpWDn92uU6nOUou9cLOa2IMuOIfJwTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DNKovTCg; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EECE41F000E9;
-	Tue, 16 Jun 2026 17:18:15 +0000 (UTC)
+	 MIME-Version; b=fWMb5LjDPkpZTbg6AlhtHfTcQjIXyAp/bdYtLxbebMUZeO54xEUgqGElkl0DxCPVY+6m096eNTRN1Zqogoq3sZX0NlJxFSmB77pYDRN2IVG4wBhoTMGAqd8lRVrMr1932HpbW4rY5axomF9cmMpPonJCSkNOXpHADi6clC9VSQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NsSae9oV; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B6321F000E9;
+	Tue, 16 Jun 2026 16:07:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781630296;
-	bh=1fiirbpAbdY6izSbk3cTrb1qTO0o1Ya80Vpf1XqSUAs=;
+	s=korg; t=1781626030;
+	bh=AvLY8b+D+JpC8J827mgstjUswC5ffm+B0ncUoCG2/KA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=DNKovTCgfJ+9yNPN3B8Gb7bdp95/qL1F+N/X1Ic8rjm1/VxqgFMMoMNzjsmQa9t9U
-	 +YI6Vhz50SspgaQpcg2YBrUufJbd8EpMDExVLh2Fx1lzp+CFzMK2drnoiprfiWHOb0
-	 kkSx2TtL4pXeDXNGs+1VADhq7fRp0OxSzS9KBTEY=
+	b=NsSae9oV6F4m2QZREdksr7AYCKCbq+UQ6QEjVE2j+yrb7jLqlDp+F6LKmMhAMzrMP
+	 5vtYyowPfAGyJLLFlOpcAAgzKzAHER3Le2FRR1FsiCmFNLpMZWf6Os05B1PBu/DV9J
+	 nQeCWkmja6qJBbUOJp/ZrB70Cf60bij8ctAZ8lUw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
-	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 415/452] ALSA: firewire-motu: Protect register DSP event queue positions
+	Judith Mendez <jm@ti.com>,
+	Linus Walleij <linusw@kernel.org>
+Subject: [PATCH 6.18 246/325] pinctrl: mcp23s08: Read spi-present-mask as u8 not u32
 Date: Tue, 16 Jun 2026 20:30:42 +0530
-Message-ID: <20260616145138.581454539@linuxfoundation.org>
+Message-ID: <20260616145110.746911814@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,114 +64,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,sakamocchi.jp,suse.de,kernel.org];
-	TAGGED_FROM(0.00)[bounces-265260-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:cassiogabrielcontato@gmail.com,m:o-takashi@sakamocchi.jp,m:tiwai@suse.de,m:sashal@kernel.org,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264466-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jm@ti.com,m:linusw@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	TAGGED_RCPT(0.00)[stable];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,suse.de:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,ti.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 34D6E69326B
+X-Rspamd-Queue-Id: 99C90691FB6
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+From: Judith Mendez <jm@ti.com>
 
-[ Upstream commit 98fb1c1bb11e29eb609b7200a25e136e05aa4498 ]
+commit b0c13ec17438577f90b379d448dfed1233e2c0a4 upstream.
 
-The register DSP event queue is updated under parser->lock, but
-snd_motu_register_dsp_message_parser_count_event() reads pull_pos and
-push_pos without the lock.
-snd_motu_register_dsp_message_parser_copy_event() also reads both queue
-positions before taking the lock.
+The binding (microchip,mcp23s08) specifies microchip,spi-present-mask
+as uint8, but driver would read u32, causing type mismatch. Use
+device_property_read_u8 to match binding spec, hardware (8 chips max),
+& prevent probe failure.
 
-Protect these accesses with parser->lock as well. This keeps the hwdep
-poll/read path consistent with the producer side and with the cached
-meter/parameter accessors.
-
-Fixes: 634ec0b2906e ("ALSA: firewire-motu: notify event for parameter change in register DSP model")
 Cc: stable@vger.kernel.org
-Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
-Reviewed-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20260521-alsa-firewire-motu-event-locking-v1-1-708e1c2b5e56@gmail.com
-[ converted copy_event() from manual spin_lock_irqsave/spin_unlock_irqrestore to guard(spinlock_irqsave) ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 3ad8d3ec6d87 ("dt-bindings: pinctrl: convert pinctrl-mcp23s08.txt to yaml format")
+Signed-off-by: Judith Mendez <jm@ti.com>
+Signed-off-by: Linus Walleij <linusw@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/firewire/motu/motu-register-dsp-message-parser.c |   14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/pinctrl/pinctrl-mcp23s08_spi.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/sound/firewire/motu/motu-register-dsp-message-parser.c
-+++ b/sound/firewire/motu/motu-register-dsp-message-parser.c
-@@ -393,6 +393,8 @@ unsigned int snd_motu_register_dsp_messa
- {
- 	struct msg_parser *parser = motu->message_parser;
+--- a/drivers/pinctrl/pinctrl-mcp23s08_spi.c
++++ b/drivers/pinctrl/pinctrl-mcp23s08_spi.c
+@@ -143,13 +143,13 @@ static int mcp23s08_probe(struct spi_dev
+ 	unsigned int addr;
+ 	int chips;
+ 	int ret;
+-	u32 v;
++	u8 v;
  
-+	guard(spinlock_irqsave)(&parser->lock);
-+
- 	if (parser->pull_pos > parser->push_pos)
- 		return EVENT_QUEUE_SIZE - parser->pull_pos + parser->push_pos;
- 	else
-@@ -402,14 +404,14 @@ unsigned int snd_motu_register_dsp_messa
- bool snd_motu_register_dsp_message_parser_copy_event(struct snd_motu *motu, u32 *event)
- {
- 	struct msg_parser *parser = motu->message_parser;
--	unsigned int pos = parser->pull_pos;
--	unsigned long flags;
-+	unsigned int pos;
+ 	info = spi_get_device_match_data(spi);
  
--	if (pos == parser->push_pos)
--		return false;
-+	guard(spinlock_irqsave)(&parser->lock);
- 
--	spin_lock_irqsave(&parser->lock, flags);
-+	if (parser->pull_pos == parser->push_pos)
-+		return false;
- 
-+	pos = parser->pull_pos;
- 	*event = parser->event_queue[pos];
- 
- 	++pos;
-@@ -417,7 +419,5 @@ bool snd_motu_register_dsp_message_parse
- 		pos = 0;
- 	parser->pull_pos = pos;
- 
--	spin_unlock_irqrestore(&parser->lock, flags);
--
- 	return true;
- }
+-	ret = device_property_read_u32(dev, "microchip,spi-present-mask", &v);
++	ret = device_property_read_u8(dev, "microchip,spi-present-mask", &v);
+ 	if (ret) {
+-		ret = device_property_read_u32(dev, "mcp,spi-present-mask", &v);
++		ret = device_property_read_u8(dev, "mcp,spi-present-mask", &v);
+ 		if (ret) {
+ 			dev_err(dev, "missing spi-present-mask");
+ 			return ret;
 
 
 
