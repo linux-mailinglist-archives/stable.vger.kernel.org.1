@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-264047-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265998-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id vNSPD+1tMWp3jAUAu9opvQ
-	(envelope-from <stable+bounces-264047-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:38:21 +0200
+	id ECd5AWCUMWpFnQUAu9opvQ
+	(envelope-from <stable+bounces-265998-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:22:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DBA46913BD
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:38:20 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F53D69412E
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:22:23 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=p5LLYTWn;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264047-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264047-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=co1XN1bV;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265998-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265998-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BA1DB308D33C
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:30:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F4188317BE37
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:22:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B7E943D504;
-	Tue, 16 Jun 2026 15:30:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F0E6466B64;
+	Tue, 16 Jun 2026 18:22:02 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35DC73CBE8B;
-	Tue, 16 Jun 2026 15:30:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 510503D45CB;
+	Tue, 16 Jun 2026 18:22:01 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781623845; cv=none; b=NSBYBOgSqz+v7BZx5ptSDCqgpxfD835/dOn5LsACGgvl3oNVEXrTww6qKbXqDyIxuXZNgVo/JdERcosEDINsUme9MS90JRP8aif7pl4K24qgP5sspOmNGD+JwaHhn8SUQbQ0VXJ0pzsyB6+4lnatASjc8BkLHHZMoJzuHBKAUk4=
+	t=1781634122; cv=none; b=aeolkAEQ0GJLPLlXQ/YDxwJvHwU1BYTdVcP3rS2UTqxrGz5erkeIIRBaR5tWxmMHLGGHLMsH6uqIfmZxhHrH0dYcroq7R1O74i97L6fxWj/uHv7jkIycp3/esIUsIys2Ua9eq/K/MaAcMtvg0zyvRiJiBOpLsgfVkJbcP33DXjg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781623845; c=relaxed/simple;
-	bh=+v8EG2eZymHfVcT0tyN37My22ARnv24Cf7ExSTOGyGY=;
+	s=arc-20240116; t=1781634122; c=relaxed/simple;
+	bh=PVpr63UxBemehGr+3PH63rtN+0+NWum5Ng2pfLIbYdA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DIydBkz8WeasLE8Y7T/nsOS5HcBFVlSr9/o4/R2pmWul24WDbgk7yn3H991K5IFTbOevyd6xyLakBgA3cWygNvwSsB2L5uJ0lwdLNWfE8V+0xtKa5yLJvfFa8qkM5fSScvpQXeDAuVdMvIu1ZwQxvpbz96tf1F5w5N3reoYv0kk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p5LLYTWn; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 222451F000E9;
-	Tue, 16 Jun 2026 15:30:42 +0000 (UTC)
+	 MIME-Version; b=NcZ2MfM3ikzUVoG9WHNENN8ATy6aNoMTPt7DNZXWZA5ZD1Pa5pNSw0rw/P7kFk+8h1LtB2FMQDdu0JevT7BIx8ySaEN9KpwNJwSOsBGRRrw6ZOaB96hp9pd0yfQPrpYgT9bwNFrlSGpzuRkJjx6+3xFH8eNHQQIIwuOEO/1E3Z0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=co1XN1bV; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 162291F000E9;
+	Tue, 16 Jun 2026 18:21:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781623844;
-	bh=rotieZyJCHj8D/yA4ZPNaJaNn2kUMKAS1bvEOBbslNM=;
+	s=korg; t=1781634121;
+	bh=R+6hKvyquz6DnMNrc9rAfwex4ZCHHuWB5nlaxo5sJU8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=p5LLYTWnk9e9QkUpihlHJQXcvFUajOzE7BAVkDkMrcXrGwV3k8n+UgIfCAkxHYK4L
-	 w4+mePwLKndiw/pPbL0G5pMWfXAfmho04l4NM7J6QapYJMCYvAjqCizI+e2qctH1fj
-	 jxD9t5zQz7m0XGW8ZEjxyJw/jPHLtp6P4nYbAV7A=
+	b=co1XN1bVPv62GEpG3T49e4t/PIiEFqtC575eDVDWefyiNRcOXUgWjTqixtgZubnSb
+	 NrvxjqHbn3q0axG56MeUqkcbBi2f/3k/Nc7mhy47RW20hKvjVEs9awMILtApUxsUds
+	 iuf5iSaGvu/50IahoVdUdnMeXJy/a2VXRqyAQCZA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kyle Zeng <kylebot@openai.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 7.0 212/378] ALSA: timer: Fix UAF at snd_timer_user_params()
-Date: Tue, 16 Jun 2026 20:27:23 +0530
-Message-ID: <20260616145121.511580647@linuxfoundation.org>
+	Adrian Korwel <adriank20047@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.15 206/411] USB: serial: io_ti: fix heap overflow in build_i2c_fw_hdr()
+Date: Tue, 16 Jun 2026 20:27:24 +0530
+Message-ID: <20260616145111.695542157@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,81 +71,81 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264047-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265998-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:adriank20047@gmail.com,m:johan@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kylebot@openai.com,m:tiwai@suse.de,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,openai.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7DBA46913BD
+X-Rspamd-Queue-Id: 4F53D69412E
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Adrian Korwel <adriank20047@gmail.com>
 
-commit 053a401b592be424fea9d57c789f66cd5d8cec11 upstream.
+commit 0fd2b00b2d3d05e3eaa13342b3dfb0fa85c226ae upstream.
 
-At releasing a timer object, e.g. when a userspace timer
-(CONFIG_SND_UTIMER) gets closed and snd_timer_free() is called, it
-tries to detach the timer instances and release the resources.
-However, it's still possible that other in-flight tasks are holding
-the timer instance where the to-be-deleted timer object is associated,
-and this may lead to racy accesses.
+build_i2c_fw_hdr() allocates a fixed-size buffer of
+(16*1024 - 512) + sizeof(struct ti_i2c_firmware_rec) bytes, then
+copies le16_to_cpu(img_header->Length) bytes into it without
+validating that Length fits within the available space after the
+firmware record header.
 
-Fortunately, most of ioctls dealing with the timer instance list
-already have the protection with register_mutex, and this also avoids
-such races.  But, SNDRV_TIMER_IOCTL_PARAMS isn't protected, hence the
-concurrent ioctl may lead to use-after-free.
+img_header->Length is a __le16 from the firmware file and can be
+up to 65535. check_fw_sanity() validates the total firmware size
+but not img_header->Length specifically.
 
-This patch just adds the guard with register_mutex to protect
-snd_timer_user_params() for covering the code path as a quick
-workaround.  It's no hot-path but rather a rarely issued ioctl, so the
-performance penalty doesn't matter.
+Fix by rejecting images where img_header->Length exceeds the
+available destination space.
 
-Reported-by: Kyle Zeng <kylebot@openai.com>
-Tested-by: Kyle Zeng <kylebot@openai.com>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20260606161145.1933447-2-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Adrian Korwel <adriank20047@gmail.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/core/timer.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/serial/io_ti.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/sound/core/timer.c
-+++ b/sound/core/timer.c
-@@ -1791,6 +1791,7 @@ static int snd_timer_user_params(struct
- 	struct snd_timer *t;
- 	int err;
+--- a/drivers/usb/serial/io_ti.c
++++ b/drivers/usb/serial/io_ti.c
+@@ -843,6 +843,11 @@ static int build_i2c_fw_hdr(u8 *header,
+ 	/* Pointer to fw_down memory image */
+ 	img_header = (struct ti_i2c_image_header *)&fw->data[4];
  
-+	guard(mutex)(&register_mutex);
- 	tu = file->private_data;
- 	if (!tu->timeri)
- 		return -EBADFD;
++	if (le16_to_cpu(img_header->Length) >
++			buffer_size - sizeof(struct ti_i2c_firmware_rec)) {
++		kfree(buffer);
++		return -EINVAL;
++	}
+ 	memcpy(buffer + sizeof(struct ti_i2c_firmware_rec),
+ 		&fw->data[4 + sizeof(struct ti_i2c_image_header)],
+ 		le16_to_cpu(img_header->Length));
 
 
 
