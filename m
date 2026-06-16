@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-264342-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264628-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id nNjHCDVzMWqhjgUAu9opvQ
-	(envelope-from <stable+bounces-264342-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:00:53 +0200
+	id yLwJCu56MWq4kQUAu9opvQ
+	(envelope-from <stable+bounces-264628-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:33:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BA516919E3
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:00:52 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 746CF692361
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:33:49 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=1uGbj2id;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264342-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264342-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=IxK1wh55;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264628-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264628-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A054330AF380
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:56:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 47FA331E4C30
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:21:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CB9144DB6D;
-	Tue, 16 Jun 2026 15:56:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12F7346AF14;
+	Tue, 16 Jun 2026 16:21:44 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7FD744CAF9;
-	Tue, 16 Jun 2026 15:56:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB0EC4508E4;
+	Tue, 16 Jun 2026 16:21:42 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781625388; cv=none; b=IPW/ZJIu6ak8CQYWJ7xgNu0nMTat1VvfwT1gGl+xpbWRMtmjGZe2rctHykjD9ugzSlI2WxPgpsOTbHeW3+X6WFFA6GgMhJnafl7GNTJ3/obcqyToqAu3FNkVs/zDrpevxIILHh4N7OhyYwUrblrCFu5ghdrbmHBqoWIa8noLXvo=
+	t=1781626903; cv=none; b=WkysIyz87yDqaIl0pBgX26FrwugNQ8/S2p1cp7eUuBgSgsfJ1AYHi7DE3zkUtpY5YH7nHXXRHqLwZDpmUsMdp9OhAV5kL79izrcRQLraLitAwUX3tB5ks6r8oN4lI6G7omvjivY2etj3boi/GhoOIFn/dfYzOUPKAo7nRD3DblI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781625388; c=relaxed/simple;
-	bh=clAr/0Xl5MGQGm7VSLdShiUcjUEQ3Pay5iGyt+pMjLs=;
+	s=arc-20240116; t=1781626903; c=relaxed/simple;
+	bh=dT63aIfT90nJ3bpGj5KVLL1MP4GqiyMyfOxZ2AqnK6Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nTwlUWtc6LBT34B096yVOfmlWzqOjc6DFlxTeGrEkb+jJovQkrG4lsHILIavZmJpYfj6lO23WT1ugD+NVEePJcvT8jSk5KXVXskUi0Z1RCaHlDOjy7+NFXVnHN4gdqW9ntA/yF/nUSqHmZGe4AnOan37LcIeicnpb5X6adju000=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1uGbj2id; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C74D51F000E9;
-	Tue, 16 Jun 2026 15:56:26 +0000 (UTC)
+	 MIME-Version; b=MT5NW19aFrwvDrWLUBptevhgZeYAnWN2zZ0x+HVGnW2o2hiwS2OvDroaj4sGyVsMO5UUrZOSyXYd8MGDxLKYIcotO0z69PmZWjfSPZbfVuDLVzAzSE/mVPOp7mU/rkmtLKQlGorEoLAoGksuqknet+z8JPLsJjufb2rOrLHVBtI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IxK1wh55; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED4941F000E9;
+	Tue, 16 Jun 2026 16:21:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781625387;
-	bh=RinjpnmoG/jSfhwNFHsUlxm3Sx+L0fSM98RlbEwuL7U=;
+	s=korg; t=1781626902;
+	bh=XJMqU8LHyU8DCw9SN5/HzlLfaez06qCMEkmAw6bKYmA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=1uGbj2id5AOMKE9orEXr5/zU2KbCfX7k+Kj/7h4yL+UfeOj6H/YM8e8v3VNaYs/dk
-	 +kA45YDAJu+foRhnGICBFiMbRosaJ6lYc1zhsIwwHiXKOGqbVmLd+6/M8j7NAHEd4R
-	 c1lxgVsyE+4OUqyMOOu3TBvEcKKqQyuXpW3N8qBg=
+	b=IxK1wh55REzlgD04WhoJ+ad4ZXgn8MhxXR7jLunfxBKcuOL+tWnY0/FP8qjdmQBZ7
+	 Tk63fdlwSdmrAWCxuKx+7G7bct0xS5JPJiZePRoKIpQiyIUgWyQUcMJqx9uOhrsVyW
+	 o6F/z1dgawj4qsOgmV1V0O7ZQpxJTMBPU0xYXxaM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiawen Wu <jiawenwu@trustnetic.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Ruoyu Wang <ruoyuw560@gmail.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 133/325] net: txgbe: optimize the flow to setup PHY for AML devices
+Subject: [PATCH 6.12 091/261] gpio: zynq: fix runtime PM leak on remove
 Date: Tue, 16 Jun 2026 20:28:49 +0530
-Message-ID: <20260616145104.358541016@linuxfoundation.org>
+Message-ID: <20260616145049.252311036@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,197 +72,72 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264342-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264628-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:ruoyuw560@gmail.com,m:bartosz.golaszewski@oss.qualcomm.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jiawenwu@trustnetic.com,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oss.qualcomm.com,kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,trustnetic.com:email,msgid.link:url,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,qualcomm.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8BA516919E3
+X-Rspamd-Queue-Id: 746CF692361
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiawen Wu <jiawenwu@trustnetic.com>
+From: Ruoyu Wang <ruoyuw560@gmail.com>
 
-[ Upstream commit 1f863ce5c71276710a7689c88bf4003fa5173998 ]
+[ Upstream commit 6edb934de9bda3b7abcec856eaee6fc8b4278dd1 ]
 
-To adapt to new firmware for AML devices, the driver should send the
-"SET_LINK_CMD" to the firmware only once when switching PHY interface
-mode, and no longer needs to re-trigger PHY configuration based on the
-RX signal interrupt (TXGBE_GPIOBIT_3).
+pm_runtime_get_sync() increments the runtime PM usage counter even when it
+returns an error. zynq_gpio_remove() uses it to keep the controller active
+while removing the GPIO chip, but never drops the usage counter again.
 
-In previous firmware versions, the PHY was configured only after receiving
-"SET_LINK_CMD", and might remain incomplete if the RX signal was lost.
-To handle this case, the driver used TXGBE_GPIOBIT_3 interrupt to resend
-the command. This workaround is no longer necessary with the new firmware.
+Balance the get with pm_runtime_put_noidle() after disabling runtime PM.
 
-And the unknown link speed is permitted in the mailbox buffer.
-
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
-Link: https://patch.msgid.link/20251014061726.36660-3-jiawenwu@trustnetic.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Stable-dep-of: 0487cfca4651 ("net: txgbe: initialize module info buffer")
+Fixes: 3242ba117e9b ("gpio: Add driver for Zynq GPIO controller")
+Signed-off-by: Ruoyu Wang <ruoyuw560@gmail.com>
+Link: https://patch.msgid.link/20260609073313.5-1-ruoyuw560@gmail.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/wangxun/libwx/wx_type.h  |  2 -
- .../net/ethernet/wangxun/txgbe/txgbe_aml.c    | 50 ++++++-------------
- .../net/ethernet/wangxun/txgbe/txgbe_type.h   |  1 +
- 3 files changed, 15 insertions(+), 38 deletions(-)
+ drivers/gpio/gpio-zynq.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_type.h b/drivers/net/ethernet/wangxun/libwx/wx_type.h
-index 2f8319e031820c..d367644debef36 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_type.h
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_type.h
-@@ -1271,8 +1271,6 @@ struct wx {
- 
- 	/* PHY stuff */
- 	bool notify_down;
--	int adv_speed;
--	int adv_duplex;
- 	unsigned int link;
- 	int speed;
- 	int duplex;
-diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c
-index 08b9b426f64846..80413504e4bc86 100644
---- a/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c
-+++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c
-@@ -19,8 +19,8 @@ void txgbe_gpio_init_aml(struct wx *wx)
- {
- 	u32 status;
- 
--	wr32(wx, WX_GPIO_INTTYPE_LEVEL, TXGBE_GPIOBIT_2 | TXGBE_GPIOBIT_3);
--	wr32(wx, WX_GPIO_INTEN, TXGBE_GPIOBIT_2 | TXGBE_GPIOBIT_3);
-+	wr32(wx, WX_GPIO_INTTYPE_LEVEL, TXGBE_GPIOBIT_2);
-+	wr32(wx, WX_GPIO_INTEN, TXGBE_GPIOBIT_2);
- 
- 	status = rd32(wx, WX_GPIO_INTSTATUS);
- 	for (int i = 0; i < 6; i++) {
-@@ -42,11 +42,6 @@ irqreturn_t txgbe_gpio_irq_handler_aml(int irq, void *data)
- 		wr32(wx, WX_GPIO_EOI, TXGBE_GPIOBIT_2);
- 		wx_service_event_schedule(wx);
- 	}
--	if (status & TXGBE_GPIOBIT_3) {
--		set_bit(WX_FLAG_NEED_LINK_CONFIG, wx->flags);
--		wx_service_event_schedule(wx);
--		wr32(wx, WX_GPIO_EOI, TXGBE_GPIOBIT_3);
--	}
- 
- 	wr32(wx, WX_GPIO_INTMASK, 0);
- 	return IRQ_HANDLED;
-@@ -96,6 +91,9 @@ static int txgbe_set_phy_link_hostif(struct wx *wx, int speed, int autoneg, int
- 	case SPEED_10000:
- 		buffer.speed = TXGBE_LINK_SPEED_10GB_FULL;
- 		break;
-+	default:
-+		buffer.speed = TXGBE_LINK_SPEED_UNKNOWN;
-+		break;
- 	}
- 
- 	buffer.fec_mode = TXGBE_PHY_FEC_AUTO;
-@@ -106,19 +104,18 @@ static int txgbe_set_phy_link_hostif(struct wx *wx, int speed, int autoneg, int
- 					 WX_HI_COMMAND_TIMEOUT, false);
+diff --git a/drivers/gpio/gpio-zynq.c b/drivers/gpio/gpio-zynq.c
+index cc53e6940ad7e6..50fa4938161dde 100644
+--- a/drivers/gpio/gpio-zynq.c
++++ b/drivers/gpio/gpio-zynq.c
+@@ -1015,6 +1015,7 @@ static void zynq_gpio_remove(struct platform_device *pdev)
+ 	gpiochip_remove(&gpio->chip);
+ 	device_set_wakeup_capable(&pdev->dev, 0);
+ 	pm_runtime_disable(&pdev->dev);
++	pm_runtime_put_noidle(&pdev->dev);
  }
  
--static void txgbe_get_link_capabilities(struct wx *wx)
-+static void txgbe_get_link_capabilities(struct wx *wx, int *speed, int *duplex)
- {
- 	struct txgbe *txgbe = wx->priv;
- 
- 	if (test_bit(PHY_INTERFACE_MODE_25GBASER, txgbe->sfp_interfaces))
--		wx->adv_speed = SPEED_25000;
-+		*speed = SPEED_25000;
- 	else if (test_bit(PHY_INTERFACE_MODE_10GBASER, txgbe->sfp_interfaces))
--		wx->adv_speed = SPEED_10000;
-+		*speed = SPEED_10000;
- 	else
--		wx->adv_speed = SPEED_UNKNOWN;
-+		*speed = SPEED_UNKNOWN;
- 
--	wx->adv_duplex = wx->adv_speed == SPEED_UNKNOWN ?
--			 DUPLEX_HALF : DUPLEX_FULL;
-+	*duplex = *speed == SPEED_UNKNOWN ? DUPLEX_HALF : DUPLEX_FULL;
- }
- 
- static void txgbe_get_phy_link(struct wx *wx, int *speed)
-@@ -138,23 +135,11 @@ static void txgbe_get_phy_link(struct wx *wx, int *speed)
- 
- int txgbe_set_phy_link(struct wx *wx)
- {
--	int speed, err;
--	u32 gpio;
-+	int speed, duplex, err;
- 
--	/* Check RX signal */
--	gpio = rd32(wx, WX_GPIO_EXT);
--	if (gpio & TXGBE_GPIOBIT_3)
--		return -ENODEV;
-+	txgbe_get_link_capabilities(wx, &speed, &duplex);
- 
--	txgbe_get_link_capabilities(wx);
--	if (wx->adv_speed == SPEED_UNKNOWN)
--		return -ENODEV;
--
--	txgbe_get_phy_link(wx, &speed);
--	if (speed == wx->adv_speed)
--		return 0;
--
--	err = txgbe_set_phy_link_hostif(wx, wx->adv_speed, 0, wx->adv_duplex);
-+	err = txgbe_set_phy_link_hostif(wx, speed, 0, duplex);
- 	if (err) {
- 		wx_err(wx, "Failed to setup link\n");
- 		return err;
-@@ -230,14 +215,7 @@ int txgbe_identify_sfp(struct wx *wx)
- 		return -ENODEV;
- 	}
- 
--	err = txgbe_sfp_to_linkmodes(wx, id);
--	if (err)
--		return err;
--
--	if (gpio & TXGBE_GPIOBIT_3)
--		set_bit(WX_FLAG_NEED_LINK_CONFIG, wx->flags);
--
--	return 0;
-+	return txgbe_sfp_to_linkmodes(wx, id);
- }
- 
- void txgbe_setup_link(struct wx *wx)
-diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h b/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
-index be78f8f61a7950..34920b49d0c09b 100644
---- a/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
-+++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
-@@ -314,6 +314,7 @@ void txgbe_up(struct wx *wx);
- int txgbe_setup_tc(struct net_device *dev, u8 tc);
- void txgbe_do_reset(struct net_device *netdev);
- 
-+#define TXGBE_LINK_SPEED_UNKNOWN        0
- #define TXGBE_LINK_SPEED_10GB_FULL      4
- #define TXGBE_LINK_SPEED_25GB_FULL      0x10
- 
+ static struct platform_driver zynq_gpio_driver = {
 -- 
 2.53.0
 
