@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-264705-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266197-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id EjvFKZx7MWoDkgUAu9opvQ
-	(envelope-from <stable+bounces-264705-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:36:44 +0200
+	id P+2pDkOZMWplnwUAu9opvQ
+	(envelope-from <stable+bounces-266197-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:43:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 500EC692425
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:36:44 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C67676945F5
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:43:14 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=sNGGuyGn;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264705-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264705-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="Y0/9ap5M";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266197-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266197-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A8FC6300FB4B
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:30:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CC7AF31CEC90
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:39:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B3DD472786;
-	Tue, 16 Jun 2026 16:30:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9B824779B0;
+	Tue, 16 Jun 2026 18:39:23 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9AC644DB64;
-	Tue, 16 Jun 2026 16:30:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 763A93D669D;
+	Tue, 16 Jun 2026 18:39:22 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781627431; cv=none; b=B0IlVce+7zX+qOaBar7pukk/18ZJeOCZy3+mrs3J+TmsKgJ7A6tyzxAlu04ohTBmaPDYq0U9AbjYP1iU4Owy6m2DbVPyGvXwKEwYp4iv8azHwmxo9kbIQxUfcEDemKg8v7rmgWEMc4mC2a1Id2AmbftYxw0fMV/JkOCQY7pWbOw=
+	t=1781635163; cv=none; b=uYFeAQ/HDX7Gtko6qhEgu8tQSoEMabbU1twVpjEACfuK+H5lU+/mJ3PXLxv8P77q9vzGbK1kXsBCWll0Lzx4cZDu8JVmMN6xTb2fxEDlM3CW9lfG+2TF/tWrMIVrL+YOMXJcek4FMIFGlkyml0Kbk9P5Gt1VQOV92an6Tp8E+Mo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781627431; c=relaxed/simple;
-	bh=hl4h0bnrt76QXDyP3bwReIxfEt1z+7B3XrrsSS6vvaQ=;
+	s=arc-20240116; t=1781635163; c=relaxed/simple;
+	bh=lxc91tWlr8LnTSbHz0krrCNDmlliIhgL6s7H33BoPuQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S7ka0MwkUhhmOHda8naICoq0bPyp+3UF7z2sLD5W+kNdeLKPFGHnazf8AvCepeGPlyWKdibDuJfmU8QNc6XCRL5ZqsZSdmRJATyjykv+dZyMHVMRrHJ9DLEocD+TeM/NjF+mb1yHvixNWQNcaxdogSs0yILjoErEg+Y4Q6Ll4HU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sNGGuyGn; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0157B1F000E9;
-	Tue, 16 Jun 2026 16:30:29 +0000 (UTC)
+	 MIME-Version; b=QLCcqUXRsmPP5uCCz+p+AcYMpytoalTYq/m3oPUvdPD1YPttRM5/ycuSUNa2OCTG6yU9GG0NBV7ktzJX3xfzcSWAjoIIM7pv84a//PQNw+SQOLYkLUJn+MRBuzocHSKmgqn3rc7LoeBNA8oS7/inEeyPMAumfP2n/LXLGrKfSh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y0/9ap5M; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AA841F000E9;
+	Tue, 16 Jun 2026 18:39:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781627430;
-	bh=G+7lNwwYAp2lCGzVBop2FHXYZTZkNl9f58M/ulB7PZ4=;
+	s=korg; t=1781635162;
+	bh=BikgtaG1LiJ8D3QhEp6SNiD7D1Qi1O0sfdL9bGJCYKk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=sNGGuyGnX6IXgvFzUm351cl78hqWrp1gxO5Fc6KH5n+rM2L9/oTm0SiQ6+BKIRyjE
-	 3bOPtn7QGY71edCbTHrwwFof2/saoyNbN32wCUudPLaoDEBUrccwyFSj+4T/DJF9dM
-	 f/OPlp3eIhG/BA3HDC0j4Nnd050SQkV3L1dTUnO0=
+	b=Y0/9ap5MChsCanv6CGgWW5JGxlOQEadgIidK3vn9JZ8xgxFNkFWYlBUs7lkwBjt9Y
+	 e1gwWkLYYseEG8vdHSpOydCIZu0VmDQLqctUcc9l23TdJ8x3SoFZmoD741iaM0v0o/
+	 Dp2SEo4gE3Zvnz0t+3pm/ix+Hk+yLw+VdUBhH/x8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Christian Brauner (Amutable)" <brauner@kernel.org>
-Subject: [PATCH 6.12 169/261] pidfd: refuse access to tasks that have started exiting harder
+	Minh Nguyen <minhnguyen.080505@gmail.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 369/411] net: skbuff: fix missing zerocopy reference in pskb_carve helpers
 Date: Tue, 16 Jun 2026 20:30:07 +0530
-Message-ID: <20260616145052.904014255@linuxfoundation.org>
+Message-ID: <20260616145120.939704891@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
-References: <20260616145044.869532709@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,86 +68,131 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-264705-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,redhat.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-266197-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:brauner@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:minhnguyen.080505@gmail.com,m:willemb@google.com,m:pabeni@redhat.com,m:sashal@kernel.org,m:minhnguyen080505@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 500EC692425
+X-Rspamd-Queue-Id: C67676945F5
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Brauner <brauner@kernel.org>
+From: Minh Nguyen <minhnguyen.080505@gmail.com>
 
-commit 62c4d31d78294bd61cf3403626b789e854357177 upstream.
+[ Upstream commit 98d0912e9f841e5529a5b89a972805f34cb1c69d ]
 
-The recent ptrace fix closed a hole where someone could rely on task->mm
-becoming NULL during do_exit() to bypass dumpability checks. This api
-here leans on on the very same check and so inherits the fix.
+pskb_carve_inside_header() and pskb_carve_inside_nonlinear() both copy
+the old skb_shared_info header into a new buffer via memcpy(), which
+includes the destructor_arg pointer (uarg) for MSG_ZEROCOPY skbs.
+Neither function calls net_zcopy_get() for the new shinfo, creating an
+unaccounted holder: every skb_shared_info with destructor_arg set will
+call skb_zcopy_clear() once when freed, but the corresponding
+net_zcopy_get() was never called for the new copy. Repeated calls
+drive uarg->refcnt to zero prematurely, freeing ubuf_info_msgzc while
+TX skbs still hold live destructor_arg pointers.
 
-But there is no good reason to let it succeed at all once the target has
-entered do_exit(). PF_EXITING is set by exit_signals() at the very top
-of do_exit(), before exit_mm() and exit_files() run. Once we observe it,
-the task is committed to dying and exit_files() will release the fdtable
-shortly.
+KASAN reports use-after-free on a freed ubuf_info_msgzc:
 
-Fixes: 8649c322f75c ("pid: Implement pidfd_getfd syscall")
+  BUG: KASAN: slab-use-after-free in skb_release_data+0x77b/0x810
+  Read of size 8 at addr ffff88801574d3e8 by task poc/220
+
+  Call Trace:
+   skb_release_data+0x77b/0x810
+   kfree_skb_list_reason+0x13e/0x610
+   skb_release_data+0x4cd/0x810
+   sk_skb_reason_drop+0xf3/0x340
+   skb_queue_purge_reason+0x282/0x440
+   rds_tcp_inc_free+0x1e/0x30
+   rds_recvmsg+0x354/0x1780
+   __sys_recvmsg+0xdf/0x180
+
+  Allocated by task 219:
+   msg_zerocopy_realloc+0x157/0x7b0
+   tcp_sendmsg_locked+0x2892/0x3ba0
+
+  Freed by task 219:
+   ip_recv_error+0x74a/0xb10
+   tcp_recvmsg+0x475/0x530
+
+The skb consuming the late access still referenced the same uarg via
+shinfo->destructor_arg copied by pskb_carve_inside_nonlinear() without
+a refcount bump. This has been verified to be reliably exploitable: a
+working proof-of-concept achieves full root privilege escalation from
+an unprivileged local user on a default kernel configuration.
+
+The fix follows the pattern of pskb_expand_head() which has the same
+memcpy/cloned structure. For pskb_carve_inside_header(), net_zcopy_get()
+is placed after skb_orphan_frags() succeeds, so the orphan error path
+needs no cleanup. For pskb_carve_inside_nonlinear(), net_zcopy_get() is
+placed after all failure points and just before skb_release_data(), so
+no error path needs cleanup at all -- matching pskb_expand_head() more
+closely and avoiding the need for a balancing net_zcopy_put().
+
+Fixes: 6fa01ccd8830 ("skbuff: Add pskb_extract() helper function")
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260518-obgleich-petersilie-2d77ccccf9b9@brauner
-Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+Assisted-by: Claude:claude-sonnet-4-6
+Signed-off-by: Minh Nguyen <minhnguyen.080505@gmail.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20260526041240.329462-1-minhnguyen.080505@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/pid.c |    8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ net/core/skbuff.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/kernel/pid.c
-+++ b/kernel/pid.c
-@@ -674,10 +674,12 @@ static struct file *__pidfd_fget(struct
- 	if (ret)
- 		return ERR_PTR(ret);
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -6256,6 +6256,8 @@ static int pskb_carve_inside_header(stru
+ 			kfree(data);
+ 			return -ENOMEM;
+ 		}
++		if (skb_zcopy(skb))
++			net_zcopy_get(skb_zcopy(skb));
+ 		for (i = 0; i < skb_shinfo(skb)->nr_frags; i++)
+ 			skb_frag_ref(skb, i);
+ 		if (skb_has_frag_list(skb))
+@@ -6404,6 +6406,8 @@ static int pskb_carve_inside_nonlinear(s
+ 		kfree(data);
+ 		return -ENOMEM;
+ 	}
++	if (skb_zcopy(skb))
++		net_zcopy_get(skb_zcopy(skb));
+ 	skb_release_data(skb);
  
--	if (ptrace_may_access(task, PTRACE_MODE_ATTACH_REALCREDS))
--		file = fget_task(task, fd);
--	else
-+	if (!ptrace_may_access(task, PTRACE_MODE_ATTACH_REALCREDS))
- 		file = ERR_PTR(-EPERM);
-+	else if (task->flags & PF_EXITING)
-+		file = ERR_PTR(-ESRCH);
-+	else
-+		file = fget_task(task, fd);
- 
- 	up_read(&task->signal->exec_update_lock);
- 
+ 	skb->head = data;
 
 
 
