@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-265446-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265919-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id leBOHg2JMWq/lwUAu9opvQ
-	(envelope-from <stable+bounces-265446-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:34:05 +0200
+	id mK5gGbGSMWptnAUAu9opvQ
+	(envelope-from <stable+bounces-265919-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:15:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF6DD693436
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:34:04 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 558E2693F51
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:15:12 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=TZol5tVS;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265446-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265446-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=EQUxla0I;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265919-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-265919-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E7AE9302F4C4
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:34:03 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 64FC63017C9A
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:14:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66A303A3E78;
-	Tue, 16 Jun 2026 17:34:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAD003D45CB;
+	Tue, 16 Jun 2026 18:14:49 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17D764502F;
-	Tue, 16 Jun 2026 17:34:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FF093D75CE;
+	Tue, 16 Jun 2026 18:14:47 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781631241; cv=none; b=GtyjCrEZmWd+fRkl8+ToZVwCxTPmhtUD51Ovvz7f4Xr1SjbMZ7UBbKtUC+COlDGqqLGS5H7UNy7u3EEhBnNzelII8FzjF9rTrM22RiXK0t52QZiriCEiPA3QQLvP1jO9CEQvvzhPBG5LwEOAR1gpM+RufgX6k7vEWxRIRhRVMWk=
+	t=1781633689; cv=none; b=CWiyELKoU0kM1VeSv3msJKNS6TKBnpW67cl6GFYEOvzXywjnCfuWiTYicglkh9Jhzj7x3O1w0MGpiKKeNqNU7HqPpCU4XVJw7DOxf4rFlvvQLnns7BLtIFNOBLlUpxj6GYVYRuKcS63WnpzD+BIUfh7iO30mRXKe3GPLWfbvQ1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781631241; c=relaxed/simple;
-	bh=eliPfGWWKko4vlliecowt7ozxYbXaY61PuHYSSLNSos=;
+	s=arc-20240116; t=1781633689; c=relaxed/simple;
+	bh=H8r2fbVvsawdmeojeXDmOAHFGG+1tZjhhNtjVfmnAi4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kxeWTJvZioPZaygw93+QZXLHVtznEQ9J6K7Yc6aalBHGkWw3h/AvXddphsuU8zg6dnxqJ/z/7FZMImYezWLR2towPwA2duwFrxUYIrjsBLLrweyhBaq/GhIYfQNr42zTPB+QvYvJTP857U7Fe0nb4ssIACKGNU3eg8LW4QcD3Oo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TZol5tVS; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 178621F000E9;
-	Tue, 16 Jun 2026 17:33:58 +0000 (UTC)
+	 MIME-Version; b=Yf24OvOGdj5QeT+1ajIjwFTBQiH7p3/idr10lpuWo/cvPrrAqooz6PMI7twwhci91Q/Ipvli7r7fAYQ3bunnzC65bppmqupSyv9uIyt9Nk/aK2rDV2QwHYXvmf5XmzJyq2lh/ijknbxbSZ1qZiMaxT9NAJuTmOPNYl7YGg88bnQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EQUxla0I; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A01761F000E9;
+	Tue, 16 Jun 2026 18:14:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781631240;
-	bh=tR1JCSMvHR1tTfkwnYS78PSFp51qkIqL7r/GSPPC9Ys=;
+	s=korg; t=1781633687;
+	bh=hwQ3FnyyfuBY+3E35Zj4JeSrLOgAyJ6nauPnrpLD6Cg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=TZol5tVSNmKJWvIKncJ9wrB9jTXBeIwzy6utv6PNNA8E8RO5nHoHCl4MjKNeRBG50
-	 mBUNT9/erM6vjHrdWh8btR9qzaByGQlRkCDCsdEg8WCqC3DChn01HXGdvEr6PvdSee
-	 82WUmA24KND+BRHgb9TEqqxip06DC1ETMb85K/TQ=
+	b=EQUxla0IUBErzYmBSImEe5Anx/42nnwKwT2eCFbH5tZ2x8VWVQkI1HcuBX8+4I9MA
+	 dF2CXQPLjLd7M+Bf2O/vZjMxo+xRJ6BfnZvKVGFmL8pE8/52efLqRw8jWBVIABFlt1
+	 zmerXBq5pzmNWhPg/g1PYn8ZTP4sxTv+9FZVh0NY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei-Cheng Chen <weichengc@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 184/522] xhci: tegra: Fix ghost USB device on dual-role port unplug
+	Ping Cheng <ping.cheng@wacom.com>,
+	Lee Jones <lee@kernel.org>,
+	Benjamin Tissoires <bentiss@kernel.org>
+Subject: [PATCH 5.15 093/411] HID: wacom: Fix OOB write in wacom_hid_set_device_mode()
 Date: Tue, 16 Jun 2026 20:25:31 +0530
-Message-ID: <20260616145134.726368907@linuxfoundation.org>
+Message-ID: <20260616145105.159669302@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,22 +72,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265446-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265919-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:weichengc@nvidia.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:ping.cheng@wacom.com,m:lee@kernel.org,m:bentiss@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -97,197 +98,90 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,msg.data:url,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,wacom.com:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: DF6DD693436
+X-Rspamd-Queue-Id: 558E2693F51
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei-Cheng Chen <weichengc@nvidia.com>
+From: Lee Jones <lee@kernel.org>
 
-[ Upstream commit 5a4c828b8b29b47534814ade26d9aee09d5101fc ]
+commit c0a8899e02ddebd51e2589835182c239c2e224ae upstream.
 
-When a USB device is unplugged from the dual-role port, the device-mode
-path in tegra_xhci_id_work() explicitly clears both SS and HS port power
-via direct hub_control ClearPortFeature(POWER) calls. This preempts the
-xHCI controller's normal disconnect processing -- PORT_CSC is never
-generated, the USB core never sees the disconnect, and the device remains
-in its internal tree as a ghost visible in lsusb.
+wacom_hid_set_device_mode() currently assumes that the HID_DG_INPUTMODE
+usage is always located in the first field (field[0]) of the feature report.
+However, a device can specify HID_DG_INPUTMODE in a different field.
 
-Add an otg_set_port_power flag to control whether the dual-role switch
-path performs explicit port power management. SoCs that need it
-(Tegra124 / Tegra210 / Tegra186) set the flag; later SoCs (Tegra194 and
-beyond) rely on the PHY mode change to handle disconnect naturally and
-skip all port power calls.
+If HID_DG_INPUTMODE is in a field other than the first one and the first
+field has a report_count smaller than the usage_index of HID_DG_INPUTMODE,
+this leads to an out-of-bounds write to r->field[0]->value.
 
-Within the port power path, otg_reset_sspi additionally gates the SSPI
-reset sequence on host-mode entry for SoCs that require it.
+Fix this by storing the field index of HID_DG_INPUTMODE in 'struct
+hid_data' during feature mapping.  In wacom_hid_set_device_mode(), use
+this stored field index to access the correct field and add bounds
+checks to ensure both the field index and the value index are within
+valid ranges before writing.
 
-Flags set per SoC:
-  Tegra124, Tegra186  -> otg_set_port_power
-  Tegra210            -> otg_set_port_power, otg_reset_sspi
-  Tegra194 and later  -> (none)
-
-[ Backport to 6.1.y: keep the host-mode snapshot in the existing
-  tegra->lock section, retain pm_runtime_mark_last_busy() in the host
-  port-power path, and omit the newer Tegra234 entry. ]
-
-Fixes: f836e7843036 ("usb: xhci-tegra: Add OTG support")
 Cc: stable@vger.kernel.org
-Signed-off-by: Wei-Cheng Chen <weichengc@nvidia.com>
-Link: https://patch.msgid.link/20260505112630.217704-1-weichengc@nvidia.com
+Fixes: 5ae6e89f7409 ("HID: wacom: implement the finger part of the HID generic handling")
+Tested-by: Ping Cheng <ping.cheng@wacom.com>
+Reviewed-by: Ping Cheng <ping.cheng@wacom.com>
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-tegra.c | 78 ++++++++++++++++++++---------------
- 1 file changed, 44 insertions(+), 34 deletions(-)
+ drivers/hid/wacom_sys.c |   13 ++++++++++---
+ drivers/hid/wacom_wac.h |    1 +
+ 2 files changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/usb/host/xhci-tegra.c b/drivers/usb/host/xhci-tegra.c
-index 14a772feab7946..0f936aeb88d064 100644
---- a/drivers/usb/host/xhci-tegra.c
-+++ b/drivers/usb/host/xhci-tegra.c
-@@ -210,6 +210,7 @@ struct tegra_xusb_soc {
- 	bool has_ipfs;
- 	bool lpm_support;
- 	bool otg_reset_sspi;
-+	bool otg_set_port_power;
- };
+--- a/drivers/hid/wacom_sys.c
++++ b/drivers/hid/wacom_sys.c
+@@ -346,6 +346,7 @@ static void wacom_feature_mapping(struct
  
- struct tegra_xusb_context {
-@@ -1211,14 +1212,17 @@ static void tegra_xhci_id_work(struct work_struct *work)
- 	struct tegra_xusb_mbox_msg msg;
- 	struct phy *phy = tegra_xusb_get_phy(tegra, "usb2",
- 						    tegra->otg_usb2_port);
-+	bool host_mode;
- 	u32 status;
- 	int ret;
+ 		hid_data->inputmode = field->report->id;
+ 		hid_data->inputmode_index = usage->usage_index;
++		hid_data->inputmode_field_index = field->index;
+ 		break;
  
--	dev_dbg(tegra->dev, "host mode %s\n", tegra->host_mode ? "on" : "off");
--
- 	mutex_lock(&tegra->lock);
+ 	case HID_UP_DIGITIZER:
+@@ -561,9 +562,14 @@ static int wacom_hid_set_device_mode(str
  
--	if (tegra->host_mode)
-+	host_mode = tegra->host_mode;
+ 	re = &(hdev->report_enum[HID_FEATURE_REPORT]);
+ 	r = re->report_id_hash[hid_data->inputmode];
+-	if (r) {
+-		r->field[0]->value[hid_data->inputmode_index] = 2;
+-		hid_hw_request(hdev, r, HID_REQ_SET_REPORT);
++	if (r && hid_data->inputmode_field_index >= 0 &&
++	    hid_data->inputmode_field_index < r->maxfield) {
++		struct hid_field *field = r->field[hid_data->inputmode_field_index];
 +
-+	dev_dbg(tegra->dev, "host mode %s\n", host_mode ? "on" : "off");
-+
-+	if (host_mode)
- 		phy_set_mode_ext(phy, PHY_MODE_USB_OTG, USB_ROLE_HOST);
- 	else
- 		phy_set_mode_ext(phy, PHY_MODE_USB_OTG, USB_ROLE_NONE);
-@@ -1229,42 +1233,44 @@ static void tegra_xhci_id_work(struct work_struct *work)
- 								    tegra->otg_usb2_port);
- 
- 	pm_runtime_get_sync(tegra->dev);
--	if (tegra->host_mode) {
--		/* switch to host mode */
--		if (tegra->otg_usb3_port >= 0) {
--			if (tegra->soc->otg_reset_sspi) {
--				/* set PP=0 */
--				tegra_xhci_hc_driver.hub_control(
--					xhci->shared_hcd, GetPortStatus,
--					0, tegra->otg_usb3_port+1,
--					(char *) &status, sizeof(status));
--				if (status & USB_SS_PORT_STAT_POWER)
--					tegra_xhci_set_port_power(tegra, false,
--								  false);
--
--				/* reset OTG port SSPI */
--				msg.cmd = MBOX_CMD_RESET_SSPI;
--				msg.data = tegra->otg_usb3_port+1;
--
--				ret = tegra_xusb_mbox_send(tegra, &msg);
--				if (ret < 0) {
--					dev_info(tegra->dev,
--						"failed to RESET_SSPI %d\n",
--						ret);
-+	if (tegra->soc->otg_set_port_power) {
-+		if (host_mode) {
-+			/* switch to host mode */
-+			if (tegra->otg_usb3_port >= 0) {
-+				if (tegra->soc->otg_reset_sspi) {
-+					/* set PP=0 */
-+					tegra_xhci_hc_driver.hub_control(
-+						xhci->shared_hcd, GetPortStatus,
-+						0, tegra->otg_usb3_port+1,
-+						(char *) &status, sizeof(status));
-+					if (status & USB_SS_PORT_STAT_POWER)
-+						tegra_xhci_set_port_power(tegra, false,
-+									  false);
-+
-+					/* reset OTG port SSPI */
-+					msg.cmd = MBOX_CMD_RESET_SSPI;
-+					msg.data = tegra->otg_usb3_port+1;
-+
-+					ret = tegra_xusb_mbox_send(tegra, &msg);
-+					if (ret < 0) {
-+						dev_info(tegra->dev,
-+							"failed to RESET_SSPI %d\n",
-+							ret);
-+					}
- 				}
--			}
- 
--			tegra_xhci_set_port_power(tegra, false, true);
--		}
-+				tegra_xhci_set_port_power(tegra, false, true);
-+			}
- 
--		tegra_xhci_set_port_power(tegra, true, true);
--		pm_runtime_mark_last_busy(tegra->dev);
-+			tegra_xhci_set_port_power(tegra, true, true);
-+			pm_runtime_mark_last_busy(tegra->dev);
- 
--	} else {
--		if (tegra->otg_usb3_port >= 0)
--			tegra_xhci_set_port_power(tegra, false, false);
-+		} else {
-+			if (tegra->otg_usb3_port >= 0)
-+				tegra_xhci_set_port_power(tegra, false, false);
- 
--		tegra_xhci_set_port_power(tegra, true, false);
-+			tegra_xhci_set_port_power(tegra, true, false);
++		if (field && hid_data->inputmode_index < field->report_count) {
++			field->value[hid_data->inputmode_index] = 2;
++			hid_hw_request(hdev, r, HID_REQ_SET_REPORT);
 +		}
  	}
- 	pm_runtime_put_autosuspend(tegra->dev);
+ 	return 0;
  }
-@@ -2289,6 +2295,7 @@ static const struct tegra_xusb_soc tegra124_soc = {
- 	.scale_ss_clock = true,
- 	.has_ipfs = true,
- 	.otg_reset_sspi = false,
-+	.otg_set_port_power = true,
- 	.mbox = {
- 		.cmd = 0xe4,
- 		.data_in = 0xe8,
-@@ -2325,6 +2332,7 @@ static const struct tegra_xusb_soc tegra210_soc = {
- 	.scale_ss_clock = false,
- 	.has_ipfs = true,
- 	.otg_reset_sspi = true,
-+	.otg_set_port_power = true,
- 	.mbox = {
- 		.cmd = 0xe4,
- 		.data_in = 0xe8,
-@@ -2366,6 +2374,7 @@ static const struct tegra_xusb_soc tegra186_soc = {
- 	.scale_ss_clock = false,
- 	.has_ipfs = false,
- 	.otg_reset_sspi = false,
-+	.otg_set_port_power = true,
- 	.mbox = {
- 		.cmd = 0xe4,
- 		.data_in = 0xe8,
-@@ -2397,6 +2406,7 @@ static const struct tegra_xusb_soc tegra194_soc = {
- 	.scale_ss_clock = false,
- 	.has_ipfs = false,
- 	.otg_reset_sspi = false,
-+	.otg_set_port_power = false,
- 	.mbox = {
- 		.cmd = 0x68,
- 		.data_in = 0x6c,
--- 
-2.53.0
-
+@@ -2821,6 +2827,7 @@ static int wacom_probe(struct hid_device
+ 		return error;
+ 
+ 	wacom_wac->hid_data.inputmode = -1;
++	wacom_wac->hid_data.inputmode_field_index = -1;
+ 	wacom_wac->mode_report = -1;
+ 
+ 	if (hid_is_usb(hdev)) {
+--- a/drivers/hid/wacom_wac.h
++++ b/drivers/hid/wacom_wac.h
+@@ -296,6 +296,7 @@ struct wacom_shared {
+ struct hid_data {
+ 	__s16 inputmode;	/* InputMode HID feature, -1 if non-existent */
+ 	__s16 inputmode_index;	/* InputMode HID feature index in the report */
++	__s16 inputmode_field_index; /* InputMode HID feature field index in the report */
+ 	bool sense_state;
+ 	bool inrange_state;
+ 	bool invert_state;
 
 
 
