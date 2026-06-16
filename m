@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-264680-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266483-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id xLO+LbB7MWoHkgUAu9opvQ
-	(envelope-from <stable+bounces-264680-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:37:04 +0200
+	id LL9qDXyeMWqxoQUAu9opvQ
+	(envelope-from <stable+bounces-266483-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:05:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07EE3692436
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:37:04 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADB3B694BB5
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:05:31 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="vl/7cl5t";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264680-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264680-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=yb6Fdry7;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266483-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-266483-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 17143318EA59
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:27:33 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 177BD30BEABE
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:04:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A47546AF11;
-	Tue, 16 Jun 2026 16:27:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 957E83DC87A;
+	Tue, 16 Jun 2026 19:04:12 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7242146AF21;
-	Tue, 16 Jun 2026 16:27:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E8703DBD76;
+	Tue, 16 Jun 2026 19:04:11 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781627252; cv=none; b=hfhf0BGnQiSJmfSXb3LLBSX7GJahMjJexCFN/0j8znfSDZw1hoeO6iePez08RxtXYUzWcND4VoIAi4xIGukLcsLjtBPS3qsfUek1aTtf3N0/3skH8EhmwS5eMA1iYywJB2k1+MFbp+5Mhikrcj8FxNSzSfHZ5VTUfhrvXuCM0ww=
+	t=1781636652; cv=none; b=TJ8yBD0igquWvf4vI9EMKmu6pdifTiwxB7OzppzDXNcyHCfKWY4o8VgvXKGKriorNU5S4GFpdR+BIFIN95sApsxxC3s73V0M74euyBo4nNL2L/enT6q2cInU0De/lYQIFkYMWUdjDtvvJcqL6xFiG0aKxscL1MG1rgapgkR+4oA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781627252; c=relaxed/simple;
-	bh=afdMyJ2DnpReYAfMAekQBQ5ixNZ/UC78Hcm7vfd3PGk=;
+	s=arc-20240116; t=1781636652; c=relaxed/simple;
+	bh=eOEza1SIj7eR84yXW5a4cZnGlxxjHP1qCYGg+X1rQic=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T7wS2PjKDZIGlNkqZpFGedNh1YhxMndinA201HT9Q+6YBZxqNklR8d33waR0c4MsQDutMivb3yjtk7SVzVRtCjaOgYh0z9TnCMyXzjqw/s0rX8oucnwz5Owya7om+vL1kVvmpNbfHd70pL+U2+BNhdieL/pK2dlJBe7monlLg+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vl/7cl5t; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35B3B1F000E9;
-	Tue, 16 Jun 2026 16:27:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gwtcNW5SfThHnc2rAwz5uLNKyaeXEnio6mM1OdE5c6hXcmROVXj6OHY/CW53XCGWNVW9czVz+lGhsloRk6W4uKEm3d0QQvLU/g12K1U7UmCiDwci1/NK+b4H00lefjZUmN706kDylcw/NFHyueQaQa0QrS5hf0AET89qRpwhvaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yb6Fdry7; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 155B91F000E9;
+	Tue, 16 Jun 2026 19:04:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781627251;
-	bh=7KPEWd/AsL6yo8MX+ds3jkyPcIkyRjfz/j0awT5rbSA=;
+	s=korg; t=1781636651;
+	bh=PUyqak93Db+jrHsymmdAPQMVH0SYWspR8l86mSE+DiM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=vl/7cl5tRkCR4SULGKCqSHNUjOkxhDKo8d47aIcfO9qmisj4mkjLpmgkGvkw9zI4Q
-	 B2ZnFxeV6KLlH+VJV9f+SeIUMJFXXZgdnNyntvPqDinXYvUzW8237KBkIFUst3wlPh
-	 Zl2nheRm2Zd/dXiAXer3Oya83q47TgqjEnIBdZoA=
+	b=yb6Fdry7aUUkNYXUVdzt3PdzLKLTWpUmo5z3a4apqBSll7RjY0QxX1M/HmeyTeTzT
+	 Nyg+E7e/y6QNdWy1j8sY4U83nzSF7kv9wSpVhXQ2G4U1ZFTfgjoM+uZ8/+VBPGR879
+	 PoXgIjpJkEVlA8pMKUCy2eivYCUj4nGcaG91pI+4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Judith Mendez <jm@ti.com>,
-	Linus Walleij <linusw@kernel.org>
-Subject: [PATCH 6.12 136/261] pinctrl: mcp23s08: Initialize mcp->dev and mcp->addr before regmap init
+	Siwei Zhang <oss@fourdim.xyz>,
+	=?UTF-8?q?Safa=20Karaku=C5=9F?= <safa.karakus@secunnix.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 278/342] Bluetooth: fix UAF in l2cap_sock_cleanup_listen() vs l2cap_conn_del()
 Date: Tue, 16 Jun 2026 20:29:34 +0530
-Message-ID: <20260616145051.386200958@linuxfoundation.org>
+Message-ID: <20260616145101.347809765@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
-References: <20260616145044.869532709@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,99 +66,249 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264680-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-266483-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jm@ti.com,m:linusw@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:oss@fourdim.xyz,m:safa.karakus@secunnix.com,m:luiz.von.dentz@intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,ti.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,secunnix.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 07EE3692436
+X-Rspamd-Queue-Id: ADB3B694BB5
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Judith Mendez <jm@ti.com>
+From: Safa Karakuş <safa.karakus@secunnix.com>
 
-commit 8473c3a197b57ff01396f7a2ec6ddf65383820d4 upstream.
+[ Upstream commit ab1513597c6cf17cd1ad2a21e3b045421b48e022 ]
 
-Regmap initialization triggers regcache_maple_populate() which attempts
-SPI read to populate cache. SPI read requires mcp->dev and mcp->addr to
-be set, without them, NULL pointer dereference occurs during probe.
+bt_accept_dequeue() unlinks a not-yet-accepted child from the parent
+accept queue and release_sock()s it before returning, so the returned
+sk has no caller reference and is unlocked.
 
-Move initialization before mcp23s08_spi_regmap_init() call.
+l2cap_sock_cleanup_listen() walks these children on listening-socket
+close.  A concurrent HCI disconnect drives hci_rx_work ->
+l2cap_conn_del() which runs l2cap_chan_del() + l2cap_sock_kill() and
+frees the child sk and its l2cap_chan; cleanup_listen() then uses both:
 
+  BUG: KASAN: slab-use-after-free in l2cap_sock_kill
+    l2cap_sock_kill / l2cap_sock_cleanup_listen / __x64_sys_close
+  Freed by: l2cap_conn_del -> l2cap_sock_close_cb -> l2cap_sock_kill
+
+This is distinct from the two fixes already in this area: commit
+e83f5e24da741 ("Bluetooth: serialize accept_q access") serialises the
+accept_q list/poll and takes temporary refs inside bt_accept_dequeue(),
+and CVE-2025-39860 serialises the userspace close()/accept() race by
+calling cleanup_listen() under lock_sock() in l2cap_sock_release().
+Neither covers l2cap_conn_del() running from hci_rx_work, so this UAF
+still reproduces on current bluetooth/master.
+
+Take the reference at the source: bt_accept_dequeue() does sock_hold()
+while sk is still locked, before release_sock(); callers sock_put().
+cleanup_listen() pins the chan with l2cap_chan_hold_unless_zero() under
+a brief child sk lock (serialising vs l2cap_sock_teardown_cb()), drops
+it before l2cap_chan_lock(), and skips a duplicate l2cap_sock_kill() on
+SOCK_DEAD.  conn->lock is not taken here: cleanup_listen() runs under
+the parent sk lock and that would invert
+conn->lock -> chan->lock -> sk_lock (lockdep).
+
+KASAN/SMP: an unprivileged listen/close vs HCI-disconnect race produced
+12 use-after-free reports per run before this change; 0, and no lockdep
+report, over 1600+ raced iterations after it on bluetooth/master.
+
+Fixes: 15f02b910562 ("Bluetooth: L2CAP: Add initial code for Enhanced Credit Based Mode")
 Cc: stable@vger.kernel.org
-Fixes: f9f4fda15e72 ("pinctrl: mcp23s08: init reg_defaults from HW at probe and switch cache type")
-Signed-off-by: Judith Mendez <jm@ti.com>
-Signed-off-by: Linus Walleij <linusw@kernel.org>
+Reported-by: Siwei Zhang <oss@fourdim.xyz>
+Reviewed-by: Siwei Zhang <oss@fourdim.xyz>
+Signed-off-by: Safa Karakuş <safa.karakus@secunnix.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/pinctrl-mcp23s08_spi.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ net/bluetooth/af_bluetooth.c |   10 ++++++++
+ net/bluetooth/l2cap_sock.c   |   51 +++++++++++++++++++++++++++++++++++++------
+ net/bluetooth/rfcomm/sock.c  |    9 ++++++-
+ net/bluetooth/sco.c          |    9 ++++++-
+ 4 files changed, 70 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/pinctrl/pinctrl-mcp23s08_spi.c b/drivers/pinctrl/pinctrl-mcp23s08_spi.c
-index 54f61c8cb1c0..5ed368772adb 100644
---- a/drivers/pinctrl/pinctrl-mcp23s08_spi.c
-+++ b/drivers/pinctrl/pinctrl-mcp23s08_spi.c
-@@ -10,6 +10,7 @@
- #include "pinctrl-mcp23s08.h"
+--- a/net/bluetooth/af_bluetooth.c
++++ b/net/bluetooth/af_bluetooth.c
+@@ -237,6 +237,16 @@ restart:
+ 			if (newsock)
+ 				sock_graft(sk, newsock);
  
- #define MCP_MAX_DEV_PER_CS	8
-+#define MCP23S08_SPI_BASE	0x40
++			/* Hand the caller a reference taken while sk is
++			 * still locked.  bt_accept_unlink() just dropped
++			 * the accept-queue reference; without this hold a
++			 * concurrent teardown (e.g. l2cap_conn_del() ->
++			 * l2cap_sock_kill()) could free sk between
++			 * release_sock() and the caller using it.  Every
++			 * caller drops this with sock_put() when done.
++			 */
++			sock_hold(sk);
++
+ 			release_sock(sk);
+ 			return sk;
+ 		}
+--- a/net/bluetooth/l2cap_sock.c
++++ b/net/bluetooth/l2cap_sock.c
+@@ -366,8 +366,13 @@ static int l2cap_sock_accept(struct sock
+ 		}
  
- /*
-  * A given spi_device can represent up to eight mcp23sxx chips
-@@ -173,6 +174,8 @@ static int mcp23s08_probe(struct spi_device *spi)
- 	for_each_set_bit(addr, &spi_present_mask, MCP_MAX_DEV_PER_CS) {
- 		data->mcp[addr] = &data->chip[--chips];
- 		data->mcp[addr]->irq = spi->irq;
-+		data->mcp[addr]->dev = dev;
-+		data->mcp[addr]->addr = MCP23S08_SPI_BASE | (addr << 1);
+ 		nsk = bt_accept_dequeue(sk, newsock);
+-		if (nsk)
++		if (nsk) {
++			/* Drop the bridging ref from bt_accept_dequeue();
++			 * the grafted socket keeps nsk alive from here.
++			 */
++			sock_put(nsk);
+ 			break;
++		}
  
- 		ret = mcp23s08_spi_regmap_init(data->mcp[addr], dev, addr, info);
- 		if (ret)
-@@ -184,7 +187,7 @@ static int mcp23s08_probe(struct spi_device *spi)
- 		if (!data->mcp[addr]->pinctrl_desc.name)
- 			return -ENOMEM;
+ 		if (!timeo) {
+ 			err = -EAGAIN;
+@@ -1432,22 +1437,54 @@ static void l2cap_sock_cleanup_listen(st
+ 	BT_DBG("parent %p state %s", parent,
+ 	       state_to_string(parent->sk_state));
  
--		ret = mcp23s08_probe_one(data->mcp[addr], dev, 0x40 | (addr << 1),
-+		ret = mcp23s08_probe_one(data->mcp[addr], dev, MCP23S08_SPI_BASE | (addr << 1),
- 					 info->type, -1);
- 		if (ret < 0)
- 			return ret;
--- 
-2.54.0
-
+-	/* Close not yet accepted channels */
++	/* Close not yet accepted channels.
++	 *
++	 * bt_accept_dequeue() now returns sk with an extra reference held
++	 * (taken while sk was still locked) so a concurrent l2cap_conn_del()
++	 * -> l2cap_sock_kill() cannot free sk under us.
++	 *
++	 * cleanup_listen() runs under the parent sk lock, so unlike
++	 * l2cap_sock_shutdown() we must NOT take conn->lock here: that would
++	 * establish sk_lock -> conn->lock and invert the established
++	 * conn->lock -> chan->lock -> sk_lock order (lockdep deadlock).
++	 *
++	 * Instead, briefly take the child sk lock to fetch and pin its chan.
++	 * l2cap_conn_del() reaches the chan free only via
++	 * l2cap_chan_del() -> l2cap_sock_teardown_cb(), which itself takes
++	 * the child sk lock; holding it across l2cap_chan_hold_unless_zero()
++	 * therefore guarantees the chan cannot be freed while we read and
++	 * pin it (hold_unless_zero() additionally skips a chan already past
++	 * its last reference).  We then drop the sk lock before taking
++	 * chan->lock, so sk and chan locks are never held together.
++	 */
+ 	while ((sk = bt_accept_dequeue(parent, NULL))) {
+-		struct l2cap_chan *chan = l2cap_pi(sk)->chan;
++		struct l2cap_chan *chan;
++
++		lock_sock_nested(sk, L2CAP_NESTING_NORMAL);
++		chan = l2cap_chan_hold_unless_zero(l2cap_pi(sk)->chan);
++		release_sock(sk);
++		if (!chan) {
++			/* l2cap_conn_del() already tearing this child down */
++			sock_put(sk);
++			continue;
++		}
+ 
+ 		BT_DBG("child chan %p state %s", chan,
+ 		       state_to_string(chan->state));
+ 
+-		l2cap_chan_hold(chan);
+ 		l2cap_chan_lock(chan);
+-
+ 		__clear_chan_timer(chan);
+ 		l2cap_chan_close(chan, ECONNRESET);
+-		l2cap_sock_kill(sk);
+-
++		/* l2cap_conn_del() may already have killed this socket
++		 * (it sets SOCK_DEAD); skip the duplicate to avoid a
++		 * double sock_put()/l2cap_chan_put().
++		 */
++		if (!sock_flag(sk, SOCK_DEAD))
++			l2cap_sock_kill(sk);
+ 		l2cap_chan_unlock(chan);
++
+ 		l2cap_chan_put(chan);
++		sock_put(sk);
+ 	}
+ }
+ 
+--- a/net/bluetooth/rfcomm/sock.c
++++ b/net/bluetooth/rfcomm/sock.c
+@@ -190,6 +190,8 @@ static void rfcomm_sock_cleanup_listen(s
+ 	while ((sk = bt_accept_dequeue(parent, NULL))) {
+ 		rfcomm_sock_close(sk);
+ 		rfcomm_sock_kill(sk);
++		/* Drop the reference handed back by bt_accept_dequeue(). */
++		sock_put(sk);
+ 	}
+ 
+ 	parent->sk_state  = BT_CLOSED;
+@@ -508,8 +510,13 @@ static int rfcomm_sock_accept(struct soc
+ 		}
+ 
+ 		nsk = bt_accept_dequeue(sk, newsock);
+-		if (nsk)
++		if (nsk) {
++			/* Drop the bridging ref from bt_accept_dequeue();
++			 * the grafted socket keeps nsk alive from here.
++			 */
++			sock_put(nsk);
+ 			break;
++		}
+ 
+ 		if (!timeo) {
+ 			err = -EAGAIN;
+--- a/net/bluetooth/sco.c
++++ b/net/bluetooth/sco.c
+@@ -384,6 +384,8 @@ static void sco_sock_cleanup_listen(stru
+ 	while ((sk = bt_accept_dequeue(parent, NULL))) {
+ 		sco_sock_close(sk);
+ 		sco_sock_kill(sk);
++		/* Drop the reference handed back by bt_accept_dequeue(). */
++		sock_put(sk);
+ 	}
+ 
+ 	parent->sk_state  = BT_CLOSED;
+@@ -677,8 +679,13 @@ static int sco_sock_accept(struct socket
+ 		}
+ 
+ 		ch = bt_accept_dequeue(sk, newsock);
+-		if (ch)
++		if (ch) {
++			/* Drop the bridging ref from bt_accept_dequeue();
++			 * the grafted socket keeps ch alive from here.
++			 */
++			sock_put(ch);
+ 			break;
++		}
+ 
+ 		if (!timeo) {
+ 			err = -EAGAIN;
 
 
 
