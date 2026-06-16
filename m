@@ -1,63 +1,63 @@
-Return-Path: <stable+bounces-265747-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266555-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id MG0pJyqPMWrTmgUAu9opvQ
-	(envelope-from <stable+bounces-265747-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:00:10 +0200
+	id DEuTE4ufMWojogUAu9opvQ
+	(envelope-from <stable+bounces-266555-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:10:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEC78693B69
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:00:09 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE472694D15
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:10:02 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=lXBnF9zL;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265747-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265747-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=2Lw5TyII;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266555-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266555-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 425B730125DB
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:59:37 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4BAEC302A0BA
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:10:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEA2B47B41F;
-	Tue, 16 Jun 2026 17:59:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF8993DDDA1;
+	Tue, 16 Jun 2026 19:09:58 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 798C9477E51;
-	Tue, 16 Jun 2026 17:59:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82B1834751B;
+	Tue, 16 Jun 2026 19:09:57 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781632776; cv=none; b=ENXJoidanKslqNZi5vJoBLTjK78cUef3Dmby45BnXRRHXXZ74wovtxeKFYUsAPbnlbskwLRWZC8jeM50+dLabuQi9OZui9bZR5qgNQvP3AYjQ1N2WThvVBLBtKZAOzYzNh8DPmwirpdJSTRfarKaVSmsJ2sOcrXDIJrY811mmRw=
+	t=1781636998; cv=none; b=B+txgmwJn6IzP8YGJ9DnUry3K2ySb/TcIzToDHO3GgkOmqQxrYwdoIQnVrjduOU/FCNTU3qky2CKsH2SO7t0CDLkQlevLX9RzzQCV3Ya9vGdHXm+fdQVhXUDXH/LvbLXoLoWigcyQjf0uXEBxTLvZysPn+W3k0KEjwqRCpSP5v8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781632776; c=relaxed/simple;
-	bh=1DajXRydcxZbqRUnaT/jvuP/KH9vQnwUXXlwh+LJhRI=;
+	s=arc-20240116; t=1781636998; c=relaxed/simple;
+	bh=mo6jOj6t1PEkrACOyUolmibDgevIJSGCjlDMP4CXPs0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dcWyR/d1Qim63O12mlqWeHy3gzaCS9QqIpYnVK2LLO6mOdQb9lN43grieHNFRh/eQp3Lo7N1ECFsDSA/xwohxP+2jMUQMfA06sb9qKgDCjkuUPxOLGOSX2K5r0pwSDqm0UDAXT6hfySCAqIlG3YVDA/YArPwah51/q6tGxapwkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lXBnF9zL; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A0AD1F000E9;
-	Tue, 16 Jun 2026 17:59:34 +0000 (UTC)
+	 MIME-Version; b=g001An7kbXCmnKm6E6AUJjMtLpi2+9k6RK6HqM2+PNBFAGh+8nGZJx66DoxwkVGHsLZxzjShSzEQRgAQxlpnCgywCZeFdXuG93jOjVVgEIShdb7/gBx3gG57kTMN9XZc+LzAj0AREzqaGZrIoZAWoef2hK8wFFC4s3KpcCd1mWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Lw5TyII; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2675C1F00AC4;
+	Tue, 16 Jun 2026 19:09:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781632775;
-	bh=wNHXlzScy5X2RjDaLr7x5fl55UcNJLw7fnRMoXbpg0c=;
+	s=korg; t=1781636997;
+	bh=sxsilXVLVUFKCiUpdq9EH/42EyRB3bLiminX9WtRqU0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=lXBnF9zL/vnTqKbzAJUgnf+LVzuR4wTRPzBZ6k6bwJ55eEyoh+LW3oFA97Xgz5h9V
-	 z6p7R9xgTzJlKAR3gmtCzqSIsNWD9wUFM7vF33lOKcb7ztAwtAIq4SlnehniY1/6+V
-	 FEWjdZgZAMWlP8TLv8nkZez16tzVgcauR/+9O24E=
+	b=2Lw5TyIIWBpmRUBzZHeq9DDQO30LsnrvG/BTe+McQi4jYq6pIh7UJIDpOMY4bxcww
+	 oiq5zFQ8DULmU05VFBYzA8mjF1Qb8et1pHKDsFl1wevMrtppm5zDQD1zXKJflS/PYd
+	 KamVE0AHB0t4hJejOcOi/fKMtJzINXNakKXvfdRw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>
-Subject: [PATCH 6.1 473/522] usb: typec: ucsi: Check if power role change actually happened before handling
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Rodrigo Alencar <rodrigo.alencar@analog.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <jic23@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 324/342] iio: dac: ad5686: fix ref bit initialization for single-channel parts
 Date: Tue, 16 Jun 2026 20:30:20 +0530
-Message-ID: <20260616145147.974779178@linuxfoundation.org>
+Message-ID: <20260616145103.666519824@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,22 +73,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265747-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-266555-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:myrrhperiwinkle@qtmlabs.xyz,m:heikki.krogerus@linux.intel.com,m:sashal@kernel.org,m:senozhatsky@chromium.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:andriy.shevchenko@intel.com,m:rodrigo.alencar@analog.com,m:Stable@vger.kernel.org,m:jic23@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -100,74 +100,71 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,chromium.org:url,chromium.org:email,qtmlabs.xyz:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,analog.com:email,vger.kernel.org:from_smtp,intel.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: EEC78693B69
+X-Rspamd-Queue-Id: CE472694D15
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
+From: Rodrigo Alencar <rodrigo.alencar@analog.com>
 
-[ Upstream commit b80e7d34c7ea6a564525119d6138fbb577a23dba ]
+[ Upstream commit ecae2ae606d493cf11457946436335bd0e726663 ]
 
-The CrOS EC may send a connector status change event with the power
-direction changed flag set even if the power direction hasn't actually
-changed after initiating a SET_PDR command internally [1]. In practice
-this happens on every system suspend due to other changes performed by
-the EC [2][3][4], causing suspend to fail.
+The reference bit position was ignored when writing the register at the
+probe() function (!!val was used). When such bit is 1, internal voltage
+reference is disabled so that an external one can be used. For
+multi-channel devices, bit 0 of the Internal Reference Setup command
+behaves the same way, so AD5686_REF_BIT_MSK is created. The issue exists
+since support for single-channel devices were first introduced.
 
-Fix this by checking if the power role change actually happened before
-handling it.
-
-[1]: https://source.chromium.org/chromiumos/chromiumos/codesearch/+/main:src/platform/ec/zephyr/subsys/pd_controller/pdc_power_mgmt.c;l=1689;drc=2d5a1cffce4e5ac8a39442cb3b764d2d5e1cf794
-[2]: https://source.chromium.org/chromiumos/chromiumos/codesearch/+/main:src/platform/ec/zephyr/subsys/pd_controller/pdc_power_mgmt.c;l=3923;drc=2d5a1cffce4e5ac8a39442cb3b764d2d5e1cf794
-[3]: https://source.chromium.org/chromiumos/chromiumos/codesearch/+/main:src/platform/ec/zephyr/subsys/pd_controller/pdc_power_mgmt.c;l=5094;drc=2d5a1cffce4e5ac8a39442cb3b764d2d5e1cf794
-[4]: https://source.chromium.org/chromiumos/chromiumos/codesearch/+/main:src/platform/ec/zephyr/subsys/pd_controller/pdc_power_mgmt.c;l=2229;drc=2d5a1cffce4e5ac8a39442cb3b764d2d5e1cf794
-
-Cc: stable <stable@kernel.org>
-Fixes: 7616f006db07 ("usb: typec: ucsi: Update power_supply on power role change")
-Signed-off-by: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
-Reported-and-tested-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://patch.msgid.link/20260519-ucsi-fix-2-v1-1-6f1239535187@qtmlabs.xyz
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: be1b24d24541 ("iio:dac:ad5686: Add AD5691R/AD5692R/AD5693/AD5693R support")
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Signed-off-by: Rodrigo Alencar <rodrigo.alencar@analog.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <jic23@kernel.org>
+[ adapted `has_external_vref` to the in-tree equivalent `voltage_uv` variable in the `val =` computation ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/ucsi/ucsi.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/iio/dac/ad5686.c |    6 +++---
+ drivers/iio/dac/ad5686.h |    1 +
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
---- a/drivers/usb/typec/ucsi/ucsi.c
-+++ b/drivers/usb/typec/ucsi/ucsi.c
-@@ -783,7 +783,7 @@ static void ucsi_handle_connector_change
- 	struct ucsi_connector *con = container_of(work, struct ucsi_connector,
- 						  work);
- 	struct ucsi *ucsi = con->ucsi;
--	enum typec_role role;
-+	enum typec_role role, prev_role;
- 	u64 command;
- 	int ret;
+--- a/drivers/iio/dac/ad5686.c
++++ b/drivers/iio/dac/ad5686.c
+@@ -488,7 +488,7 @@ int ad5686_probe(struct device *dev,
+ 		break;
+ 	case AD5686_REGMAP:
+ 		cmd = AD5686_CMD_INTERNAL_REFER_SETUP;
+-		ref_bit_msk = 0;
++		ref_bit_msk = AD5686_REF_BIT_MSK;
+ 		break;
+ 	case AD5693_REGMAP:
+ 		cmd = AD5686_CMD_CONTROL_REG;
+@@ -500,9 +500,9 @@ int ad5686_probe(struct device *dev,
+ 		goto error_disable_reg;
+ 	}
  
-@@ -791,6 +791,8 @@ static void ucsi_handle_connector_change
+-	val = (voltage_uv | ref_bit_msk);
++	val = voltage_uv ? ref_bit_msk : 0;
  
- 	command = UCSI_GET_CONNECTOR_STATUS | UCSI_CONNECTOR_NUMBER(con->num);
+-	ret = st->write(st, cmd, 0, !!val);
++	ret = st->write(st, cmd, 0, val);
+ 	if (ret)
+ 		goto error_disable_reg;
  
-+	prev_role = !!(con->status.flags & UCSI_CONSTAT_PWR_DIR);
-+
- 	ret = ucsi_send_command_common(ucsi, command, &con->status,
- 				       sizeof(con->status), true);
- 	if (ret < 0) {
-@@ -804,7 +806,7 @@ static void ucsi_handle_connector_change
+--- a/drivers/iio/dac/ad5686.h
++++ b/drivers/iio/dac/ad5686.h
+@@ -44,6 +44,7 @@
  
- 	role = !!(con->status.flags & UCSI_CONSTAT_PWR_DIR);
+ #define AD5310_REF_BIT_MSK			BIT(8)
+ #define AD5683_REF_BIT_MSK			BIT(12)
++#define AD5686_REF_BIT_MSK			BIT(0)
+ #define AD5693_REF_BIT_MSK			BIT(12)
  
--	if (con->status.change & UCSI_CONSTAT_POWER_DIR_CHANGE) {
-+	if ((con->status.change & UCSI_CONSTAT_POWER_DIR_CHANGE) && role != prev_role) {
- 		typec_set_pwr_role(con->port, role);
- 		ucsi_port_psy_changed(con);
- 
+ /**
 
 
 
