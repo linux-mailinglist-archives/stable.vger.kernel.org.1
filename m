@@ -1,62 +1,68 @@
-Return-Path: <stable+bounces-263801-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265354-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ZnoPBXJmMWoLigUAu9opvQ
-	(envelope-from <stable+bounces-263801-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:06:26 +0200
+	id 16U+LjuHMWrslgUAu9opvQ
+	(envelope-from <stable+bounces-265354-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:26:19 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80400690C29
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:06:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB41C6931F4
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:26:18 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=jeZC0MQr;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263801-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263801-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=HQrpeV6r;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265354-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265354-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3F6783036E6F
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:05:26 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 07D383011C56
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:26:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57C9040DFC5;
-	Tue, 16 Jun 2026 15:05:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50515466B5E;
+	Tue, 16 Jun 2026 17:26:17 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E657D3ACA42;
-	Tue, 16 Jun 2026 15:05:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B9EC478E50;
+	Tue, 16 Jun 2026 17:26:16 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781622324; cv=none; b=PktyG36nR7awk3gQ69UUdbZhLK1NO6bqSk/bWNgRtEgor/pA6nlMvtxAQNhGLNF7fF+m8Ns34+yAF9/WxeHW1v/HGTSxqelWI2LNWeHERtuGksGxFESxeku+Kg22CyQvlsl0C2OuRraH6dgOjJpRW/E0+mdAlZzn9jYPdS0cbI8=
+	t=1781630777; cv=none; b=kEe/LBsAvbxm0fgATznujejan+ujUZTmN9crinb9Dk+bKsTgngY/C1yeTv1KMsqycaQZfcjy4cTHKUNBdIpEcdUMm3EdwXNdk5+iquXlUY3tEqKsaJN/t3yPS8vnqxQCTypfbC96Vi8F8dnNRRaJxTn+TcAf5QNO432ig62Nkr0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781622324; c=relaxed/simple;
-	bh=TxIVv78UYuCRrwVrA9JmLSPHapawmrR4aoF4kDtpTbw=;
+	s=arc-20240116; t=1781630777; c=relaxed/simple;
+	bh=+72kxMoxomPc3MNxknzL9fMQTKkdOMDJlksHRttEEAI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UsiMkVMmJZEgbWShRwB7FGmI/KYbXSyKr1voQHaPQwxNEjJlDwJczlFlzYoexP6TxmOmq7jezfFsz9Rsy76MBrdtjdz3vbWSaJCk8WCD8IRHu417p9t82H5/Nw0ql3ifY0aYZx1WhnYTEy4Y44YYDJaJSj/dL2jzyWUA+Qiu+TI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jeZC0MQr; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F222A1F000E9;
-	Tue, 16 Jun 2026 15:05:21 +0000 (UTC)
+	 MIME-Version; b=iM1ZoMSJw4SD+AEi16TT12lOmPbG3mpu9WPOul2hxpXZrcBShi8hKTSWfvxt3RdjK5ZplQDaCaHd1DXB8SSiW1LfHmWmOAGpn5xCm5V+cMnxsfQZYqGn4l3fNo+x02g1fAqlbGjG3R3Qm7zo+T9arDjc2K5uv4eAy9WuiYiSkAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HQrpeV6r; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECD4E1F000E9;
+	Tue, 16 Jun 2026 17:26:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781622322;
-	bh=Y+pt4ENVo9y2wp3RM4lY5SVmRLZumn1iMoptSmGgnfw=;
+	s=korg; t=1781630775;
+	bh=hQhhQsWKl7zW4XEStj6tMvu96Fw8/Zz5/BB3AOlEq00=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jeZC0MQrVqUYEs9GNyMe69+ejRsk6SovGGaI7IVmTkMSxA4iC0yLSbtHJ9a0j7WjM
-	 b1rDpY3fTs31mY7iLaxylC2QeZ5DN0kwNEAYjWVaOc6CyjGAFRN06htT2ee+F652KV
-	 BHX9VkoSeVy2u7DnUcM6WbCJOWskv2mthTYPDXfY=
+	b=HQrpeV6rOK2d6fNs0y+5jRo/9U9tGozByK+9GG/PsZvAYBEq1GjFqNA5BpT8vYVfd
+	 OSq/n7LO4hBo5JF7yNfOZjZ+BYrtggRytwG/NhD1y5iofUXsekLzeg+8IRYHW7UwYS
+	 4annuOV2p/K9cfmyRnHxjUoBK7XqzpbxDWCIc0v0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Davide Caratti <dcaratti@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 002/411] net/sched: cls_fw: fix NULL dereference of "old" filters before change()
+	Linpu Yu <linpu5433@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Kees Cook <kees@kernel.org>,
+	Stanislav Kinsbursky <skinsbursky@parallels.com>,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 093/522] ipc: limit next_id allocation to the valid ID range
 Date: Tue, 16 Jun 2026 20:24:00 +0530
-Message-ID: <20260616145100.499825803@linuxfoundation.org>
+Message-ID: <20260616145130.245143082@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,159 +76,120 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	TAGGED_FROM(0.00)[bounces-265354-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:linpu5433@gmail.com,m:n05ec@lzu.edu.cn,m:yuantan098@gmail.com,m:yifanwucs@gmail.com,m:tomapufckgml@gmail.com,m:bird@lzu.edu.cn,m:kees@kernel.org,m:skinsbursky@parallels.com,m:dave@stgolabs.net,m:akpm@linux-foundation.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-263801-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jhs@mojatatu.com,m:dcaratti@redhat.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,kernel.org,parallels.com,stgolabs.net,linux-foundation.org];
+	FORWARDED(0.00)[lists@lfdr.de];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,bootlin.com:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,sashiko.dev:url,mojatatu.com:email,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,lzu.edu.cn:email,linux-foundation.org:email,stgolabs.net:email,parallels.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 80400690C29
+X-Rspamd-Queue-Id: EB41C6931F4
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Davide Caratti <dcaratti@redhat.com>
+From: Linpu Yu <linpu5433@gmail.com>
 
-[ Upstream commit 65782b2db7321d5f97c16718c4c7f6c7205a56be ]
+commit fa0b9b2b7ae3539908d69c2b9ac0d144d9bc5139 upstream.
 
-Like pointed out by Sashiko [1], since commit ed76f5edccc9 ("net: sched:
-protect filter_chain list with filter_chain_lock mutex") TC filters are
-added to a shared block and published to datapath before their ->change()
-function is called. This is a problem for cls_fw: an invalid filter
-created with the "old" method can still classify some packets before it
-is destroyed by the validation logic added by Xiang.
-Therefore, insisting with repeated runs of the following script:
+The checkpoint/restore sysctl path can request the next SysV IPC id
+through ids->next_id.  ipc_idr_alloc() currently forwards that request to
+idr_alloc() with an open-ended upper bound.
 
- # ip link add dev crash0 type dummy
- # ip link set dev crash0 up
- # mausezahn  crash0 -c 100000 -P 10 \
- > -A 4.3.2.1 -B 1.2.3.4 -t udp "dp=1234" -q &
- # sleep 1
- # tc qdisc add dev crash0 egress_block 1 clsact
- # tc filter add block 1 protocol ip prio 1 matchall \
- > action skbedit mark 65536 continue
- # tc filter add block 1 protocol ip prio 2 fw
- # ip link del dev crash0
+If the valid tail of the SysV IPC id space is full, the allocation can
+spill beyond ipc_mni.  The returned SysV IPC id still uses the normal
+index encoding, so later lookup and removal can target the wrong slot.
+This leaves the real IDR entry behind and breaks the IDR state for the
+object.
 
-can still make fw_classify() hit the WARN_ON() in [2]:
+The bug is in ipc_idr_alloc() in the checkpoint/restore path.
 
- WARNING: ./include/net/pkt_cls.h:88 at fw_classify+0x244/0x250 [cls_fw], CPU#18: mausezahn/1399
- Modules linked in: cls_fw(E) act_skbedit(E)
- CPU: 18 UID: 0 PID: 1399 Comm: mausezahn Tainted: G            E       7.0.0-rc6-virtme #17 PREEMPT(full)
- Tainted: [E]=UNSIGNED_MODULE
- Hardware name: Red Hat KVM, BIOS 1.16.3-2.el9 04/01/2014
- RIP: 0010:fw_classify+0x244/0x250 [cls_fw]
- Code: 5c 49 c7 45 00 00 00 00 00 41 5d 41 5e 41 5f 5d c3 cc cc cc cc 5b b8 ff ff ff ff 41 5c 41 5d 41 5e 41 5f 5d c3 cc cc cc cc 90 <0f> 0b 90 eb a0 0f 1f 80 00 00 00 00 90 90 90 90 90 90 90 90 90 90
- RSP: 0018:ffffd1b7026bf8a8 EFLAGS: 00010202
- RAX: ffff8c5ac9c60800 RBX: ffff8c5ac99322c0 RCX: 0000000000000004
- RDX: 0000000000000001 RSI: ffff8c5b74d7a000 RDI: ffff8c5ac8284f40
- RBP: ffffd1b7026bf8d0 R08: 0000000000000000 R09: ffffd1b7026bf9b0
- R10: 00000000ffffffff R11: 0000000000000000 R12: 0000000000010000
- R13: ffffd1b7026bf930 R14: ffff8c5ac8284f40 R15: 0000000000000000
- FS:  00007fca40c37740(0000) GS:ffff8c5b74d7a000(0000) knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 00007fca40e822a0 CR3: 0000000005ca0001 CR4: 0000000000172ef0
- Call Trace:
-  <TASK>
-  tcf_classify+0x17d/0x5c0
-  tc_run+0x9d/0x150
-  __dev_queue_xmit+0x2ab/0x14d0
-  ip_finish_output2+0x340/0x8f0
-  ip_output+0xa4/0x250
-  raw_sendmsg+0x147d/0x14b0
-  __sys_sendto+0x1cc/0x1f0
-  __x64_sys_sendto+0x24/0x30
-  do_syscall_64+0x126/0xf80
-  entry_SYSCALL_64_after_hwframe+0x77/0x7f
- RIP: 0033:0x7fca40e822ba
- Code: d8 64 89 02 48 c7 c0 ff ff ff ff eb b8 0f 1f 00 f3 0f 1e fa 41 89 ca 64 8b 04 25 18 00 00 00 85 c0 75 15 b8 2c 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 7e c3 0f 1f 44 00 00 41 54 48 83 ec 30 44 89
- RSP: 002b:00007ffc248a42c8 EFLAGS: 00000246 ORIG_RAX: 000000000000002c
- RAX: ffffffffffffffda RBX: 000055ef233289d0 RCX: 00007fca40e822ba
- RDX: 000000000000001e RSI: 000055ef23328c30 RDI: 0000000000000003
- RBP: 000055ef233289d0 R08: 00007ffc248a42d0 R09: 0000000000000010
- R10: 0000000000000000 R11: 0000000000000246 R12: 000000000000001e
- R13: 00000000000186a0 R14: 0000000000000000 R15: 00007fca41043000
-  </TASK>
- irq event stamp: 1045778
- hardirqs last  enabled at (1045784): [<ffffffff864ec042>] __up_console_sem+0x52/0x60
- hardirqs last disabled at (1045789): [<ffffffff864ec027>] __up_console_sem+0x37/0x60
- softirqs last  enabled at (1045426): [<ffffffff874d48c7>] __alloc_skb+0x207/0x260
- softirqs last disabled at (1045434): [<ffffffff874fe8f8>] __dev_queue_xmit+0x78/0x14d0
+1. ids->next_id is passed to:
 
-Then, because of the value in the packet's mark, dereference on 'q->handle'
-with NULL 'q' occurs:
+       idr_alloc(&ids->ipcs_idr, new, ipcid_to_idx(next_id), 0, ...)
 
- BUG: kernel NULL  pointer dereference, address: 0000000000000038
- [...]
- RIP: 0010:fw_classify+0x1fe/0x250 [cls_fw]
- [...]
+2. The zero upper bound makes the allocation effectively open-ended.
+   Once the valid SysV IPC tail is occupied, idr_alloc() can spill past
+   ipc_mni and allocate an entry beyond the valid IPC id range.
 
-Skip "old-style" classification on shared blocks, so that the NULL
-dereference is fixed and WARN_ON() is not hit anymore in the short
-lifetime of invalid cls_fw "old-style" filters.
+3. The new object id is still encoded with the narrower SysV IPC index
+   width:
 
-[1] https://sashiko.dev/#/patchset/20260331050217.504278-1-xmei5%40asu.edu
-[2] https://elixir.bootlin.com/linux/v7.0-rc6/source/include/net/pkt_cls.h#L86
+       new->id = (new->seq << ipcmni_seq_shift()) + idx
 
-Fixes: faeea8bbf6e9 ("net/sched: cls_fw: fix NULL pointer dereference on shared blocks")
-Fixes: ed76f5edccc9 ("net: sched: protect filter_chain list with filter_chain_lock mutex")
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: Davide Caratti <dcaratti@redhat.com>
-Link: https://patch.msgid.link/e39cbd3103a337f1e515d186fe697b4459d24757.1775661704.git.dcaratti@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+4. Later removal goes through ipc_rmid(), which uses:
+
+       ipcid_to_idx(ipcp->id)
+
+   That truncates the real IDR index. An object actually stored at a
+   high index can then be removed as if it lived at a low in-range
+   index.
+
+5. For shared memory, shm_destroy() frees the current object anyway, but
+   the real high IDR slot is left behind as a dangling pointer.
+
+6. A subsequent walk of /proc/sysvipc/shm reaches the stale IDR entry
+   and dereferences freed memory.
+
+Prevent this by bounding the requested allocation to ipc_mni so the
+checkpoint/restore path fails once the valid range is exhausted.
+
+Link: https://lore.kernel.org/cover.1778336914.git.linpu5433@gmail.com
+Link: https://lore.kernel.org/2eebe949bfa7d1f6e13b5be6a92c64c850ce9d45.1778336914.git.linpu5433@gmail.com
+Fixes: 03f595668017 ("ipc: add sysctl to specify desired next object id")
+Signed-off-by: Linpu Yu <linpu5433@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Cc: Kees Cook <kees@kernel.org>
+Cc: Stanislav Kinsbursky <skinsbursky@parallels.com>
+Cc: Davidlohr Bueso <dave@stgolabs.net>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/cls_fw.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ ipc/util.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/sched/cls_fw.c b/net/sched/cls_fw.c
-index a4ffee135c8557..60249d7b333af3 100644
---- a/net/sched/cls_fw.c
-+++ b/net/sched/cls_fw.c
-@@ -72,9 +72,13 @@ static int fw_classify(struct sk_buff *skb, const struct tcf_proto *tp,
- 			}
- 		}
+--- a/ipc/util.c
++++ b/ipc/util.c
+@@ -253,7 +253,7 @@ static inline int ipc_idr_alloc(struct i
  	} else {
--		struct Qdisc *q = tcf_block_q(tp->chain->block);
-+		struct Qdisc *q;
- 
- 		/* Old method: classify the packet using its skb mark. */
-+		if (tcf_block_shared(tp->chain->block))
-+			return -1;
-+
-+		q = tcf_block_q(tp->chain->block);
- 		if (id && (TC_H_MAJ(id) == 0 ||
- 			   !(TC_H_MAJ(id ^ q->handle)))) {
- 			res->classid = id;
--- 
-2.53.0
-
+ 		new->seq = ipcid_to_seqx(next_id);
+ 		idx = idr_alloc(&ids->ipcs_idr, new, ipcid_to_idx(next_id),
+-				0, GFP_NOWAIT);
++				ipc_mni, GFP_NOWAIT);
+ 	}
+ 	if (idx >= 0)
+ 		new->id = (new->seq << ipcmni_seq_shift()) + idx;
 
 
 
