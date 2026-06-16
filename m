@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-265444-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264900-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id siuIKXqKMWphmAUAu9opvQ
-	(envelope-from <stable+bounces-265444-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:40:10 +0200
+	id BCdvAuJ/MWrQkwUAu9opvQ
+	(envelope-from <stable+bounces-264900-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:54:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1274B693594
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:40:10 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73C4F692930
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:54:57 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=zPeLffE3;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265444-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265444-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=AitZx0i3;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264900-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264900-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DA661323AF24
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:33:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 14EA3301F4BE
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:48:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 126934611CF;
-	Tue, 16 Jun 2026 17:33:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1216044CAF5;
+	Tue, 16 Jun 2026 16:48:00 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4C99332EC1;
-	Tue, 16 Jun 2026 17:33:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4E5035DA6A;
+	Tue, 16 Jun 2026 16:47:58 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781631230; cv=none; b=tOLVgnMcDW1YhkOUCCEIObS88dKDSIu+TTRNmVClimnUJ4B4sa/Uxu6oIsxBn1TS9IMTZVhKDDIo14cJDjJzn5CHXnxIPlS/lwBMwvv4CXuHbGG1xwuGtpfevva/9VmUXlYEbADb6Z6xHLJd7h2KsN8smlxno/uFxsl8sgJvfBs=
+	t=1781628479; cv=none; b=FvXF/VmnBFkRS9Cj7lu6f7JoofmsYlTjpqtXG41cnAkivPKID4O5AZpt/aO6RckAEzktq6ORLLUsBQz9h69DvUtKo4Om00PTgeCO6T5Jc0G26g3EJwYKKkBMHeoGbeh2hqGuV1cmwi4Kp28B5eBcAtsHeue1sro7TqowhcPGMIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781631230; c=relaxed/simple;
-	bh=+4VhhhTLToDWz6/TOUFRJFUBIgvUYmM9Mzku437V2/U=;
+	s=arc-20240116; t=1781628479; c=relaxed/simple;
+	bh=M7Ut87/cbnzQagUsHbaDd/JdATTClmtX07B8xHN3oZU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J5s7u8F2wmGY8LYdoBa5WRXgYljkxCnLw7P4b1NUalTCMJHqvQxvLuxtgJUKeW5MpVwv8wMsVu17sQJ3K0Z9DJLA6TQ9TYMFEz/TwPKQWEulAzpN9Y4a7PSSst7FtyY6z6bgXoJp0buzr4NNtwimBTykHYK2cNva/vJqoOBhrOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zPeLffE3; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00A601F000E9;
-	Tue, 16 Jun 2026 17:33:48 +0000 (UTC)
+	 MIME-Version; b=PuPQoduM+t7CuI9irti28VmDWP/AnuBfzYpYf2KlSDS7LktZ0MC55Xn2DgCGLSX0cnJLd6sC0OJwlbRZNWWS1uOpngZqfcQn0avfVd7ATHt4ANfRV+gDdCdgLrBuce0WZLAJ2V43ykl1Fm/KcK2hlx0LT2o4a3i+4QqoGsK/VFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AitZx0i3; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D39461F000E9;
+	Tue, 16 Jun 2026 16:47:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781631229;
-	bh=JoZO61y+Bm8EslaEnYnOItnv1L6uGH7QfIHztHM7l4Y=;
+	s=korg; t=1781628478;
+	bh=iG3pY954g0GE8ZMSZUbEnx28JqXD8HDZzf+2Aqvg74E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=zPeLffE3HrbpcBvQCvoSvo2x+Q1yRvYpiczXzsrCvxr7C9imQg7EN7j7/9mClt7Wz
-	 ikBE2aRB3FW7AD5Ow9up5edLYlPbI69B/Ch5wn0OdXQaBsJ1EJ7VaCHe0KOrTVh054
-	 RXcE7cVJvYoGHWJlF0UmotAqmZ2dGxLxqI/+BPug=
+	b=AitZx0i3bYgNTRTds1tBWGoQDEsXVQ24tnzbaFolck0SZ0sDai87Vjzt9Bz3n2MGP
+	 phIR9dWHyoGO5EcrzZmNCEoE0KLtAN8BZ1hJeXrFcyErCywwGnccOP2WzwbNgnAJH3
+	 W5qmjVUTUsow4DH843KIenZ0QYXIkfMAAqFapi5c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladislav Nikolaev <vlad102nikolaev@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 182/522] RDMA/rxe: Complete the rxe_cleanup_task backport
-Date: Tue, 16 Jun 2026 20:25:29 +0530
-Message-ID: <20260616145134.640955607@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Ben Hutchings <benh@debian.org>,
+	Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+Subject: [PATCH 6.6 103/452] parport: Fix race between port and client registration
+Date: Tue, 16 Jun 2026 20:25:30 +0530
+Message-ID: <20260616145123.203808569@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,27 +67,28 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-265444-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:vlad102nikolaev@gmail.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-264900-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:benh@debian.org,m:sudipm.mukherjee@gmail.com,m:sudipmmukherjee@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,debian.org,gmail.com];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -94,75 +96,122 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 1274B693594
+X-Rspamd-Queue-Id: 73C4F692930
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladislav Nikolaev <vlad102nikolaev@gmail.com>
+From: Ben Hutchings <benh@debian.org>
 
-No upstream commit exists for this patch.
+commit ef15ccbb3e8640a723c42ad90eaf81d66ae02017 upstream.
 
-The issue was introduced with backporting upstream commit b2b1ddc45745
-("RDMA/rxe: Fix the error "trying to register non-static key in
-rxe_cleanup_task"") to the 6.1 stable tree as commit 3236221bb8e4
-("RDMA/rxe: Fix the error "trying to register non-static key in
-rxe_cleanup_task"").
+The parport subsystem registers port devices before they are fully
+initialised, resulting in a race condition where client drivers such
+as lp can attach to ports that are not completely initialised or even
+being torn down.
 
-The 6.1 backport guarded qp->req.task and qp->comp.task before calling
-rxe_cleanup_task(), but left qp->resp.task unguarded. It also kept the
-responder task cleanup before deleting the RC timers, while upstream had
-already moved it after the timer shutdown by commit 960ebe97e523
-("RDMA/rxe: Remove __rxe_do_task()").
+When the port and client drivers are built as modules and loaded
+around the same time during boot, this occasionally results in a
+crash.  I was able to make this happen reliably in a VM with a
+PC-style parallel port by patching parport_pc to fail probing:
 
-In the 6.1 tree, rxe_qp_from_init() calls rxe_qp_init_req() before
-rxe_qp_init_resp(). Therefore, if rxe_qp_init_req() fails, cleanup can
-run before qp->resp.task has been initialized by rxe_init_task(), and the
-unconditional rxe_cleanup_task(&qp->resp.task) can still hit the same
-uninitialized task lock problem that upstream commit b2b1ddc45745 fixed.
+> --- a/drivers/parport/parport_pc.c
+> +++ b/drivers/parport/parport_pc.c
+> @@ -2069,7 +2069,7 @@ static struct parport *__parport_pc_probe_port(unsigned long int base,
+>  	if (!p)
+>  		goto out3;
+>
+> -	base_res = request_region(base, 3, p->name);
+> +	base_res = NULL;
+>  	if (!base_res)
+>  		goto out4;
+>
 
-Move responder task cleanup after deleting the RC timers, matching the
-upstream cleanup order, and guard it with qp->resp.task.func like the
-requester and completer tasks.
+and then running:
 
-Fixes: 3236221bb8e4 ("RDMA/rxe: Fix the error "trying to register non-static key in rxe_cleanup_task"")
-Signed-off-by: Vladislav Nikolaev <vlad102nikolaev@gmail.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+    while true; do
+        modprobe lp & modprobe parport_pc
+	wait
+	rmmod lp parport_pc
+    done
+
+for a few seconds.
+
+In the long term I think port registration should be changed to put
+the call to device_add() inside parport_announce_port(), but since the
+latter currently cannot fail this will require changing all port
+drivers.
+
+For now, add a flag to indicate whether a port has been "announced"
+and only try to attach client drivers to ports when the flag is set.
+
+Fixes: 6fa45a226897 ("parport: add device-model to parport subsystem")
+Closes: https://bugs.debian.org/1130365
+Closes: https://lore.kernel.org/all/6ba903ad-9897-42bb-8c2d-337385cc3746@molgen.mpg.de/
+Cc: stable <stable@kernel.org>
+Signed-off-by: Ben Hutchings <benh@debian.org>
+Acked-by: Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+Link: https://patch.msgid.link/afo6uBv68GDevbMD@decadent.org.uk
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/sw/rxe/rxe_qp.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/parport/share.c |   11 +++++++++--
+ include/linux/parport.h |    1 +
+ 2 files changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/sw/rxe/rxe_qp.c b/drivers/infiniband/sw/rxe/rxe_qp.c
-index 709c63e9773c5f..171c0f4dcbecfc 100644
---- a/drivers/infiniband/sw/rxe/rxe_qp.c
-+++ b/drivers/infiniband/sw/rxe/rxe_qp.c
-@@ -781,13 +781,15 @@ static void rxe_qp_do_cleanup(struct work_struct *work)
+--- a/drivers/parport/share.c
++++ b/drivers/parport/share.c
+@@ -223,10 +223,14 @@ static void get_lowlevel_driver(void)
+ static int port_check(struct device *dev, void *dev_drv)
+ {
+ 	struct parport_driver *drv = dev_drv;
++	struct parport *port;
  
- 	qp->valid = 0;
- 	qp->qp_timeout_jiffies = 0;
--	rxe_cleanup_task(&qp->resp.task);
+ 	/* only send ports, do not send other devices connected to bus */
+-	if (is_parport(dev))
+-		drv->match_port(to_parport_dev(dev));
++	if (is_parport(dev)) {
++		port = to_parport_dev(dev);
++		if (test_bit(PARPORT_ANNOUNCED, &port->devflags))
++			drv->match_port(port);
++	}
+ 	return 0;
+ }
  
- 	if (qp_type(qp) == IB_QPT_RC) {
- 		del_timer_sync(&qp->retrans_timer);
- 		del_timer_sync(&qp->rnr_nak_timer);
+@@ -553,6 +557,7 @@ void parport_announce_port(struct parpor
+ 		if (slave)
+ 			attach_driver_chain(slave);
  	}
++	set_bit(PARPORT_ANNOUNCED, &port->devflags);
+ 	mutex_unlock(&registration_lock);
+ }
+ EXPORT_SYMBOL(parport_announce_port);
+@@ -582,6 +587,8 @@ void parport_remove_port(struct parport
  
-+	if (qp->resp.task.func)
-+		rxe_cleanup_task(&qp->resp.task);
+ 	mutex_lock(&registration_lock);
+ 
++	clear_bit(PARPORT_ANNOUNCED, &port->devflags);
 +
- 	if (qp->req.task.func)
- 		rxe_cleanup_task(&qp->req.task);
+ 	/* Spread the word. */
+ 	detach_driver_chain(port);
  
--- 
-2.53.0
-
+--- a/include/linux/parport.h
++++ b/include/linux/parport.h
+@@ -242,6 +242,7 @@ struct parport {
+ 
+ 	unsigned long devflags;
+ #define PARPORT_DEVPROC_REGISTERED	0
++#define PARPORT_ANNOUNCED		1
+ 	struct pardevice *proc_device;	/* Currently register proc device */
+ 
+ 	struct list_head full_list;
 
 
 
