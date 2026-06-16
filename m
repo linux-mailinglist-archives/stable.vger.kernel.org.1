@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-266321-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265023-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Ux0bJ+iaMWoroAUAu9opvQ
-	(envelope-from <stable+bounces-266321-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:50:16 +0200
+	id etGrFq2DMWpolQUAu9opvQ
+	(envelope-from <stable+bounces-265023-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:11:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97752694818
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:50:15 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B31D0692D42
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:11:08 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=fnyU3mHG;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266321-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-266321-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=PiG6vCMl;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265023-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265023-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7F9DD300BC74
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:50:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9B67F3252699
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:58:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B9C6450902;
-	Tue, 16 Jun 2026 18:50:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FB8031328E;
+	Tue, 16 Jun 2026 16:58:10 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F6433AE1A2;
-	Tue, 16 Jun 2026 18:50:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E42A332637;
+	Tue, 16 Jun 2026 16:58:09 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781635810; cv=none; b=MhvJtgS0GhZXjz9WkNJOLV3bneUk7t9aj8G6TRMvukx32tVtBZg05gXTWbFM1Sbxr4eKDUMqtgOSNbhf7T4pX39vf8caGUoALCqJIlXn3w1ywrCVPSvJ+tWWDcTb7zzG/RANUESZWJMmWA19XLytzweV7YeG4K454vXgOs+bTgc=
+	t=1781629090; cv=none; b=jQ7A/Mvut5wwR+kvg5G2XWI2EJmyCNUw+glCWwI2c9ni9IOHswp2x1n3HDCsLVOvYc1lR7DW5IqT9uO41yXbUYFoOAPMwyDYHVhRCZCgKv+NPqCaXunlkmqkoS9asila70ZgWbbDZ4m+rs8Z2Uaa1LjtGR7yjshrDhx9RGQs97w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781635810; c=relaxed/simple;
-	bh=Pk2lCnf8A5J7ndISIve6nnPwaX2bNwQgcRHXNLS0sNk=;
+	s=arc-20240116; t=1781629090; c=relaxed/simple;
+	bh=2zoI1TGyRhAqVJ6B8jsPEygJKhEDux0J8jhuq5ammHc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YPXsKSjcpyrEdOgM8HysPkzd7kCU25WMk48wprJ3YQVGtK894fu4ogbMHYvn6U/J4NQq/zPahawsd56kI7biRPMNuXyyegJkA2uo0/731CKHTO3JuSz4LWHiGSBrPFnZyxS89nPkWHuejZSK76SsLWDK8Km/knlAd4NnI13BDAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fnyU3mHG; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 277B41F000E9;
-	Tue, 16 Jun 2026 18:50:07 +0000 (UTC)
+	 MIME-Version; b=XurGl32cT5WP90gHuHvZCXd3hmiwUjZsLAoq5ZilKeMOyvnu+7kkczPuLWjHhOZwrZwRKqxpV3osueQjPQ67dEkI8jodJigAzQdIgH7UfTQzIQMXOq+SoX4DnUBYUuUc2CZgiNii3wmxOAhx2wu4inc8r9tReiLtjxfUf/NVCTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PiG6vCMl; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E6651F000E9;
+	Tue, 16 Jun 2026 16:58:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781635809;
-	bh=4imrn0/2+//yaTkRqFSFSrTTseTpc6XTnVIVlDp9NMk=;
+	s=korg; t=1781629089;
+	bh=lKJr273MayzVGWpzaj1tRJqGhVrvfI2Wh96hN3qfhu8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fnyU3mHGV48X62Qu+i53IxQbsvjyOAz0WGSc83Sca7B9jLbqeUl8IYQtJU/GWEs+h
-	 Kc1LtLgsTs6vQJq9Xel3+j6ITok9+J9+VHOB0ynrY7iF8gQ+g4pVbw9qG93qs+ie9w
-	 8ZS5x6R9N4nj+UNautSXb2pEFFW9Sv0L6F0zcJx8=
+	b=PiG6vCMlzRDeN978V4bP8vOvwg17WP6cS0dqXJ+xd83FvC+ukForo4l4tOISTfmQS
+	 YhZatwfEoVfHZvBYCyTettwg3+VJL9txZZhIffdMCYbOH9s+1cU4dqw4FLM6VUsOYX
+	 vLl77yRQ+r49CWM/ugBm/4wXUsSJmCmOiKNWZOag=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei-Cheng Chen <weichengc@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 118/342] xhci: tegra: Fix ghost USB device on dual-role port unplug
+	David Francis <David.Francis@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.6 187/452] drm/amdkfd: Check for pdd drm file first in CRIU restore path
 Date: Tue, 16 Jun 2026 20:26:54 +0530
-Message-ID: <20260616145053.709539119@linuxfoundation.org>
+Message-ID: <20260616145127.663573916@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,21 +71,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266321-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265023-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:weichengc@nvidia.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:David.Francis@amd.com,m:alexander.deucher@amd.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -97,197 +97,61 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,vger.kernel.org:from_smtp,nvidia.com:email,msg.data:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,amd.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 97752694818
+X-Rspamd-Queue-Id: B31D0692D42
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei-Cheng Chen <weichengc@nvidia.com>
+From: David Francis <David.Francis@amd.com>
 
-[ Upstream commit 5a4c828b8b29b47534814ade26d9aee09d5101fc ]
+commit 6842b6a4b72da9b2906ffc5ca9d846ace2c54c14 upstream.
 
-When a USB device is unplugged from the dual-role port, the device-mode
-path in tegra_xhci_id_work() explicitly clears both SS and HS port power
-via direct hub_control ClearPortFeature(POWER) calls. This preempts the
-xHCI controller's normal disconnect processing -- PORT_CSC is never
-generated, the USB core never sees the disconnect, and the device remains
-in its internal tree as a ghost visible in lsusb.
+CRIU restore ioctls are meant to be called by CRIU with no
+existing drm file. There's an error path
+for if the drm file unexpectedly exists. It was positioned so
+it was missing a fput(drm_file).
 
-Add an otg_set_port_power flag to control whether the dual-role switch
-path performs explicit port power management. SoCs that need it
-(Tegra124 / Tegra210 / Tegra186) set the flag; later SoCs (Tegra194 and
-beyond) rely on the PHY mode change to handle disconnect naturally and
-skip all port power calls.
+Do that check earlier, as soon as we have the pdd.
 
-Within the port power path, otg_reset_sspi additionally gates the SSPI
-reset sequence on host-mode entry for SoCs that require it.
-
-Flags set per SoC:
-  Tegra124, Tegra186  -> otg_set_port_power
-  Tegra210            -> otg_set_port_power, otg_reset_sspi
-  Tegra194 and later  -> (none)
-
-[ Backport to 5.10.y: keep the host-mode snapshot in the existing
-  tegra->lock section, retain pm_runtime_mark_last_busy() in the host
-  port-power path, and omit the newer Tegra234 entry. ]
-
-Fixes: f836e7843036 ("usb: xhci-tegra: Add OTG support")
+Signed-off-by: David Francis <David.Francis@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 2bab781dac78916c5cc8de76345a4102449267d7)
 Cc: stable@vger.kernel.org
-Signed-off-by: Wei-Cheng Chen <weichengc@nvidia.com>
-Link: https://patch.msgid.link/20260505112630.217704-1-weichengc@nvidia.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-tegra.c | 78 ++++++++++++++++++++---------------
- 1 file changed, 44 insertions(+), 34 deletions(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_chardev.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/usb/host/xhci-tegra.c b/drivers/usb/host/xhci-tegra.c
-index e2cd145ed495a1..8b4a6eb8f0b11f 100644
---- a/drivers/usb/host/xhci-tegra.c
-+++ b/drivers/usb/host/xhci-tegra.c
-@@ -208,6 +208,7 @@ struct tegra_xusb_soc {
- 	bool has_ipfs;
- 	bool lpm_support;
- 	bool otg_reset_sspi;
-+	bool otg_set_port_power;
- };
- 
- struct tegra_xusb_context {
-@@ -1161,14 +1162,17 @@ static void tegra_xhci_id_work(struct work_struct *work)
- 	struct tegra_xusb_mbox_msg msg;
- 	struct phy *phy = tegra_xusb_get_phy(tegra, "usb2",
- 						    tegra->otg_usb2_port);
-+	bool host_mode;
- 	u32 status;
- 	int ret;
- 
--	dev_dbg(tegra->dev, "host mode %s\n", tegra->host_mode ? "on" : "off");
--
- 	mutex_lock(&tegra->lock);
- 
--	if (tegra->host_mode)
-+	host_mode = tegra->host_mode;
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
+@@ -2265,6 +2265,11 @@ static int criu_restore_devices(struct k
+ 			ret = -EINVAL;
+ 			goto exit;
+ 		}
 +
-+	dev_dbg(tegra->dev, "host mode %s\n", host_mode ? "on" : "off");
-+
-+	if (host_mode)
- 		phy_set_mode_ext(phy, PHY_MODE_USB_OTG, USB_ROLE_HOST);
- 	else
- 		phy_set_mode_ext(phy, PHY_MODE_USB_OTG, USB_ROLE_NONE);
-@@ -1179,42 +1183,44 @@ static void tegra_xhci_id_work(struct work_struct *work)
- 								    tegra->otg_usb2_port);
- 
- 	pm_runtime_get_sync(tegra->dev);
--	if (tegra->host_mode) {
--		/* switch to host mode */
--		if (tegra->otg_usb3_port >= 0) {
--			if (tegra->soc->otg_reset_sspi) {
--				/* set PP=0 */
--				tegra_xhci_hc_driver.hub_control(
--					xhci->shared_hcd, GetPortStatus,
--					0, tegra->otg_usb3_port+1,
--					(char *) &status, sizeof(status));
--				if (status & USB_SS_PORT_STAT_POWER)
--					tegra_xhci_set_port_power(tegra, false,
--								  false);
--
--				/* reset OTG port SSPI */
--				msg.cmd = MBOX_CMD_RESET_SSPI;
--				msg.data = tegra->otg_usb3_port+1;
--
--				ret = tegra_xusb_mbox_send(tegra, &msg);
--				if (ret < 0) {
--					dev_info(tegra->dev,
--						"failed to RESET_SSPI %d\n",
--						ret);
-+	if (tegra->soc->otg_set_port_power) {
-+		if (host_mode) {
-+			/* switch to host mode */
-+			if (tegra->otg_usb3_port >= 0) {
-+				if (tegra->soc->otg_reset_sspi) {
-+					/* set PP=0 */
-+					tegra_xhci_hc_driver.hub_control(
-+						xhci->shared_hcd, GetPortStatus,
-+						0, tegra->otg_usb3_port+1,
-+						(char *) &status, sizeof(status));
-+					if (status & USB_SS_PORT_STAT_POWER)
-+						tegra_xhci_set_port_power(tegra, false,
-+									  false);
-+
-+					/* reset OTG port SSPI */
-+					msg.cmd = MBOX_CMD_RESET_SSPI;
-+					msg.data = tegra->otg_usb3_port+1;
-+
-+					ret = tegra_xusb_mbox_send(tegra, &msg);
-+					if (ret < 0) {
-+						dev_info(tegra->dev,
-+							"failed to RESET_SSPI %d\n",
-+							ret);
-+					}
- 				}
--			}
- 
--			tegra_xhci_set_port_power(tegra, false, true);
--		}
-+				tegra_xhci_set_port_power(tegra, false, true);
-+			}
- 
--		tegra_xhci_set_port_power(tegra, true, true);
--		pm_runtime_mark_last_busy(tegra->dev);
-+			tegra_xhci_set_port_power(tegra, true, true);
-+			pm_runtime_mark_last_busy(tegra->dev);
- 
--	} else {
--		if (tegra->otg_usb3_port >= 0)
--			tegra_xhci_set_port_power(tegra, false, false);
-+		} else {
-+			if (tegra->otg_usb3_port >= 0)
-+				tegra_xhci_set_port_power(tegra, false, false);
- 
--		tegra_xhci_set_port_power(tegra, true, false);
-+			tegra_xhci_set_port_power(tegra, true, false);
++		if (pdd->drm_file) {
++			ret = -EINVAL;
++			goto exit;
 +		}
- 	}
- 	pm_runtime_put_autosuspend(tegra->dev);
- }
-@@ -1925,6 +1931,7 @@ static const struct tegra_xusb_soc tegra124_soc = {
- 	.scale_ss_clock = true,
- 	.has_ipfs = true,
- 	.otg_reset_sspi = false,
-+	.otg_set_port_power = true,
- 	.mbox = {
- 		.cmd = 0xe4,
- 		.data_in = 0xe8,
-@@ -1961,6 +1968,7 @@ static const struct tegra_xusb_soc tegra210_soc = {
- 	.scale_ss_clock = false,
- 	.has_ipfs = true,
- 	.otg_reset_sspi = true,
-+	.otg_set_port_power = true,
- 	.mbox = {
- 		.cmd = 0xe4,
- 		.data_in = 0xe8,
-@@ -2002,6 +2010,7 @@ static const struct tegra_xusb_soc tegra186_soc = {
- 	.scale_ss_clock = false,
- 	.has_ipfs = false,
- 	.otg_reset_sspi = false,
-+	.otg_set_port_power = true,
- 	.mbox = {
- 		.cmd = 0xe4,
- 		.data_in = 0xe8,
-@@ -2033,6 +2042,7 @@ static const struct tegra_xusb_soc tegra194_soc = {
- 	.scale_ss_clock = false,
- 	.has_ipfs = false,
- 	.otg_reset_sspi = false,
-+	.otg_set_port_power = false,
- 	.mbox = {
- 		.cmd = 0x68,
- 		.data_in = 0x6c,
--- 
-2.53.0
-
+ 		pdd->user_gpu_id = device_buckets[i].user_gpu_id;
+ 
+ 		drm_file = fget(device_buckets[i].drm_fd);
+@@ -2274,11 +2279,6 @@ static int criu_restore_devices(struct k
+ 			ret = -EINVAL;
+ 			goto exit;
+ 		}
+-
+-		if (pdd->drm_file) {
+-			ret = -EINVAL;
+-			goto exit;
+-		}
+ 
+ 		/* create the vm using render nodes for kfd pdd */
+ 		if (kfd_process_device_init_vm(pdd, drm_file)) {
 
 
 
