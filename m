@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-264198-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266160-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id tmM0Cjd0MWrzjgUAu9opvQ
-	(envelope-from <stable+bounces-264198-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:05:11 +0200
+	id gIuYFqWXMWqtngUAu9opvQ
+	(envelope-from <stable+bounces-266160-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:36:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46980691AC7
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:05:10 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF7F369443E
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:36:20 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ruxWGAUl;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264198-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264198-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ydMJAPK+;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266160-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266160-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7C38F303CB97
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:45:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CB17F308B2A9
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:36:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C997F361651;
-	Tue, 16 Jun 2026 15:44:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02EC443CEC7;
+	Tue, 16 Jun 2026 18:36:19 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98BD044B69C;
-	Tue, 16 Jun 2026 15:44:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6615169AD2;
+	Tue, 16 Jun 2026 18:36:17 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781624647; cv=none; b=Av9To8f9xCJE9j5S7cPhz3y9uH89EQAOiE1rgTcytBuTxmxHSXmK9OB4bWJGYCkNqq3mClxRywLfTbJ73NZ5oKnbaddr6ZqxsqDqEdqEPK/MXPvLJWs74VRLalTGb9kATD2HJWLVRBYjs53MYmRe7ngs+S6wZg6+5zBGXQMZ4xY=
+	t=1781634978; cv=none; b=tcr0lo3RhEZzjQpSbHLHO+rY0ar6UB464YKjaD/6jHu17wdInxs+i1SpFORjcnd6/EDXBk5b1WxGSh/5U/zkxHWPhkC97Ek2gum1A+BM7+AptkmuKm52An0CHk5hcMOlZPA3VEScNZkScxXfBuzxkZr1RVnb3efkCeSqbSyCay8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781624647; c=relaxed/simple;
-	bh=cEHv62TTmX6BYPZvr86/AxkKfUPGSgxr/uGxCpHE8kA=;
+	s=arc-20240116; t=1781634978; c=relaxed/simple;
+	bh=Cob6JLo9Wy97eZ1bPdpE79srGsCdMbFs0A02Kktbq0g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=odzT12ezhCNPdEBPvXCMd5697kUINYv6zei3cHsIoWwEWh2Oxy5ZhEIMDskStyVNjXuHJyQyz06xTKyMjw0Yk5U3HGtPllc1iaKIX1ra3YSuRPQVU29qb4FCfiyapEyoSI1IEfBsvURt136LDoITVfwkN4MGmR4QYu3ROCGFRtE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ruxWGAUl; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 998171F00A3A;
-	Tue, 16 Jun 2026 15:44:05 +0000 (UTC)
+	 MIME-Version; b=ZEEKWNqQGqzrUBoFN48Y13xGZ+TFhd8Oe1zWVWFt3TWkTaLZU5+Bl73TmeoRTN3lPDOOJQcvPqD7mcI/JFxd++etJvZnE9H2/0U97Bg3C30xUaC2x7qxhXDyuin8Ng4ft3mdlxypLm1uRV6b8hRqtE+198THP/fHIzPv92yuI9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ydMJAPK+; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5453B1F000E9;
+	Tue, 16 Jun 2026 18:36:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781624646;
-	bh=+HU6ggIJw3+eked7ueR0tdROojlLTa4oaNtKNEq+6Yc=;
+	s=korg; t=1781634977;
+	bh=zsQY21QLSUrDNwgG9IHWwBgFJxscvA70qKbgFR4Nmic=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ruxWGAUlY9d+5pBs5bASkMonDbB+pha+FnnsOv/G+na0178wOSl2b5ruEA/WxAnC/
-	 BiSiagUyhX6dFRJ+QGrGxvkCvR6ezrhBmTVrIG8vww3LQS2x/1QW76Habq4jVzwBNx
-	 xw406Ux/wAo6JWT8qztlQMhLgk7hnxTpPT8M0dXM=
+	b=ydMJAPK+y+Rpep2/kgHqz0M6fTIVZW94eK3UUkzQo7eoGi2bXjtuE6EP3UIwQ6Wgn
+	 656KpucGBrQ70W6Ix4ITsnibefkFhD1NIFRJ9tUR5qyZcBpGx6rZNdIFJEBfuqdqNd
+	 evsWXQIyZFKycHfx+zG5aE91cbRmQx+JWr/w2xlE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Iago Toral Quiroga <itoral@igalia.com>,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
-Subject: [PATCH 7.0 341/378] drm/v3d: Fix global performance monitor reference counting
+	stable@kernel.org,
+	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 334/411] f2fs: fix false alarm of lockdep on cp_global_sem lock
 Date: Tue, 16 Jun 2026 20:29:32 +0530
-Message-ID: <20260616145128.132866801@linuxfoundation.org>
+Message-ID: <20260616145118.916496425@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,124 +67,141 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:itoral@igalia.com,m:mcanal@igalia.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-264198-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-266160-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:shinichiro.kawasaki@wdc.com,m:chao@kernel.org,m:jaegeuk@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ALIAS_RESOLVED(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,igalia.com:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 46980691AC7
+X-Rspamd-Queue-Id: BF7F369443E
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maíra Canal <mcanal@igalia.com>
+From: Chao Yu <chao@kernel.org>
 
-commit 6bf7e2affc6e62da7add393d7f352d4040f5bc27 upstream.
+[ Upstream commit 6a5e3de9c2bb0b691d16789a5d19e9276a09b308 ]
 
-In the SET_GLOBAL ioctl, v3d_perfmon_find() bumps the reference count on
-the perfmon it returns, but v3d_perfmon_set_global_ioctl() and
-v3d_perfmon_delete() fail to release that reference on several paths:
+lockdep reported a potential deadlock:
 
-  1. v3d_perfmon_set_global_ioctl() leaks the reference on its error
-     paths.
+a) TCMU device removal context:
+ - call del_gendisk() to get q->q_usage_counter
+ - call start_flush_work() to get work_completion of wb->dwork
+b) f2fs writeback context:
+ - in wb_workfn(), which holds work_completion of wb->dwork
+ - call f2fs_balance_fs() to get sbi->gc_lock
+c) f2fs vfs_write context:
+ - call f2fs_gc() to get sbi->gc_lock
+ - call f2fs_write_checkpoint() to get sbi->cp_global_sem
+d) f2fs mount context:
+ - call recover_fsync_data() to get sbi->cp_global_sem
+ - call f2fs_check_and_fix_write_pointer() to call blkdev_report_zones()
+   that goes down to blk_mq_alloc_request and get q->q_usage_counter
 
-  2. CLEAR_GLOBAL leaks both the find reference and the reference
-     previously stashed in v3d->global_perfmon by the SET_GLOBAL ioctl
-     that configured it.
+Original callstack is in Closes tag.
 
-  3. Destroying a perfmon that is the current global perfmon leaks the
-     reference stashed by the SET_GLOBAL ioctl.
+However, I think this is a false alarm due to before mount returns
+successfully (context d), we can not access file therein via vfs_write
+(context c).
 
-Release each of these references explicitly.
+Let's introduce per-sb cp_global_sem_key, and assign the key for
+cp_global_sem, so that lockdep can recognize cp_global_sem from
+different super block correctly.
 
-Cc: stable@vger.kernel.org
-Fixes: c6eabbab359c ("drm/v3d: Add DRM_IOCTL_V3D_PERFMON_SET_GLOBAL")
-Reviewed-by: Iago Toral Quiroga <itoral@igalia.com>
-Link: https://patch.msgid.link/20260531-v3d-perfmon-lifetime-v2-1-60ed4485a203@igalia.com
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
+A lot of work are done by Shin'ichiro Kawasaki, thanks a lot for
+the work.
+
+Fixes: c426d99127b1 ("f2fs: Check write pointer consistency of open zones")
+Cc: stable@kernel.org
+Reported-and-tested-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+Closes: https://lore.kernel.org/linux-f2fs-devel/20260218125237.3340441-1-shinichiro.kawasaki@wdc.com
+Signed-off-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+[ adapted to plain `struct rw_semaphore` (no `f2fs_rwsem` wrapper) and moved success-path `lockdep_unregister_key` from `kill_f2fs_super` to `f2fs_put_super` where sbi is actually freed ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/v3d/v3d_perfmon.c |   24 +++++++++++++++++++-----
- 1 file changed, 19 insertions(+), 5 deletions(-)
+ fs/f2fs/f2fs.h  |    3 +++
+ fs/f2fs/super.c |   11 +++++++++++
+ 2 files changed, 14 insertions(+)
 
---- a/drivers/gpu/drm/v3d/v3d_perfmon.c
-+++ b/drivers/gpu/drm/v3d/v3d_perfmon.c
-@@ -313,8 +313,11 @@ static int v3d_perfmon_idr_del(int id, v
- 	if (perfmon == v3d->active_perfmon)
- 		v3d_perfmon_stop(v3d, perfmon, false);
+--- a/fs/f2fs/f2fs.h
++++ b/fs/f2fs/f2fs.h
+@@ -1798,6 +1798,9 @@ struct f2fs_sb_info {
+ 	spinlock_t iostat_lat_lock;
+ 	struct iostat_lat_info *iostat_io_lat;
+ #endif
++#ifdef CONFIG_DEBUG_LOCK_ALLOC
++	struct lock_class_key cp_global_sem_key;
++#endif
+ };
  
--	/* If the global perfmon is being destroyed, set it to NULL */
--	cmpxchg(&v3d->global_perfmon, perfmon, NULL);
-+	/* If the global perfmon is being destroyed, clean it and release
-+	 * the reference stashed in v3d_perfmon_set_global_ioctl().
-+	 */
-+	if (cmpxchg(&v3d->global_perfmon, perfmon, NULL) == perfmon)
-+		v3d_perfmon_put(perfmon);
- 
- 	v3d_perfmon_put(perfmon);
- 
-@@ -480,16 +483,27 @@ int v3d_perfmon_set_global_ioctl(struct
- 
- 	/* If the request is to clear the global performance monitor */
- 	if (req->flags & DRM_V3D_PERFMON_CLEAR_GLOBAL) {
--		if (!v3d->global_perfmon)
-+		struct v3d_perfmon *old;
-+
-+		/* DRM_V3D_PERFMON_CLEAR_GLOBAL doesn't check if
-+		 * v3d->global_perfmon == perfmon. Therefore, there
-+		 * is no need to keep perfmon's reference.
-+		 */
-+		v3d_perfmon_put(perfmon);
-+
-+		old = xchg(&v3d->global_perfmon, NULL);
-+		if (!old)
- 			return -EINVAL;
- 
--		xchg(&v3d->global_perfmon, NULL);
-+		v3d_perfmon_put(old);
- 
- 		return 0;
- 	}
- 
--	if (cmpxchg(&v3d->global_perfmon, NULL, perfmon))
-+	if (cmpxchg(&v3d->global_perfmon, NULL, perfmon)) {
-+		v3d_perfmon_put(perfmon);
- 		return -EBUSY;
-+	}
- 
- 	return 0;
+ struct f2fs_private_dio {
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -1668,6 +1668,9 @@ static void f2fs_put_super(struct super_
+ #ifdef CONFIG_UNICODE
+ 	utf8_unload(sb->s_encoding);
+ #endif
++#ifdef CONFIG_DEBUG_LOCK_ALLOC
++	lockdep_unregister_key(&sbi->cp_global_sem_key);
++#endif
+ 	kfree(sbi);
  }
+ 
+@@ -4123,6 +4126,11 @@ try_onemore:
+ 	init_rwsem(&sbi->gc_lock);
+ 	mutex_init(&sbi->writepages);
+ 	init_rwsem(&sbi->cp_global_sem);
++#ifdef CONFIG_DEBUG_LOCK_ALLOC
++	lockdep_register_key(&sbi->cp_global_sem_key);
++	lockdep_set_class(&sbi->cp_global_sem,
++					&sbi->cp_global_sem_key);
++#endif
+ 	init_rwsem(&sbi->node_write);
+ 	init_rwsem(&sbi->node_change);
+ 
+@@ -4524,6 +4532,9 @@ free_sb_buf:
+ free_sbi:
+ 	if (sbi->s_chksum_driver)
+ 		crypto_free_shash(sbi->s_chksum_driver);
++#ifdef CONFIG_DEBUG_LOCK_ALLOC
++	lockdep_unregister_key(&sbi->cp_global_sem_key);
++#endif
+ 	kfree(sbi);
+ 
+ 	/* give only one another chance */
 
 
 
