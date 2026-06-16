@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-264548-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264049-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id oMmSMdl7MWoakgUAu9opvQ
-	(envelope-from <stable+bounces-264548-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:37:45 +0200
+	id s/bDAdluMWrWjAUAu9opvQ
+	(envelope-from <stable+bounces-264049-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:42:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCDC8692471
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:37:44 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8211A6914F8
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:42:16 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=tWP3Gf+P;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264548-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264548-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=DTDdFtqu;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264049-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264049-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 93CFC305EDD7
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:15:06 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9BE9B3082BA6
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:30:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8CF546AF02;
-	Tue, 16 Jun 2026 16:15:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B038C43D513;
+	Tue, 16 Jun 2026 15:30:55 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D9F0466B77;
-	Tue, 16 Jun 2026 16:15:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73E193A9627;
+	Tue, 16 Jun 2026 15:30:54 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781626505; cv=none; b=scgFVcOYM/OoZqzO05tR5LRawsc1r4a2axv7d2jFfE3xlfdurC2zjNBlTZ+7EiyCS4cY+xjW6QLfwfggZca68PFzwsbLj7cQid4/iLx8KguM9O/Kvds7RtoEWcNJj3MhvHC0VjnF2tOVI/1VXGc15kLACnzDeoz6dEzN5EF59IU=
+	t=1781623855; cv=none; b=ATW9wduMsxY+3GGVEwkK9A5dk9iul2qsSDm6OLQ8GUfYp55HHyWWx2Ygh+rOd6t6/5/ccbrpqbifs2QbGu7MAVqTAppewJrLgItJhlekuZOecceQrtuA1WiWG2o4xGp3zsVRsqo3gz17ghhAV8r0LBf7MFX77ugVBGcBx9C8cH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781626505; c=relaxed/simple;
-	bh=ukjWm/nKZ710i3LG63NU81bvSy+RbcYtikEdGxrKG7I=;
+	s=arc-20240116; t=1781623855; c=relaxed/simple;
+	bh=ixGpNYik5ZtVgoheusu5xex8nf+XjbhSlQ/UmMmkcDc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sOJuaIPuGKw7Lq4b8xOv6Rxlw3mMfMc61zma71kXRIs9QI6cJlRFbOypmzelOYqxFXYU33oI/HMU6vzyq2VpW5rUa++h1xIugxIpwjHBfOLpAJISxYJi8pAfIhtlhqmaVZG//ZCNeSAt4DhQYUujN2iITB5h8dfZ06qT0PTlFxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tWP3Gf+P; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8208E1F000E9;
-	Tue, 16 Jun 2026 16:15:03 +0000 (UTC)
+	 MIME-Version; b=QwqOwyW2IB1KePLQ+NjbPV4ELkIhJn/H4urlNdMFNMR4iZHgA27PqxpXnascgOtHBKi1ZqsOK0iQI/B2Tsn9zlkkt366oY4iXi3Kl3vZSMY2/9W3bb863cClE4C2rREDN8R5AX3Ig9YQ0MDFJuR6lTnDUtab43DVDpL7+UbUG0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DTDdFtqu; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 684321F000E9;
+	Tue, 16 Jun 2026 15:30:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781626504;
-	bh=9MWXL/lCT2QdEQVJxJOSkfdi4H8t+rkcZ3eVCj7cusQ=;
+	s=korg; t=1781623854;
+	bh=f3cslVgbC1zss3fEhuLqtiDanWeVa9TCTulYHLEcclg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=tWP3Gf+Per2AIYrQ4MBsouOB8pVyeWMJEvDkSapNFLKFM+tju4a4q0WnWvQ8YS3Yh
-	 Qe2AaLXZCyG8NvOV/z+8UA/fech4+7gZKrI3KtZpwMviNTRYiSqTOoyyFXq1++bxDf
-	 7Plixjg0g3HBLpiCpKVkhyLYPa9b+JTGUhwcuA9o=
+	b=DTDdFtqu8ne82jcr9zqiSH1pcnYFbJUxhroUPNugDZmSfdkpHqoLk7dSabcyGP1cd
+	 Ng+UH8NVDGKyzWx2oEnENQcpafSosuBo/58IWMOCoinhyANkk4gjsJ1GwcGBfTpyDS
+	 g1RSumCpqZnIACQU1TSoyd4jJtycEAxCKVizN8WE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robert Marko <robert.marko@sartura.hr>,
-	Jakub Kicinski <kuba@kernel.org>,
-	=?UTF-8?q?Jo=C3=ABl=20Esponde?= <joel.esponde@leroy-agon.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 007/261] net: phy: micrel: fix LAN8814 QSGMII soft reset
+	Federico Brasili <federico.brasili@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 7.0 214/378] io_uring/kbuf: dont truncate end buffer for bundles
 Date: Tue, 16 Jun 2026 20:27:25 +0530
-Message-ID: <20260616145045.369235953@linuxfoundation.org>
+Message-ID: <20260616145121.609586468@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
-References: <20260616145044.869532709@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,111 +64,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-264548-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:robert.marko@sartura.hr,m:kuba@kernel.org,m:joel.esponde@leroy-agon.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264049-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:federico.brasili@gmail.com,m:axboe@kernel.dk,m:federicobrasili@gmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.dk];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,vger.kernel.org:from_smtp,sartura.hr:email,leroy-agon.com:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[kernel.dk:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: CCDC8692471
+X-Rspamd-Queue-Id: 8211A6914F8
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Robert Marko <robert.marko@sartura.hr>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit e027c218c482c6a0ae1948129ccda3b0a2033368 ]
+commit 70f4886bcbb929e88038c8807f1daf7fc587ae7c upstream.
 
-LAN8814 QSGMII soft reset was moved into the probe function to avoid
-triggering it for each of 4 PHY-s in the package.
+If buffers have been peeked for a bundle receive, the kernel will
+truncate the end buffer, if the available length is shorter than the
+buffer itself. This is unnecessary, as applications iterating bundle
+receives must always use the minimum size of the buffer length and the
+remaining number of bytes in the bundle. The examples in liburing do
+that as well, eg examples/proxy.c.
 
-However, that broke QSGMII link between the MAC and PHY on most LAN8814
-PHY-s, specificaly for us on the Microchip LAN969x switch.
-Reading the QSGMII status registers it was visible that lanes were only
-partially synced.
+If the kernel does truncate this buffer AND the current transfer fails,
+then the buffer will be left with a smaller size than what is otherwise
+available.
 
-It looks like the reset timing is crucial, so lets move the reset back
-into the .config_init function but guard it with phy_package_init_once()
-to avoid it being triggered on each of 4 PHY-s in the package.
-Change the probe function to use phy_package_probe_once() for coma and PtP
-setup.
+Just remove the buffer truncation, as it's not necessary in the first
+place.
 
-Fixes: 347bf638d39f ("net: phy: micrel: lan8814 fix reset of the QSGMII interface")
-Signed-off-by: Robert Marko <robert.marko@sartura.hr>
-Link: https://patch.msgid.link/20260428134138.1741253-1-robert.marko@sartura.hr
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Joël Esponde <joel.esponde@leroy-agon.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/io-uring/CAAEr8jbY60noGj1fw_k91UJRBkyiRVoS6=nLhZ7Svwidjn4CAA@mail.gmail.com/
+Reported-by: Federico Brasili <federico.brasili@gmail.com>
+Cc: stable@vger.kernel.org
+Fixes: 35c8711c8fc4 ("io_uring/kbuf: add helpers for getting/peeking multiple buffers")
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/phy/micrel.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ io_uring/kbuf.c |    1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
-index f0c068075322f9..2dca6e8a5fce5c 100644
---- a/drivers/net/phy/micrel.c
-+++ b/drivers/net/phy/micrel.c
-@@ -4093,6 +4093,13 @@ static int lan8814_config_init(struct phy_device *phydev)
- {
- 	struct kszphy_priv *lan8814 = phydev->priv;
+--- a/io_uring/kbuf.c
++++ b/io_uring/kbuf.c
+@@ -305,7 +305,6 @@ static int io_ring_buffers_peek(struct i
+ 				arg->partial_map = 1;
+ 				if (iov != arg->iovs)
+ 					break;
+-				WRITE_ONCE(buf->len, len);
+ 			}
+ 		}
  
-+	if (phy_package_init_once(phydev))
-+		/* Reset the PHY */
-+		lanphy_modify_page_reg(phydev, LAN8814_PAGE_COMMON_REGS,
-+				       LAN8814_QSGMII_SOFT_RESET,
-+				       LAN8814_QSGMII_SOFT_RESET_BIT,
-+				       LAN8814_QSGMII_SOFT_RESET_BIT);
-+
- 	/* Disable ANEG with QSGMII PCS Host side */
- 	lanphy_modify_page_reg(phydev, LAN8814_PAGE_PORT_REGS,
- 			       LAN8814_QSGMII_PCS1G_ANEG_CONFIG,
-@@ -4177,13 +4184,7 @@ static int lan8814_probe(struct phy_device *phydev)
- 	devm_phy_package_join(&phydev->mdio.dev, phydev,
- 			      addr, sizeof(struct lan8814_shared_priv));
- 
--	if (phy_package_init_once(phydev)) {
--		/* Reset the PHY */
--		lanphy_modify_page_reg(phydev, LAN8814_PAGE_COMMON_REGS,
--				       LAN8814_QSGMII_SOFT_RESET,
--				       LAN8814_QSGMII_SOFT_RESET_BIT,
--				       LAN8814_QSGMII_SOFT_RESET_BIT);
--
-+	if (phy_package_probe_once(phydev)) {
- 		err = lan8814_release_coma_mode(phydev);
- 		if (err)
- 			return err;
--- 
-2.53.0
-
 
 
 
