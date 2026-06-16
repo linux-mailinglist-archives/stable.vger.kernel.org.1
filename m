@@ -1,48 +1,49 @@
-Return-Path: <stable+bounces-263576-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263577-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id obfyMkjdMGplYAUAu9opvQ
-	(envelope-from <stable+bounces-263576-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 07:21:12 +0200
+	id dtlQCojdMGp1YAUAu9opvQ
+	(envelope-from <stable+bounces-263577-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 07:22:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42F3168C1CC
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 07:21:12 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7985E68C1E4
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 07:22:15 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=arm.com header.s=foss header.b=WWNmMMum;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263576-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-263576-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=arm.com header.s=foss header.b=ne0XnJSE;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263577-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263577-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=arm.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 795443027370
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 05:20:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2ABC030F028A
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 05:20:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7017C3CF1EA;
-	Tue, 16 Jun 2026 05:20:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00AEB3CF05D;
+	Tue, 16 Jun 2026 05:20:59 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 224803CF1FD
-	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 05:20:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 306183CF663
+	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 05:20:57 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781587257; cv=none; b=Gy8S3LgPiHa6VuVdJJvqmOlIP6TP1h9NDL5aDqt0vmf6ao2RKtq5ANR+49iXkzBj3kkhVsRWUSI6m5o3FLSq13nVvt0/SFQkBG518nvkMODiD+i5gJSY6HkVk6ZEzOup373R7Xobjzm016B2TxZ3ysw8cONRZ/qqXO3ur0F+o0w=
+	t=1781587258; cv=none; b=E2Kvv0FnHTYfZ7gNc4sLkWJt2Uop+CHdyEdC5/zwG+/Rpkp+kl8vUdmUAUjmITd6OiqCyVRyKD/sLcSnIarfNIihy2c8T1ghAfnib4czJWlGEviYpFXkRQOEoV8YDgVq8V5auN/Mdpm9bh9fVAhlZmEHzTdMOe4qXcBPTehD02k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781587257; c=relaxed/simple;
-	bh=F8GMh151XZEH1IJGS4i2ScY6FZVvBKPAxosRptMbit4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=uSZq1UcSZdFSyrLDj+4O/MKtnFWS82sHFkPBcBAVC520oHJ6pBHEWTc9JWUtPt9FZ8xG8XRywE0JK4G5HqpGILLfM9MbnmnhnoeT2V/vawLIcWPZkcJxAneUL+lsf7ZAoqyY2mYApZIbQItJV7RDMG7rB7JV05rRDtfAERth7FA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=WWNmMMum; arc=none smtp.client-ip=217.140.110.172
+	s=arc-20240116; t=1781587258; c=relaxed/simple;
+	bh=qobTE3KucJIZns+uCb09DXV2IVwEivMq1XoV0zpphvA=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=b3Kar9o6Whl25HiBP+YeAp+z/4qzJ07FBYUugnScPYZpxIcfc9AkMsPemykMHRusrIzycqq2BmWst9nEbNOGO6mjwDV6t7kW2bCudh4rNuGFa12m0m1wdHUEr7ACkWMy2kbpSIW2WKwvAnCCscijmL6LumtVLDXP6EQBr0wDcoQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=ne0XnJSE; arc=none smtp.client-ip=217.140.110.172
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 080833D4B;
-	Mon, 15 Jun 2026 22:20:49 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 18E203D5D;
+	Mon, 15 Jun 2026 22:20:52 -0700 (PDT)
 Received: from lakrids.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id EEFA33F763;
-	Mon, 15 Jun 2026 22:20:51 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 0DBA33F763;
+	Mon, 15 Jun 2026 22:20:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1781587253; bh=F8GMh151XZEH1IJGS4i2ScY6FZVvBKPAxosRptMbit4=;
-	h=From:To:Cc:Subject:Date:From;
-	b=WWNmMMumCoFvz54ZcA6C83G6nEVL8s0D/LA+2RyNczgokBvLm7ul7aFD6Uw9ItiNW
-	 N2jy+DGV4JxjRkGhlfwNjeV3sYFxJeB2KT+rwO+TzQhRKoI1xYAnOsKVW/jMQ3PJcP
-	 ldl8ioDe55JJvlMcRUVqaLyWFtJlP+l5oeQFkicY=
+	t=1781587256; bh=qobTE3KucJIZns+uCb09DXV2IVwEivMq1XoV0zpphvA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ne0XnJSEjEqKuDW6suog6ctMP9EWuQwTrFJBN+RKBuB4IDISgjrIbuEQq/jq8wo+4
+	 DRHtdqe8TkLsI7eiWae67Qfs7cdatzpHqmRrp1fik7i6mSSq8WxobOKabQdRkfAsuY
+	 5B5f08UYr1xiracECiQLGDF6IS92TTdgV1UsLSwk=
 From: Mark Rutland <mark.rutland@arm.com>
 To: stable@vger.kernel.org
 Cc: anshuman.khandual@arm.com,
@@ -56,10 +57,12 @@ Cc: anshuman.khandual@arm.com,
 	sdonthineni@nvidia.com,
 	will@kernel.org,
 	yuzenghui@huawei.com
-Subject: [PATCH 6.1.y 0/9] arm64: errata: Mitigate TLBI errata on various Arm CPUs
-Date: Tue, 16 Jun 2026 06:20:37 +0100
-Message-Id: <20260616052046.112003-1-mark.rutland@arm.com>
+Subject: [PATCH 6.1.y 1/9] KVM: arm64: Remove VPIPT I-cache handling
+Date: Tue, 16 Jun 2026 06:20:38 +0100
+Message-Id: <20260616052046.112003-2-mark.rutland@arm.com>
 X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20260616052046.112003-1-mark.rutland@arm.com>
+References: <20260616052046.112003-1-mark.rutland@arm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -73,13 +76,13 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[arm.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[arm.com:s=foss];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	TAGGED_FROM(0.00)[bounces-263576-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-263577-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:anshuman.khandual@arm.com,m:catalin.marinas@arm.com,m:gregkh@linuxfoundation.org,m:lee@kernel.org,m:mark.rutland@arm.com,m:maz@kernel.org,m:oupton@kernel.org,m:ryan.roberts@arm.com,m:sdonthineni@nvidia.com,m:will@kernel.org,m:yuzenghui@huawei.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[mark.rutland@arm.com,stable@vger.kernel.org];
@@ -97,64 +100,123 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCPT_COUNT_TWELVE(0.00)[12];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,arm.com:dkim,arm.com:mid,arm.com:url,arm.com:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,arm.com:dkim,arm.com:email,arm.com:mid,arm.com:from_mime,huawei.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 42F3168C1CC
+X-Rspamd-Queue-Id: 7985E68C1E4
 
-This is a v6.1-only backport of a workaround for a TLB invalidation
-issue affecting several CPUs. The final patches landed in mainline
-yesterday:
+From: Marc Zyngier <maz@kernel.org>
 
-  https://lore.kernel.org/linux-arm-kernel/178157002783.358810.8206806281627742561.pr-tracker-bot@kernel.org/
-  https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=80476f22b8b7e193b26f285a7c9f9e4b63abca16
+commit ced242ba9d7cb3571f6e0f165f643cb832d52148 upstream.
 
-This issue has been assigned CVE ID CVE-2025-10263, and Arm have
-published a security bulletin:
+We have some special handling for VPIPT I-cache in critical parts
+of the cache and TLB maintenance. Remove it.
 
-  https://developer.arm.com/documentation/112137/latest/
+Reviewed-by: Zenghui Yu <yuzenghui@huawei.com>
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Acked-by: Mark Rutland <mark.rutland@arm.com>
+Link: https://lore.kernel.org/r/20231204143606.1806432-2-maz@kernel.org
+Signed-off-by: Will Deacon <will@kernel.org>
+[Mark: Backport to v6.1.y. VPIPT HW was never built; this is all dead code]
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+---
+ arch/arm64/include/asm/kvm_mmu.h |  4 ++--
+ arch/arm64/kvm/hyp/nvhe/tlb.c    | 35 --------------------------------
+ arch/arm64/kvm/hyp/vhe/tlb.c     | 13 ------------
+ 3 files changed, 2 insertions(+), 50 deletions(-)
 
-This backport includes prerequisite patches which were previously sent
-on their own (unchanged since that posting):
-
-  https://lore.kernel.org/stable/20260611134451.1700637-1-mark.rutland@arm.com/
-
-I've pushed a copy of this backport to my kernel.org repo:
-
-  https://git.kernel.org/pub/scm/linux/kernel/git/mark/linux.git/log/?h=stable-6.1/arm-4118414/backport
-
-Mark.
-
-Marc Zyngier (1):
-  KVM: arm64: Remove VPIPT I-cache handling
-
-Mark Rutland (5):
-  arm64: tlb: Allow XZR argument to TLBI ops
-  arm64: tlb: Optimize ARM64_WORKAROUND_REPEAT_TLBI
-  arm64: cputype: Add C1-Ultra definitions
-  arm64: cputype: Add C1-Premium definitions
-  arm64: errata: Mitigate TLBI errata on various Arm CPUs
-
-Shanker Donthineni (2):
-  arm64: cputype: Add NVIDIA Olympus definitions
-  arm64: errata: Mitigate TLBI errata on NVIDIA Olympus CPU
-
-Will Deacon (1):
-  arm64: errata: Mitigate TLBI errata on Microsoft Azure Cobalt 100 CPU
-
- Documentation/arm64/silicon-errata.rst | 46 +++++++++++++++++++++++
- arch/arm64/Kconfig                     | 50 +++++++++++++++++++++++++
- arch/arm64/include/asm/cputype.h       |  6 +++
- arch/arm64/include/asm/kvm_mmu.h       |  4 +-
- arch/arm64/include/asm/tlbflush.h      | 52 ++++++++++++++++++--------
- arch/arm64/kernel/cpu_errata.c         | 34 ++++++++++++++++-
- arch/arm64/kernel/sys_compat.c         |  2 +-
- arch/arm64/kvm/hyp/nvhe/tlb.c          | 41 ++------------------
- arch/arm64/kvm/hyp/pgtable.c           |  2 +-
- arch/arm64/kvm/hyp/vhe/tlb.c           | 19 ++--------
- 10 files changed, 180 insertions(+), 76 deletions(-)
-
+diff --git a/arch/arm64/include/asm/kvm_mmu.h b/arch/arm64/include/asm/kvm_mmu.h
+index 7784081088e78..1495fcddd98e5 100644
+--- a/arch/arm64/include/asm/kvm_mmu.h
++++ b/arch/arm64/include/asm/kvm_mmu.h
+@@ -214,8 +214,8 @@ static inline void __invalidate_icache_guest_page(void *va, size_t size)
+ 	if (icache_is_aliasing()) {
+ 		/* any kind of VIPT cache */
+ 		icache_inval_all_pou();
+-	} else if (is_kernel_in_hyp_mode() || !icache_is_vpipt()) {
+-		/* PIPT or VPIPT at EL2 (see comment in __kvm_tlb_flush_vmid_ipa) */
++	} else {
++		/* PIPT */
+ 		icache_inval_pou((unsigned long)va, (unsigned long)va + size);
+ 	}
+ }
+diff --git a/arch/arm64/kvm/hyp/nvhe/tlb.c b/arch/arm64/kvm/hyp/nvhe/tlb.c
+index d296d617f5896..291789df24e3e 100644
+--- a/arch/arm64/kvm/hyp/nvhe/tlb.c
++++ b/arch/arm64/kvm/hyp/nvhe/tlb.c
+@@ -84,28 +84,6 @@ void __kvm_tlb_flush_vmid_ipa(struct kvm_s2_mmu *mmu,
+ 	dsb(ish);
+ 	isb();
+ 
+-	/*
+-	 * If the host is running at EL1 and we have a VPIPT I-cache,
+-	 * then we must perform I-cache maintenance at EL2 in order for
+-	 * it to have an effect on the guest. Since the guest cannot hit
+-	 * I-cache lines allocated with a different VMID, we don't need
+-	 * to worry about junk out of guest reset (we nuke the I-cache on
+-	 * VMID rollover), but we do need to be careful when remapping
+-	 * executable pages for the same guest. This can happen when KSM
+-	 * takes a CoW fault on an executable page, copies the page into
+-	 * a page that was previously mapped in the guest and then needs
+-	 * to invalidate the guest view of the I-cache for that page
+-	 * from EL1. To solve this, we invalidate the entire I-cache when
+-	 * unmapping a page from a guest if we have a VPIPT I-cache but
+-	 * the host is running at EL1. As above, we could do better if
+-	 * we had the VA.
+-	 *
+-	 * The moral of this story is: if you have a VPIPT I-cache, then
+-	 * you should be running with VHE enabled.
+-	 */
+-	if (icache_is_vpipt())
+-		icache_inval_all_pou();
+-
+ 	__tlb_switch_to_host(&cxt);
+ }
+ 
+@@ -144,18 +122,5 @@ void __kvm_flush_vm_context(void)
+ {
+ 	dsb(ishst);
+ 	__tlbi(alle1is);
+-
+-	/*
+-	 * VIPT and PIPT caches are not affected by VMID, so no maintenance
+-	 * is necessary across a VMID rollover.
+-	 *
+-	 * VPIPT caches constrain lookup and maintenance to the active VMID,
+-	 * so we need to invalidate lines with a stale VMID to avoid an ABA
+-	 * race after multiple rollovers.
+-	 *
+-	 */
+-	if (icache_is_vpipt())
+-		asm volatile("ic ialluis");
+-
+ 	dsb(ish);
+ }
+diff --git a/arch/arm64/kvm/hyp/vhe/tlb.c b/arch/arm64/kvm/hyp/vhe/tlb.c
+index 24cef9b87f9e9..fc3fcd29ccc30 100644
+--- a/arch/arm64/kvm/hyp/vhe/tlb.c
++++ b/arch/arm64/kvm/hyp/vhe/tlb.c
+@@ -146,18 +146,5 @@ void __kvm_flush_vm_context(void)
+ {
+ 	dsb(ishst);
+ 	__tlbi(alle1is);
+-
+-	/*
+-	 * VIPT and PIPT caches are not affected by VMID, so no maintenance
+-	 * is necessary across a VMID rollover.
+-	 *
+-	 * VPIPT caches constrain lookup and maintenance to the active VMID,
+-	 * so we need to invalidate lines with a stale VMID to avoid an ABA
+-	 * race after multiple rollovers.
+-	 *
+-	 */
+-	if (icache_is_vpipt())
+-		asm volatile("ic ialluis");
+-
+ 	dsb(ish);
+ }
 -- 
 2.30.2
 
