@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-264126-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265625-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id v/wnDAlvMWrmjAUAu9opvQ
-	(envelope-from <stable+bounces-264126-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:43:05 +0200
+	id aqs3A5aMMWpimQUAu9opvQ
+	(envelope-from <stable+bounces-265625-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:49:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80DEF691531
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:43:04 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96B86693813
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:49:09 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=fK0vHE9Z;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264126-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264126-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ZzeFNGGL;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265625-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265625-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3B501304D47D
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:37:49 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0D3553031307
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:49:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C50F344CAE6;
-	Tue, 16 Jun 2026 15:37:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E302F3D669A;
+	Tue, 16 Jun 2026 17:49:05 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A0EC449EAB;
-	Tue, 16 Jun 2026 15:37:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2A96169AD2;
+	Tue, 16 Jun 2026 17:49:04 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781624268; cv=none; b=jzjX+LzvIJYn5Q/wL38tLqw4qo+2ahezcSuJvu3leROYKqimqMYjS5W9Hwku56WMF6g6sxi5IH5dmYtIGrI0uBQsC9RcyK4WpAwIwAAPMszIn1qRim1mgvo53KVj528pmgCqWLVu06suN0a5XkOQ0UXfeDSob8K+V0nYdfUUG+I=
+	t=1781632145; cv=none; b=NUnHBioVw0nHmM8wxwhtphNUPOdsFzBkUfQsLj2PXAQzl4FNoLIWdPs9Wqi0MiJFQi6XIemKXdNR+h7QqHbT59IFj1JKQKcT47X65aS2Itfrib6gB07n37XSCNOy5GbSe6bD45x+DyVbelYtHWrcxVUfguxPa8xtupmbd7K3D4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781624268; c=relaxed/simple;
-	bh=58MX9IFulDpPp7EmCstPTfCn2PaWb2EkF5ym5MFW/x0=;
+	s=arc-20240116; t=1781632145; c=relaxed/simple;
+	bh=IhRsPUVwviKF+5p8jNedPIGt1yGTukTFnRqz0WUxC/A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I9nqlGzsRr3YAl46ooc9WBGepfJWLfD8qVFMRpGIFpWUqI9XJi67JCmA8Z/L8Sinb8ezR4JyRtKhPbW8ibBeBoqk7QfbnPoAjfI5EohMtVjJRtglaW+eHg59KwF17UJzIhy13rJQC3PHu5cSeJvA1giCpTE5VoO6DUxv6L/Af7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fK0vHE9Z; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BF7E1F000E9;
-	Tue, 16 Jun 2026 15:37:46 +0000 (UTC)
+	 MIME-Version; b=dxs7lzxmP5qU8Rt8vs6qh3vLpXVFyCJDi7l00O7gGMajYK2hlqzPQjQpMcmuifjndYJpbgQxQct7h5/TEonHJ0fsc5l1m9wepLKQzQxY9dIToS22V+CmLDlYlcOVvxoSMf9PiHXe6nwldlZC6K3GBuUc+zAO9N6P0nJPKEzqR84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZzeFNGGL; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88E9E1F000E9;
+	Tue, 16 Jun 2026 17:49:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781624267;
-	bh=pXKQkHdB0ik7WvyIQcTidawjKDNq4vZ17gxjFZYNOUk=;
+	s=korg; t=1781632144;
+	bh=rOirTYkx8r0HGiVFykdHjI1fkf9SEmeNqL06dwH4S/I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fK0vHE9Zmtq8uHwoK1RclNfTG6zlyqryqCws6NxhHDim4Xm3msZlILw5M5BSs2m7E
-	 GvrTAb/zM1vu56bGyPJFfyjMWWkSZNdw4EYvAxFf3BSaptyY7jhnh/hF1oavn4CDe4
-	 H3t/0MT3KWj8kFVv6k7846InYmRnv+6P0b5fnmxE=
+	b=ZzeFNGGLO3EDw6LGPuEFImmXj/hscTkBpYkgBUbKW1j6dyrSq2iBNhKTeWwO+SRHJ
+	 bvBAT6V4Duz/wn9E+6KcNXQJpBKdEcRltcIf5emy5J9VEUNgjuKzMTZx/wxGHrPQR2
+	 9866OGvWTLgEV4jA0t0EhPFu9vfV8DzHWZ6TyJOg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 7.0 271/378] i2c: qcom-cci: Fix NULL pointer dereference in cci_remove()
+	Saravana Kannan <saravanak@kernel.org>,
+	Johan Hovold <johan@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 355/522] spi: fix resource leaks on device setup failure
 Date: Tue, 16 Jun 2026 20:28:22 +0530
-Message-ID: <20260616145124.376033950@linuxfoundation.org>
+Message-ID: <20260616145142.402155913@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,93 +70,169 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264126-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:vladimir.zapolskiy@linaro.org,m:konrad.dybcio@oss.qualcomm.com,m:andi.shyti@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265625-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:saravanak@kernel.org,m:johan@kernel.org,m:broonie@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linaro.org:email,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 80DEF691531
+X-Rspamd-Queue-Id: 96B86693813
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+From: Johan Hovold <johan@kernel.org>
 
-commit 729ac5a4b966aac42e08a94dea966f4429008548 upstream.
+[ Upstream commit db357034f7e0cf23f233f414a8508312dfe8fbbe ]
 
-On all modern platforms Qualcomm CCI controller provides two I2C masters,
-and on particular boards only one I2C master may be initialized, and in
-such cases the device unbinding or driver removal causes a NULL pointer
-dereference, because cci_halt() is called for all two I2C masters, but
-a completion is initialized only for the single enabled master:
+Make sure to call controller cleanup() if spi_setup() fails while
+registering a device to avoid leaking any resources allocated by
+setup().
 
-    % rmmod i2c-qcom-cci
-    Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
-    <snip>
-    Call trace:
-    __wait_for_common+0x194/0x1a8 (P)
-    wait_for_completion_timeout+0x20/0x2c
-    cci_remove+0xc4/0x138 [i2c_qcom_cci]
-    platform_remove+0x20/0x30
-    device_remove+0x4c/0x80
-    device_release_driver_internal+0x1c8/0x224
-    driver_detach+0x50/0x98
-    bus_remove_driver+0x6c/0xbc
-    driver_unregister+0x30/0x60
-    platform_driver_unregister+0x14/0x20
-    qcom_cci_driver_exit+0x18/0x1008 [i2c_qcom_cci]
-    ....
-
-Fixes: e517526195de ("i2c: Add Qualcomm CCI I2C driver")
-Signed-off-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
-Cc: <stable@vger.kernel.org> # v5.8+
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20260515234121.1607425-2-vladimir.zapolskiy@linaro.org
+Fixes: c7299fea6769 ("spi: Fix spi device unregister flow")
+Cc: stable@vger.kernel.org	# 5.13
+Cc: Saravana Kannan <saravanak@kernel.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260410154907.129248-2-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+[ adjusted context ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-qcom-cci.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi.c |   61 ++++++++++++++++++++++++++++++++----------------------
+ 1 file changed, 37 insertions(+), 24 deletions(-)
 
---- a/drivers/i2c/busses/i2c-qcom-cci.c
-+++ b/drivers/i2c/busses/i2c-qcom-cci.c
-@@ -663,8 +663,8 @@ static void cci_remove(struct platform_d
- 		if (cci->master[i].cci) {
- 			i2c_del_adapter(&cci->master[i].adap);
- 			of_node_put(cci->master[i].adap.dev.of_node);
-+			cci_halt(cci, i);
- 		}
--		cci_halt(cci, i);
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -42,6 +42,8 @@ EXPORT_TRACEPOINT_SYMBOL(spi_transfer_st
+ 
+ #include "internals.h"
+ 
++static int __spi_setup(struct spi_device *spi, bool initial_setup);
++
+ static DEFINE_IDR(spi_master_idr);
+ 
+ static void spidev_release(struct device *dev)
+@@ -666,7 +668,7 @@ static int __spi_add_device(struct spi_d
+ 	 * normally rely on the device being setup.  Devices
+ 	 * using SPI_CS_HIGH can't coexist well otherwise...
+ 	 */
+-	status = spi_setup(spi);
++	status = __spi_setup(spi, true);
+ 	if (status < 0) {
+ 		dev_err(dev, "can't setup %s, status %d\n",
+ 				dev_name(&spi->dev), status);
+@@ -3688,27 +3690,7 @@ static int spi_set_cs_timing(struct spi_
+ 	return status;
+ }
+ 
+-/**
+- * spi_setup - setup SPI mode and clock rate
+- * @spi: the device whose settings are being modified
+- * Context: can sleep, and no requests are queued to the device
+- *
+- * SPI protocol drivers may need to update the transfer mode if the
+- * device doesn't work with its default.  They may likewise need
+- * to update clock rates or word sizes from initial values.  This function
+- * changes those settings, and must be called from a context that can sleep.
+- * Except for SPI_CS_HIGH, which takes effect immediately, the changes take
+- * effect the next time the device is selected and data is transferred to
+- * or from it.  When this function returns, the spi device is deselected.
+- *
+- * Note that this call will fail if the protocol driver specifies an option
+- * that the underlying controller or its driver does not support.  For
+- * example, not all hardware supports wire transfers using nine bit words,
+- * LSB-first wire encoding, or active-high chipselects.
+- *
+- * Return: zero on success, else a negative error code.
+- */
+-int spi_setup(struct spi_device *spi)
++static int __spi_setup(struct spi_device *spi, bool initial_setup)
+ {
+ 	unsigned	bad_bits, ugly_bits;
+ 	int		status = 0;
+@@ -3787,7 +3769,7 @@ int spi_setup(struct spi_device *spi)
+ 	status = spi_set_cs_timing(spi);
+ 	if (status) {
+ 		mutex_unlock(&spi->controller->io_mutex);
+-		return status;
++		goto err_cleanup;
  	}
  
- 	disable_irq(cci->irq);
+ 	if (spi->controller->auto_runtime_pm && spi->controller->set_cs) {
+@@ -3796,7 +3778,7 @@ int spi_setup(struct spi_device *spi)
+ 			mutex_unlock(&spi->controller->io_mutex);
+ 			dev_err(&spi->controller->dev, "Failed to power device: %d\n",
+ 				status);
+-			return status;
++			goto err_cleanup;
+ 		}
+ 
+ 		/*
+@@ -3833,6 +3815,37 @@ int spi_setup(struct spi_device *spi)
+ 			status);
+ 
+ 	return status;
++
++err_cleanup:
++	if (initial_setup)
++		spi_cleanup(spi);
++
++	return status;
++}
++
++/**
++ * spi_setup - setup SPI mode and clock rate
++ * @spi: the device whose settings are being modified
++ * Context: can sleep, and no requests are queued to the device
++ *
++ * SPI protocol drivers may need to update the transfer mode if the
++ * device doesn't work with its default.  They may likewise need
++ * to update clock rates or word sizes from initial values.  This function
++ * changes those settings, and must be called from a context that can sleep.
++ * Except for SPI_CS_HIGH, which takes effect immediately, the changes take
++ * effect the next time the device is selected and data is transferred to
++ * or from it.  When this function returns, the SPI device is deselected.
++ *
++ * Note that this call will fail if the protocol driver specifies an option
++ * that the underlying controller or its driver does not support.  For
++ * example, not all hardware supports wire transfers using nine bit words,
++ * LSB-first wire encoding, or active-high chipselects.
++ *
++ * Return: zero on success, else a negative error code.
++ */
++int spi_setup(struct spi_device *spi)
++{
++	return __spi_setup(spi, false);
+ }
+ EXPORT_SYMBOL_GPL(spi_setup);
+ 
 
 
 
