@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-264316-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266459-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id JvcNOVJ2MWrDjwUAu9opvQ
-	(envelope-from <stable+bounces-264316-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:14:10 +0200
+	id WvySJuedMWpPoQUAu9opvQ
+	(envelope-from <stable+bounces-266459-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:03:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD2AA691D67
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:14:09 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19EE4694B07
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:03:03 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=TpgpqqGx;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264316-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264316-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Co1i574k;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266459-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-266459-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 53CA6302B9D9
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:54:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 954ED3065E87
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:02:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 125D037C912;
-	Tue, 16 Jun 2026 15:54:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2BB33DA5A8;
+	Tue, 16 Jun 2026 19:02:05 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BEB244D022;
-	Tue, 16 Jun 2026 15:54:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C9E1349CF0;
+	Tue, 16 Jun 2026 19:02:04 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781625290; cv=none; b=ofiC+7ApznaM4BeRS6CbBdJopr+nP5MGlVzbAaVQ41gsTZop+jC6rqtU0pV5dT512GMqinTz1A+kkYM6zOsD4wj3pPuJAeMz5R/KHU6ZSlEoyT/Mo2+xC86a/Siqyn12RPB4xE2Wf6J5Pv8nlwRmMUq39c5QDCJGz9+UbKU8+yQ=
+	t=1781636525; cv=none; b=GxhFd/7iPzDfAFWtXrA85tcWp/25mPvsZiDyFeji2Xgv7Est3au/uKtFR2LXH+d2MKXLQ2PUcZhh4NxB+TzjEa5+zJl2Lo/ctgnfDXW58AINuv2o5UkdUIZcMFscbP16YFdq0Mxs/A9vQzOG7YCIGoS6GzdsejhU2UCWA7AeY7o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781625290; c=relaxed/simple;
-	bh=rzveqxFP9abPzbRLJkrJJ5XXdPOvbAIhXjxtBxg4Nck=;
+	s=arc-20240116; t=1781636525; c=relaxed/simple;
+	bh=iqp/z91De/DDs/4c5zUj20zBzZA0axDPUv81VCpWJBk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e954TP2cD/J4Y42e260Ljh6ePFN6jhcY+/h4jemDlJ7X35//GcyYDKrGSOurwZuqhNBZDgok8frpPZ6OOZFklZtOUVW5mFhIPLkGg6oG2OPXARu2OCsoxUWRz35xJXdnWqrUcu7PkK9o6jYKZfsGhBCc9OIBFih+MtHXl7GfBF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TpgpqqGx; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08B831F000E9;
-	Tue, 16 Jun 2026 15:54:47 +0000 (UTC)
+	 MIME-Version; b=oJRmXbEahSVRHpQKjwel7N3wMbLLn5I9G9+KVQIEXnvqtGVWdGsVr+u7WGoaZKN9DXFqs3bo/1SNsOonMT3Guwmsti8YB0BPZxCDqhMzXwLxcahH41Ph8LtrxVsPnwKQonzKDmn97w8H4EtC70ETEWMVkm3hjsnmOlpr4doWU0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Co1i574k; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DF9D1F000E9;
+	Tue, 16 Jun 2026 19:02:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781625288;
-	bh=wYRYb1//isifMd7lwwTKHLolKJdbp0zpn3pWVmDAnUI=;
+	s=korg; t=1781636524;
+	bh=/NA/rS/PkRm7py4bzIkXpKefZ+2qdHP5Ru/NzPnjxOE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=TpgpqqGxUM04dsn0XjBkLWCsO3YrgfSuRGoDv9qPc+ebMfBQT9GnGcwUiLjRI2tz1
-	 SHLo4FrNKVczJbSq3xaVzaCbWl7IvXz/vbeo64yj5JKdw+hKhjXQlJhelboMnsl3y6
-	 2ihiVG0XEwK1b9+8fkMY+A4fj8bR+0j2yOCYB0lA=
+	b=Co1i574kiBlt3KLG6CGgw5MpvaqsZIENUxnHR/dSz38F1Hh1YvkpgOYPJ2Y1bTnWE
+	 WIYMUgQZHK/hpRZsZy1/gJtcyR/HltXhEcZVKKtsa4AFMRjf2a1+dNNRo135z60NRr
+	 JP5DRoKmYBLGjufAWSDydKsIzj6zmtaYvtGi4PL4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeremy Kerr <jk@codeconstruct.com.au>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 112/325] net: mctp: usb: fix race between urb completion and rx_retry cancellation
+	Alex Hung <alex.hung@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Ray Wu <ray.wu@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 5.10 212/342] drm/amd/display: Fix NULL deref and buffer over-read in SDP debugfs
 Date: Tue, 16 Jun 2026 20:28:28 +0530
-Message-ID: <20260616145103.284449686@linuxfoundation.org>
+Message-ID: <20260616145058.060827830@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,172 +71,91 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264316-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jk@codeconstruct.com.au,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-266459-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:alex.hung@amd.com,m:harry.wentland@amd.com,m:ray.wu@amd.com,m:daniel.wheeler@amd.com,m:alexander.deucher@amd.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: DD2AA691D67
+X-Rspamd-Queue-Id: 19EE4694B07
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeremy Kerr <jk@codeconstruct.com.au>
+From: Harry Wentland <harry.wentland@amd.com>
 
-[ Upstream commit 54665dce982689e2fd99b32e9a0dcc204fda8a51 ]
+commit adf67034b1f61f7119295208085bfd43f85f56af upstream.
 
-It's possible that sequencing between setting ->stopped and cancelling
-the rx_retry work (in ndo_stop) could leave us with an urb queued:
+[Why & How]
+dp_sdp_message_debugfs_write() dereferences connector->base.state->crtc
+without checking for NULL. A connector can be connected but not bound to
+any CRTC (e.g. after hot-plug before the next atomic commit), causing a
+kernel crash when writing to the sdp_message debugfs node.
 
-    T1: ndo_stop                  T2: rx_retry_work
-    ------------                  ----------------
-                                  LD: ->stopped => false
-    ST: ->stopped <= true
-    usb_kill_urb()
-                                  mctp_usb_rx_queue()
-                                    usb_submit_urb()
-    cancel_delayed_work_sync()
+The function also ignores the user-provided size argument and always
+passes 36 bytes to copy_from_user(), reading past the user buffer when
+size < 36.
 
-That urb completion can then re-schedule rx_retry_work.
+Fix both issues by:
+- Returning -ENODEV when connector->base.state or state->crtc is NULL
+- Clamping write_size to min(size, sizeof(data))
 
-Strenghen the sequencing between the stop (preventing another requeue)
-and the cancel by updating both atomically under a new rx lock. After
-setting ->rx_stopped, and cancelling pending work, we know that the
-requeue cannot occur, so all that's left is killing any pending urb.
-
-Fixes: 0791c0327a6e ("net: mctp: Add MCTP USB transport driver")
-Signed-off-by: Jeremy Kerr <jk@codeconstruct.com.au>
-Link: https://patch.msgid.link/20260608-dev-mctp-usb-rx-requeue-v2-1-29a3aa507609@codeconstruct.com.au
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c7ba3653e977 ("drm/amd/display: Generic SDP message access in amdgpu")
+Assisted-by: Copilot:claude-opus-4.6
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Ray Wu <ray.wu@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 6ab4c36a522842ff70474a1c0af2e40e50fc8300)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/mctp/mctp-usb.c | 26 +++++++++++++++++---------
- 1 file changed, 17 insertions(+), 9 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/mctp/mctp-usb.c b/drivers/net/mctp/mctp-usb.c
-index 3b5dff14417747..cf6f6a93a45112 100644
---- a/drivers/net/mctp/mctp-usb.c
-+++ b/drivers/net/mctp/mctp-usb.c
-@@ -22,7 +22,6 @@
- struct mctp_usb {
- 	struct usb_device *usbdev;
- 	struct usb_interface *intf;
--	bool stopped;
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c
+@@ -895,8 +895,13 @@ static ssize_t dp_sdp_message_debugfs_wr
+ 	if (size == 0)
+ 		return 0;
  
- 	struct net_device *netdev;
- 
-@@ -32,6 +31,9 @@ struct mctp_usb {
- 	struct urb *tx_urb;
- 	struct urb *rx_urb;
- 
-+	/* enforces atomic access to rx_stopped and requeuing the retry work */
-+	spinlock_t rx_lock;
-+	bool rx_stopped;
- 	struct delayed_work rx_retry_work;
- };
- 
-@@ -122,6 +124,7 @@ static const unsigned long RX_RETRY_DELAY = HZ / 4;
- 
- static int mctp_usb_rx_queue(struct mctp_usb *mctp_usb, gfp_t gfp)
- {
-+	unsigned long flags;
- 	struct sk_buff *skb;
- 	int rc;
- 
-@@ -147,7 +150,10 @@ static int mctp_usb_rx_queue(struct mctp_usb *mctp_usb, gfp_t gfp)
- 	return rc;
- 
- err_retry:
--	schedule_delayed_work(&mctp_usb->rx_retry_work, RX_RETRY_DELAY);
-+	spin_lock_irqsave(&mctp_usb->rx_lock, flags);
-+	if (!mctp_usb->rx_stopped)
-+		schedule_delayed_work(&mctp_usb->rx_retry_work, RX_RETRY_DELAY);
-+	spin_unlock_irqrestore(&mctp_usb->rx_lock, flags);
- 	return rc;
- }
- 
-@@ -248,9 +254,6 @@ static void mctp_usb_rx_retry_work(struct work_struct *work)
- 	struct mctp_usb *mctp_usb = container_of(work, struct mctp_usb,
- 						 rx_retry_work.work);
- 
--	if (READ_ONCE(mctp_usb->stopped))
--		return;
--
- 	mctp_usb_rx_queue(mctp_usb, GFP_KERNEL);
- }
- 
-@@ -258,7 +261,7 @@ static int mctp_usb_open(struct net_device *dev)
- {
- 	struct mctp_usb *mctp_usb = netdev_priv(dev);
- 
--	WRITE_ONCE(mctp_usb->stopped, false);
-+	WRITE_ONCE(mctp_usb->rx_stopped, false);
- 
- 	netif_start_queue(dev);
- 
-@@ -268,17 +271,21 @@ static int mctp_usb_open(struct net_device *dev)
- static int mctp_usb_stop(struct net_device *dev)
- {
- 	struct mctp_usb *mctp_usb = netdev_priv(dev);
-+	unsigned long flags;
- 
- 	netif_stop_queue(dev);
- 
- 	/* prevent RX submission retry */
--	WRITE_ONCE(mctp_usb->stopped, true);
-+	spin_lock_irqsave(&mctp_usb->rx_lock, flags);
-+	mctp_usb->rx_stopped = true;
-+	cancel_delayed_work(&mctp_usb->rx_retry_work);
-+	spin_unlock_irqrestore(&mctp_usb->rx_lock, flags);
++	if (!connector->base.state || !connector->base.state->crtc)
++		return -ENODEV;
 +
-+	flush_delayed_work(&mctp_usb->rx_retry_work);
+ 	acrtc_state = to_dm_crtc_state(connector->base.state->crtc->state);
  
- 	usb_kill_urb(mctp_usb->rx_urb);
- 	usb_kill_urb(mctp_usb->tx_urb);
++	write_size = min_t(size_t, size, sizeof(data));
++
+ 	r = copy_from_user(data, buf, write_size);
  
--	cancel_delayed_work_sync(&mctp_usb->rx_retry_work);
--
- 	return 0;
- }
- 
-@@ -331,6 +338,7 @@ static int mctp_usb_probe(struct usb_interface *intf,
- 	dev->netdev = netdev;
- 	dev->usbdev = interface_to_usbdev(intf);
- 	dev->intf = intf;
-+	spin_lock_init(&dev->rx_lock);
- 	usb_set_intfdata(intf, dev);
- 
- 	dev->ep_in = ep_in->bEndpointAddress;
--- 
-2.53.0
-
+ 	write_size -= r;
 
 
 
