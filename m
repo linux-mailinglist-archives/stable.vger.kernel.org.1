@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-264065-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264570-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id W4zDDzluMWqPjAUAu9opvQ
-	(envelope-from <stable+bounces-264065-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:39:37 +0200
+	id nNgxBQZ6MWpckQUAu9opvQ
+	(envelope-from <stable+bounces-264570-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:29:58 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD9026913F5
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:39:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84B10692234
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:29:57 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=qnkb9RL+;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264065-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264065-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Fls8WKaB;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264570-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264570-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 14B1B31E3C0C
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:32:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5F2F03352C0F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:17:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 880B9449EAB;
-	Tue, 16 Jun 2026 15:32:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 215D446AF02;
+	Tue, 16 Jun 2026 16:16:59 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6368838837F;
-	Tue, 16 Jun 2026 15:32:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3CE543E4BA;
+	Tue, 16 Jun 2026 16:16:57 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781623938; cv=none; b=Xrmr+bRSRh1FKaBmT/QKCOeoS5FSN8Q2FlUocI1XiF7clQJPiRIX8kgR/Nt0YF0oBwR6nA2Qa30mteijbdyWKr9lDymh0+hwZ6h/Kv5/68hf1ibOYkcNIFapML2N7e5kyXXxH+k8TL0bM/V9eWukOwrXcC+BrHzMtehNgfXPco4=
+	t=1781626618; cv=none; b=U+ftJWbINSSAX+8a5pWGTf7QsS2+vUx2/PZrvmgisoDHojNHbbRb0QV2fijljvwG7Pwz/pd6I7TVoLU5UC0vqeCDRf3lvNO3EFtCMWFxorIjSAU3s8pgF84rqWh9u196wbOwyB2pwWL4+63nhOk5YiIjdAtooUJWF3bVhyn80Pw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781623938; c=relaxed/simple;
-	bh=S8AR5rZ90ijj9BvnZBRdRdgXr89qhYhkUGwcCbNTLmc=;
+	s=arc-20240116; t=1781626618; c=relaxed/simple;
+	bh=uSyZTBpCXHssMy91A1XSIEA8F5Gk9VZMojyP5Vb++Ug=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tqNyMjU+Ab+amWsMOC9qg0shsffyJQtjzq3hTz+5TjSPC0MxTsLgZHfSrp+zJl8X0LlZ0QAjKMJZp26eBynt/u7a1NR9m+5Nmop5rWFLBa5oZ4ebA1v8Vwkx5mSLlWdMVD6gTwmhhsMQjQKwn+sIpaWc+Yn15kvaM0L1mN0s8No=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qnkb9RL+; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EE4B1F000E9;
-	Tue, 16 Jun 2026 15:32:15 +0000 (UTC)
+	 MIME-Version; b=NfAu7/bHDKJkD7JnuUQkTUG9NS7moHWddhmNQadoAOnyjDU0nONNymt7ysuAZFdArheXxvCMWMUnF9xsBXgcVOCa3FGH+yiML6yDauT3cq2eii4MO/fFKbKBu8bq8+E0NdcZK8/T6f3PfVfiTzOtAWSrkQwY2fc3L9TWpvI3iAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fls8WKaB; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7D1A1F000E9;
+	Tue, 16 Jun 2026 16:16:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781623937;
-	bh=YByXeK14+DAIoFTd7D1sneUJETjYSe1jahx1UsnAI5g=;
+	s=korg; t=1781626617;
+	bh=FHU9wGrv/iTgdaHrDkOaIVLigdlzfg+pc6ENxRZv1OI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=qnkb9RL+2GXCw/14HA5vI/T+p3sj2ejQFLnp2Zh2uILEzT9tKdACJpxDZA0vCGzn2
-	 UpiEqNEDK3uxbtiwnmlMnl4bodt8yFng/O7g+bpVscQRM9tR9gape/GCF702SeECA0
-	 OMrSaln6y/1zJNcqyQFy0p4ns6UCdxtAf+SQ6qeo=
+	b=Fls8WKaBtg8N27IvoRUUXKngnXeY7U66xfaNjRrTdWAHHrWg9wpFSHzNeqWP/ooev
+	 ISPflOUyHcqapkQxdTgS3BjuWVjzEY5GQCYguxmZibP5DvtZXLpgdbthfe81DG+BtF
+	 mRWoc/LgUU0L0wY8ZXTIbUCwFwrOLj8GWQtdBe3o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Raf Dickson <rafdog35@gmail.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 7.0 244/378] vsock/vmci: fix sk_ack_backlog leak on failed handshake
+	Zhang Cen <rollkingzzc@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 037/261] Bluetooth: RFCOMM: hold listener socket in rfcomm_connect_ind()
 Date: Tue, 16 Jun 2026 20:27:55 +0530
-Message-ID: <20260616145123.045485444@linuxfoundation.org>
+Message-ID: <20260616145046.829970907@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,13 +78,13 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-264065-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:rafdog35@gmail.com,m:sgarzare@redhat.com,m:pabeni@redhat.com,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264570-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:rollkingzzc@gmail.com,m:luiz.von.dentz@intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -99,62 +99,135 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: AD9026913F5
+X-Rspamd-Queue-Id: 84B10692234
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raf Dickson <rafdog35@gmail.com>
+From: Zhang Cen <rollkingzzc@gmail.com>
 
-commit c05fa14db43ebef3bd862ca9d073981c0358b3f0 upstream.
+[ Upstream commit 43c441edacf953b39517a44f5e5e10a93618b226 ]
 
-When vmci_transport_recv_connecting_server() returns an error,
-vmci_transport_recv_listen() calls vsock_remove_pending() but never
-calls sk_acceptq_removed(). This leaves sk_ack_backlog incremented
-permanently.
+rfcomm_get_sock_by_channel() scans rfcomm_sk_list under the list lock,
+but returns the selected listener after dropping that lock without
+taking a reference. rfcomm_connect_ind() then locks the listener,
+queues a child socket on it, and may notify it after unlocking it.
 
-Repeated handshake failures (malformed packets, queue pair alloc
-failure, event subscribe failure) cause sk_ack_backlog to climb
-toward sk_max_ack_backlog. Once it reaches the limit the listener
-permanently refuses all new connections with -ECONNREFUSED, a
-silent denial of service requiring a process restart to recover.
+The buggy scenario involves two paths, with each column showing the
+order within that path:
 
-The two existing sk_acceptq_removed() calls in af_vsock.c do not
-cover this path: line 764 checks vsock_is_pending() which returns
-false after vsock_remove_pending(), and line 1889 is only reached
-on successful accept().
+rfcomm_connect_ind():            listener close:
+  1. Find parent in              1. close() enters
+     rfcomm_get_sock_by_channel()   rfcomm_sock_release().
+  2. Drop rfcomm_sk_list.lock    2. rfcomm_sock_shutdown()
+     without pinning parent.        closes the listener.
+  3. Call lock_sock(parent) and  3. rfcomm_sock_kill()
+     bt_accept_enqueue(parent,      unlinks and puts parent.
+     sk, true).
+  4. Read parent flags and may   4. parent can be freed.
+     call sk_state_change().
 
-Fix by balancing sk_acceptq_added() with sk_acceptq_removed() on
-the error path.
+If close wins the race, parent can be freed before
+rfcomm_connect_ind() reaches lock_sock(), bt_accept_enqueue(), or the
+deferred-setup callback.
 
-Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
-Cc: stable@vger.kernel.org
-Signed-off-by: Raf Dickson <rafdog35@gmail.com>
-Acked-by: Stefano Garzarella <sgarzare@redhat.com>
-Link: https://patch.msgid.link/20260526104356.469928-1-rafdog35@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Take a reference on the listener before leaving rfcomm_sk_list.lock.
+After lock_sock() succeeds, recheck that it is still in BT_LISTEN
+before queueing a child, cache the deferred-setup bit while the parent
+is locked, and drop the reference after the last parent use.
+
+KASAN reported a slab-use-after-free in lock_sock_nested() from
+rfcomm_connect_ind(), with the freeing stack going through
+rfcomm_sock_kill() and rfcomm_sock_release().
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Zhang Cen <rollkingzzc@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/vmw_vsock/vmci_transport.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/bluetooth/rfcomm/sock.c | 26 ++++++++++++++++++++++----
+ 1 file changed, 22 insertions(+), 4 deletions(-)
 
---- a/net/vmw_vsock/vmci_transport.c
-+++ b/net/vmw_vsock/vmci_transport.c
-@@ -980,8 +980,10 @@ static int vmci_transport_recv_listen(st
- 			err = -EINVAL;
+diff --git a/net/bluetooth/rfcomm/sock.c b/net/bluetooth/rfcomm/sock.c
+index 3052436e9c6de5..2286efef62f5b6 100644
+--- a/net/bluetooth/rfcomm/sock.c
++++ b/net/bluetooth/rfcomm/sock.c
+@@ -122,7 +122,7 @@ static struct sock *__rfcomm_get_listen_sock_by_addr(u8 channel, bdaddr_t *src)
+ }
+ 
+ /* Find socket with channel and source bdaddr.
+- * Returns closest match.
++ * Returns closest match with an extra reference held.
+  */
+ static struct sock *rfcomm_get_sock_by_channel(int state, u8 channel, bdaddr_t *src)
+ {
+@@ -136,15 +136,25 @@ static struct sock *rfcomm_get_sock_by_channel(int state, u8 channel, bdaddr_t *
+ 
+ 		if (rfcomm_pi(sk)->channel == channel) {
+ 			/* Exact match. */
+-			if (!bacmp(&rfcomm_pi(sk)->src, src))
++			if (!bacmp(&rfcomm_pi(sk)->src, src)) {
++				sock_hold(sk);
+ 				break;
++			}
+ 
+ 			/* Closest match */
+-			if (!bacmp(&rfcomm_pi(sk)->src, BDADDR_ANY))
++			if (!bacmp(&rfcomm_pi(sk)->src, BDADDR_ANY)) {
++				if (sk1)
++					sock_put(sk1);
++
+ 				sk1 = sk;
++				sock_hold(sk1);
++			}
  		}
+ 	}
  
--		if (err < 0)
-+		if (err < 0) {
- 			vsock_remove_pending(sk, pending);
-+			sk_acceptq_removed(sk);
-+		}
++	if (sk && sk1)
++		sock_put(sk1);
++
+ 	read_unlock(&rfcomm_sk_list.lock);
  
- 		release_sock(pending);
- 		vmci_transport_release_pending(pending);
+ 	return sk ? sk : sk1;
+@@ -940,6 +950,7 @@ int rfcomm_connect_ind(struct rfcomm_session *s, u8 channel, struct rfcomm_dlc *
+ {
+ 	struct sock *sk, *parent;
+ 	bdaddr_t src, dst;
++	bool defer_setup = false;
+ 	int result = 0;
+ 
+ 	BT_DBG("session %p channel %d", s, channel);
+@@ -953,6 +964,11 @@ int rfcomm_connect_ind(struct rfcomm_session *s, u8 channel, struct rfcomm_dlc *
+ 
+ 	lock_sock(parent);
+ 
++	if (parent->sk_state != BT_LISTEN)
++		goto done;
++
++	defer_setup = test_bit(BT_SK_DEFER_SETUP, &bt_sk(parent)->flags);
++
+ 	/* Check for backlog size */
+ 	if (sk_acceptq_is_full(parent)) {
+ 		BT_DBG("backlog full %d", parent->sk_ack_backlog);
+@@ -980,9 +996,11 @@ int rfcomm_connect_ind(struct rfcomm_session *s, u8 channel, struct rfcomm_dlc *
+ done:
+ 	release_sock(parent);
+ 
+-	if (test_bit(BT_SK_DEFER_SETUP, &bt_sk(parent)->flags))
++	if (defer_setup)
+ 		parent->sk_state_change(parent);
+ 
++	sock_put(parent);
++
+ 	return result;
+ }
+ 
+-- 
+2.53.0
+
 
 
 
