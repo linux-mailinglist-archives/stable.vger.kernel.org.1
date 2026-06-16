@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-265267-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264777-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id SmHOIqSHMWoblwUAu9opvQ
-	(envelope-from <stable+bounces-265267-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:28:04 +0200
+	id 72WtOq5+MWpQkwUAu9opvQ
+	(envelope-from <stable+bounces-264777-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:49:50 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A8A169327F
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:28:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F6926927D6
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:49:50 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="oYxeCm/g";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265267-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265267-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=enUtRpz6;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264777-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264777-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6AFE13032223
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:18:58 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0725E305946D
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:37:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD85A478E55;
-	Tue, 16 Jun 2026 17:18:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77CB047799E;
+	Tue, 16 Jun 2026 16:37:16 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 600671A6803;
-	Tue, 16 Jun 2026 17:18:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 486E444DB64;
+	Tue, 16 Jun 2026 16:37:15 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781630335; cv=none; b=Tcoc2ATTVmsqAs9gDYcU1b4g2e6v8DjrDbrC6ph6/mqYdrEcFIaVKwMWi/qxqpaLRB7PLxSQZIDdIOReh3IyxKikBVBd7GKiijV5SglTEN1t96WKb9TKufztsG7h60l1mxh09E/hH2Y60h0BoOVOr/nCuhTe3TZsm5RNrZmGq8U=
+	t=1781627836; cv=none; b=m+rXJiw9YCUhnZ80xsCtDOfGAbztSeUnthtnggETKrzaqaLwfmRUEORcScREiVtN1VWM0X1Pcc3tXmAkYf7D8fnpo94FgZaSo967MRNwtFJtmDqGJB08qHD+hRcPp5ugj4n/AFKlm/fOW1acW+aIKNNlGizXG7SeW38jzsbVX+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781630335; c=relaxed/simple;
-	bh=Kzvr8KTL9CMhHgItvXHbWZIGQat9GJwqd4lCqyoxzYU=;
+	s=arc-20240116; t=1781627836; c=relaxed/simple;
+	bh=rCIHOAOKdc6ZoncDo0MZiGstKB/inJIrDxi0KBNW1Q8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UHDHHpY5N/rsvjcA4xz6+9aNfJ64tuIVFE6YKYMAmsGkomCHjS4u4KggHrt7RIV9EE6GI0q9rwsjhU+9y9l2/Hg/dDCIclMWIIzFVG1Q+UHaw7oBrj91XywHwip+Y/Re9ZArLD9ozwl4TKJAZbycGQc8/7dql/OMTgS9rT2ftEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oYxeCm/g; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 201011F000E9;
-	Tue, 16 Jun 2026 17:18:52 +0000 (UTC)
+	 MIME-Version; b=owinU86UGFJURjE1JcChVaKr53EckZ+fBwo8CABACmSLsSUZ2lz2deB8RGzBp31w7lrIqOvXsWC1mD2zNgLRHYkKX6tPEcNRLFXcYjIOz0RC9cixcFE9KiGvxSturousfxALRpHDvQNJwoZQmctWP4e7ardnp/QXwIPPQCJDOOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=enUtRpz6; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F39F1F000E9;
+	Tue, 16 Jun 2026 16:37:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781630334;
-	bh=57xOUkaiAJBphBk5yAGPdPETYsuugszPvFXmmOLsRGg=;
+	s=korg; t=1781627835;
+	bh=2q/I2ciIx/Cc6lmtpSB53dp9U/UWCx1XFXVMKLirgwk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=oYxeCm/g7fuFAj5MHToUEX5mL6oEQvUiMknxqXsbd11cNa6gORFYLRz6uHXBDHwTd
-	 vJCHqv7dUnmQ/J2hAyV1H0Mjf0Mt+3N2YxVUjZ1JUjoBV6s8uYO0VW+FvqAO/0/F24
-	 sgwl6etD+U8oVrAkBdLWc1pMwi37DToBkJsTs2N0=
+	b=enUtRpz6+SpItboXXZ+/EaDEnCXDGo2OnT1opoxT/hbfeHsWppar02RUgHSZ1OwSh
+	 WzEL1f2jlj/XDtp6ROVpUY+mYg1xNiHMHGoc6xePvg66KCn4vnnAt45JyMInSfrHCQ
+	 79urCIa9QrRUtO8X8JvUQmwo+QpPR5Fo8gNiqK2w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jacob Moroni <jmoroni@google.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 447/452] mptcp: add-addr: always drop other suboptions
+Subject: [PATCH 6.12 236/261] RDMA/umem: Add ib_umem_dmabuf_get_pinned_and_lock helper
 Date: Tue, 16 Jun 2026 20:31:14 +0530
-Message-ID: <20260616145140.000489081@linuxfoundation.org>
+Message-ID: <20260616145056.000963797@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,12 +77,12 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265267-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264777-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:matttbe@kernel.org,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jmoroni@google.com,m:leon@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
@@ -98,174 +98,96 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8A8A169327F
+X-Rspamd-Queue-Id: 2F6926927D6
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+From: Jacob Moroni <jmoroni@google.com>
 
-[ Upstream commit bd34fa0257261b76964df1c98f44b3cb4ee14620 ]
+[ Upstream commit 553dfa8cbd0c6d36adae042d9738ddf8f8765ac7 ]
 
-When an ADD_ADDR needs to be sent, it could be prepared if there is
-enough remaining space and even if the packet is not a pure ACK. But it
-would be dropped soon after.
+Move the inner logic of ib_umem_dmabuf_get_pinned_with_dma_device()
+to a new static function that returns with the lock held upon success.
 
-Indeed, in mptcp_pm_add_addr_signal(), there is enough space to fit a
-DSS of 20 octets and an ADD_ADDR echo containing an IPv4 address on 8
-octets for example. In this case, the packet would be prepared, the
-MPTCP_ADD_ADDR_ECHO bit would be removed from pm->addr_signal, but the
-option would be silently dropped in mptcp_established_options_add_addr()
-not to override DSS info in the union from 'struct mptcp_out_options',
-and also because mptcp_write_options() will enforce mutually exclusion
-with DSS.
+The intent is to allow reuse for the future get_pinned_revocable_and_lock
+function.
 
-Instead, don't even try to send an ADD_ADDR if it is not a pure ACK.
-Retry for each new packet until a pure-ACK is emitted. That's fine to do
-that, because each time an ADD_ADDR (echo) is scheduled, a pure ACK is
-queued.
-
-This also simplifies the code, and the skb checks can be done earlier,
-before the lock.
-
-Note: also, since commit 6d0060f600ad ("mptcp: Write MPTCP DSS headers
-to outgoing data packets"), opts->ahmac would not have been set to 0
-when other suboptions were not dropped, and when sending an ADD_ADDR
-echo. That would have resulted in sending an ADD_ADDR using garbage
-info, where there was not enough space, instead of an echo one without
-the ADD_ADDR HMAC.
-
-Fixes: 1bff1e43a30e ("mptcp: optimize out option generation")
-Cc: stable@vger.kernel.org
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260602-net-mptcp-misc-fixes-7-1-rc7-v2-11-856831229976@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Jacob Moroni <jmoroni@google.com>
+Link: https://patch.msgid.link/20260305170826.3803155-2-jmoroni@google.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Stable-dep-of: badad6fad60d ("RDMA: During rereg_mr ensure that REREG_ACCESS is compatible")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/options.c  |   30 +++++++-----------------------
- net/mptcp/pm.c       |   15 ++++-----------
- net/mptcp/protocol.h |    7 +++----
- 3 files changed, 14 insertions(+), 38 deletions(-)
+ drivers/infiniband/core/umem_dmabuf.c |   35 +++++++++++++++++++++++++---------
+ 1 file changed, 26 insertions(+), 9 deletions(-)
 
---- a/net/mptcp/options.c
-+++ b/net/mptcp/options.c
-@@ -662,7 +662,6 @@ static bool mptcp_established_options_ad
+--- a/drivers/infiniband/core/umem_dmabuf.c
++++ b/drivers/infiniband/core/umem_dmabuf.c
+@@ -198,18 +198,19 @@ static struct dma_buf_attach_ops ib_umem
+ 	.move_notify = ib_umem_dmabuf_unsupported_move_notify,
+ };
+ 
+-struct ib_umem_dmabuf *
+-ib_umem_dmabuf_get_pinned_with_dma_device(struct ib_device *device,
+-					  struct device *dma_device,
+-					  unsigned long offset, size_t size,
+-					  int fd, int access)
++static struct ib_umem_dmabuf *
++ib_umem_dmabuf_get_pinned_and_lock(struct ib_device *device,
++				   struct device *dma_device,
++				   unsigned long offset,
++				   size_t size, int fd, int access,
++				   const struct dma_buf_attach_ops *ops)
  {
- 	struct mptcp_subflow_context *subflow = mptcp_subflow_ctx(sk);
- 	struct mptcp_sock *msk = mptcp_sk(subflow->conn);
--	bool drop_other_suboptions = false;
- 	unsigned int opt_size = *size;
- 	struct mptcp_addr_info addr;
- 	bool echo;
-@@ -673,36 +672,20 @@ static bool mptcp_established_options_ad
- 	 */
- 	if (!mptcp_pm_should_add_signal(msk) ||
- 	    (opts->suboptions & (OPTION_MPTCP_MPJ_ACK | OPTION_MPTCP_MPC_ACK)) ||
--	    !mptcp_pm_add_addr_signal(msk, skb, opt_size, remaining, &addr,
--		    &echo, &drop_other_suboptions))
-+	    !skb || !skb_is_tcp_pure_ack(skb) ||
-+	    !mptcp_pm_add_addr_signal(msk, opt_size, remaining, &addr, &echo))
- 		return false;
+ 	struct ib_umem_dmabuf *umem_dmabuf;
+ 	int err;
  
--	/*
--	 * Later on, mptcp_write_options() will enforce mutually exclusion with
--	 * DSS, bail out if such option is set and we can't drop it.
--	 */
--	if (drop_other_suboptions)
--		remaining += opt_size;
--	else if (opts->suboptions & OPTION_MPTCP_DSS)
--		return false;
-+	remaining += opt_size;
+-	umem_dmabuf = ib_umem_dmabuf_get_with_dma_device(device, dma_device, offset,
+-							 size, fd, access,
+-							 &ib_umem_dmabuf_attach_pinned_ops);
++	umem_dmabuf =
++		ib_umem_dmabuf_get_with_dma_device(device, dma_device, offset,
++						   size, fd, access, ops);
+ 	if (IS_ERR(umem_dmabuf))
+ 		return umem_dmabuf;
  
- 	len = mptcp_add_addr_len(addr.family, echo, !!addr.port);
- 	if (remaining < len)
- 		return false;
+@@ -222,7 +223,6 @@ ib_umem_dmabuf_get_pinned_with_dma_devic
+ 	err = ib_umem_dmabuf_map_pages(umem_dmabuf);
+ 	if (err)
+ 		goto err_release;
+-	dma_resv_unlock(umem_dmabuf->attach->dmabuf->resv);
  
- 	*size = len;
--	if (drop_other_suboptions) {
--		pr_debug("drop other suboptions\n");
--		opts->suboptions = 0;
--
--		/* note that e.g. DSS could have written into the memory
--		 * aliased by ahmac, we must reset the field here
--		 * to avoid appending the hmac even for ADD_ADDR echo
--		 * options
--		 */
--		opts->ahmac = 0;
--		*size -= opt_size;
--	}
-+	pr_debug("drop other suboptions\n");
-+	opts->suboptions = 0;
-+	*size -= opt_size;
- 	opts->addr = addr;
- 	opts->suboptions |= OPTION_MPTCP_ADD_ADDR;
- 	if (!echo) {
-@@ -712,6 +695,7 @@ static bool mptcp_established_options_ad
- 						     &opts->addr);
- 	} else {
- 		MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_ECHOADDTX);
-+		opts->ahmac = 0;
- 	}
- 	pr_debug("addr_id=%d, ahmac=%llu, echo=%d, port=%d\n",
- 		 opts->addr.id, opts->ahmac, echo, ntohs(opts->addr.port));
---- a/net/mptcp/pm.c
-+++ b/net/mptcp/pm.c
-@@ -330,10 +330,9 @@ void mptcp_pm_mp_fail_received(struct so
+ 	return umem_dmabuf;
  
- /* path manager helpers */
- 
--bool mptcp_pm_add_addr_signal(struct mptcp_sock *msk, const struct sk_buff *skb,
--			      unsigned int opt_size, unsigned int remaining,
--			      struct mptcp_addr_info *addr, bool *echo,
--			      bool *drop_other_suboptions)
-+bool mptcp_pm_add_addr_signal(struct mptcp_sock *msk, unsigned int opt_size,
-+			      unsigned int remaining,
-+			      struct mptcp_addr_info *addr, bool *echo)
- {
- 	bool skip_add_addr = false;
- 	int ret = false;
-@@ -351,10 +350,7 @@ bool mptcp_pm_add_addr_signal(struct mpt
- 	 * plain dup-ack from TCP perspective. The other MPTCP-relevant info,
- 	 * if any, will be carried by the 'original' TCP ack
- 	 */
--	if (skb && skb_is_tcp_pure_ack(skb)) {
--		remaining += opt_size;
--		*drop_other_suboptions = true;
--	}
-+	remaining += opt_size;
- 
- 	*echo = mptcp_pm_should_add_signal_echo(msk);
- 	if (*echo) {
-@@ -372,9 +368,6 @@ bool mptcp_pm_add_addr_signal(struct mpt
- 	if (remaining < mptcp_add_addr_len(family, *echo, port)) {
- 		struct net *net = sock_net((struct sock *)msk);
- 
--		if (!*drop_other_suboptions)
--			goto out_unlock;
--
- 		if (*echo) {
- 			MPTCP_INC_STATS(net, MPTCP_MIB_ECHOADDTXDROP);
- 		} else {
---- a/net/mptcp/protocol.h
-+++ b/net/mptcp/protocol.h
-@@ -1042,10 +1042,9 @@ static inline int mptcp_rm_addr_len(cons
- 	return TCPOLEN_MPTCP_RM_ADDR_BASE + roundup(rm_list->nr - 1, 4) + 1;
+@@ -231,6 +231,23 @@ err_release:
+ 	ib_umem_release(&umem_dmabuf->umem);
+ 	return ERR_PTR(err);
  }
++
++struct ib_umem_dmabuf *
++ib_umem_dmabuf_get_pinned_with_dma_device(struct ib_device *device,
++					  struct device *dma_device,
++					  unsigned long offset, size_t size,
++					  int fd, int access)
++{
++	struct ib_umem_dmabuf *umem_dmabuf =
++		ib_umem_dmabuf_get_pinned_and_lock(device, dma_device, offset,
++						   size, fd, access,
++						   &ib_umem_dmabuf_attach_pinned_ops);
++	if (IS_ERR(umem_dmabuf))
++		return umem_dmabuf;
++
++	dma_resv_unlock(umem_dmabuf->attach->dmabuf->resv);
++	return umem_dmabuf;
++}
+ EXPORT_SYMBOL(ib_umem_dmabuf_get_pinned_with_dma_device);
  
--bool mptcp_pm_add_addr_signal(struct mptcp_sock *msk, const struct sk_buff *skb,
--			      unsigned int opt_size, unsigned int remaining,
--			      struct mptcp_addr_info *addr, bool *echo,
--			      bool *drop_other_suboptions);
-+bool mptcp_pm_add_addr_signal(struct mptcp_sock *msk, unsigned int opt_size,
-+			      unsigned int remaining,
-+			      struct mptcp_addr_info *addr, bool *echo);
- bool mptcp_pm_rm_addr_signal(struct mptcp_sock *msk, unsigned int remaining,
- 			     struct mptcp_rm_list *rm_list);
- int mptcp_pm_get_local_id(struct mptcp_sock *msk, struct sock_common *skc);
+ struct ib_umem_dmabuf *ib_umem_dmabuf_get_pinned(struct ib_device *device,
 
 
 
