@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-264121-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263772-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id YhLfMwdwMWo8jQUAu9opvQ
-	(envelope-from <stable+bounces-264121-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:47:19 +0200
+	id xsVVCVdlMWraiQUAu9opvQ
+	(envelope-from <stable+bounces-263772-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:01:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6191691624
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:47:18 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 184E8690B9F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:01:42 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=HCf1g0Qk;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264121-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-264121-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=O7BHDQEF;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263772-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263772-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9607530E6DEA
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:37:28 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 6AA43300F268
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:00:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 949F044D02B;
-	Tue, 16 Jun 2026 15:37:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F92342EEBB;
+	Tue, 16 Jun 2026 15:00:28 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62C4A44CF2E;
-	Tue, 16 Jun 2026 15:37:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C9CB3AA1BA;
+	Tue, 16 Jun 2026 15:00:27 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781624240; cv=none; b=ieCIosjth5NWZlGi1eUmaKw0Iqoj3i7ck2ToCX0aaaHuC15KHl3oQerSoP3ys1C1ihGora3y3fyOfwfO2R+9ATILVX6kDwQZ4XPpmY3ObpK/VmHqhrKRNl+9SulBFq0qrzp8iRLQdoZmtccB0Rzg7eQN9s7TpFfTmvfiidMmWBc=
+	t=1781622028; cv=none; b=qGcsnY76SRrtn0nHFvFFvObJwPO+x7Jp5YKo2T9pyhul2nbycY0mFrX45Pvggh2OGlqYL42wXbHaoDPfAlJyL/xyU4hRNIkq8fZAtsBFtk3WdUOAfoZrVa/oi+KA4j1Olhs81hW4AAa2Bq7zFhLJA23I81Q/jjvY0IY5JoslMU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781624240; c=relaxed/simple;
-	bh=vdx5y4PfP6jnJ6eHgQX+Ga4Q5apdNPX7WBfzB48+TkA=;
+	s=arc-20240116; t=1781622028; c=relaxed/simple;
+	bh=PJtvLXB8h4VZGYbO18T/siL7b1Q5/kaMU9afAX8T16g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ICnvM7ru/1O7iiojsx/9TlRNQNSAnHd/gRIbGjSByyxMuy/jm4qcxIVtj/4GxIn7Ku6y38EmYY2g3Eb1YIOmoVypdD5GApVxRvxYGFUMfL2IxEQVuQ1NcmG5QF6H/I5Z/YZ5aLC1TeKYWqy57lXOHjgbpWE2qC6mbA1lo26NKpw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HCf1g0Qk; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA3131F000E9;
-	Tue, 16 Jun 2026 15:37:17 +0000 (UTC)
+	 MIME-Version; b=M3PUObs0CSyQa3R3RYClPS1hvAFSIYXVDXUh4reR+eJTsMJtvA+snPoC2eVjLkYKgsHDHyeODV8dv+grcus25fag6Y1XKSpnwufar6zz3bXHkj2BmTSh085vx/rumpp5+Zy5k9FmSorzPtEksXgsARIEna/Ef0y/nQ+44KdJSE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O7BHDQEF; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42B821F000E9;
+	Tue, 16 Jun 2026 15:00:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781624239;
-	bh=btjDXi4O8zxD6KpLr0Ej2XAcESRaL8BkNcpfE++AcdA=;
+	s=korg; t=1781622027;
+	bh=61YOxhKS66IAEnL9mPAQzSgRbA/43qZnkDMaklQatPc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=HCf1g0Qk6JqKvHWcy4EEtlvwOk3YUXaoR8z2JMkE2w6pmnWYSQjmeIpx/VTORCk0C
-	 jFyL2AaqLyZGEsggtiRkaZihKd19A6WYTuU7BKmlpsoHzRucVD++0AbqrAAhrvuSqR
-	 guzp3KW8n1qVhBcP993+tiDKMslU7bDDsSLzTa40=
+	b=O7BHDQEFW1hu9plmEi4ugj7POw69nRp0k8TnksFn3ajvBr2v9dESbh78nu36I0Mwb
+	 TN493k6xwNO6A9+X5qplH3MPRNGc9EfL3WEfOCELf/4vqmR7/5g2Q2UuCakg0yBeTG
+	 DNfQf+GEOEONk906JLZ3e64NbSJexQfFTReEshVM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Judith Mendez <jm@ti.com>,
-	Linus Walleij <linusw@kernel.org>
-Subject: [PATCH 7.0 297/378] pinctrl: mcp23s08: Read spi-present-mask as u8 not u32
+	Johan Hovold <johan@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH 7.1 3/8] driver core: reject devices with unregistered buses
 Date: Tue, 16 Jun 2026 20:28:48 +0530
-Message-ID: <20260616145125.701849870@linuxfoundation.org>
+Message-ID: <20260616145523.437476927@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145523.335696673@linuxfoundation.org>
+References: <20260616145523.335696673@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,21 +71,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264121-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-263772-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:johan@kernel.org,m:dakr@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jm@ti.com,m:linusw@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -97,51 +97,71 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,ti.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C6191691624
+X-Rspamd-Queue-Id: 184E8690B9F
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+7.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Judith Mendez <jm@ti.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit b0c13ec17438577f90b379d448dfed1233e2c0a4 upstream.
+commit 36f35b8df6972167102a1c3d4361e0afb6a84534 upstream.
 
-The binding (microchip,mcp23s08) specifies microchip,spi-present-mask
-as uint8, but driver would read u32, causing type mismatch. Use
-device_property_read_u8 to match binding spec, hardware (8 chips max),
-& prevent probe failure.
+Trying to register a device on a bus which has not yet been registered
+used to trigger a NULL-pointer dereference, but since the const bus
+structure rework registration instead succeeds without the device being
+added to the bus.
 
-Cc: stable@vger.kernel.org
-Fixes: 3ad8d3ec6d87 ("dt-bindings: pinctrl: convert pinctrl-mcp23s08.txt to yaml format")
-Signed-off-by: Judith Mendez <jm@ti.com>
-Signed-off-by: Linus Walleij <linusw@kernel.org>
+This specifically means that the device will never bind to a driver and
+that the bus sysfs attributes are not created (i.e. as if the device had
+no bus).
+
+Reject devices with unregistered buses to catch any callers that get
+the ordering wrong and to handle bus registration failures more
+gracefully.
+
+Fixes: 5221b82d46f2 ("driver core: bus: bus_add/probe/remove_device() cleanups")
+Cc: stable@vger.kernel.org	# 6.3
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260430091718.230228-1-johan@kernel.org
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/pinctrl-mcp23s08_spi.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/base/bus.c |   11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
---- a/drivers/pinctrl/pinctrl-mcp23s08_spi.c
-+++ b/drivers/pinctrl/pinctrl-mcp23s08_spi.c
-@@ -144,13 +144,13 @@ static int mcp23s08_probe(struct spi_dev
- 	unsigned int addr;
- 	int chips;
- 	int ret;
--	u32 v;
-+	u8 v;
+--- a/drivers/base/bus.c
++++ b/drivers/base/bus.c
+@@ -544,10 +544,10 @@ static const struct attribute_group driv
+  */
+ int bus_add_device(struct device *dev)
+ {
+-	struct subsys_private *sp = bus_to_subsys(dev->bus);
++	struct subsys_private *sp;
+ 	int error;
  
- 	info = spi_get_device_match_data(spi);
+-	if (!sp) {
++	if (!dev->bus) {
+ 		/*
+ 		 * This is a normal operation for many devices that do not
+ 		 * have a bus assigned to them, just say that all went
+@@ -556,6 +556,13 @@ int bus_add_device(struct device *dev)
+ 		return 0;
+ 	}
  
--	ret = device_property_read_u32(dev, "microchip,spi-present-mask", &v);
-+	ret = device_property_read_u8(dev, "microchip,spi-present-mask", &v);
- 	if (ret) {
--		ret = device_property_read_u32(dev, "mcp,spi-present-mask", &v);
-+		ret = device_property_read_u8(dev, "mcp,spi-present-mask", &v);
- 		if (ret) {
- 			dev_err(dev, "missing spi-present-mask");
- 			return ret;
++	sp = bus_to_subsys(dev->bus);
++	if (!sp) {
++		pr_err("%s: cannot add device '%s' to unregistered bus '%s'\n",
++		       __func__, dev_name(dev), dev->bus->name);
++		return -EINVAL;
++	}
++
+ 	/*
+ 	 * Reference in sp is now incremented and will be dropped when
+ 	 * the device is removed from the bus
 
 
 
