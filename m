@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-264983-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265496-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id LOihEBmDMWoRlQUAu9opvQ
-	(envelope-from <stable+bounces-264983-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:08:41 +0200
+	id R3auB3qLMWr1mAUAu9opvQ
+	(envelope-from <stable+bounces-265496-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:44:26 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9991C692C52
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:08:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C5AC6936E0
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:44:25 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=dZLo7mOh;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264983-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264983-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=y45M6FPq;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265496-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265496-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A5E7A31D9545
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:55:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6CBBA31C7361
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:38:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AD004657FD;
-	Tue, 16 Jun 2026 16:55:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E15D4611CF;
+	Tue, 16 Jun 2026 17:38:21 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 152E9169AD2;
-	Tue, 16 Jun 2026 16:55:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3DB2331A44;
+	Tue, 16 Jun 2026 17:38:19 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781628914; cv=none; b=D0XbRp0Da+dDV8TzPkrhK6CDLeCLkN5uW0yd7Uyw0b43WeUFlcXBP3dNM+fSZlK3zAqUv1zOVIv9CZjf1XxgVDyp1JVtXzCyrWlCmZXAUC4dYm5ZNvpBxCXPZBLH0H7+jzbazSevOYY8PyPFUpBb/9QVC/t1Xi5+niYCLRDpC98=
+	t=1781631500; cv=none; b=Rpnwre8gZtGkEafEavb3Pq4axLMqoexDEoldraHu/DNoUKwb8SwZUQzYQjp2lt28dJahPr3PZriILo09somAO2mzCb22e9H98lno2EIj/sdhzXnXGFQ9W+dMuU5zDw7kyixPSPUqQuse74JjEn4z8WMdmzWL/q3IxlewkKuy94A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781628914; c=relaxed/simple;
-	bh=mI9pzsnHG0WF+qIumwkyWqZzCw0BHShMeYPzFYDkDUM=;
+	s=arc-20240116; t=1781631500; c=relaxed/simple;
+	bh=nq1JbfD9CSe/ZpUeJiXYJHDXEVygbAMjZG9tPf/hVl0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TWaMvhKlZVjPB2Wx1h7/SlvecqkiZIQ2i+gM556RLLxmlFGVvuFK4LcrAcHexptRJBnTiJul4qLde0EVBYLWXNtjD6lI/S5LW7mZYanzWtx28w3n4JCgE4WvOx4W9Xn/bAcMK4kzgO/cjkav49Msrmnlby1tnP33jJaQoEdfXQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dZLo7mOh; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBF7A1F000E9;
-	Tue, 16 Jun 2026 16:55:11 +0000 (UTC)
+	 MIME-Version; b=N5O3RnLl8ZTU/R6MbOv8yF5Xi5T1CZfQKJoxMTv8incwOzwBlqDM8RBbShp29te8tZjJSt4jIV9ZUKawsFEYSzxcPWONHR8bnmEru5R61mNeVUHCEJvLpTWF+3OxA2mwgAGKaMLHSTlZ04wxcrq49YkqGUyoanwSvzcGeVWfrcM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y45M6FPq; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CBA41F000E9;
+	Tue, 16 Jun 2026 17:38:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781628912;
-	bh=b8StkPYVFIjzKivT96ahTzzMrb3yoV0bpPaWA9o6jFM=;
+	s=korg; t=1781631499;
+	bh=Ak/CSEdHmexIQNEAfeC9kDyDXHXhsP3JQmsI5S8HKrY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dZLo7mOh2LaNQUfVe1UK6y2KYsdu6lrNoV/WZh7shOVhJm2dzN2shepBCuvihQ88i
-	 +G8nO5n40kiXmhrOsydrQluG+Pcj27raAUM3bvHs6+XTx4paGyV4TCq6PAU2kZFhfz
-	 YC8UGgI+kwDpw2ZdRG+xZ4bjDxPG6FK7a1jda4jg=
+	b=y45M6FPqfPo2EF3DsCxmyPT75EwqkAi6fFjidB0SxqwLZRT+8+rwA//cV6L5jI8rv
+	 SjO0kB0ufhO77/x3DY6EC1+B+SIIwN4Cw8EjaLGln+IcZwnxW2T95LliAynBv+DTbY
+	 qGcMqFeeRJf9MfJWh7gfGNcEYWdXV2lDUc9ScSNc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Pecio <michal.pecio@gmail.com>,
-	Tao Xue <xuetao09@huawei.com>
-Subject: [PATCH 6.6 152/452] usb: core: Fix up Interrupt IN endpoints with bogus wBytesPerInterval
+	stable <stable@kernel.org>,
+	Kuen-Han Tsai <khtsai@google.com>,
+	Jianqiang kang <jianqkang@sina.cn>,
+	Carlos Llamas <cmllamas@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 232/522] usb: gadget: f_ncm: Fix net_device lifecycle with device_move
 Date: Tue, 16 Jun 2026 20:26:19 +0530
-Message-ID: <20260616145125.687195005@linuxfoundation.org>
+Message-ID: <20260616145136.846800764@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,8 +69,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
@@ -76,97 +78,252 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264983-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michal.pecio@gmail.com,m:xuetao09@huawei.com,m:michalpecio@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,huawei.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,google.com,sina.cn];
+	TAGGED_FROM(0.00)[bounces-265496-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:khtsai@google.com,m:jianqkang@sina.cn,m:cmllamas@google.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,sina.cn:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9991C692C52
+X-Rspamd-Queue-Id: 6C5AC6936E0
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Pecio <michal.pecio@gmail.com>
+From: Kuen-Han Tsai <khtsai@google.com>
 
-commit 727d045d064b7c9a24db3bce9c0485a382cb768b upstream.
+[ Upstream commit ec35c1969650e7cb6c8a91020e568ed46e3551b0 ]
 
-Tao Xue found that some common devices violate USB 3.x section 9.6.7
-by reporting wBytesPerInterval lower than the size of packets they
-actually send. I confirmed that AX88179 may set it to 0 and RTL8153
-CDC configuration sets it to 8 but sends both 8 and 16 byte packets:
+The network device outlived its parent gadget device during
+disconnection, resulting in dangling sysfs links and null pointer
+dereference problems.
 
-S Ii:11:007:3 -115:128 16 <
-C Ii:11:007:3 0:128 8 = a1000000 01000000
-S Ii:11:007:3 -115:128 16 <
-C Ii:11:007:3 0:128 16 = a12a0000 01000800 00000000 00000000
+A prior attempt to solve this by removing SET_NETDEV_DEV entirely [1]
+was reverted due to power management ordering concerns and a NO-CARRIER
+regression.
 
-Most xHCI host controllers neglect interrupt bandwidth reservations
-and let such devices exceed theirs, some fail the URB with EOVERFLOW.
+A subsequent attempt to defer net_device allocation to bind [2] broke
+1:1 mapping between function instance and network device, making it
+impossible for configfs to report the resolved interface name. This
+results in a regression where the DHCP server fails on pmOS.
 
-Assume that wBytesPerInterval lower than wMaxPacketSize is bogus and
-increase it to the worst case maximum on interrupt IN endpoints. This
-solves xHCI problems and appears to have no other effect. Interrupt
-transfers are not limited to one interval and drivers submit URBs of
-class defined size without looking at wBytesPerInterval. Any multi-
-interval transfer is considered terminated by a packet shorter than
-wMaxPacketSize regardless of wBytesPerInterval - see USB3 8.10.3.
+Use device_move to reparent the net_device between the gadget device and
+/sys/devices/virtual/ across bind/unbind cycles. This preserves the
+network interface across USB reconnection, allowing the DHCP server to
+retain their binding.
 
-Stay in spec on OUT endpoints and isochronous. No buggy devices are
-known and we don't want to risk sending more data than the device
-is prepared to handle or confusing isoc drivers regarding altsetting
-capacities guaranteed by the device itself. And don't complain when
-wMaxPacketSize <= wBytesPerInterval < wMaxPacketSize * (bMaxBurst+1)
-because enabling this seems to be the exact goal of the spec.
+Introduce gether_attach_gadget()/gether_detach_gadget() helpers and use
+__free(detach_gadget) macro to undo attachment on bind failure. The
+bind_count ensures device_move executes only on the first bind.
 
-Reported-and-tested-by: Tao Xue <xuetao09@huawei.com>
-Closes: https://lore.kernel.org/linux-usb/20260402021400.28853-1-xuetao09@huawei.com/
-Cc: stable@vger.kernel.org
-Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
-Link: https://patch.msgid.link/20260518073207.5b7d26e7.michal.pecio@gmail.com
+[1] https://lore.kernel.org/lkml/f2a4f9847617a0929d62025748384092e5f35cce.camel@crapouillou.net/
+[2] https://lore.kernel.org/linux-usb/795ea759-7eaf-4f78-81f4-01ffbf2d7961@ixit.cz/
+
+Fixes: 40d133d7f542 ("usb: gadget: f_ncm: convert to new function interface with backward compatibility")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
+Link: https://patch.msgid.link/20260309-f-ncm-revert-v2-7-ea2afbc7d9b2@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[ Use no_free_ptr() since retain_and_null_ptr() is unavailable in Linux 6.1. ]
+Signed-off-by: Jianqiang kang <jianqkang@sina.cn>
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/config.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/usb/gadget/function/f_ncm.c   | 35 ++++++++++++++++++---------
+ drivers/usb/gadget/function/u_ether.c | 22 +++++++++++++++++
+ drivers/usb/gadget/function/u_ether.h | 26 ++++++++++++++++++++
+ drivers/usb/gadget/function/u_ncm.h   |  2 +-
+ 4 files changed, 73 insertions(+), 12 deletions(-)
 
---- a/drivers/usb/core/config.c
-+++ b/drivers/usb/core/config.c
-@@ -165,7 +165,14 @@ static void usb_parse_ss_endpoint_compan
- 			(desc->bMaxBurst + 1);
+diff --git a/drivers/usb/gadget/function/f_ncm.c b/drivers/usb/gadget/function/f_ncm.c
+index addd016ffbb3f7..5e240cafbe9ee8 100644
+--- a/drivers/usb/gadget/function/f_ncm.c
++++ b/drivers/usb/gadget/function/f_ncm.c
+@@ -1440,6 +1440,7 @@ static int ncm_bind(struct usb_configuration *c, struct usb_function *f)
+ 	struct f_ncm_opts	*ncm_opts;
+ 
+ 	struct usb_os_desc_table	*os_desc_table __free(kfree) = NULL;
++	struct net_device		*net __free(detach_gadget) = NULL;
+ 	struct usb_request		*request __free(free_usb_request) = NULL;
+ 
+ 	if (!can_support_ecm(cdev->gadget))
+@@ -1453,16 +1454,18 @@ static int ncm_bind(struct usb_configuration *c, struct usb_function *f)
+ 			return -ENOMEM;
+ 	}
+ 
+-	mutex_lock(&ncm_opts->lock);
+-	gether_set_gadget(ncm_opts->net, cdev->gadget);
+-	if (!ncm_opts->bound)
+-		status = gether_register_netdev(ncm_opts->net);
+-	mutex_unlock(&ncm_opts->lock);
+-
+-	if (status)
+-		return status;
+-
+-	ncm_opts->bound = true;
++	scoped_guard(mutex, &ncm_opts->lock)
++		if (ncm_opts->bind_count == 0) {
++			if (!device_is_registered(&ncm_opts->net->dev)) {
++				gether_set_gadget(ncm_opts->net, cdev->gadget);
++				status = gether_register_netdev(ncm_opts->net);
++			} else
++				status = gether_attach_gadget(ncm_opts->net, cdev->gadget);
++
++			if (status)
++				return status;
++			net = ncm_opts->net;
++		}
+ 
+ 	ncm_string_defs[1].s = ncm->ethaddr;
+ 
+@@ -1562,6 +1565,9 @@ static int ncm_bind(struct usb_configuration *c, struct usb_function *f)
+ 	}
+         ncm->notify_req = no_free_ptr(request);
+ 
++	ncm_opts->bind_count++;
++	no_free_ptr(net);
++
+ 	DBG(cdev, "CDC Network: %s speed IN/%s OUT/%s NOTIFY/%s\n",
+ 			gadget_is_superspeed(c->cdev->gadget) ? "super" :
+ 			gadget_is_dualspeed(c->cdev->gadget) ? "dual" : "full",
+@@ -1610,7 +1616,7 @@ static void ncm_free_inst(struct usb_function_instance *f)
+ 	struct f_ncm_opts *opts;
+ 
+ 	opts = container_of(f, struct f_ncm_opts, func_inst);
+-	if (opts->bound)
++	if (device_is_registered(&opts->net->dev))
+ 		gether_cleanup(netdev_priv(opts->net));
  	else
- 		max_tx = 999999;
--	if (le16_to_cpu(desc->wBytesPerInterval) > max_tx) {
-+	/*
-+	 * wBytesPerInterval > max_tx is bogus, but USB3 spec doesn't forbid the opposite.
-+	 * Experience shows that wBytesPerInterval < wMaxPacketSize on common interrupt IN
-+	 * endpoints is usually bogus too, and recent HCs enforce interrupt BW limits.
-+	 */
-+	if (le16_to_cpu(desc->wBytesPerInterval) > max_tx ||
-+	    (le16_to_cpu(desc->wBytesPerInterval) < usb_endpoint_maxp(&ep->desc) &&
-+	     usb_endpoint_is_int_in(&ep->desc))) {
- 		dev_notice(ddev, "%s endpoint with wBytesPerInterval of %d in "
- 				"config %d interface %d altsetting %d ep %d: "
- 				"setting to %d\n",
+ 		free_netdev(opts->net);
+@@ -1672,9 +1678,12 @@ static void ncm_free(struct usb_function *f)
+ static void ncm_unbind(struct usb_configuration *c, struct usb_function *f)
+ {
+ 	struct f_ncm *ncm = func_to_ncm(f);
++	struct f_ncm_opts *ncm_opts;
+ 
+ 	DBG(c->cdev, "ncm unbind\n");
+ 
++	ncm_opts = container_of(f->fi, struct f_ncm_opts, func_inst);
++
+ 	hrtimer_cancel(&ncm->task_timer);
+ 
+ 	kfree(f->os_desc_table);
+@@ -1690,6 +1699,10 @@ static void ncm_unbind(struct usb_configuration *c, struct usb_function *f)
+ 
+ 	kfree(ncm->notify_req->buf);
+ 	usb_ep_free_request(ncm->notify, ncm->notify_req);
++
++	ncm_opts->bind_count--;
++	if (ncm_opts->bind_count == 0)
++		gether_detach_gadget(ncm_opts->net);
+ }
+ 
+ static struct usb_function *ncm_alloc(struct usb_function_instance *fi)
+diff --git a/drivers/usb/gadget/function/u_ether.c b/drivers/usb/gadget/function/u_ether.c
+index e84178bffe7803..e972de236be5e2 100644
+--- a/drivers/usb/gadget/function/u_ether.c
++++ b/drivers/usb/gadget/function/u_ether.c
+@@ -910,6 +910,28 @@ void gether_set_gadget(struct net_device *net, struct usb_gadget *g)
+ }
+ EXPORT_SYMBOL_GPL(gether_set_gadget);
+ 
++int gether_attach_gadget(struct net_device *net, struct usb_gadget *g)
++{
++	int ret;
++
++	ret = device_move(&net->dev, &g->dev, DPM_ORDER_DEV_AFTER_PARENT);
++	if (ret)
++		return ret;
++
++	gether_set_gadget(net, g);
++	return 0;
++}
++EXPORT_SYMBOL_GPL(gether_attach_gadget);
++
++void gether_detach_gadget(struct net_device *net)
++{
++	struct eth_dev *dev = netdev_priv(net);
++
++	device_move(&net->dev, NULL, DPM_ORDER_NONE);
++	dev->gadget = NULL;
++}
++EXPORT_SYMBOL_GPL(gether_detach_gadget);
++
+ int gether_set_dev_addr(struct net_device *net, const char *dev_addr)
+ {
+ 	struct eth_dev *dev;
+diff --git a/drivers/usb/gadget/function/u_ether.h b/drivers/usb/gadget/function/u_ether.h
+index 40144546d1b07f..3e12d60053c136 100644
+--- a/drivers/usb/gadget/function/u_ether.h
++++ b/drivers/usb/gadget/function/u_ether.h
+@@ -149,6 +149,32 @@ static inline struct net_device *gether_setup_default(void)
+  */
+ void gether_set_gadget(struct net_device *net, struct usb_gadget *g);
+ 
++/**
++ * gether_attach_gadget - Reparent net_device to the gadget device.
++ * @net: The network device to reparent.
++ * @g: The target USB gadget device to parent to.
++ *
++ * This function moves the network device to be a child of the USB gadget
++ * device in the device hierarchy. This is typically done when the function
++ * is bound to a configuration.
++ *
++ * Returns 0 on success, or a negative error code on failure.
++ */
++int gether_attach_gadget(struct net_device *net, struct usb_gadget *g);
++
++/**
++ * gether_detach_gadget - Detach net_device from its gadget parent.
++ * @net: The network device to detach.
++ *
++ * This function moves the network device to be a child of the virtual
++ * devices parent, effectively detaching it from the USB gadget device
++ * hierarchy. This is typically done when the function is unbound
++ * from a configuration but the instance is not yet freed.
++ */
++void gether_detach_gadget(struct net_device *net);
++
++DEFINE_FREE(detach_gadget, struct net_device *, if (_T) gether_detach_gadget(_T))
++
+ /**
+  * gether_set_dev_addr - initialize an ethernet-over-usb link with eth address
+  * @net: device representing this link
+diff --git a/drivers/usb/gadget/function/u_ncm.h b/drivers/usb/gadget/function/u_ncm.h
+index 5408854d84072d..297e5087872f3f 100644
+--- a/drivers/usb/gadget/function/u_ncm.h
++++ b/drivers/usb/gadget/function/u_ncm.h
+@@ -18,7 +18,7 @@
+ struct f_ncm_opts {
+ 	struct usb_function_instance	func_inst;
+ 	struct net_device		*net;
+-	bool				bound;
++	int				bind_count;
+ 
+ 	struct config_group		*ncm_interf_group;
+ 	struct usb_os_desc		ncm_os_desc;
+-- 
+2.53.0
+
 
 
 
