@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-266505-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264190-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id qFlgObGeMWrEoQUAu9opvQ
-	(envelope-from <stable+bounces-266505-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:06:25 +0200
+	id LAhwEk1xMWq2jQUAu9opvQ
+	(envelope-from <stable+bounces-264190-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:52:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72C62694BF6
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:06:25 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC2E3691757
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:52:44 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=APx0ZfjK;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266505-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266505-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ri+E28DH;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264190-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-264190-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 54964306641E
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:06:00 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 67B41309958C
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:45:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C619B3DDDA1;
-	Tue, 16 Jun 2026 19:05:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C8BB45BD5F;
+	Tue, 16 Jun 2026 15:43:27 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84E4C3DD51C;
-	Tue, 16 Jun 2026 19:05:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ECC24534A9;
+	Tue, 16 Jun 2026 15:43:25 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781636757; cv=none; b=qP/TVVuCZ8QZh6HI6ldFWb5MHs/Om3hcJHeBcwBGlKAqzmj0J1VaFK96f8I3z+yCvN6Q31ZmrZXVW1E6zHaHQ94GAiWPJoAKuaiUcXiqooNEV3bpDIrSV4ybm4jm5LY7dnFBtSAlINUFsR1A1+lW2hvuaPaqm7OVM4LkSTfcQAE=
+	t=1781624607; cv=none; b=bkWCXflYogJl4Gmxny2aZ09nHGKrLoRgzTT17KIXYRoW4cBwhr1OJ7HvxxyeZdWkaVeG2joFQMyaxU0RLmKYLB4rxqKIjysj6S6Bt+YSPyzeUsvr2G7Oh9dguOOtHLdByUz2gSWXlW8d+8I4ntKcbbVUPH7Z2Dm7v+E/hZJszYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781636757; c=relaxed/simple;
-	bh=wXzzLAbWFLdLShVNfaSkTM1bQCgR8qUhUtlL6aQSv4Q=;
+	s=arc-20240116; t=1781624607; c=relaxed/simple;
+	bh=20ucPT++1iz7zJUhsN2En6yz2abNkH4NUVc0so7ncfA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EnvfEOC1yE39jju3uWCyVbyhbc4xsNEJ7S3Bo71x2q+Gm+afH1rKlxPG7H0E+D9uVCC+j6YeGNbcvcQAMQPfj54QZbXGE7VItrdqlYT6z++J27zj846SaVuixDvwc1/mLBFDXi+QRvWGilj7Sjr2f7eItz8+rbfi0Xa+0DEjoH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=APx0ZfjK; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7360C1F000E9;
-	Tue, 16 Jun 2026 19:05:55 +0000 (UTC)
+	 MIME-Version; b=sK+caSv7lbhps+Y3VA3D0+p9+Y7fe9LTtobA67wWHQslbMAWA5XCfNSvJHrJd3XUfUZBO9GY5ir3RF744XMvXi6Uj5SfvnNpguoIB6wnwX3hfUGTx1J9jpZJp3de4G1w83S+0jJNoXc39JNnkN7h5Jy5TOPlU++ylpNU37JUCcM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ri+E28DH; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2EC01F000E9;
+	Tue, 16 Jun 2026 15:43:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781636756;
-	bh=OFWKOv1mU9PiytBb6L6Y1depqJmzWSLl9qCNMF8waJY=;
+	s=korg; t=1781624605;
+	bh=HzxqTJAtjeXt5XvEHUGgtgpUF86MORjoSBvzVJrXJO4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=APx0ZfjKMN+iy6qNmNLT1hhlF8v+vYdTN7XsIL470h4XZAHrs4zRg5rV/Xeorm3m7
-	 3h8Bd4JNEmlptHDHmxd9ewe8uCkvZpW2Q2THcf3BZXXBZU8QRegWJsEqAjIG02WJzV
-	 AhOnEbZg5YmoqNm+HQuzolao+uw5aoe/ZsAFbED8=
+	b=ri+E28DHbHIodlU8mQyEteKWjaNUOC45nlAW0PTmg8OLWTyB8/BCvaGUEa5pNUUMu
+	 DQpoWji2d3KeodlVO3I4Gi/201zfIwrGJuQZ4U8q5SdZeGaRDLrTHU+0t2AJiO+PNq
+	 WD4rL03AS9i/4qrwzH+9273SDMX9vHiO6T3OdcAk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wayne Chang <waynec@nvidia.com>,
-	Wei-Cheng Chen <weichengc@nvidia.com>,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 300/342] phy: tegra: xusb: Fix per-pad high-speed termination calibration
+	Rio Liu <rio@r26.me>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 7.0 365/378] wifi: mac80211: skip ieee80211_verify_sta_ht_mcs_support check in non-strict mode
 Date: Tue, 16 Jun 2026 20:29:56 +0530
-Message-ID: <20260616145102.409164909@linuxfoundation.org>
+Message-ID: <20260616145129.348733831@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,179 +68,80 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266505-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264190-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:waynec@nvidia.com,m:weichengc@nvidia.com,m:jonathanh@nvidia.com,m:vkoul@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:rio@r26.me,m:johannes.berg@intel.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,nvidia.com:email,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,vger.kernel.org:from_smtp,r26.me:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 72C62694BF6
+X-Rspamd-Queue-Id: CC2E3691757
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wayne Chang <waynec@nvidia.com>
+From: Rio Liu <rio@r26.me>
 
-[ Upstream commit da110228b54f2e2143d97ea7151e0dc22e539d67 ]
+commit 711a9c018ad252b2807f85d44e1267b595644f9b upstream.
 
-The existing code reads a single hs_term_range_adj value from bit field
-[10:7] of FUSE_SKU_CALIB_0 and applies it to all USB2 pads uniformly.
-However, on SoCs that support per-pad termination, each pad has its own
-hs_term_range_adj field: pad 0 in FUSE_SKU_CALIB_0[10:7], and pads 1-3
-in FUSE_USB_CALIB_EXT_0 at bit offsets [8:5], [12:9], and [16:13]
-respectively.
+Some Xfinity XB8 firmware advertises >1 spatial stream MCS indexes in
+their basic HT-MCS set. On cards with lower spatial streams, the check
+would fail, and we'd be stuck with no HT when in fact work fine with its
+own supported rate. This change makes it so the check is only performed
+in strict mode.
 
-Fix the calibration by reading per-pad values from the appropriate fuse
-registers. For SoCs that do not support per-pad termination, replicate
-pad 0's value to all pads to maintain existing behavior.
-
-Add a has_per_pad_term flag to the SoC data to indicate whether per-pad
-termination values are available in FUSE_USB_CALIB_EXT_0.
-
-Fixes: 1ef535c6ba8e ("phy: tegra: xusb: Add Tegra194 support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Wayne Chang <waynec@nvidia.com>
-Signed-off-by: Wei-Cheng Chen <weichengc@nvidia.com>
-Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
-Link: https://patch.msgid.link/20260504033305.2283145-1-weichengc@nvidia.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 574faa0e936d ("wifi: mac80211: add HT and VHT basic set verification")
+Signed-off-by: Rio Liu <rio@r26.me>
+Link: https://patch.msgid.link/99Mv9QEceyPrQhSP52MtAVmz0_kWJmzqotJjD9YW6LGLqk-AZloAueUyHCURilFkuqOh6Ecv8i2KKdSE1ujP3AnbU5QEouVisT1w_V3xdfc=@r26.me
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/tegra/xusb-tegra186.c |   32 +++++++++++++++++++++++++-------
- drivers/phy/tegra/xusb.h          |    1 +
- 2 files changed, 26 insertions(+), 7 deletions(-)
+ net/mac80211/mlme.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/drivers/phy/tegra/xusb-tegra186.c
-+++ b/drivers/phy/tegra/xusb-tegra186.c
-@@ -20,8 +20,8 @@
- /* FUSE USB_CALIB registers */
- #define HS_CURR_LEVEL_PADX_SHIFT(x)	((x) ? (11 + (x - 1) * 6) : 0)
- #define HS_CURR_LEVEL_PAD_MASK		0x3f
--#define HS_TERM_RANGE_ADJ_SHIFT		7
--#define HS_TERM_RANGE_ADJ_MASK		0xf
-+#define HS_TERM_RANGE_ADJ_PADX_SHIFT(x)	((x) ? (5 + (x - 1) * 4) : 7)
-+#define HS_TERM_RANGE_ADJ_PAD_MASK	0xf
- #define HS_SQUELCH_SHIFT		29
- #define HS_SQUELCH_MASK			0x7
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -420,6 +420,15 @@ ieee80211_verify_sta_ht_mcs_support(stru
+ 	ieee80211_apply_htcap_overrides(sdata, &sta_ht_cap);
  
-@@ -127,7 +127,7 @@
- struct tegra_xusb_fuse_calibration {
- 	u32 *hs_curr_level;
- 	u32 hs_squelch;
--	u32 hs_term_range_adj;
-+	u32 *hs_term_range_adj;
- 	u32 rpd_ctrl;
- };
- 
-@@ -477,7 +477,7 @@ static int tegra186_utmi_phy_power_on(st
- 
- 	value = padctl_readl(padctl, XUSB_PADCTL_USB2_OTG_PADX_CTL1(index));
- 	value &= ~TERM_RANGE_ADJ(~0);
--	value |= TERM_RANGE_ADJ(priv->calib.hs_term_range_adj);
-+	value |= TERM_RANGE_ADJ(priv->calib.hs_term_range_adj[index]);
- 	value &= ~RPD_CTRL(~0);
- 	value |= RPD_CTRL(priv->calib.rpd_ctrl);
- 	padctl_writel(padctl, value, XUSB_PADCTL_USB2_OTG_PADX_CTL1(index));
-@@ -895,17 +895,23 @@ static const char * const tegra186_usb3_
- static int
- tegra186_xusb_read_fuse_calibration(struct tegra186_xusb_padctl *padctl)
- {
-+	const struct tegra_xusb_padctl_soc *soc = padctl->base.soc;
- 	struct device *dev = padctl->base.dev;
- 	unsigned int i, count;
- 	u32 value, *level;
-+	u32 *hs_term_range_adj;
- 	int err;
- 
--	count = padctl->base.soc->ports.usb2.count;
-+	count = soc->ports.usb2.count;
- 
- 	level = devm_kcalloc(dev, count, sizeof(u32), GFP_KERNEL);
- 	if (!level)
- 		return -ENOMEM;
- 
-+	hs_term_range_adj = devm_kcalloc(dev, count, sizeof(u32), GFP_KERNEL);
-+	if (!hs_term_range_adj)
-+		return -ENOMEM;
+ 	/*
++	 * Some Xfinity XB8 firmware advertises >1 spatial stream MCS indexes in
++	 * their basic HT-MCS set. On cards with lower spatial streams, the check
++	 * would fail, and we'd be stuck with no HT when it in fact work fine with
++	 * its own supported rate. So check it only in strict mode.
++	 */
++	if (!ieee80211_hw_check(&sdata->local->hw, STRICT))
++		return true;
 +
- 	err = tegra_fuse_readl(TEGRA_FUSE_SKU_CALIB_0, &value);
- 	if (err) {
- 		if (err != -EPROBE_DEFER)
-@@ -924,8 +930,8 @@ tegra186_xusb_read_fuse_calibration(stru
- 
- 	padctl->calib.hs_squelch = (value >> HS_SQUELCH_SHIFT) &
- 					HS_SQUELCH_MASK;
--	padctl->calib.hs_term_range_adj = (value >> HS_TERM_RANGE_ADJ_SHIFT) &
--						HS_TERM_RANGE_ADJ_MASK;
-+	hs_term_range_adj[0] = (value >> HS_TERM_RANGE_ADJ_PADX_SHIFT(0)) &
-+				HS_TERM_RANGE_ADJ_PAD_MASK;
- 
- 	err = tegra_fuse_readl(TEGRA_FUSE_USB_CALIB_EXT_0, &value);
- 	if (err) {
-@@ -937,6 +943,17 @@ tegra186_xusb_read_fuse_calibration(stru
- 
- 	padctl->calib.rpd_ctrl = (value >> RPD_CTRL_SHIFT) & RPD_CTRL_MASK;
- 
-+	for (i = 1; i < count; i++) {
-+		if (soc->has_per_pad_term)
-+			hs_term_range_adj[i] =
-+				(value >> HS_TERM_RANGE_ADJ_PADX_SHIFT(i)) &
-+				HS_TERM_RANGE_ADJ_PAD_MASK;
-+		else
-+			hs_term_range_adj[i] = hs_term_range_adj[0];
-+	}
-+
-+	padctl->calib.hs_term_range_adj = hs_term_range_adj;
-+
- 	return 0;
- }
- 
-@@ -1095,6 +1112,7 @@ const struct tegra_xusb_padctl_soc tegra
- 	.supply_names = tegra194_xusb_padctl_supply_names,
- 	.num_supplies = ARRAY_SIZE(tegra194_xusb_padctl_supply_names),
- 	.supports_gen2 = true,
-+	.has_per_pad_term = true,
- };
- EXPORT_SYMBOL_GPL(tegra194_xusb_padctl_soc);
- #endif
---- a/drivers/phy/tegra/xusb.h
-+++ b/drivers/phy/tegra/xusb.h
-@@ -415,6 +415,7 @@ struct tegra_xusb_padctl_soc {
- 	unsigned int num_supplies;
- 	bool supports_gen2;
- 	bool need_fake_usb3_port;
-+	bool has_per_pad_term;
- };
- 
- struct tegra_xusb_padctl {
++	/*
+ 	 * P802.11REVme/D7.0 - 6.5.4.2.4
+ 	 * ...
+ 	 * If the MLME of an HT STA receives an MLME-JOIN.request primitive
 
 
 
