@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-263898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265865-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id yYuvCepqMWpdiwUAu9opvQ
-	(envelope-from <stable+bounces-263898-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:25:30 +0200
+	id 7NqONYeRMWrOmwUAu9opvQ
+	(envelope-from <stable+bounces-265865-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:10:15 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0712691030
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:25:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47046693DAF
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:10:15 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=2tmrcfMJ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263898-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-263898-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=F+1lsBuu;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265865-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-265865-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D23F230B499B
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:17:38 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1C000308A069
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:10:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAB6743E4A8;
-	Tue, 16 Jun 2026 15:17:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5147D3D5656;
+	Tue, 16 Jun 2026 18:10:09 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A924243E49F;
-	Tue, 16 Jun 2026 15:17:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26DC43D45CB;
+	Tue, 16 Jun 2026 18:10:08 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781623055; cv=none; b=nq9qjdv6s/Vt4dtEHUo9c9nRC6d3BQZzg4Uc3RD5EFCryB6XnQiDkNUBG4QvMdqC7GYg7PnYpP6S6iVQTd5pWAYDyeMYkr4HYYa7ql06njeXct0f0cDHlp4x4gt35PVA8qyatX1DJvZzHceSIwDAA6CJs86FY6f9JGopXLDo1gA=
+	t=1781633409; cv=none; b=XEBAXO8hSizF/uJhIwOv6YkLt3wR17G1xaaDPRnvUF8ImQpneYcJ9XNS9O10ym+zCxvpXddBrwPLGX0A/oJD6x4iVRdeX4MXrt36jxdUX9me8gddt9gXEzTAvLdHVb4kRMUM1XUlVobbZk0OM3sOHP2FfTqyJ5wrskERRyaHtjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781623055; c=relaxed/simple;
-	bh=hegltPWP1Vm3eaO0dlUnmbHkqFNcb9GgZ1mkNFiHwxY=;
+	s=arc-20240116; t=1781633409; c=relaxed/simple;
+	bh=DFCRS+walDy4alBcIO1z/9PKdhPTvHuDzkRbaEn2iFI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rUzXrtAtiqDAeamfEi+stgy5Q7S53T4CWJJuURJDSgfYs4XijoFixSgbeyxyYp9DMD/ioq9tlfiVjkwBhiv6tUEx+L+qmdlfOiW1hnuR9TwSWIh4DN6aOIga5mIwGQb5zLye9G5AGjxKn65t8TfyLn6GDmwY2xv7eZ+17QHAq1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2tmrcfMJ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 544151F000E9;
-	Tue, 16 Jun 2026 15:17:33 +0000 (UTC)
+	 MIME-Version; b=oHpRlkPKXsan4q+ThK3ekJhEhMOAuX7XvBYrFcWCDuQ17oCO0rHtnr/OovdrPPytB9w6iNG0DMY85IeyFBtt+BVN0MYNRFYTS4Le+G0fo26HKWLOcmF5VnvuazKaitTjaJcenuNZjjYwlqj/iXu5RAGB72gPJ6hIoMax+cWN008=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F+1lsBuu; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 016F51F000E9;
+	Tue, 16 Jun 2026 18:10:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781623054;
-	bh=79MvhfUvtOrDi4Qv4SF0Ahc7DFwYbLRXpoRC/7dFWks=;
+	s=korg; t=1781633408;
+	bh=8ZFReDuDQXc/98EaBoxLs1ESGibrL9zqR+wzoUnyvXI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=2tmrcfMJqyzSwuoRweexO3eSfZQCFgh5y/SUMe66mtNt+rIEEV5HAnX27FanAYBZH
-	 6Y4RhzRriEOuvyBtqEw28T6u5WMkwWvo9j7ot2yymC+q8xDLfWQr+c9fE+5c0n/cH7
-	 FXUJVEca61W5lqrippC61icKN0iAMJXQmtMZ3Hsk=
+	b=F+1lsBuuUySVXlBbghZ4nhiWNfmZTY7YJo/jjNGA4kKhpYFvDS0zeIR14+MD/gafk
+	 jcZ/InZIpH458NJEd8uNl3UQh+cpOe0DXeGsxF8ZRLGZsUCpfl8kMqS6R3ViOos54c
+	 +ij9vNhpURkx0aCtXtvVpbjcGDa/1oLb2ucRhzHM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dexuan Cui <decui@microsoft.com>,
-	Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 080/378] hyperv: Clean up and fix the guest ID comment in hvgdk.h
+	David Carlier <devnexen@gmail.com>,
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Jonathan Cameron <jic23@kernel.org>
+Subject: [PATCH 5.15 073/411] iio: gyro: itg3200: fix i2c read into the wrong stack location
 Date: Tue, 16 Jun 2026 20:25:11 +0530
-Message-ID: <20260616145114.409807726@linuxfoundation.org>
+Message-ID: <20260616145104.157660248@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,94 +69,92 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-265865-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:devnexen@gmail.com,m:andriy.shevchenko@intel.com,m:jic23@kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-263898-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:decui@microsoft.com,m:hamzamahfooz@linux.microsoft.com,m:wei.liu@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,intel.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B0712691030
+X-Rspamd-Queue-Id: 47046693DAF
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dexuan Cui <decui@microsoft.com>
+From: David Carlier <devnexen@gmail.com>
 
-[ Upstream commit 83eb00f31eb1b10735d48e469df72cc2b0e06f6d ]
+commit 6bdc3023d62ed5c7d591f0eb27a5adb37fb892ae upstream.
 
-Change the "64 bit" to "64-bit", and the "Os" to "OS".
+itg3200_read_all_channels() takes `__be16 *buf' as a parameter and
+fills the i2c_msg destination as `(char *)&buf'. Since `buf' is the
+parameter (a pointer), `&buf' is the address of the local pointer
+slot on the stack of itg3200_read_all_channels(), not the address
+of the caller's scan buffer. The (char *) cast hides the type
+mismatch.
 
-Remove the obsolete paragraph since the guideline has been
-published in the Hypervisor Top Level Functional Specification
-for many years.
+i2c_transfer() therefore writes ITG3200_SCAN_ELEMENTS * sizeof(s16)
+= 8 bytes into the parameter's stack slot, which is discarded when
+the function returns. The caller's scan buffer in
+itg3200_trigger_handler() is never written to, so
+iio_push_to_buffers_with_timestamp() pushes uninitialised stack
+contents to userspace via /dev/iio:deviceX every scan -- both a
+functional bug (no actual gyroscope or temperature data is
+delivered through the triggered buffer) and an information leak.
 
-The "OS Type" is 0x1 for Linux, not 0x100.
+The non-buffered read_raw() path is unaffected: it goes through
+itg3200_read_reg_s16() which uses `&out' on a local s16 value,
+where that is correct.
 
-No functional change.
+Drop the spurious `&' so the i2c read writes into the caller's
+buffer.
 
-Fixes: 83ba0c4f3f31 ("Drivers: hv: Cleanup the guest ID computation")
-Signed-off-by: Dexuan Cui <decui@microsoft.com>
-Reviewed-by: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 9dbf091da080 ("iio: gyro: Add itg3200")
+Cc: stable@vger.kernel.org
+Signed-off-by: David Carlier <devnexen@gmail.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Signed-off-by: Jonathan Cameron <jic23@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/hyperv/hvgdk.h | 10 ++--------
- 1 file changed, 2 insertions(+), 8 deletions(-)
+ drivers/iio/gyro/itg3200_buffer.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/hyperv/hvgdk.h b/include/hyperv/hvgdk.h
-index 384c3f3ff4a525..f538144280ca55 100644
---- a/include/hyperv/hvgdk.h
-+++ b/include/hyperv/hvgdk.h
-@@ -10,18 +10,12 @@
+--- a/drivers/iio/gyro/itg3200_buffer.c
++++ b/drivers/iio/gyro/itg3200_buffer.c
+@@ -34,7 +34,7 @@ static int itg3200_read_all_channels(str
+ 			.addr = i2c->addr,
+ 			.flags = i2c->flags | I2C_M_RD,
+ 			.len = ITG3200_SCAN_ELEMENTS * sizeof(s16),
+-			.buf = (char *)&buf,
++			.buf = (char *)buf,
+ 		},
+ 	};
  
- /*
-  * The guest OS needs to register the guest ID with the hypervisor.
-- * The guest ID is a 64 bit entity and the structure of this ID is
-+ * The guest ID is a 64-bit entity and the structure of this ID is
-  * specified in the Hyper-V TLFS specification.
-  *
-- * While the current guideline does not specify how Linux guest ID(s)
-- * need to be generated, our plan is to publish the guidelines for
-- * Linux and other guest operating systems that currently are hosted
-- * on Hyper-V. The implementation here conforms to this yet
-- * unpublished guidelines.
-- *
-  * Bit(s)
-  * 63 - Indicates if the OS is Open Source or not; 1 is Open Source
-- * 62:56 - Os Type; Linux is 0x100
-+ * 62:56 - OS Type; Linux is 0x1
-  * 55:48 - Distro specific identification
-  * 47:16 - Linux kernel version number
-  * 15:0  - Distro specific identification
--- 
-2.53.0
-
 
 
 
