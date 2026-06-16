@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-266298-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265544-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 1oLrCgubMWo9oAUAu9opvQ
-	(envelope-from <stable+bounces-266298-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:50:51 +0200
+	id 6gaXB0KLMWrOmAUAu9opvQ
+	(envelope-from <stable+bounces-265544-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:43:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 811B0694838
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:50:50 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F19F69367B
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:43:29 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=V8Bl9qwq;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266298-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266298-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Sxx3vDvz;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265544-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265544-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7F18631C36F6
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:48:10 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1FF483004CAA
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:42:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBB0E466B4C;
-	Tue, 16 Jun 2026 18:48:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D01D347AF67;
+	Tue, 16 Jun 2026 17:42:21 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B25E33D8125;
-	Tue, 16 Jun 2026 18:48:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EB1247AF68;
+	Tue, 16 Jun 2026 17:42:17 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781635689; cv=none; b=oAV3ENiVqMdf+Fdnw+tYAPtLmPMKhW3l6KC5KzfDRu4uH9fBQvCSm0D3Bppxh1Ze2fOtddI9ZzyHPf3LdTWg6y6sr4s8u6FDIQLT3oBVYBNDtHZq4Y7Z7qYbVi7vgYaRLVzm8yl94zXZ6x5BwDgOHjdq/DT0rHi3AEf9P0DwIP0=
+	t=1781631741; cv=none; b=mIv+Iv6FTkx/S8+4kacZ+lb+bYf1dQixtWHi2zxMcPCn03NoZZoUB7LQviGYsSYh19StA1JzsgM5V2nWdUTdHB880GXlg9daooH6+b24BrG1VOsDEpazpSJOXSgABSD1gpaBnmvUlSUeiSBU0ccYp6ncsMDqZ5w46Cni5oiX6dM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781635689; c=relaxed/simple;
-	bh=kA03x7b8sWW1LIfmOJJySeOJdm12Cqlj+gYBOOTkvWk=;
+	s=arc-20240116; t=1781631741; c=relaxed/simple;
+	bh=2CnsogwPOz8ql3tFxDvJiGf527hlSotN6rjPQGSMTbY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fzkou6Yrx2GXP0FA6hztGFjavttyQfaw+gweBj93lPVO504mxtqeqAgzyaP4VpBIzvCWlw3zoT5sx2OQENTUnvM5FOKHZGjS4/oe5SKUFwb5FGNK2SZfFPFwbJbKj+JKF3YoLe8ihW+Mit2DjeU28PNyZpm+yWAB3R0+LEV9E30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V8Bl9qwq; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B648B1F000E9;
-	Tue, 16 Jun 2026 18:48:07 +0000 (UTC)
+	 MIME-Version; b=Vt7gMxdwWfRS+G2PrQdTRuMQycWcs+icHslcvUqjHM9HwrH3Gn3mZ1fwXqqKLZeRDyqnl+fGm+Gd/EDQt3yACy+Ljm61QYCxygNqK0hN/sAaxDXTcbRGerd2FC8YNBduHODJa8sOJD4at6qtg041ADCazIau9k1J7VhQazBWhF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sxx3vDvz; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8BB71F00A3D;
+	Tue, 16 Jun 2026 17:42:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781635688;
-	bh=NpAh35TNlQdR823cbbZ3K5+nvA+48aUeIUw3wd8Kfqw=;
+	s=korg; t=1781631736;
+	bh=7wIgRF2s6mZVhqtQyV3IILWxUJDyLzU6do9nik2AMzI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=V8Bl9qwqW3N2HptGToLEUkBcMSEb7WEITFzcmDL+i2mJh0avF0gBpPs/a0KSUYfxq
-	 Yykm3r6DhYmc5JbJJ4W8xWg4iMt5otzCeKAndSHZBpCDY0HvUaR5pVs6juGOnLs/bV
-	 AkPpMJMnXFL7OVdux5mT/cdu777Hq1N60Gn2JPro=
+	b=Sxx3vDvzHhUB8MWahlk09OFMIzpj7ty0DGF2M+WS1v+UUTSZIHB3NS5ViZIVXGFkc
+	 kRZ5uV0QxIm+ZnKAcP40J3niiwhjH92UBDJj2qCvZ2O921uWla04DUyIxEP3LVKMaM
+	 pyFgy1UlWBzFqcHI041aBPFEIT848MrHzwUjG7lc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Volckaert <janvolck@gmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 5.10 097/342] USB: serial: option: add MeiG SRM813Q
+	Kyle Zeng <kylebot@openai.com>,
+	Eric Dumazet <edumazet@google.com>,
+	syzbot+6eb9ca986d80f6f88cf9@syzkaller.appspotmail.com,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 246/522] ipv6: sit: reload inner IPv6 header after GSO offloads
 Date: Tue, 16 Jun 2026 20:26:33 +0530
-Message-ID: <20260616145052.749774261@linuxfoundation.org>
+Message-ID: <20260616145137.486296914@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,135 +69,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-266298-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:janvolck@gmail.com,m:johan@kernel.org,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265544-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kylebot@openai.com,m:edumazet@google.com,m:syzbot+6eb9ca986d80f6f88cf9@syzkaller.appspotmail.com,m:kuba@kernel.org,m:sashal@kernel.org,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	TAGGED_RCPT(0.00)[stable,6eb9ca986d80f6f88cf9];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,appspotmail.com:email,msgid.link:url,openai.com:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 811B0694838
+X-Rspamd-Queue-Id: 2F19F69367B
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Volckaert <janvolck@gmail.com>
+From: Kyle Zeng <kylebot@openai.com>
 
-commit 7d2b37d3e42d19071b62f4ddbee6e16e905efbf1 upstream.
+[ Upstream commit f0e42f0c4337b1f220de1ddd63f47197c7dee4de ]
 
-Add support for the Qualcomm Technology Snapdragon X35-based MeiG
-SRM813Q module.
+ipip6_tunnel_xmit() caches the inner IPv6 header pointer at function
+entry and continues using it after iptunnel_handle_offloads().
 
-The module can be put in different modes via AT commands to
-enable/disable GPS functionality:
+For GSO skbs, iptunnel_handle_offloads() calls skb_header_unclone().
+When the skb header is cloned, skb_header_unclone() can call
+pskb_expand_head(), which may move the skb head. The pskb_expand_head()
+contract requires pointers into the skb header to be reloaded after the
+call.
 
-MODEM - PPP mode(2dee:4d63): AT+SER=1,1
+If the later skb_realloc_headroom() branch is not taken, SIT uses the
+stale iph6 pointer to read the inner hop limit and DS field. That can
+read from a freed skb head after the old head's remaining clone is
+released.
 
-If#= 0: RMNET
-If#= 1: DIAG/ADB
-If#= 2: MODEM
-If#= 3: AT
+Reload iph6 after the offload helper succeeds and before subsequent
+reads from the inner IPv6 header. Keep the existing reload after
+skb_realloc_headroom(), since that branch can also replace the skb.
 
-P:  Vendor=2dee ProdID=4d63 Rev=05.15
-S:  Manufacturer=MEIG
-S:  Product=LTE-A Module
-S:  SerialNumber=1bd51f0e
-C:  #Ifs= 4 Cfg#= 1 Atr=80 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-
-NMEA mode(2dee:4d64): AT+SER=51,1
-
-If#= 0: RMNET
-If#= 1: DIAG/ADB
-If#= 2: NMEA
-If#= 3: AT
-
-P:  Vendor=2dee ProdID=4d64 Rev=05.15
-S:  Manufacturer=MEIG
-S:  Product=LTE-A Module
-S:  SerialNumber=1bd51f0e
-C:  #Ifs= 4 Cfg#= 1 Atr=80 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-
-Signed-off-by: Jan Volckaert <janvolck@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 14909664e4e1 ("sit: Setup and TX path for sit/UDP foo-over-udp encapsulation")
+Signed-off-by: Kyle Zeng <kylebot@openai.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reported-by: syzbot+6eb9ca986d80f6f88cf9@syzkaller.appspotmail.com
+Link: https://patch.msgid.link/20260605073448.6524-1-kylebot@openai.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/option.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ net/ipv6/sit.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -2450,6 +2450,12 @@ static const struct usb_device_id option
- 	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d38, 0xff, 0xff, 0x30) },	/* MeiG Smart SRM825WN (Diag) */
- 	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d38, 0xff, 0xff, 0x40) },	/* MeiG Smart SRM825WN (AT) */
- 	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d38, 0xff, 0xff, 0x60) },	/* MeiG Smart SRM825WN (NMEA) */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d63, 0xff, 0xff, 0x30) },	/* MeiG SRM813Q (Diag) */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d63, 0xff, 0xff, 0x40) },	/* MeiG SRM813Q (AT) */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d64, 0xff, 0xff, 0x30) },	/* MeiG SRM813Q (Diag) */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d64, 0xff, 0xff, 0x40) },	/* MeiG SRM813Q (AT) */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d64, 0xff, 0xff, 0x60) },	/* MeiG SRM813Q (NMEA) */
-+
- 	{ USB_DEVICE_INTERFACE_CLASS(0x2df3, 0x9d03, 0xff) },			/* LongSung M5710 */
- 	{ USB_DEVICE_INTERFACE_CLASS(0x305a, 0x1404, 0xff) },			/* GosunCn GM500 RNDIS */
- 	{ USB_DEVICE_INTERFACE_CLASS(0x305a, 0x1405, 0xff) },			/* GosunCn GM500 MBIM */
+diff --git a/net/ipv6/sit.c b/net/ipv6/sit.c
+index eb4c8e2a2b12e0..aa88a41034d920 100644
+--- a/net/ipv6/sit.c
++++ b/net/ipv6/sit.c
+@@ -965,6 +965,7 @@ static netdev_tx_t ipip6_tunnel_xmit(struct sk_buff *skb,
+ 		ip_rt_put(rt);
+ 		goto tx_error;
+ 	}
++	iph6 = ipv6_hdr(skb);
+ 
+ 	if (df) {
+ 		mtu = dst_mtu(&rt->dst) - t_hlen;
+-- 
+2.53.0
+
 
 
 
