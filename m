@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-264476-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265245-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id /hwaAFh4MWqZkAUAu9opvQ
-	(envelope-from <stable+bounces-264476-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:22:48 +0200
+	id 9UkqET2FMWoSlgUAu9opvQ
+	(envelope-from <stable+bounces-265245-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:17:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CB30691FFB
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:22:47 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC582692F76
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:17:48 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=MVJT0Mzd;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264476-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264476-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=2hNb0LxZ;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265245-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-265245-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 499A530A0129
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:08:17 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id EDF1B304671A
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:17:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B55F544103A;
-	Tue, 16 Jun 2026 16:08:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C54147A0D8;
+	Tue, 16 Jun 2026 17:17:00 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 913514534A3;
-	Tue, 16 Jun 2026 16:08:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 605E047AF57;
+	Tue, 16 Jun 2026 17:16:58 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781626094; cv=none; b=LshNz2cqX9GSnCx6GfTLOjB2S/pLA21jgyRIbVSFA2WZZ+AqIxmA8sedbj0fUQbFpKvB3pCDVspSGyHCQtOIGHuFNQQrm21CzhPfbCRJ/GVZUVapDgKQYNQAGfSBjPkdTeMqUtf8my7mEfXAi/m6/+Wtvmo1EWgS+KPLGvtpQto=
+	t=1781630220; cv=none; b=lRZ5bSczBTEfptAjJVHXxQm+ANGd9SMsTiimWuHEQ4xXUu5/sDHTBxo3oz4x+RPd60AvATBIlJxVJMkEzfBOXGrAbOe1hIXwQyitWqiuPvwvc57GL9pab4KFKvXNdH+CFSMYMj3IwNUsAiTM6xupWwQqnqg5nKHSf+NkoIbYBQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781626094; c=relaxed/simple;
-	bh=E9+KP37NnGUMPnf6Y00nxRf5guDEHbVqX3c3IEd5X6A=;
+	s=arc-20240116; t=1781630220; c=relaxed/simple;
+	bh=EwomWQbnOyC/RI0McJTS+8BcPhOf2lgeQ9LkqhJzwHw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AQJoV5sHmNlNM9iuJAuhh7Pr8sjzWQU0ZJY+ZtXlUM3CxZ7JdyvE3IrCT+1ryexG2bpFG3MAju4IyeBfB7/fCxF6ZdakQ2mtYYV0YnHOY3LCFJgKZs8mGnz8+4aMvRGSf/zNgu0bI0vWFyIjOBG2YPen1sozxkG8mpHOCuPF6wk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MVJT0Mzd; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 902FA1F000E9;
-	Tue, 16 Jun 2026 16:08:12 +0000 (UTC)
+	 MIME-Version; b=Twv0eOQ2B+0StirbbcQ3Fsc/nE2x5v/+9xkyWA0oF/viFG0OIAY92F/gpacgqTfa/U2yFy39+c1ZD4IGKyf0XZv40KuxFWwchg0xhNcs4WEBGEupcPKPUJ5F3ePIei/zjsYeez/QGu4s7gUOhrbhml8mdJBiaXhq/ZFlHSGngv8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2hNb0LxZ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34C961F000E9;
+	Tue, 16 Jun 2026 17:16:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781626093;
-	bh=CanB+2k4BofoweGGGFsz679FvH+kNiql/sKNjUwnXlk=;
+	s=korg; t=1781630218;
+	bh=5YfugokGDeA4OcTWX746ItEtUXeVDYfa9GzN6JUZ+/w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=MVJT0MzdI0QeAT7GM8lF5KdechM4ry/TD6qTmzAyNqLjrtQf1RQfAs6ojYEFnlxlG
-	 6m2EpgK8UnwS7b4/v0MJ0/dT7Shp0+wL6lF18T9g5xcAC9XjfsE/8uJQTOmfGlrttz
-	 VMo5IZBI4qEee/536EWlbzYsqaRo9miAELA6PqSs=
+	b=2hNb0LxZdwYHniV9wZAsZl3MEqjnAc5agGzyMEAx4vaqb71b+DOdziFDm3H4f6Fze
+	 1ehZmbcB5VDRDubobS800PnQDZ4dHJOIt/ahlI+moFFg7dezASwlr/NO63XSAeHGTs
+	 BvJDx0bv2WKkUBG2VLV9i6vJUBaC7HG8ziz+B+ts=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Lai <justinlai0215@realtek.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.18 264/325] rtase: Avoid sleeping in get_stats64()
+	Anton Leontev <leontyevantony@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 433/452] hv_netvsc: use kmap_local_page in netvsc_copy_to_send_buf
 Date: Tue, 16 Jun 2026 20:31:00 +0530
-Message-ID: <20260616145111.777072980@linuxfoundation.org>
+Message-ID: <20260616145139.394282496@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,78 +72,125 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264476-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265245-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:leontyevantony@gmail.com,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:justinlai0215@realtek.com,m:kuba@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com,kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,realtek.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7CB30691FFB
+X-Rspamd-Queue-Id: DC582692F76
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Lai <justinlai0215@realtek.com>
+From: Anton Leontev <leontyevantony@gmail.com>
 
-commit 9fc237f8d49f06d05f0f8e80361047b718894e81 upstream.
+[ Upstream commit 004e9ecfe6c5384f9e0b2f6f6389d42ec22789af ]
 
-The .ndo_get_stats64 callback must not sleep because it can be
-called when reading /proc/net/dev.
+netvsc_copy_to_send_buf() copies page buffer entries into the VMBus
+send buffer using phys_to_virt() on the entry PFN. Entries for the
+RNDIS header and the skb linear data come from kmalloc'd memory and
+are always in the kernel direct map, but entries for skb fragments
+reference page cache or user pages, which on 32-bit x86 with
+CONFIG_HIGHMEM=y can live above the LOWMEM boundary. For such a page
+phys_to_virt() returns an address outside the direct map and the
+subsequent memcpy() faults on the transmit softirq path, which is
+fatal.
 
-rtase_get_stats64() calls rtase_dump_tally_counter(), which polls
-the tally counter dump bit with read_poll_timeout(). This may
-sleep while waiting for the hardware counter dump to complete.
+Map the pages with kmap_local_page() instead, handling two properties
+of the page buffer entries:
 
-Use read_poll_timeout_atomic() instead to avoid sleeping in the
-get_stats64() path.
+ - pb[i].pfn is a Hyper-V PFN at HV_HYP_PAGE_SIZE (4K) granularity,
+   not a native PFN. Reconstruct the physical address first and derive
+   the native page from it, so the mapping stays correct where
+   PAGE_SIZE > HV_HYP_PAGE_SIZE (e.g. arm64 with 64K pages).
 
-Fixes: 079600489960 ("rtase: Implement net_device_ops")
+ - Since commit 41a6328b2c55 ("hv_netvsc: Preserve contiguous PFN
+   grouping in the page buffer array"), an entry describes a full
+   physically contiguous fragment and pb[i].len can exceed PAGE_SIZE,
+   while kmap_local_page() maps a single page. Copy page by page,
+   splitting at native page boundaries.
+
+The copy path only handles packets smaller than the send section size
+(6144 bytes by default); larger packets take the cp_partial path where
+only the RNDIS header is copied. So entries here are bounded by the
+section size and a copy is split at most once on 4K-page systems. On
+!CONFIG_HIGHMEM configs kmap_local_page() folds to page_address() and
+no mapping work is added.
+
+Fixes: c25aaf814a63 ("hyperv: Enable sendbuf mechanism on the send path")
 Cc: stable@vger.kernel.org
-Signed-off-by: Justin Lai <justinlai0215@realtek.com>
-Link: https://patch.msgid.link/20260603061816.31356-1-justinlai0215@realtek.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Anton Leontev <leontyevantony@gmail.com>
+Link: https://patch.msgid.link/20260604165938.32033-1-leontyevantony@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[ adapted `phys_to_page(paddr)` to `pfn_to_page(PHYS_PFN(paddr))` ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/realtek/rtase/rtase_main.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/hyperv/netvsc.c |   19 +++++++++++++++----
+ 1 file changed, 15 insertions(+), 4 deletions(-)
 
---- a/drivers/net/ethernet/realtek/rtase/rtase_main.c
-+++ b/drivers/net/ethernet/realtek/rtase/rtase_main.c
-@@ -1563,8 +1563,9 @@ static void rtase_dump_tally_counter(con
- 	rtase_w32(tp, RTASE_DTCCR0, cmd);
- 	rtase_w32(tp, RTASE_DTCCR0, cmd | RTASE_COUNTER_DUMP);
+--- a/drivers/net/hyperv/netvsc.c
++++ b/drivers/net/hyperv/netvsc.c
+@@ -12,6 +12,7 @@
+ #include <linux/sched.h>
+ #include <linux/wait.h>
+ #include <linux/mm.h>
++#include <linux/highmem.h>
+ #include <linux/delay.h>
+ #include <linux/io.h>
+ #include <linux/slab.h>
+@@ -957,12 +958,22 @@ static void netvsc_copy_to_send_buf(stru
+ 	}
  
--	err = read_poll_timeout(rtase_r32, val, !(val & RTASE_COUNTER_DUMP),
--				10, 250, false, tp, RTASE_DTCCR0);
-+	err = read_poll_timeout_atomic(rtase_r32, val,
-+				       !(val & RTASE_COUNTER_DUMP),
-+				       10, 250, false, tp, RTASE_DTCCR0);
+ 	for (i = 0; i < page_count; i++) {
+-		char *src = phys_to_virt(pb[i].pfn << HV_HYP_PAGE_SHIFT);
+-		u32 offset = pb[i].offset;
++		phys_addr_t paddr = (pb[i].pfn << HV_HYP_PAGE_SHIFT) +
++				    pb[i].offset;
+ 		u32 len = pb[i].len;
  
- 	if (err == -ETIMEDOUT)
- 		netdev_err(tp->dev, "error occurred in dump tally counter\n");
+-		memcpy(dest, (src + offset), len);
+-		dest += len;
++		while (len) {
++			struct page *page = pfn_to_page(PHYS_PFN(paddr));
++			u32 off = offset_in_page(paddr);
++			u32 chunk = min_t(u32, len, PAGE_SIZE - off);
++			char *src = kmap_local_page(page);
++
++			memcpy(dest, src + off, chunk);
++			kunmap_local(src);
++			dest += chunk;
++			paddr += chunk;
++			len -= chunk;
++		}
+ 	}
+ 
+ 	if (padding)
 
 
 
