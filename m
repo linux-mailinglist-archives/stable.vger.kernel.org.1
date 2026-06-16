@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-265952-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266301-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id xnl+A1GTMWq+nAUAu9opvQ
-	(envelope-from <stable+bounces-265952-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:17:53 +0200
+	id iWRcBXuaMWoOoAUAu9opvQ
+	(envelope-from <stable+bounces-266301-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:48:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7299B693FFF
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:17:52 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A649C6947C5
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:48:26 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Om1nLRd9;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265952-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265952-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=LaGRhWHi;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266301-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266301-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DEC95317A2AA
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:17:42 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2182A3038F7B
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:48:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE0003D091A;
-	Tue, 16 Jun 2026 18:17:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F1603D8125;
+	Tue, 16 Jun 2026 18:48:25 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88EBB35292A;
-	Tue, 16 Jun 2026 18:17:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4E612C0261;
+	Tue, 16 Jun 2026 18:48:23 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781633861; cv=none; b=I01yn2F+Q93M55lR5oszqxc52vzQ1wC7uDuJ2SfravGIdyUfzIqsaJEokHAaQE6sKz2STLrEOdnE2Dw6W4KJ91pzzSgcQ3HOqL1ekI1VXA4qbekYu0HvKeMt6rmeUFMVVUXUNMlxQ+RqPmAlI0Pjz4ezAI8b/ehBkWxEQbMEMvQ=
+	t=1781635704; cv=none; b=dGRUDyyiCjDLBpmviN+LVbUOKmqdy/VIaekf55Es7zzzA9dKLQuAvKYkQo5ksnS+ZsGISfhGQPQOTZ+1+gupkmlc7Qs4pi/SmCfZAWwVivATdzGr9EkvP9W/9+yRrMUqv0Ct0KqslpcF6qrP/npOygh+eJPTMHM7Bzib9ejLuUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781633861; c=relaxed/simple;
-	bh=BgaXbzj+y4Vrh9kMj4Nims2v+LtW2T3OptOPAsg3bHk=;
+	s=arc-20240116; t=1781635704; c=relaxed/simple;
+	bh=l6dzmx4QFrdVsffXNGgplF/ypdrB0A6Aj4xMWXC09T8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ETJhL2m5CBpvMMM+H37PpMq+jnA7Z+MgV7UW9IDgmMmbnLgU9OkqsnNdWj5mqGIpH2bR6QstDqlRlVAl0ZBKrCfrH7izVeAGnG9EkMppfGlW4iO6R5/urD987byI/H0V+X8g7JmUV51Ao8OJduTH/EMGvxlewOchuvYPTXVkXM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Om1nLRd9; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E1761F000E9;
-	Tue, 16 Jun 2026 18:17:39 +0000 (UTC)
+	 MIME-Version; b=QMzuMAW79w9+MFPF6mkmXjbJV0AEpkla9hhAJfwIKmwk4WTn8jRsRUr+MeBhabJdX47F3eZMrBvkKvTN1SkyENc3/bsbaApCQPL4trhkyqf6chHXaDZGSDVEnBB8e1pr++QFi8fdb+lcIoxZCc5J7FKJ2hayAB0YUkesV3ccZnU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LaGRhWHi; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E67A01F000E9;
+	Tue, 16 Jun 2026 18:48:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781633860;
-	bh=Zgi42OoX/+KZuyxh+DSDt+LVvjfN/9vC5YEB8ArE/Kg=;
+	s=korg; t=1781635703;
+	bh=pabDFGxJ+uZ/SzFxiqgx8tcsfyrrOIBVOlM6/P9B/vk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Om1nLRd9psLrxO4Os4SJ/jSZvRZsr695F/9ozXxcBIRz0gBGaVZASfOuEmcq5nKSY
-	 8yB1y/jgen3n/OvmqxcUMZvR0Gn/u6qqdfB+OweysIshBBuNWY/RH8YITY9Fw/KuTl
-	 QYRJSAYBm78ZceUT3J43CUnnJoeRGepxzJHgT0GE=
+	b=LaGRhWHiqrqYE3tuQwurmKxqe04MZh3Ya/44cv0EkKqhXk9Sl8RF0xHyASM6rndx1
+	 pW8fw5lclyUH9OY4+lQ6IT9I1BQ5FSpI//9y4q339BTt1TEsndG2j4a7X9jpiy7+Sv
+	 cMF+Cfr7O2htHhFwTlFQFrTukvgcZocJuzEbCfTk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yicong Hui <yiconghui@gmail.com>,
-	Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>,
-	Liu Ying <victor.liu@nxp.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 158/411] drm/imx: Fix three kernel-doc warnings in dcss-scaler.c
+	Zhang Cen <rollkingzzc@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.10 100/342] USB: serial: cypress_m8: validate interrupt packet headers
 Date: Tue, 16 Jun 2026 20:26:36 +0530
-Message-ID: <20260616145108.879167450@linuxfoundation.org>
+Message-ID: <20260616145052.891238888@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,89 +71,122 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oss.nxp.com,nxp.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-265952-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:yiconghui@gmail.com,m:laurentiu.palcu@oss.nxp.com,m:victor.liu@nxp.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-266301-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:rollkingzzc@gmail.com,m:johan@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,nxp.com:email,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7299B693FFF
+X-Rspamd-Queue-Id: A649C6947C5
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yicong Hui <yiconghui@gmail.com>
+From: Zhang Cen <rollkingzzc@gmail.com>
 
-[ Upstream commit ae0383e5a9a4b12d68c76c4769857def4665deff ]
+commit 9f9bfc80c67f35a275820da7e83a35dface08281 upstream.
 
-Fix the following W=1 kerneldoc warnings by adding the missing parameter
-descriptions for @phase0_identity and @nn_interpolation in
-dcss_scaler_filter_design() and @phase0_identity in
-dcss_scaler_gaussian_filter()
+cypress_read_int_callback() parses the interrupt-in buffer according to
+the selected Cypress packet format. Format 1 has a two-byte status/count
+header and format 2 has a one-byte combined status/count header. The
+usb-serial core sizes the interrupt-in buffer from the endpoint
+descriptor's wMaxPacketSize, and successful interrupt transfers can
+complete short when URB_SHORT_NOT_OK is not set.
 
-Warning: drivers/gpu/drm/imx/dcss/dcss-scaler.c:173 function parameter 'phase0_identity' not described in 'dcss_scaler_gaussian_filter'
-Warning: drivers/gpu/drm/imx/dcss/dcss-scaler.c:270 function parameter 'phase0_identity' not described in 'dcss_scaler_filter_design'
-Warning: drivers/gpu/drm/imx/dcss/dcss-scaler.c:270 function parameter 'nn_interpolation' not described in 'dcss_scaler_filter_design'
+Check that the completed packet contains the selected header before
+reading it. Malformed short reports are ignored and the interrupt URB is
+resubmitted through the existing retry path, preventing out-of-bounds
+header-byte reads.
 
-Fixes: 9021c317b770 ("drm/imx: Add initial support for DCSS on iMX8MQ")
-Signed-off-by: Yicong Hui <yiconghui@gmail.com>
-Reviewed-by: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
-Link: https://patch.msgid.link/20260406180013.2442096-1-yiconghui@gmail.com
-Signed-off-by: Liu Ying <victor.liu@nxp.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+KASAN report as below:
+KASAN slab-out-of-bounds in cypress_read_int_callback+0x240/0x7f0
+Read of size 1
+Call trace:
+  cypress_read_int_callback() (drivers/usb/serial/cypress_m8.c:1009)
+  __usb_hcd_giveback_urb()
+  dummy_timer()
+
+Fixes: 3416eaa1f8f8 ("USB: cypress_m8: Packet format is separate from characteristic size")
+Assisted-by: Codex:gpt-5.5
+Signed-off-by: Zhang Cen <rollkingzzc@gmail.com>
+Fixes: 3416eaa1f8f8 ("USB: cypress_m8: Packet format is separate from characteristic size")
+Cc: stable@vger.kernel.org	# 2.6.26
+[ johan: use constants in header length sanity checks ]
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/imx/dcss/dcss-scaler.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/usb/serial/cypress_m8.c |   12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/imx/dcss/dcss-scaler.c b/drivers/gpu/drm/imx/dcss/dcss-scaler.c
-index 47852b9dd5eaa2..d2a89a99bd71cf 100644
---- a/drivers/gpu/drm/imx/dcss/dcss-scaler.c
-+++ b/drivers/gpu/drm/imx/dcss/dcss-scaler.c
-@@ -166,6 +166,7 @@ static int exp_approx_q(int x)
-  * dcss_scaler_gaussian_filter() - Generate gaussian prototype filter.
-  * @fc_q: fixed-point cutoff frequency normalized to range [0, 1]
-  * @use_5_taps: indicates whether to use 5 taps or 7 taps
-+ * @phase0_identity: whether to override phase 0 coefficients with identity filter
-  * @coef: output filter coefficients
-  */
- static void dcss_scaler_gaussian_filter(int fc_q, bool use_5_taps,
-@@ -262,7 +263,9 @@ static void dcss_scaler_nearest_neighbor_filter(bool use_5_taps,
-  * @src_length: length of input
-  * @dst_length: length of output
-  * @use_5_taps: 0 for 7 taps per phase, 1 for 5 taps
-+ * @phase0_identity: whether to override phase 0 coefficients with identity filter
-  * @coef: output coefficients
-+ * @nn_interpolation: whether to use nearest neighbor instead of gaussian filter
-  */
- static void dcss_scaler_filter_design(int src_length, int dst_length,
- 				      bool use_5_taps, bool phase0_identity,
--- 
-2.53.0
-
+--- a/drivers/usb/serial/cypress_m8.c
++++ b/drivers/usb/serial/cypress_m8.c
+@@ -1035,8 +1035,8 @@ static void cypress_read_int_callback(st
+ 	char tty_flag = TTY_NORMAL;
+ 	int bytes = 0;
+ 	int result;
+-	int i = 0;
+ 	int status = urb->status;
++	int i;
+ 
+ 	switch (status) {
+ 	case 0: /* success */
+@@ -1074,22 +1074,32 @@ static void cypress_read_int_callback(st
+ 
+ 	spin_lock_irqsave(&priv->lock, flags);
+ 	result = urb->actual_length;
++	i = 0;
+ 	switch (priv->pkt_fmt) {
+ 	default:
+ 	case packet_format_1:
+ 		/* This is for the CY7C64013... */
++		if (result < 2)
++			break;
+ 		priv->current_status = data[0] & 0xF8;
+ 		bytes = data[1] + 2;
+ 		i = 2;
+ 		break;
+ 	case packet_format_2:
+ 		/* This is for the CY7C63743... */
++		if (result < 1)
++			break;
+ 		priv->current_status = data[0] & 0xF8;
+ 		bytes = (data[0] & 0x07) + 1;
+ 		i = 1;
+ 		break;
+ 	}
+ 	spin_unlock_irqrestore(&priv->lock, flags);
++	if (i == 0) {
++		dev_dbg(dev, "%s - short packet received: %d bytes\n",
++			__func__, result);
++		goto continue_read;
++	}
+ 	if (result < bytes) {
+ 		dev_dbg(dev,
+ 			"%s - wrong packet size - received %d bytes but packet said %d bytes\n",
 
 
 
