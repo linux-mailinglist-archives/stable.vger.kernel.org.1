@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-264419-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266129-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id SVgTGCt6MWprkQUAu9opvQ
-	(envelope-from <stable+bounces-264419-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:30:35 +0200
+	id 4XxBKVSYMWr1ngUAu9opvQ
+	(envelope-from <stable+bounces-266129-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:39:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64C4C692269
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:30:34 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 078E16944D3
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:39:16 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=cqyBlQeE;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264419-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-264419-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=EWIlv99r;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266129-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266129-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E545F308C640
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:03:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D10D431EA894
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:33:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F38F451056;
-	Tue, 16 Jun 2026 16:03:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3431F3DC86D;
+	Tue, 16 Jun 2026 18:33:36 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43AC344CF44;
-	Tue, 16 Jun 2026 16:03:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E87B23D8902;
+	Tue, 16 Jun 2026 18:33:34 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781625783; cv=none; b=hXh+5vHkj892SwQSzjnSOBj/c8gYqN6Zw4OeMD8o3yZMNgQEXg5lg3gnNkBcfZd/etbXWeI0Zn6674/AC6AlPHxZN8jkgm2OUT0TyuEWKSUH0qEtriQ1e3crKe2ToOxIAfVDbCHYBFsk2X5Xm6dVO/RzVTuAChJycYkzqEgweFQ=
+	t=1781634816; cv=none; b=ehJ94MDsxy991xb7oAHYroyY38rNsPGOfAnV8mLQ1EdYA+9JsBWyCJ4jQHz3BQgN0LFzVpTBwjlD8WvNbDbSW47I/JCldVHdl8WYtdG+tIfa8AoF/RINqPt3F1PLJ5GMjkS/hvGuh8urPdnfQCSSp48We2J+82+lk4dMc2Oedcc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781625783; c=relaxed/simple;
-	bh=g4kUaDXkuWKkzsgZepw1NU+9uhkyYylBRpwCiBG4F8U=;
+	s=arc-20240116; t=1781634816; c=relaxed/simple;
+	bh=2z3Arw+lsyhvrh8sr7IqNq+dIOk5CK1SfJvHEYfMbpk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PHU2ZrBs5J+5osQzds4cgZoKzaJf5DA09iEjCs6AOnrc64IJ9Yc50auyihWxvDk2dQogPpydLFQSaOgdyFq8eTUDL3xBRiDek4cCvkOOavFTUgZ2QHlcdyh/uo1vi56b7PzPK4gCAsQFq/vocLZNtZDAkyS/6ztPIhsk7NbRMgE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cqyBlQeE; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B6DF1F000E9;
-	Tue, 16 Jun 2026 16:03:01 +0000 (UTC)
+	 MIME-Version; b=qdbBfgRvMnRhYcWlTDH/4YmgodO8vE24k/Z6ef7ApuqsTGjrY+hU6YfH6sde2VL4gP/OjZkuc3Vpt+yQ+deXB2jqp0a5KQmo9Et+KtbbTZ7pcB5vtYuk7t1OwEd5XWdVsPbaV69VowB+ujLU/mNvVKIZ8+HoLcV+dg/jwmwQvao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EWIlv99r; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACC431F000E9;
+	Tue, 16 Jun 2026 18:33:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781625782;
-	bh=55q7SWwM1E0+tKa2hz0LM0o3pSUsLhXzrvvU0MxeWo0=;
+	s=korg; t=1781634814;
+	bh=pM3fno78BxmgKO4ZG9+HJH/NUJnNGp9hHcup7lXtC6U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=cqyBlQeE9HgMZzi7zABtM0tr4Dq33iBVSaBZJVuaDbgYaa5IMBfctEouvlosPYR4y
-	 6zX0BMul1JOkTm4FjtEMZjL9MDvUJQ/T4xxm7B3ibrRCjxkwPbNYNhu23vjZ9gLmuw
-	 7xsdzWVWNNBlJwEGWeEy00zvdEzlPp27mf3wlLOc=
+	b=EWIlv99r5rra82R6KqAUVpEPh53IynacaCdiJ/diXHLIBU2odDPtN2HW/WJF8BCNt
+	 3L52QAjG2mSvhHKwNeyEeJmiZcaMdOx/A7jAJ0lH+j3A+S7eZqXJqL+Se4tNHnbhfV
+	 jIKuUcpxmtuq5357+BjEG+qwOJfC6qakx+O/hXpY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kyle Zeng <kylebot@openai.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.18 179/325] ALSA: timer: Fix UAF at snd_timer_user_params()
+	Ido Schimmel <idosch@nvidia.com>,
+	Mat Martineau <martineau@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 337/411] genetlink: Use internal flags for multicast groups
 Date: Tue, 16 Jun 2026 20:29:35 +0530
-Message-ID: <20260616145106.792416970@linuxfoundation.org>
+Message-ID: <20260616145119.102389884@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,84 +71,151 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264419-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kylebot@openai.com,m:tiwai@suse.de,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-266129-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:idosch@nvidia.com,m:martineau@kernel.org,m:andriy.shevchenko@linux.intel.com,m:davem@davemloft.net,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,suse.de:email,openai.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 64C4C692269
+X-Rspamd-Queue-Id: 078E16944D3
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Ido Schimmel <idosch@nvidia.com>
 
-commit 053a401b592be424fea9d57c789f66cd5d8cec11 upstream.
+[ Upstream commit cd4d7263d58ab98fd4dee876776e4da6c328faa3 ]
 
-At releasing a timer object, e.g. when a userspace timer
-(CONFIG_SND_UTIMER) gets closed and snd_timer_free() is called, it
-tries to detach the timer instances and release the resources.
-However, it's still possible that other in-flight tasks are holding
-the timer instance where the to-be-deleted timer object is associated,
-and this may lead to racy accesses.
+As explained in commit e03781879a0d ("drop_monitor: Require
+'CAP_SYS_ADMIN' when joining "events" group"), the "flags" field in the
+multicast group structure reuses uAPI flags despite the field not being
+exposed to user space. This makes it impossible to extend its use
+without adding new uAPI flags, which is inappropriate for internal
+kernel checks.
 
-Fortunately, most of ioctls dealing with the timer instance list
-already have the protection with register_mutex, and this also avoids
-such races.  But, SNDRV_TIMER_IOCTL_PARAMS isn't protected, hence the
-concurrent ioctl may lead to use-after-free.
+Solve this by adding internal flags (i.e., "GENL_MCAST_*") and convert
+the existing users to use them instead of the uAPI flags.
 
-This patch just adds the guard with register_mutex to protect
-snd_timer_user_params() for covering the code path as a quick
-workaround.  It's no hot-path but rather a rarely issued ioctl, so the
-performance penalty doesn't matter.
+Tested using the reproducers in commit 44ec98ea5ea9 ("psample: Require
+'CAP_NET_ADMIN' when joining "packets" group") and commit e03781879a0d
+("drop_monitor: Require 'CAP_SYS_ADMIN' when joining "events" group").
 
-Reported-by: Kyle Zeng <kylebot@openai.com>
-Tested-by: Kyle Zeng <kylebot@openai.com>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20260606161145.1933447-2-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+No functional changes intended.
+
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: d1ebfce2c1d1 ("smb: client: require net admin for CIFS SWN netlink")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/core/timer.c |    1 +
- 1 file changed, 1 insertion(+)
+ include/net/genetlink.h |    9 ++++++---
+ net/core/drop_monitor.c |    2 +-
+ net/mptcp/pm_netlink.c  |    2 +-
+ net/netlink/genetlink.c |    4 ++--
+ net/psample/psample.c   |    2 +-
+ 5 files changed, 11 insertions(+), 8 deletions(-)
 
---- a/sound/core/timer.c
-+++ b/sound/core/timer.c
-@@ -1791,6 +1791,7 @@ static int snd_timer_user_params(struct
- 	struct snd_timer *t;
- 	int err;
+--- a/include/net/genetlink.h
++++ b/include/net/genetlink.h
+@@ -8,16 +8,19 @@
  
-+	guard(mutex)(&register_mutex);
- 	tu = file->private_data;
- 	if (!tu->timeri)
- 		return -EBADFD;
+ #define GENLMSG_DEFAULT_SIZE (NLMSG_DEFAULT_SIZE - GENL_HDRLEN)
+ 
++/* Binding to multicast group requires %CAP_NET_ADMIN */
++#define GENL_MCAST_CAP_NET_ADMIN	BIT(0)
++/* Binding to multicast group requires %CAP_SYS_ADMIN */
++#define GENL_MCAST_CAP_SYS_ADMIN	BIT(1)
++
+ /**
+  * struct genl_multicast_group - generic netlink multicast group
+  * @name: name of the multicast group, names are per-family
+- * @flags: GENL_* flags (%GENL_ADMIN_PERM or %GENL_UNS_ADMIN_PERM)
+- * @cap_sys_admin: whether %CAP_SYS_ADMIN is required for binding
++ * @flags: GENL_MCAST_* flags
+  */
+ struct genl_multicast_group {
+ 	char			name[GENL_NAMSIZ];
+ 	u8			flags;
+-	u8			cap_sys_admin:1;
+ };
+ 
+ struct genl_ops;
+--- a/net/core/drop_monitor.c
++++ b/net/core/drop_monitor.c
+@@ -184,7 +184,7 @@ out:
+ }
+ 
+ static const struct genl_multicast_group dropmon_mcgrps[] = {
+-	{ .name = "events", .cap_sys_admin = 1 },
++	{ .name = "events", .flags = GENL_MCAST_CAP_SYS_ADMIN, },
+ };
+ 
+ static void send_dm_alert(struct work_struct *work)
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -1207,7 +1207,7 @@ void mptcp_pm_nl_data_init(struct mptcp_
+ static const struct genl_multicast_group mptcp_pm_mcgrps[] = {
+ 	[MPTCP_PM_CMD_GRP_OFFSET]	= { .name = MPTCP_PM_CMD_GRP_NAME, },
+ 	[MPTCP_PM_EV_GRP_OFFSET]        = { .name = MPTCP_PM_EV_GRP_NAME,
+-					    .flags = GENL_UNS_ADMIN_PERM,
++					    .flags = GENL_MCAST_CAP_NET_ADMIN,
+ 					  },
+ };
+ 
+--- a/net/netlink/genetlink.c
++++ b/net/netlink/genetlink.c
+@@ -1372,10 +1372,10 @@ static int genl_bind(struct net *net, in
+ 			continue;
+ 
+ 		grp = &family->mcgrps[i];
+-		if ((grp->flags & GENL_UNS_ADMIN_PERM) &&
++		if ((grp->flags & GENL_MCAST_CAP_NET_ADMIN) &&
+ 		    !ns_capable(net->user_ns, CAP_NET_ADMIN))
+ 			ret = -EPERM;
+-		if (grp->cap_sys_admin &&
++		if ((grp->flags & GENL_MCAST_CAP_SYS_ADMIN) &&
+ 		    !ns_capable(net->user_ns, CAP_SYS_ADMIN))
+ 			ret = -EPERM;
+ 
+--- a/net/psample/psample.c
++++ b/net/psample/psample.c
+@@ -32,7 +32,7 @@ enum psample_nl_multicast_groups {
+ static const struct genl_multicast_group psample_nl_mcgrps[] = {
+ 	[PSAMPLE_NL_MCGRP_CONFIG] = { .name = PSAMPLE_NL_MCGRP_CONFIG_NAME },
+ 	[PSAMPLE_NL_MCGRP_SAMPLE] = { .name = PSAMPLE_NL_MCGRP_SAMPLE_NAME,
+-				      .flags = GENL_UNS_ADMIN_PERM },
++				      .flags = GENL_MCAST_CAP_NET_ADMIN, },
+ };
+ 
+ static struct genl_family psample_nl_family __ro_after_init;
 
 
 
