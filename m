@@ -1,63 +1,62 @@
-Return-Path: <stable+bounces-265930-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263998-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id NUw0F/OSMWqHnAUAu9opvQ
-	(envelope-from <stable+bounces-265930-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:16:19 +0200
+	id 7sTiDMFsMWr/iwUAu9opvQ
+	(envelope-from <stable+bounces-263998-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:33:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD548693F8F
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:16:18 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 869BA691234
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:33:20 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=LwJXgwh5;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265930-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-265930-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=qyq9UPiF;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263998-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263998-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4F0FE3090184
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:15:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F0743321E77C
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:26:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F84D3876CF;
-	Tue, 16 Jun 2026 18:15:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC89243E9ED;
+	Tue, 16 Jun 2026 15:26:35 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5176D35292A;
-	Tue, 16 Jun 2026 18:15:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9396843E4BC;
+	Tue, 16 Jun 2026 15:26:34 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781633746; cv=none; b=j7Zv++Rz8GKZSG/Btm7tUjIkVNYIs9uDbv3J5/ZLYcFil8zgB2F4WIV8uVXjY+4TovalFAhmt1xpsXbk/jH4cjx9IauLqqg3VOL8udX4I/Cq9A9xbr0gdvvW1Q54VsyfGqWOfg6iFCHO9fitqkheTBrraziuJqu1w5WByYbvNX8=
+	t=1781623595; cv=none; b=PJU7rS6qyA1G7xjM6RD/1TN9Q7eBbSt0QR6lif8BEKOgonn6vuyGqbz0Osg3mHOVinLj/uxbSl8bHSU9lwfg+JDzEm+TJFiDBxWwlzzHzk9TKkhlqcmaIHuND0Y2I3nFSHQ0u7yKkX3nKnzmlA9c8E6XUCHb3hA0hre6wUV1dVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781633746; c=relaxed/simple;
-	bh=0sxxpSNvlD59OCwvnQszF5BTLVOw3C616ihuozv5u1M=;
+	s=arc-20240116; t=1781623595; c=relaxed/simple;
+	bh=rO1FNAXAZGi92ux8sxmNs3UzAfETHcP0Gut+vVNYKUo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=twIPa6DHInCTiH++V3ReQPkdQR6Lq7EtHRWSSRti6kQVOVsGXyRwkFI0r5ZwfuIKGFaHnOoLVfs8Kyt0UldVHUxNEMgkFMamczdLAbc424fFfYaWOs5RVCzlke5y3IAdcUyCA1ZMoiefcyC034zUsugrANNz8cQ1q72F7v63UkA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LwJXgwh5; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1133E1F00A3D;
-	Tue, 16 Jun 2026 18:15:43 +0000 (UTC)
+	 MIME-Version; b=MPJclQEl6BD9Ty8Q9Go88C9GdVT5jwhK2tnXIvuQkf8dXdDxwj2XCUNwDzdgfrR1qCEWnGMXo9HDu+Sv0LkqkjCQhRdLfy5Ulc+j3HyuMEh1MpeRTnXpN7Wi+FUA0eBXquHgU4fVe0eivm+CazO8zxK+Xr5/DYh7DTUx2/XWP0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qyq9UPiF; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 571EB1F000E9;
+	Tue, 16 Jun 2026 15:26:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781633744;
-	bh=Ol67TKSYvOXGthy5mpPgyb0RuObHFDS3eL4jm3esiQE=;
+	s=korg; t=1781623594;
+	bh=RhrTDbYrBWMvJv++pG5n+COh2CS9bNgz6ejpjQFkHas=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=LwJXgwh58nSVtNY8W5px/V5i+7dx2yp6P5/Wfa2Y6EXYju3VUJ8GAH7/ItBEAHxu8
-	 vrqJO1Cuj02Qxtxn6IB/SZJ0rq9941Uhdm7tKnm8jT4k3MFLlHQKfY4xg9z/AyHDNM
-	 T+cspBRwIqcqBrcpKU7z9SZsEqUJe9QN+K1Dztuw=
+	b=qyq9UPiFrY1m3PHBEx3vSY+wrQpLbyXk9hzEDYhvY78NkEea2bxjbQRQ2hEXAIpnG
+	 SZVNIdFwUeZe4CJ/KkSpPPm8bB7+xEf8/f0FlLoo1hvRC04NZZpgQhFYq1OXatAyLi
+	 Ltel4yYulo5SZ9OOHm8bNM2eOxwgxjZk+HKoi4e8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Lee Jones <lee@kernel.org>,
+	Jian Zhou <eilaimemedsnaimel@gmail.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 138/411] HID: core: Fix size_t specifier in hid_report_raw_event()
+Subject: [PATCH 7.0 145/378] netfilter: nft_exthdr: fix register tracking for F_PRESENT flag
 Date: Tue, 16 Jun 2026 20:26:16 +0530
-Message-ID: <20260616145107.702940863@linuxfoundation.org>
+Message-ID: <20260616145117.898198779@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,102 +70,81 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265930-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,strlen.de,netfilter.org,kernel.org];
+	TAGGED_FROM(0.00)[bounces-263998-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:ojeda@kernel.org,m:nathan@kernel.org,m:torvalds@linux-foundation.org,m:lee@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:eilaimemedsnaimel@gmail.com,m:fw@strlen.de,m:pablo@netfilter.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linux-foundation.org:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,netfilter.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,strlen.de:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: CD548693F8F
+X-Rspamd-Queue-Id: 869BA691234
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 4d3a2a466b8d68d852a1f3bbf11204b718428dc4 ]
+[ Upstream commit 772cecf198da732faebb5dcfc46d66a505be8495 ]
 
-When building for 32-bit platforms, for which 'size_t' is
-'unsigned int', there are warnings around using the incorrect format
-specifier to print bsize in hid_report_raw_event():
+nft_exthdr_init() passes user-controlled priv->len to
+nft_parse_register_store(), which marks that many bytes in the
+register bitmap as initialized.  However, when NFT_EXTHDR_F_PRESENT
+is set, the eval paths write only 1 byte (nft_reg_store8) or
+4 bytes (*dest = 0 on TCP/DCCP error path).  When len > 4,
+registers beyond the first are never written, retaining
+uninitialized stack data from nft_regs.
 
-  drivers/hid/hid-core.c:2054:29: error: format specifies type 'long' but the argument has type 'size_t' (aka 'unsigned int') [-Werror,-Wformat]
-   2053 |                 hid_warn_ratelimited(hid, "Event data for report %d is incorrect (%d vs %ld)\n",
-        |                                                                                         ~~~
-        |                                                                                         %zu
-   2054 |                                      report->id, csize, bsize);
-        |                                                         ^~~~~
-  drivers/hid/hid-core.c:2076:29: error: format specifies type 'long' but the argument has type 'size_t' (aka 'unsigned int') [-Werror,-Wformat]
-   2075 |                 hid_warn_ratelimited(hid, "Event data for report %d was too short (%d vs %ld)\n",
-        |                                                                                          ~~~
-        |                                                                                          %zu
-   2076 |                                      report->id, rsize, bsize);
-        |                                                         ^~~~~
+Bail out if userspace requests too much data when F_PRESENT is set.
 
-Use the proper 'size_t' format specifier, '%zu', to clear up the
-warnings.
-
-Cc: stable@vger.kernel.org
-Fixes: 2c85c61d1332 ("HID: pass the buffer size to hid_report_raw_event")
-Reported-by: Miguel Ojeda <ojeda@kernel.org>
-Closes: https://lore.kernel.org/20260516020430.110135-1-ojeda@kernel.org/
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Lee Jones <lee@kernel.org>
+Reported-by: Ji'an Zhou <eilaimemedsnaimel@gmail.com>
+Fixes: c078ca3b0c5b ("netfilter: nft_exthdr: Add support for existence check")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/netfilter/nft_exthdr.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/hid/hid-core.c b/drivers/hid/hid-core.c
-index a8d4673c7b8e13..e106b59b55da2d 100644
---- a/drivers/hid/hid-core.c
-+++ b/drivers/hid/hid-core.c
-@@ -1793,7 +1793,7 @@ int hid_report_raw_event(struct hid_device *hid, int type, u8 *data,
- 		return 0;
- 
- 	if (unlikely(bsize < csize)) {
--		hid_warn_ratelimited(hid, "Event data for report %d is incorrect (%d vs %ld)\n",
-+		hid_warn_ratelimited(hid, "Event data for report %d is incorrect (%d vs %zu)\n",
- 				     report->id, csize, bsize);
- 		return -EINVAL;
+diff --git a/net/netfilter/nft_exthdr.c b/net/netfilter/nft_exthdr.c
+index 7eedf4e3ae9c75..9471328802d3b7 100644
+--- a/net/netfilter/nft_exthdr.c
++++ b/net/netfilter/nft_exthdr.c
+@@ -532,6 +532,9 @@ static int nft_exthdr_init(const struct nft_ctx *ctx,
+ 			return err;
  	}
-@@ -1815,7 +1815,7 @@ int hid_report_raw_event(struct hid_device *hid, int type, u8 *data,
- 		rsize = max_buffer_size;
  
- 	if (bsize < rsize) {
--		hid_warn_ratelimited(hid, "Event data for report %d was too short (%d vs %ld)\n",
-+		hid_warn_ratelimited(hid, "Event data for report %d was too short (%d vs %zu)\n",
- 				     report->id, rsize, bsize);
- 		return -EINVAL;
- 	}
++	if ((flags & NFT_EXTHDR_F_PRESENT) && len != 1)
++		return -EINVAL;
++
+ 	priv->type   = nla_get_u8(tb[NFTA_EXTHDR_TYPE]);
+ 	priv->offset = offset;
+ 	priv->len    = len;
 -- 
 2.53.0
 
