@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-264950-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266331-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id eEyFHleAMWoclAUAu9opvQ
-	(envelope-from <stable+bounces-264950-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:56:55 +0200
+	id T0IqAtybMWp/oAUAu9opvQ
+	(envelope-from <stable+bounces-266331-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:54:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3619C6929B4
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:56:55 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6940C6948F1
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:54:19 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=TC3tmqcQ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264950-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-264950-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=j5irVjHk;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266331-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266331-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 41DB23082F5B
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:52:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1D0273221466
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:51:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46B2B47B415;
-	Tue, 16 Jun 2026 16:52:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 830394657F8;
+	Tue, 16 Jun 2026 18:51:02 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1102D47AF75;
-	Tue, 16 Jun 2026 16:52:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DF2F34FF79;
+	Tue, 16 Jun 2026 18:51:01 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781628742; cv=none; b=BkO9yozzVsWQuSz+WLiRXTTDbrzNlnqWXfgcypdrxmYEcjCU0ng5mK7rdHc9SYgMY1ADoj6thGDJeYg1qA5KsOTSRuRYsrNxlVyiVxA5FJF6dwWSN1OUD8ZYW6yayuYfIhFUmOo35c8uDkRizq/WdPShPKzrM8EjPY8PqaTGkVc=
+	t=1781635862; cv=none; b=qVPzJ8laMt/Pxr/dUJzJpODvGEfBGs649eWOS3INnDTuMcymFi5lS9koVcEVU0Xr2xATZ10+eQ0oGGeZaTbVsyoNMe3CfsZAZlc4GFmX187e9Sr5+hpMvSm/qh7Ta4igquBFoYM0lsIKrcCXyWhrJF+OnC2OB0QyNJXZgRyUW04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781628742; c=relaxed/simple;
-	bh=ftTDP1DAq1I5phXmT5l7dY+9g5jE1vwuALyYNn6trP8=;
+	s=arc-20240116; t=1781635862; c=relaxed/simple;
+	bh=AQ2LbnxtIX9OTIh812yHGino+QWTVhB/09zGhF5r50s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UH3zJNfP2FYPYMiOK3PPZvI4IPFME8+KOb9MVxnaMLJlkSt/U9KjZL6EbaEzxrN3xkPwlZOugUX0++wh9djLnnEvc7NSzPyze9S+JvvfCpEH/+zSd7KWa+blBEaISaSelYDp0O64IP3oFs8lnCzoZ6cZaYFmLNDIdtXA7SMWFB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TC3tmqcQ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD4921F000E9;
-	Tue, 16 Jun 2026 16:52:19 +0000 (UTC)
+	 MIME-Version; b=UovmRPWsUo/2Vz5QDtvI9FQpk5L6XMZUDaGKKr/P0AgtS5brP2rK9u/5v/JGL5Y15s0AzJ0FbhLo6Vlbbt+mLxsZilIYbPwXu1SvbPt8i7Py3+9e589x9RLAcL07CVIf++v0bS0sO8fmcuDrRUga1janzBCxMfY5OGAU1KHCkDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j5irVjHk; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46F221F000E9;
+	Tue, 16 Jun 2026 18:51:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781628740;
-	bh=g40HbRv04usoMAhJMcYIZumKRx7W52MkUYTquaLVdKs=;
+	s=korg; t=1781635861;
+	bh=Y+J3yYwS4fVksgcSx4qikq89K39OBpDyahqZALskE0I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=TC3tmqcQCnoyFUutT68D8bWRyA5qcB7vBcyeFTYJxlPou0irIULb323aZOeuDwuzs
-	 KWYdj9ikly81/StKT8P0PM5zY5D8iSizCLqaKIFen7+lsXoUMFXw7a3Ata+pOzmS0m
-	 cUfk8rURGx6sd/W44pbQQdRmufvQWY1IMmZZUUS0=
+	b=j5irVjHkiABfYGGHSVqMvbjENNWniSCWpgr+1zoLKe1g50tGe4vvRzjja8vYUT/1W
+	 oOSB3koEiOOhZwDfTH3oqy/i4DSPd5/CRibKEc8ozmb7cPG6rXtD/wuEtqlAa3vHiu
+	 cb02rMvAPvaNPF2LqIc4g8jskI5w+/L2HImI+VWs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sam Burkels <sam@1a38.nl>,
-	Oliver Neukum <oneukum@suse.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.6 154/452] usb: storage: Add quirks for PNY Elite Portable SSD
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 5.10 085/342] Input: atmel_mxt_ts - fix boundary check in mxt_prepare_cfg_mem
 Date: Tue, 16 Jun 2026 20:26:21 +0530
-Message-ID: <20260616145125.801260270@linuxfoundation.org>
+Message-ID: <20260616145052.207170243@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,109 +66,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264950-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:sam@1a38.nl,m:oneukum@suse.com,m:stable@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-266331-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:ribalda@chromium.org,m:dmitry.torokhov@gmail.com,m:dmitrytorokhov@gmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,chromium.org,gmail.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,synopsys.com:email,suse.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3619C6929B4
+X-Rspamd-Queue-Id: 6940C6948F1
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sam Burkels <sam@1a38.nl>
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 
-commit b53ebb811e00be50a779ce4e7aee604178b4a825 upstream.
+commit baa0210fb6a9dc3882509a9411b6d284d88fe30e upstream.
 
-The PNY Elite Portable SSD (USB ID 154b:f009) is a sibling of the
-already-quirked PNY Pro Elite SSDs (154b:f00b and 154b:f00d). Like its
-siblings, it uses a Phison-based USB-SATA bridge that exhibits
-firmware bugs when bound to the uas driver.
+When a configuration file provides an object size that is larger than the
+driver's known mxt_obj_size(object), the driver intends to discard the
+extra bytes.
 
-Without quirks, the device fails to complete READ CAPACITY commands
-when accessed over UAS on a SuperSpeed (USB 3) port. The device
-enumerates and reports as a SCSI direct-access device, but reports
-zero logical blocks and never finishes spin-up:
+The loop iterates using for (i = 0; i < size; i++). Inside the loop, the
+condition to skip processing extra bytes is:
 
-    usb 2-3: new SuperSpeed USB device number 8 using xhci_hcd
-    usb 2-3: New USB device found, idVendor=154b, idProduct=f009
-    usb 2-3: Product: PNY ELITE PSSD
-    usb 2-3: Manufacturer: PNY
-    scsi host0: uas
-    scsi 0:0:0:0: Direct-Access     PNY      PNY ELITE PSSD   0
-    sd 0:0:0:0: [sda] Spinning up disk...
-    [...10+ seconds of polling, no progress...]
-    sd 0:0:0:0: [sda] Read Capacity(16) failed: hostbyte=DID_ERROR
-    sd 0:0:0:0: [sda] Read Capacity(10) failed: hostbyte=DID_ERROR
-    sd 0:0:0:0: [sda] 0 512-byte logical blocks: (0 B/0 B)
+    if (i > mxt_obj_size(object))
+        continue;
 
-Tested each individual quirk to find the minimum that fixes this:
-  - US_FL_NO_ATA_1X alone: device hangs on spin-up
-  - US_FL_NO_REPORT_OPCODES alone: works on USB 2.0, hangs on USB 3.0
-  - US_FL_NO_ATA_1X | US_FL_NO_REPORT_OPCODES: works on both
+Since i is a 0-based index, the valid indices for the object are 0 through
+mxt_obj_size(object) - 1.
 
-With both quirks the device enumerates correctly while still using
-the uas driver, and delivers full UAS throughput (~281 MB/s
-sequential read on a USB 3.0 Gen 1 port).
+When i == mxt_obj_size(object), the condition evaluates to false, and the
+code processes the byte instead of discarding it.
 
-The existing PNY Pro Elite entries (f00b, f00d) only set NO_ATA_1X,
-but this device additionally chokes on REPORT OPCODES under
-SuperSpeed.
+This causes the code to calculate byte_offset = reg + i - cfg->start_ofs
+and writes the byte there, overwriting exactly one byte of the adjacent
+instance or object.
 
-Signed-off-by: Sam Burkels <sam@1a38.nl>
-Acked-by: Oliver Neukum <oneukum@suse.com>
-Cc: stable <stable@kernel.org>
-Link: https://patch.msgid.link/20260501132346.86572-1-sam@1a38.nl
+Update the boundary check to skip extra bytes correctly by using >=.
+
+Fixes: 50a77c658b80 ("Input: atmel_mxt_ts - download device config using firmware loader")
+Cc: stable@vger.kernel.org
+Assisted-by: Gemini:gemini-3.1-pro
+Reviewed-by: Ricardo Ribalda <ribalda@chromium.org>
+Link: https://patch.msgid.link/20260504185448.4055973-1-dmitry.torokhov@gmail.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/storage/unusual_uas.h |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/input/touchscreen/atmel_mxt_ts.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/storage/unusual_uas.h
-+++ b/drivers/usb/storage/unusual_uas.h
-@@ -132,6 +132,13 @@ UNUSUAL_DEV(0x152d, 0x0583, 0x0000, 0x99
- 		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
- 		US_FL_NO_REPORT_OPCODES),
+--- a/drivers/input/touchscreen/atmel_mxt_ts.c
++++ b/drivers/input/touchscreen/atmel_mxt_ts.c
+@@ -1400,7 +1400,7 @@ static int mxt_prepare_cfg_mem(struct mx
+ 			}
+ 			cfg->raw_pos += offset;
  
-+/* Reported-by: Sam Burkels <sam@1a38.nl> */
-+UNUSUAL_DEV(0x154b, 0xf009, 0x0000, 0x9999,
-+		"PNY",
-+		"PNY ELITE PSSD",
-+		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
-+		US_FL_NO_ATA_1X | US_FL_NO_REPORT_OPCODES),
-+
- /* Reported-by: Thinh Nguyen <thinhn@synopsys.com> */
- UNUSUAL_DEV(0x154b, 0xf00b, 0x0000, 0x9999,
- 		"PNY",
+-			if (i > mxt_obj_size(object))
++			if (i >= mxt_obj_size(object))
+ 				continue;
+ 
+ 			byte_offset = reg + i - cfg->start_ofs;
 
 
 
