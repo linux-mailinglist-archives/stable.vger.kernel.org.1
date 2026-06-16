@@ -1,61 +1,64 @@
-Return-Path: <stable+bounces-265713-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264372-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id AxDQOAmPMWqxmgUAu9opvQ
-	(envelope-from <stable+bounces-265713-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:59:37 +0200
+	id saemOXl1MWprjwUAu9opvQ
+	(envelope-from <stable+bounces-264372-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:10:33 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60389693B12
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:59:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D6BA691C45
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:10:33 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=qeHpGuuM;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265713-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265713-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="DCT/YOTW";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264372-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264372-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C469131117C8
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:56:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 24A8A32706FB
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:00:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7505C478E55;
-	Tue, 16 Jun 2026 17:56:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2499946AF12;
+	Tue, 16 Jun 2026 15:58:51 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49D604779B3;
-	Tue, 16 Jun 2026 17:56:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD0E64534B4;
+	Tue, 16 Jun 2026 15:58:49 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781632605; cv=none; b=qbPiG2gAjZh7crZEtW9r7e3DLdSB5Nav+565xl0SPZkNGeAV/O0DGcFyvjK3D4qP3L01Yu3ak1Grsd3ghuAFVWb+Yuk0dFWcwo3QUUEFLLf5L/3QZRd6W0A+ugI0D930EZN3CjezhSJ89LSV8JhzlMjbtPhpeoIZ3kttZqr76rA=
+	t=1781625530; cv=none; b=Z6+FGYwRAwLijAfyq16zSQ1rbrRv+5rV2o55pqXfAhcQG4zSnW2G3Od4c5pBs4UibFEtFEWa1sTeKNTq1rv5eMTgeXXrNU/I3OfO//aJE96BfXBetN8XAVcIhciHDW2P5H3rX+/u4MZaSpKocR5cH2HYHaL7pI1wJ0y8LvGxrRc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781632605; c=relaxed/simple;
-	bh=WkeIBfwVHhPVO5oCLl8THtbR2oyaaEEQHfNNDkwVvmU=;
+	s=arc-20240116; t=1781625530; c=relaxed/simple;
+	bh=ajgogWKgx8j7g64eTOs+Ao0ohrFUr/yeS2Iy1tsXmzk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cqztv8SEhjCLO2CjiZnPhj3xx1AMTZoNJF/FhJw5yGeCWou9DOSdsFxqSZMq+ohsi92RCOmgsV1KTOo6M77Qh8nKcphsLL60qJVz6RrfstVSfHANHY9/IA9RipA8HOOZt1IOzR4SlLNLZLa1oATYs6OKqNzDSVMi0EBVnQhmy9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qeHpGuuM; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CF581F000E9;
-	Tue, 16 Jun 2026 17:56:42 +0000 (UTC)
+	 MIME-Version; b=r/JKJ04yXhRzVbUBxlPAHgKr7IRRZnXItKrXuf0ZJWU/BGAIELVO4sxdVi9wn17J33czgxa/O6JO4HiziM5nhvg+4+PXPnXfWlbBxnG5q4zJ8wN2EREuf/MNDxd1gxvIvTn1VQPX+Iilhul1DsxckUjM3yf/Khp2c5JvcRsF7zI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DCT/YOTW; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B822A1F000E9;
+	Tue, 16 Jun 2026 15:58:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781632604;
-	bh=lZ1ZQVOsQy9VwPBeZKHsyIfop2Rku47rjSvD7AMpTkw=;
+	s=korg; t=1781625529;
+	bh=yst8PGqewdyumD+nO816GxR3K9AIgwMVYVutWhpL5zk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=qeHpGuuMGOcIjkI5Fe79KNQ+Fk13XXUPnfAg4RkKvCQ5uAFcvCQKKvjK0umpDnsJ8
-	 ICcqnzFsPVNDvzDLrt3u81MMi3AknXpQ8UaIWb0VFRAfi4w8HPmZqMzHBiFQ+vCeMm
-	 uISTIPaKlJXn+DMG5pkACRduHhbZH7TNmnBn28Gg=
+	b=DCT/YOTWe+BjVfyyNa2ircaiB9mwPJgMNYHH2pb6snPeKXufJcpybFTa5LXv3jSwR
+	 T1rHyanMaQBEW/gun6mpZ2qdeLK7bG5yGj14dNAsJgD6EtlsuuimUeOYpJstqm6tXn
+	 YUP3xITy4INTz69v4tuyZJhAGnN6QQjrK2e4+5K4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Helge Deller <deller@gmx.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 410/522] fbcon: Avoid OOB font access if console rotation fails
+	stable@kernel.org,
+	Bo Ye <bo.ye@mediatek.com>,
+	Isaac Manjarres <isaacmanjarres@google.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Sami Tolvanen <samitolvanen@google.com>
+Subject: [PATCH 6.18 161/325] rust: arm64: set uwtable llvm module flag for CONFIG_UNWIND_TABLES
 Date: Tue, 16 Jun 2026 20:29:17 +0530
-Message-ID: <20260616145145.238935587@linuxfoundation.org>
+Message-ID: <20260616145105.790292747@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,92 +72,105 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-265713-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:tzimmermann@suse.de,m:deller@gmx.de,m:sashal@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,suse.de,gmx.de,kernel.org];
+	TAGGED_FROM(0.00)[bounces-264372-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:bo.ye@mediatek.com,m:isaacmanjarres@google.com,m:aliceryhl@google.com,m:ojeda@kernel.org,m:samitolvanen@google.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gmx.de:email,vger.kernel.org:from_smtp,suse.de:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,bootlin.com:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,mediatek.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 60389693B12
+X-Rspamd-Queue-Id: 2D6BA691C45
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Alice Ryhl <aliceryhl@google.com>
 
-[ Upstream commit e4ef723d8975a2694cc90733a6b888a5e2841842 ]
+commit ac35b5580ace12e5d0a0b5e61e36d2c4e1ffa29c upstream.
 
-Clear the font buffer if the reallocation during console rotation fails
-in fbcon_rotate_font(). The putcs implementations for the rotated buffer
-will return early in this case. See [1] for an example.
+Due to a rustc bug [1] the -Cforce-unwind-tables=y flag only emits the
+uwtable annotation for functions, but not for the module. This means
+that compiler-generated functions such as 'asan.module_ctor' do not
+receive the uwtable annotation.
 
-Currently, fbcon_rotate_font() keeps the old buffer, which is too small
-for the rotated font. Printing to the rotated console with a high-enough
-character code will overflow the font buffer.
+When CONFIG_UNWIND_PATCH_PAC_INTO_SCS is enabled, this leads to boot
+failures because the dwarf information emitted for the kasan
+constructors is wrong, which causes the SCS boot patching code to
+patch the constructor in an illegal manner. Specifically, the paciasp
+instruction is patched, but the autiasp instruction is not. This
+mismatch leads to a crash when the constructor is called during boot.
 
-v2:
-- fix typos in commit message
+	==================================================================
+	BUG: KASAN: global-out-of-bounds in do_basic_setup+0x4c/0x90
+	Read of size 8 at addr ffffffe3cc7eb488 by task swapper/0/1
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Fixes: 6cc50e1c5b57 ("[PATCH] fbcon: Console Rotation - Add support to rotate font bitmap")
-Cc: stable@vger.kernel.org # v2.6.15+
-Link: https://elixir.bootlin.com/linux/v6.19/source/drivers/video/fbdev/core/fbcon_ccw.c#L144 # [1]
-Signed-off-by: Helge Deller <deller@gmx.de>
-[ renamed `par` to `ops` to match the 6.12 local pointer name ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Specifically the faulting instruction is the (*fn)() to invoke the
+constructor in do_ctors() of the init/main.c file.
+
+Once the fix lands in rustc, this flag can be made conditional on the
+rustc version. Note that passing the flag on a rustc with the fix
+present has no effect.
+
+[ The fix [1] has landed for Rust 1.98.0 (expected release on
+  2026-08-20).
+
+  Thus add a version check as discussed.
+
+    - Miguel ]
+
+Fixes: d077242d68a3 ("rust: support for shadow call stack sanitizer")
+Cc: stable@kernel.org
+Link: https://github.com/rust-lang/rust/pull/156973 [1]
+Reported-by: Bo Ye <bo.ye@mediatek.com>
+Debugged-by: Isaac Manjarres <isaacmanjarres@google.com>
+Debugged-by: Sami Tolvanen <samitolvanen@google.com>
+Tested-by: Isaac Manjarres <isaacmanjarres@google.com>
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+Link: https://patch.msgid.link/20260527-uwtable-module-flag-v1-1-caa41342be4b@google.com
+[ Adjusted link and comment. - Miguel ]
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/fbdev/core/fbcon_rotate.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ arch/arm64/Makefile |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/video/fbdev/core/fbcon_rotate.c
-+++ b/drivers/video/fbdev/core/fbcon_rotate.c
-@@ -46,6 +46,10 @@ static int fbcon_rotate_font(struct fb_i
- 		info->fbops->fb_sync(info);
+--- a/arch/arm64/Makefile
++++ b/arch/arm64/Makefile
+@@ -63,6 +63,9 @@ else
+ KBUILD_CFLAGS	+= -fasynchronous-unwind-tables
+ KBUILD_AFLAGS	+= -fasynchronous-unwind-tables
+ KBUILD_RUSTFLAGS += -Cforce-unwind-tables=y -Zuse-sync-unwind=n
++# Work around rustc bug on compilers without
++# https://github.com/rust-lang/rust/pull/156973.
++KBUILD_RUSTFLAGS += $(if $(call rustc-min-version,109800),,-Zllvm_module_flag=uwtable:u32:2:max)
+ endif
  
- 	if (ops->fd_size < d_cellsize * len) {
-+		kfree(ops->fontbuffer);
-+		ops->fontbuffer = NULL;
-+		ops->fd_size = 0;
-+
- 		dst = kmalloc_array(len, d_cellsize, GFP_KERNEL);
- 
- 		if (dst == NULL) {
-@@ -54,7 +58,6 @@ static int fbcon_rotate_font(struct fb_i
- 		}
- 
- 		ops->fd_size = d_cellsize * len;
--		kfree(ops->fontbuffer);
- 		ops->fontbuffer = dst;
- 	}
- 
+ ifeq ($(CONFIG_STACKPROTECTOR_PER_TASK),y)
 
 
 
