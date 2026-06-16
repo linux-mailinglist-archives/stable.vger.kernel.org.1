@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-265073-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265615-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id HsctIhiDMWoQlQUAu9opvQ
-	(envelope-from <stable+bounces-265073-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:08:40 +0200
+	id OYJPC02NMWrQmQUAu9opvQ
+	(envelope-from <stable+bounces-265615-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:52:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DF4D692C4B
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:08:40 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E9746938FF
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:52:12 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=hA0L5DoE;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265073-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-265073-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ardsMEql;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265615-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265615-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B493A30CC283
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:02:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D9FC131BDC14
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:48:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ED27472767;
-	Tue, 16 Jun 2026 17:02:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FD273CFF4B;
+	Tue, 16 Jun 2026 17:48:19 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FA7A43D4E9;
-	Tue, 16 Jun 2026 17:02:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7FFE3C65F2;
+	Tue, 16 Jun 2026 17:48:17 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781629339; cv=none; b=aNuReCEaHvee3ovbGZTVJWu6PbvSJ7e8dPzhrCyodwnSncLeaGQvcJCCFvfP5Fl8/ZOapKtKIV8GqJZhgnHUftOmAK39XSqsTg+pYFu27y4iDGZl2n6c2SdIkPlAxN96Z1s2kz4soaF0gzPi2vrHSO8RqS9jUrZ8TZyMorEGu+o=
+	t=1781632098; cv=none; b=ICvV1t6UrfsNbnt/nOhmvSExIzzy4mQ6SR68Xbmiug3kWn/Ek2Cn1Xt0Gna5mv7zF9xiPP7fU2gdpRGpKiXgGNntRp8HzzJbLT4cUOMU4OheTN/odFkdYAuRAPUoTAZmB7sabmJCsi2QiKlTAILAJ3sC5De/jKdogAWpIHXXpw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781629339; c=relaxed/simple;
-	bh=OICDM8ynvJqmTA5rVyHDmt/jSBTsv+4XH30xORDOkbE=;
+	s=arc-20240116; t=1781632098; c=relaxed/simple;
+	bh=r4D4AEzsr/+d/DfWOKFjKwrsuWTF+mOTcOjtu+f7umM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lGwlaK2aRVPt1ESyUtbKbVMxxBTidIICq5mPYlzOzZlX2RE1K53ubLKdbxSImH8vynCsjf1zj2ZU4AwqrAseZ/qHwjyjPESDzubSuWTbQlQBuZD63pPfsbM0UrTQcHH8s6sTb0oXNrKatmcDepsbHF2MvOoZ9mNjdc6/m2KseUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hA0L5DoE; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 527D71F000E9;
-	Tue, 16 Jun 2026 17:02:16 +0000 (UTC)
+	 MIME-Version; b=cka3nFti49h+TmyQScz9S0mDoZNF82xpYpyLKWgI+OGa1wQpas4yZfaludd8/fA0q5e3rjKeDdr5L5QlaHF/tJksor97hjVS+vwoimnHEGANsBJRUTTDggOHPqu1Q741d8teijBiOxMuLby9Jed5cxG8R1iLnOmXCbSXjmhwKrA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ardsMEql; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E074D1F000E9;
+	Tue, 16 Jun 2026 17:48:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781629338;
-	bh=4eI9LTMjTzAMlL/ZJg5jR6yRZFCpwO5VfnvqXrE+50E=;
+	s=korg; t=1781632097;
+	bh=hQW3nuJdcQFa8hk8lFp2fwUfy6ZI9sfKGeskQ2fBxyA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hA0L5DoEiRS0XZsWfkpsGlhD0G0KMXJXOnRpNu6V+VqIALHR0LjLLLuXQEjPFK17T
-	 OFAdx6AG/LflVuzxBSksL90/sDlqKmfN7PZZ19aSq6x2HacZewDM8BVzvcxM+EMuDI
-	 oD8GuCypf+BqWg9HX2sHPcnYxwlPdeabPWITbjYk=
+	b=ardsMEqlrWqa5mahh6vhNoTGcAmVmA5R37ngNecPG8iiBTU5nmOGnnzHxvjnHF+qh
+	 Yx7KaUipEvhaZePvh6vyF7RDCyHARhuKsSbY91mKU5/D4OxVZlpw2HJIdY+U4J0xh4
+	 nXWnuerNq+448qEWUgE3rX+v33v0IEm2VsGGACtw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mingyu Wang <25181214217@stu.xidian.edu.cn>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Oliver Neukum <oneukum@suse.com>,
+	Sean Young <sean@mess.org>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 267/452] net: qrtr: fix refcount saturation and potential UAF in qrtr_port_remove
+Subject: [PATCH 6.1 347/522] media: rc: igorplugusb: heed coherency rules
 Date: Tue, 16 Jun 2026 20:28:14 +0530
-Message-ID: <20260616145131.629811175@linuxfoundation.org>
+Message-ID: <20260616145142.037987911@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,119 +68,123 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265073-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:25181214217@stu.xidian.edu.cn,m:horms@kernel.org,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265615-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:oneukum@suse.com,m:sean@mess.org,m:hverkuil+cisco@kernel.org,m:sashal@kernel.org,m:hverkuil@kernel.org,s:lists@lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,xidian.edu.cn:email]
+	TAGGED_RCPT(0.00)[stable,cisco];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,mess.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 1DF4D692C4B
+X-Rspamd-Queue-Id: 9E9746938FF
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mingyu Wang <25181214217@stu.xidian.edu.cn>
+From: Oliver Neukum <oneukum@suse.com>
 
-[ Upstream commit a2171131ecda1ed61a594a1eb715e75fdad0fef5 ]
+[ Upstream commit eac69475b01fe1e861dfe3960b57fa95671c132e ]
 
-In qrtr_port_remove(), the socket reference count is decremented via
-__sock_put() before the port is removed from the qrtr_ports XArray and
-before the RCU grace period elapses.
+In a control request, the USB request structure
+can be subject to DMA on some HCs. Hence it must obey
+the rules for DMA coherency. Allocate it separately.
 
-This breaks the fundamental RCU update paradigm. It exposes a race
-window where a concurrent RCU reader (such as qrtr_reset_ports() or
-qrtr_port_lookup()) can obtain a pointer to the socket from the XArray,
-and attempt to call sock_hold() on a socket whose reference count has
-already dropped to zero.
-
-This exact race condition was hit during syzkaller fuzzing, leading to
-the following refcount saturation warning and a potential Use-After-Free:
-
-  refcount_t: saturated; leaking memory.
-  WARNING: CPU: 3 PID: 1273 at lib/refcount.c:22 refcount_warn_saturate+0xae/0x1d0
-  Modules linked in: qrtr(+) bochs drm_shmem_helper ...
-  Call Trace:
-   <TASK>
-   qrtr_reset_ports net/qrtr/af_qrtr.c:768 [inline] [qrtr]
-   __qrtr_bind.isra.0+0x48b/0x570 net/qrtr/af_qrtr.c:805 [qrtr]
-   qrtr_bind+0x17d/0x210 net/qrtr/af_qrtr.c:901 [qrtr]
-   kernel_bind+0xe4/0x120 net/socket.c:3592
-   qrtr_ns_init+0x1a6/0x380 net/qrtr/ns.c:715 [qrtr]
-   qrtr_proto_init+0x3b/0xff0 net/qrtr/af_qrtr.c:169 [qrtr]
-   do_one_initcall+0xf5/0x5e0 init/main.c:1283
-   ...
-   </TASK>
-
-Fix this by deferring the reference count decrement until after the
-xa_erase() and the synchronize_rcu() complete.
-
-(Note: The v1 of this patch incorrectly replaced __sock_put() with
-sock_put(). As Simon Horman pointed out, the callers of qrtr_port_remove()
-still hold a reference to the socket, so freeing the socket memory here
-would lead to a subsequent UAF in the caller. Thus, the __sock_put() is
-kept, but only repositioned to close the RCU race.)
-
-Fixes: bdabad3e363d ("net: Add Qualcomm IPC router")
-Signed-off-by: Mingyu Wang <25181214217@stu.xidian.edu.cn>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260604064801.1180388-1-w15303746062@163.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: b1c97193c6437 ("[media] rc: port IgorPlug-USB to rc-core")
+Cc: stable@vger.kernel.org
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Signed-off-by: Sean Young <sean@mess.org>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+[ replaced kzalloc_obj(*ir->request, GFP_KERNEL) with kzalloc(sizeof(*ir->request), GFP_KERNEL) ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/qrtr/af_qrtr.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/media/rc/igorplugusb.c |   16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
-diff --git a/net/qrtr/af_qrtr.c b/net/qrtr/af_qrtr.c
-index b703e4c6458532..2c009793f1931d 100644
---- a/net/qrtr/af_qrtr.c
-+++ b/net/qrtr/af_qrtr.c
-@@ -707,13 +707,13 @@ static void qrtr_port_remove(struct qrtr_sock *ipc)
- 	if (port == QRTR_PORT_CTRL)
- 		port = 0;
+--- a/drivers/media/rc/igorplugusb.c
++++ b/drivers/media/rc/igorplugusb.c
+@@ -34,7 +34,7 @@ struct igorplugusb {
+ 	struct device *dev;
  
--	__sock_put(&ipc->sk);
--
- 	xa_erase(&qrtr_ports, port);
+ 	struct urb *urb;
+-	struct usb_ctrlrequest request;
++	struct usb_ctrlrequest *request;
  
- 	/* Ensure that if qrtr_port_lookup() did enter the RCU read section we
- 	 * wait for it to up increment the refcount */
- 	synchronize_rcu();
+ 	struct timer_list timer;
+ 
+@@ -122,7 +122,7 @@ static void igorplugusb_cmd(struct igorp
+ {
+ 	int ret;
+ 
+-	ir->request.bRequest = cmd;
++	ir->request->bRequest = cmd;
+ 	ir->urb->transfer_flags = 0;
+ 	ret = usb_submit_urb(ir->urb, GFP_ATOMIC);
+ 	if (ret && ret != -EPERM)
+@@ -164,13 +164,17 @@ static int igorplugusb_probe(struct usb_
+ 	if (!ir)
+ 		return -ENOMEM;
+ 
++	ir->request = kzalloc(sizeof(*ir->request), GFP_KERNEL);
++	if (!ir->request)
++		goto fail;
 +
-+	__sock_put(&ipc->sk);
+ 	ir->dev = &intf->dev;
+ 
+ 	timer_setup(&ir->timer, igorplugusb_timer, 0);
+ 
+-	ir->request.bRequest = GET_INFRACODE;
+-	ir->request.bRequestType = USB_TYPE_VENDOR | USB_DIR_IN;
+-	ir->request.wLength = cpu_to_le16(MAX_PACKET);
++	ir->request->bRequest = GET_INFRACODE;
++	ir->request->bRequestType = USB_TYPE_VENDOR | USB_DIR_IN;
++	ir->request->wLength = cpu_to_le16(MAX_PACKET);
+ 
+ 	ir->urb = usb_alloc_urb(0, GFP_KERNEL);
+ 	if (!ir->urb)
+@@ -228,6 +232,7 @@ fail:
+ 	usb_free_urb(ir->urb);
+ 	rc_free_device(ir->rc);
+ 	kfree(ir->buf_in);
++	kfree(ir->request);
+ 
+ 	return ret;
+ }
+@@ -243,6 +248,7 @@ static void igorplugusb_disconnect(struc
+ 	usb_unpoison_urb(ir->urb);
+ 	usb_free_urb(ir->urb);
+ 	kfree(ir->buf_in);
++	kfree(ir->request);
  }
  
- /* Assign port number to socket.
--- 
-2.53.0
-
+ static const struct usb_device_id igorplugusb_table[] = {
 
 
 
