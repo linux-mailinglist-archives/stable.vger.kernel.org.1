@@ -1,170 +1,175 @@
-Return-Path: <stable+bounces-263511-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263512-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id rejDFXOoMGrzVwUAu9opvQ
-	(envelope-from <stable+bounces-263511-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 03:35:47 +0200
+	id X6FoLwWqMGooWAUAu9opvQ
+	(envelope-from <stable+bounces-263512-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 03:42:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9EDB68B4A7
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 03:35:46 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3607868B4FE
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 03:42:29 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DqNYAUlI;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263511-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263511-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=fail ("headers rsa verify failed") header.d=igalia.com header.s=20170329 header.b=HMn+4N9p;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263512-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-263512-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=fail reason="SPF not aligned (relaxed)" header.from=igalia.com (policy=none);
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AF6C530459F9
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 01:35:08 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 425323016B9F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 01:42:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EB9836F8F9;
-	Tue, 16 Jun 2026 01:35:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F1C937BE80;
+	Tue, 16 Jun 2026 01:42:27 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D35EC1A6803
-	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 01:35:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 731E137BE7A;
+	Tue, 16 Jun 2026 01:42:23 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781573708; cv=none; b=n7+t23vN4+xB9HqW/KdPvGHKwtXBOlba1OAZSSLeiXTQ5wyCs90E5mnVXQxV0T/K9hjYKeZZunxEAPKVpvSDGf5bgLPCeujtkY/fHMY3LXuvfUZ32K9v3um/170xhQSivzmpI/BDtYLtSot8lOnH19f8N5bt6zyQI+m1sygl2Kc=
+	t=1781574147; cv=none; b=Id88kv7pX8i8tnmibi40QqKsHMQiVstbPFJhd1Hj1GPjhZxyy7xsqFHWKOx1xQfBA1mY2ZkDiEd+q5b3PsWiOwQ6JZ5B+cEtKvKvwmu3jx1aYnM+UZOyPtHlxstBLrmKPAJ8N4uEhta+hQtYWR50/KeESiHZ4z2BJe9LLbfr8Qo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781573708; c=relaxed/simple;
-	bh=55FKlZPYBdEjaSQaK3gjgP3dTq9fiwBWokO0cIRt4gA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qme+iXpZKyk8Tis0PxAV7E7RYwzvh525RgV0oWJo4YqRIY+TSTd+nucm0luJCCcwzVeucEbSPZqJIzDCSAZX0E10YkyxdQZZ5eEW569oa7p7ccB6gF0LQBqydcF8xWeEoLHoZg2ll9mm0/diPiuyQpJ4/F18zFKtnOkZKqc5ACI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DqNYAUlI; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C81641F000E9;
-	Tue, 16 Jun 2026 01:35:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781573706;
-	bh=OssSHsxO1g+tHbXT/xHaULs0sSqtbeGXLKSdnmCYVJo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=DqNYAUlIsVXCnakGJQq1XVAbrGiZRvoFOSWHu3W8/82VeatoJDX8P+gQCnz2EOyC/
-	 GKHYyriZi/GLLlC8fO4yK76YvZ379P+jAco5DW3IAyeBfuaIO1ByR9RTfOQa+urFnE
-	 rgrP1s3lGyFs0YTmd7b4Yc4OnVFys8Ufv8ZqUVr2eSPu592D3+T8AquLyphGCD/atr
-	 zV35pwdcaVJL33YukJUkYkZihGeUrQJZVXZavinjimJ/CuHgU05MlMnIujAAf4p0QE
-	 hVM9MYdptVlxnsGdwRAyPii6LdztQVnnDHy0z/2+4pq/8Pd1IzY/3k0hV6v+A2v2An
-	 dZ7waY2W9qp4w==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Yin Tirui <yintirui@huawei.com>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"David Hildenbrand (arm)" <david@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>,
-	Dev Jain <dev.jain@arm.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Barry Song <baohua@kernel.org>,
-	Chen Jun <chenjun102@huawei.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Nico Pache <npache@redhat.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Yang Shi <yang.shi@linux.alibaba.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] mm/huge_memory: update file PMD counter before folio_put()
-Date: Mon, 15 Jun 2026 21:35:03 -0400
-Message-ID: <20260616013503.2708473-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026061512-encrypt-banking-e175@gregkh>
-References: <2026061512-encrypt-banking-e175@gregkh>
+	s=arc-20240116; t=1781574147; c=relaxed/simple;
+	bh=u6ApwQNKW9ESpposHwjyUT5t/LeS8wwWSOugVRDoqx4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=RDdsU8N1/Gr6qQRuVs5dNa0WqPd7O/Cj+UC4WZzUg1gFhpDz8GBKSVhQ7jt3u6KS7JhDH/FaOK6jGBEYyg+AxQ6dahbx4J+f0wN/xnXHhA991oono8XC50TZjkrtv/ESoBQ9K8uegLZW3AOGhdh+o2h2nn8h0dWW5zFRToBPN68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=HMn+4N9p; arc=none smtp.client-ip=213.97.179.56
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=bfKNs+epJgX7p0qKpOy6KZQL+Q/RyTOBkRnyXEtEQn8=; b=HMn+4N9pjHZVSgSbOz913o8IBq
+	G/pWzOI/lKBipWN6rHnBELqy5kopN/hpVjbstJOe+jZhyUrAhHImRhDU/v6Sw9k7FtMtYt8aVkmWJ
+	8nwUtr5LRONrawUbENpPPwmMeSfFn4bX0uP3ueNKdo6YiSY9Pny2BDXTc1afvTjNBnh1x3Mn3p4C3
+	AbFDvSX8Uy0c9BBZkJyy2k/Oba73N2S5d6yq/Cyf6PIs84yKyww8YMyUmCdu10iSnPoMJcNmrVGGC
+	Qmcc6A5dcPXQ7Rg85Le4eXEbyhwj03wM4Jq+Wp6FyL+y2wf5MH8DhNrMViVCpxp2jrjXEN0ehOafF
+	052zS/RQ==;
+Received: from [189.7.87.67] (helo=[192.168.0.2])
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
+	id 1wZIob-000iFy-EG; Tue, 16 Jun 2026 03:42:09 +0200
+Message-ID: <1b7f8dba-281b-4184-ba9e-d550b9a7ea7f@igalia.com>
+Date: Mon, 15 Jun 2026 22:42:05 -0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] drm/v3d: reject an invalid indirect CSD buffer handle
+To: JaeHoon Lee <dlwognsdc610@gmail.com>, Melissa Wen <mwen@igalia.com>
+Cc: Iago Toral Quiroga <itoral@igalia.com>, dri-devel@lists.freedesktop.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260616070048.1590551-1-dlwognsdc610@gmail.com>
+From: =?UTF-8?Q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>
+Content-Language: en-US
+Autocrypt: addr=mcanal@igalia.com; keydata=
+ xsBNBGcCwywBCADgTji02Sv9zjHo26LXKdCaumcSWglfnJ93rwOCNkHfPIBll85LL9G0J7H8
+ /PmEL9y0LPo9/B3fhIpbD8VhSy9Sqz8qVl1oeqSe/rh3M+GceZbFUPpMSk5pNY9wr5raZ63d
+ gJc1cs8XBhuj1EzeE8qbP6JAmsL+NMEmtkkNPfjhX14yqzHDVSqmAFEsh4Vmw6oaTMXvwQ40
+ SkFjtl3sr20y07cJMDe++tFet2fsfKqQNxwiGBZJsjEMO2T+mW7DuV2pKHr9aifWjABY5EPw
+ G7qbrh+hXgfT+njAVg5+BcLz7w9Ju/7iwDMiIY1hx64Ogrpwykj9bXav35GKobicCAwHABEB
+ AAHNIE1hw61yYSBDYW5hbCA8bWNhbmFsQGlnYWxpYS5jb20+wsCRBBMBCAA7FiEE+ORdfQEW
+ dwcppnfRP/MOinaI+qoFAmcCwywCGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AACgkQ
+ P/MOinaI+qoUBQgAqz2gzUP7K3EBI24+a5FwFlruQGtim85GAJZXToBtzsfGLLVUSCL3aF/5
+ O335Bh6ViSBgxmowIwVJlS/e+L95CkTGzIIMHgyUZfNefR2L3aZA6cgc9z8cfow62Wu8eXnq
+ GM/+WWvrFQb/dBKKuohfBlpThqDWXxhozazCcJYYHradIuOM8zyMtCLDYwPW7Vqmewa+w994
+ 7Lo4CgOhUXVI2jJSBq3sgHEPxiUBOGxvOt1YBg7H9C37BeZYZxFmU8vh7fbOsvhx7Aqu5xV7
+ FG+1ZMfDkv+PixCuGtR5yPPaqU2XdjDC/9mlRWWQTPzg74RLEw5sz/tIHQPPm6ROCACFls7A
+ TQRnAsMsAQgAxTU8dnqzK6vgODTCW2A6SAzcvKztxae4YjRwN1SuGhJR2isJgQHoOH6oCItW
+ Xc1CGAWnci6doh1DJvbbB7uvkQlbeNxeIz0OzHSiB+pb1ssuT31Hz6QZFbX4q+crregPIhr+
+ 0xeDi6Mtu+paYprI7USGFFjDUvJUf36kK0yuF2XUOBlF0beCQ7Jhc+UoI9Akmvl4sHUrZJzX
+ LMeajARnSBXTcig6h6/NFVkr1mi1uuZfIRNCkxCE8QRYebZLSWxBVr3h7dtOUkq2CzL2kRCK
+ T2rKkmYrvBJTqSvfK3Ba7QrDg3szEe+fENpL3gHtH6h/XQF92EOulm5S5o0I+ceREwARAQAB
+ wsB2BBgBCAAgFiEE+ORdfQEWdwcppnfRP/MOinaI+qoFAmcCwywCGwwACgkQP/MOinaI+qpI
+ zQf+NAcNDBXWHGA3lgvYvOU31+ik9bb30xZ7IqK9MIi6TpZqL7cxNwZ+FAK2GbUWhy+/gPkX
+ it2gCAJsjo/QEKJi7Zh8IgHN+jfim942QZOkU+p/YEcvqBvXa0zqW0sYfyAxkrf/OZfTnNNE
+ Tr+uBKNaQGO2vkn5AX5l8zMl9LCH3/Ieaboni35qEhoD/aM0Kpf93PhCvJGbD4n1DnRhrxm1
+ uEdQ6HUjWghEjC+Jh9xUvJco2tUTepw4OwuPxOvtuPTUa1kgixYyG1Jck/67reJzMigeuYFt
+ raV3P8t/6cmtawVjurhnCDuURyhUrjpRhgFp+lW8OGr6pepHol/WFIOQEg==
+In-Reply-To: <20260616070048.1590551-1-dlwognsdc610@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.66 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [-0.36 / 15.00];
+	R_DKIM_REJECT(1.00)[igalia.com:s=20170329];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
+	DMARC_POLICY_SOFTFAIL(0.10)[igalia.com : SPF not aligned (relaxed),none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-263511-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:yintirui@huawei.com,m:ljs@kernel.org,m:david@kernel.org,m:lance.yang@linux.dev,m:dev.jain@arm.com,m:baolin.wang@linux.alibaba.com,m:baohua@kernel.org,m:chenjun102@huawei.com,m:wangkefeng.wang@huawei.com,m:liam@infradead.org,m:npache@redhat.com,m:ryan.roberts@arm.com,m:vbabka@kernel.org,m:yang.shi@linux.alibaba.com,m:ziy@nvidia.com,m:akpm@linux-foundation.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:dlwognsdc610@gmail.com,m:mwen@igalia.com,m:itoral@igalia.com,m:dri-devel@lists.freedesktop.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[mcanal@igalia.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-263512-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FREEMAIL_TO(0.00)[gmail.com,igalia.com];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[mcanal@igalia.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[igalia.com:-];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[igalia.com:mid,igalia.com:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A9EDB68B4A7
+X-Rspamd-Queue-Id: 3607868B4FE
 
-From: Yin Tirui <yintirui@huawei.com>
+Hi JaeHoon,
 
-[ Upstream commit 8d878059924f12c1bc24556a92ec56add74de3c8 ]
+Duplicated patch, please check [1].
 
-__split_huge_pmd_locked() updates the file/shmem RSS counter after
-dropping the PMD mapping's folio reference.  If folio_put() drops the last
-reference, mm_counter_file() can later read freed folio state via
-folio_test_swapbacked().
+[1] 
+https://lore.kernel.org/dri-devel/20260610-v3d-cpu-job-fixes-v1-0-0d9c88989edc@igalia.com/T/#m42c7a8cf94b8cb787cca01dfbdaf5fdce40c7332
 
-Move the counter update before folio_put().
+Best regards,
+- Maíra
 
-Link: https://lore.kernel.org/20260526101337.1984081-1-yintirui@huawei.com
-Fixes: fadae2953072 ("thp: use mm_file_counter to determine update which rss counter")
-Signed-off-by: Yin Tirui <yintirui@huawei.com>
-Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
-Acked-by: David Hildenbrand (arm) <david@kernel.org>
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
-Reviewed-by: Dev Jain <dev.jain@arm.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Barry Song <baohua@kernel.org>
-Cc: Chen Jun <chenjun102@huawei.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Liam R. Howlett <liam@infradead.org>
-Cc: Nico Pache <npache@redhat.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>
-Cc: Yang Shi <yang.shi@linux.alibaba.com>
-Cc: Zi Yan <ziy@nvidia.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- mm/huge_memory.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index e9c5de967b2c15..934c08de74f42d 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -1994,7 +1994,9 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
- 			if (!PageReferenced(page) && pmd_young(old_pmd))
- 				SetPageReferenced(page);
- 			page_remove_rmap(page, true);
-+			add_mm_counter(mm, mm_counter_file(page), -HPAGE_PMD_NR);
- 			put_page(page);
-+			return;
- 		}
- 		add_mm_counter(mm, mm_counter_file(page), -HPAGE_PMD_NR);
- 		return;
--- 
-2.53.0
+On 16/06/26 04:00, JaeHoon Lee wrote:
+> v3d_get_cpu_indirect_csd_params() does not check the result of
+> drm_gem_object_lookup().  A bogus indirect CSD handle from userspace
+> makes it store NULL in info->indirect; when the CPU job runs,
+> v3d_rewrite_csd_job_wg_counts_from_indirect() dereferences it through
+> v3d_get_bo_vaddr() and oopses the kernel.  Any unprivileged client can
+> trigger this.
+> 
+> Reject the NULL handle with -ENOENT, as every other GEM lookup in this
+> driver does.  v3d_cpu_job_free() drops the reference under a NULL check,
+> so the error path leaks nothing.
+> 
+> Fixes: 18b8413b25b7 ("drm/v3d: Create a CPU job extension for a indirect CSD job")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: JaeHoon Lee <dlwognsdc610@gmail.com>
+> ---
+>   drivers/gpu/drm/v3d/v3d_submit.c | 2 ++
+>   1 file changed, 2 insertions(+)
+> 
+> diff --git a/drivers/gpu/drm/v3d/v3d_submit.c b/drivers/gpu/drm/v3d/v3d_submit.c
+> index ee2ac2540ed5..05f98379c1a4 100644
+> --- a/drivers/gpu/drm/v3d/v3d_submit.c
+> +++ b/drivers/gpu/drm/v3d/v3d_submit.c
+> @@ -605,6 +605,8 @@ v3d_get_cpu_indirect_csd_params(struct drm_file *file_priv,
+>   	       sizeof(indirect_csd.wg_uniform_offsets));
+>   
+>   	info->indirect = drm_gem_object_lookup(file_priv, indirect_csd.indirect);
+> +	if (!info->indirect)
+> +		return -ENOENT;
+>   
+>   	return 0;
+>   }
 
 
