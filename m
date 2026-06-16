@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-266067-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266454-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id uofOGruVMWrRnQUAu9opvQ
-	(envelope-from <stable+bounces-266067-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:28:11 +0200
+	id G/7GKrCdMWo2oQUAu9opvQ
+	(envelope-from <stable+bounces-266454-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:02:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC1E8694260
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:28:10 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2340694ABC
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:02:07 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=i8NPowNX;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266067-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266067-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=zfCkRf2G;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266454-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266454-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7215931429C8
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:28:09 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id F1E0C301B1E3
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:01:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC144477986;
-	Tue, 16 Jun 2026 18:28:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77AD03DA5A8;
+	Tue, 16 Jun 2026 19:01:39 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E16547A0B2;
-	Tue, 16 Jun 2026 18:28:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54FB334751B;
+	Tue, 16 Jun 2026 19:01:38 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781634488; cv=none; b=p8oSGk7hvZa6FMhDBJ5BhgwbMaJy03bSZIqy3cAhx7jR55bxag6QFQRVMa5Vqqdam92kP0zAVmqWDzceqyoYFMl+BjmeoaL86Km741lz1cuT+8TEP0S9Lt9erpn1UYPVX50uIF1aFlell3ZUrQwHxJWEczSlqUxlI2jaxjvcfxQ=
+	t=1781636499; cv=none; b=ZzRC1f13lbHGffacE2AaE2ClnQBkWi9coq1PeJDbPj3A8Rp74xDZuBbIyGpbpxWBnq0zQ5J+JawKX0vR3IM0zZ7grT/adVdlzkAXkMbsL+2L0efF8vio5i1+u/uxWnVbCnoLHbak1IWcUftQPjV2su2vhOCXAt/jN8iPKl2hNhs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781634488; c=relaxed/simple;
-	bh=fOJlPvTWOUG3sO0n8XBjCFAxf8W4kCf3FSbV+lYVwWM=;
+	s=arc-20240116; t=1781636499; c=relaxed/simple;
+	bh=32I4zom79fzsiBTchUVr7vZ1816i3VSqRdPq3iw4soI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=loClYK4mxqxYSyYv8JfMhrLCa4CxxwLnBmc6NjlbSzDA72OIgNAGXJtMpAzbXncVFMvO96F/R7QaTPkBwrQiSuYFX+xG7VTNC04Y1FifxQqHeXpXkvsVAG/3I8yCDL0kCDy2ssi7PM2Y+wG/ieWUWrva53M4zvgFj/9nDmA+Rc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i8NPowNX; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 906A41F000E9;
-	Tue, 16 Jun 2026 18:28:06 +0000 (UTC)
+	 MIME-Version; b=RQTdVVb+F6SRG2P1WyprmhfCW8WNUIAHWP2R2Ud+AlJQVltrOhngznFljAEtvrYlZoYyrt7TNudkScpNkAIHPncoIxa+y4v97OsXt5X/ClC1LeSp3beNADkfQmVrZ9KlihkuqRneeZ5qt/3olmRO94WxGNeUFzylYwwzZqN08Og=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zfCkRf2G; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56F3B1F000E9;
+	Tue, 16 Jun 2026 19:01:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781634487;
-	bh=oTxwDyF4trT26KuN8eKflgacTA3C8gdZ9qjANmS2/G8=;
+	s=korg; t=1781636498;
+	bh=TPLXHo258hcp4SJi1wY2fUFvZhGaLphuc8KHqsiXz6Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=i8NPowNXkeWgkJ4UQGuFzvHqfXOiT4tvrfBlZaGezxKbuvNi+NEpYKvz/bY6t+j0f
-	 Qb6LkwDDwwZSgcshOeg/SInrT3AlJ/Ds3jEVubLHRrhdXOtCfXKGhZ84e/UEDryFrR
-	 d8DQ72paCNILQ0je/mtcBujAfHttVhaIyk9EXyow=
+	b=zfCkRf2GDcSG2EguwAEO/aK/mfgxkzo6PTWBP4ijb5M/Q1c/clO/4507PglAkApcg
+	 IhBrHAgr27JNSkOiq2K89Z6wuXtr+J9l++Mau6HphRKIdZozea/2EdLo9UKCvNe5XU
+	 5W39CxW8jwi4QszSwY1MgZYfzGDTBz6hqcx03eVY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Lew <quic_clew@quicinc.com>,
-	Vignesh Viswanathan <quic_viswanat@quicinc.com>,
-	Simon Horman <simon.horman@corigine.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 275/411] net: qrtr: ns: Change servers radix tree to xarray
+	stable@kernel.org,
+	Sven Eckelmann <sven@narfation.org>
+Subject: [PATCH 5.10 217/342] batman-adv: tp_meter: fix tp_num leak on kmalloc failure
 Date: Tue, 16 Jun 2026 20:28:33 +0530
-Message-ID: <20260616145115.739291222@linuxfoundation.org>
+Message-ID: <20260616145058.304158197@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,345 +68,90 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266067-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-266454-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:quic_clew@quicinc.com,m:quic_viswanat@quicinc.com,m:simon.horman@corigine.com,m:davem@davemloft.net,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:sven@narfation.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,davemloft.net:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,narfation.org:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: BC1E8694260
+X-Rspamd-Queue-Id: A2340694ABC
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vignesh Viswanathan <quic_viswanat@quicinc.com>
+From: Sven Eckelmann <sven@narfation.org>
 
-[ Upstream commit 608a147a88728f84bbd2efdde3d4984339f1d872 ]
+commit ce425dd05d0fe7594930a0fb103634f35ac47bb6 upstream.
 
-There is a use after free scenario while iterating through the servers
-radix tree despite the ns being a single threaded process. This can
-happen when the radix tree APIs are not synchronized with the
-rcu_read_lock() APIs.
+When batadv_tp_start() or batadv_tp_init_recv() fail to allocate a new
+tp_vars object, the previously incremented bat_priv->tp_num counter is
+never decremented. This causes tp_num to drift upward on each allocation
+failure. Since only BATADV_TP_MAX_NUM sessions can be started and the count
+is never reduced for these failed allocations, it causes to an exhaustion
+of throughput meter sessions. In worst case, no new throughput meter
+session can be started until the mesh interface is removed.
 
-Convert the radix tree for servers to xarray to take advantage of the
-built in rcu lock usage provided by xarray.
+The error handling must decrement tp_num releasing the lock and aborting
+the creation of an throughput meter session
 
-Signed-off-by: Chris Lew <quic_clew@quicinc.com>
-Signed-off-by: Vignesh Viswanathan <quic_viswanat@quicinc.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 68efba36446a ("net: qrtr: ns: Free the node during ctrl_cmd_bye()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@kernel.org
+Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+[ Context ]
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/qrtr/ns.c |  133 ++++++++++------------------------------------------------
- 1 file changed, 24 insertions(+), 109 deletions(-)
+ net/batman-adv/tp_meter.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/net/qrtr/ns.c
-+++ b/net/qrtr/ns.c
-@@ -67,7 +67,7 @@ struct qrtr_server {
+--- a/net/batman-adv/tp_meter.c
++++ b/net/batman-adv/tp_meter.c
+@@ -1036,6 +1036,7 @@ void batadv_tp_start(struct batadv_priv
  
- struct qrtr_node {
- 	unsigned int id;
--	struct radix_tree_root servers;
-+	struct xarray servers;
- };
- 
- /* Max lookup limit is chosen based on the current platform requirements. If the
-@@ -89,6 +89,7 @@ static struct qrtr_node *node_get(unsign
- 		return NULL;
- 
- 	node->id = node_id;
-+	xa_init(&node->servers);
- 
- 	if (radix_tree_insert(&nodes, node_id, node)) {
- 		kfree(node);
-@@ -199,40 +200,23 @@ static void lookup_notify(struct sockadd
- 
- static int announce_servers(struct sockaddr_qrtr *sq)
- {
--	struct radix_tree_iter iter;
- 	struct qrtr_server *srv;
- 	struct qrtr_node *node;
--	void __rcu **slot;
-+	unsigned long index;
- 	int ret;
- 
- 	node = node_get(qrtr_ns.local_node);
- 	if (!node)
- 		return 0;
- 
--	rcu_read_lock();
- 	/* Announce the list of servers registered in this node */
--	radix_tree_for_each_slot(slot, &node->servers, &iter, 0) {
--		srv = radix_tree_deref_slot(slot);
--		if (!srv)
--			continue;
--		if (radix_tree_deref_retry(srv)) {
--			slot = radix_tree_iter_retry(&iter);
--			continue;
--		}
--		slot = radix_tree_iter_resume(slot, &iter);
--		rcu_read_unlock();
--
-+	xa_for_each(&node->servers, index, srv) {
- 		ret = service_announce_new(sq, srv);
- 		if (ret < 0) {
- 			pr_err("failed to announce new service\n");
- 			return ret;
- 		}
--
--		rcu_read_lock();
- 	}
--
--	rcu_read_unlock();
--
- 	return 0;
- }
- 
-@@ -262,14 +246,17 @@ static struct qrtr_server *server_add(un
- 		goto err;
- 
- 	/* Delete the old server on the same port */
--	old = radix_tree_lookup(&node->servers, port);
-+	old = xa_store(&node->servers, port, srv, GFP_KERNEL);
- 	if (old) {
--		radix_tree_delete(&node->servers, port);
--		kfree(old);
-+		if (xa_is_err(old)) {
-+			pr_err("failed to add server [0x%x:0x%x] ret:%d\n",
-+			       srv->service, srv->instance, xa_err(old));
-+			goto err;
-+		} else {
-+			kfree(old);
-+		}
+ 	tp_vars = kmalloc(sizeof(*tp_vars), GFP_ATOMIC);
+ 	if (!tp_vars) {
++		atomic_dec(&bat_priv->tp_num);
+ 		spin_unlock_bh(&bat_priv->tp_list_lock);
+ 		batadv_dbg(BATADV_DBG_TP_METER, bat_priv,
+ 			   "Meter: %s cannot allocate list elements\n",
+@@ -1410,8 +1411,10 @@ batadv_tp_init_recv(struct batadv_priv *
  	}
  
--	radix_tree_insert(&node->servers, port, srv);
--
- 	trace_qrtr_ns_server_add(srv->service, srv->instance,
- 				 srv->node, srv->port);
+ 	tp_vars = kmalloc(sizeof(*tp_vars), GFP_ATOMIC);
+-	if (!tp_vars)
++	if (!tp_vars) {
++		atomic_dec(&bat_priv->tp_num);
+ 		goto out_unlock;
++	}
  
-@@ -286,11 +273,11 @@ static int server_del(struct qrtr_node *
- 	struct qrtr_server *srv;
- 	struct list_head *li;
- 
--	srv = radix_tree_lookup(&node->servers, port);
-+	srv = xa_load(&node->servers, port);
- 	if (!srv)
- 		return -ENOENT;
- 
--	radix_tree_delete(&node->servers, port);
-+	xa_erase(&node->servers, port);
- 
- 	/* Broadcast the removal of local servers */
- 	if (srv->node == qrtr_ns.local_node && bcast)
-@@ -350,13 +337,12 @@ static int ctrl_cmd_hello(struct sockadd
- static int ctrl_cmd_bye(struct sockaddr_qrtr *from)
- {
- 	struct qrtr_node *local_node;
--	struct radix_tree_iter iter;
- 	struct qrtr_ctrl_pkt pkt;
- 	struct qrtr_server *srv;
- 	struct sockaddr_qrtr sq;
- 	struct msghdr msg = { };
- 	struct qrtr_node *node;
--	void __rcu **slot;
-+	unsigned long index;
- 	struct kvec iv;
- 	int ret;
- 
-@@ -367,22 +353,9 @@ static int ctrl_cmd_bye(struct sockaddr_
- 	if (!node)
- 		return 0;
- 
--	rcu_read_lock();
- 	/* Advertise removal of this client to all servers of remote node */
--	radix_tree_for_each_slot(slot, &node->servers, &iter, 0) {
--		srv = radix_tree_deref_slot(slot);
--		if (!srv)
--			continue;
--		if (radix_tree_deref_retry(srv)) {
--			slot = radix_tree_iter_retry(&iter);
--			continue;
--		}
--		slot = radix_tree_iter_resume(slot, &iter);
--		rcu_read_unlock();
-+	xa_for_each(&node->servers, index, srv)
- 		server_del(node, srv->port, true);
--		rcu_read_lock();
--	}
--	rcu_read_unlock();
- 
- 	/* Advertise the removal of this client to all local servers */
- 	local_node = node_get(qrtr_ns.local_node);
-@@ -393,18 +366,7 @@ static int ctrl_cmd_bye(struct sockaddr_
- 	pkt.cmd = cpu_to_le32(QRTR_TYPE_BYE);
- 	pkt.client.node = cpu_to_le32(from->sq_node);
- 
--	rcu_read_lock();
--	radix_tree_for_each_slot(slot, &local_node->servers, &iter, 0) {
--		srv = radix_tree_deref_slot(slot);
--		if (!srv)
--			continue;
--		if (radix_tree_deref_retry(srv)) {
--			slot = radix_tree_iter_retry(&iter);
--			continue;
--		}
--		slot = radix_tree_iter_resume(slot, &iter);
--		rcu_read_unlock();
--
-+	xa_for_each(&local_node->servers, index, srv) {
- 		sq.sq_family = AF_QIPCRTR;
- 		sq.sq_node = srv->node;
- 		sq.sq_port = srv->port;
-@@ -417,11 +379,7 @@ static int ctrl_cmd_bye(struct sockaddr_
- 			pr_err("failed to send bye cmd\n");
- 			return ret;
- 		}
--		rcu_read_lock();
- 	}
--
--	rcu_read_unlock();
--
- 	return 0;
- }
- 
-@@ -429,7 +387,6 @@ static int ctrl_cmd_del_client(struct so
- 			       unsigned int node_id, unsigned int port)
- {
- 	struct qrtr_node *local_node;
--	struct radix_tree_iter iter;
- 	struct qrtr_lookup *lookup;
- 	struct qrtr_ctrl_pkt pkt;
- 	struct msghdr msg = { };
-@@ -438,7 +395,7 @@ static int ctrl_cmd_del_client(struct so
- 	struct qrtr_node *node;
- 	struct list_head *tmp;
- 	struct list_head *li;
--	void __rcu **slot;
-+	unsigned long index;
- 	struct kvec iv;
- 	int ret;
- 
-@@ -484,18 +441,7 @@ static int ctrl_cmd_del_client(struct so
- 	pkt.client.node = cpu_to_le32(node_id);
- 	pkt.client.port = cpu_to_le32(port);
- 
--	rcu_read_lock();
--	radix_tree_for_each_slot(slot, &local_node->servers, &iter, 0) {
--		srv = radix_tree_deref_slot(slot);
--		if (!srv)
--			continue;
--		if (radix_tree_deref_retry(srv)) {
--			slot = radix_tree_iter_retry(&iter);
--			continue;
--		}
--		slot = radix_tree_iter_resume(slot, &iter);
--		rcu_read_unlock();
--
-+	xa_for_each(&local_node->servers, index, srv) {
- 		sq.sq_family = AF_QIPCRTR;
- 		sq.sq_node = srv->node;
- 		sq.sq_port = srv->port;
-@@ -508,11 +454,7 @@ static int ctrl_cmd_del_client(struct so
- 			pr_err("failed to send del client cmd\n");
- 			return ret;
- 		}
--		rcu_read_lock();
- 	}
--
--	rcu_read_unlock();
--
- 	return 0;
- }
- 
-@@ -585,13 +527,12 @@ static int ctrl_cmd_del_server(struct so
- static int ctrl_cmd_new_lookup(struct sockaddr_qrtr *from,
- 			       unsigned int service, unsigned int instance)
- {
--	struct radix_tree_iter node_iter;
- 	struct qrtr_server_filter filter;
--	struct radix_tree_iter srv_iter;
- 	struct qrtr_lookup *lookup;
-+	struct qrtr_server *srv;
- 	struct qrtr_node *node;
--	void __rcu **node_slot;
--	void __rcu **srv_slot;
-+	unsigned long node_idx;
-+	unsigned long srv_idx;
- 
- 	/* Accept only local observers */
- 	if (from->sq_node != qrtr_ns.local_node)
-@@ -616,40 +557,14 @@ static int ctrl_cmd_new_lookup(struct so
- 	filter.service = service;
- 	filter.instance = instance;
- 
--	rcu_read_lock();
--	radix_tree_for_each_slot(node_slot, &nodes, &node_iter, 0) {
--		node = radix_tree_deref_slot(node_slot);
--		if (!node)
--			continue;
--		if (radix_tree_deref_retry(node)) {
--			node_slot = radix_tree_iter_retry(&node_iter);
--			continue;
--		}
--		node_slot = radix_tree_iter_resume(node_slot, &node_iter);
--
--		radix_tree_for_each_slot(srv_slot, &node->servers,
--					 &srv_iter, 0) {
--			struct qrtr_server *srv;
--
--			srv = radix_tree_deref_slot(srv_slot);
--			if (!srv)
--				continue;
--			if (radix_tree_deref_retry(srv)) {
--				srv_slot = radix_tree_iter_retry(&srv_iter);
--				continue;
--			}
--
-+	xa_for_each(&nodes, node_idx, node) {
-+		xa_for_each(&node->servers, srv_idx, srv) {
- 			if (!server_match(srv, &filter))
- 				continue;
- 
--			srv_slot = radix_tree_iter_resume(srv_slot, &srv_iter);
--
--			rcu_read_unlock();
- 			lookup_notify(from, srv, true);
--			rcu_read_lock();
- 		}
- 	}
--	rcu_read_unlock();
- 
- 	/* Empty notification, to indicate end of listing */
- 	lookup_notify(from, NULL, true);
+ 	ether_addr_copy(tp_vars->other_end, icmp->orig);
+ 	tp_vars->role = BATADV_TP_RECEIVER;
 
 
 
