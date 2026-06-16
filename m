@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-263957-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266273-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 2um2DotsMWriiwUAu9opvQ
-	(envelope-from <stable+bounces-263957-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:32:27 +0200
+	id a0vmA++ZMWrcnwUAu9opvQ
+	(envelope-from <stable+bounces-266273-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:46:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id A13556911DB
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:32:26 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96444694744
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:46:06 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=WORktjXi;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263957-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-263957-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=U1yc0Ckx;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266273-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266273-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9A52B314E267
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:23:42 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DC106303B6D1
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:46:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 271D844CF40;
-	Tue, 16 Jun 2026 15:23:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C1473CFF55;
+	Tue, 16 Jun 2026 18:46:04 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B33B244CAEA;
-	Tue, 16 Jun 2026 15:23:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC5A2331A44;
+	Tue, 16 Jun 2026 18:46:02 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781623387; cv=none; b=ZbvbfG9TGtvIQ2KcS25Deq/4ISqow54wfneB9wWEaMe0/Reo9MdG2P2fE7HXv3lcoQZ0BNBs/jLbZj72IHab+t5QKftvIfDiRLF1XHoKQoy82oVxwhFK7gJpsE83nBIiAS2NjAVLXe5zXjiv1vta0osYUHox7C8Gun3i9vNdJRc=
+	t=1781635563; cv=none; b=hgIk2JdHLwq0p5H8XafCutn5AT97GZVj+WkRRi1olAUaziXzhWmG8pPClr7UMFTdDuI9HSiRgHCi5Tz363W4p5Wj30op+t3DUZazEM+XXbMc2oGTtY07kDiAJFHVqTj6rUX+vF89BP8SyQlosKHRCpXeWVXzrRIY2HlfkhnHBaw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781623387; c=relaxed/simple;
-	bh=o977UknFEPOL8XyIhVtsEqDcGfFSp5xuRPiaZjFCHj8=;
+	s=arc-20240116; t=1781635563; c=relaxed/simple;
+	bh=Noim+MBRN6f3N69rFx8jeEiySxxGoGXiW80P9Dw43EA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i9FfroTnCuErUXl/b9ZVy5QA1ARnsELwvB/rdnM5ULSR0CdAxBMFRPxwucJyNKAfPNj9+TNciB+JRbm0fmjR4iPQb0iBvh7zBPpoKaZ/5M5ut3k7BzQHvEX1TeGCMtm5ZhHk4S5Y85wvULm5jdBQfvql9WTRAOl2RXyLGPQSzfg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WORktjXi; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5A0E1F000E9;
-	Tue, 16 Jun 2026 15:23:05 +0000 (UTC)
+	 MIME-Version; b=aQBXuzqfdB55FCSjvER6uGgGVYVkdOjdy0sYKdYL62HUVh/BYxBI3lRbFZN92Q0AFeeaLex3gBJTQ4XlzLnbJEIbVPFJeNziYM2DaiPShR+bEMbF4IbbsVgUEsljrMkqh75G3XIi3T0xIuZvD21THeUpwOmQNk/4HHju0+XiOx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U1yc0Ckx; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B32DD1F000E9;
+	Tue, 16 Jun 2026 18:46:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781623386;
-	bh=uef4f7ImzhyDAPl1CEUNc3sXjmHnssfNTdP8Jc1c5fc=;
+	s=korg; t=1781635562;
+	bh=bW/m705OzeOQ93fgJDd6lgTt8ueuN1l5hOLm6v7EUpM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=WORktjXiUkBMKvwxIfXjAj+VbSvSVeTS3em9OmuTipo/YsQcW6Mvs7OU0Z5pWg61C
-	 ElDSZjatT5lJiAjwu4UKmS+0442VIHgkAB6N8KacpeUu1rzp89vLzNDyOOFBdIUjz2
-	 1ulivv5XOGHN1UF6bcwq8DqYKv1EnfxWob0JrOeY=
+	b=U1yc0CkxfWoB0Yy+wCzcWKVonEEhrPFnAA1t39NuTzfP6+OAIlXTzugX9QPkngpUv
+	 UHAdjq00W0MfNzl3pNZFjPryqtrEii4mbJkqQy+P1+btDuWuHnZXzaKiXKLV8bv1qU
+	 RrmTX/JYw5vV6j+75fpfIhur2NWjKRB7wgUFuAT4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 137/378] ptp: ocp: fix resource freeing order
+	Stable@vger.kernel.org,
+	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 5.10 072/342] ASoC: qcom: q6asm-dai: fix error handling in prepare and set_params
 Date: Tue, 16 Jun 2026 20:26:08 +0530
-Message-ID: <20260616145117.501799097@linuxfoundation.org>
+Message-ID: <20260616145051.599063975@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,21 +72,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-263957-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-266273-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:vadim.fedorenko@linux.dev,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:Stable@vger.kernel.org,m:srinivas.kandagatla@oss.qualcomm.com,m:broonie@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -98,90 +98,92 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linux.dev:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,qualcomm.com:email,msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A13556911DB
+X-Rspamd-Queue-Id: 96444694744
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+From: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
 
-[ Upstream commit 627366c51145a07f675b1800fb5ea2ec960bd900 ]
+commit 4b4db09f283df65d780bc7cee66cb4a7e9bf4770 upstream.
 
-Commit a60fc3294a37 ("ptp: rework ptp_clock_unregister() to disable
-events") added a call to ptp_disable_all_events() which changes the
-configuration of pins if they support EXTTS events. In ptp_ocp_detach()
-pins resources are freed before ptp_clock_unregister() and it leads to
-use-after-free during driver removal. Fix it by changing the order of
-free/unregister calls. To avoid irq handler running on the other core
-while ptp device unregistering, call synchronize_irq() after HW is
-configured to stop producing irqs and no irqs are in-flight.
+Fix error handling in q6asm_dai_compr_set_params() and q6asm_dai_prepare()
+for both CMD_CLOSE and q6asm_unmap_memory_regions().
 
-Fixes: a60fc3294a37 ("ptp: rework ptp_clock_unregister() to disable events")
-Signed-off-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Link: https://patch.msgid.link/20260608155952.240304-1-vadim.fedorenko@linux.dev
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+In both the functions, we are doing q6asm_audio_client_free in failure
+cases, which means if prepare or set_params fail, we can never recover.
+Now open and close are done in respective dai_open/close functions.
+
+Fixes: 2a9e92d371db ("ASoC: qdsp6: q6asm: Add q6asm dai driver")
+Cc: Stable@vger.kernel.org
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260518092347.3446946-4-srinivas.kandagatla@oss.qualcomm.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ptp/ptp_ocp.c | 24 +++++++++++++++++++++---
- 1 file changed, 21 insertions(+), 3 deletions(-)
+ sound/soc/qcom/qdsp6/q6asm-dai.c |   24 ++++++++++++++++--------
+ 1 file changed, 16 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/ptp/ptp_ocp.c b/drivers/ptp/ptp_ocp.c
-index d88ab2f86b1bf6..fcfa671bd6897c 100644
---- a/drivers/ptp/ptp_ocp.c
-+++ b/drivers/ptp/ptp_ocp.c
-@@ -2216,8 +2216,13 @@ ptp_ocp_ts_enable(void *priv, u32 req, bool enable)
- 		iowrite32(1, &reg->intr_mask);
- 		iowrite32(1, &reg->intr);
- 	} else {
-+		int irq_vec = pci_irq_vector(bp->pdev, ext->irq_vec);
+--- a/sound/soc/qcom/qdsp6/q6asm-dai.c
++++ b/sound/soc/qcom/qdsp6/q6asm-dai.c
+@@ -239,9 +239,19 @@ static int q6asm_dai_prepare(struct snd_
+ 	/* rate and channels are sent to audio driver */
+ 	if (prtd->state == Q6ASM_STREAM_RUNNING) {
+ 		/* clear the previous setup if any  */
+-		q6asm_cmd(prtd->audio_client, prtd->stream_id, CMD_CLOSE);
+-		q6asm_unmap_memory_regions(substream->stream,
+-					   prtd->audio_client);
++		ret = q6asm_cmd(prtd->audio_client, prtd->stream_id, CMD_CLOSE);
++		if (ret < 0) {
++			dev_err(dev, "Failed to close q6asm stream %d\n", prtd->stream_id);
++			return ret;
++		}
 +
- 		iowrite32(0, &reg->intr_mask);
- 		iowrite32(0, &reg->enable);
-+		ioread32(&reg->intr_mask);
-+		if (irq_vec > 0)
-+			synchronize_irq(irq_vec);
++		ret = q6asm_unmap_memory_regions(substream->stream, prtd->audio_client);
++		if (ret < 0) {
++			dev_err(dev, "Failed to unmap memory regions for q6asm stream %d\n",
++				prtd->stream_id);
++			return ret;
++		}
++
+ 		q6routing_stream_close(soc_prtd->dai_link->id,
+ 					 substream->stream);
+ 		prtd->state = Q6ASM_STREAM_STOPPED;
+@@ -309,8 +319,6 @@ routing_err:
+ 	q6asm_cmd(prtd->audio_client, prtd->stream_id,  CMD_CLOSE);
+ open_err:
+ 	q6asm_unmap_memory_regions(substream->stream, prtd->audio_client);
+-	q6asm_audio_client_free(prtd->audio_client);
+-	prtd->audio_client = NULL;
+ 
+ 	return ret;
+ }
+@@ -926,7 +934,7 @@ static int q6asm_dai_compr_set_params(st
+ 			      prtd->session_id, dir);
+ 	if (ret) {
+ 		dev_err(dev, "Stream reg failed ret:%d\n", ret);
+-		goto q6_err;
++		goto routing_err;
  	}
  
+ 	ret = __q6asm_dai_compr_set_codec_params(component, stream,
+@@ -952,11 +960,11 @@ static int q6asm_dai_compr_set_params(st
  	return 0;
-@@ -4558,6 +4563,22 @@ ptp_ocp_detach(struct ptp_ocp *bp)
- 	ptp_ocp_detach_sysfs(bp);
- 	ptp_ocp_attr_group_del(bp);
- 	timer_delete_sync(&bp->watchdog);
-+	/* Disable interrupts on all timestampers */
-+	if (bp->ts0)
-+		ptp_ocp_ts_enable(bp->ts0, 0, false);
-+	if (bp->ts1)
-+		ptp_ocp_ts_enable(bp->ts1, 0, false);
-+	if (bp->ts2)
-+		ptp_ocp_ts_enable(bp->ts2, 0, false);
-+	if (bp->ts3)
-+		ptp_ocp_ts_enable(bp->ts3, 0, false);
-+	if (bp->ts4)
-+		ptp_ocp_ts_enable(bp->ts4, 0, false);
-+	if (bp->pps)
-+		ptp_ocp_ts_enable(bp->pps, ~0, false);
-+	if (bp->ptp)
-+		ptp_clock_unregister(bp->ptp);
-+	kfree(bp->ptp_info.pin_config);
- 	ptp_ocp_unregister_ext(bp->ts0);
- 	ptp_ocp_unregister_ext(bp->ts1);
- 	ptp_ocp_unregister_ext(bp->ts2);
-@@ -4575,9 +4596,6 @@ ptp_ocp_detach(struct ptp_ocp *bp)
- 		clk_hw_unregister_fixed_rate(bp->i2c_clk);
- 	if (bp->n_irqs)
- 		pci_free_irq_vectors(bp->pdev);
--	if (bp->ptp)
--		ptp_clock_unregister(bp->ptp);
--	kfree(bp->ptp_info.pin_config);
- 	device_unregister(&bp->dev);
+ 
+ q6_err:
++	q6routing_stream_close(rtd->dai_link->id, dir);
++routing_err:
+ 	q6asm_cmd(prtd->audio_client, prtd->stream_id, CMD_CLOSE);
+ 
+ open_err:
+-	q6asm_audio_client_free(prtd->audio_client);
+-	prtd->audio_client = NULL;
+ 	return ret;
  }
  
--- 
-2.53.0
-
 
 
 
