@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-264975-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265520-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id UyYtB2yAMWonlAUAu9opvQ
-	(envelope-from <stable+bounces-264975-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:57:16 +0200
+	id EbvSNgaMMWovmQUAu9opvQ
+	(envelope-from <stable+bounces-265520-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:46:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 843EF6929C4
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:57:15 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AC2469377C
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:46:46 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="q3Pf4VM/";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264975-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264975-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ORdKay96;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265520-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265520-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 993503017FA0
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:54:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1CDF032348D1
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:40:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94ABF40E8C1;
-	Tue, 16 Jun 2026 16:54:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB18F47AF5D;
+	Tue, 16 Jun 2026 17:40:29 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 400144502F;
-	Tue, 16 Jun 2026 16:54:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 986E447AF5F;
+	Tue, 16 Jun 2026 17:40:28 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781628876; cv=none; b=E+a3+nWgV+TWyiAwNCYN1Y8xqw/wZucIAQ8XgRgevze2PMZkebLqto+V+ZYtrQKmTS9zuhvTDgomc9PA5O/bnujhoisa6sflUs8PoiRbtEUslG0yKD5TLXMRHbSM0U2G7/QG5QYRnjhLt5OfqHe9FksK5j0zf5uU9rVqLnaZRvY=
+	t=1781631629; cv=none; b=pQ55Ebp3pgL7eLxiRWPQLexU0jjvfrMaO66qFrZ3TsYdTUQe9bJ9M5hturWfvKxhVAUNTTSHuIyvPfb/Urex/82IKa0V5NcVizMWQsBtmyjWS+zog0Rsj3DeYZZlfERHQkhLPV2jGB28+3T2A6LBAovRlf4zRyJ34zR7YaPvp0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781628876; c=relaxed/simple;
-	bh=WBonmLvxOtQZnZKG4PgmvIt8BZC2VtdgvF04LdKJ5sI=;
+	s=arc-20240116; t=1781631629; c=relaxed/simple;
+	bh=7nSi6BGNAheHSdmbEJARFDZtyBQlcd6ZGohU8BPDBIo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P5Eb+pFnoaRKY3id17BIWjPW7nvXBflrBpqgSU/itXbtVJypnzsUb+chlbD2DxrmksvUKy4e6EUIx5fLKZBsqZtUmwc3peafEiRgJzHrgez2Sjf1QFPaDthYIBsYLoZKAWXBVF1/GEytirL/eyiuzBlD/nKUsOSLNmQMLGCTe/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q3Pf4VM/; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 438531F000E9;
-	Tue, 16 Jun 2026 16:54:33 +0000 (UTC)
+	 MIME-Version; b=KS0qNZDp8qwdCoDPpFjwS5BkNggrWklS17RY7lEM6ZA5kc8pP3YYk9K+AV6vnSa1tdUGxsAw1YDaCF9TG1mgWomct9bDHhcoFXmgceuUh/qQHxA9BYnDv9+/3suN89OCapXBTU/Y7I0zKQ30dGFvTo1RkeX5/3lPUSQjuEqQIJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ORdKay96; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FFE31F000E9;
+	Tue, 16 Jun 2026 17:40:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781628875;
-	bh=h3PG/3WiOqlzCKzXGW1ADHhoJXlazTroLW0Gu91IN3s=;
+	s=korg; t=1781631628;
+	bh=jc9RC872TvGH1WvgsjKzvz63KhcRUYS2nbBYAKITJl4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=q3Pf4VM/nfRMEorM7/OYuupgsVpizDeIaiMJFau5APYXCtrbOCH+7+oLsJ8jsGX6O
-	 pCV74aFV65GtgnLgip9INU11IxZZd5NsWQRwZmhI7zcr94CbSdmVyrhkU2ExkrC7aY
-	 cJewkga6leMe8zvBGTsZ4GlX9dWyks/5Dtule1A0=
+	b=ORdKay96hDXd0bujxJM4yYnIRKsK5bh6UQ7AzY+v3yOlLOq6Y2os1TuItjnf5orKQ
+	 +wkZdIhUhw+8N4+EnQD6FLfL4ykMkHKkw0ksNSl+G3M9iamcQHUCN9svIOKF4w6yRs
+	 97I4o/sTpNsoab2kL8pG2IZNP7bNgd6qsxNo1keY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Berkant Koc <me@berkoc.com>,
-	Michael Kelley <mhklinux@outlook.com>,
-	Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
-Subject: [PATCH 6.6 177/452] drm/hyperv: validate VMBus packet size in receive callback
+	Kyle Zeng <kylebot@openai.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 257/522] netfilter: x_tables: avoid leaking percpu counter pointers
 Date: Tue, 16 Jun 2026 20:26:44 +0530
-Message-ID: <20260616145127.172067803@linuxfoundation.org>
+Message-ID: <20260616145137.974707732@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,223 +72,178 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265520-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-264975-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:me@berkoc.com,m:mhklinux@outlook.com,m:hamzamahfooz@linux.microsoft.com,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,berkoc.com,outlook.com,linux.microsoft.com];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kylebot@openai.com,m:pablo@netfilter.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,outlook.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,netfilter.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,openai.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 843EF6929C4
+X-Rspamd-Queue-Id: 4AC2469377C
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Berkant Koc <me@berkoc.com>
+From: Kyle Zeng <kylebot@openai.com>
 
-commit 7f87763f47a3c22fb50265a00619ef10f2394b18 upstream.
+[ Upstream commit f7f2fbb0e893a0238dc464f8d8c0f5609bec584f ]
 
-hyperv_receive_sub() reads msg->vid_hdr.type and dispatches into one
-of four message-type branches without knowing how many bytes the host
-wrote into hv->recv_buf. The completion path then runs
-memcpy(hv->init_buf, msg, VMBUS_MAX_PACKET_SIZE), so the consumer that
-wakes on wait_for_completion_timeout() can read up to 16 KiB of
-residue from a prior message as if it were the response payload.
+The native and compat get-entries paths copy the fixed rule entry header
+from the kernelized rule blob to userspace before overwriting the entry's
+counter fields with a sanitized counter snapshot.
 
-Pass bytes_recvd into hyperv_receive_sub() and reject any packet that
-does not cover the pipe + synthvid header. A single switch on
-msg->vid_hdr.type then computes the type-specific payload size: the
-three completion-driving types (SYNTHVID_VERSION_RESPONSE,
-SYNTHVID_RESOLUTION_RESPONSE, SYNTHVID_VRAM_LOCATION_ACK) fall through
-to a shared exit that requires that size before memcpy/complete, while
-SYNTHVID_FEATURE_CHANGE validates its own payload and returns before
-reading is_dirt_needed. Unknown types are dropped.
+On SMP kernels, entry->counters.pcnt contains the percpu allocation
+address used by x_tables rule counters. A caller can provide a userspace
+buffer that faults during the initial fixed-header copy after pcnt has
+been copied but before the later sanitized counter copy runs. The syscall
+then returns -EFAULT while leaving the raw percpu pointer in userspace.
 
-SYNTHVID_RESOLUTION_RESPONSE is variable length: the host fills
-resolution_count entries, not the full SYNTHVID_MAX_RESOLUTION_COUNT
-array. Validate the fixed prefix first so resolution_count can be
-read, bound it against the array, then require only the count-sized
-array, so the shorter responses the host actually sends are accepted.
+Copy only the fixed entry prefix before counters from the kernelized rule
+blob, then copy the sanitized counter snapshot into the counter field.
+Apply this ordering to the IPv4, IPv6, and ARP native and compat
+get-entries implementations so a fault cannot expose the internal percpu
+counter pointer.
 
-Only run the sub-handler when vmbus_recvpacket() returned success. The
-memcpy length is bytes_recvd, which is bounded by VMBUS_MAX_PACKET_SIZE
-only on a successful receive; on -ENOBUFS vmbus_recvpacket() instead
-reports the required length, which can exceed hv->recv_buf, so copying
-bytes_recvd would read and write past the 16 KiB buffers. Gating on the
-success return keeps the copy bounded. The nonzero-return path is itself
-a malformed-message case and is now logged rather than silently skipped;
-channel recovery is not attempted.
-
-Rejected packets are reported via drm_err_ratelimited() rather than
-silently dropped, matching the CoCo-hardened pattern in
-hv_kvp_onchannelcallback().
-
-Fixes: 76c56a5affeb ("drm/hyperv: Add DRM driver for hyperv synthetic video device")
-Cc: stable@vger.kernel.org # 5.14+
-Signed-off-by: Berkant Koc <me@berkoc.com>
-Assisted-by: Claude:claude-opus-4-7 berkoc-pipeline
-Reviewed-by: Michael Kelley <mhklinux@outlook.com>
-Tested-by: Michael Kelley <mhklinux@outlook.com>
-Signed-off-by: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
-Link: https://patch.msgid.link/8200dbc199c7a9b75ac7e8af6c748d2189b5ebd5.1779542874.git.me@berkoc.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 71ae0dff02d7 ("netfilter: xtables: use percpu rule counters")
+Signed-off-by: Kyle Zeng <kylebot@openai.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/hyperv/hyperv_drm_proto.c |  100 ++++++++++++++++++++++++++----
- 1 file changed, 87 insertions(+), 13 deletions(-)
+ net/ipv4/netfilter/arp_tables.c | 15 ++++++---------
+ net/ipv4/netfilter/ip_tables.c  | 15 ++++++---------
+ net/ipv6/netfilter/ip6_tables.c | 15 ++++++---------
+ 3 files changed, 18 insertions(+), 27 deletions(-)
 
---- a/drivers/gpu/drm/hyperv/hyperv_drm_proto.c
-+++ b/drivers/gpu/drm/hyperv/hyperv_drm_proto.c
-@@ -425,30 +425,92 @@ static int hyperv_get_supported_resoluti
- 	return 0;
- }
+diff --git a/net/ipv4/netfilter/arp_tables.c b/net/ipv4/netfilter/arp_tables.c
+index 564054123772a1..eeb48265208a2b 100644
+--- a/net/ipv4/netfilter/arp_tables.c
++++ b/net/ipv4/netfilter/arp_tables.c
+@@ -702,14 +702,12 @@ static int copy_entries_to_user(unsigned int total_size,
+ 		const struct xt_entry_target *t;
  
--static void hyperv_receive_sub(struct hv_device *hdev)
-+static void hyperv_receive_sub(struct hv_device *hdev, u32 bytes_recvd)
- {
- 	struct hyperv_drm_device *hv = hv_get_drvdata(hdev);
- 	struct synthvid_msg *msg;
-+	size_t hdr_size;
-+	size_t need;
+ 		e = loc_cpu_entry + off;
+-		if (copy_to_user(userptr + off, e, sizeof(*e))) {
+-			ret = -EFAULT;
+-			goto free_counters;
+-		}
+-		if (copy_to_user(userptr + off
++		if (copy_to_user(userptr + off, e,
++				 offsetof(struct arpt_entry, counters)) ||
++		    copy_to_user(userptr + off
+ 				 + offsetof(struct arpt_entry, counters),
+ 				 &counters[num],
+-				 sizeof(counters[num])) != 0) {
++				 sizeof(counters[num]))) {
+ 			ret = -EFAULT;
+ 			goto free_counters;
+ 		}
+@@ -1327,9 +1325,8 @@ static int compat_copy_entry_to_user(struct arpt_entry *e, void __user **dstptr,
  
- 	if (!hv)
- 		return;
+ 	origsize = *size;
+ 	ce = *dstptr;
+-	if (copy_to_user(ce, e, sizeof(struct arpt_entry)) != 0 ||
+-	    copy_to_user(&ce->counters, &counters[i],
+-	    sizeof(counters[i])) != 0)
++	if (copy_to_user(ce, e, offsetof(struct compat_arpt_entry, counters)) ||
++	    copy_to_user(&ce->counters, &counters[i], sizeof(counters[i])))
+ 		return -EFAULT;
  
--	msg = (struct synthvid_msg *)hv->recv_buf;
--
--	/* Complete the wait event */
--	if (msg->vid_hdr.type == SYNTHVID_VERSION_RESPONSE ||
--	    msg->vid_hdr.type == SYNTHVID_RESOLUTION_RESPONSE ||
--	    msg->vid_hdr.type == SYNTHVID_VRAM_LOCATION_ACK) {
--		memcpy(hv->init_buf, msg, VMBUS_MAX_PACKET_SIZE);
--		complete(&hv->wait);
-+	hdr_size = sizeof(struct pipe_msg_hdr) +
-+		   sizeof(struct synthvid_msg_hdr);
-+	if (bytes_recvd < hdr_size) {
-+		drm_err_ratelimited(&hv->dev,
-+				    "synthvid packet too small for header: %u\n",
-+				    bytes_recvd);
- 		return;
- 	}
+ 	*dstptr += sizeof(struct compat_arpt_entry);
+diff --git a/net/ipv4/netfilter/ip_tables.c b/net/ipv4/netfilter/ip_tables.c
+index a6208efcfccfce..055d5e28a44f46 100644
+--- a/net/ipv4/netfilter/ip_tables.c
++++ b/net/ipv4/netfilter/ip_tables.c
+@@ -834,14 +834,12 @@ copy_entries_to_user(unsigned int total_size,
+ 		const struct xt_entry_target *t;
  
--	if (msg->vid_hdr.type == SYNTHVID_FEATURE_CHANGE) {
-+	msg = (struct synthvid_msg *)hv->recv_buf;
-+	need = hdr_size;
-+
-+	switch (msg->vid_hdr.type) {
-+	case SYNTHVID_VERSION_RESPONSE:
-+		need += sizeof(struct synthvid_version_resp);
-+		break;
-+	case SYNTHVID_RESOLUTION_RESPONSE:
-+		/*
-+		 * The resolution response is variable length: the host
-+		 * fills resolution_count entries, not the full
-+		 * SYNTHVID_MAX_RESOLUTION_COUNT array. Require the fixed
-+		 * prefix first so resolution_count can be read, then
-+		 * demand exactly the count-sized array.
-+		 */
-+		need += offsetof(struct synthvid_supported_resolution_resp,
-+				 supported_resolution);
-+		if (bytes_recvd < need)
-+			break;
-+		if (msg->resolution_resp.resolution_count >
-+		    SYNTHVID_MAX_RESOLUTION_COUNT) {
-+			drm_err_ratelimited(&hv->dev,
-+					    "synthvid resolution count too large: %u\n",
-+					    msg->resolution_resp.resolution_count);
-+			return;
-+		}
-+		need += msg->resolution_resp.resolution_count *
-+			sizeof(struct hvd_screen_info);
-+		break;
-+	case SYNTHVID_VRAM_LOCATION_ACK:
-+		need += sizeof(struct synthvid_vram_location_ack);
-+		break;
-+	case SYNTHVID_FEATURE_CHANGE:
-+		/*
-+		 * Not a completion-driving message: validate its own payload
-+		 * and consume it here rather than falling through to the
-+		 * memcpy/complete shared by the wait-event responses.
-+		 */
-+		if (bytes_recvd < need +
-+		    sizeof(struct synthvid_feature_change)) {
-+			drm_err_ratelimited(&hv->dev,
-+					    "synthvid feature change packet too small: %u\n",
-+					    bytes_recvd);
-+			return;
-+		}
- 		hv->dirt_needed = msg->feature_chg.is_dirt_needed;
- 		if (hv->dirt_needed)
- 			hyperv_hide_hw_ptr(hv->hdev);
-+		return;
-+	default:
-+		return;
-+	}
-+
-+	/*
-+	 * Shared completion path for the wait-event responses
-+	 * (VERSION_RESPONSE, RESOLUTION_RESPONSE, VRAM_LOCATION_ACK):
-+	 * require the type-specific payload before handing the buffer to
-+	 * the waiter.
-+	 */
-+	if (bytes_recvd < need) {
-+		drm_err_ratelimited(&hv->dev,
-+				    "synthvid packet too small for type %u: %u < %zu\n",
-+				    msg->vid_hdr.type, bytes_recvd, need);
-+		return;
- 	}
-+	memcpy(hv->init_buf, msg, bytes_recvd);
-+	complete(&hv->wait);
- }
+ 		e = loc_cpu_entry + off;
+-		if (copy_to_user(userptr + off, e, sizeof(*e))) {
+-			ret = -EFAULT;
+-			goto free_counters;
+-		}
+-		if (copy_to_user(userptr + off
++		if (copy_to_user(userptr + off, e,
++				 offsetof(struct ipt_entry, counters)) ||
++		    copy_to_user(userptr + off
+ 				 + offsetof(struct ipt_entry, counters),
+ 				 &counters[num],
+-				 sizeof(counters[num])) != 0) {
++				 sizeof(counters[num]))) {
+ 			ret = -EFAULT;
+ 			goto free_counters;
+ 		}
+@@ -1230,9 +1228,8 @@ compat_copy_entry_to_user(struct ipt_entry *e, void __user **dstptr,
  
- static void hyperv_receive(void *ctx)
-@@ -469,9 +531,21 @@ static void hyperv_receive(void *ctx)
- 		ret = vmbus_recvpacket(hdev->channel, recv_buf,
- 				       VMBUS_MAX_PACKET_SIZE,
- 				       &bytes_recvd, &req_id);
--		if (bytes_recvd > 0 &&
--		    recv_buf->pipe_hdr.type == PIPE_MSG_DATA)
--			hyperv_receive_sub(hdev);
-+		if (ret) {
-+			/*
-+			 * A nonzero return (e.g. -ENOBUFS for an oversized
-+			 * packet) is itself a malformed message: bytes_recvd
-+			 * then reports the required length rather than a copied
-+			 * payload, so it must not be forwarded to the
-+			 * sub-handler. Channel recovery is not attempted.
-+			 */
-+			drm_err_ratelimited(&hv->dev,
-+					    "vmbus_recvpacket failed: %d (need %u)\n",
-+					    ret, bytes_recvd);
-+		} else if (bytes_recvd > 0 &&
-+			   recv_buf->pipe_hdr.type == PIPE_MSG_DATA) {
-+			hyperv_receive_sub(hdev, bytes_recvd);
-+		}
- 	} while (bytes_recvd > 0 && ret == 0);
- }
+ 	origsize = *size;
+ 	ce = *dstptr;
+-	if (copy_to_user(ce, e, sizeof(struct ipt_entry)) != 0 ||
+-	    copy_to_user(&ce->counters, &counters[i],
+-	    sizeof(counters[i])) != 0)
++	if (copy_to_user(ce, e, offsetof(struct compat_ipt_entry, counters)) ||
++	    copy_to_user(&ce->counters, &counters[i], sizeof(counters[i])))
+ 		return -EFAULT;
  
+ 	*dstptr += sizeof(struct compat_ipt_entry);
+diff --git a/net/ipv6/netfilter/ip6_tables.c b/net/ipv6/netfilter/ip6_tables.c
+index b844e519da1b4e..333115dff69ae7 100644
+--- a/net/ipv6/netfilter/ip6_tables.c
++++ b/net/ipv6/netfilter/ip6_tables.c
+@@ -850,14 +850,12 @@ copy_entries_to_user(unsigned int total_size,
+ 		const struct xt_entry_target *t;
+ 
+ 		e = loc_cpu_entry + off;
+-		if (copy_to_user(userptr + off, e, sizeof(*e))) {
+-			ret = -EFAULT;
+-			goto free_counters;
+-		}
+-		if (copy_to_user(userptr + off
++		if (copy_to_user(userptr + off, e,
++				 offsetof(struct ip6t_entry, counters)) ||
++		    copy_to_user(userptr + off
+ 				 + offsetof(struct ip6t_entry, counters),
+ 				 &counters[num],
+-				 sizeof(counters[num])) != 0) {
++				 sizeof(counters[num]))) {
+ 			ret = -EFAULT;
+ 			goto free_counters;
+ 		}
+@@ -1246,9 +1244,8 @@ compat_copy_entry_to_user(struct ip6t_entry *e, void __user **dstptr,
+ 
+ 	origsize = *size;
+ 	ce = *dstptr;
+-	if (copy_to_user(ce, e, sizeof(struct ip6t_entry)) != 0 ||
+-	    copy_to_user(&ce->counters, &counters[i],
+-	    sizeof(counters[i])) != 0)
++	if (copy_to_user(ce, e, offsetof(struct compat_ip6t_entry, counters)) ||
++	    copy_to_user(&ce->counters, &counters[i], sizeof(counters[i])))
+ 		return -EFAULT;
+ 
+ 	*dstptr += sizeof(struct compat_ip6t_entry);
+-- 
+2.53.0
+
 
 
 
