@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-264967-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266302-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 9+1OEj6DMWoqlQUAu9opvQ
-	(envelope-from <stable+bounces-264967-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:09:18 +0200
+	id YC0jC1WbMWpYoAUAu9opvQ
+	(envelope-from <stable+bounces-266302-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:52:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44596692C91
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:09:17 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9CA5694882
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:52:04 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=qxu6xYk1;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264967-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-264967-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=fG3c+iYM;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266302-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266302-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7C859300CF2B
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:53:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 413B731D0883
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:48:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A765743E490;
-	Tue, 16 Jun 2026 16:53:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA7553D8125;
+	Tue, 16 Jun 2026 18:48:30 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F3E33876CF;
-	Tue, 16 Jun 2026 16:53:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C173A2C0261;
+	Tue, 16 Jun 2026 18:48:29 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781628832; cv=none; b=Wubpei/SJsiMvV3xLK6lOjoeMsgZYEqqm02hGek661vA7qilJN837AJkef2/vMOPZG3P2D8sp+LhcYCO/EcRZMnAW2WEezOKbOoOFctJegHb96FkcvbBNO5k/H5D12M92H5w9Wo4RhgXNHYQv6UYF89TM5ep+5CsqjguNV7wtfM=
+	t=1781635710; cv=none; b=G59xhJkTr+313V6TmiIly//Ecy7sK/hPJAhJ9E+Clazz8fSOCm1BPf3ilUK3eTPtxmhLzRsJKp57Sa6XtqDvHuVZL0fxWFqzflUBemMMchizWOjh8jfIkdXcWadr+iTWKuBu5YxPsELSumnvgrTepfpowyIkdMs24iKLVOlwQHw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781628832; c=relaxed/simple;
-	bh=iVNg7B54T4Ip5EjQCMvHW84pvJlOLWXka82yqVNgYbw=;
+	s=arc-20240116; t=1781635710; c=relaxed/simple;
+	bh=Q0CymfwSRind67AOTsbJFT2RYyLdfr7NQBUej8wr2hw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BI8cGhvyqaBfDK57NC3XX8vKPc3Xi86Jm0xPxmyCLa0Dkqkr1eyNSOG95AGhydL2vPA1R3FtWggNkQDmiOjJHROerTswAT/kUsRXsTp+Xb1Mky2t5mXHqnU5VMzVyKHfvtbQi7IvuNyDwGeYyDQaiKRUXiHkgHiEMefTEyJxJuc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qxu6xYk1; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DAEC1F000E9;
-	Tue, 16 Jun 2026 16:53:50 +0000 (UTC)
+	 MIME-Version; b=N0zUilAIyV7hgjcIKLjr8sMS1dtjequ8mteGLpzGM7zZxSlXtbBK0S9NKTN7Y6xcPgOwRziAcGKg4OEhUqyfvdANhCeoXhQD/quoXdGnm1I9zyqOitBwoeJ3MIyX/YsxBeqzKvT6DyVfKqD90iziph5BF57C7J2Ld9iBnhVKH8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fG3c+iYM; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BC811F00A3A;
+	Tue, 16 Jun 2026 18:48:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781628831;
-	bh=8WQPCP8LDZi4KAV0aNuDL0WYGDPZMIAhSDS/3aOgCQE=;
+	s=korg; t=1781635709;
+	bh=fVDPkUrB2oYFnAGglY/qz70WXVRNjoGsF7m30c8dKCU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=qxu6xYk1dxXZMkCCW2XR5CECeMMVOtrdTFuzFtXAQXiDDeEZBxcxUKs7bMwGsF4V1
-	 CvVefncL9b2cQAHFQL3s83bWfDlwcY16c63Qv754FnBplBXap26KMLuo7Ph5RfcYXW
-	 07IY90ZtyHNUuSO+PTo2istrmnuvwbYG6eRpJ0Uc=
+	b=fG3c+iYMIhNYUR72lhWQVI35/NtdouUTVNlIyur59f0wsHabuPnLY56RqN6FPedYc
+	 2c34E3FQyCL/nwHTzWjPJ9DpqKdJH8USeYgoz99rOBufkIPNbWnbvRu6KNJLzFlwTp
+	 JF2YpBVW26NaL6BN4WRfGUu4lYltljrDElzz+QVM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: [PATCH 6.6 170/452] thunderbolt: property: Reject u32 wrap in tb_property_entry_valid()
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.10 101/342] USB: serial: keyspan: fix missing indat transfer sanity check
 Date: Tue, 16 Jun 2026 20:26:37 +0530
-Message-ID: <20260616145126.822697143@linuxfoundation.org>
+Message-ID: <20260616145052.935864812@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,107 +65,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264967-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:mika.westerberg@linux.intel.com,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.intel.com];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TAGGED_FROM(0.00)[bounces-266302-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:johan@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCPT_COUNT_THREE(0.00)[4];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,intel.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 44596692C91
+X-Rspamd-Queue-Id: B9CA5694882
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit 01deda0152066c6c955f0619114ea6afa070aaec upstream.
+commit ab8336a7e414f018430aa1af3a46944032f7ff96 upstream.
 
-entry->value is u32 and entry->length is u16; the sum is performed in
-u32 and wraps.  A malicious XDomain peer can pick
-value = 0xffffff00, length = 0x100 so the sum 0x100000000 wraps to 0
-and passes the > block_len check.  tb_property_parse() then passes
-entry->value to parse_dwdata() as a dword offset into the property
-block, reading attacker-directed memory far past the allocation.
+Add the missing sanity check on the size of usa49wg indat transfers to
+avoid parsing stale or uninitialised slab data.
 
-For TEXT-typed entries with the "deviceid" or "vendorid" keys this
-lands in xd->device_name / xd->vendor_name and is readable back via
-the per-XDomain device_name / vendor_name sysfs attributes; the leak
-is NUL-bounded (kstrdup() stops at the first zero byte) and
-untargeted (the attacker picks a delta, not an absolute address).
-DATA-typed entries are parsed into property->value.data but not
-generically surfaced to userspace.
-
-Use check_add_overflow() so a wrapped sum is rejected.
-
-Fixes: cdae7c07e3e3 ("thunderbolt: Add support for XDomain properties")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-6
-Assisted-by: Codex:gpt-5-4
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Fixes: 0ca1268e109a ("USB Serial Keyspan: add support for USA-49WG & USA-28XG")
+Cc: stable@vger.kernel.org	# 2.6.23
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/thunderbolt/property.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/usb/serial/keyspan.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/thunderbolt/property.c
-+++ b/drivers/thunderbolt/property.c
-@@ -8,6 +8,7 @@
-  */
+--- a/drivers/usb/serial/keyspan.c
++++ b/drivers/usb/serial/keyspan.c
+@@ -1204,6 +1204,10 @@ static void usa49wg_indat_callback(struc
+ 	len = 0;
  
- #include <linux/err.h>
-+#include <linux/overflow.h>
- #include <linux/slab.h>
- #include <linux/string.h>
- #include <linux/uuid.h>
-@@ -52,13 +53,16 @@ static inline void format_dwdata(void *d
- static bool tb_property_entry_valid(const struct tb_property_entry *entry,
- 				  size_t block_len)
- {
-+	u32 end;
-+
- 	switch (entry->type) {
- 	case TB_PROPERTY_TYPE_DIRECTORY:
- 	case TB_PROPERTY_TYPE_DATA:
- 	case TB_PROPERTY_TYPE_TEXT:
- 		if (entry->length > block_len)
- 			return false;
--		if (entry->value + entry->length > block_len)
-+		if (check_add_overflow(entry->value, entry->length, &end) ||
-+		    end > block_len)
- 			return false;
- 		break;
+ 	while (i < urb->actual_length) {
++		if (urb->actual_length - i < 3) {
++			dev_warn_ratelimited(&urb->dev->dev, "malformed indat packet\n");
++			break;
++		}
  
+ 		/* Check port number from message */
+ 		if (data[i] >= serial->num_ports) {
 
 
 
