@@ -1,60 +1,67 @@
-Return-Path: <stable+bounces-264177-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264390-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id jAuuIC5xMWqxjQUAu9opvQ
-	(envelope-from <stable+bounces-264177-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:52:14 +0200
+	id sFefLN11MWqNjwUAu9opvQ
+	(envelope-from <stable+bounces-264390-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:12:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7081691748
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:52:13 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D9FD691CC5
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:12:13 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=wniR7lM5;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264177-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264177-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=wvTRrtP8;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264390-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264390-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0990D308C891
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:43:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4B2D430C026C
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:01:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 798044534A5;
-	Tue, 16 Jun 2026 15:42:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42CEB4534A3;
+	Tue, 16 Jun 2026 16:00:36 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31BF445107D;
-	Tue, 16 Jun 2026 15:42:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBE6B44D686;
+	Tue, 16 Jun 2026 16:00:34 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781624526; cv=none; b=MU3MMIgV4TjR3K6dGxHitGkwceZy4ZUF3zaBb4r5k7NBElObH8LTE+cMf+9krBBxAaVKOZDPsbnd1FFwWe448nXzrkAagASNxfzRhZH1+D9GvKVP/JFHuQ/EjYE49ySS6u2ajK48Pmt2gDXzOTujEEj1aU/Rea4bXhZyAVxxuWQ=
+	t=1781625636; cv=none; b=m0VZmRbtkna6OR1L+OQIAPgp67jZkfs8QopvHhOLXj4suV4zlJLsNzFmRzIlipvBmUJuvZgsXmOQtTwL3aiX/5jWygTAuNEeqWNPdztSGJ8POfTmJbwJLwFZvjmU7Ow8PF4bnfjcHc3hNIWJYqe83twjMiUW6n3ScC0xsWCYdiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781624526; c=relaxed/simple;
-	bh=2UwTMCcefVmsKnU9uryUbQIZK3Kv/twe3OvpKn1K/6I=;
+	s=arc-20240116; t=1781625636; c=relaxed/simple;
+	bh=yZfQ4uGFxdjYfClbMLn9l0zKCgQFHCwiyMb7+jeh7u4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V5hGbIwXBsbc79CK2/JyGl5WP0nl+MdUNMA7L8qWrXRqL7qyDMhcd7z3kSNXi0yYEdOGkf5NgTO8Pm8L3FMMiqVMj69IbTAxBPfECAzNVzIth8t/KYBaZtJsrK4x1WsuwAugy/TC6cClu+9/G3YWS7kzOhwTihMRfsh52cF+TC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wniR7lM5; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC4B61F000E9;
-	Tue, 16 Jun 2026 15:42:03 +0000 (UTC)
+	 MIME-Version; b=SXL2c/I50SNVIMTgft/csqYU/bhInibW3fEcpS0pAiFe/vP9Bfj3/Ruy53P3tpv0FLAQ5EXzsHbeSx0c8eD+acNKX/O0kNX+v2eYoazMk3okvQhQilC2r3DzGUf7wNFUS9ngCTwdLL4f6vSB2ce9H6BeJgc2ujlum7fkLPrSlHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wvTRrtP8; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E67741F000E9;
+	Tue, 16 Jun 2026 16:00:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781624524;
-	bh=AqxbF55NUW6arnm5/OkxLiMsck4cmKH3KgTHOB/ZHpE=;
+	s=korg; t=1781625634;
+	bh=+wSiuLgJFiZTfWRLltYdkvd2JFX0km2TqagC1Beqhf8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=wniR7lM5GUHgx7h7wRjVCdf0UaKHOkdDaOXQMNqWiJ5ZX0Kv5qNrsBnVbU7aKxqyB
-	 P/jY0HD7ZRl59DtaGcbP5mBm0+vpfKr0UlsvCUns4SbhT2/dwCUSyOauWqIL6c+nU8
-	 v29gyrBrnjrqPxPNKQ2aTzPisOOXfv8zaS2YPdRI=
+	b=wvTRrtP8lf6V8j+KH8z0n+QvpFLTV0xdlctvcbZcRKkM7sk0HqVjDbmtlRsv0uYYC
+	 DlUAcCRLOZNLWWzh39IMHoLf2+te8vs/V9SjiIsRVyBXYtNjHXcetY8hxCaLECqVVV
+	 oku6jvjYULh2J5WjL6M3z4oCnqoTWRtyZ2ErSM8M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Martin <andrew.martin@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 7.0 336/378] drm/amdkfd: Fix buffer overflow in SDMA queue checkpoint/restore on GFX11
+	stable@kernel.org,
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Zhengchuan Liang <zcliangcn@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Wyatt Feng <bronzed_45_vested@icloud.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Steffen Klassert <steffen.klassert@secunet.com>
+Subject: [PATCH 6.18 171/325] xfrm: espintcp: do not reuse an in-progress partial send
 Date: Tue, 16 Jun 2026 20:29:27 +0530
-Message-ID: <20260616145127.900277952@linuxfoundation.org>
+Message-ID: <20260616145106.354074666@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,153 +78,95 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264177-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	TAGGED_FROM(0.00)[bounces-264390-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:andrew.martin@amd.com,m:alexander.deucher@amd.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:yuantan098@gmail.com,m:yifanwucs@gmail.com,m:tomapufckgml@gmail.com,m:zcliangcn@gmail.com,m:bird@lzu.edu.cn,m:bronzed_45_vested@icloud.com,m:n05ec@lzu.edu.cn,m:steffen.klassert@secunet.com,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,icloud.com,secunet.com];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,icloud.com:email,secunet.com:email,lzu.edu.cn:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E7081691748
+X-Rspamd-Queue-Id: 2D9FD691CC5
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Martin <andrew.martin@amd.com>
+From: Wyatt Feng <bronzed_45_vested@icloud.com>
 
-commit 352ea59028ea48a6fff77f19ae28f98f71946a80 upstream.
+commit c381039ade2e161ab08c0eda73c4f8b9a7115928 upstream.
 
-The v11 MQD manager incorrectly assigned the CP-compute variants of
-checkpoint_mqd/restore_mqd for KFD_MQD_TYPE_SDMA queues. These functions
-use sizeof(struct v11_compute_mqd) (2048 bytes) instead of sizeof(struct
-v11_sdma_mqd) (512 bytes), causing a 1536-byte overflow.
+espintcp keeps a single in-flight transmit in ctx->partial.
+Before building a new sk_msg, espintcp_sendmsg() first tries to flush
+that state through espintcp_push_msgs().
 
-During CRIU checkpoint of an SDMA queue on Navi3x:
-- checkpoint_mqd() reads 2048 bytes from a 512-byte SDMA MQD buffer,
-  leaking 1536 bytes of adjacent GTT memory to userspace
+For blocking callers, espintcp_push_msgs() may return success even when
+the previous partial send is still pending. espintcp_sendmsg() would
+then reinitialize emsg->skmsg and reuse ctx->partial while the old
+transfer still owns that state.
 
-During CRIU restore:
-- restore_mqd() writes 2048 bytes into a 512-byte SDMA MQD buffer,
-  corrupting 1536 bytes of adjacent GTT memory (often the ring buffer
-  or neighboring MQDs)
+Do not rebuild the send message when ctx->partial is still in progress.
+If espintcp_push_msgs() returns with emsg->len still set, fail the new
+send instead of overwriting the live partial state.
 
-This is a copy-paste regression unique to v11. All other ASIC backends
-(cik, vi, v9, v10, v12) correctly use the SDMA-specific variants.
+This is a memory-safety fix: reusing the live partial-send state can
+leave a stale offset attached to a new sk_msg and lead to an out-of-
+bounds read in the send path.
 
-Add checkpoint_mqd_sdma() and restore_mqd_sdma() functions that properly
-handle the smaller v11_sdma_mqd structure, matching the pattern used in
-other MQD managers.
+tcp_sendmsg_locked() already handles waiting for send buffer memory, so
+the fix here is just to preserve espintcp's one-message-at-a-time
+transmit state.
 
-Fixes: cc009e613de6 ("drm/amdkfd: Add KFD support for soc21 v3")
-Assisted-by: Claude:Sonnet 4-5
-Signed-off-by: Andrew Martin <andrew.martin@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 6fa41db7ffdec97d62433adf03b7b9b759af8c2c)
-Cc: stable@vger.kernel.org
+Fixes: e27cca96cd68 ("xfrm: add espintcp (RFC 8229)")
+Cc: stable@kernel.org
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Zhengchuan Liang <zcliangcn@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Assisted-by: Codex:GPT-5.4
+Signed-off-by: Wyatt Feng <bronzed_45_vested@icloud.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v11.c |   49 +++++++++++++++++++----
- 1 file changed, 41 insertions(+), 8 deletions(-)
+ net/xfrm/espintcp.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v11.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v11.c
-@@ -320,8 +320,7 @@ static void checkpoint_mqd(struct mqd_ma
+--- a/net/xfrm/espintcp.c
++++ b/net/xfrm/espintcp.c
+@@ -349,6 +349,10 @@ static int espintcp_sendmsg(struct sock
+ 			err = -ENOBUFS;
+ 		goto unlock;
+ 	}
++	if (emsg->len) {
++		err = -ENOBUFS;
++		goto unlock;
++	}
  
- static void restore_mqd(struct mqd_manager *mm, void **mqd,
- 			struct kfd_mem_obj *mqd_mem_obj, uint64_t *gart_addr,
--			struct queue_properties *qp,
--			const void *mqd_src,
-+			struct queue_properties *qp, const void *mqd_src,
- 			const void *ctl_stack_src, const u32 ctl_stack_size)
- {
- 	uint64_t addr;
-@@ -337,14 +336,48 @@ static void restore_mqd(struct mqd_manag
- 		*gart_addr = addr;
- 
- 	m->cp_hqd_pq_doorbell_control =
--		qp->doorbell_off <<
--			CP_HQD_PQ_DOORBELL_CONTROL__DOORBELL_OFFSET__SHIFT;
--	pr_debug("cp_hqd_pq_doorbell_control 0x%x\n",
--			m->cp_hqd_pq_doorbell_control);
-+		qp->doorbell_off << CP_HQD_PQ_DOORBELL_CONTROL__DOORBELL_OFFSET__SHIFT;
-+	pr_debug("cp_hqd_pq_doorbell_control 0x%x\n", m->cp_hqd_pq_doorbell_control);
- 
- 	qp->is_active = 0;
- }
- 
-+static void checkpoint_mqd_sdma(struct mqd_manager *mm,
-+				void *mqd,
-+				void *mqd_dst,
-+				void *ctl_stack_dst)
-+{
-+	struct v11_sdma_mqd *m;
-+
-+	m = get_sdma_mqd(mqd);
-+
-+	memcpy(mqd_dst, m, sizeof(struct v11_sdma_mqd));
-+}
-+
-+static void restore_mqd_sdma(struct mqd_manager *mm, void **mqd,
-+			     struct kfd_mem_obj *mqd_mem_obj, uint64_t *gart_addr,
-+			     struct queue_properties *qp,
-+			     const void *mqd_src,
-+			     const void *ctl_stack_src,
-+			     const u32 ctl_stack_size)
-+{
-+	uint64_t addr;
-+	struct v11_sdma_mqd *m;
-+
-+	m = (struct v11_sdma_mqd *) mqd_mem_obj->cpu_ptr;
-+	addr = mqd_mem_obj->gpu_addr;
-+
-+	memcpy(m, mqd_src, sizeof(*m));
-+
-+	m->sdmax_rlcx_doorbell_offset =
-+		qp->doorbell_off << SDMA0_QUEUE0_DOORBELL_OFFSET__OFFSET__SHIFT;
-+
-+	*mqd = m;
-+	if (gart_addr)
-+		*gart_addr = addr;
-+
-+	qp->is_active = 0;
-+}
- 
- static void init_mqd_hiq(struct mqd_manager *mm, void **mqd,
- 			struct kfd_mem_obj *mqd_mem_obj, uint64_t *gart_addr,
-@@ -529,8 +562,8 @@ struct mqd_manager *mqd_manager_init_v11
- 		mqd->update_mqd = update_mqd_sdma;
- 		mqd->destroy_mqd = kfd_destroy_mqd_sdma;
- 		mqd->is_occupied = kfd_is_occupied_sdma;
--		mqd->checkpoint_mqd = checkpoint_mqd;
--		mqd->restore_mqd = restore_mqd;
-+		mqd->checkpoint_mqd = checkpoint_mqd_sdma;
-+		mqd->restore_mqd = restore_mqd_sdma;
- 		mqd->mqd_size = sizeof(struct v11_sdma_mqd);
- 		mqd->mqd_stride = kfd_mqd_stride;
- #if defined(CONFIG_DEBUG_FS)
+ 	sk_msg_init(&emsg->skmsg);
+ 	while (1) {
 
 
 
