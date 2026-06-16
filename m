@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-264340-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264120-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id J7D4Cw1zMWqVjgUAu9opvQ
-	(envelope-from <stable+bounces-264340-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:00:13 +0200
+	id hs6QKu1vMWoqjQUAu9opvQ
+	(envelope-from <stable+bounces-264120-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:46:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 996596919BD
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:00:12 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D8546915FC
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:46:52 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=gddKSCuI;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264340-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264340-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=X7MLtljv;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264120-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-264120-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E294E30AADBB
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:56:19 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0168A30C7270
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:37:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75AE844DB85;
-	Tue, 16 Jun 2026 15:56:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A70E444CF52;
+	Tue, 16 Jun 2026 15:37:13 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39F2E44DB64;
-	Tue, 16 Jun 2026 15:56:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7779A44CF39;
+	Tue, 16 Jun 2026 15:37:12 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781625378; cv=none; b=MJLD7bKGLdxYkMdT9/PhKA2AJpxdEygs81sc1gDtaiEw8wlFfNgrf7SF40NbuMuxyoGcTUQDGeE15pq5WczU0RfvEiHMwMzCBcgINm5gT0CCG6MXH6eg76UViIgFIQApk5AeYwwx68tx7UTFycX1cUBpCbDwlYCuXfvnYekLIOI=
+	t=1781624233; cv=none; b=r3BXVQQrVY6q0mMFYoJ9QHoPqPS3cKS/B7wQlel/iFYahQ0zikDq6xjGW+Uxn5mwENwLKMPDkwFk5/O2eVYSkZDF13i66Du0PjzjCuB+Mh8dwzAX+O13rlNbVlREpNN2GHCz/ThudIkFE1ZDWt3Ipw1yrA6fGM5PJtDxfIYlLl8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781625378; c=relaxed/simple;
-	bh=FWHsN6wGTBhs0O7SKhTyh4UFDYk4m0+7MaAA5R6J9rI=;
+	s=arc-20240116; t=1781624233; c=relaxed/simple;
+	bh=JRgDCbDWgzNN2xAQ+QIuIxsWw3HvIWh8F4TUcB4ZA0w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NPyzxy0Xd1T0JaQZrOiM5IJ3pGAeniGe3XZ00G1hKxmbU3avxWMJogVvh9aP3xEh1yleCZAMlbt+UwO+Ttm9IriKI9dNX8E0Ykgv/mFr+q6OtlxpDS5ayq2uFLulBaBoMKTq5DaXLrEXOpmKRj+5J6gwpfFREiQ/xG0RAzhoXO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gddKSCuI; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AC931F000E9;
-	Tue, 16 Jun 2026 15:56:15 +0000 (UTC)
+	 MIME-Version; b=FEb4QCHb8PZMkLG323RjzCyGuatwQyFv4hb4TMKaUCAVF16IDuMxvh5wgjiwCMCBqYKMJHmxR9YVKgtAxmCO7WHt6Yskt4TfPIsyCoHzOF6DIGIMxNmnJqhVUZDioTS9b4zkt1tSgd67vIJsjvwfUL0TW+0M6AbRJq3IXhpeL6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X7MLtljv; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCAD31F000E9;
+	Tue, 16 Jun 2026 15:37:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781625377;
-	bh=4lFZYPaoqo/UuDqm+8q1Fed7z9Useqda860e+KJ/3o0=;
+	s=korg; t=1781624232;
+	bh=kF7IJ+IvxPTCZ+TL22JW0M+8VlqNItbjhJtDGRac7t0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gddKSCuI0UBOgmzUmuPX6Bw7PDy/tN2x0fvyaanDr6j6p9JhCIaOveoGyuV3cjVuG
-	 X8pr9LjOB80fQM1lnNQ/X+U1BEHXQxRMgXtHcSuCiun/PVW3h7owra4rBjxiRHJkEg
-	 86H6Ke14TFIq/QBjMIoSt9DoGJzaAbeO4W7jz4Vc=
+	b=X7MLtljvmcJ5gdP7bGZgdPqd/HBljVm/CRdWEvu8++IfoapNF1wTiUX7KlI11XxKX
+	 fXfZPjfo+LdqhknEHuVk3r0bR75Ef3QRvXLYgYQhYcKG4gCgR7n73hcmSJlQCSiMWM
+	 yfFV7c8pl2dLU5mlvNrLkr3iYAfZpOTJeJcJmxgw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Til Kaiser <mail@tk154.de>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 131/325] net: mvpp2: refill RX buffers before XDP or skb use
+	Dawei Feng <dawei.feng@seu.edu.cn>,
+	Zilin Guan <zilin@seu.edu.cn>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 7.0 296/378] octeontx2-af: fix memory leak in rvu_setup_hw_resources()
 Date: Tue, 16 Jun 2026 20:28:47 +0530
-Message-ID: <20260616145104.254297111@linuxfoundation.org>
+Message-ID: <20260616145125.650616613@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,21 +72,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264340-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264120-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mail@tk154.de,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:dawei.feng@seu.edu.cn,m:zilin@seu.edu.cn,m:pabeni@redhat.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -98,135 +98,58 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,vger.kernel.org:from_smtp,tk154.de:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,seu.edu.cn:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 996596919BD
+X-Rspamd-Queue-Id: 9D8546915FC
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Til Kaiser <mail@tk154.de>
+From: Dawei Feng <dawei.feng@seu.edu.cn>
 
-[ Upstream commit 5e8e2a9624df72fca7c736b2966b2cbf6c9c3ff6 ]
+commit 09a5bf856aa759513afc4afd233d15bcc711b84e upstream.
 
-The RX error path returns the current descriptor buffer to the hardware
-BM pool. That is only valid while the driver still owns the buffer.
+If rvu_npc_exact_init() fails in rvu_setup_hw_resources(), the function
+returns directly instead of jumping to the error handling path. This
+causes a resource leak for the previously initialized CGX, NPC, fwdata,
+and MSI-X states.
 
-mvpp2_rx_refill() can fail after the current buffer has been handed to
-XDP or attached to an skb. In those cases mvpp2_run_xdp() may have
-recycled, redirected, or queued the page for XDP_TX, and an skb free also
-retires the data buffer. Returning such a buffer to BM lets hardware DMA
-into memory that is no longer owned by the RX ring.
+Fix this by replacing the direct return with goto cgx_err to ensure
+proper cleanup.
 
-Refill the BM pool before handing the current buffer to XDP or to the
-skb. If the allocation fails there, drop the packet and return the
-still-owned current buffer to BM, preserving the pool depth. Once the
-refill succeeds, later local drops retire/free the current buffer instead
-of returning it to BM.
+The bug was first flagged by an experimental analysis tool we are
+developing for kernel memory-management bugs while analyzing
+v6.13-rc1. The tool is still under development and is not yet publicly
+available. Manual inspection confirms that the bug is still present in
+v7.1-rc6.
 
-Fixes: 07dd0a7aae7f ("mvpp2: add basic XDP support")
-Fixes: d6526926de73 ("net: mvpp2: fix memory leak in mvpp2_rx")
-Signed-off-by: Til Kaiser <mail@tk154.de>
-Link: https://patch.msgid.link/20260607134943.21996-4-mail@tk154.de
+An x86_64 allyesconfig build showed no new warnings. As we do not have
+access to Marvell OcteonTX2 RVU AF hardware to test with, no runtime
+testing was able to be performed.
+
+Fixes: 3571fe07a090 ("octeontx2-af: Drop rules for NPC MCAM")
+Cc: stable@vger.kernel.org
+Signed-off-by: Dawei Feng <dawei.feng@seu.edu.cn>
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Link: https://patch.msgid.link/20260604143756.1524482-1-dawei.feng@seu.edu.cn
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Stable-dep-of: 77a6b90ce56b ("net: mvpp2: build skb from XDP-adjusted data on XDP_PASS")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/ethernet/marvell/mvpp2/mvpp2_main.c   | 43 +++++++++++--------
- 1 file changed, 24 insertions(+), 19 deletions(-)
+ drivers/net/ethernet/marvell/octeontx2/af/rvu.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-index 814b60b16a23dc..7f748cd6605ae4 100644
---- a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-+++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-@@ -3973,6 +3973,12 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
- 		else
- 			frag_size = bm_pool->frag_size;
- 
-+		err = mvpp2_rx_refill(port, bm_pool, pp, pool);
-+		if (err) {
-+			netdev_err(port->dev, "failed to refill BM pools\n");
-+			goto err_drop_frame;
-+		}
-+
- 		if (xdp_prog) {
- 			struct xdp_rxq_info *xdp_rxq;
- 
-@@ -3990,12 +3996,6 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
- 
- 			if (ret) {
- 				xdp_ret |= ret;
--				err = mvpp2_rx_refill(port, bm_pool, pp, pool);
--				if (err) {
--					netdev_err(port->dev, "failed to refill BM pools\n");
--					goto err_drop_frame;
--				}
--
- 				ps.rx_packets++;
- 				ps.rx_bytes += rx_bytes;
- 				continue;
-@@ -4010,8 +4010,21 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
- 			skb = slab_build_skb(data);
- 		if (!skb) {
- 			netdev_warn(port->dev, "skb build failed\n");
--			goto err_drop_frame;
-+			if (pp) {
-+				page_pool_put_page(pp, virt_to_head_page(data),
-+						   rx_bytes + MVPP2_MH_SIZE,
-+						   true);
-+			} else {
-+				dma_unmap_single_attrs(dev->dev.parent, dma_addr,
-+						       bm_pool->buf_size,
-+						       DMA_FROM_DEVICE,
-+						       DMA_ATTR_SKIP_CPU_SYNC);
-+				mvpp2_frag_free(bm_pool, pp, data);
-+			}
-+			goto err_drop_frame_retired;
- 		}
-+		if (pp)
-+			skb_mark_for_recycle(skb);
- 
- 		/* If we have RX hardware timestamping enabled, grab the
- 		 * timestamp from the queue and convert.
-@@ -4022,16 +4035,7 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
- 					 skb_hwtstamps(skb));
- 		}
- 
--		err = mvpp2_rx_refill(port, bm_pool, pp, pool);
--		if (err) {
--			netdev_err(port->dev, "failed to refill BM pools\n");
--			dev_kfree_skb_any(skb);
--			goto err_drop_frame;
--		}
--
--		if (pp)
--			skb_mark_for_recycle(skb);
--		else
-+		if (!pp)
- 			dma_unmap_single_attrs(dev->dev.parent, dma_addr,
- 					       bm_pool->buf_size, DMA_FROM_DEVICE,
- 					       DMA_ATTR_SKIP_CPU_SYNC);
-@@ -4050,13 +4054,14 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
- 		continue;
- 
- err_drop_frame:
--		dev->stats.rx_errors++;
--		mvpp2_rx_error(port, rx_desc);
- 		/* Return the buffer to the pool */
- 		if (rx_status & MVPP2_RXD_BUF_HDR)
- 			mvpp2_buff_hdr_pool_put(port, rx_desc, pool, rx_status);
- 		else
- 			mvpp2_bm_pool_put(port, pool, dma_addr, phys_addr);
-+err_drop_frame_retired:
-+		dev->stats.rx_errors++;
-+		mvpp2_rx_error(port, rx_desc);
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
+@@ -1135,7 +1135,7 @@ cpt:
+ 	err = rvu_npc_exact_init(rvu);
+ 	if (err) {
+ 		dev_err(rvu->dev, "failed to initialize exact match table\n");
+-		return err;
++		goto cgx_err;
  	}
  
- 	if (xdp_ret & MVPP2_XDP_REDIR)
--- 
-2.53.0
-
+ 	/* Assign MACs for CGX mapped functions */
 
 
 
