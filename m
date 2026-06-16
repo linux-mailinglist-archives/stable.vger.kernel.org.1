@@ -1,63 +1,62 @@
-Return-Path: <stable+bounces-266479-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265694-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id LGA7MRqeMWqRoQUAu9opvQ
-	(envelope-from <stable+bounces-266479-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:03:54 +0200
+	id 9Z54AVOOMWpfmgUAu9opvQ
+	(envelope-from <stable+bounces-265694-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:56:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E211694B4A
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:03:54 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E766693A56
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:56:34 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=SgRsCbz6;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266479-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-266479-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=dDii0nQk;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265694-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265694-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5CC8C302AF1A
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:03:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A47323018AD3
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:55:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB8B33DD51C;
-	Tue, 16 Jun 2026 19:03:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E05403A5E89;
+	Tue, 16 Jun 2026 17:55:05 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA93F3ACA5A;
-	Tue, 16 Jun 2026 19:03:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FE013AA1BA;
+	Tue, 16 Jun 2026 17:55:03 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781636630; cv=none; b=iYsjnPgmrfsXYlV3ECrEzCAuAuJ9ksj6XQty2B17YwNDbwvWr0OGffbWp8xLQ1+a9Ipb+6iavlrICSZFtiq4Bp6L2O4BnJroW7VNB9cF53cQCTDAPTwu1/8OMPmyrC4JD5IoCNxy53NNlgxm6ohGs5IUjMmkxpt2dmwLQbBfI08=
+	t=1781632505; cv=none; b=bSAS0CSu8LuarjAC+l8yp7JxPoRRLhXXVnRnN7Kjyq8hc42gk64ec1fKFgEQTHkpjY0dTlzDmeKRRA5L714y5wrklhO9pVx6qGTZJu4JGxwgmfzrfXwTRfw2GY96J+hogTi/mayneRL5KWBv4zpaXFEglUCvWJBuja0IkJp8n0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781636630; c=relaxed/simple;
-	bh=3wBseRu2ayxH6m2RDqAGObWfYxiH5HeMxApS337o0oA=;
+	s=arc-20240116; t=1781632505; c=relaxed/simple;
+	bh=eVL1Rv6n9z6TGeLorSGdVaHUJTISmVl4T01wwudNu5c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WLFNjsGctlARFv5bxbZ5N3CfYK0/sf9UclEtSUHEUUU/8KpD/9dMpAmrTfwceLMSdpa5wFVGPFLOWZcRLGeJUqRhb08ryrLAWZ6jCoaYVS/I1bC4MQ2W+b+KAqPYZYr8gVSLfz89MPayk2I9FQAda3RZOYoK1+kPXLx4IMsnNjI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SgRsCbz6; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F2861F000E9;
-	Tue, 16 Jun 2026 19:03:48 +0000 (UTC)
+	 MIME-Version; b=V0OCRGJpPTokJZJoE8VHwv+gaHgv208hUvGvZ9/3iVEV8WZMG/xe/7Pe60lU3gf9P2XfPT8NcbGqWQKXxe9CV709QPgwJiBjgSN41H9E4ecayuk6mHsPu3bbj+PSLk8PEf758RFgQKsKHL8+wHV8StBWyXQ/T1QyfTh9PLqCoPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dDii0nQk; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C0161F000E9;
+	Tue, 16 Jun 2026 17:55:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781636629;
-	bh=N5u9//6vff88tpi+BbmMGn/IIrZTrSunnllSclr/vnM=;
+	s=korg; t=1781632503;
+	bh=P7YZu+i0/1BOt+ARDGEuo3UQNOl0WjZkjSKqLT7N+DE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=SgRsCbz6ACJTdllWBzHaU6mCClUHMCYBm+OMCTqxrB6NOqxiyIiXhlSf7WDRMFGZD
-	 SBL4b+OzWnvBbfoQipVIDS7fCqtDbTB3MZOGwubWIixGkIA4lrvMN4eo4rwmIPdx27
-	 0uu7xCnNinXiTsqwFi2WkpEZS7kmFKNHJ5vLLmSA=
+	b=dDii0nQkbQbdGRuUUVFLDKaS5dgg6fZa5daOvMDY/2xwwag8gdP/PXGiw3LLf/EpY
+	 fPrxek+5QpOrH8HLuxxnv0/jUS+BZ8Af7Z4Z59+UzhapDk8PHkqwb3aTMUugnOjm98
+	 taPA4wNW2kPgwweRs83rIFLaKy3rPYmwp8KQwy64=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yongpeng Yang <yangyongpeng@xiaomi.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 275/342] f2fs: fix incorrect file address mapping when inline inode is unwritten
+Subject: [PATCH 6.1 424/522] mptcp: pm: ADD_ADDR rtx: fix potential data-race
 Date: Tue, 16 Jun 2026 20:29:31 +0530
-Message-ID: <20260616145101.171458650@linuxfoundation.org>
+Message-ID: <20260616145145.824087750@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,22 +72,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266479-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265694-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:yangyongpeng@xiaomi.com,m:chao@kernel.org,m:jaegeuk@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:martineau@kernel.org,m:matttbe@kernel.org,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -97,77 +96,64 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,xiaomi.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4E211694B4A
+X-Rspamd-Queue-Id: 8E766693A56
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yongpeng Yang <yangyongpeng@xiaomi.com>
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 
-[ Upstream commit 68a0178981a0f493295afa29f8880246e561494c ]
+[ Upstream commit 5cd6e0ad79d2615264f63929f8b457ad97ae550d ]
 
-When `fileinfo->fi_flags` does not have the `FIEMAP_FLAG_SYNC` bit set
-and inline data has not been persisted yet, the physical address of the
-extent is calculated incorrectly for unwritten inline inodes.
+This mptcp_pm_add_timer() helper is executed as a timer callback in
+softirq context. To avoid any data races, the socket lock needs to be
+held with bh_lock_sock().
 
-root@vm:/mnt/f2fs# dd if=/dev/zero of=data.3k bs=3k count=1
-root@vm:/mnt/f2fs# f2fs_io fiemap 0 100 data.3k
-Fiemap: offset = 0 len = 100
-	logical addr.    physical addr.   length           flags
-0	0000000000000000 00000ffffffff16c 0000000000000c00 00000301
+If the socket is in use, retry again soon after, similar to what is done
+with the keepalive timer.
 
-This patch fixes the issue by checking if the inode's address is valid.
-If the inline inode is unwritten, set the physical address to 0 and
-mark the extent with `FIEMAP_EXTENT_UNKNOWN | FIEMAP_EXTENT_DELALLOC`
-flags.
-
-Cc: stable@kernel.org
-Fixes: 67f8cf3cee6f ("f2fs: support fiemap for inline_data")
-Signed-off-by: Yongpeng Yang <yangyongpeng@xiaomi.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-[ renamed `ifolio` to `ipage` in `inline_data_addr()` and `F2FS_INODE()` calls ]
+Fixes: 00cfd77b9063 ("mptcp: retransmit ADD_ADDR when timeout")
+Cc: stable@vger.kernel.org
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260505-net-mptcp-pm-fixes-7-1-rc3-v1-3-fca8091060a4@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/inline.c |   13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ net/mptcp/pm_netlink.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/fs/f2fs/inline.c
-+++ b/fs/f2fs/inline.c
-@@ -761,7 +761,7 @@ int f2fs_read_inline_dir(struct file *fi
- int f2fs_inline_data_fiemap(struct inode *inode,
- 		struct fiemap_extent_info *fieinfo, __u64 start, __u64 len)
- {
--	__u64 byteaddr, ilen;
-+	__u64 byteaddr = 0, ilen;
- 	__u32 flags = FIEMAP_EXTENT_DATA_INLINE | FIEMAP_EXTENT_NOT_ALIGNED |
- 		FIEMAP_EXTENT_LAST;
- 	struct node_info ni;
-@@ -794,9 +794,14 @@ int f2fs_inline_data_fiemap(struct inode
- 	if (err)
- 		goto out;
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -315,6 +315,13 @@ static void mptcp_pm_add_timer(struct ti
+ 	if (inet_sk_state_load(sk) == TCP_CLOSE)
+ 		return;
  
--	byteaddr = (__u64)ni.blk_addr << inode->i_sb->s_blocksize_bits;
--	byteaddr += (char *)inline_data_addr(inode, ipage) -
--					(char *)F2FS_INODE(ipage);
-+	if (__is_valid_data_blkaddr(ni.blk_addr)) {
-+		byteaddr = (__u64)ni.blk_addr << inode->i_sb->s_blocksize_bits;
-+		byteaddr += (char *)inline_data_addr(inode, ipage) -
-+						(char *)F2FS_INODE(ipage);
-+	} else {
-+		f2fs_bug_on(F2FS_I_SB(inode), ni.blk_addr != NEW_ADDR);
-+		flags |= FIEMAP_EXTENT_DELALLOC | FIEMAP_EXTENT_UNKNOWN;
++	bh_lock_sock(sk);
++	if (sock_owned_by_user(sk)) {
++		/* Try again later. */
++		sk_reset_timer(sk, timer, jiffies + HZ / 20);
++		goto out;
 +	}
- 	err = fiemap_fill_next_extent(fieinfo, start, byteaddr, ilen, flags);
- 	trace_f2fs_fiemap(inode, start, byteaddr, ilen, flags, err);
++
+ 	if (mptcp_pm_should_add_signal_addr(msk)) {
+ 		sk_reset_timer(sk, timer, jiffies + TCP_RTO_MAX / 8);
+ 		goto out;
+@@ -343,6 +350,7 @@ static void mptcp_pm_add_timer(struct ti
+ 		mptcp_pm_subflow_established(msk);
+ 
  out:
++	bh_unlock_sock(sk);
+ 	__sock_put(sk);
+ }
+ 
 
 
 
