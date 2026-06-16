@@ -1,66 +1,67 @@
-Return-Path: <stable+bounces-264854-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263882-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 94dGBW99MWrZkgUAu9opvQ
-	(envelope-from <stable+bounces-264854-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:44:31 +0200
+	id Lp6IHcBoMWqsigUAu9opvQ
+	(envelope-from <stable+bounces-263882-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:16:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4882692689
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:44:30 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A430B690DEF
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:16:15 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=g2O5NWk0;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264854-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264854-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=two6wMnu;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263882-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263882-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A6534303BEFD
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:44:01 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B1710300BC9A
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:16:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31267466B79;
-	Tue, 16 Jun 2026 16:43:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5703943DA2C;
+	Tue, 16 Jun 2026 15:16:09 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE76913777E;
-	Tue, 16 Jun 2026 16:43:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29DCA3375C5;
+	Tue, 16 Jun 2026 15:16:08 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781628239; cv=none; b=j51KOOPShdS0+BVLtNugEMUN7h7E6KeKwYXBWiMz9jch4T82yjw4HcWOUzPKbj+DX8L/Db14ZLILoho8jjmVdWnM+XZdoT9xkQ0TkFOffmMqPefcRRX/i/bfa+VEPrHQuU41rolTrHyuXmqayNrsiIcYMd3JhCQo3Hnk8TAJcpI=
+	t=1781622969; cv=none; b=RvZUeTCDtEKOq3PVtgYXfX556TBi6iPAA3+5m6L81DQyd9dQSWedoX98Bj2Vs/MoQPYcTZZD54bcTzTa2cGXcKSJWbwORigvqUdc2PIj0CBELIszbx132fvxJ7jc3ZM4uCHHYdrjd5o8m/iRxq49xAkJjYNxoQUc/7JJDcLa0pk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781628239; c=relaxed/simple;
-	bh=3z9NJZIN3Eu3ABtSLVwYZq5P99Pm0xIeuR9zFve+p9g=;
+	s=arc-20240116; t=1781622969; c=relaxed/simple;
+	bh=3VO2LZTG7Rb80m4AxJsgvkSD7tV2UEDJG7/z/QuHd94=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OQ/CkCQ5iAXfFJu6/FSvbmMNCTuXuDFpeAzzLXACTOPjZBsEnPMSX2Zvp/g8lt929OGDGp5M3jlEXT2iAEgLYqg9qEE71NF0YIcPCbGP3FnRjF1kEoT71v5C9FPvebB/ayAn3THRO1AG5eKEfY/tE584QaVJQsAZEi1nomeoNUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g2O5NWk0; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 831C41F000E9;
-	Tue, 16 Jun 2026 16:43:56 +0000 (UTC)
+	 MIME-Version; b=ZbQ5eg5hAzOcJQVWQG5LkllQRdAISxn1DvuRVKgeqWQJOa0dSy07x54wLlTJ8C2VZ90Xe4/WVb8HVQGLmBhJdPMDt4QYzl+2mhAbFhezFm7RyjW9n0KfCsuxJcxByMKsMvm5a5e0ZR1wYpplganYXMZuJhvR45JQ2Af+g2wJ/JA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=two6wMnu; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A61E1F000E9;
+	Tue, 16 Jun 2026 15:16:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781628237;
-	bh=XOBqV6L4J/pAf2kNQdQf9A8dNREMjp8FdgGtZvuOzy4=;
+	s=korg; t=1781622968;
+	bh=RacStkIQapAk9GjQb/5mfmmUV2NYNoSj/7MnEh1TJSA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=g2O5NWk0aGPKOG2jBprsAnkty3cRXazWn6niUC6LNF9FEiWLz4GHDmGjxRJqoNMio
-	 rxqaUSr2OrSj5TdjefhkjP4NNmY0X79DJuBgEEO2I2ds0yaRVpOfS0SHXLYQeHJjCA
-	 MZhlmNRMQJVUnSP9ECYRvhfHfXAg3t9O6kuTgOgc=
+	b=two6wMnuMTAg2bq3+bTN1Euu1mjU/WUi8DNIqHqvZnRcYpZifBRA4GXA4exIjWYsK
+	 MVp7mi+ter2j3KuSwr3czZ7FZqdRGtr7xOpLoMgW4Mu88Es+jnSJHb41WypMpytKAX
+	 /6ycSm3cC+LBeMhd+vQEH0nck8xzCXtL/cMNoaXU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ji-Soo Chung <jschung2@proton.me>,
-	Gerlinde <lrGerlinde@mailfence.com>,
-	zyc zyc <zyc199902@zohomail.cn>,
-	Manas Ghandat <ghandatmanas@gmail.com>,
-	Stephen Hemminger <stephen@networkplumber.org>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>,
+	Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>,
+	Ao Wang <wangao@seu.edu.cn>,
+	Xuewei Feng <fengxw06@126.com>,
+	Qi Li <qli01@tsinghua.edu.cn>,
+	Ke Xu <xuke@tsinghua.edu.cn>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 040/452] net/sched: Revert "net/sched: Restrict conditions for adding duplicating netems to qdisc tree"
+Subject: [PATCH 7.0 036/378] net: garp: fix unsigned integer underflow in garp_pdu_parse_attr
 Date: Tue, 16 Jun 2026 20:24:27 +0530
-Message-ID: <20260616145120.042078657@linuxfoundation.org>
+Message-ID: <20260616145111.771912966@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,134 +78,91 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,proton.me,mailfence.com,zohomail.cn,gmail.com,networkplumber.org,mojatatu.com,redhat.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-264854-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jschung2@proton.me,m:lrGerlinde@mailfence.com,m:zyc199902@zohomail.cn,m:ghandatmanas@gmail.com,m:stephen@networkplumber.org,m:jhs@mojatatu.com,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	TAGGED_FROM(0.00)[bounces-263882-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:zhaoyz24@mails.tsinghua.edu.cn,m:yangyx22@mails.tsinghua.edu.cn,m:wangao@seu.edu.cn,m:fengxw06@126.com,m:qli01@tsinghua.edu.cn,m:xuke@tsinghua.edu.cn,m:horms@kernel.org,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,mails.tsinghua.edu.cn,seu.edu.cn,126.com,tsinghua.edu.cn,kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,proton.me:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,mailfence.com:email,zohomail.cn:email,networkplumber.org:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,seu.edu.cn:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,tsinghua.edu.cn:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A4882692689
+X-Rspamd-Queue-Id: A430B690DEF
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jamal Hadi Salim <jhs@mojatatu.com>
+From: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
 
-[ Upstream commit eda0b7f203bb166c98d1418b204135bd566ac83b ]
+[ Upstream commit 16e408e607a94b646fb14a2a98422c6877ae4b3c ]
 
-This reverts commit ec8e0e3d7adef940cdf9475e2352c0680189d14e.
+The receive-side GARP attribute parser computes dlen with reversed
+operands:
 
-The original patch rejects any tree containing two netems when
-either has duplication set, even when they sit on unrelated classes
-of the same classful parent. That broke configurations that have
-worked since netem was introduced.
+        dlen = sizeof(*ga) - ga->len;
 
-The re-entrancy problem the original commit was trying to solve is
-handled by later patch using tc_depth flag.
+ga->len is the on-wire attribute length and includes the GARP attribute
+header. For normal attributes with data, ga->len is larger than
+sizeof(*ga), so the subtraction underflows in unsigned arithmetic.
 
-Doing this revert will (re)expose the original bug with multiple
-netem duplication. When this patch is backported make sure
-and get the full series.
+The resulting value is later passed to garp_attr_lookup(), whose length
+argument is u8. After truncation, the parsed data length usually no
+longer matches the length stored for locally registered attributes, so
+received Join/Leave events are ignored. This breaks the GARP receive path
+for common attributes, such as GVRP VLAN registration attributes.
 
-Fixes: ec8e0e3d7ade ("net/sched: Restrict conditions for adding duplicating netems to qdisc tree")
-Reported-by: Ji-Soo Chung <jschung2@proton.me>
-Reported-by: Gerlinde <lrGerlinde@mailfence.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220774
-Reported-by: zyc zyc <zyc199902@zohomail.cn>
-Closes: https://lore.kernel.org/all/19adda5a1e2.12410b78222774.9191120410578703463@zohomail.cn/
-Reported-by: Manas Ghandat <ghandatmanas@gmail.com>
-Closes: https://lore.kernel.org/netdev/f69b2c8f-8325-4c2e-a011-6dbc089f30e4@gmail.com/
-Reviewed-by: Stephen Hemminger <stephen@networkplumber.org>
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://patch.msgid.link/20260525122556.973584-3-jhs@mojatatu.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Compute the data length as the attribute length minus the header length.
+
+Fixes: eca9ebac651f ("net: Add GARP applicant-only participant")
+Reported-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+Reported-by: Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>
+Reported-by: Ao Wang <wangao@seu.edu.cn>
+Reported-by: Xuewei Feng <fengxw06@126.com>
+Reported-by: Qi Li <qli01@tsinghua.edu.cn>
+Reported-by: Ke Xu <xuke@tsinghua.edu.cn>
+Signed-off-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260527083200.42861-1-zhaoyz24@mails.tsinghua.edu.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_netem.c | 40 ----------------------------------------
- 1 file changed, 40 deletions(-)
+ net/802/garp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
-index f8c5c506180858..827489b31626bb 100644
---- a/net/sched/sch_netem.c
-+++ b/net/sched/sch_netem.c
-@@ -1005,41 +1005,6 @@ static int parse_attr(struct nlattr *tb[], int maxtype, struct nlattr *nla,
- 	return 0;
- }
+diff --git a/net/802/garp.c b/net/802/garp.c
+index 6f563b6797d99e..c7a39f298ad6ed 100644
+--- a/net/802/garp.c
++++ b/net/802/garp.c
+@@ -453,7 +453,7 @@ static int garp_pdu_parse_attr(struct garp_applicant *app, struct sk_buff *skb,
+ 	if (!pskb_may_pull(skb, ga->len))
+ 		return -1;
+ 	skb_pull(skb, ga->len);
+-	dlen = sizeof(*ga) - ga->len;
++	dlen = ga->len - sizeof(*ga);
  
--static const struct Qdisc_class_ops netem_class_ops;
--
--static int check_netem_in_tree(struct Qdisc *sch, bool duplicates,
--			       struct netlink_ext_ack *extack)
--{
--	struct Qdisc *root, *q;
--	unsigned int i;
--
--	root = qdisc_root_sleeping(sch);
--
--	if (sch != root && root->ops->cl_ops == &netem_class_ops) {
--		if (duplicates ||
--		    ((struct netem_sched_data *)qdisc_priv(root))->duplicate)
--			goto err;
--	}
--
--	if (!qdisc_dev(root))
--		return 0;
--
--	hash_for_each(qdisc_dev(root)->qdisc_hash, i, q, hash) {
--		if (sch != q && q->ops->cl_ops == &netem_class_ops) {
--			if (duplicates ||
--			    ((struct netem_sched_data *)qdisc_priv(q))->duplicate)
--				goto err;
--		}
--	}
--
--	return 0;
--
--err:
--	NL_SET_ERR_MSG(extack,
--		       "netem: cannot mix duplicating netems with other netems in tree");
--	return -EINVAL;
--}
--
- /* Parse netlink message to set options */
- static int netem_change(struct Qdisc *sch, struct nlattr *opt,
- 			struct netlink_ext_ack *extack)
-@@ -1116,11 +1081,6 @@ static int netem_change(struct Qdisc *sch, struct nlattr *opt,
- 	q->gap = qopt->gap;
- 	q->counter = 0;
- 	q->loss = qopt->loss;
--
--	ret = check_netem_in_tree(sch, qopt->duplicate, extack);
--	if (ret)
--		goto unlock;
--
- 	q->duplicate = qopt->duplicate;
- 
- 	/* for compatibility with earlier versions.
+ 	if (attrtype > app->app->maxattr)
+ 		return 0;
 -- 
 2.53.0
 
