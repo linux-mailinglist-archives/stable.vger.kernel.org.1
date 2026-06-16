@@ -1,67 +1,62 @@
-Return-Path: <stable+bounces-264032-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266000-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id QtLtKnptMWpLjAUAu9opvQ
-	(envelope-from <stable+bounces-264032-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:36:26 +0200
+	id M7+XLVqUMWpDnQUAu9opvQ
+	(envelope-from <stable+bounces-266000-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:22:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DC9E691335
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:36:26 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1BE7694125
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:22:17 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=J1gpxKTk;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264032-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-264032-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=txzABazv;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266000-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-266000-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id CC1FF309777A
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:29:46 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id CD6343001A7C
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:22:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8357544CAC2;
-	Tue, 16 Jun 2026 15:29:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0D35466B64;
+	Tue, 16 Jun 2026 18:22:13 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE4B4449ED2;
-	Tue, 16 Jun 2026 15:29:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 767603D8105;
+	Tue, 16 Jun 2026 18:22:12 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781623769; cv=none; b=ATlkQ89vkCp9fI+1d0qVio+jXUvO81YZvTSve9S7Y5K7WdXDOFNPF1LqcTPNWq4ZbafL8RXTQ/ATl60TzA4uZmJigQbfQHUJXXZ7ZGv1oO8K4+UcS1jaGAnFYnENn+N8+xh4BBpUUN7nk/wKLfMgz/9/cnPiO4ETpXQNcNgUKZg=
+	t=1781634133; cv=none; b=NiqPBteqvQ0hwGC5bqD3NN3/sktaKkFU2MW3YpGHF3WCtIdIh7QWLb4lKEyXOLkF0aAhyoc3LgQck8vTejTlORyn2eIqC4kd/9CqmD5bYGpAJVpO3FxlD1LWAcZMfReyTxbQaShWWFU8kxskL1roNQVuIsIuNwMsiLACkAe7BLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781623769; c=relaxed/simple;
-	bh=hNtdIpHh+0qMjKw5A00qstIgPUrN7iTd8dviREC5ZUA=;
+	s=arc-20240116; t=1781634133; c=relaxed/simple;
+	bh=9QkKL9nQsINugm/AmREcbC5/MIP9JZ3bjfhEe1X6DvE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CvnQTrO69OiLbT4nz/mOHzqbSgvrTBh/PvwFFVe+fJ99h19Ik7DFCe5+rHdMiaR44J4FGm1MXCRqynfZWe4o7RLuLK/9+/iNZo70JjaAan+FGH8jUsupZ9WCzBxVMm0V1RGkQPcplaq1VzIPf74ADSGv4dcDbvoHeRjdhVlKCqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J1gpxKTk; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E93A1F000E9;
-	Tue, 16 Jun 2026 15:29:24 +0000 (UTC)
+	 MIME-Version; b=DKgNJTc1CvLavmpQS5KpXfnfDf+Bcn5ASho9q/uTAsAuhfi41I2y3ES47nUOOD9T3Sv3nEkJzxXw/In5ZDdO7qlwscwRGlXvRNZ5kdAuIP+kR5miKe3Q46w6Z1BJXwfeDfOsBDYoK6sqMhZJtRqkSzQgmaojZ7bgmrkR16fR83I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=txzABazv; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DC601F000E9;
+	Tue, 16 Jun 2026 18:22:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781623765;
-	bh=oUO/hmW6+8OhY/BaMurRlrHk1cOWfaiW1s17xym4CKM=;
+	s=korg; t=1781634132;
+	bh=W6N0iWAfUFIu/mOGi/hgD9yGhplxffd1N688LdLmYTM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=J1gpxKTkEDSZxXuBcfKuN1aI74hoYFyMaTJiofX3P2rIE8Ye6Sk4cm98+4zf450rO
-	 wmN7pKPk9qYTMSziU459UgKRw6knAH6MSUZTr3oRCLwo7GwvMCwZBOt2mcvTK1iC0q
-	 Nlyc1zmE4b5j5yiU8pHJrMfMkfUzjh9fcqpJ1Uvo=
+	b=txzABazv36QkCN3E4klyxcKI3B9a0G7Ntzg1/JSvbUMdyEOchFYTIwdKGwGoM70LY
+	 ySAVbGcKxBXcN+Otaz/oQcXue6L4P7v0rZ8BeZR/VT6K6qFLV/BDT80H8XNqAWCcHi
+	 Lbsjel90tPJ1CHDiTxXyZuBG7NcYtMfSZzHM+H+Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Zhengchuan Liang <zcliangcn@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Wyatt Feng <bronzed_45_vested@icloud.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Steffen Klassert <steffen.klassert@secunet.com>
-Subject: [PATCH 7.0 204/378] xfrm: espintcp: do not reuse an in-progress partial send
+	Michal Kubiak <michal.kubiak@intel.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 197/411] net: mvpp2: Add metadata support for xdp mode
 Date: Tue, 16 Jun 2026 20:27:15 +0530
-Message-ID: <20260616145121.122038819@linuxfoundation.org>
+Message-ID: <20260616145111.190079312@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,98 +70,119 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	TAGGED_FROM(0.00)[bounces-264032-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:yuantan098@gmail.com,m:yifanwucs@gmail.com,m:tomapufckgml@gmail.com,m:zcliangcn@gmail.com,m:bird@lzu.edu.cn,m:bronzed_45_vested@icloud.com,m:n05ec@lzu.edu.cn,m:steffen.klassert@secunet.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,icloud.com,secunet.com];
+	TAGGED_FROM(0.00)[bounces-266000-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michal.kubiak@intel.com,m:lorenzo@kernel.org,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,secunet.com:email,icloud.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,intel.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,xdp.data:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4DC9E691335
+X-Rspamd-Queue-Id: B1BE7694125
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wyatt Feng <bronzed_45_vested@icloud.com>
+From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-commit c381039ade2e161ab08c0eda73c4f8b9a7115928 upstream.
+[ Upstream commit 9a45e193c88a55a536d7fd0ebfa29823d588c2cf ]
 
-espintcp keeps a single in-flight transmit in ctx->partial.
-Before building a new sk_msg, espintcp_sendmsg() first tries to flush
-that state through espintcp_push_msgs().
+Set metadata size building the skb from xdp_buff in mvpp2 driver
+mvpp2 driver sets xdp headroom to:
 
-For blocking callers, espintcp_push_msgs() may return success even when
-the previous partial send is still pending. espintcp_sendmsg() would
-then reinitialize emsg->skmsg and reuse ctx->partial while the old
-transfer still owns that state.
+MVPP2_MH_SIZE + MVPP2_SKB_HEADROOM
 
-Do not rebuild the send message when ctx->partial is still in progress.
-If espintcp_push_msgs() returns with emsg->len still set, fail the new
-send instead of overwriting the live partial state.
+where
 
-This is a memory-safety fix: reusing the live partial-send state can
-leave a stale offset attached to a new sk_msg and lead to an out-of-
-bounds read in the send path.
+MVPP2_MH_SIZE 2
+MVPP2_SKB_HEADROOM min(max(XDP_PACKET_HEADROOM, NET_SKB_PAD), 224)
 
-tcp_sendmsg_locked() already handles waiting for send buffer memory, so
-the fix here is just to preserve espintcp's one-message-at-a-time
-transmit state.
+so the headroom is large enough to contain xdp_frame and xdp metadata.
+Please note this patch is just compiled tested.
 
-Fixes: e27cca96cd68 ("xfrm: add espintcp (RFC 8229)")
-Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Zhengchuan Liang <zcliangcn@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Assisted-by: Codex:GPT-5.4
-Signed-off-by: Wyatt Feng <bronzed_45_vested@icloud.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Michal Kubiak <michal.kubiak@intel.com>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Link: https://patch.msgid.link/20250318-mvneta-xdp-meta-v2-2-b6075778f61f@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 77a6b90ce56b ("net: mvpp2: build skb from XDP-adjusted data on XDP_PASS")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/xfrm/espintcp.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/net/xfrm/espintcp.c
-+++ b/net/xfrm/espintcp.c
-@@ -349,6 +349,10 @@ static int espintcp_sendmsg(struct sock
- 			err = -ENOBUFS;
- 		goto unlock;
- 	}
-+	if (emsg->len) {
-+		err = -ENOBUFS;
-+		goto unlock;
-+	}
+diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
+index d8a2268b88187a..d55c3f1526c38b 100644
+--- a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
++++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
+@@ -3912,13 +3912,13 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
  
- 	sk_msg_init(&emsg->skmsg);
- 	while (1) {
+ 	while (rx_done < rx_todo) {
+ 		struct mvpp2_rx_desc *rx_desc = mvpp2_rxq_next_desc_get(rxq);
++		u32 rx_status, timestamp, metasize = 0;
+ 		struct mvpp2_bm_pool *bm_pool;
+ 		struct page_pool *pp = NULL;
+ 		struct sk_buff *skb;
+ 		unsigned int frag_size;
+ 		dma_addr_t dma_addr;
+ 		phys_addr_t phys_addr;
+-		u32 rx_status, timestamp;
+ 		int pool, rx_bytes, err, ret;
+ 		struct page *page;
+ 		void *data;
+@@ -3981,7 +3981,7 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
+ 			xdp_init_buff(&xdp, bm_pool->frag_size, xdp_rxq);
+ 			xdp_prepare_buff(&xdp, data,
+ 					 MVPP2_MH_SIZE + MVPP2_SKB_HEADROOM,
+-					 rx_bytes, false);
++					 rx_bytes, true);
+ 
+ 			ret = mvpp2_run_xdp(port, xdp_prog, &xdp, pp, &ps);
+ 
+@@ -3997,6 +3997,8 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
+ 				ps.rx_bytes += rx_bytes;
+ 				continue;
+ 			}
++
++			metasize = xdp.data - xdp.data_meta;
+ 		}
+ 
+ 		skb = build_skb(data, frag_size);
+@@ -4033,6 +4035,8 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
+ 
+ 		skb_reserve(skb, MVPP2_MH_SIZE + MVPP2_SKB_HEADROOM);
+ 		skb_put(skb, rx_bytes);
++		if (metasize)
++			skb_metadata_set(skb, metasize);
+ 		skb->ip_summed = mvpp2_rx_csum(port, rx_status);
+ 		skb->protocol = eth_type_trans(skb, dev);
+ 
+-- 
+2.53.0
+
 
 
 
