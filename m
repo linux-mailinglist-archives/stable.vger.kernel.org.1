@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-265968-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266321-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id QCjoObGTMWr1nAUAu9opvQ
-	(envelope-from <stable+bounces-265968-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:19:29 +0200
+	id Ux0bJ+iaMWoroAUAu9opvQ
+	(envelope-from <stable+bounces-266321-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:50:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60CDD69408C
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:19:29 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97752694818
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:50:15 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="wI/NYtAT";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265968-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265968-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=fnyU3mHG;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266321-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-266321-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6CFED307A07E
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:19:28 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7F9DD300BC74
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:50:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DBB53D091A;
-	Tue, 16 Jun 2026 18:19:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B9C6450902;
+	Tue, 16 Jun 2026 18:50:10 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BFB136A36C;
-	Tue, 16 Jun 2026 18:19:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F6433AE1A2;
+	Tue, 16 Jun 2026 18:50:09 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781633965; cv=none; b=WfgoR9+VZOkj8oogSWD49RtqIVaneOde8/4/CQc0w6icvfaUS89tMls8CPviQfpIhfKWszs/Pt9/i+9wyJfJ7UFmeMLkH8BtPlNoAjDn7c7g5G6h9NApVz9VEyqtEaQj8mdBk1o9NSNftT9cPH6w18oKJ1DMCWF39zZz6Gssp8Y=
+	t=1781635810; cv=none; b=MhvJtgS0GhZXjz9WkNJOLV3bneUk7t9aj8G6TRMvukx32tVtBZg05gXTWbFM1Sbxr4eKDUMqtgOSNbhf7T4pX39vf8caGUoALCqJIlXn3w1ywrCVPSvJ+tWWDcTb7zzG/RANUESZWJMmWA19XLytzweV7YeG4K454vXgOs+bTgc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781633965; c=relaxed/simple;
-	bh=dV9TWscus0SWbpRNnX2i5JKoBkkQUMStwj4zSN2IErE=;
+	s=arc-20240116; t=1781635810; c=relaxed/simple;
+	bh=Pk2lCnf8A5J7ndISIve6nnPwaX2bNwQgcRHXNLS0sNk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oeAumCRWd8NcxUtyUhDZPUlfd1Z/silCx+WzOiW3UmDMqWTD+fwmBskM8myBZ6EF/gKHJ49K0uk4Bn/t/2lL8vmmLLn6ULKWwrrfxi1VxPnRicU3tSYhxUvE1kttKO4kQuoVxKZBbg4eHSwUnmvB5onO/fY7DRNl8cyASahaw6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wI/NYtAT; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E86991F000E9;
-	Tue, 16 Jun 2026 18:19:22 +0000 (UTC)
+	 MIME-Version; b=YPXsKSjcpyrEdOgM8HysPkzd7kCU25WMk48wprJ3YQVGtK894fu4ogbMHYvn6U/J4NQq/zPahawsd56kI7biRPMNuXyyegJkA2uo0/731CKHTO3JuSz4LWHiGSBrPFnZyxS89nPkWHuejZSK76SsLWDK8Km/knlAd4NnI13BDAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fnyU3mHG; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 277B41F000E9;
+	Tue, 16 Jun 2026 18:50:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781633964;
-	bh=CFaFuGMKfI/Km7Z7rQFx7XqKJO8fiDL7DCzntYsON1k=;
+	s=korg; t=1781635809;
+	bh=4imrn0/2+//yaTkRqFSFSrTTseTpc6XTnVIVlDp9NMk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=wI/NYtATetrxjTWwbry/QwDO9CJM8MHdZKezth+HzJeJSJdh3EjyDIlyxIPyBmW99
-	 UYIj77vinsktmzjUWpficCRfs1QcYUb45hLLs0Zg7WCuabuOAVq/OmODlwO/Th+/Wn
-	 J++U2VK6uapCqiEbG8e7/cPGSgfC6ZctGjHZmnqM=
+	b=fnyU3mHGV48X62Qu+i53IxQbsvjyOAz0WGSc83Sca7B9jLbqeUl8IYQtJU/GWEs+h
+	 Kc1LtLgsTs6vQJq9Xel3+j6ITok9+J9+VHOB0ynrY7iF8gQ+g4pVbw9qG93qs+ie9w
+	 8ZS5x6R9N4nj+UNautSXb2pEFFW9Sv0L6F0zcJx8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+e34ad04f27991521104c@syzkaller.appspotmail.com,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Vladislav Nikolaev <vlad102nikolaev@gmail.com>,
+	Wei-Cheng Chen <weichengc@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 176/411] nfsd: dont ignore the return code of svc_proc_register()
+Subject: [PATCH 5.10 118/342] xhci: tegra: Fix ghost USB device on dual-role port unplug
 Date: Tue, 16 Jun 2026 20:26:54 +0530
-Message-ID: <20260616145110.023789253@linuxfoundation.org>
+Message-ID: <20260616145053.709539119@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,137 +66,225 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,kernel.org,oracle.com,gmail.com];
-	TAGGED_FROM(0.00)[bounces-265968-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:syzbot+e34ad04f27991521104c@syzkaller.appspotmail.com,m:jlayton@kernel.org,m:chuck.lever@oracle.com,m:vlad102nikolaev@gmail.com,m:sashal@kernel.org,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-266321-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:weichengc@nvidia.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,e34ad04f27991521104c];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,appspotmail.com:email,oracle.com:email,vger.kernel.org:from_smtp]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,vger.kernel.org:from_smtp,nvidia.com:email,msg.data:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 60CDD69408C
+X-Rspamd-Queue-Id: 97752694818
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Wei-Cheng Chen <weichengc@nvidia.com>
 
-commit 930b64ca0c511521f0abdd1d57ce52b2a6e3476b upstream.
+[ Upstream commit 5a4c828b8b29b47534814ade26d9aee09d5101fc ]
 
-Currently, nfsd_proc_stat_init() ignores the return value of
-svc_proc_register(). If the procfile creation fails, then the kernel
-will WARN when it tries to remove the entry later.
+When a USB device is unplugged from the dual-role port, the device-mode
+path in tegra_xhci_id_work() explicitly clears both SS and HS port power
+via direct hub_control ClearPortFeature(POWER) calls. This preempts the
+xHCI controller's normal disconnect processing -- PORT_CSC is never
+generated, the USB core never sees the disconnect, and the device remains
+in its internal tree as a ghost visible in lsusb.
 
-Fix nfsd_proc_stat_init() to return the same type of pointer as
-svc_proc_register(), and fix up nfsd_net_init() to check that and fail
-the nfsd_net construction if it occurs.
+Add an otg_set_port_power flag to control whether the dual-role switch
+path performs explicit port power management. SoCs that need it
+(Tegra124 / Tegra210 / Tegra186) set the flag; later SoCs (Tegra194 and
+beyond) rely on the PHY mode change to handle disconnect naturally and
+skip all port power calls.
 
-svc_proc_register() can fail if the dentry can't be allocated, or if an
-identical dentry already exists. The second case is pretty unlikely in
-the nfsd_net construction codepath, so if this happens, return -ENOMEM.
+Within the port power path, otg_reset_sspi additionally gates the SSPI
+reset sequence on host-mode entry for SoCs that require it.
 
-Reported-by: syzbot+e34ad04f27991521104c@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-nfs/67a47501.050a0220.19061f.05f9.GAE@google.com/
-Cc: stable@vger.kernel.org # v6.9
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Vladislav Nikolaev <vlad102nikolaev@gmail.com>
+Flags set per SoC:
+  Tegra124, Tegra186  -> otg_set_port_power
+  Tegra210            -> otg_set_port_power, otg_reset_sspi
+  Tegra194 and later  -> (none)
+
+[ Backport to 5.10.y: keep the host-mode snapshot in the existing
+  tegra->lock section, retain pm_runtime_mark_last_busy() in the host
+  port-power path, and omit the newer Tegra234 entry. ]
+
+Fixes: f836e7843036 ("usb: xhci-tegra: Add OTG support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Wei-Cheng Chen <weichengc@nvidia.com>
+Link: https://patch.msgid.link/20260505112630.217704-1-weichengc@nvidia.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfsctl.c | 9 ++++++++-
- fs/nfsd/stats.c  | 4 ++--
- fs/nfsd/stats.h  | 2 +-
- 3 files changed, 11 insertions(+), 4 deletions(-)
+ drivers/usb/host/xhci-tegra.c | 78 ++++++++++++++++++++---------------
+ 1 file changed, 44 insertions(+), 34 deletions(-)
 
-diff --git a/fs/nfsd/nfsctl.c b/fs/nfsd/nfsctl.c
-index ba2eaf3744efa4..cc0dea883fbdb2 100644
---- a/fs/nfsd/nfsctl.c
-+++ b/fs/nfsd/nfsctl.c
-@@ -1460,17 +1460,24 @@ static __net_init int nfsd_init_net(struct net *net)
- 	retval = nfsd_stat_counters_init(nn);
- 	if (retval)
- 		goto out_repcache_error;
+diff --git a/drivers/usb/host/xhci-tegra.c b/drivers/usb/host/xhci-tegra.c
+index e2cd145ed495a1..8b4a6eb8f0b11f 100644
+--- a/drivers/usb/host/xhci-tegra.c
++++ b/drivers/usb/host/xhci-tegra.c
+@@ -208,6 +208,7 @@ struct tegra_xusb_soc {
+ 	bool has_ipfs;
+ 	bool lpm_support;
+ 	bool otg_reset_sspi;
++	bool otg_set_port_power;
+ };
+ 
+ struct tegra_xusb_context {
+@@ -1161,14 +1162,17 @@ static void tegra_xhci_id_work(struct work_struct *work)
+ 	struct tegra_xusb_mbox_msg msg;
+ 	struct phy *phy = tegra_xusb_get_phy(tegra, "usb2",
+ 						    tegra->otg_usb2_port);
++	bool host_mode;
+ 	u32 status;
+ 	int ret;
+ 
+-	dev_dbg(tegra->dev, "host mode %s\n", tegra->host_mode ? "on" : "off");
+-
+ 	mutex_lock(&tegra->lock);
+ 
+-	if (tegra->host_mode)
++	host_mode = tegra->host_mode;
 +
- 	memset(&nn->nfsd_svcstats, 0, sizeof(nn->nfsd_svcstats));
- 	nn->nfsd_svcstats.program = &nfsd_program;
-+	if (!nfsd_proc_stat_init(net)) {
-+		retval = -ENOMEM;
-+		goto out_proc_error;
-+	}
++	dev_dbg(tegra->dev, "host mode %s\n", host_mode ? "on" : "off");
 +
- 	nn->nfsd_versions = NULL;
- 	nn->nfsd4_minorversions = NULL;
- 	nfsd4_init_leases_net(nn);
- 	get_random_bytes(&nn->siphash_key, sizeof(nn->siphash_key));
- 	seqlock_init(&nn->writeverf_lock);
--	nfsd_proc_stat_init(net);
++	if (host_mode)
+ 		phy_set_mode_ext(phy, PHY_MODE_USB_OTG, USB_ROLE_HOST);
+ 	else
+ 		phy_set_mode_ext(phy, PHY_MODE_USB_OTG, USB_ROLE_NONE);
+@@ -1179,42 +1183,44 @@ static void tegra_xhci_id_work(struct work_struct *work)
+ 								    tegra->otg_usb2_port);
  
- 	return 0;
+ 	pm_runtime_get_sync(tegra->dev);
+-	if (tegra->host_mode) {
+-		/* switch to host mode */
+-		if (tegra->otg_usb3_port >= 0) {
+-			if (tegra->soc->otg_reset_sspi) {
+-				/* set PP=0 */
+-				tegra_xhci_hc_driver.hub_control(
+-					xhci->shared_hcd, GetPortStatus,
+-					0, tegra->otg_usb3_port+1,
+-					(char *) &status, sizeof(status));
+-				if (status & USB_SS_PORT_STAT_POWER)
+-					tegra_xhci_set_port_power(tegra, false,
+-								  false);
+-
+-				/* reset OTG port SSPI */
+-				msg.cmd = MBOX_CMD_RESET_SSPI;
+-				msg.data = tegra->otg_usb3_port+1;
+-
+-				ret = tegra_xusb_mbox_send(tegra, &msg);
+-				if (ret < 0) {
+-					dev_info(tegra->dev,
+-						"failed to RESET_SSPI %d\n",
+-						ret);
++	if (tegra->soc->otg_set_port_power) {
++		if (host_mode) {
++			/* switch to host mode */
++			if (tegra->otg_usb3_port >= 0) {
++				if (tegra->soc->otg_reset_sspi) {
++					/* set PP=0 */
++					tegra_xhci_hc_driver.hub_control(
++						xhci->shared_hcd, GetPortStatus,
++						0, tegra->otg_usb3_port+1,
++						(char *) &status, sizeof(status));
++					if (status & USB_SS_PORT_STAT_POWER)
++						tegra_xhci_set_port_power(tegra, false,
++									  false);
++
++					/* reset OTG port SSPI */
++					msg.cmd = MBOX_CMD_RESET_SSPI;
++					msg.data = tegra->otg_usb3_port+1;
++
++					ret = tegra_xusb_mbox_send(tegra, &msg);
++					if (ret < 0) {
++						dev_info(tegra->dev,
++							"failed to RESET_SSPI %d\n",
++							ret);
++					}
+ 				}
+-			}
  
-+out_proc_error:
-+	nfsd_stat_counters_destroy(nn);
- out_repcache_error:
- 	nfsd_idmap_shutdown(net);
- out_idmap_error:
-diff --git a/fs/nfsd/stats.c b/fs/nfsd/stats.c
-index 7a58dba0045c3b..6d1c6067c80e3b 100644
---- a/fs/nfsd/stats.c
-+++ b/fs/nfsd/stats.c
-@@ -113,11 +113,11 @@ void nfsd_stat_counters_destroy(struct nfsd_net *nn)
- 	nfsd_percpu_counters_destroy(nn->counter, NFSD_STATS_COUNTERS_NUM);
+-			tegra_xhci_set_port_power(tegra, false, true);
+-		}
++				tegra_xhci_set_port_power(tegra, false, true);
++			}
+ 
+-		tegra_xhci_set_port_power(tegra, true, true);
+-		pm_runtime_mark_last_busy(tegra->dev);
++			tegra_xhci_set_port_power(tegra, true, true);
++			pm_runtime_mark_last_busy(tegra->dev);
+ 
+-	} else {
+-		if (tegra->otg_usb3_port >= 0)
+-			tegra_xhci_set_port_power(tegra, false, false);
++		} else {
++			if (tegra->otg_usb3_port >= 0)
++				tegra_xhci_set_port_power(tegra, false, false);
+ 
+-		tegra_xhci_set_port_power(tegra, true, false);
++			tegra_xhci_set_port_power(tegra, true, false);
++		}
+ 	}
+ 	pm_runtime_put_autosuspend(tegra->dev);
  }
- 
--void nfsd_proc_stat_init(struct net *net)
-+struct proc_dir_entry *nfsd_proc_stat_init(struct net *net)
- {
- 	struct nfsd_net *nn = net_generic(net, nfsd_net_id);
- 
--	svc_proc_register(net, &nn->nfsd_svcstats, &nfsd_proc_ops);
-+	return svc_proc_register(net, &nn->nfsd_svcstats, &nfsd_proc_ops);
- }
- 
- void nfsd_proc_stat_shutdown(struct net *net)
-diff --git a/fs/nfsd/stats.h b/fs/nfsd/stats.h
-index 14525e854cbac3..b9329285bc1d79 100644
---- a/fs/nfsd/stats.h
-+++ b/fs/nfsd/stats.h
-@@ -15,7 +15,7 @@ void nfsd_percpu_counters_reset(struct percpu_counter *counters, int num);
- void nfsd_percpu_counters_destroy(struct percpu_counter *counters, int num);
- int nfsd_stat_counters_init(struct nfsd_net *nn);
- void nfsd_stat_counters_destroy(struct nfsd_net *nn);
--void nfsd_proc_stat_init(struct net *net);
-+struct proc_dir_entry *nfsd_proc_stat_init(struct net *net);
- void nfsd_proc_stat_shutdown(struct net *net);
- 
- static inline void nfsd_stats_rc_hits_inc(struct nfsd_net *nn)
+@@ -1925,6 +1931,7 @@ static const struct tegra_xusb_soc tegra124_soc = {
+ 	.scale_ss_clock = true,
+ 	.has_ipfs = true,
+ 	.otg_reset_sspi = false,
++	.otg_set_port_power = true,
+ 	.mbox = {
+ 		.cmd = 0xe4,
+ 		.data_in = 0xe8,
+@@ -1961,6 +1968,7 @@ static const struct tegra_xusb_soc tegra210_soc = {
+ 	.scale_ss_clock = false,
+ 	.has_ipfs = true,
+ 	.otg_reset_sspi = true,
++	.otg_set_port_power = true,
+ 	.mbox = {
+ 		.cmd = 0xe4,
+ 		.data_in = 0xe8,
+@@ -2002,6 +2010,7 @@ static const struct tegra_xusb_soc tegra186_soc = {
+ 	.scale_ss_clock = false,
+ 	.has_ipfs = false,
+ 	.otg_reset_sspi = false,
++	.otg_set_port_power = true,
+ 	.mbox = {
+ 		.cmd = 0xe4,
+ 		.data_in = 0xe8,
+@@ -2033,6 +2042,7 @@ static const struct tegra_xusb_soc tegra194_soc = {
+ 	.scale_ss_clock = false,
+ 	.has_ipfs = false,
+ 	.otg_reset_sspi = false,
++	.otg_set_port_power = false,
+ 	.mbox = {
+ 		.cmd = 0x68,
+ 		.data_in = 0x6c,
 -- 
 2.53.0
 
