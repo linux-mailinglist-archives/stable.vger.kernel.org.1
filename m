@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-264320-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265092-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id tK6oORJzMWqYjgUAu9opvQ
-	(envelope-from <stable+bounces-264320-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:00:18 +0200
+	id 7ch9CwWCMWq3lAUAu9opvQ
+	(envelope-from <stable+bounces-265092-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:04:05 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 870A46919CB
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:00:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4560692B14
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:04:04 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=sHMY7vas;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264320-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-264320-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="xuSb1u/6";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265092-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-265092-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7EA5B304E637
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:54:57 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0F925303CE2E
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:03:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 712CE44D6AB;
-	Tue, 16 Jun 2026 15:54:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64819472767;
+	Tue, 16 Jun 2026 17:03:51 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A25444CF4E;
-	Tue, 16 Jun 2026 15:54:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4383735675A;
+	Tue, 16 Jun 2026 17:03:50 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781625295; cv=none; b=N1JgKLSNenFidVZjQrMH3/YTvAmdjVNyMm7iySEef9FkhUr35XgPp0nv/pYZ86uaUflxCpdkoEmI0uVy+MuSdDcBOdQIRsFD3SM9WeBSzPCrD3wWrD1d/crLNWGE+Sv9zf/XPJvlZHt97KzXpaNfQvjOcDwiFlwu99NWIjVmK5Q=
+	t=1781629431; cv=none; b=j+KH+Cxy/uzFay8Tt9GuUFsXNOYUhmWQ+1SJbXb0rY4SWlG655zD+Q+/Zk3QuV3a0JurYfWpGVArbpk/RsDOgri1tKdKYtHp9u9kKvPRTs+P3xmzRp2TMIZXUxC8thLg3IpfIGh5f32t2pxN/kr2VVGQ0znF4ZMeuclX8Kiq/yI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781625295; c=relaxed/simple;
-	bh=F4tr9gRmwFO4zTvpWPP+HUsYXto1XA9AAE7KHInQqWc=;
+	s=arc-20240116; t=1781629431; c=relaxed/simple;
+	bh=FJBaLj6Af6ma6FHC7J0WuNJ9E+zzm39NdGVgBXYQhUU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=osDEbwWdGsoX2Xx7aR0PkcDsMNuuSB4axQ4hOGE38uB/ruuwaQHrMqA4kPF5QWGjx1SJJrL3OkT55HLBaAo2FGXtkVRURPUKt0lJ/PQJTTRL+pd2zNumm05RA6KIbTZINh+yqNQK7hQeLRywpym2DfqYhblt/z2UpVNIS79w4TU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sHMY7vas; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54D4D1F000E9;
-	Tue, 16 Jun 2026 15:54:53 +0000 (UTC)
+	 MIME-Version; b=HFbKnfFPLVi2qwK8RrZAwxamBytiS8T7Ck10Fri5hdqytLP0VdbQJaz5wNlWQLaXXq46oNs4DGpJZWUqdJPuWzoiq+fidAk8CqbOW4kxldheUDjUIeiy4Ktd5oEX3Oi/aXH+aa2vu+yGUOaGuNvpiA30idCJVneiYeo+SPjMOok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xuSb1u/6; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 537A01F000E9;
+	Tue, 16 Jun 2026 17:03:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781625294;
-	bh=cD3WRKoJ2+ogYR+eEhUZk02Mjoo718x2HXATnyvXi+E=;
+	s=korg; t=1781629430;
+	bh=GNp34bn7GmmPq1sUAfvym0oukyTR5CJUb6luwq8Vehg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=sHMY7vasFmcGeo6FPxdpQJbFbAKf1taF4beN66jpewg+w/ASAWzCmqvBON1g7jBZ9
-	 ePu2WZPDNJTV2auWboFwCr2FHFcKpkitaBI22TF8rXNvP7wGSoJFHkkRNj1qZtk2lc
-	 DFIag/18JB/iU57Q1Avy/h2rj/eq9SEOyTjHlJIk=
+	b=xuSb1u/6uKBDWy3znUb6awUgV4k2TYtE59bQpZy/6Zv9jIZUdUWcalIJykxBaHLVa
+	 dbLmG+thAN/s45fT5ufeAjyNkTnVbtcZB/bG8ib9AOeh9nuO/K3JyVnldhdbXqtiQs
+	 pv6auPvnm4fDkoGl2rTVLRfBWTTMQjsEppy8D1XU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeremy Kerr <jk@codeconstruct.com.au>,
+	Til Kaiser <mail@tk154.de>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 113/325] net: mctp: usb: dont fail mctp_usb_rx_queue on a deferred submission
+Subject: [PATCH 6.6 282/452] net: mvpp2: limit XDP frame size to the RX buffer
 Date: Tue, 16 Jun 2026 20:28:29 +0530
-Message-ID: <20260616145103.331554696@linuxfoundation.org>
+Message-ID: <20260616145132.434064439@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,12 +77,12 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264320-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265092-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jk@codeconstruct.com.au,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mail@tk154.de,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
@@ -98,48 +98,52 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,codeconstruct.com.au:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tk154.de:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 870A46919CB
+X-Rspamd-Queue-Id: C4560692B14
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeremy Kerr <jk@codeconstruct.com.au>
+From: Til Kaiser <mail@tk154.de>
 
-[ Upstream commit 881a3113b74964918cdd72747e3bc119c02b0c0c ]
+[ Upstream commit f3c6aa078927e6fe8121c9c591ddee8716c5305a ]
 
-In the ndo_open path, a deferred queue open will report a failure, and
-so the netdev will not be ndo_stop()ed, leaving us with the rx_retry
-work potentially pending.
+mvpp2 has short and long BM pools, and short pool buffers can be smaller
+than PAGE_SIZE. The XDP path nevertheless initializes every xdp_buff with
+PAGE_SIZE as frame size.
 
-Don't report a deferred queue as an error, as we are still operational.
-This means we use the ndo_stop() path for future cleanup, which handles
-rx_retry_work cancellation.
+XDP helpers use frame_sz to validate tail growth and to derive the hard
+end of the data area. Advertising PAGE_SIZE for short buffers can let
+bpf_xdp_adjust_tail() grow a packet past the real allocation, corrupting
+memory or later tripping skb tailroom checks.
 
-Fixes: 0791c0327a6e ("net: mctp: Add MCTP USB transport driver")
-Signed-off-by: Jeremy Kerr <jk@codeconstruct.com.au>
-Link: https://patch.msgid.link/20260608-dev-mctp-usb-rx-requeue-v2-2-29a3aa507609@codeconstruct.com.au
+Initialize the XDP buffer with bm_pool->frag_size so XDP tailroom matches
+the actual buffer backing the packet.
+
+Fixes: 07dd0a7aae7f ("mvpp2: add basic XDP support")
+Signed-off-by: Til Kaiser <mail@tk154.de>
+Link: https://patch.msgid.link/20260607134943.21996-3-mail@tk154.de
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/mctp/mctp-usb.c | 2 +-
+ drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/mctp/mctp-usb.c b/drivers/net/mctp/mctp-usb.c
-index cf6f6a93a45112..fade65f2f26995 100644
---- a/drivers/net/mctp/mctp-usb.c
-+++ b/drivers/net/mctp/mctp-usb.c
-@@ -154,7 +154,7 @@ static int mctp_usb_rx_queue(struct mctp_usb *mctp_usb, gfp_t gfp)
- 	if (!mctp_usb->rx_stopped)
- 		schedule_delayed_work(&mctp_usb->rx_retry_work, RX_RETRY_DELAY);
- 	spin_unlock_irqrestore(&mctp_usb->rx_lock, flags);
--	return rc;
-+	return 0;
- }
+diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
+index af10654f655674..9221ee209a309b 100644
+--- a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
++++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
+@@ -3981,7 +3981,7 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
+ 			else
+ 				xdp_rxq = &rxq->xdp_rxq_long;
  
- static void mctp_usb_in_complete(struct urb *urb)
+-			xdp_init_buff(&xdp, PAGE_SIZE, xdp_rxq);
++			xdp_init_buff(&xdp, bm_pool->frag_size, xdp_rxq);
+ 			xdp_prepare_buff(&xdp, data,
+ 					 MVPP2_MH_SIZE + MVPP2_SKB_HEADROOM,
+ 					 rx_bytes, false);
 -- 
 2.53.0
 
