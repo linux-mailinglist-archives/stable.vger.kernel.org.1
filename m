@@ -1,68 +1,62 @@
-Return-Path: <stable+bounces-266028-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264569-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id KA/sCe2UMWqCnQUAu9opvQ
-	(envelope-from <stable+bounces-266028-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:24:45 +0200
+	id LO+lAAB6MWpakQUAu9opvQ
+	(envelope-from <stable+bounces-264569-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:29:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A72BD6941B3
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:24:44 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 574D869222A
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:29:51 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=gJ+zpTUB;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266028-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266028-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=pWQYKv10;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264569-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264569-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AEDF0306C71D
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:24:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0378F321235C
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:16:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 688F946AF1B;
-	Tue, 16 Jun 2026 18:24:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8588046AEFE;
+	Tue, 16 Jun 2026 16:16:54 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36EF73BFE5A;
-	Tue, 16 Jun 2026 18:24:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24CAF35AC1E;
+	Tue, 16 Jun 2026 16:16:53 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781634280; cv=none; b=qm2Y1TcNUyVhOKp8+WPlopMR/Lye0dunvZ0Cb8IhHVNvGvs8BWGGJ83SV8KhIhfDwedYd83+02hnD2qRWLmliBOQnNcJfRRGhPJwKIuFTDaq9xrHT4U/mJ5iDrDbi6CV2ZHhs/RX86qqwTxVIp8tsVlhGY0NJ3cg3pJLyV2zSDw=
+	t=1781626614; cv=none; b=UrusyDQS8oYmU/DLt4baxhrP/ciMe1A8PgGdCfbJWBx0nnukJOJ9c0faF6Ym+CENTVG8R/eExeS/+z47DMRA0SOUkJTvYaBbgOZ51d26dyeIon0OXM4BXxkP/d8t1A/5g0gbAhzc3/yqt1yTzt8mCuNtYy74vKdB7Ac1B6drrO8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781634280; c=relaxed/simple;
-	bh=+fzLOKZVm98/3437/xu0mtMCwTcZScx6ZgTjL25/b6E=;
+	s=arc-20240116; t=1781626614; c=relaxed/simple;
+	bh=7fUGXDdIfLyJF4cA1J59sINzZqTNMXJl6VJto8KTesY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uWjTuN8/V5ybxoUfuFXO582ieiTY7NCFQ7m3NshVyWjuvN6bO7qt5+zte7eNwUz456cGzUUIvyexaGmICkRdPckqkS2FrjwIHzFAXYJRcpks0xbAGvKDi8kHcCbxZHVRVhJq+AzCFgjxMRm++2BTEDiFz4V9/lZRfmPFkdUPVC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gJ+zpTUB; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 332B41F000E9;
-	Tue, 16 Jun 2026 18:24:38 +0000 (UTC)
+	 MIME-Version; b=uFS5gasaswa3Ptc/xX0f9Fa2jgZ/1BHWXitjlXra16vfN5/RgJeRDWSn3f+jZgCkRwraMkj2b84gbPPmQD5qLKkogsk+D5EavZv67xlOVDiijMflCVX3IfuuqAL+VhPAmqH6gddK4aolmG/mcyn2Dv2OF/RoKSH3S9dxHjFgmbw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pWQYKv10; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BA1A1F000E9;
+	Tue, 16 Jun 2026 16:16:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781634279;
-	bh=qgVvirZm8Tsgrmjjl2Uj+hOuct9zWN62orGiMU/m8e4=;
+	s=korg; t=1781626613;
+	bh=79rjtJOlBo9ybCj6d5EF1L67fVI1L21cA1DK4VwJ1sc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gJ+zpTUB88jWPC+OGNmnniezrvCh1gMFj0cfpQYHDdTwL5lo5Ev86AoEZN7DnK2hK
-	 1/2nntUUMCA2kh4hCShNheEDqjy0wbUjOm06/wFF64xzVw3Z2OHPIbqrCyBcKo7h46
-	 +73k34HpsnUOymxPbASCB6ZRunNqVrFzefiPR5qI=
+	b=pWQYKv10l46MVoMqz2S5PqaXDcCKyr4aXrOh0vgqjAxQJZkbLRAFNjRk8eFVZQFp7
+	 A4tQN9UaIB8dGWN6Zlo7zwWeE87StZXo7564HWzxzc10cITYNOFQBg4PCaQsFt0xBY
+	 V0qqtRzMQ+Y9X9einB+tVqNIrebgGjPq492W9yq4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Zhengchuan Liang <zcliangcn@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Wyatt Feng <bronzed_45_vested@icloud.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Xin Long <lucien.xin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 236/411] sctp: stream: fully roll back denied add-stream state
+	Tapio Reijonen <tapio.reijonen@vaisala.com>,
+	Wei Fang <wei.fang@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 036/261] net: fec: fix pinctrl default state restore order on resume
 Date: Tue, 16 Jun 2026 20:27:54 +0530
-Message-ID: <20260616145113.380548910@linuxfoundation.org>
+Message-ID: <20260616145046.769051642@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,103 +68,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266028-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:yuantan098@gmail.com,m:yifanwucs@gmail.com,m:tomapufckgml@gmail.com,m:zcliangcn@gmail.com,m:bird@lzu.edu.cn,m:bronzed_45_vested@icloud.com,m:n05ec@lzu.edu.cn,m:lucien.xin@gmail.com,m:kuba@kernel.org,m:lucienxin@gmail.com,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264569-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:tapio.reijonen@vaisala.com,m:wei.fang@nxp.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,icloud.com];
 	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,lzu.edu.cn:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vaisala.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,nxp.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A72BD6941B3
+X-Rspamd-Queue-Id: 574D869222A
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wyatt Feng <bronzed_45_vested@icloud.com>
+From: Tapio Reijonen <tapio.reijonen@vaisala.com>
 
-commit a5f8a90ac9f77c678a9781c0a464b635e0d63e49 upstream.
+[ Upstream commit b455410146bf723c7ebcb49ecd5becc0d6611482 ]
 
-When ADD_OUT_STREAMS is denied, SCTP only shrinks the queued chunks and
-then lowers outcnt. That leaves removed stream metadata behind, so a
-later re-add can reuse a stale ext and hit a null-pointer dereference in
-the scheduler get path.
+In fec_resume(), fec_enet_clk_enable() is called before
+pinctrl_pm_select_default_state() in the non-WoL path, inverting the
+ordering used in fec_suspend() which correctly switches to the sleep
+pinctrl state before disabling clocks.
 
-Fix the rollback by tearing down the removed stream state the same way
-other stream resizes do. Unschedule the current scheduler state, drop
-the removed stream ext state with sctp_stream_outq_migrate(), and then
-reschedule the remaining streams.
+For PHYs with the PHY_RST_AFTER_CLK_EN flag (e.g. TI DP83848 or
+SMSC LAN87xx), fec_enet_clk_enable() triggers a hardware reset pulse
+via the phy-reset GPIO. With the GPIO pin still in sleep pinctrl state
+at that point, the GPIO write has no physical effect and the PHY never
+receives the required reset after clock enable, leading to unreliable
+link establishment after system resume.
 
-This keeps scheduler-private RR/FC/PRIO lists consistent while fully
-rolling back denied outgoing stream additions.
+Fix by restoring the default pinctrl state before enabling clocks,
+making resume the proper mirror of suspend. The call is made
+unconditionally: fec_suspend() only switches to the sleep pinctrl state
+on the non-WoL path and leaves the pins in the default state when WoL
+is enabled, so on a WoL resume the device is already in the default
+state and pinctrl_pm_select_default_state() is a no-op.
 
-Fixes: 637784ade221 ("sctp: introduce priority based stream scheduler")
-Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Zhengchuan Liang <zcliangcn@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Wyatt Feng <bronzed_45_vested@icloud.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Acked-by: Xin Long <lucien.xin@gmail.com>
-Link: https://patch.msgid.link/d78954ecd94954653ee299400e98d74a03a6f7d3.1780603399.git.bronzed_45_vested@icloud.com
+Fixes: de40ed31b3c5 ("net: fec: add Wake-on-LAN support")
+Signed-off-by: Tapio Reijonen <tapio.reijonen@vaisala.com>
+Reviewed-by: Wei Fang <wei.fang@nxp.com>
+Link: https://patch.msgid.link/20260529-b4-fec-resume-pinctrl-order-v3-1-6eda0f592fca@vaisala.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sctp/stream.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/freescale/fec_main.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/net/sctp/stream.c
-+++ b/net/sctp/stream.c
-@@ -1038,6 +1038,7 @@ struct sctp_chunk *sctp_process_strreset
- 			stsn, rtsn, GFP_ATOMIC);
- 	} else if (req->type == SCTP_PARAM_RESET_ADD_OUT_STREAMS) {
- 		struct sctp_strreset_addstrm *addstrm;
-+		const struct sctp_sched_ops *sched;
- 		__u16 number;
+diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
+index 9018a7d3864fd5..d8189c433847c4 100644
+--- a/drivers/net/ethernet/freescale/fec_main.c
++++ b/drivers/net/ethernet/freescale/fec_main.c
+@@ -4731,6 +4731,7 @@ static int fec_resume(struct device *dev)
+ 		if (fep->rpm_active)
+ 			pm_runtime_force_resume(dev);
  
- 		addstrm = (struct sctp_strreset_addstrm *)req;
-@@ -1048,7 +1049,10 @@ struct sctp_chunk *sctp_process_strreset
- 			for (i = number; i < stream->outcnt; i++)
- 				SCTP_SO(stream, i)->state = SCTP_STREAM_OPEN;
- 		} else {
--			sctp_stream_shrink_out(stream, number);
-+			sched = sctp_sched_ops_from_stream(stream);
-+			sched->unsched_all(stream);
-+			sctp_stream_outq_migrate(stream, NULL, number);
-+			sched->sched_all(stream);
- 			stream->outcnt = number;
++		pinctrl_pm_select_default_state(&fep->pdev->dev);
+ 		ret = fec_enet_clk_enable(ndev, true);
+ 		if (ret) {
+ 			rtnl_unlock();
+@@ -4747,8 +4748,6 @@ static int fec_resume(struct device *dev)
+ 			val &= ~(FEC_ECR_MAGICEN | FEC_ECR_SLEEP);
+ 			writel(val, fep->hwp + FEC_ECNTRL);
+ 			fep->wol_flag &= ~FEC_WOL_FLAG_SLEEP_ON;
+-		} else {
+-			pinctrl_pm_select_default_state(&fep->pdev->dev);
  		}
- 
+ 		fec_restart(ndev);
+ 		netif_tx_lock_bh(ndev);
+-- 
+2.53.0
+
 
 
 
