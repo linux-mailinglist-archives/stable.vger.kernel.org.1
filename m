@@ -1,384 +1,137 @@
-Return-Path: <stable+bounces-263678-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263690-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id IpY7C6M2MWp4eAUAu9opvQ
-	(envelope-from <stable+bounces-263678-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 13:42:27 +0200
+	id zExKCLE8MWr+egUAu9opvQ
+	(envelope-from <stable+bounces-263690-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 14:08:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE3AC68EDE1
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 13:42:26 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62AB668F1D5
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 14:08:16 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=awne7RLf;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263678-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-263678-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=zNWF2Vvj;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263690-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-263690-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A5E193025BAE
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 11:42:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 77A8830F4C49
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 12:07:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CDE2344044;
-	Tue, 16 Jun 2026 11:42:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AB8443CEFF;
+	Tue, 16 Jun 2026 12:07:47 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADD0842E004;
-	Tue, 16 Jun 2026 11:41:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBA5B43CEEF
+	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 12:07:45 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781610120; cv=none; b=izEpU3o6oqOdwqvuMGow9L2YQjGkTNwa1zXwh7C/dXdQlBAt6sCGxeB5JJmbv75g8KozHzvXej0HqSWqUuJcKSARwfgDzT0Gn2lZSqwAgFKK//2/07uDws2n0VlmcaXX/sPQuQYDOVFdMz3MmxZPdZsSLIn2Ipg9JxJA8g2gNdc=
+	t=1781611666; cv=none; b=tzstQ0I+jw1UKoRbiP9LxbDdnz5s8H0EPTo1pYSgV5dhrZdnwYFyzzFrn+vWM/LBhnBZfpP983EaFHEEAtiRXYR8iRzWt5ERAgaGbYyrZOyB4XcbQzDAjf16twe8wLAPTtiZ6Y1BJplKYRGS3d6HiNjwVpAvcoW2h5+vfRK6E7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781610120; c=relaxed/simple;
-	bh=Q2H8Q5oZoCKwXJzLTaolymrMNeCDNy+1NXp7olYM2t8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=OtONYNU45rhUqVF66IWYOa9Msrw4RqT9MwNmAEIkxRBgZB+2RjW0E4ujWtHwm/dqHYmaPj9R0K4NxUKwo/0m493n7WlO9IFBlA4B2n+tyv9iNxEETbo96voVX+hjLsBYez97TlwFKBKAvluyQgxL6IIaDT5bn3aQFzOTUrSanMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=awne7RLf; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24F121F00A3D;
-	Tue, 16 Jun 2026 11:41:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781610118;
-	bh=L/7K/apxV0sRO/3BBLIPR4xFcZPnDkB3ZGwISoTDSQw=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=awne7RLfP8C7GrmYymXUWPdqcY5cqGWYtFcqiUeDlesUd2doshc/u6WH+GC6AVXdd
-	 Gfi6MroTvcSh9HIafDXUZmt15qYbRLXpcYS7ruaMpRov5M5daJK+vsVDwhqin5tK/1
-	 u+ztkTGaXn56Xware4Cs0G3Xrq2G+RduJPB1qCapgm/QITuhictkiofLRJ080WwXaA
-	 BkzkF0EQKzn0p40qup0AA1yR2rHKHNyWTjCsWjNJJ44kvYLqULKNoEteasJOz21N4w
-	 APYeLbp90gLvzxvM+fqN6LjN/KnlS//q/OqoezuIpw+AE89d3R3xAr325tRNDYRgal
-	 OBQTFURDaWURQ==
-From: Christian Brauner <brauner@kernel.org>
-Date: Tue, 16 Jun 2026 13:41:16 +0200
-Subject: [PATCH 7/7] btrfs: keep the exclusive op held while a dev-replace
- is suspended in-mount
+	s=arc-20240116; t=1781611666; c=relaxed/simple;
+	bh=aefywNorBjtG7Ab4/CtoyHSmkGL3g+aGnLYLrtcN6g8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ci0ZyN71a+kPcVcBluLp6lrwxnSLXANOAAs45GVulc1ZaKvwKxkUJ0cOzwDwrO7zjgWMiA1KAVyddeUTsHcm95kniKk5e5xO+tTBksI/rbkvKlqcWxE6VcFzNIr0FAIfmrRJN9pPI3399YQ7b1KSMwTAAdNOHfBrVOZREgT4WRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zNWF2Vvj; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B1D31F000E9;
+	Tue, 16 Jun 2026 12:07:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1781611665;
+	bh=ny94/my199aySWtIHlh+NSB7NXA2rnfenepVm3aFYx0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=zNWF2Vvj15y6z0+r5M8wHOaXSBWWgVb86AoWuE3R5fV/5C0Oqu6Q1mEwE3sPQBqjQ
+	 bqWrqHAtoPR/8YnOupdJGfJXodJXB0ZAA5zMLNu5usph9/VLYWUlKVpda5VRWZ9uUV
+	 wREaCwsSbq8Wph3jK943tpOIeG7dle78mGN2hcpE=
+Date: Tue, 16 Jun 2026 17:16:49 +0530
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Mark Rutland <mark.rutland@arm.com>
+Cc: stable@vger.kernel.org, catalin.marinas@arm.com, lee@kernel.org,
+	sdonthineni@nvidia.com, will@kernel.org
+Subject: Re: [PATCH 6.18.y 0/5] arm64: errata: Mitigate TLBI errata on
+ various Arm CPUs
+Message-ID: <2026061641-flip-baggage-b527@gregkh>
+References: <20260616051329.111597-1-mark.rutland@arm.com>
+ <2026061655-veggie-rerun-83e6@gregkh>
+ <2026061658-landowner-dangling-5d07@gregkh>
+ <ajEq3rRp8rYQg7Fu@J2N7QTR9R3>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260616-work-btrfs-preexisting-fixes-v1-7-c4abe2f6d4f0@kernel.org>
-References: <20260616-work-btrfs-preexisting-fixes-v1-0-c4abe2f6d4f0@kernel.org>
-In-Reply-To: <20260616-work-btrfs-preexisting-fixes-v1-0-c4abe2f6d4f0@kernel.org>
-To: Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>, 
- Qu Wenruo <quwenruo.btrfs@gmx.com>
-Cc: Filipe Manana <fdmanana@suse.com>, Naohiro Aota <naota@elisp.net>, 
- linux-btrfs@vger.kernel.org, Anand Jain <anand.jain@oracle.com>, 
- Stefan Behrens <sbehrens@giantdisaster.de>, linux-fsdevel@vger.kernel.org, 
- "Christian Brauner (Amutable)" <brauner@kernel.org>, stable@vger.kernel.org
-X-Mailer: b4 0.16-dev-4090c
-X-Developer-Signature: v=1; a=openpgp-sha256; l=11570; i=brauner@kernel.org;
- h=from:subject:message-id; bh=Q2H8Q5oZoCKwXJzLTaolymrMNeCDNy+1NXp7olYM2t8=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQZmmWXvfRosNFonf+P98ZB5Ve9dlPtpp7zKvbsuGIsm
- fOWS/tDRykLgxgXg6yYIotDu0m43HKeis1GmRowc1iZQIYwcHEKwESSghj+p0y+EndEs2hTwrLj
- h89Y/LvCdOrQ+6lty+Q417Qctv/mL8bI8JrllrjI1JUP5aOXHdq28JPeXcdoL0OH7IzXtyZ3ywS
- nMAIA
-X-Developer-Key: i=brauner@kernel.org; a=openpgp;
- fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ajEq3rRp8rYQg7Fu@J2N7QTR9R3>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-5.16 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:clm@fb.com,m:dsterba@suse.com,m:quwenruo.btrfs@gmx.com,m:fdmanana@suse.com,m:naota@elisp.net,m:linux-btrfs@vger.kernel.org,m:anand.jain@oracle.com,m:sbehrens@giantdisaster.de,m:linux-fsdevel@vger.kernel.org,m:brauner@kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:mark.rutland@arm.com,m:stable@vger.kernel.org,m:catalin.marinas@arm.com,m:lee@kernel.org,m:sdonthineni@nvidia.com,m:will@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-263690-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[fb.com,suse.com,gmx.com];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[brauner@kernel.org,stable@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-263678-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[brauner@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,arm.com:url,gregkh:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: DE3AC68EDE1
+X-Rspamd-Queue-Id: 62AB668F1D5
 
-btrfs serialises balance and device add/remove/replace/resize through the
-single fs_info->exclusive_operation token; a balance can only start when the
-token is BTRFS_EXCLOP_NONE.
+On Tue, Jun 16, 2026 at 11:52:14AM +0100, Mark Rutland wrote:
+> On Tue, Jun 16, 2026 at 03:34:27PM +0530, Greg KH wrote:
+> > On Tue, Jun 16, 2026 at 03:31:11PM +0530, Greg KH wrote:
+> > > On Tue, Jun 16, 2026 at 06:13:24AM +0100, Mark Rutland wrote:
+> > > > This is a v6.18-only backport of a workaround for a TLB invalidation
+> > > > issue affecting several CPUs. The final patches landed in mainline
+> > > > yesterday:
+> > > > 
+> > > >   https://lore.kernel.org/linux-arm-kernel/178157002783.358810.8206806281627742561.pr-tracker-bot@kernel.org/
+> > > >   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=80476f22b8b7e193b26f285a7c9f9e4b63abca16
+> > > > 
+> > > > This issue has been assigned CVE ID CVE-2025-10263, and Arm have
+> > > > published a security bulletin:
+> > > > 
+> > > >   https://developer.arm.com/documentation/112137/latest/
+> > > > 
+> > > > I've pushed a copy of this backport to my kernel.org repo:
+> > > > 
+> > > >   https://git.kernel.org/pub/scm/linux/kernel/git/mark/linux.git/log/?h=stable-6.18/arm-4118414/backport
+> > > 
+> > > Should I cherry-pick these to 7.1.y and 7.0.y as well?
+> > 
+> > Ok, cherry-picking didn't work well, I gave up on patch 3...
+> > 
+> > Can you send backports for those branches too?
+> 
+> Sorry about that.
+> 
+> I'll send out backports for v7.0.y and v7.1.y later today.
 
-When btrfs_dev_replace_finishing() fails on one of its early legs --
-btrfs_start_delalloc_roots() or btrfs_start_transaction() returning an error
-such as -ENOMEM -- the replace is left pending in-mount: the source and target
-devices stay in place and writes are still mirrored to the target
-(btrfs_dev_replace_is_ongoing() stays true).  The callers, however, release the
-exclusive op unconditionally -- both btrfs_dev_replace_kthread() and the
-BTRFS_IOCTL_DEV_REPLACE_CMD_START ioctl call btrfs_exclop_finish() regardless of
-the outcome.  With the token back to NONE a balance can claim it and run against
-the still-pending replace, which the token exists to prevent: balance relocates
-extents that are mirrored to the target during the window, while a later resume
-drives the copy from the source commit root starting at committed_cursor_left,
-so the two can disagree and leave stale data on the target after the devices are
-swapped.
+Wonderful, thanks!
 
-This is the exclusive-op lifetime tightening deferred by the SUSPENDED demotion
-in "btrfs: don't leave dev-replace STARTED after an early finishing failure".
-Mirror how a paused balance keeps owning the token (BTRFS_EXCLOP_BALANCE_PAUSED):
-a replace suspended while the filesystem stays mounted keeps
-BTRFS_EXCLOP_DEV_REPLACE, so every other exclusive operation is rejected exactly
-as during an active replace.
-
-btrfs_dev_replace_finishing() now reports whether it suspended the replace
-through an output parameter, captured from its own outcome rather than re-read
-from the shared state (which a racing cancel could change underneath us).  The
-two callers keep the token when the replace was suspended and release it
-otherwise.  The release goes through a new btrfs_exclop_finish_if() that only
-drops the token when it is still BTRFS_EXCLOP_DEV_REPLACE: a replace suspended
-across a mount that could not be resumed does not own the token -- a recovered
-paused balance may -- and must not have it cleared from under it.
-btrfs_dev_replace_cancel() releases the retained token the same way once the
-suspended replace has been torn down.  Its own btrfs_start_transaction()
-failure leg now falls through to that teardown and token release rather than
-returning early, since the replace is already marked canceled at that point.
-
-The across-mount degraded-resume cases (missing target, or the exclusive op
-already taken at resume) and the rw->ro remount path leave the replace suspended
-without owning the token; closing those needs a balance-side back-off and is
-left as a separate change.
-
-Fixes: e93c89c1aaaa ("Btrfs: add new sources for device replace code")
-Fixes: 5ac00addc7ac ("Btrfs: disallow mutually exclusive admin operations from user mode")
-Cc: stable@vger.kernel.org
-Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
----
- fs/btrfs/dev-replace.c | 36 ++++++++++++++++++++++++------------
- fs/btrfs/dev-replace.h |  3 ++-
- fs/btrfs/fs.c          | 17 +++++++++++++++++
- fs/btrfs/fs.h          |  2 ++
- fs/btrfs/ioctl.c       |  9 +++++++--
- 5 files changed, 52 insertions(+), 15 deletions(-)
-
-diff --git a/fs/btrfs/dev-replace.c b/fs/btrfs/dev-replace.c
-index 6420f235ccd7..2f2b775478df 100644
---- a/fs/btrfs/dev-replace.c
-+++ b/fs/btrfs/dev-replace.c
-@@ -64,7 +64,7 @@
-  */
- 
- static int btrfs_dev_replace_finishing(struct btrfs_fs_info *fs_info,
--				       int scrub_ret);
-+				       int scrub_ret, bool *suspended);
- static int btrfs_dev_replace_kthread(void *data);
- static void btrfs_rm_dev_replace_blocked(struct btrfs_fs_info *fs_info);
- static void btrfs_rm_dev_replace_unblocked(struct btrfs_fs_info *fs_info);
-@@ -587,7 +587,7 @@ bool btrfs_finish_block_group_to_copy(struct btrfs_device *srcdev,
- 
- static int btrfs_dev_replace_start(struct btrfs_fs_info *fs_info,
- 		const char *tgtdev_name, u64 srcdevid, const char *srcdev_name,
--		int read_src)
-+		int read_src, bool *suspended)
- {
- 	struct btrfs_root *root = fs_info->dev_root;
- 	struct btrfs_trans_handle *trans;
-@@ -707,7 +707,7 @@ static int btrfs_dev_replace_start(struct btrfs_fs_info *fs_info,
- 			      btrfs_device_get_total_bytes(src_device),
- 			      &dev_replace->scrub_progress, false, true);
- 
--	ret = btrfs_dev_replace_finishing(fs_info, ret);
-+	ret = btrfs_dev_replace_finishing(fs_info, ret, suspended);
- 	if (ret == -EINPROGRESS)
- 		ret = BTRFS_IOCTL_DEV_REPLACE_RESULT_SCRUB_INPROGRESS;
- 
-@@ -736,7 +736,8 @@ static int btrfs_check_replace_dev_names(struct btrfs_ioctl_dev_replace_args *ar
- }
- 
- int btrfs_dev_replace_by_ioctl(struct btrfs_fs_info *fs_info,
--			    struct btrfs_ioctl_dev_replace_args *args)
-+			    struct btrfs_ioctl_dev_replace_args *args,
-+			    bool *suspended)
- {
- 	int ret;
- 
-@@ -754,7 +755,8 @@ int btrfs_dev_replace_by_ioctl(struct btrfs_fs_info *fs_info,
- 	ret = btrfs_dev_replace_start(fs_info, args->start.tgtdev_name,
- 					args->start.srcdevid,
- 					args->start.srcdev_name,
--					args->start.cont_reading_from_srcdev_mode);
-+					args->start.cont_reading_from_srcdev_mode,
-+					suspended);
- 	args->result = ret;
- 	/* don't warn if EINPROGRESS, someone else might be running scrub */
- 	if (ret == BTRFS_IOCTL_DEV_REPLACE_RESULT_SCRUB_INPROGRESS ||
-@@ -877,7 +879,7 @@ static void btrfs_dev_replace_set_suspended(struct btrfs_fs_info *fs_info)
- }
- 
- static int btrfs_dev_replace_finishing(struct btrfs_fs_info *fs_info,
--				       int scrub_ret)
-+				       int scrub_ret, bool *suspended)
- {
- 	struct btrfs_dev_replace *dev_replace = &fs_info->dev_replace;
- 	struct btrfs_fs_devices *fs_devices = fs_info->fs_devices;
-@@ -888,6 +890,8 @@ static int btrfs_dev_replace_finishing(struct btrfs_fs_info *fs_info,
- 	struct btrfs_trans_handle *trans;
- 	int ret = 0;
- 
-+	*suspended = false;
-+
- 	/* don't allow cancel or unmount to disturb the finishing procedure */
- 	mutex_lock(&dev_replace->lock_finishing_cancel_unmount);
- 
-@@ -911,6 +915,7 @@ static int btrfs_dev_replace_finishing(struct btrfs_fs_info *fs_info,
- 	ret = btrfs_start_delalloc_roots(fs_info, LONG_MAX, false);
- 	if (ret) {
- 		btrfs_dev_replace_set_suspended(fs_info);
-+		*suspended = true;
- 		mutex_unlock(&dev_replace->lock_finishing_cancel_unmount);
- 		return ret;
- 	}
-@@ -925,6 +930,7 @@ static int btrfs_dev_replace_finishing(struct btrfs_fs_info *fs_info,
- 		trans = btrfs_start_transaction(root, 0);
- 		if (IS_ERR(trans)) {
- 			btrfs_dev_replace_set_suspended(fs_info);
-+			*suspended = true;
- 			mutex_unlock(&dev_replace->lock_finishing_cancel_unmount);
- 			return PTR_ERR(trans);
- 		}
-@@ -1167,11 +1173,11 @@ int btrfs_dev_replace_cancel(struct btrfs_fs_info *fs_info)
- 
- 		trans = btrfs_start_transaction(root, 0);
- 		if (IS_ERR(trans)) {
--			mutex_unlock(&dev_replace->lock_finishing_cancel_unmount);
--			return PTR_ERR(trans);
-+			result = PTR_ERR(trans);
-+		} else {
-+			ret = btrfs_commit_transaction(trans);
-+			WARN_ON(ret);
- 		}
--		ret = btrfs_commit_transaction(trans);
--		WARN_ON(ret);
- 
- 		btrfs_info(fs_info,
- 		"suspended dev_replace from %s (devid %llu) to %s canceled",
-@@ -1183,6 +1189,9 @@ int btrfs_dev_replace_cancel(struct btrfs_fs_info *fs_info)
- 		if (tgt_device)
- 			btrfs_destroy_dev_replace_tgtdev(tgt_device);
- 		btrfs_rm_dev_replace_unblocked(fs_info);
-+
-+		/* Release the exclusive op if this replace still holds it. */
-+		btrfs_exclop_finish_if(fs_info, BTRFS_EXCLOP_DEV_REPLACE);
- 		break;
- 	default:
- 		up_write(&dev_replace->rwsem);
-@@ -1276,6 +1285,7 @@ static int btrfs_dev_replace_kthread(void *data)
- 	struct btrfs_fs_info *fs_info = data;
- 	struct btrfs_dev_replace *dev_replace = &fs_info->dev_replace;
- 	u64 progress;
-+	bool suspended = false;
- 	int ret;
- 
- 	progress = btrfs_dev_replace_progress(fs_info);
-@@ -1291,10 +1301,12 @@ static int btrfs_dev_replace_kthread(void *data)
- 			      dev_replace->committed_cursor_left,
- 			      btrfs_device_get_total_bytes(dev_replace->srcdev),
- 			      &dev_replace->scrub_progress, false, true);
--	ret = btrfs_dev_replace_finishing(fs_info, ret);
-+	ret = btrfs_dev_replace_finishing(fs_info, ret, &suspended);
- 	WARN_ON(ret && ret != -ECANCELED);
- 
--	btrfs_exclop_finish(fs_info);
-+	/* A suspended replace keeps the exclusive op; see the finishing path. */
-+	if (!suspended)
-+		btrfs_exclop_finish_if(fs_info, BTRFS_EXCLOP_DEV_REPLACE);
- 	return 0;
- }
- 
-diff --git a/fs/btrfs/dev-replace.h b/fs/btrfs/dev-replace.h
-index b35cecf388f2..7fe6b57d4465 100644
---- a/fs/btrfs/dev-replace.h
-+++ b/fs/btrfs/dev-replace.h
-@@ -19,7 +19,8 @@ struct btrfs_device;
- int btrfs_init_dev_replace(struct btrfs_fs_info *fs_info);
- int btrfs_run_dev_replace(struct btrfs_trans_handle *trans);
- int btrfs_dev_replace_by_ioctl(struct btrfs_fs_info *fs_info,
--			    struct btrfs_ioctl_dev_replace_args *args);
-+			    struct btrfs_ioctl_dev_replace_args *args,
-+			    bool *suspended);
- void btrfs_dev_replace_status(struct btrfs_fs_info *fs_info,
- 			      struct btrfs_ioctl_dev_replace_args *args);
- int btrfs_dev_replace_cancel(struct btrfs_fs_info *fs_info);
-diff --git a/fs/btrfs/fs.c b/fs/btrfs/fs.c
-index 14d83565cdee..173875e341f2 100644
---- a/fs/btrfs/fs.c
-+++ b/fs/btrfs/fs.c
-@@ -229,6 +229,23 @@ void btrfs_exclop_finish(struct btrfs_fs_info *fs_info)
- 	sysfs_notify(&fs_info->fs_devices->fsid_kobj, NULL, "exclusive_operation");
- }
- 
-+/* Like btrfs_exclop_finish(), but only if @type is the one currently held. */
-+void btrfs_exclop_finish_if(struct btrfs_fs_info *fs_info,
-+			    enum btrfs_exclusive_operation type)
-+{
-+	bool notify = false;
-+
-+	spin_lock(&fs_info->super_lock);
-+	if (fs_info->exclusive_operation == type) {
-+		WRITE_ONCE(fs_info->exclusive_operation, BTRFS_EXCLOP_NONE);
-+		notify = true;
-+	}
-+	spin_unlock(&fs_info->super_lock);
-+	if (notify)
-+		sysfs_notify(&fs_info->fs_devices->fsid_kobj, NULL,
-+			     "exclusive_operation");
-+}
-+
- void btrfs_exclop_balance(struct btrfs_fs_info *fs_info,
- 			  enum btrfs_exclusive_operation op)
- {
-diff --git a/fs/btrfs/fs.h b/fs/btrfs/fs.h
-index 5f0cfb0b5466..473b47df1989 100644
---- a/fs/btrfs/fs.h
-+++ b/fs/btrfs/fs.h
-@@ -1091,6 +1091,8 @@ bool btrfs_exclop_start_try_lock(struct btrfs_fs_info *fs_info,
- 				 enum btrfs_exclusive_operation type);
- void btrfs_exclop_start_unlock(struct btrfs_fs_info *fs_info);
- void btrfs_exclop_finish(struct btrfs_fs_info *fs_info);
-+void btrfs_exclop_finish_if(struct btrfs_fs_info *fs_info,
-+			    enum btrfs_exclusive_operation type);
- void btrfs_exclop_balance(struct btrfs_fs_info *fs_info,
- 			  enum btrfs_exclusive_operation op);
- 
-diff --git a/fs/btrfs/ioctl.c b/fs/btrfs/ioctl.c
-index 9d47d16394fc..562d4df32dd8 100644
---- a/fs/btrfs/ioctl.c
-+++ b/fs/btrfs/ioctl.c
-@@ -3176,8 +3176,13 @@ static long btrfs_ioctl_dev_replace(struct btrfs_fs_info *fs_info,
- 		if (!btrfs_exclop_start(fs_info, BTRFS_EXCLOP_DEV_REPLACE)) {
- 			ret = BTRFS_ERROR_DEV_EXCL_RUN_IN_PROGRESS;
- 		} else {
--			ret = btrfs_dev_replace_by_ioctl(fs_info, p);
--			btrfs_exclop_finish(fs_info);
-+			bool suspended = false;
-+
-+			ret = btrfs_dev_replace_by_ioctl(fs_info, p, &suspended);
-+			/* A suspended replace keeps the exclusive op held. */
-+			if (!suspended)
-+				btrfs_exclop_finish_if(fs_info,
-+						       BTRFS_EXCLOP_DEV_REPLACE);
- 		}
- 		break;
- 	case BTRFS_IOCTL_DEV_REPLACE_CMD_STATUS:
-
--- 
-2.47.3
-
+greg k-h
 
