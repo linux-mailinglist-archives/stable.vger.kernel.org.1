@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-263914-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264897-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id sbfKID9rMWpziwUAu9opvQ
-	(envelope-from <stable+bounces-263914-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:26:55 +0200
+	id BtVrHNN/MWrFkwUAu9opvQ
+	(envelope-from <stable+bounces-264897-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:54:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEC01691085
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:26:54 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBD53692922
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:54:42 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=twsS4onr;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263914-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263914-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=UPbYHYLw;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264897-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264897-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4354130D9FDE
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:19:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C7E9C3205E4A
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:47:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04E8043E486;
-	Tue, 16 Jun 2026 15:19:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10B8B449EC3;
+	Tue, 16 Jun 2026 16:47:45 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE93F43C05C;
-	Tue, 16 Jun 2026 15:19:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF9541A6803;
+	Tue, 16 Jun 2026 16:47:43 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781623144; cv=none; b=uJf9hntdSa1EXzhWYNkU1+gapmTGU3jGPfXqejKvh4YZzIZoRLQmUBQY1fxmE5vbCf5rr10CyRHEM1dRtFzdaKKmbTyR3WmyntgeogIWJ+Nf6CbOxWpM9vEAuUDpbwboTbbrxXDAawNgNPQyBalEGZ3xKqPM8EuXUWS9Me7dcas=
+	t=1781628464; cv=none; b=u+kJKLYvX/ZKPbhshiWoYm1q29/Ixgc0a5yiEyQ4LDTGx4o6FnZGFGiOmyVyUMO4KBHRZkbkOkxAlk23pQKQpEUKlDLtuORiWpExNO6Lu1gqoYxcNqI0PixcF5/n96raGX9O2RPNbiCwG4CzSC5cN0DPhemPHXkixiZcSSZLV+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781623144; c=relaxed/simple;
-	bh=pFz25esQru+2zYgtdSWBDAZrYgPsCkcLZ2Wa44RRsn4=;
+	s=arc-20240116; t=1781628464; c=relaxed/simple;
+	bh=IJu6YiUf2Lm3+j2cEwM56BybHpjNcOJrCMPEFKBCRWE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WLWbDhu2B9l4e8NJoFZ2nZKRn7Tq9IKlBz4Ie52tZbMYxBWqWnS5Fsuf/mpRavyEF85bBnzgOvH0bhQfTHtSb7bKYjbez171CmN3xcTzW3XLnGg9Z2V+BFWK4czK430vJB1S0yHwpgiWU6UMPGWjBOg/QD3e0rxmuMmOfNYWUFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=twsS4onr; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69AF51F000E9;
-	Tue, 16 Jun 2026 15:19:02 +0000 (UTC)
+	 MIME-Version; b=muiMNgAr5g94dSn2r5ewMAZZhhnHfmL73gs+CgNZP26qqekig55PpJfrLgh/pu81JrD4LcLCZSRpGieM0ZvDt5FTcXJBjLAHPyj32+V0AVH3yrgbHtkblMPmKyQJry9cgfmvJ5IKp6mj27tkzXRepPxTWSl/AGWknSfgQq6F/74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UPbYHYLw; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2B421F000E9;
+	Tue, 16 Jun 2026 16:47:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781623143;
-	bh=tu08nH1X7DXQArVZZgn0bAPRnoSjW7jrDMdail15UnY=;
+	s=korg; t=1781628463;
+	bh=EAeK86Nf7WCaAJ9EoVcZgpwYqkQ40EVVjrCtQCzzqvI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=twsS4onrGxpa+gHpu0YxnMJKLhsd+klIr+blA+30wxE+qvoreMNYhwCtBBCqXNakH
-	 /VLj8KDTHzcqzt0MhUw7feGsKPIxjInc9l5FVXzVUmSgu0kLAzpz9FWKxkYL0imJfF
-	 PcRE6/mdf3Bqs3vG46Sda/2S9SNtRVX9MHFHv6Go=
+	b=UPbYHYLwrG6tui3pgDxVtLJsVysDNN7sKvSti7ElCy2EVUYLRfSLMufIWuXhAAZTn
+	 L4/MruBDz2BW5HMWtDizTC8KA8X5FdGyKln4X4AgWVEmrZCzSQFpOEyvS8r7PDk+4F
+	 qK72zz8N1aAOOwCKMvW6ScBlsdbrbQQ49SFbl5U8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nam Cao <namcao@linutronix.de>,
-	Gabriele Monaco <gmonaco@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 095/378] verification/rvgen: Fix ltl2k writing True as a literal
-Date: Tue, 16 Jun 2026 20:25:26 +0530
-Message-ID: <20260616145115.292148638@linuxfoundation.org>
+	Muhammad Bilal <meatuni001@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.6 100/452] Bluetooth: ISO: fix UAF in iso_recv_frame
+Date: Tue, 16 Jun 2026 20:25:27 +0530
+Message-ID: <20260616145123.043040790@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,91 +71,93 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-263914-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264897-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:meatuni001@gmail.com,m:luiz.von.dentz@intel.com,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:namcao@linutronix.de,m:gmonaco@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linutronix.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: DEC01691085
+X-Rspamd-Queue-Id: BBD53692922
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabriele Monaco <gmonaco@redhat.com>
+From: Muhammad Bilal <meatuni001@gmail.com>
 
-[ Upstream commit df996599cc69a9b74ff437c67751cf8a61f62e39 ]
+commit 47f23a259517abbdb8032c057a1e8a6bf3734878 upstream.
 
-The rvgen parser for LTL stores literal true values in the python
-representation (capitalised True), this doesn't build in C.
-The Literal class should already handle this case but ASTNode skips its
-strigification method and converts the value (true/false) directly.
+iso_recv_frame reads conn->sk under iso_conn_lock but releases the lock
+before using sk, with no reference held. A concurrent iso_sock_kill()
+can free sk in that window, causing use-after-free on sk->sk_state and
+sock_queue_rcv_skb().
 
-Fix by delegating ASTNode stringification to the Literal and Variable
-classes instead of bypassing them.
+Fix by replacing the bare pointer read with iso_sock_hold(conn), which
+calls sock_hold() while the spinlock is held, atomically elevating the
+refcount before the lock drops. Add a drop_put label so sock_put() is
+called on all exit paths where the hold succeeded.
 
-Fixes: 97ffa4ce6ab32 ("verification/rvgen: Add support for linear temporal logic")
-Reviewed-by: Nam Cao <namcao@linutronix.de>
-Link: https://lore.kernel.org/r/20260514152055.229162-8-gmonaco@redhat.com
-Signed-off-by: Gabriele Monaco <gmonaco@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: ccf74f2390d60a2f9a75ef496d2564abb478f46a ("Bluetooth: Add BTPROTO_ISO socket type")
+Cc: stable@vger.kernel.org
+Signed-off-by: Muhammad Bilal <meatuni001@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/verification/rvgen/rvgen/ltl2ba.py | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ net/bluetooth/iso.c |   10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/tools/verification/rvgen/rvgen/ltl2ba.py b/tools/verification/rvgen/rvgen/ltl2ba.py
-index f14e6760ac3db8..aada15ec83a3c2 100644
---- a/tools/verification/rvgen/rvgen/ltl2ba.py
-+++ b/tools/verification/rvgen/rvgen/ltl2ba.py
-@@ -121,10 +121,8 @@ class ASTNode:
-         return self.op.expand(self, node, node_set)
+--- a/net/bluetooth/iso.c
++++ b/net/bluetooth/iso.c
+@@ -526,7 +526,7 @@ static void iso_recv_frame(struct iso_co
+ 	struct sock *sk;
  
-     def __str__(self):
--        if isinstance(self.op, Literal):
--            return str(self.op.value)
--        if isinstance(self.op, Variable):
--            return self.op.name.lower()
-+        if isinstance(self.op, (Literal, Variable)):
-+            return str(self.op)
-         return "val" + str(self.id)
+ 	iso_conn_lock(conn);
+-	sk = conn->sk;
++	sk = iso_sock_hold(conn);
+ 	iso_conn_unlock(conn);
  
-     def normalize(self):
-@@ -381,6 +379,9 @@ class Variable:
-     def __iter__(self):
-         yield from ()
+ 	if (!sk)
+@@ -535,11 +535,15 @@ static void iso_recv_frame(struct iso_co
+ 	BT_DBG("sk %p len %d", sk, skb->len);
  
-+    def __str__(self):
-+        return self.name.lower()
-+
-     def negate(self):
-         new = ASTNode(self)
-         return NotOp(new)
--- 
-2.53.0
-
+ 	if (sk->sk_state != BT_CONNECTED)
+-		goto drop;
++		goto drop_put;
+ 
+-	if (!sock_queue_rcv_skb(sk, skb))
++	if (!sock_queue_rcv_skb(sk, skb)) {
++		sock_put(sk);
+ 		return;
++	}
+ 
++drop_put:
++	sock_put(sk);
+ drop:
+ 	kfree_skb(skb);
+ }
 
 
 
