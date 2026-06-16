@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-265189-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264429-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id vaQ+GbqFMWpKlgUAu9opvQ
-	(envelope-from <stable+bounces-265189-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:19:54 +0200
+	id 9ZgKKPR2MWoBkAUAu9opvQ
+	(envelope-from <stable+bounces-264429-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:16:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B364C69301B
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:19:53 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BD39691E23
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:16:52 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=IW082UHl;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265189-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265189-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="DxV/U0id";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264429-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264429-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A76673215D30
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:12:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 864BA337F5D4
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:04:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCF0F478E45;
-	Tue, 16 Jun 2026 17:12:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A98F466B5F;
+	Tue, 16 Jun 2026 16:03:56 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2CE03AE71F;
-	Tue, 16 Jun 2026 17:12:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 484B444CF40;
+	Tue, 16 Jun 2026 16:03:55 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781629922; cv=none; b=itfn0xBWmefnXe2QhULK0gbzv5eANXEfKAnMziH6l1EHp/pB3chC/Jb7nYD1BObFi+OgoW8iNdYSiQu3/pwEBvnMR76prlvRn7vl4yF0pwI0yWSUrNw3psp1HSwMzyYT5MkHpn+AITSqu0EXxiLfuWWKTntqZuf+qC3w+fK66vo=
+	t=1781625836; cv=none; b=g/aZHcccYQpiFt4Glz/O4BaDinTYkSIsJwcemc0tkvt8IVleEIhQVYyMOUESBIzm8vdnCDDpBlOMyT+NtqEL4lgb+JVekgvzT7Z54FxNfc3AxcmU/WVHyvGN3jCxjKr+Hqs25TUpHrsIcygmda2/PAcUT/lMb4J5KwVf/Dc8iog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781629922; c=relaxed/simple;
-	bh=HAYRGm7Tkb4GEF9XA7R9XGsuyZZQYBNtS5+X3oVK3Js=;
+	s=arc-20240116; t=1781625836; c=relaxed/simple;
+	bh=3+BLzJH/NHieUt4elb002yGd8H3Vkaw+plKvkENjrig=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QLCRCmPKpQ5SdEa3rC51kdb5aYXHnyxSbrawhg+MZwV2aY/CWDpm4kAOod/+U+TrUTGLvBfVoXO7We9s9sj/NLlI3z4VdG1ANSGsDoOoPEoSUjPMvKTUGJCnIDIjQUoBLNVFD0pyHJdaiEFhpJ5XjvEkWUwQrrDnck8es9uP0yQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IW082UHl; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F27DB1F00A3A;
-	Tue, 16 Jun 2026 17:11:59 +0000 (UTC)
+	 MIME-Version; b=QcGvuU0qjd4nwric6kM276y6r9qtzj4QAJFWgBbSC0zBqXDVPELw6/3j+JTPzsqNXuHrmlV/NKQbdlZxechEj2YmxK+dx6zo6J/a1FycEVVdKd1ba9TRvQvattvMEAsahcGjOeheFhKdSuIuZq/hsH/k+zpF8U2mEX7mhuEP+Ak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DxV/U0id; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 499091F000E9;
+	Tue, 16 Jun 2026 16:03:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781629920;
-	bh=6Em/4uj8GvyAp4L4m9p8HZXCKXgDJFr53jfdgLX6ykY=;
+	s=korg; t=1781625835;
+	bh=iE8UOxHPhAK3rUBFxnbyzPQ9vq8fn/98AI2w3qIOUP8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=IW082UHl8Z+XuUZyU2OFgDCoylo7/FFzpd9RnjAqW0D7XPuoiU79HB4WXN2CgJVQR
-	 OPFbx8qrsRWblKtnu8EUsYxCUxk5wkLS3OviP5oOrGWkK4gV6LxQrUl8eGYuDTCVyk
-	 ROiuo1m1PU5Rn2xlmq23KvTTZ1My38pMOWpQyaXo=
+	b=DxV/U0id4ZBrV74GlsT2+4NeJvJgwUweFF6jajDABPUqYR+cgurW3OYJ0AI5hKzr/
+	 9LGM1Tq3Ei9OqofLevdBWFW25VNHs3g/YG0QpTOLTlt53FAT00qatkIdIoPMC6R8VN
+	 625GSQQ8ZyZ3iDhZudknZS9xKLpMU3Up5WGwLrPY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Zhenzhong Wu <jt26wzz@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 344/452] bpf: Remove mark_precise_scalar_ids()
-Date: Tue, 16 Jun 2026 20:29:31 +0530
-Message-ID: <20260616145135.334630711@linuxfoundation.org>
+	Jack Wu <jackbb_wu@compal.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.18 176/325] USB: serial: option: add usb-id for Dell Wireless DW5826e-m
+Date: Tue, 16 Jun 2026 20:29:32 +0530
+Message-ID: <20260616145106.629902670@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,509 +71,106 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-265189-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264429-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:eddyz87@gmail.com,m:andrii@kernel.org,m:jt26wzz@gmail.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jackbb_wu@compal.com,m:johan@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,r2.id:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,r0.id:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,r1.id:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B364C69301B
+X-Rspamd-Queue-Id: 1BD39691E23
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eduard Zingerman <eddyz87@gmail.com>
+From: Jack Wu <jackbb_wu@compal.com>
 
-[ Upstream commit 842edb5507a1038e009d27e69d13b94b6f085763 ]
+commit 1938fb9fe38c4f04a3f30bea44f8071c80a63be4 upstream.
 
-Function mark_precise_scalar_ids() is superseded by
-bt_sync_linked_regs() and equal scalars tracking in jump history.
-mark_precise_scalar_ids() propagates precision over registers sharing
-same ID on parent/child state boundaries, while jump history records
-allow bt_sync_linked_regs() to propagate same information with
-instruction level granularity, which is strictly more precise.
+Add support for Dell DW5826e-m with USB-id 0x413c:0x81ea
 
-This commit removes mark_precise_scalar_ids() and updates test cases
-in progs/verifier_scalar_ids to reflect new verifier behavior.
+T:  Bus=03 Lev=01 Prnt=01 Port=04 Cnt=01 Dev#=  8 Spd=480  MxCh= 0
+D:  Ver= 2.10 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=413c ProdID=81ea Rev= 5.04
+S:  Manufacturer=DELL
+S:  Product=DW5826e-m Qualcomm Snapdragon X12 Global LTE-A
+S:  SerialNumber=358988870177734
+C:* #Ifs= 7 Cfg#= 1 Atr=a0 MxPwr=500mA
+A:  FirstIf#=12 IfCount= 2 Cls=02(comm.) Sub=0e Prot=00
+I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 4 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=ff Driver=(none)
+E:  Ad=87(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:* If#=12 Alt= 0 #EPs= 1 Cls=02(comm.) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=88(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#=13 Alt= 0 #EPs= 0 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+I:* If#=13 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=0f(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-The tests are updated in the following manner:
-- mark_precise_scalar_ids() propagated precision regardless of
-  presence of conditional jumps, while new jump history based logic
-  only kicks in when conditional jumps are present.
-  Hence test cases are augmented with conditional jumps to still
-  trigger precision propagation.
-- As equal scalars tracking no longer relies on parent/child state
-  boundaries some test cases are no longer interesting,
-  such test cases are removed, namely:
-  - precision_same_state and precision_cross_state are superseded by
-    linked_regs_bpf_k;
-  - precision_same_state_broken_link and equal_scalars_broken_link
-    are superseded by linked_regs_broken_link.
-
-Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20240718202357.1746514-3-eddyz87@gmail.com
-[ zhenzhong: backport to 6.6.y after adapting the first linked-regs
-  history commit to the older scalar-id verifier layout. ]
-Signed-off-by: Zhenzhong Wu <jt26wzz@gmail.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Jack Wu <jackbb_wu@compal.com>
+Reviewed-by: Lars Melin <larsm17@gmail>
+Cc: stable@vger.kernel.org
+[ johan: reserve also interface 4 ]
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/bpf/verifier.c                         | 115 ------------
- .../selftests/bpf/progs/verifier_scalar_ids.c | 171 ++++++------------
- .../testing/selftests/bpf/verifier/precise.c  |   2 +-
- 3 files changed, 56 insertions(+), 232 deletions(-)
+ drivers/usb/serial/option.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 3cc0fc90244f7b..55a5a5bed1ab68 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -4265,96 +4265,6 @@ static void mark_all_scalars_imprecise(struct bpf_verifier_env *env, struct bpf_
- 	}
- }
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -202,6 +202,7 @@ static void option_instat_callback(struc
+ #define DELL_PRODUCT_5821E_ESIM			0x81e0
+ #define DELL_PRODUCT_5829E_ESIM			0x81e4
+ #define DELL_PRODUCT_5829E			0x81e6
++#define DELL_PRODUCT_5826E_ESIM			0x81ea
  
--static bool idset_contains(struct bpf_idset *s, u32 id)
--{
--	u32 i;
--
--	for (i = 0; i < s->count; ++i)
--		if (s->ids[i] == id)
--			return true;
--
--	return false;
--}
--
--static int idset_push(struct bpf_idset *s, u32 id)
--{
--	if (WARN_ON_ONCE(s->count >= ARRAY_SIZE(s->ids)))
--		return -EFAULT;
--	s->ids[s->count++] = id;
--	return 0;
--}
--
--static void idset_reset(struct bpf_idset *s)
--{
--	s->count = 0;
--}
--
--/* Collect a set of IDs for all registers currently marked as precise in env->bt.
-- * Mark all registers with these IDs as precise.
-- */
--static int mark_precise_scalar_ids(struct bpf_verifier_env *env, struct bpf_verifier_state *st)
--{
--	struct bpf_idset *precise_ids = &env->idset_scratch;
--	struct backtrack_state *bt = &env->bt;
--	struct bpf_func_state *func;
--	struct bpf_reg_state *reg;
--	DECLARE_BITMAP(mask, 64);
--	int i, fr;
--
--	idset_reset(precise_ids);
--
--	for (fr = bt->frame; fr >= 0; fr--) {
--		func = st->frame[fr];
--
--		bitmap_from_u64(mask, bt_frame_reg_mask(bt, fr));
--		for_each_set_bit(i, mask, 32) {
--			reg = &func->regs[i];
--			if (!reg->id || reg->type != SCALAR_VALUE)
--				continue;
--			if (idset_push(precise_ids, reg->id))
--				return -EFAULT;
--		}
--
--		bitmap_from_u64(mask, bt_frame_stack_mask(bt, fr));
--		for_each_set_bit(i, mask, 64) {
--			if (i >= func->allocated_stack / BPF_REG_SIZE)
--				break;
--			if (!is_spilled_scalar_reg(&func->stack[i]))
--				continue;
--			reg = &func->stack[i].spilled_ptr;
--			if (!reg->id)
--				continue;
--			if (idset_push(precise_ids, reg->id))
--				return -EFAULT;
--		}
--	}
--
--	for (fr = 0; fr <= st->curframe; ++fr) {
--		func = st->frame[fr];
--
--		for (i = BPF_REG_0; i < BPF_REG_10; ++i) {
--			reg = &func->regs[i];
--			if (!reg->id)
--				continue;
--			if (!idset_contains(precise_ids, reg->id))
--				continue;
--			bt_set_frame_reg(bt, fr, i);
--		}
--		for (i = 0; i < func->allocated_stack / BPF_REG_SIZE; ++i) {
--			if (!is_spilled_scalar_reg(&func->stack[i]))
--				continue;
--			reg = &func->stack[i].spilled_ptr;
--			if (!reg->id)
--				continue;
--			if (!idset_contains(precise_ids, reg->id))
--				continue;
--			bt_set_frame_slot(bt, fr, i);
--		}
--	}
--
--	return 0;
--}
--
- /*
-  * __mark_chain_precision() backtracks BPF program instruction sequence and
-  * chain of verifier states making sure that register *regno* (if regno >= 0)
-@@ -4487,31 +4397,6 @@ static int __mark_chain_precision(struct bpf_verifier_env *env, int regno)
- 				bt->frame, last_idx, first_idx, subseq_idx);
- 		}
- 
--		/* If some register with scalar ID is marked as precise,
--		 * make sure that all registers sharing this ID are also precise.
--		 * This is needed to estimate effect of sync_linked_regs().
--		 * Do this at the last instruction of each state,
--		 * bpf_reg_state::id fields are valid for these instructions.
--		 *
--		 * Allows to track precision in situation like below:
--		 *
--		 *     r2 = unknown value
--		 *     ...
--		 *   --- state #0 ---
--		 *     ...
--		 *     r1 = r2                 // r1 and r2 now share the same ID
--		 *     ...
--		 *   --- state #1 {r1.id = A, r2.id = A} ---
--		 *     ...
--		 *     if (r2 > 10) goto exit; // sync_linked_regs() assigns range to r1
--		 *     ...
--		 *   --- state #2 {r1.id = A, r2.id = A} ---
--		 *     r3 = r10
--		 *     r3 += r1                // need to mark both r1 and r2
--		 */
--		if (mark_precise_scalar_ids(env, st))
--			return -EFAULT;
--
- 		if (last_idx < 0) {
- 			/* we are at the entry into subprog, which
- 			 * is expected for global funcs, but only if
-diff --git a/tools/testing/selftests/bpf/progs/verifier_scalar_ids.c b/tools/testing/selftests/bpf/progs/verifier_scalar_ids.c
-index 22a6cf6e8255df..f70392bf696c62 100644
---- a/tools/testing/selftests/bpf/progs/verifier_scalar_ids.c
-+++ b/tools/testing/selftests/bpf/progs/verifier_scalar_ids.c
-@@ -5,54 +5,27 @@
- #include "bpf_misc.h"
- 
- /* Check that precision marks propagate through scalar IDs.
-- * Registers r{0,1,2} have the same scalar ID at the moment when r0 is
-- * marked to be precise, this mark is immediately propagated to r{1,2}.
-+ * Registers r{0,1,2} have the same scalar ID.
-+ * Range information is propagated for scalars sharing same ID.
-+ * Check that precision mark for r0 causes precision marks for r{1,2}
-+ * when range information is propagated for 'if <reg> <op> <const>' insn.
-  */
- SEC("socket")
- __success __log_level(2)
--__msg("frame0: regs=r0,r1,r2 stack= before 4: (bf) r3 = r10")
--__msg("frame0: regs=r0,r1,r2 stack= before 3: (bf) r2 = r0")
--__msg("frame0: regs=r0,r1 stack= before 2: (bf) r1 = r0")
--__msg("frame0: regs=r0 stack= before 1: (57) r0 &= 255")
--__msg("frame0: regs=r0 stack= before 0: (85) call bpf_ktime_get_ns")
--__flag(BPF_F_TEST_STATE_FREQ)
--__naked void precision_same_state(void)
--{
--	asm volatile (
--	/* r0 = random number up to 0xff */
--	"call %[bpf_ktime_get_ns];"
--	"r0 &= 0xff;"
--	/* tie r0.id == r1.id == r2.id */
--	"r1 = r0;"
--	"r2 = r0;"
--	/* force r0 to be precise, this immediately marks r1 and r2 as
--	 * precise as well because of shared IDs
--	 */
--	"r3 = r10;"
--	"r3 += r0;"
--	"r0 = 0;"
--	"exit;"
--	:
--	: __imm(bpf_ktime_get_ns)
--	: __clobber_all);
--}
--
--/* Same as precision_same_state, but mark propagates through state /
-- * parent state boundary.
-- */
--SEC("socket")
--__success __log_level(2)
--__msg("frame0: last_idx 6 first_idx 5 subseq_idx -1")
--__msg("frame0: regs=r0,r1,r2 stack= before 5: (bf) r3 = r10")
-+/* first 'if' branch */
-+__msg("6: (0f) r3 += r0")
-+__msg("frame0: regs=r0 stack= before 4: (25) if r1 > 0x7 goto pc+0")
- __msg("frame0: parent state regs=r0,r1,r2 stack=:")
--__msg("frame0: regs=r0,r1,r2 stack= before 4: (05) goto pc+0")
- __msg("frame0: regs=r0,r1,r2 stack= before 3: (bf) r2 = r0")
--__msg("frame0: regs=r0,r1 stack= before 2: (bf) r1 = r0")
--__msg("frame0: regs=r0 stack= before 1: (57) r0 &= 255")
--__msg("frame0: parent state regs=r0 stack=:")
--__msg("frame0: regs=r0 stack= before 0: (85) call bpf_ktime_get_ns")
-+/* second 'if' branch */
-+__msg("from 4 to 5: ")
-+__msg("6: (0f) r3 += r0")
-+__msg("frame0: regs=r0 stack= before 5: (bf) r3 = r10")
-+__msg("frame0: regs=r0 stack= before 4: (25) if r1 > 0x7 goto pc+0")
-+/* parent state already has r{0,1,2} as precise */
-+__msg("frame0: parent state regs= stack=:")
- __flag(BPF_F_TEST_STATE_FREQ)
--__naked void precision_cross_state(void)
-+__naked void linked_regs_bpf_k(void)
- {
- 	asm volatile (
- 	/* r0 = random number up to 0xff */
-@@ -61,9 +34,8 @@ __naked void precision_cross_state(void)
- 	/* tie r0.id == r1.id == r2.id */
- 	"r1 = r0;"
- 	"r2 = r0;"
--	/* force checkpoint */
--	"goto +0;"
--	/* force r0 to be precise, this immediately marks r1 and r2 as
-+	"if r1 > 7 goto +0;"
-+	/* force r0 to be precise, this eventually marks r1 and r2 as
- 	 * precise as well because of shared IDs
- 	 */
- 	"r3 = r10;"
-@@ -75,59 +47,18 @@ __naked void precision_cross_state(void)
- 	: __clobber_all);
- }
- 
--/* Same as precision_same_state, but break one of the
-+/* Same as linked_regs_bpf_k, but break one of the
-  * links, note that r1 is absent from regs=... in __msg below.
-  */
- SEC("socket")
- __success __log_level(2)
--__msg("frame0: regs=r0,r2 stack= before 5: (bf) r3 = r10")
--__msg("frame0: regs=r0,r2 stack= before 4: (b7) r1 = 0")
--__msg("frame0: regs=r0,r2 stack= before 3: (bf) r2 = r0")
--__msg("frame0: regs=r0 stack= before 2: (bf) r1 = r0")
--__msg("frame0: regs=r0 stack= before 1: (57) r0 &= 255")
--__msg("frame0: regs=r0 stack= before 0: (85) call bpf_ktime_get_ns")
--__flag(BPF_F_TEST_STATE_FREQ)
--__naked void precision_same_state_broken_link(void)
--{
--	asm volatile (
--	/* r0 = random number up to 0xff */
--	"call %[bpf_ktime_get_ns];"
--	"r0 &= 0xff;"
--	/* tie r0.id == r1.id == r2.id */
--	"r1 = r0;"
--	"r2 = r0;"
--	/* break link for r1, this is the only line that differs
--	 * compared to the previous test
--	 */
--	"r1 = 0;"
--	/* force r0 to be precise, this immediately marks r1 and r2 as
--	 * precise as well because of shared IDs
--	 */
--	"r3 = r10;"
--	"r3 += r0;"
--	"r0 = 0;"
--	"exit;"
--	:
--	: __imm(bpf_ktime_get_ns)
--	: __clobber_all);
--}
--
--/* Same as precision_same_state_broken_link, but with state /
-- * parent state boundary.
-- */
--SEC("socket")
--__success __log_level(2)
--__msg("frame0: regs=r0,r2 stack= before 6: (bf) r3 = r10")
--__msg("frame0: regs=r0,r2 stack= before 5: (b7) r1 = 0")
--__msg("frame0: parent state regs=r0,r2 stack=:")
--__msg("frame0: regs=r0,r1,r2 stack= before 4: (05) goto pc+0")
--__msg("frame0: regs=r0,r1,r2 stack= before 3: (bf) r2 = r0")
--__msg("frame0: regs=r0,r1 stack= before 2: (bf) r1 = r0")
--__msg("frame0: regs=r0 stack= before 1: (57) r0 &= 255")
-+__msg("7: (0f) r3 += r0")
-+__msg("frame0: regs=r0 stack= before 6: (bf) r3 = r10")
- __msg("frame0: parent state regs=r0 stack=:")
--__msg("frame0: regs=r0 stack= before 0: (85) call bpf_ktime_get_ns")
-+__msg("frame0: regs=r0 stack= before 5: (25) if r0 > 0x7 goto pc+0")
-+__msg("frame0: parent state regs=r0,r2 stack=:")
- __flag(BPF_F_TEST_STATE_FREQ)
--__naked void precision_cross_state_broken_link(void)
-+__naked void linked_regs_broken_link(void)
- {
- 	asm volatile (
- 	/* r0 = random number up to 0xff */
-@@ -136,18 +67,13 @@ __naked void precision_cross_state_broken_link(void)
- 	/* tie r0.id == r1.id == r2.id */
- 	"r1 = r0;"
- 	"r2 = r0;"
--	/* force checkpoint, although link between r1 and r{0,2} is
--	 * broken by the next statement current precision tracking
--	 * algorithm can't react to it and propagates mark for r1 to
--	 * the parent state.
--	 */
--	"goto +0;"
- 	/* break link for r1, this is the only line that differs
--	 * compared to precision_cross_state()
-+	 * compared to the previous test
- 	 */
- 	"r1 = 0;"
--	/* force r0 to be precise, this immediately marks r1 and r2 as
--	 * precise as well because of shared IDs
-+	"if r0 > 7 goto +0;"
-+	/* force r0 to be precise,
-+	 * this eventually marks r2 as precise because of shared IDs
- 	 */
- 	"r3 = r10;"
- 	"r3 += r0;"
-@@ -164,10 +90,16 @@ __naked void precision_cross_state_broken_link(void)
-  */
- SEC("socket")
- __success __log_level(2)
--__msg("11: (0f) r2 += r1")
-+__msg("12: (0f) r2 += r1")
- /* Current state */
--__msg("frame2: last_idx 11 first_idx 10 subseq_idx -1")
--__msg("frame2: regs=r1 stack= before 10: (bf) r2 = r10")
-+__msg("frame2: last_idx 12 first_idx 11 subseq_idx -1 ")
-+__msg("frame2: regs=r1 stack= before 11: (bf) r2 = r10")
-+__msg("frame2: parent state regs=r1 stack=")
-+__msg("frame1: parent state regs= stack=")
-+__msg("frame0: parent state regs= stack=")
-+/* Parent state */
-+__msg("frame2: last_idx 10 first_idx 10 subseq_idx 11 ")
-+__msg("frame2: regs=r1 stack= before 10: (25) if r1 > 0x7 goto pc+0")
- __msg("frame2: parent state regs=r1 stack=")
- /* frame1.r{6,7} are marked because mark_precise_scalar_ids()
-  * looks for all registers with frame2.r1.id in the current state
-@@ -192,7 +124,7 @@ __msg("frame1: regs=r1 stack= before 4: (85) call pc+1")
- __msg("frame0: parent state regs=r1,r6 stack=")
- /* Parent state */
- __msg("frame0: last_idx 3 first_idx 1 subseq_idx 4")
--__msg("frame0: regs=r0,r1,r6 stack= before 3: (bf) r6 = r0")
-+__msg("frame0: regs=r1,r6 stack= before 3: (bf) r6 = r0")
- __msg("frame0: regs=r0,r1 stack= before 2: (bf) r1 = r0")
- __msg("frame0: regs=r0 stack= before 1: (57) r0 &= 255")
- __flag(BPF_F_TEST_STATE_FREQ)
-@@ -230,7 +162,8 @@ static __naked __noinline __used
- void precision_many_frames__bar(void)
- {
- 	asm volatile (
--	/* force r1 to be precise, this immediately marks:
-+	"if r1 > 7 goto +0;"
-+	/* force r1 to be precise, this eventually marks:
- 	 * - bar frame r1
- 	 * - foo frame r{1,6,7}
- 	 * - main frame r{1,6}
-@@ -247,14 +180,16 @@ void precision_many_frames__bar(void)
-  */
- SEC("socket")
- __success __log_level(2)
-+__msg("11: (0f) r2 += r1")
- /* foo frame */
--__msg("frame1: regs=r1 stack=-8,-16 before 9: (bf) r2 = r10")
-+__msg("frame1: regs=r1 stack= before 10: (bf) r2 = r10")
-+__msg("frame1: regs=r1 stack= before 9: (25) if r1 > 0x7 goto pc+0")
- __msg("frame1: regs=r1 stack=-8,-16 before 8: (7b) *(u64 *)(r10 -16) = r1")
- __msg("frame1: regs=r1 stack=-8 before 7: (7b) *(u64 *)(r10 -8) = r1")
- __msg("frame1: regs=r1 stack= before 4: (85) call pc+2")
- /* main frame */
--__msg("frame0: regs=r0,r1 stack=-8 before 3: (7b) *(u64 *)(r10 -8) = r1")
--__msg("frame0: regs=r0,r1 stack= before 2: (bf) r1 = r0")
-+__msg("frame0: regs=r1 stack=-8 before 3: (7b) *(u64 *)(r10 -8) = r1")
-+__msg("frame0: regs=r1 stack= before 2: (bf) r1 = r0")
- __msg("frame0: regs=r0 stack= before 1: (57) r0 &= 255")
- __flag(BPF_F_TEST_STATE_FREQ)
- __naked void precision_stack(void)
-@@ -283,7 +218,8 @@ void precision_stack__foo(void)
- 	 */
- 	"*(u64*)(r10 - 8) = r1;"
- 	"*(u64*)(r10 - 16) = r1;"
--	/* force r1 to be precise, this immediately marks:
-+	"if r1 > 7 goto +0;"
-+	/* force r1 to be precise, this eventually marks:
- 	 * - foo frame r1,fp{-8,-16}
- 	 * - main frame r1,fp{-8}
- 	 */
-@@ -299,15 +235,17 @@ void precision_stack__foo(void)
- SEC("socket")
- __success __log_level(2)
- /* r{6,7} */
--__msg("11: (0f) r3 += r7")
--__msg("frame0: regs=r6,r7 stack= before 10: (bf) r3 = r10")
-+__msg("12: (0f) r3 += r7")
-+__msg("frame0: regs=r7 stack= before 11: (bf) r3 = r10")
-+__msg("frame0: regs=r7 stack= before 9: (25) if r7 > 0x7 goto pc+0")
- /* ... skip some insns ... */
- __msg("frame0: regs=r6,r7 stack= before 3: (bf) r7 = r0")
- __msg("frame0: regs=r0,r6 stack= before 2: (bf) r6 = r0")
- /* r{8,9} */
--__msg("12: (0f) r3 += r9")
--__msg("frame0: regs=r8,r9 stack= before 11: (0f) r3 += r7")
-+__msg("13: (0f) r3 += r9")
-+__msg("frame0: regs=r9 stack= before 12: (0f) r3 += r7")
- /* ... skip some insns ... */
-+__msg("frame0: regs=r9 stack= before 10: (25) if r9 > 0x7 goto pc+0")
- __msg("frame0: regs=r8,r9 stack= before 7: (bf) r9 = r0")
- __msg("frame0: regs=r0,r8 stack= before 6: (bf) r8 = r0")
- __flag(BPF_F_TEST_STATE_FREQ)
-@@ -328,8 +266,9 @@ __naked void precision_two_ids(void)
- 	"r9 = r0;"
- 	/* clear r0 id */
- 	"r0 = 0;"
--	/* force checkpoint */
--	"goto +0;"
-+	/* propagate equal scalars precision */
-+	"if r7 > 7 goto +0;"
-+	"if r9 > 7 goto +0;"
- 	"r3 = r10;"
- 	/* force r7 to be precise, this also marks r6 */
- 	"r3 += r7;"
-diff --git a/tools/testing/selftests/bpf/verifier/precise.c b/tools/testing/selftests/bpf/verifier/precise.c
-index 8a2ff81d835088..17fbc1e6150e3f 100644
---- a/tools/testing/selftests/bpf/verifier/precise.c
-+++ b/tools/testing/selftests/bpf/verifier/precise.c
-@@ -106,7 +106,7 @@
- 	mark_precise: frame0: regs=r2 stack= before 22\
- 	mark_precise: frame0: parent state regs=r2 stack=:\
- 	mark_precise: frame0: last_idx 20 first_idx 20\
--	mark_precise: frame0: regs=r2,r9 stack= before 20\
-+	mark_precise: frame0: regs=r2 stack= before 20\
- 	mark_precise: frame0: parent state regs=r2,r9 stack=:\
- 	mark_precise: frame0: last_idx 19 first_idx 17\
- 	mark_precise: frame0: regs=r2,r9 stack= before 19\
--- 
-2.53.0
-
+ #define DELL_PRODUCT_FM101R_ESIM		0x8213
+ #define DELL_PRODUCT_FM101R			0x8215
+@@ -1123,6 +1124,8 @@ static const struct usb_device_id option
+ 	  .driver_info = RSVD(0) | RSVD(6) },
+ 	{ USB_DEVICE(DELL_VENDOR_ID, DELL_PRODUCT_5829E_ESIM),
+ 	  .driver_info = RSVD(0) | RSVD(6) },
++	{ USB_DEVICE_INTERFACE_CLASS(DELL_VENDOR_ID, DELL_PRODUCT_5826E_ESIM, 0xff),
++	  .driver_info = RSVD(1) | RSVD(4) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(DELL_VENDOR_ID, DELL_PRODUCT_FM101R, 0xff) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(DELL_VENDOR_ID, DELL_PRODUCT_FM101R_ESIM, 0xff) },
+ 	{ USB_DEVICE(ANYDATA_VENDOR_ID, ANYDATA_PRODUCT_ADU_E100A) },	/* ADU-E100, ADU-310 */
 
 
 
