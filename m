@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-264562-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266359-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 0tk3L+J2MWr6jwUAu9opvQ
-	(envelope-from <stable+bounces-264562-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:16:34 +0200
+	id psIbK+KcMWruoAUAu9opvQ
+	(envelope-from <stable+bounces-266359-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:58:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63864691E0B
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:16:34 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E48F694A03
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:58:42 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=yMRpA9h2;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264562-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264562-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=AVcRa7HB;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266359-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266359-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 325F93030365
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:16:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4AE54320C74A
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:53:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3519B46AEFE;
-	Tue, 16 Jun 2026 16:16:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA8D847B435;
+	Tue, 16 Jun 2026 18:53:28 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECEAA46AEC5;
-	Tue, 16 Jun 2026 16:16:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A78914779BF;
+	Tue, 16 Jun 2026 18:53:27 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781626578; cv=none; b=WXkP3dZJDUTULpO68YeAxD9x/fKqIQcTGxAzXTyKyMVPhlndNK7roSoIXyMokElnV6zhwndGXh0PNH0FnAhOcSK9qE1pejX6/sCFkNBvFLzrg22UC8/pVxcwsJ3t547orFkm5pyjj8Sb3vDVlaHo8tVX6XoBhIKxMN97XJQxYDQ=
+	t=1781636008; cv=none; b=jyTbQaWQh2TIaoQX8jdlA+suj1a+BkO6nJ6ui9BaGC82H6ABbxxehQAMwJMX6ojJa16IEzC8+NGMJsvTR/j1ahwsKW8ha/yFiwtlZNH1+hhPnUEs91aBnTSf/pLtfs6i/Kkjpp6PfWON7cu1sYgcEqdXnvv/4N3IJY6uYioO7jo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781626578; c=relaxed/simple;
-	bh=FJyD4ZhEyoPmkQg/X1ux0qg9iQTKAW7h0j1Ss6xH3+4=;
+	s=arc-20240116; t=1781636008; c=relaxed/simple;
+	bh=y7u355cv3pHdQHGQCKJ7cgeDhxBvtjLpuMv3r7wU/iI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L/9njpdYvVrpWDuWjR+rlpICRf/CRLbX/jUpqbjaZDEZZl4QiyznAfrWnmOSvqSdzaocy80jO0VKgNWZyBdcgrRzlqVBUzc6SyNEx6a1tg7AVyKrmqy1PKJQJIZpqB/Xn2u1KAD5ZmTjVzU8e2Lsw51O66VndT1JDjJCwN8P/CY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yMRpA9h2; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB3591F000E9;
-	Tue, 16 Jun 2026 16:16:15 +0000 (UTC)
+	 MIME-Version; b=lX5XlcDzh6+Tgjqu/K8beXz42BNq5Nnarr1ZVZONXPKLQfPRXemN/P5yvXYEMkpzJw5O9OVH02o0lCzSgG7hGey3fbp6VFGdTh1XqYXkCOjAPqG3+ahajoKPrJBYuQSSVA0EjBsNgwVgMLJ9tAHsJNNP8wC1efrSHOGSqenHc08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AVcRa7HB; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 988B81F000E9;
+	Tue, 16 Jun 2026 18:53:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781626576;
-	bh=0bKSuI9FLAhdnVHltZxb3cw3x8EQaFRuHekW7evcjpY=;
+	s=korg; t=1781636007;
+	bh=+3o5gOa+/YTPeRr2ELdCXqMfq+PiavHOa7iZHEMXdaU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=yMRpA9h2Hjlx4KhWAC8SbjG+H4iMtVr5L57mOnmlrlvL0oApHsnnBlnI1DSNQ6rRn
-	 1Utpvh60SUhXMj9bo9WZmnAgRKJzPo7r5MxDgob78BZoG0eL96mTqg9fuM2nBEwXP2
-	 zQDhlqD8+471m1zNDZYcVKybYWlvICtwsQwhk/cs=
+	b=AVcRa7HBOFDMZQcH2643qlnwG/NPdq14H/Q57skwoCzRujdDzLgmy8X+UuEzgqDwl
+	 lCSPYlGAgnmaIMBPbCxZF15/C8IqPRIxDBoLISz1mcRmYFFqa42Itx13bZNr8yGm90
+	 aPu7mCWX/AgIR17+GF8PqPBckAvNun6lUKTuN7uw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chunhai Guo <guochunhai@vivo.com>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	syzbot+e34ad04f27991521104c@syzkaller.appspotmail.com,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Vladislav Nikolaev <vlad102nikolaev@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 014/261] erofs: add sysfs node to drop internal caches
+Subject: [PATCH 5.10 156/342] nfsd: dont ignore the return code of svc_proc_register()
 Date: Tue, 16 Jun 2026 20:27:32 +0530
-Message-ID: <20260616145045.681277847@linuxfoundation.org>
+Message-ID: <20260616145055.429150969@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
-References: <20260616145044.869532709@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,156 +69,137 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264562-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,kernel.org,oracle.com,gmail.com];
+	TAGGED_FROM(0.00)[bounces-266359-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:guochunhai@vivo.com,m:hsiangkao@linux.alibaba.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:syzbot+e34ad04f27991521104c@syzkaller.appspotmail.com,m:jlayton@kernel.org,m:chuck.lever@oracle.com,m:vlad102nikolaev@gmail.com,m:sashal@kernel.org,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[alibaba.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	TAGGED_RCPT(0.00)[stable,e34ad04f27991521104c];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,oracle.com:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 63864691E0B
+X-Rspamd-Queue-Id: 2E48F694A03
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chunhai Guo <guochunhai@vivo.com>
+From: Jeff Layton <jlayton@kernel.org>
 
-[ Upstream commit db80b98305f73ca83891e4228ead5f0324118b00 ]
+commit 930b64ca0c511521f0abdd1d57ce52b2a6e3476b upstream.
 
-Add a sysfs node to drop compression-related caches, currently used to
-drop in-memory pclusters and cached compressed folios.
+Currently, nfsd_proc_stat_init() ignores the return value of
+svc_proc_register(). If the procfile creation fails, then the kernel
+will WARN when it tries to remove the entry later.
 
-Signed-off-by: Chunhai Guo <guochunhai@vivo.com>
-Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Link: https://lore.kernel.org/r/20241113041148.749129-1-guochunhai@vivo.com
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Stable-dep-of: 1aee05e814d2 ("erofs: fix use-after-free on sbi->sync_decompress")
+Fix nfsd_proc_stat_init() to return the same type of pointer as
+svc_proc_register(), and fix up nfsd_net_init() to check that and fail
+the nfsd_net construction if it occurs.
+
+svc_proc_register() can fail if the dentry can't be allocated, or if an
+identical dentry already exists. The second case is pretty unlikely in
+the nfsd_net construction codepath, so if this happens, return -ENOMEM.
+
+Reported-by: syzbot+e34ad04f27991521104c@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-nfs/67a47501.050a0220.19061f.05f9.GAE@google.com/
+Cc: stable@vger.kernel.org # v6.9
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Vladislav Nikolaev <vlad102nikolaev@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/ABI/testing/sysfs-fs-erofs | 11 +++++++++++
- fs/erofs/internal.h                      |  2 ++
- fs/erofs/sysfs.c                         | 17 +++++++++++++++++
- fs/erofs/zdata.c                         |  1 -
- 4 files changed, 30 insertions(+), 1 deletion(-)
+ fs/nfsd/nfsctl.c | 9 ++++++++-
+ fs/nfsd/stats.c  | 4 ++--
+ fs/nfsd/stats.h  | 2 +-
+ 3 files changed, 11 insertions(+), 4 deletions(-)
 
-diff --git a/Documentation/ABI/testing/sysfs-fs-erofs b/Documentation/ABI/testing/sysfs-fs-erofs
-index 284224d1b56fe1..b134146d735bc5 100644
---- a/Documentation/ABI/testing/sysfs-fs-erofs
-+++ b/Documentation/ABI/testing/sysfs-fs-erofs
-@@ -16,3 +16,14 @@ Description:	Control strategy of sync decompression:
- 		  readahead on atomic contexts only.
- 		- 1 (force on): enable for readpage and readahead.
- 		- 2 (force off): disable for all situations.
+diff --git a/fs/nfsd/nfsctl.c b/fs/nfsd/nfsctl.c
+index 8178d7d016487a..5cd264171daeee 100644
+--- a/fs/nfsd/nfsctl.c
++++ b/fs/nfsd/nfsctl.c
+@@ -1471,17 +1471,24 @@ static __net_init int nfsd_init_net(struct net *net)
+ 	retval = nfsd_stat_counters_init(nn);
+ 	if (retval)
+ 		goto out_repcache_error;
 +
-+What:		/sys/fs/erofs/<disk>/drop_caches
-+Date:		November 2024
-+Contact:	"Guo Chunhai" <guochunhai@vivo.com>
-+Description:	Writing to this will drop compression-related caches,
-+		currently used to drop in-memory pclusters and cached
-+		compressed folios:
+ 	memset(&nn->nfsd_svcstats, 0, sizeof(nn->nfsd_svcstats));
+ 	nn->nfsd_svcstats.program = &nfsd_program;
++	if (!nfsd_proc_stat_init(net)) {
++		retval = -ENOMEM;
++		goto out_proc_error;
++	}
 +
-+		- 1 : invalidate cached compressed folios
-+		- 2 : drop in-memory pclusters
-+		- 3 : drop in-memory pclusters and cached compressed folios
-diff --git a/fs/erofs/internal.h b/fs/erofs/internal.h
-index 1c003412677ef6..24e01d9135c60d 100644
---- a/fs/erofs/internal.h
-+++ b/fs/erofs/internal.h
-@@ -443,6 +443,8 @@ static inline void erofs_pagepool_add(struct page **pagepool, struct page *page)
- void erofs_release_pages(struct page **pagepool);
+ 	nn->nfsd_versions = NULL;
+ 	nn->nfsd4_minorversions = NULL;
+ 	nfsd4_init_leases_net(nn);
+ 	get_random_bytes(&nn->siphash_key, sizeof(nn->siphash_key));
+ 	seqlock_init(&nn->writeverf_lock);
+-	nfsd_proc_stat_init(net);
  
- #ifdef CONFIG_EROFS_FS_ZIP
-+#define MNGD_MAPPING(sbi)	((sbi)->managed_cache->i_mapping)
-+
- extern atomic_long_t erofs_global_shrink_cnt;
- void erofs_shrinker_register(struct super_block *sb);
- void erofs_shrinker_unregister(struct super_block *sb);
-diff --git a/fs/erofs/sysfs.c b/fs/erofs/sysfs.c
-index 63cffd0fd26195..19d586273b7091 100644
---- a/fs/erofs/sysfs.c
-+++ b/fs/erofs/sysfs.c
-@@ -10,6 +10,7 @@
- 
- enum {
- 	attr_feature,
-+	attr_drop_caches,
- 	attr_pointer_ui,
- 	attr_pointer_bool,
- };
-@@ -57,11 +58,13 @@ static struct erofs_attr erofs_attr_##_name = {			\
- 
- #ifdef CONFIG_EROFS_FS_ZIP
- EROFS_ATTR_RW_UI(sync_decompress, erofs_mount_opts);
-+EROFS_ATTR_FUNC(drop_caches, 0200);
- #endif
- 
- static struct attribute *erofs_attrs[] = {
- #ifdef CONFIG_EROFS_FS_ZIP
- 	ATTR_LIST(sync_decompress),
-+	ATTR_LIST(drop_caches),
- #endif
- 	NULL,
- };
-@@ -163,6 +166,20 @@ static ssize_t erofs_attr_store(struct kobject *kobj, struct attribute *attr,
- 			return -EINVAL;
- 		*(bool *)ptr = !!t;
- 		return len;
-+#ifdef CONFIG_EROFS_FS_ZIP
-+	case attr_drop_caches:
-+		ret = kstrtoul(skip_spaces(buf), 0, &t);
-+		if (ret)
-+			return ret;
-+		if (t < 1 || t > 3)
-+			return -EINVAL;
-+
-+		if (t & 2)
-+			z_erofs_shrink_scan(sbi, ~0UL);
-+		if (t & 1)
-+			invalidate_mapping_pages(MNGD_MAPPING(sbi), 0, -1);
-+		return len;
-+#endif
- 	}
  	return 0;
- }
-diff --git a/fs/erofs/zdata.c b/fs/erofs/zdata.c
-index a81b6e6aee59ad..8192eb9b23bc7b 100644
---- a/fs/erofs/zdata.c
-+++ b/fs/erofs/zdata.c
-@@ -109,7 +109,6 @@ static inline unsigned int z_erofs_pclusterpages(struct z_erofs_pcluster *pcl)
- 	return PAGE_ALIGN(pcl->pclustersize) >> PAGE_SHIFT;
+ 
++out_proc_error:
++	nfsd_stat_counters_destroy(nn);
+ out_repcache_error:
+ 	nfsd_idmap_shutdown(net);
+ out_idmap_error:
+diff --git a/fs/nfsd/stats.c b/fs/nfsd/stats.c
+index 7a58dba0045c3b..6d1c6067c80e3b 100644
+--- a/fs/nfsd/stats.c
++++ b/fs/nfsd/stats.c
+@@ -113,11 +113,11 @@ void nfsd_stat_counters_destroy(struct nfsd_net *nn)
+ 	nfsd_percpu_counters_destroy(nn->counter, NFSD_STATS_COUNTERS_NUM);
  }
  
--#define MNGD_MAPPING(sbi)	((sbi)->managed_cache->i_mapping)
- static bool erofs_folio_is_managed(struct erofs_sb_info *sbi, struct folio *fo)
+-void nfsd_proc_stat_init(struct net *net)
++struct proc_dir_entry *nfsd_proc_stat_init(struct net *net)
  {
- 	return fo->mapping == MNGD_MAPPING(sbi);
+ 	struct nfsd_net *nn = net_generic(net, nfsd_net_id);
+ 
+-	svc_proc_register(net, &nn->nfsd_svcstats, &nfsd_proc_ops);
++	return svc_proc_register(net, &nn->nfsd_svcstats, &nfsd_proc_ops);
+ }
+ 
+ void nfsd_proc_stat_shutdown(struct net *net)
+diff --git a/fs/nfsd/stats.h b/fs/nfsd/stats.h
+index 14525e854cbac3..b9329285bc1d79 100644
+--- a/fs/nfsd/stats.h
++++ b/fs/nfsd/stats.h
+@@ -15,7 +15,7 @@ void nfsd_percpu_counters_reset(struct percpu_counter *counters, int num);
+ void nfsd_percpu_counters_destroy(struct percpu_counter *counters, int num);
+ int nfsd_stat_counters_init(struct nfsd_net *nn);
+ void nfsd_stat_counters_destroy(struct nfsd_net *nn);
+-void nfsd_proc_stat_init(struct net *net);
++struct proc_dir_entry *nfsd_proc_stat_init(struct net *net);
+ void nfsd_proc_stat_shutdown(struct net *net);
+ 
+ static inline void nfsd_stats_rc_hits_inc(struct nfsd_net *nn)
 -- 
 2.53.0
 
