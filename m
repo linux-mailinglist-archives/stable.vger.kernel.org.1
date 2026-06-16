@@ -1,67 +1,62 @@
-Return-Path: <stable+bounces-266522-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266136-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id YQ2iDPCfMWpLogUAu9opvQ
-	(envelope-from <stable+bounces-266522-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:11:44 +0200
+	id 1NuLCXiYMWoGnwUAu9opvQ
+	(envelope-from <stable+bounces-266136-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:39:52 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AC80694DA9
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:11:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EC786944EF
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:39:51 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=lWtZANiO;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266522-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266522-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=05Wpd1HZ;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266136-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266136-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D47833212FD2
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:07:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C649D320798A
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:34:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 634D63DDDBA;
-	Tue, 16 Jun 2026 19:07:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F44145BD4B;
+	Tue, 16 Jun 2026 18:34:10 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12549318EDA;
-	Tue, 16 Jun 2026 19:07:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 286D13DC86D;
+	Tue, 16 Jun 2026 18:34:08 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781636832; cv=none; b=unmYS9EV1gYwKe86OR0m2jDUdAiu9ninKSjT8S0/xfpVnvx33CtntNaaUQ/QnkvTE88YKNw1mrR6kKiu2H+LocwQNfszJatCFvqPcE/ULixkmZny8mnwlyDvV5/FSj8XA4jRVZnU2lMy6biZZNPwlWDI86FKo+Cikakx4UJI92M=
+	t=1781634850; cv=none; b=Nc7Wsu7/eAXfrXdEnOFu3t1a8a2iNfbzu38ksUBd+TKdPE9Jazr8CQVLbsnc/dmci9oQkniG86+ABmWmyPtNzDfpx+gooOVT8EKoA+IRvUzOy/wkzHmgN0EKncV2JtAohSarOC2DXVd8cwDbEu+th6at9bpf2eeZJN/gFuWtV3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781636832; c=relaxed/simple;
-	bh=XNChmDigjGI2ANiqweD9vDnLyGg45T/OqEoDiB4atWQ=;
+	s=arc-20240116; t=1781634850; c=relaxed/simple;
+	bh=JYNyjb5XpFCwgl2n0PWaNlhTp43FjyFcBpexad+le2U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qnfmGIejh1Q5C9vYRYqhKAIgOBKj/U/f++9+FW9zqE/9wjYz8BHW0wHcZldcYzRpnPEtV9NXZO8nOwczA+n1wtsUM2xrIxdoFy5hM/K8TudfXjUPiciPUxZQ4Ifi8hCA8Npy95HKNB18WyvBl/LE+W2egs3qPbe+X7jVU8hOBXg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lWtZANiO; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C92A1F000E9;
-	Tue, 16 Jun 2026 19:07:09 +0000 (UTC)
+	 MIME-Version; b=qIaU8y/zm8x3aqMvApBRCzBHNRuUTKpyYY0rZnB0StMUHKyxckX5pInoqaOzZdrLMmUEqY89A7mOlJmuhuEQpnJ/k9NP7jgChE/b+Or5svWxoAwhRTkktjBS/QdCOsjtcXmkZWTLuMJheR3Af9MbqkTejoo4vsjVdv+3YkJRX/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=05Wpd1HZ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D85B41F000E9;
+	Tue, 16 Jun 2026 18:34:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781636830;
-	bh=SJpxesuYQwfSuUeEMbF3HCRTw7c+Dnt6h8byw/ePAMg=;
+	s=korg; t=1781634848;
+	bh=Woubh+zpgM2rMh+Uqe5wuJ7GJRY5oblAPrcWm/+7dBQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=lWtZANiOXkQ5byiSr0vvhqHxUXcpwvNc7IMlPCsMTIaCeTEyhCD4uzksmk+xa7e+b
-	 y0F7ZSFLKi2zfoG2a/GW6tVj8rvs/M3CF+By7ZJsH+lD9ygsevoBq4VYVtYd68rC4f
-	 e6uxpv6CpfgZVfZ92KrI6IF3cqSzAvTMUcyo+9zU=
+	b=05Wpd1HZo5sA9vzFGFu/Dvc+B3RzUIft3Hr+zIytNy2y+cWvX7f2CimZR8Zih/VDo
+	 DISgy/msA6IDw25Q/1AdT0uTsCt0ohKibWND+ejgH5ZOyYQNxHPxMB8Zaf/r29wQ4n
+	 /vm7V2Ii+nRCqjiPVR8QYYcF6Vask6Z7Wh8wBBzY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jann Horn <jannh@google.com>,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Jiexun Wang <wangjiexun2025@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Zilin Guan <zilin@seu.edu.cn>,
+	Dawei Feng <dawei.feng@seu.edu.cn>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 286/342] Bluetooth: serialize accept_q access
+Subject: [PATCH 5.15 344/411] qed: fix double free in qed_cxt_tables_alloc()
 Date: Tue, 16 Jun 2026 20:29:42 +0530
-Message-ID: <20260616145101.734063953@linuxfoundation.org>
+Message-ID: <20260616145119.545259368@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,258 +70,93 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	TAGGED_FROM(0.00)[bounces-266522-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jannh@google.com,m:yuantan098@gmail.com,m:yifanwucs@gmail.com,m:tomapufckgml@gmail.com,m:bird@lzu.edu.cn,m:wangjiexun2025@gmail.com,m:n05ec@lzu.edu.cn,m:luiz.von.dentz@intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,gmail.com,lzu.edu.cn,intel.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-266136-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:zilin@seu.edu.cn,m:dawei.feng@seu.edu.cn,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,lzu.edu.cn:email,intel.com:email,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,seu.edu.cn:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8AC80694DA9
+X-Rspamd-Queue-Id: 7EC786944EF
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiexun Wang <wangjiexun2025@gmail.com>
+From: Dawei Feng <dawei.feng@seu.edu.cn>
 
-[ Upstream commit e83f5e24da741fa9405aeeff00b08c5ee7c37b88 ]
+[ Upstream commit 2bccfb8476ca5f3548afbd623dc7a6980d4e77de ]
 
-bt_sock_poll() walks the accept queue without synchronization, while
-child teardown can unlink the same socket and drop its last reference.
-The unsynchronized accept queue walk has existed since the initial
-Bluetooth import.
+If one of the later PF or VF CID bitmap allocations fails,
+qed_cid_map_alloc() jumps to cid_map_fail and frees the previously
+allocated CID bitmaps before returning an error. qed_cxt_tables_alloc()
+then calls qed_cxt_mngr_free(), which invokes qed_cid_map_free()
+again.
 
-Protect accept_q with a dedicated lock for queue updates and polling.
-Also rework bt_accept_dequeue() to take temporary child references under
-the queue lock before dropping it and locking the child socket.
+Fix this by setting each CID bitmap pointer to NULL after bitmap_free()
+to avoid double free.
 
-Fixes: 1da177e4c3f41524e886b7f1b8a0c1fc7321cac2 ("Linux-2.6.12-rc2")
+The bug was first flagged by an experimental analysis tool we are
+developing for kernel memory-management bugs while analyzing
+v6.13-rc1. The tool is still under development and is not yet publicly
+available. Manual inspection confirms that the bug is still
+present in v7.1-rc3.
+
+Runtime reproduction was not attempted because exercising the failing
+allocation path requires device-specific setup.
+
+Fixes: fe56b9e6a8d9 ("qed: Add module with basic common support")
 Cc: stable@vger.kernel.org
-Reported-by: Jann Horn <jannh@google.com>
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Jiexun Wang <wangjiexun2025@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Signed-off-by: Jiexun Wang <wangjiexun2025@gmail.com>
-Reviewed-by: Jann Horn <jannh@google.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Signed-off-by: Dawei Feng <dawei.feng@seu.edu.cn>
+Link: https://patch.msgid.link/20260520070323.2762379-1-dawei.feng@seu.edu.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/bluetooth/bluetooth.h |    1 
- net/bluetooth/af_bluetooth.c      |   87 ++++++++++++++++++++++++++++----------
- 2 files changed, 66 insertions(+), 22 deletions(-)
+ drivers/net/ethernet/qlogic/qed/qed_cxt.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/include/net/bluetooth/bluetooth.h
-+++ b/include/net/bluetooth/bluetooth.h
-@@ -291,6 +291,7 @@ void baswap(bdaddr_t *dst, const bdaddr_
- struct bt_sock {
- 	struct sock sk;
- 	struct list_head accept_q;
-+	spinlock_t accept_q_lock; /* protects accept_q */
- 	struct sock *parent;
- 	unsigned long flags;
- 	void (*skb_msg_name)(struct sk_buff *, void *, int *);
---- a/net/bluetooth/af_bluetooth.c
-+++ b/net/bluetooth/af_bluetooth.c
-@@ -149,6 +149,7 @@ struct sock *bt_sock_alloc(struct net *n
+--- a/drivers/net/ethernet/qlogic/qed/qed_cxt.c
++++ b/drivers/net/ethernet/qlogic/qed/qed_cxt.c
+@@ -1038,11 +1038,13 @@ static void qed_cid_map_free(struct qed_
  
- 	sock_init_data(sock, sk);
- 	INIT_LIST_HEAD(&bt_sk(sk)->accept_q);
-+	spin_lock_init(&bt_sk(sk)->accept_q_lock);
+ 	for (type = 0; type < MAX_CONN_TYPES; type++) {
+ 		bitmap_free(p_mngr->acquired[type].cid_map);
++		p_mngr->acquired[type].cid_map = NULL;
+ 		p_mngr->acquired[type].max_count = 0;
+ 		p_mngr->acquired[type].start_cid = 0;
  
- 	sock_reset_flag(sk, SOCK_ZAPPED);
- 
-@@ -187,6 +188,7 @@ void bt_accept_enqueue(struct sock *pare
- {
- 	const struct cred *old_cred;
- 	struct pid *old_pid;
-+	struct bt_sock *par = bt_sk(parent);
- 
- 	BT_DBG("parent %p, sk %p", parent, sk);
- 
-@@ -197,9 +199,13 @@ void bt_accept_enqueue(struct sock *pare
- 	else
- 		lock_sock_nested(sk, SINGLE_DEPTH_NESTING);
- 
--	list_add_tail(&bt_sk(sk)->accept_q, &bt_sk(parent)->accept_q);
- 	bt_sk(sk)->parent = parent;
- 
-+	spin_lock_bh(&par->accept_q_lock);
-+	list_add_tail(&bt_sk(sk)->accept_q, &par->accept_q);
-+	sk_acceptq_added(parent);
-+	spin_unlock_bh(&par->accept_q_lock);
-+
- 	/* Copy credentials from parent since for incoming connections the
- 	 * socket is allocated by the kernel.
- 	 */
-@@ -217,8 +223,6 @@ void bt_accept_enqueue(struct sock *pare
- 		bh_unlock_sock(sk);
- 	else
- 		release_sock(sk);
--
--	sk_acceptq_added(parent);
- }
- EXPORT_SYMBOL(bt_accept_enqueue);
- 
-@@ -227,45 +231,72 @@ EXPORT_SYMBOL(bt_accept_enqueue);
-  */
- void bt_accept_unlink(struct sock *sk)
- {
-+	struct sock *parent = bt_sk(sk)->parent;
-+
- 	BT_DBG("sk %p state %d", sk, sk->sk_state);
- 
-+	spin_lock_bh(&bt_sk(parent)->accept_q_lock);
- 	list_del_init(&bt_sk(sk)->accept_q);
--	sk_acceptq_removed(bt_sk(sk)->parent);
-+	sk_acceptq_removed(parent);
-+	spin_unlock_bh(&bt_sk(parent)->accept_q_lock);
- 	bt_sk(sk)->parent = NULL;
- 	sock_put(sk);
- }
- EXPORT_SYMBOL(bt_accept_unlink);
- 
-+static struct sock *bt_accept_get(struct sock *parent, struct sock *sk)
-+{
-+	struct bt_sock *bt = bt_sk(parent);
-+	struct sock *next = NULL;
-+
-+	/* accept_q is modified from child teardown paths too, so take a
-+	 * temporary reference before dropping the queue lock.
-+	 */
-+	spin_lock_bh(&bt->accept_q_lock);
-+
-+	if (sk) {
-+		if (bt_sk(sk)->parent != parent)
-+			goto out;
-+
-+		if (!list_is_last(&bt_sk(sk)->accept_q, &bt->accept_q)) {
-+			next = &list_next_entry(bt_sk(sk), accept_q)->sk;
-+			sock_hold(next);
-+		}
-+	} else if (!list_empty(&bt->accept_q)) {
-+		next = &list_first_entry(&bt->accept_q,
-+					 struct bt_sock, accept_q)->sk;
-+		sock_hold(next);
-+	}
-+
-+out:
-+	spin_unlock_bh(&bt->accept_q_lock);
-+	return next;
-+}
-+
- struct sock *bt_accept_dequeue(struct sock *parent, struct socket *newsock)
- {
--	struct bt_sock *s, *n;
--	struct sock *sk;
-+	struct sock *sk, *next;
- 
- 	BT_DBG("parent %p", parent);
- 
- restart:
--	list_for_each_entry_safe(s, n, &bt_sk(parent)->accept_q, accept_q) {
--		sk = (struct sock *)s;
--
-+	for (sk = bt_accept_get(parent, NULL); sk; sk = next) {
- 		/* Prevent early freeing of sk due to unlink and sock_kill */
--		sock_hold(sk);
- 		lock_sock(sk);
- 
- 		/* Check sk has not already been unlinked via
- 		 * bt_accept_unlink() due to serialisation caused by sk locking
- 		 */
--		if (!bt_sk(sk)->parent) {
-+		if (bt_sk(sk)->parent != parent) {
- 			BT_DBG("sk %p, already unlinked", sk);
- 			release_sock(sk);
- 			sock_put(sk);
- 
--			/* Restart the loop as sk is no longer in the list
--			 * and also avoid a potential infinite loop because
--			 * list_for_each_entry_safe() is not thread safe.
--			 */
- 			goto restart;
+ 		for (vf = 0; vf < MAX_NUM_VFS; vf++) {
+ 			bitmap_free(p_mngr->acquired_vf[type][vf].cid_map);
++			p_mngr->acquired_vf[type][vf].cid_map = NULL;
+ 			p_mngr->acquired_vf[type][vf].max_count = 0;
+ 			p_mngr->acquired_vf[type][vf].start_cid = 0;
  		}
- 
-+		next = bt_accept_get(parent, sk);
-+
- 		/* sk is safely in the parent list so reduce reference count */
- 		sock_put(sk);
- 
-@@ -293,6 +324,8 @@ restart:
- 			sock_hold(sk);
- 
- 			release_sock(sk);
-+			if (next)
-+				sock_put(next);
- 			return sk;
- 		}
- 
-@@ -496,18 +529,28 @@ EXPORT_SYMBOL(bt_sock_stream_recvmsg);
- 
- static inline __poll_t bt_accept_poll(struct sock *parent)
- {
--	struct bt_sock *s, *n;
-+	struct bt_sock *bt = bt_sk(parent);
-+	struct bt_sock *s;
- 	struct sock *sk;
-+	__poll_t mask = 0;
-+
-+	spin_lock_bh(&bt->accept_q_lock);
-+	list_for_each_entry(s, &bt->accept_q, accept_q) {
-+		int state;
- 
--	list_for_each_entry_safe(s, n, &bt_sk(parent)->accept_q, accept_q) {
- 		sk = (struct sock *)s;
--		if (sk->sk_state == BT_CONNECTED ||
--		    (test_bit(BT_SK_DEFER_SETUP, &bt_sk(parent)->flags) &&
--		     sk->sk_state == BT_CONNECT2))
--			return EPOLLIN | EPOLLRDNORM;
-+		state = READ_ONCE(sk->sk_state);
-+
-+		if (state == BT_CONNECTED ||
-+		    (test_bit(BT_SK_DEFER_SETUP, &bt->flags) &&
-+		     state == BT_CONNECT2)) {
-+			mask = EPOLLIN | EPOLLRDNORM;
-+			break;
-+		}
- 	}
-+	spin_unlock_bh(&bt->accept_q_lock);
- 
--	return 0;
-+	return mask;
- }
- 
- __poll_t bt_sock_poll(struct file *file, struct socket *sock,
 
 
 
