@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-265142-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266438-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id O9Q3Mw+FMWr8lQUAu9opvQ
-	(envelope-from <stable+bounces-265142-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:17:03 +0200
+	id hVe4J4OeMWq1oQUAu9opvQ
+	(envelope-from <stable+bounces-266438-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:05:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D60D692F4B
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:17:03 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13A66694BC2
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:05:39 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=dju8QaXh;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265142-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-265142-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="sovcQh/X";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266438-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266438-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8ABBB3134ECB
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:08:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C720A31AD61A
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:00:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB8FE47AF67;
-	Tue, 16 Jun 2026 17:08:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88A0234751B;
+	Tue, 16 Jun 2026 19:00:35 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2165478E45;
-	Tue, 16 Jun 2026 17:08:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 904963DC87A;
+	Tue, 16 Jun 2026 19:00:24 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781629684; cv=none; b=hRyD6rr4FdA6Dr8rDb58b8fByOc4Tw0gY0vPeZSQ0MtxIsVEjcubHwZhVdzyTFMtHRz2XeGDf8hKiI1fpnFGmomMeqb4vZQ3HgkJut6mMU3Fn0jqCQRmrXLBI98DgBolq4eAshlvNu8xN7NsA86LTLRK0/OGWRoAoyDpgl/WsOw=
+	t=1781636435; cv=none; b=lCQWQIahiyX4Si7FImjuhFCxDFQ8+KVVw2vTnWvtFO2leV/S3Bf3mMWs773yVwyfqnur+k2vCkJofu2S2uOQng9/2kba+PNUEQCJCN3yak5a7XUAaz2UD0He8C9kQyhHMOQM6LAQho6hrq8CVKScXRUJxc6NH3cJoz3enEE/gRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781629684; c=relaxed/simple;
-	bh=I87c7wgzosQJctdB+QvL1pBJg0dOIDNruBZP9U7ZB2Q=;
+	s=arc-20240116; t=1781636435; c=relaxed/simple;
+	bh=84LOpa4L2OfpBTzlF5P8IafXlbFb95QQuTKaTs3mvd0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RVIIi6SJczh38bK9I9L/fTgEvcclOA6DyX0dmmYJLqP/Eesu8TEVZMbBlZPvbKfgalN1ssDkZ9xx+sT6j/oielNoxJexuWGmS1reW9PTPtMR+6sL/ylR7rSuVKMesKioYg8/1IW7EeGif3LdUw2y+e3he372PXm3TO17SD4OyME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dju8QaXh; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAC371F000E9;
-	Tue, 16 Jun 2026 17:08:02 +0000 (UTC)
+	 MIME-Version; b=ED1FpgITn3WB5qi3EL4NKfkqNF3GUZy0QhbQHPjlR6l6HmO6lzummZVYaL91yLTkApHcNs362MWSq1T/fkVGRt4sgty9hro/jr79T3TdktGopJ2algrD7RTdTJHqpUmvhw16Fiu1Q1s+BdqCFzSeRXGbvkOBXJKd5SSB18WsuMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sovcQh/X; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AF621F000E9;
+	Tue, 16 Jun 2026 19:00:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781629683;
-	bh=lPVmqAbjQgdHzc7d3jvJJxId4YEs4FbzU5sieHQsBrM=;
+	s=korg; t=1781636424;
+	bh=Kuf9CQxD+wEe9caKAfagDnbnhJRbCIgfXhukrZFlXIY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dju8QaXh1fti04ifRrrams+ZzRZeRDpLyKAglEyjTMqODzCU8m/yNKhMG8/+s1sup
-	 ovk/IDWvx99bOSRIcc/0VmXCcBBcF5Wn7tGeXL08wWMoTTIkMnvp2hnaIYiuftEYAI
-	 TkCKKasfp2mauej7Rl2IA0k1/dIy3wm7xEvMP9XI=
+	b=sovcQh/XCr6h9gzDe3dPUFI4a+tDlDDMIR6WLchYLT2kNSiwKeDNfz9KX4uZiB/Y+
+	 n4v/7bYgX6LMpRsFeSLnPFbH1GridvJDSspsU5TmqI9L4wKheoh++1Vf2ALuB3vOjA
+	 4ao/X9kH1hGao1N0IS6HiPFQkA4JWEZ4Td6AFSr0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Subject: [PATCH 6.6 305/452] drm/virtio: fix dma_fence refcount leak on error in virtio_gpu_dma_fence_wait()
+	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 236/342] net: qrtr: ns: Free the node during ctrl_cmd_bye()
 Date: Tue, 16 Jun 2026 20:28:52 +0530
-Message-ID: <20260616145133.526779784@linuxfoundation.org>
+Message-ID: <20260616145059.194551390@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,22 +72,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265142-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-266438-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:vulab@iscas.ac.cn,m:dmitry.osipenko@collabora.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:manivannan.sadhasivam@oss.qualcomm.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -97,60 +98,83 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,collabora.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7D60D692F4B
+X-Rspamd-Queue-Id: 13A66694BC2
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wentao Liang <vulab@iscas.ac.cn>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
 
-commit 3f26bb732cc136ab20176697c92f32c9c84cb125 upstream.
+[ Upstream commit 68efba36446a7774ea5b971257ade049272a07ac ]
 
-dma_fence_unwrap_for_each() internally calls dma_fence_unwrap_first()
-which does cursor->chain = dma_fence_get(head), taking an extra
-reference. On normal loop completion, dma_fence_unwrap_next()
-releases this via dma_fence_chain_walk() -> dma_fence_put().
+A node sends the BYE packet when it is about to go down. So the nameserver
+should advertise the removal of the node to all remote and local observers
+and free the node finally. But currently, the nameserver doesn't free the
+node memory even after processing the BYE packet. This causes the node
+memory to leak.
 
-When virtio_gpu_do_fence_wait() fails and the function returns early
-from inside the loop, the cursor->chain reference is never released.
-This is the only caller in the entire kernel that does an early return
-inside dma_fence_unwrap_for_each.
-
-Add dma_fence_put(itr.chain) before the early return.
+Hence, remove the node from Xarray list and free the node memory during
+both success and failure case of ctrl_cmd_bye().
 
 Cc: stable@vger.kernel.org
-Fixes: eba57fb5498f ("drm/virtio: Wait for each dma-fence of in-fence array individually")
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-Reviewed-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Link: https://patch.msgid.link/20260607090303.92423-1-vulab@iscas.ac.cn
+Fixes: 0c2204a4ad71 ("net: qrtr: Migrate nameservice to kernel from userspace")
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260409-qrtr-fix-v3-3-00a8a5ff2b51@oss.qualcomm.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/virtio/virtgpu_submit.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/qrtr/ns.c |   20 +++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/virtio/virtgpu_submit.c b/drivers/gpu/drm/virtio/virtgpu_submit.c
-index dae761fa5788..32cb1e4aa425 100644
---- a/drivers/gpu/drm/virtio/virtgpu_submit.c
-+++ b/drivers/gpu/drm/virtio/virtgpu_submit.c
-@@ -65,8 +65,10 @@ static int virtio_gpu_dma_fence_wait(struct virtio_gpu_submit *submit,
+--- a/net/qrtr/ns.c
++++ b/net/qrtr/ns.c
+@@ -344,7 +344,7 @@ static int ctrl_cmd_bye(struct sockaddr_
+ 	struct qrtr_node *node;
+ 	unsigned long index;
+ 	struct kvec iv;
+-	int ret;
++	int ret = 0;
  
- 	dma_fence_unwrap_for_each(f, &itr, fence) {
- 		err = virtio_gpu_do_fence_wait(submit, f);
--		if (err)
-+		if (err) {
-+			dma_fence_put(itr.chain);
- 			return err;
-+		}
+ 	iv.iov_base = &pkt;
+ 	iv.iov_len = sizeof(pkt);
+@@ -359,8 +359,10 @@ static int ctrl_cmd_bye(struct sockaddr_
+ 
+ 	/* Advertise the removal of this client to all local servers */
+ 	local_node = node_get(qrtr_ns.local_node);
+-	if (!local_node)
+-		return 0;
++	if (!local_node) {
++		ret = 0;
++		goto delete_node;
++	}
+ 
+ 	memset(&pkt, 0, sizeof(pkt));
+ 	pkt.cmd = cpu_to_le32(QRTR_TYPE_BYE);
+@@ -377,10 +379,18 @@ static int ctrl_cmd_bye(struct sockaddr_
+ 		ret = kernel_sendmsg(qrtr_ns.sock, &msg, &iv, 1, sizeof(pkt));
+ 		if (ret < 0) {
+ 			pr_err("failed to send bye cmd\n");
+-			return ret;
++			goto delete_node;
+ 		}
  	}
+-	return 0;
++
++	/* Ignore -ENODEV */
++	ret = 0;
++
++delete_node:
++	xa_erase(&nodes, from->sq_node);
++	kfree(node);
++
++	return ret;
+ }
  
- 	return 0;
--- 
-2.54.0
-
+ static int ctrl_cmd_del_client(struct sockaddr_qrtr *from,
 
 
 
