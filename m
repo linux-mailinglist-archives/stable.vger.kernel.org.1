@@ -1,59 +1,89 @@
-Return-Path: <stable+bounces-264418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264364-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id PCMrCSJ6MWpmkQUAu9opvQ
-	(envelope-from <stable+bounces-264418-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:30:26 +0200
+	id kzpMLtx2MWr1jwUAu9opvQ
+	(envelope-from <stable+bounces-264364-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:16:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BFC0692254
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:30:25 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C816691E00
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:16:28 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=seu.edu.cn header.s=default header.b=Zth6olDn;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264418-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264418-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=seu.edu.cn;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=SDLtwOX2;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264364-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264364-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 831E6308BEA6
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:03:06 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9767D314C015
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:59:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 448C5450915;
-	Tue, 16 Jun 2026 16:03:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E0A04779B9;
+	Tue, 16 Jun 2026 15:58:14 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-m49198.qiye.163.com (mail-m49198.qiye.163.com [45.254.49.198])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 166A0450903;
-	Tue, 16 Jun 2026 16:02:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BCF84779A4
+	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 15:58:12 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781625783; cv=none; b=GK++a7eAjMV4CmcwgrcBP/M2rwMwwWCERkk7e1A68T5i5uK2ti+aZzWA5S+TWf4z7Rj3NYOBnmQbBg9DetJjbCtlz+TbtMoLgU2vWOw5wXVUd+y7tebw6QmEwLrkXVY8GZnNWry+e4XDP42N6YMOnuVHB/nUS8+IWk1mQARSAx0=
+	t=1781625493; cv=none; b=oa4j6AKszEOR3vtA71aYgJZAqHaFsW7sro85KxiLghduHXEq3Elh4iAn9oClleGxTaMjJ39k/CDgi/CkEgCfPVswNJkEKZXZkONDmben6lASx3ioiI2VjixphmbYg62MZBsHRonQl5Y4afSZVgdQ97VpnrTKgYU/lBjOPJNkv/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781625783; c=relaxed/simple;
-	bh=CscwrQpvjj+N4uM5G00PJLqObAJAFGeM4PUVlMY4a/Y=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=b5TK4KsEfeT2fuox6KV2COoSyz/sCcyy3uZitc6xYdw2ILH/wo678jGYaXzYWfUMncP/zt4FZ5oUFAFNJIEzURIiEuXr0WggB9JzfXgZrW6bEE9iukHKHCi3i2yz7kzcGMmJGVddBkWq7g7HEcKiH89AeY1ipXxoHQchPfcNZyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=Zth6olDn; arc=none smtp.client-ip=45.254.49.198
-Received: from DESKTOP-SUEFNF9.taila7e912.ts.net (unknown [221.228.238.82])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 429e07efd;
-	Tue, 16 Jun 2026 23:57:45 +0800 (GMT+08:00)
-From: Dawei Feng <dawei.feng@seu.edu.cn>
-To: Tony Nguyen <anthony.l.nguyen@intel.com>
-Cc: Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
+	s=arc-20240116; t=1781625493; c=relaxed/simple;
+	bh=P1I+KWbK76llHaE2wH3T1Kgg++GDTr9b0M+6bQ/aXrk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=UxAJmhx/ZVTkVN3zjKOu50i/ITPrD23jcpHWXo7AH3f3Tu3/PxbaGxGrloWXj33YOwN7AaWKC+Q24d0Djb8juUHm7CJzGiGmdx9aLPVsAc7e7L6/Cm8VSDX96n2UneFZokUIUIpldjjPgyVKc6hkiWh8wafCjLlRywJ7380TxFY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SDLtwOX2; arc=none smtp.client-ip=170.10.133.124
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1781625491;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vZ6shKU2Olrq5XLk9VR7nCy5qua26jmULBJsUITnQx4=;
+	b=SDLtwOX2kKBTyHnrXmy7wG2Y/rBsXYM3uyXisxNrJLW+RLOe/IQJGyZIpNXI6eCCdSXQRl
+	KusNDGwcQmcIBO8UfwEV9OA785+45IyRtykMGGc/dZoHF7ZTIgVFHZHkzGKxbma2Y3l3aH
+	waI4zFbpF8KPP0GtASb1jPnIsb/oD44=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-570-YYgferILNXm0AdRbM1RG4A-1; Tue,
+ 16 Jun 2026 11:58:05 -0400
+X-MC-Unique: YYgferILNXm0AdRbM1RG4A-1
+X-Mimecast-MFC-AGG-ID: YYgferILNXm0AdRbM1RG4A_1781625483
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E40441800A3E;
+	Tue, 16 Jun 2026 15:58:02 +0000 (UTC)
+Received: from warthog.procyon.org.com (unknown [10.44.50.44])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 201311800595;
+	Tue, 16 Jun 2026 15:57:56 +0000 (UTC)
+From: David Howells <dhowells@redhat.com>
+To: netdev@vger.kernel.org
+Cc: David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
 	Jakub Kicinski <kuba@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
 	Paolo Abeni <pabeni@redhat.com>,
-	intel-wired-lan@lists.osuosl.org,
-	netdev@vger.kernel.org,
+	Simon Horman <horms@kernel.org>,
+	linux-afs@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
-	jianhao.xu@seu.edu.cn,
-	Dawei Feng <dawei.feng@seu.edu.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH net v2] ice: fix memory leak in ice_lbtest_prepare_rings()
-Date: Tue, 16 Jun 2026 23:57:42 +0800
-Message-Id: <20260616155742.4052021-1-dawei.feng@seu.edu.cn>
-X-Mailer: git-send-email 2.34.1
+	Wyatt Feng <bronzed_45_vested@icloud.com>,
+	stable@vger.kernel.org,
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Zhengchuan Liang <zcliangcn@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Ren Wei <n05ec@lzu.edu.cn>
+Subject: [PATCH net 1/5] rxrpc: input: reject ACKALL outside transmit phase
+Date: Tue, 16 Jun 2026 16:57:43 +0100
+Message-ID: <20260616155749.2125907-2-dhowells@redhat.com>
+In-Reply-To: <20260616155749.2125907-1-dhowells@redhat.com>
+References: <20260616155749.2125907-1-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,112 +91,104 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9ed127289903a2kunm68ae6ddd4b895
-X-HM-MType: 10
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkZSx8fVkpJHUwYGRlJHUJNTVYeHw
-	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlJSUpVSUlDVUlIQ1VDSVlXWRYaDxIVHRRZQVlPS0hVSktISk
-	9ITFVKS0tVSkJLS1kG
-DKIM-Signature: a=rsa-sha256;
-	b=Zth6olDn4pHnkHSYvSKvAJ+GMYqXvoyBC/nK4iBIFPu5OMaNLkNkpBk+4DNuVqwK0J+OEVAOv3rZ9QsQNaS6A+3+KoL8cIzxkV/jCJt9NuOwkxEpyg2jwT6v/b92TfSYPvOgEwkaLMi1oBLezu17n9/fyYWUPZPSf+TMAF7mLpU=; s=default; c=relaxed/relaxed; d=seu.edu.cn; v=1;
-	bh=nvoZVV9gxYlV8gdYEFEmCBm8zHB/8MAJLgD2t4vMXMc=;
-	h=date:mime-version:subject:message-id:from;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[seu.edu.cn,none];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[seu.edu.cn:s=default];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:anthony.l.nguyen@intel.com,m:przemyslaw.kitszel@intel.com,m:andrew+netdev@lunn.ch,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:intel-wired-lan@lists.osuosl.org,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:jianhao.xu@seu.edu.cn,m:dawei.feng@seu.edu.cn,m:stable@vger.kernel.org,m:andrew@lunn.ch,s:lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-264418-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[13];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	FREEMAIL_CC(0.00)[redhat.com,auristor.com,kernel.org,davemloft.net,google.com,lists.infradead.org,vger.kernel.org,icloud.com,gmail.com,lzu.edu.cn];
+	TAGGED_FROM(0.00)[bounces-264364-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER(0.00)[dhowells@redhat.com,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[dawei.feng@seu.edu.cn,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[seu.edu.cn:+];
+	FORGED_RECIPIENTS(0.00)[m:netdev@vger.kernel.org,m:dhowells@redhat.com,m:marc.dionne@auristor.com,m:kuba@kernel.org,m:davem@davemloft.net,m:edumazet@google.com,m:pabeni@redhat.com,m:horms@kernel.org,m:linux-afs@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:bronzed_45_vested@icloud.com,m:stable@vger.kernel.org,m:yuantan098@gmail.com,m:yifanwucs@gmail.com,m:tomapufckgml@gmail.com,m:zcliangcn@gmail.com,m:bird@lzu.edu.cn,m:n05ec@lzu.edu.cn,s:lists@lfdr.de];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dawei.feng@seu.edu.cn,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dhowells@redhat.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[redhat.com:+];
+	RCVD_COUNT_FIVE(0.00)[6];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,seu.edu.cn:dkim,seu.edu.cn:email,seu.edu.cn:mid,seu.edu.cn:from_mime,vger.kernel.org:from_smtp]
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lzu.edu.cn:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,icloud.com:email,infradead.org:email,vger.kernel.org:from_smtp,auristor.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 1BFC0692254
+X-Rspamd-Queue-Id: 4C816691E00
 
-ice_lbtest_prepare_rings() frees Rx rings only when
-ice_vsi_start_all_rx_rings() fails. If ice_vsi_setup_rx_rings() fails
-after allocating some descriptors, or if ice_vsi_cfg_lan() fails after
-the Rx rings were prepared, the function reaches the Tx cleanup path
-without releasing the initialized Rx resources.
+From: Wyatt Feng <bronzed_45_vested@icloud.com>
 
-Fix this by adding separate unwind paths for Rx setup failure and LAN
-configuration failure. The Rx setup failure path releases the partially
-prepared Rx rings before freeing Tx rings, while later failures first
-undo the LAN Tx configuration and then release the Rx rings in reverse
-setup order.
+rxrpc_input_ackall() accepts ACKALL packets without checking whether
+the call is in a state that can legitimately have outstanding transmit
+buffers.  A forged ACKALL can therefore reach a new service call in
+RXRPC_CALL_SERVER_RECV_REQUEST before any reply packets have been
+queued.
 
-The bug was first flagged by an experimental analysis tool we are
-developing for kernel memory-management bugs while analyzing
-v6.13-rc1. The tool is still under development and is not yet publicly
-available. Manual inspection confirms that the bug is still
-present in v7.1-rc7.
+In that state call->tx_top is zero and call->tx_queue is NULL, so
+rxrpc_rotate_tx_window() dereferences a NULL txqueue and triggers a
+null-pointer dereference.
 
-An x86_64 allyesconfig build showed no new warnings. As we do not have an
-Intel E800 Series adapter available to run the ethtool offline loopback
-selftest, no runtime testing was able to be performed.
+Fix rxrpc_input_ackall() to mirror the transmit-state gating already
+used for normal ACK processing, and ignore ACKALL when there is no
+outstanding transmit window to rotate.
 
-Fixes: 0e674aeb0b77 ("ice: Add handler for ethtool selftest")
+Fixes: b341a0263b1b ("rxrpc: Implement progressive transmission queue struct")
 Cc: stable@vger.kernel.org
-Signed-off-by: Dawei Feng <dawei.feng@seu.edu.cn>
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Zhengchuan Liang <zcliangcn@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Assisted-by: Codex:GPT-5.4
+Signed-off-by: Wyatt Feng <bronzed_45_vested@icloud.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: linux-afs@lists.infradead.org
 ---
-Changes in v2:
-- Fix cleanup order
+ net/rxrpc/input.c | 16 +++++++++++++++-
+ 1 file changed, 15 insertions(+), 1 deletion(-)
 
- drivers/net/ethernet/intel/ice/ice_ethtool.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+diff --git a/net/rxrpc/input.c b/net/rxrpc/input.c
+index ce761466b02d..37881dffa898 100644
+--- a/net/rxrpc/input.c
++++ b/net/rxrpc/input.c
+@@ -1214,8 +1214,22 @@ static void rxrpc_input_ack(struct rxrpc_call *call, struct sk_buff *skb)
+ static void rxrpc_input_ackall(struct rxrpc_call *call, struct sk_buff *skb)
+ {
+ 	struct rxrpc_ack_summary summary = { 0 };
++	rxrpc_seq_t top = READ_ONCE(call->tx_top);
++
++	switch (__rxrpc_call_state(call)) {
++	case RXRPC_CALL_CLIENT_SEND_REQUEST:
++	case RXRPC_CALL_CLIENT_AWAIT_REPLY:
++	case RXRPC_CALL_SERVER_SEND_REPLY:
++	case RXRPC_CALL_SERVER_AWAIT_ACK:
++		break;
++	default:
++		return;
++	}
++
++	if (call->tx_bottom == top)
++		return;
+ 
+-	if (rxrpc_rotate_tx_window(call, call->tx_top, &summary))
++	if (rxrpc_rotate_tx_window(call, top, &summary))
+ 		rxrpc_end_tx_phase(call, false, rxrpc_eproto_unexpected_ackall);
+ }
+ 
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool.c b/drivers/net/ethernet/intel/ice/ice_ethtool.c
-index f28416a707d7..10a4abc66974 100644
---- a/drivers/net/ethernet/intel/ice/ice_ethtool.c
-+++ b/drivers/net/ethernet/intel/ice/ice_ethtool.c
-@@ -1069,18 +1069,18 @@ static int ice_lbtest_prepare_rings(struct ice_vsi *vsi)
- 
- 	status = ice_vsi_cfg_lan(vsi);
- 	if (status)
--		goto err_setup_rx_ring;
-+		goto err_cfg_lan;
- 
- 	status = ice_vsi_start_all_rx_rings(vsi);
- 	if (status)
--		goto err_start_rx_ring;
-+		goto err_cfg_lan;
- 
- 	return 0;
- 
--err_start_rx_ring:
--	ice_vsi_free_rx_rings(vsi);
--err_setup_rx_ring:
-+err_cfg_lan:
- 	ice_vsi_stop_lan_tx_rings(vsi, ICE_NO_RESET, 0);
-+err_setup_rx_ring:
-+	ice_vsi_free_rx_rings(vsi);
- err_setup_tx_ring:
- 	ice_vsi_free_tx_rings(vsi);
- 
--- 
-2.34.1
 
