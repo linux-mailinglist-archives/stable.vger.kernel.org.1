@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-265219-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266177-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id J2h2I1CGMWqBlgUAu9opvQ
-	(envelope-from <stable+bounces-265219-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:22:24 +0200
+	id vEamI/WXMWrUngUAu9opvQ
+	(envelope-from <stable+bounces-266177-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:37:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7C0E6930C0
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:22:23 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2122A69447B
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:37:41 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=kVlr283m;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265219-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265219-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=en4lua9y;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266177-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266177-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 05454319ED4B
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:14:48 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 84C80303C520
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:37:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 572D93C5827;
-	Tue, 16 Jun 2026 17:14:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1679C46AF3C;
+	Tue, 16 Jun 2026 18:37:37 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27E9D32B138;
-	Tue, 16 Jun 2026 17:14:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF04A169AD2;
+	Tue, 16 Jun 2026 18:37:35 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781630087; cv=none; b=IxyiYwzn+Mh2Ivn5Pp/pCQnIML1BWElZIq+sjqp9GAoIECO+MUfEUpK6t0e5QNERvL6e2RUssvAT6z6vxZJesFeFQVi52z78SE5cALvXMZ6XsZNCluDqmTMzTpYM4E9IuoZlM/hvdcPqBEabswOE3iraCydxOwvbfk+5r0YMg1c=
+	t=1781635056; cv=none; b=KeTGZOUIEuewG+Jpsy7iHDHwuYvQEQESou5+I6oh0lIQ/HzsT8P8/X5/5ltGhytviqVvpntnc7wfRCV8WjVZjFDXNz3axJ/7itVHmPRx2fABUjtG7+lCvZJb01end+niYENO8SzbLw6F3CF/ywo5a4GECmceO4skYJIC/N3mm88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781630087; c=relaxed/simple;
-	bh=AtzkLxMt4WMnCCoTypP6vQpEvhVMKf4UOkeVR/5bA/8=;
+	s=arc-20240116; t=1781635056; c=relaxed/simple;
+	bh=9jpEKmG8l54DfobIcVu5ji0z1UEM6jJL2Pj1tvjLJz0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UbcMFEqS/QycSG1isEQjZ8xvLDtTuJ9Wa/VLjsURUdwkIJLRGD7KvBa4yLrsDvk63VMpINf7HMs62GJSyPnJasGC9JM8BVgKUx0kh176Mvx2fRr4jL2NmWmhChEKKFsL9hlt8kxLb41MesnYFfl/OBzUkRPdEpsoOUVt6G8GTuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kVlr283m; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED4F21F000E9;
-	Tue, 16 Jun 2026 17:14:44 +0000 (UTC)
+	 MIME-Version; b=IVCewvdvhn+mG5bZev0f07Pkm+1Ns7ajrYEexzQA7AwPJMhlSmVdUCieRIPBfjT2LytW3624u02EKTRE8wqXsildwmkllhRwCOs43kmUKhFMzKqvLkHiQXuAkwkIlTt0ExL1onsOifNVJ8o6de0RZuSftrXGSma4bh7y/rjHeU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=en4lua9y; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C16C31F000E9;
+	Tue, 16 Jun 2026 18:37:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781630085;
-	bh=deiErL8Y7oY9f864BbnYeU+3A/92Y4BP6lE7VtbxNcg=;
+	s=korg; t=1781635055;
+	bh=bMQLSLjW4mwfsOkk7TuGyMbngNDum6hdJlj1XRIDXfQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=kVlr283mQ1EmOseDBEhgDTWveUGQgrl0M4yZfn23/vMqDGJpaGJ/KVJGELf0lc/To
-	 H93bMdeBzZksMbJqG0MOo8sELDoXsVBpoeHU2V0XeL91PeLgkObbGmwRz13ptKm9LF
-	 ZytCMbcmhK81PN+/AO7TXZoKlgkAJJt5knrgiiq0=
+	b=en4lua9yDUOzjzYAly0wVMtOxztQBza0HfBgaWz9AOWMr2xTQNQeUwbqOfoExyx4i
+	 bbfjZ2E9737eTGuBL92ksStUKun908CZGJeGEr5njM9q+m2mLD0BuYCXd8gqxj7x/t
+	 aDcOnCs6O9hIrm4Yu9tfK/wzaMn9Hpm/VTZcgK7M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Javier Martinez Canillas <javierm@redhat.com>,
-	Ben Hutchings <benh@debian.org>
-Subject: [PATCH 6.6 375/452] fbdev/vt8500lcdfb: Initialize fb_ops with fbdev macros
-Date: Tue, 16 Jun 2026 20:30:02 +0530
-Message-ID: <20260616145136.695175208@linuxfoundation.org>
+	David Lechner <dlechner@baylibre.com>,
+	Tomasz Duszynski <tomasz.duszynski@octakon.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 365/411] iio: chemical: scd30: Use guard(mutex) to allow early returns
+Date: Tue, 16 Jun 2026 20:30:03 +0530
+Message-ID: <20260616145120.735496116@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,107 +70,213 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265219-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:tzimmermann@suse.de,m:javierm@redhat.com,m:benh@debian.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-266177-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:dlechner@baylibre.com,m:tomasz.duszynski@octakon.com,m:Jonathan.Cameron@huawei.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,patchwork.freedesktop.org:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,baylibre.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,huawei.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E7C0E6930C0
+X-Rspamd-Queue-Id: 2122A69447B
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-commit 63a11adaceb8b77d70bcce0890197fa9462ce160 upstream.
+[ Upstream commit 5feb5532870fbced5d6f450b8061a33f461b88ca ]
 
-Initialize the instance of struct fb_ops with fbdev initializer
-macros for framebuffers in DMA-able virtual address space. Set the
-read/write, draw and mmap callbacks to the correct implementation
-and avoid implicit defaults. Also select the necessary helpers in
-Kconfig.
+Auto cleanup based release of the lock allows for simpler code flow in a
+few functions with large multiplexing style switch statements and no
+common operations following the switch.
 
-Fbdev drivers sometimes rely on the callbacks being NULL for a
-default I/O-memory-based implementation to be invoked; hence
-requiring the I/O helpers to be built in any case. Setting all
-callbacks in all drivers explicitly will allow to make the I/O
-helpers optional. This benefits systems that do not use these
-functions.
-
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231127131655.4020-23-tzimmermann@suse.de
-Cc: Ben Hutchings <benh@debian.org>
+Suggested-by: David Lechner <dlechner@baylibre.com>
+Cc: Tomasz Duszynski <tomasz.duszynski@octakon.com>
+Reviewed-by: David Lechner <dlechner@baylibre.com>
+Link: https://patch.msgid.link/20250209180624.701140-3-jic23@kernel.org
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Stable-dep-of: 5aba4f94b225 ("iio: chemical: scd30: fix division by zero in write_raw")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/fbdev/Kconfig       |    1 +
- drivers/video/fbdev/vt8500lcdfb.c |    4 +++-
- 2 files changed, 4 insertions(+), 1 deletion(-)
+ drivers/iio/chemical/scd30_core.c |   63 ++++++++++++++++----------------------
+ 1 file changed, 28 insertions(+), 35 deletions(-)
 
---- a/drivers/video/fbdev/Kconfig
-+++ b/drivers/video/fbdev/Kconfig
-@@ -1464,6 +1464,7 @@ config FB_VT8500
- 	select FB_SYS_FILLRECT if (!FB_WMT_GE_ROPS)
- 	select FB_SYS_COPYAREA if (!FB_WMT_GE_ROPS)
- 	select FB_SYS_IMAGEBLIT
-+	select FB_SYS_FOPS
- 	select FB_MODE_HELPERS
- 	select VIDEOMODE_HELPERS
- 	help
---- a/drivers/video/fbdev/vt8500lcdfb.c
-+++ b/drivers/video/fbdev/vt8500lcdfb.c
-@@ -241,6 +241,7 @@ static int vt8500lcd_blank(int blank, st
+--- a/drivers/iio/chemical/scd30_core.c
++++ b/drivers/iio/chemical/scd30_core.c
+@@ -5,6 +5,7 @@
+  * Copyright (c) 2020 Tomasz Duszynski <tomasz.duszynski@octakon.com>
+  */
+ #include <linux/bits.h>
++#include <linux/cleanup.h>
+ #include <linux/completion.h>
+ #include <linux/delay.h>
+ #include <linux/device.h>
+@@ -198,112 +199,104 @@ static int scd30_read_raw(struct iio_dev
+ 			  int *val, int *val2, long mask)
+ {
+ 	struct scd30_state *state = iio_priv(indio_dev);
+-	int ret = -EINVAL;
++	int ret;
+ 	u16 tmp;
  
- static const struct fb_ops vt8500lcd_ops = {
- 	.owner		= THIS_MODULE,
-+	__FB_DEFAULT_DMAMEM_OPS_RDWR,
- 	.fb_set_par	= vt8500lcd_set_par,
- 	.fb_setcolreg	= vt8500lcd_setcolreg,
- 	.fb_fillrect	= wmt_ge_fillrect,
-@@ -250,6 +251,7 @@ static const struct fb_ops vt8500lcd_ops
- 	.fb_ioctl	= vt8500lcd_ioctl,
- 	.fb_pan_display	= vt8500lcd_pan_display,
- 	.fb_blank	= vt8500lcd_blank,
-+	// .fb_mmap needs DMA mmap
- };
+-	mutex_lock(&state->lock);
++	guard(mutex)(&state->lock);
+ 	switch (mask) {
+ 	case IIO_CHAN_INFO_RAW:
+ 	case IIO_CHAN_INFO_PROCESSED:
+ 		if (chan->output) {
+ 			*val = state->pressure_comp;
+-			ret = IIO_VAL_INT;
+-			break;
++			return IIO_VAL_INT;
+ 		}
  
- static irqreturn_t vt8500lcd_handle_irq(int irq, void *dev_id)
-@@ -357,7 +359,7 @@ static int vt8500lcd_probe(struct platfo
+ 		ret = iio_device_claim_direct_mode(indio_dev);
+ 		if (ret)
+-			break;
++			return ret;
  
- 	fbi->fb.fix.smem_start	= fb_mem_phys;
- 	fbi->fb.fix.smem_len	= fb_mem_len;
--	fbi->fb.screen_base	= fb_mem_virt;
-+	fbi->fb.screen_buffer	= fb_mem_virt;
+ 		ret = scd30_read(state);
+ 		if (ret) {
+ 			iio_device_release_direct_mode(indio_dev);
+-			break;
++			return ret;
+ 		}
  
- 	fbi->palette_size	= PAGE_ALIGN(512);
- 	fbi->palette_cpu	= dma_alloc_coherent(&pdev->dev,
+ 		*val = state->meas[chan->address];
+ 		iio_device_release_direct_mode(indio_dev);
+-		ret = IIO_VAL_INT;
+-		break;
++		return IIO_VAL_INT;
+ 	case IIO_CHAN_INFO_SCALE:
+ 		*val = 0;
+ 		*val2 = 1;
+-		ret = IIO_VAL_INT_PLUS_MICRO;
+-		break;
++		return IIO_VAL_INT_PLUS_MICRO;
+ 	case IIO_CHAN_INFO_SAMP_FREQ:
+ 		ret = scd30_command_read(state, CMD_MEAS_INTERVAL, &tmp);
+ 		if (ret)
+-			break;
++			return ret;
+ 
+ 		*val = 0;
+ 		*val2 = 1000000000 / tmp;
+-		ret = IIO_VAL_INT_PLUS_NANO;
+-		break;
++		return IIO_VAL_INT_PLUS_NANO;
+ 	case IIO_CHAN_INFO_CALIBBIAS:
+ 		ret = scd30_command_read(state, CMD_TEMP_OFFSET, &tmp);
+ 		if (ret)
+-			break;
++			return ret;
+ 
+ 		*val = tmp;
+-		ret = IIO_VAL_INT;
+-		break;
++		return IIO_VAL_INT;
++	default:
++		return -EINVAL;
+ 	}
+-	mutex_unlock(&state->lock);
+-
+-	return ret;
+ }
+ 
+ static int scd30_write_raw(struct iio_dev *indio_dev, struct iio_chan_spec const *chan,
+ 			   int val, int val2, long mask)
+ {
+ 	struct scd30_state *state = iio_priv(indio_dev);
+-	int ret = -EINVAL;
++	int ret;
+ 
+-	mutex_lock(&state->lock);
++	guard(mutex)(&state->lock);
+ 	switch (mask) {
+ 	case IIO_CHAN_INFO_SAMP_FREQ:
+ 		if (val)
+-			break;
++			return -EINVAL;
+ 
+ 		val = 1000000000 / val2;
+ 		if (val < SCD30_MEAS_INTERVAL_MIN_S || val > SCD30_MEAS_INTERVAL_MAX_S)
+-			break;
++			return -EINVAL;
+ 
+ 		ret = scd30_command_write(state, CMD_MEAS_INTERVAL, val);
+ 		if (ret)
+-			break;
++			return ret;
+ 
+ 		state->meas_interval = val;
+-		break;
++		return 0;
+ 	case IIO_CHAN_INFO_RAW:
+ 		switch (chan->type) {
+ 		case IIO_PRESSURE:
+ 			if (val < SCD30_PRESSURE_COMP_MIN_MBAR ||
+ 			    val > SCD30_PRESSURE_COMP_MAX_MBAR)
+-				break;
++				return -EINVAL;
+ 
+ 			ret = scd30_command_write(state, CMD_START_MEAS, val);
+ 			if (ret)
+-				break;
++				return ret;
+ 
+ 			state->pressure_comp = val;
+-			break;
++			return 0;
+ 		default:
+-			break;
++			return -EINVAL;
+ 		}
+-		break;
+ 	case IIO_CHAN_INFO_CALIBBIAS:
+ 		if (val < 0 || val > SCD30_TEMP_OFFSET_MAX)
+-			break;
++			return -EINVAL;
+ 		/*
+ 		 * Manufacturer does not explicitly specify min/max sensible
+ 		 * values hence check is omitted for simplicity.
+ 		 */
+-		ret = scd30_command_write(state, CMD_TEMP_OFFSET / 10, val);
++		return scd30_command_write(state, CMD_TEMP_OFFSET / 10, val);
++	default:
++		return -EINVAL;
+ 	}
+-	mutex_unlock(&state->lock);
+-
+-	return ret;
+ }
+ 
+ static int scd30_write_raw_get_fmt(struct iio_dev *indio_dev, struct iio_chan_spec const *chan,
 
 
 
