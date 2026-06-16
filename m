@@ -1,60 +1,66 @@
-Return-Path: <stable+bounces-264719-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265198-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ukBNJJp6MWqRkQUAu9opvQ
-	(envelope-from <stable+bounces-264719-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:32:26 +0200
+	id vH3DJMeGMWrHlgUAu9opvQ
+	(envelope-from <stable+bounces-265198-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:24:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45CB26922D0
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:32:26 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A9A369317C
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:24:22 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=M4q4QJYB;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264719-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-264719-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=A3spkxSR;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265198-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265198-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BD377303C9A4
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:31:54 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 67E9D30074DC
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:12:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BE5847799E;
-	Tue, 16 Jun 2026 16:31:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4F5744BCBE;
+	Tue, 16 Jun 2026 17:12:47 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D87E94779A7;
-	Tue, 16 Jun 2026 16:31:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B35303AE71F;
+	Tue, 16 Jun 2026 17:12:46 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781627501; cv=none; b=NWJt+zSw+TrPZnqfPi6bCwX6QeVrEWWOACbK2euWwkm6zN607Z87pHBM6wMQ/NvGZmjGYrDBf8TENiFRwaCGd6Bzn91yeRO61XcIiHuOAKLpqO8hjt37pigdsFDl2GfCeEN6Af7+GTkWzcFWDRbBTmsWeiR0htOdRxcjJnEnf/8=
+	t=1781629967; cv=none; b=G+jRP0JfgGnEhUbBATcFqz+WEuKLjfbqlJPtqgv07Q8RvM5mfV9XXNoyQWFdfAKPNGdIqX4wVZxEWnUZ9A5fzlwgwJSP0EwxVFRj1kNPd672+X4O3fTk2XOW9Nz8ybn+hJBGp/HchK/xwlIc6mkaAp9lAkMuH0BQZ24dUQSOlyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781627501; c=relaxed/simple;
-	bh=Q0DEdVxb0JaLo3wp9ULhBSz6rp0TqyQ8YG6IysxflqI=;
+	s=arc-20240116; t=1781629967; c=relaxed/simple;
+	bh=lEw1fyQq9PlK1LyQF5MKWoa1B66ptdw8U6NUdy3CDBg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=atxA24LVVuwa2qjnthTLqJpXGPiMPD0ZzvX5YUt5Obw2n/98FlC6CHUKBcsp7MSibb0M0LsKgaYywJlYK+Wq3LDdrjnmfJTSrrXtSNoDLms8Br1GqtFJDCky1pixxytemzqE0YcPUyIpcHN5SqCRqsIqunUKrqB3J+/dx1HsJhQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M4q4QJYB; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B50D51F000E9;
-	Tue, 16 Jun 2026 16:31:39 +0000 (UTC)
+	 MIME-Version; b=Omc5JxXhaYB9upORcI+uC8no+BySoF6zJbh5Z6OUodveQuXRKyZlBoXN9c6swt+NnpjmlVN7JdJw8XnMZQwJp6KEzLLx13GvfJPy23uJWt89Rdx7FZmMkLXDC7ErfvEtntNNDhnKQEiupFm4KFg2qXkyAWLelsYhfYwP/rZhtAI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A3spkxSR; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C54821F000E9;
+	Tue, 16 Jun 2026 17:12:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781627500;
-	bh=oQIZCNUDEegIuBzRy6zrew78bE0JGPaZEzIgwNM3IU4=;
+	s=korg; t=1781629966;
+	bh=DZ6CqeiYEklsE9mDdeFQ/ajWV0IiizsZaOprWoz1T3Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=M4q4QJYBbJT4f1XeAmzwjepKhJ06Z3ljHnSsFB75IIfW19if5KGRFuzFUwWbHHXoF
-	 2zOXLzXOwuMZncVZ3JkxmwDaXaUwYmGXrsWTPfHUx5MxLhf766XWpdPEf2nyf/PVXc
-	 cMAswo36arHLDezwsP1uUHhPsUSMM81Bk7xuGPPA=
+	b=A3spkxSRqGwiGGZZ+U7PDRe11HCsmh6p+fwDKt6guNIWipCEss+0pGkdxtUTvP2RY
+	 L7XkrV33dq5xPnRbMOvIJJscn3wpPEbktzfUA9SnYOnGSKBaqXVTrKJlFdAtlvxOxF
+	 xhbHtZDAUlFkf0ntCokFU4bhtBC0R6WnAevGv6dA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zeyu WANG <zeyu.thomas.wang@gmail.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.12 175/261] Input: atkbd - add DMI quirk for Lenovo Yoga Air 14 (83QK)
-Date: Tue, 16 Jun 2026 20:30:13 +0530
-Message-ID: <20260616145053.191634539@linuxfoundation.org>
+	Jose Ignacio Tornos Martinez <jtornosm@redhat.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 387/452] ice: fix VF queue configuration with low MTU values
+Date: Tue, 16 Jun 2026 20:30:14 +0530
+Message-ID: <20260616145137.261544257@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
-References: <20260616145044.869532709@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,94 +72,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264719-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:zeyu.thomas.wang@gmail.com,m:dmitry.torokhov@gmail.com,m:zeyuthomaswang@gmail.com,m:dmitrytorokhov@gmail.com,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265198-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jtornosm@redhat.com,m:jacob.e.keller@intel.com,m:michal.swiatkowski@linux.intel.com,m:pmenzel@molgen.mpg.de,m:rafal.romanowski@intel.com,m:anthony.l.nguyen@intel.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com];
 	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mpg.de:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,intel.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 45CB26922D0
+X-Rspamd-Queue-Id: 5A9A369317C
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zeyu WANG <zeyu.thomas.wang@gmail.com>
+From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
 
-commit ad0979fe053e9f2db82da82188256ef6eb41095a upstream.
+[ Upstream commit 3ba4dd024d26372733d1c02e13e076c6016e3320 ]
 
-The Lenovo Yoga Air 14 (83QK) laptop keyboard becomes unresponsive
-after the standard atkbd init sequence. Controlled testing on the
-actual hardware shows the F5 (ATKBD_CMD_RESET_DIS / deactivate)
-command specifically corrupts the EC state, causing zero IRQ1
-interrupts after init.
+The ice driver's VF queue configuration validation rejects
+databuffer_size values below 1024 bytes, which prevents VFs from
+using MTU values below 871 bytes.
 
-Skipping only the deactivate command (while keeping F4 ENABLE)
-resolves the issue completely: both keystroke input and CapsLock
-LED toggle work correctly. The reverse test - skipping only F4
-while keeping F5 - makes the problem worse (zero keystroke
-interrupts), confirming F5 is the sole culprit.
+The iavf driver calculates databuffer_size based on the MTU using:
+  databuffer_size = ALIGN(MTU + LIBETH_RX_LL_LEN, 128)
 
-Add a DMI quirk entry for LENOVO/83QK using the existing
-atkbd_deactivate_fixup callback, consistent with the existing
-entries for LG Electronics and HONOR FMB-P that address the
-same EC F5 deactivate issue.
+where LIBETH_RX_LL_LEN = 26 (ETH_HLEN + 2*VLAN_HLEN + ETH_FCS_LEN).
 
-Signed-off-by: Zeyu WANG <zeyu.thomas.wang@gmail.com>
-Link: https://patch.msgid.link/20260602170909.14725-1-zeyu.thomas.wang@gmail.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+For MTU values below 871:
+  MTU 870: 870 + 26 = 896, aligned to 128 = 896 (< 1024, rejected)
+  MTU 871: 871 + 26 = 897, aligned to 128 = 1024 (>= 1024, accepted)
+
+The 1024-byte minimum seems unnecessarily restrictive, because the hardware
+supports databuffer_size as low as 128 bytes (the alignment boundary),
+which should allow MTU values down to the standard minimum of 68 bytes.
+
+I haven't found the reason why the limit was configured in the commit
+9c7dd7566d18 ("ice: add validation in OP_CONFIG_VSI_QUEUES VF message"), so
+with no more information and since it is working, change the minimum
+databuffer_size validation from 1024 to 128 bytes to allow standard low
+MTU values while still preventing invalid configurations.
+
+Fixes: 9c7dd7566d18 ("ice: add validation in OP_CONFIG_VSI_QUEUES VF message")
+cc: stable@vger.kernel.org
+Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Link: https://patch.msgid.link/20260515182419.1597859-3-anthony.l.nguyen@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ applied the change to ice_virtchnl.c ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/keyboard/atkbd.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/net/ethernet/intel/ice/ice_virtchnl.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/input/keyboard/atkbd.c
-+++ b/drivers/input/keyboard/atkbd.c
-@@ -1937,6 +1937,14 @@ static const struct dmi_system_id atkbd_
- 		},
- 		.callback = atkbd_deactivate_fixup,
- 	},
-+	{
-+		/* Lenovo Yoga Air 14 (83QK) */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "83QK"),
-+		},
-+		.callback = atkbd_deactivate_fixup,
-+	},
- 	{ }
- };
+--- a/drivers/net/ethernet/intel/ice/ice_virtchnl.c
++++ b/drivers/net/ethernet/intel/ice/ice_virtchnl.c
+@@ -1681,7 +1681,7 @@ static int ice_vc_cfg_qs_msg(struct ice_
  
+ 			if (qpi->rxq.databuffer_size != 0 &&
+ 			    (qpi->rxq.databuffer_size > ((16 * 1024) - 128) ||
+-			     qpi->rxq.databuffer_size < 1024))
++			     qpi->rxq.databuffer_size < 128))
+ 				goto error_param;
+ 			vsi->rx_buf_len = qpi->rxq.databuffer_size;
+ 			ring->rx_buf_len = vsi->rx_buf_len;
 
 
 
