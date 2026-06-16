@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-265901-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265462-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id non5HI6SMWpYnAUAu9opvQ
-	(envelope-from <stable+bounces-265901-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:14:38 +0200
+	id a6JrHF+JMWrrlwUAu9opvQ
+	(envelope-from <stable+bounces-265462-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:35:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E22CF693F10
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:14:37 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id D212169348C
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:35:26 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=fkPcNZ5O;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265901-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265901-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=gXq52kl9;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265462-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-265462-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 352D130C4A43
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:13:21 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DB181303B4E0
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:35:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D8353D566F;
-	Tue, 16 Jun 2026 18:13:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E60E147AF6E;
+	Tue, 16 Jun 2026 17:35:24 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9AE33D812A;
-	Tue, 16 Jun 2026 18:13:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B81D332EC1;
+	Tue, 16 Jun 2026 17:35:23 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781633594; cv=none; b=jFaVmaGv3bsjQdCaFIWADncJCXMUlgV2SFLHTGpEeakgq6/aFqspKcEWqR+L+trh6r8os02EEfxS9fSXc783ngmQXpqaVHfjIZJjVSpfiOL2sblDaZB27yqPO0lf99C1l0sL1YoqjfERwChBHmZ1Cg28QpeQFUDn69HsH8sUzV8=
+	t=1781631324; cv=none; b=ocInUaTpqSlgxI/0dL1vM1JCe+lf63SEApc3d5vj9bLWmZKye7wfIZ8P/YkKvuOT2k02AXZo14/E7zBPPIUEzy/u+UTzL3scmueLaQzkqEtlEg2upasd/Ecla19HhSjZ7Vca8iAB0E0BLm+Uj1rPh87ZZerP9vfnHFmMPaXJq/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781633594; c=relaxed/simple;
-	bh=oC3AKgPQ9WjE6XjeSRM3+QvBQpv3a0epUMTkqtBvzsk=;
+	s=arc-20240116; t=1781631324; c=relaxed/simple;
+	bh=B7ZxjnYWO5VbFM6WSirIguxra/BXjarPyKW7dYPV/uY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hoP+9fwqy0sYXW8K6EvKpebcjnEYa/wfxpkkvKrG8GF2KxXd++y6p2DNlxGpCtVQpqvACPfTnSQbdSgkrxzFTzSX7Ib1h/H6LebnJp/7v/lVhdK7wpo8SzirAsOsGCrsUdfYLX65zweXS1/ScbzMGngqM+L824hCA9D36QjDt8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fkPcNZ5O; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEEBB1F000E9;
-	Tue, 16 Jun 2026 18:13:12 +0000 (UTC)
+	 MIME-Version; b=Q4wWjjk8IIK6XgifTO7cVtnmieZAcotTpADSURKhA1YgBeYtuLFjirrYmyeemUrNIIJXfSEpECRzcz4CpYMYkCZIL7n9jZgD2orzEbti9QQMj772AmXbc2UpOTx7jii98ni3KLU0HyePgrwMGJq+CSWvBr3++kSPpGKCX/fYwPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gXq52kl9; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EDBF1F000E9;
+	Tue, 16 Jun 2026 17:35:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781633593;
-	bh=5AY2Pap/ddtkpyVsu6swpi1p9rDGAd4X3imOqGpsB3Q=;
+	s=korg; t=1781631323;
+	bh=cIiohKKJ0CuSh5+gAr4BYJ1TElu5s/1LI4Q+HTie4ws=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fkPcNZ5ONwxnLOhhu1/duUA2eji/aeeVuy3LmV3gISzqV9a1qJJo56nbg+o5CyN2+
-	 rjEGXRt+2IW3SoPBXUDsOyZDyfApZBniFEXeyfdV13t3prgrNXEZtlKCFJNZXqdfbG
-	 FLHGXwiDp4zHaYjmJti+4usIEP4/O38742sEXxOc=
+	b=gXq52kl9hdqy6sHK2KU+Kt5uDsGE4d2n2AW8FLiJnJnLaXbQc2Seuc5/JDYkGQPQ9
+	 51GxExQe10DqnNx63bvW4qRmL2sqScJPZKNUpBfyBvH8iSS3sHJvm2AiOifQB7wZPO
+	 APX74RmSiO/X997STZ/wx3mSUYRydJXko0bmhutE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Pecio <michal.pecio@gmail.com>,
-	Tao Xue <xuetao09@huawei.com>
-Subject: [PATCH 5.15 108/411] usb: core: Fix up Interrupt IN endpoints with bogus wBytesPerInterval
+	Julian Anastasov <ja@ssi.bg>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 199/522] ipvs: clear the svc scheduler ptr early on edit
 Date: Tue, 16 Jun 2026 20:25:46 +0530
-Message-ID: <20260616145106.007976210@linuxfoundation.org>
+Message-ID: <20260616145135.397113653@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,107 +68,167 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265901-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michal.pecio@gmail.com,m:xuetao09@huawei.com,m:michalpecio@gmail.com,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265462-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:ja@ssi.bg,m:fw@strlen.de,m:pablo@netfilter.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,huawei.com];
 	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,huawei.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ssi.bg:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sashiko.dev:url,strlen.de:email,netfilter.org:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E22CF693F10
+X-Rspamd-Queue-Id: D212169348C
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Pecio <michal.pecio@gmail.com>
+From: Julian Anastasov <ja@ssi.bg>
 
-commit 727d045d064b7c9a24db3bce9c0485a382cb768b upstream.
+[ Upstream commit 193989cc6d80dd8e0460fb3992e69fa03bf0ff9b ]
 
-Tao Xue found that some common devices violate USB 3.x section 9.6.7
-by reporting wBytesPerInterval lower than the size of packets they
-actually send. I confirmed that AX88179 may set it to 0 and RTL8153
-CDC configuration sets it to 8 but sends both 8 and 16 byte packets:
+ip_vs_edit_service() while unbinding the old scheduler clears
+the svc->scheduler ptr after the scheduler module initiates
+RCU callbacks. This can cause packets to use the old
+scheduler at the time when svc->sched_data is already freed
+after RCU grace period.
 
-S Ii:11:007:3 -115:128 16 <
-C Ii:11:007:3 0:128 8 = a1000000 01000000
-S Ii:11:007:3 -115:128 16 <
-C Ii:11:007:3 0:128 16 = a12a0000 01000800 00000000 00000000
+Fix it by clearing the ptr early in ip_vs_unbind_scheduler(),
+before the done_service method schedules any RCU callbacks.
 
-Most xHCI host controllers neglect interrupt bandwidth reservations
-and let such devices exceed theirs, some fail the URB with EOVERFLOW.
+Also, if the new scheduler fails to initialize when replacing
+the old scheduler, try to restore the old scheduler while still
+returning the error code.
 
-Assume that wBytesPerInterval lower than wMaxPacketSize is bogus and
-increase it to the worst case maximum on interrupt IN endpoints. This
-solves xHCI problems and appears to have no other effect. Interrupt
-transfers are not limited to one interval and drivers submit URBs of
-class defined size without looking at wBytesPerInterval. Any multi-
-interval transfer is considered terminated by a packet shorter than
-wMaxPacketSize regardless of wBytesPerInterval - see USB3 8.10.3.
-
-Stay in spec on OUT endpoints and isochronous. No buggy devices are
-known and we don't want to risk sending more data than the device
-is prepared to handle or confusing isoc drivers regarding altsetting
-capacities guaranteed by the device itself. And don't complain when
-wMaxPacketSize <= wBytesPerInterval < wMaxPacketSize * (bMaxBurst+1)
-because enabling this seems to be the exact goal of the spec.
-
-Reported-and-tested-by: Tao Xue <xuetao09@huawei.com>
-Closes: https://lore.kernel.org/linux-usb/20260402021400.28853-1-xuetao09@huawei.com/
-Cc: stable@vger.kernel.org
-Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
-Link: https://patch.msgid.link/20260518073207.5b7d26e7.michal.pecio@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://sashiko.dev/#/patchset/20260519015506.634185-1-rosenp%40gmail.com
+Fixes: 05f00505a89a ("ipvs: fix crash if scheduler is changed")
+Signed-off-by: Julian Anastasov <ja@ssi.bg>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/config.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ include/net/ip_vs.h              |  3 +--
+ net/netfilter/ipvs/ip_vs_ctl.c   | 13 ++++++++-----
+ net/netfilter/ipvs/ip_vs_sched.c | 14 +++++++-------
+ 3 files changed, 16 insertions(+), 14 deletions(-)
 
---- a/drivers/usb/core/config.c
-+++ b/drivers/usb/core/config.c
-@@ -165,7 +165,14 @@ static void usb_parse_ss_endpoint_compan
- 			(desc->bMaxBurst + 1);
- 	else
- 		max_tx = 999999;
--	if (le16_to_cpu(desc->wBytesPerInterval) > max_tx) {
-+	/*
-+	 * wBytesPerInterval > max_tx is bogus, but USB3 spec doesn't forbid the opposite.
-+	 * Experience shows that wBytesPerInterval < wMaxPacketSize on common interrupt IN
-+	 * endpoints is usually bogus too, and recent HCs enforce interrupt BW limits.
-+	 */
-+	if (le16_to_cpu(desc->wBytesPerInterval) > max_tx ||
-+	    (le16_to_cpu(desc->wBytesPerInterval) < usb_endpoint_maxp(&ep->desc) &&
-+	     usb_endpoint_is_int_in(&ep->desc))) {
- 		dev_notice(ddev, "%s endpoint with wBytesPerInterval of %d in "
- 				"config %d interface %d altsetting %d ep %d: "
- 				"setting to %d\n",
+diff --git a/include/net/ip_vs.h b/include/net/ip_vs.h
+index abc46f05762e6b..0b175ecd9562bd 100644
+--- a/include/net/ip_vs.h
++++ b/include/net/ip_vs.h
+@@ -1407,8 +1407,7 @@ int register_ip_vs_scheduler(struct ip_vs_scheduler *scheduler);
+ int unregister_ip_vs_scheduler(struct ip_vs_scheduler *scheduler);
+ int ip_vs_bind_scheduler(struct ip_vs_service *svc,
+ 			 struct ip_vs_scheduler *scheduler);
+-void ip_vs_unbind_scheduler(struct ip_vs_service *svc,
+-			    struct ip_vs_scheduler *sched);
++void ip_vs_unbind_scheduler(struct ip_vs_service *svc);
+ struct ip_vs_scheduler *ip_vs_scheduler_get(const char *sched_name);
+ void ip_vs_scheduler_put(struct ip_vs_scheduler *scheduler);
+ struct ip_vs_conn *
+diff --git a/net/netfilter/ipvs/ip_vs_ctl.c b/net/netfilter/ipvs/ip_vs_ctl.c
+index 6cc50f05c46c15..15a083dd459737 100644
+--- a/net/netfilter/ipvs/ip_vs_ctl.c
++++ b/net/netfilter/ipvs/ip_vs_ctl.c
+@@ -1415,7 +1415,7 @@ ip_vs_add_service(struct netns_ipvs *ipvs, struct ip_vs_service_user_kern *u,
+ 	if (ret_hooks >= 0)
+ 		ip_vs_unregister_hooks(ipvs, u->af);
+ 	if (svc != NULL) {
+-		ip_vs_unbind_scheduler(svc, sched);
++		ip_vs_unbind_scheduler(svc);
+ 		ip_vs_service_free(svc);
+ 	}
+ 	ip_vs_scheduler_put(sched);
+@@ -1477,9 +1477,8 @@ ip_vs_edit_service(struct ip_vs_service *svc, struct ip_vs_service_user_kern *u)
+ 	old_sched = rcu_dereference_protected(svc->scheduler, 1);
+ 	if (sched != old_sched) {
+ 		if (old_sched) {
+-			ip_vs_unbind_scheduler(svc, old_sched);
+-			RCU_INIT_POINTER(svc->scheduler, NULL);
+-			/* Wait all svc->sched_data users */
++			ip_vs_unbind_scheduler(svc);
++			/* Wait all svc->scheduler/sched_data users */
+ 			synchronize_rcu();
+ 		}
+ 		/* Bind the new scheduler */
+@@ -1487,6 +1486,10 @@ ip_vs_edit_service(struct ip_vs_service *svc, struct ip_vs_service_user_kern *u)
+ 			ret = ip_vs_bind_scheduler(svc, sched);
+ 			if (ret) {
+ 				ip_vs_scheduler_put(sched);
++				/* Try to restore the old_sched */
++				if (old_sched &&
++				    !ip_vs_bind_scheduler(svc, old_sched))
++					old_sched = NULL;
+ 				goto out;
+ 			}
+ 		}
+@@ -1543,7 +1546,7 @@ static void __ip_vs_del_service(struct ip_vs_service *svc, bool cleanup)
+ 
+ 	/* Unbind scheduler */
+ 	old_sched = rcu_dereference_protected(svc->scheduler, 1);
+-	ip_vs_unbind_scheduler(svc, old_sched);
++	ip_vs_unbind_scheduler(svc);
+ 	ip_vs_scheduler_put(old_sched);
+ 
+ 	/* Unbind persistence engine, keep svc->pe */
+diff --git a/net/netfilter/ipvs/ip_vs_sched.c b/net/netfilter/ipvs/ip_vs_sched.c
+index d4903723be7e90..49b2e5d2b2c837 100644
+--- a/net/netfilter/ipvs/ip_vs_sched.c
++++ b/net/netfilter/ipvs/ip_vs_sched.c
+@@ -57,19 +57,19 @@ int ip_vs_bind_scheduler(struct ip_vs_service *svc,
+ /*
+  *  Unbind a service with its scheduler
+  */
+-void ip_vs_unbind_scheduler(struct ip_vs_service *svc,
+-			    struct ip_vs_scheduler *sched)
++void ip_vs_unbind_scheduler(struct ip_vs_service *svc)
+ {
+-	struct ip_vs_scheduler *cur_sched;
++	struct ip_vs_scheduler *sched;
+ 
+-	cur_sched = rcu_dereference_protected(svc->scheduler, 1);
+-	/* This check proves that old 'sched' was installed */
+-	if (!cur_sched)
++	sched = rcu_dereference_protected(svc->scheduler, 1);
++	if (!sched)
+ 		return;
+ 
++	/* Reset the scheduler before initiating any RCU callbacks */
++	rcu_assign_pointer(svc->scheduler, NULL);
++	smp_wmb();	/* paired with smp_rmb() in ip_vs_schedule() */
+ 	if (sched->done_service)
+ 		sched->done_service(svc);
+-	/* svc->scheduler can be set to NULL only by caller */
+ }
+ 
+ 
+-- 
+2.53.0
+
 
 
 
