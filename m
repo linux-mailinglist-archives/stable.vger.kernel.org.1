@@ -1,62 +1,63 @@
-Return-Path: <stable+bounces-264270-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266373-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id hCdiF7Z0MWoYjwUAu9opvQ
-	(envelope-from <stable+bounces-264270-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:07:18 +0200
+	id w/ULMjmdMWoaoQUAu9opvQ
+	(envelope-from <stable+bounces-266373-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:00:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5E07691B3E
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:07:17 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26470694A61
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:00:09 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=rTqQKg+w;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264270-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264270-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="w/Rz8m+M";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266373-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266373-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 273273039C75
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:51:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D3A35328F564
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:54:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F7FD44CAF9;
-	Tue, 16 Jun 2026 15:51:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 256063CC303;
+	Tue, 16 Jun 2026 18:54:42 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34F01441035;
-	Tue, 16 Jun 2026 15:51:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E985347CC96;
+	Tue, 16 Jun 2026 18:54:40 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781625076; cv=none; b=e9kJX1F5srxxhk+vC0ww4RytlG110zKcdFc7rqb4Z4t1UTmxaM2D1XEbLX0963PXSG6q1nrHhiKoXh14fVrWzhVCr4+xQSYXcRi7Lrb4eA2ThTAF7RzzIBoHeIHMFudZ7t6L8jnKCzV2SgXapO6APt+VSqCid5YZcjVJAbZaAPs=
+	t=1781636081; cv=none; b=EKO8/G8fTkVvveGiDPZ3Ktu2bMSLOoGxMMlHKA2pSAlJEGLyiz9tkfv+1nC8jSRfLECMmie0tJp4UFbpuTT+TFjAZJckobb1d/yqLKpomTMVwvHkytj3hLH0lPNBd19N43PwdS/dcv0gSI/ckqspRCyJgez4iVb0PD7J2BSQL7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781625076; c=relaxed/simple;
-	bh=kgGithKPT/z9ChWP3E9Ud359AOhmNMSyknUP7a7+dkM=;
+	s=arc-20240116; t=1781636081; c=relaxed/simple;
+	bh=hIVWbuQRKKQDw/rihzWLsiiCLL7BVhuJ9Bv3R4Z82M8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CuYTcnsGZ7WjKkhyZ+sl3BKaM3zSx6SireQQcAptvyApzbMUVh259KVZigasqU3ERa9ojH0TPVTqfeZ9vKC+/JGwyujCT7mQ7DgYYUaM5pWrc0937usqG7q7RJHNaYrbD+Duu7yOdhw8E/WT1JA7ywGjob0WAHpb1zWsWvJmE8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rTqQKg+w; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9ED11F000E9;
-	Tue, 16 Jun 2026 15:51:13 +0000 (UTC)
+	 MIME-Version; b=BhD58bbffPzYAwJp8X5Q/FR7uWIzqaSIPhiUsSGz6WKATqC+7atWPzMpscFswYXm333ko28xP2oAuw4deBVBc1EzEoCQCnewUasGOl+EhjvQLTxvhzeFi7Ml27fk78GuhFDMuUkDC9h7o/M+sjhchCwm0Fo+N9ceWv7YgQn78bE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w/Rz8m+M; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0F931F000E9;
+	Tue, 16 Jun 2026 18:54:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781625075;
-	bh=OZiYwSXSYRo4yTjvvBnh29NFzn3+wKILIyF+uwyWbbw=;
+	s=korg; t=1781636080;
+	bh=0b1fkPjVvt1JK0lOXjb3GQj3ErLjAiHgK5poxn0u0JA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=rTqQKg+wrGMbxgkJExo9WNBUzrsJKKF91PolUjmLF/RrGc1RkG51GCCM/ein4IJuS
-	 fO2XjubinT60NK3JYYcEwFP/mRv0u8rXKaLmyGSvEi7W0B+DZsUOkLPfYuGgDjFCiS
-	 ImdbfT7yik6iWGLCD/1My+KGhrMUix5LBzUXsUPg=
+	b=w/Rz8m+MVhDvp2btUdSCMOg00886KWt961pGqZv1Ue1hh9+QgFe6+frfv9tWFVjIz
+	 ay9A4y1JxMy+IYfZOuD4YGlptP5Fz8InOzysGRVjfeRwoMumJgnX3AF4BcJle8f1xb
+	 Y8sd293V3TJqJw2d+AvhGchfxMjOam/bAeRyVkiY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+b109633ea805cac54a61@syzkaller.appspotmail.com,
-	Aleksandr Nogikh <nogikh@google.com>,
-	"Christian Brauner (Amutable)" <brauner@kernel.org>,
+	Xiang Mei <xmei5@asu.edu>,
+	Weiming Shi <bestswngs@gmail.com>,
+	Allison Henderson <achender@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 072/325] signal: clear JOBCTL_PENDING_MASK for caller in zap_other_threads()
+Subject: [PATCH 5.10 172/342] net/rds: fix NULL deref in rds_ib_send_cqe_handler() on masked atomic completion
 Date: Tue, 16 Jun 2026 20:27:48 +0530
-Message-ID: <20260616145101.310446566@linuxfoundation.org>
+Message-ID: <20260616145056.213952669@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,26 +69,26 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-266373-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264270-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:syzbot+b109633ea805cac54a61@syzkaller.appspotmail.com,m:nogikh@google.com,m:brauner@kernel.org,m:sashal@kernel.org,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:xmei5@asu.edu,m:bestswngs@gmail.com,m:achender@kernel.org,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -97,81 +98,76 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,b109633ea805cac54a61];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,msgid.link:url,appspotmail.com:email,syzkaller.appspot.com:url]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,asu.edu:email,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E5E07691B3E
+X-Rspamd-Queue-Id: 26470694A61
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Nogikh <nogikh@google.com>
+From: Weiming Shi <bestswngs@gmail.com>
 
-[ Upstream commit 90918794a4e2c3b440f8fcf3847765a8b1d81b25 ]
+[ Upstream commit 34080db3e70ddf94c38512ad2331e3c3afca6cc1 ]
 
-When a multi-threaded process receives a stop signal (e.g., SIGSTOP),
-do_signal_stop() sets JOBCTL_STOP_PENDING and JOBCTL_STOP_CONSUME on all
-threads and sets signal->group_stop_count to the number of threads. If
-one of the threads concurrently calls execve(), de_thread() invokes
-zap_other_threads() to kill all other threads. zap_other_threads()
-aborts the pending group stop by resetting signal->group_stop_count to 0
-and clears the JOBCTL_PENDING_MASK for all other threads. However, it
-fails to clear the job control flags for the calling thread.
+rds_ib_xmit_atomic() always programs a masked atomic opcode
+(IB_WR_MASKED_ATOMIC_CMP_AND_SWP or IB_WR_MASKED_ATOMIC_FETCH_AND_ADD)
+for every RDS atomic cmsg.  But the completion-side switch in
+rds_ib_send_unmap_op() only handles the non-masked opcodes, so a masked
+atomic completion falls through to default and returns rm == NULL while
+send->s_op is left set.  rds_ib_send_cqe_handler() then dereferences the
+NULL rm via rm->m_final_op, oopsing in softirq context.  An unprivileged
+AF_RDS sendmsg() of an atomic cmsg over an active RDS/IB connection
+triggers it; on hardware that natively accepts masked atomics (mlx4,
+mlx5) no extra setup is needed.
 
-When execve() completes, the calling thread returns to user mode and
-checks for pending signals. Seeing the stale JOBCTL_STOP_PENDING flag,
-it calls do_signal_stop(), which invokes task_participate_group_stop().
-Since JOBCTL_STOP_CONSUME is still set, it attempts to decrement the
-already-zero signal->group_stop_count, triggering a warning:
+  RDS/IB: rds_ib_send_unmap_op: unexpected opcode 0xd in WR!
+  Oops: general protection fault [#1] SMP KASAN
+  KASAN: null-ptr-deref in range [0x0000000000000190-0x0000000000000197]
+  RIP: rds_ib_send_cqe_handler+0x25c/0xb10 (net/rds/ib_send.c:282)
+  Call Trace:
+   <IRQ>
+   rds_ib_send_cqe_handler (net/rds/ib_send.c:282)
+   poll_scq (net/rds/ib_cm.c:274)
+   rds_ib_tasklet_fn_send (net/rds/ib_cm.c:294)
+   tasklet_action_common (kernel/softirq.c:943)
+   handle_softirqs (kernel/softirq.c:573)
+   run_ksoftirqd (kernel/softirq.c:479)
+   </IRQ>
+  Kernel panic - not syncing: Fatal exception in interrupt
 
-sig->group_stop_count == 0
-WARNING: CPU: 1 PID: 6475 at kernel/signal.c:373
-task_participate_group_stop+0x215/0x2d0
-Call Trace:
- <TASK>
- do_signal_stop+0x3be/0x5c0 kernel/signal.c:2619
- get_signal+0xa8c/0x1330 kernel/signal.c:2884
- arch_do_signal_or_restart+0xbc/0x840 arch/x86/kernel/signal.c:337
- exit_to_user_mode_loop+0x8c/0x4d0 kernel/entry/common.c:98
- do_syscall_64+0x33e/0xf80 arch/x86/entry/syscall_64.c:100
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
- </TASK>
+Handle the masked atomic opcodes in the same case as the non-masked
+ones: they map to the same struct rds_message.atomic union member, so
+the existing container_of()/rds_ib_send_unmap_atomic() body is correct
+for them.
 
-Fix this race condition by clearing the JOBCTL_PENDING_MASK for the
-calling thread in zap_other_threads(), ensuring it does not retain any
-stale job control state after the thread group is destroyed. This aligns
-with other functions that tear down a thread group and abort group
-stops, such as zap_process() and complete_signal(), which correctly
-clear these flags for all threads including the current one.
-
-Fixes: 39efa3ef3a37 ("signal: Use GROUP_STOP_PENDING to stop once for a single group stop")
-Assisted-by: Gemini:gemini-3.1-pro-preview Gemini:gemini-3-flash-preview syzbot
-Reported-by: syzbot+b109633ea805cac54a61@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=b109633ea805cac54a61
-Link: https://syzkaller.appspot.com/ai_job?id=d70208cc-862b-4fe3-bf02-3031e10cd0b3
-Signed-off-by: Aleksandr Nogikh <nogikh@google.com>
-Link: https://patch.msgid.link/20260521142240.2973022-1-nogikh@google.com
-Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+Fixes: 20c72bd5f5f9 ("RDS: Implement masked atomic operations")
+Reported-by: Xiang Mei <xmei5@asu.edu>
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+Reviewed-by: Allison Henderson <achender@kernel.org>
+Link: https://patch.msgid.link/20260606192447.1179255-2-bestswngs@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/signal.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/rds/ib_send.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/kernel/signal.c b/kernel/signal.c
-index fe9190d84f281e..810098300ecdcb 100644
---- a/kernel/signal.c
-+++ b/kernel/signal.c
-@@ -1340,6 +1340,7 @@ int zap_other_threads(struct task_struct *p)
- 	int count = 0;
- 
- 	p->signal->group_stop_count = 0;
-+	task_clear_jobctl_pending(p, JOBCTL_PENDING_MASK);
- 
- 	for_other_threads(p, t) {
- 		task_clear_jobctl_pending(t, JOBCTL_PENDING_MASK);
+diff --git a/net/rds/ib_send.c b/net/rds/ib_send.c
+index 92b4a8689aae7a..6c20526f71a1e2 100644
+--- a/net/rds/ib_send.c
++++ b/net/rds/ib_send.c
+@@ -170,6 +170,8 @@ static struct rds_message *rds_ib_send_unmap_op(struct rds_ib_connection *ic,
+ 		break;
+ 	case IB_WR_ATOMIC_FETCH_AND_ADD:
+ 	case IB_WR_ATOMIC_CMP_AND_SWP:
++	case IB_WR_MASKED_ATOMIC_FETCH_AND_ADD:
++	case IB_WR_MASKED_ATOMIC_CMP_AND_SWP:
+ 		if (send->s_op) {
+ 			rm = container_of(send->s_op, struct rds_message, atomic);
+ 			rds_ib_send_unmap_atomic(ic, send->s_op, wc_status);
 -- 
 2.53.0
 
