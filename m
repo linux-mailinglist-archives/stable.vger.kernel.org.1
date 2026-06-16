@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-264147-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264652-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id pCNBMa1wMWp5jQUAu9opvQ
-	(envelope-from <stable+bounces-264147-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:50:05 +0200
+	id G+pzCk17MWrekQUAu9opvQ
+	(envelope-from <stable+bounces-264652-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:35:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFC8A6916BD
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:50:04 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7EC96923BA
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:35:24 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=OGrt5TUc;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264147-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-264147-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ck6IdqW6;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264652-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264652-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id CB9D8303A76D
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:39:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 97DE1324F8D4
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:24:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4015744CAFB;
-	Tue, 16 Jun 2026 15:39:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 125C53A8746;
+	Tue, 16 Jun 2026 16:24:40 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC77544D024;
-	Tue, 16 Jun 2026 15:39:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8CF5466B57;
+	Tue, 16 Jun 2026 16:24:38 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781624372; cv=none; b=uvY+VSLtr0L39lIUrNeVZRlQ9/ne5YEAKh2X49uWfXgOspF1iYqdObCwq7S/d7D0y7cx9fJUOD2VjVZ6QoU9Ym3coYAqLOaLAxR/DJ3tIJSbOzWKIPoNZpArPE/3wKDNquxi7xJ2gTc0IlOjlQU8jTmi2jRAmYG6A1tU9PqiygI=
+	t=1781627079; cv=none; b=S9pq+YBl39IHzq8wdtOErABgH7yrswbcOMUTzcAV19ODuLPUVQ4O+d2R/jEU9Tev0W6dcDYIjtth14kwVWcT9MPNmdW87/jQ+InNl5qtiGXqkB/IbJ0vMf9g0uzdxHCaOMdQA0b/c3elF5V1bAG8OIS6xtwnzxNhhxbBNoGfEdI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781624372; c=relaxed/simple;
-	bh=q8HHSNLV/5EZ7jKOlQuflwrRiDGyYIf9VCPNvX+MGfk=;
+	s=arc-20240116; t=1781627079; c=relaxed/simple;
+	bh=n0k+IC02t5kcwUBCeUZy/avKOFheIHOK2H7OTq5Tc0g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nw+N47x0VBZqksv6aE/2M5cZ16W3YmiH2iwWi3w+W10ZgDFFtxaCJc9gEMu79gf1dhcjweKBbs4rVMDNsE1UVctKQ7DIfXLwOelzeNrisO1H1b9bGJu9bX1Tc80VDgFXSg1KPP7GVoE155FqIRmNYnC953ORJd7vA3/yfvoP+0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OGrt5TUc; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC3AD1F000E9;
-	Tue, 16 Jun 2026 15:39:29 +0000 (UTC)
+	 MIME-Version:Content-Type; b=PFEpifq6n8C/MpVLQWM84tLtmQqscZ23fOMcSP1Wpbx/YAiKvwcrtLzR86MHiXLvH/5FnfkXShP5cD/MR9PJyI4F55jFNMGKADEE68WjuT604rQcKvPdwg2ZNxvacEQLXgAAuqDuRHB5vwASbEsHNpbzFvIPE8C8ExZs7c1kd9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ck6IdqW6; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B811B1F000E9;
+	Tue, 16 Jun 2026 16:24:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781624370;
-	bh=dw8xaQsnGM27um7kv7Cg3kS8Co6GWQCxaB28A6kZ2BM=;
+	s=korg; t=1781627078;
+	bh=pZ3vq+gnrOl6u2q5TsGsaOFiKHVor4YqH6FNJ2GoqAo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OGrt5TUcXW8Hm2nkzrHjvuUnvcKzfNcnC+xx6EAHhzk+yAbvdYLllEQWGV1kkLA6u
-	 /8TrBLzUN817KLl2fqm+xbaBc3krCjOSnwKg+OhPg+UOOFlgYWKyu0ndlAV9Y/hmz0
-	 qgzAK36TPqfdBZBG2ZqF0hrSKaGGjPb+fZUiICd0=
+	b=ck6IdqW6iEA9J0Yo8/hzO9iIFH+sPEMOxn8C+UAo0UQQWyYZNOoCiTSYmdbVkvul9
+	 F0+PEwLfc9iyUd3nagQYo73GYNwjr358TfIr++ZEOlhyfl4Sib8638UcAP6OzF6EPR
+	 N2blEfUwM3jRq9R/O5rNPutycWr+IL/AcKBMsD40=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: [PATCH 7.0 323/378] thunderbolt: Validate XDomain request packet size before type cast
+	Pengyu Luo <mitltlatltl@gmail.com>,
+	=?UTF-8?q?J=C3=A9r=C3=B4me=20de=20Bretagne?= <jerome.debretagne@gmail.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 116/261] clk: qcom: dispcc-sc8280xp: Dont park mdp_clk_src at registration time
 Date: Tue, 16 Jun 2026 20:29:14 +0530
-Message-ID: <20260616145127.236813741@linuxfoundation.org>
+Message-ID: <20260616145050.437534996@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,119 +66,92 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-264652-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264147-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:mika.westerberg@linux.intel.com,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mitltlatltl@gmail.com,m:jerome.debretagne@gmail.com,m:andersson@kernel.org,m:sashal@kernel.org,m:jeromedebretagne@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.intel.com];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: BFC8A6916BD
+X-Rspamd-Queue-Id: A7EC96923BA
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Pengyu Luo <mitltlatltl@gmail.com>
 
-commit a504b9f2797b739e0304d537e8aa4ce883ecce39 upstream.
+[ Upstream commit 5285b046757844435d1db96c1b5c3a6621b2979a ]
 
-tb_xdp_handle_request() casts the received packet buffer to
-protocol-specific structs without verifying that the allocation
-is large enough for the target type.  A peer can send a minimal
-XDomain packet that passes the generic header length check but is
-shorter than the struct accessed after the cast, causing out-of-
-bounds reads from the kmemdup allocation.
+Parking disp{0,1}_cc_mdss_mdp_clk_src clk broke simplefb on HUAWEI
+Gaokun3, the image will stuck at grey for seconds until msm takes
+over framebuffer. Use clk_rcg2_shared_no_init_park_ops to skip it.
 
-Plumb the packet length through xdomain_request_work and validate
-it against the expected struct size before each cast.
-
-Fixes: 8e1de7042596 ("thunderbolt: Add support for XDomain lane bonding")
-Fixes: cdae7c07e3e3 ("thunderbolt: Add support for XDomain properties")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-7
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Pengyu Luo <mitltlatltl@gmail.com>
+Tested-by: Jérôme de Bretagne <jerome.debretagne@gmail.com>
+Fixes: 01a0a6cc8cfd ("clk: qcom: Park shared RCGs upon registration")
+Link: https://lore.kernel.org/r/20260303150152.90685-1-mitltlatltl@gmail.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thunderbolt/xdomain.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/clk/qcom/dispcc-sc8280xp.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/thunderbolt/xdomain.c
-+++ b/drivers/thunderbolt/xdomain.c
-@@ -55,6 +55,7 @@ static const char * const state_names[]
- struct xdomain_request_work {
- 	struct work_struct work;
- 	struct tb_xdp_header *pkg;
-+	size_t pkg_len;
- 	struct tb *tb;
+diff --git a/drivers/clk/qcom/dispcc-sc8280xp.c b/drivers/clk/qcom/dispcc-sc8280xp.c
+index c23cbb983d29ea..43d26616bd27bd 100644
+--- a/drivers/clk/qcom/dispcc-sc8280xp.c
++++ b/drivers/clk/qcom/dispcc-sc8280xp.c
+@@ -978,7 +978,7 @@ static struct clk_rcg2 disp0_cc_mdss_mdp_clk_src = {
+ 		.name = "disp0_cc_mdss_mdp_clk_src",
+ 		.parent_data = disp0_cc_parent_data_5,
+ 		.num_parents = ARRAY_SIZE(disp0_cc_parent_data_5),
+-		.ops = &clk_rcg2_shared_ops,
++		.ops = &clk_rcg2_shared_no_init_park_ops,
+ 	},
  };
  
-@@ -733,6 +734,7 @@ static void tb_xdp_handle_request(struct
- 	struct xdomain_request_work *xw = container_of(work, typeof(*xw), work);
- 	const struct tb_xdp_header *pkg = xw->pkg;
- 	const struct tb_xdomain_header *xhdr = &pkg->xd_hdr;
-+	size_t pkg_len = xw->pkg_len;
- 	struct tb *tb = xw->tb;
- 	struct tb_ctl *ctl = tb->ctl;
- 	struct tb_xdomain *xd;
-@@ -764,7 +766,7 @@ static void tb_xdp_handle_request(struct
- 	switch (pkg->type) {
- 	case PROPERTIES_REQUEST:
- 		tb_dbg(tb, "%llx: received XDomain properties request\n", route);
--		if (xd) {
-+		if (xd && pkg_len >= sizeof(struct tb_xdp_properties)) {
- 			ret = tb_xdp_properties_response(tb, ctl, xd, sequence,
- 				(const struct tb_xdp_properties *)pkg);
- 		}
-@@ -818,7 +820,8 @@ static void tb_xdp_handle_request(struct
- 		tb_dbg(tb, "%llx: received XDomain link state change request\n",
- 		       route);
+@@ -992,7 +992,7 @@ static struct clk_rcg2 disp1_cc_mdss_mdp_clk_src = {
+ 		.name = "disp1_cc_mdss_mdp_clk_src",
+ 		.parent_data = disp1_cc_parent_data_5,
+ 		.num_parents = ARRAY_SIZE(disp1_cc_parent_data_5),
+-		.ops = &clk_rcg2_shared_ops,
++		.ops = &clk_rcg2_shared_no_init_park_ops,
+ 	},
+ };
  
--		if (xd && xd->state == XDOMAIN_STATE_BONDING_UUID_HIGH) {
-+		if (xd && xd->state == XDOMAIN_STATE_BONDING_UUID_HIGH &&
-+		    pkg_len >= sizeof(struct tb_xdp_link_state_change)) {
- 			const struct tb_xdp_link_state_change *lsc =
- 				(const struct tb_xdp_link_state_change *)pkg;
- 
-@@ -870,6 +873,7 @@ tb_xdp_schedule_request(struct tb *tb, c
- 		kfree(xw);
- 		return false;
- 	}
-+	xw->pkg_len = size;
- 	xw->tb = tb_domain_get(tb);
- 
- 	schedule_work(&xw->work);
+-- 
+2.53.0
+
 
 
 
