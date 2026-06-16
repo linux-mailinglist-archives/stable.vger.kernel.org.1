@@ -1,62 +1,64 @@
-Return-Path: <stable+bounces-266326-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265941-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id qkUqI8ebMWp9oAUAu9opvQ
-	(envelope-from <stable+bounces-266326-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:53:59 +0200
+	id 3DFJCxCTMWqTnAUAu9opvQ
+	(envelope-from <stable+bounces-265941-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:16:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A9E76948E7
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:53:59 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B33B6693FB7
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:16:47 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=vovLtr2F;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266326-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266326-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="wzi/dRjm";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265941-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265941-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BDD5531B663E
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:50:36 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BC2F1301D4C6
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:16:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39F10466B4C;
-	Tue, 16 Jun 2026 18:50:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1A923D45CB;
+	Tue, 16 Jun 2026 18:16:43 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EBA13AE1A2;
-	Tue, 16 Jun 2026 18:50:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A59103ACA5A;
+	Tue, 16 Jun 2026 18:16:42 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781635836; cv=none; b=ii/gCYpQE9WfInaxKBmAVxMnfbMfUxgNP3y7UO8c1LgIc0bkfaQP+FTWENzQMVu6KnMx00Ydm/YJ3npldv530tpKcIEdlPprMotLYl30BR82iTSPYvtnX97K/6CAK3wAlRew/Rr14XY6gn809KPmZa6c3cBnzddMHBKfMoiFD0I=
+	t=1781633803; cv=none; b=iLn1bf6fXw01d+fnNzRhCbCXTkHfrroHCi5Vr52k8STBRmo2mE6Dc2uLv0htm7S0xw/cmr/vtcxpJIAtEKuqpjPeVaihzlZd8EllowKkbxMq1JlJcntapKONDHfz6osUIx9xGjc7r6/wShMmdBh7d2pggrmFQ2HQNivOg/XIzvI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781635836; c=relaxed/simple;
-	bh=8htpIbOXkAIkLZWm/Xj62KEgZXjIhsZlsZd2sobwCSw=;
+	s=arc-20240116; t=1781633803; c=relaxed/simple;
+	bh=39WYvcBsmWRoA1pQMXwVqaxqWcOEwNPhsALGlVkf/2M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B6MHgD5sFNbadliKqlo9bccajTCbvwqvquSJwsRYTlu83XQBH6eorXS5HYndheEecSCiOt+vsKEevHEOsLzNCdXHHhGYIsOtKcZrlM2QMI5fM8GcKRnS7uKyoI1T3KSLkXc5sirEQfEr9BxdXlkFfZMny9/Hid+nsf73uVp+Pws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vovLtr2F; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F74D1F000E9;
-	Tue, 16 Jun 2026 18:50:33 +0000 (UTC)
+	 MIME-Version; b=Tpi2//80scznNGJiHrSAomU8DCF1r3/4TSCjMSOeH4zS4CxPSD4aFKoT8E1GBTwt5Dk5IhPitScTIBA+qW85YnHeCmvgFTRAVopNO+zHVBqepD5SdRDTkUm9gZQk5gXePZ6p7Ev9XWiFT6AgTTuGZKHktdSPIDWvR+jX7eub7Lk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wzi/dRjm; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A84D41F000E9;
+	Tue, 16 Jun 2026 18:16:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781635835;
-	bh=ZxtCOkfA3C1HKldQ6KEq3pldxE6LovBOLiqFxCS+cx4=;
+	s=korg; t=1781633802;
+	bh=gAca+aF5VfpFweuayMUAkOgHNcXU73q5X2J0I1QeqLQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=vovLtr2FPJquoB/qKEYIGreG6HIa7XhJW2NUVu2bU/teH7Yv5R8Cgq5C+cCzC1+H6
-	 R7S65fbm3uJBOYLgjsZ96GWkBTeUN6NGCesuvyl0re5Cp3Ng0XZHBqi9wp0df78xWK
-	 QiPy76HlxNs0D4mbLNd5vRgyM0v4PE2IATDv/2is=
+	b=wzi/dRjmXXhBURIOMXz6ousFw8sm6xc/Qbg+KIpduLRKCLsHZFwWnqisc0EYaxGQd
+	 Ydrqa9zw6v6Cz0QRNRKFeEhezIz+yYXKogHAfaX5Myq6dawgBRZZ6owDswD3Zs2lGN
+	 S5TYTr3l/o59DRZL8/x2cE21U7EHKNnUTLk827m0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Peter Chen <peter.chen@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Xu Yang <xu.yang_2@nxp.com>
-Subject: [PATCH 5.10 090/342] usb: chipidea: core: convert ci_role_switch to local variable
+	Leo Lin <leo@depthfirst.com>,
+	David Ahern <dahern@nvidia.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 148/411] ipv6: mcast: Fix use-after-free when processing MLD queries
 Date: Tue, 16 Jun 2026 20:26:26 +0530
-Message-ID: <20260616145052.431963268@linuxfoundation.org>
+Message-ID: <20260616145108.277206656@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,22 +74,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266326-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265941-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:peter.chen@kernel.org,m:Frank.Li@nxp.com,m:xu.yang_2@nxp.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:leo@depthfirst.com,m:dahern@nvidia.com,m:idosch@nvidia.com,m:edumazet@google.com,m:jiayuan.chen@linux.dev,m:kuba@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -96,89 +98,114 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linux.dev:email,depthfirst.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 0A9E76948E7
+X-Rspamd-Queue-Id: B33B6693FB7
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xu Yang <xu.yang_2@nxp.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-commit 8f6aa392653e52a45858cff5c063df550028836b upstream.
+commit 791c91dc7a9dfb2457d5e29b8216a6484b9c4b40 upstream.
 
-When a system contains multiple USB controllers, the global ci_role_switch
-variable may be overwritten by subsequent driver initialization code.
+When processing an MLD query, a pointer to the multicast group address
+is retrieved when initially parsing the packet. This pointer is later
+dereferenced without being reloaded despite the fact that the skb header
+might have been reallocated following the pskb_may_pull() calls, leading
+to a use-after-free [1].
 
-This can cause issues in the following cases:
- - The 2nd ci_hdrc_probe() sees ci_role_switch.fwnode as non-NULL even
-   though the "usb-role-switch" property is not present for the controller.
- - When the ci_hdrc device is unbound and bound again, ci_role_switch
-   fwnode will not be reassigned, and the old value will be used instead.
+Fix by copying the multicast group address when the packet is initially
+parsed.
 
-Convert ci_role_switch to a local variable to fix these issues.
+[1]
+BUG: KASAN: slab-use-after-free in __mld_query_work (net/ipv6/mcast.c:1512)
+Read of size 8 at addr ffff8881154b8e90 by task kworker/4:1/118
 
-Fixes: 05559f10ed79 ("usb: chipidea: add role switch class support")
-Cc: stable <stable@kernel.org>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-Link: https://patch.msgid.link/20260427075755.3611217-1-xu.yang_2@nxp.com
+Workqueue: mld mld_query_work
+Call Trace:
+<TASK>
+dump_stack_lvl (lib/dump_stack.c:94 lib/dump_stack.c:120)
+print_address_description.constprop.0 (mm/kasan/report.c:378)
+print_report (mm/kasan/report.c:482)
+kasan_report (mm/kasan/report.c:595)
+__mld_query_work (net/ipv6/mcast.c:1512)
+mld_query_work (net/ipv6/mcast.c:1563)
+process_one_work (kernel/workqueue.c:3314)
+worker_thread (kernel/workqueue.c:3397 kernel/workqueue.c:3478)
+kthread (kernel/kthread.c:436)
+ret_from_fork (arch/x86/kernel/process.c:158)
+ret_from_fork_asm (arch/x86/entry/entry_64.S:245)
+</TASK>
+
+[...]
+
+Freed by task 118:
+kasan_save_stack (mm/kasan/common.c:57)
+kasan_save_track (mm/kasan/common.c:78)
+kasan_save_free_info (mm/kasan/generic.c:584)
+__kasan_slab_free (mm/kasan/common.c:253 mm/kasan/common.c:285)
+kfree (./include/linux/kasan.h:235 mm/slub.c:2689 mm/slub.c:6251 mm/slub.c:6566)
+pskb_expand_head (net/core/skbuff.c:2335)
+__pskb_pull_tail (net/core/skbuff.c:2878 (discriminator 4))
+__mld_query_work (net/ipv6/mcast.c:1495 (discriminator 1))
+mld_query_work (net/ipv6/mcast.c:1563)
+process_one_work (kernel/workqueue.c:3314)
+worker_thread (kernel/workqueue.c:3397 kernel/workqueue.c:3478)
+kthread (kernel/kthread.c:436)
+ret_from_fork (arch/x86/kernel/process.c:158)
+ret_from_fork_asm (arch/x86/entry/entry_64.S:245)
+
+Fixes: 97300b5fdfe2 ("[MCAST] IPv6: Check packet size when process Multicast")
+Reported-by: Leo Lin <leo@depthfirst.com>
+Reviewed-by: David Ahern <dahern@nvidia.com>
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Link: https://patch.msgid.link/20260603101811.612594-1-idosch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/chipidea/core.c |   16 ++++++----------
- 1 file changed, 6 insertions(+), 10 deletions(-)
+ net/ipv6/mcast.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/usb/chipidea/core.c
-+++ b/drivers/usb/chipidea/core.c
-@@ -654,12 +654,6 @@ static int ci_usb_role_switch_set(struct
- 	return 0;
- }
- 
--static struct usb_role_switch_desc ci_role_switch = {
--	.set = ci_usb_role_switch_set,
--	.get = ci_usb_role_switch_get,
--	.allow_userspace_control = true,
--};
--
- static int ci_get_platdata(struct device *dev,
- 		struct ci_hdrc_platform_data *platdata)
+--- a/net/ipv6/mcast.c
++++ b/net/ipv6/mcast.c
+@@ -1392,9 +1392,9 @@ out:
+ static void __mld_query_work(struct sk_buff *skb)
  {
-@@ -786,9 +780,6 @@ static int ci_get_platdata(struct device
- 			cable->connected = false;
- 	}
+ 	struct mld2_query *mlh2 = NULL;
+-	const struct in6_addr *group;
+ 	unsigned long max_delay;
+ 	struct inet6_dev *idev;
++	struct in6_addr group;
+ 	struct ifmcaddr6 *ma;
+ 	struct mld_msg *mld;
+ 	int group_type;
+@@ -1426,8 +1426,8 @@ static void __mld_query_work(struct sk_b
+ 		goto kfree_skb;
  
--	if (device_property_read_bool(dev, "usb-role-switch"))
--		ci_role_switch.fwnode = dev->fwnode;
--
- 	platdata->pctl = devm_pinctrl_get(dev);
- 	if (!IS_ERR(platdata->pctl)) {
- 		struct pinctrl_state *p;
-@@ -1005,6 +996,7 @@ ATTRIBUTE_GROUPS(ci);
+ 	mld = (struct mld_msg *)icmp6_hdr(skb);
+-	group = &mld->mld_mca;
+-	group_type = ipv6_addr_type(group);
++	group = mld->mld_mca;
++	group_type = ipv6_addr_type(&group);
  
- static int ci_hdrc_probe(struct platform_device *pdev)
- {
-+	struct usb_role_switch_desc ci_role_switch = {};
- 	struct device	*dev = &pdev->dev;
- 	struct ci_hdrc	*ci;
- 	struct resource	*res;
-@@ -1146,7 +1138,11 @@ static int ci_hdrc_probe(struct platform
+ 	if (group_type != IPV6_ADDR_ANY &&
+ 	    !(group_type&IPV6_ADDR_MULTICAST))
+@@ -1477,7 +1477,7 @@ static void __mld_query_work(struct sk_b
  		}
- 	}
- 
--	if (ci_role_switch.fwnode) {
-+	if (device_property_read_bool(dev, "usb-role-switch")) {
-+		ci_role_switch.set = ci_usb_role_switch_set;
-+		ci_role_switch.get = ci_usb_role_switch_get;
-+		ci_role_switch.allow_userspace_control = true;
-+		ci_role_switch.fwnode = dev_fwnode(dev);
- 		ci_role_switch.driver_data = ci;
- 		ci->role_switch = usb_role_switch_register(dev,
- 					&ci_role_switch);
+ 	} else {
+ 		for_each_mc_mclock(idev, ma) {
+-			if (!ipv6_addr_equal(group, &ma->mca_addr))
++			if (!ipv6_addr_equal(&group, &ma->mca_addr))
+ 				continue;
+ 			if (ma->mca_flags & MAF_TIMER_RUNNING) {
+ 				/* gsquery <- gsquery && mark */
 
 
 
