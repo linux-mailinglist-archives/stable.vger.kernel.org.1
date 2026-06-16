@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-265015-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266002-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 4Xt4GYODMWpNlQUAu9opvQ
-	(envelope-from <stable+bounces-265015-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:10:27 +0200
+	id /WmcDmGUMWpGnQUAu9opvQ
+	(envelope-from <stable+bounces-266002-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:22:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6F17692CF1
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:10:26 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0EE4694131
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:22:24 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=UAIJGaii;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265015-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265015-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=COw7sUoP;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266002-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-266002-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8E30D31B2083
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:57:30 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 428A6302A57A
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:22:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6E8D44CF44;
-	Tue, 16 Jun 2026 16:57:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 505AE466B64;
+	Tue, 16 Jun 2026 18:22:23 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A9B8169AD2;
-	Tue, 16 Jun 2026 16:57:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AF1F3D8105;
+	Tue, 16 Jun 2026 18:22:22 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781629049; cv=none; b=LJUsiDP1vzVG3rrtXX9IDSyh5D68sKEK+TMFOmXoKATN2Zrkt6KC+qfGHDC/TK6UwbDoQrTNARH+LwMsBNr6HI3LoB955R1qiVhTFEy7c5vTerKgfjM+smBaR4Gkt9PoFE84qT4/yImz8jJh/KOugvFy18DkVhL/hJmWx0uDf54=
+	t=1781634143; cv=none; b=Xp55sfbtt4DB+XTKllwWOA/pMwbTsUODPXjuMKwHX4Hst/+JXcMvQ2vnIFK8Fw3wyHjdZfTNG7pvxtcN0Kp0eRvLNTjIV/EPiRAslp+D6tc90wHp1Lhe+g/PRo6zHLkofFwzhgFDBganBuxt7BOtaKLl70EDCCoTiGRBCzu06ts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781629049; c=relaxed/simple;
-	bh=fnQgEhuRDMscEsJrPjyqrvDSQSqUyyAyI/SC3GkZcRA=;
+	s=arc-20240116; t=1781634143; c=relaxed/simple;
+	bh=RKUi84FQijCfTQAns8BZHmI6LsUhX6kEg7WwZM/qG6k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OMIZ2NGfibw6QL989WKTSNwfa1BcJpHm34nfe+MfRtReW1D2KXS5d0gKxFo8eBkFDymOUXv1oTo6OZNnYWrnwZXJZccSmKe8ExGPBfuaHFeXFC09Dv4eOFwUbrXm/WIUzsjlwugT940TuAi1f/CTLZtiQ7esOpHN2ib1LIAbLRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UAIJGaii; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD6C51F000E9;
-	Tue, 16 Jun 2026 16:57:26 +0000 (UTC)
+	 MIME-Version; b=p6C3GXaX4VjRo0a2BRXHLhv+dOo9Q4c16vdYa5JFFPNbQBohXE2UU+hP9EWhRWaBNru1JECznePin93JBFlF/IYms9Anbaycwsn/fdZKf3vKInSMX9tk1IICQIn9IT/4bGbl8JdRpkgOowPqkSzt3y8VkdnNU6p5EP/Xxc3MiQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=COw7sUoP; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BFBE1F000E9;
+	Tue, 16 Jun 2026 18:22:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781629047;
-	bh=Vq6QVwnzoLjPNubJD/BiVeTIyBsLLlEczzCkWGG5iPk=;
+	s=korg; t=1781634142;
+	bh=UrinH8DF6Bl1hWFd7Ztu8XvpgW1AhWjJ6lX+sf2MB+A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=UAIJGaiiT80V/8va7QZKyrAnKKuAkl32xfuaEIWcSSi530R208LxS3Ow1byBgtyrd
-	 TrzKKASPLDMry9wQ+ubpsAH0CJYF2UlMB7ZHp8QJnvgs3RbnB2I4zadDW4w7Vpp3kh
-	 bA65H+f8SOobNuyhRjTVvnpMT6rhnChE3SdBHfMM=
+	b=COw7sUoPZWHxLjtrQwzyseU1i0rXpnFvgRSy130ngHfll705BDS8cHbo6jZmbNibq
+	 7VaDKlz3m8Ezy46/TXq0XR3tkqz7D2HiV0jp/VRlp12oqaqYnWOhW/NDbcZ9nd+ScG
+	 lTOoH2OS9lmKJ3a1RtNq0Yt7MvFg5KKZyuZ7P4oA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mingyu Wang <25181214217@stu.xidian.edu.cn>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>
-Subject: [PATCH 6.6 210/452] i2c: dev: prevent integer overflow in I2C_TIMEOUT ioctl
+	Til Kaiser <mail@tk154.de>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 199/411] net: mvpp2: build skb from XDP-adjusted data on XDP_PASS
 Date: Tue, 16 Jun 2026 20:27:17 +0530
-Message-ID: <20260616145128.836626846@linuxfoundation.org>
+Message-ID: <20260616145111.299856043@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,101 +67,146 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-266002-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-265015-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:25181214217@stu.xidian.edu.cn,m:wsa+renesas@sang-engineering.com,m:wsa@sang-engineering.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mail@tk154.de,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,renesas];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,xidian.edu.cn:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,sang-engineering.com:email,vger.kernel.org:from_smtp]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,tk154.de:email,vger.kernel.org:from_smtp,xdp.data:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A6F17692CF1
+X-Rspamd-Queue-Id: D0EE4694131
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mingyu Wang <25181214217@stu.xidian.edu.cn>
+From: Til Kaiser <mail@tk154.de>
 
-commit 617eb7c0961a8dfcfc811844a6396e406b2923ea upstream.
+[ Upstream commit 77a6b90ce56bc982dcfa94229b8e28e6abb16e95 ]
 
-While fuzzing with Syzkaller, a persistent `schedule_timeout: wrong
-timeout value` warning was observed, accompanied by SMBus controller
-state machine corruption.
+When an XDP program uses bpf_xdp_adjust_head() or bpf_xdp_adjust_tail()
+and then returns XDP_PASS, mvpp2 still builds the skb from fixed offsets
+derived from the original RX descriptor. Packet geometry changes made by
+the XDP program are therefore discarded before the skb reaches the stack.
 
-The I2C_TIMEOUT ioctl accepts a user-provided timeout in multiples of
-10 ms. The user argument is checked against INT_MAX, but it is
-subsequently multiplied by 10 before being passed to msecs_to_jiffies().
+Update rx_offset and rx_bytes from xdp.data and xdp.data_end for
+XDP_PASS. This makes skb_reserve() and skb_put() reflect the packet seen
+by XDP, and makes RX byte accounting for XDP_PASS follow the length of the
+skb passed to the network stack.
 
-A malicious user can pass a large value (e.g., 429496729) that passes
-the `arg > INT_MAX` check but overflows when multiplied by 10. This
-results in a truncated 32-bit unsigned value that bypasses the
-internal `(int)m < 0` check in `msecs_to_jiffies()`.
+Keep a separate rx_sync_size for page-pool recycling on skb allocation
+failure, which must stay tied to the received buffer range.
 
-The truncated value is then assigned to `client->adapter->timeout`
-(a signed 32-bit int), which is reinterpreted as a negative number.
-When passed to wait_for_completion_timeout(), this negative value
-undergoes sign extension to a 64-bit unsigned long, triggering the
-`schedule_timeout` warning and causing premature returns. This leaves
-the SMBus state machine in an unrecoverable state, constituting a
-local Denial of Service (DoS).
+Non-PASS verdicts continue to account the descriptor length because no skb
+is passed up in those cases.
 
-Fix this by bounding the user argument to `INT_MAX / 10`.
-
-Signed-off-by: Mingyu Wang <25181214217@stu.xidian.edu.cn>
-[wsa: move the comment as well]
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 07dd0a7aae7f ("mvpp2: add basic XDP support")
+Signed-off-by: Til Kaiser <mail@tk154.de>
+Link: https://patch.msgid.link/20260607134943.21996-5-mail@tk154.de
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/i2c-dev.c |    9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ .../net/ethernet/marvell/mvpp2/mvpp2_main.c   | 21 +++++++++++++------
+ 1 file changed, 15 insertions(+), 6 deletions(-)
 
---- a/drivers/i2c/i2c-dev.c
-+++ b/drivers/i2c/i2c-dev.c
-@@ -476,12 +476,13 @@ static long i2cdev_ioctl(struct file *fi
- 		client->adapter->retries = arg;
- 		break;
- 	case I2C_TIMEOUT:
--		if (arg > INT_MAX)
-+		/*
-+		 * For historical reasons, user-space sets the timeout value in
-+		 * units of 10 ms.
-+		 */
-+		if (arg > INT_MAX / 10)
- 			return -EINVAL;
+diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
+index 04002548a46327..c4951eb88241b0 100644
+--- a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
++++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
+@@ -3916,10 +3916,10 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
+ 		struct mvpp2_bm_pool *bm_pool;
+ 		struct page_pool *pp = NULL;
+ 		struct sk_buff *skb;
+-		unsigned int frag_size;
++		unsigned int frag_size, rx_sync_size;
+ 		dma_addr_t dma_addr;
+ 		phys_addr_t phys_addr;
+-		int pool, rx_bytes, err, ret;
++		int pool, rx_bytes, rx_offset, err, ret;
+ 		struct page *page;
+ 		void *data;
  
--		/* For historical reasons, user-space sets the timeout
--		 * value in units of 10 ms.
--		 */
- 		client->adapter->timeout = msecs_to_jiffies(arg * 10);
- 		break;
- 	default:
+@@ -3932,6 +3932,8 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
+ 		rx_status = mvpp2_rxdesc_status_get(port, rx_desc);
+ 		rx_bytes = mvpp2_rxdesc_size_get(port, rx_desc);
+ 		rx_bytes -= MVPP2_MH_SIZE;
++		rx_sync_size = rx_bytes + MVPP2_MH_SIZE;
++		rx_offset = MVPP2_MH_SIZE + MVPP2_SKB_HEADROOM;
+ 		dma_addr = mvpp2_rxdesc_dma_addr_get(port, rx_desc);
+ 
+ 		pool = (rx_status & MVPP2_RXD_BM_POOL_ID_MASK) >>
+@@ -3947,7 +3949,7 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
+ 
+ 		dma_sync_single_range_for_cpu(dev->dev.parent, dma_addr,
+ 					      MVPP2_SKB_HEADROOM,
+-					      rx_bytes + MVPP2_MH_SIZE,
++					      rx_sync_size,
+ 					      dma_dir);
+ 
+ 		/* Buffer header not supported */
+@@ -3998,6 +4000,14 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
+ 				continue;
+ 			}
+ 
++			rx_sync_size = max_t(unsigned int, rx_sync_size,
++					     xdp.data_end - xdp.data_hard_start -
++					     MVPP2_SKB_HEADROOM);
++
++			/* Update offset and length to reflect any XDP adjustments. */
++			rx_offset = xdp.data     - data;
++			rx_bytes  = xdp.data_end - xdp.data;
++
+ 			metasize = xdp.data - xdp.data_meta;
+ 		}
+ 
+@@ -4006,8 +4016,7 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
+ 			netdev_warn(port->dev, "skb build failed\n");
+ 			if (pp) {
+ 				page_pool_put_page(pp, virt_to_head_page(data),
+-						   rx_bytes + MVPP2_MH_SIZE,
+-						   true);
++						   rx_sync_size, true);
+ 			} else {
+ 				dma_unmap_single_attrs(dev->dev.parent, dma_addr,
+ 						       bm_pool->buf_size,
+@@ -4037,7 +4046,7 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
+ 		ps.rx_packets++;
+ 		ps.rx_bytes += rx_bytes;
+ 
+-		skb_reserve(skb, MVPP2_MH_SIZE + MVPP2_SKB_HEADROOM);
++		skb_reserve(skb, rx_offset);
+ 		skb_put(skb, rx_bytes);
+ 		if (metasize)
+ 			skb_metadata_set(skb, metasize);
+-- 
+2.53.0
+
 
 
 
