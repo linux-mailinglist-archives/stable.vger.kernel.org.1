@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-264472-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265785-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id mguKGjd1MWpLjwUAu9opvQ
-	(envelope-from <stable+bounces-264472-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:09:27 +0200
+	id iksxONaPMWoVmwUAu9opvQ
+	(envelope-from <stable+bounces-265785-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:03:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16FA6691BDE
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:09:27 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F639693C1F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:03:02 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=MaPdcpRJ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264472-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-264472-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=z2GHY2W5;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265785-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-265785-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2C9903028AC4
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:07:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 151AD300A7CD
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:02:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4141045349C;
-	Tue, 16 Jun 2026 16:07:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3292F3CEBBD;
+	Tue, 16 Jun 2026 18:02:52 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F21344103A;
-	Tue, 16 Jun 2026 16:07:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 700E0352007;
+	Tue, 16 Jun 2026 18:02:49 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781626071; cv=none; b=q/5BtPh/AKQvHV42bfxkiSiVA1Gfr8WiODtk8FoHEnmfL72OTY/09bUvt/KH+fyaHdigZvU33vxBRbb6q9G2UyC2RUcozF5B0CwKzjId30xIYp5SdRNCKdB8X41xKlnqJdX4Z0p/933WU7/cTrIMwu/3wv/G4lltnrQL0zVB6Dk=
+	t=1781632972; cv=none; b=Hrtvvqwtsmx/873YWbC/G1wfmOlvgQLOYU/YUvSqasTv0waS6vAcdlIhgm75yEMBIl29S/EzBxbe2Ji8wnoWoCNYqUpyrciTBU9JrkC3C7hMI9bb1dAP1OSohxI1e6X1PJ1rYrcJeZqMe39j2M4skElUuDHLhowbVJ66TnpImaE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781626071; c=relaxed/simple;
-	bh=iQBKC3CS6UsX/uW5h48uOfr53fFQli9L5UbXkMNe8jU=;
+	s=arc-20240116; t=1781632972; c=relaxed/simple;
+	bh=0qEp+jdUKeCk1QlLPxapQjuYImFEAIikGCcE1UQuzm8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=remRuBWh+egsVfMroSuwEXW2IeT7GVD5oh4GwhIxXUzIOf2PMiMF82aKLrec6Cw2pIb29PQSZlB22UkmXxlXeGGD90yWcYUhWoM9noTquJJRYLpumtJMsBcecTdfVNK7YDuqdDExAdu9hW1OA6D23ylPULAvThWUrjduLxgSAQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MaPdcpRJ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A87481F000E9;
-	Tue, 16 Jun 2026 16:07:48 +0000 (UTC)
+	 MIME-Version; b=TNnJYSIaR/khbp25wgI6pkbxjq59NCpn4lAleE1BMZWT9Fs4uDRjILRi4yVocIIN9QKVn6KF+6ZC4gk4bEopVdltmuiL/TbmrHsp/wLAy2tsNjhedo+qs0Ro9YI3VpTK/y4KbxpMwZvOpWU8yibHdj1js+Ss6V81BZQcZDaMSoo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z2GHY2W5; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 563121F000E9;
+	Tue, 16 Jun 2026 18:02:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781626070;
-	bh=cpRYkHcz4QKzOK0N+bqxbIi6B64cypADdayqLp+EUMs=;
+	s=korg; t=1781632969;
+	bh=cToOLBGXaPr16aXcYow0K9QAIuY3KtAJmIp2FZsCvCQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=MaPdcpRJw4vA8hAHjEQeNaYtJRorMOo7Q+jX/jdEXJvecxWU++6IH8w2+oWpFDKnN
-	 OUWfA1hQpjGDAfjScriKfGearZeaQ8AA2RyMsVpU9INkrmAtIJ1CLwKFRYBK7+eZcp
-	 dpR98rlfQRV16vWpiT0Rv4zGQJJD4GWCQvmcGSAI=
+	b=z2GHY2W5wchkOazu2NcEeUkwlOMl4tU+HuK9Zr1eL/kAbI5/GbGpmXw6pbCxz/P0O
+	 oOLvvS7+GiLazeM3LkUIPhmYzJnWfmBK7+BmXuwsrszig6+1/h2f3icYSVj3lHKFCb
+	 du636m6XDBjARUe/vaLcOK2mqMZk7nXebDpBp3+0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Ulf Hansson <ulfh@kernel.org>
-Subject: [PATCH 6.18 260/325] mmc: renesas_sdhi: Add OF entry for RZ/G2H SoC
-Date: Tue, 16 Jun 2026 20:30:56 +0530
-Message-ID: <20260616145111.541514690@linuxfoundation.org>
+	Liew Rui Yan <aethernet65535@gmail.com>,
+	SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 510/522] mm/damon/lru_sort: detect and use fresh enabled and kdamond_pid values
+Date: Tue, 16 Jun 2026 20:30:57 +0530
+Message-ID: <20260616145149.600964629@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,81 +67,290 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264472-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-265785-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:aethernet65535@gmail.com,m:sj@kernel.org,m:akpm@linux-foundation.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:prabhakar.mahadev-lad.rj@bp.renesas.com,m:wsa+renesas@sang-engineering.com,m:geert+renesas@glider.be,m:ulfh@kernel.org,m:wsa@sang-engineering.com,m:geert@glider.be,s:lists@lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,linux-foundation.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,renesas];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[glider.be:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,renesas.com:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sang-engineering.com:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,linux-foundation.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 16FA6691BDE
+X-Rspamd-Queue-Id: 7F639693C1F
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+From: SeongJae Park <sj@kernel.org>
 
-commit f48ee49726ee4ab545fd2dc644f169c0809b19b3 upstream.
+commit b98b7ff6025ae82570d4915e083f0cbd8d48b3cf upstream.
 
-The RZ/G2H (R8A774E1) SoC was previously handled via the generic
-"renesas,rcar-gen3-sdhi" fallback compatible string. However, because
-the SDHI IP on RZ/G2H is identical with the R-Car H3-N (R8A77951), it
-requires the specific quirks and configuration defined in
-`of_r8a7795_compatible` rather than the generic Gen3 data.
+DAMON_LRU_SORT updates 'enabled' and 'kdamond_pid' parameter values, which
+represents the running status of its kdamond, when the user explicitly
+requests start/stop of the kdamond.  The kdamond can, however, be stopped
+in events other than the explicit user request in the following three
+events.
 
-Add the explicit "renesas,sdhi-r8a774e1" match entry to map it correctly.
-Note that the DT binding file renesas,sdhi.yaml does not need an update
-as the entry for this SoC is already present.
+1. ctx->regions_score_histogram allocation failure at beginning of the
+   execution,
+2. damon_commit_ctx() failure due to invalid user input, and
+3. damon_commit_ctx() failure due to its internal allocation failures.
 
-Fixes: 31941342888d ("arm64: dts: renesas: r8a774e1: Add SDHI nodes")
-Cc: stable@vger.kernel.org
-Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Signed-off-by: Ulf Hansson <ulfh@kernel.org>
+Hence, if the kdamond is stopped by the above three events, the values of
+the status parameters can be stale.  Users could show the stale values and
+be confused.  This is already bad, but the real consequence is worse.
+DAMON_LRU_SORT avoids unnecessary damon_start() and damon_stop() calls
+based on the 'enabled' parameter value.  And the update of 'enabled'
+parameter value depends on the damon_start() and damon_stop() call
+results.  Hence, once the kdamond has stopped by the unintentional events,
+the user cannot restart the kdamond before the system reboot.  For
+example, the issue can be reproduced via below steps.
+
+    # cd /sys/module/damon_lru_sort/parameters
+    #
+    # # start DAMON_LRU_SORT
+    # echo Y > enabled
+    # ps -ef | grep kdamond
+    root         806       2  0 17:53 ?        00:00:00 [kdamond.0]
+    root         808     803  0 17:53 pts/4    00:00:00 grep kdamond
+    #
+    # # commit wrong input to stop kdamond withou explicit stop request
+    # echo 3 > addr_unit
+    # echo Y > commit_inputs
+    bash: echo: write error: Invalid argument
+    #
+    # # confirm kdamond is stopped
+    # ps -ef | grep kdamond
+    root         811     803  0 17:53 pts/4    00:00:00 grep kdamond
+    #
+    # # users casn now show stable status
+    # cat enabled
+    Y
+    # cat kdamond_pid
+    806
+    #
+    # # even after fixing the wrong parameter,
+    # # kdamond cannot be restarted.
+    # echo 1 > addr_unit
+    # echo Y > enabled
+    # ps -ef | grep kdamond
+    root         815     803  0 17:54 pts/4    00:00:00 grep kdamond
+
+The problem will only rarely happen in real and common setups for the
+following reasons.  The allocation failures are unlikely in such setups
+since those allocations are arguably too small to fail.  Also sane users
+on real production environments may not commit wrong input parameters.
+But once it happens, the consequence is quite bad.  And the bug is a bug.
+
+The issue stems from the fact that there are multiple events that can
+change the status, and following all the events is challenging.
+Dynamically detect and use the fresh status for the parameters when those
+are requested.
+
+Link: https://lore.kernel.org/20260419161003.79176-3-sj@kernel.org
+Fixes: 40e983cca927 ("mm/damon: introduce DAMON-based LRU-lists Sorting")
+Co-developed-by: Liew Rui Yan <aethernet65535@gmail.com>
+Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: <stable@vger.kernel.org> # 6.0.x
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: SeongJae Park <sj@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/renesas_sdhi_internal_dmac.c |    1 +
- 1 file changed, 1 insertion(+)
+ include/linux/damon.h |    1 
+ mm/damon/core.c       |   16 +++++++++
+ mm/damon/lru_sort.c   |   84 +++++++++++++++++++++++++++++++++-----------------
+ 3 files changed, 73 insertions(+), 28 deletions(-)
 
---- a/drivers/mmc/host/renesas_sdhi_internal_dmac.c
-+++ b/drivers/mmc/host/renesas_sdhi_internal_dmac.c
-@@ -279,6 +279,7 @@ static const struct renesas_sdhi_of_data
- static const struct of_device_id renesas_sdhi_internal_dmac_of_match[] = {
- 	{ .compatible = "renesas,sdhi-r7s9210", .data = &of_rza2_compatible, },
- 	{ .compatible = "renesas,sdhi-mmc-r8a77470", .data = &of_rcar_gen3_compatible, },
-+	{ .compatible = "renesas,sdhi-r8a774e1", .data = &of_r8a7795_compatible, },
- 	{ .compatible = "renesas,sdhi-r8a7795", .data = &of_r8a7795_compatible, },
- 	{ .compatible = "renesas,sdhi-r8a77961", .data = &of_r8a77961_compatible, },
- 	{ .compatible = "renesas,sdhi-r8a77965", .data = &of_r8a77965_compatible, },
+--- a/include/linux/damon.h
++++ b/include/linux/damon.h
+@@ -572,6 +572,7 @@ static inline unsigned int damon_max_nr_
+ 
+ int damon_start(struct damon_ctx **ctxs, int nr_ctxs, bool exclusive);
+ int damon_stop(struct damon_ctx **ctxs, int nr_ctxs);
++bool damon_is_running(struct damon_ctx *ctx);
+ int damon_kdamond_pid(struct damon_ctx *ctx);
+ 
+ int damon_set_region_biggest_system_ram_default(struct damon_target *t,
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -644,6 +644,22 @@ static bool damon_check_reset_time_inter
+ }
+ 
+ /**
++ * damon_is_running() - Returns if a given DAMON context is running.
++ * @ctx:	The DAMON context to see if running.
++ *
++ * Return: true if @ctx is running, false otherwise.
++ */
++bool damon_is_running(struct damon_ctx *ctx)
++{
++	bool running;
++
++	mutex_lock(&ctx->kdamond_lock);
++	running = ctx->kdamond != NULL;
++	mutex_unlock(&ctx->kdamond_lock);
++	return running;
++}
++
++/**
+  * damon_kdamond_pid() - Return pid of a given DAMON context's worker thread.
+  * @ctx:	The DAMON context of the question.
+  *
+--- a/mm/damon/lru_sort.c
++++ b/mm/damon/lru_sort.c
+@@ -113,15 +113,6 @@ module_param(monitor_region_start, ulong
+ static unsigned long monitor_region_end __read_mostly;
+ module_param(monitor_region_end, ulong, 0600);
+ 
+-/*
+- * PID of the DAMON thread
+- *
+- * If DAMON_LRU_SORT is enabled, this becomes the PID of the worker thread.
+- * Else, -1.
+- */
+-static int kdamond_pid __read_mostly = -1;
+-module_param(kdamond_pid, int, 0400);
+-
+ static struct damos_stat damon_lru_sort_hot_stat;
+ DEFINE_DAMON_MODULES_DAMOS_STATS_PARAMS(damon_lru_sort_hot_stat,
+ 		lru_sort_tried_hot_regions, lru_sorted_hot_regions,
+@@ -249,37 +240,32 @@ static int damon_lru_sort_turn(bool on)
+ {
+ 	int err;
+ 
+-	if (!on) {
+-		err = damon_stop(&ctx, 1);
+-		if (!err)
+-			kdamond_pid = -1;
+-		return err;
+-	}
++	if (!on)
++		return damon_stop(&ctx, 1);
+ 
+ 	err = damon_lru_sort_apply_parameters();
+ 	if (err)
+ 		return err;
+ 
+-	err = damon_start(&ctx, 1, true);
+-	if (err)
+-		return err;
+-	kdamond_pid = ctx->kdamond->pid;
+-	return 0;
++	return damon_start(&ctx, 1, true);
++}
++
++static bool damon_lru_sort_enabled(void)
++{
++	if (!ctx)
++		return false;
++	return damon_is_running(ctx);
+ }
+ 
+ static struct delayed_work damon_lru_sort_timer;
+ static void damon_lru_sort_timer_fn(struct work_struct *work)
+ {
+-	static bool last_enabled;
+ 	bool now_enabled;
+ 
+ 	now_enabled = enabled;
+-	if (last_enabled != now_enabled) {
+-		if (!damon_lru_sort_turn(now_enabled))
+-			last_enabled = now_enabled;
+-		else
+-			enabled = last_enabled;
+-	}
++	if (damon_lru_sort_enabled() == now_enabled)
++		return;
++	damon_lru_sort_turn(now_enabled);
+ }
+ static DECLARE_DELAYED_WORK(damon_lru_sort_timer, damon_lru_sort_timer_fn);
+ 
+@@ -301,15 +287,57 @@ static int damon_lru_sort_enabled_store(
+ 	return 0;
+ }
+ 
++static int damon_lru_sort_enabled_load(char *buffer,
++		const struct kernel_param *kp)
++{
++	return sprintf(buffer, "%c\n", damon_lru_sort_enabled() ? 'Y' : 'N');
++}
++
+ static const struct kernel_param_ops enabled_param_ops = {
+ 	.set = damon_lru_sort_enabled_store,
+-	.get = param_get_bool,
++	.get = damon_lru_sort_enabled_load,
+ };
+ 
+ module_param_cb(enabled, &enabled_param_ops, &enabled, 0600);
+ MODULE_PARM_DESC(enabled,
+ 	"Enable or disable DAMON_LRU_SORT (default: disabled)");
+ 
++static int damon_lru_sort_kdamond_pid_store(const char *val,
++		const struct kernel_param *kp)
++{
++	/*
++	 * kdamond_pid is read-only, but kernel command line could write it.
++	 * Do nothing here.
++	 */
++	return 0;
++}
++
++static int damon_lru_sort_kdamond_pid_load(char *buffer,
++		const struct kernel_param *kp)
++{
++	int kdamond_pid = -1;
++
++	if (ctx) {
++		kdamond_pid = damon_kdamond_pid(ctx);
++		if (kdamond_pid < 0)
++			kdamond_pid = -1;
++	}
++	return sprintf(buffer, "%d\n", kdamond_pid);
++}
++
++static const struct kernel_param_ops kdamond_pid_param_ops = {
++	.set = damon_lru_sort_kdamond_pid_store,
++	.get = damon_lru_sort_kdamond_pid_load,
++};
++
++/*
++ * PID of the DAMON thread
++ *
++ * If DAMON_LRU_SORT is enabled, this becomes the PID of the worker thread.
++ * Else, -1.
++ */
++module_param_cb(kdamond_pid, &kdamond_pid_param_ops, NULL, 0400);
++
+ static int damon_lru_sort_handle_commit_inputs(void)
+ {
+ 	int err;
 
 
 
