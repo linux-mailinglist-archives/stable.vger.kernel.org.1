@@ -1,75 +1,62 @@
-Return-Path: <stable+bounces-264743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265739-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id fr8OHed8MWqhkgUAu9opvQ
-	(envelope-from <stable+bounces-264743-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:42:15 +0200
+	id g0OaGeqOMWqhmgUAu9opvQ
+	(envelope-from <stable+bounces-265739-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:59:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5CDB6925C0
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:42:14 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F199B693AE9
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:59:05 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="Mg/Sgn4X";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264743-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264743-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=bXdmcLpa;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265739-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265739-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 74C24300BCB2
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:34:19 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id CC4A7303ECC8
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:59:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 672A14779B3;
-	Tue, 16 Jun 2026 16:34:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02E65477E51;
+	Tue, 16 Jun 2026 17:59:04 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1595A477E34;
-	Tue, 16 Jun 2026 16:34:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB50F47A0B2;
+	Tue, 16 Jun 2026 17:59:02 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781627651; cv=none; b=to64AnDG0ZV+M51TsrmtAaoAZN/ddXf/TlTiADq5hkCCTeX4yGr1NakvPhS3ehmOUAUgt/G5liv2+sQHp8XRxb0P/7/GBp9pBbNG3HGfCS0Tx78m79JjgKOE1lQslEBcq1E9aSas2Fo7VWfPgsagfNhVDTS2aix8Chc2oaF4ayY=
+	t=1781632743; cv=none; b=q4jjrWYWkJ5QG3evoEK8A0ZL66tGzDh2ipqji/jq9hUCmmmyXGxsVPZloFQdubx/BusstwH5PGsK7noIHrwlPRlVUlqGczzWqhAd53lRGnGQR1Z6L2z5K/GbWLv10NYMhbXSxd8/zsaxgMGceZKR1oUYxBRIUiWx5LpPXz5jnIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781627651; c=relaxed/simple;
-	bh=pNi4F6y8IrUKvAvmy9qXvqEms/zj6LtGJgoc0346Zjo=;
+	s=arc-20240116; t=1781632743; c=relaxed/simple;
+	bh=y5D9Rw1W+QEIR2UGqAfIBJNyArw9zmKX2wce2ULY5SE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bIKVdfmjq/QzL8IYFh/oy5xqae/YvjqWMRU8CbzN3/ns57V7wNCH1KJbdMM+sjJdAqliU9WCuPMtJIKwkHvWoESZQCd2rJttvXNKtwruklwroQ/IIVbtE5k6eC8mD7jGJ632Rxz9lk3yhDFucfL6UGL1W16ke8Prynft1HGt7IE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mg/Sgn4X; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACC071F00A3D;
-	Tue, 16 Jun 2026 16:34:08 +0000 (UTC)
+	 MIME-Version; b=fYpLPXM+eu1moF8Ldo66Nr6/cOWTlVJegw7Q1jsqXQ/ErlKV6ZaqnTR7hL7OitB5Pug+1jWsmuAgPLX0dwSrEQElOcRZyHyf/t4TVUXz5fjrs/nDESGH6NxXoS+aHH7Um6sgSXwi1cZizSRFa2ZPPSouTmxmqyTvUjoWHFj+hpo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bXdmcLpa; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA37D1F00A3A;
+	Tue, 16 Jun 2026 17:59:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781627650;
-	bh=Y4QPJgveOPIasJpZnkqxPzWix6rieM/j2wsF0oysiVA=;
+	s=korg; t=1781632742;
+	bh=ur39Jw9Wf4G3pgE7AADiwhZdQ43Bx5pNhcQHNWjfYs0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Mg/Sgn4XXosLIGTsFMAMcfYLyvwp3EaP08rejTEl6TQ/8rTL/Yjp2K//1Ydvdcotu
-	 BW7sIrUDABwvcKle6ytmfbb01+do7q3Y6rN1oubpvhrL7yPGeetg6V3sKjn6d8Wn8G
-	 JTbaAipiYhxI5YehWgHHErzq4CRnvmh2kJt0XWFc=
+	b=bXdmcLpaD0GKTPOyYatSY0M/H3l2lMCqJagVwKWQutANxFAIGqpa2TG9wN27ricFU
+	 flUloAo+8ZXAI20l14UusRbu0FShj0+l0EGJJ5PRJCMbi3QSc+joCJa0DYgIMiy7Yi
+	 rUS8198GmApITXyI0L0iNu+yBnX/EOUcsn0qtEpo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Yilin Zhu <zylzyl2333@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Christian Brauner <brauner@kernel.org>,
-	Jeongjun Park <aha310510@gmail.com>,
-	Kees Cook <kees@kernel.org>,
-	Liam Howlett <liam@infradead.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Serge Hallyn <sergeh@kernel.org>,
-	Vasiliy Kulikov <segoon@openwall.com>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Serge Hallyn <serge@hallyn.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 177/261] ipc/shm: serialize orphan cleanup with shm_nattch updates
+	stable <stable@kernel.org>,
+	John Ogness <john.ogness@linutronix.de>,
+	Tudor Ambarus <tudor.ambarus@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 468/522] tty: serial: samsung: Remove redundant port lock acquisition in rx helpers
 Date: Tue, 16 Jun 2026 20:30:15 +0530
-Message-ID: <20260616145053.283056773@linuxfoundation.org>
+Message-ID: <20260616145147.758427869@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
-References: <20260616145044.869532709@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -83,107 +70,120 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	TAGGED_FROM(0.00)[bounces-264743-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:yuantan098@gmail.com,m:yifanwucs@gmail.com,m:tomapufckgml@gmail.com,m:bird@lzu.edu.cn,m:zylzyl2333@gmail.com,m:n05ec@lzu.edu.cn,m:brauner@kernel.org,m:aha310510@gmail.com,m:kees@kernel.org,m:liam@infradead.org,m:ljs@kernel.org,m:sergeh@kernel.org,m:segoon@openwall.com,m:dave@stgolabs.net,m:oleg@redhat.com,m:serge@hallyn.com,m:akpm@linux-foundation.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,kernel.org,infradead.org,openwall.com,stgolabs.net,redhat.com,hallyn.com,linux-foundation.org];
+	TAGGED_FROM(0.00)[bounces-265739-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:john.ogness@linutronix.de,m:tudor.ambarus@linaro.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sashiko.dev:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E5CDB6925C0
+X-Rspamd-Queue-Id: F199B693AE9
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yilin Zhu <zylzyl2333@gmail.com>
+From: Tudor Ambarus <tudor.ambarus@linaro.org>
 
-commit 2e5c6f4fd4001562781e99bbfc7f1f0127187542 upstream.
+[ Upstream commit a3bb136bff5e6a5e48cdd813246c9c4686feaaa9 ]
 
-shm_destroy_orphaned() walks the shm idr under shm_ids(ns).rwsem, but that
-does not serialize all fields tested by shm_may_destroy().  In particular,
-shm_nattch is updated while holding shm_perm.lock, and attach paths can do
-that without holding the rwsem.
+Sashiko identified a deadlock when the console flow is engaged [1].
 
-Do not decide that an orphaned segment is unused before taking the object
-lock.  Move the shm_may_destroy() check under shm_perm.lock, matching the
-other destroy paths, and unlock the segment when it no longer qualifies
-for removal.
+When console flow control is enabled (UPF_CONS_FLOW),
+s3c24xx_serial_stop_tx() calls s3c24xx_serial_rx_enable() and
+s3c24xx_serial_start_tx() calls s3c24xx_serial_rx_disable().
 
-Link: https://lore.kernel.org/9d97cc1031de2d0bace0edf3a668818aa2f4eca6.1777410234.git.zylzyl2333@gmail.com
-Fixes: 4c677e2eefdb ("shm: optimize locking and ipc_namespace getting")
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Yilin Zhu <zylzyl2333@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Jeongjun Park <aha310510@gmail.com>
-Cc: Kees Cook <kees@kernel.org>
-Cc: Liam Howlett <liam@infradead.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Serge Hallyn <sergeh@kernel.org>
-Cc: Vasiliy Kulikov <segoon@openwall.com>
-Cc: Davidlohr Bueso <dave@stgolabs.net>
-Cc: Oleg Nesterov <oleg@redhat.com>
-Cc: Serge Hallyn <serge@hallyn.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+The serial core framework invokes the .stop_tx() and .start_tx()
+callbacks with the port->lock spinlock already held. Furthermore, all
+internal driver paths that invoke stop_tx (such as the DMA TX
+completion handler s3c24xx_serial_tx_dma_complete() or the PIO TX IRQ
+handler s3c24xx_serial_tx_irq()) also acquire port->lock prior to
+calling it. (Note that s3c24xx_serial_start_tx() is only invoked by the
+serial core).
+
+However, s3c24xx_serial_rx_enable() and s3c24xx_serial_rx_disable()
+unconditionally attempt to acquire port->lock again using
+uart_port_lock_irqsave(). Since spinlocks are not recursive, this
+causes a deadlock on the same CPU when console flow control is engaged.
+
+Remove the redundant lock acquisition from both rx helper functions.
+
+Cc: stable <stable@kernel.org>
+Fixes: b497549a035c ("[ARM] S3C24XX: Split serial driver into core and per-cpu drivers")
+Reported-by: John Ogness <john.ogness@linutronix.de>
+Closes: https://sashiko.dev/#/patchset/20260506121606.5805-1-john.ogness%40linutronix.de [1]
+Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+Link: https://patch.msgid.link/20260515-samsung-tty-flow-control-deadlock-v1-1-93255edbc9bc@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- ipc/shm.c |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/tty/serial/samsung_tty.c |    8 --------
+ 1 file changed, 8 deletions(-)
 
---- a/ipc/shm.c
-+++ b/ipc/shm.c
-@@ -416,15 +416,17 @@ static int shm_try_destroy_orphaned(int
- 	 * We want to destroy segments without users and with already
- 	 * exit'ed originating process.
- 	 *
--	 * As shp->* are changed under rwsem, it's safe to skip shp locking.
-+	 * shm_nattch can be changed under shm_perm.lock without holding the
-+	 * rwsem, so take the object lock before checking shm_may_destroy().
- 	 */
- 	if (!list_empty(&shp->shm_clist))
- 		return 0;
+--- a/drivers/tty/serial/samsung_tty.c
++++ b/drivers/tty/serial/samsung_tty.c
+@@ -247,12 +247,9 @@ static int s3c24xx_serial_txempty_nofifo
+ static void s3c24xx_serial_rx_enable(struct uart_port *port)
+ {
+ 	struct s3c24xx_uart_port *ourport = to_ourport(port);
+-	unsigned long flags;
+ 	int count = 10000;
+ 	u32 ucon, ufcon;
  
--	if (shm_may_destroy(shp)) {
--		shm_lock_by_ptr(shp);
-+	shm_lock_by_ptr(shp);
-+	if (shm_may_destroy(shp))
- 		shm_destroy(ns, shp);
--	}
-+	else
-+		shm_unlock(shp);
- 	return 0;
+-	uart_port_lock_irqsave(port, &flags);
+-
+ 	while (--count && !s3c24xx_serial_txempty_nofifo(port))
+ 		udelay(100);
+ 
+@@ -265,23 +262,18 @@ static void s3c24xx_serial_rx_enable(str
+ 	wr_regl(port, S3C2410_UCON, ucon);
+ 
+ 	ourport->rx_enabled = 1;
+-	uart_port_unlock_irqrestore(port, flags);
  }
  
+ static void s3c24xx_serial_rx_disable(struct uart_port *port)
+ {
+ 	struct s3c24xx_uart_port *ourport = to_ourport(port);
+-	unsigned long flags;
+ 	u32 ucon;
+ 
+-	uart_port_lock_irqsave(port, &flags);
+-
+ 	ucon = rd_regl(port, S3C2410_UCON);
+ 	ucon &= ~S3C2410_UCON_RXIRQMODE;
+ 	wr_regl(port, S3C2410_UCON, ucon);
+ 
+ 	ourport->rx_enabled = 0;
+-	uart_port_unlock_irqrestore(port, flags);
+ }
+ 
+ static void s3c24xx_serial_stop_tx(struct uart_port *port)
 
 
 
