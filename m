@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-266001-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265013-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id SGcSCnGUMWpNnQUAu9opvQ
-	(envelope-from <stable+bounces-266001-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:22:41 +0200
+	id A1RIHXqDMWpElQUAu9opvQ
+	(envelope-from <stable+bounces-265013-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:10:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98E3969413E
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:22:40 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7783E692CE5
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:10:17 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=kTXdydq5;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266001-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266001-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=HDI1PdZy;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265013-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265013-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1C26031822B3
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:22:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6DA5D3244084
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:57:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDA9546AEFC;
-	Tue, 16 Jun 2026 18:22:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D86C9477E2D;
+	Tue, 16 Jun 2026 16:57:18 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 845A93BFE5A;
-	Tue, 16 Jun 2026 18:22:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CB9E477995;
+	Tue, 16 Jun 2026 16:57:17 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781634138; cv=none; b=PVdyutYXq7FNiSN4YVC/W5AmVWeKfILPXrHoH0zNp8dzwtPkgNAt6W+41Rc+/t+zp4JYlpov3+4dUZfFSBZXt16Vhus4RU/cHN2X+YNXE0nQfA/LkvRRZrqJPJhr/0KXCYl2ZboAzvl9iz/Q/Qa/tZWi+bvwqIPUk2WHXd5mYm4=
+	t=1781629038; cv=none; b=cO23vFasZz9sDPdRrtvo9hMPsVBTxhwJf//Yx8AJmVtnftgBSWtelDIc0F1ceJ3jWUB4zGxy9ZrL7nrW9ygq9r1QinccuC05btkfoSCVWiomC05g3AHG719aOrYKCdcXQnOhUcnXucHRciHvZ++g0eS58r43BeA0/PyczB5/3Mk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781634138; c=relaxed/simple;
-	bh=pU2douOwGB0YpfSwUb6/lY6KPwsoOQGj11pK4jz9jYY=;
+	s=arc-20240116; t=1781629038; c=relaxed/simple;
+	bh=YTaP4mqH91QCcjEU9BwokxHhGbtP9lkvcb/GOOYS+tA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UB9PcCQnIjYNB1MyeStwH4azqwkdEQHt8CrURrT2Nw11nLmpU61ZNwreVXOKMpd8900PqidYrxlkMmVeLJPOtUyjSjypMEVw+nBw5tM46FojhE7w6opKv+xDCozA1b8qIgtfFexX/Z+7CDOiPE0KaCmbSWGbMXbZEIHjMItQFtg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kTXdydq5; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8216F1F000E9;
-	Tue, 16 Jun 2026 18:22:16 +0000 (UTC)
+	 MIME-Version; b=RHDDi5Q9yGBcRlGN94EGxEvTS6eb2YzAXkEerosGzqzfrYOA89k8TwMW5JIF8ASBwEGpTz1V9hnj26VtLgQhxZuAjO+ztvO/mG2e/fj/dsk7/JSmu4wK7TOtx1Y6aFbywVGe7zSBK+3WOReWz30vJSZ32E3s+Oq2qiBIlrNb7Co=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HDI1PdZy; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36BA91F000E9;
+	Tue, 16 Jun 2026 16:57:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781634137;
-	bh=jz3HRdropGBD2mtwP9WNdfxpo94xB7u92JBSj9oZWzM=;
+	s=korg; t=1781629037;
+	bh=be+ygM9LC0oVpp5KIQvokNRp9W+Cv5KkV90I4tUAqWo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=kTXdydq5HkwFXlDVlohgrx+V+YP6GDRFfA1NwS/redRkNWcBObYy02M2gvvAfd09o
-	 UFNOLhi55nZvcgtheIvohaia+Gj58rzwySgN8eY1pve3GQQoyyKnj9JDFPrmd+adws
-	 PqG1XnMi3N6xifZA1bYiVrttLbqjGhr3prdk76Jk=
+	b=HDI1PdZyh+n5KDuUf9uPUrkDLoaVgJutCsf0vp0DJm6yuZWNk1FKaBU7iG8XLmvSt
+	 gNjtRNYnNcC2Tz84t3k/A9p01nI6gyzRBnrWtugGuZ6G6FhhbKnJnUMAVdksk13tO/
+	 jgO26nSh4mCKCwBEW351agA4ppWh/zBUnVMz2D08=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Til Kaiser <mail@tk154.de>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Nathan Chancellor <nathan@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 198/411] net: mvpp2: refill RX buffers before XDP or skb use
+Subject: [PATCH 6.6 209/452] Disable -Wattribute-alias for clang-23 and newer
 Date: Tue, 16 Jun 2026 20:27:16 +0530
-Message-ID: <20260616145111.244297445@linuxfoundation.org>
+Message-ID: <20260616145128.773154882@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,22 +71,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266001-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265013-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mail@tk154.de,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:nathan@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -98,132 +97,129 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,msgid.link:url,tk154.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 98E3969413E
+X-Rspamd-Queue-Id: 7783E692CE5
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Til Kaiser <mail@tk154.de>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit 5e8e2a9624df72fca7c736b2966b2cbf6c9c3ff6 ]
+commit 175db11786bde9061db526bf1ac5107d915f5163 upstream.
 
-The RX error path returns the current descriptor buffer to the hardware
-BM pool. That is only valid while the driver still owns the buffer.
+Clang recently added support for -Wattribute-alias [1], which results in
+the same warnings that necessitated commit bee20031772a ("disable
+-Wattribute-alias warning for SYSCALL_DEFINEx()") for GCC.
 
-mvpp2_rx_refill() can fail after the current buffer has been handed to
-XDP or attached to an skb. In those cases mvpp2_run_xdp() may have
-recycled, redirected, or queued the page for XDP_TX, and an skb free also
-retires the data buffer. Returning such a buffer to BM lets hardware DMA
-into memory that is no longer owned by the RX ring.
+  kernel/time/itimer.c:325:1: error: alias and aliasee have different types 'long (unsigned int)' and 'long (typeof (__builtin_choose_expr((__builtin_types_compatible_p(typeof ((unsigned int)0), typeof (0LL)) || __builtin_types_compatible_p(typeof ((unsigned int)0), typeof (0ULL))), 0LL, 0L)))' (aka 'long (long)') [-Werror,-Wattribute-alias]
+    325 | SYSCALL_DEFINE1(alarm, unsigned int, seconds)
+        | ^
+  include/linux/syscalls.h:225:36: note: expanded from macro 'SYSCALL_DEFINE1'
+    225 | #define SYSCALL_DEFINE1(name, ...) SYSCALL_DEFINEx(1, _##name, __VA_ARGS__)
+        |                                    ^
+  include/linux/syscalls.h:236:2: note: expanded from macro 'SYSCALL_DEFINEx'
+    236 |         __SYSCALL_DEFINEx(x, sname, __VA_ARGS__)
+        |         ^
+  include/linux/syscalls.h:251:18: note: expanded from macro '__SYSCALL_DEFINEx'
+    251 |                 __attribute__((alias(__stringify(__se_sys##name))));    \
+        |                                ^
+  kernel/time/itimer.c:325:1: note: aliasee is declared here
+  include/linux/syscalls.h:225:36: note: expanded from macro 'SYSCALL_DEFINE1'
+    225 | #define SYSCALL_DEFINE1(name, ...) SYSCALL_DEFINEx(1, _##name, __VA_ARGS__)
+        |                                    ^
+  include/linux/syscalls.h:236:2: note: expanded from macro 'SYSCALL_DEFINEx'
+    236 |         __SYSCALL_DEFINEx(x, sname, __VA_ARGS__)
+        |         ^
+  include/linux/syscalls.h:255:18: note: expanded from macro '__SYSCALL_DEFINEx'
+    255 |         asmlinkage long __se_sys##name(__MAP(x,__SC_LONG,__VA_ARGS__))  \
+        |                         ^
+  <scratch space>:16:1: note: expanded from here
+     16 | __se_sys_alarm
+        | ^
 
-Refill the BM pool before handing the current buffer to XDP or to the
-skb. If the allocation fails there, drop the packet and return the
-still-owned current buffer to BM, preserving the pool depth. Once the
-refill succeeds, later local drops retire/free the current buffer instead
-of returning it to BM.
+Disable the warnings in the same way for clang-23 and newer. Disable the
+warning about unknown warning options to avoid breaking the build for
+versions of clang-23 that do not have -Wattribute-alias, such as ones
+deployed by vendors like Android or CI systems or when bisecting LLVM
+between llvmorg-23-init and release/23.x.
 
-Fixes: 07dd0a7aae7f ("mvpp2: add basic XDP support")
-Fixes: d6526926de73 ("net: mvpp2: fix memory leak in mvpp2_rx")
-Signed-off-by: Til Kaiser <mail@tk154.de>
-Link: https://patch.msgid.link/20260607134943.21996-4-mail@tk154.de
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Stable-dep-of: 77a6b90ce56b ("net: mvpp2: build skb from XDP-adjusted data on XDP_PASS")
+Cc: stable@vger.kernel.org
+Closes: https://github.com/ClangBuiltLinux/linux/issues/2163
+Link: https://github.com/llvm/llvm-project/commit/40da6920a0d71d49dfa2392b09153600b0759f5e [1]
+Link: https://patch.msgid.link/20260515-syscall-disable-attribute-alias-for-clang-v1-1-9a9d95d41df6@kernel.org
+[nathan: Drop arch/riscv hunk in older trees and address conflicts]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/marvell/mvpp2/mvpp2_main.c   | 43 +++++++++++--------
- 1 file changed, 24 insertions(+), 19 deletions(-)
+ include/linux/compat.h         | 4 ++++
+ include/linux/compiler-clang.h | 6 ++++++
+ include/linux/compiler_types.h | 4 ++++
+ include/linux/syscalls.h       | 4 ++++
+ 4 files changed, 18 insertions(+)
 
-diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-index d55c3f1526c38b..04002548a46327 100644
---- a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-+++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-@@ -3970,6 +3970,12 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
- 		else
- 			frag_size = bm_pool->frag_size;
+diff --git a/include/linux/compat.h b/include/linux/compat.h
+index 5981d3eadaee1e..7a55636cc98454 100644
+--- a/include/linux/compat.h
++++ b/include/linux/compat.h
+@@ -72,6 +72,10 @@
+ 	__diag_push();								\
+ 	__diag_ignore(GCC, 8, "-Wattribute-alias",				\
+ 		      "Type aliasing is used to sanitize syscall arguments");\
++	__diag_ignore(clang, 23, "-Wunknown-warning-option",			\
++		      "Avoid breaking versions without -Wattribute-alias");	\
++	__diag_ignore(clang, 23, "-Wattribute-alias",				\
++		      "Type aliasing is used to sanitize syscall arguments");	\
+ 	asmlinkage long compat_sys##name(__MAP(x,__SC_DECL,__VA_ARGS__))	\
+ 		__attribute__((alias(__stringify(__se_compat_sys##name))));	\
+ 	ALLOW_ERROR_INJECTION(compat_sys##name, ERRNO);				\
+diff --git a/include/linux/compiler-clang.h b/include/linux/compiler-clang.h
+index f9de53fff3acc4..2fd5b596b36b5c 100644
+--- a/include/linux/compiler-clang.h
++++ b/include/linux/compiler-clang.h
+@@ -144,5 +144,11 @@
+ #define __diag_clang_11(s)
+ #endif
  
-+		err = mvpp2_rx_refill(port, bm_pool, pp, pool);
-+		if (err) {
-+			netdev_err(port->dev, "failed to refill BM pools\n");
-+			goto err_drop_frame;
-+		}
++#if CONFIG_CLANG_VERSION >= 230000
++#define __diag_clang_23(s)	__diag(s)
++#else
++#define __diag_clang_23(s)
++#endif
 +
- 		if (xdp_prog) {
- 			struct xdp_rxq_info *xdp_rxq;
+ #define __diag_ignore_all(option, comment) \
+ 	__diag_clang(11, ignore, option)
+diff --git a/include/linux/compiler_types.h b/include/linux/compiler_types.h
+index b63da6b03d3382..ed1c107124e4e1 100644
+--- a/include/linux/compiler_types.h
++++ b/include/linux/compiler_types.h
+@@ -486,6 +486,10 @@ struct ftrace_likely_data {
+ #define __diag_GCC(version, severity, string)
+ #endif
  
-@@ -3987,12 +3993,6 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
++#ifndef __diag_clang
++#define __diag_clang(version, severity, string)
++#endif
++
+ #define __diag_push()	__diag(push)
+ #define __diag_pop()	__diag(pop)
  
- 			if (ret) {
- 				xdp_ret |= ret;
--				err = mvpp2_rx_refill(port, bm_pool, pp, pool);
--				if (err) {
--					netdev_err(port->dev, "failed to refill BM pools\n");
--					goto err_drop_frame;
--				}
--
- 				ps.rx_packets++;
- 				ps.rx_bytes += rx_bytes;
- 				continue;
-@@ -4004,8 +4004,21 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
- 		skb = build_skb(data, frag_size);
- 		if (!skb) {
- 			netdev_warn(port->dev, "skb build failed\n");
--			goto err_drop_frame;
-+			if (pp) {
-+				page_pool_put_page(pp, virt_to_head_page(data),
-+						   rx_bytes + MVPP2_MH_SIZE,
-+						   true);
-+			} else {
-+				dma_unmap_single_attrs(dev->dev.parent, dma_addr,
-+						       bm_pool->buf_size,
-+						       DMA_FROM_DEVICE,
-+						       DMA_ATTR_SKIP_CPU_SYNC);
-+				mvpp2_frag_free(bm_pool, pp, data);
-+			}
-+			goto err_drop_frame_retired;
- 		}
-+		if (pp)
-+			skb_mark_for_recycle(skb);
- 
- 		/* If we have RX hardware timestamping enabled, grab the
- 		 * timestamp from the queue and convert.
-@@ -4016,16 +4029,7 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
- 					 skb_hwtstamps(skb));
- 		}
- 
--		err = mvpp2_rx_refill(port, bm_pool, pp, pool);
--		if (err) {
--			netdev_err(port->dev, "failed to refill BM pools\n");
--			dev_kfree_skb_any(skb);
--			goto err_drop_frame;
--		}
--
--		if (pp)
--			skb_mark_for_recycle(skb);
--		else
-+		if (!pp)
- 			dma_unmap_single_attrs(dev->dev.parent, dma_addr,
- 					       bm_pool->buf_size, DMA_FROM_DEVICE,
- 					       DMA_ATTR_SKIP_CPU_SYNC);
-@@ -4044,13 +4048,14 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
- 		continue;
- 
- err_drop_frame:
--		dev->stats.rx_errors++;
--		mvpp2_rx_error(port, rx_desc);
- 		/* Return the buffer to the pool */
- 		if (rx_status & MVPP2_RXD_BUF_HDR)
- 			mvpp2_buff_hdr_pool_put(port, rx_desc, pool, rx_status);
- 		else
- 			mvpp2_bm_pool_put(port, pool, dma_addr, phys_addr);
-+err_drop_frame_retired:
-+		dev->stats.rx_errors++;
-+		mvpp2_rx_error(port, rx_desc);
- 	}
- 
- 	if (xdp_ret & MVPP2_XDP_REDIR)
+diff --git a/include/linux/syscalls.h b/include/linux/syscalls.h
+index 36c592e43d6520..8109d9f0ede62d 100644
+--- a/include/linux/syscalls.h
++++ b/include/linux/syscalls.h
+@@ -242,6 +242,10 @@ static inline int is_syscall_trace_event(struct trace_event_call *tp_event)
+ 	__diag_push();							\
+ 	__diag_ignore(GCC, 8, "-Wattribute-alias",			\
+ 		      "Type aliasing is used to sanitize syscall arguments");\
++	__diag_ignore(clang, 23, "-Wunknown-warning-option",		\
++		      "Avoid breaking versions without -Wattribute-alias");\
++	__diag_ignore(clang, 23, "-Wattribute-alias",			\
++		      "Type aliasing is used to sanitize syscall arguments");\
+ 	asmlinkage long sys##name(__MAP(x,__SC_DECL,__VA_ARGS__))	\
+ 		__attribute__((alias(__stringify(__se_sys##name))));	\
+ 	ALLOW_ERROR_INJECTION(sys##name, ERRNO);			\
 -- 
 2.53.0
 
