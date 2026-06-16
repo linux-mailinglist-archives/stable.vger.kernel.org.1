@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-264794-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264499-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id eoe5Kcl+MWpjkwUAu9opvQ
-	(envelope-from <stable+bounces-264794-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:50:17 +0200
+	id joDSOaB4MWrOkAUAu9opvQ
+	(envelope-from <stable+bounces-264499-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:24:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E1D2692806
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:50:16 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 767F56920A7
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:24:00 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=b+PjbWnW;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264794-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264794-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=G11SwANA;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264499-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264499-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 992B43031A32
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:38:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 793ED32555E1
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:10:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCDA747799B;
-	Tue, 16 Jun 2026 16:38:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08F56466B57;
+	Tue, 16 Jun 2026 16:10:16 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B460331EAB;
-	Tue, 16 Jun 2026 16:38:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 762D444BCB8;
+	Tue, 16 Jun 2026 16:10:14 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781627924; cv=none; b=XmIHZLgh8cf4e4MgS2Mw0kNhT3edWf5Qy5Me8BMaaCyFexaOW2okCAuSTPRp4hWEf2qNJds8huMHZ8RK6R4+Lc/hHfUQF/XcKbhisPtZNXA1jvrmskXD6+OtuPyatjmUwgMR41e2d5KUegK+lr5xkieyzuD3wOVoP7ys5S7NDzk=
+	t=1781626215; cv=none; b=RECQXbbrVWrsTPRliCwuEwCAPQr2L8t3xAeSnaEdh4Zrf3TwIRR0RLXNHLdPsNI7NxcKLBDKHZ9T1Sv42x2t9U90S13Z36aYXz9TYcNU4hKVqaMh18YUS3hbqYruLJeuyMmhtzVy2ghHXbTvNCnXPapo9nh8VLCY3mzbkxKYhz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781627924; c=relaxed/simple;
-	bh=9pewqXgFQbtehZUJJCaKeomOvVkxVFiPAAhTAM7gqDM=;
+	s=arc-20240116; t=1781626215; c=relaxed/simple;
+	bh=RqIKc2rQQru0RwLN4RwnM/6tFe3zpALILAGIa/3JufU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zz4vKHWaiRi+lK38URsPq4XXVqYnXZQZjNNY0rynRBZENwOlPxw+3a+u1N8vT8UAFsg1vvJesomxwQ14gMjgq5DQ8AW21DesApIVOWzQ0LZWEpfXD0NdTRVbfMeKcenjYIU5Ukbxr/Wx/MfBKAdoXQ9mxPpmch2xvVpLq+xmJOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b+PjbWnW; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 898B41F000E9;
-	Tue, 16 Jun 2026 16:38:42 +0000 (UTC)
+	 MIME-Version; b=Jo71mDGcEkVzYwuLah4gvLlLUj4qHXuqN/SbRE2IF2d6qlpqLbWUXSt6mCRJ9p/hqEyVtscH8raq6e1NJn11pX8V/ffz+9HcjIHUUMYfXpYl81dRW6hKWYqPiL/O0mogaJxo+6fiBGdNawD0n3kARguIKHmVdPhDo7xcj5TLPcc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G11SwANA; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 234C91F000E9;
+	Tue, 16 Jun 2026 16:10:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781627923;
-	bh=ZRAcxVwgFoQud+cqB70xIeJ54RGLZzJE2eXbvLxP38k=;
+	s=korg; t=1781626214;
+	bh=oaix62ZiYHsUzS/BG1p3OrsIFlA9Uoa1E68ARllCQtg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=b+PjbWnWMrGfqMY0R2PXZNwK0aSodl5TM0X88nSyOqS00S5en+VzuqH1v26QUyl4I
-	 wPqdvOADxwG4HDhxz2T1l9ZZ3rpQbOrX8w49Khe8uKvSU7MyvfZHunAgTACKzNip0e
-	 KHyWyixQ8D/ND/AqM2fu9SO49DCTAtPaM1/TDgnc=
+	b=G11SwANAU42vT978XWHgFksfDBKDIVF21ZBXGaRifDkZCt6FspNwwqCUAW4r6/TWD
+	 Mke4FvfDwktQUz6ol5UgvVJcsor2G9+tTp7BTnLVBpZ7yvkgsyltaPYx0I6QVkfeHT
+	 KVOcwCR2PpiNJHrSN42Ygb9y0MxFUtnw86w1kBDE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>,
-	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
-	Srinivas Kandagatla <srini@kernel.org>
-Subject: [PATCH 6.12 210/261] slimbus: qcom-ngd-ctrl: Register callbacks after creating the ngd
+	SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.18 252/325] mm/damon/reclaim: handle ctx allocation failure
 Date: Tue, 16 Jun 2026 20:30:48 +0530
-Message-ID: <20260616145054.776229997@linuxfoundation.org>
+Message-ID: <20260616145111.092547223@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
-References: <20260616145044.869532709@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,22 +71,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264794-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264499-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mukesh.ojha@oss.qualcomm.com,m:bjorn.andersson@oss.qualcomm.com,m:srini@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:sj@kernel.org,m:akpm@linux-foundation.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -98,142 +97,62 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,qualcomm.com:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux-foundation.org:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9E1D2692806
+X-Rspamd-Queue-Id: 767F56920A7
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+From: SeongJae Park <sj@kernel.org>
 
-commit 2a9d50e9ea406e0c8735938484adc20515ef1b47 upstream.
+commit 7e2ed8a29427af534bf2cb9b8bc51762b8b6e654 upstream.
 
-When the remoteproc starts in parallel with the NGD driver being probed,
-or the remoteproc is already up when the PDR lookup is being registered,
-or in the theoretical event that we get an interrupt from the hardware,
-these callbacks will operate on uninitialized data. This result in
-issues to boot the affected boards.
+Patch series "mm/damon/{reclaim,lru_sort}: handle ctx allocation failures".
 
-One such example can be seen in the following fault, where
-qcom_slim_ngd_ssr_pdr_notify() schedules work on the NULL ngd_up_work.
+DAMON_RECLAIM and DAMON_LRU_SORT could dereference NULL pointers if their
+damon_ctx object allocations fail.  The bugs are expected to happen
+infrequently because the allocations are arguably too small to fail on
+common setups.  But theoretically they are possible and the consequences
+are bad.  Fix those.
 
-[   21.858578] ------------[ cut here ]------------
-[   21.858745] WARNING: kernel/workqueue.c:2338 at __queue_work+0x5e0/0x790, CPU#2: kworker/2:2/116
-...
-[   21.859251] Call trace:
-[   21.859255]  __queue_work+0x5e0/0x790 (P)
-[   21.859265]  queue_work_on+0x6c/0xf0
-[   21.859273]  qcom_slim_ngd_ssr_pdr_notify+0x110/0x150 [slim_qcom_ngd_ctrl]
-[   21.859304]  qcom_slim_ngd_ssr_notify+0x24/0x40 [slim_qcom_ngd_ctrl]
-[   21.859318]  notifier_call_chain+0xa4/0x230
-[   21.859329]  srcu_notifier_call_chain+0x64/0xb8
-[   21.859338]  ssr_notify_start+0x40/0x78 [qcom_common]
-[   21.859355]  rproc_start+0x130/0x230
-[   21.859367]  rproc_boot+0x3d4/0x518
-...
+The issues were discovered [1] by Sashiko.
 
-Move the enablement of interrupts, and the registration of SSR and PDR
-until after the NGD device has been registered.
 
-This could be further refined by moving initialization to the control
-driver probe and by removing the platform driver model from the picture.
+This patch (of 2):
 
-Fixes: 917809e2280b ("slimbus: ngd: Add qcom SLIMBus NGD driver")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
-Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
-Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
-Link: https://patch.msgid.link/20260530204421.116824-6-srini@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+DAMON_RECLAIM allocates the damon_ctx object for its kdamond in its init
+function.  damon_reclaim_enabled_store() wrongly assumes the allocation
+will always succeed once tried.  If the damon_ctx allocation was failed,
+therefore, code execution reaches to damon_commit_ctx() while 'ctx' is
+NULL.  As a result, it dereferences the NULL 'ctx' pointer.  Avoid the
+NULL dereference by returning -ENOMEM if 'ctx' is NULL.
+
+Link: https://lore.kernel.org/20260529000104.7006-2-sj@kernel.org
+Link: https://lore.kernel.org/20260419014800.877-1-sj@kernel.org [1]
+Fixes: 3f7a914ab9a5 ("mm/damon/reclaim: use damon_initialized()")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: <stable@vger.kernel.org> # 6.18.x
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/slimbus/qcom-ngd-ctrl.c |   47 ++++++++++++++++++++++------------------
- 1 file changed, 27 insertions(+), 20 deletions(-)
+ mm/damon/reclaim.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/slimbus/qcom-ngd-ctrl.c
-+++ b/drivers/slimbus/qcom-ngd-ctrl.c
-@@ -1615,6 +1615,7 @@ static int qcom_slim_ngd_ctrl_probe(stru
- {
- 	struct device *dev = &pdev->dev;
- 	struct qcom_slim_ngd_ctrl *ctrl;
-+	int irq;
- 	int ret;
- 	struct pdr_service *pds;
+--- a/mm/damon/reclaim.c
++++ b/mm/damon/reclaim.c
+@@ -343,6 +343,10 @@ static int damon_reclaim_enabled_store(c
+ 	if (!damon_initialized())
+ 		return 0;
  
-@@ -1628,20 +1629,16 @@ static int qcom_slim_ngd_ctrl_probe(stru
- 	if (IS_ERR(ctrl->base))
- 		return PTR_ERR(ctrl->base);
- 
--	ret = platform_get_irq(pdev, 0);
--	if (ret < 0)
--		return ret;
--
--	ret = devm_request_irq(dev, ret, qcom_slim_ngd_interrupt,
--			       IRQF_TRIGGER_HIGH, "slim-ngd", ctrl);
-+	irq = platform_get_irq(pdev, 0);
-+	if (irq < 0)
-+		return irq;
++	/* damon_modules_new_paddr_ctx_target() in the init function failed. */
++	if (!ctx)
++		return -ENOMEM;
 +
-+	ret = devm_request_irq(dev, irq, qcom_slim_ngd_interrupt,
-+			       IRQF_TRIGGER_HIGH | IRQF_NO_AUTOEN,
-+			       "slim-ngd", ctrl);
- 	if (ret)
- 		return dev_err_probe(&pdev->dev, ret, "request IRQ failed\n");
- 
--	ctrl->nb.notifier_call = qcom_slim_ngd_ssr_notify;
--	ctrl->notifier = qcom_register_ssr_notifier("lpass", &ctrl->nb);
--	if (IS_ERR(ctrl->notifier))
--		return PTR_ERR(ctrl->notifier);
--
- 	ctrl->dev = dev;
- 	ctrl->framer.rootfreq = SLIM_ROOT_FREQ >> 3;
- 	ctrl->framer.superfreq =
-@@ -1663,24 +1660,34 @@ static int qcom_slim_ngd_ctrl_probe(stru
- 	init_completion(&ctrl->qmi_up);
- 
- 	ctrl->pdr = pdr_handle_alloc(slim_pd_status, ctrl);
--	if (IS_ERR(ctrl->pdr)) {
--		ret = dev_err_probe(dev, PTR_ERR(ctrl->pdr),
--				    "Failed to init PDR handle\n");
--		goto err_unregister_ssr;
--	}
-+	if (IS_ERR(ctrl->pdr))
-+		return dev_err_probe(dev, PTR_ERR(ctrl->pdr), "Failed to init PDR handle\n");
-+
-+	ret = of_qcom_slim_ngd_register(dev, ctrl);
-+	if (ret)
-+		goto err_pdr_release;
- 
- 	pds = pdr_add_lookup(ctrl->pdr, "avs/audio", "msm/adsp/audio_pd");
- 	if (IS_ERR(pds) && PTR_ERR(pds) != -EALREADY) {
- 		ret = dev_err_probe(dev, PTR_ERR(pds), "pdr add lookup failed\n");
--		goto err_pdr_release;
-+		goto err_unregister_ngd;
- 	}
- 
--	return of_qcom_slim_ngd_register(dev, ctrl);
-+	ctrl->nb.notifier_call = qcom_slim_ngd_ssr_notify;
-+	ctrl->notifier = qcom_register_ssr_notifier("lpass", &ctrl->nb);
-+	if (IS_ERR(ctrl->notifier)) {
-+		ret = PTR_ERR(ctrl->notifier);
-+		goto err_unregister_ngd;
-+	}
-+
-+	enable_irq(irq);
-+
-+	return 0;
- 
-+err_unregister_ngd:
-+	qcom_slim_ngd_unregister(ctrl);
- err_pdr_release:
- 	pdr_handle_release(ctrl->pdr);
--err_unregister_ssr:
--	qcom_unregister_ssr_notifier(ctrl->notifier, &ctrl->nb);
- 
- 	return ret;
+ 	return damon_reclaim_turn(enabled);
  }
+ 
 
 
 
