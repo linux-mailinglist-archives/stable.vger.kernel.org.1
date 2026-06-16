@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-264007-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265540-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id uQZvDfFsMWoTjAUAu9opvQ
-	(envelope-from <stable+bounces-264007-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:34:09 +0200
+	id 7806EGSMMWpRmQUAu9opvQ
+	(envelope-from <stable+bounces-265540-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:48:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8ED1C69127F
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:34:08 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BD3C6937E9
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:48:19 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=n7sq0wS9;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264007-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264007-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=d19U7Y5s;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265540-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265540-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E191E31549E4
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:27:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 433E931C5FC0
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:42:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72DC143DA3C;
-	Tue, 16 Jun 2026 15:27:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 538093101A7;
+	Tue, 16 Jun 2026 17:42:01 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F5653A8746;
-	Tue, 16 Jun 2026 15:27:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74ED847CC7F;
+	Tue, 16 Jun 2026 17:41:55 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781623641; cv=none; b=KLGsSUzpcKYM/pRJRpTpBu211C0ArQrcK/P4u/O+dJDh2fcBJcta3vYbAUzArhhGXBwP5pRc5GsHYAXwOGJC6sAJPOwKTDheD9pITCPh5mLVY42XVVLXl1EemQXjD4qhjfxpduh+9MTuNAg3EvQL1LE1D6yy3/fAiAPidnceOGE=
+	t=1781631720; cv=none; b=Oji5tFlgPykVEKjSGwyaUzr87m64DH4O1x60mgFcLwtpjUX5s1S0ePlSfEk5Gn3wnSpg5hjqYksDbx9uwYt3e3BqKw2befsQs96mVL1o4r6VdQk132CtiTEnSxf6CKc9BlV8I9rjKY7odLAz4yNU57peZG8xnRk3D06VqcdwbKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781623641; c=relaxed/simple;
-	bh=JFtzolJRzXOV5E/eIYM2MCMicEiNyU4IyiObzFWYfBg=;
+	s=arc-20240116; t=1781631720; c=relaxed/simple;
+	bh=tgTf8fUh5aRArfwmxehXKtxUnNkkNjAKGOnYZGwOcKU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JmsrD98x8U9GsYCFOtSGTDe2LZOlXTka/ELfcH/ryAHTyjG9Tx8Xc/DXEd3a+Xmp+oc/wr5CV7MvSmM1mZm0xV1EMobF6yUWMgIhyKgR5dhgKyexOifDmDmqlzVV+1N0yHzzoIguCxnvBENY0mTmk3KQdpsBHJt4yDEx/YVMTwU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n7sq0wS9; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B28E1F000E9;
-	Tue, 16 Jun 2026 15:27:18 +0000 (UTC)
+	 MIME-Version; b=YjSJRy8u0oNT1LCbZ66VdTDFSKtbLT106x/168AD+XRA6QgqI4roVBjS8e9PWONMRnYtwkjiyXgbNrUVBOGw+JXET0ZTx47PC4gJMeurYkqxMdi4yP+scymhxuMOYnv3A199VVcxRHmdKzeD+dGA6yKfZlaMX31afxfJzMcvNoQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d19U7Y5s; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50D801F00A3A;
+	Tue, 16 Jun 2026 17:41:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781623640;
-	bh=YAwGM0c1i73CdqDk2uWs5JGgvPS5R5lo96LVREipHbQ=;
+	s=korg; t=1781631715;
+	bh=o2cKLRB2fd361Cd+oOJaWsqIKkNIx1yhKvbow5zIG7Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=n7sq0wS9U0zrmJsybI01s8nXRKLzACHPD6m+X3RtjcK0oGiZ2Hf/nWekcC64FOoL3
-	 /TfXYe+pUzKyHftCBzxhrM/GKfxdpdkt5WnTSMre+7+XnJUExJBmLkdBM67bZQT6ac
-	 bScGKCWfX16w/dDgMwgsF6HL30NinY0dAo7H56So=
+	b=d19U7Y5suSc6rYAmJcBCvYSbVYraGEEQwmF4mRrS+/VpQpUqjbiMqm4Qwr3eIZ7LY
+	 GJm3UOZeaKuN6PdD/WiDeQVgWr0re7sIgDrNLrORAqpL1VMbsV0fSFllO6zWKb0cJj
+	 FHswoWCbBcELCiRU2owU279VSA4h9SLIs1Iy1iI8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ralf Jung <post@ralfj.de>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 7.0 188/378] rust: x86: support Rust >= 1.98.0 target spec
+	Gil Portnoy <dddhkts1@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.1 272/522] ksmbd: fix use-after-free of a deferred file_lock on double SMB2_CANCEL
 Date: Tue, 16 Jun 2026 20:26:59 +0530
-Message-ID: <20260616145120.276626553@linuxfoundation.org>
+Message-ID: <20260616145138.690642369@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,94 +72,105 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264007-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265540-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:dddhkts1@gmail.com,m:linkinjeon@kernel.org,m:stfrench@microsoft.com,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:post@ralfj.de,m:aliceryhl@google.com,m:ojeda@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,ralfj.de:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8ED1C69127F
+X-Rspamd-Queue-Id: 8BD3C6937E9
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miguel Ojeda <ojeda@kernel.org>
+From: Gil Portnoy <dddhkts1@gmail.com>
 
-commit 905b06d32a52afe32fcf5f30cf298c9ea6359f11 upstream.
+commit f580d27e8928828693df44ba2db0fffdbe11dfea upstream.
 
-Starting with Rust 1.98.0 (expected 2026-08-20), the target spec will not
-support `x86-softfloat` anymore [1]. Instead, `softfloat` should be used,
-which is an alias. Otherwise, one gets:
+A deferred byte-range lock (an SMB2_LOCK that blocks) registers an async work on
+conn->async_requests via setup_async_work(), with cancel_fn =
+smb2_remove_blocked_lock and cancel_argv[0] pointing at the struct file_lock.
 
-    error: error loading target specification: rustc-abi: invalid rustc abi: 'x86-softfloat'. allowed values: 'x86-sse2', 'softfloat' at line 3 column 32
-      |
-      = help: run `rustc --print target-list` for a list of built-in targets
+When the request is cancelled, the worker frees the file_lock with
+locks_free_lock() and takes the cancelled early-exit, which "goto out"s and never
+reaches release_async_work() -- the only site that unlinks the work from
+conn->async_requests and clears cancel_fn/cancel_argv. The work therefore stays
+matchable on async_requests with a live cancel_fn pointing at the freed file_lock,
+until connection teardown finally runs release_async_work().
 
-Thus conditionally use one or the other depending on the version.
+smb2_cancel() fires cancel_fn unconditionally with no state guard, so a second
+SMB2_CANCEL for the same AsyncId, arriving in that window, re-runs
+smb2_remove_blocked_lock() on the freed file_lock -- a slab use-after-free:
 
-The alias has existed since Rust 1.95.0 (released 2026-04-16) [2], but
-use the newer version instead to avoid changing how the build works for
-existing compilers, at least until more testing takes place.
+  BUG: KASAN: slab-use-after-free in __locks_delete_block
+    __locks_delete_block
+    locks_delete_block
+    ksmbd_vfs_posix_lock_unblock
+    smb2_remove_blocked_lock
+    smb2_cancel                 <- 2nd SMB2_CANCEL fires cancel_fn
+    handle_ksmbd_work
+  Allocated by ...: locks_alloc_lock <- smb2_lock
+  Freed by ...:     locks_free_lock  <- smb2_lock (cancelled branch)
+  ... cache file_lock_cache of size 192
 
-Cc: Ralf Jung <post@ralfj.de>
-Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned in older LTSs).
-Link: https://github.com/rust-lang/rust/pull/157151 [1]
-Link: https://github.com/rust-lang/rust/pull/151154 [2]
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Link: https://patch.msgid.link/20260530114925.260754-1-ojeda@kernel.org
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Reproduced on mainline with KASAN by an authenticated SMB client.
+
+Skip a work whose state is already KSMBD_WORK_CANCELLED so its cancel callback
+cannot be fired a second time.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Gil Portnoy <dddhkts1@gmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/generate_rust_target.rs |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ fs/smb/server/smb2pdu.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/scripts/generate_rust_target.rs
-+++ b/scripts/generate_rust_target.rs
-@@ -196,7 +196,9 @@ fn main() {
-         }
-     } else if cfg.has("X86_64") {
-         ts.push("arch", "x86_64");
--        if cfg.rustc_version_atleast(1, 86, 0) {
-+        if cfg.rustc_version_atleast(1, 98, 0) {
-+            ts.push("rustc-abi", "softfloat");
-+        } else if cfg.rustc_version_atleast(1, 86, 0) {
-             ts.push("rustc-abi", "x86-softfloat");
-         }
-         ts.push(
-@@ -236,7 +238,9 @@ fn main() {
-             panic!("32-bit x86 only works under UML");
-         }
-         ts.push("arch", "x86");
--        if cfg.rustc_version_atleast(1, 86, 0) {
-+        if cfg.rustc_version_atleast(1, 98, 0) {
-+            ts.push("rustc-abi", "softfloat");
-+        } else if cfg.rustc_version_atleast(1, 86, 0) {
-             ts.push("rustc-abi", "x86-softfloat");
-         }
-         ts.push(
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -6810,6 +6810,17 @@ int smb2_cancel(struct ksmbd_work *work)
+ 			    le64_to_cpu(hdr->Id.AsyncId))
+ 				continue;
+ 
++			/*
++			 * A cancelled deferred byte-range lock frees its
++			 * file_lock and takes the smb2_lock() early-exit that
++			 * skips release_async_work(), so the work stays on
++			 * conn->async_requests with a live cancel_fn pointing
++			 * at the freed file_lock.  Re-firing it on a second
++			 * SMB2_CANCEL is a use-after-free.
++			 */
++			if (iter->state == KSMBD_WORK_CANCELLED)
++				break;
++
+ 			ksmbd_debug(SMB,
+ 				    "smb2 with AsyncId %llu cancelled command = 0x%x\n",
+ 				    le64_to_cpu(hdr->Id.AsyncId),
 
 
 
