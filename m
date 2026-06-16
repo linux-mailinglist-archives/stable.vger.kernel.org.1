@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-265543-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264995-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id g0MeFXCMMWpVmQUAu9opvQ
-	(envelope-from <stable+bounces-265543-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:48:32 +0200
+	id HmplNE2BMWqDlAUAu9opvQ
+	(envelope-from <stable+bounces-264995-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:01:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D84D76937F1
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:48:31 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D23E692A7C
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:01:01 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=YHr+9LCw;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265543-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265543-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=jSFowmBY;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264995-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264995-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 45449323E0ED
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:42:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BBC2F30DC338
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:56:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4808347B435;
-	Tue, 16 Jun 2026 17:42:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C447647AF5F;
+	Tue, 16 Jun 2026 16:56:00 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1323C47AF5D;
-	Tue, 16 Jun 2026 17:42:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53A5F169AD2;
+	Tue, 16 Jun 2026 16:55:59 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781631736; cv=none; b=SYMHGFx16jvKIDCZUdjprn0A+Jw27laG2ZHDDD58BYi8Di3QcvhW2yp+cRuhjWkbHRY5wL7XMaHuXsZdFgTPGZ5+DS1i7t06HQhJFnBKEpVEoKMd8JayQ1CF0jPmKgJvruvu5pZV9E3a5gEgz1SnDc9nxCR6TMp6CZBqPnqXHHQ=
+	t=1781628960; cv=none; b=DnWpMqONcR5aOyg3yIwsVU8l1aaVpDHfiZqHsPsWfl59iTvuMNjuWCuo5JJIOcRyaVa6OPOtB1sI2S+nq2Ignxe+i+mIRxVoCw1cIqxSkFMDXV4XMWeskh01wITLFc3HYMSvqp38lcBYvDE/8uB9A1sVm2ALlUjJCcFPUnhjrIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781631736; c=relaxed/simple;
-	bh=FxNaEmgaB01aOVDM9sVE8VPr5ociImJO14RzmmzQ4sA=;
+	s=arc-20240116; t=1781628960; c=relaxed/simple;
+	bh=jBuim/tnwAJwnhBHhdx8y8PLr9yYtmFCTm0s5kVWPG4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fUlG4NdfIEUIuShjKhqrkQ1t2S2GkdAiGJEjQSLINAe/vc8q0wIcDK81Wx8czQL8xM3JyUZDrgIWrmJAdXKOgMai6tGxEL1/HQVIZZ53sST1rJEdXE6LO/OvxOSfrtheHh/UnHAEgJKnOGbnOuhDIO0v32xLtm3A3K5z5s0fun0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YHr+9LCw; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FC151F000E9;
-	Tue, 16 Jun 2026 17:42:10 +0000 (UTC)
+	 MIME-Version; b=AV9l1TYYm0QRTBQ9vNemz/9y2DThK1xH2z03nUiWnDQS5AzK3HVHdEsDo5uelb/uVvX4r2fJRS8aOE1mXDPXN4KKA6vSpx3p9QkZ+YvDXyeD5H12kzMTLUiZTMPzCrjM6Nn08br0+UxmkQVakJSJWscodlPhLRGBkKbznlpx804=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jSFowmBY; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57AA61F000E9;
+	Tue, 16 Jun 2026 16:55:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781631731;
-	bh=P3F34wZzrBg5XYTuPtBYxf/5fa14pDsXQ72IEeNDzWo=;
+	s=korg; t=1781628959;
+	bh=iWM3KWpStvbZ+EemuG3nvQVos0ucbNWQ1ZhdEcuq6t4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=YHr+9LCwmtNBDcDtZzSa9FCUPtuXNvpbpbAGELefgYbZCt7iamt7oHRvfeZ4VsSvl
-	 A1w7puWUXe8Z/bheuesdMgcxnw8bPsiYjD0IGiIdvomlD7VYzZxvpAUwN2XGuLkx5G
-	 Foy7VyjavwIfRZALdmGHGLbmX9U8al+IB5PY/0Ow=
+	b=jSFowmBYgNakSGiP0DafbFTlinRAP7w0s43RrgOQjOdCB9VphTuevD3Ktm8lPp3Te
+	 CM7UzU4t1Tv0/GPenc4YtI+RsiAreJg43tdDBOapUYSbvkHdxkoBKp+72oEqWNoXrh
+	 sWuqFZeY9rlVBkevWnW3ISVhsyoRvbhl4NFuphMk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Korwel <adriank20047@gmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.1 275/522] USB: serial: io_ti: fix heap overflow in build_i2c_fw_hdr()
+	Johan Hovold <johan@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 195/452] USB: serial: digi_acceleport: fix memory corruption with small endpoints
 Date: Tue, 16 Jun 2026 20:27:02 +0530
-Message-ID: <20260616145138.828752869@linuxfoundation.org>
+Message-ID: <20260616145128.070723428@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,81 +71,101 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264995-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-265543-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:adriank20047@gmail.com,m:johan@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:johan@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D84D76937F1
+X-Rspamd-Queue-Id: 5D23E692A7C
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Korwel <adriank20047@gmail.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit 0fd2b00b2d3d05e3eaa13342b3dfb0fa85c226ae upstream.
+commit cb3560e8eab1dfa1cac1ed52631adf8ec6ff2cd5 upstream.
 
-build_i2c_fw_hdr() allocates a fixed-size buffer of
-(16*1024 - 512) + sizeof(struct ti_i2c_firmware_rec) bytes, then
-copies le16_to_cpu(img_header->Length) bytes into it without
-validating that Length fits within the available space after the
-firmware record header.
-
-img_header->Length is a __le16 from the firmware file and can be
-up to 65535. check_fw_sanity() validates the total firmware size
-but not img_header->Length specifically.
-
-Fix by rejecting images where img_header->Length exceeds the
-available destination space.
+Add the missing bulk-out buffer size sanity checks to avoid
+out-of-bounds memory accesses or slab corruption should a malicious
+device report smaller buffers than expected.
 
 Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Cc: stable@vger.kernel.org
-Signed-off-by: Adrian Korwel <adriank20047@gmail.com>
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/io_ti.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/usb/serial/digi_acceleport.c | 23 +++++++++++++++++++++--
+ 1 file changed, 21 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/serial/io_ti.c
-+++ b/drivers/usb/serial/io_ti.c
-@@ -844,6 +844,11 @@ static int build_i2c_fw_hdr(u8 *header,
- 	/* Pointer to fw_down memory image */
- 	img_header = (struct ti_i2c_image_header *)&fw->data[4];
- 
-+	if (le16_to_cpu(img_header->Length) >
-+			buffer_size - sizeof(struct ti_i2c_firmware_rec)) {
-+		kfree(buffer);
-+		return -EINVAL;
+diff --git a/drivers/usb/serial/digi_acceleport.c b/drivers/usb/serial/digi_acceleport.c
+index d1dea38505762c..5eac99407c1611 100644
+--- a/drivers/usb/serial/digi_acceleport.c
++++ b/drivers/usb/serial/digi_acceleport.c
+@@ -1231,15 +1231,34 @@ static int digi_port_init(struct usb_serial_port *port, unsigned port_num)
+ static int digi_startup(struct usb_serial *serial)
+ {
+ 	struct digi_serial *serial_priv;
++	int oob_port_num;
+ 	int ret;
++	int i;
++
++	/*
++	 * The port bulk-out buffers must be large enough for header and
++	 * buffered data.
++	 */
++	for (i = 0; i < serial->type->num_ports; i++) {
++		if (serial->port[i]->bulk_out_size < DIGI_OUT_BUF_SIZE + 2)
++			return -EINVAL;
 +	}
- 	memcpy(buffer + sizeof(struct ti_i2c_firmware_rec),
- 		&fw->data[4 + sizeof(struct ti_i2c_image_header)],
- 		le16_to_cpu(img_header->Length));
++
++	/*
++	 * The OOB port bulk-out buffer must be large enough for the two
++	 * commands in digi_set_modem_signals().
++	 */
++	oob_port_num = serial->type->num_ports;
++	if (serial->port[oob_port_num]->bulk_out_size < 8)
++		return -EINVAL;
+ 
+ 	serial_priv = kzalloc(sizeof(*serial_priv), GFP_KERNEL);
+ 	if (!serial_priv)
+ 		return -ENOMEM;
+ 
+ 	spin_lock_init(&serial_priv->ds_serial_lock);
+-	serial_priv->ds_oob_port_num = serial->type->num_ports;
+-	serial_priv->ds_oob_port = serial->port[serial_priv->ds_oob_port_num];
++	serial_priv->ds_oob_port_num = oob_port_num;
++	serial_priv->ds_oob_port = serial->port[oob_port_num];
+ 
+ 	ret = digi_port_init(serial_priv->ds_oob_port,
+ 						serial_priv->ds_oob_port_num);
+-- 
+2.53.0
+
 
 
 
