@@ -1,62 +1,70 @@
-Return-Path: <stable+bounces-266472-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264158-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id EWtJN/OdMWpUoQUAu9opvQ
-	(envelope-from <stable+bounces-266472-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:03:15 +0200
+	id pAfoKUBwMWpRjQUAu9opvQ
+	(envelope-from <stable+bounces-264158-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:48:16 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78A10694B0F
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:03:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 407E969165D
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:48:16 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Df7QOMSu;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266472-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266472-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=qlXjgHTn;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264158-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264158-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E6A163038E2F
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:03:14 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8AC663041C75
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:41:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEDB83DA5A8;
-	Tue, 16 Jun 2026 19:03:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9AEE44DB73;
+	Tue, 16 Jun 2026 15:40:29 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B33F43DBD76;
-	Tue, 16 Jun 2026 19:03:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3CBA44DB61;
+	Tue, 16 Jun 2026 15:40:27 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781636593; cv=none; b=Ca6ojWbOMMdxWtppPZLfrLuOHb+h8mEWf/PTW3ozHZVJse7y3MQKV6qfvGzjZ2DoOIrsxRxHgzp85LmekHjeYTmaRjwLUMsJL2vQOgBwKiGD7+jzX648j/fBi6S3nNQ9sHe5zInBgKSKO/cxO2HD0hurjUr2cCI4e1ziLWV3MDg=
+	t=1781624429; cv=none; b=dBYmjnsfZe2njif9f4BK/mXLvrLGVzzyAysGaVuvDH7yCKJubXUaHG8sfM8M/SKnyxG9/lC/F/o6Nt5o4QkPBdD8bh/9kTawLypId6iuVl248FDrDLrp5E8cn6oSGUrVNOINJ/1pNqdOGXePKBHy84rcL/KzNOm+NyQSehthnm0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781636593; c=relaxed/simple;
-	bh=EOU6rd79RgJCcSFZHpZCOS9CW8mLkvQD0bPm4/+PhGI=;
+	s=arc-20240116; t=1781624429; c=relaxed/simple;
+	bh=yLx7GEOXBxeUYawpMq8kenO0cWlxY/hJPNYeyA+1iVU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C3D0oKOJWKd1+qfccqSujdo2tZrIIyyDFZmQVz5UlinOTjqteYve5vnZ10tz8FmwT98ylHWaAbOqAp6E4plX/tHdfu+H/p7wkf/QjV8U/YYf/F0tVeJ6d2H1n8dSZ3lj1HEdF5R3gjmIWk7S5H2wrQMa6xwJdOdCewMQRMD2DNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Df7QOMSu; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D0821F00A3D;
-	Tue, 16 Jun 2026 19:03:11 +0000 (UTC)
+	 MIME-Version; b=Ljcb1e7OKlPJJTeOw3ZVycHHPzANT4OxUpO9H0/A9bJVGEETGnzwiU1skOvZU/L9/4sGA1yZks/et3Q4WZ6IqLVSr6p40rLBfYZRaMf0ACwhrIc8wgGPrx5+CyDu5bLHbGrYmJUuodXWQH1KtVEok4ACArzD3zsTzEpxNo3KCSI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qlXjgHTn; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB56E1F000E9;
+	Tue, 16 Jun 2026 15:40:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781636592;
-	bh=hrPqweF8hnlnrRMnXFdR5IA1lC8sRBycEPXEojmJYJo=;
+	s=korg; t=1781624427;
+	bh=+TAc7tW/6OGtYH0czwy+FLs8VBExU63fxJhIk+JC8bU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Df7QOMSurBjiQJ8G6//Lf41ae6lbPylRkeXkYo5N21aZlVyRrgTTLryBj2pYItVFD
-	 C6MGGLn1UxfVYSeZZWb9qwsbt1hvM/70tFCaCCuOAN1Dplw+ICJEf7sno7natMLrBW
-	 dtt/WOGGbgMNVavgt6OZ3LLrSvxLaZZAyiRQ+mxo=
+	b=qlXjgHTnZ8MX0axDo25OMZgPt0G4Grv2oXB02yM+nYR6RRRbWehMv2S+hhbo8HxQ4
+	 CjCwRaldwNeepvv5N/iJAY0vJe2dD7ijhCqMQFxygyY5kevAXPnleuT7tMD31lOYhV
+	 G6rm6sP5L8rkPdEJlEd60xeJ0dWPV7PiIokUg/LQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 268/342] tracing/probes: Limit size of event probe to 3K
+	"DARKNAVY (@DarkNavyOrg)" <vr@darknavy.com>,
+	Simona Vetter <simona.vetter@ffwll.ch>,
+	syzbot+d7c9eed171647e421013@syzkaller.appspotmail.com,
+	Edward Adam Davis <eadavis@qq.com>,
+	Dave Airlie <airlied@redhat.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Francis <David.Francis@amd.com>,
+	Puttimet Thammasaeng <pwn8official@gmail.com>,
+	Christian Koenig <Christian.Koenig@amd.com>,
+	Zhenghang Xiao <kipreyyy@gmail.com>
+Subject: [PATCH 7.0 333/378] drm/gem: Try to fix change_handle ioctl, attempt 4
 Date: Tue, 16 Jun 2026 20:29:24 +0530
-Message-ID: <20260616145100.791811796@linuxfoundation.org>
+Message-ID: <20260616145127.755723966@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,105 +76,270 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266472-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mathieu.desnoyers@efficios.com,m:mhiramat@kernel.org,m:rostedt@goodmis.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264158-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:vr@darknavy.com,m:simona.vetter@ffwll.ch,m:syzbot+d7c9eed171647e421013@syzkaller.appspotmail.com,m:eadavis@qq.com,m:airlied@redhat.com,m:maarten.lankhorst@linux.intel.com,m:mripard@kernel.org,m:tzimmermann@suse.de,m:David.Francis@amd.com,m:pwn8official@gmail.com,m:Christian.Koenig@amd.com,m:kipreyyy@gmail.com,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,darknavy.com,ffwll.ch,syzkaller.appspotmail.com,qq.com,redhat.com,linux.intel.com,kernel.org,suse.de,amd.com,gmail.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,vger.kernel.org:from_smtp,goodmis.org:email]
+	TAGGED_RCPT(0.00)[stable,d7c9eed171647e421013];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,appspotmail.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 78A10694B0F
+X-Rspamd-Queue-Id: 407E969165D
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Simona Vetter <simona.vetter@ffwll.ch>
 
-[ Upstream commit b2aa3b4d64e460ac606f386c24e7d8a873ce6f1a ]
+commit 1a4f03d22fb655e5f192244fb2c87d8066fcfca2 upstream.
 
-There currently isn't a max limit an event probe can be. One could make an
-event greater than PAGE_SIZE, which makes the event useless because if
-it's bigger than the max event that can be recorded into the ring buffer,
-then it will never be recorded.
+[airlied: just added some comments on how to reenable]
+On-list because the cat is out of the bag and we're clearly not good
+enough to figure this out in private. The story thus far:
 
-A event probe should never need to be greater than 3K, so make that the
-max size. As long as the max is less than the max that can be recorded
-onto the ring buffer, it should be fine.
+5e28b7b94408 ("drm: Set old handle to NULL before prime swap in
+change_handle") tried to fix a race condition between the gem_close and
+gem_change_handle ioctls, but got a few things wrong:
 
+- There's a confusion with the local variable handle, which is actually
+  the new handle, and so the two-stage trick was actually applied to the
+  wrong idr slot. 7164d78559b0 ("drm/gem: fix race between
+  change_handle and handle_delete") tried to fix that by adding yet
+  another code block, but forgot to add the error handling. Which meant
+  we now have two paths, both kinda wrong.
+
+- dc366607c41c ("drm: Replace old pointer to new idr") tried to apply
+  another fix, but inconsistently, again because of the handle confusion
+  - this would be the right fix (kinda, somewhat, it's a mess) if we'd
+  do the two-stage approach for the new handle. Except that wasn't the
+  intent of the original fix.
+
+We also didn't have an igt merged for the original ioctl, which is a big
+no-go. This was attempted to address off-list in the original bugfix,
+and amd QA people claimed the bug was fixed now. Very clearly that's not
+the case. Here's my attempt to sort this out:
+
+- Rename the local variable to new_handle, the old aliasing with
+  args->handle is just too dangerously confusing.
+
+- Merge the gem obj lookup with the two-stage idr_replace so that we
+  avoid getting ourselves confused there.
+
+- This means we don't have a surplus temporary reference anymore, only
+  an inherited from the idr. A concurrent gem_close on the new_handle
+  could steal that. Fix that with the same two-stage approach
+  create_tail uses. This is a bit overkill as documented in the comment,
+  but I also don't trust my ability to understand this all correctly, so
+  go with the established pattern we have from other ioctls instead for
+  maximum paranoia.
+
+- Adjust error paths. I've tried to make the error and success paths
+  common, because they are identical except for which handle is removed
+  and on which we call idr_replace to (re)install the object again. But
+  that made things messier to read, so I've left it at the more verbose
+  version, which unfortunately hides the symmetry in the entire code
+  flow a bit.
+
+- While at it, also replace the 7 space indent with 1 tab.
+
+And finally, because I flat out don't trust my abilities here at all
+anymore:
+
+- Disable the ioctl until we have the igt situation and everything else
+  sorted out on-list and with full consensus.
+
+v2:
+
+Sashiko noticed that I didn't handle the error path for idr_replace
+correctly, it must be checked with IS_ERR_OR_NULL like in
+gem_handle_delete. So yeah, definitely should just the existing paths
+1:1 because this is endless amounts of tricky.
+
+Also add the Fixes: line for the original ioctl, I forgot that too.
+
+Reported-by: DARKNAVY (@DarkNavyOrg) <vr@darknavy.com>
+Signed-off-by: Simona Vetter <simona.vetter@ffwll.ch>
+Fixes: dc366607c41c ("drm: Replace old pointer to new idr")
+Cc: syzbot+d7c9eed171647e421013@syzkaller.appspotmail.com
 Cc: stable@vger.kernel.org
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Fixes: 93ccae7a22274 ("tracing/kprobes: Support basic types on dynamic events")
-Link: https://patch.msgid.link/20260428122302.706610ba@gandalf.local.home
-Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Edward Adam Davis <eadavis@qq.com>
+Cc: Dave Airlie <airlied@redhat.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Fixes: 5e28b7b94408 ("drm: Set old handle to NULL before prime swap in change_handle")
+Cc: David Francis <David.Francis@amd.com>
+Cc: Puttimet Thammasaeng <pwn8official@gmail.com>
+Cc: Christian Koenig <Christian.Koenig@amd.com>
+Fixes: 7164d78559b0 ("drm/gem: fix race between change_handle and handle_delete")
+Cc: Zhenghang Xiao <kipreyyy@gmail.com>
+Fixes: 5e28b7b94408 ("drm: Set old handle to NULL before prime swap in change_handle")
+Reviewed-by: David Francis <David.Francis@amd.com>
+Signed-off-by: Dave Airlie <airlied@redhat.com>
+Link: https://patch.msgid.link/20260604194437.1725314-1-simona.vetter@ffwll.ch
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace_probe.c |    5 +++++
- kernel/trace/trace_probe.h |    4 +++-
- 2 files changed, 8 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/drm_gem.c   |   73 ++++++++++++++++++++------------------------
+ drivers/gpu/drm/drm_ioctl.c |    3 +
+ 2 files changed, 36 insertions(+), 40 deletions(-)
 
---- a/kernel/trace/trace_probe.c
-+++ b/kernel/trace/trace_probe.c
-@@ -610,6 +610,11 @@ static int traceprobe_parse_probe_arg_bo
- 	parg->offset = *size;
- 	*size += parg->type->size * (parg->count ?: 1);
+--- a/drivers/gpu/drm/drm_gem.c
++++ b/drivers/gpu/drm/drm_gem.c
+@@ -997,12 +997,25 @@ err:
+ 	return ret;
+ }
  
-+	if (*size > MAX_PROBE_EVENT_SIZE) {
-+		trace_probe_log_err(offset, EVENT_TOO_BIG);
-+		return -E2BIG;
++/*
++ * This ioctl is disabled for security reasons but also it failed
++ * to follow process in terms of adding testing in igt and verifying
++ * all the corner cases which made fixing security bugs in it even
++ * harder than necessary.
++ *
++ * To re-enable this ioctl
++ * 1. land working IGT tests in igt-gpu-tools that cover
++ *    all corner cases and race conditions.
++ * 2. handle idr_preload
++ * 3. handle == 0
++ * 4. handle == new_handle semantics definition.
++ */
+ int drm_gem_change_handle_ioctl(struct drm_device *dev, void *data,
+ 				struct drm_file *file_priv)
+ {
+ 	struct drm_gem_change_handle *args = data;
+-	struct drm_gem_object *obj, *idrobj;
+-	int handle, ret;
++	struct drm_gem_object *obj;
++	int new_handle, ret;
+ 
+ 	if (!drm_core_check_feature(dev, DRIVER_GEM))
+ 		return -EOPNOTSUPP;
+@@ -1010,52 +1023,36 @@ int drm_gem_change_handle_ioctl(struct d
+ 	/* idr_alloc() limitation. */
+ 	if (args->new_handle > INT_MAX)
+ 		return -EINVAL;
+-	handle = args->new_handle;
++	new_handle = args->new_handle;
+ 
+-	obj = drm_gem_object_lookup(file_priv, args->handle);
+-	if (!obj)
+-		return -ENOENT;
+-
+-	if (args->handle == handle) {
+-		ret = 0;
+-		goto out;
+-	}
++	if (args->handle == new_handle)
++		return 0;
+ 
+ 	mutex_lock(&file_priv->prime.lock);
+-
+ 	spin_lock(&file_priv->table_lock);
+-
+-       /* When create_tail allocs an obj idr, it needs to first alloc as NULL,
+-	* then later replace with the correct object. This is not necessary
+-	* here, because the only operations that could race are drm_prime
+-	* bookkeeping, and we hold the prime lock.
+-	*/
+-	ret = idr_alloc(&file_priv->object_idr, obj, handle, handle + 1,
++	ret = idr_alloc(&file_priv->object_idr, NULL, new_handle, new_handle + 1,
+ 			GFP_NOWAIT);
+ 
+-       if (ret < 0) {
+-	       spin_unlock(&file_priv->table_lock);
+-	       goto out_unlock;
+-       }
+-
+-       idrobj = idr_replace(&file_priv->object_idr, NULL, handle);
+-       if (idrobj != obj) {
+-	       idr_replace(&file_priv->object_idr, idrobj, handle);
+-	       idr_remove(&file_priv->object_idr, args->new_handle);
+-	       spin_unlock(&file_priv->table_lock);
+-	       ret = -ENOENT;
+-	       goto out_unlock;
+-       }
++	if (ret < 0) {
++		spin_unlock(&file_priv->table_lock);
++		goto out_unlock;
 +	}
-+
- 	if (parg->count) {
- 		len = strlen(parg->type->fmttype) + 6;
- 		parg->fmt = kmalloc(len, GFP_KERNEL);
---- a/kernel/trace/trace_probe.h
-+++ b/kernel/trace/trace_probe.h
-@@ -33,6 +33,7 @@
- #define MAX_ARRAY_LEN		64
- #define MAX_ARG_NAME_LEN	32
- #define MAX_STRING_SIZE		PATH_MAX
-+#define MAX_PROBE_EVENT_SIZE	3072
  
- /* Reserved field names */
- #define FIELD_STRING_IP		"__probe_ip"
-@@ -439,7 +440,8 @@ extern int traceprobe_define_arg_fields(
- 	C(FAIL_REG_PROBE,	"Failed to register probe event"),\
- 	C(DIFF_PROBE_TYPE,	"Probe type is different from existing probe"),\
- 	C(DIFF_ARG_TYPE,	"Argument type or name is different from existing probe"),\
--	C(SAME_PROBE,		"There is already the exact same probe event"),
-+	C(SAME_PROBE,		"There is already the exact same probe event"),\
-+	C(EVENT_TOO_BIG,	"Event too big (too many fields?)"),
+-	idr_replace(&file_priv->object_idr, NULL, args->handle);
++	obj = idr_replace(&file_priv->object_idr, NULL, args->handle);
++	if (IS_ERR_OR_NULL(obj)) {
++		idr_remove(&file_priv->object_idr, new_handle);
++		spin_unlock(&file_priv->table_lock);
++		ret = -ENOENT;
++		goto out_unlock;
++	}
+ 	spin_unlock(&file_priv->table_lock);
  
- #undef C
- #define C(a, b)		TP_ERR_##a
+ 	if (obj->dma_buf) {
+ 		ret = drm_prime_add_buf_handle(&file_priv->prime, obj->dma_buf,
+-					       handle);
++					       new_handle);
+ 		if (ret < 0) {
+ 			spin_lock(&file_priv->table_lock);
+-			idr_remove(&file_priv->object_idr, handle);
++			idr_remove(&file_priv->object_idr, new_handle);
+ 			idr_replace(&file_priv->object_idr, obj, args->handle);
+ 			spin_unlock(&file_priv->table_lock);
+ 			goto out_unlock;
+@@ -1068,14 +1065,12 @@ int drm_gem_change_handle_ioctl(struct d
+ 
+ 	spin_lock(&file_priv->table_lock);
+ 	idr_remove(&file_priv->object_idr, args->handle);
+-	idrobj = idr_replace(&file_priv->object_idr, obj, handle);
++	obj = idr_replace(&file_priv->object_idr, obj, new_handle);
+ 	spin_unlock(&file_priv->table_lock);
+-	WARN_ON(idrobj != NULL);
++	WARN_ON(obj != NULL);
+ 
+ out_unlock:
+ 	mutex_unlock(&file_priv->prime.lock);
+-out:
+-	drm_gem_object_put(obj);
+ 
+ 	return ret;
+ }
+--- a/drivers/gpu/drm/drm_ioctl.c
++++ b/drivers/gpu/drm/drm_ioctl.c
+@@ -660,7 +660,8 @@ static const struct drm_ioctl_desc drm_i
+ 	DRM_IOCTL_DEF(DRM_IOCTL_GEM_CLOSE, drm_gem_close_ioctl, DRM_RENDER_ALLOW),
+ 	DRM_IOCTL_DEF(DRM_IOCTL_GEM_FLINK, drm_gem_flink_ioctl, DRM_AUTH),
+ 	DRM_IOCTL_DEF(DRM_IOCTL_GEM_OPEN, drm_gem_open_ioctl, DRM_AUTH),
+-	DRM_IOCTL_DEF(DRM_IOCTL_GEM_CHANGE_HANDLE, drm_gem_change_handle_ioctl, DRM_RENDER_ALLOW),
++	/* see drm_gem.c:drm_gem_change_handle_ioctl for why this is invalid */
++	DRM_IOCTL_DEF(DRM_IOCTL_GEM_CHANGE_HANDLE, drm_invalid_op, DRM_RENDER_ALLOW),
+ 
+ 	DRM_IOCTL_DEF(DRM_IOCTL_MODE_GETRESOURCES, drm_mode_getresources, 0),
+ 
 
 
 
