@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-265422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265423-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id GjtvIKqJMWoPmAUAu9opvQ
-	(envelope-from <stable+bounces-265422-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:36:42 +0200
+	id EV7iANOJMWojmAUAu9opvQ
+	(envelope-from <stable+bounces-265423-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:37:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F27A46934E1
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:36:41 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AF86693517
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:37:22 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="y/qcT/2W";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265422-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265422-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=LM7zw+jZ;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265423-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265423-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A8DC131EA890
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:32:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EF0DC31F20DE
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:32:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E8C747AF57;
-	Tue, 16 Jun 2026 17:32:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ADEF47A0DA;
+	Tue, 16 Jun 2026 17:32:07 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F74747A0DA;
-	Tue, 16 Jun 2026 17:32:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3B3E332EC1;
+	Tue, 16 Jun 2026 17:32:05 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781631121; cv=none; b=ivSTWQ3Fw0OgugoRa+35VgelOyoYFPV04zmMThxV7LIrmyUHj9r/RzsWBzGgXQXMSNmGEw0haslSKh3E/MR64vxuinismLAefuwQYyJ+zW80JNunCoPhr4TGVsG+JEgrmoYtXXrwyrPznQAHpxYrcGmZrFqmrLY2bwl5PCQwdwQ=
+	t=1781631126; cv=none; b=RtPlx7VuHwdAjXPS5BO2vsenuoWpY6+oSt349n+P+ss1TX3tNL6pMevtcX7GFl/izdcetesrbThhQZpheG6DX69HNIlT/kZTwru7f7eMXHuzfuzsZt1JFic3LL2/bORBl2WVetlGF/+sl442e4u1h55Z+mOIG4JRqswjrcpePzs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781631121; c=relaxed/simple;
-	bh=BQEEELklXiBtSJhp4zY0PdNXc1NaGs3CWSOHNhgZT7U=;
+	s=arc-20240116; t=1781631126; c=relaxed/simple;
+	bh=jtsedPWDCB/9zy6+JgKeGHp7xp5pnxCFqpi3sPPqMJA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CEUl8A++wNaRm7IpgtmQmVPx0sdRCoLIgrkGWeh7cGQMUcOIw3c8UOsSr+14guwf8RaIXtWFZF9s4cXdjMOYdyBrYYPbZ9JUftrVV2dAShuYYYj2PsF2B7IrErE4YUMZg3f7GuQ0/x5Oq+qTDFCPmSRh5z8f/utjIGIBt/I7X5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y/qcT/2W; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 382241F000E9;
-	Tue, 16 Jun 2026 17:31:58 +0000 (UTC)
+	 MIME-Version; b=dq2sXAIAgf9mJ0iPh4A5izoJ1IORXactK7UNTMGxUSMXaHsJjad2Dj+nHfYhfHq3TiqXkrMxCwcoOtLY0vMVHZeSTMf448qHuUbWMOEjWV/MTBt2ElexG9O+cxph/uz4o/hSG6yyPGXOiaH+v/rh7KIN/kp3GaY7HvMc4vvXVdA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LM7zw+jZ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A99931F000E9;
+	Tue, 16 Jun 2026 17:32:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781631120;
-	bh=wrXti2phj0jypO9zwGS/aajQUBmCm5znCEB4jA/CnQs=;
+	s=korg; t=1781631125;
+	bh=OwWkQnehEBUujvOferkga6UNI+p4gwoWD2b6yIckoL8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=y/qcT/2Wy4cYhyZ9zW8A6ucPT1keECPG66fh66Clg1TIKRHGNLXWKB3WNphl4gTUU
-	 BTarQPAYa/NJbEaDOTRRqbiGQUQFQcPLbuJ8PsGBHIc+a3C+v+SA9JgK7An+HW3aH/
-	 xApcQ6NT16QeLf+Bz1XBjpJbwBGUd6iJL6DUpNtY=
+	b=LM7zw+jZ1hsM1s8qcG4LmTNlAwHZMSkSL1KsgCuhn++qL9X9/gsiMKP/rxn9ZMxtt
+	 6K0iOweOaR3wRIR1G53P4qXNbOVZvoy22ndqoVSZo2XLnDklHd+L4ci4gm5O3YhGBG
+	 sukKsRDIk5ivjba3T+3dTO0Iugc/+YTVvYjjv5sQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Michael Bommarito <michael.bommarito@gmail.com>,
 	Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: [PATCH 6.1 160/522] thunderbolt: property: Reject u32 wrap in tb_property_entry_valid()
-Date: Tue, 16 Jun 2026 20:25:07 +0530
-Message-ID: <20260616145133.614085642@linuxfoundation.org>
+Subject: [PATCH 6.1 161/522] thunderbolt: property: Reject dir_len < 4 to prevent size_t underflow
+Date: Tue, 16 Jun 2026 20:25:08 +0530
+Message-ID: <20260616145133.663159198@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
 References: <20260616145125.307082728@linuxfoundation.org>
@@ -72,20 +72,20 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265422-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265423-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:mika.westerberg@linux.intel.com,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.intel.com];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:mika.westerberg@linux.intel.com,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
@@ -95,13 +95,13 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: F27A46934E1
+X-Rspamd-Queue-Id: 5AF86693517
 
 6.1-stable review patch.  If anyone has any objections, please let me know.
 
@@ -109,24 +109,34 @@ X-Rspamd-Queue-Id: F27A46934E1
 
 From: Michael Bommarito <michael.bommarito@gmail.com>
 
-commit 01deda0152066c6c955f0619114ea6afa070aaec upstream.
+commit de21b59c29e31c5108ddc04210631bbfab81b997 upstream.
 
-entry->value is u32 and entry->length is u16; the sum is performed in
-u32 and wraps.  A malicious XDomain peer can pick
-value = 0xffffff00, length = 0x100 so the sum 0x100000000 wraps to 0
-and passes the > block_len check.  tb_property_parse() then passes
-entry->value to parse_dwdata() as a dword offset into the property
-block, reading attacker-directed memory far past the allocation.
+On the non-root path, __tb_property_parse_dir() takes dir_len from
+entry->length (u16 widened to size_t).  Two distinct OOB conditions
+follow when entry->length < 4:
 
-For TEXT-typed entries with the "deviceid" or "vendorid" keys this
-lands in xd->device_name / xd->vendor_name and is readable back via
-the per-XDomain device_name / vendor_name sysfs attributes; the leak
-is NUL-bounded (kstrdup() stops at the first zero byte) and
-untargeted (the attacker picks a delta, not an absolute address).
-DATA-typed entries are parsed into property->value.data but not
-generically surfaced to userspace.
+1. The non-root path begins with kmemdup(&block[dir_offset],
+   sizeof(*dir->uuid), ...) which always reads 4 dwords from
+   dir_offset.  tb_property_entry_valid() only enforces
+   dir_offset + entry->length <= block_len, so a crafted entry
+   with dir_offset close to the end of the property block and
+   entry->length in 0..3 passes that gate but lets the UUID copy
+   run off the block (e.g. dir_offset = 497, dir_len = 3 in a
+   500-dword block reads block[497..501]).
 
-Use check_add_overflow() so a wrapped sum is rejected.
+2. After the kmemdup, content_len = dir_len - 4 underflows size_t
+   to ~SIZE_MAX, nentries becomes SIZE_MAX / 4, and the entry
+   walk runs OOB on each iteration until an entry fails
+   validation or the kernel oopses on an unmapped page.
+
+Reject dir_len < 4 on the non-root path *before* the UUID kmemdup,
+which closes both holes.
+
+Also move INIT_LIST_HEAD(&dir->properties) up to immediately after
+the dir allocation so the new error-return path (and the existing
+uuid-alloc failure path) calling tb_property_free_dir() sees a
+walkable list rather than the zero-initialized NULL next/prev that
+list_for_each_entry_safe() would oops on.
 
 Fixes: cdae7c07e3e3 ("thunderbolt: Add support for XDomain properties")
 Cc: stable@vger.kernel.org
@@ -136,36 +146,36 @@ Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
 Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/thunderbolt/property.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/thunderbolt/property.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
 --- a/drivers/thunderbolt/property.c
 +++ b/drivers/thunderbolt/property.c
-@@ -8,6 +8,7 @@
-  */
+@@ -174,10 +174,16 @@ static struct tb_property_dir *__tb_prop
+ 	if (!dir)
+ 		return NULL;
  
- #include <linux/err.h>
-+#include <linux/overflow.h>
- #include <linux/slab.h>
- #include <linux/string.h>
- #include <linux/uuid.h>
-@@ -52,13 +53,16 @@ static inline void format_dwdata(void *d
- static bool tb_property_entry_valid(const struct tb_property_entry *entry,
- 				  size_t block_len)
- {
-+	u32 end;
++	INIT_LIST_HEAD(&dir->properties);
 +
- 	switch (entry->type) {
- 	case TB_PROPERTY_TYPE_DIRECTORY:
- 	case TB_PROPERTY_TYPE_DATA:
- 	case TB_PROPERTY_TYPE_TEXT:
- 		if (entry->length > block_len)
- 			return false;
--		if (entry->value + entry->length > block_len)
-+		if (check_add_overflow(entry->value, entry->length, &end) ||
-+		    end > block_len)
- 			return false;
- 		break;
+ 	if (is_root) {
+ 		content_offset = dir_offset + 2;
+ 		content_len = dir_len;
+ 	} else {
++		if (dir_len < 4) {
++			tb_property_free_dir(dir);
++			return NULL;
++		}
+ 		dir->uuid = kmemdup(&block[dir_offset], sizeof(*dir->uuid),
+ 				    GFP_KERNEL);
+ 		if (!dir->uuid) {
+@@ -191,8 +197,6 @@ static struct tb_property_dir *__tb_prop
+ 	entries = (const struct tb_property_entry *)&block[content_offset];
+ 	nentries = content_len / (sizeof(*entries) / 4);
+ 
+-	INIT_LIST_HEAD(&dir->properties);
+-
+ 	for (i = 0; i < nentries; i++) {
+ 		struct tb_property *property;
  
 
 
