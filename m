@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-264019-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265569-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id pGPbBUFtMWowjAUAu9opvQ
-	(envelope-from <stable+bounces-264019-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:35:29 +0200
+	id YMdnJJqMMWpnmQUAu9opvQ
+	(envelope-from <stable+bounces-265569-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:49:14 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FFB96912DA
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:35:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0818969381F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:49:14 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=sdOnRktv;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264019-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264019-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=uQTIzh0C;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265569-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265569-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C7C5F3235E01
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:28:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DE4373082E54
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:44:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D70914418F0;
-	Tue, 16 Jun 2026 15:28:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A43C747AF68;
+	Tue, 16 Jun 2026 17:44:25 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA9F4441022;
-	Tue, 16 Jun 2026 15:28:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05B1B3876CF;
+	Tue, 16 Jun 2026 17:44:24 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781623696; cv=none; b=TaCJDZYkKQ+PfGGgF7dKSMyZHUzVkEJamUo8VIp489huW3No0h/adCRsTINLfRiSJYwxRLaPprgpukVGLb9s9Tj6wNj6G38+9aZrBB/7U7gcRuKur/Mid/DPArevXQH3YaECmputICYvsr1AtX4vLLZNjkbU8M53FDRRMYO+Evc=
+	t=1781631865; cv=none; b=jRtpxuYiDuBISiRFIhdWNAa2AcaRpsiUKhMmIDiHnK5y2//b6pst1OG+hBYznXGCFi3OLRuh3bEii+99tbvda5bPzb66U1sOGzvgjuO/TkzrXdO4NiMDD2SIK5Gs4/eP1I9QkySRa/cIp36BhMW4vyqS9dZwuuZ3uAFqQCYjEmQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781623696; c=relaxed/simple;
-	bh=Y3VBHMlKtpgLDNEsHrzsEF1UuE5+xb7S92lFXodTGEg=;
+	s=arc-20240116; t=1781631865; c=relaxed/simple;
+	bh=xSIp7d6QwcdQIGj/by1xBuyOOulRkqtz0pufYoeXbeE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Aw1fg4WxcPgEvhFmQt6Jw/7eZM36HzPgeBmRM0PfpEgWaU1/2E7ZIfLOi1ZorwmLgZ/3VSUqf/6IgC+ayb8qLAFJW9UGwqV3rh13iQ9sekMUOr8z+vsUYlRfaY8jQPNgA+xrGmaueT7xhyCSMlyjs6xnzJ80RLY6QPDWxN4Iw7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sdOnRktv; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BAF31F000E9;
-	Tue, 16 Jun 2026 15:28:14 +0000 (UTC)
+	 MIME-Version; b=HspdhlgnvV+9kE8zSuS5B8oqOJYYGjc6MBP6yc3z2Y4VVtmAB7EJWrpA5AKV++ZCJ31ZK8iuKO4/HrbjIFQSVrLE+NmhJOuMA52M/UKcI6wEIanGCtEEqah3nXwuvjZblIZ8+dycL4ctC/LL33zOpR4V+AfN7JKOxjED1WSjHlU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uQTIzh0C; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B2F71F000E9;
+	Tue, 16 Jun 2026 17:44:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781623695;
-	bh=LuCB17T3LWOjvHGWdBKwnyfd7bwdaqmwNinENz+9Mgc=;
+	s=korg; t=1781631863;
+	bh=a9M/qFA7P0aHR2U0aMJP+cU9svV+V2yI4eBLUofeweg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=sdOnRktvdI0VQ/Znq1arABpjFIzmUiWDAajV30LMBa1U+EQFAhjcpyj8a7KnyoWEk
-	 OOKOUsdHEsMa3oYtnCD+2PPsmUsZ869GBMl71og5FdqUQeNIFUPZwwz9hmheHghKw1
-	 MOzRFgZU+SKdqchKNWNB7UpduvCruY1TGEIQEtEo=
+	b=uQTIzh0CeYGXSqvMoJB1v5ab06kjVq2fk5X8Ey/1MzuPltHEjbTPcqqtTh5frHPOS
+	 MeSbJpRvfxWGotMNoFmeE8a5oyLU8akYgeqXzgSQkqq6pnv2qauAsNuH2XYk2h7qbI
+	 dRgk7xv8dB24WoXRqd9fJEhCOd4T/3rymQ2OXe5o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Upton <oupton@kernel.org>,
-	Wei-Lin Chang <weilin.chang@arm.com>,
-	Marc Zyngier <maz@kernel.org>
-Subject: [PATCH 7.0 198/378] KVM: arm64: Correctly identify executable PTEs at stage-2
+	Yuho Choi <dbgh9129@gmail.com>,
+	Dinh Nguyen <dinguyen@kernel.org>
+Subject: [PATCH 6.1 282/522] ARM: socfpga: Fix OF node refcount leak in SMP setup
 Date: Tue, 16 Jun 2026 20:27:09 +0530
-Message-ID: <20260616145120.815712596@linuxfoundation.org>
+Message-ID: <20260616145139.133118857@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,73 +75,71 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264019-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265569-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:dbgh9129@gmail.com,m:dinguyen@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:oupton@kernel.org,m:weilin.chang@arm.com,m:maz@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,arm.com:email,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 6FFB96912DA
+X-Rspamd-Queue-Id: 0818969381F
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Upton <oupton@kernel.org>
+From: Yuho Choi <dbgh9129@gmail.com>
 
-commit 17f073f78fc43280891ecde8f8ec3f84f98bb37c upstream.
+commit 63838c323924fe4a78b2323bd45aa1030f72ca60 upstream.
 
-KVM invalidates the I-cache before installing an executable PTE on
-implementations without DIC. Unfortunately, support for FEAT_XNX
-broke this check as KVM_PTE_LEAF_ATTR_HI_S2_XN was expanded to a
-bitfield.
+socfpga_smp_prepare_cpus() looks up the Cortex-A9 SCU node with
+of_find_compatible_node(), which returns a node reference that must be
+released with of_node_put().
 
-Fix it by reusing kvm_pgtable_stage2_pte_prot() and testing the abstract
-permission bits instead.
+The function maps the SCU registers and then returns without dropping
+that reference, leaking the node on both the success path and the
+of_iomap() failure path.
 
-Fixes: 2608563b466b ("KVM: arm64: Add support for FEAT_XNX stage-2 permissions")
-Reported-by: Sashiko (gemini/gemini-3.1-pro-preview)
-Signed-off-by: Oliver Upton <oupton@kernel.org>
-Reviewed-by: Wei-Lin Chang <weilin.chang@arm.com>
-Link: https://patch.msgid.link/20260602165901.52800-3-oupton@kernel.org
-Signed-off-by: Marc Zyngier <maz@kernel.org>
+Drop the reference once the mapping attempt is complete. The returned
+MMIO mapping does not depend on keeping the device node reference held.
+
+Fixes: 122694a0c712 ("ARM: socfpga: use of_iomap to map the SCU")
 Cc: stable@vger.kernel.org
+Signed-off-by: Yuho Choi <dbgh9129@gmail.com>
+Signed-off-by: Dinh Nguyen <dinguyen@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kvm/hyp/pgtable.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/arm/mach-socfpga/platsmp.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/arm64/kvm/hyp/pgtable.c
-+++ b/arch/arm64/kvm/hyp/pgtable.c
-@@ -923,7 +923,9 @@ static bool stage2_pte_cacheable(struct
+--- a/arch/arm/mach-socfpga/platsmp.c
++++ b/arch/arm/mach-socfpga/platsmp.c
+@@ -78,6 +78,7 @@ static void __init socfpga_smp_prepare_c
+ 	}
  
- static bool stage2_pte_executable(kvm_pte_t pte)
- {
--	return kvm_pte_valid(pte) && !(pte & KVM_PTE_LEAF_ATTR_HI_S2_XN);
-+	enum kvm_pgtable_prot prot = kvm_pgtable_stage2_pte_prot(pte);
-+
-+	return prot & (KVM_PGTABLE_PROT_UX | KVM_PGTABLE_PROT_PX);
- }
- 
- static u64 stage2_map_walker_phys_addr(const struct kvm_pgtable_visit_ctx *ctx,
+ 	socfpga_scu_base_addr = of_iomap(np, 0);
++	of_node_put(np);
+ 	if (!socfpga_scu_base_addr)
+ 		return;
+ 	scu_enable(socfpga_scu_base_addr);
 
 
 
