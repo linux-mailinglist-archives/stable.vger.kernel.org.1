@@ -1,62 +1,63 @@
-Return-Path: <stable+bounces-265664-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266096-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 8vUoB2mNMWrimQUAu9opvQ
-	(envelope-from <stable+bounces-265664-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:52:41 +0200
+	id 25PLN7WWMWpZngUAu9opvQ
+	(envelope-from <stable+bounces-266096-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:32:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 484A069392E
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:52:40 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DCEE694382
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:32:21 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=jzy5dz6D;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265664-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265664-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=OqNqDLAy;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266096-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266096-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6F74F30008A9
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:52:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 427D732009A5
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:30:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53CC04779BB;
-	Tue, 16 Jun 2026 17:52:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 082CC46AEDB;
+	Tue, 16 Jun 2026 18:30:41 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0DC247CC64;
-	Tue, 16 Jun 2026 17:52:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 903644418D7;
+	Tue, 16 Jun 2026 18:30:39 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781632353; cv=none; b=i7FIUsc06+VVdRQRtoUk0giGSkAB75jZpbq5FUKiuAlHLVq140k1RHVUONPQPl67WkpzFz1YQoIdqI5N8anlrUPzKhcT5WN9hEiwMb309qUTWAI8u43uZJpLQRU2ATDJ4c5Wg8/3eann0XktbxA5sVcF1EVMDcRhtrcoO61NM1g=
+	t=1781634640; cv=none; b=MoRad4+XuIzk3qpBOlEmyoeD5xUQPFTxSnpqtTmUuWOWyoa3Sbmmeng46BammokpaLA4e2hw1hIeEb649B1iYvAvzXhpSGDFdC/7pJAx1uZ8+YsYV486Ei6pBWIERQnUx25ct5OuS1Fsu634TuD0gbKJz9saMPwZZPPuDIHMCJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781632353; c=relaxed/simple;
-	bh=BZVlcst+hdNYNVP5ZkSuJhq1rvvWx2qO2EXRZiDArjc=;
+	s=arc-20240116; t=1781634640; c=relaxed/simple;
+	bh=5UJH0UoqVZffacw4+0mLrjTnse9yxOlkSh7YunMWujc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eTEl9iHxI25YvNoy1hEiqJmlcZdKhtN9p2k7HqIfMtS6uZ5M2+887ySnWXYQlrxHW59oDpytUq87qaKiksvsk1vDdjPbOKR1PwALrfCLTPl25GWfAvsEVXwxoJVObnYJHaWIZeDXmtEF8jB/gPcpj02aaM67PPlrJbN5ZFmd26U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jzy5dz6D; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7EE81F000E9;
-	Tue, 16 Jun 2026 17:52:29 +0000 (UTC)
+	 MIME-Version; b=SpLGB19+H4VSsaP5q8ZUdWhGHBOh4SEkpQq+3kolqOvep1GXxUdumUv5mlQOXA2ULXPT43gYH/aLnkYHCJXyv0EJ1D/hcnarXK7CIKPmTUMSZtRHDa/Tq5VtYFTHnVw7haEwS3ZqUmdiav7TzosDpmFzYRG9KEtg5iSm5YdjdJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OqNqDLAy; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9457C1F000E9;
+	Tue, 16 Jun 2026 18:30:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781632350;
-	bh=dr1D5AHIXrYgtMoLnMiF5C01LqxvYY+WtsCtKfr3ugg=;
+	s=korg; t=1781634639;
+	bh=G3taWQjl1BfsPxdjG5iodc2cSxnqUL9MLYVql2ioS6Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jzy5dz6Dln7/QVgTzk9M6SBbtRK72AOxUA6wX1g1aiZYyf6kv14MZbh76Yt0vcMja
-	 aCynyoRimDRaaQzNZX70eXhsFSS8sWCtJlKweuegtNJAHnUiRd3rmKKfVX67LCPfa2
-	 hzv5kX1usThRIFNrMlwPbF+0yNGIT8IIZOR7r2vo=
+	b=OqNqDLAy1/9Suf7Cnh21ioWaKobXzYT/NuL39wzq3wwBCFnEZrmc7qxfEN3MWJVrx
+	 IKSBtPeQPE72oJgNeQ7EbTb3rZE7fa3HIUk0cLwV6Ao0M4AO1K2HZqa0dvFJUXVQHA
+	 WnBM1sy4/1/emyP4Aq9d8HrGdyry/0WHnKPddrCc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxime Ripard <mripard@kernel.org>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
+	Amit Sunil Dhamne <amitsd@google.com>,
+	stable <stable@kernel.org>,
+	Badhri Jagan Sridharan <badhri@google.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 394/522] spi: sun6i: fix controller deregistration
-Date: Tue, 16 Jun 2026 20:29:01 +0530
-Message-ID: <20260616145144.312334441@linuxfoundation.org>
+Subject: [PATCH 5.15 304/411] usb: typec: tcpm: reset internal port states on soft reset AMS
+Date: Tue, 16 Jun 2026 20:29:02 +0530
+Message-ID: <20260616145117.309810031@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,22 +73,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265664-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-266096-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mripard@kernel.org,m:johan@kernel.org,m:broonie@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:amitsd@google.com,m:stable@kernel.org,m:badhri@google.com,m:heikki.krogerus@linux.intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -96,68 +97,99 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 484A069392E
+X-Rspamd-Queue-Id: 4DCEE694382
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Amit Sunil Dhamne <amitsd@google.com>
 
-[ Upstream commit d874a1c33aee0d88fb4ba2f8aeadaa9f1965209a ]
+[ Upstream commit 2909f0d4994fb4306bf116df5ccee797791fce2c ]
 
-Make sure to deregister the controller before disabling underlying
-resources like clocks during driver unbind.
+Reset internal port states (such as vdm_sm_running and
+explicit_contract) on soft reset AMS as the port needs to negotiate a
+new contract. The consequence of leaving the states in as-is cond are as
+follows:
+  * port is in SRC power role and an explicit contract is negotiated
+    with the port partner (in sink role)
+  * port partner sends a Soft Reset AMS while VDM State Machine is
+    running
+  * port accepts the Soft Reset request and the port advertises src caps
+  * port partner sends a Request message but since the explicit_contract
+    and vdm_sm_running are true from previous negotiation, the port ends
+    up sending Soft Reset instead of Accept msg.
 
-Fixes: 3558fe900e8a ("spi: sunxi: Add Allwinner A31 SPI controller driver")
-Cc: stable@vger.kernel.org	# 3.15
-Cc: Maxime Ripard <mripard@kernel.org>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260410081757.503099-20-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-[ renamed spi_controller APIs to spi_master equivalents and kept int return type for sun6i_spi_remove ]
+Stub Log:
+[  203.653942] AMS DISCOVER_IDENTITY start
+[  203.653947] PD TX, header: 0x176f
+[  203.655901] PD TX complete, status: 0
+[  203.657470] PD RX, header: 0x124f [1]
+[  203.657477] Rx VDM cmd 0xff008081 type 2 cmd 1 len 1
+[  203.657482] AMS DISCOVER_IDENTITY finished
+[  203.657484] cc:=4
+[  204.155698] PD RX, header: 0x144f [1]
+[  204.155718] Rx VDM cmd 0xeeee8001 type 0 cmd 1 len 1
+[  204.155741] PD TX, header: 0x196f
+[  204.157622] PD TX complete, status: 0
+[  204.160060] PD RX, header: 0x4d [1]
+[  204.160066] state change SRC_READY -> SOFT_RESET [rev2 SOFT_RESET_AMS]
+[  204.160076] PD TX, header: 0x163
+[  204.162486] PD TX complete, status: 0
+[  204.162832] AMS SOFT_RESET_AMS finished
+[  204.162840] cc:=4
+[  204.162891] AMS POWER_NEGOTIATION start
+[  204.162896] state change SOFT_RESET -> AMS_START [rev2 POWER_NEGOTIATION]
+[  204.162908] state change AMS_START -> SRC_SEND_CAPABILITIES [rev2 POWER_NEGOTIATION]
+[  204.162913] PD TX, header: 0x1361
+[  204.165529] PD TX complete, status: 0
+[  204.165571] pending state change SRC_SEND_CAPABILITIES -> SRC_SEND_CAPABILITIES_TIMEOUT @ 60 ms [rev2 POWER_NEGOTIATION]
+[  204.166996] PD RX, header: 0x1242 [1]
+[  204.167009] state change SRC_SEND_CAPABILITIES -> SRC_SOFT_RESET_WAIT_SNK_TX [rev2 POWER_NEGOTIATION]
+[  204.167019] AMS POWER_NEGOTIATION finished
+[  204.167020] cc:=4
+[  204.167083] AMS SOFT_RESET_AMS start
+[  204.167086] state change SRC_SOFT_RESET_WAIT_SNK_TX -> SOFT_RESET_SEND [rev2 SOFT_RESET_AMS]
+[  204.167092] PD TX, header: 0x16d
+[  204.168824] PD TX complete, status: 0
+[  204.168854] pending state change SOFT_RESET_SEND -> HARD_RESET_SEND @ 60 ms [rev2 SOFT_RESET_AMS]
+[  204.171876] PD RX, header: 0x43 [1]
+[  204.171879] AMS SOFT_RESET_AMS finished
+
+This causes COMMON.PROC.PD.11.2 check failure for
+TEST.PD.VDM.SRC.2_Rev2Src test on the PD compliance tester.
+
+Signed-off-by: Amit Sunil Dhamne <amitsd@google.com>
+Fixes: 8d3a0578ad1a ("usb: typec: tcpm: Respond Wait if VDM state machine is running")
+Fixes: f0690a25a140 ("staging: typec: USB Type-C Port Manager (tcpm)")
+Cc: stable <stable@kernel.org>
+Reviewed-by: Badhri Jagan Sridharan <badhri@google.com>
+Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://patch.msgid.link/20260414-fix-soft-reset-v1-1-01d7cb9764e2@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[ kept `tcpm_pd_send_control(port, PD_CTRL_ACCEPT)` call unchanged ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-sun6i.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/usb/typec/tcpm/tcpm.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/spi/spi-sun6i.c
-+++ b/drivers/spi/spi-sun6i.c
-@@ -688,7 +688,7 @@ static int sun6i_spi_probe(struct platfo
- 	pm_runtime_set_active(&pdev->dev);
- 	pm_runtime_enable(&pdev->dev);
- 
--	ret = devm_spi_register_master(&pdev->dev, master);
-+	ret = spi_register_master(master);
- 	if (ret) {
- 		dev_err(&pdev->dev, "cannot register SPI master\n");
- 		goto err_pm_disable;
-@@ -714,12 +714,19 @@ static int sun6i_spi_remove(struct platf
- {
- 	struct spi_master *master = platform_get_drvdata(pdev);
- 
-+	spi_master_get(master);
-+
-+	spi_unregister_master(master);
-+
- 	pm_runtime_force_suspend(&pdev->dev);
- 
- 	if (master->dma_tx)
- 		dma_release_channel(master->dma_tx);
- 	if (master->dma_rx)
- 		dma_release_channel(master->dma_rx);
-+
-+	spi_master_put(master);
-+
- 	return 0;
- }
- 
+--- a/drivers/usb/typec/tcpm/tcpm.c
++++ b/drivers/usb/typec/tcpm/tcpm.c
+@@ -4576,6 +4576,8 @@ static void run_state_machine(struct tcp
+ 		port->message_id = 0;
+ 		port->rx_msgid = -1;
+ 		tcpm_pd_send_control(port, PD_CTRL_ACCEPT);
++		port->vdm_sm_running = false;
++		port->explicit_contract = false;
+ 		tcpm_ams_finish(port);
+ 		if (port->pwr_role == TYPEC_SOURCE) {
+ 			port->upcoming_state = SRC_SEND_CAPABILITIES;
 
 
 
