@@ -1,62 +1,63 @@
-Return-Path: <stable+bounces-264218-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266332-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id AE2pFOhxMWrzjQUAu9opvQ
-	(envelope-from <stable+bounces-264218-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:55:20 +0200
+	id 2ATXI+CbMWqDoAUAu9opvQ
+	(envelope-from <stable+bounces-266332-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:54:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3B13691829
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:55:19 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D62D66948F9
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:54:23 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=awdGx3t0;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264218-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264218-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Rj6F1B8A;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266332-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266332-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B8CA93038F68
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:47:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3DDEB3222836
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:51:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85BCE4657D7;
-	Tue, 16 Jun 2026 15:45:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC80947AF43;
+	Tue, 16 Jun 2026 18:51:08 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0287C44CF4E;
-	Tue, 16 Jun 2026 15:45:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61CF2472798;
+	Tue, 16 Jun 2026 18:51:07 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781624754; cv=none; b=R68lXQLgoL9qc1UxtXF9otYDWwuji15B2ad4IFFWONCWgmPNxjuj1cS6SPnljBx2hIT6luD/PJDJlAw+MXEgC9JSRJZ5hTwEpf4frgZDGWuyu1X5niX6fQAxG08o74UIMvnGPQPKthhyl6Q89KIibt3xcTn9U6QUSh+Kn5hU0c0=
+	t=1781635868; cv=none; b=ZSNDdbmWcm2TzO5CKaIqXfCFMpdKf/tEuQIXDJUSbcM/cfQT9FQ1AqL1H/hwOZ91qeXL5g3WY9iTyoKKE3bqICwsDg700qE81jDmWMz/MWn7LpjLIbY7I62fDSjM7SYTisPfk3v58TydH1ijXEiLIz/fTVrskgsYHm1Og32749U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781624754; c=relaxed/simple;
-	bh=qcF6UrEwND6yoNeLF5HFmCaSETpnFwGFnx+laQI8yX0=;
+	s=arc-20240116; t=1781635868; c=relaxed/simple;
+	bh=0YmU2HgTi1tGerrioqyO3DxbAwno5H6abxC2UDyNWLk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bKnEeZPbCO8Iy/ocjt1sNRkMSccOg2A0SIds2JoERkeIZEOP3ETBbSETy5wBa994SyGygGpDNkYaajMzg3pWfjLsaJnWLab6hlVi1BeVghHDoPZT970na9eDmIVSyjXcq5/ehnGnxaEQsRrKQxCyRUsKMD/f7rYkw0Cy6QXei88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=awdGx3t0; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0EBE1F000E9;
-	Tue, 16 Jun 2026 15:45:50 +0000 (UTC)
+	 MIME-Version; b=dZUCRVvR5iUMIuKDnLsOJ6FGqH+IKmHbaGQhunTTAhTUNpb3rR+gf5KoM18MnsI8+di5LyUezx9Iax66/yykU5dk/NWslA8n1uUX+R0CeK0c433iLlRsToA/qx5zS2rg3iBVg0giFVmjMzbM1waxFZSx2UHkWBOUlMCYR2wR3FI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rj6F1B8A; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6267D1F000E9;
+	Tue, 16 Jun 2026 18:51:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781624751;
-	bh=ld4MrRoMFHP5wQYooovJNTHUlV1w0VObgomj8WSIfsc=;
+	s=korg; t=1781635867;
+	bh=uEfFpHBJKw4S7UIxA+Xk7Kt9wON26upafeTLkekYkNA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=awdGx3t0I3UJTVvPYA83KfsIvcjinJUxkdhXg4z3kftRl8zcVxqCfczGP/iqBYFO1
-	 BTEP/P0nVBcrdgALoh1oeuYB42DYqvO98U4EwwCwI05gfUdp4ubDC/91RAeYgULuD4
-	 XM2/2zy3+pRx5W+r+4XSkhgEcDd1lEF2fKrm+nAA=
+	b=Rj6F1B8AGR7sQ3I4ZF8yxWIDlH6Xg3V0p6lhN2uc3WWHo8IlDmu/uM6aprTPrvsUr
+	 2RCr5vr52FF8/lmM6xR0yjmARTwLVhRtt5MJa33Wk/u3KH9+y0+5nB3NefRHFXqP+d
+	 yrP+WCn1zbiyWwr4FziOObBlL/I76ASTXvrk02RM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Eulgyu Kim <eulgyukim@snu.ac.kr>,
+	Taeyang Lee <0wn@theori.io>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 023/325] netfilter: synproxy: add mutex to guard hook reference counting
+Subject: [PATCH 5.10 123/342] bpf: Free reuseport cBPF prog after RCU grace period.
 Date: Tue, 16 Jun 2026 20:26:59 +0530
-Message-ID: <20260616145058.932434347@linuxfoundation.org>
+Message-ID: <20260616145053.939452977@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,22 +73,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264218-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-266332-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:fmancera@suse.de,m:fw@strlen.de,m:pablo@netfilter.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:eulgyukim@snu.ac.kr,m:0wn@theori.io,m:kuniyu@google.com,m:daniel@iogearbox.net,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -96,122 +97,148 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,netfilter.org:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,strlen.de:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,theori.io:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E3B13691829
+X-Rspamd-Queue-Id: D62D66948F9
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fernando Fernandez Mancera <fmancera@suse.de>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-[ Upstream commit 2fcba19caaeb2a33017459d3430f057967bb91b6 ]
+[ Upstream commit 18fc650ccd7fe3376eca89203668cfb8268f60df ]
 
-As the synproxy infrastructure register netfilter hooks on-demand when a
-user adds the first iptables target or nftables expression, if done
-concurrently they can race each other.
+Eulgyu Kim reported the splat below with a repro. [0]
 
-Introduce a mutex to serialize the refcount control blocks access from
-both frontends. While a per namespace mutex might be more efficient, it
-is not needed for target/expression like SYNPROXY.
+The repro sets up a UDP reuseport group with a cBPF prog and
+replaces it with a new one while another thread is sending
+a UDP packet to the group.
 
-Fixes: ad49d86e07a4 ("netfilter: nf_tables: Add synproxy support")
-Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+The reuseport prog is freed by sk_reuseport_prog_free().
+bpf_prog_put() is called for "e"BPF prog to destruct through
+multiple stages while cBPF prog is freed immediately by
+bpf_release_orig_filter() and bpf_prog_free().
+
+If a reuseport prog is detached from the setsockopt() path
+(reuseport_attach_prog() or reuseport_detach_prog()),
+sk_reuseport_prog_free() is called without waiting for RCU
+readers to complete, resulting in various bugs.
+
+Let's defer freeing the reuseport cBPF prog after one RCU
+grace period.
+
+Note "e"BPF prog is safe as is unless the fast path starts
+to touch fields destroyed in bpf_prog_put_deferred() and
+__bpf_prog_put_noref().
+
+[0]:
+BUG: KASAN: vmalloc-out-of-bounds in reuseport_select_sock+0xedc/0x1220 net/core/sock_reuseport.c:596
+Read of size 4 at addr ffffc9000051e004 by task slowme/10208
+CPU: 6 UID: 1000 PID: 10208 Comm: slowme Not tainted 7.0.0-geb7ac95ff75e #32 PREEMPT(full)
+Hardware name: QEMU Ubuntu 24.04 PC v2 (i440FX + PIIX, arch_caps fix, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+Call Trace:
+ <IRQ>
+ dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:378 [inline]
+ print_report+0xca/0x240 mm/kasan/report.c:482
+ kasan_report+0x118/0x150 mm/kasan/report.c:595
+ reuseport_select_sock+0xedc/0x1220 net/core/sock_reuseport.c:596
+ udp4_lib_lookup2+0x3bc/0x950 net/ipv4/udp.c:495
+ __udp4_lib_lookup+0x768/0xe20 net/ipv4/udp.c:723
+ __udp4_lib_lookup_skb+0x297/0x390 net/ipv4/udp.c:752
+ __udp4_lib_rcv+0x1312/0x2620 net/ipv4/udp.c:2752
+ ip_protocol_deliver_rcu+0x282/0x440 net/ipv4/ip_input.c:207
+ ip_local_deliver_finish+0x3bb/0x6f0 net/ipv4/ip_input.c:241
+ NF_HOOK+0x30c/0x3a0 include/linux/netfilter.h:318
+ NF_HOOK+0x30c/0x3a0 include/linux/netfilter.h:318
+ __netif_receive_skb_one_core net/core/dev.c:6181 [inline]
+ __netif_receive_skb net/core/dev.c:6294 [inline]
+ process_backlog+0xaa4/0x1960 net/core/dev.c:6645
+ __napi_poll+0xae/0x340 net/core/dev.c:7709
+ napi_poll net/core/dev.c:7772 [inline]
+ net_rx_action+0x5d7/0xf50 net/core/dev.c:7929
+ handle_softirqs+0x22b/0x870 kernel/softirq.c:622
+ do_softirq+0x76/0xd0 kernel/softirq.c:523
+ </IRQ>
+ <TASK>
+ __local_bh_enable_ip+0xf8/0x130 kernel/softirq.c:450
+ local_bh_enable include/linux/bottom_half.h:33 [inline]
+ rcu_read_unlock_bh include/linux/rcupdate.h:924 [inline]
+ __dev_queue_xmit+0x1dd7/0x3710 net/core/dev.c:4890
+ neigh_output include/net/neighbour.h:556 [inline]
+ ip_finish_output2+0xca9/0x1070 net/ipv4/ip_output.c:237
+ NF_HOOK_COND include/linux/netfilter.h:307 [inline]
+ ip_output+0x29f/0x450 net/ipv4/ip_output.c:438
+ ip_send_skb+0x45/0xc0 net/ipv4/ip_output.c:1508
+ udp_send_skb+0xb04/0x1510 net/ipv4/udp.c:1195
+ udp_sendmsg+0x1a71/0x2350 net/ipv4/udp.c:1485
+ sock_sendmsg_nosec net/socket.c:727 [inline]
+ __sock_sendmsg net/socket.c:742 [inline]
+ __sys_sendto+0x554/0x680 net/socket.c:2206
+ __do_sys_sendto net/socket.c:2213 [inline]
+ __se_sys_sendto net/socket.c:2209 [inline]
+ __x64_sys_sendto+0xde/0x100 net/socket.c:2209
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x160/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x415a2d
+Code: b3 66 2e 0f 1f 84 00 00 00 00 00 66 90 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f6bc31e41e8 EFLAGS: 00000212 ORIG_RAX: 000000000000002c
+RAX: ffffffffffffffda RBX: 00007f6bc31e4cdc RCX: 0000000000415a2d
+RDX: 0000000000000001 RSI: 00007f6bc31e421f RDI: 0000000000000003
+RBP: 00007f6bc31e4240 R08: 00007f6bc31e4220 R09: 0000000000000010
+R10: 0000000000000000 R11: 0000000000000212 R12: 00007f6bc31e46c0
+R13: ffffffffffffffb8 R14: 0000000000000000 R15: 00007ffc9b0d70b0
+ </TASK>
+
+Fixes: 538950a1b752 ("soreuseport: setsockopt SO_ATTACH_REUSEPORT_[CE]BPF")
+Reported-by: Eulgyu Kim <eulgyukim@snu.ac.kr>
+Reported-by: Taeyang Lee <0wn@theori.io>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/bpf/20260426012647.3233119-1-kuniyu@google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_synproxy_core.c | 24 ++++++++++++++++++------
- 1 file changed, 18 insertions(+), 6 deletions(-)
+ net/core/filter.c | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/net/netfilter/nf_synproxy_core.c b/net/netfilter/nf_synproxy_core.c
-index 6a851ac4dd048f..a277b2bd3275dc 100644
---- a/net/netfilter/nf_synproxy_core.c
-+++ b/net/netfilter/nf_synproxy_core.c
-@@ -21,6 +21,8 @@
- #include <net/netfilter/nf_conntrack_zones.h>
- #include <net/netfilter/nf_synproxy.h>
+diff --git a/net/core/filter.c b/net/core/filter.c
+index 5fbce37db28323..27550e8b05a655 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -1640,15 +1640,24 @@ int sk_reuseport_attach_bpf(u32 ufd, struct sock *sk)
+ 	return err;
+ }
  
-+static DEFINE_MUTEX(synproxy_mutex);
++static void sk_reuseport_prog_free_rcu(struct rcu_head *rcu)
++{
++	struct bpf_prog_aux *aux = container_of(rcu, struct bpf_prog_aux, rcu);
++	struct bpf_prog *prog = aux->prog;
 +
- unsigned int synproxy_net_id;
- EXPORT_SYMBOL_GPL(synproxy_net_id);
- 
-@@ -768,26 +770,31 @@ static const struct nf_hook_ops ipv4_synproxy_ops[] = {
- 
- int nf_synproxy_ipv4_init(struct synproxy_net *snet, struct net *net)
++	bpf_release_orig_filter(prog);
++	bpf_prog_free(prog);
++}
++
+ void sk_reuseport_prog_free(struct bpf_prog *prog)
  {
--	int err;
-+	int err = 0;
+ 	if (!prog)
+ 		return;
  
-+	mutex_lock(&synproxy_mutex);
- 	if (snet->hook_ref4 == 0) {
- 		err = nf_register_net_hooks(net, ipv4_synproxy_ops,
- 					    ARRAY_SIZE(ipv4_synproxy_ops));
- 		if (err)
--			return err;
-+			goto out;
- 	}
- 
- 	snet->hook_ref4++;
--	return 0;
-+out:
-+	mutex_unlock(&synproxy_mutex);
-+	return err;
+-	if (prog->type == BPF_PROG_TYPE_SK_REUSEPORT)
+-		bpf_prog_put(prog);
++	if (bpf_prog_was_classic(prog))
++		call_rcu(&prog->aux->rcu, sk_reuseport_prog_free_rcu);
+ 	else
+-		bpf_prog_destroy(prog);
++		bpf_prog_put(prog);
  }
- EXPORT_SYMBOL_GPL(nf_synproxy_ipv4_init);
  
- void nf_synproxy_ipv4_fini(struct synproxy_net *snet, struct net *net)
- {
-+	mutex_lock(&synproxy_mutex);
- 	snet->hook_ref4--;
- 	if (snet->hook_ref4 == 0)
- 		nf_unregister_net_hooks(net, ipv4_synproxy_ops,
- 					ARRAY_SIZE(ipv4_synproxy_ops));
-+	mutex_unlock(&synproxy_mutex);
- }
- EXPORT_SYMBOL_GPL(nf_synproxy_ipv4_fini);
- 
-@@ -1192,27 +1199,32 @@ static const struct nf_hook_ops ipv6_synproxy_ops[] = {
- int
- nf_synproxy_ipv6_init(struct synproxy_net *snet, struct net *net)
- {
--	int err;
-+	int err = 0;
- 
-+	mutex_lock(&synproxy_mutex);
- 	if (snet->hook_ref6 == 0) {
- 		err = nf_register_net_hooks(net, ipv6_synproxy_ops,
- 					    ARRAY_SIZE(ipv6_synproxy_ops));
- 		if (err)
--			return err;
-+			goto out;
- 	}
- 
- 	snet->hook_ref6++;
--	return 0;
-+out:
-+	mutex_unlock(&synproxy_mutex);
-+	return err;
- }
- EXPORT_SYMBOL_GPL(nf_synproxy_ipv6_init);
- 
- void
- nf_synproxy_ipv6_fini(struct synproxy_net *snet, struct net *net)
- {
-+	mutex_lock(&synproxy_mutex);
- 	snet->hook_ref6--;
- 	if (snet->hook_ref6 == 0)
- 		nf_unregister_net_hooks(net, ipv6_synproxy_ops,
- 					ARRAY_SIZE(ipv6_synproxy_ops));
-+	mutex_unlock(&synproxy_mutex);
- }
- EXPORT_SYMBOL_GPL(nf_synproxy_ipv6_fini);
- #endif /* CONFIG_IPV6 */
+ struct bpf_scratchpad {
 -- 
 2.53.0
 
