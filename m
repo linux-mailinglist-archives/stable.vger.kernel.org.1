@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-266514-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264699-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 07PzGb2eMWrKoQUAu9opvQ
-	(envelope-from <stable+bounces-266514-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:06:37 +0200
+	id OK6XGHB7MWrrkQUAu9opvQ
+	(envelope-from <stable+bounces-264699-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:36:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89A29694C0E
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:06:36 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C47946923E3
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:35:59 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=H8UiJB0A;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266514-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266514-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="MfrzH4n/";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264699-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264699-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6E1253006034
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:06:31 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B32763001BC0
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:29:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69BAF3DDDA0;
-	Tue, 16 Jun 2026 19:06:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC34C46AEE0;
+	Tue, 16 Jun 2026 16:29:29 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34049318EDA;
-	Tue, 16 Jun 2026 19:06:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86FB139150B;
+	Tue, 16 Jun 2026 16:29:28 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781636790; cv=none; b=XcjNU0TxObnJx9x3W1P8fq+Kq07D50VUMPnYivQEUCE+NtqRmet+fiVftrUD05V5Hbi150qEPp8QFFNwSugN7BrKTyxFWxnGGcUjI1G5lXQ0Ue+Y0O2ezg7LAO1rBFYX9FpxrEa5gSDZiAkBWBkNAnpqWj6TKOay0D7va83iriw=
+	t=1781627369; cv=none; b=kvMvyeTaUnCHQA83i/Yes0nmro8wy/E2dHfLFVSeAlIjH+7ojNpHcbqA7DNh6EVmkEIepAZHFwTbMnznb2K4SxkJvjEdLf9LNncKvo9FSC0dmEJNJ8Ufs/vqIzXzvQOiFB1QjbgaA0BHsgYP4aHGQxBmrizgtQj48uxmQZQmMgM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781636790; c=relaxed/simple;
-	bh=3lbsUwAVHiiVNBuopHdLDubxe6onpk7NDV0eZb48Q4I=;
+	s=arc-20240116; t=1781627369; c=relaxed/simple;
+	bh=zGlkR6+hfCW0sL9PT1pKpNl1nS2ZSE2Pu5B6EVD0kmM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vd9MsOlfOcWJDed+aLW6pktvqwFf088JkkWGh9a/nnSHLAoXPiHO3oVBMERzeBj3Ch7wfwRqJRZ7yC2uT7xJ2SqakRBzUNGtdVOKA0D2APXmXBF/CAWM3yk3BVwhH+NMm2Dkp83w0VisXAdMsVlKU6LHkSWDujlLgjkPv1cIohY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H8UiJB0A; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 053361F000E9;
-	Tue, 16 Jun 2026 19:06:27 +0000 (UTC)
+	 MIME-Version; b=RIGrOYNyS5zTh+hBTWXm+5ulq3do62mo6q4tJLyXNWmKxTxJewrE9orrCoj5odTPx/N7ze2+8bZAOzqEiXbXJJY0qFuHovRlcLnrKwTI9YPar0PcgRyZP/Ar0pCaO6FBDhWPFwTwD1UYgK+IXcskqPs5X9x/gtUWKQRezg+0HJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MfrzH4n/; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 869D21F000E9;
+	Tue, 16 Jun 2026 16:29:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781636788;
-	bh=dw1ltbhi+BNyRanpAN2rf2ImQiAbh4q4VhDUfk3+IyU=;
+	s=korg; t=1781627368;
+	bh=P04Cte9YlZsHNxpr/aeUqoIS60DY7GhHmclo/YW4oUk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=H8UiJB0Ao262JFblVRF172zvurv/2KCtkPR7HmksG6ZraIWQXTP6gRRD9YqlpPiKc
-	 wKVWhsDvHGjsgkLVkiRQYcQ83Hioq0CAyop/DNW5p8uRQXJsYVRNstrqb2lq/BXbpw
-	 iVEK5Fp2Y5qBHIRFTAVMGZAf+VgZb5Ne2w+jh9Pw=
+	b=MfrzH4n/8d6ZvyAUWhp2PiZsqyFCtazWoW50AJSN+8t5Cy5NBYWZT+O4lxLgUCid3
+	 Wa5X/PuHj7VXDs4MKMJqQUng3C5oxcjgbNUdCvAtaGW7cSsNZ1btgCZWm6ByNso4Nz
+	 SsyRmWMEJxthqJAXa8mRyIlDcSdmPY9F6gYjjNVM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 305/342] tty: serial: qcom-geni-serial: align #define values
+	Raf Dickson <rafdog35@gmail.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.12 163/261] vsock/vmci: fix sk_ack_backlog leak on failed handshake
 Date: Tue, 16 Jun 2026 20:30:01 +0530
-Message-ID: <20260616145102.651605987@linuxfoundation.org>
+Message-ID: <20260616145052.624208791@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,147 +72,89 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266514-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264699-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:rafdog35@gmail.com,m:sgarzare@redhat.com,m:pabeni@redhat.com,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bartosz.golaszewski@linaro.org,m:konrad.dybcio@linaro.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linaro.org:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 89A29694C0E
+X-Rspamd-Queue-Id: C47946923E3
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+From: Raf Dickson <rafdog35@gmail.com>
 
-[ Upstream commit 6cde11dbf4b65170eeefba48df730c93d75e01a3 ]
+commit c05fa14db43ebef3bd862ca9d073981c0358b3f0 upstream.
 
-Keep the #define symbols aligned for better readability.
+When vmci_transport_recv_connecting_server() returns an error,
+vmci_transport_recv_listen() calls vsock_remove_pending() but never
+calls sk_acceptq_removed(). This leaves sk_ack_backlog incremented
+permanently.
 
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20221229155030.418800-5-brgl@bgdev.pl
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: ca2584d841b6 ("serial: qcom-geni: fix UART_RX_PAR_EN bit position")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Repeated handshake failures (malformed packets, queue pair alloc
+failure, event subscribe failure) cause sk_ack_backlog to climb
+toward sk_max_ack_backlog. Once it reaches the limit the listener
+permanently refuses all new connections with -ECONNREFUSED, a
+silent denial of service requiring a process restart to recover.
+
+The two existing sk_acceptq_removed() calls in af_vsock.c do not
+cover this path: line 764 checks vsock_is_pending() which returns
+false after vsock_remove_pending(), and line 1889 is only reached
+on successful accept().
+
+Fix by balancing sk_acceptq_added() with sk_acceptq_removed() on
+the error path.
+
+Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
+Cc: stable@vger.kernel.org
+Signed-off-by: Raf Dickson <rafdog35@gmail.com>
+Acked-by: Stefano Garzarella <sgarzare@redhat.com>
+Link: https://patch.msgid.link/20260526104356.469928-1-rafdog35@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/qcom_geni_serial.c |   60 +++++++++++++++++-----------------
- 1 file changed, 30 insertions(+), 30 deletions(-)
+ net/vmw_vsock/vmci_transport.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/tty/serial/qcom_geni_serial.c
-+++ b/drivers/tty/serial/qcom_geni_serial.c
-@@ -35,57 +35,57 @@
- #define SE_UART_MANUAL_RFR		0x2ac
+--- a/net/vmw_vsock/vmci_transport.c
++++ b/net/vmw_vsock/vmci_transport.c
+@@ -972,8 +972,10 @@ static int vmci_transport_recv_listen(st
+ 			err = -EINVAL;
+ 		}
  
- /* SE_UART_TRANS_CFG */
--#define UART_TX_PAR_EN		BIT(0)
--#define UART_CTS_MASK		BIT(1)
-+#define UART_TX_PAR_EN			BIT(0)
-+#define UART_CTS_MASK			BIT(1)
+-		if (err < 0)
++		if (err < 0) {
+ 			vsock_remove_pending(sk, pending);
++			sk_acceptq_removed(sk);
++		}
  
- /* SE_UART_TX_STOP_BIT_LEN */
--#define TX_STOP_BIT_LEN_1	0
--#define TX_STOP_BIT_LEN_2	2
-+#define TX_STOP_BIT_LEN_1		0
-+#define TX_STOP_BIT_LEN_2		2
- 
- /* SE_UART_RX_TRANS_CFG */
--#define UART_RX_PAR_EN		BIT(3)
-+#define UART_RX_PAR_EN			BIT(3)
- 
- /* SE_UART_RX_WORD_LEN */
--#define RX_WORD_LEN_MASK	GENMASK(9, 0)
-+#define RX_WORD_LEN_MASK		GENMASK(9, 0)
- 
- /* SE_UART_RX_STALE_CNT */
--#define RX_STALE_CNT		GENMASK(23, 0)
-+#define RX_STALE_CNT			GENMASK(23, 0)
- 
- /* SE_UART_TX_PARITY_CFG/RX_PARITY_CFG */
--#define PAR_CALC_EN		BIT(0)
--#define PAR_EVEN		0x00
--#define PAR_ODD			0x01
--#define PAR_SPACE		0x10
-+#define PAR_CALC_EN			BIT(0)
-+#define PAR_EVEN			0x00
-+#define PAR_ODD				0x01
-+#define PAR_SPACE			0x10
- 
- /* SE_UART_MANUAL_RFR register fields */
--#define UART_MANUAL_RFR_EN	BIT(31)
--#define UART_RFR_NOT_READY	BIT(1)
--#define UART_RFR_READY		BIT(0)
-+#define UART_MANUAL_RFR_EN		BIT(31)
-+#define UART_RFR_NOT_READY		BIT(1)
-+#define UART_RFR_READY			BIT(0)
- 
- /* UART M_CMD OP codes */
--#define UART_START_TX		0x1
-+#define UART_START_TX			0x1
- /* UART S_CMD OP codes */
--#define UART_START_READ		0x1
-+#define UART_START_READ			0x1
- 
--#define UART_OVERSAMPLING	32
--#define STALE_TIMEOUT		16
--#define DEFAULT_BITS_PER_CHAR	10
--#define GENI_UART_CONS_PORTS	1
--#define GENI_UART_PORTS		3
--#define DEF_FIFO_DEPTH_WORDS	16
--#define DEF_TX_WM		2
--#define DEF_FIFO_WIDTH_BITS	32
--#define UART_RX_WM		2
-+#define UART_OVERSAMPLING		32
-+#define STALE_TIMEOUT			16
-+#define DEFAULT_BITS_PER_CHAR		10
-+#define GENI_UART_CONS_PORTS		1
-+#define GENI_UART_PORTS			3
-+#define DEF_FIFO_DEPTH_WORDS		16
-+#define DEF_TX_WM			2
-+#define DEF_FIFO_WIDTH_BITS		32
-+#define UART_RX_WM			2
- 
- /* SE_UART_LOOPBACK_CFG */
--#define RX_TX_SORTED	BIT(0)
--#define CTS_RTS_SORTED	BIT(1)
--#define RX_TX_CTS_RTS_SORTED	(RX_TX_SORTED | CTS_RTS_SORTED)
-+#define RX_TX_SORTED			BIT(0)
-+#define CTS_RTS_SORTED			BIT(1)
-+#define RX_TX_CTS_RTS_SORTED		(RX_TX_SORTED | CTS_RTS_SORTED)
- 
- /* UART pin swap value */
--#define DEFAULT_IO_MACRO_IO0_IO1_MASK		GENMASK(3, 0)
-+#define DEFAULT_IO_MACRO_IO0_IO1_MASK	GENMASK(3, 0)
- #define IO_MACRO_IO0_SEL		0x3
--#define DEFAULT_IO_MACRO_IO2_IO3_MASK		GENMASK(15, 4)
-+#define DEFAULT_IO_MACRO_IO2_IO3_MASK	GENMASK(15, 4)
- #define IO_MACRO_IO2_IO3_SWAP		0x4640
- 
- /* We always configure 4 bytes per FIFO word */
+ 		release_sock(pending);
+ 		vmci_transport_release_pending(pending);
 
 
 
