@@ -1,63 +1,93 @@
-Return-Path: <stable+bounces-265468-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265534-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id lbxqIfCKMWqWmAUAu9opvQ
-	(envelope-from <stable+bounces-265468-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:42:08 +0200
+	id H4eOCPOKMWqXmAUAu9opvQ
+	(envelope-from <stable+bounces-265534-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:42:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6055693617
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:42:07 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0FCE69361A
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:42:10 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IJlSkgoV;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265468-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265468-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=RvhsqXhr;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265534-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265534-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5BEE6323E31F
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:35:55 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 746893048F93
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:41:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03ECA47AF66;
-	Tue, 16 Jun 2026 17:35:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBEA347CC7F;
+	Tue, 16 Jun 2026 17:41:28 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B37A477E57
-	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 17:35:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D33C47CC91
+	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 17:41:24 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781631354; cv=none; b=TGv6lLtfKQhAdfWzqistBiYWkNwhZGcvi2PPdTWUpx3GpdbIuwCSMWeg547VhTFF6/MG0LaToLR9XO/gQLWpJSv2d7wAwLG2gQ8y1WAVs3IiuVwZwKWLS/BKYm3fPn5ZroUH+Wv0U0T+jTm53iLRUgTwfqgwbF1rdZe2zYBeqGw=
+	t=1781631687; cv=none; b=LxTc24Ns+45PlUscjavsvjO2SisAknyx7Nm5GMVTB1QmpQMlA1lzYnuzhwuvq4KNA9Hqt0KQ7E2jHC56uFWxAsAiVAYDviBAPZBFMa4erPB4jaAMl7k7ol2KtWrgM5WNc2mLPSKDwy5z1Vdl4CLxCYUeWn+FZSls/q3fns4EloM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781631354; c=relaxed/simple;
-	bh=VJrGe2PBgcZ82vZ68S9owlOjrFti7BZzFWW9PW/Uyvs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=im4N5HmKodvn2EGku3H09NBh+7SH/fcGidw5kJkmF2RNKhf/knxUARLLSo6T947NZfh2qwfQgX2rFlazrzsmR+vTRH08UKYTf2cqCz+Eko1YUUi9G3nk+MSV3IoMDpH4VOYCRUFEZO1SWonRWpDi6psoMCViB8iJJ0pbe5RyImE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IJlSkgoV; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 398EB1F000E9;
-	Tue, 16 Jun 2026 17:35:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781631352;
-	bh=OMDkbIpaHYz/GydYqr2N3E2ihdSRMgVL3qZhM2qM3Zc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=IJlSkgoVTWFk80skWMZHIF9KjgSFE2dP0cY533auSZeZOOOfXKa684ZUSiLKoYO2c
-	 bCLAn9g4nr1A4pt0XMq/0RPZJHeilzB6+3VDM41NjFOXurK5fcZ/qA7y1h2GMGOThV
-	 +507O2CdRzD9c09a9f1CQgt9AeeAef6YzXVujyQGOG0fKgmJa5faJjDXSMvCyjbBO9
-	 vIc/lABmbDP2h758551qMUmty4KCqRFhAei1NLfcLYwyo9+fz2nhSfIQmim+pIJqgz
-	 O9DyX6LZ95vNYc68PYx7s+I1MX2wbXhzA9z4OQyCb3Wl2R4Glf5rd20nzTPtmaNy4B
-	 FZutkhY2/zplg==
-From: Sasha Levin <sashal@kernel.org>
+	s=arc-20240116; t=1781631687; c=relaxed/simple;
+	bh=56iPGefvrDIOQ0kYSPHWkBcVy4fG83iGF+E4yp8AZ4M=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=o1kXEBOp1gGHpN8xzd28No4tU09JqywTzCeh1la85+VhGAhxcmmSRKRp1VdGE5hFvJQFrLnptGUaYHxZPRTMFXSPVYhvaUyVCJlm99kF4BBo+p84WG6AhIOFSd7Gixlm18V3KbWtNRg5TL6d6+M3jsLm2fn/wx8HHhHQTfUrT3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RvhsqXhr; arc=none smtp.client-ip=209.85.221.48
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-4624a44e152so45143f8f.2
+        for <stable@vger.kernel.org>; Tue, 16 Jun 2026 10:41:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781631683; x=1782236483; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=VKy4647HVZtA5TmBvoQR4FjcGycfij8utQ+A9hIT6Tg=;
+        b=RvhsqXhrj6ArXU3dAhWnOzK8CQOBp9xOZ4DQ1AMiM8cIbLNdfMNtlPt5I8CovLO2sW
+         cFYwWFBsYBvCB4Q3h3dY/dSJvtCCawygDduwl8kegMPAesHONnjcFjr5xw2C+hAe60Df
+         h3j/ZSw1JMnvnlKDTzpP7XKLdCNwxiUEJIv/MWRT8/zpQhvzV5+xDixzz66daNPTA9PC
+         FMC+7kg7nrFl3Zl+VfYhjzD8WzSFyQ1D4vHaHEuC1InKpNMnmxWLSLITZlwfJ+BdGnV8
+         R1kphGjMrKnR/cYekSvQe6T02tE0Z29tjy2o1f2GkKb+OF4wH7jOlkWVT4IwEU3v2QDt
+         5TaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781631683; x=1782236483;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VKy4647HVZtA5TmBvoQR4FjcGycfij8utQ+A9hIT6Tg=;
+        b=dgvzuCjI9xhijUwW14bNzjOCVz3TY4RnmaFZJIlXH/Tporpq3Dwuq3xFgewICR5Vz1
+         oC3iDgCaGJ7H44bVAogCeeqi35r9+2vpyyJKuvXt81D1/95TFofDPJ1rRtf3Z7vqeJYu
+         5Zb4f7IIxCOaK3qIoAr/gjeeu76pwf7+84z80yyJERmdxilL0UwvGETnJl3P8BcuthZg
+         7UWrxzNF1filiMFw9j83SJNUze0fmawz+FSBo6SG8iUozOJWznlcHmRLLMcpNFLkVICj
+         eotGi0xW+FehKuPe/HORDwmc5IKImh75geSt18Tj1pBlCRCrevrO+8Myzu9VUpgy5K0b
+         FSTg==
+X-Gm-Message-State: AOJu0YwrgMCUk/9zYkO7mXsw376R79KnJcHKGvea41yfXIwePwrhZSyp
+	pBzbVXqZnV1Qhf0YbROQgnGWDjYCBODG805OPv4okXWRu9IooW01eLrp0B636CY=
+X-Gm-Gg: Acq92OEyV+S9PNI7yKn6ZuJHlkk4WtGhx+uX1dIATPH+STrhgRyRccGYlC01I4W7Zht
+	INWOXk9ds27kp8KNa5l6JhkINVm5Zz7vPeO/FTIc+ZZedBUWh6kU81UVRAsKHvKp3bAOEI8wOM6
+	y1LdFloQM6kw31uahLs8g3r2X7p/hrRl5xlqTOeLji6Zrc2pQUMrk03ebKCdSR7JlyL7j5M6778
+	DUbeCqoJXF2napv7VinJy4kqOX++4a/oxdXJ7zCiNgjLBN0p80CPLVSGQchyWGUgTcb5PJg6iE6
+	+Sz0Cgr/UyHnW1RV8ITK47kGaIb+5He4r4K1XcJt9ZN5huc1mq8HKdeWEB9A9EpGRcQOFDmxQWl
+	VHD/lMmFG2ziGS7Eu9cMZEU5rkfA4aCKtSDlVSTsr/5cm1iXXB/napYXC5dlJFO1FMxwTlMpRzx
+	Qs85y9w0IJobWMP0Q6AdTLpZm8Ltf0jgO7gf+P0Zny8bxOUtP4ZZYs4GJ4v2iJNNcnsrdxyr+vK
+	ffx3KiWVKo+wMEciiSayuR6K0e9bPf1c4KlMNZa0K7tze10k7BvmQ==
+X-Received: by 2002:a5d:5a02:0:b0:45e:e509:d2fa with SMTP id ffacd0b85a97d-46236275eb2mr616305f8f.3.1781631683244;
+        Tue, 16 Jun 2026 10:41:23 -0700 (PDT)
+Received: from archtop.localdomain (92-242-249-94.broadband.mtnet.hr. [92.242.249.94])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4606f2b0d70sm46775690f8f.19.2026.06.16.10.41.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 16 Jun 2026 10:41:22 -0700 (PDT)
+From: Jakov Novak <jakovnovak30@gmail.com>
 To: stable@vger.kernel.org
-Cc: Thorsten Blum <thorsten.blum@linux.dev>,
-	Long Li <longli@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] hv: utils: handle and propagate errors in kvp_register
-Date: Tue, 16 Jun 2026 13:35:50 -0400
-Message-ID: <20260616173550.3401658-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026061505-another-sensually-b0cb@gregkh>
-References: <2026061505-another-sensually-b0cb@gregkh>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>,
+	linux-kernel-mentees@lists.linux.dev,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Hsin-Wei Hung <hsinweih@uci.edu>,
+	Florian Lehner <dev@der-flo.net>,
+	Jakov Novak <jakovnovak30@gmail.com>
+Subject: [PATCH 5.15.y] mm: Fix copy_from_user_nofault().
+Date: Tue, 16 Jun 2026 19:40:10 +0200
+Message-ID: <20260616174009.9906-2-jakovnovak30@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,124 +96,131 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.66 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-265468-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:thorsten.blum@linux.dev,m:longli@microsoft.com,m:wei.liu@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,kernel.org,lists.linux.dev,uci.edu,der-flo.net,gmail.com];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265534-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:sashal@kernel.org,m:linux-kernel-mentees@lists.linux.dev,m:skhan@linuxfoundation.org,m:ast@kernel.org,m:hsinweih@uci.edu,m:dev@der-flo.net,m:jakovnovak30@gmail.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[jakovnovak30@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[jakovnovak30@gmail.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linux.dev:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,der-flo.net:email,uci.edu:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D6055693617
+X-Rspamd-Queue-Id: B0FCE69361A
 
-From: Thorsten Blum <thorsten.blum@linux.dev>
+From: Alexei Starovoitov <ast@kernel.org>
 
-[ Upstream commit 3fcf923302a8f5c0dc3af3d2ca2657cb5fae4297 ]
+[ Upstream commit d319f344561de23e810515d109c7278919bff7b0 ]
 
-Make kvp_register() return an error code instead of silently ignoring
-failures, and propagate the error from kvp_handle_handshake() instead of
-returning success.
+There are several issues with copy_from_user_nofault():
 
-This propagates both kzalloc_obj() and hvutil_transport_send() failures
-to kvp_handle_handshake() and thus to kvp_on_msg().
+- access_ok() is designed for user context only and for that reason
+it has WARN_ON_IN_IRQ() which triggers when bpf, kprobe, eprobe
+and perf on ppc are calling it from irq.
 
-Fixes: 245ba56a52a3 ("Staging: hv: Implement key/value pair (KVP)")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-Reviewed-by: Long Li <longli@microsoft.com>
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+- it's missing nmi_uaccess_okay() which is a nop on all architectures
+except x86 where it's required.
+The comment in arch/x86/mm/tlb.c explains the details why it's necessary.
+Calling copy_from_user_nofault() from bpf, [ke]probe without this check is not safe.
+
+- __copy_from_user_inatomic() under CONFIG_HARDENED_USERCOPY is calling
+check_object_size()->__check_object_size()->check_heap_object()->find_vmap_area()->spin_lock()
+which is not safe to do from bpf, [ke]probe and perf due to potential deadlock.
+
+Fix all three issues. At the end the copy_from_user_nofault() becomes
+equivalent to copy_from_user_nmi() from safety point of view with
+a difference in the return value.
+
+Reported-by: Hsin-Wei Hung <hsinweih@uci.edu>
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Florian Lehner <dev@der-flo.net>
+Tested-by: Hsin-Wei Hung <hsinweih@uci.edu>
+Tested-by: Florian Lehner <dev@der-flo.net>
+Link: https://lore.kernel.org/r/20230410174345.4376-2-dev@der-flo.net
+[ merge conflicts 
+
+  copy_from_user_nofault: caused by force_uaccess_begin and
+  force_uaccess_end functions. moved the code around to call those
+  functions in the same way after the additional checks.
+
+  check_heap_object: completely different implementation in 5.15.y.
+  removed any changes from this commit as the current implementation
+  doesn't call the same lock which caused problems. ]
+Signed-off-by: Jakov Novak <jakovnovak30@gmail.com>
 ---
- drivers/hv/hv_kvp.c | 25 +++++++++++++------------
- 1 file changed, 13 insertions(+), 12 deletions(-)
+Note: I have checked all syzbot issues linked with this backport and
+verified that they work locally (the ones with repros) and on the
+syzbot servers and I ran KUnit tests to make sure this doesn't break anything.
+This is my first time sending a patch to the stable repo, so I am a bit
+unsure if there is more to be done for testing, apart from inspecting the
+code and running those mentioned tests.
 
-diff --git a/drivers/hv/hv_kvp.c b/drivers/hv/hv_kvp.c
-index 2908fbb88f59a2..5431afcd577a39 100644
---- a/drivers/hv/hv_kvp.c
-+++ b/drivers/hv/hv_kvp.c
-@@ -93,7 +93,7 @@ static void kvp_send_key(struct work_struct *dummy);
- static void kvp_respond_to_host(struct hv_kvp_msg *msg, int error);
- static void kvp_timeout_func(struct work_struct *dummy);
- static void kvp_host_handshake_func(struct work_struct *dummy);
--static void kvp_register(int);
-+static int kvp_register(int);
+ mm/maccess.c | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
+
+diff --git a/mm/maccess.c b/mm/maccess.c
+index ded4bfaba7f3..2b186ce822c9 100644
+--- a/mm/maccess.c
++++ b/mm/maccess.c
+@@ -5,6 +5,7 @@
+ #include <linux/export.h>
+ #include <linux/mm.h>
+ #include <linux/uaccess.h>
++#include <asm/tlb.h>
  
- static DECLARE_DELAYED_WORK(kvp_timeout_work, kvp_timeout_func);
- static DECLARE_DELAYED_WORK(kvp_host_handshake_work, kvp_host_handshake_func);
-@@ -127,24 +127,26 @@ static void kvp_register_done(void)
- 	hv_poll_channel(kvp_transaction.recv_channel, kvp_poll_wrapper);
- }
- 
--static void
-+static int
- kvp_register(int reg_value)
+ bool __weak copy_from_kernel_nofault_allowed(const void *unsafe_src,
+ 		size_t size)
+@@ -221,13 +222,18 @@ long strncpy_from_kernel_nofault(char *dst, const void *unsafe_addr, long count)
+ long copy_from_user_nofault(void *dst, const void __user *src, size_t size)
  {
+ 	long ret = -EFAULT;
+-	mm_segment_t old_fs = force_uaccess_begin();
++	mm_segment_t old_fs;
  
- 	struct hv_kvp_msg *kvp_msg;
- 	char *version;
-+	int ret;
- 
- 	kvp_msg = kzalloc(sizeof(*kvp_msg), GFP_KERNEL);
-+	if (!kvp_msg)
-+		return -ENOMEM;
- 
--	if (kvp_msg) {
--		version = kvp_msg->body.kvp_register.version;
--		kvp_msg->kvp_hdr.operation = reg_value;
--		strcpy(version, HV_DRV_VERSION);
-+	version = kvp_msg->body.kvp_register.version;
-+	kvp_msg->kvp_hdr.operation = reg_value;
-+	strcpy(version, HV_DRV_VERSION);
- 
--		hvutil_transport_send(hvt, kvp_msg, sizeof(*kvp_msg),
--				      kvp_register_done);
--		kfree(kvp_msg);
+-	if (access_ok(src, size)) {
+-		pagefault_disable();
+-		ret = __copy_from_user_inatomic(dst, src, size);
+-		pagefault_enable();
 -	}
-+	ret = hvutil_transport_send(hvt, kvp_msg, sizeof(*kvp_msg),
-+				    kvp_register_done);
-+	kfree(kvp_msg);
-+	return ret;
- }
++	if (!__access_ok(src, size))
++		return ret;
++
++	if (!nmi_uaccess_okay())
++		return ret;
++
++	old_fs = force_uaccess_begin();
++	pagefault_disable();
++	ret = __copy_from_user_inatomic(dst, src, size);
++	pagefault_enable();
+ 	force_uaccess_end(old_fs);
  
- static void kvp_timeout_func(struct work_struct *dummy)
-@@ -186,9 +188,8 @@ static int kvp_handle_handshake(struct hv_kvp_msg *msg)
- 	 */
- 	pr_debug("KVP: userspace daemon ver. %d connected\n",
- 		 msg->kvp_hdr.operation);
--	kvp_register(dm_reg_value);
- 
--	return 0;
-+	return kvp_register(dm_reg_value);
- }
- 
- 
+ 	if (ret)
 -- 
-2.53.0
+2.54.0
 
 
