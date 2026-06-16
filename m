@@ -1,63 +1,68 @@
-Return-Path: <stable+bounces-264765-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264482-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Y0dBLkZ8MWpEkgUAu9opvQ
-	(envelope-from <stable+bounces-264765-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:39:34 +0200
+	id qbcmDmd4MWqkkAUAu9opvQ
+	(envelope-from <stable+bounces-264482-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:23:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 598F56924F1
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:39:34 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1FAA692011
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:23:02 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="V/ZD0lhi";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264765-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264765-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=EuF3mGiK;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264482-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264482-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7EC9F306306E
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:36:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 116573168120
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:09:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 585CC477E51;
-	Tue, 16 Jun 2026 16:36:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4C3344E045;
+	Tue, 16 Jun 2026 16:08:46 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE07347A0DA;
-	Tue, 16 Jun 2026 16:36:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 977564534B3;
+	Tue, 16 Jun 2026 16:08:44 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781627773; cv=none; b=UVK+qAnftNNd++/Rz0lXSuvFD+p/aQ59WemMmZnnB+sZY3akSe8cYGgJI/qyS75cMoIihTX/3BdIHsYzYe7/yZqiNNWPFssRYnDXqjv75y/yfqYI2hUCXGBTM354y2hsn4gwpiscaDuMDPbx/G6nd7jbhgq49/4RUU9B+OnVAVQ=
+	t=1781626126; cv=none; b=cLtmLlqUwLJt7MAkgXoZ+L1OM/jibADJNsBG8EXtvgCL81mOLBcNCgSzBWxgIlrmglboXjHjeBUSrahscKivbTVLtxtj9akU5phmpZaJy2JX47YMB8rFasGdWgxyjtJ83tlMH6SCxZM/zDQ3A69ZRnJbpW+qle5E8vdhFwiPQk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781627773; c=relaxed/simple;
-	bh=+41kNmzGuOvO+Ia4csl9NrWF9+/Vvp/bnpFOqMeUa+8=;
+	s=arc-20240116; t=1781626126; c=relaxed/simple;
+	bh=cUIuNzrBO1kk+i5SPb/QGFoKMlF6Bv9VkEoHrDOrz2Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PASEERbsXdAv+67OnZ4cGV/+KrUVyAVa81oVVm2iaUHHf/gmKPVe/hougJC1e+FdqDuCtv5ll+6aKaKKDp+ffyVNpd6swvCjUsO6g2pWLoGnuIdmibDOgOtmXPhdTKTCDT6P9WVRGMDyCPPb+G1SWjdhyq55fTX8tIhuj1iGp2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V/ZD0lhi; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C62171F000E9;
-	Tue, 16 Jun 2026 16:36:10 +0000 (UTC)
+	 MIME-Version; b=ZUdedppAJU8hmLj3o/L6qBQwIHDPywEeZP8ZeKoGZFe2Ch4SMK/Fi4DEK+ad/SU1xDALMgQqsTa2AaWrAoNv0RZdskWwHJZWpNBT6xVFVAOcTaDPB9rC9WJty4PF0nD0TeZD7F5S5sS2wqFh01sXcxADSz6lqcperT1wjv7xLaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EuF3mGiK; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29AE21F000E9;
+	Tue, 16 Jun 2026 16:08:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781627771;
-	bh=Ltl4+6577Cr5S6+6d+5EjIOFtWr7FmWp3+uvrpsyZZE=;
+	s=korg; t=1781626124;
+	bh=ThmZBUEvXL3/O+YxxLEAD6Jo1ex24PGQAhqnTidA9DI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=V/ZD0lhiVc26lWv0YWFLxT3R7ILrIY0Sf9ADzyk2mwCkZmfvD3ULfNXIKnGFyN+6Y
-	 md3A93nNz1YhTaygVsKq7OJPRKuEgMck4AtofJ5aZvwMx8/KwkRiOfhFSkZ8fueqvq
-	 Z+MhGM3bk0QusydQtyEUjiyjfl4Z51+NPA3rPNG8=
+	b=EuF3mGiKJQZ5abdFUA67OS8EaXidWSwESrtaAf35YFBP0+FSdoTbuEDMeEBpFFUo4
+	 itqNyrfC2sETgEx354hcoku/vYCsn4klJ0s0tMRhr6re3C1JkeKZr/nORcKR3b8XjQ
+	 zS4b+dusvgLzYokzY3o91CGVkwW/KoSC30OGQx1U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Hung <alex.hung@amd.com>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Ray Wu <ray.wu@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 225/261] drm/amd/display: Clamp VBIOS HDMI retimer register count to array size
-Date: Tue, 16 Jun 2026 20:31:03 +0530
-Message-ID: <20260616145055.455467512@linuxfoundation.org>
+	stable@kernel.org,
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Zhengchuan Liang <zcliangcn@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Wyatt Feng <bronzed_45_vested@icloud.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Xin Long <lucien.xin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.18 268/325] sctp: stream: fully roll back denied add-stream state
+Date: Tue, 16 Jun 2026 20:31:04 +0530
+Message-ID: <20260616145111.996048227@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
-References: <20260616145044.869532709@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,228 +74,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264765-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:alex.hung@amd.com,m:harry.wentland@amd.com,m:ray.wu@amd.com,m:daniel.wheeler@amd.com,m:alexander.deucher@amd.com,s:lists@lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264482-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:yuantan098@gmail.com,m:yifanwucs@gmail.com,m:tomapufckgml@gmail.com,m:zcliangcn@gmail.com,m:bird@lzu.edu.cn,m:bronzed_45_vested@icloud.com,m:n05ec@lzu.edu.cn,m:lucien.xin@gmail.com,m:kuba@kernel.org,m:lucienxin@gmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,icloud.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,amd.com:email,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,icloud.com:email,vger.kernel.org:from_smtp,lzu.edu.cn:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 598F56924F1
+X-Rspamd-Queue-Id: A1FAA692011
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harry Wentland <harry.wentland@amd.com>
+From: Wyatt Feng <bronzed_45_vested@icloud.com>
 
-commit fb0707ce00eef4e2d60c3020e1c0432739703e4a upstream.
+commit a5f8a90ac9f77c678a9781c0a464b635e0d63e49 upstream.
 
-[Why & How]
-The VBIOS integrated info tables (v1_11 and v2_1) contain HdmiRegNum and
-Hdmi6GRegNum fields that are used as loop bounds when copying retimer I2C
-register settings into fixed-size arrays (dp*_ext_hdmi_reg_settings[9]
-and dp*_ext_hdmi_6g_reg_settings[3]). These u8 fields are not validated
-before use, so a malformed VBIOS can specify values up to 255, causing an
-out-of-bounds heap write during driver probe.
+When ADD_OUT_STREAMS is denied, SCTP only shrinks the queued chunks and
+then lowers outcnt. That leaves removed stream metadata behind, so a
+later re-add can reuse a stale ext and hit a null-pointer dereference in
+the scheduler get path.
 
-Clamp each register count to the destination array size using min_t()
-before the copy loops, in both get_integrated_info_v11() and
-get_integrated_info_v2_1().
+Fix the rollback by tearing down the removed stream state the same way
+other stream resizes do. Unschedule the current scheduler state, drop
+the removed stream ext state with sctp_stream_outq_migrate(), and then
+reschedule the remaining streams.
 
-Assisted-by: GitHub Copilot:claude-opus-4.6
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Ray Wu <ray.wu@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 5a7f0ef90195940c54b0f5bb85b87da55f038c69)
-Cc: stable@vger.kernel.org
+This keeps scheduler-private RR/FC/PRIO lists consistent while fully
+rolling back denied outgoing stream additions.
+
+Fixes: 637784ade221 ("sctp: introduce priority based stream scheduler")
+Cc: stable@kernel.org
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Zhengchuan Liang <zcliangcn@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Wyatt Feng <bronzed_45_vested@icloud.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Acked-by: Xin Long <lucien.xin@gmail.com>
+Link: https://patch.msgid.link/d78954ecd94954653ee299400e98d74a03a6f7d3.1780603399.git.bronzed_45_vested@icloud.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c |   48 ++++++++++++++-------
- 1 file changed, 32 insertions(+), 16 deletions(-)
+ net/sctp/stream.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
-+++ b/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
-@@ -2591,14 +2591,16 @@ static enum bp_result get_integrated_inf
- 	info_v11->extdispconninfo.checksum;
+--- a/net/sctp/stream.c
++++ b/net/sctp/stream.c
+@@ -1038,6 +1038,7 @@ struct sctp_chunk *sctp_process_strreset
+ 			stsn, rtsn, GFP_ATOMIC);
+ 	} else if (req->type == SCTP_PARAM_RESET_ADD_OUT_STREAMS) {
+ 		struct sctp_strreset_addstrm *addstrm;
++		const struct sctp_sched_ops *sched;
+ 		__u16 number;
  
- 	info->dp0_ext_hdmi_slv_addr = info_v11->dp0_retimer_set.HdmiSlvAddr;
--	info->dp0_ext_hdmi_reg_num = info_v11->dp0_retimer_set.HdmiRegNum;
-+	info->dp0_ext_hdmi_reg_num = min_t(u8, info_v11->dp0_retimer_set.HdmiRegNum,
-+					    ARRAY_SIZE(info->dp0_ext_hdmi_reg_settings));
- 	for (i = 0; i < info->dp0_ext_hdmi_reg_num; i++) {
- 		info->dp0_ext_hdmi_reg_settings[i].i2c_reg_index =
- 				info_v11->dp0_retimer_set.HdmiRegSetting[i].ucI2cRegIndex;
- 		info->dp0_ext_hdmi_reg_settings[i].i2c_reg_val =
- 				info_v11->dp0_retimer_set.HdmiRegSetting[i].ucI2cRegVal;
- 	}
--	info->dp0_ext_hdmi_6g_reg_num = info_v11->dp0_retimer_set.Hdmi6GRegNum;
-+	info->dp0_ext_hdmi_6g_reg_num = min_t(u8, info_v11->dp0_retimer_set.Hdmi6GRegNum,
-+					       ARRAY_SIZE(info->dp0_ext_hdmi_6g_reg_settings));
- 	for (i = 0; i < info->dp0_ext_hdmi_6g_reg_num; i++) {
- 		info->dp0_ext_hdmi_6g_reg_settings[i].i2c_reg_index =
- 				info_v11->dp0_retimer_set.Hdmi6GhzRegSetting[i].ucI2cRegIndex;
-@@ -2607,14 +2609,16 @@ static enum bp_result get_integrated_inf
- 	}
+ 		addstrm = (struct sctp_strreset_addstrm *)req;
+@@ -1048,7 +1049,10 @@ struct sctp_chunk *sctp_process_strreset
+ 			for (i = number; i < stream->outcnt; i++)
+ 				SCTP_SO(stream, i)->state = SCTP_STREAM_OPEN;
+ 		} else {
+-			sctp_stream_shrink_out(stream, number);
++			sched = sctp_sched_ops_from_stream(stream);
++			sched->unsched_all(stream);
++			sctp_stream_outq_migrate(stream, NULL, number);
++			sched->sched_all(stream);
+ 			stream->outcnt = number;
+ 		}
  
- 	info->dp1_ext_hdmi_slv_addr = info_v11->dp1_retimer_set.HdmiSlvAddr;
--	info->dp1_ext_hdmi_reg_num = info_v11->dp1_retimer_set.HdmiRegNum;
-+	info->dp1_ext_hdmi_reg_num = min_t(u8, info_v11->dp1_retimer_set.HdmiRegNum,
-+					    ARRAY_SIZE(info->dp1_ext_hdmi_reg_settings));
- 	for (i = 0; i < info->dp1_ext_hdmi_reg_num; i++) {
- 		info->dp1_ext_hdmi_reg_settings[i].i2c_reg_index =
- 				info_v11->dp1_retimer_set.HdmiRegSetting[i].ucI2cRegIndex;
- 		info->dp1_ext_hdmi_reg_settings[i].i2c_reg_val =
- 				info_v11->dp1_retimer_set.HdmiRegSetting[i].ucI2cRegVal;
- 	}
--	info->dp1_ext_hdmi_6g_reg_num = info_v11->dp1_retimer_set.Hdmi6GRegNum;
-+	info->dp1_ext_hdmi_6g_reg_num = min_t(u8, info_v11->dp1_retimer_set.Hdmi6GRegNum,
-+					       ARRAY_SIZE(info->dp1_ext_hdmi_6g_reg_settings));
- 	for (i = 0; i < info->dp1_ext_hdmi_6g_reg_num; i++) {
- 		info->dp1_ext_hdmi_6g_reg_settings[i].i2c_reg_index =
- 				info_v11->dp1_retimer_set.Hdmi6GhzRegSetting[i].ucI2cRegIndex;
-@@ -2623,14 +2627,16 @@ static enum bp_result get_integrated_inf
- 	}
- 
- 	info->dp2_ext_hdmi_slv_addr = info_v11->dp2_retimer_set.HdmiSlvAddr;
--	info->dp2_ext_hdmi_reg_num = info_v11->dp2_retimer_set.HdmiRegNum;
-+	info->dp2_ext_hdmi_reg_num = min_t(u8, info_v11->dp2_retimer_set.HdmiRegNum,
-+					    ARRAY_SIZE(info->dp2_ext_hdmi_reg_settings));
- 	for (i = 0; i < info->dp2_ext_hdmi_reg_num; i++) {
- 		info->dp2_ext_hdmi_reg_settings[i].i2c_reg_index =
- 				info_v11->dp2_retimer_set.HdmiRegSetting[i].ucI2cRegIndex;
- 		info->dp2_ext_hdmi_reg_settings[i].i2c_reg_val =
- 				info_v11->dp2_retimer_set.HdmiRegSetting[i].ucI2cRegVal;
- 	}
--	info->dp2_ext_hdmi_6g_reg_num = info_v11->dp2_retimer_set.Hdmi6GRegNum;
-+	info->dp2_ext_hdmi_6g_reg_num = min_t(u8, info_v11->dp2_retimer_set.Hdmi6GRegNum,
-+					       ARRAY_SIZE(info->dp2_ext_hdmi_6g_reg_settings));
- 	for (i = 0; i < info->dp2_ext_hdmi_6g_reg_num; i++) {
- 		info->dp2_ext_hdmi_6g_reg_settings[i].i2c_reg_index =
- 				info_v11->dp2_retimer_set.Hdmi6GhzRegSetting[i].ucI2cRegIndex;
-@@ -2639,14 +2645,16 @@ static enum bp_result get_integrated_inf
- 	}
- 
- 	info->dp3_ext_hdmi_slv_addr = info_v11->dp3_retimer_set.HdmiSlvAddr;
--	info->dp3_ext_hdmi_reg_num = info_v11->dp3_retimer_set.HdmiRegNum;
-+	info->dp3_ext_hdmi_reg_num = min_t(u8, info_v11->dp3_retimer_set.HdmiRegNum,
-+					    ARRAY_SIZE(info->dp3_ext_hdmi_reg_settings));
- 	for (i = 0; i < info->dp3_ext_hdmi_reg_num; i++) {
- 		info->dp3_ext_hdmi_reg_settings[i].i2c_reg_index =
- 				info_v11->dp3_retimer_set.HdmiRegSetting[i].ucI2cRegIndex;
- 		info->dp3_ext_hdmi_reg_settings[i].i2c_reg_val =
- 				info_v11->dp3_retimer_set.HdmiRegSetting[i].ucI2cRegVal;
- 	}
--	info->dp3_ext_hdmi_6g_reg_num = info_v11->dp3_retimer_set.Hdmi6GRegNum;
-+	info->dp3_ext_hdmi_6g_reg_num = min_t(u8, info_v11->dp3_retimer_set.Hdmi6GRegNum,
-+					       ARRAY_SIZE(info->dp3_ext_hdmi_6g_reg_settings));
- 	for (i = 0; i < info->dp3_ext_hdmi_6g_reg_num; i++) {
- 		info->dp3_ext_hdmi_6g_reg_settings[i].i2c_reg_index =
- 				info_v11->dp3_retimer_set.Hdmi6GhzRegSetting[i].ucI2cRegIndex;
-@@ -2796,14 +2804,16 @@ static enum bp_result get_integrated_inf
- 	info->ext_disp_conn_info.checksum =
- 		info_v2_1->extdispconninfo.checksum;
- 	info->dp0_ext_hdmi_slv_addr = info_v2_1->dp0_retimer_set.HdmiSlvAddr;
--	info->dp0_ext_hdmi_reg_num = info_v2_1->dp0_retimer_set.HdmiRegNum;
-+	info->dp0_ext_hdmi_reg_num = min_t(u8, info_v2_1->dp0_retimer_set.HdmiRegNum,
-+					    ARRAY_SIZE(info->dp0_ext_hdmi_reg_settings));
- 	for (i = 0; i < info->dp0_ext_hdmi_reg_num; i++) {
- 		info->dp0_ext_hdmi_reg_settings[i].i2c_reg_index =
- 				info_v2_1->dp0_retimer_set.HdmiRegSetting[i].ucI2cRegIndex;
- 		info->dp0_ext_hdmi_reg_settings[i].i2c_reg_val =
- 				info_v2_1->dp0_retimer_set.HdmiRegSetting[i].ucI2cRegVal;
- 	}
--	info->dp0_ext_hdmi_6g_reg_num = info_v2_1->dp0_retimer_set.Hdmi6GRegNum;
-+	info->dp0_ext_hdmi_6g_reg_num = min_t(u8, info_v2_1->dp0_retimer_set.Hdmi6GRegNum,
-+					       ARRAY_SIZE(info->dp0_ext_hdmi_6g_reg_settings));
- 	for (i = 0; i < info->dp0_ext_hdmi_6g_reg_num; i++) {
- 		info->dp0_ext_hdmi_6g_reg_settings[i].i2c_reg_index =
- 				info_v2_1->dp0_retimer_set.Hdmi6GhzRegSetting[i].ucI2cRegIndex;
-@@ -2811,14 +2821,16 @@ static enum bp_result get_integrated_inf
- 				info_v2_1->dp0_retimer_set.Hdmi6GhzRegSetting[i].ucI2cRegVal;
- 	}
- 	info->dp1_ext_hdmi_slv_addr = info_v2_1->dp1_retimer_set.HdmiSlvAddr;
--	info->dp1_ext_hdmi_reg_num = info_v2_1->dp1_retimer_set.HdmiRegNum;
-+	info->dp1_ext_hdmi_reg_num = min_t(u8, info_v2_1->dp1_retimer_set.HdmiRegNum,
-+					    ARRAY_SIZE(info->dp1_ext_hdmi_reg_settings));
- 	for (i = 0; i < info->dp1_ext_hdmi_reg_num; i++) {
- 		info->dp1_ext_hdmi_reg_settings[i].i2c_reg_index =
- 				info_v2_1->dp1_retimer_set.HdmiRegSetting[i].ucI2cRegIndex;
- 		info->dp1_ext_hdmi_reg_settings[i].i2c_reg_val =
- 				info_v2_1->dp1_retimer_set.HdmiRegSetting[i].ucI2cRegVal;
- 	}
--	info->dp1_ext_hdmi_6g_reg_num = info_v2_1->dp1_retimer_set.Hdmi6GRegNum;
-+	info->dp1_ext_hdmi_6g_reg_num = min_t(u8, info_v2_1->dp1_retimer_set.Hdmi6GRegNum,
-+					       ARRAY_SIZE(info->dp1_ext_hdmi_6g_reg_settings));
- 	for (i = 0; i < info->dp1_ext_hdmi_6g_reg_num; i++) {
- 		info->dp1_ext_hdmi_6g_reg_settings[i].i2c_reg_index =
- 				info_v2_1->dp1_retimer_set.Hdmi6GhzRegSetting[i].ucI2cRegIndex;
-@@ -2826,14 +2838,16 @@ static enum bp_result get_integrated_inf
- 				info_v2_1->dp1_retimer_set.Hdmi6GhzRegSetting[i].ucI2cRegVal;
- 	}
- 	info->dp2_ext_hdmi_slv_addr = info_v2_1->dp2_retimer_set.HdmiSlvAddr;
--	info->dp2_ext_hdmi_reg_num = info_v2_1->dp2_retimer_set.HdmiRegNum;
-+	info->dp2_ext_hdmi_reg_num = min_t(u8, info_v2_1->dp2_retimer_set.HdmiRegNum,
-+					    ARRAY_SIZE(info->dp2_ext_hdmi_reg_settings));
- 	for (i = 0; i < info->dp2_ext_hdmi_reg_num; i++) {
- 		info->dp2_ext_hdmi_reg_settings[i].i2c_reg_index =
- 				info_v2_1->dp2_retimer_set.HdmiRegSetting[i].ucI2cRegIndex;
- 		info->dp2_ext_hdmi_reg_settings[i].i2c_reg_val =
- 				info_v2_1->dp2_retimer_set.HdmiRegSetting[i].ucI2cRegVal;
- 	}
--	info->dp2_ext_hdmi_6g_reg_num = info_v2_1->dp2_retimer_set.Hdmi6GRegNum;
-+	info->dp2_ext_hdmi_6g_reg_num = min_t(u8, info_v2_1->dp2_retimer_set.Hdmi6GRegNum,
-+					       ARRAY_SIZE(info->dp2_ext_hdmi_6g_reg_settings));
- 	for (i = 0; i < info->dp2_ext_hdmi_6g_reg_num; i++) {
- 		info->dp2_ext_hdmi_6g_reg_settings[i].i2c_reg_index =
- 				info_v2_1->dp2_retimer_set.Hdmi6GhzRegSetting[i].ucI2cRegIndex;
-@@ -2841,14 +2855,16 @@ static enum bp_result get_integrated_inf
- 				info_v2_1->dp2_retimer_set.Hdmi6GhzRegSetting[i].ucI2cRegVal;
- 	}
- 	info->dp3_ext_hdmi_slv_addr = info_v2_1->dp3_retimer_set.HdmiSlvAddr;
--	info->dp3_ext_hdmi_reg_num = info_v2_1->dp3_retimer_set.HdmiRegNum;
-+	info->dp3_ext_hdmi_reg_num = min_t(u8, info_v2_1->dp3_retimer_set.HdmiRegNum,
-+					    ARRAY_SIZE(info->dp3_ext_hdmi_reg_settings));
- 	for (i = 0; i < info->dp3_ext_hdmi_reg_num; i++) {
- 		info->dp3_ext_hdmi_reg_settings[i].i2c_reg_index =
- 				info_v2_1->dp3_retimer_set.HdmiRegSetting[i].ucI2cRegIndex;
- 		info->dp3_ext_hdmi_reg_settings[i].i2c_reg_val =
- 				info_v2_1->dp3_retimer_set.HdmiRegSetting[i].ucI2cRegVal;
- 	}
--	info->dp3_ext_hdmi_6g_reg_num = info_v2_1->dp3_retimer_set.Hdmi6GRegNum;
-+	info->dp3_ext_hdmi_6g_reg_num = min_t(u8, info_v2_1->dp3_retimer_set.Hdmi6GRegNum,
-+					       ARRAY_SIZE(info->dp3_ext_hdmi_6g_reg_settings));
- 	for (i = 0; i < info->dp3_ext_hdmi_6g_reg_num; i++) {
- 		info->dp3_ext_hdmi_6g_reg_settings[i].i2c_reg_index =
- 				info_v2_1->dp3_retimer_set.Hdmi6GhzRegSetting[i].ucI2cRegIndex;
 
 
 
