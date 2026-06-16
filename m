@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-265479-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265911-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id MLqeMkCLMWrNmAUAu9opvQ
-	(envelope-from <stable+bounces-265479-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:43:28 +0200
+	id 9+paAK2SMWpsnAUAu9opvQ
+	(envelope-from <stable+bounces-265911-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:15:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38DA3693678
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:43:28 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74DF3693F4E
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:15:08 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=d0bG47g2;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265479-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265479-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=UdxijG1A;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265911-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265911-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 57B32324E9C8
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:36:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1CE8C30A3FF3
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:14:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 843544611CF;
-	Tue, 16 Jun 2026 17:36:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 549B23D7D70;
+	Tue, 16 Jun 2026 18:14:08 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62ECE43D4E9;
-	Tue, 16 Jun 2026 17:36:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 224413CE4BA;
+	Tue, 16 Jun 2026 18:14:07 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781631408; cv=none; b=Jk/ToHA5YO8akioLCEfYYirdP/hma4pb1sDqLroJprbYsft9Vh25vZIC4AqOpMjnhl8my8n2q1A08VWHS9bC+vvG7fs6zdxFBRoBmVGitU/Yy4jnA4iwPCORyk31auLIOqHFPXYpUJ2oNjW4JVZNiF7YBwnJVo4NVmL9dkYv2PQ=
+	t=1781633648; cv=none; b=RMTY3gaF6wJGgURl5x8H8yZafDTdaVlsKAO62cXlMbpI80Qkg4XDtq4d1GP1OTAoh5RTpKAxoz4MQYrYhKXbwWlIVf+W+Ot4esPAIhjoKP6KKMwzxrV/OqmJHkUnwh2c93MjTcDg4SYnQSlUfjINR69RQZ6iNX+34e1AQ1Z1KaE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781631408; c=relaxed/simple;
-	bh=XktSxX0Cs0h0qigjb7tCv72GGNOjgMF6nXiVXY+lYC0=;
+	s=arc-20240116; t=1781633648; c=relaxed/simple;
+	bh=7A2DxV3LgL8yZdkiAjnCMfR62z2nXxA6nX2tgqJ03bo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kT/u3qW6W04Ad6vXWF0fHtn69YzdTij0p5rkZBO9qbkkJH3/g2JCNTJB5DBWlUw2ZnJNqU6U56xsTr06I7m+iyRLXAVEGBUFnZSrG3rdY+8gO1pfbYliFIrBtnksz4kmT2QOzfeHA5FXcXuX+1UjpUWJUYDzFInxU9dq56Q4esA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d0bG47g2; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 191091F000E9;
-	Tue, 16 Jun 2026 17:36:45 +0000 (UTC)
+	 MIME-Version; b=NDPR3DUSSPCUti0/kGXKK927DbL2yCAFFbTRUG1LlvfJ/b/MNnHp/0JludrlOaQ9z+RCpaa0ZrLG9R1hycYXaI31p2AFjfq6U60/KawoJ3fiDxAZ50klrnwtkKa/+o13Ejnlfto0+y84XHwWPbyFMkZlGQvzuAGquju9dkeMyao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UdxijG1A; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F1201F000E9;
+	Tue, 16 Jun 2026 18:14:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781631407;
-	bh=h5DemRsgbSmajC8yuXgycV2Xf/u54AOobFV1ZFcS9KQ=;
+	s=korg; t=1781633647;
+	bh=u6bprMsjU1zolLXLR2/K8Yc1FQruL8jzR9SF2VUiOT4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=d0bG47g2Yp28FWb/yO+TxEBcSSVRB9OQTEtDPihmaj6hq3hSylpa9CmMBUlUuynAp
-	 BuVQaIL92lnw2ZzJvbf3IEhbaWAdwh93pZ731eULNkPfz21ijryyuQscLTQZJEMzEo
-	 CvsmYaQTCS8YCaEmSCSb8logEzZeM9Tduf6Uuqis=
+	b=UdxijG1A9q3/dyZJPnAXDupfeDmunDt/GTXMq1cn4zqTjLMdyyt5XbudX1g/N4kbU
+	 Sa5Fz7C4w4X1km/LJny8Mn84JKfu3O8jQW4alHMuSW2BWbTQofRMM03n0ZieQaMQyo
+	 ZqKLUqRy6uwINh0Pu6GeZKL19RM+FfxTRyUrhYGY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jakub Sitnicki <jakub@cloudflare.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 208/522] net: Annotate sk->sk_write_space() for UDP SOCKMAP.
+	Zhang Cen <rollkingzzc@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.15 117/411] USB: serial: cypress_m8: validate interrupt packet headers
 Date: Tue, 16 Jun 2026 20:25:55 +0530
-Message-ID: <20260616145135.793184452@linuxfoundation.org>
+Message-ID: <20260616145106.527604752@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,98 +68,125 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-265911-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:rollkingzzc@gmail.com,m:johan@kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265479-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kuniyu@google.com,m:jakub@cloudflare.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,cloudflare.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 38DA3693678
+X-Rspamd-Queue-Id: 74DF3693F4E
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Zhang Cen <rollkingzzc@gmail.com>
 
-[ Upstream commit b748765019fe9e9234660327090fc1a9665cdbdd ]
+commit 9f9bfc80c67f35a275820da7e83a35dface08281 upstream.
 
-UDP TX skb->destructor() is sock_wfree(), and UDP holds lock_sock()
-only for UDP_CORK / MSG_MORE sendmsg().
+cypress_read_int_callback() parses the interrupt-in buffer according to
+the selected Cypress packet format. Format 1 has a two-byte status/count
+header and format 2 has a one-byte combined status/count header. The
+usb-serial core sizes the interrupt-in buffer from the endpoint
+descriptor's wMaxPacketSize, and successful interrupt transfers can
+complete short when URB_SHORT_NOT_OK is not set.
 
-Otherwise, sk->sk_write_space() may be read locklessly while SOCKMAP
-rewrites sk->sk_write_space().
+Check that the completed packet contains the selected header before
+reading it. Malformed short reports are ignored and the interrupt URB is
+resubmitted through the existing retry path, preventing out-of-bounds
+header-byte reads.
 
-Let's use WRITE_ONCE() and READ_ONCE() for sk->sk_write_space().
+KASAN report as below:
+KASAN slab-out-of-bounds in cypress_read_int_callback+0x240/0x7f0
+Read of size 1
+Call trace:
+  cypress_read_int_callback() (drivers/usb/serial/cypress_m8.c:1009)
+  __usb_hcd_giveback_urb()
+  dummy_timer()
 
-Note that the write side is annotated by commit 2ef2b20cf4e0
-("net: annotate data-races around sk->sk_{data_ready,write_space}").
-
-Fixes: 7b98cd42b049 ("bpf: sockmap: Add UDP support")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Reviewed-by: Jakub Sitnicki <jakub@cloudflare.com>
-Link: https://patch.msgid.link/20260529193941.3897256-1-kuniyu@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 3416eaa1f8f8 ("USB: cypress_m8: Packet format is separate from characteristic size")
+Assisted-by: Codex:gpt-5.5
+Signed-off-by: Zhang Cen <rollkingzzc@gmail.com>
+Fixes: 3416eaa1f8f8 ("USB: cypress_m8: Packet format is separate from characteristic size")
+Cc: stable@vger.kernel.org	# 2.6.26
+[ johan: use constants in header length sanity checks ]
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/sock.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/usb/serial/cypress_m8.c |   12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/net/core/sock.c b/net/core/sock.c
-index 6c178b47426669..62411c8870e855 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -2433,8 +2433,12 @@ void sock_wfree(struct sk_buff *skb)
- 	bool free;
+--- a/drivers/usb/serial/cypress_m8.c
++++ b/drivers/usb/serial/cypress_m8.c
+@@ -1018,8 +1018,8 @@ static void cypress_read_int_callback(st
+ 	char tty_flag = TTY_NORMAL;
+ 	int bytes = 0;
+ 	int result;
+-	int i = 0;
+ 	int status = urb->status;
++	int i;
  
- 	if (!sock_flag(sk, SOCK_USE_WRITE_QUEUE)) {
-+		void (*sk_write_space)(struct sock *sk);
-+
-+		sk_write_space = READ_ONCE(sk->sk_write_space);
-+
- 		if (sock_flag(sk, SOCK_RCU_FREE) &&
--		    sk->sk_write_space == sock_def_write_space) {
-+		    sk_write_space == sock_def_write_space) {
- 			rcu_read_lock();
- 			free = refcount_sub_and_test(len, &sk->sk_wmem_alloc);
- 			sock_def_write_space_wfree(sk);
-@@ -2449,7 +2453,7 @@ void sock_wfree(struct sk_buff *skb)
- 		 * after sk_write_space() call
- 		 */
- 		WARN_ON(refcount_sub_and_test(len - 1, &sk->sk_wmem_alloc));
--		sk->sk_write_space(sk);
-+		sk_write_space(sk);
- 		len = 1;
+ 	switch (status) {
+ 	case 0: /* success */
+@@ -1057,22 +1057,32 @@ static void cypress_read_int_callback(st
+ 
+ 	spin_lock_irqsave(&priv->lock, flags);
+ 	result = urb->actual_length;
++	i = 0;
+ 	switch (priv->pkt_fmt) {
+ 	default:
+ 	case packet_format_1:
+ 		/* This is for the CY7C64013... */
++		if (result < 2)
++			break;
+ 		priv->current_status = data[0] & 0xF8;
+ 		bytes = data[1] + 2;
+ 		i = 2;
+ 		break;
+ 	case packet_format_2:
+ 		/* This is for the CY7C63743... */
++		if (result < 1)
++			break;
+ 		priv->current_status = data[0] & 0xF8;
+ 		bytes = (data[0] & 0x07) + 1;
+ 		i = 1;
+ 		break;
  	}
- 	/*
--- 
-2.53.0
-
+ 	spin_unlock_irqrestore(&priv->lock, flags);
++	if (i == 0) {
++		dev_dbg(dev, "%s - short packet received: %d bytes\n",
++			__func__, result);
++		goto continue_read;
++	}
+ 	if (result < bytes) {
+ 		dev_dbg(dev,
+ 			"%s - wrong packet size - received %d bytes but packet said %d bytes\n",
 
 
 
