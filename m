@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-266263-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265508-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id xp8KAQuaMWrknwUAu9opvQ
-	(envelope-from <stable+bounces-266263-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:46:35 +0200
+	id 42r/C86LMWoYmQUAu9opvQ
+	(envelope-from <stable+bounces-265508-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:45:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6748669474C
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:46:34 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5C7269373F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:45:49 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=CTRpTgM7;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266263-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266263-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=LwxUMN23;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265508-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265508-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 41B8931DBC48
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:45:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 900E73217CE1
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:39:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1EFE47D951;
-	Tue, 16 Jun 2026 18:45:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FD7C47AF75;
+	Tue, 16 Jun 2026 17:39:26 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8E5C47D949;
-	Tue, 16 Jun 2026 18:45:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02E6547AF5F;
+	Tue, 16 Jun 2026 17:39:25 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781635512; cv=none; b=N334lwoxjdN0h/KSTZBU/qBlcO32CrO0SuKDEpYa0im2/dvRjZ3ehOogn50ibxNBM6ulQCgIf1u2BT2mcYCCOKUf7G72oK1D5llUTTXQezZlL1VNDgSIwlfO1md8t332Ywx5ZN7Zq/ddkmGlKPoVERBHjh5pCQi/04+2TP1RgTQ=
+	t=1781631566; cv=none; b=fE3VC1X7oBaVCxVIBbbqjWJtIiPYmEQ1TjzKQTfSrNHSzyAD8XWOWuazymj/30bAO5fBbmJQTcw/4LI146MUFNC7QVqgsvgmhrbCFl9rSI7U/rCRe9afis/gNb0tWevMEkkHUaZAhZtxgnsYFyfen6Wp6fpZyWo4whoYbQm5qEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781635512; c=relaxed/simple;
-	bh=7pK4hhn/6jz5QBsyIQJWr0/2oC0UCyzrjyklfuSrX2M=;
+	s=arc-20240116; t=1781631566; c=relaxed/simple;
+	bh=KN9ah7mvsKMfMNkgvzzde4T5L7ayWlpPfUNIjJg0tYE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HP/4asANMAXq0q7Zs+BRNj15ZO3nwoowWiUjbND/Ds5bcpOZ3bfxEMaergGUAl2cd7T6F5Px6P+UhdBftWrmVpqCNg050Esa+Fucz7fwyqZO6CbUAuK8KsoxTG4dUyxRVj4twWtJ2fEJRG2khOLFFezTFiUY0qq/85HX74L4TRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CTRpTgM7; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4627E1F000E9;
-	Tue, 16 Jun 2026 18:45:08 +0000 (UTC)
+	 MIME-Version; b=J2eBDtYUiavvJKdA7b4aS+KvCibqpwVOdSo0vO6yupENgiCsONUf/BgLUrl44zwJmBbmTmggjAD31BjPD8HYUJSO0h26j8cGBUL1rmnazoJp0oSUJhfXs226cu9fiDAQLJBxcXshIP6E39vt7ts121NYIAgLVMK1UBseMr3Hh+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LwxUMN23; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A40F1F000E9;
+	Tue, 16 Jun 2026 17:39:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781635509;
-	bh=DGMvcTteGW4Dr3naZIe1jkeADPDryd3nY1UYqu+lTSM=;
+	s=korg; t=1781631564;
+	bh=wT+CYkDKyfQDzcudA8eDnhZDWc/Q+IRFhlZ+MnEwuBA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=CTRpTgM7l8AYUXmkl0+EmJM7IxzTo0kCSjSQkL5yijnhMyhWkm4RK470ZRH+PX5bF
-	 xaEVWK7zqo1bKgsRerJfy/UsgyGscCei2Rl+Y5L+UMONguMyIc2YYgX88Y7BUjTuWY
-	 Fxuj2G2OeqEvHHj2yqF0j1OaDnUhp0fpzrTy+mMk=
+	b=LwxUMN23C6CHZU49+FMzx7fJDMR1uUofUGj4nhDPBnQ1T+OqgeTOFr0KvCxNdpfce
+	 Z/a6iBDpgpnN6zSunDJ64zyVsnEUcuYzR2noKQba6XrfvrGrb8KjAQYRkL2KU2pgF8
+	 +2xX2iElvMwzaHr0WzbID1ry58Hsiq3calQFIOgA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aldo Conte <aldocontelk@gmail.com>,
-	Jonathan Cameron <jic23@kernel.org>
-Subject: [PATCH 5.10 063/342] iio: light: cm3323: fix reg_conf not being initialized correctly
+	Zhang Cen <rollkingzzc@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 212/522] Bluetooth: RFCOMM: hold listener socket in rfcomm_connect_ind()
 Date: Tue, 16 Jun 2026 20:25:59 +0530
-Message-ID: <20260616145051.193548191@linuxfoundation.org>
+Message-ID: <20260616145135.967815166@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,21 +72,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-266263-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:aldocontelk@gmail.com,m:jic23@kernel.org,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265508-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:rollkingzzc@gmail.com,m:luiz.von.dentz@intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -94,79 +95,139 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 6748669474C
+X-Rspamd-Queue-Id: C5C7269373F
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aldo Conte <aldocontelk@gmail.com>
+From: Zhang Cen <rollkingzzc@gmail.com>
 
-commit 1f4f0bcc5255dec5c4c3a1551bf49d8c33b69b20 upstream.
+[ Upstream commit 43c441edacf953b39517a44f5e5e10a93618b226 ]
 
-The code stores the return value of i2c_smbus_write_word_data()
-in data->reg_conf; however, this value represents the result
-of the write operation and not the value actually written to
-the configuration register. This meant that the contents of
-data->reg_conf did not truly reflect the contents
-of the hardware register.
+rfcomm_get_sock_by_channel() scans rfcomm_sk_list under the list lock,
+but returns the selected listener after dropping that lock without
+taking a reference. rfcomm_connect_ind() then locks the listener,
+queues a child socket on it, and may notify it after unlocking it.
 
-Instead, save the value of the register before the write
-and use this value in the I2C write.
+The buggy scenario involves two paths, with each column showing the
+order within that path:
 
-The bug was found by code inspection: i2c_smbus_write_word_data()
-returns 0 on success, not the value written to the register.
+rfcomm_connect_ind():            listener close:
+  1. Find parent in              1. close() enters
+     rfcomm_get_sock_by_channel()   rfcomm_sock_release().
+  2. Drop rfcomm_sk_list.lock    2. rfcomm_sock_shutdown()
+     without pinning parent.        closes the listener.
+  3. Call lock_sock(parent) and  3. rfcomm_sock_kill()
+     bt_accept_enqueue(parent,      unlinks and puts parent.
+     sk, true).
+  4. Read parent flags and may   4. parent can be freed.
+     call sk_state_change().
 
-Tested using i2c-stub on a Raspberry Pi 3B running a custom 6.19.10
-kernel. Before loading the driver, the configuration register 0x00
-CM3323_CMD_CONF was populated with 0x0030 using
-`i2cset -y 11 0x10 0x00 0x0030 w`, encoding an integration time of 320ms
-in bits[6:4].
+If close wins the race, parent can be freed before
+rfcomm_connect_ind() reaches lock_sock(), bt_accept_enqueue(), or the
+deferred-setup callback.
 
-Due to incorrect initialization of data->reg_conf in
-cm3323_init(), the print of integration_time returns 0.040000
-instead of the expected 0.320000. This happens because the read of the
-integration_time depends on cm3323_get_it_bits() that is based on the
-value of data->reg_conf, which is erroneously set to 0.
+Take a reference on the listener before leaving rfcomm_sk_list.lock.
+After lock_sock() succeeds, recheck that it is still in BT_LISTEN
+before queueing a child, cache the deferred-setup bit while the parent
+is locked, and drop the reference after the last parent use.
 
-With this fix applied, data->reg_conf correctly saves 0x0030 after init
-and the successive integration_time reports 0.320000 as expected.
+KASAN reported a slab-use-after-free in lock_sock_nested() from
+rfcomm_connect_ind(), with the freeing stack going through
+rfcomm_sock_kill() and rfcomm_sock_release().
 
-Fixes: 8b0544263761 ("iio: light: Add support for Capella CM3323 color sensor")
-Cc: stable@vger.kernel.org
-Signed-off-by: Aldo Conte <aldocontelk@gmail.com>
-Signed-off-by: Jonathan Cameron <jic23@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Zhang Cen <rollkingzzc@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/light/cm3323.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ net/bluetooth/rfcomm/sock.c | 26 ++++++++++++++++++++++----
+ 1 file changed, 22 insertions(+), 4 deletions(-)
 
---- a/drivers/iio/light/cm3323.c
-+++ b/drivers/iio/light/cm3323.c
-@@ -89,15 +89,14 @@ static int cm3323_init(struct iio_dev *i
- 
- 	/* enable sensor and set auto force mode */
- 	ret &= ~(CM3323_CONF_SD_BIT | CM3323_CONF_AF_BIT);
-+	data->reg_conf = ret;
- 
--	ret = i2c_smbus_write_word_data(data->client, CM3323_CMD_CONF, ret);
-+	ret = i2c_smbus_write_word_data(data->client, CM3323_CMD_CONF, data->reg_conf);
- 	if (ret < 0) {
- 		dev_err(&data->client->dev, "Error writing reg_conf\n");
- 		return ret;
- 	}
- 
--	data->reg_conf = ret;
--
- 	return 0;
+diff --git a/net/bluetooth/rfcomm/sock.c b/net/bluetooth/rfcomm/sock.c
+index bc2b22c2b3aec7..d72cdcd2e2bb11 100644
+--- a/net/bluetooth/rfcomm/sock.c
++++ b/net/bluetooth/rfcomm/sock.c
+@@ -122,7 +122,7 @@ static struct sock *__rfcomm_get_listen_sock_by_addr(u8 channel, bdaddr_t *src)
  }
  
+ /* Find socket with channel and source bdaddr.
+- * Returns closest match.
++ * Returns closest match with an extra reference held.
+  */
+ static struct sock *rfcomm_get_sock_by_channel(int state, u8 channel, bdaddr_t *src)
+ {
+@@ -136,15 +136,25 @@ static struct sock *rfcomm_get_sock_by_channel(int state, u8 channel, bdaddr_t *
+ 
+ 		if (rfcomm_pi(sk)->channel == channel) {
+ 			/* Exact match. */
+-			if (!bacmp(&rfcomm_pi(sk)->src, src))
++			if (!bacmp(&rfcomm_pi(sk)->src, src)) {
++				sock_hold(sk);
+ 				break;
++			}
+ 
+ 			/* Closest match */
+-			if (!bacmp(&rfcomm_pi(sk)->src, BDADDR_ANY))
++			if (!bacmp(&rfcomm_pi(sk)->src, BDADDR_ANY)) {
++				if (sk1)
++					sock_put(sk1);
++
+ 				sk1 = sk;
++				sock_hold(sk1);
++			}
+ 		}
+ 	}
+ 
++	if (sk && sk1)
++		sock_put(sk1);
++
+ 	read_unlock(&rfcomm_sk_list.lock);
+ 
+ 	return sk ? sk : sk1;
+@@ -941,6 +951,7 @@ int rfcomm_connect_ind(struct rfcomm_session *s, u8 channel, struct rfcomm_dlc *
+ {
+ 	struct sock *sk, *parent;
+ 	bdaddr_t src, dst;
++	bool defer_setup = false;
+ 	int result = 0;
+ 
+ 	BT_DBG("session %p channel %d", s, channel);
+@@ -954,6 +965,11 @@ int rfcomm_connect_ind(struct rfcomm_session *s, u8 channel, struct rfcomm_dlc *
+ 
+ 	lock_sock(parent);
+ 
++	if (parent->sk_state != BT_LISTEN)
++		goto done;
++
++	defer_setup = test_bit(BT_SK_DEFER_SETUP, &bt_sk(parent)->flags);
++
+ 	/* Check for backlog size */
+ 	if (sk_acceptq_is_full(parent)) {
+ 		BT_DBG("backlog full %d", parent->sk_ack_backlog);
+@@ -981,9 +997,11 @@ int rfcomm_connect_ind(struct rfcomm_session *s, u8 channel, struct rfcomm_dlc *
+ done:
+ 	release_sock(parent);
+ 
+-	if (test_bit(BT_SK_DEFER_SETUP, &bt_sk(parent)->flags))
++	if (defer_setup)
+ 		parent->sk_state_change(parent);
+ 
++	sock_put(parent);
++
+ 	return result;
+ }
+ 
+-- 
+2.53.0
+
 
 
 
