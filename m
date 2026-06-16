@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-266363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264998-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Su7QNPGcMWr3oAUAu9opvQ
-	(envelope-from <stable+bounces-266363-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:58:57 +0200
+	id ZwuhAEaDMWovlQUAu9opvQ
+	(envelope-from <stable+bounces-264998-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:09:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3220A694A17
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:58:57 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C1A8692C99
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:09:25 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="t2/ZaMr0";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266363-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266363-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=vVklgcjH;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264998-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264998-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A01F03213973
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:53:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DF0B53366CB5
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:56:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00B2646AEE1;
-	Tue, 16 Jun 2026 18:53:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1FB24657FD;
+	Tue, 16 Jun 2026 16:56:14 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8C22472798;
-	Tue, 16 Jun 2026 18:53:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28BC7478E39;
+	Tue, 16 Jun 2026 16:56:09 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781636029; cv=none; b=GlYyMGPlhXkWBo0FIdi/g6PRS4rW5O4Jh+nD+hYyco/fnaFsNicf2VcXFP2VtnHS4yznwfm50rYw4XA3A2Ir9N4SaGC0CAOS/Eir0TwyatMaeZpCs6mIhJyRWv/QwZvReYiIddbWfcIS7CnJZ3mwmZwW3KNvkVXCCgac4eojwTk=
+	t=1781628974; cv=none; b=Whf2ApRo8Qb1UolkOMREvKxhnhdlpqH5a9dLuDGhVnwaQEPhA8V2pm2Hh9QzX/P8XyKj4y7RChQrdVbH0xRgOhwfUv5HWar/Ut9E8doIXL8gXUe61iPM0RSHGRbS60NewQwb6IHLnSAkht3pomvsTAMg/ds40amnbdFGe6GPtDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781636029; c=relaxed/simple;
-	bh=rb1p2pVMsgxD9W9Mh54IFankvZp6hY/tiXfi80pSA+o=;
+	s=arc-20240116; t=1781628974; c=relaxed/simple;
+	bh=se0AUG9QOZV0BIhNeKo95L612h6aYqQzKNNzRpIQjg4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p1+TUFT1w+u4vtg7ekiVRgHOR08IyPxkIxko1mQpYnR0dZSBIOemzROOMYU4plCqn5s8ahRLojsHtH7Fz9UaBOtYGqKdtut96CUjgxrm8hks/PbPmrHOQaaUJAKOY5KzS/TdgCbNiz3I+NriXLHWzN6rVxrJ+21j2jr9WePxzpE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t2/ZaMr0; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B557E1F000E9;
-	Tue, 16 Jun 2026 18:53:47 +0000 (UTC)
+	 MIME-Version; b=JLvjvSskhuHm2yM7pSxzmn7QF0W0evkPqNurQ7qPIduAwv/7TKsJSn+Nie0K+TA5fzHZU4VQJ07nC03AyYgr0MNod8QdEn7FQxe1gTUtJXwXP5T18/i3DGvI0x3cYfRIq8YDZRT5eW59jmEnnoa7ctvhCNo39qU3yPxI4mbU2M8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vVklgcjH; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEC651F000E9;
+	Tue, 16 Jun 2026 16:56:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781636028;
-	bh=F/T8c805nWnMAXA1aq4abNp2PX10DjMK2uBgnOWOxKg=;
+	s=korg; t=1781628969;
+	bh=Dni0y3tBCFQSBMoOaZsqMgt9AwpbFVjoF+UJ6hBOo9k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=t2/ZaMr0lN9+cKvRpweU6l0l19Nc0ATZNCOjtHFz3i6D+CyiDKUFe7yxG9GJZmQ6S
-	 fe4515YneQ2U2fwdZ7g8nnTVFTjXYbIVjfePnPzgsvtWWmKQ8Il7DE5GMxMqi6wV/+
-	 1PXvuZ+NFy4OKSxgjFZaG44c4pLhmRGxOhKsYbBA=
+	b=vVklgcjHZ5sKbZ3tsgykw7ZTajIRdbDolMF/ER5MwFLaXj3DEU0HBcvmoh6qGMYlK
+	 cVmgq8IAQ5hJy333EvtZQQTsC4XZQsaChVYC65MwhV1wg98n36rrkGFmOoEc2qzlZm
+	 aSFs0Eocbc0Xc85SXlw3sn6uPPamSs058zCTBhmA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	"Maciej W. Rozycki" <macro@orcam.me.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 128/342] compiler-clang.h: Add __diag infrastructure for clang
+Subject: [PATCH 6.6 197/452] serial: dz: Fix bootconsole handover lockup
 Date: Tue, 16 Jun 2026 20:27:04 +0530
-Message-ID: <20260616145054.164143894@linuxfoundation.org>
+Message-ID: <20260616145128.181140115@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,92 +71,136 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-266363-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264998-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:nathan@kernel.org,m:memxor@gmail.com,m:ast@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:macro@orcam.me.uk,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,orcam.me.uk:email,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3220A694A17
+X-Rspamd-Queue-Id: 5C1A8692C99
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Maciej W. Rozycki <macro@orcam.me.uk>
 
-commit f014a00bbeb09cea16017b82448d32a468a6b96f upstream.
+commit 7f127b2208e5e2b817243cad41fe4211a6d5a7a3 upstream.
 
-Add __diag macros similar to those in compiler-gcc.h, so that warnings
-that need to be adjusted for specific cases but not globally can be
-ignored when building with clang.
+Calling dz_reset() in the course of setting up the serial device causes
+line parameters to be reset and the transmitter disabled.  We've been
+lucky in that no message is usually produced to the kernel log between
+this call and the later call to uart_set_options() in the course of
+console setup done by dz_serial_console_init(), or the system would hang
+as the console output handler in the firmware tried to access a port the
+transmitter of which has been disabled and line parameters messed up.
 
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Link: https://lore.kernel.org/bpf/20220304224645.3677453-6-memxor@gmail.com
+This will change with the next change to the driver, so fix dz_reset()
+such that line parameters are set for 9600n8 console operation as with
+the system firmware and the transmitter re-enabled after reset.  This
+also means dz_pm() serves no purpose anymore, so drop it.
 
-[ Kartikeya: wrote commit message ]
-
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Fixes: e6ee512f5a77 ("dz.c: Resource management")
+Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Cc: stable@vger.kernel.org # v2.6.25+
+Link: https://patch.msgid.link/alpine.DEB.2.21.2605062302010.46195@angie.orcam.me.uk
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/compiler-clang.h | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ drivers/tty/serial/dz.c | 36 ++++++++++++------------------------
+ 1 file changed, 12 insertions(+), 24 deletions(-)
 
-diff --git a/include/linux/compiler-clang.h b/include/linux/compiler-clang.h
-index d9376e327d665f..fae3775d02b516 100644
---- a/include/linux/compiler-clang.h
-+++ b/include/linux/compiler-clang.h
-@@ -126,3 +126,25 @@
- #if __has_feature(shadow_call_stack)
- # define __noscs	__attribute__((__no_sanitize__("shadow-call-stack")))
- #endif
+diff --git a/drivers/tty/serial/dz.c b/drivers/tty/serial/dz.c
+index 3cfb68165334e2..90231ec00ff070 100644
+--- a/drivers/tty/serial/dz.c
++++ b/drivers/tty/serial/dz.c
+@@ -572,6 +572,18 @@ static void dz_reset(struct dz_port *dport)
+ 	while (dz_in(dport, DZ_CSR) & DZ_CLR);
+ 	iob();
+ 
++	/*
++	 * Set parameters across all lines such as not to interfere
++	 * with the initial PROM-based console.  Otherwise any output
++	 * produced before the console handover would cause the system
++	 * firmware to produce rubbish.
++	 */
++	for (int line = 0; line < DZ_NB_PORT; line++)
++		dz_out(dport, DZ_LPR, DZ_B9600 | DZ_CS8 | line);
 +
-+/*
-+ * Turn individual warnings and errors on and off locally, depending
-+ * on version.
-+ */
-+#define __diag_clang(version, severity, s) \
-+	__diag_clang_ ## version(__diag_clang_ ## severity s)
++	/* Re-enable transmission for the initial PROM-based console.  */
++	dz_out(dport, DZ_TCR, tcr);
 +
-+/* Severity used in pragma directives */
-+#define __diag_clang_ignore	ignored
-+#define __diag_clang_warn	warning
-+#define __diag_clang_error	error
-+
-+#define __diag_str1(s)		#s
-+#define __diag_str(s)		__diag_str1(s)
-+#define __diag(s)		_Pragma(__diag_str(clang diagnostic s))
-+
-+#if CONFIG_CLANG_VERSION >= 110000
-+#define __diag_clang_11(s)	__diag(s)
-+#else
-+#define __diag_clang_11(s)
-+#endif
+ 	/* Enable scanning.  */
+ 	dz_out(dport, DZ_CSR, DZ_MSE);
+ 
+@@ -655,26 +667,6 @@ static void dz_set_termios(struct uart_port *uport, struct ktermios *termios,
+ 	spin_unlock_irqrestore(&dport->port.lock, flags);
+ }
+ 
+-/*
+- * Hack alert!
+- * Required solely so that the initial PROM-based console
+- * works undisturbed in parallel with this one.
+- */
+-static void dz_pm(struct uart_port *uport, unsigned int state,
+-		  unsigned int oldstate)
+-{
+-	struct dz_port *dport = to_dport(uport);
+-	unsigned long flags;
+-
+-	spin_lock_irqsave(&dport->port.lock, flags);
+-	if (state < 3)
+-		dz_start_tx(&dport->port);
+-	else
+-		dz_stop_tx(&dport->port);
+-	spin_unlock_irqrestore(&dport->port.lock, flags);
+-}
+-
+-
+ static const char *dz_type(struct uart_port *uport)
+ {
+ 	return "DZ";
+@@ -770,7 +762,6 @@ static const struct uart_ops dz_ops = {
+ 	.startup	= dz_startup,
+ 	.shutdown	= dz_shutdown,
+ 	.set_termios	= dz_set_termios,
+-	.pm		= dz_pm,
+ 	.type		= dz_type,
+ 	.release_port	= dz_release_port,
+ 	.request_port	= dz_request_port,
+@@ -895,10 +886,7 @@ static int __init dz_console_setup(struct console *co, char *options)
+ 	if (ret)
+ 		return ret;
+ 
+-	spin_lock_init(&dport->port.lock);	/* For dz_pm().  */
+-
+ 	dz_reset(dport);
+-	dz_pm(uport, 0, -1);
+ 
+ 	if (options)
+ 		uart_parse_options(options, &baud, &parity, &bits, &flow);
 -- 
 2.53.0
 
