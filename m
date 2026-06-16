@@ -1,62 +1,63 @@
-Return-Path: <stable+bounces-265113-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264110-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 8/G2EdCEMWralQUAu9opvQ
-	(envelope-from <stable+bounces-265113-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:16:00 +0200
+	id zOeDFd1uMWrXjAUAu9opvQ
+	(envelope-from <stable+bounces-264110-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:42:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA732692EE8
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:15:59 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7BD76914FD
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:42:20 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ObbMWhDq;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265113-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265113-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="rq6xhg/i";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264110-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-264110-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5A6C730E6919
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:05:34 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id CD735306B015
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:36:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C84BD376A19;
-	Tue, 16 Jun 2026 17:05:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76215357D14;
+	Tue, 16 Jun 2026 15:36:19 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CCD743E4BC;
-	Tue, 16 Jun 2026 17:05:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BE7244BC94;
+	Tue, 16 Jun 2026 15:36:18 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781629533; cv=none; b=D/8F5l//gVawjfigB6f3kzy4DcTbjAR+7WQPDiatuPWoGCjfo8GHCnUw9IOdRl+mZmMNMrFdwkm9pHfhQ0qxjBJYo0epbwCXEbjass+WzSCBU65Ee9GKvbHb4aYw8UTPOvzXxm4Sc2CmBtyzC3LHqpytEofevnkzEFRMQkAqEt8=
+	t=1781624179; cv=none; b=b/m1xMX5bVnmQRZO8AMx3aarB4Z1W+SsrEmABDD1ShbcGgpdlRbaP4Fj89ObcRT5zRiq6RLa8IZ74kQGtXejqHyRBixJlA2vDvs4tFtOwBmOHQbuOXc9BdLv0xkxebwPcFPfhOh7M247U/P+1r6zZjDXV1xzaBJjC3BDp00Q77I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781629533; c=relaxed/simple;
-	bh=wj81f2oU60DddLlmVQoGI8sceuYYAHayymcz7uyyWRQ=;
+	s=arc-20240116; t=1781624179; c=relaxed/simple;
+	bh=1HEA38jiHmVf61Y5ZYqTobdgadR1AvG0nv2W5OvmK1A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O4YYUaKPba9o61FzY7JKfMT0XJx2a/1AMHyzukyR/0LzblNsiXYUQKDJ1Yxk5EYtyB6PcE6SrugL+aMGRAYJvrnqq9Gsns3Pd3EcsSYLBZVJKGlBqvs+kfZVxGfMMjHBEI/xf3dv24XbJUsWw7tlBhoBPqPD3JgJkhO+5vWIctQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ObbMWhDq; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A88F31F000E9;
-	Tue, 16 Jun 2026 17:05:31 +0000 (UTC)
+	 MIME-Version; b=Bbst0M7CWFP/hkgSTQRVmP8QHUQ0WKmQhdh0NfSaKOZIK/NQKmvNa8ZKDE9LIWN2gxQnUrJLxILKu36/Vd7gAkQjLIqKjIzhCUACbnxWM88cZigeWRKXu62Vy2opIb9T/H6RwBjPiPIeGrX/mKiVBLgDMj+C4/5OzpHWTp4yV2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rq6xhg/i; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BB091F00A3A;
+	Tue, 16 Jun 2026 15:36:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781629532;
-	bh=0WN9SxrZqgi7TmMZI941yhGlD10SwdW9+Un7+/dHRoE=;
+	s=korg; t=1781624178;
+	bh=wuA1DJnohwpvH7KvAEZm79A/U2htlyQwPtFkrSdsyhg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ObbMWhDqD/gNTR6I78HIpx5cZXob2lIMW7Bun0nmkv0RVy03SJ5dSIEHpo27TKbRQ
-	 YncpnH7voq/BR//J00N9EG68VVigrqY16yL3zYzSVKPnjbQckARMR/z7orwA9EG0Zf
-	 b4VGghYoS+CVsCYquGE7ib+HQnUR3bnu4FzUS+1g=
+	b=rq6xhg/il4xf9kZEGm+gokO+bgj6R+e8kaEIEr1+rtfniLcwcPbzbgQIcnWTJZ0dL
+	 x25MwjCH1rwmhMuNydTbl+YpNNL4fJV2L2HgSPswap4j0coNiSauiudyCFtrgrmwzF
+	 qcJ2yPspuaFHnFAqhnvnE5MjNCaG8SRwlk1JpuCk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tristan Madani <tristan@talencesecurity.com>,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 6.6 291/452] netfilter: nft_tunnel: fix use-after-free on object destroy
+	Nikolay Kuratov <kniv@yandex-team.ru>,
+	Md Haris Iqbal <haris.iqbal@linux.dev>,
+	Moshe Shemesh <moshe@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 7.0 287/378] net/mlx5: Reorder completion before putting command entry in cmd_work_handler
 Date: Tue, 16 Jun 2026 20:28:38 +0530
-Message-ID: <20260616145132.852126441@linuxfoundation.org>
+Message-ID: <20260616145125.191787418@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,22 +73,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265113-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264110-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:tristan@talencesecurity.com,m:fmancera@suse.de,m:fw@strlen.de,m:pablo@netfilter.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kniv@yandex-team.ru,m:haris.iqbal@linux.dev,m:moshe@nvidia.com,m:tariqt@nvidia.com,m:pabeni@redhat.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -96,55 +97,76 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,suse.de:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,netfilter.org:email,strlen.de:email,vger.kernel.org:from_smtp,talencesecurity.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,msgid.link:url,linux.dev:email,nvidia.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,yandex-team.ru:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: AA732692EE8
+X-Rspamd-Queue-Id: E7BD76914FD
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tristan Madani <tristan@talencesecurity.com>
+From: Nikolay Kuratov <kniv@yandex-team.ru>
 
-commit c32b26aaa2f9216520a38b3f4bfeec846eb3eb8a upstream.
+commit 02896a7fa4cd3ec61d60ba30136841e4f04bdeac upstream.
 
-nft_tunnel_obj_destroy() calls metadata_dst_free() which directly
-kfree()s the metadata_dst, ignoring the dst_entry refcount. Packets
-that took a reference via dst_hold() in nft_tunnel_obj_eval() and
-are still queued (e.g. in a netem qdisc) are left with a dangling
-pointer. When these packets are eventually dequeued, dst_release()
-operates on freed memory.
+Assuming callback != NULL && !page_queue, cmd_work_handler takes
+command entry with refcnt == 1 from mlx5_cmd_invoke.
+If either semaphore timeout or index allocation error happens,
+it does final cmd_ent_put(ent). To avoid access to freed memory,
+notify slotted completion before cmd_ent_put.
 
-Replace metadata_dst_free() with dst_release() so the metadata_dst
-is freed only after all references are dropped. The dst subsystem
-already handles metadata_dst cleanup in dst_destroy() when
-DST_METADATA is set.
+This is theoretical issue found by Svace static analyser.
 
-Fixes: af308b94a2a4 ("netfilter: nf_tables: add tunnel support")
 Cc: stable@vger.kernel.org
-Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
-Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 485d65e135712 ("net/mlx5: Add a timeout to acquire the command queue semaphore")
+Fixes: 0e2909c6bec90 ("net/mlx5: Fix variable not being completed when function returns")
+Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
+Reviewed-by: Md Haris Iqbal <haris.iqbal@linux.dev>
+Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
+Acked-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20260526162932.501584-1-kniv@yandex-team.ru
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nft_tunnel.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlx5/core/cmd.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/net/netfilter/nft_tunnel.c
-+++ b/net/netfilter/nft_tunnel.c
-@@ -699,7 +699,7 @@ static void nft_tunnel_obj_destroy(const
- {
- 	struct nft_tunnel_obj *priv = nft_obj_data(obj);
- 
--	metadata_dst_free(priv->md);
-+	dst_release(&priv->md->dst);
- }
- 
- static struct nft_object_type nft_tunnel_obj_type;
+--- a/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
+@@ -1001,12 +1001,13 @@ static void cmd_work_handler(struct work
+ 				ent->callback(-EBUSY, ent->context);
+ 				mlx5_free_cmd_msg(dev, ent->out);
+ 				free_msg(dev, ent->in);
++				complete(&ent->slotted);
+ 				cmd_ent_put(ent);
+ 			} else {
+ 				ent->ret = -EBUSY;
+ 				complete(&ent->done);
++				complete(&ent->slotted);
+ 			}
+-			complete(&ent->slotted);
+ 			return;
+ 		}
+ 		alloc_ret = cmd_alloc_index(cmd, ent);
+@@ -1016,13 +1017,14 @@ static void cmd_work_handler(struct work
+ 				ent->callback(-EAGAIN, ent->context);
+ 				mlx5_free_cmd_msg(dev, ent->out);
+ 				free_msg(dev, ent->in);
++				complete(&ent->slotted);
+ 				cmd_ent_put(ent);
+ 			} else {
+ 				ent->ret = -EAGAIN;
+ 				complete(&ent->done);
++				complete(&ent->slotted);
+ 			}
+ 			up(&cmd->vars.sem);
+-			complete(&ent->slotted);
+ 			return;
+ 		}
+ 	} else {
 
 
 
