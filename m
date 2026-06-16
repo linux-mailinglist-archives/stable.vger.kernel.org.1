@@ -1,215 +1,225 @@
-Return-Path: <stable+bounces-263668-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263670-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id pnuCCFgwMWpLdgUAu9opvQ
-	(envelope-from <stable+bounces-263668-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 13:15:36 +0200
+	id 96EfGQkyMWokdwUAu9opvQ
+	(envelope-from <stable+bounces-263670-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 13:22:49 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 766DC68EB4D
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 13:15:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B80EC68EC11
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 13:22:48 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=chromium.org header.s=google header.b=Qo2I+q5P;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263668-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263668-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=chromium.org;
+	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=fgDwNjjw;
+	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=OgS9oD4D;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263670-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263670-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=reject) header.from=qualcomm.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 12CB4319A0C6
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 11:12:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CC0DC31A3D8D
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 11:18:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BF74439010;
-	Tue, 16 Jun 2026 11:12:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7C2F386557;
+	Tue, 16 Jun 2026 11:18:25 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADF4142982C
-	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 11:12:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AF512D8DD0
+	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 11:18:24 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781608376; cv=none; b=Gv2UhCLs2+iFnHbiMC5CFfQtJ6rEzbHL7L+azLOpeJC0o1APahtsjbGtshHJDK6ZGmDYbK4MuNDvf699ISSsQhplwPnTyNtNwmGAm38gJEeqEuUW3SkdZ4qyP8FSx7HKIfHyUPUXnCVpCNHRDZO0c2+rqaT9ntAl2EmrhdM8EnE=
+	t=1781608705; cv=none; b=D5BE5LalkzFI90zGYhaWkDeuozeaChuH7Jz0JpAln7RLRpiExEL4iU1+JPOobi4ALX3mrxCdHrt/6OPyTfcKPE7hKYnysgfH8iJAMNazq8jlDDn7bz10piHSNLj/PAlc5dqgjPJoylZGpC9FmCviduzd1lQ0Q09sjp/Pr5HoYyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781608376; c=relaxed/simple;
-	bh=XzhCB5GzyvJph4pAksg0ijeF4yJPIDyIY2jjs6KRlQA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ORRCgNoUUk/feP1HPWMlLVWl24aEkfFaWrc3VTkE/JGlbZaFagRUcsE3C2QvJBDFyov9Ew//+qx9piEICHj71fnP6JZxgOqBIYmVbV+mASphkcoXe/sI1Kte2SQngkqWvzNqkVeHhX3KTya2N//jd0huGKnEddQxqLPTggng1mA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=Qo2I+q5P; arc=none smtp.client-ip=209.85.210.181
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-842cd900ee0so1983156b3a.2
-        for <stable@vger.kernel.org>; Tue, 16 Jun 2026 04:12:55 -0700 (PDT)
+	s=arc-20240116; t=1781608705; c=relaxed/simple;
+	bh=my90AxcsOT0BM+hQjh9MNTinNSbEdC0lQeKCWBsWE28=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ctEac926OcxxIiSzGkIkZG88JxsdJq2QZrkTDbMbCTgWT8Zl92JreYMXrFjlbO3oZv/EpIhspK5f1JdHq8xn2UXnmZE8P1lwbFXG8gnZ2yMGEpPU8TZRC/BdpTv+GZv1hEv5FDMRza8RMUoUPqcvdRmzInFgIDObwWMq/7eBYRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=fgDwNjjw; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=OgS9oD4D; arc=none smtp.client-ip=205.220.180.131
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65GACTWE3474740
+	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 11:18:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	1mC4p/ZORnTCo0N4Vz/PvLV6xnFXcvPjV/Xeey750iY=; b=fgDwNjjwMqTyQK6Z
+	JwROqnBq6ifyMPf8FYZ0BMUTM+TNiGYFFM0KbbgH8C0AbdpOc/fFQKx1YcI71tQq
+	U0OMrwJFlaRhbRUoRxsfUvFZ0FWGnyEJJUnj2z74Z/6mqd0g+gaN3e8hbVLMSdDd
+	aQH2iKoECXSFDjptpP3UgrAKbF8rRqEVnbobqesPV4Yy7bcA5X7RYHDdcPzU03ud
+	DskvVN7ekHxTpMh/CV0/leBaX71aBfBnwf9g2uq/VIi864hH0k9NV5RTcY2ogegE
+	5Wy+C9c5QVWgUzHTTMFcBsjInP9Sdy48DnDsh3QuUxtJsmce7Q6JPMR0AX5S4kS8
+	J6RFhQ==
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4ety52sr0k-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 11:18:22 +0000 (GMT)
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-36d99629fd6so7023186a91.1
+        for <stable@vger.kernel.org>; Tue, 16 Jun 2026 04:18:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1781608375; x=1782213175; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OjucF5goefZfuxikv7tCuZJMVpoPtgqO36vnpR26lfo=;
-        b=Qo2I+q5PflWGczlHlRiUo/fRgc2c3r7zrJNkD4+/3E1B2zfC8BOXqkTtmtgIEv6cTO
-         voOXW+VFx9CDIjM0E/mj8aLuFTGT4wbfENSQUclvoSOVqz2Dfaugg9dYrQomw4wnhgCT
-         kRveK0IFvF4nzqmleiR/fTeS3/ExciBCpZCzo=
+        d=oss.qualcomm.com; s=google; t=1781608701; x=1782213501; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=1mC4p/ZORnTCo0N4Vz/PvLV6xnFXcvPjV/Xeey750iY=;
+        b=OgS9oD4D0YzDiXyR8tbOKDjuvB0i/1mMjmx38+BZ2ssFVxAi9+k9OMzKQmJj3qbBvd
+         es0ZPnhMK4YG5HGie4+7YLFrH0XGLrLHS9sIli8CfgrglFueIsK7K6CgdysqeZ6SvGyR
+         /3DLytIjRYzY+/PyA9FjTBCXokLNS/cV7B5fj1Mpy2t+3hU1ZcJedjZxH8189FU1z15b
+         w/q+FSvf5Z+UomHyhOXe+Ts41qiC6W/wfSGmyjNAAm3vR6NrlrvvWG6JKD4JqV+mx/Pz
+         058JVh1LcUZjuQdhRZuief8g6vKfJUmiVxaEEyB86cISTF+HzpJ6u8/cx7n6cZ8lLI8J
+         eLFA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781608375; x=1782213175;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=OjucF5goefZfuxikv7tCuZJMVpoPtgqO36vnpR26lfo=;
-        b=Gj6VhETAXdMsDPJvJpp2N4VOx5CrgWAxjiC1mnOHJ1slpIy07YWGcEv2SX+cOwnGIC
-         yObcX08LDNaM+1FGCG/GV0yAvHHzaQEvO2dLJQi0bONhdUk589CIM49op/7qrbBXJ4Zb
-         nbVDYEZW3PeHY80jCxkqdwzj4zxXqXIdnlo9gKWIRTN1tTVK/dVvSfzWM9+GZWF/4Ifw
-         EMe5AjXEVLMm7AzukEc5dOsaYdMPHTmqwNJROirw3KuhjJegCJ4iSDb1CBk4HMUnq//W
-         BJP7y5skXfMX49Y7We49eOKJN/xtp/HJjvHBgYY7OIkDTTHDjDLn0VCiXrFHtf+92Pxh
-         L1zQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8Zb70keCV+F0B9dH8t+FKVXEGiM+PIXojFf1b3kzeqWRjg6u+Kq/KobfvZKs8NPnq0UFu4M7o=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw/c2dlDa84l2NQF0+dFWeycaM8WjaRLPBd9yIcj+2umzW4qHLC
-	7KeUTaZ413OR70mPYLoXGAh0YAYvYb2E6Aj5LKBhZ0+AQdGvjwXq/jD6eP2TBGlrLA==
-X-Gm-Gg: Acq92OGsY4cRnvDdqDOuvZrrLh/NuMimt5SpRYqqIZWXlG9RG5RE+eM32pTWwXzMN0U
-	FGujMHI5A+zEi7ADNW1eJ2n/U5nSggq0jhxYDG/T843jrfFuWN7nBAtFBl67CuGWmgKKgNROWL3
-	DIMYpYfgx8Z9tVDuf7P5iFW1ZQLUpRFTcyUT4yEyc5N3AKVM4kf7CAdJDheEUCbOLTP0VySJmTi
-	dNj89YUAsDArQu6fF/Tpuz+cjhIrrCIrLQTSSRgFcOpnwh56WVc0oo9Dwg4o3tKQsc50UGtdFn+
-	k9W3xFhB5ZUMlYTVvHmbty3A50NPM073MGyDWASFKYUR9l5tZGbPRFj+eDwKydR4Anw7ot4lLlx
-	rNkGQKIEMo0c5ATHM4hgEHFFP1f5+p4fIzDzmDbSx2JOI0GAFaPmxwL2GTGMiHvIEvuTYYy0SSQ
-	QXPsdf8cHRWuATzrBnIiBP9PLwI/jLj7PS+RUH0dMBYdfmYjQ8ZhtGPLODo5n5HoJUNpg9JqmsP
-	rUpqO4V3f+h
-X-Received: by 2002:a05:6a00:1d85:b0:841:de16:8a8f with SMTP id d2e1a72fcca58-8451530c1d1mr3127048b3a.7.1781608375147;
-        Tue, 16 Jun 2026 04:12:55 -0700 (PDT)
-Received: from tigerii.tok.corp.google.com ([2a00:79e0:2031:6:a0b:fabb:5b62:b85b])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8434b05921bsm12906321b3a.59.2026.06.16.04.12.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Jun 2026 04:12:54 -0700 (PDT)
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Marcel Holtmann <marcel@holtmann.org>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	Mark-yw Chen <mark-yw.chen@mediatek.com>,
-	Sean Wang <sean.wang@mediatek.com>
-Cc: Tomasz Figa <tfiga@chromium.org>,
-	linux-bluetooth@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	stable@vger.kernel.org
-Subject: [PATCH v2 3/3] Bluetooth: btmtksdio: call cancel_work_sync() outside of host lock scope
-Date: Tue, 16 Jun 2026 20:12:08 +0900
-Message-ID: <20260616111224.152140-4-senozhatsky@chromium.org>
-X-Mailer: git-send-email 2.54.0.1136.gdb2ca164c4-goog
-In-Reply-To: <20260616111224.152140-1-senozhatsky@chromium.org>
-References: <20260616111224.152140-1-senozhatsky@chromium.org>
+        d=1e100.net; s=20251104; t=1781608701; x=1782213501;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=1mC4p/ZORnTCo0N4Vz/PvLV6xnFXcvPjV/Xeey750iY=;
+        b=np/Wj4lisFAr8VVEJvLkClDx0sMSyENzgBYLwCaoNkCgWOR/bUQ2FlFwappDqkrF7f
+         lJKMLSLkv/YJeTbQYvUCvOsXAzkU+qcgbLcuscPhNmU0NMSTTIQMU7iGXOGKTz5J9M9L
+         tlp5ao2kgpgoOLB9JL14MLv7YAKytWEXvooJYT/ZiI/xhw4MyYVHWyKpefRvyYMdEUSF
+         rJhLjrEewqW4M6k62HKUuWDKzC+XQzC+4X9CdE3W6bfgzY+3UMW/G/9QlkBBx/zAsdBK
+         8xB8BaeiI1SIqqaOLoGrzXMnAe6TY+paWdC06YtbrQwOLpoKA1AyS/F1zJqexLFvuGWO
+         bf+g==
+X-Forwarded-Encrypted: i=1; AFNElJ/1Z520ZOFtzHExDhdMr76FCph0SkXfZsYajHOg+u3ly7ptocIn4NKQRlNuHKTaKp3ghG1vpVc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx3wWA2w3OImto1C4DDnTPiVDgCRlJ222jM8v5lJ+uQC8V1aw+y
+	oDO4czpadiUAvNYV+BOpHzfmBrIZIHpwMCTWk4Xe1AwXuEyyO0lSk7OIjGuVsD/KoFnhkCdk9ZZ
+	3UXgtmdleUj4DFuDuA6eoIucYrIgceB6StuN0y6RWF1oEZm4LaCcJgfoonDE=
+X-Gm-Gg: Acq92OFruw6sIIQxjLNa37/jC4QWF41cubZHj9mtMUQrnjf0GYGnsjPeX+3dm4PgtGT
+	zmRsn4TVLCVG9S4+xPMzDnTFFF9OX+FNU5mTRSHDT1cPIUyyNt9nk2AIxo0IgahxkgPq/jHunEj
+	DdqhTkYipdjGbo6r7G2eBkUM/n/wezMPFXyLqBH6dXCyIpgZJ1/OUE+AAr2TK20pDnWuQTFVqGO
+	ODAVUuYDV6n2ygkjMSGPE1FxH6vVpjAVr/UBsMPr+X56f7AOYVDbgpbLSisbMLAS4GzvHQiOjiM
+	lTvJbBlHlizE4v7MfNHtWgw7Zb+jrQLnpB/4krfGWvIkDqy6gN7p0RASa/IpYefKxJ0EmTRWqN9
+	dXk6q/8E53ACIoMjJ4t/qDsR8zkIYvAkx6lww8Hfa/nDWhtdRgA==
+X-Received: by 2002:a17:90a:d40b:b0:36d:6315:1de4 with SMTP id 98e67ed59e1d1-37a036ea1b9mr19181546a91.17.1781608701107;
+        Tue, 16 Jun 2026 04:18:21 -0700 (PDT)
+X-Received: by 2002:a17:90a:d40b:b0:36d:6315:1de4 with SMTP id 98e67ed59e1d1-37a036ea1b9mr19181517a91.17.1781608700654;
+        Tue, 16 Jun 2026 04:18:20 -0700 (PDT)
+Received: from [10.218.15.172] ([202.46.22.19])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-37c521ca7a7sm2624672a91.7.2026.06.16.04.18.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 16 Jun 2026 04:18:20 -0700 (PDT)
+Message-ID: <f6dd1ea3-52f2-40fb-95c4-4e15618aaf8c@oss.qualcomm.com>
+Date: Tue, 16 Jun 2026 16:48:14 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] pinctrl: qcom: Unconditionally mark gpio as wakeup
+ enable
+To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Linus Walleij <linusw@kernel.org>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Maulik Shah <maulik.shah@oss.qualcomm.com>
+References: <20260430-enable_wakeup_capable_gpios-v2-1-8c26ac795318@oss.qualcomm.com>
+ <2ba8b020-c8b9-4c60-9fa8-545642bde1fb@oss.qualcomm.com>
+Content-Language: en-US
+From: Sneh Mankad <sneh.mankad@oss.qualcomm.com>
+In-Reply-To: <2ba8b020-c8b9-4c60-9fa8-545642bde1fb@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjE2MDExNCBTYWx0ZWRfX653mCAVs1kKN
+ QzBksz8G9ItS1MSf/gA/kOtYNN6pZcAZGUnouEjjsYBAtkoUNIHYoNq44hQFiSsW1PCS5A+ZRRd
+ HTxyUSHoPutxIXhD7GX4qpmYkRaQmUc=
+X-Authority-Analysis: v=2.4 cv=FJwrAeos c=1 sm=1 tr=0 ts=6a3130fe cx=c_pps
+ a=vVfyC5vLCtgYJKYeQD43oA==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
+ a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=gowsoOTTUOVcmtlkKump:22
+ a=EUspDBNiAAAA:8 a=Ye5m1eMZPwjv6mJ2BMQA:9 a=QEXdDO2ut3YA:10
+ a=rl5im9kqc5Lf4LNbBjHf:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjE2MDExNCBTYWx0ZWRfX46uCbmpvPBNQ
+ F3Ee4jccj+lzjC3tzAWJ1aNX/78avAj4qeNrFeDQzFoj1nacTF5iYVrlonnOLROM4I1HC+0vL5v
+ wfKc6TrQR6UbouGpw+cz0trNJd9i9f/wvGEyAqSBhSTA/FfInzwYCUMJQfChIGjLv7HK962u7AF
+ E4j08WRpab4ZEt+ruTsBXeqN1zhrRuQgo+MCFH30i7IERkyVY8M89g0T4L5p/qtAqHLZtByZ3gd
+ Ozz4LLr72cK1gC/64pihObW5wgz2Ext3IJ79GNN0c193LbvGTr2cg15se9bQDiuEFxdI3pJrUVx
+ MJwqzCcNuGYgDd7YNffqB/5Si1YSO+jYekDLtrVgCJGGMJe/kLi5ugdiL/WwI+CDB+bCzksxUsG
+ iyJEh8NGaPCCwGlyHPuWbjoysY7jqD6ro9Do2mF7dbLRgM9Z/3wkXLWKtk6I+TUEJassKIcnCN0
+ A2rYAbfxNFJffWSE/rg==
+X-Proofpoint-ORIG-GUID: 1v1sjV_k4T8UY-HpcWN7btyRfA2lv4Du
+X-Proofpoint-GUID: 1v1sjV_k4T8UY-HpcWN7btyRfA2lv4Du
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-16_03,2026-06-15_04,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 lowpriorityscore=0 spamscore=0 phishscore=0 malwarescore=0
+ impostorscore=0 adultscore=0 suspectscore=0 bulkscore=0 priorityscore=1501
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606040000 definitions=main-2606160114
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[chromium.org,none];
-	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[chromium.org:s=google];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-263668-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:marcel@holtmann.org,m:luiz.dentz@gmail.com,m:mark-yw.chen@mediatek.com,m:sean.wang@mediatek.com,m:tfiga@chromium.org,m:linux-bluetooth@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:linux-mediatek@lists.infradead.org,m:senozhatsky@chromium.org,m:stable@vger.kernel.org,m:luizdentz@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FORGED_SENDER(0.00)[senozhatsky@chromium.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[holtmann.org,gmail.com,mediatek.com];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
 	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-263670-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[senozhatsky@chromium.org,stable@vger.kernel.org];
+	FORGED_SENDER(0.00)[sneh.mankad@oss.qualcomm.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:konrad.dybcio@oss.qualcomm.com,m:andersson@kernel.org,m:linusw@kernel.org,m:neil.armstrong@linaro.org,m:krzk@kernel.org,m:linux-arm-msm@vger.kernel.org,m:linux-gpio@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:maulik.shah@oss.qualcomm.com,s:lists@lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	ALIAS_RESOLVED(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	DKIM_TRACE(0.00)[chromium.org:+];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:dkim,qualcomm.com:email,vger.kernel.org:from_smtp,oss.qualcomm.com:dkim,oss.qualcomm.com:mid,oss.qualcomm.com:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sneh.mankad@oss.qualcomm.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ALIAS_RESOLVED(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,chromium.org:dkim,chromium.org:email,chromium.org:mid,chromium.org:from_mime,vger.kernel.org:from_smtp]
+	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 766DC68EB4D
+X-Rspamd-Queue-Id: B80EC68EC11
 
-cancel_work_sync() should be called outside of host lock scope
-in order to avoid circular locking scenario:
 
-CPU0					CPU1
-					close()/reset()
-					sdio_claim_host()
-txrx_work
-  sdio_claim_host() // sleeps
-					cancel_work_sync() // sleeps
 
-In addition, when txrx_work() runs concurrently with close()/reset()
-it better not to re-enable interrupts by testing for BTMTKSDIO_FUNC_ENABLED
-and not BTMTKSDIO_HW_RESET_ACTIVE before C_INT_EN_SET write.  However,
-btmtksdio_close() clears the BTMTKSDIO_FUNC_ENABLED too late (after
-cancel_work_sync() call).  Move BTMTKSDIO_FUNC_ENABLED bit-clear earlier
-so that txrx_work can see concurrent close().
+On 15-May-26 5:02 PM, Konrad Dybcio wrote:
+> On 4/30/26 11:20 AM, Sneh Mankad wrote:
 
-Fixes: 26270bc189ea4 ("Bluetooth: btmtksdio: move interrupt service to work")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
----
- drivers/bluetooth/btmtksdio.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+[...]
 
-diff --git a/drivers/bluetooth/btmtksdio.c b/drivers/bluetooth/btmtksdio.c
-index d8c8d2857527..207d04cc2282 100644
---- a/drivers/bluetooth/btmtksdio.c
-+++ b/drivers/bluetooth/btmtksdio.c
-@@ -625,7 +625,9 @@ static void btmtksdio_txrx_work(struct work_struct *work)
- 	} while (int_status && time_is_after_jiffies(txrx_timeout));
- 
- 	/* Enable interrupt */
--	if (bdev->func->irq_handler)
-+	if (bdev->func->irq_handler &&
-+	    test_bit(BTMTKSDIO_FUNC_ENABLED, &bdev->tx_state) &&
-+	    !test_bit(BTMTKSDIO_HW_RESET_ACTIVE, &bdev->tx_state))
- 		sdio_writel(bdev->func, C_INT_EN_SET, MTK_REG_CHLPCR, NULL);
- 
- 	sdio_release_host(bdev->func);
-@@ -741,6 +743,8 @@ static int btmtksdio_close(struct hci_dev *hdev)
- 	if (!test_bit(BTMTKSDIO_FUNC_ENABLED, &bdev->tx_state))
- 		return 0;
- 
-+	clear_bit(BTMTKSDIO_FUNC_ENABLED, &bdev->tx_state);
-+
- 	sdio_claim_host(bdev->func);
- 
- 	/* Disable interrupt */
-@@ -748,11 +752,12 @@ static int btmtksdio_close(struct hci_dev *hdev)
- 
- 	sdio_release_irq(bdev->func);
- 
-+	sdio_release_host(bdev->func);
- 	cancel_work_sync(&bdev->txrx_work);
-+	sdio_claim_host(bdev->func);
- 
- 	btmtksdio_fw_pmctrl(bdev);
- 
--	clear_bit(BTMTKSDIO_FUNC_ENABLED, &bdev->tx_state);
- 	sdio_disable_func(bdev->func);
- 
- 	sdio_release_host(bdev->func);
-@@ -1295,7 +1300,10 @@ static void btmtksdio_reset(struct hci_dev *hdev)
- 
- 	sdio_writel(bdev->func, C_INT_EN_CLR, MTK_REG_CHLPCR, NULL);
- 	skb_queue_purge(&bdev->txq);
-+
-+	sdio_release_host(bdev->func);
- 	cancel_work_sync(&bdev->txrx_work);
-+	sdio_claim_host(bdev->func);
- 
- 	gpiod_set_value_cansleep(bdev->reset, 1);
- 	msleep(100);
--- 
-2.54.0.1136.gdb2ca164c4-goog
+> 
+> $ b4 diff 20260430-enable_wakeup_capable_gpios-v2-1-8c26ac795318@oss.qualcomm.com
+> 
+> [...]
+> 
+> 
+>       ## drivers/pinctrl/qcom/pinctrl-msm.c ##
+>      @@ drivers/pinctrl/qcom/pinctrl-msm.c: static int msm_gpio_irq_reqres(struct irq_data *d)
+>     +   /*
+>     +    * If the wakeup_enable bit is present and marked as available for the
+>     +    * requested GPIO, it should be enabled when the GPIO is marked as
+>     +-   * wake irq in order to allow the interrupt event to be transfered to
+>     +-   * the PDC HW.
+>     ++   * wake irq in order to allow the interrupt event to be transferred to
+>     ++   * the PDC/MPM HW.
+>          * While the name implies only the wakeup event, it's also required for
+>          * the interrupt event.
+>          */
+> 
+> This is not what I asked for.
+> 
+> Instead, please focus on explaining what skip_wake_irqs is, perhaps under
+> what conditions it is set, and how that differs for PDC vs MPM
+> 
 
+I raised v2 in reply to Maulik's comment. By that time I had not seen your reply, apologies for that.
+Will raise v3 with added description.
+
+Thanks,
+Sneh
 
