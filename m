@@ -1,63 +1,63 @@
-Return-Path: <stable+bounces-265109-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265329-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id vg7vJ52EMWrDlQUAu9opvQ
-	(envelope-from <stable+bounces-265109-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:15:09 +0200
+	id 2x9LMr+GMWrBlgUAu9opvQ
+	(envelope-from <stable+bounces-265329-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:24:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AA32692E9C
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:15:08 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 708D8693169
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:24:15 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="aLJJVWG/";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265109-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-265109-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XWLG1bk4;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265329-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265329-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1B332304F5B2
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:05:18 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DE9CE30320B4
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:24:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 651AF477E21;
-	Tue, 16 Jun 2026 17:05:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E2D1478E50;
+	Tue, 16 Jun 2026 17:24:13 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B25543D4E8
-	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 17:05:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E61B644BCBE
+	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 17:24:11 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781629515; cv=none; b=qdlbfWAl0k183hzcRXuAvKxiuCiYQZc5c7YiRDf6LEL7T4ScpsjkxwnDNoEgjY7yFf1YkMHDsCuhJMjqKf6EpL3BnNpOfGMcOS//aSh/CMhhGpIzg8pn9NCleDqTvduxkD2qDJXlLaIhhiipowD3F341oxXUj6CXA6xI5zGdYPk=
+	t=1781630652; cv=none; b=cM0jV0lNAhn+h+sYCfp3dLrzpQbrXwBSdhB2lp+zbPg+dxbBi9ptfOUhZ7181TxFGpBMU1ZVsVpKVFimscSU/+gxD4d+mIM2Sls95fz4FsLwrMXK+O2Xv44j9mkadFdW8FxVBuWBRKK2LVJij28GVXb383G3IyWO++XiMRffe/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781629515; c=relaxed/simple;
+	s=arc-20240116; t=1781630652; c=relaxed/simple;
 	bh=sRO32Nws6B/xQoRqaeIWnb6n7Hg4q/oIxmARgeZ5F1o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C1FOdz5hKzDo7TIbJC5oYGeUrGxFeYmSOZseTZeAfssI4kTwjJcAdQx98QAYmbScHT9J6ygkXaplGNnCTmzQvaXwXA2m//zp28/AllK/71JFpsRvZ37L9e2YaJUFlUsDiAi23B6PnTGRWruzuZVf4AmT2rl2vMXnkMVYzr/sHyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aLJJVWG/; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 744001F00A3A;
-	Tue, 16 Jun 2026 17:05:13 +0000 (UTC)
+	 MIME-Version; b=s9PP10ao8aeVtisf9VjwmezjFQKdgLCJbhEUfCFI854XOXfIp2EBAXQyDP4HMdJ4tZ52sulcTW/fpEFehtEqyiqzmMe2UP+jdwQ8xqBfb1wdfOGawPWLCDu/qnwAwU3H/IShxtoQrP9Z2j0bjrMV9XMgjHesfXko7doMOOPicSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XWLG1bk4; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33EF91F00A3A;
+	Tue, 16 Jun 2026 17:24:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781629514;
+	s=k20260515; t=1781630651;
 	bh=rb3o+O/RaY5zLsgupgwLYtGG7y6qHbxQ3K+rPM5tLFQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=aLJJVWG/AW62VSTRisZswf4HPaeApizWGOVqRWy01yfTfszuxbUeunpOW7syuvzlQ
-	 CqLwtR/pu4vaYHXTKZNS12j7gqCSWhE50aG88XuMpfnh5QiIJZEd6v0xTnV8uxttI6
-	 FyPvyMQ3lXZn9rpjEGeJeDdP4IhdJfnntzO0doh+JHbWtdBPH+4Bm0d6XFDPSa05xy
-	 WTqCIKs9O0QIMWTn9fR9GDGSC7r3sNpkwj7/on3Dw4TGAQbr46mzpHMgFcN8bqhkR5
-	 4ocLfmWMrBERgJ9JnrTj+4VDxixKxLMFYh+gfw51msZa9WH1AbLBPEsjhmwbkaArSy
-	 UgngUQ4dueWzA==
+	b=XWLG1bk4PD3XPDFeb0EcTZuNFZe+9KH5MUrljUL0PKGj+tV4dPdk289GwaxpaWrEZ
+	 8FKn8lxpCFMDisSj/633T4dvmi0DLXJ94jOQ80xJjGpj8OyyLxpcBAx0kZ5gcGFJMQ
+	 cj6Rg1pw0oxzl29lXJ68sWzNJ5MROVwtEPvQU8ANjY9OOHOnb9DRUj1Q+2p8KCB+Uh
+	 oFqQs0PC+VSq3Vt/24NBSHdsA6zFVuINVeSrRQBBU1ZT04tK5mNkyeNWKzbym1Akk5
+	 kN2CDjGjwu6V7+QcyKKkp9tLVm7kyx8Ld1QNjHxHMEEvkI9xzAjjpKjzzAu1jfoseu
+	 CkkkVo0Oldwcw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Thorsten Blum <thorsten.blum@linux.dev>,
 	Long Li <longli@microsoft.com>,
 	Wei Liu <wei.liu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y] hv: utils: handle and propagate errors in kvp_register
-Date: Tue, 16 Jun 2026 13:05:11 -0400
-Message-ID: <20260616170511.3370357-1-sashal@kernel.org>
+Subject: [PATCH 6.1.y] hv: utils: handle and propagate errors in kvp_register
+Date: Tue, 16 Jun 2026 13:24:09 -0400
+Message-ID: <20260616172409.3390421-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026061501-ambush-comply-071d@gregkh>
-References: <2026061501-ambush-comply-071d@gregkh>
+In-Reply-To: <2026061503-baggy-protrude-228c@gregkh>
+References: <2026061503-baggy-protrude-228c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -72,13 +72,13 @@ X-Spamd-Result: default: False [-3.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-265109-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265329-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
@@ -96,11 +96,11 @@ X-Spamd-Result: default: False [-3.66 / 15.00];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linux.dev:email,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linux.dev:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9AA32692E9C
+X-Rspamd-Queue-Id: 708D8693169
 
 From: Thorsten Blum <thorsten.blum@linux.dev>
 
