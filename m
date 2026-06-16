@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-264571-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264294-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 8iPeOAx6MWpekQUAu9opvQ
-	(envelope-from <stable+bounces-264571-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:30:04 +0200
+	id 476+J+5yMWqHjgUAu9opvQ
+	(envelope-from <stable+bounces-264294-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:59:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CF3C69223C
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:30:04 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56B436919A2
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:59:42 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=DrkUJjpa;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264571-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264571-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=2DWzKm9I;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264294-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264294-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1A0503215355
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:17:05 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id BBE8930486E8
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:53:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 864A546AEC5;
-	Tue, 16 Jun 2026 16:17:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E53644CF4E;
+	Tue, 16 Jun 2026 15:53:26 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54C3543E4BA;
-	Tue, 16 Jun 2026 16:17:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6266044B69C;
+	Tue, 16 Jun 2026 15:53:25 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781626624; cv=none; b=hUjfT+LENga//UT7yXJOo28k1t7e4YgxN3yLofP8WWifJj0v/PGdVKl6/Pbk9RAJ+HJ5GwNZzMOuIk6S/+q9W5V/J09X8pWEtcFICdPCMTXy7YIPbfG5gd+wI+M0Ii2mxLb3SjQwgLHahOI5QeVL/Wm4KRsclMcysQ+1+vg2flU=
+	t=1781625206; cv=none; b=u1mq79kc7lS8Gtn6zAc0C1r2XD6ePMxmS8HZljcPegSdvMTybdeTTveg/e3S0ldmHRUHPe7Nv2z2I/nBC5b5GS+cyi8lbLS31JZzDo+Z/uBEbMiMx6FMxC0He7VU1oGVdWBn0rxFrgnhVnXYGPz69zysZuor2FZrf4DyexgRaUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781626624; c=relaxed/simple;
-	bh=+BmwlgMb6lMAY62jAEEUXbMaeS1ye2HxxGgNt0DioAQ=;
+	s=arc-20240116; t=1781625206; c=relaxed/simple;
+	bh=moFNeglWY3cZBjNVMCPayV7Kgz10kP8OVsmoH27JgFw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PHboHV5Lmwo91u4JmTTAMXpkU/hlB3QrYa9AZkMct3LpA+/ztaMjWqhflZWxVwTFXyy3QafQudI8I8zM0a7Q4vYkvDLL/bmN/Jde3j+loVJKZ/FzLr4Jk/eM6/WIC4wwqS3YspBZlFNOpDpm3uCIv8d2w05KsiGB37YcDSG3ABw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DrkUJjpa; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 554541F000E9;
-	Tue, 16 Jun 2026 16:17:01 +0000 (UTC)
+	 MIME-Version; b=s1M1yeRxowRoAmjKkDt6Gzon2qrz7iuLFi90Hp0ukeF1kyYZxFBcqeWkNl0uBcnsAtviBIdxE1yr7aBkvdb/ZmLq01PdaKuralaRBjIzBKjW30OkPB9LWOR+M0odk/qH2Cr3omcxfCf41EWUxBvuR+mT5PjlUT61g5vDxfJkM7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2DWzKm9I; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71A531F000E9;
+	Tue, 16 Jun 2026 15:53:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781626623;
-	bh=6MDmVAhpWPsAlnlivbx36HW3AI29lAeRAydBPWjrCMM=;
+	s=korg; t=1781625205;
+	bh=zsQVQ4KwuONMlE8Byc+4rqcWmkqXWpoBbqVJJvms9l8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=DrkUJjpaPMNtvctgnYL/CquQs0xnkzY24z2Srr8nyOC5c/fMl29cb15AlfI55WyWV
-	 dGea1cr++rWJpcxMBLXLxJhKg/e6Lxc9mLxrZCneSie+4FG3rOwjh0xBjDm2K7hqbZ
-	 OgrBjWGmLGiskdgfK1MHh773ZZG2JyPRbucQa9CI=
+	b=2DWzKm9I/30+AHV+aRu6X4ZIzDu+gAgZxLl3FWLygTlTdwKewJj4GrLT/0SkrMOvs
+	 vm4en3a8SiyhdrAN5UTH/OB0vrWRZEXcuuMnwjIKYVmPjDzf3gFZY8jAb8nLgTDS+T
+	 1fIJNagyWhldIqlTYQQr+rjDXqoCu6dG+spESb7I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Zhang Cen <rollkingzzc@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Nam Cao <namcao@linutronix.de>,
+	Gabriele Monaco <gmonaco@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 038/261] Bluetooth: MGMT: validate advertising TLV before type checks
+Subject: [PATCH 6.18 080/325] tools/rv: Fix substring match bug in monitor name search
 Date: Tue, 16 Jun 2026 20:27:56 +0530
-Message-ID: <20260616145046.897611487@linuxfoundation.org>
+Message-ID: <20260616145101.711728433@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
-References: <20260616145044.869532709@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,106 +72,128 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,molgen.mpg.de,gmail.com,intel.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-264571-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264294-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:pmenzel@molgen.mpg.de,m:rollkingzzc@gmail.com,m:luiz.von.dentz@intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:namcao@linutronix.de,m:gmonaco@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,mpg.de:email,intel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,linutronix.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 6CF3C69223C
+X-Rspamd-Queue-Id: 56B436919A2
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Cen <rollkingzzc@gmail.com>
+From: Gabriele Monaco <gmonaco@redhat.com>
 
-[ Upstream commit de23fb62259aa01d294f77238ae3b835eb674413 ]
+[ Upstream commit a963fbf3166f2e178ac38b6c3c186a0c98092fb9 ]
 
-tlv_data_is_valid() reads each advertising data field length from
-data[i], then inspects data[i + 1] for managed EIR types before
-checking that the current field still fits inside the supplied buffer.
+__ikm_find_monitor_name() relies on strstr() to find a monitor by name,
+which fails if the target monitor is a substring of a previously listed
+monitor.
 
-A malformed field whose length byte is the last byte of the buffer can
-therefore make the parser read one byte past the advertising data.
+Fix it by tokenizing the available_monitors file and matching full
+tokens instead.
 
-KASAN reported the following when a malformed MGMT_OP_ADD_ADVERTISING
-request reached that path:
-
-  BUG: KASAN: vmalloc-out-of-bounds in tlv_data_is_valid()
-  Read of size 1
-  Call trace:
-    tlv_data_is_valid()
-    add_advertising()
-    hci_mgmt_cmd()
-    hci_sock_sendmsg()
-
-Move the existing element-length check before any type-octet inspection
-so each non-empty element is proven to contain its type byte before the
-parser looks at data[i + 1].
-
-Fixes: 2bb36870e8cb ("Bluetooth: Unify advertising instance flags check")
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Signed-off-by: Zhang Cen <rollkingzzc@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: eba321a16fc6 ("tools/rv: Add support for nested monitors")
+Reviewed-by: Nam Cao <namcao@linutronix.de>
+Link: https://lore.kernel.org/r/20260514152055.229162-2-gmonaco@redhat.com
+Signed-off-by: Gabriele Monaco <gmonaco@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/mgmt.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ tools/verification/rv/src/in_kernel.c | 48 ++++++++++++++-------------
+ 1 file changed, 25 insertions(+), 23 deletions(-)
 
-diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
-index a2bdf25a77aece..040a5595f45fee 100644
---- a/net/bluetooth/mgmt.c
-+++ b/net/bluetooth/mgmt.c
-@@ -8721,6 +8721,12 @@ static bool tlv_data_is_valid(struct hci_dev *hdev, u32 adv_flags, u8 *data,
- 		if (!cur_len)
- 			continue;
+diff --git a/tools/verification/rv/src/in_kernel.c b/tools/verification/rv/src/in_kernel.c
+index d324538249d3ab..95eac9ab148468 100644
+--- a/tools/verification/rv/src/in_kernel.c
++++ b/tools/verification/rv/src/in_kernel.c
+@@ -58,38 +58,40 @@ static int __ikm_read_enable(char *monitor_name)
+  */
+ static int __ikm_find_monitor_name(char *monitor_name, char *out_name)
+ {
+-	char *available_monitors, container[MAX_DA_NAME_LEN+1], *cursor, *end;
+-	int retval = 1;
++	char *available_monitors, *cursor, *line;
++	int len = strlen(monitor_name);
++	int found = 0;
  
-+		/* If the current field length would exceed the total data
-+		 * length, then it's invalid.
-+		 */
-+		if (i + cur_len >= len)
-+			return false;
-+
- 		if (data[i + 1] == EIR_FLAGS &&
- 		    (!is_adv_data || flags_managed(adv_flags)))
- 			return false;
-@@ -8737,12 +8743,6 @@ static bool tlv_data_is_valid(struct hci_dev *hdev, u32 adv_flags, u8 *data,
- 		if (data[i + 1] == EIR_APPEARANCE &&
- 		    appearance_managed(adv_flags))
- 			return false;
+ 	available_monitors = tracefs_instance_file_read(NULL, "rv/available_monitors", NULL);
+ 	if (!available_monitors)
+ 		return -1;
+ 
+-	cursor = strstr(available_monitors, monitor_name);
+-	if (!cursor) {
+-		retval = 0;
+-		goto out_free;
+-	}
++	config_is_container = 0;
++	cursor = available_monitors;
++	while ((line = strsep(&cursor, "\n"))) {
++		char *colon = strchr(line, ':');
+ 
+-	for (; cursor > available_monitors; cursor--)
+-		if (*(cursor-1) == '\n')
+-			break;
+-	end = strstr(cursor, "\n");
+-	memcpy(out_name, cursor, end-cursor);
+-	out_name[end-cursor] = '\0';
 -
--		/* If the current field length would exceed the total data
--		 * length, then it's invalid.
--		 */
--		if (i + cur_len >= len)
--			return false;
+-	cursor = strstr(out_name, ":");
+-	if (cursor)
+-		*cursor = '/';
+-	else {
+-		sprintf(container, "%s:", monitor_name);
+-		if (strstr(available_monitors, container))
+-			config_is_container = 1;
++		if (strcmp(line, monitor_name) && (!colon || strcmp(colon + 1, monitor_name)))
++			continue;
++
++		strncpy(out_name, line, 2 * MAX_DA_NAME_LEN);
++		out_name[2 * MAX_DA_NAME_LEN - 1] = '\0';
++
++		if (colon) {
++			out_name[colon - line] = '/';
++		} else {
++			/* If there are children, they are on the next line. */
++			line = strsep(&cursor, "\n");
++			if (line && !strncmp(line, monitor_name, len) && line[len] == ':')
++				config_is_container = 1;
++		}
++
++		found = 1;
++		break;
  	}
  
- 	return true;
+-out_free:
+ 	free(available_monitors);
+-	return retval;
++	return found;
+ }
+ 
+ /*
 -- 
 2.53.0
 
