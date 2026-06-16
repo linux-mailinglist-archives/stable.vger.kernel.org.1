@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-264812-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263854-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id f7t+CFZ9MWrKkgUAu9opvQ
-	(envelope-from <stable+bounces-264812-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:44:06 +0200
+	id IE6dL6RpMWrwigUAu9opvQ
+	(envelope-from <stable+bounces-263854-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:20:04 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CFB2692658
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:44:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 418E4690EC9
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:20:04 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=hp2EByXS;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264812-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264812-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=SeuKzzsf;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263854-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-263854-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E0AA8304021B
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:40:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8AB9B31181FB
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:13:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7893346AF3C;
-	Tue, 16 Jun 2026 16:40:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A70F643CEC7;
+	Tue, 16 Jun 2026 15:13:43 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F040646AF1B;
-	Tue, 16 Jun 2026 16:40:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83C0A38C437;
+	Tue, 16 Jun 2026 15:13:42 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781628019; cv=none; b=QTyaFxWCAYF8jgGqVOtVe/mDfiVlvH5RW0YTaEQeYRUpZG2gAXY72cJr3cUdZDF4/XLTiBNWK+uDs3zR0XmiqDzpr9CNifLgTjjr863UU/mi6oyMl8ED/wBXuheq815LDYp0eh4eVfuW9uU7FtgzxriPQfjXpeqTMto1PP0P43I=
+	t=1781622823; cv=none; b=IJyDict8TrDBJZsy01dkFM0QNbvJ0icMyRX7XBhYlR8N9tnGLMBohYy9+Pu0PVXE5HASKwAEwpsPpWisB7D1K9LVRSq3DoIEg7XW+W1PY2WUGy82sgwL4209pDgCjTjSBvo9RKR2Rkzq7uAcu8xIZiwU4ND1MkwAGemlS38lxdA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781628019; c=relaxed/simple;
-	bh=cLt30yQVTHGOhU17o59b9iPbW2udyaK07bWKh0MgsB8=;
+	s=arc-20240116; t=1781622823; c=relaxed/simple;
+	bh=XR5ZC1WNe0QT+ca/fc5U1x0rkRNtPk6ClOwF5zftu1w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KyYIIaW5LybvgafHlKD2zCdkOHdflE/bkaFa+rN7KH4f1tJVP5gFrGUHucK2jsIFo/15n1NuyseOluUrrQc6gbWWqMM6lO3DneD6Vh+MiMlP5OVV4cv1irSjb/qqHN/DGIbsi35882kvTHbI+MiiUKLotfWHCtHhAxwOpu/tack=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hp2EByXS; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B81C31F000E9;
-	Tue, 16 Jun 2026 16:40:16 +0000 (UTC)
+	 MIME-Version; b=TRFe8u1pSiKcFeotvqqlFfdC7wFfuv1/TINMWTIpTYEgMZgHw78zlS5ChLdD3hMATRyxdqASZmKVauj2VkB8XAvipuh4V9Im3E3hJhGxfEZ5lbrPufyOffDUMFJtGd8vArNzd0e5S7XiMujudNv1k3fiDz8i8x3B65an7fNz9sk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SeuKzzsf; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A8321F000E9;
+	Tue, 16 Jun 2026 15:13:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781628017;
-	bh=5gpfeGvxITiER79TWysA8EU/19FmZB3j9EKtMpCkLUE=;
+	s=korg; t=1781622822;
+	bh=wrDBwPhs1//pKQqIpPvp66hZpCDRwgu3JVZ91rUokxI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hp2EByXSpa/UgimvNcFB8J8nu7qp6azjQ1jz3+v2jtJwzqbj9QzcPQ77pf85SxHVk
-	 uH9R+j9iu2nVugZEO89IQ6Ry/BYzz3aTmrndTbtSdbx862IyQ2+7SN+5IdA38iokiZ
-	 TzOQ+0ibeSDydIna916i4HEccWJo11iIGA8rxFPA=
+	b=SeuKzzsfS0DZNsSAS66VzPCfoZK3/rX1uOJJXviGhy9P8nnHArnkjsz8ZCpaW1mJF
+	 tB+fs5N4w2JFt/DMcGCqeSnYT6F47IQitF5hfWTYW1oAyCfghA0u5JFrI1dp7QnnZP
+	 yu+A/OHpY0pw8EXFMExNwTBurrobywDkW8Ru131A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeremy Sowden <jeremy@azazel.net>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Jens Wiklander <jens.wiklander@linaro.org>,
+	Harshal Dev <harshal.dev@oss.qualcomm.com>,
+	Sumit Garg <sumit.garg@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 016/452] netfilter: bitwise: add support for doing AND, OR and XOR directly
+Subject: [PATCH 7.0 012/378] tee: fix tee_ioctl_object_invoke_arg padding
 Date: Tue, 16 Jun 2026 20:24:03 +0530
-Message-ID: <20260616145118.664567619@linuxfoundation.org>
+Message-ID: <20260616145110.446323820@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,335 +71,79 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264812-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jeremy@azazel.net,m:pablo@netfilter.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-263854-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:arnd@arndb.de,m:jens.wiklander@linaro.org,m:harshal.dev@oss.qualcomm.com,m:sumit.garg@oss.qualcomm.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,azazel.net:email,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,netfilter.org:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,qualcomm.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linaro.org:email,arndb.de:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5CFB2692658
+X-Rspamd-Queue-Id: 418E4690EC9
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeremy Sowden <jeremy@azazel.net>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit b0ccf4f53d968e794a4ea579d5135cc1aaf1a53f ]
+[ Upstream commit c15d7a2a11ea055bcecc0b538ae8ba79475637f9 ]
 
-Hitherto, these operations have been converted in user space to
-mask-and-xor operations on one register and two immediate values, and it
-is the latter which have been evaluated by the kernel.  We add support
-for evaluating these operations directly in kernel space on one register
-and either an immediate value or a second register.
+The tee_ioctl_object_invoke_arg structure has padding on some
+architectures but not on x86-32 and a few others:
 
-Pablo made a few changes to the original patch:
+include/linux/tee.h:474:32: error: padding struct to align 'params' [-Werror=padded]
 
-- EINVAL if NFTA_BITWISE_SREG2 is used with fast version.
-- Allow _AND,_OR,_XOR with _DATA != sizeof(u32)
-- Dump _SREG2 or _DATA with _AND,_OR,_XOR
+I expect that all current users of this are on architectures that do
+have implicit padding here (arm64, arm, x86, riscv), so make the padding
+explicit in order to avoid surprises if this later gets used elsewhere.
 
-Signed-off-by: Jeremy Sowden <jeremy@azazel.net>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Stable-dep-of: 18014147d3ee ("netfilter: nf_tables: fix dst corruption in same register operation")
+Fixes: d5b8b0fa1775 ("tee: add TEE_IOCTL_PARAM_ATTR_TYPE_OBJREF")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Jens Wiklander <jens.wiklander@linaro.org>
+Tested-by: Harshal Dev <harshal.dev@oss.qualcomm.com>
+Reviewed-by: Sumit Garg <sumit.garg@oss.qualcomm.com>
+Signed-off-by: Jens Wiklander <jens.wiklander@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/uapi/linux/netfilter/nf_tables.h |   8 ++
- net/netfilter/nft_bitwise.c              | 134 +++++++++++++++++++++--
- 2 files changed, 131 insertions(+), 11 deletions(-)
+ include/uapi/linux/tee.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/uapi/linux/netfilter/nf_tables.h b/include/uapi/linux/netfilter/nf_tables.h
-index cbb1b58e181fca..f8867f198f3104 100644
---- a/include/uapi/linux/netfilter/nf_tables.h
-+++ b/include/uapi/linux/netfilter/nf_tables.h
-@@ -564,11 +564,17 @@ enum nft_immediate_attributes {
-  *                        and XOR boolean operations
-  * @NFT_BITWISE_LSHIFT: left-shift operation
-  * @NFT_BITWISE_RSHIFT: right-shift operation
-+ * @NFT_BITWISE_AND: and operation
-+ * @NFT_BITWISE_OR: or operation
-+ * @NFT_BITWISE_XOR: xor operation
-  */
- enum nft_bitwise_ops {
- 	NFT_BITWISE_MASK_XOR,
- 	NFT_BITWISE_LSHIFT,
- 	NFT_BITWISE_RSHIFT,
-+	NFT_BITWISE_AND,
-+	NFT_BITWISE_OR,
-+	NFT_BITWISE_XOR,
+diff --git a/include/uapi/linux/tee.h b/include/uapi/linux/tee.h
+index cab5cadca8ef99..5203977ed35d1d 100644
+--- a/include/uapi/linux/tee.h
++++ b/include/uapi/linux/tee.h
+@@ -470,6 +470,7 @@ struct tee_ioctl_object_invoke_arg {
+ 	__u32 op;
+ 	__u32 ret;
+ 	__u32 num_params;
++	__u32 :32;
+ 	/* num_params tells the actual number of element in params */
+ 	struct tee_ioctl_param params[];
  };
- /*
-  * Old name for NFT_BITWISE_MASK_XOR.  Retained for backwards-compatibility.
-@@ -586,6 +592,7 @@ enum nft_bitwise_ops {
-  * @NFTA_BITWISE_OP: type of operation (NLA_U32: nft_bitwise_ops)
-  * @NFTA_BITWISE_DATA: argument for non-boolean operations
-  *                     (NLA_NESTED: nft_data_attributes)
-+ * @NFTA_BITWISE_SREG2: second source register (NLA_U32: nft_registers)
-  *
-  * The bitwise expression supports boolean and shift operations.  It implements
-  * the boolean operations by performing the following operation:
-@@ -609,6 +616,7 @@ enum nft_bitwise_attributes {
- 	NFTA_BITWISE_XOR,
- 	NFTA_BITWISE_OP,
- 	NFTA_BITWISE_DATA,
-+	NFTA_BITWISE_SREG2,
- 	__NFTA_BITWISE_MAX
- };
- #define NFTA_BITWISE_MAX	(__NFTA_BITWISE_MAX - 1)
-diff --git a/net/netfilter/nft_bitwise.c b/net/netfilter/nft_bitwise.c
-index 86abbe4c1308b3..af990c600745be 100644
---- a/net/netfilter/nft_bitwise.c
-+++ b/net/netfilter/nft_bitwise.c
-@@ -17,6 +17,7 @@
- 
- struct nft_bitwise {
- 	u8			sreg;
-+	u8			sreg2;
- 	u8			dreg;
- 	enum nft_bitwise_ops	op:8;
- 	u8			len;
-@@ -60,28 +61,72 @@ static void nft_bitwise_eval_rshift(u32 *dst, const u32 *src,
- 	}
- }
- 
-+static void nft_bitwise_eval_and(u32 *dst, const u32 *src, const u32 *src2,
-+				 const struct nft_bitwise *priv)
-+{
-+	unsigned int i, n;
-+
-+	for (i = 0, n = DIV_ROUND_UP(priv->len, sizeof(u32)); i < n; i++)
-+		dst[i] = src[i] & src2[i];
-+}
-+
-+static void nft_bitwise_eval_or(u32 *dst, const u32 *src, const u32 *src2,
-+				const struct nft_bitwise *priv)
-+{
-+	unsigned int i, n;
-+
-+	for (i = 0, n = DIV_ROUND_UP(priv->len, sizeof(u32)); i < n; i++)
-+		dst[i] = src[i] | src2[i];
-+}
-+
-+static void nft_bitwise_eval_xor(u32 *dst, const u32 *src, const u32 *src2,
-+				 const struct nft_bitwise *priv)
-+{
-+	unsigned int i, n;
-+
-+	for (i = 0, n = DIV_ROUND_UP(priv->len, sizeof(u32)); i < n; i++)
-+		dst[i] = src[i] ^ src2[i];
-+}
-+
- void nft_bitwise_eval(const struct nft_expr *expr,
- 		      struct nft_regs *regs, const struct nft_pktinfo *pkt)
- {
- 	const struct nft_bitwise *priv = nft_expr_priv(expr);
--	const u32 *src = &regs->data[priv->sreg];
-+	const u32 *src = &regs->data[priv->sreg], *src2;
- 	u32 *dst = &regs->data[priv->dreg];
- 
--	switch (priv->op) {
--	case NFT_BITWISE_MASK_XOR:
-+	if (priv->op == NFT_BITWISE_MASK_XOR) {
- 		nft_bitwise_eval_mask_xor(dst, src, priv);
--		break;
--	case NFT_BITWISE_LSHIFT:
-+		return;
-+	}
-+	if (priv->op == NFT_BITWISE_LSHIFT) {
- 		nft_bitwise_eval_lshift(dst, src, priv);
--		break;
--	case NFT_BITWISE_RSHIFT:
-+		return;
-+	}
-+	if (priv->op == NFT_BITWISE_RSHIFT) {
- 		nft_bitwise_eval_rshift(dst, src, priv);
--		break;
-+		return;
-+	}
-+
-+	src2 = priv->sreg2 ? &regs->data[priv->sreg2] : priv->data.data;
-+
-+	if (priv->op == NFT_BITWISE_AND) {
-+		nft_bitwise_eval_and(dst, src, src2, priv);
-+		return;
-+	}
-+	if (priv->op == NFT_BITWISE_OR) {
-+		nft_bitwise_eval_or(dst, src, src2, priv);
-+		return;
-+	}
-+	if (priv->op == NFT_BITWISE_XOR) {
-+		nft_bitwise_eval_xor(dst, src, src2, priv);
-+		return;
- 	}
- }
- 
- static const struct nla_policy nft_bitwise_policy[NFTA_BITWISE_MAX + 1] = {
- 	[NFTA_BITWISE_SREG]	= { .type = NLA_U32 },
-+	[NFTA_BITWISE_SREG2]	= { .type = NLA_U32 },
- 	[NFTA_BITWISE_DREG]	= { .type = NLA_U32 },
- 	[NFTA_BITWISE_LEN]	= { .type = NLA_U32 },
- 	[NFTA_BITWISE_MASK]	= { .type = NLA_NESTED },
-@@ -105,7 +150,8 @@ static int nft_bitwise_init_mask_xor(struct nft_bitwise *priv,
- 	};
- 	int err;
- 
--	if (tb[NFTA_BITWISE_DATA])
-+	if (tb[NFTA_BITWISE_DATA] ||
-+	    tb[NFTA_BITWISE_SREG2])
- 		return -EINVAL;
- 
- 	if (!tb[NFTA_BITWISE_MASK] ||
-@@ -139,7 +185,8 @@ static int nft_bitwise_init_shift(struct nft_bitwise *priv,
- 	int err;
- 
- 	if (tb[NFTA_BITWISE_MASK] ||
--	    tb[NFTA_BITWISE_XOR])
-+	    tb[NFTA_BITWISE_XOR]  ||
-+	    tb[NFTA_BITWISE_SREG2])
- 		return -EINVAL;
- 
- 	if (!tb[NFTA_BITWISE_DATA])
-@@ -158,6 +205,41 @@ static int nft_bitwise_init_shift(struct nft_bitwise *priv,
- 	return 0;
- }
- 
-+static int nft_bitwise_init_bool(const struct nft_ctx *ctx,
-+				 struct nft_bitwise *priv,
-+				 const struct nlattr *const tb[])
-+{
-+	int err;
-+
-+	if (tb[NFTA_BITWISE_MASK] ||
-+	    tb[NFTA_BITWISE_XOR])
-+		return -EINVAL;
-+
-+	if ((!tb[NFTA_BITWISE_DATA] && !tb[NFTA_BITWISE_SREG2]) ||
-+	    (tb[NFTA_BITWISE_DATA] && tb[NFTA_BITWISE_SREG2]))
-+		return -EINVAL;
-+
-+	if (tb[NFTA_BITWISE_DATA]) {
-+		struct nft_data_desc desc = {
-+			.type	= NFT_DATA_VALUE,
-+			.size	= sizeof(priv->data),
-+			.len	= priv->len,
-+		};
-+
-+		err = nft_data_init(NULL, &priv->data, &desc,
-+				    tb[NFTA_BITWISE_DATA]);
-+		if (err < 0)
-+			return err;
-+	} else {
-+		err = nft_parse_register_load(ctx, tb[NFTA_BITWISE_SREG2],
-+					      &priv->sreg2, priv->len);
-+		if (err < 0)
-+			return err;
-+	}
-+
-+	return 0;
-+}
-+
- static int nft_bitwise_init(const struct nft_ctx *ctx,
- 			    const struct nft_expr *expr,
- 			    const struct nlattr * const tb[])
-@@ -189,6 +271,9 @@ static int nft_bitwise_init(const struct nft_ctx *ctx,
- 		case NFT_BITWISE_MASK_XOR:
- 		case NFT_BITWISE_LSHIFT:
- 		case NFT_BITWISE_RSHIFT:
-+		case NFT_BITWISE_AND:
-+		case NFT_BITWISE_OR:
-+		case NFT_BITWISE_XOR:
- 			break;
- 		default:
- 			return -EOPNOTSUPP;
-@@ -205,6 +290,11 @@ static int nft_bitwise_init(const struct nft_ctx *ctx,
- 	case NFT_BITWISE_RSHIFT:
- 		err = nft_bitwise_init_shift(priv, tb);
- 		break;
-+	case NFT_BITWISE_AND:
-+	case NFT_BITWISE_OR:
-+	case NFT_BITWISE_XOR:
-+		err = nft_bitwise_init_bool(ctx, priv, tb);
-+		break;
- 	}
- 
- 	return err;
-@@ -233,6 +323,21 @@ static int nft_bitwise_dump_shift(struct sk_buff *skb,
- 	return 0;
- }
- 
-+static int nft_bitwise_dump_bool(struct sk_buff *skb,
-+				 const struct nft_bitwise *priv)
-+{
-+	if (priv->sreg2) {
-+		if (nft_dump_register(skb, NFTA_BITWISE_SREG2, priv->sreg2))
-+			return -1;
-+	} else {
-+		if (nft_data_dump(skb, NFTA_BITWISE_DATA, &priv->data,
-+				  NFT_DATA_VALUE, sizeof(u32)) < 0)
-+			return -1;
-+	}
-+
-+	return 0;
-+}
-+
- static int nft_bitwise_dump(struct sk_buff *skb,
- 			    const struct nft_expr *expr, bool reset)
- {
-@@ -256,6 +361,11 @@ static int nft_bitwise_dump(struct sk_buff *skb,
- 	case NFT_BITWISE_RSHIFT:
- 		err = nft_bitwise_dump_shift(skb, priv);
- 		break;
-+	case NFT_BITWISE_AND:
-+	case NFT_BITWISE_OR:
-+	case NFT_BITWISE_XOR:
-+		err = nft_bitwise_dump_bool(skb, priv);
-+		break;
- 	}
- 
- 	return err;
-@@ -300,6 +410,7 @@ static bool nft_bitwise_reduce(struct nft_regs_track *track,
- 	    track->regs[priv->dreg].bitwise &&
- 	    track->regs[priv->dreg].bitwise->ops == expr->ops &&
- 	    priv->sreg == bitwise->sreg &&
-+	    priv->sreg2 == bitwise->sreg2 &&
- 	    priv->dreg == bitwise->dreg &&
- 	    priv->op == bitwise->op &&
- 	    priv->len == bitwise->len &&
-@@ -376,7 +487,8 @@ static int nft_bitwise_fast_init(const struct nft_ctx *ctx,
- 	if (err < 0)
- 		return err;
- 
--	if (tb[NFTA_BITWISE_DATA])
-+	if (tb[NFTA_BITWISE_DATA] ||
-+	    tb[NFTA_BITWISE_SREG2])
- 		return -EINVAL;
- 
- 	if (!tb[NFTA_BITWISE_MASK] ||
 -- 
 2.53.0
 
