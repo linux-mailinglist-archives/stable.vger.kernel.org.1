@@ -1,200 +1,165 @@
-Return-Path: <stable+bounces-266899-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266900-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id J+dfFQD7MmoD8QUAu9opvQ
-	(envelope-from <stable+bounces-266899-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 21:52:32 +0200
+	id DOfgHpb7Mmoa8QUAu9opvQ
+	(envelope-from <stable+bounces-266900-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 21:55:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C50E069C3D9
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 21:52:31 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6C5169C41F
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 21:55:01 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lMXBDS6g;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266899-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-266899-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=googlemail.com header.s=20251104 header.b=BkVIAemT;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266900-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266900-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=fail reason="SPF not aligned (relaxed), DKIM not aligned (relaxed)" header.from=gmail.com (policy=none);
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4A5673144A9D
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 19:52:00 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 37B60313795B
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 19:53:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D8463A169E;
-	Wed, 17 Jun 2026 19:50:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3607D3AD51C;
+	Wed, 17 Jun 2026 19:51:41 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39AD6397339
-	for <stable@vger.kernel.org>; Wed, 17 Jun 2026 19:50:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D555388E4D
+	for <stable@vger.kernel.org>; Wed, 17 Jun 2026 19:51:34 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781725856; cv=none; b=hE8HbEwA3Ze+i65/utHM5NKEBZsZFJm1LngfdzHhuh3oDgPMkGAA6JkF3xjJhE/pyBTTrtC4KJfn9brthBZvwYlsC/DSm5ceZLdNz3m36kBHVSfJaEGtOWLnaUycz1wrMqYRGbVuJgWnJ1/qh+JoYCL/3vEhB1a1AnRr7uRbgYU=
+	t=1781725900; cv=none; b=JhYKFFvJBZnhCOQxQct/xwg/kGzJUNBjGP5VwCT09jRNmpxoTl+Eu3bUyJQeQbL7Uc2Q2h/LtNWGSQtmlDd1rL2FuOcP14Lze7gH7w2VeBuujFlD8J3zBVRlPMeNIigu3TwlLEGJUjgxocWxEq/fbxh7L5T0MfjjJNEqvJOAbBc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781725856; c=relaxed/simple;
-	bh=Yg2yfIIrwTt0VfqXetXh44fveUa4/4bOb2jm1sYMiR0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LJRTPUMTfHV4N3QsKWNBZUXjtvyJE7oMbyfGCFkhmup7bVuKS+uhwtuu+bqCcggrvRUYMRYq0n2pBFKPVOZDCXKkkgXPVHBdluyQB3CqJ0TocZO0srhAMi0dOpxAtV8KAwrpDvBy2BDBQsHRZt9ycbRr/bccvM06ZMTyG1iFPKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lMXBDS6g; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C29D11F000E9;
-	Wed, 17 Jun 2026 19:50:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781725847;
-	bh=tsyobPhw7ssHWT43Au8Mn1rCshfkWWW22fu1W/J8GQk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=lMXBDS6gTVOObmj0f4Ci1ylGqHmhZsxfmSeajQGs29Ng2VDcrAmy71HC9USGD0EpD
-	 8F7ZPTYdiDGrpjykXtOKOi36AbySrx+/6GU3IHkvipp9gbT2SD+bwSz5G7wNRm+KmU
-	 7uJfWx2GV/CVCemXk0U6tbBGM5FrsFQN1YOpSQSHWOz8r8lj09dSePI0+RNmvRfV1M
-	 FslFYOYrCuo+Ngp2IYKKNRgoDmBTrzsVyGK3B0DDdouAGLpAsijMrJ6ns06hklAswz
-	 RxR/Fv6JaDxENxMoU74gpU5kqbwl0tb5ym6HXerESVFBKsz1UgLC4mFbEWOf+NRr9d
-	 u8fFtWjyHds6w==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>,
-	Srinivas Kandagatla <srini@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y] slimbus: qcom-ngd-ctrl: Fix up platform_driver registration
-Date: Wed, 17 Jun 2026 15:50:45 -0400
-Message-ID: <20260617195045.303749-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026061524-synapse-enticing-658a@gregkh>
-References: <2026061524-synapse-enticing-658a@gregkh>
+	s=arc-20240116; t=1781725900; c=relaxed/simple;
+	bh=YRWp0QBY9So9jvC++gDHCc2QC2B11a+d/rs/bKIKsrE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=jU2wJoj1LUUp8G70pv8gLVeV9Kvc7WvsZ1tV8wGfgZ5JtSO4jb25RLbnPS1kriYbFou6iqetYFtrQkDyppXyN3SQGNMYuiiMCNu2trGI0VIB+PWNhLbjnaZ/yVhkRHBHrYQEs1iZtpnnzi9TAeA2P4jP76qUBw8nAauyObKOsOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=BkVIAemT; arc=none smtp.client-ip=209.85.128.51
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-490acbb0f89so509375e9.0
+        for <stable@vger.kernel.org>; Wed, 17 Jun 2026 12:51:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20251104; t=1781725892; x=1782330692; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=pfGIZP62uh7PYVhHDF3yN5s7VorHMzFuzJ11i4tucO0=;
+        b=BkVIAemTjGfUcaOQikqNUm0zy1wn19m9E/96O6C8r/lI7ZKR9/1rG+oeUI8AvhzWhm
+         cVNa4jB11BC5qSok1oZlNVZ5QSEloumXRB004Cktxg0vi/WIuxv2Oeyh8aAt46EX6twz
+         UVTrzsFOqzQCv2cceZYnUBnF/M1LT9y2Do1LmLD9wnQrt+sBIkaJSzZyG6uFQmpBSZPP
+         qjYWMpAwzDtheBWCPL/rYeg0tSyolwjWsQzXMqtYodXHGNHsECV/ibbQ7cJuXrX9pjFC
+         ZnXiLLbH6wqY30FSm3GvjVs2m8Lhwv3gyyB0hntZIlm345giL9MjUPR4tWdw3yTRASch
+         qZHw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781725892; x=1782330692;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=pfGIZP62uh7PYVhHDF3yN5s7VorHMzFuzJ11i4tucO0=;
+        b=ZbMFp/CggUB81xrXjpmSM90dxT0U5s5f7DxGTBIRcV6Gt4KVj4l2tTmT1EkH7up6gN
+         XuaYZZbJHMA0vXkPSEB1omckr7JeEb7RJd023xm/l875HesJmJDUP2jFj+PwcIIK+4jW
+         dvoDxl5R7cosAQgoIh4LqtKStCOerWgz77c+fnet29yFvpHkBnvMJ6UJ9c+A8iAHBtAu
+         h1Ey2Q06p5TmNlwxhUjxEn3RjenFiL2ls1NBnYNmZZ+SYrQ7bJxcqHB8Dx30Yob0beAd
+         rJ3Ft4J1jyzPFKhsbPjjRWbI5C2a2RqvOq08CffkI8kJEJZjup6U/EwgE9O/9vBoEgA7
+         b6kA==
+X-Forwarded-Encrypted: i=1; AFNElJ8QaUIWj1WIBUil3rtLn3vxWI6GYNR9Nr2lyZEg2gEMCPF+gsF4Sc45kEAjCc03paAQGGr5+1Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwSvolKziKthJkJWYCSGWUS3qWds/1WtAu99Rjb23i59b+Sknoo
+	nYORDKe0FQQ2YGW+Y85nxjtxMT9rogwu3Ua7phSU5Cl5ymc1YrEodVU=
+X-Gm-Gg: Acq92OEGCCf2q87RE0mNK50l9RGWEMp+cNxdiuP3dp1ZFOMr46pPsJWzhc4xz0g38og
+	ZQNJ6EPIF2Ahh/vUILp1tAL0aRMmnvEeD4oxF8gnKZejgCz7xg7v46E+f0qklJf4DhxAosHFJXh
+	kz/12VMsCEw+BFeR6d1PCXFSQUCyP5vM6dr15JGpaYlnnk3MsK5HlXeN0awBBOffFldUaiXDzS5
+	1uXpil+oXpYHgHL3zCr6v3vaOAOUfe+oAgNG9MVNKOedXiVuvJ8jzuLv24OWo9Ue9QacrkSjeQw
+	Oaeem6X/s/7Ux+VUKWOXDchXWJjhuBVMtbV1PVf+qgnhTlJHQvwGmp0y7lHtwg8a55axki0gJGi
+	jKEAWICySM+Yp7YEede36HgCGniD9++vLjJuEMeywM74dsbfwxLPYW6/UgHq57mxy1QZ77kU+fz
+	h10yDG0ueEbYT7gyz7D4PnYNIvcKRAobVECOKDNi4u9Uye+xXEfr2VPbAIyBrlmhjj
+X-Received: by 2002:a05:600d:6443:20b0:490:5e2a:f924 with SMTP id 5b1f17b1804b1-492381e2430mr11808775e9.7.1781725892360;
+        Wed, 17 Jun 2026 12:51:32 -0700 (PDT)
+Received: from [192.168.1.3] (p5b2b4777.dip0.t-ipconnect.de. [91.43.71.119])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4922fa47ce3sm211320875e9.6.2026.06.17.12.51.31
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 17 Jun 2026 12:51:32 -0700 (PDT)
+Message-ID: <a937041f-31f6-40b3-83f1-1cac8deb1f50@googlemail.com>
+Date: Wed, 17 Jun 2026 21:51:31 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 7.1 0/8] 7.1.1-rc1 review
+Content-Language: de-DE
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org, sr@sladewatkins.com
+References: <20260616145523.335696673@linuxfoundation.org>
+From: Peter Schneider <pschneider1968@googlemail.com>
+In-Reply-To: <20260616145523.335696673@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.66 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-0.05 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[googlemail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	DMARC_POLICY_SOFTFAIL(0.10)[gmail.com : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:bjorn.andersson@oss.qualcomm.com,m:dmitry.baryshkov@oss.qualcomm.com,m:mukesh.ojha@oss.qualcomm.com,m:srini@kernel.org,m:gregkh@linuxfoundation.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266899-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	XM_UA_NO_VERSION(0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,m:patches@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:torvalds@linux-foundation.org,m:akpm@linux-foundation.org,m:linux@roeck-us.net,m:shuah@kernel.org,m:patches@kernelci.org,m:lkft-triage@lists.linaro.org,m:pavel@nabladev.com,m:jonathanh@nvidia.com,m:f.fainelli@gmail.com,m:sudipm.mukherjee@gmail.com,m:rwarsow@gmx.de,m:conor@kernel.org,m:hargar@microsoft.com,m:broonie@kernel.org,m:achill@achill.org,m:sr@sladewatkins.com,m:ffainelli@gmail.com,m:sudipmmukherjee@gmail.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[pschneider1968@gmail.com,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[googlemail.com];
+	TAGGED_FROM(0.00)[bounces-266900-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[20];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[googlemail.com:+];
 	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[pschneider1968@gmail.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,qualcomm.com:email]
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,mailvelope.com:url,googlemail.com:dkim,googlemail.com:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C50E069C3D9
+X-Rspamd-Queue-Id: E6C5169C41F
 
-From: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+Am 16.06.2026 um 16:58 schrieb Greg Kroah-Hartman:
+> This is the start of the stable review cycle for the 7.1.1 release.
+> There are 8 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-[ Upstream commit 8663e8334d7b6007f5d8a4e5dd270246f35107a6 ]
+Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg oddities or regressions found.
 
-Device drivers should not invoke platform_driver_register()/unregister()
-in their probe and remove paths. They should further not rely on
-platform_driver_unregister() as their only means of "deleting" their
-child devices.
+Tested-by: Peter Schneider <pschneider1968@googlemail.com>
 
-Introduce a helper to unregister the child device and move the
-platform_driver_register()/unregister() to module_init()/exit().
 
-Fixes: 917809e2280b ("slimbus: ngd: Add qcom SLIMBus NGD driver")
-Cc: stable@vger.kernel.org
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
-Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
-Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
-Link: https://patch.msgid.link/20260530204421.116824-3-srini@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/slimbus/qcom-ngd-ctrl.c | 36 ++++++++++++++++++++++++++++++---
- 1 file changed, 33 insertions(+), 3 deletions(-)
+Beste Grüße,
+Peter Schneider
 
-diff --git a/drivers/slimbus/qcom-ngd-ctrl.c b/drivers/slimbus/qcom-ngd-ctrl.c
-index 8384f55ccd43e3..4e6c48b023e519 100644
---- a/drivers/slimbus/qcom-ngd-ctrl.c
-+++ b/drivers/slimbus/qcom-ngd-ctrl.c
-@@ -1382,6 +1382,13 @@ static int of_qcom_slim_ngd_register(struct device *parent,
- 	return -ENODEV;
- }
- 
-+static void qcom_slim_ngd_unregister(struct qcom_slim_ngd_ctrl *ctrl)
-+{
-+	struct qcom_slim_ngd *ngd = ctrl->ngd;
-+
-+	platform_device_del(ngd->pdev);
-+}
-+
- static int qcom_slim_ngd_probe(struct platform_device *pdev)
- {
- 	struct device *dev = &pdev->dev;
-@@ -1467,13 +1474,14 @@ static int qcom_slim_ngd_ctrl_probe(struct platform_device *pdev)
- 	init_completion(&ctrl->reconf);
- 	init_completion(&ctrl->qmi.qmi_comp);
- 
--	platform_driver_register(&qcom_slim_ngd_driver);
- 	return of_qcom_slim_ngd_register(dev, ctrl);
- }
- 
- static int qcom_slim_ngd_ctrl_remove(struct platform_device *pdev)
- {
--	platform_driver_unregister(&qcom_slim_ngd_driver);
-+	struct qcom_slim_ngd_ctrl *ctrl = platform_get_drvdata(pdev);
-+
-+	qcom_slim_ngd_unregister(ctrl);
- 
- 	return 0;
- }
-@@ -1550,6 +1558,28 @@ static struct platform_driver qcom_slim_ngd_driver = {
- 	},
- };
- 
--module_platform_driver(qcom_slim_ngd_ctrl_driver);
-+static int qcom_slim_ngd_init(void)
-+{
-+	int ret;
-+
-+	ret = platform_driver_register(&qcom_slim_ngd_driver);
-+	if (ret)
-+		return ret;
-+
-+	ret = platform_driver_register(&qcom_slim_ngd_ctrl_driver);
-+	if (ret)
-+		platform_driver_unregister(&qcom_slim_ngd_driver);
-+
-+	return ret;
-+}
-+
-+static void qcom_slim_ngd_exit(void)
-+{
-+	platform_driver_unregister(&qcom_slim_ngd_ctrl_driver);
-+	platform_driver_unregister(&qcom_slim_ngd_driver);
-+}
-+
-+module_init(qcom_slim_ngd_init);
-+module_exit(qcom_slim_ngd_exit);
- MODULE_LICENSE("GPL v2");
- MODULE_DESCRIPTION("Qualcomm SLIMBus NGD controller");
 -- 
-2.53.0
+Climb the mountain not to plant your flag, but to embrace the challenge,
+enjoy the air and behold the view. Climb it so you can see the world,
+not so the world can see you.                    -- David McCullough Jr.
 
+OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
+Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
