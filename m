@@ -1,174 +1,143 @@
-Return-Path: <stable+bounces-266820-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266818-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id xrKpFbK5MmpV4gUAu9opvQ
-	(envelope-from <stable+bounces-266820-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 17:13:54 +0200
+	id yH2XI1O7MmoL4wUAu9opvQ
+	(envelope-from <stable+bounces-266818-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 17:20:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C01AC69ADBB
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 17:13:53 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CAE469AE9A
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 17:20:51 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=seu.edu.cn header.s=default header.b=mg4p7HEH;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266820-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-266820-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=seu.edu.cn;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=g7VBZWx6;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266818-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-266818-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 11E0F3111E3D
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 15:11:27 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id ECD54307E9FC
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 15:10:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61A9444A725;
-	Wed, 17 Jun 2026 15:07:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAADB49253B;
+	Wed, 17 Jun 2026 15:04:17 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-m49197.qiye.163.com (mail-m49197.qiye.163.com [45.254.49.197])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03818288D0;
-	Wed, 17 Jun 2026 15:07:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6B1A49252B;
+	Wed, 17 Jun 2026 15:04:16 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781708825; cv=none; b=NYVgAe72ko4H5UgXTK2y5wWyukIrzMVdhsfcU6/lLXuqdeNjn9hxi2CXRFhvxAEP/Pt0wmq836hkdoPiGuU6NqgNYRmGA/wgiJM4LnG8eStjtfbqmDqFqYSOgCDE/KmLRB0xCV31VXeLvHAKQZFNtIx6t0eEMxs2dq/nWNG1e8o=
+	t=1781708657; cv=none; b=gEiOmUr0+9aJBvKn4I3NsgOgWK9JfSf8BBCuWGsn70kzWMF3KKFqJZ66/KYN+exPKvO5H1EPB6kog5AFIEPYEtLCRNvN0NWNxKqJXTO6vZVICeEDPVjjTFL0GnjYYndjzdB1A7X3dvKsVzaNr6DdmJeqemV3Ww3mKUzuj4CYPGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781708825; c=relaxed/simple;
-	bh=aQbg1YvfiQDdp+2LZACTnYqzfGQ9WFK8VhEU7/1Oa7A=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=oBAuovuen7IHcmBDi3hIyJoneKm5t2edZ+IY4qElmP440EoAf3tcYOkEz8rkyRdqugWWzCSA10ZewXO3JvZPPmbUlE6JE3ZnuEIFtTBnlJJ81fcSQ8QMDQhqqa9t4wsIQ2UTxYfgTpvzMoaA3k/MbmKGdlyb/SbM0c/JFF8v160=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=mg4p7HEH; arc=none smtp.client-ip=45.254.49.197
-Received: from PC-202605011814.localdomain (unknown [58.241.16.34])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 42c696515;
-	Wed, 17 Jun 2026 23:01:44 +0800 (GMT+08:00)
-From: Runyu Xiao <runyu.xiao@seu.edu.cn>
-To: Jorge Marques <jorge.marques@analog.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Cc: Frank Li <Frank.Li@nxp.com>,
-	linux-i3c@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	jianhao.xu@seu.edu.cn,
-	runyu.xiao@seu.edu.cn,
-	stable@vger.kernel.org
-Subject: [PATCH] i3c: master: adi: initialize the lock before enabling interrupts
-Date: Wed, 17 Jun 2026 23:01:38 +0800
-Message-Id: <20260617150138.628578-1-runyu.xiao@seu.edu.cn>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1781708657; c=relaxed/simple;
+	bh=pjjp4MzWZ8FDUOpytnawP/n+vVA2Ar/oBkUxx2Mh0gk=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=qHCwILCpYeQaPfoWtPOV51awF7fTDN4rdWqQ9aVEZVTkyqmDEmfCCNi96bYNmggJUKzuzR9Nw6BBn1RvFZ0UhEWI6axgXc7bEuD445uJO7/NL5Wt8Ke9+Y2y1pcZkmNe8zQXofEhTW+vmphYGTDbluPwX1DTA3pqXxrKr2Tu3qM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g7VBZWx6; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F63A1F000E9;
+	Wed, 17 Jun 2026 15:04:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781708656;
+	bh=ghd9wTzINh2dtZPrT9KDc2aPUFeLgpcJQbubFr7vwtg=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=g7VBZWx6G1v0yjwE4S5A+2flB8u8FDeIBVSm6mcC2cCGY98LWPpuu8PdFUm2cNnNp
+	 PfMv5D9fdj6LXXJnL8NSii2Suj1pRSk3rV/L7+hs1WUok8AqLUPzborcE2xFTPeJP8
+	 utETkERJvyOkaLKtNX+tQtk4ICc8/ZJLnqgEsBU9zt00VtVYxViyAMQ6MdXGSSc3+D
+	 SCXzPSLynWVR/FyEWX/HZP7jEZ6ZUrt78dUM+djx1shEciKUvOOJNnjsgkvMfybp2+
+	 tO+6PZXhy78+xtFReBDcn86IkO9uW7wecclHeu+vqAmq/gPyCKSKED4YisMztmJFdH
+	 t9jzfsmuqPlKQ==
+From: Thomas Gleixner <tglx@kernel.org>
+To: Marek Szyprowski <m.szyprowski@samsung.com>,
+ linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org
+Cc: Teddy Astie <teddy.astie@vates.tech>, stable@vger.kernel.org,
+ x86@kernel.org
+Subject: Re: [tip: timers/core] time/jiffies: Register jiffies clocksource
+ before usage
+In-Reply-To: <813164f9-d036-4858-80ad-f3af9bee9c77@samsung.com>
+References: <87y0gn3fve.ffs@fw13>
+ <178135728754.1650852.1266320590541376793.tip-bot2@tip-bot2>
+ <CGME20260616184701eucas1p13c7aff447073832095aa4adfb85935f0@eucas1p1.samsung.com>
+ <813164f9-d036-4858-80ad-f3af9bee9c77@samsung.com>
+Date: Wed, 17 Jun 2026 17:04:12 +0200
+Message-ID: <871pe5dx8z.ffs@fw13>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9ed61a3cb903a1kunm30aede3e71fad
-X-HM-MType: 10
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlCGUpNVkNJHk9PT0NJH0wYH1YeHw
-	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlOQ1VJT0pVSk1VSE9ZV1kWGg8SFR0UWUFZT0tIVUpLSEpPSE
-	xVSktLVUpCS0tZBg++
-DKIM-Signature: a=rsa-sha256;
-	b=mg4p7HEHY8vmP8MknhhjbKoZBcw3shn2hzBZBbfIK7chKfApm6cwCjHgmcGiuCUmK+zVBVtBTdAhYZTz3+gW1Z5r1Wx2q5llxdusNFsh66S9cmKxggnXcvCB8RsRBXwWRQCcCKTzZ797VQsN7i+BBIXJiCD80Svx3/O0tG6qpvI=; s=default; c=relaxed/relaxed; d=seu.edu.cn; v=1;
-	bh=oP+7Fqj5obiHqmRzGIe8ikds8jQUQ2UQELMJxvRP8PA=;
-	h=date:mime-version:subject:message-id:from;
+Content-Type: text/plain
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-4.16 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_RHS_NOT_FQDN(0.50)[];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[seu.edu.cn,none];
-	R_DKIM_ALLOW(-0.20)[seu.edu.cn:s=default];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266820-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[tglx@kernel.org,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:jorge.marques@analog.com,m:alexandre.belloni@bootlin.com,m:Frank.Li@nxp.com,m:linux-i3c@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:jianhao.xu@seu.edu.cn,m:runyu.xiao@seu.edu.cn,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:m.szyprowski@samsung.com,m:linux-kernel@vger.kernel.org,m:linux-tip-commits@vger.kernel.org,m:teddy.astie@vates.tech,m:stable@vger.kernel.org,m:x86@kernel.org,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[runyu.xiao@seu.edu.cn,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TAGGED_FROM(0.00)[bounces-266818-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[runyu.xiao@seu.edu.cn,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[tglx@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[seu.edu.cn:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	TO_DN_SOME(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,seu.edu.cn:dkim,seu.edu.cn:email,seu.edu.cn:mid,seu.edu.cn:from_mime]
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,fw13:mid,vger.kernel.org:from_smtp,vates.tech:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C01AC69ADBB
+X-Rspamd-Queue-Id: 2CAE469AE9A
 
-adi_i3c_master_probe() requests the IRQ and unmasks REG_IRQ_PENDING_CMDR
-before the controller's IBI state, transfer queue list and transfer
-queue lock are initialized.  A pending CMDR interrupt can therefore run
-adi_i3c_master_irq() and take master->xferqueue.lock before the dynamic
-lock has been initialized.
+On Tue, Jun 16 2026 at 20:47, Marek Szyprowski wrote:
+> On 13.06.2026 15:28, tip-bot2 for Thomas Gleixner wrote:
+>> The following commit has been merged into the timers/core branch of tip:
+>>
+>> Commit-ID:     f24df84cbe05e4471c04ac4b921fc0340bbc7752
+>> Gitweb:        https://git.kernel.org/tip/f24df84cbe05e4471c04ac4b921fc0340bbc7752
+>> Author:        Thomas Gleixner <tglx@kernel.org>
+>> AuthorDate:    Tue, 09 Jun 2026 17:14:45 +02:00
+>> Committer:     Thomas Gleixner <tglx@kernel.org>
+>> CommitterDate: Sat, 13 Jun 2026 15:22:40 +02:00
+>>
+>> time/jiffies: Register jiffies clocksource before usage
+>>
+>> Teddy reported that a XEN HVM has a long boot delay, which was bisected to
+>> the recent enhancements to the negative motion detection. It turned out
+>> that the jiffies clocksource is used in early boot before it is registered,
+>> which leaves the max_delta_raw field at zero. That causes the read out to
+>> be clamped to the max delta of 0, which means time is not making progress.
+>>
+>> Cure it by ensuring that it is initialized before its first usage in
+>> timekeeping_init().
+>>
+>> Fixes: 76031d9536a0 ("clocksource: Make negative motion detection more robust")
+>> Reported-by: Teddy Astie <teddy.astie@vates.tech>
+>> Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+>> Tested-by: Teddy Astie <teddy.astie@vates.tech>
+>> Cc: stable@vger.kernel.org
+>> Link: https://patch.msgid.link/87y0gn3fve.ffs@fw13
+>> Closes: https://lore.kernel.org/all/1780914594.8631fc262581453bbf619ec5b2062170.19ea6c8227b000701b@vates.tech
+> This patch landed recently in linux-next as commit f24df84cbe05 ("time/jiffies:
+> Register jiffies clocksource before usage"). In my tests I found that it triggers
+> the following warning on Qualcomm Robotics RB5 board
+> (arch/arm64/boot/dts/qcom/qrb5165-rb5.dts):
 
-This issue was found by our static analysis tool and then manually
-reviewed against the current tree.
-
-The grounded PoC kept the probe ordering and the IRQ path
-adi_i3c_master_probe() -> adi_i3c_master_irq() -> xferqueue.lock, with a
-pending CMDR interrupt arriving after REG_IRQ_PENDING_CMDR is unmasked.
-Lockdep reported:
-
-  INFO: trying to register non-static key.
-  you didn't initialize this object before use?
-  lock_acquire+0xbb/0x290
-  _raw_spin_lock_irqsave+0x36/0x60
-  adi_i3c_master_irq+0x32/0x56 [vuln_msv]
-  adi_i3c_master_probe+0x5a/0xf47 [vuln_msv]
-
-Initialize the transfer queue and IBI state before requesting and
-unmasking the IRQ.
-
-Fixes: a79ac2cdc91d ("i3c: master: Add driver for Analog Devices I3C Controller IP")
-Cc: stable@vger.kernel.org
-Signed-off-by: Runyu Xiao <runyu.xiao@seu.edu.cn>
----
- drivers/i3c/master/adi-i3c-master.c | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
-
-diff --git a/drivers/i3c/master/adi-i3c-master.c b/drivers/i3c/master/adi-i3c-master.c
-index 82ac0b3d057a..cf873d46e10f 100644
---- a/drivers/i3c/master/adi-i3c-master.c
-+++ b/drivers/i3c/master/adi-i3c-master.c
-@@ -967,17 +967,9 @@ static int adi_i3c_master_probe(struct platform_device *pdev)
- 	writel(0x00, master->regs + REG_ENABLE);
- 	writel(0x00, master->regs + REG_IRQ_MASK);
- 
--	ret = devm_request_irq(&pdev->dev, irq, adi_i3c_master_irq, 0,
--			       dev_name(&pdev->dev), master);
--	if (ret)
--		return ret;
--
- 	platform_set_drvdata(pdev, master);
- 
- 	master->free_rr_slots = GENMASK(ADI_MAX_DEVS, 1);
--
--	writel(REG_IRQ_PENDING_CMDR, master->regs + REG_IRQ_MASK);
--
- 	spin_lock_init(&master->ibi.lock);
- 	master->ibi.num_slots = 15;
- 	master->ibi.slots = devm_kcalloc(&pdev->dev, master->ibi.num_slots,
-@@ -989,6 +981,13 @@ static int adi_i3c_master_probe(struct platform_device *pdev)
- 	spin_lock_init(&master->xferqueue.lock);
- 	INIT_LIST_HEAD(&master->xferqueue.list);
- 
-+	ret = devm_request_irq(&pdev->dev, irq, adi_i3c_master_irq, 0,
-+			       dev_name(&pdev->dev), master);
-+	if (ret)
-+		return ret;
-+
-+	writel(REG_IRQ_PENDING_CMDR, master->regs + REG_IRQ_MASK);
-+
- 	return i3c_master_register(&master->base, &pdev->dev,
- 				   &adi_i3c_master_ops, false);
- }
--- 
-2.34.1
-
+Fix is queued already.
 
