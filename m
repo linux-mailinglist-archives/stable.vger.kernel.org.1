@@ -1,239 +1,176 @@
-Return-Path: <stable+bounces-266695-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266697-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id QjJQOv5qMmrDzgUAu9opvQ
-	(envelope-from <stable+bounces-266695-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 11:38:06 +0200
+	id 8mvMKSdtMmoGzwUAu9opvQ
+	(envelope-from <stable+bounces-266697-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 11:47:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63832697FE0
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 11:38:06 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CD086980B2
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 11:47:19 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=MjZRZgFR;
-	dkim=pass header.d=redhat.com header.s=google header.b=hui5DVI+;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266695-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266695-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	dkim=pass header.d=pobox.com header.s=fm3 header.b="B/32yiuD";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="d u0WyXd";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266697-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-266697-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=pobox.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8A76731A9313
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 09:32:24 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 06B043030976
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 09:46:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7CB83D0C09;
-	Wed, 17 Jun 2026 09:31:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B5B83C8C65;
+	Wed, 17 Jun 2026 09:46:43 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from fout-a6-smtp.messagingengine.com (fout-a6-smtp.messagingengine.com [103.168.172.149])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D18BB3D0932
-	for <stable@vger.kernel.org>; Wed, 17 Jun 2026 09:31:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CB2339B49D;
+	Wed, 17 Jun 2026 09:46:40 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781688715; cv=none; b=bFvpSEDqkoRBgbDYKiX9LLMmqYWJqJUUxvM1qQTnGZBpyVfqsFjMlT6GJ7t7WgMH4KI4LAQls1MAm7E+mLy9nsZlGyXaXfKC+1k9hQGZgxQMxDhgZFuHJn03JiVhEPyKnAonadGiXZn66kqDPiR2NFY79+HqLsWS/NHf6CidUDw=
+	t=1781689602; cv=none; b=WpWkpSEAgCUjWJ1hea5T0TeMbCSzyu7GkmGAUf+r/vz5MLX3b143RGDWduKYr/08wT/z9atCpV508i1w6pbAWCHLzJ1rpD1PfZzW7RbsjEQugoWP5cIXNZlDH0r2K3bshRG8oBo8G5+qjjFG/P5TgfyQRzSWvv8EM4He3ypBGTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781688715; c=relaxed/simple;
-	bh=InkgWW+/VHDyhaoc+fT+csd/kvb5mastzqAMS5sVaxQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RrF+k8kaaPVbx1F6jUS++D1KBXKbmS84nT8RAilLwO5m9Fulgisza5I8OiJRgeQs8q9z43hBfj6NHagMmGh53vDTNENTzi1MZX4cRlo2d5c25aXrVEGHVR1pFD9U7uvpEe9ymHY0C2ob+oSgXQ8WAgoewK8yhWJ4/eZrfUrr32s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MjZRZgFR; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=hui5DVI+; arc=none smtp.client-ip=170.10.129.124
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1781688711;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vjo/PuOgMPgrqc3EuUbFNwHzptbDO7oNZxgsy6X+RuE=;
-	b=MjZRZgFRnTZDjU10c/Bg6t2u8s67Ira4K6oPfxd12yBtCG7TVEH29XsNjpIdXUZ1BoE6IP
-	SQxRe2c7k3PH/JwUGMHSYqs38VzeqmRV/lJrVPU3yYrrMdt/2iszjbzJ16T0ksiBL0VKEb
-	wUeY8P+L9VfqyUhuB5dxHQP1jzcR+kc=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-587-S6jemHqvOCO76iyOTP3PlQ-1; Wed, 17 Jun 2026 05:31:50 -0400
-X-MC-Unique: S6jemHqvOCO76iyOTP3PlQ-1
-X-Mimecast-MFC-AGG-ID: S6jemHqvOCO76iyOTP3PlQ_1781688709
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-490b3ec3f7fso35040555e9.1
-        for <stable@vger.kernel.org>; Wed, 17 Jun 2026 02:31:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1781688709; x=1782293509; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=vjo/PuOgMPgrqc3EuUbFNwHzptbDO7oNZxgsy6X+RuE=;
-        b=hui5DVI+xMXtxWXA3fzuSUk7BPXqG6HbYu0b7IcvN64RjS/0LVmXpiS5iBEb0L7BEx
-         nuc+ny2qCH4yAxcnA1iaGTuWHBOV3w7Nv3/TtIozVEC/Rsc9Ul6M4debJ8ydvoF/rirB
-         RRCS6xRzxBEjhYuUvzH6cXtWkAouvLN8vJbTbtBobqaMN5+5htWEi7WkItnut4omrWQi
-         lKBxtr+Kt2YbSznixcG9adAaTmBL9S4IryLYmSYaFeniXREC/xkfxXx6QT+dUD2TuTHD
-         im8n91C35qtJIY8UxSReLcRkFSHivOA3BzZckb0wng9NfLab2SPewlrR3/tQWmk6Rxag
-         17zA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781688709; x=1782293509;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=vjo/PuOgMPgrqc3EuUbFNwHzptbDO7oNZxgsy6X+RuE=;
-        b=J+TznSkS6I4NY5vnBkVuVQVRUaS1qEiIYKWLZka/jqzog+3fnLOorZVUNriw6hm1BH
-         zfBiVZT0xatNzzkZWz/yfLePDGj6Utm+A6m9dmuo4AFCwtZJ1zNx0RSiSgGb3bdqxnM1
-         pUy1HKPFsNHhpH/3ccJFTiK6jVGdtI3YtTJ9hbJhe/DHkoNQe1fjuoTgmFcbR8x+usvi
-         dhHJFqb9ma8zReB7n9rY6cpoCrR2Pi+gAMp9LRzqGFgjvw7UaT0DRIbBKeVvPZa4FldI
-         ClE1wozmI82Hzu2A2Am344OmqAvT6dD49mGNjuW/RWsqbhYT6VkMtdJmZsQdaUwFt/vQ
-         GlvA==
-X-Forwarded-Encrypted: i=1; AFNElJ8IV2dz4pUtWt5U8oEI+7suxzkxyP77fbwrMvnB3g8yCejjgkmXq+sHX/HdG++HaVCA1U7i2qk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzCpThoymWFAtKhJ1ym3euDGJwh7ICN3C/j3YYEqXUim2NQTkIa
-	4RbmRTSgbJu+2RnTn3Gh1OcnAWZR+G6BffI+qWJq3WBWmLn/VNU+T3AUKRxSiOc8j3XkQejIXqm
-	s9XQGp6XFFWy6dJ/XdlR0sNcl0uGjDfQcjeI7vJJUluc3k4p+t6dkHpwOzQ==
-X-Gm-Gg: Acq92OFbU9S+wucTCObSrCZAxEEcv/NPt5HrM13utulGKdH1jpGjiz1yG3zds3FrnO0
-	Ro3MTEM8ML6TQ3UrWN7k/ZTd+GUjqnKJJM9ctv9mFlCU4LJ8SHiXTzxbU8k2t3hDkI9/zUeWQgm
-	j6rD4pbnqIHuVPZhZWK3NwETMMe1oIaqdLJq4QmBZEIHGHt+Cv4Ozxykc6m/s1xV/xUDc5G2qub
-	T3Ml6mO7hFRRPHqvBLdMggUyv/E1GS6mBrKU6+gycs+O7oxSwt3XV1sXJPWehKUqwMyKyTHq4h4
-	iPNlQBiDB21jJ5ZvIkIk11eUvxP+F0UNgpiQoZaDAx2llFPnNdm5LlvTh2mnNFw/fKdoDkZvp9s
-	slygKYiVPBuuQEiKxd/NfJ7j6hGo1bwrgIBMy8iv94PkEsLz3/5qMV9qcn/Yi
-X-Received: by 2002:a05:600c:a142:b0:490:b8d3:5dcc with SMTP id 5b1f17b1804b1-492333ca3b7mr41077385e9.19.1781688709368;
-        Wed, 17 Jun 2026 02:31:49 -0700 (PDT)
-X-Received: by 2002:a05:600c:a142:b0:490:b8d3:5dcc with SMTP id 5b1f17b1804b1-492333ca3b7mr41076915e9.19.1781688708883;
-        Wed, 17 Jun 2026 02:31:48 -0700 (PDT)
-Received: from sgarzare-redhat (host-82-53-135-12.retail.telecomitalia.it. [82.53.135.12])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49233bf0881sm52263795e9.2.2026.06.17.02.31.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Jun 2026 02:31:48 -0700 (PDT)
-Date: Wed, 17 Jun 2026 11:31:42 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Carlos =?utf-8?B?TMOzcGV6?= <clopez@suse.de>, 
-	syzbot ci <syzbot+ci493c6d734b63e050@syzkaller.appspotmail.com>, bp@alien8.de, dave.hansen@linux.intel.com, hpa@zytor.com, 
-	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, mingo@redhat.com, 
-	osteffen@redhat.com, pbonzini@redhat.com, stable@vger.kernel.org, tglx@kernel.org, 
-	x86@kernel.org, syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
-Subject: Re: [syzbot ci] Re: KVM: x86: Unconditionally recompute CR8
- intercept on PPR update
-Message-ID: <ajJnb-Bzu4S0oOP5@sgarzare-redhat>
-References: <20260610214523.2905255-2-clopez@suse.de>
- <6a2adf3b.3b0a2d4e.8c8d1.0012.GAE@google.com>
- <airudX6N4oL5X_wE@google.com>
- <79c59d84-80bc-41f6-950f-41ff2e6b2b5b@suse.de>
- <ajBGeUyhVM1-SI33@google.com>
+	s=arc-20240116; t=1781689602; c=relaxed/simple;
+	bh=xAqe/8U2yGUbThMQKi1IkcJCEV2Y3uLy22DWmUEApC0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=NaLm8du9BywXS99pF+j22dTWPsjIdIENrGPtXzEORiq9c3Zv9mbeAM1ST8m74Puot7aT7jFtbdnPnrtBANCJ2QzfMZIl1mxJhCCbq9yXsOzLqEcja9JrAANIARPd568JEKSzx69dMYriChJx1BnzQoaU281tOwWgzw+DISK1gcI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com; spf=pass smtp.mailfrom=pobox.com; dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b=B/32yiuD; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=du0WyXdg; arc=none smtp.client-ip=103.168.172.149
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfout.phl.internal (Postfix) with ESMTP id 69796EC01AF;
+	Wed, 17 Jun 2026 05:46:39 -0400 (EDT)
+Received: from phl-frontend-02 ([10.202.2.161])
+  by phl-compute-04.internal (MEProxy); Wed, 17 Jun 2026 05:46:39 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pobox.com; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1781689599;
+	 x=1781775999; bh=mogodG7pcrCiKUsu7dKMewLglswihOIGnqfNWlGOzx8=; b=
+	B/32yiuDBi2lpJ3ZPrrzpvLjOTqIkaPIs9EahU/txqcXLBReT0KGLZZNWOwuGwaY
+	YXvt/A+DP0jEwcRihddVu4Fw1B2Q4T75P2XCrwEfeBN4ZVOFlEWS7Z7D3lScQZi6
+	Xr1O8tGIyXwNf/Ubhfh5SA3SdIpoXcEM59Hp1tIJp9WOehj3F4a7dNQhkijgu+B8
+	8chOpPyxj8bjqBC4sUiIximqjAJVHqwrf+q30by4o3Seddjz6ReqH6kX+3VxCec0
+	Eg7Uji+BukWXfOWYyrzLmNG+JI/vI8M2rXVQdNVBHiG417yuWeg5xnzH0xE4K99D
+	lkbX2IQa83n8vpeCFgZvlQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1781689599; x=
+	1781775999; bh=mogodG7pcrCiKUsu7dKMewLglswihOIGnqfNWlGOzx8=; b=d
+	u0WyXdg6fmPSxq/3gedyfC/xDAxoN6rVImZu+lJVANZjCrcqt/O2r8GIRtFHnd7z
+	R+g1JLSZRnm9p6kb0mVdbhyC0mlx0nzAwobZDjEvKk/aH4ReR5x1y8seNImiZ9j5
+	AnMnCY9bwld4C0xEsb44da0BAzfs7kkSaNLQFCJ2JDVv9D2jZRzoVfz4JFeC5Dt9
+	nJ559r3sS0HBwygqcqCp0onQtcYvRlIo0eqSHv2/NDozETqapwfE6N2kei0Q8EWG
+	Ubm5gIrPHpAHMw2L9nPeMkdhl/JhpnS0bNCjpsgeVVvefj5QicsxyGQBkNZEWRvM
+	KpSrop9jmCdwVOk1T9J2Q==
+X-ME-Sender: <xms:_mwyaiiU8SRSXyTulPHXOEmoi9_pT1_zhYt7AY8kmDlUY61VibJSSg>
+    <xme:_mwyau5T2-ZLaz6qfBzqwvSdF2XHznz52l6lnOU0kEBBM7NCaRsF0ZMEUzFTX2LCi
+    3Rh7CDKHOPc0F0yo0f3AHwEGrbXmZqt7NFBD0s-uHWDuZpr0Ni_xwo>
+X-ME-Received: <xmr:_mwyall3RiXUvERwPwMqUptrdrhOaSbXujhc3gLK0GdpSA9ZfGauhixBhHLQhXneAoPetXB4_yFRsj_rKMwXNHrn5xOHZ2zW>
+X-ME-Proxy-Cause: dmFkZTEtUkYpXsvlu3vF1Efxo7cKDRm7QTRG0dyYph7GzLNBbqcTNMzdurQZb0QJIWBeQv
+    CFE/o6qwPa8NsbO2vSbcM7FGZs4HIMygkj8yHeqJIy/79UAPaKJ+oJvRVAcc5IYRpAZcmh
+    QEwdl0QPwIp2Et5ZdSmQfU7TZmGjiOE6BzpNPlTflUY3fdSDyU51fSAVa8IFFpk7jGDto+
+    QZgyCeI0cgzf4VFeqCjl3ardLsncVvqPtHwd3MyseMhb9mZuIi9pFHkvQGKsK+Gbv/oatP
+    ZN5Zt7hKmXT0YBTGmZzXbWB4eX2C/k1abq5RmoMzruEsP8OIze93IjApyoK/2Xg8iPLzED
+    j4DH5Z3kNt2zriQ58f3++m6ovval02rDJirg+N9smNq9excavfyuizos6cDEKsBvrD42nE
+    4+HGOvpnFov+h7K7PMPaldtHJVhEXTBlX2dTCmhFVAdR9aKjXy6q31ILRzsdSgk1dDCBrY
+    845CMrnTOKS8abip9b+vs05OHoref5BgLfNQPPa5BXPq69Q+1Qrxp74UCUqSZ/DngBwN1S
+    dGTaxuMN9lsK84Di7TeLs2kMFuy06sWCUTtWAfvflPW9NgijkE/OyscbJXs/BEAt6p21o5
+    5LhtlacudGNaPCmOqpEfoL/UGTLjLdwcoalkPfa+QoVWR/mXLlWmzVHMiccQ
+X-ME-Proxy: <xmx:_mwyavOwubVHqZQ7KDwj4k3Uc3gK0at18X_FHDyDU97VkjtOpzd5XA>
+    <xmx:_mwyanpieopgR9tz9ark79GX-jEKBUWYSmvRmnG42NpgaoYZDb3mnw>
+    <xmx:_mwyaosgaT8mnv80DHWkfOiZSTEM-z0f0-aSXEUdMx_VzUGG2KZZpQ>
+    <xmx:_mwyar7e7QZfwcVVCxPKMOeA1UX2enSgJaWrwz7W-4q7r3R6oe43xA>
+    <xmx:_2wyah0ndfP6brtdhROD6lh_czgWTvBJbY7--PLjJx4iuKG4cCIYzJ-W>
+Feedback-ID: i6289494f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 17 Jun 2026 05:46:35 -0400 (EDT)
+Message-ID: <d0a4a3ca-e799-45a5-978d-9d81fea2a9de@pobox.com>
+Date: Wed, 17 Jun 2026 02:46:34 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1; format=flowed
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ajBGeUyhVM1-SI33@google.com>
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH 7.1 0/8] 7.1.1-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org, sr@sladewatkins.com
+References: <20260616145523.335696673@linuxfoundation.org>
+Content-Language: en-US
+From: "Barry K. Nathan" <barryn@pobox.com>
+In-Reply-To: <20260616145523.335696673@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[pobox.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[pobox.com:s=fm3,messagingengine.com:s=fm1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-266695-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	FORGED_SENDER(0.00)[sgarzare@redhat.com,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:seanjc@google.com,m:clopez@suse.de,m:syzbot+ci493c6d734b63e050@syzkaller.appspotmail.com,m:bp@alien8.de,m:dave.hansen@linux.intel.com,m:hpa@zytor.com,m:kvm@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:mingo@redhat.com,m:osteffen@redhat.com,m:pbonzini@redhat.com,m:stable@vger.kernel.org,m:tglx@kernel.org,m:x86@kernel.org,m:syzbot@lists.linux.dev,m:syzkaller-bugs@googlegroups.com,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	TAGGED_FROM(0.00)[bounces-266697-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,m:patches@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:torvalds@linux-foundation.org,m:akpm@linux-foundation.org,m:linux@roeck-us.net,m:shuah@kernel.org,m:patches@kernelci.org,m:lkft-triage@lists.linaro.org,m:pavel@nabladev.com,m:jonathanh@nvidia.com,m:f.fainelli@gmail.com,m:sudipm.mukherjee@gmail.com,m:rwarsow@gmx.de,m:conor@kernel.org,m:hargar@microsoft.com,m:broonie@kernel.org,m:achill@achill.org,m:sr@sladewatkins.com,m:ffainelli@gmail.com,m:sudipmmukherjee@gmail.com,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[barryn@pobox.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sgarzare@redhat.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[redhat.com:+];
+	FROM_NEQ_ENVFROM(0.00)[barryn@pobox.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[pobox.com:+,messagingengine.com:+];
 	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable,ci493c6d734b63e050];
-	TO_DN_SOME(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,sgarzare-redhat:mid]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,messagingengine.com:dkim,pobox.com:dkim,pobox.com:email,pobox.com:mid,pobox.com:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 63832697FE0
+X-Rspamd-Queue-Id: 1CD086980B2
 
-On Mon, Jun 15, 2026 at 11:37:45AM -0700, Sean Christopherson wrote:
->On Mon, Jun 15, 2026, Carlos López wrote:
->> On 6/11/26 7:20 PM, Sean Christopherson wrote:
->> > On Thu, Jun 11, 2026, syzbot ci wrote:
->> >> ------------[ cut here ]------------
->> >> debug_locks && !(lock_is_held(&(&vcpu->mutex)->dep_map) || !refcount_read(&vcpu->kvm->users_count))
->> >> WARNING: arch/x86/kvm/vmx/nested.h:61 at get_vmcs12 arch/x86/kvm/vmx/nested.h:60 [inline], CPU#0: syz.2.19/5879
->> >> WARNING: arch/x86/kvm/vmx/nested.h:61 at vmx_update_cr8_intercept+0x3de/0x4e0 arch/x86/kvm/vmx/vmx.c:6879, CPU#0: syz.2.19/5879
->> >> Modules linked in:
->> >> CPU: 0 UID: 0 PID: 5879 Comm: syz.2.19 Not tainted syzkaller #0 PREEMPT(full)
->> >> Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
->> >> RIP: 0010:get_vmcs12 arch/x86/kvm/vmx/nested.h:60 [inline]
->> >> RIP: 0010:vmx_update_cr8_intercept+0x3de/0x4e0 arch/x86/kvm/vmx/vmx.c:6879
->> >>  apic_update_ppr arch/x86/kvm/lapic.c:984 [inline]
->> >>  kvm_lapic_reset+0x1c24/0x2980 arch/x86/kvm/lapic.c:3023
->> >>  kvm_vcpu_reset+0x44c/0x1bf0 arch/x86/kvm/x86.c:12986
->> >>  kvm_arch_vcpu_create+0x746/0x8b0 arch/x86/kvm/x86.c:12847
->> >>  kvm_vm_ioctl_create_vcpu+0x428/0x930 virt/kvm/kvm_main.c:4201
->> >>  kvm_vm_ioctl+0x893/0xd50 virt/kvm/kvm_main.c:5159
->> >>  vfs_ioctl fs/ioctl.c:51 [inline]
->> >>  __do_sys_ioctl fs/ioctl.c:597 [inline]
->> >>  __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:583
->> >>  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
->> >>  do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
->> >>  entry_SYSCALL_64_after_hwframe+0x77/0x7f
->> >
->> > This is "fine", the assertion just wants to make sure KVM isn't access vmcs12
->> > without holding vcpu->mutex, otherwise any queries are inherently unstable.
->> > It's just that vCPU creation runs without taking vcpu->mutex, because the vCPU
->> > is otherwise unreachable.
->> >
->> > I'm pretty sure we can squash the WARN by grabbing vmcs12 if and only if the vCPU
->> > is actually in guest mode.
->>
->> Will you add this on top or should I send a v3?
->
->Gah, I was going to say "I'll fixup when applying", but that leads to an unwieldy
->changelog.  I'll send a v3 with this slotted in as a proper prep patch, might as
->well let syzbot have another go at it, to make sure there isn't another assertion
->lurking.
+On 6/16/26 7:58 AM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 7.1.1 release.
+> There are 8 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Thu, 18 Jun 2026 14:55:16 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v7.x/stable-review/patch-7.1.1-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-7.1.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-I successfully tested Carlos's v2 plus this hunk with SVSM as mentioned 
-in the link in the description.
+Tested on 2 amd64 systems and an arm64 VM. Working well, no regressions
+observed.
 
-So, feel free to carry my T-b in v3:
+Tested-by: Barry K. Nathan <barryn@pobox.com>
 
-Tested-by: Stefano Garzarella <sgarzare@redhat.com>
-
-Thanks,
-Stefano
-
->
->> > diff --git arch/x86/kvm/vmx/vmx.c arch/x86/kvm/vmx/vmx.c
->> > index c548f22375ad..332fbcd924f2 100644
->> > --- arch/x86/kvm/vmx/vmx.c
->> > +++ arch/x86/kvm/vmx/vmx.c
->> > @@ -6876,11 +6876,10 @@ int vmx_handle_exit(struct kvm_vcpu *vcpu, fastpath_t exit_fastpath)
->> >
->> >  void vmx_update_cr8_intercept(struct kvm_vcpu *vcpu, int tpr, int irr)
->> >  {
->> > -       struct vmcs12 *vmcs12 = get_vmcs12(vcpu);
->> >         int tpr_threshold;
->> >
->> >         if (is_guest_mode(vcpu) &&
->> > -               nested_cpu_has(vmcs12, CPU_BASED_TPR_SHADOW))
->> > +           nested_cpu_has(get_vmcs12(vcpu), CPU_BASED_TPR_SHADOW))
->> >                 return;
->> >
->> >         guard(vmx_vmcs01)(vcpu);
->> >
->> >
->> > Longer term, I'll work on figuring out how to handle this in get_vmcs12(), because
->> > to_hv_vcpu() has the solve the same fundamental problem:
->> >
->> > https://lore.kernel.org/all/aeqRzanSaa9P_EPg@google.com
->>
->
-
+-- 
+-Barry K. Nathan  <barryn@pobox.com>
 
