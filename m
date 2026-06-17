@@ -1,159 +1,210 @@
-Return-Path: <stable+bounces-266822-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266824-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id l3T5Jem9MmoL5AUAu9opvQ
-	(envelope-from <stable+bounces-266822-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 17:31:53 +0200
+	id QcL4EObAMmpx5AUAu9opvQ
+	(envelope-from <stable+bounces-266824-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 17:44:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id B22E869B030
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 17:31:52 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9D5169B18B
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 17:44:37 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=sigvoid.com header.s=default header.b=jhKYziPx;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266822-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-266822-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=sigvoid.com;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=a2tEvJWw;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266824-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266824-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=reject ("cv is fail on i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 659BC30501FA
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 15:18:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A89F131B5F99
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 15:28:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD234480960;
-	Wed, 17 Jun 2026 15:17:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AA4248B36D;
+	Wed, 17 Jun 2026 15:28:32 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from out28-134.mail.aliyun.com (out28-134.mail.aliyun.com [115.124.28.134])
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011046.outbound.protection.outlook.com [40.93.194.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62BD6480DEA
-	for <stable@vger.kernel.org>; Wed, 17 Jun 2026 15:17:51 +0000 (UTC)
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781709475; cv=none; b=p+tMM9RNjod0n5nvPpcZYanTTZdpLRL/tAdIU/EGeK9agQsQnMLZ5U9jM1G+FuSiDLcu6Ycm93CPJG3m94th1sD42pZJw8lEL8wDjMj55+B8Rirol6dfSyAqf75lwpEJqaIU13E2MpQ01yTb2yTjiFiROlojrGSnsSc1w0D1kO4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781709475; c=relaxed/simple;
-	bh=JDITdoNQe6JysXQwdncGz5aHwM8xnjrR1YGJSUXmcTE=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Xc4GLMuaLt++zghT0Tq/oG/lEhG+vY+iB4yw2x5XyxUDVc0hXKTa5c1OnQN8SmJCnePTyBwp0wdpXWrjWwezJa+Xs3255C/JYPBrdf/cK6ZhejFCKIVMESxJFA3aKuU9BE+5VY1m+OlBCPmTTV3XjV5FsxsI5s5PIauAteWxqzg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=sigvoid.com; spf=pass smtp.mailfrom=sigvoid.com; dkim=pass (2048-bit key) header.d=sigvoid.com header.i=@sigvoid.com header.b=jhKYziPx; arc=none smtp.client-ip=115.124.28.134
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=sigvoid.com; s=default;
-	t=1781709463; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=oSWc9sSlhXbpQOqYnu9ZH7ql4C5+7+B5hkIhJzZFNDU=;
-	b=jhKYziPxMCom0+m9IbaHBnbqyIDVm8Jw4QOFZ4+xRPsrOhkBqpgxSMvitTZpMnyHjah92avulsK9LQQfuOg+XF2Qz8n63ewMhVeyyATx1pC0iejm4y4sIcssPgwmZ0bAmRgtDj2f7nREbU8QTqxc8MP/Hcjik9rJpeBosrH1KlDe8losvamMloBcHTKey2VfVN+NEDmUtTh4RnMO9oRohnpXfO0OEDoPXidVat9vmjagmjF3yPkcMHLZbNjUElG+GkeaikrmC/+t1shU76gj+ppTGJEj8DuVs7365cIbWi4u5ZZVwBgYSDvU60Q+akD0iq7h0XdyYPIkfatCWdrmKQ==
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.06689589|-1;BR=01201311R171S32rulernew998_84748_2000303;CH=blue;DM=|CONTINUE|false|;DS=CONTINUE|ham_alarm|0.00466299-0.000278393-0.995059;FP=13590277443709849546|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037022039;MF=yingjcao@sigvoid.com;NM=1;PH=DS;RN=2;RT=2;SR=0;TI=SMTPD_---.i-qcTA6_1781709439;
-Received: from localhost.localdomain(mailfrom:yingjcao@sigvoid.com fp:SMTPD_---.i-qcTA6_1781709439 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Wed, 17 Jun 2026 23:17:42 +0800
-From: Yingjie Cao <yingjcao@sigvoid.com>
-To: yingjcao@sigvoid.com
-Cc: stable@vger.kernel.org
-Subject: [PATCH] wifi: mac80211: fix negotiated TTLM skb allocation
-Date: Wed, 17 Jun 2026 23:17:14 +0800
-Message-Id: <20260617151714.24458-1-yingjcao@sigvoid.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FF6848B365
+	for <stable@vger.kernel.org>; Wed, 17 Jun 2026 15:28:23 +0000 (UTC)
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781710111; cv=fail; b=PO4ARCgoIEavPNGgR2ja6Vx6HHGIL92SKb4AndvKtyxefOX0hzkPvpgddrxvNxgRqkQch8k6VWVRwjg35kcTuYbu6VqNyl3JkDPJB7JCmdsPw6MODRhf6+9pS+D28N3OLYu9OfI6WX3SiWvkLDLxJTNurBB6QPX+ed3NnxE0aqk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781710111; c=relaxed/simple;
+	bh=lwVwfirAAXDitvV3HqQKpyrNq2/bz9+wjrecyrF0t5A=;
+	h=References:From:To:CC:Subject:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=F9E2cMaZQQjr4nGAAdSm+lGc7rvX1/Qu9HhUHnd29il66U7/vUpDQb6DkUShXxA/GC7xp+dL91X8yKNUWDS731QPGm23XaFfZ6yqVcSxgxE0jLetjvhTDJF2GisRemnQG0/TVP4oZOmWcSh4h9AcsPQPQdo8keJr9BTWUn3bRjQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=a2tEvJWw; arc=fail smtp.client-ip=40.93.194.46
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=tSld6D1zzG2KpaNr5qmfKp59B8wGQig6Ty32f7ab1VNp95uhKR4pY7o8AOo8gOQvHp75uuySGXDcuYwgjkidD6un5bk0jqObe3UTEzYviJg8fG6qSPmQnEohsYRWObYd7uBaMMToMatsDzZ9qamTZpbdCupsRgISH4IAzn6R7/yrVezelJe7WwOhRd10ExNdWFNSlX7xTPUDxZ4HdueMnbT4JVLX98++FKGGQixl2piUf8Hn2stcYsuAGXGJV3wD/ZnzhSwzNH/h9jD3ivJCkph+QQkcSLuj5f3gnMUWzNYxJkMypHjOfE7WD7EDqpxXqAAUNjBvYa7NxfjAFbAn6g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=taC0a4uTTpEDVdz3vAynTgNpmPV85YbBKlgZXSqMfrk=;
+ b=gt9/8ipnD+U1T07ZRI/rhLaWYSnYoAdKCgO3iQPkLwgNCZzyjiAunqbWE803BFWu04aeIbHJXoM89aEOmVLTaIeYOBOAk5yPzcl+2MXR8ImftZmfU+UmKK57+pZYCxWS5N53Upm57At3HHW/+fMg+Z5YyOl2lQ9iEnwlNeLvsQEG+D6DpRnez6B1ymtOP9e9S+5em30yzw8CCTwae7mN7TxpJUrP24TXEYFeyuit55GpMXrx732yN7hQ2PHZAjWG+RlZhTEkASFhJwaC6fxjlKsQjZTZX2+MI57hYVQxB0xP24r8YblCfJMD/WkICILirq6AhQjEODyVS309e78ODA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=gmail.com smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=taC0a4uTTpEDVdz3vAynTgNpmPV85YbBKlgZXSqMfrk=;
+ b=a2tEvJWwc3Mf+F5GQAeVtGZTDEOlH/ctZFgyQ8gb36Z8i535GyL/48dLDYymLsoTxKIsIJu7+qzAooifdrk5sRyDWzBfIH8YncF1lGha6NrtX5gwk2QBNfIU+c2Rzrw5IX9Z19KbqzFaxmU3yH4coM8rMoDZH0k6bTsHNZQz1I6xEioaaWadAX7XyjjieAbBc6LCafXo34qBGMNEJzzngpCtS7Fd+opY/wedKvvq2ds46jYS4bDdvhaAOtFoMhlJPiaQhQ2WoPhh95EvGLPCBNke04IO6bE94QjtTvjsldd0MJC3pq/9r33EK/JRSo9yDXJHfNtuDaHUowRqep+vlQ==
+Received: from CH0PR04CA0058.namprd04.prod.outlook.com (2603:10b6:610:77::33)
+ by MN2PR12MB4271.namprd12.prod.outlook.com (2603:10b6:208:1d7::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.139.11; Wed, 17 Jun
+ 2026 15:28:19 +0000
+Received: from DS3PEPF0000C37F.namprd04.prod.outlook.com
+ (2603:10b6:610:77:cafe::aa) by CH0PR04CA0058.outlook.office365.com
+ (2603:10b6:610:77::33) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.139.11 via Frontend Transport; Wed,
+ 17 Jun 2026 15:28:19 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ DS3PEPF0000C37F.mail.protection.outlook.com (10.167.23.9) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.139.8 via Frontend Transport; Wed, 17 Jun 2026 15:28:18 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Wed, 17 Jun
+ 2026 08:27:56 -0700
+Received: from fedora (10.126.231.37) by rnnvmail201.nvidia.com (10.129.68.8)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Wed, 17 Jun
+ 2026 08:27:51 -0700
+References: <2e4d2f2b9efa7b0b32476947f63506cfe9568d1d.1778851656.git.petrm@nvidia.com>
+ <2026061639-antennae-upstage-bd52@gregkh>
+ <2026061610-lying-manor-2d57@gregkh>
+User-agent: mu4e 1.8.14; emacs 30.2
+From: Petr Machata <petrm@nvidia.com>
+To: Greg KH <gregkh@linuxfoundation.org>
+CC: Petr Machata <petrm@nvidia.com>, Sasha Levin <sashal@kernel.org>,
+	<stable@vger.kernel.org>, Wojtek Wasko <wwasko@nvidia.com>, Mahesh Bandewar
+	<maheshb@google.com>, Shuah Khan <shuah@kernel.org>, Richard Cochran
+	<richardcochran@gmail.com>, Yong Wang <yongwang@nvidia.com>
+Subject: Re: [PATCH 6.1.y] Revert "selftest/ptp: update ptp selftest to
+ exercise the gettimex options"
+Date: Wed, 17 Jun 2026 17:22:44 +0200
+In-Reply-To: <2026061610-lying-manor-2d57@gregkh>
+Message-ID: <871pe5i3v1.fsf@nvidia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: rnnvmail203.nvidia.com (10.129.68.9) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS3PEPF0000C37F:EE_|MN2PR12MB4271:EE_
+X-MS-Office365-Filtering-Correlation-Id: 04287c12-fdfc-4b5d-5d86-08decc850f33
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|36860700016|376014|82310400026|1800799024|56012099006|11063799006|4143699003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	+7/VuOu6XxEqVHc2ed43jihcrrz1oiDf9CgY+0AWdeUhOyP1LXpdW5d/g/+SkQye1UnOIOntxYbwV/ciYh8M2MtOp9IA9c2++tzjnmC4JOdjHX2OhkCj7zehwJzrHhHiCyTCsaXxx1rmEQVK7DMHDuU03gykEiK/QNSG4jlMeFQh8QDYgYmh9yTZrDVfsQMtGUwsZFvKBQH11Cy9xH/yNsGWMvkI9dEEfR0wuck8pXQTbftEzXTmDlCRrPNTgwYR7eO6WCLbgGlUcm3kpQu7QKwXneNj3wXvVN4+/JTEeKQKbEyyCMHkvx3QLXn7Wrbn2he7MieyL04yMIWGCIdM14gAF/gqfaG1R7PzBwEsr61Ow9d2o2E4KCNPNJP2GBv6BHq/YiSZgAlHhrklDsQfOGFrWWLNZmoCQ2VE0nlRrQBgu5himWTy3LTQds0qoKY5/9K05JYeRSlR0ZnPpDuKFymVdsFzTgBIwyhUAxKQw4WWcZ+8IFmF8LVwyM4KgalM8uXvPDMTbJ0900NGPxDSpc6z2tD8tJs16LRD2SxDEV4sapDRcvrogJzuXfjgOTtkf9YaabCDyH7a9prFvMlb0QdhSmZjNFhOa/VB1S4kf7nffjVuaV9GTT7zN/HBdrU0X4vP3/8RpXwRBPrQcvsHjUAwzG4DHdb8euNHbkwBAV3sqVEGvh0OnSc8D7D2ULhym67p4Hp+A1gsl3tEEMSn3a0bBO5GbmyV1BkZZj189u4=
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(23010399003)(36860700016)(376014)(82310400026)(1800799024)(56012099006)(11063799006)(4143699003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	pQJIpvGu/b4u7GS40VCFUjwhq4yUTIoXLQ5zl+Dw9bgBeJeE8wffjZRZKGRHgj+sazQeya5t5VB2m52eX2W9l97zriipLMpyJ4CgaUytfmVdJOp+baEdf/5ATxKtEU/g5phpXc5nNfMxgj07Qq3Wg31n+nK1eZnDsKDoopX8zyBIKR+DwFfRsCma+5soUTmFbjtcNNx6vhWjIkxZzkctXxQ0Y5mubatwBKWFSKAtewMGUd5uq3pE3QgAkFR+v4nIjkTClqfu9mtgKGgAcDnWSZFsYfOuijkVwKgK6tkVUU4+plSMrypSTYEgmJEPI/Q2hs5JHPpYJg7yQD2LD4TEAabF2lw0DdWk/tI8BFrmuXWos1MCHd0IbY7QTo5b4w27eCSf1vr9jWoZCwqGxb+LYfvrMBBjBTlS4FIlOdakQoCXbNNQq+v/qC3qwguWn/zU
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2026 15:28:18.9450
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 04287c12-fdfc-4b5d-5d86-08decc850f33
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DS3PEPF0000C37F.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4271
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-6.66 / 15.00];
+	WHITELIST_DMARC(-7.00)[nvidia.com:D:+];
+	ARC_REJECT(1.00)[cv is fail on i=2];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[sigvoid.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[sigvoid.com:s=default];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[nvidia.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[Nvidia.com:s=selector2];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-266822-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
+	FREEMAIL_CC(0.00)[nvidia.com,kernel.org,vger.kernel.org,google.com,gmail.com];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[yingjcao@sigvoid.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:yingjcao@sigvoid.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-266824-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:petrm@nvidia.com,m:sashal@kernel.org,m:stable@vger.kernel.org,m:wwasko@nvidia.com,m:maheshb@google.com,m:shuah@kernel.org,m:richardcochran@gmail.com,m:yongwang@nvidia.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[petrm@nvidia.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[Nvidia.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[yingjcao@sigvoid.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[petrm@nvidia.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[sigvoid.com:+];
-	TO_DN_NONE(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,nvidia.com:mid,nvidia.com:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:email,Nvidia.com:dkim];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	TO_DN_SOME(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,sigvoid.com:dkim,sigvoid.com:email,sigvoid.com:mid,sigvoid.com:from_mime]
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[8]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B22E869B030
+X-Rspamd-Queue-Id: A9D5169B18B
 
-The negotiated TTLM request and response allocation only accounts for
-one TTLM element header. When downlink and uplink mappings differ,
-ieee80211_neg_ttlm_add_suggested_map() emits two elements, each with
-its own 5-byte header.
 
-With all eight TIDs mapped in both directions, the helper writes
-42 bytes of TTLM data, but the callers only reserve 37 bytes for that
-portion. With tight skb tailroom and CONFIG_DEBUG_NET, the next
-skb_put_data() is caught as skb_over_panic; otherwise the write can
-corrupt skb_shared_info past the intended skb data area.
+Greg KH <gregkh@linuxfoundation.org> writes:
 
-Account for IEEE80211_TTLM_MAX_CNT element headers in both negotiated
-TTLM request and response construction paths.
+> On Tue, Jun 16, 2026 at 06:58:53PM +0530, Greg KH wrote:
+>> On Fri, May 15, 2026 at 03:53:53PM +0200, Petr Machata wrote:
+>> > This reverts commit 06954f715deb0ed053f8bf85547370db6870225d, which is
+>> > commit 3d07b691ee707c00afaf365440975e81bb96cd9b upstream.
+>> > 
+>> > The cited commit allows testptp to set a configurable clock_id. That is
+>> > done via a PTP_SYS_OFFSET_EXTENDED ioctl call, whose argument is struct
+>> > ptp_sys_offset_extended, where the clock_id is set. However, this Linux
+>> > version does not support the ptp_sys_offset_extended.clockid field, and
+>> > the test case cannot be built against this tree's own UAPI headers.
+>> > 
+>> > The reverted commit was introduced to resolve a missing dependency of
+>> > commit c6dc458227a3 ("testptp: Add option to open PHC in readonly mode"),
+>> > which is 76868642e427 upstream. My suspicion is that the only conflict
+>> > between the two is the getopt string, and there is otherwise no direct
+>> > dependency between the two.
+>> > 
+>> > This patch therefore reverts the cited commit, with hand-resolving the
+>> > getopt string to include 'r' (as introduced by c6dc458227a3), but not
+>> > 'y' (introduced by 06954f715deb).
+>> > 
+>> > Reported-by: Yong Wang <yongwang@nvidia.com>
+>> > Signed-off-by: Petr Machata <petrm@nvidia.com>
+>> > ---
+>> > 
+>> > Note: the issue appears to exist in 6.6, 6.12 and 6.18 as well.
+>> >       Depending on your preference, I can prepare separate
+>> >       patches for those branches as well. Let me know.
+>> 
+>> No need, I did it now for those branches too, thanks!
+>
+> Oops, nope, spoke too soon, 6.18.y still needs it, this one doesn't
+> apply there.  Can you send that revert?
 
-Fixes: f7660b3f584a ("wifi: mac80211: add support for negotiated TTLM request")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yingjie Cao <yingjcao@sigvoid.com>
----
-Based on wireless.git main:
-ddd664bbff63e09e7a7f9acae9c43605d4cf185f
-("Merge tag 'net-7.1-rc7' of
-git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net")
+My bad, 6.18 does appear to have the field already.
 
-The crash proof used reports/poc/ttlm_force.c in a
-QEMU/mac80211_hwsim environment. I used hwsim because I do not have
-physical Wi-Fi 7 MLO hardware that satisfies the negotiated TTLM
-prerequisite.
-
-Local validation:
-- git am on the base commit above: OK
-- git show --check: OK
-- scripts/checkpatch.pl --strict --no-tree: only the expected warning
-  that my shallow checkout cannot resolve the older Fixes commit
-
- net/mac80211/mlme.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index b98ddfa30..0b6626a01 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -7998,7 +7998,8 @@ ieee80211_send_neg_ttlm_req(struct ieee80211_sub_if_data *sdata,
- 	struct ieee80211_mgmt *mgmt;
- 	struct sk_buff *skb;
- 	int hdr_len = IEEE80211_MIN_ACTION_SIZE(ttlm_req);
--	int ttlm_max_len = 2 + 1 + sizeof(struct ieee80211_ttlm_elem) + 1 +
-+	int ttlm_max_len = IEEE80211_TTLM_MAX_CNT *
-+		(2 + 1 + sizeof(struct ieee80211_ttlm_elem) + 1) +
- 		2 * 2 * IEEE80211_TTLM_NUM_TIDS;
- 
- 	skb = dev_alloc_skb(local->tx_headroom + hdr_len + ttlm_max_len);
-@@ -8066,7 +8067,8 @@ ieee80211_send_neg_ttlm_res(struct ieee80211_sub_if_data *sdata,
- 	struct ieee80211_mgmt *mgmt;
- 	struct sk_buff *skb;
- 	int hdr_len = IEEE80211_MIN_ACTION_SIZE(ttlm_res);
--	int ttlm_max_len = 2 + 1 + sizeof(struct ieee80211_ttlm_elem) + 1 +
-+	int ttlm_max_len = IEEE80211_TTLM_MAX_CNT *
-+		(2 + 1 + sizeof(struct ieee80211_ttlm_elem) + 1) +
- 		2 * 2 * IEEE80211_TTLM_NUM_TIDS;
- 	u16 status_code;
- 
-
-base-commit: ddd664bbff63e09e7a7f9acae9c43605d4cf185f
--- 
-2.39.5 (Apple Git-154)
+In fact, looking at 6.12, I see it as well. I am not sure why I thought
+6.12 and 6.18 are impacted. I wonder if I looked at at 5.12 and 5.18 by
+mistake.
 
