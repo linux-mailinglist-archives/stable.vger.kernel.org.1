@@ -1,211 +1,248 @@
-Return-Path: <stable+bounces-266915-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266916-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id dINVEQIHM2qm8gUAu9opvQ
-	(envelope-from <stable+bounces-266915-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 22:43:46 +0200
+	id kMBRMw4HM2qn8gUAu9opvQ
+	(envelope-from <stable+bounces-266916-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 22:43:58 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA20F69C657
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 22:43:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4446169C65D
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 22:43:58 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eYvumKc2;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266915-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-266915-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
+	dkim=pass header.d=NXP1.onmicrosoft.com header.s=selector1-NXP1-onmicrosoft-com header.b=tN19K4m9;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266916-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-266916-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=fail reason="SPF not aligned (relaxed), DKIM not aligned (relaxed)" header.from=nxp.com (policy=none);
+	arc=reject ("cv is fail on i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B3F6E3078E9C
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 20:43:44 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E40F03099A37
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 20:43:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D7B0386C2C;
-	Wed, 17 Jun 2026 20:43:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E20938E12D;
+	Wed, 17 Jun 2026 20:43:54 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010012.outbound.protection.outlook.com [52.101.84.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB5C437B00F
-	for <stable@vger.kernel.org>; Wed, 17 Jun 2026 20:43:40 +0000 (UTC)
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781729021; cv=none; b=URu/qLLyhCsW6fVgaGz2UM+qekgkX4ZxsqsYDAU+mbUJowb5620NtYd43aCl8SWoBIu4ax3wiquEMJGewDe2Q94Y59vJVQIqRZwEuzavcSNglmFrdbLrZrcGNOoO9a0jJvn6tctg7vDhsvM7MeVCr1+rMIRfvZlS2ieyF/c22lQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781729021; c=relaxed/simple;
-	bh=bOhbmCt+oFVJ9jsKtMt74ZG6kg58YvXE5tI5hP57JQc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qn2nU+bBNyKZNf9J4SzVyJ9fdV583aOvlaCoqq1Pbpk6GwumpVab6N5eLLWCHce/AeuHTuVesH2WppqSRB0kmGM+y9psRnwZajTuDs6tSAOBsqwA48cws3uF1N0yvsmkezVRPpLEY+Uh9mg89bZCFElqU/3LtS4Gmz9NpmyWAQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eYvumKc2; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8E481F000E9;
-	Wed, 17 Jun 2026 20:43:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781729020;
-	bh=BcjZCajz8vdCzFsPNlUqRx/Pt3voqk5LgBh+WwTdT8E=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=eYvumKc26ppY59rh0506Q1e9QpL2RwK1wvceWhZClZ86P90oq1ksACOaKTcvYJnao
-	 3QXThSK4CFBJES/4HNEH0dVvk0B1Uy4LJcd0V1HKmJlk0U3AsriNDYYoa5hEROX+qL
-	 4bQpteE+jJdLFg4+pAYzmX8BK97s1C7/164xEh3qZbGUphBkavuG1etLnQt3XL3L23
-	 senoLfcbkc3KMRpTm1puFhz2ABh262BCSQBFyDMZqq/+c28//o4ujH1QtzXJJUkp6w
-	 TTvmPHCTbhCww65G4DrRkCJDm/KZucvsfcHWoY3MStpdrkxoC2zp6PQaOTP98YEFJa
-	 rr+n6IvRJWu7Q==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>,
-	Srinivas Kandagatla <srini@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y] slimbus: qcom-ngd-ctrl: Initialize controller resources in controller
-Date: Wed, 17 Jun 2026 16:43:38 -0400
-Message-ID: <20260617204338.352068-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026061535-tables-coil-a9e2@gregkh>
-References: <2026061535-tables-coil-a9e2@gregkh>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8691C37B00F;
+	Wed, 17 Jun 2026 20:43:52 +0000 (UTC)
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781729033; cv=fail; b=gfDly7cRzFSouddDHS7RaoLv5mEFb3sluR37aHjZ9xISseu2179HIabR2N0Lf3W/Sp2paULuMrPBPdNZrlffBKg0f0KQIvm1l6O31BooXec2hLMOfnSOYhx0Aa5FDhC2PXHP/Uh9WewpcuiJudLfjmG+zcBBc92wvEGeQrbKghY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781729033; c=relaxed/simple;
+	bh=YzmnmOwRLFTGpl2pvY0KObGQR7rVQ1iGLPJm4osWD8w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=c3zyJuibosAGApG5YObhdwQxSeWDomhpW/WYVgg/gmZ3MUyTwEt7IyEgEZujfYBJfGIhpjonj07Vzw/GKKuzZLFRf0db1X7oGCbX7KbLao8dJMs0w/T3SChR87MOwQzXXWxKNPR+d+Vd+1Yl/Id81Dzw+m+qAXhOGnXfrQUCHN4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=tN19K4m9; arc=fail smtp.client-ip=52.101.84.12
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=O1SPEPfos67gckJl6O4diaTOcXgAYo/cAFBI+ntcx1B0YWwh8Q2ZP63aatT++3E57y5BGJ6S5gw36ISYgiVrOjKvuoj1dBmHt7Ul0Z54HdDz0zCDH5e4YUTMueTtUhwOnrnET7W8GV3wUDy7PC+UxpdZKAoiKkuZn0e2KRE5ng6ZUrOEK4LCHed12Do2lNK44jLecTfRctZ6RJpyvssi4AeOS8za40bQKiDMukwMJQ/PmI0G+f9QTWKdC3wGy/oljVGUOxKG4DGu0V/QpO238+e2a4JVv4FpFWedDxC7gHmeze3K8nxAy4l37xYFCbTXH2FxGB2XoVgdOpEjOYKCDQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=u5a9wcdJV6e3Z60cqCTXDDheLjwEF48R5fIdGsMt908=;
+ b=uLNiZqckL0IaazH2hDue5qzFgFhsQWNfq/uH6eopgq7yeWmoV7W6MsxtI0pe+HyJQTm9qST5h8Q27VsfA/rvzx/ExsIhRWolsHreVKmMxaCNHM5rlPp3jtq5+21li1NVVzMrFr0471iK2bMDpYaHzaL4Ntgg9ZonpVIvDKMW55UhsOy90Y5gsED6jXBGNYGy3J1QmFMEat8Jhcq/hrLh2w47Vdp0gpLqwWVGX+FimqZvtgZqHGR6VZxrSf+D2rqKZV5u9wsIcFX5uYDvpZ69ZXJ6wgwv8zTvfmKVIMLCWLkhfFDifrBkwiw1dHm7bVMG1ShHsCK5/VskoV6yUJNLog==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=u5a9wcdJV6e3Z60cqCTXDDheLjwEF48R5fIdGsMt908=;
+ b=tN19K4m9h9zXah5s585Rgh7UYqVuuCw/J9VWowR1WAvggpf15wKNyWmuPKXhotsVhf/cN6E7IBIilRAwkt1Z0GXSETI4Hh8XW5r8/+CKHWcpD8ElXK1vuWLDbYGy3ejvrgR4QjZu6ePOcH2cxxmzHStN597is0pCklwUtbrasb/WVVNHuOcGiYkZAX0nCPOFzpJzBaXOJb6kRVxYDSb+vbPmAg29udZBnocnE5tW6K0nPDUfz/Qzsodlf4h2GmQMpLGLyCpapumk03FF9bHlEtArDIp79IAdjeSsgjmGa4z1KhL9hlVuaks0l6JGoqDqwAEsS1L0/ZSTDbDTO6BIyw==
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
+ by DB8PR04MB7179.eurprd04.prod.outlook.com (2603:10a6:10:124::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.139.11; Wed, 17 Jun
+ 2026 20:43:50 +0000
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c%6]) with mapi id 15.21.0113.015; Wed, 17 Jun 2026
+ 20:43:50 +0000
+Date: Wed, 17 Jun 2026 16:43:43 -0400
+From: Frank Li <Frank.li@oss.nxp.com>
+To: Runyu Xiao <runyu.xiao@seu.edu.cn>
+Cc: Jorge Marques <jorge.marques@analog.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Frank Li <Frank.Li@nxp.com>, linux-i3c@lists.infradead.org,
+	linux-kernel@vger.kernel.org, jianhao.xu@seu.edu.cn,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] i3c: master: adi: initialize the lock before enabling
+ interrupts
+Message-ID: <ajMG_yuwzqGhjaBD@lizhi-Precision-Tower-5810>
+References: <20260617150138.628578-1-runyu.xiao@seu.edu.cn>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260617150138.628578-1-runyu.xiao@seu.edu.cn>
+X-ClientProxiedBy: SA0PR11CA0107.namprd11.prod.outlook.com
+ (2603:10b6:806:d1::22) To GV2PR04MB11799.eurprd04.prod.outlook.com
+ (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|DB8PR04MB7179:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0e4f74e6-074b-4c70-8d4d-08deccb122b4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|19092799006|366016|1800799024|23010399003|376014|22082099003|18002099003|11063799006|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	5fR8uoLwj7iwhYQzkJPrKPVIBDV+CUlsDhz3xrPy3SdkX7SqKAtHbEVgWlBSvs5c3lGkcOOd4Kz+knPD3I91FB6R+m60DCxrynCEOYYJAoC0ONGfMKCTxeSdDpC7/Sgtwbs81HQ5xHMO27JWCamvnNRDE31sBva5b0a+OMPLYvMaeIltaSvWttKaIsVIGA/GR1ojyQEAaOhU507yPmGBbec/g7kChcVur6+9EBtLLZit6L5EUaBGSxzo210QIrFoec0IrcRzUJySUSe++KfkT/5dI5JvevO9NVWosu8CIsOvgSO5EuGmKGt5ucnFJ7Y//LCIJISoS9BD+FXmdn4UnkdwoanlH9t6mniyH00S+8o+JGX4IFmF6rG6Dst1727vLnsug5jBirVsSBGT+wBdEiy607DygQmxK7+wxDt9s3reHOYoxCwadLSJmQXbYgMAqIZdo+90ZTBrUa1LhFmDohbfEFiAD1ZguglNbUsxHf+Wxb6M3AeM1NyEI6yO6mjp3j7zXFiv/C8LMxSwqLmCMcfaFpd4Qdbn2wSVPCG+P5oazE40AO0bAfMS6akZiL6kXWUYNmZc4S4/wfzWmjXzKBaZiz3LJAatqwdTUpJ65rbRkytHfqimuU3rrpyp+rMqoPDlE++djSq+c21vUpjgTdruj+Acz/lEMKl0cWSyhO0+/CRysNEtQoggxIu3y8ji
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(1800799024)(23010399003)(376014)(22082099003)(18002099003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?zyeR4XzPBpUoaLLLIOuImMhU+QeOpqcITiW0xcl2YuqwoO0tJgwZCDBuSj0t?=
+ =?us-ascii?Q?bmAGOK7Ds0f5SGUP9gfbOoPJIUKrDgyv399lVlrZSbhwIu3pib3Jv0coR+R4?=
+ =?us-ascii?Q?rWkESbflwFKt278+n3pvF8YI8xCyuIglf9g+x4C/a4jgk5EEz7zDONo/1ZLj?=
+ =?us-ascii?Q?V+UGdYJMWiJXWo+WAKl169srxafC3VpenvxauEwtd1e6lvzZOXp4eLjFSpSl?=
+ =?us-ascii?Q?8pW93AnBpB4z6K/8W/wkt1xzuo1psB0EH0F+KO9b0QKjuvPLMrLfNczeNUXG?=
+ =?us-ascii?Q?rkj01bgQl9dE/R1YVEE/Kq/Fva1nmC/7/4M4e85aGPci21GX4h4ZnH9siJhP?=
+ =?us-ascii?Q?UtnEQWbo2wuE/Wxi6e1/ecl7pGYFa8emizWeVtiYeW+hQIKr+a5H5duMIi96?=
+ =?us-ascii?Q?A+t3MEWL5ZaAaL+exTH5lwDLi+rORYIz99of5ZIobPn6niFz9Lo9oB0iN/Yc?=
+ =?us-ascii?Q?8Z2IL+t8P0u4w2jlBGeMB/aGvyKv69ENCKWCHzmQHm1LvIG+vnGwMt7DPvwE?=
+ =?us-ascii?Q?hM6XnAxc86RdI47VLxMAeYHtJCgBg63AosO/1SfPmJYeYsMJL5KCG+EIm31W?=
+ =?us-ascii?Q?OdqYio4kPdvstz9+IF0zb2suiWJ9CdSO8go2RkrsqkellmP+qNiDnGVCOQKN?=
+ =?us-ascii?Q?d2VMQKlB2/miepKQZGm6FPTzTTbb6AvfOFNi+pVScGBJGKMjHXTdn7ZP6lCY?=
+ =?us-ascii?Q?DFMhl5fPvmdOcm06EghLiMcBc0NkQtUPA2NZsdZ8RMqEuwOf6S9QrlxD3Fx9?=
+ =?us-ascii?Q?vCwJ6IFFNBaTMlePLCmpV2Ik1LoW1rZb5K+ku/f/ZZuR5ftDVahnJuWm1PWI?=
+ =?us-ascii?Q?M0iuJr0dnXySudmVMdo2Cifzc6NEg4W2hPbKCGhzQOzR+L86meDXJeQpwjLU?=
+ =?us-ascii?Q?8zhxhjSaiqlBPI9YgSp+cENU/UGrv3H98c822m/q2pfzZ5cpWhH89MLYY9B3?=
+ =?us-ascii?Q?JRcFMWEGr2RNg/PPhOnWuOI/YfmwhsYb85KEWYBMpraMF+peFFTzMwe0TF/L?=
+ =?us-ascii?Q?XyQBQIrShldY/y90EidJcRstWIAkINRpRklYgvy0cVisMZ9uv+lAMMQeKFS0?=
+ =?us-ascii?Q?n5ZgZD9UJffEw9VGvq+SJ4/sXWL8zsGpU4xKqWmdxV4vgG7+kj5u5VZTz6m8?=
+ =?us-ascii?Q?N9QWxXnSya7SoTnQIhIw3cor1MVLhDHVKtf3pvJCcgBKVPluQKyj9qYWNX1o?=
+ =?us-ascii?Q?sPzq6zbxniivNiqjVTwLyvSZxC8dabNgZI+jTWresfY2sgtJxMWDVm8IYW7/?=
+ =?us-ascii?Q?HgX68A3HuZfoEo6NtAMnfNXsXUIGNQi7a10gPxQ8IQHr8h7qV8JOId1Q0fhp?=
+ =?us-ascii?Q?wO5/un049RmTBwJuIv8z7mwAHrw7g2TluEdo6Y/7P5rW8Fr1L3Vwo+kgkN8G?=
+ =?us-ascii?Q?fXJ1mbQAkoWGsuE38SRVOUcZRWr54gk/7tvTNex4mjnR85Q/Pg6DLsgHWyMP?=
+ =?us-ascii?Q?Qvm7CbQn3B/zQwWeDVl/WvdS81e+ezXdxez8E0k+XgdzQUNBM3pWD8RdTyF5?=
+ =?us-ascii?Q?fCodUmXjS5NlZASgU0uUXfqzEQdl1pSiotS9GcE+jCQvam/8+9xsOJd1hTyZ?=
+ =?us-ascii?Q?mbNmjuUtqxLYSQ4GODu5/gU70hXiE6dogTzZU0YOoSdaZ1B1e5bpENkzukQy?=
+ =?us-ascii?Q?hkDDLiudih806nzv/lI4xKvE5n4ZwRrCUmsFw4SSJwQDIewtwukQM4o0RodJ?=
+ =?us-ascii?Q?s/s4mRrZlRSjBqpW4ATqp8fSWuvVB6XbxJ+ebJvU4UbbGC2bs7fHrdOTE8Fw?=
+ =?us-ascii?Q?zcKI9JwiWPbQD6cMOUeUCCMUc6B4IJnahSWP45BL+0VElEDTwvvX?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0e4f74e6-074b-4c70-8d4d-08deccb122b4
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2026 20:43:49.9464
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: LFCM7MKPQllS/d3jX2gRCdDQmzF1De7N4JYS1rj5XffQm0UKBeBUTUCGaD+moPXies9nli83xRGHFX/Gposo8mTkDqcevSOSEJv7a9ReoZrutU8d5myD4zIFBgM/lXgm
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR04MB7179
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.66 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	MID_CONTAINS_FROM(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
+X-Spamd-Result: default: False [0.94 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[NXP1.onmicrosoft.com:s=selector1-NXP1-onmicrosoft-com];
 	MAILLIST(-0.15)[generic];
+	DMARC_POLICY_SOFTFAIL(0.10)[nxp.com : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266915-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:bjorn.andersson@oss.qualcomm.com,m:dmitry.baryshkov@oss.qualcomm.com,m:mukesh.ojha@oss.qualcomm.com,m:srini@kernel.org,m:gregkh@linuxfoundation.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-266916-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_SENDER(0.00)[Frank.li@oss.nxp.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:runyu.xiao@seu.edu.cn,m:jorge.marques@analog.com,m:alexandre.belloni@bootlin.com,m:Frank.Li@nxp.com,m:linux-i3c@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:jianhao.xu@seu.edu.cn,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[NXP1.onmicrosoft.com:+];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[Frank.li@oss.nxp.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[seu.edu.cn:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,NXP1.onmicrosoft.com:dkim,oss.nxp.com:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: AA20F69C657
+X-Rspamd-Queue-Id: 4446169C65D
 
-From: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+On Wed, Jun 17, 2026 at 11:01:38PM +0800, Runyu Xiao wrote:
+> adi_i3c_master_probe() requests the IRQ and unmasks REG_IRQ_PENDING_CMDR
+> before the controller's IBI state, transfer queue list and transfer
+> queue lock are initialized.  A pending CMDR interrupt can therefore run
+> adi_i3c_master_irq() and take master->xferqueue.lock before the dynamic
+> lock has been initialized.
+>
+> This issue was found by our static analysis tool and then manually
+> reviewed against the current tree.
+>
+> The grounded PoC kept the probe ordering and the IRQ path
+> adi_i3c_master_probe() -> adi_i3c_master_irq() -> xferqueue.lock, with a
+> pending CMDR interrupt arriving after REG_IRQ_PENDING_CMDR is unmasked.
+> Lockdep reported:
+>
+>   INFO: trying to register non-static key.
+>   you didn't initialize this object before use?
+>   lock_acquire+0xbb/0x290
+>   _raw_spin_lock_irqsave+0x36/0x60
+>   adi_i3c_master_irq+0x32/0x56 [vuln_msv]
+>   adi_i3c_master_probe+0x5a/0xf47 [vuln_msv]
+>
+> Initialize the transfer queue and IBI state before requesting and
+> unmasking the IRQ.
+>
+> Fixes: a79ac2cdc91d ("i3c: master: Add driver for Analog Devices I3C Controller IP")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Runyu Xiao <runyu.xiao@seu.edu.cn>
+> ---
 
-[ Upstream commit 07c564ea5fb859b7381429de935d5df4781947c6 ]
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
 
-The work structs and work queue are controller resources, create and
-destroy them in the controller context. Creating them as part of the
-child device's probe path seems to be okay now that the controller's
-probe has been updated, but if for some reason the child does not probe
-successfully a SSR or PDR notification will schedule_work() on an
-uninitialized "ngd_up_work".
-
-Move the initialization of these controller resources to the controller
-probe function to avoid any issues, and to clarify the ownership.
-
-Fixes: 917809e2280b ("slimbus: ngd: Add qcom SLIMBus NGD driver")
-Cc: stable@vger.kernel.org
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
-Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
-Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
-Link: https://patch.msgid.link/20260530204421.116824-7-srini@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/slimbus/qcom-ngd-ctrl.c | 33 +++++++++++++--------------------
- 1 file changed, 13 insertions(+), 20 deletions(-)
-
-diff --git a/drivers/slimbus/qcom-ngd-ctrl.c b/drivers/slimbus/qcom-ngd-ctrl.c
-index 3fa245a472b2ee..c79589b194d3bd 100644
---- a/drivers/slimbus/qcom-ngd-ctrl.c
-+++ b/drivers/slimbus/qcom-ngd-ctrl.c
-@@ -1506,25 +1506,8 @@ static int qcom_slim_ngd_probe(struct platform_device *pdev)
- 	pm_runtime_enable(dev);
- 	pm_runtime_get_noresume(dev);
- 	ret = qcom_slim_ngd_qmi_svc_event_init(ctrl);
--	if (ret) {
-+	if (ret)
- 		dev_err(&pdev->dev, "QMI service registration failed:%d", ret);
--		return ret;
--	}
--
--	INIT_WORK(&ctrl->m_work, qcom_slim_ngd_master_worker);
--	INIT_WORK(&ctrl->ngd_up_work, qcom_slim_ngd_up_worker);
--	ctrl->mwq = create_singlethread_workqueue("ngd_master");
--	if (!ctrl->mwq) {
--		dev_err(&pdev->dev, "Failed to start master worker\n");
--		ret = -ENOMEM;
--		goto wq_err;
--	}
--
--	return 0;
--wq_err:
--	qcom_slim_ngd_qmi_svc_event_deinit(&ctrl->qmi);
--	if (ctrl->mwq)
--		destroy_workqueue(ctrl->mwq);
- 
- 	return ret;
- }
-@@ -1582,6 +1565,13 @@ static int qcom_slim_ngd_ctrl_probe(struct platform_device *pdev)
- 	init_completion(&ctrl->qmi.qmi_comp);
- 	init_completion(&ctrl->qmi_up);
- 
-+	INIT_WORK(&ctrl->m_work, qcom_slim_ngd_master_worker);
-+	INIT_WORK(&ctrl->ngd_up_work, qcom_slim_ngd_up_worker);
-+
-+	ctrl->mwq = create_singlethread_workqueue("ngd_master");
-+	if (!ctrl->mwq)
-+		return dev_err_probe(dev, -ENOMEM, "Failed to start master worker\n");
-+
- 	ctrl->pdr = pdr_handle_alloc(slim_pd_status, ctrl);
- 	if (IS_ERR(ctrl->pdr)) {
- 		ret = dev_err_probe(dev, PTR_ERR(ctrl->pdr),
-@@ -1603,14 +1593,19 @@ static int qcom_slim_ngd_ctrl_probe(struct platform_device *pdev)
- 
- err_pdr_lookup:
- 	pdr_handle_release(ctrl->pdr);
-+	destroy_workqueue(ctrl->mwq);
- 
- 	return ret;
- }
- 
- static int qcom_slim_ngd_ctrl_remove(struct platform_device *pdev)
- {
-+	struct qcom_slim_ngd_ctrl *ctrl = platform_get_drvdata(pdev);
-+
- 	platform_driver_unregister(&qcom_slim_ngd_driver);
- 
-+	destroy_workqueue(ctrl->mwq);
-+
- 	return 0;
- }
- 
-@@ -1624,8 +1619,6 @@ static int qcom_slim_ngd_remove(struct platform_device *pdev)
- 	qcom_slim_ngd_enable(ctrl, false);
- 	qcom_slim_ngd_exit_dma(ctrl);
- 	qcom_slim_ngd_qmi_svc_event_deinit(&ctrl->qmi);
--	if (ctrl->mwq)
--		destroy_workqueue(ctrl->mwq);
- 
- 	kfree(ctrl->ngd);
- 	ctrl->ngd = NULL;
--- 
-2.53.0
-
+>  drivers/i3c/master/adi-i3c-master.c | 15 +++++++--------
+>  1 file changed, 7 insertions(+), 8 deletions(-)
+>
+> diff --git a/drivers/i3c/master/adi-i3c-master.c b/drivers/i3c/master/adi-i3c-master.c
+> index 82ac0b3d057a..cf873d46e10f 100644
+> --- a/drivers/i3c/master/adi-i3c-master.c
+> +++ b/drivers/i3c/master/adi-i3c-master.c
+> @@ -967,17 +967,9 @@ static int adi_i3c_master_probe(struct platform_device *pdev)
+>  	writel(0x00, master->regs + REG_ENABLE);
+>  	writel(0x00, master->regs + REG_IRQ_MASK);
+>
+> -	ret = devm_request_irq(&pdev->dev, irq, adi_i3c_master_irq, 0,
+> -			       dev_name(&pdev->dev), master);
+> -	if (ret)
+> -		return ret;
+> -
+>  	platform_set_drvdata(pdev, master);
+>
+>  	master->free_rr_slots = GENMASK(ADI_MAX_DEVS, 1);
+> -
+> -	writel(REG_IRQ_PENDING_CMDR, master->regs + REG_IRQ_MASK);
+> -
+>  	spin_lock_init(&master->ibi.lock);
+>  	master->ibi.num_slots = 15;
+>  	master->ibi.slots = devm_kcalloc(&pdev->dev, master->ibi.num_slots,
+> @@ -989,6 +981,13 @@ static int adi_i3c_master_probe(struct platform_device *pdev)
+>  	spin_lock_init(&master->xferqueue.lock);
+>  	INIT_LIST_HEAD(&master->xferqueue.list);
+>
+> +	ret = devm_request_irq(&pdev->dev, irq, adi_i3c_master_irq, 0,
+> +			       dev_name(&pdev->dev), master);
+> +	if (ret)
+> +		return ret;
+> +
+> +	writel(REG_IRQ_PENDING_CMDR, master->regs + REG_IRQ_MASK);
+> +
+>  	return i3c_master_register(&master->base, &pdev->dev,
+>  				   &adi_i3c_master_ops, false);
+>  }
+> --
+> 2.34.1
+>
 
