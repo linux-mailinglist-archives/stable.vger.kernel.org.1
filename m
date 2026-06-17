@@ -1,166 +1,157 @@
-Return-Path: <stable+bounces-266829-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266828-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id p4mhMwzEMmr45AUAu9opvQ
-	(envelope-from <stable+bounces-266829-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 17:58:04 +0200
+	id vjhxIxTCMmqr5AUAu9opvQ
+	(envelope-from <stable+bounces-266828-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 17:49:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DA6069B2E8
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 17:58:04 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E31D069B21A
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 17:49:39 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=seu.edu.cn header.s=default header.b=OkXUpmZs;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266829-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266829-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=seu.edu.cn;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="CXewF/Sa";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266828-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266828-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CA49732F87C0
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 15:42:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E891232E92FC
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 15:41:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 401B64A33F4;
-	Wed, 17 Jun 2026 15:41:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2E364A2E19;
+	Wed, 17 Jun 2026 15:41:31 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-m49198.qiye.163.com (mail-m49198.qiye.163.com [45.254.49.198])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0135F47ECED;
-	Wed, 17 Jun 2026 15:41:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15D79492182
+	for <stable@vger.kernel.org>; Wed, 17 Jun 2026 15:41:16 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781710916; cv=none; b=uvAMznbr5wFFFE1dkglbCQV2AWWBIT4iq/jn7AcBuTpkwlbmX+6PgShAfg0xWA1zj5dbo05lbfBgVVUwE+TNYFk/wUQ8VwA7Gdt5rbRmFp90ZDXpkMOvsCHMK/FrSZJlctEMmP/Hb2wS4RLsZsv+fqXBy4Ibo+9N+Xxqf/9L76Q=
+	t=1781710891; cv=none; b=u5KfpuK15rZtGsyE4/9pOVsmhIzXTUxqrhqaIYUSNi7wlds64DaSBAa6U4VFJtxoP74BglD2kMBUIjdIe7GDYmzCCTSzutoakLJ6ncDaW/hAVqQRUGPIjJtqzGCen69qeaCB18mXKyf9L/4zq/6/EFoYBbhFhYawXkOJVsoZhtI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781710916; c=relaxed/simple;
-	bh=PHdfh7Gi7SFhovCD8/WMoefeFyMBsIKEk5s9v02X2nU=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=In0q5i0SGbNFLfM505tnup4+GmTV8m5rR4Y1IO4zPC8v2yREfZAHMIg1VhHD6hqQNuSjs11fm4JXkZmbJBzVse1QpQYxIIjjYJpMuYdfg3hAZr7+JHDkvJF6lVem+TmLC9ai66YonFbtSrVVRa5fcHb3YrDaYgmZHuJBFgy+9JM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=OkXUpmZs; arc=none smtp.client-ip=45.254.49.198
-Received: from PC-202605011814.localdomain (unknown [58.241.16.34])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 42c7865ee;
-	Wed, 17 Jun 2026 23:36:20 +0800 (GMT+08:00)
-From: Runyu Xiao <runyu.xiao@seu.edu.cn>
-To: Marcel Holtmann <marcel@holtmann.org>,
-	Johan Hedberg <johan.hedberg@gmail.com>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Cc: Jukka Taimisto <jtt@codenomicon.com>,
-	linux-bluetooth@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	jianhao.xu@seu.edu.cn,
-	runyu.xiao@seu.edu.cn,
-	stable@vger.kernel.org
-Subject: [PATCH] Bluetooth: L2CAP: cancel pending_rx_work before taking conn->lock
-Date: Wed, 17 Jun 2026 23:36:13 +0800
-Message-Id: <20260617153613.1139031-1-runyu.xiao@seu.edu.cn>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1781710891; c=relaxed/simple;
+	bh=sj2X5KYK9Qw6VQOUT10LVyWyhkAog43+vpDeeGJyO8A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oAy8Rd/Kne2ddiYUyLtSNOqjiARhAeyqY1hMR3MyzKANlaygDYA9DlQfLRN8bbiPPMHCsl7x+hJClDC52PG4xATsU5WCW680Bcf2LgNEbv+35BVNyaj0c8jILmemLHCvqfkavyfCxxCUHOV+N08ERx8GW+Q28bpFJSFH6PKGgh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CXewF/Sa; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6341A1F00A3A;
+	Wed, 17 Jun 2026 15:41:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1781710876;
+	bh=nBn2p8pdyU3TZYXBqSMJNqI2gqJzj4w30AULxwSyvjo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=CXewF/SaT6pjB+vSmXGkNyp5AQl1tox8c/LYnVxVyFgFyQHUdnVeJdzPjm8gJgRa4
+	 0gtsn0Auta/7a8quH9IFMDyaSqomlxCjT8Xh8a2HlVDPnQWWJ1uKU3pt9ySIfaSyOQ
+	 byX2cOdhAfqfFXXgo6D847Tp4PgHXzcIfdo+vxPE=
+Date: Wed, 17 Jun 2026 21:10:08 +0530
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Petr Machata <petrm@nvidia.com>
+Cc: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org,
+	Wojtek Wasko <wwasko@nvidia.com>,
+	Mahesh Bandewar <maheshb@google.com>, Shuah Khan <shuah@kernel.org>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Yong Wang <yongwang@nvidia.com>
+Subject: Re: [PATCH 6.1.y] Revert "selftest/ptp: update ptp selftest to
+ exercise the gettimex options"
+Message-ID: <2026061754-patronage-wilt-e4fa@gregkh>
+References: <2e4d2f2b9efa7b0b32476947f63506cfe9568d1d.1778851656.git.petrm@nvidia.com>
+ <2026061639-antennae-upstage-bd52@gregkh>
+ <2026061610-lying-manor-2d57@gregkh>
+ <871pe5i3v1.fsf@nvidia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9ed639ea2b03a1kunme23cd2e8732ee
-X-HM-MType: 10
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkaTB4ZVhgfHR8eT0lOGhkfQ1YeHw
-	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlOQ1VJT0pVSk1VSE9ZV1kWGg8SFR0UWUFZT0tIVUpLSEpPSE
-	xVSktLVUpCS0tZBg++
-DKIM-Signature: a=rsa-sha256;
-	b=OkXUpmZsjyVqDnXQVaw/I9DsAWUar5FRNyoZXFXhd4uqwrRGNvQI90K/t0jhW5Rz+R/OoWtbpMEmdzESZmmfgmO+HTtcMqKh7tCzDHlFpGb5IwnKeQM1ulU7nM+ZPezh51vLpPX2xwE8+tILg2r2ZEGYLrw7H9Zu9J+yR3L62ds=; s=default; c=relaxed/relaxed; d=seu.edu.cn; v=1;
-	bh=mLpzQVAD7epGARRboPScKzBtY6z++o0yIiTwMTW/aWo=;
-	h=date:mime-version:subject:message-id:from;
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <871pe5i3v1.fsf@nvidia.com>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[seu.edu.cn,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[seu.edu.cn:s=default];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-266829-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-266828-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[holtmann.org,gmail.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[kernel.org,vger.kernel.org,nvidia.com,google.com,gmail.com];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:petrm@nvidia.com,m:sashal@kernel.org,m:stable@vger.kernel.org,m:wwasko@nvidia.com,m:maheshb@google.com,m:shuah@kernel.org,m:richardcochran@gmail.com,m:yongwang@nvidia.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[runyu.xiao@seu.edu.cn,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:marcel@holtmann.org,m:johan.hedberg@gmail.com,m:luiz.dentz@gmail.com,m:jtt@codenomicon.com,m:linux-bluetooth@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:jianhao.xu@seu.edu.cn,m:runyu.xiao@seu.edu.cn,m:stable@vger.kernel.org,m:johanhedberg@gmail.com,m:luizdentz@gmail.com,s:lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[runyu.xiao@seu.edu.cn,stable@vger.kernel.org];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[seu.edu.cn:+];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[seu.edu.cn:dkim,seu.edu.cn:email,seu.edu.cn:mid,seu.edu.cn:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,vger.kernel.org:from_smtp,gregkh:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2DA6069B2E8
+X-Rspamd-Queue-Id: E31D069B21A
 
-l2cap_conn_del() takes conn->lock and then calls cancel_work_sync() for
-pending_rx_work.  process_pending_rx() takes the same mutex, so teardown
-can deadlock against the worker it is flushing.
+On Wed, Jun 17, 2026 at 05:22:44PM +0200, Petr Machata wrote:
+> 
+> Greg KH <gregkh@linuxfoundation.org> writes:
+> 
+> > On Tue, Jun 16, 2026 at 06:58:53PM +0530, Greg KH wrote:
+> >> On Fri, May 15, 2026 at 03:53:53PM +0200, Petr Machata wrote:
+> >> > This reverts commit 06954f715deb0ed053f8bf85547370db6870225d, which is
+> >> > commit 3d07b691ee707c00afaf365440975e81bb96cd9b upstream.
+> >> > 
+> >> > The cited commit allows testptp to set a configurable clock_id. That is
+> >> > done via a PTP_SYS_OFFSET_EXTENDED ioctl call, whose argument is struct
+> >> > ptp_sys_offset_extended, where the clock_id is set. However, this Linux
+> >> > version does not support the ptp_sys_offset_extended.clockid field, and
+> >> > the test case cannot be built against this tree's own UAPI headers.
+> >> > 
+> >> > The reverted commit was introduced to resolve a missing dependency of
+> >> > commit c6dc458227a3 ("testptp: Add option to open PHC in readonly mode"),
+> >> > which is 76868642e427 upstream. My suspicion is that the only conflict
+> >> > between the two is the getopt string, and there is otherwise no direct
+> >> > dependency between the two.
+> >> > 
+> >> > This patch therefore reverts the cited commit, with hand-resolving the
+> >> > getopt string to include 'r' (as introduced by c6dc458227a3), but not
+> >> > 'y' (introduced by 06954f715deb).
+> >> > 
+> >> > Reported-by: Yong Wang <yongwang@nvidia.com>
+> >> > Signed-off-by: Petr Machata <petrm@nvidia.com>
+> >> > ---
+> >> > 
+> >> > Note: the issue appears to exist in 6.6, 6.12 and 6.18 as well.
+> >> >       Depending on your preference, I can prepare separate
+> >> >       patches for those branches as well. Let me know.
+> >> 
+> >> No need, I did it now for those branches too, thanks!
+> >
+> > Oops, nope, spoke too soon, 6.18.y still needs it, this one doesn't
+> > apply there.  Can you send that revert?
+> 
+> My bad, 6.18 does appear to have the field already.
+> 
+> In fact, looking at 6.12, I see it as well. I am not sure why I thought
+> 6.12 and 6.18 are impacted. I wonder if I looked at at 5.12 and 5.18 by
+> mistake.
 
-This issue was found by our static analysis tool and then manually
-reviewed against the current tree.
+So should this be dropped from 6.12?
 
-The grounded PoC kept the l2cap_conn_ready() -> queue_work(...,
-&conn->pending_rx_work) submit path, the l2cap_conn_del() ->
-cancel_work_sync(&conn->pending_rx_work) teardown path, and the
-process_pending_rx() -> mutex_lock(&conn->lock) worker edge.  Lockdep
-reported:
+thanks,
 
-  WARNING: possible circular locking dependency detected
-  process_pending_rx+0x21/0x2a [vuln_msv]
-  l2cap_conn_del.constprop.0+0x3f/0x4e [vuln_msv]
-  *** DEADLOCK ***
-
-Cancel pending_rx_work before taking conn->lock, matching the existing
-lock-before-drain ordering used for the two delayed works in the same
-teardown path.  The pending_rx queue is still purged after the work has
-been cancelled and conn->lock has been acquired.
-
-Fixes: 7ab56c3a6ecc ("Bluetooth: Fix deadlock in l2cap_conn_del()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Runyu Xiao <runyu.xiao@seu.edu.cn>
----
- net/bluetooth/l2cap_core.c | 10 ++--------
- 1 file changed, 2 insertions(+), 8 deletions(-)
-
-diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
-index 29e23f20dc43..0dad72716cca 100644
---- a/net/bluetooth/l2cap_core.c
-+++ b/net/bluetooth/l2cap_core.c
-@@ -1774,19 +1774,13 @@ static void l2cap_conn_del(struct hci_conn *hcon, int err)
- 	disable_delayed_work_sync(&conn->info_timer);
- 	disable_delayed_work_sync(&conn->id_addr_timer);
- 
-+	cancel_work_sync(&conn->pending_rx_work);
-+
- 	mutex_lock(&conn->lock);
- 
- 	kfree_skb(conn->rx_skb);
- 
- 	skb_queue_purge(&conn->pending_rx);
--
--	/* We can not call flush_work(&conn->pending_rx_work) here since we
--	 * might block if we are running on a worker from the same workqueue
--	 * pending_rx_work is waiting on.
--	 */
--	if (work_pending(&conn->pending_rx_work))
--		cancel_work_sync(&conn->pending_rx_work);
--
- 	ida_destroy(&conn->tx_ida);
- 
- 	l2cap_unregister_all_users(conn);
--- 
-2.34.1
-
+greg k-h
 
