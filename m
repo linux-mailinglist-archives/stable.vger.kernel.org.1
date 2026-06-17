@@ -1,222 +1,160 @@
-Return-Path: <stable+bounces-266625-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266627-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id uNSwJ0QRMmozuQUAu9opvQ
-	(envelope-from <stable+bounces-266625-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 05:15:16 +0200
+	id 21T/JKIRMmpYuQUAu9opvQ
+	(envelope-from <stable+bounces-266627-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 05:16:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4D62696402
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 05:15:15 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1296696420
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 05:16:49 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=RyvrvsqH;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266625-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266625-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=linux.dev;
+	dkim=pass header.d=foxmail.com header.s=s201512 header.b=HGK8RVqq;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266627-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266627-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=foxmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DF37E302EA85
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 03:15:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CCD0E30CCB4F
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 03:16:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F3C530C170;
-	Wed, 17 Jun 2026 03:15:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02A63307AC7;
+	Wed, 17 Jun 2026 03:16:47 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
+Received: from out203-205-221-205.mail.qq.com (out203-205-221-205.mail.qq.com [203.205.221.205])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D58003016FC
-	for <stable@vger.kernel.org>; Wed, 17 Jun 2026 03:15:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99AE5302753;
+	Wed, 17 Jun 2026 03:16:40 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781666111; cv=none; b=MAZr390liAx33f9w++/ItN7aDj9pQsJm7Z2JePHPS3GOg+NtazX0FjZWfg2v7AftUPE93xpEF0JnWBMhS6BB4bVt7biIR2tfN76lUZaxTBw40uV0A8Yaq67DRXCI/MiS/PwcAvlEsppDHwyIQpFEtaISxrBINOOyHIOC5T0V61g=
+	t=1781666206; cv=none; b=ropi0rp4+nB2Hc4X/JBdq5Y9QnNloUuWolEpLzzJVjGY5koK7PdC6tQ2eXme8Hnk5ozo7hb6qABp6vqYzOZo7j2j7YsZp6RvZp5i/He+67FNvzlGfQb15BkCgNVwpqRryob6Q/IlXlw19ri4JqXwKqFkugR0NJmbfhcoMoEkY+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781666111; c=relaxed/simple;
-	bh=Qk/DM4744K7XBYGNbGM3g85QtFLrnbrVNMpF5F9IuE8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oMpbTxc5TMCR3xXwIIed4IldBASCWVyhWgd3dezf2JOvOOnlwloeejvlahYw6x1Na5l84+JT2+hNMLlryqNlMAZAAUFpqy8treMMPXJxE8BbeQrQC2wEzFRP/ainnrvzqxo6jLpMxVoeOUewGoF/gWwGMl46Y3O7CZDX5OO2Ark=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=RyvrvsqH; arc=none smtp.client-ip=95.215.58.176
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1781666108;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=FYheglZoN7ZQINy1Nkai5yf7WMqEaDWpcm1200AttNM=;
-	b=RyvrvsqHUQr2/2WVE1SSai7a83FHouvM1ASy/wdoWScK1x0Ub9zIsGQpopfn4pf36Mxb25
-	DnpJnpNqv65Zb0KEYBbk16vQR2SLelhUs2cgnPVUw9x+PvqztbxbbfbOsDMaomrwInQBIw
-	TbjerRr9NnM+ci/z211zqm2KqH7jzZY=
-From: Lance Yang <lance.yang@linux.dev>
-To: balbirs@nvidia.com
-Cc: david@kernel.org,
-	lance.yang@linux.dev,
-	richard.weiyang@gmail.com,
-	akpm@linux-foundation.org,
-	ljs@kernel.org,
-	riel@surriel.com,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	harry@kernel.org,
-	jannh@google.com,
-	ziy@nvidia.com,
-	sj@kernel.org,
-	linux-mm@kvack.org,
-	lorenzo.stoakes@oracle.com,
+	s=arc-20240116; t=1781666206; c=relaxed/simple;
+	bh=hmyoSJ0V5hqJwQu/GQal32d6H/e0Rw9UIAusrzx+Dzc=;
+	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=i80N6n/gCz0ZWXzUgAHGIAh8hMo18EYKKS4mVSxDmnh4ra+3ExxNn8X7ad0VrAZeLoUS9kfUKxb6T0nUBrpD3nBkS55Qh6zDyVybMl2CdV4hf2DvmgOkbboDIJt89QCCmlrxCIJu5Y0dd5bKXsotgIZokkjac9xgRovDlvBJPZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=HGK8RVqq; arc=none smtp.client-ip=203.205.221.205
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
+	s=s201512; t=1781666192;
+	bh=voPZZPDKGy96YcSfqQY+Ty+WqcoQ+pWgwDXXjhOpYBE=;
+	h=From:To:Cc:Subject:Date;
+	b=HGK8RVqqARfxHkNYgVn4edYgrlArjkwb0aGQ55p6wrOPjQtzgFIX7AW8yd3xrJju3
+	 si/WVtG9r7QfPldpTft7vHE410PBavrc0WRalFmN3PWHrdP+KPmcIm0C2tjUn1/0uS
+	 XDuZCtFBv7o/mVmtA5v5Ii6e+P0FJulteY7Gp9kQ=
+Received: from localhost.localdomain ([116.128.244.169])
+	by newxmesmtplogicsvrsza63-0.qq.com (NewEsmtp) with SMTP
+	id 41E2881F; Wed, 17 Jun 2026 11:16:30 +0800
+X-QQ-mid: xmsmtpt1781666190t35bmdde9
+Message-ID: <tencent_2C7697B076D53BBE62D99B7CD15E77A20C07@qq.com>
+X-QQ-XMAILINFO: OEUhVsHQax4MM32vS78aLX1UrID9s8H7mfImQLTf6Gz8suyH8C92nduvQJulM1
+	 F/2DBOw02nLzyGlwlFOg0igz/oMKwrdsOvgzGDLPbEcBl1cctzdMTLHQKqjyDnFLKX79fijodnJp
+	 nDPIE/y9Lk2TiPPtybD63TlrqZQwnf7aKkUoUQXKE9F15o7f+WkAdacDAxGl1ieq6rFHksqhhvcM
+	 6RWUBMtDovM/TNai9FFvL6ZJoGxmb9k/ZgxvuZlIfHHrddzoJaKfo+MRm0ZHtTBjS7ErTOCYEGlC
+	 GByYix4rSAYG7k/LnFyHXolb39n9s9WP9eMlXRdqgZ7j/9i944ceeKYVoWKk4ZOjD7jAhbwGnti4
+	 n9/aBQd/K5R2/r+4Nc/JunhO7/e56Xjn1nISanFMwguFS/wlMxFNtzm5AHSLGKx8AmaS8pI0T61O
+	 K7fxRcUzPeO6xDUXWxPI0rhdcyBi2GSeD4qSp4iGhTsni0gRL6SmL5qpQz/YX221gkIHmATByFcU
+	 UWgKoUoFiqqghjbqnIFFkqYy52p6az3IreeQNqJnmyzBVSAANJp8ibJlQnOJLJE8haLSGS0Y6nU1
+	 C38hQHyegDF9d0evGH4VLLlhVOzCQcPB+zrQitPlGXC8s4vodCYlorwpd6LXLdPvLWgMt6hVpy4q
+	 ZSpK2s+H55d2GOu97ZxcbTzi90gv7X8tNWc6bEZ6S0t9LmbgOLVZXepFVOQp1Ma1Qao856lPgcg9
+	 C34xF65oKSrjN4Rwfo5++qMTYpsHlcE2A/DghjGj9K4B98F6NMWakV68yjXimotFulX/Dy6PSAhY
+	 Hz1UgvMO0i698uXLqRioupfR4zdvmjoVsDLR83oqkHLttLQaHDvuAWrGYolBwhG8ucP+9xZZquBj
+	 vaWFZh9zIBq9q1eqkE0aW/pXP+mxY1Iva7OCJKDUTGrfqGmA2F8G0/zha5qI8loRTiMopId92/9q
+	 /lhx7Nu+kNpj69o/Na/d5rZbu3Guw2o75arPBpE8mIymk7mTl0Bfr33YgtuWmC7hiTuOPqtZlLfo
+	 h3HVji9g==
+X-QQ-XMRINFO: Nq+8W0+stu50tPAe92KXseR0ZZmBTk3gLg==
+From: Zhao Dongdong <winter91@foxmail.com>
+To: p.zabel@pengutronix.de,
+	wens@kernel.org,
+	jernej.skrabec@gmail.com
+Cc: linux-sunxi@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Zhao Dongdong <zhaodongdong@kylinos.cn>,
 	stable@vger.kernel.org
-Subject: Re: [Patch v2] mm/page_vma_mapped: revalidate and do proper check before return device-private pmd
-Date: Wed, 17 Jun 2026 11:14:54 +0800
-Message-Id: <20260617031454.29210-1-lance.yang@linux.dev>
-In-Reply-To: <ajIBTyWCLDo9RAHR@parvat>
-References: <ajIBTyWCLDo9RAHR@parvat>
+Subject: [PATCH] reset: sunxi: fix memory region leak on ioremap failure
+Date: Wed, 17 Jun 2026 11:16:27 +0800
+X-OQ-MSGID: <20260617031627.151885-1-winter91@foxmail.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.34 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
+	DMARC_POLICY_ALLOW(-0.50)[foxmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[foxmail.com:s=s201512];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-266625-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[kernel.org,linux.dev,gmail.com,linux-foundation.org,surriel.com,infradead.org,google.com,nvidia.com,kvack.org,oracle.com,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-266627-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	FORGED_SENDER(0.00)[lance.yang@linux.dev,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:balbirs@nvidia.com,m:david@kernel.org,m:lance.yang@linux.dev,m:richard.weiyang@gmail.com,m:akpm@linux-foundation.org,m:ljs@kernel.org,m:riel@surriel.com,m:liam@infradead.org,m:vbabka@kernel.org,m:harry@kernel.org,m:jannh@google.com,m:ziy@nvidia.com,m:sj@kernel.org,m:linux-mm@kvack.org,m:lorenzo.stoakes@oracle.com,m:stable@vger.kernel.org,m:richardweiyang@gmail.com,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:p.zabel@pengutronix.de,m:wens@kernel.org,m:jernej.skrabec@gmail.com,m:linux-sunxi@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:zhaodongdong@kylinos.cn,m:stable@vger.kernel.org,m:jernejskrabec@gmail.com,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[winter91@foxmail.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_TO(0.00)[pengutronix.de,kernel.org,gmail.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	TO_DN_NONE(0.00)[];
+	FREEMAIL_FROM(0.00)[foxmail.com];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lance.yang@linux.dev,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linux.dev:+];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[winter91@foxmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[foxmail.com:+];
 	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,linux.dev:dkim,linux.dev:mid,linux.dev:from_mime]
+	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qq.com:mid,vger.kernel.org:from_smtp,kylinos.cn:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D4D62696402
+X-Rspamd-Queue-Id: D1296696420
 
+From: Zhao Dongdong <zhaodongdong@kylinos.cn>
 
-On Wed, Jun 17, 2026 at 12:11:14PM +1000, Balbir Singh wrote:
->On Tue, Jun 16, 2026 at 03:07:53PM +0200, David Hildenbrand (Arm) wrote:
->> On 6/16/26 14:30, Lance Yang wrote:
->> > 
->> > On Tue, Jun 16, 2026 at 06:34:36AM +0000, Wei Yang wrote:
->> > [...]
->> >> diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
->> >> index 2ccbabfb2cc1..21635fab209c 100644
->> >> --- a/mm/page_vma_mapped.c
->> >> +++ b/mm/page_vma_mapped.c
->> >> @@ -243,40 +243,28 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
->> >> 		 */
->> >> 		pmde = pmdp_get_lockless(pvmw->pmd);
->> >>
->> >> -		if (pmd_trans_huge(pmde) || pmd_is_migration_entry(pmde)) {
->> >> -			pvmw->ptl = pmd_lock(mm, pvmw->pmd);
->> >> -			pmde = *pvmw->pmd;
->> >> -			if (!pmd_present(pmde)) {
->> >> -				softleaf_t entry;
->> >> -
->> >> -				if (!thp_migration_supported() ||
->> >> -				    !(pvmw->flags & PVMW_MIGRATION))
->> >> -					return not_found(pvmw);
->> >> -				entry = softleaf_from_pmd(pmde);
->> >> -
->> >> -				if (!softleaf_is_migration(entry) ||
->> >> -				    !check_pmd(softleaf_to_pfn(entry), pvmw))
->> >> -					return not_found(pvmw);
->> >> -				return true;
->> >> -			}
->> >> -			if (likely(pmd_trans_huge(pmde))) {
->> >> -				if (pvmw->flags & PVMW_MIGRATION)
->> >> -					return not_found(pvmw);
->> >> -				if (!check_pmd(pmd_pfn(pmde), pvmw))
->> >> -					return not_found(pvmw);
->> >> -				return true;
->> >> -			}
->> >> -			/* THP pmd was split under us: handle on pte level */
->> >> -			spin_unlock(pvmw->ptl);
->> >> -			pvmw->ptl = NULL;
->> >> -		} else if (!pmd_present(pmde)) {
->> >> -			const softleaf_t entry = softleaf_from_pmd(pmde);
->> >> -
->> >> -			if (softleaf_is_device_private(entry)) {
->> >> -				pvmw->ptl = pmd_lock(mm, pvmw->pmd);
->> >> -				return true;
->> >> -			}
->> >> +		if (pmd_present(pmde)) {
->> >> +			if (!pmd_leaf(pmde))
->> >> +				goto pte_table;
->> >> +			if (pvmw->flags & PVMW_MIGRATION)
->> >> +				return not_found(pvmw);
->> >> +			if (!check_pmd(pmd_pfn(pmde), pvmw))
->> >> +				return not_found(pvmw);
->> >> +		} else if (pmd_is_migration_entry(pmde)) {
->> >> +			softleaf_t entry = softleaf_from_pmd(pmde);
->> >> +
->> >> +			if (!(pvmw->flags & PVMW_MIGRATION))
->> >> +				return not_found(pvmw);
->> > 
->> > Looked at history a bit, and I wonder if this changed something old
->> > here ...
->> > 
->> > Since 616b8371539a ("mm: thp: enable thp migration in generic path"), PMD
->> > migration handling took PTL before doing PVMW_MIGRATION/PFN checks,
->> > including not_found() cases. So lockless PMD read was just a filter ...
->> > 
->> > With this fix, true case gets final pmd_same() check, but this
->> > not_found() case happens before taking PTL.
->> > 
->> > So a !PVMW_MIGRATION walker could race with someone, e.g.
->> > remove_migration_pmd(): we make the not_found() decision from old PMD
->> > value that still says "migration", while real *pvmw->pmd may already be
->> > present again. We return without ever taking PTL :)
->> > 
->> > Not sure about practical fallout, but should these PMD-level not_found()
->> > cases also take PTL and restart if PMD changed?
->> I was hoping that we could so something similar to the PTE case.
->> 
->> In map_pte(), we check whether the PMD changed, which is slightly different.
->> 
->> The actual check happens in check_pte() after grabbing the PTL.
->> 
->> For the case you describe, map_pte() would find !pte_none(ptent) ...
->> !pte_present(ptent) and !is_migration, and effectively grab the lock and proceed
->> to check_pte().
->> 
->> In check_pte() we re-check under lock indeed.
->>
->
->Thinking of the practical fallout, not finding the PMD for a non
->migration worker should be OK. Is there a case where it's not OK to
->report the old state.
+In sunxi_reset_init(), when ioremap() fails, the memory region obtained
+via request_mem_region() is not released, leading to a resource leak.
 
-I was thinking the lockless value should only be used as a first filter,
-to see whether entry looks worth checking.
+Add an err_mem_region label to properly release the memory region before
+freeing the data structure.
 
-PTE side is roughly lockless filter + PTL/check_pte().
+Fixes: 8f1ae77f4666 ("reset: Add Allwinner SoCs Reset Controller Driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zhao Dongdong <zhaodongdong@kylinos.cn>
+---
+ drivers/reset/reset-sunxi.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-PMD true case now gets PTL/pmd_same(), but some PMD not_found() cases
-still come straight from lockless "pmde".
+diff --git a/drivers/reset/reset-sunxi.c b/drivers/reset/reset-sunxi.c
+index 2544de6576e4..2f6df7707cad 100644
+--- a/drivers/reset/reset-sunxi.c
++++ b/drivers/reset/reset-sunxi.c
+@@ -44,7 +44,7 @@ static int sunxi_reset_init(struct device_node *np)
+ 	data->membase = ioremap(res.start, size);
+ 	if (!data->membase) {
+ 		ret = -ENOMEM;
+-		goto err_alloc;
++		goto err_mem_region;
+ 	}
+ 
+ 	spin_lock_init(&data->lock);
+@@ -57,6 +57,8 @@ static int sunxi_reset_init(struct device_node *np)
+ 
+ 	return reset_controller_register(&data->rcdev);
+ 
++err_mem_region:
++	release_mem_region(res.start, size);
+ err_alloc:
+ 	kfree(data);
+ 	return ret;
+-- 
+2.25.1
 
-That mismatch felt odd to me ...
-
-Cheers, Lance
 
