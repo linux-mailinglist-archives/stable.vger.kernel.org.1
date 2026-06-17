@@ -1,341 +1,188 @@
-Return-Path: <stable+bounces-266684-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266686-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 4VDNHThmMmrSzQUAu9opvQ
-	(envelope-from <stable+bounces-266684-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 11:17:44 +0200
+	id tPbZHWBmMmrezQUAu9opvQ
+	(envelope-from <stable+bounces-266686-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 11:18:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D74DF697D1F
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 11:17:43 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3704E697D49
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 11:18:24 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=mR4CfvDW;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266684-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-266684-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
+	dkim=pass header.d=bootlin.com header.s=dkim header.b=UARaXKgO;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266686-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-266686-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=reject) header.from=bootlin.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0397F300C825
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 09:17:35 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4754E304F513
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 09:17:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13B0239A7F5;
-	Wed, 17 Jun 2026 09:17:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33D1D374726;
+	Wed, 17 Jun 2026 09:17:52 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21B6539B969
-	for <stable@vger.kernel.org>; Wed, 17 Jun 2026 09:17:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A6E33932F1;
+	Wed, 17 Jun 2026 09:17:47 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781687851; cv=none; b=nZix2g+tGv+vntru0PpFFPC4ImKKQnjweYOiKIrz6T+b0l5k2iYGfJvUML4ddRNnigElVg5HFdMrANa+e5AsgcT1IVB113VTza65SBnaT8HGIws/dAPPAp4xtkmPeEzMpgMfIEK246FRvb8TtRImhwnH3VICXRmO35yFKRymjRs=
+	t=1781687872; cv=none; b=mOUrLAtIBLi13aYYW/FX5IKB74y/N70vHXEPyTW278bpiaLUiK0thEFQiwuzlqxSjgeoez0FsLBRdvbc6YXsbhq0sssDmrTSXpT10ustScH36zmpZT0tFSiJO+/TKesvSC4OC2PFp1Gvi2zkDyoPNq1T4OF+Vq4ilYfUeU4kUhE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781687851; c=relaxed/simple;
-	bh=WzzfVyCP2CKJWE9hG85VQhglRzrRfvCBy/dID+zqyIs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HW+IByc5Fc0VjK4jGAXK9jX+cAKmuMeaKv0O+10JO/U0EHkJmjF/8x6UpDcO55/7WqJJwpRQpqIJMaMLmblZq/erPLu0fV2ns2NKFoayZLKEDS92znpqCSht6fMU9IC5zITdL1n/vcQcQMNhtyU04ndboAIlBNNsLA07MtFF9XQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mR4CfvDW; arc=none smtp.client-ip=209.85.214.179
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2c0c3546924so35979455ad.3
-        for <stable@vger.kernel.org>; Wed, 17 Jun 2026 02:17:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781687849; x=1782292649; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=mEZb6LJ8Uk1AgrpJuSRf5PMAcIBsdsc1p+ANTmomdOU=;
-        b=mR4CfvDWHmdak87k5BocYFiUJMFPEVwL4ztX2Bbq8v72oovy4osd4BtXAsT32zDgsr
-         BDWrtP16rOjhwFZrsEwnoUkFfLvVpTsWUFyAhWWcN6c5zI8XY5AfHHbISecIsAmGLnL0
-         bJvaySd/t4iPauyou5Z0fcGIAS7gxw/VKdTBTSOyr0k5rrEBehy/UxvXLIxd7wNhkSR9
-         6RDNINUAHfknp63zlpCSQnIzcI2PKbJaBdTH7AMZ09ixLAiQXgwd0+5HyOFsRgKETUE+
-         y8hRCBToKVaKveNFLWGNh3Ei3Tlahgo1lnZ49wdbUTsktICIuuPYH58phL6NLgk9NZwT
-         PaiA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781687849; x=1782292649;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=mEZb6LJ8Uk1AgrpJuSRf5PMAcIBsdsc1p+ANTmomdOU=;
-        b=qJVyTkez13GgehxiQsiSkOELSuLdHarcXm+g/kN5PL1V+Vw94U3/3l0/fw3PjbVn4e
-         tWPmG5HM0guTkfc8Y6GtCcsXEafm+RrXcm+ghPdqFgm1+3P4ucGJSDXAnELutfuzfHgZ
-         bEWF6X742Ce79xgCvBb34fL8+LzmsGcWSOAXTxEOwnkREkChHN3n5NbE0speZSKdaMVB
-         KtCNQXBRk637EYxcsGbA+xRcmSiH3zKsSHrTt7U1m9WnAU4xqcmR1wsY5ElpzquZqRkk
-         sSnyCV7/XrrQ05PAlMtiYvjeqGGQsbexhpQsIJmyucBYjEUJOi6J2w0qEGEWD4hGje9B
-         kzOA==
-X-Forwarded-Encrypted: i=1; AFNElJ8TUeAw84vulylmQVHynIzTJrpYOKdKeLP/ZDEsThEXhYA/LW1on5RZBsH5Jw/Gwzqc2c6TcrA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwijyBzmPhQ48n+cOW22M9vha8+gjlzdl4YvKGi8V3DrQ164KSr
-	koE47UKr05qTk7xgGKarOEwSMxKaQhnTh12P8EJUbOC31Nv0RMBDfhq3
-X-Gm-Gg: AfdE7cnKqxiT5k4H68TmBQuxdXsJMW9wW3qPUb9JGCFmZPjL2FSrAhvYFwTwdFWd8Do
-	s4CMw0g9CY7RtsVZsolaQ95sWizZxz9pY4p2/VY5gMx3atPNvW5ir1PjL16MZ6dWracH0mFdBwo
-	D37ILPukDfMFufKaeKM5KaeDIP/y8FFOHZvk8sFzpmudTtdz79XPor7RhRu+VZ3QxEoJGlBmxw3
-	i/QNA7lLD4yfjqRRh/BRWcgLKowyPBIPi+7vyibLIhgzztpuu0WhaRfwwcDTy/iw6VklvUV+Iq2
-	TqpGwK9hbKHC9sCUkj0E6x9djPd/KzTVdWNZxa8jRrXfG0H52N/KghXLMQ+BguQQj6jB7Co7hCD
-	kymIHGeFc8FmijuBEIMtgDVW980D2CpS2OyrjuRj3dLJOOPWFnhOVMW51p6qkhB433rFQwCmJ+U
-	Pw3qClY6ag3ILmMq5Ugh3sJDydIIJfglkVuxyTBManrMpuonrM+NyDRVqN
-X-Received: by 2002:a17:902:e88e:b0:2bd:606d:b342 with SMTP id d9443c01a7336-2c6bc21f1f9mr27060005ad.26.1781687849338;
-        Wed, 17 Jun 2026 02:17:29 -0700 (PDT)
-Received: from li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com ([129.41.58.4])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c6a1878493sm41114495ad.81.2026.06.17.02.17.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Jun 2026 02:17:28 -0700 (PDT)
-Date: Wed, 17 Jun 2026 14:47:21 +0530
-From: Mukesh Kumar Chaurasiya <mkchauras@gmail.com>
-To: Amit Machhiwal <amachhiw@linux.ibm.com>
-Cc: linuxppc-dev@lists.ozlabs.org, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Vaibhav Jain <vaibhav@linux.ibm.com>, 
-	Harsh Prateek Bora <harshpb@linux.ibm.com>, Ritesh Harjani <ritesh.list@gmail.com>, 
-	Anushree Mathur <anushree.mathur@linux.ibm.com>, Gautam Menghani <gautam@linux.ibm.com>, 
-	Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Thomas Huth <thuth@redhat.com>, kvm@vger.kernel.org, 
-	stable@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4] KVM: PPC: Book3S HV: Validate arch_compat against
- host compatibility mode
-Message-ID: <ajJlstOjsnAQ-SEH@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
-References: <20260616163405.96962-1-amachhiw@linux.ibm.com>
- <ajJknRi0n7tJDOKQ@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
+	s=arc-20240116; t=1781687872; c=relaxed/simple;
+	bh=xu7aOuhQ04R4vpge7pBuLaEXJsx1pCwyTSYVw8HP9MU=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=pMwmDTYmGspCQ9Wk+2RPfjvjbrRhKdxPA9TKmTfr5T2tQqLVsY2QJMAbOWkEEVNfJFA6L6z73/6UmxTZFfK4CufMrscPn/keZXvPIALf/x46QvbSmRD3xjmF/GAv1rvBlFYsO+M9+UCAnM6b4VCljtOfVRUOM+e9qiaeuzwr1PI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=UARaXKgO; arc=none smtp.client-ip=185.171.202.116
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 8E6BCC2BB3F;
+	Wed, 17 Jun 2026 09:17:50 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 6A641601AA;
+	Wed, 17 Jun 2026 09:17:45 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 425A3106CA30F;
+	Wed, 17 Jun 2026 11:17:31 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1781687864; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=iZjSYv5+s2q2RljvmzW/0JQPykBdiJHijmZR1vkN4PA=;
+	b=UARaXKgOWONpm2AfTIUcVizriXzTigTxagYOI+sQ5PAE5JlsEYsjEAqZtAw/Aj1T2VSZfp
+	7Sqi3JxaFZhrS77Qj+LpVGCL64IyvLPFbLy6ry+6YjnhuP962bNXch2Zm4HTLV0YwmH/l4
+	VZ0o99YfNW4HofI5LCXAf5JZcede81UaeOqLw6q+nc1SE7x2FVTrKRBf0yTpXNdot63p8J
+	UMiW7JiO5vvsrati/VI3dAUTgaFq1rzZ3+dKc3g2il1nPz5yoP+iRNd3YD8Cr5mQExyca2
+	2UN88CfNSKng1hlj885IAsk9vmuxbAzAjCDTfZvMeR5gZsaL2yMpvXlmNxqbYA==
+From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
+Subject: [PATCH net v3 0/2] Drop in-flight Tx SKBs on MACB close
+Date: Wed, 17 Jun 2026 11:17:28 +0200
+Message-Id: <20260617-macb-drop-tx-v3-0-d4c7e57d890b@bootlin.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ajJknRi0n7tJDOKQ@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/12NQQ6CMBREr0K69ptSCgVX3sO4oO1HaoSSthIM4
+ e5CdSEuZzLvzUw8OoOenJKZOByNN7ZfQ3ZIiGrr/oZg9JoJo6ygnGXQ1UqCdnaAMEFTKRRMMKp
+ pTlZkcNiYKeoupMdArp/SP+UdVdhE26w1Plj3iqdjGsdfP9/7xxRSkBkqKUqhS67P0trwMP1R2
+ S7KR/aLl384AwoFF02eVpUudbPHl2V5A+OLSoQAAQAA
+X-Change-ID: 20260423-macb-drop-tx-f9ce72720d05
+To: Nicolas Ferre <nicolas.ferre@microchip.com>, 
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Haavard Skinnemoen <hskinnemoen@atmel.com>, Jeff Garzik <jeff@garzik.org>, 
+ Conor Dooley <conor.dooley@microchip.com>
+Cc: Paolo Valerio <pvalerio@redhat.com>, Nicolai Buchwitz <nb@tipi-net.de>, 
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>, 
+ Gregory CLEMENT <gregory.clement@bootlin.com>, 
+ =?utf-8?q?Beno=C3=AEt_Monin?= <benoit.monin@bootlin.com>, 
+ Tawfik Bayouk <tawfik.bayouk@mobileye.com>, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ Maxime Chevallier <maxime.chevallier@bootlin.com>, 
+ =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.15.2
+X-Last-TLS-Session-Version: TLSv1.3
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[bootlin.com,reject];
+	R_DKIM_ALLOW(-0.20)[bootlin.com:s=dkim];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-266684-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:amachhiw@linux.ibm.com,m:linuxppc-dev@lists.ozlabs.org,m:maddy@linux.ibm.com,m:vaibhav@linux.ibm.com,m:harshpb@linux.ibm.com,m:ritesh.list@gmail.com,m:anushree.mathur@linux.ibm.com,m:gautam@linux.ibm.com,m:npiggin@gmail.com,m:mpe@ellerman.id.au,m:chleroy@kernel.org,m:thuth@redhat.com,m:kvm@vger.kernel.org,m:stable@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:riteshlist@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[mkchauras@gmail.com,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[lists.ozlabs.org,linux.ibm.com,gmail.com,ellerman.id.au,kernel.org,redhat.com,vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	FORWARDED(0.00)[lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-266686-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[22];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:nicolas.ferre@microchip.com,m:claudiu.beznea@tuxon.dev,m:andrew+netdev@lunn.ch,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:hskinnemoen@atmel.com,m:jeff@garzik.org,m:conor.dooley@microchip.com,m:pvalerio@redhat.com,m:nb@tipi-net.de,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:vladimir.kondratiev@mobileye.com,m:gregory.clement@bootlin.com,m:benoit.monin@bootlin.com,m:tawfik.bayouk@mobileye.com,m:thomas.petazzoni@bootlin.com,m:maxime.chevallier@bootlin.com,m:theo.lebrun@bootlin.com,m:stable@vger.kernel.org,m:andrew@lunn.ch,s:lists@lfdr.de];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FORGED_SENDER(0.00)[theo.lebrun@bootlin.com,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mkchauras@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	FROM_NEQ_ENVFROM(0.00)[theo.lebrun@bootlin.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[bootlin.com:+];
 	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com:mid,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	TAGGED_RCPT(0.00)[stable,netdev];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D74DF697D1F
+X-Rspamd-Queue-Id: 3704E697D49
 
-On Wed, Jun 17, 2026 at 02:43:15PM +0530, Mukesh Kumar Chaurasiya wrote:
-> On Tue, Jun 16, 2026 at 10:04:05PM +0530, Amit Machhiwal wrote:
-> > On IBM POWER systems, newer processor generations can operate in
-> > compatibility modes corresponding to earlier generations. This becomes
-> > relevant for nested virtualization, where nested KVM guests may need to
-> > run with a specific processor compatibility level.
-> > 
-> > Currently, when running a nested KVM guest (L2) inside a Power11 pSeries
-> > logical partition (L1) booted in Power10 compatibility mode, the guest
-> > fails to boot while setting 'arch_compat'. This happens because the CPU
-> > class is derived from the hardware PVR (via mfspr()), which reflects the
-> > physical processor generation (Power11), rather than the effective
-> > compatibility mode (Power10).
-> > 
-> > As a result, userspace may request a Power11 arch_compat for the L2
-> > guest. However, the L1 partition, running in Power10 compatibility, has
-> > only negotiated support up to Power10 with the Power Hypervisor (L0).
-> > When H_GUEST_SET_STATE is invoked with a Power11 Logical PVR, the
-> > hypervisor rejects the request, leading to a late guest boot failure:
-> > 
-> >   KVM-NESTEDv2: couldn't set guest wide elements
-> >   [..KVM reg dump..]
-> > 
-> > This situation should be detected earlier and rejected by KVM. Without
-> > proper validation, if userspace ignores the error, the guest may continue
-> > to boot in Power11 raw mode on a Power10 compatibility host, which should
-> > not be allowed.
-> > 
-> > Introduce a validation mechanism that detects unsupported arch_compat
-> > values early in the guest initialization path. When an unsupported
-> > arch_compat is requested (e.g., Power11 on a Power10 compatibility mode
-> > host), kvmppc_set_arch_compat() uses cpu_has_feature(CPU_FTR_P11_PVR) to
-> > detect the mismatch and sets arch_compat to PVR_ARCH_INVALID (0xffffffff).
-> > This sentinel value is architecturally safe: PAPR specifies that valid
-> > logical PVR values must have 0x0f as the first byte, ensuring 0xffffffff
-> > lies permanently outside the specification-defined range. Setting this
-> > value triggers kvmppc_sanity_check() to mark the vCPU as invalid by
-> > setting vcpu->arch.sane to false. On the next vCPU run, kvmppc_vcpu_run_hv()
-> > checks this flag and returns -EINVAL, preventing the guest from running
-> > with an invalid processor compatibility configuration.
-> > 
-> > With this, when a Power11 arch_compat is requested on a Power10
-> > compatibility mode host, the guest fails early during boot with:
-> > 
-> >   error: kvm run failed Invalid argument
-> > 
-> > This provides a much clearer failure mode compared to the previous
-> > behavior where the guest could boot in Power11 raw mode (if userspace
-> > ignored the error) or fail late during H_GUEST_SET_STATE.
-> > 
-> > Suggested-by: Vaibhav Jain <vaibhav@linux.ibm.com>
-> > Reviewed-by: Vaibhav Jain <vaibhav@linux.ibm.com>
-> > Tested-by: Anushree Mathur <anushree.mathur@linux.ibm.com>
-> > Acked-by: Gautam Menghani <gautam@linux.ibm.com>
-> > Cc: stable@vger.kernel.org # v6.13+
-> > Signed-off-by: Amit Machhiwal <amachhiw@linux.ibm.com>
-> > ---
-> > Testing: Both Anushree and I have tested the below scenarios:
-> > 1. P11 guest on P11 host - Works
-> > 2. P10 compat guest on P11 host - Works
-> > 3. P11 guest on compat-P10 host - Correctly fails with "Invalid argument"
-> > 4. P10 guest on compat-P10 host - Works
-> > 
-> > Changes in v4:
-> > * Added documentation for PVR_ARCH_INVALID explaining why 0xffffffff is
-> >   architecturally safe to use as a sentinel value (PAPR constraint on
-> >   first byte being 0x0f) [Ritesh]
-> > * Updated commit message
-> > * v3: https://lore.kernel.org/all/20260609053327.61563-1-amachhiw@linux.ibm.com/
-> > 
-> > Changes in v3:
-> > * Fixed null pointer dereference in kvmppc_sanity_check(): added check for
-> >   vcpu->arch.vcore before accessing arch_compat, as vcore is NULL for Book3S
-> >   PR and BookE guests (only Book3S HV uses vcore) [Reported by Sashiko AI]
-> > * Added Reviewed-by tag from Vaibhav
-> > * v2: https://lore.kernel.org/all/20260608201001.65760-1-amachhiw@linux.ibm.com/
-> > 
-> > Changes in v2:
-> > * Fixed issue where v1 allowed guest to boot in Power11 raw mode when
-> >   userspace ignored the error, by adding validation in kvmppc_sanity_check()
-> >   to ensure early failure during vCPU run [Found the issue after posting v1,
-> >   also reported by Gautam.]
-> > * Introduced PVR_ARCH_INVALID constant for marking invalid arch_compat
-> > * Dropped all Reviewed-by and Tested-by tags due to code changes; requesting
-> >   fresh reviews
-> > * v1: https://lore.kernel.org/all/20260603141539.47620-1-amachhiw@linux.ibm.com/
-> > 
-> > Changes in v1:
-> > * Moved this patch out of the v3 series [1] as discussed here [2]
-> > * Addressed below review comments from Ritesh:
-> >   - Based the PVR validation on cpu features
-> >   - Fixed hcall name typo
-> >   - Stable backport
-> > 
-> > [1] https://lore.kernel.org/all/20260522152744.55251-1-amachhiw@linux.ibm.com/
-> > [2] https://lore.kernel.org/all/20260522152744.55251-2-amachhiw@linux.ibm.com/
-> > ---
-> >  arch/powerpc/include/asm/reg.h | 12 ++++++++++++
-> >  arch/powerpc/kvm/book3s_hv.c   | 15 ++++++++++++++-
-> >  arch/powerpc/kvm/powerpc.c     |  4 ++++
-> >  3 files changed, 30 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/arch/powerpc/include/asm/reg.h b/arch/powerpc/include/asm/reg.h
-> > index 3449dd2b577d..b9ab9df1e2bc 100644
-> > --- a/arch/powerpc/include/asm/reg.h
-> > +++ b/arch/powerpc/include/asm/reg.h
-> > @@ -1357,6 +1357,18 @@
-> >  #define PVR_ARCH_31	0x0f000006
-> >  #define PVR_ARCH_31_P11	0x0f000007
-> >  
-> > +/*
-> > + * Kernel-internal sentinel for invalid processor compatibility modes.
-> > + * PAPR specifies that the first byte of a valid logical PVR value is
-> > + * 0x0f. So 0xffffffff lies permanently outside the PAPR-defined range
-> > + * and is safe to repurpose. KVM stores it in vcpu->arch.arch_compat
-> > + * when userspace requests an unsupported compatibility mode (e.g.,
-> > + * Power11 PVR on a Power11 host booted in Power10 compat).
-> > + * kvmppc_sanity_check() detects this and prevents the vCPU from
-> > + * running with an unsupported arch_compat.
-> > + */
-> > +#define PVR_ARCH_INVALID	0xffffffff
-> > +
-> nit:
-> I think the description of the invalid value should go into the commit
-> message rather then here. It creates an unnecessary clutter here. If
-> anyone wants to know why it's added they can always get the blame and
-> get the description.
-> 
-> Apart from this.
-> 
-> Reviewed-by: Mukesh Kumar Chaurasiya (IBM) <mkchauras@gmail.com>
+The first patch is here to allow giving a drop reason.
+We dissociate consumed packets from dropped ones that way.
 
-I just saw the conversation on previous version. After that it makes
-sense to have it here.
+Second patch is the main one: it drops unsent packets on close.
+MACB driver forgot freeing its SKBs (and associated DMA mappings).
 
-Regards,
-Mukesh
-> >  /* Macros for setting and retrieving special purpose registers */
-> >  #ifndef __ASSEMBLER__
-> >  
-> > diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-> > index 61dbeea317f3..f9380ef65750 100644
-> > --- a/arch/powerpc/kvm/book3s_hv.c
-> > +++ b/arch/powerpc/kvm/book3s_hv.c
-> > @@ -446,7 +446,19 @@ static int kvmppc_set_arch_compat(struct kvm_vcpu *vcpu, u32 arch_compat)
-> >  			guest_pcr_bit = PCR_ARCH_300;
-> >  			break;
-> >  		case PVR_ARCH_31:
-> > +			guest_pcr_bit = PCR_ARCH_31;
-> > +			break;
-> >  		case PVR_ARCH_31_P11:
-> > +			/*
-> > +			 * Need to check this for ISA 3.1, as Power10 and
-> > +			 * Power11 share the same PCR. For any subsequent ISA
-> > +			 * versions, this will be taken care of by the guest vs
-> > +			 * host PCR comparison below.
-> > +			 */
-> > +			if (!cpu_has_feature(CPU_FTR_P11_PVR)) {
-> > +				arch_compat = PVR_ARCH_INVALID;
-> > +				goto out;
-> > +			}
-> >  			guest_pcr_bit = PCR_ARCH_31;
-> >  			break;
-> >  		default:
-> > @@ -469,6 +481,7 @@ static int kvmppc_set_arch_compat(struct kvm_vcpu *vcpu, u32 arch_compat)
-> >  			return -EINVAL;
-> >  	}
-> >  
-> > +out:
-> >  	spin_lock(&vc->lock);
-> >  	vc->arch_compat = arch_compat;
-> >  	kvmhv_nestedv2_mark_dirty(vcpu, KVMPPC_GSID_LOGICAL_PVR);
-> > @@ -479,7 +492,7 @@ static int kvmppc_set_arch_compat(struct kvm_vcpu *vcpu, u32 arch_compat)
-> >  	vc->pcr = (host_pcr_bit - guest_pcr_bit) | PCR_MASK;
-> >  	spin_unlock(&vc->lock);
-> >  
-> > -	return 0;
-> > +	return kvmppc_sanity_check(vcpu);
-> >  }
-> >  
-> >  static void kvmppc_dump_regs(struct kvm_vcpu *vcpu)
-> > diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
-> > index 00302399fc37..98de68379b18 100644
-> > --- a/arch/powerpc/kvm/powerpc.c
-> > +++ b/arch/powerpc/kvm/powerpc.c
-> > @@ -258,6 +258,10 @@ int kvmppc_sanity_check(struct kvm_vcpu *vcpu)
-> >  	if (!vcpu->arch.pvr)
-> >  		goto out;
-> >  
-> > +	if (vcpu->arch.vcore &&
-> > +		vcpu->arch.vcore->arch_compat == PVR_ARCH_INVALID)
-> > +		goto out;
-> > +
-> >  	/* PAPR only works with book3s_64 */
-> >  	if ((vcpu->arch.cpu_type != KVM_CPU_3S_64) && vcpu->arch.papr_enabled)
-> >  		goto out;
-> > 
-> > base-commit: 6b5a2b7d9bc156e505f09e698d85d6a1547c1206
-> > -- 
-> > 2.50.1 (Apple Git-155)
-> > 
+---
+Changes in v3:
+- Drop stats fixing. A proper fix deserves its own net-next refactoring
+  series to migrate to netdev_stat_ops (ynltool uAPI), which will come
+  in later. We keep the tx_dropped++ because they are safe as every
+  other context is disabled when macb_free_consistent() is called.
+- Rebased to latest net/main (406e8a651a7b), nothing to report.
+- Link to v2: https://patch.msgid.link/20260428-macb-drop-tx-v2-0-647f5199d8df@bootlin.com
+
+Changes in v2:
+- Increment tx_dropped stat once per SKB, not once per frame.
+- Reset tx_head & tx_tail to avoid keeping stalled cursors.
+- Fix SKB dropped reasons throughout by adding the reason as parameter
+  to macb_tx_unmap(). This is a new patch. Then the drop-all-on-close
+  fix can use this ability to report we are not consuming SKBs.
+- Add increment to stats->tx_dropped on DMA mapping failure and
+  tx_error_task. Done as separate patches (3 and 4).
+- Rebase upon net/main @ 46f74a3f7d57, nothing to report.
+- Link to v1: https://patch.msgid.link/20260424-macb-drop-tx-v1-1-b3ecb787d84d@bootlin.com
+
+To: Nicolas Ferre <nicolas.ferre@microchip.com>
+To: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+To: Andrew Lunn <andrew+netdev@lunn.ch>
+To: "David S. Miller" <davem@davemloft.net>
+To: Eric Dumazet <edumazet@google.com>
+To: Jakub Kicinski <kuba@kernel.org>
+To: Paolo Abeni <pabeni@redhat.com>
+To: Haavard Skinnemoen <hskinnemoen@atmel.com>
+To: Jeff Garzik <jeff@garzik.org>
+To: Conor Dooley <conor.dooley@microchip.com>
+Cc: Paolo Valerio <pvalerio@redhat.com>
+Cc: Nicolai Buchwitz <nb@tipi-net.de>
+Cc: netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>
+Cc: Gregory CLEMENT <gregory.clement@bootlin.com>
+Cc: Benoît Monin <benoit.monin@bootlin.com>
+Cc: Tawfik Bayouk <tawfik.bayouk@mobileye.com>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
+
+---
+Théo Lebrun (2):
+      net: macb: give reasons for Tx SKB kfree
+      net: macb: drop in-flight Tx SKBs on close
+
+ drivers/net/ethernet/cadence/macb_main.c | 46 +++++++++++++++++++++++++-------
+ 1 file changed, 37 insertions(+), 9 deletions(-)
+---
+base-commit: 712927eaa34199bb62cf370af591c0550ba977de
+change-id: 20260423-macb-drop-tx-f9ce72720d05
+
+Best regards,
+--  
+Théo Lebrun <theo.lebrun@bootlin.com>
+
 
