@@ -1,229 +1,168 @@
-Return-Path: <stable+bounces-266651-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266652-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 5BcwJSNPMmrSyQUAu9opvQ
-	(envelope-from <stable+bounces-266651-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 09:39:15 +0200
+	id NwjKCNpPMmroyQUAu9opvQ
+	(envelope-from <stable+bounces-266652-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 09:42:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A72876973BC
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 09:39:14 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A72556973DC
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 09:42:17 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=intel.com header.s=Intel header.b="Rpbq/1Qo";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266651-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266651-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=intel.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=4sW21Ypg;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=MbFlUpVf;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266652-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266652-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=linutronix.de;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id ECAE13028CB6
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 07:39:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 337AB30115B1
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 07:42:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D6B53B7751;
-	Wed, 17 Jun 2026 07:39:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6B493BB123;
+	Wed, 17 Jun 2026 07:42:11 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF61236F91C;
-	Wed, 17 Jun 2026 07:39:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B7743BB120;
+	Wed, 17 Jun 2026 07:42:10 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781681950; cv=none; b=tmjnPTX7GO3d6bMFI8QMAaZkERgEdMLsYE3ogKZi6KZ2+k19sJS9uoDjEErm7/QgavDgclFpoMFHvzHSsLEVwm942DrijT868sh1uAZgwkPS2ANdDHwbwH5MMCAnNW5Kt8NtoZ96srm1mfDobtXtAepEFKVZjjbDkEDHB6F/iFU=
+	t=1781682131; cv=none; b=tQHHZdIZhIn0owxtHxIX8tdMIS0dKaLPS3VjWdTdHFDzQ6C+pimq6yMA1V8msaoqaBu5HDw8IlnGo9e5gPyo0nA5K23XSoUA2anni2MQERMx11EF8xtHRn0pxhXDtBBME9tqUAtiMj6QAbWdCR9azCo8ddz8w+TtwXoMOBgkxF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781681950; c=relaxed/simple;
-	bh=CpEDmXb91/TWr4Fgpip+CAc92egKL1pPgELfKsjl1QI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XWoopfy3pbCO4sCjYJ7ThQUdKDqNTPzujzPFlvmiAVJ2mLWC0NVMgADvOoFXzQBMkj9AuxQNGcLR7Bd6q/77pQ2V2EoUjmzA8DKUS33uHJtml4lbpsp65TF82+DgbbIu9YkQHPvNKlARq9m9Wc9/JccOEzWg23LXkslpOzX/9fc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Rpbq/1Qo; arc=none smtp.client-ip=192.198.163.8
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1781681948; x=1813217948;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=CpEDmXb91/TWr4Fgpip+CAc92egKL1pPgELfKsjl1QI=;
-  b=Rpbq/1QoNmxxxJqah3/RpyeCuGDf7FdL58hx3uEI4mn+oFkxU1HDZUFF
-   JMvTP7MVokOuuR4zIGWEdCcjwiHSoVR8hfTBgKYdSJQvPBrGACQlTD0mU
-   i6BZjlL0ewK9KxRTzdrNoxbtslRYyOOpaeSwda/x3XyeAp3stfbnB/5Dg
-   FzMw3nYci3RZ+CYElwDr8HfM07LNWhPyDpwfLDnzfIvqcw43Cwlm1LvDi
-   gE5TusBVIJaplak7auz97mwzuQeoC1WEt8ilqN4JKkwN0UW6B7PCGDRyz
-   4aD8pvSaHiiD4ZdrCcDDJmntHIRmoEFpheDh92gmCBlu/lC04NIQCEpfo
-   w==;
-X-CSE-ConnectionGUID: PYn87Q3DSHC7wUs5xcCFNA==
-X-CSE-MsgGUID: cKJR55rDS2mAjjrYIc9tbw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11819"; a="100031244"
-X-IronPort-AV: E=Sophos;i="6.24,209,1774335600"; 
-   d="scan'208";a="100031244"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jun 2026 00:39:07 -0700
-X-CSE-ConnectionGUID: l0E97XhTTf2fm8AXVgu/fA==
-X-CSE-MsgGUID: YrCctxhzQWKGcZNHsJIm4A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,209,1774335600"; 
-   d="scan'208";a="243620213"
-Received: from lkp-server01.sh.intel.com (HELO f0d55cb201f0) ([10.239.97.150])
-  by fmviesa006.fm.intel.com with ESMTP; 17 Jun 2026 00:39:04 -0700
-Received: from kbuild by f0d55cb201f0 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wZkrW-00000000UF0-0LUj;
-	Wed, 17 Jun 2026 07:39:02 +0000
-Date: Wed, 17 Jun 2026 15:38:57 +0800
-From: kernel test robot <lkp@intel.com>
-To: Wentao Liang <vulab@iscas.ac.cn>, bhelgaas@google.com
-Cc: oe-kbuild-all@lists.linux.dev, mika.westerberg@linux.intel.com,
-	mani@kernel.org, andriy.shevchenko@intel.com, kees@kernel.org,
-	adiyenga@cisco.com, vulab@iscas.ac.cn, linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] PCI/PTM: fix refcount leak in pci_enable_ptm()
-Message-ID: <202606171537.E42T5ZLo-lkp@intel.com>
-References: <20260616141733.1688264-1-vulab@iscas.ac.cn>
+	s=arc-20240116; t=1781682131; c=relaxed/simple;
+	bh=UYnPxb1Rl/unG8AVIs6+c36t87t9Pw4qOIB524d8GNs=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=Wc/ONT9KiziwJaxBHvE94gmFlLMIqMCg3nGB+ycZb7kBfFhkygNZUvwgICrzS+9KtJxw7WQ16+J9Gf3y+VbuKv7/2SgI8H1FFGF+ZwtPkn5X92D2fV0DwCpfgHSFqQwV4Uj4uxE3BmGn0QrTm3x1RuYxylWzVhbboo3oDOuIaZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=4sW21Ypg; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=MbFlUpVf; arc=none smtp.client-ip=193.142.43.55
+From: John Ogness <john.ogness@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1781682128;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UYnPxb1Rl/unG8AVIs6+c36t87t9Pw4qOIB524d8GNs=;
+	b=4sW21YpgR3GAzE4SyMd8vyQ9/Cb0EJz4EJnc0UdmP6HbYmWBglbAq37akwe1SlIZOH4kr6
+	+QiMgt436te6oOI+lmAu12sXggSA8cORImUvh09dMPn2DAqtt9W3CaSXbCKrbXMpbujb8y
+	7hjlSxh5jtJf2H5wVpVnbKwrnBcB5NgKVRoe9s1usN8XMswu84YAoHuP0eBPbAdVExURku
+	aOngiFO27/nVGbCat9KTiTSlWcZ1xc3h9VyTgoJ4LNFwlJ0jXUkyPGk2GmBuMRD3vq6hVn
+	FvLiigQYy9isVxvIRYfOAe4trfrUo6sZI4ewhcNg39LCgR0g0wNhuZZ9BmH+wA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1781682128;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UYnPxb1Rl/unG8AVIs6+c36t87t9Pw4qOIB524d8GNs=;
+	b=MbFlUpVfCCdPPCPFztBOHVzgXUqWNTd2yX6XgxBEb2+MroUmYBfg82eFym9PLbfdRDbPrt
+	m+VdNMVvE0uzkWBA==
+To: Breno Leitao <leitao@debian.org>, Sebastian Andrzej Siewior
+ <bigeasy@linutronix.de>, pmladek@suse.com
+Cc: Jakub Kicinski <kuba@kernel.org>, Petr Mladek <pmladek@suse.com>, Sergey
+ Senozhatsky <senozhatsky@chromium.org>, Peter Zijlstra
+ <peterz@infradead.org>, Vlad Poenaru <vlad.wing@gmail.com>, Thomas
+ Gleixner <tglx@kernel.org>, netdev@vger.kernel.org, "David S . Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Clark Williams
+ <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
+ linux-rt-devel@lists.linux.dev, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, Frederic Weisbecker <frederic@kernel.org>, Ingo
+ Molnar <mingo@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>,
+ Dietmar Eggemann <dietmar.eggemann@arm.com>, K Prateek Nayak
+ <kprateek.nayak@amd.com>
+Subject: Re: [PATCH net] netpoll: run NAPI poll in softirq context to avoid
+ rq->lock self-deadlock
+In-Reply-To: <ajF5S0uY-8F0jzoh@gmail.com>
+References: <20260610183621.3915271-1-vlad.wing@gmail.com>
+ <20260611191114.5bc43a59@kernel.org>
+ <20260616103529.Yh9Dxsjp@linutronix.de> <ajF5S0uY-8F0jzoh@gmail.com>
+Date: Wed, 17 Jun 2026 09:48:07 +0206
+Message-ID: <877bnxfwa8.fsf@jogness.linutronix.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260616141733.1688264-1-vulab@iscas.ac.cn>
+Content-Type: text/plain
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-4.16 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[intel.com:d:+,kernel.org:s:+];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCPT_COUNT_TWELVE(0.00)[24];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-266651-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	FORGED_SENDER(0.00)[lkp@intel.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-266652-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:vulab@iscas.ac.cn,m:bhelgaas@google.com,m:oe-kbuild-all@lists.linux.dev,m:mika.westerberg@linux.intel.com,m:mani@kernel.org,m:andriy.shevchenko@intel.com,m:kees@kernel.org,m:adiyenga@cisco.com,m:linux-pci@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:leitao@debian.org,m:bigeasy@linutronix.de,m:pmladek@suse.com,m:kuba@kernel.org,m:senozhatsky@chromium.org,m:peterz@infradead.org,m:vlad.wing@gmail.com,m:tglx@kernel.org,m:netdev@vger.kernel.org,m:davem@davemloft.net,m:edumazet@google.com,m:pabeni@redhat.com,m:horms@kernel.org,m:clrkwllms@kernel.org,m:rostedt@goodmis.org,m:linux-rt-devel@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:frederic@kernel.org,m:mingo@redhat.com,m:vincent.guittot@linaro.org,m:dietmar.eggemann@arm.com,m:kprateek.nayak@amd.com,m:vladwing@gmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[john.ogness@linutronix.de,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[kernel.org,suse.com,chromium.org,infradead.org,gmail.com,vger.kernel.org,davemloft.net,google.com,redhat.com,goodmis.org,lists.linux.dev,linaro.org,arm.com,amd.com];
+	RCVD_COUNT_THREE(0.00)[3];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lkp@intel.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[intel.com:+];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[john.ogness@linutronix.de,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linutronix.de:+];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,git-scm.com:url,01.org:url,intel.com:dkim,intel.com:email,intel.com:mid,intel.com:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,jogness.linutronix.de:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A72876973BC
+X-Rspamd-Queue-Id: A72556973DC
 
-Hi Wentao,
+On 2026-06-16, Breno Leitao <leitao@debian.org> wrote:
+>> So this is not an issue since commit 7eab73b18630e ("netconsole: convert
+>> to NBCON console infrastructure"). Because from here now on writes are
+>> deferred to the nbcon thread. So this purely about -stable in this case.
+>
+> Does the nbcon thread handle defer even for consoles that support atomic
+> operations?
 
-kernel test robot noticed the following build errors:
+The all "printk deferred" variants have zero effect on nbcon
+drivers. The "printk deferred" variants exist purely as duct tape for
+legacy console drivers.
 
-[auto build test ERROR on pci/next]
-[also build test ERROR on pci/for-linus westeri-thunderbolt/next linus/master v7.1 next-20260616]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+If nbcon drivers provide a safe write_atomic(), they will _always_ write
+synchronously when the CPU is in an emergency state. Otherwise nbcon
+drivers _always_ defer to their dedicated console printing kthread and
+there they use the write_thread() callback.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Wentao-Liang/PCI-PTM-fix-refcount-leak-in-pci_enable_ptm/20260617-043856
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/pci/pci.git next
-patch link:    https://lore.kernel.org/r/20260616141733.1688264-1-vulab%40iscas.ac.cn
-patch subject: [PATCH] PCI/PTM: fix refcount leak in pci_enable_ptm()
-config: s390-randconfig-r072-20260617 (https://download.01.org/0day-ci/archive/20260617/202606171537.E42T5ZLo-lkp@intel.com/config)
-compiler: s390-linux-gcc (GCC) 8.5.0
-smatch: v0.5.0-9185-gbcc58b9c
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260617/202606171537.E42T5ZLo-lkp@intel.com/reproduce)
+> netconsole is marked with CON_NBCON_ATOMIC_UNSAFE, which means it rarely
+> performs inline/direct printk and instead pushes to the thread, which
+> flushes in a safe context.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202606171537.E42T5ZLo-lkp@intel.com/
+CON_NBCON_ATOMIC_UNSAFE means it _never_ performs inline/direct printk
+console writing. That flags means that in panic, at the _very_ end, just
+before going into an infinite nop loop, the CON_NBCON_ATOMIC_UNSAFE
+consoles will be flushed directly from the panic context.
 
-All errors (new ones prefixed by >>):
+> For drivers that behave correctly, I'd like to be able to drop
+> CON_NBCON_ATOMIC_UNSAFE, potentially setting it at runtime based on the
+> underlying driver capabilities. If netconsole is backed by a well-behaving
+> network driver, we could eventually remove the flag (!?)
+>
+> Would that approach cause any issues?
 
-   drivers/pci/pcie/ptm.c: In function 'pci_enable_ptm':
->> drivers/pci/pcie/ptm.c:204:20: error: 'parent' undeclared (first use in this function); did you mean 'xa_parent'?
-       pci_disable_ptm(parent);
-                       ^~~~~~
-                       xa_parent
-   drivers/pci/pcie/ptm.c:204:20: note: each undeclared identifier is reported only once for each function it appears in
+Removing the flag means the driver can safely write from _any_ context
+(including scheduler and NMI), regardless what locks that context may be
+holding.
 
+Note that the nbcon framework allows console drivers to mark unsafe
+regions in themselves, where atomic writing would not be possible. In
+such scenarios, it defers to the dedicated printing kthread (except
+during panic, where more agressive tactics are used).
 
-vim +204 drivers/pci/pcie/ptm.c
-
-   162	
-   163	/**
-   164	 * pci_enable_ptm() - Enable Precision Time Measurement
-   165	 * @dev: PCI device
-   166	 *
-   167	 * Enable Precision Time Measurement for @dev.
-   168	 *
-   169	 * Return: zero if successful, or -EINVAL if @dev lacks a PTM Capability or
-   170	 * is not a PTM Root and lacks an upstream path of PTM-enabled devices.
-   171	 */
-   172	int pci_enable_ptm(struct pci_dev *dev)
-   173	{
-   174		int rc;
-   175		char clock_desc[8];
-   176	
-   177		/*
-   178		 * A device uses local PTM Messages to request time information
-   179		 * from a PTM Root that's farther upstream. Every device along
-   180		 * the path must support PTM and have it enabled so it can
-   181		 * handle the messages. Therefore, if this device is not a PTM
-   182		 * Root, the upstream link partner must have PTM enabled before
-   183		 * we can enable PTM.
-   184		 */
-   185		if (!dev->ptm_root) {
-   186			struct pci_dev *parent;
-   187	
-   188			parent = pci_upstream_ptm(dev);
-   189			if (!parent)
-   190				return -EINVAL;
-   191			/* Enable PTM for the parent */
-   192			rc = pci_enable_ptm(parent);
-   193			if (rc)
-   194				return rc;
-   195		}
-   196	
-   197		/* Already enabled? */
-   198		if (atomic_inc_return(&dev->ptm_enable_cnt) > 1)
-   199			return 0;
-   200	
-   201		rc = __pci_enable_ptm(dev);
-   202		if (rc) {
-   203			if (!dev->ptm_root)
- > 204				pci_disable_ptm(parent);
-   205			atomic_dec(&dev->ptm_enable_cnt);
-   206			return rc;
-   207		}
-   208	
-   209		switch (dev->ptm_granularity) {
-   210		case 0:
-   211			snprintf(clock_desc, sizeof(clock_desc), "unknown");
-   212			break;
-   213		case 255:
-   214			snprintf(clock_desc, sizeof(clock_desc), ">254ns");
-   215			break;
-   216		default:
-   217			snprintf(clock_desc, sizeof(clock_desc), "%uns",
-   218				 dev->ptm_granularity);
-   219			break;
-   220		}
-   221		pci_info(dev, "PTM enabled%s, %s granularity\n",
-   222			 dev->ptm_root ? " (root)" : "", clock_desc);
-   223	
-   224		return 0;
-   225	}
-   226	EXPORT_SYMBOL(pci_enable_ptm);
-   227	
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+John Ogness
 
