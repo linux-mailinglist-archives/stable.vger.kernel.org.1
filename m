@@ -1,172 +1,165 @@
-Return-Path: <stable+bounces-266849-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266850-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 0B9bMbPOMmre5gUAu9opvQ
-	(envelope-from <stable+bounces-266849-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 18:43:31 +0200
+	id uPVXCPfTMmrK5wUAu9opvQ
+	(envelope-from <stable+bounces-266850-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 19:05:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41D3F69B74D
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 18:43:31 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1485369B92D
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 19:05:58 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cbIzmMFb;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266849-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-266849-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=googlemail.com header.s=20251104 header.b=i5AX9sd5;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266850-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-266850-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=fail reason="SPF not aligned (relaxed), DKIM not aligned (relaxed)" header.from=gmail.com (policy=none);
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6096F3049217
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 16:43:29 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 524D5301C498
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 17:05:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FCDC480DEB;
-	Wed, 17 Jun 2026 16:43:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B17DF3BC669;
+	Wed, 17 Jun 2026 17:05:51 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2088444CADF;
-	Wed, 17 Jun 2026 16:43:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 387B33F44FF
+	for <stable@vger.kernel.org>; Wed, 17 Jun 2026 17:05:50 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781714605; cv=none; b=TIVTZqP5xJZpUg6gWQnZAr1BePR0EJNQysf79BeUFnc4N2/e697oOc3itcCWUxMjFYWTy1W6zK9GiEgtuIajmm65q/5rmakeBRMblAtmgfb72vjKXNxDkzFhCUy0Jp6pM+8ft7/4EETk8voB3AvuDv74SW452KUzCX/fnZsUGn8=
+	t=1781715951; cv=none; b=GBxuWFFpSXz0CwQiT/WHsqD5AExhVCwRHNxd7af1OkqHtkD0POGz8z0pGS12HJ85nTJnr7yBVjvcQKE7x+hOSzZe6cgyU6ErnKbEWpugwthmpfI6qD2Q4LEV2TF+nriADWWkBq7qt4nBX4p6MFzmOwmAz29A8j1oPigwyf6T4tw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781714605; c=relaxed/simple;
-	bh=XutTQBdwrTCAX8gC7dBmWVDXGhZkom9HxGluN1rN/Rs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LoC3HfsfOJY7d8j+H7lAiFJMOI68DXsE0BFHu/nPqapFE7wfiODvcn98seob5X229JiMfboAwzH5+Rotr8FeBH9hmM5SIAKGcLpqj59em9tqOOjAIwxWM85u/iQyIE6EF8mpjOQyw/lAn0c1OVJnf9625RZXg1kzep/bJYu9EXg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cbIzmMFb; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01E581F00A3A;
-	Wed, 17 Jun 2026 16:43:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781714603;
-	bh=KNmSwsg0gZTKvDNis5tgxyQ5iNCbMv/g9fJ24kqEAco=;
-	h=From:To:Cc:Subject:Date;
-	b=cbIzmMFbOfJsgrMm5Zwfw2IrFIBtOo6RfvjaMYiZOEZb0mGGIlFq5oJrljinqyM3Q
-	 oD4knC1D3USr5PrjhwKDE4ALrOmvV+coR2YsjMRfCD6HnoZG05aRvau8KUbzRyvjw0
-	 XOhSelBmYGthZ1RYMsgpEdoibmCPg4AGsxxhIBlS1ve64p+wlhOdlOyc5k63qTbM9y
-	 P0aTpFwQdGUKuCWUWF/eDPhzBl9BT9FTo0ECXspwe02R815QiCdxACaXe2sqhq/pYj
-	 /SiHK2Tkw/6Vak7xO4QuyGn76mBMoTXOoiHZB4ZZbauux5Q7SuGFkpAbxR2FClQZW/
-	 tWXvFiPH+K5YQ==
-From: Dinh Nguyen <dinguyen@kernel.org>
-To: bp@alien8.de,
-	tony.luck@intel.com
-Cc: dinguyen@kernel.org,
-	dbgh9129@gmail.com,
-	linux-edac@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] EDAC/altera: Use parent device for devres in altr_portb_setup()
-Date: Wed, 17 Jun 2026 11:43:03 -0500
-Message-ID: <20260617164303.585555-1-dinguyen@kernel.org>
-X-Mailer: git-send-email 2.42.0.411.g813d9a9188
+	s=arc-20240116; t=1781715951; c=relaxed/simple;
+	bh=QWiUt4W65Yol1oqJQVCdl+On8yL1ocMTAIdDcP5QrmE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=mC9teQM8hBh+y6tGgq8UUmW1HZvLsg/J1MRStinLdhu+qWuosUB7R5hrKOuWbR0rrHWk+O0W3juyz7XT0lZZ+QxD4noPKyWU4fRaQ0v4HfesO449riLW8EIaLYwpq2ZiFfvyIU2kKz2CiRnwlC1894xoFQPQD0O0uF30+xteQZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=i5AX9sd5; arc=none smtp.client-ip=209.85.221.47
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-4626fdc829aso36816f8f.3
+        for <stable@vger.kernel.org>; Wed, 17 Jun 2026 10:05:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20251104; t=1781715948; x=1782320748; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=u+aduyT6+K3d0mjQ176gNz47/6BLqnF1YE2F3LafYgU=;
+        b=i5AX9sd5CnhUqnsURpS+U8t7XZgnGaCgfzqHqgK/Als1FMzqnrPCZEgYZ5euhMTiJt
+         Um2X+Lr1+J7sCiI9D5y+2c0W5b25ZUwXctPn1JMj89l6tdnngdxIpp9ztsL0rN+cTHGO
+         a5QOrKvJIbcGpeFIETQO/44S1sYfJjMeJryug1OXYITQ0RMW7SVqj680s1vIjShsdVJz
+         TCQfeJdiDlkEIAjIU4ieiRAjhh4DoNniKsFcoIHbWiMudjEydhOBwa6jiqCRQQo5L8mZ
+         KU4TwoFccq4ckYVmDz1zsob0Gnfa8w6MK6PkcessVN2T8hKduWIFAdkoAxhItN4h4Rlo
+         AozA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781715948; x=1782320748;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=u+aduyT6+K3d0mjQ176gNz47/6BLqnF1YE2F3LafYgU=;
+        b=BvbMMh1wtoX29AQ1cQklvoVwBIIzDM/wsjRrE6C+m1Oj3JF72JNpXN51LlZSeMBx+3
+         yM5BCx/mpDFlmewbpvsG3WAjiF6YDjK6zP6IPmeUGBaJkn+wdAjJJsOwqS3k6w28NNPh
+         f/IICciWcFEGxONIs13mzpK96G6xJ6pt5fibtQEGv/l+m8N/cvczK/ffap2fVL/ctdnI
+         6/OILlHvrcqPbtIxRJnxFgrA/9Kild7H4inqJW6txjj15UdTcKw09LZ1J1dPKWqkhbh0
+         RrbdmbWR7HcN+XFLLU7bLRJIYSAMLmwzu5OavF/5lnHLYkgt7SpzxGDxLg6wJHHt83zY
+         yGaA==
+X-Forwarded-Encrypted: i=1; AFNElJ//y5SWTkmpjT1bTxntsPX1hCycbOgMorcXAKTPFIpnj/MgufaD4SPMXBWm/upkIH/ml/MOOx8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyc/8Br/4Kft9TJUYknoXBljzJWKMkFWgjD3TZuBwyzboSp+vRl
+	u/dYCxGRIW6GD/w2MgzI/CDIScyO8jZ7kUI3Lo+rTSZi7NMIiCCwGus=
+X-Gm-Gg: AfdE7ckMVv8SQ9IoUTpukwGXLvhklFFqQQPbRO6Cn2vOOWa82TmuX4r/2y3UCSIBaE2
+	mGKVy0+MDh/0vtwmFQUu59LN8IhElCiwzFm/8idosnETRPF33PsVkrbqt7sWO/2mKcLnTvYVx2N
+	vvHbCgSefIec081qiXtVU+IsLz/DZJmGGWwglVDIKTVZH4w2YPQrmdTf4ur2Q3Jj77uquSJaybh
+	WlHz+pe43Fgasf0Qr+GEWtlTqW+pwEoURB4YJLldiVh1tG/vxE6OmwiOBJEADbk6zLQL49vMQdW
+	KmTEzu/nCvMV0ULueuQUXoEz4+B7y2Kl4Lr9VXHpEf/IZ3fKZn4jxje6U1eMaA5N578wbpqTLnY
+	+Oz2zwsoQx2QQiSMhudU3Ct6YGbu2LKniO40W2zguxgqvNLUPiaZ7LqdvSbx/Lts+keY+APc0xX
+	PClQ6eBuxgZNXAqzn+5sCHW/iaQ5LKSJTU9x4ul54Cz5rqPBypn9IlPtVKKMDmTQ7f
+X-Received: by 2002:a05:6000:470d:b0:463:a7e3:9f71 with SMTP id ffacd0b85a97d-463a7e3a5e4mr178035f8f.15.1781715948528;
+        Wed, 17 Jun 2026 10:05:48 -0700 (PDT)
+Received: from [192.168.1.3] (p5b2b4777.dip0.t-ipconnect.de. [91.43.71.119])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4606f2dbfb1sm58842472f8f.35.2026.06.17.10.05.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 17 Jun 2026 10:05:48 -0700 (PDT)
+Message-ID: <951a5d24-f36b-4ccf-939c-b741fb1b3a20@googlemail.com>
+Date: Wed, 17 Jun 2026 19:05:47 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 6.12 000/261] 6.12.94-rc1 review
+Content-Language: de-DE
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org, sr@sladewatkins.com
+References: <20260616145044.869532709@linuxfoundation.org>
+From: Peter Schneider <pschneider1968@googlemail.com>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.66 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [-0.05 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[googlemail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	DMARC_POLICY_SOFTFAIL(0.10)[gmail.com : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[kernel.org,gmail.com,vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[dinguyen@kernel.org,stable@vger.kernel.org];
+	XM_UA_NO_VERSION(0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-266849-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:bp@alien8.de,m:tony.luck@intel.com,m:dinguyen@kernel.org,m:dbgh9129@gmail.com,m:linux-edac@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,m:patches@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:torvalds@linux-foundation.org,m:akpm@linux-foundation.org,m:linux@roeck-us.net,m:shuah@kernel.org,m:patches@kernelci.org,m:lkft-triage@lists.linaro.org,m:pavel@nabladev.com,m:jonathanh@nvidia.com,m:f.fainelli@gmail.com,m:sudipm.mukherjee@gmail.com,m:rwarsow@gmx.de,m:conor@kernel.org,m:hargar@microsoft.com,m:broonie@kernel.org,m:achill@achill.org,m:sr@sladewatkins.com,m:ffainelli@gmail.com,m:sudipmmukherjee@gmail.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[pschneider1968@gmail.com,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[googlemail.com];
+	TAGGED_FROM(0.00)[bounces-266850-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	FORWARDED(0.00)[lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dinguyen@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_NONE(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[googlemail.com:+];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[pschneider1968@gmail.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,sashiko.dev:url]
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,mailvelope.com:url,peters-netzplatz.de:url,googlemail.com:dkim,googlemail.com:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 41D3F69B74D
+X-Rspamd-Queue-Id: 1485369B92D
 
-Anchor the devres group and the devm-managed IRQ requests in
-altr_portb_setup() to the actual parent device (device->edac->dev)
-instead of the embedded struct device inside the copied per-port
-altr_edac_device_dev. This keeps devres_open_group(),
-devm_request_irq(), devres_remove_group() and devres_release_group()
-all referring to the same long-lived device so the group and the
-resources allocated inside it are torn down together.
+Am 16.06.2026 um 16:57 schrieb Greg Kroah-Hartman:
+> This is the start of the stable review cycle for the 6.12.94 release.
+> There are 261 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-Fixes: 911049845d70 ("EDAC, altera: Add Arria10 SD-MMC EDAC support")
-Cc: stable@vger.kernel.org
-Closes: https://sashiko.dev/#/patchset/20260503212558.2811480-1-dbgh9129%40gmail.com
-Assisted-by: Claude:claude-opus-4-7
-Signed-off-by: Dinh Nguyen <dinguyen@kernel.org>
----
- drivers/edac/altera_edac.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg oddities or regressions found.
 
-diff --git a/drivers/edac/altera_edac.c b/drivers/edac/altera_edac.c
-index 4edd2088c2db..5914b2fd94d9 100644
---- a/drivers/edac/altera_edac.c
-+++ b/drivers/edac/altera_edac.c
-@@ -1533,7 +1533,7 @@ static int altr_portb_setup(struct altr_edac_device_dev *device)
- 	altdev = dci->pvt_info;
- 	*altdev = *device;
- 
--	if (!devres_open_group(&altdev->ddev, altr_portb_setup, GFP_KERNEL))
-+	if (!devres_open_group(device->edac->dev, altr_portb_setup, GFP_KERNEL))
- 		return -ENOMEM;
- 
- 	/* Update PortB specific values */
-@@ -1562,7 +1562,7 @@ static int altr_portb_setup(struct altr_edac_device_dev *device)
- 		rc = -ENODEV;
- 		goto err_release_group_1;
- 	}
--	rc = devm_request_irq(&altdev->ddev, altdev->sb_irq,
-+	rc = devm_request_irq(device->edac->dev, altdev->sb_irq,
- 			      prv->ecc_irq_handler, IRQF_TRIGGER_HIGH,
- 			      ecc_name, altdev);
- 	if (rc) {
-@@ -1585,7 +1585,7 @@ static int altr_portb_setup(struct altr_edac_device_dev *device)
- 		rc = -ENODEV;
- 		goto err_release_group_1;
- 	}
--	rc = devm_request_irq(&altdev->ddev, altdev->db_irq,
-+	rc = devm_request_irq(device->edac->dev, altdev->db_irq,
- 			      prv->ecc_irq_handler, IRQF_TRIGGER_HIGH,
- 			      ecc_name, altdev);
- 	if (rc) {
-@@ -1605,13 +1605,13 @@ static int altr_portb_setup(struct altr_edac_device_dev *device)
- 
- 	list_add(&altdev->next, &altdev->edac->a10_ecc_devices);
- 
--	devres_remove_group(&altdev->ddev, altr_portb_setup);
-+	devres_remove_group(device->edac->dev, altr_portb_setup);
- 
- 	return 0;
- 
- err_release_group_1:
- 	edac_device_free_ctl_info(dci);
--	devres_release_group(&altdev->ddev, altr_portb_setup);
-+	devres_release_group(device->edac->dev, altr_portb_setup);
- 	edac_printk(KERN_ERR, EDAC_DEVICE,
- 		    "%s:Error setting up EDAC device: %d\n", ecc_name, rc);
- 	return rc;
+Tested-by: Peter Schneider <pschneider1968@googlemail.com>
+
+
+Beste Grüße,
+Peter Schneider
+
 -- 
-2.42.0.411.g813d9a9188
+Climb the mountain not to plant your flag, but to embrace the challenge,
+enjoy the air and behold the view. Climb it so you can see the world,
+not so the world can see you.                    -- David McCullough Jr.
 
+OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
+Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
