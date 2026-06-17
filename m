@@ -1,58 +1,64 @@
-Return-Path: <stable+bounces-266823-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266826-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Y9S8Kjq9Mmro4wUAu9opvQ
-	(envelope-from <stable+bounces-266823-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 17:28:58 +0200
+	id kO6wNKu+Mmoq5AUAu9opvQ
+	(envelope-from <stable+bounces-266826-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 17:35:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12D0369AFCF
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 17:28:58 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CB3469B0BB
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 17:35:07 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=CXz0HYJt;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266823-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-266823-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=linux.dev;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=m9h4dzMy;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266826-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266826-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 660173099A04
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 15:24:46 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E31D030A3BB5
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 15:29:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD944481AB2;
-	Wed, 17 Jun 2026 15:24:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D84C148AE0C;
+	Wed, 17 Jun 2026 15:28:58 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1864645BD5F
-	for <stable@vger.kernel.org>; Wed, 17 Jun 2026 15:24:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C01D8481FDC
+	for <stable@vger.kernel.org>; Wed, 17 Jun 2026 15:28:52 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781709885; cv=none; b=OJOWxWSuY04MkS+/xLSwsYa88h8ZNR0ApXrv6zLDckw72AaXfPeVIdjRPRkaX2ZVFGs+/gLB6KukAOVcid2e1Z+7R1h+x0mIE+7YM96gb3jsaq/jQn2TjSXkUz5jPcFSEwpjI7mpqkbioHUJoSUn9y0TEFHV2SaOa64xJAvGif0=
+	t=1781710138; cv=none; b=XwE/JLWV1H5CW1dEOXwRBmjtcAy4ro6sRhTw6bMmCJvVNBuvA1TccmOrTcRrvtiU2+brgW++QDEElhn4LTlbIFfpVPbfkmK0j8pOfESByOg45zslFCfwL5YJcjh5djyYSEU3lyIPZlHUsSVTc8n4DjJVPkRkzP770af+EGQ1sJI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781709885; c=relaxed/simple;
-	bh=K6BdhynNCxTbKte0oto9qXNQxgiuj197Vq3cvTizjVg=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=CjTdwtk6fVBxKqc3KGnfgbMdbxbLTxDgddzGKy7DQSMHq3pFoN5W6snNNojCaBsmdADYN3uCm+xm9ZBdy+oaeI4LlnmcSvZHZ09JY3KKd/MzFFOzbqJ93Me5hM9Y7Qd3VkFFJNrDeEyLvOwfsooT33YcXxHuLY3oFJ5+wqjuANs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=CXz0HYJt; arc=none smtp.client-ip=95.215.58.181
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1781709882;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=/1YITrhnDXSdmC6Dqv+F70YQc0TGd3NsGsm13gGEdTo=;
-	b=CXz0HYJtk190U/sx4Wh+h4WEdBGdG8kvRojZHqmHkrTL30R7QlpHwmdrAsFAW9WWyEcG3T
-	xGW691kNb7opYYX3Y+JvQqZ5VHE0g2iA4DLyV48lj0qNtPMa65C7+NHBF2TVXeQyBMtsYO
-	wRgsOTWWDN/7rLn2rG4eCwvWJBfqSqg=
-From: wen.yang@linux.dev
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Deepak Kumar Singh <quic_deesin@quicinc.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Wen Yang <wen.yang@linux.dev>
-Subject: [PATCH 6.1] rpmsg: char: Add lock to avoid race when rpmsg device is released
-Date: Wed, 17 Jun 2026 23:24:18 +0800
-Message-Id: <20260617152418.7046-1-wen.yang@linux.dev>
+	s=arc-20240116; t=1781710138; c=relaxed/simple;
+	bh=kY5uBKzy92M0xQRk15jQVGGEogzuIklmFX1woZmaJ6k=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=jFu7hU1WZuQXeAzNhsFe5lNt4mmvb86ABkGoymB1Z0d1xm3zoqHAKEy5PFmw1dw7HSN7eLYEKPyv0gKSp/kNlDoAvgNtyY+pXMAX09TAqsssp85Gg9jAQjE/uHNlEMdgYz3bdjhZ/tGrHpnSJnbr474tF+Mwq/O2tCmwPRbVaE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m9h4dzMy; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F23C1F000E9;
+	Wed, 17 Jun 2026 15:28:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781710132;
+	bh=TAI5W7rWKVdQn2SHzcXgDvkQdVH0V4r3TdxSk7wmnxY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=m9h4dzMyzkDTt+SxlLLEiUoS7SL0w1Y1dhwEBPxFkT070FMhVYd2yoHwg3uvISDS2
+	 juC4GJpbHEY+G0s0sY0BCr/a/7eDfBKZbWrXWpxmkKOq+LmZ+9nOMPjfF/PUqFl86Q
+	 eLfX/picV6sQS8/+2IiYJVO2F9WxgG9dGOduK181KDNoBgbZCZ41dx1SMhTVP0isNt
+	 H6DqL3ILghUfu+wi/bwth8YHzA8q3tgXdM/o25Zec3hUgZ2YDYTO5IsfFcwkFRzING
+	 tH9qTjZnlS/TiB9SKBSzVQhNABUlN+Z9o+7UBkpvuD06X78qTdzye9OaSsrXQDfgfC
+	 lHzeHogOhZ99w==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Jann Horn <jannh@google.com>,
+	stable@kernel.org,
+	Miklos Szeredi <mszeredi@redhat.com>,
+	"Christian Brauner (Amutable)" <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1.y] fuse: limit FUSE_NOTIFY_RETRIEVE to uptodate folios
+Date: Wed, 17 Jun 2026 11:28:49 -0400
+Message-ID: <20260617152849.216990-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026061527-overjoyed-wool-2466@gregkh>
+References: <2026061527-overjoyed-wool-2466@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,100 +66,85 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-3.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[3];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-266823-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-266826-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:quic_deesin@quicinc.com,m:andersson@kernel.org,m:wen.yang@linux.dev,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:jannh@google.com,m:stable@kernel.org,m:mszeredi@redhat.com,m:brauner@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[wen.yang@linux.dev,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[6];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[wen.yang@linux.dev,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linux.dev:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
-	FROM_NO_DN(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linux.dev:dkim,linux.dev:email,linux.dev:mid,linux.dev:from_mime,quicinc.com:email]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 12D0369AFCF
+X-Rspamd-Queue-Id: 2CB3469B0BB
 
-From: Deepak Kumar Singh <quic_deesin@quicinc.com>
+From: Jann Horn <jannh@google.com>
 
-commit 17b88a2050e9d1f89a53562f2adb709a8959e763 upstream.
+[ Upstream commit 4e3d1b2c48ca6c55f1e9ca7f8dccc76f120f276c ]
 
-When remote host goes down glink char device channel is freed and
-associated rpdev is destroyed through rpmsg_chrdev_eptdev_destroy(),
-At the same time user space apps can still try to open/poll rpmsg
-char device which will result in calling rpmsg_create_ept()/rpmsg_poll().
-These functions will try to reference rpdev which has already been freed
-through rpmsg_chrdev_eptdev_destroy().
+FUSE_NOTIFY_RETRIEVE must be limited to uptodate folios; !uptodate folios
+can contain uninitialized data.
+Since FUSE_NOTIFY_RETRIEVE is intended to only return data that is already
+in the page cache and not wait for data from the FUSE daemon, treat
+!uptodate folios as if they weren't present.
 
-File operation functions and device removal function must be protected
-with lock. This patch adds existing ept lock in remove function as well.
+This only has security impact on systems that don't enable automatic
+zero-initialization of all page allocations via
+CONFIG_INIT_ON_ALLOC_DEFAULT_ON or init_on_alloc=1.
 
-Signed-off-by: Deepak Kumar Singh <quic_deesin@quicinc.com>
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/1663584840-15762-2-git-send-email-quic_deesin@quicinc.com
-Signed-off-by: Wen Yang <wen.yang@linux.dev>
+Cc: stable@kernel.org
+Fixes: 2d45ba381a74 ("fuse: add retrieve request")
+Signed-off-by: Jann Horn <jannh@google.com>
+Link: https://patch.msgid.link/20260519-fuse-retrieve-uptodate-v1-1-a7a1912a37f9@google.com
+Acked-by: Miklos Szeredi <mszeredi@redhat.com>
+Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+[ translated `folio_test_uptodate(folio)`/`folio_put(folio)` to `PageUptodate(page)`/`put_page(page)` for the pre-folio page-based 6.6 fuse ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rpmsg/rpmsg_char.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ fs/fuse/dev.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/rpmsg/rpmsg_char.c b/drivers/rpmsg/rpmsg_char.c
-index 3e0b8f3496ed..a271fceb16f4 100644
---- a/drivers/rpmsg/rpmsg_char.c
-+++ b/drivers/rpmsg/rpmsg_char.c
-@@ -75,6 +75,7 @@ int rpmsg_chrdev_eptdev_destroy(struct device *dev, void *data)
- 	struct rpmsg_eptdev *eptdev = dev_to_eptdev(dev);
+diff --git a/fs/fuse/dev.c b/fs/fuse/dev.c
+index 7e0d4f08a0cf5d..d7b155f9473d0f 100644
+--- a/fs/fuse/dev.c
++++ b/fs/fuse/dev.c
+@@ -1714,6 +1714,10 @@ static int fuse_retrieve(struct fuse_mount *fm, struct inode *inode,
+ 		page = find_get_page(mapping, index);
+ 		if (!page)
+ 			break;
++		if (!PageUptodate(page)) {
++			put_page(page);
++			break;
++		}
  
- 	mutex_lock(&eptdev->ept_lock);
-+	eptdev->rpdev = NULL;
- 	if (eptdev->ept) {
- 		/* The default endpoint is released by the rpmsg core */
- 		if (!eptdev->default_ept)
-@@ -128,6 +129,11 @@ static int rpmsg_eptdev_open(struct inode *inode, struct file *filp)
- 		return -EBUSY;
- 	}
- 
-+	if (!eptdev->rpdev) {
-+		mutex_unlock(&eptdev->ept_lock);
-+		return -ENETRESET;
-+	}
-+
- 	get_device(dev);
- 
- 	/*
-@@ -279,7 +285,9 @@ static __poll_t rpmsg_eptdev_poll(struct file *filp, poll_table *wait)
- 	if (!skb_queue_empty(&eptdev->queue))
- 		mask |= EPOLLIN | EPOLLRDNORM;
- 
-+	mutex_lock(&eptdev->ept_lock);
- 	mask |= rpmsg_poll(eptdev->ept, filp, wait);
-+	mutex_unlock(&eptdev->ept_lock);
- 
- 	return mask;
- }
+ 		this_num = min_t(unsigned, num, PAGE_SIZE - offset);
+ 		ap->pages[ap->num_pages] = page;
 -- 
-2.34.1
+2.53.0
 
 
