@@ -1,54 +1,63 @@
-Return-Path: <stable+bounces-266816-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266811-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id iGXmMFi2Mmre4AUAu9opvQ
-	(envelope-from <stable+bounces-266816-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 16:59:36 +0200
+	id IWGyBza2MmrH4AUAu9opvQ
+	(envelope-from <stable+bounces-266811-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 16:59:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C64969ABDC
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 16:59:31 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9554369ABCA
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 16:59:01 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=temperror ("DNS error when getting key") header.d=seu.edu.cn header.s=default header.b=lVZqgi1H;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266816-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-266816-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=temperror reason="SPF/DKIM temp error" header.from=seu.edu.cn (policy=temperror);
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IXAjHyFQ;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266811-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-266811-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8B71A3004D28
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 14:59:30 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BB260304705E
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 14:55:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AA1644E025;
-	Wed, 17 Jun 2026 14:59:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A72D8347503;
+	Wed, 17 Jun 2026 14:55:42 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-m155101.qiye.163.com (mail-m155101.qiye.163.com [101.71.155.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C53D72DF701;
-	Wed, 17 Jun 2026 14:59:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8353F2DF701
+	for <stable@vger.kernel.org>; Wed, 17 Jun 2026 14:55:41 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781708366; cv=none; b=AyKmuyNjwR2k1UMeQiwjzQ8V4UPxr1uWCdlI1abtcDHWeXVpAgTJiv2UhUvn/D8gp34wqFAeuCP4T168JB08pfIvWkY8Y3tm6Cs0074Z0ycfpFMqx9S5TD8x/cDhYqOJgMNfAhMSwDIY9+MY2dznEhenuuHZN8nRjbw6AE6IIPg=
+	t=1781708142; cv=none; b=BmIUI8MiSC+GMFjxaOGra5xLbziCimZumx4Oy9xdtCYXUeglzdxItImN/w5csDILQYR8X4EWXakm+39Rjqkoe2Z4o/hxIu8Cqy8PbnHfCnnbSHat3ztv7R/3AVU/MRj+nWdQk6EoeGurkNUPdF6zEF2FTVSD5OQG+4KFsNjgOC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781708366; c=relaxed/simple;
-	bh=mqJ9CDPdN13Tk1t1hJVgjmBUF+9AliE5GbvZD9w1/jk=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Vhy9BrRxtJYwhiGSC1uVKHFzfc8pfZ8w8vcry1KMMmz0WtmzqPQoeBq138QKQL9oJ7jiFev+q7Dq0YADfvq/6i4n/mEtIuwDgfH7CGSuUvZ33LyFCNBIUIsQhLJvgV4ht0y598RXOVPsDSqnjZKrit9WvIACOkTW0r434iznXC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=lVZqgi1H; arc=none smtp.client-ip=101.71.155.101
-Received: from PC-202605011814.localdomain (unknown [58.241.16.34])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 42c69639e;
-	Wed, 17 Jun 2026 22:54:00 +0800 (GMT+08:00)
-From: Runyu Xiao <runyu.xiao@seu.edu.cn>
-To: Alexander Graf <graf@amazon.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: The AWS Nitro Enclaves Team <aws-nitro-enclaves-devel@amazon.com>,
-	linux-kernel@vger.kernel.org,
-	jianhao.xu@seu.edu.cn,
-	runyu.xiao@seu.edu.cn,
-	stable@vger.kernel.org
-Subject: [PATCH] misc: nsm: only unlock nsm_dev on post-lock error paths
-Date: Wed, 17 Jun 2026 22:53:50 +0800
-Message-Id: <20260617145350.513875-1-runyu.xiao@seu.edu.cn>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1781708142; c=relaxed/simple;
+	bh=2mEWhKkYvCoxqAV4EaE/XMBtHtdRFtluNxbU7PsVflM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=BN7rlXSHHU9ttzOOA/gOczTb+7tbw9ulZuPmSEPDPSwqKcEX6rb9nIYQgQtInFZFQJeYRq3QxZOfs/k0wPMz+JZPqFpBZ+98uYqHc22HUx7EYVTik1WTwalEEe43TN95e5l/9KC8RtpppOFsXYqOsSixkR6yGwM7gWQpfJeCOQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IXAjHyFQ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88BAF1F000E9;
+	Wed, 17 Jun 2026 14:55:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781708141;
+	bh=SFBxBAhgXrRXmyfBFo/Vgy59o9Ged79mpgVK9YU+rgU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=IXAjHyFQhBesNUE3z+AzAbE5dEEYCIsDLsdi4IX/HT8Cfh6jSyeyuRZ6UNT6VxjIE
+	 LKwJdLnkvaRhOcGdoEpWZTPohOXInNBDHG/u7jbbRP551u1ts2HrPe1tRPorXEVni3
+	 nporamJPGtsoK81+sCyKG32gnmIf8oHiBZzae+PniF5bT59adxsSx5bO0zFlVABf0n
+	 mazIUZf/KAjwckEYpQL82jeyUCUployYSM5WTwmtenBi6vW3FxvoqhK1THjTOTGS29
+	 vsan5SWS2jDbbyaz/f6oNSJYQxXBMCcHgbm6dYVR272+olax9mfPQ2TkhzhWBiOaVy
+	 8pAmZhjwkmtyg==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10.y 1/3] phonet: Pass ifindex to fill_addr().
+Date: Wed, 17 Jun 2026 10:55:36 -0400
+Message-ID: <20260617145538.157435-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026061549-equipment-myspace-2ba7@gregkh>
+References: <2026061549-equipment-myspace-2ba7@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -56,93 +65,117 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9ed6132a9503a1kunmb71436e171af3
-X-HM-MType: 10
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkaQx0aVkIYS0oeTUtIS08dH1YeHw
-	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlOQ1VJT0pVSk1VSE9ZV1kWGg8SFR0UWUFZT0tIVUpLSEpPSE
-	xVSktLVUpCS0tZBg++
-DKIM-Signature: a=rsa-sha256;
-	b=lVZqgi1HSrjp8VxZUFATnbLtKNx7A+ZOoRI7gFUSm3G7+MqklCFARR2VGZpiYmB1+8u4Zaxqc/ioNbBpXCyCsZ7xsvNUzfGaPSw/PcqPVriNkVMMLDLRikXo/Yu7V8WAZGPiwo58/Sc0od81K2zp4DcW7D98akjDF1QYO391+0c=; s=default; c=relaxed/relaxed; d=seu.edu.cn; v=1;
-	bh=8lNDahgHw3h1ashyvSXOpRVgmpNM1Tqg52/ufq23fcU=;
-	h=date:mime-version:subject:message-id:from;
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.04 / 15.00];
+X-Spamd-Result: default: False [-3.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-266816-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:graf@amazon.com,m:arnd@arndb.de,m:gregkh@linuxfoundation.org,m:aws-nitro-enclaves-devel@amazon.com,m:linux-kernel@vger.kernel.org,m:jianhao.xu@seu.edu.cn,m:runyu.xiao@seu.edu.cn,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER(0.00)[runyu.xiao@seu.edu.cn,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	DKIM_TRACE(0.00)[seu.edu.cn:?];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	DMARC_DNSFAIL(0.00)[seu.edu.cn : SPF/DKIM temp error,none];
-	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	R_DKIM_TEMPFAIL(0.00)[seu.edu.cn:s=default];
-	TAGGED_RCPT(0.00)[stable];
-	FROM_NEQ_ENVFROM(0.00)[runyu.xiao@seu.edu.cn,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-266811-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,seu.edu.cn:email,seu.edu.cn:mid,seu.edu.cn:from_mime]
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:kuniyu@amazon.com,m:edumazet@google.com,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ALIAS_RESOLVED(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2C64969ABDC
+X-Rspamd-Queue-Id: 9554369ABCA
 
-nsm_dev_ioctl() jumps to the common out label even when the initial
-copy_from_user() fails before nsm->lock has been taken.  The error path
-then blindly unlocks a mutex that was never acquired.
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-This issue was found by our static analysis tool and then manually
-reviewed against the current tree.
+[ Upstream commit 08a9572be36819b5d9011604edfa5db6c5062a7a ]
 
-The grounded PoC kept the miscdevice ioctl entry and the pre-lock
-copy_from_user(&raw, argp, _IOC_SIZE(cmd)) failure path by issuing
-NSM_IOCTL_RAW with an invalid user pointer.  That failure reaches the
-shared out label before mutex_lock(&nsm->lock).  Lockdep reported:
+We will convert addr_doit() and getaddr_dumpit() to RCU, both
+of which call fill_addr().
 
-  WARNING: bad unlock balance detected!
-  exploit/193 is trying to release lock (&global_nsm.lock) at:
-  nsm_dev_ioctl+0x5f/0xcf [vuln_msv]
-  but there are no more locks to release!
-  no locks held by exploit/193.
+The former will call phonet_address_notify() outside of RCU
+due to GFP_KERNEL, so dev will not be available in fill_addr().
 
-Return immediately on the pre-lock copy_from_user() failure and keep the
-common unlock label for the post-lock paths only.
+Let's pass ifindex directly to fill_addr().
 
-Fixes: b9873755a6c8 ("misc: Add Nitro Secure Module driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Runyu Xiao <runyu.xiao@seu.edu.cn>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Stable-dep-of: 71de0177b28d ("net: phonet: free phonet_device after RCU grace period")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/nsm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/phonet/pn_netlink.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/misc/nsm.c b/drivers/misc/nsm.c
-index ef7b32742340..185900cdad4a 100644
---- a/drivers/misc/nsm.c
-+++ b/drivers/misc/nsm.c
-@@ -367,7 +367,7 @@ static long nsm_dev_ioctl(struct file *file, unsigned int cmd,
- 	/* Copy user argument struct to kernel argument struct */
- 	r = -EFAULT;
- 	if (copy_from_user(&raw, argp, _IOC_SIZE(cmd)))
--		goto out;
-+		return r;
+diff --git a/net/phonet/pn_netlink.c b/net/phonet/pn_netlink.c
+index dd4c7e9a634fbe..6b50e4d526682f 100644
+--- a/net/phonet/pn_netlink.c
++++ b/net/phonet/pn_netlink.c
+@@ -19,7 +19,7 @@
  
- 	mutex_lock(&nsm->lock);
+ /* Device address handling */
  
+-static int fill_addr(struct sk_buff *skb, struct net_device *dev, u8 addr,
++static int fill_addr(struct sk_buff *skb, u32 ifindex, u8 addr,
+ 		     u32 portid, u32 seq, int event);
+ 
+ void phonet_address_notify(int event, struct net_device *dev, u8 addr)
+@@ -31,7 +31,8 @@ void phonet_address_notify(int event, struct net_device *dev, u8 addr)
+ 			nla_total_size(1), GFP_KERNEL);
+ 	if (skb == NULL)
+ 		goto errout;
+-	err = fill_addr(skb, dev, addr, 0, 0, event);
++
++	err = fill_addr(skb, dev->ifindex, addr, 0, 0, event);
+ 	if (err < 0) {
+ 		WARN_ON(err == -EMSGSIZE);
+ 		kfree_skb(skb);
+@@ -92,8 +93,8 @@ static int addr_doit(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 	return err;
+ }
+ 
+-static int fill_addr(struct sk_buff *skb, struct net_device *dev, u8 addr,
+-			u32 portid, u32 seq, int event)
++static int fill_addr(struct sk_buff *skb, u32 ifindex, u8 addr,
++		     u32 portid, u32 seq, int event)
+ {
+ 	struct ifaddrmsg *ifm;
+ 	struct nlmsghdr *nlh;
+@@ -107,7 +108,7 @@ static int fill_addr(struct sk_buff *skb, struct net_device *dev, u8 addr,
+ 	ifm->ifa_prefixlen = 0;
+ 	ifm->ifa_flags = IFA_F_PERMANENT;
+ 	ifm->ifa_scope = RT_SCOPE_LINK;
+-	ifm->ifa_index = dev->ifindex;
++	ifm->ifa_index = ifindex;
+ 	if (nla_put_u8(skb, IFA_LOCAL, addr))
+ 		goto nla_put_failure;
+ 	nlmsg_end(skb, nlh);
+@@ -140,7 +141,7 @@ static int getaddr_dumpit(struct sk_buff *skb, struct netlink_callback *cb)
+ 			if (addr_idx++ < addr_start_idx)
+ 				continue;
+ 
+-			if (fill_addr(skb, pnd->netdev, addr << 2,
++			if (fill_addr(skb, pnd->netdev->ifindex, addr << 2,
+ 					 NETLINK_CB(cb->skb).portid,
+ 					cb->nlh->nlmsg_seq, RTM_NEWADDR) < 0)
+ 				goto out;
 -- 
-2.34.1
+2.53.0
 
 
