@@ -1,138 +1,192 @@
-Return-Path: <stable+bounces-266731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266732-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id l0LGI/WLMmpd1wUAu9opvQ
-	(envelope-from <stable+bounces-266731-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 13:58:45 +0200
+	id 7isXCjuMMmqA1wUAu9opvQ
+	(envelope-from <stable+bounces-266732-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 13:59:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA471699613
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 13:58:44 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 005D5699663
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 13:59:54 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EglIvT3P;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266731-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266731-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=suse.com header.s=google header.b=M6qD7bvt;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266732-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266732-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=suse.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 080D731990F8
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 11:51:20 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4A1C33037794
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 11:59:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22CDE3EC2E3;
-	Wed, 17 Jun 2026 11:51:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 453763F0AA8;
+	Wed, 17 Jun 2026 11:59:34 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 102263EFFCA;
-	Wed, 17 Jun 2026 11:51:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08A4A3EFD14
+	for <stable@vger.kernel.org>; Wed, 17 Jun 2026 11:59:31 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781697073; cv=none; b=UWH7NB+LiUOP2vh76DbtGR4q8jOTAemdfzEfYolX69wWPpaCSIjTCOWwTkxFf7d3QIb4dzyI/D3aM3g1xLAUrWo4e1HhLIkRIFaUFzrBmbhBGUn2RXZ6H52IX4EzLduNkMlDJGQNdZI/9gR7bHY57HLFqLSIceoKSa3UuY19SJQ=
+	t=1781697574; cv=none; b=Te+sz9fZm498ivCiJLMYdn8xcp6xOAEQhP4ASKJj/NIMeSFuAV+nxza9R8/NcknaXrMTzAbJDYTEmudKgyUe9hjSFQzo99/59cliM66Q9uSt524PlPddaheF4FT35g0iZ/z2vVIy8WizDJm8bnpaL7b18AuSv3MTW5juaRGkh8Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781697073; c=relaxed/simple;
-	bh=6sW+7YnMJv5+cqZGmyMQkreGbhXyeXdqLP6+7n6/DHc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=X/u3CqGoml16z6v+XwWI6o0+5nz8JtC13NWScqQlejZdqRTRk1sKsZPoTidEUg3fmDK2MU2/M8AaK57EFWPlHUmoBPOfA0cGjtPfmq4acToEteDKpIw1/Z1lA9gjUIZjqVDudI6ybMQL/zFbxRfKPJseE2QAZOe4AwaeHoGNMMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EglIvT3P; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0E0E1F00A3E;
-	Wed, 17 Jun 2026 11:51:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781697072;
-	bh=C9EGIq2jnGzJg6EdnET9pfuV4r6/vPa6svq/9XBMvTE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=EglIvT3Pjsru3BQXu5uyKZYxgggtCrsrNPWIkdUe6C2Pk182xRTbM1DpDs2eCb3LZ
-	 whGMHOfPFy+XOt19yGPnrnUkrMHNvCDDLeawdCX4HXyF/0xxJiOZzmmBXPeBK4WVRZ
-	 Aqy15e2VuybcjXIN0T64mBCtfVCQYtgxRHCxXWw/dLwIvJRioERZPnR5HyeZBLygZR
-	 3DVYpAkhFd+QUDjfgA9cE9XyeBsD9atLm2xp9ND0cchc2HyW3YgmlPnJB1QukgQ8Ji
-	 XDI+8jPxCwWF/7wKAH2403AldF5LBMqTp1WVb7rAy0ova7SlqA1DNMbxlxBYxZCZfT
-	 kCv1cOrJXvRxA==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1wZonW-0000000DfJO-3s1b;
-	Wed, 17 Jun 2026 11:51:10 +0000
-From: Marc Zyngier <maz@kernel.org>
-To: kvmarm@lists.linux.dev,
-	Oliver Upton <oupton@kernel.org>
-Cc: Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] KVM: arm64: nv: Drop bogus WARN for write to ZCR_EL2
-Date: Wed, 17 Jun 2026 12:51:08 +0100
-Message-ID: <178169701882.3049015.10605549328933029647.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260615051324.830045-1-oupton@kernel.org>
-References: <20260615051324.830045-1-oupton@kernel.org>
+	s=arc-20240116; t=1781697574; c=relaxed/simple;
+	bh=cvsxccTzFVOpMQezm4HlOWz2aB8KWwD6zxOBa9D3eA8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Rpb6u3lUSy2w5Ncewof5g/AdDGSdEQBUzZJrv8WhaR/91/XWdRugmyJWpyRzVIwn5X1I5emI7RjWVv5Yet3dK7E2RJd1mFNCg5HpxCf7f8k2lHuY0ilkLgGdo7eFFxfYbF0ZdjLszliJ6I6WiBox4PUh2+W4ibE3C7W76GMBuVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=M6qD7bvt; arc=none smtp.client-ip=209.85.128.44
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-490bc6a7958so7158485e9.1
+        for <stable@vger.kernel.org>; Wed, 17 Jun 2026 04:59:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1781697570; x=1782302370; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=wFy1siI5GPA02P4SigwJOvEY2/GCKPj1mDQV6Az/rvE=;
+        b=M6qD7bvtZL4WoGDeCzK3htwiEAuyM4CktDeM5fxxmuqw8gryeGiBqYiMqXeDX0TObt
+         ZhwgjWODAUq1Wf3Ii+fDS6wIbRIKznp+VbtnNcMlXDPeRTSb35z7nADRBqaaQQJpu7c5
+         E+wQDUsA8ekgkOZFpVB+TO4QInOdJdP0boeMLaa7Jm+N+CRknJN8WskaFdqdSBs19MsJ
+         eGKWMVRPZzLWCQU6WqgGC1mSSdRD/AcSd5UzNGZKVBVNC6xyNW6sQLx4BqpiZ+xh4bnR
+         kH561LSvnpzCGzIWt+h44lsPyKA5JUitnlXOYfdn+0QaRB9CPyOj+PXMEt90lJWu8pBR
+         H3GA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781697570; x=1782302370;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=wFy1siI5GPA02P4SigwJOvEY2/GCKPj1mDQV6Az/rvE=;
+        b=GaGUM5cBWn8PmJyN0WS7wZKRSsE+dprYMhdSe+f3t+UoIedq8T2WgSzLKMKM0RsMCG
+         YROjv5oFGADnUFb276EegrajrHbWiU2BJL9O6oCVHguJAAgl4Lw9tgaSZ5D42ZmTMZIK
+         brQhY5W8BgAgzUvbAHMpWLNaJvvZP68fhAlhPhAZxZrlPEOwZPc760he9gOutaIlrYVX
+         0z5jHra4oADx22YjcpT9Nlt/4HzV9RQl7LJcyk9U0a7HSXrBogA4ZoUFOolwHA023g8X
+         Yt5ekDh0xJaLRtD9FvsaMAcTiBIfZk1nstTujsUxheHk7HAnTf4ur/HrVuGxzKw8w6T0
+         i7bQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9cBNogujR6wYiEp63VAtFxa+UISU4sjMbinLmYJXYJorYGlL1N/xGK6PRtmSTFEfHkZcCNr/U=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwZTLl3agTGFPP9aX+i57G+KPn2C3PapiJBWaTk3bRCLXsj9EQN
+	RA+jgXvJKz4//NgqE9wpoJ0fNENCCet6q+u0A1/2+uSSZOeZ+K8kpeUPWuYNZWOAGCo=
+X-Gm-Gg: Acq92OFJ2+wqdxUDxj0FNWFxTLaqrBKQl2jzyH1Kni2TO84RECo5OoGy3SooFI1G5wk
+	BJDf9MwhUQ2aOx0a5IsMsszE6RONZNsvdDJZ1STPnG1AzvxG4I2vi81kya5DWUCyXEB2+IeMz+o
+	X9UQLT6osezh7jaHSh8bZXBHNN+xI5A6IIGava/WYyixGv4hjY1dphJQMXP7mWiiyXDdXURY+Uv
+	wPop4kXZS5lWnG9UIJYgtbyg7RT4Yvetm5Q9zIFbwYxCsWoECotgtnOazL/pwzeSQi4RVXqX3Ik
+	k/+QnAwlcPeIGPa1kkxochrE1GtHzTICBn/TyocTYak3EaIbjqLjMYgFye57GY1OKEVe83vOmR1
+	VUWExgILSIkc1M1H4t1kaoUUHgL7ddqF+0OHiejRSTgIc0/QzxNcYxpnjC0wtOOSNaK0imEIil5
+	rmHJ2/uYGiKtyjNIQ=
+X-Received: by 2002:a05:600d:8450:10b0:490:4035:323 with SMTP id 5b1f17b1804b1-492340e75cdmr33496715e9.9.1781697570289;
+        Wed, 17 Jun 2026 04:59:30 -0700 (PDT)
+Received: from pathway.suse.cz ([176.114.240.130])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4606f26f309sm48879291f8f.14.2026.06.17.04.59.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 17 Jun 2026 04:59:29 -0700 (PDT)
+Date: Wed, 17 Jun 2026 13:59:27 +0200
+From: Petr Mladek <pmladek@suse.com>
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Jakub Kicinski <kuba@kernel.org>,
+	John Ogness <john.ogness@linutronix.de>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Vlad Poenaru <vlad.wing@gmail.com>,
+	Thomas Gleixner <tglx@kernel.org>, netdev@vger.kernel.org,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, Breno Leitao <leitao@debian.org>,
+	Clark Williams <clrkwllms@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	linux-rt-devel@lists.linux.dev, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, Frederic Weisbecker <frederic@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>
+Subject: Re: [PATCH net] netpoll: run NAPI poll in softirq context to avoid
+ rq->lock self-deadlock
+Message-ID: <ajKMH_LmiZhjNlOW@pathway.suse.cz>
+References: <20260610183621.3915271-1-vlad.wing@gmail.com>
+ <20260611191114.5bc43a59@kernel.org>
+ <20260616103529.Yh9Dxsjp@linutronix.de>
+ <20260616081128.04e2c8dd@kernel.org>
+ <20260616153122.keHMKvVT@linutronix.de>
+ <ajJy92ES-Q8ro97A@pathway.suse.cz>
+ <20260617111504.GK49951@noisy.programming.kicks-ass.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, oupton@kernel.org, joey.gouly@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, stable@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260617111504.GK49951@noisy.programming.kicks-ass.net>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-5.16 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[suse.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-266731-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:kvmarm@lists.linux.dev,m:oupton@kernel.org,m:joey.gouly@arm.com,m:suzuki.poulose@arm.com,m:yuzenghui@huawei.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER(0.00)[maz@kernel.org,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[23];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-266732-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS(0.00)[m:peterz@infradead.org,m:bigeasy@linutronix.de,m:kuba@kernel.org,m:john.ogness@linutronix.de,m:senozhatsky@chromium.org,m:vlad.wing@gmail.com,m:tglx@kernel.org,m:netdev@vger.kernel.org,m:davem@davemloft.net,m:edumazet@google.com,m:pabeni@redhat.com,m:horms@kernel.org,m:leitao@debian.org,m:clrkwllms@kernel.org,m:rostedt@goodmis.org,m:linux-rt-devel@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:frederic@kernel.org,m:mingo@redhat.com,m:vincent.guittot@linaro.org,m:dietmar.eggemann@arm.com,m:kprateek.nayak@amd.com,m:vladwing@gmail.com,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[pmladek@suse.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linutronix.de,kernel.org,chromium.org,gmail.com,vger.kernel.org,davemloft.net,google.com,redhat.com,debian.org,goodmis.org,lists.linux.dev,linaro.org,arm.com,amd.com];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[maz@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[pmladek@suse.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[suse.com:+];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[pathway.suse.cz:mid,vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,suse.com:dkim,suse.com:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: DA471699613
+X-Rspamd-Queue-Id: 005D5699663
 
-On Sun, 14 Jun 2026 22:13:24 -0700, Oliver Upton wrote:
-> It is entirely possible for a guest to write to the ZCR_EL2 sysreg alias
-> while in a nested context, as it is expected if FEAT_NV2 is advertised
-> to the L1 hypervisor.
+On Wed 2026-06-17 13:15:04, Peter Zijlstra wrote:
+> On Wed, Jun 17, 2026 at 12:12:07PM +0200, Petr Mladek wrote:
+> > On Tue 2026-06-16 17:31:22, Sebastian Andrzej Siewior wrote:
+> > > On 2026-06-16 08:11:28 [-0700], Jakub Kicinski wrote:
+> > > > > 
+> > > > > Adding sched and printk folks for opinions while eyeballing
+> > > > > WARN_ON_DEFERRED().
+> > > > 
+> > > > Thanks a lot for looking into this! To be clear - the printk_deferred /
+> > > > WARN_DEFERRED would be just for stable? Or there's still some
+> > > > sensitivity even with nbcon?
+> > > 
+> > > We already have printk_deferred(). WARN_DEFERRED() would be new. I
+> > > *think* this is not limited netpoll/ netconsole but all console drivers
+> > > not using CON_NBCON if the printk (via WARN) occurs with the rq held.
+> > > I don't remember all the details but printk_deferred() was introduced to
+> > > circumvent this until printk is fixed.
+> > 
+> > Just to make it clear. The problem with the legacy consoles is that
+> > they are called under console_lock() which is a semaphore. And it
+> > calls wake_up_process() in console_unlock() when there is another
+> > waiter on the lock.
+> > 
+> > > Once we get rid of those legacy drivers and NBCON is the default we can
+> > > get rid of printk_deferred() :)
+> > 
+> > Yup.
 > 
-> Get rid of the bogus WARN which, since the hyp vectors were installed at
-> this point, has the effect of a hyp_panic...
-> 
-> [...]
+> Can't we push all the legacy consoles into a single legacy kthread? I
+> mean, converting all consoles is of course awesome, but should we really
+> wait for that?
 
-Applied to fixes, thanks!
+I am afraid that converting the consoles one by one is the deal with
+Linus. I could imagine to moving last few sinners into the kthread
+when the majority is converted. But we are far from there :-/
 
-[1/1] KVM: arm64: nv: Drop bogus WARN for write to ZCR_EL2
-      commit: 9f1667098c6ae7ec81a9a56859cfdacb822aa0d0
-
-Cheers,
-
-	M.
--- 
-Without deviation from the norm, progress is not possible.
-
-
+Best Regards,
+Petr
 
