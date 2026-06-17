@@ -1,236 +1,185 @@
-Return-Path: <stable+bounces-266622-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266623-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id auUsBmEHMmqctwUAu9opvQ
-	(envelope-from <stable+bounces-266622-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 04:33:05 +0200
+	id bOP6BiMPMmq5uAUAu9opvQ
+	(envelope-from <stable+bounces-266623-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 05:06:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BEEF696269
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 04:33:04 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0269C6963CA
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 05:06:10 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=EOPnEcRo;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266622-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-266622-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=linux.dev;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Dx4m37m8;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266623-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266623-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 57EE630185BC
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 02:32:30 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E70E8300C7CC
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 03:06:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 889A32DF134;
-	Wed, 17 Jun 2026 02:32:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4A462E7F25;
+	Wed, 17 Jun 2026 03:06:03 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3EB11CDFCA
-	for <stable@vger.kernel.org>; Wed, 17 Jun 2026 02:32:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ECF42E739F
+	for <stable@vger.kernel.org>; Wed, 17 Jun 2026 03:06:02 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781663549; cv=none; b=GeeEqsuy+KHqtzoG8eyOe9BZS/tez3Zk8nXemTE2jxNtewg1yx4POKLES1pjV/6b+51RmbadzXE8NijxS/4CJ1WnkjDb/X00euznwFxlXZzP/Hvc+nWtUaU+4A63NfuJvQENAeLwF+PH0aPGY2TRW2/Zz0rgtfAexYIO691bIe0=
+	t=1781665563; cv=none; b=APDgW+/0E2NGpYLymcYqhSM0wQI7p0UzGc0NdgxImnIKci9XSEGdb3+Y/bFzmY4aURJXuPDP20BJl4oyz3+SVYh0HmxpOMPv7Ot+J6pf8pMvr2dN4kZORDGIvEdAaaUOl/q2NofApL9V9J32iXA0c09sN8q6hL2Ws/A84Vb3tms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781663549; c=relaxed/simple;
-	bh=8Jkg4hWaGSgxim555NVdr/IGldICyHHu0eKJiB7qjp0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OTlJU3C3dgLfm5AxiSVfWCEPAL4nFy3QlJeAlg+b2VrfHlOwmzzZDRJiNn/A39dWPDauWxfrENRmEXdVPdRuzePtrKY2wAoqqpySSQx/tYXp9orDlONjmZ78ewf+W6Yj/GwbjA1iXiTqfVFszVGjsa8fBz/4uH2CQWiYlDONMVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=EOPnEcRo; arc=none smtp.client-ip=95.215.58.174
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1781663545;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KWSwI0JSp8IpusvL17b7isqNuxgesNcqyUkzefJ+C/g=;
-	b=EOPnEcRoyEvrckUiMuG+/W56AB0fjfv6Ssjj7zOAWHhVtqtmbkqSe23THUbNf4yk623rCB
-	KKdaBgxBn6yPULoRDg3R5eb4fJrpdPUYPyraPTes0TevoJqpC4OX2BKnX0fcH8iJrheN1q
-	4tQ8m/GCPRbWd9hOjxwAnPooOewsAx0=
-From: Lance Yang <lance.yang@linux.dev>
-To: richard.weiyang@gmail.com
-Cc: lance.yang@linux.dev,
-	akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	riel@surriel.com,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	harry@kernel.org,
-	jannh@google.com,
-	balbirs@nvidia.com,
-	ziy@nvidia.com,
-	sj@kernel.org,
-	linux-mm@kvack.org,
-	lorenzo.stoakes@oracle.com,
+	s=arc-20240116; t=1781665563; c=relaxed/simple;
+	bh=yfz8vgxmmOr1tI4i2OC6lLpyXdWuyxwqMqDIJFkTrM8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hF0QmkkNAlO/xI7divQgVePe+uebSmciV6TO6OFGJL2SFK8xMZjhlkeImikm7LSXfgZN2GwxwVm5My4Q93cEcQ3/opYBqmwS4vQxkE9mlY9527buS5kbRdzy59ujLh40pMZBWGe5i/EIoqp6XytosyCZNirx62kLBFmj1F4H9RI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Dx4m37m8; arc=none smtp.client-ip=74.125.82.170
+Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-307d0405e07so8071094eec.1
+        for <stable@vger.kernel.org>; Tue, 16 Jun 2026 20:06:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781665561; x=1782270361; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=VjFINYj1zMYDDcJtLNGEvT7jZIVVI6wBvhquCrpC5Lk=;
+        b=Dx4m37m8WCVpjjlIGga0gv9m4e4opzCN8zGGRJc+5sHnbn/aE7/BR9bSdRjIFhzng3
+         4KGzpYVPVbqa0rli3BLq0y0Tlp6pf7tLf6/6HBmFgtqTRlHSPuvyaGr8KM9XcYfFzWyL
+         w5LJZ/lqrF5k5EmDpCtLQaxvZ/vK8WolDRaefJ8M/wXXYVjCrEDWCxO4wsYk4Jf3rG7E
+         kFcxI8emvHBB3Pw2J5lKFX3oqKmXXacKsRBvlzBi/pHejD4ndfRo2AEYnCctLBZKzk/T
+         FGVWSXO0YrwDVcsnIm/OIdsUBcJUX30GuSQd04yh/69wWeCReH84ZrZs0EqT7GIHnkvh
+         JQ6A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781665561; x=1782270361;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VjFINYj1zMYDDcJtLNGEvT7jZIVVI6wBvhquCrpC5Lk=;
+        b=T/cHZqpVBSqE6PHxNlwLJKEIMfDLjh92of0huVKsOMLwciZiq7ke8KGOcMWP38ezZy
+         UWjEFF5hPoq40ImHBY106L+uU0Backyi7+wgNi3TZp1ghuZFjWIHHdaGeJ3l7a3RxZAd
+         hBNZ6bUOgp6qDZZjxLuWbQ2mv5SDE4uleOLk0pG4t+3/bTsGwAFiNAuI3N4Ojbr1rp85
+         ydz/B23Uz16e4Vvy80asCsekJ6p700BwjIJJuLENyIzLH1LagiZc4Q3OlsDG4SvFXIgu
+         Cf3KZ7ic8KUA64/bfLhct+1Kk29r3b0fxDWLp6RtDW06D8CgVf4yL3VDn/y2YHCbRH7G
+         QVqg==
+X-Forwarded-Encrypted: i=1; AFNElJ85b2rGcK/EJ2X+WHH+YicSjnDVIwbqTV2NSmLwhZ0b/3NLExsbHebP3XXTt8059NwWsR+vhgQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywjxva8evFihi9uuJa8Dzo+MSjq8Qu/CdXE6K9+9z94k7beYoGh
+	nha8W0ttHnVRKqkOJngzsrWnNF3HxUG/uhZygpvHX3QjMb/k48oSbPLf
+X-Gm-Gg: AfdE7cmYDkGu2J+Up2JDfx0uV8+zymvq85583o5o81F2W5z6VWZH+NXsKLFZbv2Eg2t
+	22iC67ysD99MxHENb1EHtUGrxwboi5F0pT5A0NvYLFJAtdPJ5l4bGECwwwVx06k/X6gXEd36ttP
+	YIU8/DBXrOYdLMznm1Z3gzzWZhOcvHBC0NcBVF0CQi7DmhDP7IWQBPHrUMz1aufxxd38cfePhM3
+	jZw8AJvHNqJG6yrFMdWLo20EwDf4z5l3Gb7PpScaQL4qk0cK4y7KnVEBfv0q0DuwvAezulzFIJL
+	2Bk5t29d0BTJ4SZTZmfZThBqTiYoktb/nc0D+K7BD9uUBiEt7BBlZADZmlYWngDKD86WPG2Lor9
+	GS2bYhRYFW+2CAGwuFsdGUNqPnNjJcj+a65MOvmDBgqRSfO8YrOhqK4ce3ZQQ3g8RwaAlxFtZ8R
+	h2VKNv3rMKt9ssZm7iN2XVtDgWXJENUT9YXZbW8MX4YVYJhWJ51pA=
+X-Received: by 2002:a05:7301:6583:b0:304:e59a:e3d1 with SMTP id 5a478bee46e88-30bca0e2049mr1048972eec.24.1781665561156;
+        Tue, 16 Jun 2026 20:06:01 -0700 (PDT)
+Received: from localhost.localdomain ([47.246.98.92])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3081e48bfa7sm21048977eec.5.2026.06.16.20.05.57
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Tue, 16 Jun 2026 20:06:00 -0700 (PDT)
+From: "=?UTF-8?q?=E9=93=AD=E5=AE=A3?=" <omeux327@gmail.com>
+X-Google-Original-From: =?UTF-8?q?=E9=93=AD=E5=AE=A3?= <yangmingxuan.ymx@antgroup.com>
+To: ast@kernel.org,
+	daniel@iogearbox.net,
+	eddyz87@gmail.com
+Cc: security@kernel.org,
+	andrii@kernel.org,
+	memxor@gmail.com,
+	eilaimemedsnaimel@gmail.com,
+	MingXuan <omeux327@gmail.com>,
 	stable@vger.kernel.org
-Subject: Re: [Patch v2] mm/page_vma_mapped: revalidate and do proper check before return device-private pmd
-Date: Wed, 17 Jun 2026 10:32:11 +0800
-Message-Id: <20260617023211.80409-1-lance.yang@linux.dev>
-In-Reply-To: <20260616235022.iesy2jeb2p7zof2l@master>
-References: <20260616235022.iesy2jeb2p7zof2l@master>
+Subject: [PATCH] bpf: reject percpu alloc ptr and percpu ksym convergence at same call insn
+Date: Wed, 17 Jun 2026 11:05:51 +0800
+Message-ID: <20260617030551.39489-1-yangmingxuan.ymx@antgroup.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-266622-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:richard.weiyang@gmail.com,m:lance.yang@linux.dev,m:akpm@linux-foundation.org,m:david@kernel.org,m:ljs@kernel.org,m:riel@surriel.com,m:liam@infradead.org,m:vbabka@kernel.org,m:harry@kernel.org,m:jannh@google.com,m:balbirs@nvidia.com,m:ziy@nvidia.com,m:sj@kernel.org,m:linux-mm@kvack.org,m:lorenzo.stoakes@oracle.com,m:stable@vger.kernel.org,m:richardweiyang@gmail.com,s:lists@lfdr.de];
-	FREEMAIL_TO(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-266623-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[3];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,gmail.com,vger.kernel.org];
+	FORGED_SENDER(0.00)[omeux327@gmail.com,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:ast@kernel.org,m:daniel@iogearbox.net,m:eddyz87@gmail.com,m:security@kernel.org,m:andrii@kernel.org,m:memxor@gmail.com,m:eilaimemedsnaimel@gmail.com,m:omeux327@gmail.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[lance.yang@linux.dev,stable@vger.kernel.org];
+	FREEMAIL_TO(0.00)[kernel.org,iogearbox.net,gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[omeux327@gmail.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lance.yang@linux.dev,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linux.dev:+];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:dkim,linux.dev:mid,linux.dev:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7BEEF696269
+X-Rspamd-Queue-Id: 0269C6963CA
 
+From: MingXuan <omeux327@gmail.com>
 
-On Tue, Jun 16, 2026 at 11:50:22PM +0000, Wei Yang wrote:
->On Tue, Jun 16, 2026 at 08:30:01PM +0800, Lance Yang wrote:
->>
->>On Tue, Jun 16, 2026 at 06:34:36AM +0000, Wei Yang wrote:
->>[...]
->>>diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
->>>index 2ccbabfb2cc1..21635fab209c 100644
->>>--- a/mm/page_vma_mapped.c
->>>+++ b/mm/page_vma_mapped.c
->>>@@ -243,40 +243,28 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
->>> 		 */
->>> 		pmde = pmdp_get_lockless(pvmw->pmd);
->>> 
->>>-		if (pmd_trans_huge(pmde) || pmd_is_migration_entry(pmde)) {
->>>-			pvmw->ptl = pmd_lock(mm, pvmw->pmd);
->>>-			pmde = *pvmw->pmd;
->>>-			if (!pmd_present(pmde)) {
->>>-				softleaf_t entry;
->>>-
->>>-				if (!thp_migration_supported() ||
->>>-				    !(pvmw->flags & PVMW_MIGRATION))
->>>-					return not_found(pvmw);
->>>-				entry = softleaf_from_pmd(pmde);
->>>-
->>>-				if (!softleaf_is_migration(entry) ||
->>>-				    !check_pmd(softleaf_to_pfn(entry), pvmw))
->>>-					return not_found(pvmw);
->>>-				return true;
->>>-			}
->>>-			if (likely(pmd_trans_huge(pmde))) {
->>>-				if (pvmw->flags & PVMW_MIGRATION)
->>>-					return not_found(pvmw);
->>>-				if (!check_pmd(pmd_pfn(pmde), pvmw))
->>>-					return not_found(pvmw);
->>>-				return true;
->>>-			}
->>>-			/* THP pmd was split under us: handle on pte level */
->>>-			spin_unlock(pvmw->ptl);
->>>-			pvmw->ptl = NULL;
->>>-		} else if (!pmd_present(pmde)) {
->>>-			const softleaf_t entry = softleaf_from_pmd(pmde);
->>>-
->>>-			if (softleaf_is_device_private(entry)) {
->>>-				pvmw->ptl = pmd_lock(mm, pvmw->pmd);
->>>-				return true;
->>>-			}
->>>+		if (pmd_present(pmde)) {
->>>+			if (!pmd_leaf(pmde))
->>>+				goto pte_table;
->>>+			if (pvmw->flags & PVMW_MIGRATION)
->>>+				return not_found(pvmw);
->>>+			if (!check_pmd(pmd_pfn(pmde), pvmw))
->>>+				return not_found(pvmw);
->>>+		} else if (pmd_is_migration_entry(pmde)) {
->>>+			softleaf_t entry = softleaf_from_pmd(pmde);
->>>+
->>>+			if (!(pvmw->flags & PVMW_MIGRATION))
->>>+				return not_found(pvmw);
->>
->>Looked at history a bit, and I wonder if this changed something old
->>here ...
->>
->>Since 616b8371539a ("mm: thp: enable thp migration in generic path"), PMD
->>migration handling took PTL before doing PVMW_MIGRATION/PFN checks,
->>including not_found() cases. So lockless PMD read was just a filter ...
->>
->>With this fix, true case gets final pmd_same() check, but this
->>not_found() case happens before taking PTL.
->>
->>So a !PVMW_MIGRATION walker could race with someone, e.g.
->>remove_migration_pmd(): we make the not_found() decision from old PMD
->>value that still says "migration", while real *pvmw->pmd may already be
->>present again. We return without ever taking PTL :)
->>
->
->Hi, Lance
->
->Thanks for take a look.
->
->I am trying to understand the scenario you mentioned. Let's say A migrate a
->pmd and B want to unmap the pmd.
->
->            A                                        B
->
->  try to migrate a pmd
->  pmd is set to migration entry
->                                           unmap the pmd ...
->  managed to finish migration
->                                           ...still see migration entry,
->                                           so skipped and unmap fail
->
->Would this be a timing case? Even B grab the PTL, it still could see migration
->entry if B visit pmd before A finish migration.
->
->Maybe I miss something, look forward your insight.
+The call_with_percpu_alloc_ptr flag is per-instruction but set
+per-path. When a single bpf_this_cpu_ptr()/bpf_per_cpu_ptr() CALL
+instruction is reachable via both a MEM_RCU percpu alloc path and a
+non-MEM_RCU percpu ksym path, the alloc path sets the flag which
+causes do_misc_fixups() to unconditionally prepend a pointer
+dereference (r1 = *(u64 *)(r1 + 0)) for all paths. This dereference
+is correct only for the MEM_RCU path where R1 points to a
+bpf_mem_alloc wrapper.
 
-Right, seeing migration entry while migration is still ongoing is fine.
+For the percpu ksym path, this reads the percpu data content as a
+pointer, producing a corrupted address that causes a kernel Oops when
+the helper's return value is accessed. With a carefully chosen percpu
+ksym, this can become an arbitrary kernel read primitive.
 
-What I meant was this ordering:
+Fix by rejecting programs where a non-MEM_RCU percpu path reaches a
+CALL instruction that already has call_with_percpu_alloc_ptr set from
+a prior MEM_RCU path.
 
-  CPU 0: pmde = pmdp_get_lockless(...); /* migration */
-  CPU 1: remove_migration_pmd() restores PMD to present
-  CPU 0: returns not_found() from old pmde, without ever taking PTL and
-         rechecking *pvmw->pmd
+Fixes: 01cc55af9388 ("bpf: Add bpf_this_cpu_ptr/bpf_per_cpu_ptr support for allocated percpu obj")
+Cc: stable@vger.kernel.org
+Reported-by: MingXuan <omeux327@gmail.com>
+Reported-by: HanQuan <eilaimemedsnaimel@gmail.com>
+Signed-off-by: MingXuan <omeux327@gmail.com>
+---
+ kernel/bpf/verifier.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-So issue is not seeing migration entry itself, but making final
-not_found() decision from stale lockless PMD value ...
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index 7fb88e1cd7c4..c3d4308b4c6e 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -10543,6 +10543,11 @@ static int check_helper_call(struct bpf_verifier_env *env, struct bpf_insn *insn
+ 			}
+ 			returns_cpu_specific_alloc_ptr = true;
+ 			env->insn_aux_data[insn_idx].call_with_percpu_alloc_ptr = true;
++		} else if (reg->type & MEM_PERCPU) {
++			if (env->insn_aux_data[insn_idx].call_with_percpu_alloc_ptr) {
++				verbose(env, "same insn cannot be used with percpu alloc ptr and percpu ksym\n");
++				return -EINVAL;
++			}
+ 		}
+ 		break;
+ 	}
+-- 
+2.50.1 (Apple Git-155)
 
-Before this patch, PMD migration case took PTL before making that
-decision ...
-
->>Not sure about practical fallout, but should these PMD-level not_found()
->>cases also take PTL and restart if PMD changed?
->>
->
->-- 
->Wei Yang
->Help you, Help me
->
 
