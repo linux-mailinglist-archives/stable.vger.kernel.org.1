@@ -1,203 +1,153 @@
-Return-Path: <stable+bounces-266724-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266726-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id iD1KEEeEMmpy1QUAu9opvQ
-	(envelope-from <stable+bounces-266724-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 13:25:59 +0200
+	id Xzd0OouIMmqI1gUAu9opvQ
+	(envelope-from <stable+bounces-266726-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 13:44:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B8366990C7
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 13:25:58 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id E48006993DA
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 13:44:10 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ecEorMHW;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266724-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266724-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=suse.de (policy=none);
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266726-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-266726-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9D48E3041A91
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 11:20:47 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 6E9E53055C67
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 11:30:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C58293C7DE8;
-	Wed, 17 Jun 2026 11:20:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 199D32E6CB8;
+	Wed, 17 Jun 2026 11:29:41 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 613163CB918
-	for <stable@vger.kernel.org>; Wed, 17 Jun 2026 11:20:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F34FA25B0B4
+	for <stable@vger.kernel.org>; Wed, 17 Jun 2026 11:29:38 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781695219; cv=none; b=lt/qz+N+59bRemigEaJpRS9uG3aHwCrWoNgTlm/+QdWifLOxlYc0CHmNa3XSjbOblyWKFbdDds3ceGk9Qw0yVPZ9zz2dmEBpsh//Uu3GFoLhSRRO5ayjwZu2ggPyh4F6zhZ6nD5cK+VwX/xvEFs6PEy4YuwDZKiLK+OWM+blIrw=
+	t=1781695780; cv=none; b=gcmIBvxKm+YNUhRe0DibrE2Vr9Xyq98EyDw3V/mi10OzYkxX5+enb+dtv6VBiJN42A8LbxmKSyGrOt0X6qq1SSGlp1ugKCzeDk7PiXOdEk4ExMN/Om5eusB90Xs0ygUjmms52diFjbS/+6YnZDUc1nWfAsq+cgzmoCsMAtrvihc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781695219; c=relaxed/simple;
-	bh=CN3hTnHGTzcazerSqLwxWW1GpSBEGf3IG1NQptlmTJI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BzR56MMl03lb+20V6S4VawYs7pSxJb3NUDC4lV27R581oBv3kEsT7jknODAoi1pTVX6n6ckgjMUv6UTdyrYxolfRnm+F7hUA/A255tQjtm5qQS4SXCggIT4fNIU9YuRFLh7gkldmCsx3X/wsaludSjYDzXJVLr5l3TZDS5ctkeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ecEorMHW; arc=none smtp.client-ip=209.85.208.175
-Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-399389dae7fso8614381fa.0
-        for <stable@vger.kernel.org>; Wed, 17 Jun 2026 04:20:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781695214; x=1782300014; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=fEPBS2XQIGG150Y2esIPhsZu4HIK10nFbPjkifBbsWY=;
-        b=ecEorMHWxYRrFshldT4/9/HxINnrxEwiWHKpjj6NiVHDowYEgdGiP/kEd7VTQZF28F
-         ySgjjBkQYPSPB2u6Hy+r+6kvnJqRsouiSykcEf6loKSJAPbLZCufdjF+GMEtO48Oy+8M
-         2G3N0maccsgvVmClYCSGeoNm1f+HeAEfVP9Fr3Ewm6l6g5KrV/fpz2Ix/Mxv+cnE23EM
-         CFLz84P3IhH4iJjQDYvOb2l9LtKxU0u4tyzbgaWWJ9v8uvEuCsTIeSb6INi1R7NM7+GK
-         GJUN404Z7BvolbDAm33V4jvoi/zdw/V0YQoMkIV1kOAps7YMrE40RRpOAc9hadzs5m8F
-         rtCg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781695214; x=1782300014;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=fEPBS2XQIGG150Y2esIPhsZu4HIK10nFbPjkifBbsWY=;
-        b=ZvnObjsl/xIQKxKLT5fcZw/H1ddLL8oL6fRKhpmxsBsUi16ez7aigXUP0jsx1YJswP
-         WTnbuQtj7jilCYLWK8T+QYBpKE26SN8+d2T8OTQ03tygbg1ARj6jqELylBahOaskixl2
-         HuV8QOfyvL9QUEgjXUVJZ7eRoq2vdxCIWGZZByaM5mZY0BO8LP5kaGzGrrrR+epwY75W
-         ++4QnfPu00hgI/tkIRO3J0AMPqCkAEVhW1gIKIwg41VAYOAIzjuWwVZMzOjhiidcL8YQ
-         llb1qUml3n8w65cjfSTvmf2l2kIQl104cgRiXv2cLto1FkKtJKQTocx3lVmxWcBj3FlX
-         p+Nw==
-X-Forwarded-Encrypted: i=1; AFNElJ+YPo0nzcg4BxZl/+1/rOACZ9NVYPp71wOm3KtrmD7Cj0W6UaJTcJ6G16ZzYCE9Ldms+uar56g=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzgJvD9zN2dZL6c7oFiXjkHSWSdlmP5MgYoTgdSjFzYh+ZGNkcW
-	Ul8wANJe2VxvNefcjxbwZaioW4zoYDmqtmUX2iGG8f4FBweCi+vghZ55
-X-Gm-Gg: AfdE7cl4mEQajcFP4UOBGoNLW2J1H3EimUs1EmYbJbQJ/oFATn64TBceizHZDSZdCeS
-	0XujN7qkZqBqZeZmxqhG2vSkFPJIHOCh4yHnKK7Su0V3s47a02jszRLHCQGz46iCwIL+nHfNEzK
-	paD/IbaBoPGxPfFOuy+i7KRT4v/fWa+00Yop3i9EszfNR7IKw2BC+AsXIJYhFpUNky/HNN3RT7o
-	N8/QxrWBzJC1vxwk8Gl7i1eMrlmY6FmljbA8yC+5RFZepGUlbqjd0wbj9mFDcRcSTuAoa7endOJ
-	2w9zjDXvPGrLgroLzMB3yAiu/18NPoZASAhX9TR4L5/wMHRvhfX80HSxMD2XLfk/NnKPo7I5CPi
-	3GCX8W9s4b6upqbubyVKfit4L1icLrjAD0yVslJnQzbKOMIedDhHaMoKe+P/kF4fzY4uIImLyQy
-	kwGL3KQ0ig+3X5whcGm4Y6c5VcEJDqPoNxL98loYzdBLuouaBUhGMmHXctNGYsTx0jaLoRe6cUu
-	eISTqyEv8UfSmrvuy5px2NW/3NUuGY+Y65oRqqQrEiAF/HULg==
-X-Received: by 2002:a2e:a594:0:b0:38a:5bf2:80d6 with SMTP id 38308e7fff4ca-3996a013db5mr9545231fa.5.1781695214065;
-        Wed, 17 Jun 2026 04:20:14 -0700 (PDT)
-Received: from ?IPV6:2001:14ba:6e:3100:ab3:3fa0:bafe:f56b? (2001-14ba-6e-3100-ab3-3fa0-bafe-f56b.rev.dnainternet.fi. [2001:14ba:6e:3100:ab3:3fa0:bafe:f56b])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-3995c191cd8sm14748111fa.20.2026.06.17.04.20.13
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 17 Jun 2026 04:20:13 -0700 (PDT)
-Message-ID: <09f69783-3eca-4318-b09b-78e6730e899c@gmail.com>
-Date: Wed, 17 Jun 2026 14:20:12 +0300
+	s=arc-20240116; t=1781695780; c=relaxed/simple;
+	bh=vTOHrKNm1HoUhJUWQrvXEcGiqLCnUDATYPRY7npcQc8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=rDLa0b1gAeXUQZWIXaN8HB/o7Bm9s4xzdPuw7K9oipyVXLxAohu5IyPjBUnYlc9yfCbwZo1GKFsAjbYqliPMu38PVD/nj23ViBpYZxQj9PspnyyLN0LwVx3lUUkg8UgRG+mvXv9Nvi45XrVL3xWmne1//z4g4YGGhveSJ3htpcM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; arc=none smtp.client-ip=195.135.223.131
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 6D87675932;
+	Wed, 17 Jun 2026 11:29:37 +0000 (UTC)
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2F329779AB;
+	Wed, 17 Jun 2026 11:29:37 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id iIAaCiGFMmqbZAAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Wed, 17 Jun 2026 11:29:37 +0000
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: javierm@redhat.com,
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	airlied@gmail.com,
+	simona@ffwll.ch
+Cc: dri-devel@lists.freedesktop.org,
+	sashiko-reviews@lists.linux.dev,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	stable@vger.kernel.org
+Subject: [PATCH 1/2] drm/sysfb: Do not page-align visible size of the framebuffer
+Date: Wed, 17 Jun 2026 13:27:29 +0200
+Message-ID: <20260617112932.511657-2-tzimmermann@suse.de>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260617112932.511657-1-tzimmermann@suse.de>
+References: <20260617112932.511657-1-tzimmermann@suse.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] KVM: VMX: guard regparm(0) on
- vmread_error_trampoline for x86_32 only
-To: Clark Williams <clrkwllms@kernel.org>, stable@vger.kernel.org
-Cc: bpf@vger.kernel.org, x86@ekrnel.org, kvm@vger.kernel.org
-References: <20260617011303.3969027-1-clrkwllms@kernel.org>
- <20260617011303.3969027-3-clrkwllms@kernel.org>
-Content-Language: en-US
-From: =?UTF-8?B?SGFubmUtTG90dGEgTcOkZW5ww6TDpA==?= <hannelotta@gmail.com>
-In-Reply-To: <20260617011303.3969027-3-clrkwllms@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Spam-Flag: NO
+X-Spam-Score: -4.00
+X-Spam-Level: 
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.37 / 15.00];
+X-Spamd-Result: default: False [0.14 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MIXED_CHARSET(0.79)[subject];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
+	DMARC_POLICY_SOFTFAIL(0.10)[suse.de : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-266724-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:javierm@redhat.com,m:maarten.lankhorst@linux.intel.com,m:mripard@kernel.org,m:airlied@gmail.com,m:simona@ffwll.ch,m:dri-devel@lists.freedesktop.org,m:sashiko-reviews@lists.linux.dev,m:tzimmermann@suse.de,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-266726-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:clrkwllms@kernel.org,m:stable@vger.kernel.org,m:bpf@vger.kernel.org,m:x86@ekrnel.org,m:kvm@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FORGED_SENDER(0.00)[hannelotta@gmail.com,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[hannelotta@gmail.com,stable@vger.kernel.org];
+	FREEMAIL_TO(0.00)[redhat.com,linux.intel.com,kernel.org,gmail.com,ffwll.ch];
+	FORGED_SENDER(0.00)[tzimmermann@suse.de,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[tzimmermann@suse.de,stable@vger.kernel.org];
 	ALIAS_RESOLVED(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	R_DKIM_NA(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	RCPT_COUNT_SEVEN(0.00)[9];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.freedesktop.org:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,suse.de:email,suse.de:mid,suse.de:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8B8366990C7
+X-Rspamd-Queue-Id: E48006993DA
 
-On 6/17/26 4:13 AM, Clark Williams wrote:
-> [ Upstream commit 0b5e7a16a0a79a3742f0df9e45bca46f01b40e6a ]
-> 
-> regparm(0) overrides the kernel's -mregparm=3 convention on x86-32 so
-> that vmread_error_trampoline receives its arguments on the stack, matching
-> the inline asm callers that push args before the call.  On x86-64 the
-> attribute is a no-op and newer GCC now emits -Wattributes for it, which
-> becomes a build error under -Werror.  Guard it with CONFIG_X86_32.
-> 
-> [ clrkwllms: the upstream commit redesigns the trampoline declaration as
->    an opaque symbol; this simpler approach guards the regparm(0) attribute
->    with CONFIG_X86_32 since the attribute is only meaningful on x86-32. ]
-> 
-> Assisted-by: Claude:claude-sonnet-4.6
-> Signed-off-by: Clark Williams <clrkwllms@kernel.org>
-> ---
->   arch/x86/kvm/vmx/vmx_ops.h | 7 +++++--
->   1 file changed, 5 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/x86/kvm/vmx/vmx_ops.h b/arch/x86/kvm/vmx/vmx_ops.h
-> index 5edab28dfb2e..50328be40b2b 100644
-> --- a/arch/x86/kvm/vmx/vmx_ops.h
-> +++ b/arch/x86/kvm/vmx/vmx_ops.h
-> @@ -11,8 +11,11 @@
->   #include "../x86.h"
->   
->   void vmread_error(unsigned long field, bool fault);
-> -__attribute__((regparm(0))) void vmread_error_trampoline(unsigned long field,
-> -							 bool fault);
-> +/* regparm(0) overrides -mregparm=3 so args are stack-passed, matching asm callers */
-> +#ifdef CONFIG_X86_32
-> +__attribute__((regparm(0)))
-> +#endif
-> +void vmread_error_trampoline(unsigned long field, bool fault);
->   void vmwrite_error(unsigned long field, unsigned long value);
->   void vmclear_error(struct vmcs *vmcs, u64 phys_addr);
->   void vmptrld_error(struct vmcs *vmcs, u64 phys_addr);
+Only return the actually visible size of the system framebuffer in
+drm_sysfb_get_visible_size_si(). Drivers use this size value for
+reserving access to framebuffer memory. Increasing the value can
+make later attempts to do so fail.
 
-Hi,
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Fixes: 32ae90c66fb6 ("drm/sysfb: Add efidrm for EFI displays")
+Fixes: a84eb6abe2b6 ("drm/sysfb: Add vesadrm for VESA displays")
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Javier Martinez Canillas <javierm@redhat.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v6.16+
+---
+ drivers/gpu/drm/sysfb/drm_sysfb_screen_info.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-I've sent a backport patch for this commit, see here:
+diff --git a/drivers/gpu/drm/sysfb/drm_sysfb_screen_info.c b/drivers/gpu/drm/sysfb/drm_sysfb_screen_info.c
+index 749290196c6a..361b7233600c 100644
+--- a/drivers/gpu/drm/sysfb/drm_sysfb_screen_info.c
++++ b/drivers/gpu/drm/sysfb/drm_sysfb_screen_info.c
+@@ -67,7 +67,7 @@ EXPORT_SYMBOL(drm_sysfb_get_stride_si);
+ u64 drm_sysfb_get_visible_size_si(struct drm_device *dev, const struct screen_info *si,
+ 				  unsigned int height, unsigned int stride, u64 size)
+ {
+-	u64 vsize = PAGE_ALIGN(height * stride);
++	u64 vsize = height * stride;
+ 
+ 	return drm_sysfb_get_validated_size0(dev, "visible size", vsize, size);
+ }
+-- 
+2.54.0
 
-https://lore.kernel.org/lkml/20260617105100.22094-1-hannelotta@gmail.com/
-
-The commit applies cleanly without any modifications, and compiles 
-without errors with gcc-16, and boots.
-
-For commits that apply cleanly, you can simply use:
-
-     git cherry-pick -s -x <commit-id>
-
-And after that
-
-     git commit --amend
-
-to add the required [ Upstream commit <commit-id> ] line.
-
-I wasn't able to see other compilation errors for v6.1.175 using gcc-16. 
-I tried with allyesconfig and my local config.
-
-Hope this helps.
-
-Best regards,
-
-Hanne-Lotta Mäenpää
 
