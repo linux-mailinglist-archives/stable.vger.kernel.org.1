@@ -1,141 +1,153 @@
-Return-Path: <stable+bounces-266782-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266783-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id DcVuGZSuMmpH3gUAu9opvQ
-	(envelope-from <stable+bounces-266782-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 16:26:28 +0200
+	id /LIBHrKuMmpL3gUAu9opvQ
+	(envelope-from <stable+bounces-266783-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 16:26:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEF3369A847
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 16:26:27 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B607469A858
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 16:26:57 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=J4ZGvepd;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266782-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266782-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=none;
+	dmarc=none;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266783-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266783-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id EA5DD3028142
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 14:26:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BF9AC3038B91
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 14:26:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1756B449ED6;
-	Wed, 17 Jun 2026 14:26:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF9FE42EEA1;
+	Wed, 17 Jun 2026 14:26:54 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF2A73F58D1;
-	Wed, 17 Jun 2026 14:26:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DEE3175A8F;
+	Wed, 17 Jun 2026 14:26:49 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781706385; cv=none; b=UCijoIc9Np3DSRuihTEnan/VHRieUg9193die2k8K3u2YKzo8mU4bfb7hi0QUGBd4HfIXITVccldZBQzdu4oEGLdO8f9VX/3iZNod8YaDMgwlko8rViR68kRJPdau16wLMVg1mvJivnmYHVOFipgMJv4umf6cd+lclflxcEZaMA=
+	t=1781706414; cv=none; b=gWLNkK9eSL/FNEUfGQDh0bDITbmh4kC4SWODJwjSvpNRDkI3sCpw0GGnIGJegkzthedicsUS39GHx0UG7GtrCCb3wrnalLVh7/dBwWdZ/ZQmYF2b+22YP5vknyY2CuNZ6x3SvA5qF1kiwR+rcgT7Md9ENw0sxJ6JBv3fi9ZD1ms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781706385; c=relaxed/simple;
-	bh=piWZjWgpY6i97lZ7IrOOepD5NazW4NIySKzMMZOf3L0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=A+3zWEVa7NWQVUUitUBGy5RElZEG9Uq53p6aXNKz+AlBdTcS0abqxd6SJ2o2t9LIYHeXiuhrj2d3nVVj1wWZKYBqak1d8p4INnJt43s8XKIthSHn6OlIx69yxHyjJoyeYwGB+W4tVPB3Lx9SoQsEJcNXzG5vXNpxWht1pfI9sn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J4ZGvepd; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CCE01F00A3A;
-	Wed, 17 Jun 2026 14:26:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781706384;
-	bh=cyfcgLixjIJ/ZNlakykDFftx+mwdMiYzFjxXOqLJVTg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=J4ZGvepdX7KfkIpO65JtGyM0MQn/jAJ/90zWXZr8lKJqcLA7aHu/6PrQLVLTKDx3E
-	 X92s7E+EwnhOhAZuH1Omrscj/Ia4lqXFYB6AsmO0O6P84rK7MuejoeLheAPDBZ5pOl
-	 OsZ3MdvdNedbSf7YH12mEaU+x+5f7sR+g9pSajP60drIMZInnaJ6BOnl92YK7V1EQw
-	 nlqS4n35wEE32g4f8KUa8ufHdRw5ziUvNCathRn7UyK+kREOamQDh+yPI5lzLNzFCy
-	 w2AgkKDaglTEb1LojrIcTp5mf7IyDPt9macYSHjBAd0R4SZQ3EHC8vY4Jb3PNyCNZD
-	 tjdlpqV/bUKRg==
-Date: Wed, 17 Jun 2026 15:26:18 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org,
-	pavel@nabladev.com, jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
-	hargar@microsoft.com, achill@achill.org, sr@sladewatkins.com
-Subject: Re: [PATCH 6.1 000/522] 6.1.176-rc1 review
-Message-ID: <89b84c07-9e6a-410f-a279-321a8085d167@sirena.org.uk>
-References: <20260616145125.307082728@linuxfoundation.org>
+	s=arc-20240116; t=1781706414; c=relaxed/simple;
+	bh=3y0gEXamMe0owhrK09QNOqshLwEU+gZ9iv/DESOXGlc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ih2BTTJKXoi5NNxDq16j38f4x9JWTuvNXvhoCuPURjJLj/vmPg7HJOLjhJX2FOZ8SJoGTpJ9h7c2ZULAowPdWe2UGmuWbr1TV0SHGxTyEkx8e1e8I32phLkqJwkAG0+OUD73sT+CYBpemufNWSWJiSgeEcVVM8PAw6Jvms0incA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Received: from dfae2b116770.home.arpa (unknown [36.110.52.2])
+	by APP-01 (Coremail) with SMTP id qwCowAB3HNWbrjJqafsOAg--.697S2;
+	Wed, 17 Jun 2026 22:26:36 +0800 (CST)
+From: Wentao Liang <vulab@iscas.ac.cn>
+To: matthew.brost@intel.com,
+	thomas.hellstrom@linux.intel.com,
+	rodrigo.vivi@intel.com,
+	airlied@gmail.com,
+	simona@ffwll.ch
+Cc: intel-xe@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	Wentao Liang <vulab@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] drm/xe/guc: Fix invalid kfree() call via __cleanup on pointer
+Date: Wed, 17 Jun 2026 14:26:32 +0000
+Message-Id: <20260617142632.3298984-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="QoVnGzZQg5ZjXRwR"
-Content-Disposition: inline
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-X-Cookie: Absence makes the heart go wander.
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qwCowAB3HNWbrjJqafsOAg--.697S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7CFy3ZryDWw48Zr4xtF43ZFb_yoW8Ww4fpa
+	9aqr1jyrW3XF1xtanrZa10vF15Can8JF92gwsrAwsruw15tw1fAr95AayUXr97ZrWxAF12
+	yFZIywsrG3sFyaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9j14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
+	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
+	jxv20xvE14v26r1Y6r17McIj6I8E87Iv67AKxVW0oVWYowAm72CE4IkC6x0Yz7v_Jr0_Gr
+	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxa
+	n2IY04v7MxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4
+	AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE
+	17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMI
+	IF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4l
+	IxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvf
+	C2KfnxnUUI43ZEXa7VU1bTmDUUUUU==
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiDAYBA2oybL66kQABso
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-5.76 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	SIGNED_PGP(-2.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [0.04 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-266782-lists,stable=lfdr.de];
+	DMARC_NA(0.00)[iscas.ac.cn];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER(0.00)[broonie@kernel.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,m:patches@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:torvalds@linux-foundation.org,m:akpm@linux-foundation.org,m:linux@roeck-us.net,m:shuah@kernel.org,m:patches@kernelci.org,m:lkft-triage@lists.linaro.org,m:pavel@nabladev.com,m:jonathanh@nvidia.com,m:f.fainelli@gmail.com,m:sudipm.mukherjee@gmail.com,m:rwarsow@gmx.de,m:conor@kernel.org,m:hargar@microsoft.com,m:achill@achill.org,m:sr@sladewatkins.com,m:ffainelli@gmail.com,m:sudipmmukherjee@gmail.com,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	FORGED_RECIPIENTS(0.00)[m:matthew.brost@intel.com,m:thomas.hellstrom@linux.intel.com,m:rodrigo.vivi@intel.com,m:airlied@gmail.com,m:simona@ffwll.ch,m:intel-xe@lists.freedesktop.org,m:dri-devel@lists.freedesktop.org,m:linux-kernel@vger.kernel.org,m:vulab@iscas.ac.cn,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-266783-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
+	FREEMAIL_TO(0.00)[intel.com,linux.intel.com,gmail.com,ffwll.ch];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[broonie@kernel.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	R_DKIM_NA(0.00)[];
 	TO_DN_SOME(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sirena.org.uk:mid,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,iscas.ac.cn:mid,iscas.ac.cn:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: EEF3369A847
+X-Rspamd-Queue-Id: B607469A858
 
+The variable `buf` in `fast_req_dump()` is declared with
+`__cleanup(kfree)`, which passes `&buf` (the stack address of the
+pointer variable) to kfree() rather than the heap address stored
+in `buf`.  This would cause an invalid free of a stack address,
+leading to memory corruption or a crash.
 
---QoVnGzZQg5ZjXRwR
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+`__cleanup(func)` is designed for value-typed variables where the
+cleanup function should receive a pointer to the variable.  For
+heap-allocated pointers, `__free(kfree)` must be used instead,
+since DEFINE_FREE creates a wrapper that correctly dereferences
+the pointer before passing it to kfree().
 
-On Tue, Jun 16, 2026 at 08:22:27PM +0530, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.176 release.
-> There are 522 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+This is the same class of bug recorded in CVE-2026-45959 and fixed by
+commit d5abcc33ee76 ("crypto: ccp - Fix a crash due to incorrect
+cleanup usage of kfree").
 
-Tested-by: Mark Brown <broonie@kernel.org>
+Fixes: ea944d57eac7 ("drm/xe/guc_ct: Cleanup ifdef'ry")
+Cc: stable@vger.kernel.org
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+---
+ drivers/gpu/drm/xe/xe_guc_ct.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---QoVnGzZQg5ZjXRwR
-Content-Type: application/pgp-signature; name="signature.asc"
+diff --git a/drivers/gpu/drm/xe/xe_guc_ct.c b/drivers/gpu/drm/xe/xe_guc_ct.c
+index a11cff7a20be..73867a5cbe3a 100644
+--- a/drivers/gpu/drm/xe/xe_guc_ct.c
++++ b/drivers/gpu/drm/xe/xe_guc_ct.c
+@@ -116,7 +116,7 @@ static void fast_req_dump(struct xe_guc_ct *ct, u16 fence, unsigned int slot)
+ {
+ 	struct xe_gt *gt = ct_to_gt(ct);
+ #if IS_ENABLED(CONFIG_DRM_XE_DEBUG_GUC)
+-	char *buf __cleanup(kfree) = kmalloc(SZ_4K, GFP_NOWAIT);
++	char *buf __free(kfree) = kmalloc(SZ_4K, GFP_NOWAIT);
+ 
+ 	if (buf && stack_depot_snprint(ct->fast_req[slot].stack, buf, SZ_4K, 0))
+ 		xe_gt_err(gt, "Fence 0x%x was used by action %#04x sent at:\n%s\n",
+-- 
+2.34.1
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmoyrokACgkQJNaLcl1U
-h9Dwhgf/bDevMaXuBDwdT9jacbcZaEBGkn+FyQDM4e+a+SDqXPHk4gRkAxB8XBcI
-qJUOgdzBkRzQh5VLPMS4ieUxnIK8ttopMqlolouemwphG3SsZ2RYLJtI4b3d4xw4
-X8rHG1z5OJZl1D6t1QjvkH57x0OxnC0TTo9B5pSOC7SyjzjVCphCE4BAYQuzB6ru
-l/Pi6JjCJ3ot7kZs06AoPaOGQbXARWo6XsN/l9/DjwdAEwGTbfRRQ6Bm/wL9Y9jY
-Cj7Ca+2I5p4K0G4byKj27om/nes6EF/RtgUD0I0lkNLt/dK9CQYqnVO8R78wFex9
-7PDoHISig0enmM1p9L772uWrspY13w==
-=qvu4
------END PGP SIGNATURE-----
-
---QoVnGzZQg5ZjXRwR--
 
