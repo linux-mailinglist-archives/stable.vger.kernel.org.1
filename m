@@ -1,225 +1,240 @@
-Return-Path: <stable+bounces-266725-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266727-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 7eGDMLuKMmoL1wUAu9opvQ
-	(envelope-from <stable+bounces-266725-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 13:53:31 +0200
+	id gYPlKP6HMmpl1gUAu9opvQ
+	(envelope-from <stable+bounces-266727-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 13:41:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 367E2699507
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 13:53:31 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0679C699371
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 13:41:50 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=suse.de (policy=none);
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266725-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266725-lists+stable=lfdr.de@vger.kernel.org";
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
+	dkim=pass header.d=intel.com header.s=Intel header.b=JmT1YLrN;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266727-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266727-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=intel.com;
+	arc=reject ("cv is fail on i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6A83B32F8E6C
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 11:30:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1CFE2301F9E9
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 11:30:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5584273D8F;
-	Wed, 17 Jun 2026 11:29:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08D2D3E9C2F;
+	Wed, 17 Jun 2026 11:30:54 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39DDA2D94AB
-	for <stable@vger.kernel.org>; Wed, 17 Jun 2026 11:29:39 +0000 (UTC)
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781695780; cv=none; b=jV06yhRLfs9tz0jks680sxxx1p+CUyI9Rut2t23ixH3Afirs+ouw158+zZd9JNKvkhsHREVKNfA9XJq1YU+gr3MvPFjOw2c7/GASDS9qlViTHWErfv003WxvnutzhBxP7RQpx2fr3iEMKYn9aMHUY8jWQjRDdH1tI9nIpwb9/mw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781695780; c=relaxed/simple;
-	bh=3p7XZ/qL3/9FoxLGYi5zEFz1IHsnMRpVGxgtlmMPr3o=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PIIH0svRwxhocawf4jXWzkdSqBqyanopwzk2XtqWJR9GGHVKwZjE2ftWT4IkUu1WNTZRvb7YirBEKuJhs4/O2oR+7beOxUjbrhTdsQj7nGT/mAWEXXGnGBaCOsRZRXyMAig+2Yu/jB4urSfa1hNSH0M/e4RFjrpxKKjZy19vD1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; arc=none smtp.client-ip=195.135.223.130
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id B112D6BEAF;
-	Wed, 17 Jun 2026 11:29:37 +0000 (UTC)
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 73B87779A8;
-	Wed, 17 Jun 2026 11:29:37 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id iP8HGyGFMmqbZAAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Wed, 17 Jun 2026 11:29:37 +0000
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: javierm@redhat.com,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	airlied@gmail.com,
-	simona@ffwll.ch
-Cc: dri-devel@lists.freedesktop.org,
-	sashiko-reviews@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	stable@vger.kernel.org
-Subject: [PATCH 2/2] drm/sysfb: Return errno code from drm_sysfb_get_visible_size()
-Date: Wed, 17 Jun 2026 13:27:30 +0200
-Message-ID: <20260617112932.511657-3-tzimmermann@suse.de>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260617112932.511657-1-tzimmermann@suse.de>
-References: <20260617112932.511657-1-tzimmermann@suse.de>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 677193E1D06;
+	Wed, 17 Jun 2026 11:30:52 +0000 (UTC)
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781695853; cv=fail; b=KfYNdEFoVX8ZxBWv5RKxLDFHYMpc9UbzYYxoWxeubsFPomlViPD1oPvcx4fXUNLWusY/RkJFbKSRn7jJ5Ib5AvB5rnNgxV56Tdjk4WjRqiEhcmdDyWTfvB7FH6E/DJyz1cxpCyPnSLMA86jtIsw1yXs3gVsDHv2rPJBe8ek3M5A=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781695853; c=relaxed/simple;
+	bh=o9ac4ykSSGyJTHGJkhoopnOD8LNoFsOKVAVZgnTWlwg=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=n4JXrqIrSVZQ+a7keup+OZPKzNM2jInCEi4E3zBJdQ7cRN2RWldnHH60fALhVw+CG+drhMTiRZnYlBSOyhvbAnLJF54fkAgedsiWOFfkY3My5mW7xYj9hzwjLKZFirp031PTViPGgfshvqylhNmWNp6VmR9rGRuEWMM+viPjC0s=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JmT1YLrN; arc=fail smtp.client-ip=192.198.163.17
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1781695852; x=1813231852;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-id:content-transfer-encoding:
+   mime-version;
+  bh=o9ac4ykSSGyJTHGJkhoopnOD8LNoFsOKVAVZgnTWlwg=;
+  b=JmT1YLrNDnVzevfVEFLlPytH2daCrqLszZqrS2FeBN1pXMpGU+b2D5Ty
+   IS0yeyZA3uriVuCMCSbHgKGI1EcJkHw5UPotbl9xtjJcOXNy0MDFeBpwI
+   BLYL0Ld9kI1TbMpNmsMTdlGelFfTSFT9Un4B8ZhmLoPIjsbpl0BYM2/4i
+   ocvjRADZEXhf2HARQ4rijbZoDvY9FpKOe8XJcFCzf+CJDAr3eGdxIUN8M
+   6F83e0K3rYCq3OWpKOawCrBknLoVR+iQ3jqbWc9RLkGVckzKmb/NcwPWi
+   1XpSzjwiOmldi/FwBIoEUVEo5IA+x1qy1N/sqXdt3GXS4fv/UyCDaO0y3
+   Q==;
+X-CSE-ConnectionGUID: 2b46pFyNQUSZKokQrsITgg==
+X-CSE-MsgGUID: Fk72VrkYRSCkAibqetyRUw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11819"; a="82365046"
+X-IronPort-AV: E=Sophos;i="6.24,209,1774335600"; 
+   d="scan'208";a="82365046"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jun 2026 04:30:51 -0700
+X-CSE-ConnectionGUID: roT8q04cQZ2fKdc2t3zoPA==
+X-CSE-MsgGUID: xJ/lMaIzRY6sNKpMn4LOGA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,209,1774335600"; 
+   d="scan'208";a="286156617"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+  by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jun 2026 04:30:52 -0700
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Wed, 17 Jun 2026 04:30:51 -0700
+Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Wed, 17 Jun 2026 04:30:51 -0700
+Received: from BL0PR03CU003.outbound.protection.outlook.com (52.101.53.42) by
+ edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Wed, 17 Jun 2026 04:30:50 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=PR4a+DHkXR9CkwEcCWlw6CoLqRzmuoYVG5s0ogVfLw3HujQ9fYq1gJ7LIBRH7e98+pRn75XXBMNP6hS1jFjA1bRVl4IU/I+1XL9oz37ukHnZtshPcDjE9T3cTgeDEVyDfzzCVqR/R5poCUwhpvQZXF96dWA7wB5dQ/z6ax/Twj/A+xZc4wRlGZ8vI/kydp5TOXKkeU4XUCPKIeqhqzOjOO+XUexHE+IDjuYuV6G19CDdREd1KXxM3d6m//bNGKoL8Ahtej0904RU+A6abeQ8O+ClbqVMIZoC6RyCW3AUeZpmiy6dt9ebA1v/hanbU/zSTQVL2Yfz2uWfrnQi4nGA0g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=o9ac4ykSSGyJTHGJkhoopnOD8LNoFsOKVAVZgnTWlwg=;
+ b=Ra+4hpk3z3QzWh+GitvXIqTjRodXGaV3M0xN0/VDML4mhEjYkUKbZxbbYe6q5ZnOcKSk6HGTB1WG/M0XQ5qsDXgZgmRc20RWZNknwpfSpeGZAXIexMSJ8lkmqkF/9Qa58Mu/eFyIdmwpAgOCzcGJipf7Y5971XMOSDc0LakmZzVpEWs2GGlvMmG8ZUaV9ETNvQ5iTomb1/P2KtQG4fR2ZKHU7t7zLYlmLMAvaE+avBjVSE/1qmpoS71H0xxvVslZDb1DDQrBZtvem1m4QtxHvMlmkQLbLQtyv5VBXeFQapuL8H/D2D/OtSJ2YIYd4SP1pJDYXe7c8TjWmhDEAZyC5w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from DM6PR11MB2650.namprd11.prod.outlook.com (2603:10b6:5:c4::18) by
+ CY5PR11MB6317.namprd11.prod.outlook.com (2603:10b6:930:3f::13) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.113.18; Wed, 17 Jun 2026 11:30:48 +0000
+Received: from DM6PR11MB2650.namprd11.prod.outlook.com
+ ([fe80::ec1e:bdbd:ecd8:4c86]) by DM6PR11MB2650.namprd11.prod.outlook.com
+ ([fe80::ec1e:bdbd:ecd8:4c86%3]) with mapi id 15.21.0139.009; Wed, 17 Jun 2026
+ 11:30:48 +0000
+From: "Huang, Kai" <kai.huang@intel.com>
+To: "seanjc@google.com" <seanjc@google.com>, "yosry@kernel.org"
+	<yosry@kernel.org>
+CC: "jmattson@google.com" <jmattson@google.com>, "kvm@vger.kernel.org"
+	<kvm@vger.kernel.org>, "pbonzini@redhat.com" <pbonzini@redhat.com>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 1/3] KVM: nVMX: Always flush vpid02 on first use
+Thread-Topic: [PATCH 1/3] KVM: nVMX: Always flush vpid02 on first use
+Thread-Index: AQHc/dm+vhBqLF7f3EanPIP01uKgGbZCncWA
+Date: Wed, 17 Jun 2026 11:30:48 +0000
+Message-ID: <5b5a0f3f21bba5d25410382a9e0170a17c952738.camel@intel.com>
+References: <20260616214652.2157032-1-yosry@kernel.org>
+	 <20260616214652.2157032-2-yosry@kernel.org>
+In-Reply-To: <20260616214652.2157032-2-yosry@kernel.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+user-agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DM6PR11MB2650:EE_|CY5PR11MB6317:EE_
+x-ms-office365-filtering-correlation-id: c5980513-6560-46f9-d8e4-08decc63e121
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|23010399003|1800799024|366016|376014|38070700021|22082099003|18002099003|56012099006|4143699003|11063799006;
+x-microsoft-antispam-message-info: DHs8OwRUCUt3xTC2aEPAUfR7NQ2PxHyhXisyxGZJm3DwRF56YJuQiRz5/Fbmq1jdHG9Oxc9WhKKItOB1X+vb9zaJyGhoSiwcPNyNu/IJO0Ktg6KULZculF2SZKIYRF+snD3gYnVm/jCUs+mqFfYPe0d0VfwWV9HhK9IcjcwRxs4gHWdJKFvPF7Zh8PCUo9y7MmD/JRu1YBexgr48632j+ivldaZqdEFDdMsv46+X70sWcjOzasHeMFew7EDtNeWwE4VSdKDnzxePQIM6oI6BObTvJnHSa7Gx55sKOdOBQ3yGCDQa3PKaBeZObTMFKnec2RJKne+jNDtdphgQhXyo3vsLbPN8cAYt1u+9HbNjx432rCYZEhbV69wU0mrpHBZKG6UBcVOg0L9lTJ5IJooDB8Ug7xPTIXws1W8VqHqDmjKzghOJWvs3kAWhnJTV6Nug62CdJOuQEAKFHkwpJEBBrbs3iy8RQtTeVIR27pe9o5buo3HT6VKtiS0gTtwVYl+kRZksjddaetn0vXCb2pWT8824Ugndz4rDUA9x1JzwGbJ48ES9VM2MmC9mFw0T5Azn8EK9aVw9PSrK1WS8jZdu6IejxQ2A78o/0+pR1mZ5xJpcnDucd+PQUtkirBtVOUNbW7y9SoPnQdEP8XyD1dCJI+GrPclk9ga98RCV/IpXufZCky6+XI3QWTb7o2Y+m3Gu8h3BvJoJvdpKTf4uCOVLIuriQMRCU9Swq/67GSSnAHbhM1S+Vg8J0jzJT94uLrtZ
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR11MB2650.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(366016)(376014)(38070700021)(22082099003)(18002099003)(56012099006)(4143699003)(11063799006);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?RHcrbW4vcm5vTC9hb2dVYUo4S3NLMWhKcWVKbnhBU2dGd3ArdnhKRStJa3BS?=
+ =?utf-8?B?MlRmMWUxRktnNzl2dU5EK0hVelQ0TjVrbFlpYUVUNVNqYXRTSTdxN1JaTG9K?=
+ =?utf-8?B?ODZnOGZ3UHptME1BVENiYzZFTTZIN0FseDAxMmh3RFY5V0k1a0F5RmlQQjM2?=
+ =?utf-8?B?ZTFXbUlHOE91bGZwNDBpWVdqWDZObFBRMk1ZZGlQZEIxckd6Skp5MThOU0xB?=
+ =?utf-8?B?QmN4b2pmemk5cHdWQ0cvWnJNTDU1N0huMEJBbDhZeDJHNmdjTnA0RDdwM2s5?=
+ =?utf-8?B?Q3h6a1hjKzlnbm1XOVRaUkYwSWFZRVVKZ3BPVHM3cmlreENoNmsxdFUrWjd5?=
+ =?utf-8?B?aU1DSjQzRDJLb2wyRVV3NGwzZzczV0NhOG1LS21HZ21PdmxrVmhSMTNINTFj?=
+ =?utf-8?B?MWtCRnl0UUtTUHpMR0dKN2t2akNtRVhzMThsVHJnaU90am5kSWFpWEZ1V28v?=
+ =?utf-8?B?Q0MzaytjWC9tQ1lhVHprOG1yR0dJazd0RngvcDJXTjVOdnVuZmp0Y2dpS1Iz?=
+ =?utf-8?B?akZMdTNRVGo2OXFSUHJLTDhYeDBLbC9iVE0vdXJyZVlycmRzRityRDJCbUpD?=
+ =?utf-8?B?YVd0cVo5Y3JwdURVc3JraFpPTFhBS2JPZkxkM01nWWx6UElxeFlIcWFjTzVu?=
+ =?utf-8?B?YTcxVjlDS3dJLy81M21ndEU3SDhjUTYyb0cyRk9IdFlrTjMySXYrQithZWdi?=
+ =?utf-8?B?UXJMbkQvK29nMzFHUWdnQ1E5OGNqWDV6OGt3QWpWb3hhK3pwUkhBa2w5eFVY?=
+ =?utf-8?B?VTFYUzNkZ1l0MlpkYTd2MHNNRmg4UFNWNjBVUTA5OEhuTmpGWVRwcFlZNE9L?=
+ =?utf-8?B?RU5wQVo1emVFNWQ3cXZqZUZtMGlqd3pGVnI1dkkySzhteVd0eC9XT2lPQlpC?=
+ =?utf-8?B?ZkJRYWE3czBEWldMNUlzRXNCcHRVZmZFU3BhWEJkWnlCdmh6TGwwQUxleVRz?=
+ =?utf-8?B?UDNCUGlNYzV6OHRvMVhMYjdDRzhYVmU4SFVQYkY1N1hwbDJ5Sjd1azgwVkZi?=
+ =?utf-8?B?U0FTR2NpWld6UXZNRnE1MlVUdTQyMmszZ3hmQTF1dmRON2ZYMnZQQWVjZ3kr?=
+ =?utf-8?B?N1IzVk5kMmhaUjg4d2JnRGFsR2c2S3ZpMHZ2cTFBalpOWnBpRmJHdmg4ZHpv?=
+ =?utf-8?B?SWJSR1hjNjMyR3ltamhKa1U5QjEwb1pML3lRMERvcGJMQUFiVzMvUUlQZVFt?=
+ =?utf-8?B?V0wwUGVXSWxMcnN3YXNUTnRwOE9Hcnc5ZzE5d1F4V2FDdUtoMlhHLzNZdUJh?=
+ =?utf-8?B?S0pHNVZITHJhelp0KzdNNkRwcVZBTStNck1vWVhkejJwL0tTaFIyS1VzUWF5?=
+ =?utf-8?B?Z0NNWVozS0dPVGYxOEltT29pK3MwREtzU0hEWUVkN2R3bWMvTTZJTHhTQlQv?=
+ =?utf-8?B?TS91eEVZaDhWQ2FIcWM4aVNOUXllTXIxZ0V1eitXRDZLUFF5SVV4S2RSK1ZE?=
+ =?utf-8?B?dS9LcVFMb0Y3S2JxMzYrWkJ6aThCRmtqRUJhbFo5YWJEcmhTMlI0RklJODE4?=
+ =?utf-8?B?dmxYTTVCczErSnVEWWNkSElLa3FBQ1MzaWZEZ3JqV09ML1prVk41bXA2eGFq?=
+ =?utf-8?B?d1V1NEFtUmg3VXJxcVErZ0cybmcySzh3dDlZUFMyZlAxazhwamh6WlBKTjRI?=
+ =?utf-8?B?eWkwVmtxQkF4OWdyVzdMaE1hdUZpcWxkTXduOVdYWG5seFZkTUczQi9oQ2o3?=
+ =?utf-8?B?YWNxcVlxa1BjVW5DTkUxYWh5OG0yVjlpNmhwditYQmpPYjcwRnJ2dGp5SEFP?=
+ =?utf-8?B?ZjVzSlpmY3V6ZGFWM1dhME9yeWhtN2c3UUdHeXNKUXlWNWpRSm1sNkQxYTVM?=
+ =?utf-8?B?MkZpbjRhY2llOVYybGkvZWRaUlhXSkxZSlVQT3B2NG8yVHNsWitETWFEWmZJ?=
+ =?utf-8?B?TlBuL1VTcnFqcFVQVkhmaTBKNHJBWG1UOEx0aTd1TUhtaCtIR21ia3NROUt5?=
+ =?utf-8?B?WjJtYkxzblJiQW1GRGhma0RPeWtPMjYyNzJRRXU2Qk4rN0g1NG1VdkxZOXlk?=
+ =?utf-8?B?M3l5ODlidG9jbUI2cVpTMnM3R1d5RU42cThLTnpVY0FrcGN5SURzUWFHQ0JB?=
+ =?utf-8?B?K0Q0R1FGemtUUm1VTHJBVEo3NG5PSnJnKzdNL2JpM1BoZVRJditOSi9qOVFN?=
+ =?utf-8?B?Lyt1N3FzZnVEd0prZ3l4elczK1BodGJTb0d5Y0FKTk9CVWFSb2xlY2NjaFZ6?=
+ =?utf-8?B?TnJDTXM0NDdzaWE4L1RkR1FlN2oyWjNXaDhpOWVxOUFERk5FM0dYZ0tlQUlq?=
+ =?utf-8?B?NUNyWG10eUUxNnUrSCtSVHVuaEdUM2NJVnpvZXo2U0FjN1gzRlp2RUNqaDNN?=
+ =?utf-8?B?allMa1hKMGd3R2VFS2M4RWl5RUFMRmF6bTBEQmQvdnV1YzgvRS9VQT09?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <931BE1BEECDF52458D854081C9CE423A@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Pre-Result: action=no action;
-	module=replies;
-	Message is reply to one we originated
-X-Rspamd-Pre-Result: action=no action;
-	module=replies;
-	Message is reply to one we originated
-X-Spam-Flag: NO
-X-Spam-Score: -4.00
-X-Spam-Level: 
+X-Exchange-RoutingPolicyChecked: gb3ccMkWoeuff6fGUgUzAp/oSJs1FX8EzhMMVyXhyn+A+H2ptPCpXFLrLEr/+LeeMkeVglSZohiJlSSu3ofP0VRKd/G1xf85R0ZYASeAKxAzMDwf6N0TJgE9BKdthfSn60IB05hl8fmya09yKGQflU1PIxnbhtWQsHC5dgthXW0XXCUEePVLpqYjxApoJ9lR2YOo2rZS5DFZE3uASJ+6eEkH35J6kWxf/geuSMt/Jfr0rsLB72AC+X9MQyL1y4rVgCaufbxcO39FCYrGJwzi3rLCpeo/0hgcCES/6e5W52pOH8RN8d4WNYFlHG/J9FdqwXmRY3yX+AeUMCrXQW0Z7Q==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR11MB2650.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c5980513-6560-46f9-d8e4-08decc63e121
+X-MS-Exchange-CrossTenant-originalarrivaltime: 17 Jun 2026 11:30:48.4031
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: bn9Q8QA7meUvhOCFKtvPcXYDB4X4+6zJ1yv+VGPUIn9W6joLyXIZoRY+OsUlI4HXCPudrLCzSgsSMmZb10L30w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR11MB6317
+X-OriginatorOrg: intel.com
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.14 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+X-Spamd-Result: default: False [-2.06 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[intel.com:d:+,kernel.org:s:+];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	MIME_BASE64_TEXT_BOGUS(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[suse.de : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
+	MIME_BASE64_TEXT(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:javierm@redhat.com,m:maarten.lankhorst@linux.intel.com,m:mripard@kernel.org,m:airlied@gmail.com,m:simona@ffwll.ch,m:dri-devel@lists.freedesktop.org,m:sashiko-reviews@lists.linux.dev,m:tzimmermann@suse.de,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-266725-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FREEMAIL_TO(0.00)[redhat.com,linux.intel.com,kernel.org,gmail.com,ffwll.ch];
-	FORGED_SENDER(0.00)[tzimmermann@suse.de,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-266727-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:seanjc@google.com,m:yosry@kernel.org,m:jmattson@google.com,m:kvm@vger.kernel.org,m:pbonzini@redhat.com,m:stable@vger.kernel.org,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_EQ_ADDR_ALL(0.00)[];
+	FORGED_SENDER(0.00)[kai.huang@intel.com,stable@vger.kernel.org];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,intel.com:dkim,intel.com:email,intel.com:mid,intel.com:from_mime];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[tzimmermann@suse.de,stable@vger.kernel.org];
-	ALIAS_RESOLVED(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	MIME_TRACE(0.00)[0:+];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[kai.huang@intel.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
+	ALIAS_RESOLVED(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	R_DKIM_NA(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.freedesktop.org:email,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	RCVD_COUNT_SEVEN(0.00)[10]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 367E2699507
+X-Rspamd-Queue-Id: 0679C699371
 
-Change the return type of drm_sysfb_get_visible_size() to s64 so
-that it returns a possible errno code from _get_validated_size0().
-Fix callers to handle the errno code.
-
-The currently returned unsigned type converts an errno code to a
-very large size value, which drivers interpret as visible size of
-the system framebuffer. Later efforts to reserve the framebuffer
-resource fail.
-
-The bug has been present since efidrm and vesadrm got merged. It
-was then part of each driver.
-
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Fixes: 32ae90c66fb6 ("drm/sysfb: Add efidrm for EFI displays")
-Fixes: a84eb6abe2b6 ("drm/sysfb: Add vesadrm for VESA displays")
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Javier Martinez Canillas <javierm@redhat.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v6.16+
----
- drivers/gpu/drm/sysfb/drm_sysfb_helper.h      | 2 +-
- drivers/gpu/drm/sysfb/drm_sysfb_screen_info.c | 2 +-
- drivers/gpu/drm/sysfb/efidrm.c                | 7 ++++---
- drivers/gpu/drm/sysfb/vesadrm.c               | 6 +++---
- 4 files changed, 9 insertions(+), 8 deletions(-)
-
-diff --git a/drivers/gpu/drm/sysfb/drm_sysfb_helper.h b/drivers/gpu/drm/sysfb/drm_sysfb_helper.h
-index 2a2b553366fb..547f2327af5e 100644
---- a/drivers/gpu/drm/sysfb/drm_sysfb_helper.h
-+++ b/drivers/gpu/drm/sysfb/drm_sysfb_helper.h
-@@ -50,7 +50,7 @@ struct resource *drm_sysfb_get_memory_si(struct drm_device *dev,
- int drm_sysfb_get_stride_si(struct drm_device *dev, const struct screen_info *si,
- 			    const struct drm_format_info *format,
- 			    unsigned int width, unsigned int height, u64 size);
--u64 drm_sysfb_get_visible_size_si(struct drm_device *dev, const struct screen_info *si,
-+s64 drm_sysfb_get_visible_size_si(struct drm_device *dev, const struct screen_info *si,
- 				  unsigned int height, unsigned int stride, u64 size);
- #endif
- 
-diff --git a/drivers/gpu/drm/sysfb/drm_sysfb_screen_info.c b/drivers/gpu/drm/sysfb/drm_sysfb_screen_info.c
-index 361b7233600c..40b4f7883b9b 100644
---- a/drivers/gpu/drm/sysfb/drm_sysfb_screen_info.c
-+++ b/drivers/gpu/drm/sysfb/drm_sysfb_screen_info.c
-@@ -64,7 +64,7 @@ int drm_sysfb_get_stride_si(struct drm_device *dev, const struct screen_info *si
- }
- EXPORT_SYMBOL(drm_sysfb_get_stride_si);
- 
--u64 drm_sysfb_get_visible_size_si(struct drm_device *dev, const struct screen_info *si,
-+s64 drm_sysfb_get_visible_size_si(struct drm_device *dev, const struct screen_info *si,
- 				  unsigned int height, unsigned int stride, u64 size)
- {
- 	u64 vsize = height * stride;
-diff --git a/drivers/gpu/drm/sysfb/efidrm.c b/drivers/gpu/drm/sysfb/efidrm.c
-index 1a1e36700976..3f9cd5d03efb 100644
---- a/drivers/gpu/drm/sysfb/efidrm.c
-+++ b/drivers/gpu/drm/sysfb/efidrm.c
-@@ -152,7 +152,8 @@ static struct efidrm_device *efidrm_device_create(struct drm_driver *drv,
- 	const struct screen_info *si;
- 	const struct drm_format_info *format;
- 	int width, height, stride;
--	u64 vsize, mem_flags;
-+	s64 vsize;
-+	u64 mem_flags;
- 	struct resource resbuf;
- 	struct resource *res;
- 	struct efidrm_device *efi;
-@@ -206,8 +207,8 @@ static struct efidrm_device *efidrm_device_create(struct drm_driver *drv,
- 	if (stride < 0)
- 		return ERR_PTR(stride);
- 	vsize = drm_sysfb_get_visible_size_si(dev, si, height, stride, resource_size(res));
--	if (!vsize)
--		return ERR_PTR(-EINVAL);
-+	if (vsize < 0)
-+		return ERR_PTR(vsize);
- 
- 	drm_dbg(dev, "framebuffer format=%p4cc, size=%dx%d, stride=%d bytes\n",
- 		&format->format, width, height, stride);
-diff --git a/drivers/gpu/drm/sysfb/vesadrm.c b/drivers/gpu/drm/sysfb/vesadrm.c
-index dbc317778d54..6a67b2d2e451 100644
---- a/drivers/gpu/drm/sysfb/vesadrm.c
-+++ b/drivers/gpu/drm/sysfb/vesadrm.c
-@@ -402,7 +402,7 @@ static struct vesadrm_device *vesadrm_device_create(struct drm_driver *drv,
- 	const struct screen_info *si;
- 	const struct drm_format_info *format;
- 	int width, height, stride;
--	u64 vsize;
-+	s64 vsize;
- 	struct resource resbuf;
- 	struct resource *res;
- 	struct vesadrm_device *vesa;
-@@ -457,8 +457,8 @@ static struct vesadrm_device *vesadrm_device_create(struct drm_driver *drv,
- 	if (stride < 0)
- 		return ERR_PTR(stride);
- 	vsize = drm_sysfb_get_visible_size_si(dev, si, height, stride, resource_size(res));
--	if (!vsize)
--		return ERR_PTR(-EINVAL);
-+	if (vsize < 0)
-+		return ERR_PTR(vsize);
- 
- 	drm_dbg(dev, "framebuffer format=%p4cc, size=%dx%d, stride=%d bytes\n",
- 		&format->format, width, height, stride);
--- 
-2.54.0
-
+T24gVHVlLCAyMDI2LTA2LTE2IGF0IDIxOjQ2ICswMDAwLCBZb3NyeSBBaG1lZCB3cm90ZToNCj4g
+TWFrZSBzdXJlIHZwaWQwMiBpcyBhbHdheXMgZmx1c2hlZCBvbiBmaXJzdCB1c2UgYnkgc2V0dGlu
+ZyBsYXN0X3ZwaWQ9MA0KPiB3aGVuIGFsbG9jYXRpbmcgdnBpZDAyLiAgbmVzdGVkX3ZteF90cmFu
+c2l0aW9uX3RsYl9mbHVzaCgpIHdpbGwgYWx3YXlzDQo+IGRldGVjdCBhIFZQSUQgY2hhbmdlIG9u
+IGZpcnN0IFZNLUVudGVyIGFmdGVyIFZNWE9OLCBiZWNhdXNlIFZQSUQ9MCBpbg0KPiB2bWNiMTIg
+aXMgbm90IGFsbG93ZWQgaWYgTDEgZW5hYmxlcyBWUElELg0KDQp2bWNzMTIgOi0pDQoNCj4gDQo+
+IFRoaXMgYXZvaWRzIHVzaW5nIHN0YWxlIFRMQiBlbnRyaWVzIGZyb20gYSBwcmV2aW91cyBsaWZl
+dGltZSBvZiB0aGUNCj4gVlBJRCwgdGhhdCBtaWdodCBoYXZlIGJlZW4gYXNzb2NpYXRlZCB3aXRo
+IGEgZGlmZmVyZW50IHZDUFUgKG9yIGENCj4gY29tcGxldGVseSBkaWZmZXJlbnQgVk0pLg0KPiAN
+Cj4gTm90ZSB0aGF0IGxhc3RfdnBpZCBpcyBhbHJlYWR5IGJlaW5nIGluaXRpYWxpemVkIGFzIDAg
+d2hlbiB0aGUgdkNQVSBpcw0KPiBjcmVhdGVkLCBidXQgaXQgaXMgbm90IHJlc2V0IHdoZW4gdnBp
+ZDAyIGlzIGZyZWVkIG9uIFZNWE9GRi4gSGVuY2UsIHRoZQ0KPiBwcm9ibGVtIGNhbiBvbmx5IG9j
+Y3VyIGlmIEwxIGRvZXMgVk1YT0ZGIC0+IFZNWE9OLCBydW5zIGFuIEwyLCBhbmQgS1ZNDQo+IGhh
+cHBlbnMgdG8gcmV1c2UgYSBWUElEIHRoYXQgaGFzIFRMQiBlbnRyaWVzIG9uIHRoZSBwaHlzaWNh
+bCBDUFUuDQoNCk5vdCBzdXJlIHdoZXRoZXIgaXQncyBiZXR0ZXIgdG8gc2V0IGl0IHRvIDAgaW4g
+ZnJlZV9uZXN0ZWQoKSwgd2hpY2ggYWxzbyByZXNldHMNCnNvbWUgb3RoZXIgbmVzdGVkIGZpZWxk
+cyB0byBjbGVhbiBzbGF0ZSBBRkFJQ1Q/DQoNCj4gDQo+IENjOiBzdGFibGVAdmdlci5rZXJuZWwu
+b3JnDQo+IFNpZ25lZC1vZmYtYnk6IFlvc3J5IEFobWVkIDx5b3NyeUBrZXJuZWwub3JnPg0KDQpB
+bnl3YXk6DQoNClJldmlld2VkLWJ5OiBLYWkgSHVhbmcgPGthaS5odWFuZ0BpbnRlbC5jb20+DQo=
 
