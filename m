@@ -1,148 +1,148 @@
-Return-Path: <stable+bounces-266810-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266816-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id nSMxNmG1MmpB4AUAu9opvQ
-	(envelope-from <stable+bounces-266810-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 16:55:29 +0200
+	id iGXmMFi2Mmre4AUAu9opvQ
+	(envelope-from <stable+bounces-266816-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 16:59:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2010569AB4B
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 16:55:29 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C64969ABDC
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 16:59:31 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cgdOQSCl;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266810-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266810-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=temperror ("DNS error when getting key") header.d=seu.edu.cn header.s=default header.b=lVZqgi1H;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266816-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-266816-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=temperror reason="SPF/DKIM temp error" header.from=seu.edu.cn (policy=temperror);
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1544D32380B8
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 14:49:26 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8B71A3004D28
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 14:59:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2EF62F8E8C;
-	Wed, 17 Jun 2026 14:49:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AA1644E025;
+	Wed, 17 Jun 2026 14:59:27 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail-m155101.qiye.163.com (mail-m155101.qiye.163.com [101.71.155.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E6E53B38A2
-	for <stable@vger.kernel.org>; Wed, 17 Jun 2026 14:49:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C53D72DF701;
+	Wed, 17 Jun 2026 14:59:21 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781707764; cv=none; b=WAzSQLSp3cxj+d3DGIWaQY3vGmNZ5LPJv1jWPj8nvPRBEgaa1aU2KyGx88WYuHWbH9qAY3bOBAK7X3UHdeYBNFNN7f+S4BQ0fidFOEAY2gwOFdyre77x/YqLX/cdsLwId9Bd6eTJvfcCraKhWDOU7t1hwAg2FNTTnwMg3lYgOkA=
+	t=1781708366; cv=none; b=AyKmuyNjwR2k1UMeQiwjzQ8V4UPxr1uWCdlI1abtcDHWeXVpAgTJiv2UhUvn/D8gp34wqFAeuCP4T168JB08pfIvWkY8Y3tm6Cs0074Z0ycfpFMqx9S5TD8x/cDhYqOJgMNfAhMSwDIY9+MY2dznEhenuuHZN8nRjbw6AE6IIPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781707764; c=relaxed/simple;
-	bh=ttANePPkO7P1BaCSZQpFItFrqnqjHZWxgMEo0jgIoTw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OZA2bGydRvAeEFAfv13B6ewHjO9sdcInKyYW+UlL1cUUw1RNWVrC80cs8VUznkoGdYFBGlrvuJyb1kHIHUnMc8fJS0WvMmrXYBM7pT016/dArlGPrFZAfckNMBCRnD8Lk8gPDJUqHouqNQlH0A1y7YGc7bL9sCa8udH4gyKrOG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cgdOQSCl; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 680D91F00A3E;
-	Wed, 17 Jun 2026 14:49:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781707763;
-	bh=mlUuneOEXraJI0inpBsDP+A4/EPUliEN5nTwxU/J6Ew=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=cgdOQSClVa58OfdhzW9IoHiET35PVxCDY4c4scmmnG0tnBuKTSwgk2hvUuzfQJkiL
-	 VAAyMRu9Pu0jV00ugDtvKEkQgOsu9cvjGTTUf0MPxag83p75wtRxMk7glDeOF5DKm0
-	 nxr0QwUdBf9cmoevpIrNRNTRHmstlmEJGwRIJ7VHXG1YDCxfxw1ARF1v01sVF95zwK
-	 oU6VEhIfcZ68Pz+ruu+Cc1RdoQGT48Mo2lcYqOK1wl+vL0P6rZhqtYk3jnr9x25IR5
-	 qK/ub+kLVqUmwic4CkjBwxkzpktD0a39CGk+/lEXt/FuNBm6/o2nrTOYUp5WtOVqs9
-	 ETjlpGELvGIfw==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Santosh Kalluri <santosh.kalluri129@gmail.com>,
-	=?UTF-8?q?R=C3=A9mi=20Denis-Courmont?= <remi@remlab.net>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y 3/3] net: phonet: free phonet_device after RCU grace period
-Date: Wed, 17 Jun 2026 10:49:18 -0400
-Message-ID: <20260617144918.39042-3-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260617144918.39042-1-sashal@kernel.org>
-References: <2026061547-discourse-faceless-4af5@gregkh>
- <20260617144918.39042-1-sashal@kernel.org>
+	s=arc-20240116; t=1781708366; c=relaxed/simple;
+	bh=mqJ9CDPdN13Tk1t1hJVgjmBUF+9AliE5GbvZD9w1/jk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Vhy9BrRxtJYwhiGSC1uVKHFzfc8pfZ8w8vcry1KMMmz0WtmzqPQoeBq138QKQL9oJ7jiFev+q7Dq0YADfvq/6i4n/mEtIuwDgfH7CGSuUvZ33LyFCNBIUIsQhLJvgV4ht0y598RXOVPsDSqnjZKrit9WvIACOkTW0r434iznXC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=lVZqgi1H; arc=none smtp.client-ip=101.71.155.101
+Received: from PC-202605011814.localdomain (unknown [58.241.16.34])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 42c69639e;
+	Wed, 17 Jun 2026 22:54:00 +0800 (GMT+08:00)
+From: Runyu Xiao <runyu.xiao@seu.edu.cn>
+To: Alexander Graf <graf@amazon.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: The AWS Nitro Enclaves Team <aws-nitro-enclaves-devel@amazon.com>,
+	linux-kernel@vger.kernel.org,
+	jianhao.xu@seu.edu.cn,
+	runyu.xiao@seu.edu.cn,
+	stable@vger.kernel.org
+Subject: [PATCH] misc: nsm: only unlock nsm_dev on post-lock error paths
+Date: Wed, 17 Jun 2026 22:53:50 +0800
+Message-Id: <20260617145350.513875-1-runyu.xiao@seu.edu.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0a9ed6132a9503a1kunmb71436e171af3
+X-HM-MType: 10
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkaQx0aVkIYS0oeTUtIS08dH1YeHw
+	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlOQ1VJT0pVSk1VSE9ZV1kWGg8SFR0UWUFZT0tIVUpLSEpPSE
+	xVSktLVUpCS0tZBg++
+DKIM-Signature: a=rsa-sha256;
+	b=lVZqgi1HSrjp8VxZUFATnbLtKNx7A+ZOoRI7gFUSm3G7+MqklCFARR2VGZpiYmB1+8u4Zaxqc/ioNbBpXCyCsZ7xsvNUzfGaPSw/PcqPVriNkVMMLDLRikXo/Yu7V8WAZGPiwo58/Sc0od81K2zp4DcW7D98akjDF1QYO391+0c=; s=default; c=relaxed/relaxed; d=seu.edu.cn; v=1;
+	bh=8lNDahgHw3h1ashyvSXOpRVgmpNM1Tqg52/ufq23fcU=;
+	h=date:mime-version:subject:message-id:from;
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.66 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [0.04 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-266810-lists,stable=lfdr.de];
-	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:santosh.kalluri129@gmail.com,m:remi@remlab.net,m:horms@kernel.org,m:kuba@kernel.org,m:sashal@kernel.org,m:santoshkalluri129@gmail.com,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-266816-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:graf@amazon.com,m:arnd@arndb.de,m:gregkh@linuxfoundation.org,m:aws-nitro-enclaves-devel@amazon.com,m:linux-kernel@vger.kernel.org,m:jianhao.xu@seu.edu.cn,m:runyu.xiao@seu.edu.cn,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER(0.00)[runyu.xiao@seu.edu.cn,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	DKIM_TRACE(0.00)[seu.edu.cn:?];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[gmail.com,remlab.net,kernel.org];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	DMARC_DNSFAIL(0.00)[seu.edu.cn : SPF/DKIM temp error,none];
+	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,remlab.net:email]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	R_DKIM_TEMPFAIL(0.00)[seu.edu.cn:s=default];
+	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[runyu.xiao@seu.edu.cn,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,seu.edu.cn:email,seu.edu.cn:mid,seu.edu.cn:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2010569AB4B
+X-Rspamd-Queue-Id: 2C64969ABDC
 
-From: Santosh Kalluri <santosh.kalluri129@gmail.com>
+nsm_dev_ioctl() jumps to the common out label even when the initial
+copy_from_user() fails before nsm->lock has been taken.  The error path
+then blindly unlocks a mutex that was never acquired.
 
-[ Upstream commit 71de0177b28da751f407581a4515cf4d762f6296 ]
+This issue was found by our static analysis tool and then manually
+reviewed against the current tree.
 
-phonet_device_destroy() removes a phonet_device from the per-net device
-list with list_del_rcu(), but frees it immediately. RCU readers walking
-the same list can still hold a pointer to the object after it has been
-removed, leading to a slab-use-after-free.
+The grounded PoC kept the miscdevice ioctl entry and the pre-lock
+copy_from_user(&raw, argp, _IOC_SIZE(cmd)) failure path by issuing
+NSM_IOCTL_RAW with an invalid user pointer.  That failure reaches the
+shared out label before mutex_lock(&nsm->lock).  Lockdep reported:
 
-Use kfree_rcu(), matching the lifetime rule already used by
-phonet_address_del() for the same object type.
+  WARNING: bad unlock balance detected!
+  exploit/193 is trying to release lock (&global_nsm.lock) at:
+  nsm_dev_ioctl+0x5f/0xcf [vuln_msv]
+  but there are no more locks to release!
+  no locks held by exploit/193.
 
-Fixes: eeb74a9d45f7 ("Phonet: convert devices list to RCU")
+Return immediately on the pre-lock copy_from_user() failure and keep the
+common unlock label for the post-lock paths only.
+
+Fixes: b9873755a6c8 ("misc: Add Nitro Secure Module driver")
 Cc: stable@vger.kernel.org
-Signed-off-by: Santosh Kalluri <santosh.kalluri129@gmail.com>
-Acked-by: Rémi Denis-Courmont <remi@remlab.net>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Runyu Xiao <runyu.xiao@seu.edu.cn>
 ---
- net/phonet/pn_dev.c | 2 +-
+ drivers/misc/nsm.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/phonet/pn_dev.c b/net/phonet/pn_dev.c
-index 2e7d850dc72668..3f020c362d6cde 100644
---- a/net/phonet/pn_dev.c
-+++ b/net/phonet/pn_dev.c
-@@ -105,7 +105,7 @@ static void phonet_device_destroy(struct net_device *dev)
- 		for_each_set_bit(addr, pnd->addrs, 64)
- 			phonet_address_notify(net, RTM_DELADDR, ifindex, addr);
+diff --git a/drivers/misc/nsm.c b/drivers/misc/nsm.c
+index ef7b32742340..185900cdad4a 100644
+--- a/drivers/misc/nsm.c
++++ b/drivers/misc/nsm.c
+@@ -367,7 +367,7 @@ static long nsm_dev_ioctl(struct file *file, unsigned int cmd,
+ 	/* Copy user argument struct to kernel argument struct */
+ 	r = -EFAULT;
+ 	if (copy_from_user(&raw, argp, _IOC_SIZE(cmd)))
+-		goto out;
++		return r;
  
--		kfree(pnd);
-+		kfree_rcu(pnd, rcu);
- 	}
- }
+ 	mutex_lock(&nsm->lock);
  
 -- 
-2.53.0
+2.34.1
 
 
