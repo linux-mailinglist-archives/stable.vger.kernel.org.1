@@ -1,173 +1,126 @@
-Return-Path: <stable+bounces-266624-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266626-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id LA6XHj0QMmoDuQUAu9opvQ
-	(envelope-from <stable+bounces-266624-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 05:10:53 +0200
+	id GcpnC4sRMmpRuQUAu9opvQ
+	(envelope-from <stable+bounces-266626-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 05:16:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F8706963E2
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 05:10:53 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B60E69641B
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 05:16:26 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=oQwMjOJQ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266624-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-266624-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=sqUZ0PXU;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266626-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266626-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 10C55303F721
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 03:10:44 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9997C305A230
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 03:15:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B98B2FFFA4;
-	Wed, 17 Jun 2026 03:10:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45B902EA498;
+	Wed, 17 Jun 2026 03:15:48 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4640C2FC037
-	for <stable@vger.kernel.org>; Wed, 17 Jun 2026 03:10:38 +0000 (UTC)
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781665840; cv=pass; b=TnldlIyz8T2I1yKud1yRBaXRFZDYhsrl0SxxQdn5Oy3i+uvgwuxnEMbra0d4vs9+mIJmz/LLBupwdQvERsKvOqrambIlcvMeUi41F/XggiXdFP+KCw+VqOqOMyph9QnJczEoI9w2MVCgQuWHLWpKWc3Ug3ANRhmOaWT1WD+FLZs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781665840; c=relaxed/simple;
-	bh=qW3BsbQGsGgKULV+hbJJQuiSOz+Kn3lDvAFF1WmVP9Q=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Nf2f8F3rD7Sugps6vZP2CyjZfqIqpxzimw76u5ImzueOF/XE+uToj0MLbtdstjfC7UwNNB9zn1yiQmqIhohgcFsvRYweIcukDp0XFPAEpZkL8wBVO/9bPnhcumoOeazdwHzN6EPOHaeoAjlH3BwjvqVJ+yTItcosDf0W/gQsg5U=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=oQwMjOJQ; arc=pass smtp.client-ip=209.85.215.182
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-c85893bce34so2245103a12.1
-        for <stable@vger.kernel.org>; Tue, 16 Jun 2026 20:10:38 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781665838; cv=none;
-        d=google.com; s=arc-20240605;
-        b=NxLw2pt8J6q36F7ezyE/4ZkM51OOJrTpqEiET0Sfczd5jCO450OW/DaRpn1rBXbnly
-         Wc64HS9YeuI2kFVabKZh93g6/ifi9XurkePWCOBjLf25QGyjwnbY6JyBPRkPuFX1CzKF
-         7KBPfgjBWqwMOGNiYJvypt9IwX5IQEMDGFKDjgGvxnZHCsIRqNFEtR+JzQyPbnmogEiy
-         TLGwh3t0pozrlRNcSxSguV89W3qetUbIeHcNDMMzNG5Zx+gk90hoaVBiDangou7inlBZ
-         ZZJJ4+gDQ0z/OBH4eZ3Ds+jwVAsBQsPQ3nx3hejytUmiyZcMYqWcyM0c+WhRYpyj1P7Y
-         Z4LQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=B9qnaTblXj/mC0G2wqpgdmlyR0jIb0R2Ou22Kr79vAs=;
-        fh=twNZpUDsO4zAVuZ6HFm8UNBEO3fdjqW851KkopU4xhI=;
-        b=O3dnNadtEmmZw1ok5hKg4zz/VAiN+V9LrsVFxexhE42dYmZQ3ADnxU/bKw6GgJF9zv
-         JWUB5ikAsCYHgMuGUa/OyHrs5XSOu8lTTlRzyOqr1DCkBkISuB07QkGX2iZafvzy0rw2
-         c+OZ9Zz0Z4DcuTOT1yMJvlMvpST2EmLqbFBuzIrgaX7un11sysAdkZM9abNOUCUp4VWs
-         3FhMtqPOKQKFyYWVPuMId8QAnDcK8k+tMOfJSX1IzlgxkDUQ3IZF1oET1rvL95Xfj6O7
-         fDQKQodTJIcQYDvpRnJ71c9dEb6QKhXr2EU8de7Ukruo2TKWIt+TZgdEwtySLIslLqnG
-         ou2w==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781665838; x=1782270638; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=B9qnaTblXj/mC0G2wqpgdmlyR0jIb0R2Ou22Kr79vAs=;
-        b=oQwMjOJQuFjD7/KrNVYg9punGeV+QqkYjFVulASJdV1qtHzQb8Fxb628Mt0xyoEPiU
-         Rga3/zakCQsdCPZf60O3QvicpNj6lAkkm/FxXulF6+hknx7W4WhArDQ/x0QxL0WIAh74
-         uaRiZ/caakdHS1LRyhhQYjxFbQl4ShA1jwzXhOnMhScH76lRyshGhy0PjhS3bPAvhZ9C
-         y7lOwn90iBA6w9aH0dBS1wGB9sbXUQcw6KfpFv2O9kaNASI2lHk1iZA9Qmhud7lmGRpR
-         xF8GWH7MzNpbE248cjjxBnvgRw0EaGH//5Lo6n9NmB45iPMXzTQdAE+3idDrTtkT33TU
-         FYOw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781665838; x=1782270638;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=B9qnaTblXj/mC0G2wqpgdmlyR0jIb0R2Ou22Kr79vAs=;
-        b=n6qhQU4q21MxwnulJl0xx2KQMEhu54URIhfiTiWvTiwcFNaQ5gNCEvQKrjjU0iZwpf
-         0Qk0rIpR78gDGPP+JQ4ctMD1HIQt2NhntKEfQDdRzyawp1LvLWx7Pxk7+4vCeLUt1z2w
-         mQvxQzZ6ClTR2IDP+jipRpei0ApcfsISEFN/zdFzQ77E+ZaBJgH/jSD1vDC1q5C+9EoJ
-         9qbic887Ie9bti618wKhyNSLXGD9PZZlMTDfjwJX41bIvvNFXCkyX2S9OKAm7gqOhO/w
-         3QAa1fJFl39pj1WYYyBvvwK4Bgtecqgfo62xR34ldisxeyWAYR2FAnM5BdHhNiT9L7gr
-         KXOg==
-X-Gm-Message-State: AOJu0YyBNc7ZPvgLmmzNs4QzuptYLEk8L9LzHNxc4D9BpHBbo8L/4e0e
-	D8tW+wnD4nHb8rkEezgKLRcU71pYk9PL/InG4Yc1WRxHkxdFfErMX9f0cK2ypk/WQRl/415VXbD
-	8NY5xFBBgxbTdlBvWEW3O3hjFu9eID4tdnvEB
-X-Gm-Gg: Acq92OG429SkdX2SskpGcg0G/8MGRL2+zR5BRkvBcEujA8dNx4WEsyVwGrDF3vZzPPG
-	/4ul/VoGPXmjpAhrAKBcrNZPWj7yK8m3eY8wE7jqkmJYptjQ000ymgBPsHe5mnkuqlGB+WSLvsW
-	nma2BD5Xn4k5dmBZs2K6K5RVPJt3iVhv5U+EGMJ6qvOAr2ENNXcW5EVqW84CdjPqds1wsRbQHyC
-	xK7j0x3ORBzvo8FjOMyy5tQx2B2kIv1qHvRkKwvxkBbWOj6FP1tkTrvyxTqKPYVQqaMBYBCcutv
-	oDwOGFleGevQw0CAwz9tbz2W6YETS9kOLcwLGua4JPmwfOnodujkvLu3sZjqEkQUnyA1fuv9wA4
-	M1rEs653D9HZfOw==
-X-Received: by 2002:a05:6a20:7f92:b0:398:b95c:51ed with SMTP id
- adf61e73a8af0-3b8b7eddd0amr2155474637.35.1781665837570; Tue, 16 Jun 2026
- 20:10:37 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27A0E18872A;
+	Wed, 17 Jun 2026 03:15:46 +0000 (UTC)
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781666148; cv=none; b=Bk+ogDG8d369wA+ag/Y6mJDmo1qRg6lgNKKrcGv/d7qGpeLEf6B8H25c0FlfPM/YHZdKrl79ds8UOzL7il5An1UjrjenBorCYqgqkkezlmDWJOmTw/BLSEaBdnYgTo9amVKRZ7QaPNvL/lxR0u0cYsON0ecWTzJzXfFPvQaisNw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781666148; c=relaxed/simple;
+	bh=BJxMgaJXgouj5zGh9dh2J7oHbtUDdbZpJ3CxO7htx/s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mAsju66YKgMvBARQF6mOh6TSVIHyxMDO6CasnL+QkvwLzPsRL1IGox+FwE7HHfO3O/nO8BaIOOKMSiuRgA9wIrKATNEFG2EFoZiuVLhWwXKdhv7xGORWxD7D0rl4rBbSjMTbYWwgqy+kh5az61eNOYMLr84AxpLzD7ipSCBVEsw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sqUZ0PXU; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA6811F000E9;
+	Wed, 17 Jun 2026 03:15:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1781666146;
+	bh=tWH+vKDhOqk082ZzJdPzM8fKcwQ8biGlnRZlqoX9AK0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=sqUZ0PXU5kC4xo4JYdp34NIqnXwIA6skd8qZAzk6hu37GRV/4EjdoH3aMk8WpsKzv
+	 I2s44/pZBcFO6O0xpAKI10ijFRR0UXYTishx9NZOoK3ndMUoMTBwzJLHwQuKfspF9d
+	 1k5dot/L6+XrQcRt0ifkIsFmhC103dnXW31/3uw8=
+Date: Wed, 17 Jun 2026 08:44:41 +0530
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Ben Hutchings <ben@decadent.org.uk>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.1 011/522] tools/bootconfig: Cleanup bootconfig footer
+ size calculations
+Message-ID: <2026061731-stadium-backer-bcc6@gregkh>
+References: <20260616145125.307082728@linuxfoundation.org>
+ <20260616145125.946340231@linuxfoundation.org>
+ <9125d5976feb09ef919f2a287b079843c7671325.camel@decadent.org.uk>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260617011303.3969027-1-clrkwllms@kernel.org> <20260617011303.3969027-2-clrkwllms@kernel.org>
-In-Reply-To: <20260617011303.3969027-2-clrkwllms@kernel.org>
-From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date: Tue, 16 Jun 2026 20:10:26 -0700
-X-Gm-Features: AVVi8Cfc0CqsWHOwbee6X-rMFuNMy0GR6Pg8FpJSFXk-J0xJ0qCfLErAPY2sjx4
-Message-ID: <CAADnVQKniB8TLvQkuVaPb4jrKLR5G894bMEOrT+GxzRxqgPVdA@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] tools/lib/bpf: fix const-qualifier discard in resolve_full_path
-To: Clark Williams <clrkwllms@kernel.org>
-Cc: stable <stable@vger.kernel.org>, bpf <bpf@vger.kernel.org>, x86@ekrnel.org, 
-	kvm@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9125d5976feb09ef919f2a287b079843c7671325.camel@decadent.org.uk>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:clrkwllms@kernel.org,m:stable@vger.kernel.org,m:bpf@vger.kernel.org,m:x86@ekrnel.org,m:kvm@vger.kernel.org,s:lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-266624-lists,stable=lfdr.de];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FORGED_SENDER(0.00)[alexeistarovoitov@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:ben@decadent.org.uk,m:stable@vger.kernel.org,m:patches@lists.linux.dev,m:mhiramat@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-266626-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[alexeistarovoitov@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,gregkh:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 0F8706963E2
+X-Rspamd-Queue-Id: 8B60E69641B
 
-On Tue, Jun 16, 2026 at 6:13=E2=80=AFPM Clark Williams <clrkwllms@kernel.or=
-g> wrote:
->
-> [ Upstream commit d70f79fef65810faf64dbae1f3a1b5623cdb2345 ]
->
-> strchr() now propagates const when passed a const char * argument in
-> newer GCC/glibc combinations, causing -Werror=3Ddiscarded-qualifiers to
-> fire on the assignment to next_path. Declare next_path as const char *
-> since it is only used for pointer arithmetic, never written through.
->
-> [ clrkwllms: only the next_path change from the upstream commit applies
->   to 6.1.y ]
->
-> Assisted-by: Claude:claude-sonnet-4.6
-> Signed-off-by: Clark Williams <clrkwllms@kernel.org>
+On Tue, Jun 16, 2026 at 11:06:49PM +0200, Ben Hutchings wrote:
+> On Tue, 2026-06-16 at 20:22 +0530, Greg Kroah-Hartman wrote:
+> > 6.1-stable review patch.  If anyone has any objections, please let me know.
+> > 
+> > ------------------
+> > 
+> > From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+> > 
+> > [ Upstream commit 26dda57695090e05c1a99c3e8f802f862d1ac474 ]
+> > 
+> > There are many same pattern of 8 + BOOTCONFIG_MAGIC_LEN for calculating
+> > the size of bootconfig footer. Use BOOTCONFIG_FOOTER_SIZE macro to
+> > clean up those magic numbers.
+> [...]
+> 
+> This causes a regression in some configurations, fixed by commit
+> 729dc340a4ed "bootconfig: Fix negative seeks on 32-bit with LFS
+> enabled".
 
-No. There is no reason to backport this patch.
-Distros build and ship libbpf from official github source.
-The kernel source tree is the source of truth though.
-From there it gets synced into github automatically.
-Anything but the latest bpf-next and bpf trees are irrelevant.
-Hence, please do NOT backport any tools/lib/bpf/ patches. Ever.
-It is just a waste of electrons.
+Ah, missed that, now queued up, thanks.
+
+greg k-h
 
