@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-266685-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266687-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 5gD6Kg9nMmr4zQUAu9opvQ
-	(envelope-from <stable+bounces-266685-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 11:21:19 +0200
+	id g8OkB0FnMmoBzgUAu9opvQ
+	(envelope-from <stable+bounces-266687-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 11:22:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87988697D96
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 11:21:18 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A29B697D9D
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 11:22:08 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=bootlin.com header.s=dkim header.b=OwRxlSgt;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266685-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266685-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=bootlin.com header.s=dkim header.b=Qm0iVjU4;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266687-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266687-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=reject) header.from=bootlin.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D91803011F1F
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 09:17:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A6516304420F
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 09:18:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F8B339A800;
-	Wed, 17 Jun 2026 09:17:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 462D039E9DE;
+	Wed, 17 Jun 2026 09:17:58 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEFE939B4A3;
-	Wed, 17 Jun 2026 09:17:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3662239BFEC;
+	Wed, 17 Jun 2026 09:17:56 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781687871; cv=none; b=V71M6voBXu+3puUQCv4ufPKZJESfauXvr/ivqZCcTG+Zwz4KeGd3C0QG0DUqDlxS9s2Cy9HpXkkGo8ppUiItEC4x5i+km8its8FRCHp/aC8hX9082pLXKYDPjhYgVK44z0RBqVG8+0I2MMREVDteFV8IX4iLA8Is6MOOG8Ucj/Q=
+	t=1781687878; cv=none; b=sQ94aLM1pPmdIjWhCtSBVRe3y+QHGJ4+1bY4uto5JWxr9tbwltegTtJpX520JJmvTfJleGo6/TgFnYNh/8Eer4z5tzegxq0TeMweLlOZIIVHSPmNm15PoTYR+Pc8Owi0sLTnb3g9B4/b0J16Slioyb1nokWXBgh/4hLgEJGUpo4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781687871; c=relaxed/simple;
-	bh=dAGm4PiwWs80ZnheUKD2LU5YAlmFHcW8oMdB+VthDOQ=;
+	s=arc-20240116; t=1781687878; c=relaxed/simple;
+	bh=1jBDxYXWJq8oVg4cfwRSFslEeHBgkTsITO5M9rYbr1Q=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=jNdux0cmCuZ1mKFjXUg66iWfS1yb6Npo4nK2rA+ReiZn0zK1sAcOefH4kIIaDxuVcb5nULvZ8iu2VZtHBD0xZHLLirNNqfXvIXRsGP3hYwfwAtjwiLvwC9sWs8tABI44Eb2dw+KzVbu+U5J44BEPbmjawupnqiA22yJRdYHSYGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=OwRxlSgt; arc=none smtp.client-ip=185.171.202.116
+	 In-Reply-To:To:Cc; b=Gg2TryQ6nuLGD1euMOmC6cst+8sjKB1DEipsWzcpvfY9aa89gmWQASkOLIfF1cuGE1CWxNVd6HGOTuhZyBI8qnDn2kipwR1vM8nvItzLrwuCyFqzn0tIn9RpDA0PbTGM5RxPWbvgSsbw6ag1d9aAZsYCL0igsxxkax5wf/NpAqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Qm0iVjU4; arc=none smtp.client-ip=185.246.85.4
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 32AE0C2B9CB;
-	Wed, 17 Jun 2026 09:17:52 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 722B94E42F2C;
+	Wed, 17 Jun 2026 09:17:49 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 44B58601AA;
-	Wed, 17 Jun 2026 09:17:47 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9F496106CA34E;
-	Wed, 17 Jun 2026 11:17:44 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 46A8A601AA;
+	Wed, 17 Jun 2026 09:17:49 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 804AA106CA350;
+	Wed, 17 Jun 2026 11:17:46 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1781687866; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1781687868; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=+0AqFZZvY0X0WypoYom4SAfWrYqe9FmXmaw/Ruojua0=;
-	b=OwRxlSgtA7X9jK4+a/Ru9tHlDjG2YqNEmcUMawRKfQBsjnIGYczrsLd384l2o31yYDkamX
-	ec5YjD94KnI7l5N/BEFLR8AGqlfIEYUCkWAsy96X3uVwdubFD7pEKWXTht5T4xzySTjx1W
-	99aX7P6I81tXKbNku4+vEuiv17QU6bdnmYjRcGr/OS0fgmKxXOUrtVmG4BRQdkAIaObN4X
-	FqCy54a7kzGmzKId5OA1m3wOw1HSx/Ie/OrLqbwBlykuLywiOktQxi0oZb8EW6acSaRiDZ
-	m/cbYmEuiFqmdKbm9GwP5gkl71tnfDsAIR9bG3JXLcokaoZ8CbIPvdj7QW76gw==
+	bh=G9FpCeKi3Ynv/LOiUy9epKx2SW5IzmteIiDj38KugCY=;
+	b=Qm0iVjU4OMdghsQmnsSO/ZVglUuAgnSWOLaEln7sLb0stSd5BiwNTG+skRE5W6v3NM36gN
+	WIQOk93EJD4sv52sOkRdC9HVawr/X7IFU80SnCCXq1PazwZhwep1i9OgCmhKP2wFB1zGoc
+	GB13r44Stdt2gEgUmPQ9q0Wc/7qHoUm4h4m7TiaNtiWtbj3eNC2ZzwF+EPWwbb8ePFfN8N
+	qvNsINoO3ALOm5y1vsJVXflVV2fQT8s76IUjL/6eSGp0JF40a4ibAL/sMhj9QEPcn3N5yL
+	O/b+AA+zriz0OkqoSBxJne3TuK/MHTD9n+4MLuAli8RdO4XGmVqJ6ApiAWzEfQ==
 From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
-Date: Wed, 17 Jun 2026 11:17:29 +0200
-Subject: [PATCH net v3 1/2] net: macb: give reasons for Tx SKB kfree
+Date: Wed, 17 Jun 2026 11:17:30 +0200
+Subject: [PATCH net v3 2/2] net: macb: drop in-flight Tx SKBs on close
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,7 +62,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260617-macb-drop-tx-v3-1-d4c7e57d890b@bootlin.com>
+Message-Id: <20260617-macb-drop-tx-v3-2-d4c7e57d890b@bootlin.com>
 References: <20260617-macb-drop-tx-v3-0-d4c7e57d890b@bootlin.com>
 In-Reply-To: <20260617-macb-drop-tx-v3-0-d4c7e57d890b@bootlin.com>
 To: Nicolas Ferre <nicolas.ferre@microchip.com>, 
@@ -90,12 +90,12 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[bootlin.com,reject];
 	R_DKIM_ALLOW(-0.20)[bootlin.com:s=dkim];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266685-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-266687-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCPT_COUNT_TWELVE(0.00)[22];
 	FORWARDED(0.00)[lists@lfdr.de];
@@ -104,7 +104,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FORGED_SENDER(0.00)[theo.lebrun@bootlin.com,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[6];
@@ -117,115 +117,63 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable,netdev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[bootlin.com:dkim,bootlin.com:email,bootlin.com:mid,bootlin.com:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,bootlin.com:dkim,bootlin.com:email,bootlin.com:mid,bootlin.com:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 87988697D96
+X-Rspamd-Queue-Id: 6A29B697D9D
 
-Using dev_consume_skb_any() marks the drop reason as SKB_CONSUMED every
-time we free a Tx SKB. Instead, replace by SKB_DROP_REASON_NOT_SPECIFIED
-when packet has been dropped without sending.
+The MACB driver has since forever leaked the outgoing SKBs that
+have not yet been marked as completed. They live in queue->tx_skb
+which gets freed without remorse nor checking.
 
-It is not precise but at least differs from SKB_CONSUMED and is used by
-many drivers for their error codepaths through dev_kfree_skb_{any,irq}().
+macb_free_consistent() gets called in a few codepaths, but only
+close will trigger the added expressions. In macb_open() and
+macb_alloc_consistent() failure cases, tx_skb just got allocated
+and is empty.
 
-Pass a reason around rather than call dev_consume_skb_any() or
-dev_kfree_skb_any() because macb_tx_unmap() is called for cleanup in
-all cases.
-
-macb_tx_error_task() is made complex because some SKBs encountered have
-been successfully sent.
+Use the new macb_tx_unmap() prototype to report our error as
+SKB_DROP_REASON_NOT_SPECIFIED rather than SKB_CONSUMED which makes it
+sound like no error occurred. Equivalent to dev_kfree_skb_any().
 
 Fixes: 89e5785fc8a6 ("[PATCH] Atmel MACB ethernet driver")
 Cc: stable@vger.kernel.org
 Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
 ---
- drivers/net/ethernet/cadence/macb_main.c | 24 +++++++++++++++++-------
- 1 file changed, 17 insertions(+), 7 deletions(-)
+ drivers/net/ethernet/cadence/macb_main.c | 22 ++++++++++++++++++++--
+ 1 file changed, 20 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-index a12aa21244e8..9caae1ef52b1 100644
+index 9caae1ef52b1..5a2500bd59a6 100644
 --- a/drivers/net/ethernet/cadence/macb_main.c
 +++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -1201,7 +1201,8 @@ static int macb_halt_tx(struct macb *bp)
- 					bp, TSR);
- }
+@@ -2678,8 +2678,26 @@ static void macb_free_consistent(struct macb *bp)
+ 	dma_free_coherent(dev, size, bp->queues[0].rx_ring, bp->queues[0].rx_ring_dma);
  
--static void macb_tx_unmap(struct macb *bp, struct macb_tx_skb *tx_skb, int budget)
-+static void macb_tx_unmap(struct macb *bp, struct macb_tx_skb *tx_skb,
-+			  int budget, enum skb_drop_reason reason)
- {
- 	if (tx_skb->mapping) {
- 		if (tx_skb->mapped_as_page)
-@@ -1214,7 +1215,7 @@ static void macb_tx_unmap(struct macb *bp, struct macb_tx_skb *tx_skb, int budge
+ 	for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue) {
+-		kfree(queue->tx_skb);
+-		queue->tx_skb = NULL;
++		if (queue->tx_skb) {
++			unsigned int dropped = 0, tail;
++
++			for (tail = queue->tx_tail; tail != queue->tx_head;
++			     tail++) {
++				if (macb_tx_skb(queue, tail)->skb)
++					dropped++;
++				macb_tx_unmap(bp, macb_tx_skb(queue, tail), 0,
++					      SKB_DROP_REASON_NOT_SPECIFIED);
++			}
++
++			queue->stats.tx_dropped += dropped;
++			bp->dev->stats.tx_dropped += dropped;
++
++			kfree(queue->tx_skb);
++			queue->tx_skb = NULL;
++		}
++
++		queue->tx_head = 0;
++		queue->tx_tail = 0;
+ 		queue->tx_ring = NULL;
+ 		queue->rx_ring = NULL;
  	}
- 
- 	if (tx_skb->skb) {
--		dev_consume_skb_any(tx_skb->skb);
-+		dev_kfree_skb_any_reason(tx_skb->skb, reason);
- 		tx_skb->skb = NULL;
- 	}
- }
-@@ -1297,7 +1298,8 @@ static void macb_tx_error_task(struct work_struct *work)
- 	 * Free transmit buffers in upper layer.
- 	 */
- 	for (tail = queue->tx_tail; tail != queue->tx_head; tail++) {
--		u32	ctrl;
-+		enum skb_drop_reason reason = SKB_DROP_REASON_NOT_SPECIFIED;
-+		u32 ctrl;
- 
- 		desc = macb_tx_desc(queue, tail);
- 		ctrl = desc->ctrl;
-@@ -1307,7 +1309,10 @@ static void macb_tx_error_task(struct work_struct *work)
- 		if (ctrl & MACB_BIT(TX_USED)) {
- 			/* skb is set for the last buffer of the frame */
- 			while (!skb) {
--				macb_tx_unmap(bp, tx_skb, 0);
-+				/* The reason parameter is unused because it
-+				 * only matters when skb is valid.
-+				 */
-+				macb_tx_unmap(bp, tx_skb, 0, SKB_CONSUMED);
- 				tail++;
- 				tx_skb = macb_tx_skb(queue, tail);
- 				skb = tx_skb->skb;
-@@ -1326,6 +1331,7 @@ static void macb_tx_error_task(struct work_struct *work)
- 				bp->dev->stats.tx_bytes += skb->len;
- 				queue->stats.tx_bytes += skb->len;
- 				bytes += skb->len;
-+				reason = SKB_CONSUMED;
- 			}
- 		} else {
- 			/* "Buffers exhausted mid-frame" errors may only happen
-@@ -1339,7 +1345,7 @@ static void macb_tx_error_task(struct work_struct *work)
- 			desc->ctrl = ctrl | MACB_BIT(TX_USED);
- 		}
- 
--		macb_tx_unmap(bp, tx_skb, 0);
-+		macb_tx_unmap(bp, tx_skb, 0, reason);
- 	}
- 
- 	netdev_tx_completed_queue(netdev_get_tx_queue(bp->dev, queue_index),
-@@ -1458,7 +1464,7 @@ static int macb_tx_complete(struct macb_queue *queue, int budget)
- 			}
- 
- 			/* Now we can safely release resources */
--			macb_tx_unmap(bp, tx_skb, budget);
-+			macb_tx_unmap(bp, tx_skb, budget, SKB_CONSUMED);
- 
- 			/* skb is set only for the last buffer of the frame.
- 			 * WARNING: at this point skb has been freed by
-@@ -2357,7 +2363,11 @@ static unsigned int macb_tx_map(struct macb *bp,
- 	for (i = queue->tx_head; i != tx_head; i++) {
- 		tx_skb = macb_tx_skb(queue, i);
- 
--		macb_tx_unmap(bp, tx_skb, 0);
-+		/* The reason parameter is unused, tx_skb->skb has not yet
-+		 * been assigned. Parent caller is responsible for freeing
-+		 * the SKB.
-+		 */
-+		macb_tx_unmap(bp, tx_skb, 0, SKB_DROP_REASON_NOT_SPECIFIED);
- 	}
- 
- 	return -ENOMEM;
 
 -- 
 2.54.0
