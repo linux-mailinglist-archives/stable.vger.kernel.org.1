@@ -1,114 +1,238 @@
-Return-Path: <stable+bounces-266819-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266821-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id s6QSOWa5Mmoo4gUAu9opvQ
-	(envelope-from <stable+bounces-266819-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 17:12:38 +0200
+	id 2IqtHsK7MmpU4wUAu9opvQ
+	(envelope-from <stable+bounces-266821-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 17:22:42 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CD7F69AD5A
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 17:12:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 105F069AEE8
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 17:22:42 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bS533rhb;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266819-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-266819-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=seu.edu.cn header.s=default header.b=Iv7D5zQQ;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266821-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-266821-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=seu.edu.cn;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6C9A33131795
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 15:11:03 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DE0E831628D9
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 15:14:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98748481243;
-	Wed, 17 Jun 2026 15:04:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD771244687;
+	Wed, 17 Jun 2026 15:14:28 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail-m49197.qiye.163.com (mail-m49197.qiye.163.com [45.254.49.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84627480DD9;
-	Wed, 17 Jun 2026 15:04:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EC3A3101A6;
+	Wed, 17 Jun 2026 15:14:24 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781708689; cv=none; b=I+oTAAtHBE2MS9J1h4VvzYAJDalQiJ6+/MQyxZ0/tbp1Pf1TxqjARjMDcEbd+Z0VFldN0CRCT1YaF7qxRVnV0ueKzVqz8x/LxcvZYX2/QMqpU84JJ8HdjXrBMeCRCRBhe/gT8jY8Y8xRPqQ4acDk4Fhld0PpgI2kSQOQd49rOJw=
+	t=1781709268; cv=none; b=pu1yu+RXASsJ4NBTIhg69XprIY412fZno1nk/ak+AC8ptHjt6PdK+TT2p/bARQCZ9VRnyUa/xM+wGpnxPVE1vcAAK9925CyQh3M1bJzMCwDalNxUoz8D5W+Rr/U5iMiKaj/aviC+SPpIlA7uhUUD+dvgvhRm3uxueCRY+VFsbOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781708689; c=relaxed/simple;
-	bh=WOAParVT6NWGmlFHWCKXqVZK8KqXAbfZkknyu5XU/no=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=RhNDbI10wlPL/Ufc2uCTkVkwvxEAIrcpRNAVYFpcOxjKImoUq74it6KN712b6fYWVVzhBoQTcyJ8BaJRFgrGJSTIvGd0F3GCMQiBWImpbDpks+sYSsIreyqvyiQnpK1+xqYYdVRAEHfQJPuX86MNbp/JU1AnSzrAbLa26HiFM34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bS533rhb; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A5D41F00A3A;
-	Wed, 17 Jun 2026 15:04:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781708688;
-	bh=WOAParVT6NWGmlFHWCKXqVZK8KqXAbfZkknyu5XU/no=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=bS533rhbInHnGCn86WVWZ8VqTbgdd0o/mYMi519tUWUReswL1I5tmDI+elEXu3/J5
-	 ygkmZSOgcxiTGWqvbONuk31Ve6jmsdUPBJ/gVHNfqeJHbht2y/+ViiIyFvCIWrfFSy
-	 T6W0z9AUO7M62cCrwEqJ7PRau1p9basUCXUdVlPZLuin8zQWzEA1hzb6mw3xfrUW08
-	 gVBREmwB+BA4vYB5n9V4+y5Ce/BEsRSIjhCE+T8a0SAKcYnNnjxP4xiOq+EJ7XIbQ3
-	 vMG76FesBwleYraLHKRjL93thHUBIBFXLl6amLTjlG+3zt4kPrlTxVeax5YNCq55mf
-	 eBdAqXaQZOvVw==
-From: Thomas Gleixner <tglx@kernel.org>
-To: Conor Dooley <conor@kernel.org>, Marek Szyprowski
- <m.szyprowski@samsung.com>
-Cc: linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org, Teddy
- Astie <teddy.astie@vates.tech>, stable@vger.kernel.org, x86@kernel.org
-Subject: Re: [tip: timers/core] time/jiffies: Register jiffies clocksource
- before usage
-In-Reply-To: <20260617-flounder-pebble-fe4c19e1be81@spud>
-References: <87y0gn3fve.ffs@fw13>
- <178135728754.1650852.1266320590541376793.tip-bot2@tip-bot2>
- <CGME20260616184701eucas1p13c7aff447073832095aa4adfb85935f0@eucas1p1.samsung.com>
- <813164f9-d036-4858-80ad-f3af9bee9c77@samsung.com>
- <20260617-flounder-pebble-fe4c19e1be81@spud>
-Date: Wed, 17 Jun 2026 17:04:45 +0200
-Message-ID: <87y0gdcinm.ffs@fw13>
+	s=arc-20240116; t=1781709268; c=relaxed/simple;
+	bh=GMSkdwKwwvN36qMoWsVT2yLCvb+VwQ5Tnb7iL6tpNpQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=TzutdzX7KOvqXCtvkYVDWYR+wHTjQSZgzKOr4WfoYco0+SHKtYBawPTQz6Y4Wmhy8CsHfchq8Pwr/dtQbYZfVGyfmNtx4BtdN4O94nGFEt6nAVqbur08eDbM1FnCph1UcsEFonfn2fQ9cCM2Kn/FZdA3IJf+XGvHpmWj9NYtMDo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=Iv7D5zQQ; arc=none smtp.client-ip=45.254.49.197
+Received: from PC-202605011814.localdomain (unknown [58.241.16.34])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 42c703c95;
+	Wed, 17 Jun 2026 23:09:13 +0800 (GMT+08:00)
+From: Runyu Xiao <runyu.xiao@seu.edu.cn>
+To: Guenter Roeck <linux@roeck-us.net>
+Cc: Eddie James <eajames@linux.ibm.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	linux-hwmon@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	jianhao.xu@seu.edu.cn,
+	runyu.xiao@seu.edu.cn,
+	stable@vger.kernel.org
+Subject: [PATCH] hwmon: (occ) unregister hwmon device outside occ lock
+Date: Wed, 17 Jun 2026 23:08:59 +0800
+Message-Id: <20260617150859.741453-1-runyu.xiao@seu.edu.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0a9ed621159103a1kunm16e6a07772443
+X-HM-MType: 10
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkaTUwdVk1DHxhNSUIYTEoYGFYeHw
+	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlOQ1VJT0pVSk1VSE9ZV1kWGg8SFR0UWUFZT0tIVUpLSEpPSE
+	xVSktLVUpCS0tZBg++
+DKIM-Signature: a=rsa-sha256;
+	b=Iv7D5zQQ71MG0Dhb+gC9gE89+Gyrsv1HzTj7mA7/KUVqjLd/btbiYm2qxDBHBG+ws7HsaICdeFqeg9aJ9dvBcfzWdmeDXqQiH4WFNnmpbHL8m/Of1ibIEbeNMOAZJSWahuQX0KSRaQXR09inW1+rYW+aM4DxLCE7eygqdlTJH+s=; s=default; c=relaxed/relaxed; d=seu.edu.cn; v=1;
+	bh=ZWA+6aQnuueaEeg7IzTAGsIcPfG41MO3NK5SCC3HElg=;
+	h=date:mime-version:subject:message-id:from;
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-4.16 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	DMARC_POLICY_ALLOW(-0.50)[seu.edu.cn,none];
+	R_DKIM_ALLOW(-0.20)[seu.edu.cn:s=default];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-266819-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:conor@kernel.org,m:m.szyprowski@samsung.com,m:linux-kernel@vger.kernel.org,m:linux-tip-commits@vger.kernel.org,m:teddy.astie@vates.tech,m:stable@vger.kernel.org,m:x86@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[tglx@kernel.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-266821-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:linux@roeck-us.net,m:eajames@linux.ibm.com,m:arnd@arndb.de,m:linux-hwmon@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:jianhao.xu@seu.edu.cn,m:runyu.xiao@seu.edu.cn,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[runyu.xiao@seu.edu.cn,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tglx@kernel.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[runyu.xiao@seu.edu.cn,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[seu.edu.cn:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	TO_DN_SOME(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,fw13:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,seu.edu.cn:dkim,seu.edu.cn:email,seu.edu.cn:mid,seu.edu.cn:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7CD7F69AD5A
+X-Rspamd-Queue-Id: 105F069AEE8
 
-On Wed, Jun 17 2026 at 15:17, Conor Dooley wrote:
-> On Tue, Jun 16, 2026 at 08:47:00PM +0200, Marek Szyprowski wrote:
-> Same here:
+occ_active(false) and occ_shutdown() call hwmon_device_unregister() while
+occ->lock is held.  hwmon_device_unregister() waits for sysfs callbacks to
+drain, and those callbacks can enter the OCC update path and try to take
+occ->lock again.  That gives the unregister paths the lock ordering
+occ->lock -> sysfs callback drain, while a callback has the opposite edge
+sysfs callback -> occ->lock.
 
-Fix is queued
+This issue was found by our static analysis tool and then manually
+reviewed against the current tree.
+
+The grounded PoC kept the real unregister and callback carrier:
+
+  occ_shutdown()
+  hwmon_device_unregister()
+  occ_show_temp_1()
+  occ_update_response()
+
+Lockdep reported the circular dependency with occ_shutdown() already
+holding the OCC mutex and hwmon_device_unregister() waiting on the sysfs
+side:
+
+  WARNING: possible circular locking dependency detected
+  ... (sysfs_lock) ... at: hwmon_device_unregister+0x12/0x30 [vuln_msv]
+  ... (&test_occ.lock) ... at: occ_shutdown.constprop.0+0xe/0x40 [vuln_msv]
+  occ_update_response.isra.0+0xb/0x20 [vuln_msv]
+  occ_show_temp_1.constprop.0.isra.0+0x23/0x40 [vuln_msv]
+  *** DEADLOCK ***
+
+Serialize hwmon registration and removal with a separate hwmon_lock.
+Under that lock, detach occ->hwmon and update occ->active while occ->lock
+is held so concurrent OCC state changes still see a stable state, then
+drop occ->lock before calling hwmon_device_unregister().  This keeps the
+double-unregister protection while avoiding the unregister-versus-callback
+lock inversion.
+
+Fixes: 849b0156d996 ("hwmon: (occ) Delay hwmon registration until user request")
+Fixes: ac6888ac5a11 ("hwmon: (occ) Lock mutex in shutdown to prevent race with occ_active")
+Cc: stable@vger.kernel.org
+Signed-off-by: Runyu Xiao <runyu.xiao@seu.edu.cn>
+---
+ drivers/hwmon/occ/common.c | 28 ++++++++++++++++++++++------
+ drivers/hwmon/occ/common.h |  1 +
+ 2 files changed, 23 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/hwmon/occ/common.c b/drivers/hwmon/occ/common.c
+index 89928d38831b..43dfea14d2ef 100644
+--- a/drivers/hwmon/occ/common.c
++++ b/drivers/hwmon/occ/common.c
+@@ -1106,11 +1106,16 @@ static void occ_parse_poll_response(struct occ *occ)
+ 
+ int occ_active(struct occ *occ, bool active)
+ {
+-	int rc = mutex_lock_interruptible(&occ->lock);
++	struct device *hwmon = NULL;
++	int rc = mutex_lock_interruptible(&occ->hwmon_lock);
+ 
+ 	if (rc)
+ 		return rc;
+ 
++	rc = mutex_lock_interruptible(&occ->lock);
++	if (rc)
++		goto unlock_hwmon;
++
+ 	if (active) {
+ 		if (occ->active) {
+ 			rc = -EALREADY;
+@@ -1155,14 +1160,17 @@ int occ_active(struct occ *occ, bool active)
+ 			goto unlock;
+ 		}
+ 
+-		if (occ->hwmon)
+-			hwmon_device_unregister(occ->hwmon);
++		hwmon = occ->hwmon;
+ 		occ->active = false;
+ 		occ->hwmon = NULL;
+ 	}
+ 
+ unlock:
+ 	mutex_unlock(&occ->lock);
++	if (hwmon)
++		hwmon_device_unregister(hwmon);
++unlock_hwmon:
++	mutex_unlock(&occ->hwmon_lock);
+ 	return rc;
+ }
+ 
+@@ -1171,6 +1179,7 @@ int occ_setup(struct occ *occ)
+ 	int rc;
+ 
+ 	mutex_init(&occ->lock);
++	mutex_init(&occ->hwmon_lock);
+ 	occ->groups[0] = &occ->group;
+ 
+ 	rc = occ_setup_sysfs(occ);
+@@ -1191,15 +1200,22 @@ EXPORT_SYMBOL_GPL(occ_setup);
+ 
+ void occ_shutdown(struct occ *occ)
+ {
+-	mutex_lock(&occ->lock);
++	struct device *hwmon;
+ 
++	mutex_lock(&occ->hwmon_lock);
++	mutex_lock(&occ->lock);
++
+ 	occ_shutdown_sysfs(occ);
+ 
+-	if (occ->hwmon)
+-		hwmon_device_unregister(occ->hwmon);
++	hwmon = occ->hwmon;
++	occ->active = false;
+ 	occ->hwmon = NULL;
+ 
+ 	mutex_unlock(&occ->lock);
++
++	if (hwmon)
++		hwmon_device_unregister(hwmon);
++	mutex_unlock(&occ->hwmon_lock);
+ }
+ EXPORT_SYMBOL_GPL(occ_shutdown);
+ 
+diff --git a/drivers/hwmon/occ/common.h b/drivers/hwmon/occ/common.h
+index 7ac4b2febce6..82f600093c7f 100644
+--- a/drivers/hwmon/occ/common.h
++++ b/drivers/hwmon/occ/common.h
+@@ -101,6 +101,7 @@ struct occ {
+ 
+ 	unsigned long next_update;
+ 	struct mutex lock;		/* lock OCC access */
++	struct mutex hwmon_lock;		/* serialize hwmon registration/removal */
+ 
+ 	struct device *hwmon;
+ 	struct occ_attribute *attrs;
+-- 
+2.34.1
 
