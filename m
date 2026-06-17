@@ -1,103 +1,65 @@
-Return-Path: <stable+bounces-266704-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266706-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 0dFwFd9xMmpM0AUAu9opvQ
-	(envelope-from <stable+bounces-266704-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 12:07:27 +0200
+	id X6tiOdJzMmrN0AUAu9opvQ
+	(envelope-from <stable+bounces-266706-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 12:15:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF32F69844F
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 12:07:26 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F6ED6985FC
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 12:15:46 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=fail ("headers rsa verify failed") header.d=0sec.ai header.s=google header.b=KLGHlWWI;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266704-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266704-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=none;
+	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=jjjrHG5Y;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266706-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-266706-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=uniontech.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 587BC303F3FF
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 10:06:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9A5B9304CFCB
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 10:10:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC22C3DB645;
-	Wed, 17 Jun 2026 10:06:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CAF53D3D16;
+	Wed, 17 Jun 2026 10:10:46 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpbguseast3.qq.com (smtpbguseast3.qq.com [54.243.244.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA9BD3D8909
-	for <stable@vger.kernel.org>; Wed, 17 Jun 2026 10:06:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D03743C3C0E;
+	Wed, 17 Jun 2026 10:10:40 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781690764; cv=none; b=B70urecDXtDhQlry/u7QrQb/jz73pFcj/SxNH9q16NdKntiRT1jlMAGiZdwc2XHtKl4M6De5CJrHObGQfiGgL6rK0LlWwn35v6UuHB663U9eY5zApaqm2tqTD4/cEAS0kvUSGZWiHlr7WmpC55xzaxAuro1fJpVPqHNPlB+bIrM=
+	t=1781691046; cv=none; b=kWs+w9Xx092yzy01ojz7OFSdq4bzE2zK/lnHClNWMARRTdbKHmPQ4lMmh4UzTRs7ixRoX2EJdaRNSloI0j1oZvCIoGlK1pvLffkHZN+NFk9LRAon+sXvX4FV9rVIceTFWvzIoexGIWYZAfuJaUgjc4EIAbYRMxr5hpXvayGQz9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781690764; c=relaxed/simple;
-	bh=+lUniz+q8lUs9BYGcRRkAl9bdd2QYzCYyRz+e0Nv9cE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tT7jb9biu1nG1uCe9hzUD0vyrWG+UYATnfvvLaz6KNh0XB2044aMDtoErrMMWRBWdr6jR5M4h8j1LqPKaEU4fZ0EGJ9JMprI7+qk6qoNnaaSyO4Z0e0mA+wEDo92oqb+HFU9m379+hOa4syhzPkuIQyzwKD3X+Es58GEvdU/A80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0sec.ai; spf=pass smtp.mailfrom=0sec.ai; dkim=temperror (0-bit key) header.d=0sec.ai header.i=@0sec.ai header.b=KLGHlWWI; arc=none smtp.client-ip=209.85.128.51
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-490b8ac62baso7390845e9.0
-        for <stable@vger.kernel.org>; Wed, 17 Jun 2026 03:06:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=0sec.ai; s=google; t=1781690761; x=1782295561; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=nUCt6L8NGGOm3y2JBJxNOs5/dk/YzppXFeUdkifdqiU=;
-        b=KLGHlWWIQWV95gRGvYrlg8zMuKKgIvOP+3By4nnVx1YX+fVHJ8QQffgBV4ciqjmmyd
-         L1tscgyFu5SU9qqpxN7FikREOjy5cIIQvKLggUoLSxK5xdKvO2E44Uitvor6nSHnaXw5
-         n4sbCnw+8OWpwJtSI3wVs8pjrMgN7PW2xIiIktnsAVoBwMY9/7Gr4Bwd3NRL1vpVtrLt
-         VAaSKz+t5AcrJ2yICYjx96c8LCWjrxS7a/LzQGkwq97Z1W82wDHIl5Fm7+kPE1Q5JcVx
-         JjLuQVhYdZasdESO+aCLKFiO648xfECbjYiTcHV6zUisBV9oMNtp2o7lRYvgWP8419lL
-         dWpQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781690761; x=1782295561;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nUCt6L8NGGOm3y2JBJxNOs5/dk/YzppXFeUdkifdqiU=;
-        b=c4r8flRKOvkezA67c99XxB1W5u70Dip/Ogk7FQdA+He6j2Vwe0deq2f+NKuU1cojsL
-         sSTG+KQNfKloVYKm804cHje9Vj9Cdb9nO8Rg1cqzK78/bxuH/a3rBvNB826cAx/ocDjB
-         /v1CxjXt/5RqFgPxVqwadWDkuRtXsVtiUTvyilC0jNQxBUN0dzF3qp4cEBCd1stmjFox
-         MuSHKspSL22NH9h2h7Vj7lBtO0qo+stzjJOmjwG2lIaMvI0vgQ9MrFjjvlzJp5uj/Ltq
-         Kc+JKL/Op8Id5u+88ym6Gv5DyVtVy+Q9PfCNEjLk/mxd+P4pFU/K8gsyzAuVU6pbB7Nv
-         FhAg==
-X-Forwarded-Encrypted: i=1; AFNElJ/zj5s9rYoSi98b4OmGr+t/EaK78047vu/z4QTG+CSgW3WC93dZC4K1Ro11U5oBx6Mr9ZNFpOw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxeN+F7mCDHBTeC/iLYLa0joWh0o0m3ZSzHY/0tc+MnWPa4RLy9
-	Ck+SSQqkw50E2OKlMhyzuhPIwzaQElvWMWsB851UHgJAQlNupeiAYn3liIOmkD339o+k
-X-Gm-Gg: Acq92OGZfKfugh3XJDtB+jeWkxgf+qzrO53YUSLYNLxrJCwe5bxisgHMvGPyxPflvVN
-	QDq7HHclw9BV16hf5s5mc8ZfAHxK2yMV37W+np3gP/9gf0f/28TDoXpqZzT4uYRtJUeSkdP5Xti
-	etMvMRT3xUrzuhVamlAuRthT8lkIkrN4i4ojZa2RVccDUAhfpt2YLBifsCX+Mz9gyvVIPyW8EXM
-	8XFsS/+0bGXuB7Vwg/tv9mGFA4zDGGYA3Sa01ayBrFtuNH5mJIyoXQCo09nmBfQarXBLNEbHmN5
-	ML2Eoz60sB8Fg60bMrrVagn4q1CKu11xNrxYQz7ym0+4wsuDomou1mLYsfPNmG9BWRNlZNQ8XRP
-	KKg3ZbRsyLmHSm7+wjL/b5+tZodNwmL7fwBXgGUGOX0PZ1vzTaaC+lImneQvX6N76Gfvc5mKTpx
-	1tdP9HhnV+BFiSFNOsChWteZ258FZY5itfMrZTdV49vLmFTnwAxSPD133GdQfQ9L42nF2uoh3L9
-	2CDsWHnVnQHlNWrQ/qqnGQmCcJLIm1gR2Y=
-X-Received: by 2002:a05:600c:a45:b0:48f:e230:29f5 with SMTP id 5b1f17b1804b1-492340f6f3emr34524455e9.16.1781690761127;
-        Wed, 17 Jun 2026 03:06:01 -0700 (PDT)
-Received: from PeakBook-Mini.tail8e484.ts.net ([178.197.218.209])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49230a4fd31sm142422875e9.4.2026.06.17.03.05.59
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 17 Jun 2026 03:06:00 -0700 (PDT)
-From: Doruk Tan Ozturk <doruk@0sec.ai>
-To: saeedm@nvidia.com,
-	leon@kernel.org,
-	tariqt@nvidia.com,
-	mbloch@nvidia.com,
-	sd@queasysnail.net,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: borisp@nvidia.com,
-	raeds@nvidia.com,
-	ehakim@nvidia.com,
-	netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
+	s=arc-20240116; t=1781691046; c=relaxed/simple;
+	bh=34QBRVhfuaS2DMfKCySh/mkmfr2LC/mf23+rkkAdqDI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VsK4s+AHfoi0A94jMpRILVYjJtZdBi5DPmjy0nC2Ws9pAUWhG6ANYEWXbHzi2L+A7ElOPZQTcXGtW3IDBY7Me4VfsNf+P6NYVMn9nxE3R75TQgVXlaOk2bPztJORWvjkeiBGczCoACTCZNZkaUvfP2XG/R5qzM+Pw9UrEEvtzRM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=jjjrHG5Y; arc=none smtp.client-ip=54.243.244.52
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1781691016;
+	bh=t0k4KETS3DYbrhuiTcpPSSNVJN8XG33QT9JP6dIByTY=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=jjjrHG5YD5geU+YCMCIsWyHS+RaPtG94xrNFnGVRKCPVhSt3nNdc4bTQABDJRSPvh
+	 FYqlbCG8ulrhw1/BvEIpgaDRysBtGhPlcYOsX/ieW2qIqjEZDlhEQNpdrae4TBQrOY
+	 fIK5w3Ch4YKHIEccLqzZ+KmwpJMIUFBPAMkeuDD8=
+X-QQ-mid: zesmtpgz6t1781691000t43d5fb33
+X-QQ-Originating-IP: meuJZ+mkGZcHUGa1IWwktNozjbt5o5TDqGotR1bukL0=
+Received: from PEN202512010004 ( [113.57.152.160])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Wed, 17 Jun 2026 18:09:58 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 7307632202497933010
+EX-QQ-RecipientCnt: 6
+From: raoxu <raoxu@uniontech.com>
+To: mathias.nyman@intel.com
+Cc: gregkh@linuxfoundation.org,
+	linux-usb@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Doruk Tan Ozturk <doruk@0sec.ai>,
+	raoxu@uniontech.com,
 	stable@vger.kernel.org
-Subject: [PATCH net v2] net/mlx5e: macsec: fix use-after-free of metadata_dst on RX SC delete
-Date: Wed, 17 Jun 2026 12:05:58 +0200
-Message-ID: <20260617100558.83654-1-doruk@0sec.ai>
-X-Mailer: git-send-email 2.53.0
+Subject: [PATCH v2] xhci: pci: Disable soft retry for Renesas uPD720201
+Date: Wed, 17 Jun 2026 18:09:57 +0800
+Message-ID: <D9BA02889D046D23+20260617100957.2888108-1-raoxu@uniontech.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -105,126 +67,123 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpgz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz6b-0
+X-QQ-XMAILINFO: NQN/cmJBY1rC10lbOi6TuNqgKRROH5AUjkbVIfKhWdrSTuWzYrMjoNST
+	BePrmAwGCGQDkEj1rjdVY3AlcrSsqUPNjVaoNdrzbitg4ePoLPDiQf1t61kIeZyDNFQRn1A
+	F7WelYFDuLTyrKWRcRfzD9b5CbJKd1RI0pukU57mVW7Deawi8C37F8eXOOBpCJG60T8/v4C
+	9VhW6Lf5W6v/Hfu05Fy7ByTBqBkhCjLmmQIAfnjKIrWoMPXxJn+6jO7MgQY/xnqizQLdoNM
+	xPPxqu1JYEzWf4fM3zxrQZdMONGf0GpY3PhWkVTzWsRh1RIx/ChAChijPdGV9tsvF3v5Yp5
+	CM3eMWEALsPQgw54o5ntqd52ALUslyARw/KQq7K84ix+Oipx3gXzS/PoPt3xHuTWwxo9fSv
+	4DIEasty0hS8nJeRCGsEVhjxNhEiTrnCn/illruGe8oYdkEmWvPVjygNbtRa+cZHqQSdot0
+	Zp80WwbEnpoci9Yhw+zIjvqeHKfXHMg5FEhh6mqzxp0AT2VAoUj7L8G7nqLHU2WTOMY8By1
+	kmqUDqr4gvE4mr7wk8Lnrh6EJeFgx8DodLcGtGkawEryQjn17sslMp/mBW3Jv1qcqT+QOzS
+	T9TW9HucyosnxNDPIQ6Y7HTAlEa8rFbpuRU39L1igCJqlVluYlm44vskwGP0LGnahk6e0P4
+	wnf+Ny4vD+LW835KlMlds+6TJO1WcuKLK6jUh+blVC5K8oP+leepyC6R38vaFXnH401fwBg
+	lh1nWxKpNLdZBTH8kkdXTtak2/fjQ+v8LysgWMHfN+dVaSz2DVQWgGW5LnnqZK2lmAw0O+s
+	MeMB+vVgUK+OsfIarp4N2vSA6x3fWkfnTDpoX0++POfJqNdByM+IKOZ1lUoJlmIdXHhCN55
+	CUyEujO6E7dtAyL0i6APsNTip1wZxJ6D1fCVhIFbOQX9O+d5pp2K5hl4MLx7bcT1gXSG/QB
+	oX38m4IMNmxvtJqmY+enGc8i3Bk1zQj0Gh0PgNacfnFh1JxWQJ/NWBTp9P/o029uTEZfA+y
+	C9RD2PsjXDIbNlSIRLOxPkGDkSyt87S2rsXcd1+YvhQo8NCHW5Z+A6B3Ig3kXKet5k5VCsu
+	5EVoYgE7CV6ogesvITfb5edq+xePjJCUGJxY5UI9N8UG6hNw6OpKco=
+X-QQ-XMRINFO: OD9hHCdaPRBwH5bRRRw8tsiH4UAatJqXfg==
+X-QQ-RECHKSPAM: 0
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [2.54 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
-	R_DKIM_REJECT(1.00)[0sec.ai:s=google];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[uniontech.com,none];
+	R_DKIM_ALLOW(-0.20)[uniontech.com:s=onoh2408];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	TAGGED_FROM(0.00)[bounces-266704-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-266706-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[0sec.ai];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[doruk@0sec.ai,stable@vger.kernel.org];
+	FORGED_SENDER(0.00)[raoxu@uniontech.com,stable@vger.kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:saeedm@nvidia.com,m:leon@kernel.org,m:tariqt@nvidia.com,m:mbloch@nvidia.com,m:sd@queasysnail.net,m:andrew+netdev@lunn.ch,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:borisp@nvidia.com,m:raeds@nvidia.com,m:ehakim@nvidia.com,m:netdev@vger.kernel.org,m:linux-rdma@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:doruk@0sec.ai,m:stable@vger.kernel.org,m:andrew@lunn.ch,s:lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:mathias.nyman@intel.com,m:gregkh@linuxfoundation.org,m:linux-usb@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:raoxu@uniontech.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[doruk@0sec.ai,stable@vger.kernel.org];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[0sec.ai:-];
 	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[raoxu@uniontech.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[uniontech.com:+];
+	TO_DN_NONE(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,0sec.ai:email,0sec.ai:mid,0sec.ai:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,uniontech.com:dkim,uniontech.com:email,uniontech.com:mid,uniontech.com:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: DF32F69844F
+X-Rspamd-Queue-Id: 5F6ED6985FC
 
-When an offloaded MACsec RX SC is deleted, macsec_del_rxsc_ctx() released
-the per-SC metadata_dst with metadata_dst_free(), which calls kfree()
-unconditionally and ignores the dst reference count. The RX datapath in
-mlx5e_macsec_offload_handle_rx_skb() looks up the SC under rcu_read_lock()
-via xa_load() and, while still holding only the RCU read lock, takes a
-reference with dst_hold() and attaches the dst to the skb with
-skb_dst_set().
+From: Xu Rao <raoxu@uniontech.com>
 
-A reader that has already obtained the rx_sc pointer can therefore race
-with the delete path:
+The Renesas uPD720201 xHCI controller can fail to complete
+a Stop Endpoint command after a transaction error on an interrupt
+endpoint when soft retry is used.
 
-  CPU0 (del_rxsc)                 CPU1 (rx datapath)
-  --------------                  ------------------
-                                  rcu_read_lock();
-                                  rx_sc = xa_load(...)->rx_sc;
-  xa_erase(...);
-  metadata_dst_free(rx_sc->md_dst); /* kfree(), ignores refcount */
-                                  dst_hold(&rx_sc->md_dst->dst); /* UAF */
-                                  skb_dst_set(skb, &rx_sc->md_dst->dst);
+This was reproduced with this setup:
 
-metadata_dst_free() frees the object even though the datapath still holds
-(or is about to take) a reference, so the subsequent dst_hold() /
-skb_dst_set() and the later skb free operate on freed memory.
+  xHCI: Renesas uPD720201, PCI ID 1912:0014 rev 03
+  dev:  USB Ethernet device with an integrated Genesys Logic
+        USB3.1 hub, USB ID 05e3:0626, and a Realtek RTL8153
+        Ethernet function, USB ID 0bda:8153
 
-Fix the owner side by dropping the reference with dst_release() instead of
-freeing unconditionally. dst_release() only schedules the RCU-deferred
-dst_destroy() once the reference count reaches zero, so a concurrent reader
-that still holds a reference keeps the object alive.
+Reproducer:
 
-Dropping the owner reference is not sufficient on its own: once the owner
-reference is the last one, dst_release() drops the count to zero and the
-destroy is merely RCU-deferred. A racing reader that runs plain dst_hold()
-on that already-dead dst gets rcuref_get() == false but dst_hold() only
-WARNs and attaches the dying dst to the skb anyway; the later skb free then
-calls dst_release() on an object whose destroy is already
-scheduled, again a use-after-free.
+  1. Plug the integrated USB hub and Ethernet device into the
+     1912:0014 xHCI controller.
+  2. Let r8152 bind to the 0bda:8153 RTL8153 Ethernet function
+     behind the integrated hub.
+  3. Bring the Ethernet device up.
+  4. Hot-unplug the device.
 
-Convert the RX datapath to dst_hold_safe(), which returns false
-(without warning) when the dst is already dead, and only attach it to
-the skb when a reference was successfully taken. When the SC is being
-deleted the in-flight packet simply proceeds without the offload
-metadata_dst: skb_metadata_dst() returns NULL, the MACsec core sees
-!is_macsec_md_dst and skips this secy (rx_uses_md_dst path), which is
-the correct behaviour for a packet whose SC is going away.
+The host reports a transaction error on the RTL8153 interrupt
+endpoint, queues a soft reset, and later times out the Stop
+Endpoint command while disconnecting the device:
 
-Fixes: b7c9400cbc48 ("net/mlx5e: Implement MACsec Rx data path using MACsec skb_metadata_dst")
+  Transfer error for slot 8 ep 6 on endpoint
+  Soft-reset ep 6, slot 8
+  Ignoring reset ep completion code of 1
+  xHCI host not responding to stop endpoint command
+  xHCI host controller not responding, assume dead
+  HC died; cleaning up
+
+The Renesas 1912:0014 controller cannot safely use the xHCI soft
+retry path. Set XHCI_NO_SOFT_RETRY for this controller so
+transaction errors use the pre-soft-retry recovery path. With
+this quirk the same hot-unplug test no longer times out the Stop
+Endpoint command and the RTL8153 remains usable and stable.
+
+Fixes: f8f80be501aa ("xhci: Use soft retry to recover faster from transaction errors")
 Cc: stable@vger.kernel.org
-Signed-off-by: Doruk Tan Ozturk <doruk@0sec.ai>
+Signed-off-by: Xu Rao <raoxu@uniontech.com>
 ---
-v2: also convert the RX datapath dst_hold() to dst_hold_safe() so a reader
-    racing the SC delete cannot attach a dst whose last reference was just
-    dropped (per the automated review forwarded by Simon Horman).
+Changes in v2:
+- Add Cc: stable@vger.kernel.org.
 
-v1: https://lore.kernel.org/netdev/20260615140534.52691-1-doruk@0sec.ai/
+ drivers/usb/host/xhci-pci.c | 1 +
+ 1 file changed, 1 insertion(+)
 
- drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c
-index 71b3a059c964..e5d9a14c92b8 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c
-@@ -829,7 +829,7 @@ static void macsec_del_rxsc_ctx(struct mlx5e_macsec *macsec, struct mlx5e_macsec
- 	 */
- 	list_del_rcu(&rx_sc->rx_sc_list_element);
- 	xa_erase(&macsec->sc_xarray, rx_sc->sc_xarray_element->fs_id);
--	metadata_dst_free(rx_sc->md_dst);
-+	dst_release(&rx_sc->md_dst->dst);
- 	kfree(rx_sc->sc_xarray_element);
- 	kfree_rcu_mightsleep(rx_sc);
- }
-@@ -1697,8 +1697,8 @@ void mlx5e_macsec_offload_handle_rx_skb(struct net_device *netdev,
- 	sc_xarray_element = xa_load(&macsec->sc_xarray, fs_id);
- 	rx_sc = sc_xarray_element->rx_sc;
- 	if (rx_sc) {
--		dst_hold(&rx_sc->md_dst->dst);
--		skb_dst_set(skb, &rx_sc->md_dst->dst);
-+		if (dst_hold_safe(&rx_sc->md_dst->dst))
-+			skb_dst_set(skb, &rx_sc->md_dst->dst);
+diff --git a/drivers/usb/host/xhci-pci.c b/drivers/usb/host/xhci-pci.c
+index 585b2f3117b0..d70c6a6a64bb 100644
+--- a/drivers/usb/host/xhci-pci.c
++++ b/drivers/usb/host/xhci-pci.c
+@@ -427,6 +427,7 @@ static void xhci_pci_quirks(struct device *dev, struct xhci_hcd *xhci)
+ 	if (pdev->vendor == PCI_VENDOR_ID_RENESAS &&
+ 	    pdev->device == 0x0014) {
+ 		xhci->quirks |= XHCI_ZERO_64B_REGS;
++		xhci->quirks |= XHCI_NO_SOFT_RETRY;
  	}
- 
- 	rcu_read_unlock();
--- 
-2.43.0
-
+ 	if (pdev->vendor == PCI_VENDOR_ID_RENESAS &&
+ 	    pdev->device == 0x0015) {
+--
+2.50.1
 
