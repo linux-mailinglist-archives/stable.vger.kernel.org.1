@@ -1,64 +1,54 @@
-Return-Path: <stable+bounces-266817-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266820-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 1Vb3LXe3MmqC4QUAu9opvQ
-	(envelope-from <stable+bounces-266817-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 17:04:23 +0200
+	id xrKpFbK5MmpV4gUAu9opvQ
+	(envelope-from <stable+bounces-266820-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 17:13:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CCE269AC65
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 17:04:23 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C01AC69ADBB
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 17:13:53 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IhipSx7Y;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266817-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-266817-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=seu.edu.cn header.s=default header.b=mg4p7HEH;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266820-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-266820-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=seu.edu.cn;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C72B030523F0
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 15:02:38 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 11E0F3111E3D
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 15:11:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74104477E4D;
-	Wed, 17 Jun 2026 15:00:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61A9444A725;
+	Wed, 17 Jun 2026 15:07:05 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail-m49197.qiye.163.com (mail-m49197.qiye.163.com [45.254.49.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F5C22E7F38
-	for <stable@vger.kernel.org>; Wed, 17 Jun 2026 15:00:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03818288D0;
+	Wed, 17 Jun 2026 15:07:01 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781708443; cv=none; b=V5hsR4ZWUw/eg33Te0992mSzLsJW6e2xi9JANZ8sK7XvmhFGFZNjD52xjmpq9E2Q5e4SmAwW70effdDhJ8cbYPUGpfledCzPHOyJiYfhaQHHlcRJ/7Zb4dKfO9PpFdBTqFBuoiP4OLr2PK6MtKFunk1FUADLgnSx9dg2PE9AcOo=
+	t=1781708825; cv=none; b=NYVgAe72ko4H5UgXTK2y5wWyukIrzMVdhsfcU6/lLXuqdeNjn9hxi2CXRFhvxAEP/Pt0wmq836hkdoPiGuU6NqgNYRmGA/wgiJM4LnG8eStjtfbqmDqFqYSOgCDE/KmLRB0xCV31VXeLvHAKQZFNtIx6t0eEMxs2dq/nWNG1e8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781708443; c=relaxed/simple;
-	bh=op71p3I+zyvqW0SMNbKNQ5LSDX+X++0u7+WxMaAJnnI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qH2Igwmv+emakKn/WQp8beqNiRf0mW5ZCSUG9YhkIJVvZxCJE0emTRbepUJeGUPL1n++cQmUyespXada/hJwJXzGdDS6mHL7zIqfnpChug423Qn69bxV6XHCVdWBsLRanB9cJu6rqdsI0G3yUnB7Rq/nEr0Gxr4+FlKfmvwutL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IhipSx7Y; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F59F1F000E9;
-	Wed, 17 Jun 2026 15:00:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781708436;
-	bh=A8oq8IYYmsqDMsuy8wa0En+W7vaPCZkNLRnuI+Z9CoQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=IhipSx7YLHZrlJdDr9L+QjW8Y3NrkbtrQd0xt/07cB6hYCBJja3p4KjmC4X5ofNVV
-	 cCldMLnmuALBvqDp+TRfO2uf1IF4PXAF9T3C0F4EE+pWIpcm/2WkZTYgVMnvKaCQnr
-	 mybt06L/EISu8fYqLAjgbKXUrCCO/4Tn5nTuI8Fw2yHEkLZbXrcxEP1rLWBw+AL30X
-	 EpP8gY5E+FwpsmzRp7N5BAi7NeX/t16atsR31dZsBqSH0TjkRHe1AP/c5wAUOQ34EG
-	 QQnz0Fu1n51/Fs0DfgD4fGXOYLIOVzWNoxa/ZS0dSATSH7hiUiOkDXBMtORwS8ksiS
-	 Lo1Ypl7cel3pg==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Jann Horn <jannh@google.com>,
-	stable@kernel.org,
-	Miklos Szeredi <mszeredi@redhat.com>,
-	"Christian Brauner (Amutable)" <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y] fuse: limit FUSE_NOTIFY_RETRIEVE to uptodate folios
-Date: Wed, 17 Jun 2026 11:00:34 -0400
-Message-ID: <20260617150034.208494-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026061525-banshee-overlay-7405@gregkh>
-References: <2026061525-banshee-overlay-7405@gregkh>
+	s=arc-20240116; t=1781708825; c=relaxed/simple;
+	bh=aQbg1YvfiQDdp+2LZACTnYqzfGQ9WFK8VhEU7/1Oa7A=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=oBAuovuen7IHcmBDi3hIyJoneKm5t2edZ+IY4qElmP440EoAf3tcYOkEz8rkyRdqugWWzCSA10ZewXO3JvZPPmbUlE6JE3ZnuEIFtTBnlJJ81fcSQ8QMDQhqqa9t4wsIQ2UTxYfgTpvzMoaA3k/MbmKGdlyb/SbM0c/JFF8v160=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=mg4p7HEH; arc=none smtp.client-ip=45.254.49.197
+Received: from PC-202605011814.localdomain (unknown [58.241.16.34])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 42c696515;
+	Wed, 17 Jun 2026 23:01:44 +0800 (GMT+08:00)
+From: Runyu Xiao <runyu.xiao@seu.edu.cn>
+To: Jorge Marques <jorge.marques@analog.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>
+Cc: Frank Li <Frank.Li@nxp.com>,
+	linux-i3c@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	jianhao.xu@seu.edu.cn,
+	runyu.xiao@seu.edu.cn,
+	stable@vger.kernel.org
+Subject: [PATCH] i3c: master: adi: initialize the lock before enabling interrupts
+Date: Wed, 17 Jun 2026 23:01:38 +0800
+Message-Id: <20260617150138.628578-1-runyu.xiao@seu.edu.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,85 +56,119 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0a9ed61a3cb903a1kunm30aede3e71fad
+X-HM-MType: 10
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlCGUpNVkNJHk9PT0NJH0wYH1YeHw
+	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlOQ1VJT0pVSk1VSE9ZV1kWGg8SFR0UWUFZT0tIVUpLSEpPSE
+	xVSktLVUpCS0tZBg++
+DKIM-Signature: a=rsa-sha256;
+	b=mg4p7HEHY8vmP8MknhhjbKoZBcw3shn2hzBZBbfIK7chKfApm6cwCjHgmcGiuCUmK+zVBVtBTdAhYZTz3+gW1Z5r1Wx2q5llxdusNFsh66S9cmKxggnXcvCB8RsRBXwWRQCcCKTzZ797VQsN7i+BBIXJiCD80Svx3/O0tG6qpvI=; s=default; c=relaxed/relaxed; d=seu.edu.cn; v=1;
+	bh=oP+7Fqj5obiHqmRzGIe8ikds8jQUQ2UQELMJxvRP8PA=;
+	h=date:mime-version:subject:message-id:from;
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.66 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	DMARC_POLICY_ALLOW(-0.50)[seu.edu.cn,none];
+	R_DKIM_ALLOW(-0.20)[seu.edu.cn:s=default];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-266817-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:jannh@google.com,m:stable@kernel.org,m:mszeredi@redhat.com,m:brauner@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-266820-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:jorge.marques@analog.com,m:alexandre.belloni@bootlin.com,m:Frank.Li@nxp.com,m:linux-i3c@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:jianhao.xu@seu.edu.cn,m:runyu.xiao@seu.edu.cn,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[runyu.xiao@seu.edu.cn,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[runyu.xiao@seu.edu.cn,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	DKIM_TRACE(0.00)[seu.edu.cn:+];
 	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,msgid.link:url]
+	RCPT_COUNT_SEVEN(0.00)[8];
+	TO_DN_SOME(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,seu.edu.cn:dkim,seu.edu.cn:email,seu.edu.cn:mid,seu.edu.cn:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4CCE269AC65
+X-Rspamd-Queue-Id: C01AC69ADBB
 
-From: Jann Horn <jannh@google.com>
+adi_i3c_master_probe() requests the IRQ and unmasks REG_IRQ_PENDING_CMDR
+before the controller's IBI state, transfer queue list and transfer
+queue lock are initialized.  A pending CMDR interrupt can therefore run
+adi_i3c_master_irq() and take master->xferqueue.lock before the dynamic
+lock has been initialized.
 
-[ Upstream commit 4e3d1b2c48ca6c55f1e9ca7f8dccc76f120f276c ]
+This issue was found by our static analysis tool and then manually
+reviewed against the current tree.
 
-FUSE_NOTIFY_RETRIEVE must be limited to uptodate folios; !uptodate folios
-can contain uninitialized data.
-Since FUSE_NOTIFY_RETRIEVE is intended to only return data that is already
-in the page cache and not wait for data from the FUSE daemon, treat
-!uptodate folios as if they weren't present.
+The grounded PoC kept the probe ordering and the IRQ path
+adi_i3c_master_probe() -> adi_i3c_master_irq() -> xferqueue.lock, with a
+pending CMDR interrupt arriving after REG_IRQ_PENDING_CMDR is unmasked.
+Lockdep reported:
 
-This only has security impact on systems that don't enable automatic
-zero-initialization of all page allocations via
-CONFIG_INIT_ON_ALLOC_DEFAULT_ON or init_on_alloc=1.
+  INFO: trying to register non-static key.
+  you didn't initialize this object before use?
+  lock_acquire+0xbb/0x290
+  _raw_spin_lock_irqsave+0x36/0x60
+  adi_i3c_master_irq+0x32/0x56 [vuln_msv]
+  adi_i3c_master_probe+0x5a/0xf47 [vuln_msv]
 
-Cc: stable@kernel.org
-Fixes: 2d45ba381a74 ("fuse: add retrieve request")
-Signed-off-by: Jann Horn <jannh@google.com>
-Link: https://patch.msgid.link/20260519-fuse-retrieve-uptodate-v1-1-a7a1912a37f9@google.com
-Acked-by: Miklos Szeredi <mszeredi@redhat.com>
-Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
-[ translated `folio_test_uptodate(folio)`/`folio_put(folio)` to `PageUptodate(page)`/`put_page(page)` for the pre-folio page-based 6.6 fuse ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Initialize the transfer queue and IBI state before requesting and
+unmasking the IRQ.
+
+Fixes: a79ac2cdc91d ("i3c: master: Add driver for Analog Devices I3C Controller IP")
+Cc: stable@vger.kernel.org
+Signed-off-by: Runyu Xiao <runyu.xiao@seu.edu.cn>
 ---
- fs/fuse/dev.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/i3c/master/adi-i3c-master.c | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
-diff --git a/fs/fuse/dev.c b/fs/fuse/dev.c
-index 7573dcd8f5d442..b9d6e03f8f7f45 100644
---- a/fs/fuse/dev.c
-+++ b/fs/fuse/dev.c
-@@ -1718,6 +1718,10 @@ static int fuse_retrieve(struct fuse_mount *fm, struct inode *inode,
- 		page = find_get_page(mapping, index);
- 		if (!page)
- 			break;
-+		if (!PageUptodate(page)) {
-+			put_page(page);
-+			break;
-+		}
+diff --git a/drivers/i3c/master/adi-i3c-master.c b/drivers/i3c/master/adi-i3c-master.c
+index 82ac0b3d057a..cf873d46e10f 100644
+--- a/drivers/i3c/master/adi-i3c-master.c
++++ b/drivers/i3c/master/adi-i3c-master.c
+@@ -967,17 +967,9 @@ static int adi_i3c_master_probe(struct platform_device *pdev)
+ 	writel(0x00, master->regs + REG_ENABLE);
+ 	writel(0x00, master->regs + REG_IRQ_MASK);
  
- 		this_num = min_t(unsigned, num, PAGE_SIZE - offset);
- 		ap->pages[ap->num_pages] = page;
+-	ret = devm_request_irq(&pdev->dev, irq, adi_i3c_master_irq, 0,
+-			       dev_name(&pdev->dev), master);
+-	if (ret)
+-		return ret;
+-
+ 	platform_set_drvdata(pdev, master);
+ 
+ 	master->free_rr_slots = GENMASK(ADI_MAX_DEVS, 1);
+-
+-	writel(REG_IRQ_PENDING_CMDR, master->regs + REG_IRQ_MASK);
+-
+ 	spin_lock_init(&master->ibi.lock);
+ 	master->ibi.num_slots = 15;
+ 	master->ibi.slots = devm_kcalloc(&pdev->dev, master->ibi.num_slots,
+@@ -989,6 +981,13 @@ static int adi_i3c_master_probe(struct platform_device *pdev)
+ 	spin_lock_init(&master->xferqueue.lock);
+ 	INIT_LIST_HEAD(&master->xferqueue.list);
+ 
++	ret = devm_request_irq(&pdev->dev, irq, adi_i3c_master_irq, 0,
++			       dev_name(&pdev->dev), master);
++	if (ret)
++		return ret;
++
++	writel(REG_IRQ_PENDING_CMDR, master->regs + REG_IRQ_MASK);
++
+ 	return i3c_master_register(&master->base, &pdev->dev,
+ 				   &adi_i3c_master_ops, false);
+ }
 -- 
-2.53.0
+2.34.1
 
 
