@@ -1,192 +1,163 @@
-Return-Path: <stable+bounces-266732-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266734-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 7isXCjuMMmqA1wUAu9opvQ
-	(envelope-from <stable+bounces-266732-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 13:59:55 +0200
+	id Xjt5CpuPMmqS2AUAu9opvQ
+	(envelope-from <stable+bounces-266734-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 14:14:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 005D5699663
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 13:59:54 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BEAB699969
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 14:14:18 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=suse.com header.s=google header.b=M6qD7bvt;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266732-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266732-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=suse.com;
+	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=HFvNnWN6;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266734-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266734-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=uniontech.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4A1C33037794
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 11:59:41 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BC2D7304AE4A
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 12:09:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 453763F0AA8;
-	Wed, 17 Jun 2026 11:59:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 906ED3F0751;
+	Wed, 17 Jun 2026 12:09:16 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpbgau1.qq.com (smtpbgau1.qq.com [54.206.16.166])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08A4A3EFD14
-	for <stable@vger.kernel.org>; Wed, 17 Jun 2026 11:59:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BB863B4EAA;
+	Wed, 17 Jun 2026 12:09:12 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781697574; cv=none; b=Te+sz9fZm498ivCiJLMYdn8xcp6xOAEQhP4ASKJj/NIMeSFuAV+nxza9R8/NcknaXrMTzAbJDYTEmudKgyUe9hjSFQzo99/59cliM66Q9uSt524PlPddaheF4FT35g0iZ/z2vVIy8WizDJm8bnpaL7b18AuSv3MTW5juaRGkh8Q=
+	t=1781698156; cv=none; b=pgo7BysAv1LddxV0VdFUSNFeWpBXfYmODn8bnyFfCULW16U3XF0GlXWZeHwyRT41OsN4NiEaZmsVh7YQEAaEnp96sbRFvGtSp6sCDNvUPdnR7Q54H5OLEM81Jfzll+grPD+HYf1M6UZG7KDipaVvZ+4SDkOAMugjzNtcuLLE+G4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781697574; c=relaxed/simple;
-	bh=cvsxccTzFVOpMQezm4HlOWz2aB8KWwD6zxOBa9D3eA8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Rpb6u3lUSy2w5Ncewof5g/AdDGSdEQBUzZJrv8WhaR/91/XWdRugmyJWpyRzVIwn5X1I5emI7RjWVv5Yet3dK7E2RJd1mFNCg5HpxCf7f8k2lHuY0ilkLgGdo7eFFxfYbF0ZdjLszliJ6I6WiBox4PUh2+W4ibE3C7W76GMBuVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=M6qD7bvt; arc=none smtp.client-ip=209.85.128.44
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-490bc6a7958so7158485e9.1
-        for <stable@vger.kernel.org>; Wed, 17 Jun 2026 04:59:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1781697570; x=1782302370; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=wFy1siI5GPA02P4SigwJOvEY2/GCKPj1mDQV6Az/rvE=;
-        b=M6qD7bvtZL4WoGDeCzK3htwiEAuyM4CktDeM5fxxmuqw8gryeGiBqYiMqXeDX0TObt
-         ZhwgjWODAUq1Wf3Ii+fDS6wIbRIKznp+VbtnNcMlXDPeRTSb35z7nADRBqaaQQJpu7c5
-         E+wQDUsA8ekgkOZFpVB+TO4QInOdJdP0boeMLaa7Jm+N+CRknJN8WskaFdqdSBs19MsJ
-         eGKWMVRPZzLWCQU6WqgGC1mSSdRD/AcSd5UzNGZKVBVNC6xyNW6sQLx4BqpiZ+xh4bnR
-         kH561LSvnpzCGzIWt+h44lsPyKA5JUitnlXOYfdn+0QaRB9CPyOj+PXMEt90lJWu8pBR
-         H3GA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781697570; x=1782302370;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=wFy1siI5GPA02P4SigwJOvEY2/GCKPj1mDQV6Az/rvE=;
-        b=GaGUM5cBWn8PmJyN0WS7wZKRSsE+dprYMhdSe+f3t+UoIedq8T2WgSzLKMKM0RsMCG
-         YROjv5oFGADnUFb276EegrajrHbWiU2BJL9O6oCVHguJAAgl4Lw9tgaSZ5D42ZmTMZIK
-         brQhY5W8BgAgzUvbAHMpWLNaJvvZP68fhAlhPhAZxZrlPEOwZPc760he9gOutaIlrYVX
-         0z5jHra4oADx22YjcpT9Nlt/4HzV9RQl7LJcyk9U0a7HSXrBogA4ZoUFOolwHA023g8X
-         Yt5ekDh0xJaLRtD9FvsaMAcTiBIfZk1nstTujsUxheHk7HAnTf4ur/HrVuGxzKw8w6T0
-         i7bQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9cBNogujR6wYiEp63VAtFxa+UISU4sjMbinLmYJXYJorYGlL1N/xGK6PRtmSTFEfHkZcCNr/U=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwZTLl3agTGFPP9aX+i57G+KPn2C3PapiJBWaTk3bRCLXsj9EQN
-	RA+jgXvJKz4//NgqE9wpoJ0fNENCCet6q+u0A1/2+uSSZOeZ+K8kpeUPWuYNZWOAGCo=
-X-Gm-Gg: Acq92OFJ2+wqdxUDxj0FNWFxTLaqrBKQl2jzyH1Kni2TO84RECo5OoGy3SooFI1G5wk
-	BJDf9MwhUQ2aOx0a5IsMsszE6RONZNsvdDJZ1STPnG1AzvxG4I2vi81kya5DWUCyXEB2+IeMz+o
-	X9UQLT6osezh7jaHSh8bZXBHNN+xI5A6IIGava/WYyixGv4hjY1dphJQMXP7mWiiyXDdXURY+Uv
-	wPop4kXZS5lWnG9UIJYgtbyg7RT4Yvetm5Q9zIFbwYxCsWoECotgtnOazL/pwzeSQi4RVXqX3Ik
-	k/+QnAwlcPeIGPa1kkxochrE1GtHzTICBn/TyocTYak3EaIbjqLjMYgFye57GY1OKEVe83vOmR1
-	VUWExgILSIkc1M1H4t1kaoUUHgL7ddqF+0OHiejRSTgIc0/QzxNcYxpnjC0wtOOSNaK0imEIil5
-	rmHJ2/uYGiKtyjNIQ=
-X-Received: by 2002:a05:600d:8450:10b0:490:4035:323 with SMTP id 5b1f17b1804b1-492340e75cdmr33496715e9.9.1781697570289;
-        Wed, 17 Jun 2026 04:59:30 -0700 (PDT)
-Received: from pathway.suse.cz ([176.114.240.130])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4606f26f309sm48879291f8f.14.2026.06.17.04.59.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Jun 2026 04:59:29 -0700 (PDT)
-Date: Wed, 17 Jun 2026 13:59:27 +0200
-From: Petr Mladek <pmladek@suse.com>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Jakub Kicinski <kuba@kernel.org>,
-	John Ogness <john.ogness@linutronix.de>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Vlad Poenaru <vlad.wing@gmail.com>,
-	Thomas Gleixner <tglx@kernel.org>, netdev@vger.kernel.org,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, Breno Leitao <leitao@debian.org>,
-	Clark Williams <clrkwllms@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	linux-rt-devel@lists.linux.dev, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, Frederic Weisbecker <frederic@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	K Prateek Nayak <kprateek.nayak@amd.com>
-Subject: Re: [PATCH net] netpoll: run NAPI poll in softirq context to avoid
- rq->lock self-deadlock
-Message-ID: <ajKMH_LmiZhjNlOW@pathway.suse.cz>
-References: <20260610183621.3915271-1-vlad.wing@gmail.com>
- <20260611191114.5bc43a59@kernel.org>
- <20260616103529.Yh9Dxsjp@linutronix.de>
- <20260616081128.04e2c8dd@kernel.org>
- <20260616153122.keHMKvVT@linutronix.de>
- <ajJy92ES-Q8ro97A@pathway.suse.cz>
- <20260617111504.GK49951@noisy.programming.kicks-ass.net>
+	s=arc-20240116; t=1781698156; c=relaxed/simple;
+	bh=SMgrSA/kIjByUED9+XkXmN8xQD9JA6hPkyyYkau0aBQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=hqdM7CyERcDKPsLWGws7DnlPbUszOFqAMK8dgc4rOHyQXP68ZKm13PW7cRYhDXyjoA8oOzz0nYuOi4WS9X9StkJXbzTJQYyi9q+E2vP2M1HqKFK++4vPAJUl7M91pkH3SbjP2cjZWBdSJYWWr2RaGnsgerYZGvYzWgm1O8SsE2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=HFvNnWN6; arc=none smtp.client-ip=54.206.16.166
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1781698089;
+	bh=SMgrSA/kIjByUED9+XkXmN8xQD9JA6hPkyyYkau0aBQ=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version;
+	b=HFvNnWN6fA0kXa4AQRrJKN4VKGHbAXkdGvavTMLteyHI3LwKPkSEe5tdRLG1u+zek
+	 IjkGWvBXJURxQTjWcSUGIU4MbpQPekOCJm/nNhIvPJXj/DIJ+MLn3TH14BXS3uIsv7
+	 taWg+lD3xhm2BJiHTqVLkh37P8tkWOnabMFjvn6s=
+X-QQ-mid: zesmtpsz4t1781698083t041b0929
+X-QQ-Originating-IP: Jb0C0ZXzNqY/BFbTVt39oM2OHBuQciYf+eq6X0aQM6Q=
+Received: from localhost.localdomain ( [113.57.152.160])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Wed, 17 Jun 2026 20:08:00 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 11797564057231867192
+EX-QQ-RecipientCnt: 21
+From: Wentao Guan <guanwentao@uniontech.com>
+To: gregkh@linuxfoundation.org
+Cc: achill@achill.org,
+	akpm@linux-foundation.org,
+	broonie@kernel.org,
+	conor@kernel.org,
+	f.fainelli@gmail.com,
+	hargar@microsoft.com,
+	jonathanh@nvidia.com,
+	linux-kernel@vger.kernel.org,
+	linux@roeck-us.net,
+	lkft-triage@lists.linaro.org,
+	patches@kernelci.org,
+	patches@lists.linux.dev,
+	pavel@nabladev.com,
+	rwarsow@gmx.de,
+	shuah@kernel.org,
+	sr@sladewatkins.com,
+	stable@vger.kernel.org,
+	sudipm.mukherjee@gmail.com,
+	torvalds@linux-foundation.org,
+	Wentao Guan <guanwentao@uniontech.com>
+Subject: Re: [PATCH 6.6 000/452] 6.6.143-rc1 review
+Date: Wed, 17 Jun 2026 20:07:49 +0800
+Message-Id: <20260617120747.1241937-1-guanwentao@uniontech.com>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260617111504.GK49951@noisy.programming.kicks-ass.net>
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpsz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz3a-0
+X-QQ-XMAILINFO: OA2O1J/qT0Faq+b2gmU82E529Fk2xtR3zC41GU+9WV6cPAs+StJJTDR4
+	f2jNrULRJ0mGWY/79tu1KL+MV+r5d9dDqHPT7rbus1I60OyBBP5j8ZFAo55Ub0u4oUxRwE+
+	2bF2YFVWnk5lkZCvF2vW4sWuf8AzUmanCn/Np1c+A7vl3OHaqZLa04fGgvCXkZDaYvU6pI7
+	kWUFuTTZ+QRJXdDthMX6bumbLA6BkcFdZyFAF5zvmvm5WInjI8yjoOkiXdxSLu88UcPB29T
+	v/8H2f2bHKP3Hv22FLY3S0YilawKQkznfM+4XjDOz8s1sQbghPxyr0GVaJTmWhCdyvVDhP+
+	r9Et0m+cJyiaVm43cEs+wdKb9roAJ9ndCU87RYkqv/HLCFJRHg1e7Cm+fSwi2jOzeK0G/sd
+	6lL1lNVSsEOGlyjhLAxr0C9iaGx+CEgFdedW0AuUt1J86NfZMet8ouR2qsuHSs0+Z8lpPix
+	Virm4ukhkXGeIkc8iIzRk4Yy6iHgSi40LfzU2f+gYijQo1EKmkWv8dWx84AfcnE8LBYJ5zP
+	qqv+faWF8cBAjN8DGDrqsH4d7fO/ctBgoLqYgt3Y4uDYsARmCluLTvI/D/iv8qIlpYNtlVa
+	pRQcLDk2a8Q9yxw8OFxzrHcinPXwaIZOkW/9lcoQUwPt+X/XhQ2vqkkrehtwpUg4Vvgnvvc
+	l4AWrlddt7di9vm/XNO5gL873xULbMGn+2s4d0fcmxeeWlPGOwrjNZ+TsNWi5VGJ7kyUctd
+	DtnqtH8u+/ZVmNYN5aeK+KdUTfTi0RRrL7nzkmiHYvoD6Hy5rgfOdcfnAEm2qYjPZvVbcxr
+	fpTTjmKbqc173IAZ5RE6MRGOFROOw3y+m85ulugERJ8ksGYIl6dW62U5Mr28iGnClxmK//L
+	+Rc2+FqARHl+7qgQjF6Soc8bGvU6os30MQSVM2Oh52+NUnf+i2W4g1SgmjT1dA+hgtkoIp4
+	YUKFQyYA9xrJAU19JuZZQOtlEQJEGe0S7+P3o1QN4PL/PBZwXpXBszxmUbhO6+C3IqbFhKi
+	xaTwemyyXJtclH4drgyaivHFHerE2cN0QB+wQqBgEonY4l951zZcMnDm/MVS9lFZ9CXrBau
+	R6AejTkf75zcBTW5t1UdDZGvSp1LmVOo9Ytr7TNWE6zCse3vjNLwDVh4KTqaTNs/UKYT7tk
+	mXO5fwho8na80O4=
+X-QQ-XMRINFO: OD9hHCdaPRBwH5bRRRw8tsiH4UAatJqXfg==
+X-QQ-RECHKSPAM: 0
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[suse.com:s=google];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[uniontech.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[uniontech.com:s=onoh2408];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[23];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266732-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:achill@achill.org,m:akpm@linux-foundation.org,m:broonie@kernel.org,m:conor@kernel.org,m:f.fainelli@gmail.com,m:hargar@microsoft.com,m:jonathanh@nvidia.com,m:linux-kernel@vger.kernel.org,m:linux@roeck-us.net,m:lkft-triage@lists.linaro.org,m:patches@kernelci.org,m:patches@lists.linux.dev,m:pavel@nabladev.com,m:rwarsow@gmx.de,m:shuah@kernel.org,m:sr@sladewatkins.com,m:stable@vger.kernel.org,m:sudipm.mukherjee@gmail.com,m:torvalds@linux-foundation.org,m:guanwentao@uniontech.com,m:ffainelli@gmail.com,m:sudipmmukherjee@gmail.com,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-266734-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[21];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:peterz@infradead.org,m:bigeasy@linutronix.de,m:kuba@kernel.org,m:john.ogness@linutronix.de,m:senozhatsky@chromium.org,m:vlad.wing@gmail.com,m:tglx@kernel.org,m:netdev@vger.kernel.org,m:davem@davemloft.net,m:edumazet@google.com,m:pabeni@redhat.com,m:horms@kernel.org,m:leitao@debian.org,m:clrkwllms@kernel.org,m:rostedt@goodmis.org,m:linux-rt-devel@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:frederic@kernel.org,m:mingo@redhat.com,m:vincent.guittot@linaro.org,m:dietmar.eggemann@arm.com,m:kprateek.nayak@amd.com,m:vladwing@gmail.com,s:lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[guanwentao@uniontech.com,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[pmladek@suse.com,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linutronix.de,kernel.org,chromium.org,gmail.com,vger.kernel.org,davemloft.net,google.com,redhat.com,debian.org,goodmis.org,lists.linux.dev,linaro.org,arm.com,amd.com];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[uniontech.com:+];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pmladek@suse.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[suse.com:+];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[guanwentao@uniontech.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[achill.org,linux-foundation.org,kernel.org,gmail.com,microsoft.com,nvidia.com,vger.kernel.org,roeck-us.net,lists.linaro.org,kernelci.org,lists.linux.dev,nabladev.com,gmx.de,sladewatkins.com,uniontech.com];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[pathway.suse.cz:mid,vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,suse.com:dkim,suse.com:from_mime]
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 005D5699663
+X-Rspamd-Queue-Id: 8BEAB699969
 
-On Wed 2026-06-17 13:15:04, Peter Zijlstra wrote:
-> On Wed, Jun 17, 2026 at 12:12:07PM +0200, Petr Mladek wrote:
-> > On Tue 2026-06-16 17:31:22, Sebastian Andrzej Siewior wrote:
-> > > On 2026-06-16 08:11:28 [-0700], Jakub Kicinski wrote:
-> > > > > 
-> > > > > Adding sched and printk folks for opinions while eyeballing
-> > > > > WARN_ON_DEFERRED().
-> > > > 
-> > > > Thanks a lot for looking into this! To be clear - the printk_deferred /
-> > > > WARN_DEFERRED would be just for stable? Or there's still some
-> > > > sensitivity even with nbcon?
-> > > 
-> > > We already have printk_deferred(). WARN_DEFERRED() would be new. I
-> > > *think* this is not limited netpoll/ netconsole but all console drivers
-> > > not using CON_NBCON if the printk (via WARN) occurs with the rq held.
-> > > I don't remember all the details but printk_deferred() was introduced to
-> > > circumvent this until printk is fixed.
-> > 
-> > Just to make it clear. The problem with the legacy consoles is that
-> > they are called under console_lock() which is a semaphore. And it
-> > calls wake_up_process() in console_unlock() when there is another
-> > waiter on the lock.
-> > 
-> > > Once we get rid of those legacy drivers and NBCON is the default we can
-> > > get rid of printk_deferred() :)
-> > 
-> > Yup.
-> 
-> Can't we push all the legacy consoles into a single legacy kthread? I
-> mean, converting all consoles is of course awesome, but should we really
-> wait for that?
+Build tested in our x86,arm64,loongarch,riscv config successfully without error.
 
-I am afraid that converting the consoles one by one is the deal with
-Linus. I could imagine to moving last few sinners into the kthread
-when the majority is converted. But we are far from there :-/
+Tested-by: Wentao Guan <guanwentao@uniontech.com>
 
-Best Regards,
-Petr
+BRs
+Wentao Guan
+
+Log:
+Linux version 6.6.143-rc1-arm64-desktop-hwe-gc3a40fddacf0 (guanwentao@uos-PC) (aarch64-linux-gnu-gcc-12 (Deepin 12.3.0-17deepin8) 12.3.0, GNU ld (GNU Binutils for Deepin) 2.41) # SMP PREEMPT
+Linux version 6.6.143-rc1-arm64-desktop-hwe-gc3a40fddacf0 (guanwentao@uos-PC) (aarch64-linux-gnu-gcc-12 (Deepin 12.3.0-17deepin8) 12.3.0, GNU ld (GNU Binutils for Deepin) 2.41) #2 SMP PREEMPT Wed Jun 17 15:27:25 CST 2026
+Linux version 6.6.143-rc1-loong64-desktop-hwe-gc3a40fddacf0 (guanwentao@uos-PC) (loongarch64-linux-gnu-gcc-12 (Deepin 12.3.0-17deepin8) 12.3.0, GNU ld (GNU Binutils for Deepin) 2.41) # SMP PREEMPT
+Linux version 6.6.143-rc1-loong64-desktop-hwe-gc3a40fddacf0 (guanwentao@uos-PC) (loongarch64-linux-gnu-gcc-12 (Deepin 12.3.0-17deepin8) 12.3.0, GNU ld (GNU Binutils for Deepin) 2.41) #3 SMP PREEMPT Wed Jun 17 15:43:37 CST 2026
+Linux version 6.6.143-rc1-riscv64-desktop-hwe+ (guanwentao@uos-PC) (riscv64-linux-gnu-gcc-12 (Deepin 12.3.0-17deepin8) 12.3.0, GNU ld (GNU Binutils for Deepin) 2.41) # SMP
+Linux version 6.6.143-rc1-riscv64-desktop-hwe+ (guanwentao@uos-PC) (riscv64-linux-gnu-gcc-12 (Deepin 12.3.0-17deepin8) 12.3.0, GNU ld (GNU Binutils for Deepin) 2.41) #4 SMP Wed Jun 17 15:57:42 CST 2026
+Linux version 6.6.143-rc1-amd64-desktop-hwe-gc3a40fddacf0 (guanwentao@uos-PC) (gcc (Deepin 12.3.0-17deepin15) 12.3.0, GNU ld (GNU Binutils for Deepin) 2.41) # SMP PREEMPT_DYNAMIC
+Linux version 6.6.143-rc1-amd64-desktop-hwe-gc3a40fddacf0 (guanwentao@uos-PC) (gcc (Deepin 12.3.0-17deepin15) 12.3.0, GNU ld (GNU Binutils for Deepin) 2.41) #1 SMP PREEMPT_DYNAMIC Wed Jun 17 15:11:47 CST 2026
 
