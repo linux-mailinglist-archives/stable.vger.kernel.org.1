@@ -1,169 +1,134 @@
-Return-Path: <stable+bounces-266757-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266761-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 3S+jE2ufMmqT2wUAu9opvQ
-	(envelope-from <stable+bounces-266757-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 15:21:47 +0200
+	id DjxIEhWgMmq92wUAu9opvQ
+	(envelope-from <stable+bounces-266761-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 15:24:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB5D669A0BF
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 15:21:46 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA4FB69A10E
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 15:24:36 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=none;
-	dmarc=none;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266757-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266757-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CO2Sv6j3;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266761-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-266761-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DF285304DFD5
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 13:21:22 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 00F1930AE10F
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 13:22:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76BE3401A13;
-	Wed, 17 Jun 2026 13:21:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CB4B405C43;
+	Wed, 17 Jun 2026 13:22:30 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [13.75.44.102])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90D723BA24F;
-	Wed, 17 Jun 2026 13:21:14 +0000 (UTC)
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 046143BCD31;
+	Wed, 17 Jun 2026 13:22:28 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781702481; cv=none; b=t2f8I5/tHvLZUFfieRHwvcErZ+lNv3q8b7h0hC+yyAHn5+msGSMCrRruDepvTUAftqdB+ednlm60iI3BWTfh7Ygb3f6dRfumcQeiwnYL+yeC033PD/8+wuexfAkaZ+ZE1VtcdquAyiHw8taQ6w71CSBZDFXLA24CtobdilAi6Bg=
+	t=1781702549; cv=none; b=BgZHxi1J/2MYsrxPKsTF8QCJS+qqgW+0ap0OI5fhgxNMYxMMhge1iu3Upr2alE5SfzzVNWPRa+RsD716VvyLo+kQSgNaiJ6UDLh5PN8CWD6e1autTa+3hnBQlkD1NHI3ZlaS0TOPoJtK7lxvXLTDt8sDikZ3R8uRBQHH1WWwWYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781702481; c=relaxed/simple;
-	bh=kpygvBfcifuBDEWdYIDGUxQxLu26PMqo11C4UWhNlcc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=sNZep3o6bMyd9lvMv2w2kDeMUJ+Z9d7a0yr2TSu6bNEjGBdsz+MHG87zYTu7THD2+0UFH8A63sq30jG2eAd3i/IqtOF8FETn4qVcaYERd3qhYwX3QQWXba+A6KweBetz7ovBguLcroFy5t8xJMVB1nqIDDG5hlPnMvNIueG1d+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn; spf=pass smtp.mailfrom=zju.edu.cn; arc=none smtp.client-ip=13.75.44.102
-Received: from zju.edu.cn (unknown [10.98.66.117])
-	by mtasvr (Coremail) with SMTP id _____wDX30c_nzJqEKm8Ag--.61156S3;
-	Wed, 17 Jun 2026 21:21:03 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.98.66.117])
-	by mail-app4 (Coremail) with SMTP id zi_KCgCn2jE+nzJqBRWdAQ--.32818S5;
-	Wed, 17 Jun 2026 21:21:03 +0800 (CST)
-From: Fan Wu <fanwu01@zju.edu.cn>
-To: robin.clark@oss.qualcomm.com
-Cc: sean@poorly.run,
-	konradybcio@kernel.org,
-	akhilpo@oss.qualcomm.com,
-	lumag@kernel.org,
-	abhinav.kumar@linux.dev,
-	jesszhan0024@gmail.com,
-	marijn.suijten@somainline.org,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	linux-arm-msm@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	freedreno@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Fan Wu <fanwu01@zju.edu.cn>
-Subject: [PATCH 3/3] drm/msm/a5xx: make preempt_fini idempotent
-Date: Wed, 17 Jun 2026 13:20:07 +0000
-Message-Id: <20260617132007.131079-4-fanwu01@zju.edu.cn>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260617132007.131079-1-fanwu01@zju.edu.cn>
-References: <20260617132007.131079-1-fanwu01@zju.edu.cn>
+	s=arc-20240116; t=1781702549; c=relaxed/simple;
+	bh=2l+Wx1vgZnMvuLLZF695Kf9yHqIqlLEZVIyAT0+TDPQ=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=hqDSbCPMCW5m1gZMUjk3PaVbB1J57gIxnObff/i/tHw0dntSkjkgVxN9u8Hl5yLwwAcOr896SBb30UCq81gvV/UUS+rEtgoB8WKA79wiK6961mTwi/DqGD2eNmWUbb0OAO4xfVi9ozkqbadkZbw1ZA1YP1jsoXsue8FTt+dNXqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CO2Sv6j3; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 011E91F000E9;
+	Wed, 17 Jun 2026 13:22:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781702548;
+	bh=jjE1ZgEQ7JK8ooIDdfvIp9yidTMTkSuCid79afKW4HA=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=CO2Sv6j3D1MvkjY+AfuWFS/W0s2AxAFVNZXibTGHyLViBO2kHoDIOCLB20Fm/7AiG
+	 gr4wr8Fee4yWuKlpV+X/vEE+cT9lFSOn2lInt/vGAVzQrHjKX1H5C1DXVsmVkkcbYz
+	 oaRQfn1yCCA/Z4OTS0VhZnJKia4yytKDsl7lcc/VXe660cHNBY4gWRNtwG7yDYd6Hn
+	 SfPDJDOihKHgKizKEvkwVpFarcsGlQXEImYph2z8EwWbRgqkqEbWTcZCJ7ZYiukoZ9
+	 Ec9mmznt+9SC0IgDNzBCFW935dyfq+hdTgr95wrhNt6P282awuYrsjOyvICz3c3NDx
+	 0SDW96A97CSmw==
+From: Christian Brauner <brauner@kernel.org>
+To: miklos@szeredi.hu, amir73il@gmail.com, 
+ Souvik Banerjee <souvik@amlalabs.com>
+Cc: linux-unionfs@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+In-Reply-To: <20260501232735.2610824-1-souvik@amlalabs.com>
+References: <20260501232735.2610824-1-souvik@amlalabs.com>
+Subject: Re: [PATCH] ovl: use linked upper dentry in copy-up tmpfile
+Message-Id: <178170254157.660235.877558308523952750.b4-ty@b4>
+Date: Wed, 17 Jun 2026 15:22:21 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zi_KCgCn2jE+nzJqBRWdAQ--.32818S5
-X-CM-SenderInfo: qrstjiaswqq6lmxovvfxof0/
-X-CM-DELIVERINFO: =?B?wrm4WwXKKxbFmtjJiESix3B1w3vZ3A9ovKVTomAyoQazvoRs/NHSP8GI2EvgeEEW7R
-	sfnXz+g1OQfMo27QHy5TwQyZw4RkBG+uCXkjoTHCMQ/XMrQ+VxDRSXxPGQotD49GmWfKpp
-	yPDu2GgIIjdkSmMp7CWCT10VStYec0Qz5GEzcv5l
-X-Coremail-Antispam: 1Uk129KBj93XoW7try5Cw4fKrykXw47tw17twc_yoW8AF13pr
-	43KrW0yr1xAa42yw47K3WjkFyrJ3ZxXFs5G34xKws8C3Z8KFn0kr4UZ347tr98uF4Ivr4S
-	qr1kG3yUXFyrAwcCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUP0b4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AK
-	xVW0oVCq3wAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc804V
-	CY07AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AK
-	xVWUGVWUXwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48Icx
-	kI7VAKI48JM4x0Y48IcxkI7VAKI48G6xCjnVAKz4kxM4IIrI8v6xkF7I0E8cxan2IY04v7
-	MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr
-	0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0E
-	wIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JV
-	WxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAI
-	cVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU8zc_3UUUUU==
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.16-dev-4090c
+X-Developer-Signature: v=1; a=openpgp-sha256; l=873; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=2l+Wx1vgZnMvuLLZF695Kf9yHqIqlLEZVIyAT0+TDPQ=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQZzZ/EabtpGTdDsjXTwt0sLPe/Nt4+y5yqdZlZZuKly
+ +szLnzk6ihlYRDjYpAVU2RxaDcJl1vOU7HZKFMDZg4rE8gQBi5OAZiIARMjw5t7BxWyriidjch1
+ vNPH6bLGfFnKnldTLixh2nLZOtrTKYmR4cmipQ4ndxRP/v3rYsiab28FHWaqu9zLcz6QYhbKvfD
+ OPx4A
+X-Developer-Key: i=brauner@kernel.org; a=openpgp;
+ fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.04 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-4.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[16];
+	FORGED_RECIPIENTS(0.00)[m:miklos@szeredi.hu,m:amir73il@gmail.com,m:souvik@amlalabs.com,m:linux-unionfs@vger.kernel.org,m:linux-fsdevel@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-266757-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	DMARC_NA(0.00)[zju.edu.cn];
-	FREEMAIL_CC(0.00)[poorly.run,kernel.org,oss.qualcomm.com,linux.dev,gmail.com,somainline.org,ffwll.ch,vger.kernel.org,lists.freedesktop.org,zju.edu.cn];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[fanwu01@zju.edu.cn,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:robin.clark@oss.qualcomm.com,m:sean@poorly.run,m:konradybcio@kernel.org,m:akhilpo@oss.qualcomm.com,m:lumag@kernel.org,m:abhinav.kumar@linux.dev,m:jesszhan0024@gmail.com,m:marijn.suijten@somainline.org,m:airlied@gmail.com,m:simona@ffwll.ch,m:linux-arm-msm@vger.kernel.org,m:dri-devel@lists.freedesktop.org,m:freedreno@lists.freedesktop.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:fanwu01@zju.edu.cn,s:lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[fanwu01@zju.edu.cn,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	FREEMAIL_TO(0.00)[szeredi.hu,gmail.com,amlalabs.com];
+	FORGED_SENDER(0.00)[brauner@kernel.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-266761-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	R_DKIM_NA(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[brauner@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,zju.edu.cn:email,zju.edu.cn:mid,zju.edu.cn:from_mime]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: AB5D669A0BF
+X-Rspamd-Queue-Id: AA4FB69A10E
 
-a5xx_preempt_fini() is reached from three call sites: a5xx_preempt_init()
-on the ring-init error path, a5xx_ucode_load() when WHERE_AM_I is
-unavailable (which disables preemption at runtime), and a5xx_destroy().
-It releases the per-ring preempt_bo and preempt_counters_bo GEM buffers
-but does not null the pointers afterwards.
+On Fri, 01 May 2026 23:27:35 +0000, Souvik Banerjee wrote:
+> ovl: use linked upper dentry in copy-up tmpfile
 
-If a5xx_ucode_load() disables preemption (or a5xx_preempt_init() fails
-partway), a5xx_preempt_fini() frees the allocated buffers and leaves
-dangling pointers; a later a5xx_destroy() calls a5xx_preempt_fini() again
-and msm_gem_kernel_put()s the already-freed objects -- a double-free.
+Applied to the vfs.fixes branch of the vfs/vfs.git tree.
+Patches in the vfs.fixes branch should appear in linux-next soon.
 
-Null each pointer after msm_gem_kernel_put() so a second invocation is a
-no-op rather than a double-free. msm_gem_kernel_put() is already
-NULL-safe, so unallocated pointers stay harmless.
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
 
-This bug was found by static analysis.
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
 
-Fixes: b1fc2839d2f9 ("drm/msm: Implement preemption for A5XX targets")
-Cc: stable@vger.kernel.org
-Signed-off-by: Fan Wu <fanwu01@zju.edu.cn>
----
- drivers/gpu/drm/msm/adreno/a5xx_preempt.c | 2 ++
- 1 file changed, 2 insertions(+)
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
 
-diff --git a/drivers/gpu/drm/msm/adreno/a5xx_preempt.c b/drivers/gpu/drm/msm/adreno/a5xx_preempt.c
-index 96ade4936ef8..1186e7a83860 100644
---- a/drivers/gpu/drm/msm/adreno/a5xx_preempt.c
-+++ b/drivers/gpu/drm/msm/adreno/a5xx_preempt.c
-@@ -299,7 +299,9 @@ void a5xx_preempt_fini(struct msm_gpu *gpu)
- 
- 	for (i = 0; i < gpu->nr_rings; i++) {
- 		msm_gem_kernel_put(a5xx_gpu->preempt_bo[i], gpu->vm);
-+		a5xx_gpu->preempt_bo[i] = NULL;
- 		msm_gem_kernel_put(a5xx_gpu->preempt_counters_bo[i], gpu->vm);
-+		a5xx_gpu->preempt_counters_bo[i] = NULL;
- 	}
- }
- 
--- 
-2.34.1
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs.fixes
+
+[1/1] ovl: use linked upper dentry in copy-up tmpfile
+      https://git.kernel.org/vfs/vfs/c/8726161b595e
 
 
