@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-266798-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266799-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id NZZqNSWzMmoM3wUAu9opvQ
-	(envelope-from <stable+bounces-266798-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 16:45:57 +0200
+	id i/gIATOzMmoN3wUAu9opvQ
+	(envelope-from <stable+bounces-266799-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 16:46:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B9B569AA3E
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 16:45:57 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5866869AA41
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 16:46:10 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cX6fjbt0;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266798-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266798-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YEArsaCg;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266799-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266799-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 907153059E1B
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 14:45:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 220E13103815
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 14:45:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B3FB44E045;
-	Wed, 17 Jun 2026 14:45:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8752244DB62;
+	Wed, 17 Jun 2026 14:45:10 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C5FD44BC93
-	for <stable@vger.kernel.org>; Wed, 17 Jun 2026 14:45:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4312944E03B
+	for <stable@vger.kernel.org>; Wed, 17 Jun 2026 14:45:09 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781707509; cv=none; b=BGImii8MZsBaPJuray29yHcvRGJrqv5cWIvb1xd3qHawhOSyFe0dOa8ixTBk9u1F+dfh7fVl5Vlj9ZE0qT0t55W5ic85RHU9B8Pr1lxdS3HcrWOK/7qLz3SbIv8iyfojsxNyJaLfy1LuyFxCrOHt56bDFVCYATj6jERw936p50k=
+	t=1781707510; cv=none; b=C+7cS88NY4yCBwC4+qSkUvoTH2bVUDH7WkN3fj9eUSvWS+V0Q4D6G4e4GVP5a3crSCAwxINQ8ZOY8Ds5Y8CjIMDr2ctWZ+Lx0bDRdOLFBbN1X2zEZdnXRwXTppGJCZxW9o+XUGcH54jr62NCaq5S53j32DsNPum5/i+7ha2y2M8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781707509; c=relaxed/simple;
-	bh=7/GrXiodOP9OwdMMFRSh95vsySulNg/H72W8Rph4d4w=;
+	s=arc-20240116; t=1781707510; c=relaxed/simple;
+	bh=ttANePPkO7P1BaCSZQpFItFrqnqjHZWxgMEo0jgIoTw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mKIr5nHxpwIHQe6b2AbBF6KPWIuxPJ+GzaP+laCTvPoN3BV2j3xO2xXf5Vn3z/+vVuv65GLjFbKbKhsg3c04fHbr0rdMBrX36zzcFBYhBszM/KuIbJc4g5vIaMhKYt+mR+lbxHXn0EqNrywbPTb9fI6k87ZYWfW4LpRnnMTXCLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cX6fjbt0; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C01E1F00A3D;
-	Wed, 17 Jun 2026 14:45:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=DXboQdRgb2VlGhx3eiS+ZAmrVycllw4aZ4YP+9ueo8dyDsz7wVa11gCxw90++sAEVYR66NZlHlysECLpe9y3sI/2V1fxlX3PDUC86muiDlzFhzsGt1GyPXFWLU69VsgLS7HQs8fqLANs5Is0LS4v2hoe3T0OUnkpP2n4UxOECKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YEArsaCg; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 529711F00A3E;
+	Wed, 17 Jun 2026 14:45:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781707508;
-	bh=UzLI/R3YCqt2r814l0qc6stpzhnmo3vH45Jpy+3/qU8=;
+	s=k20260515; t=1781707509;
+	bh=mlUuneOEXraJI0inpBsDP+A4/EPUliEN5nTwxU/J6Ew=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=cX6fjbt00RykADdapfyRWkthTEqy08aorCpuVCesA0MU7h3IANnZWflesSwpIro7p
-	 WkHHuUE5LUrqHl992oIu6ZvmDFUAYavsBCjNR8ZncusTJIb1ngRD5OwIa6DMRKTJo6
-	 XiZfwD/JJtjTDj5LbICnsg2g/VTnocBKCffFON7HE408AjYP3TXDAMURcyGCWXsq1K
-	 h16MFZL3jBq6FuzhS36GDyvfjm/gLvyCNfYnDD4ZE+UpUZLUeHb7vyPq8e9oviXKj5
-	 fh6r5//2NuOVnfgB8cEDqe3vswCw1XMsgTe3og3+zjUMyIoGwHRkExT6irjYSMkGi3
-	 fHLFTkw/0I5iA==
+	b=YEArsaCgSrIx2hmg5JLlUO3Esxzl0fDy2zDM0A8sftEU2NFo2HlmZa+uGd+rHvjfJ
+	 i4sXsz6mDXbYw++J6Yb+rBJReelrh3eMgOMToX1yX6emyDmaENziaNjwkeZBhZj6vX
+	 IYHCY6CDiH8vAGOlNL0vTXysUiKMfvRrzRTMz9hHCNI0dztgnydSF6YnFZRZ0Xg0Ci
+	 JGCnq4Lw5mrd+U+puN5hCV7EWAkwnkMkhDeqL+mK8aJwsTcLyOck+S+3AMubR0MqbT
+	 Z1iYKqhR8pcx+rF7kSKiUGOB2cTEf3+lDyJl864jRAI+5S9WrQpLRaOoiplYKKhhCq
+	 bgk5ArnRRQrBA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+Cc: Santosh Kalluri <santosh.kalluri129@gmail.com>,
+	=?UTF-8?q?R=C3=A9mi=20Denis-Courmont?= <remi@remlab.net>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y 2/3] phonet: Pass net and ifindex to phonet_address_notify().
-Date: Wed, 17 Jun 2026 10:45:03 -0400
-Message-ID: <20260617144504.4144644-2-sashal@kernel.org>
+Subject: [PATCH 6.1.y 3/3] net: phonet: free phonet_device after RCU grace period
+Date: Wed, 17 Jun 2026 10:45:04 -0400
+Message-ID: <20260617144504.4144644-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260617144504.4144644-1-sashal@kernel.org>
 References: <2026061545-rival-anything-e56f@gregkh>
@@ -65,153 +66,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.66 / 15.00];
+X-Spamd-Result: default: False [-2.66 / 15.00];
 	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	SUSPICIOUS_RECIPS(1.50)[];
 	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-266798-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:kuniyu@amazon.com,m:edumazet@google.com,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-266799-lists,stable=lfdr.de];
 	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:santosh.kalluri129@gmail.com,m:remi@remlab.net,m:horms@kernel.org,m:kuba@kernel.org,m:sashal@kernel.org,m:santoshkalluri129@gmail.com,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[gmail.com,remlab.net,kernel.org];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,remlab.net:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 1B9B569AA3E
+X-Rspamd-Queue-Id: 5866869AA41
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Santosh Kalluri <santosh.kalluri129@gmail.com>
 
-[ Upstream commit 68ed5c38b512b734caf3da1f87db4a99fcfe3002 ]
+[ Upstream commit 71de0177b28da751f407581a4515cf4d762f6296 ]
 
-Currently, phonet_address_notify() fetches netns and ifindex from dev.
+phonet_device_destroy() removes a phonet_device from the per-net device
+list with list_del_rcu(), but frees it immediately. RCU readers walking
+the same list can still hold a pointer to the object after it has been
+removed, leading to a slab-use-after-free.
 
-Once addr_doit() is converted to RCU, phonet_address_notify() will be
-called outside of RCU due to GFP_KERNEL, and dev will be unavailable
-there.
+Use kfree_rcu(), matching the lifetime rule already used by
+phonet_address_del() for the same object type.
 
-Let's pass net and ifindex to phonet_address_notify().
-
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Stable-dep-of: 71de0177b28d ("net: phonet: free phonet_device after RCU grace period")
+Fixes: eeb74a9d45f7 ("Phonet: convert devices list to RCU")
+Cc: stable@vger.kernel.org
+Signed-off-by: Santosh Kalluri <santosh.kalluri129@gmail.com>
+Acked-by: Rémi Denis-Courmont <remi@remlab.net>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/phonet/pn_dev.h |  2 +-
- net/phonet/pn_dev.c         | 10 +++++++---
- net/phonet/pn_netlink.c     | 12 ++++++------
- 3 files changed, 14 insertions(+), 10 deletions(-)
+ net/phonet/pn_dev.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/net/phonet/pn_dev.h b/include/net/phonet/pn_dev.h
-index e9dc8dca5817b8..6b2102b4ece38a 100644
---- a/include/net/phonet/pn_dev.h
-+++ b/include/net/phonet/pn_dev.h
-@@ -38,7 +38,7 @@ int phonet_address_add(struct net_device *dev, u8 addr);
- int phonet_address_del(struct net_device *dev, u8 addr);
- u8 phonet_address_get(struct net_device *dev, u8 addr);
- int phonet_address_lookup(struct net *net, u8 addr);
--void phonet_address_notify(int event, struct net_device *dev, u8 addr);
-+void phonet_address_notify(struct net *net, int event, u32 ifindex, u8 addr);
- 
- int phonet_route_add(struct net_device *dev, u8 daddr);
- int phonet_route_del(struct net_device *dev, u8 daddr);
 diff --git a/net/phonet/pn_dev.c b/net/phonet/pn_dev.c
-index cde671d29d5dd3..2e7d850dc72668 100644
+index 2e7d850dc72668..3f020c362d6cde 100644
 --- a/net/phonet/pn_dev.c
 +++ b/net/phonet/pn_dev.c
-@@ -98,10 +98,13 @@ static void phonet_device_destroy(struct net_device *dev)
- 	mutex_unlock(&pndevs->lock);
- 
- 	if (pnd) {
-+		struct net *net = dev_net(dev);
-+		u32 ifindex = dev->ifindex;
- 		u8 addr;
- 
+@@ -105,7 +105,7 @@ static void phonet_device_destroy(struct net_device *dev)
  		for_each_set_bit(addr, pnd->addrs, 64)
--			phonet_address_notify(RTM_DELADDR, dev, addr);
-+			phonet_address_notify(net, RTM_DELADDR, ifindex, addr);
-+
- 		kfree(pnd);
+ 			phonet_address_notify(net, RTM_DELADDR, ifindex, addr);
+ 
+-		kfree(pnd);
++		kfree_rcu(pnd, rcu);
  	}
- }
-@@ -244,8 +247,9 @@ static int phonet_device_autoconf(struct net_device *dev)
- 	ret = phonet_address_add(dev, req.ifr_phonet_autoconf.device);
- 	if (ret)
- 		return ret;
--	phonet_address_notify(RTM_NEWADDR, dev,
--				req.ifr_phonet_autoconf.device);
-+
-+	phonet_address_notify(dev_net(dev), RTM_NEWADDR, dev->ifindex,
-+			      req.ifr_phonet_autoconf.device);
- 	return 0;
- }
- 
-diff --git a/net/phonet/pn_netlink.c b/net/phonet/pn_netlink.c
-index 6b50e4d526682f..c4c9fda4c3de14 100644
---- a/net/phonet/pn_netlink.c
-+++ b/net/phonet/pn_netlink.c
-@@ -22,7 +22,7 @@
- static int fill_addr(struct sk_buff *skb, u32 ifindex, u8 addr,
- 		     u32 portid, u32 seq, int event);
- 
--void phonet_address_notify(int event, struct net_device *dev, u8 addr)
-+void phonet_address_notify(struct net *net, int event, u32 ifindex, u8 addr)
- {
- 	struct sk_buff *skb;
- 	int err = -ENOBUFS;
-@@ -32,17 +32,17 @@ void phonet_address_notify(int event, struct net_device *dev, u8 addr)
- 	if (skb == NULL)
- 		goto errout;
- 
--	err = fill_addr(skb, dev->ifindex, addr, 0, 0, event);
-+	err = fill_addr(skb, ifindex, addr, 0, 0, event);
- 	if (err < 0) {
- 		WARN_ON(err == -EMSGSIZE);
- 		kfree_skb(skb);
- 		goto errout;
- 	}
--	rtnl_notify(skb, dev_net(dev), 0,
--		    RTNLGRP_PHONET_IFADDR, NULL, GFP_KERNEL);
-+
-+	rtnl_notify(skb, net, 0, RTNLGRP_PHONET_IFADDR, NULL, GFP_KERNEL);
- 	return;
- errout:
--	rtnl_set_sk_err(dev_net(dev), RTNLGRP_PHONET_IFADDR, err);
-+	rtnl_set_sk_err(net, RTNLGRP_PHONET_IFADDR, err);
- }
- 
- static const struct nla_policy ifa_phonet_policy[IFA_MAX+1] = {
-@@ -89,7 +89,7 @@ static int addr_doit(struct sk_buff *skb, struct nlmsghdr *nlh,
- 	else
- 		err = phonet_address_del(dev, pnaddr);
- 	if (!err)
--		phonet_address_notify(nlh->nlmsg_type, dev, pnaddr);
-+		phonet_address_notify(net, nlh->nlmsg_type, ifm->ifa_index, pnaddr);
- 	return err;
  }
  
 -- 
