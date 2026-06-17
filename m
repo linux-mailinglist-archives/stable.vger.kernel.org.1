@@ -1,198 +1,150 @@
-Return-Path: <stable+bounces-266815-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266817-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 6rTAHuO2Mmox4QUAu9opvQ
-	(envelope-from <stable+bounces-266815-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 17:01:55 +0200
+	id 1Vb3LXe3MmqC4QUAu9opvQ
+	(envelope-from <stable+bounces-266817-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 17:04:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DFFF69AC19
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 17:01:54 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CCE269AC65
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 17:04:23 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=XG9foDWC;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=fTB01KKP;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266815-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-266815-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=linutronix.de;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IhipSx7Y;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266817-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-266817-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0555831522E6
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 14:57:41 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C72B030523F0
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 15:02:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C34C6426ED6;
-	Wed, 17 Jun 2026 14:57:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74104477E4D;
+	Wed, 17 Jun 2026 15:00:44 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CBF23F7894;
-	Wed, 17 Jun 2026 14:57:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F5C22E7F38
+	for <stable@vger.kernel.org>; Wed, 17 Jun 2026 15:00:37 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781708257; cv=none; b=lE6YopvKEdAWD1s/TZqEa+DOd4fDB5lQYP0UAPGSllQSj75moFN+5sYEdGu2k91gDFV7T/k0Nxb0+SeYE5TgPeNmeabi5DoKIiPztgi0vg4aSx2OfM2UDWSBjbIQOSYit6kx6RKNMAhbSZJGbEc+Rtos34glyCt6FYv5O6SQzJE=
+	t=1781708443; cv=none; b=V5hsR4ZWUw/eg33Te0992mSzLsJW6e2xi9JANZ8sK7XvmhFGFZNjD52xjmpq9E2Q5e4SmAwW70effdDhJ8cbYPUGpfledCzPHOyJiYfhaQHHlcRJ/7Zb4dKfO9PpFdBTqFBuoiP4OLr2PK6MtKFunk1FUADLgnSx9dg2PE9AcOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781708257; c=relaxed/simple;
-	bh=fv5dOpAW67iqFL47fR3xXEWbHsq/577+lwYFzZwcF7E=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=tUNgir54rP+1lRlZHmUvldXeWz+NxI6QCowTxKkfgnJHGrjtC/Ub+PFuthWliK/f3JjEOXCp8QqjpyheEEtkKhY+ZkDzSx9/VvjaPngFfuzIA7S87gVPlVNXSXGDi/Kfeiq/QmZDZdOqCQr7naI1Utv3+BNSDmM6FDB/1BWVbXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=XG9foDWC; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=fTB01KKP; arc=none smtp.client-ip=193.142.43.55
-Date: Wed, 17 Jun 2026 14:57:32 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1781708254;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+iPwSubwqAnX7nq9Sydj/EIPAB2STY7iQ/nSSMZXc58=;
-	b=XG9foDWCp+kuxeecjmYnL3n2hq7tIL1uPGG4H2aNnvSktyhFOYYj2WLGuG+0idcsrT2ZXB
-	bXWCOyF6QgLgIzteUhToGP0AKfqAlkV2VRy/HIScd9LZOJUzCsr70PYBoJBaVxdr+Vbphl
-	OvCj10GTZzFbjXiZODD+ebfxnOicnB0nXQ8W4TRU65aUsLVc0yRdpfyLtFm8C+jbMX7R3F
-	5jE2oYsc9QQpacBbFDEaI8k/MgsrbU6BS9SSEvNegig9MwZ2dFACCvJL00c8s6Qu2e4naB
-	3vrfPet6s+t1aR16sL/xY+R43OSY2Uj5B1q7Qaqvstvj7vEWHQvzn6uNepzSlA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1781708254;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+iPwSubwqAnX7nq9Sydj/EIPAB2STY7iQ/nSSMZXc58=;
-	b=fTB01KKPwBHVG3+SyOfI6IHtPR6vxlFvrGrF7qWXuzUeClDbJEwuM7eShw5fzhaiCiS+nH
-	vw3uOZgWir7ACXCQ==
-From: "tip-bot2 for Mikhail Gavrilov" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/urgent] timekeeping: Register default clocksource before
- taking tk_core.lock
-Cc: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>,
- Thomas Gleixner <tglx@kernel.org>, Breno Leitao <leitao@debian.org>,
- Oleg Nesterov <oleg@redhat.com>, stable@vger.kernel.org, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20260616070914.65818-1-mikhail.v.gavrilov@gmail.com>
-References: <20260616070914.65818-1-mikhail.v.gavrilov@gmail.com>
+	s=arc-20240116; t=1781708443; c=relaxed/simple;
+	bh=op71p3I+zyvqW0SMNbKNQ5LSDX+X++0u7+WxMaAJnnI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=qH2Igwmv+emakKn/WQp8beqNiRf0mW5ZCSUG9YhkIJVvZxCJE0emTRbepUJeGUPL1n++cQmUyespXada/hJwJXzGdDS6mHL7zIqfnpChug423Qn69bxV6XHCVdWBsLRanB9cJu6rqdsI0G3yUnB7Rq/nEr0Gxr4+FlKfmvwutL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IhipSx7Y; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F59F1F000E9;
+	Wed, 17 Jun 2026 15:00:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781708436;
+	bh=A8oq8IYYmsqDMsuy8wa0En+W7vaPCZkNLRnuI+Z9CoQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=IhipSx7YLHZrlJdDr9L+QjW8Y3NrkbtrQd0xt/07cB6hYCBJja3p4KjmC4X5ofNVV
+	 cCldMLnmuALBvqDp+TRfO2uf1IF4PXAF9T3C0F4EE+pWIpcm/2WkZTYgVMnvKaCQnr
+	 mybt06L/EISu8fYqLAjgbKXUrCCO/4Tn5nTuI8Fw2yHEkLZbXrcxEP1rLWBw+AL30X
+	 EpP8gY5E+FwpsmzRp7N5BAi7NeX/t16atsR31dZsBqSH0TjkRHe1AP/c5wAUOQ34EG
+	 QQnz0Fu1n51/Fs0DfgD4fGXOYLIOVzWNoxa/ZS0dSATSH7hiUiOkDXBMtORwS8ksiS
+	 Lo1Ypl7cel3pg==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Jann Horn <jannh@google.com>,
+	stable@kernel.org,
+	Miklos Szeredi <mszeredi@redhat.com>,
+	"Christian Brauner (Amutable)" <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6.y] fuse: limit FUSE_NOTIFY_RETRIEVE to uptodate folios
+Date: Wed, 17 Jun 2026 11:00:34 -0400
+Message-ID: <20260617150034.208494-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026061525-banshee-overlay-7405@gregkh>
+References: <2026061525-banshee-overlay-7405@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <178170825255.1650852.6401156316192794514.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@kernel.org> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-3.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
-	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-266815-lists,stable=lfdr.de];
-	REPLYTO_DOM_EQ_TO_DOM(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:linux-tip-commits@vger.kernel.org,m:mikhail.v.gavrilov@gmail.com,m:tglx@kernel.org,m:leitao@debian.org,m:oleg@redhat.com,m:stable@vger.kernel.org,m:x86@kernel.org,m:linux-kernel@vger.kernel.org,m:mikhailvgavrilov@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[tip-bot2@linutronix.de,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-266817-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:jannh@google.com,m:stable@kernel.org,m:mszeredi@redhat.com,m:brauner@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[gmail.com,kernel.org,debian.org,redhat.com,vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	HAS_REPLYTO(0.00)[linux-kernel@vger.kernel.org];
-	ALIAS_RESOLVED(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tip-bot2@linutronix.de,stable@vger.kernel.org];
-	PRECEDENCE_BULK(0.00)[];
-	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DKIM_TRACE(0.00)[linutronix.de:+];
-	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linutronix.de:dkim,linutronix.de:from_mime,vger.kernel.org:replyto,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,tip-bot2:mid,msgid.link:url]
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ALIAS_RESOLVED(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3DFFF69AC19
+X-Rspamd-Queue-Id: 4CCE269AC65
 
-The following commit has been merged into the timers/urgent branch of tip:
+From: Jann Horn <jannh@google.com>
 
-Commit-ID:     8fa30821180a9a19e78e9f4df1c0ba710252801e
-Gitweb:        https://git.kernel.org/tip/8fa30821180a9a19e78e9f4df1c0ba71025=
-2801e
-Author:        Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
-AuthorDate:    Tue, 16 Jun 2026 12:09:14 +05:00
-Committer:     Thomas Gleixner <tglx@kernel.org>
-CommitterDate: Wed, 17 Jun 2026 16:55:26 +02:00
+[ Upstream commit 4e3d1b2c48ca6c55f1e9ca7f8dccc76f120f276c ]
 
-timekeeping: Register default clocksource before taking tk_core.lock
+FUSE_NOTIFY_RETRIEVE must be limited to uptodate folios; !uptodate folios
+can contain uninitialized data.
+Since FUSE_NOTIFY_RETRIEVE is intended to only return data that is already
+in the page cache and not wait for data from the FUSE daemon, treat
+!uptodate folios as if they weren't present.
 
-Commit f24df84cbe05 ("time/jiffies: Register jiffies clocksource before
-usage") moved the jiffies clocksource registration into
-clocksource_default_clock(), so that it is registered lazily on the first
-call. __clocksource_register() acquires clocksource_mutex, but the first
-caller is timekeeping_init(), which invokes clocksource_default_clock()
-while holding tk_core.lock, a raw spinlock.
+This only has security impact on systems that don't enable automatic
+zero-initialization of all page allocations via
+CONFIG_INIT_ON_ALLOC_DEFAULT_ON or init_on_alloc=1.
 
-Acquiring a sleeping mutex while holding a raw spinlock is invalid.
-
-The default clocksource only has to be registered before
-tk_setup_internals() consumes its mult/shift/maxadj. Neither
-clocksource_default_clock(), the ->enable() callback, nor the registration
-itself need tk_core.lock, so fetch and enable the clock before acquiring
-the lock. This preserves the "register before usage" ordering while
-keeping clocksource_mutex out of the raw spinlock section.
-
-clocksource_default_clock() has a second caller,
-clocksource_done_booting(), which invokes it with clocksource_mutex already
-held. That path avoids a recursive lock because timekeeping_init() has
-already run and set cs_jiffies_registered, so the registration is skipped
-there. This change does not alter that; it only fixes the invalid wait
-context in timekeeping_init().
-
-Fixes: f24df84cbe05 ("time/jiffies: Register jiffies clocksource before usage=
-")
-Signed-off-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Reported-by: Breno Leitao <leitao@debian.org>
-Reported-by: Oleg Nesterov <oleg@redhat.com>
-Reviewed-by: Breno Leitao <leitao@debian.org>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260616070914.65818-1-mikhail.v.gavrilov@gmai=
-l.com
+Cc: stable@kernel.org
+Fixes: 2d45ba381a74 ("fuse: add retrieve request")
+Signed-off-by: Jann Horn <jannh@google.com>
+Link: https://patch.msgid.link/20260519-fuse-retrieve-uptodate-v1-1-a7a1912a37f9@google.com
+Acked-by: Miklos Szeredi <mszeredi@redhat.com>
+Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+[ translated `folio_test_uptodate(folio)`/`folio_put(folio)` to `PageUptodate(page)`/`put_page(page)` for the pre-folio page-based 6.6 fuse ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/time/timekeeping.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ fs/fuse/dev.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/kernel/time/timekeeping.c b/kernel/time/timekeeping.c
-index 0d5b67f..b1b5ec4 100644
---- a/kernel/time/timekeeping.c
-+++ b/kernel/time/timekeeping.c
-@@ -2061,13 +2061,14 @@ void __init timekeeping_init(void)
- 	 */
- 	wall_to_mono =3D timespec64_sub(boot_offset, wall_time);
-=20
-+	clock =3D clocksource_default_clock();
-+	if (clock->enable)
-+		clock->enable(clock);
-+
- 	guard(raw_spinlock_irqsave)(&tk_core.lock);
-=20
- 	ntp_init();
-=20
--	clock =3D clocksource_default_clock();
--	if (clock->enable)
--		clock->enable(clock);
- 	tk_setup_internals(tks, clock);
-=20
- 	tk_set_xtime(tks, &wall_time);
+diff --git a/fs/fuse/dev.c b/fs/fuse/dev.c
+index 7573dcd8f5d442..b9d6e03f8f7f45 100644
+--- a/fs/fuse/dev.c
++++ b/fs/fuse/dev.c
+@@ -1718,6 +1718,10 @@ static int fuse_retrieve(struct fuse_mount *fm, struct inode *inode,
+ 		page = find_get_page(mapping, index);
+ 		if (!page)
+ 			break;
++		if (!PageUptodate(page)) {
++			put_page(page);
++			break;
++		}
+ 
+ 		this_num = min_t(unsigned, num, PAGE_SIZE - offset);
+ 		ap->pages[ap->num_pages] = page;
+-- 
+2.53.0
+
 
