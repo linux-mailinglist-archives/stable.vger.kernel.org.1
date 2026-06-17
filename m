@@ -1,176 +1,146 @@
-Return-Path: <stable+bounces-266697-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266698-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 8mvMKSdtMmoGzwUAu9opvQ
-	(envelope-from <stable+bounces-266697-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 11:47:19 +0200
+	id E59mJ4VwMmr9zwUAu9opvQ
+	(envelope-from <stable+bounces-266698-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 12:01:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CD086980B2
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 11:47:19 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 491C469834E
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 12:01:36 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=pobox.com header.s=fm3 header.b="B/32yiuD";
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="d u0WyXd";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266697-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-266697-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=pobox.com;
+	dkim=pass header.d=tipi-net.de header.s=dkim header.b=W3Esklww;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266698-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266698-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=none;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 06B043030976
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 09:46:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5B45432285C0
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 09:49:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B5B83C8C65;
-	Wed, 17 Jun 2026 09:46:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 124E73CCFB2;
+	Wed, 17 Jun 2026 09:49:27 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from fout-a6-smtp.messagingengine.com (fout-a6-smtp.messagingengine.com [103.168.172.149])
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CB2339B49D;
-	Wed, 17 Jun 2026 09:46:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0F8A28A3FA;
+	Wed, 17 Jun 2026 09:49:22 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781689602; cv=none; b=WpWkpSEAgCUjWJ1hea5T0TeMbCSzyu7GkmGAUf+r/vz5MLX3b143RGDWduKYr/08wT/z9atCpV508i1w6pbAWCHLzJ1rpD1PfZzW7RbsjEQugoWP5cIXNZlDH0r2K3bshRG8oBo8G5+qjjFG/P5TgfyQRzSWvv8EM4He3ypBGTY=
+	t=1781689766; cv=none; b=LICI736UoPKIVXhr75NKQfwA2Pc55I5/9GOneLzYOfHO/BaI60sbgaki/pXEoURz74fApQV9uvcr8bw93NnA4UebygmwP9Hi+FZ2APCGlkaj1NwEhdywFJTkburXgiRgzqusU+bnU4rEK0zrSmXFAzp4Ivs6JZznnj7i3eb8BlI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781689602; c=relaxed/simple;
-	bh=xAqe/8U2yGUbThMQKi1IkcJCEV2Y3uLy22DWmUEApC0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NaLm8du9BywXS99pF+j22dTWPsjIdIENrGPtXzEORiq9c3Zv9mbeAM1ST8m74Puot7aT7jFtbdnPnrtBANCJ2QzfMZIl1mxJhCCbq9yXsOzLqEcja9JrAANIARPd568JEKSzx69dMYriChJx1BnzQoaU281tOwWgzw+DISK1gcI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com; spf=pass smtp.mailfrom=pobox.com; dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b=B/32yiuD; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=du0WyXdg; arc=none smtp.client-ip=103.168.172.149
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfout.phl.internal (Postfix) with ESMTP id 69796EC01AF;
-	Wed, 17 Jun 2026 05:46:39 -0400 (EDT)
-Received: from phl-frontend-02 ([10.202.2.161])
-  by phl-compute-04.internal (MEProxy); Wed, 17 Jun 2026 05:46:39 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pobox.com; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1781689599;
-	 x=1781775999; bh=mogodG7pcrCiKUsu7dKMewLglswihOIGnqfNWlGOzx8=; b=
-	B/32yiuDBi2lpJ3ZPrrzpvLjOTqIkaPIs9EahU/txqcXLBReT0KGLZZNWOwuGwaY
-	YXvt/A+DP0jEwcRihddVu4Fw1B2Q4T75P2XCrwEfeBN4ZVOFlEWS7Z7D3lScQZi6
-	Xr1O8tGIyXwNf/Ubhfh5SA3SdIpoXcEM59Hp1tIJp9WOehj3F4a7dNQhkijgu+B8
-	8chOpPyxj8bjqBC4sUiIximqjAJVHqwrf+q30by4o3Seddjz6ReqH6kX+3VxCec0
-	Eg7Uji+BukWXfOWYyrzLmNG+JI/vI8M2rXVQdNVBHiG417yuWeg5xnzH0xE4K99D
-	lkbX2IQa83n8vpeCFgZvlQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1781689599; x=
-	1781775999; bh=mogodG7pcrCiKUsu7dKMewLglswihOIGnqfNWlGOzx8=; b=d
-	u0WyXdg6fmPSxq/3gedyfC/xDAxoN6rVImZu+lJVANZjCrcqt/O2r8GIRtFHnd7z
-	R+g1JLSZRnm9p6kb0mVdbhyC0mlx0nzAwobZDjEvKk/aH4ReR5x1y8seNImiZ9j5
-	AnMnCY9bwld4C0xEsb44da0BAzfs7kkSaNLQFCJ2JDVv9D2jZRzoVfz4JFeC5Dt9
-	nJ559r3sS0HBwygqcqCp0onQtcYvRlIo0eqSHv2/NDozETqapwfE6N2kei0Q8EWG
-	Ubm5gIrPHpAHMw2L9nPeMkdhl/JhpnS0bNCjpsgeVVvefj5QicsxyGQBkNZEWRvM
-	KpSrop9jmCdwVOk1T9J2Q==
-X-ME-Sender: <xms:_mwyaiiU8SRSXyTulPHXOEmoi9_pT1_zhYt7AY8kmDlUY61VibJSSg>
-    <xme:_mwyau5T2-ZLaz6qfBzqwvSdF2XHznz52l6lnOU0kEBBM7NCaRsF0ZMEUzFTX2LCi
-    3Rh7CDKHOPc0F0yo0f3AHwEGrbXmZqt7NFBD0s-uHWDuZpr0Ni_xwo>
-X-ME-Received: <xmr:_mwyall3RiXUvERwPwMqUptrdrhOaSbXujhc3gLK0GdpSA9ZfGauhixBhHLQhXneAoPetXB4_yFRsj_rKMwXNHrn5xOHZ2zW>
-X-ME-Proxy-Cause: dmFkZTEtUkYpXsvlu3vF1Efxo7cKDRm7QTRG0dyYph7GzLNBbqcTNMzdurQZb0QJIWBeQv
-    CFE/o6qwPa8NsbO2vSbcM7FGZs4HIMygkj8yHeqJIy/79UAPaKJ+oJvRVAcc5IYRpAZcmh
-    QEwdl0QPwIp2Et5ZdSmQfU7TZmGjiOE6BzpNPlTflUY3fdSDyU51fSAVa8IFFpk7jGDto+
-    QZgyCeI0cgzf4VFeqCjl3ardLsncVvqPtHwd3MyseMhb9mZuIi9pFHkvQGKsK+Gbv/oatP
-    ZN5Zt7hKmXT0YBTGmZzXbWB4eX2C/k1abq5RmoMzruEsP8OIze93IjApyoK/2Xg8iPLzED
-    j4DH5Z3kNt2zriQ58f3++m6ovval02rDJirg+N9smNq9excavfyuizos6cDEKsBvrD42nE
-    4+HGOvpnFov+h7K7PMPaldtHJVhEXTBlX2dTCmhFVAdR9aKjXy6q31ILRzsdSgk1dDCBrY
-    845CMrnTOKS8abip9b+vs05OHoref5BgLfNQPPa5BXPq69Q+1Qrxp74UCUqSZ/DngBwN1S
-    dGTaxuMN9lsK84Di7TeLs2kMFuy06sWCUTtWAfvflPW9NgijkE/OyscbJXs/BEAt6p21o5
-    5LhtlacudGNaPCmOqpEfoL/UGTLjLdwcoalkPfa+QoVWR/mXLlWmzVHMiccQ
-X-ME-Proxy: <xmx:_mwyavOwubVHqZQ7KDwj4k3Uc3gK0at18X_FHDyDU97VkjtOpzd5XA>
-    <xmx:_mwyanpieopgR9tz9ark79GX-jEKBUWYSmvRmnG42NpgaoYZDb3mnw>
-    <xmx:_mwyaosgaT8mnv80DHWkfOiZSTEM-z0f0-aSXEUdMx_VzUGG2KZZpQ>
-    <xmx:_mwyar7e7QZfwcVVCxPKMOeA1UX2enSgJaWrwz7W-4q7r3R6oe43xA>
-    <xmx:_2wyah0ndfP6brtdhROD6lh_czgWTvBJbY7--PLjJx4iuKG4cCIYzJ-W>
-Feedback-ID: i6289494f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 17 Jun 2026 05:46:35 -0400 (EDT)
-Message-ID: <d0a4a3ca-e799-45a5-978d-9d81fea2a9de@pobox.com>
-Date: Wed, 17 Jun 2026 02:46:34 -0700
+	s=arc-20240116; t=1781689766; c=relaxed/simple;
+	bh=wi4lwLaRO7F267pP1ARLV3qFeVZRDo6AoT6aFpopDXU=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=BfkdP0QY57eg0kXgGqbiAZUdMWyQArTy9b7kwYonF0HiwVzPCxYbx1FfKDaZpz6qgcDukQUzw0R9G0R/rSEycJPY94tEEBMNsApFM0WCwmcyL+TPMGLPj885QgAxoAQXGYT0QGuaTvlGvMy8eHwZ8NAuuzIJ/riCq481DxKjwT4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=W3Esklww; arc=none smtp.client-ip=194.13.80.246
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C0BD1A0308;
+	Wed, 17 Jun 2026 11:49:07 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1781689759; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=ZlrDqMyQq4zKuxqKG6lBK1mUYEi66ZSWBSX8jgTDuvg=;
+	b=W3EsklwwgvkjKyWSwWZfYrzQbovQcNjs6sjus2PbL+xZtai3n+k6BItSd3Sn5BdaJKavyP
+	2oioTcOF9K6PWGlaJtTS4dD72/SHb9HkJLEDCho6A1ro6lI2NkBYZrcH6AdrOA7XNfan7E
+	B3D1T8XlsmiftI68bxMYzk7u4ov6wOXetIn9CKH7coyMuV95SfS1tWMuQDtgYg+XPsu6ys
+	spjpM7Ik49Vx+ZvWDI9D5tKsbYuEDxymV9UEPdvZbcer9QGFBzmdYp8LnvSUgDAiWr9iu+
+	+M98Mdat4VeZL7b5hpi/OQ9tiHxQCLkb9Z2zoXTVMUVjKYSsnMu1tTBRpnJj/Q==
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH 7.1 0/8] 7.1.1-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org, sr@sladewatkins.com
-References: <20260616145523.335696673@linuxfoundation.org>
-Content-Language: en-US
-From: "Barry K. Nathan" <barryn@pobox.com>
-In-Reply-To: <20260616145523.335696673@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Date: Wed, 17 Jun 2026 11:49:07 +0200
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: =?UTF-8?Q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
+Cc: Nicolas Ferre <nicolas.ferre@microchip.com>, Claudiu Beznea
+ <claudiu.beznea@tuxon.dev>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
+ Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Haavard
+ Skinnemoen <hskinnemoen@atmel.com>, Jeff Garzik <jeff@garzik.org>, Conor
+ Dooley <conor.dooley@microchip.com>, Paolo Valerio <pvalerio@redhat.com>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Vladimir Kondratiev
+ <vladimir.kondratiev@mobileye.com>, Gregory CLEMENT
+ <gregory.clement@bootlin.com>, =?UTF-8?Q?Beno=C3=AEt_Monin?=
+ <benoit.monin@bootlin.com>, Tawfik Bayouk <tawfik.bayouk@mobileye.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Maxime Chevallier
+ <maxime.chevallier@bootlin.com>, stable@vger.kernel.org
+Subject: Re: [PATCH net v3 1/2] net: macb: give reasons for Tx SKB kfree
+In-Reply-To: <20260617-macb-drop-tx-v3-1-d4c7e57d890b@bootlin.com>
+References: <20260617-macb-drop-tx-v3-0-d4c7e57d890b@bootlin.com>
+ <20260617-macb-drop-tx-v3-1-d4c7e57d890b@bootlin.com>
+Message-ID: <739f87c219e04468fbe0453013a7342f@tipi-net.de>
+X-Sender: nb@tipi-net.de
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[pobox.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[pobox.com:s=fm3,messagingengine.com:s=fm1];
+	R_DKIM_ALLOW(-0.20)[tipi-net.de:s=dkim];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	TAGGED_FROM(0.00)[bounces-266697-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,m:patches@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:torvalds@linux-foundation.org,m:akpm@linux-foundation.org,m:linux@roeck-us.net,m:shuah@kernel.org,m:patches@kernelci.org,m:lkft-triage@lists.linaro.org,m:pavel@nabladev.com,m:jonathanh@nvidia.com,m:f.fainelli@gmail.com,m:sudipm.mukherjee@gmail.com,m:rwarsow@gmx.de,m:conor@kernel.org,m:hargar@microsoft.com,m:broonie@kernel.org,m:achill@achill.org,m:sr@sladewatkins.com,m:ffainelli@gmail.com,m:sudipmmukherjee@gmail.com,s:lists@lfdr.de];
+	DMARC_NA(0.00)[tipi-net.de];
+	FORGED_RECIPIENTS(0.00)[m:theo.lebrun@bootlin.com,m:nicolas.ferre@microchip.com,m:claudiu.beznea@tuxon.dev,m:andrew+netdev@lunn.ch,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:hskinnemoen@atmel.com,m:jeff@garzik.org,m:conor.dooley@microchip.com,m:pvalerio@redhat.com,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:vladimir.kondratiev@mobileye.com,m:gregory.clement@bootlin.com,m:benoit.monin@bootlin.com,m:tawfik.bayouk@mobileye.com,m:thomas.petazzoni@bootlin.com,m:maxime.chevallier@bootlin.com,m:stable@vger.kernel.org,m:andrew@lunn.ch,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[nb@tipi-net.de,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[21];
+	TAGGED_FROM(0.00)[bounces-266698-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[barryn@pobox.com,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RSPAMD_EMAILBL_FAIL(0.00)[nb.tipi-net.de:query timed out];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[barryn@pobox.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[pobox.com:+,messagingengine.com:+];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[nb@tipi-net.de,stable@vger.kernel.org];
+	PRECEDENCE_BULK(0.00)[];
+	DKIM_TRACE(0.00)[tipi-net.de:+];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,messagingengine.com:dkim,pobox.com:dkim,pobox.com:email,pobox.com:mid,pobox.com:from_mime]
+	TO_DN_SOME(0.00)[];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tipi-net.de:dkim,tipi-net.de:email,tipi-net.de:mid,tipi-net.de:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,bootlin.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 1CD086980B2
+X-Rspamd-Queue-Id: 491C469834E
 
-On 6/16/26 7:58 AM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 7.1.1 release.
-> There are 8 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On 17.6.2026 11:17, Théo Lebrun wrote:
+> Using dev_consume_skb_any() marks the drop reason as SKB_CONSUMED every
+> time we free a Tx SKB. Instead, replace by 
+> SKB_DROP_REASON_NOT_SPECIFIED
+> when packet has been dropped without sending.
 > 
-> Responses should be made by Thu, 18 Jun 2026 14:55:16 +0000.
-> Anything received after that time might be too late.
+> It is not precise but at least differs from SKB_CONSUMED and is used by
+> many drivers for their error codepaths through 
+> dev_kfree_skb_{any,irq}().
 > 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v7.x/stable-review/patch-7.1.1-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-7.1.y
-> and the diffstat can be found below.
+> Pass a reason around rather than call dev_consume_skb_any() or
+> dev_kfree_skb_any() because macb_tx_unmap() is called for cleanup in
+> all cases.
 > 
-> thanks,
+> macb_tx_error_task() is made complex because some SKBs encountered have
+> been successfully sent.
 > 
-> greg k-h
+> Fixes: 89e5785fc8a6 ("[PATCH] Atmel MACB ethernet driver")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
+> ---
 
-Tested on 2 amd64 systems and an arm64 VM. Working well, no regressions
-observed.
+Looks like my r-b from v2 was lost, but here it goes again :)
 
-Tested-by: Barry K. Nathan <barryn@pobox.com>
+Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
 
--- 
--Barry K. Nathan  <barryn@pobox.com>
+Thanks,
+Nicolai
 
