@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-266804-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266805-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 34euNee0Mmrj3wUAu9opvQ
-	(envelope-from <stable+bounces-266804-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 16:53:27 +0200
+	id HCAnKwu0Mmpj3wUAu9opvQ
+	(envelope-from <stable+bounces-266805-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 16:49:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EC8A69AB05
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 16:53:27 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id E608C69AA98
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 16:49:46 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=newO6kd6;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266804-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266804-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aC0czx2A;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266805-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-266805-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0AD723205923
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 14:48:42 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4CB003123B27
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 14:48:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BB673101A6;
-	Wed, 17 Jun 2026 14:48:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8342F34EF04;
+	Wed, 17 Jun 2026 14:48:41 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5133F19EED3;
-	Wed, 17 Jun 2026 14:48:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 657D32F1FDF;
+	Wed, 17 Jun 2026 14:48:40 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781707720; cv=none; b=ugfiagu5pS14pt2FcZUpJ4XYtFVuVpq3Ru2yA1Add7aO8/WhgTg4DxTNKy7/EMEBUlUUNSWCug1jthaeUyBUOO42g91JI5skQAS1YKFixR9mp1DuTizMnOwSINHw7qq6JjMqitL/3h4mwUI5jyfR8Rug0te2F52+m/9z+gAxPzo=
+	t=1781707721; cv=none; b=eA5Ai3Kzsf1ItIQWfujL7UZYIq7kKBiei2PU6CStSb+eLyYLOvmtK+0JZaZJcn1V0oNAgOKzVCzQcywI2szsm4pOSvSRzJhz4AqZP7MxMxt3aMzP6N7HzHYD2St1PsTz/OTGGZWmY1HNpvor/xHqkDrkyjY4oIjWBiCkgOn6xxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781707720; c=relaxed/simple;
-	bh=P/YRtZaOARgw54Tx+SEjBI9kxicLKAlJR6FWI+U/JuA=;
+	s=arc-20240116; t=1781707721; c=relaxed/simple;
+	bh=EgtPrbPPj4evdAKWXpQqc5q3fphFHpFUB+kARdSSrq4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LHFBuSZjqG3dGtBjxuW7Erp5srOAOyLpYu7hWM0dp3HV6TQud9HG2OGeL5owvHLvlklzP9WGN4Dvn7tJtPCtuVenbfNucllkOQTPs1/Xsa0f2JYs3IuXBlIwkkHvdEHKi04no25rMjl5Lzw70xAI/nF5euZFZ4eRSsbfJ4jwvjg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=newO6kd6; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33FAD1F00A3D;
-	Wed, 17 Jun 2026 14:48:34 +0000 (UTC)
+	 MIME-Version; b=YrHqnvx2os2klYSEkUGXNjnRZffyYaJD8gsCnEHRGhPosLcEXeDh5N9Jav2UW15HbTyCcygZwqxISIIMbpblHpg2QdzlWY858zV+EoBzbsiUk4mYNrjOBXq0ODtolZylt3FYIdicxPMnayAwMjdiBHhAR7vHD8Z8aicXKHiPU4E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aC0czx2A; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A03C81F00A3A;
+	Wed, 17 Jun 2026 14:48:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781707717;
-	bh=YtuACU05uWFEz+Ei+IYVVZbkflRFGPIDankdmmStN+4=;
+	s=k20260515; t=1781707720;
+	bh=5tsHNLiRHrT2fupCfklpoPqgBkd/OIiPYVnZdcCqxSw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=newO6kd61rxUta9sxfOW/31k4cJ7NC+z7HUfEnbvZE8UgaW1nrLrktwr3chXpFcsm
-	 dzdlN4eHn8jhYQsWOP3Jj1CJAb1CBco3QnpH6DKglf6vNQMypJLg2NZdQn8z6P5AZR
-	 wSlSEKkGLc9DUo+Lex+3ZloUY0cdJoiNB4ZQl8f3LVUr2uvup9ADPAcQudhzE0FOzZ
-	 Rn5+9uZEZum7JLeV3YQLrz5e4wNCBfx43sQJ8ompkyOIrLsSWA0d7CRwXl0WwLss89
-	 C/uDRIA2ueWQcgS9OumJon6hYbA1MFUJbW0mCyY4EgitmXOCLG2C8q00Sxpnbjx1Y7
-	 DRj0FwuCfpctQ==
+	b=aC0czx2A3MwkvRVQ7VpYXqVxqoI8ifrDMm+sVwCpSzdvI2FdtYshbvNU1RwPKccuF
+	 /EE3964iMLCQ8ssThuyN2kAQB4fDSNd5Yf5GfIAqiDRpZKMo8vekE2Ld0ObhoE7yNM
+	 5ZHEA85xNdoaqTuHhCz1q0vfpSZuYPihSwF6DcGJZdzya9C/x5S56XnrKpenW4SmSY
+	 R9+eBv2TFDhBKZEVzzqsqa0ozWpxBR/BUO04hlBluxDRAJIuLRFiIzDNrlm3FXcKtn
+	 gP2S42GBO3Ba/RUiG69k16UOfmUuQXJZpfroQcSGYw45ol9fyF02IwOYBIhBiC5913
+	 qpYh2OaTWzwiw==
 From: SeongJae Park <sj@kernel.org>
 To: 
 Cc: SeongJae Park <sj@kernel.org>,
-	"# 6 . 2 . x" <stable@vger.kernel.org>,
+	"# 6 . 3 . x" <stable@vger.kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v1.1 04/11] mm/damon/sysfs-schemes: kobject_del() scheme region dirs
-Date: Wed, 17 Jun 2026 07:47:58 -0700
-Message-ID: <20260617144807.91441-5-sj@kernel.org>
+Subject: [RFC PATCH v1.1 05/11] mm/damon/sysfs-schemes: kobject_del() scheme filter dirs
+Date: Wed, 17 Jun 2026 07:47:59 -0700
+Message-ID: <20260617144807.91441-6-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260617144807.91441-1-sj@kernel.org>
 References: <20260617144807.91441-1-sj@kernel.org>
@@ -74,13 +74,13 @@ X-Spamd-Result: default: False [-3.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-266804-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-266805-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
@@ -98,41 +98,40 @@ X-Spamd-Result: default: False [-3.66 / 15.00];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2EC8A69AB05
+X-Rspamd-Queue-Id: E608C69AA98
 
 On CONFIG_DEBUG_KOBJECT_RELEASE enabled kernel, lack of kobject_del()
 could cause directories creation failures due to the name conflicts. Fix
-those issues for scheme region directories by adding kobject_del()
+those issues for scheme filter directories by adding kobject_del()
 calls.
 
-This issue was discovered [1] by Sashiko, though its analysis was
-partially incorrect.
-
-[1] https://lore.kernel.org/20260517205828.6204-1-sj@kernel.org
-
-Fixes: 9277d0367ba1 ("mm/damon/sysfs-schemes: implement scheme region directory")
-Cc: <stable@vger.kernel.org> # 6.2.x
+Fixes: 472e2b70eda6 ("mm/damon/sysfs-schemes: connect filter directory and filters directory")
+Cc: <stable@vger.kernel.org> # 6.3.x
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- mm/damon/sysfs-schemes.c | 1 +
- 1 file changed, 1 insertion(+)
+ mm/damon/sysfs-schemes.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/mm/damon/sysfs-schemes.c b/mm/damon/sysfs-schemes.c
-index debf2a3a0d8fc..604b77a47a463 100644
+index 604b77a47a463..db6226c05b023 100644
 --- a/mm/damon/sysfs-schemes.c
 +++ b/mm/damon/sysfs-schemes.c
-@@ -334,6 +334,7 @@ static void damon_sysfs_scheme_regions_rm_dirs(
- 	list_for_each_entry_safe(r, next, &regions->regions_list, list) {
- 		damos_sysfs_region_rm_dirs(r);
- 		list_del(&r->list);
-+		kobject_del(&r->kobj);
- 		kobject_put(&r->kobj);
- 		regions->nr_regions--;
- 	}
+@@ -914,8 +914,10 @@ static void damon_sysfs_scheme_filters_rm_dirs(
+ 	struct damon_sysfs_scheme_filter **filters_arr = filters->filters_arr;
+ 	int i;
+ 
+-	for (i = 0; i < filters->nr; i++)
++	for (i = 0; i < filters->nr; i++) {
++		kobject_del(&filters_arr[i]->kobj);
+ 		kobject_put(&filters_arr[i]->kobj);
++	}
+ 	filters->nr = 0;
+ 	kfree(filters_arr);
+ 	filters->filters_arr = NULL;
 -- 
 2.47.3
 
