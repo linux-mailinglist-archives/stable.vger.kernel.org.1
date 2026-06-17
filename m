@@ -1,165 +1,205 @@
-Return-Path: <stable+bounces-266879-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266881-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id V7eCNuXiMmpJ6gUAu9opvQ
-	(envelope-from <stable+bounces-266879-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 20:09:41 +0200
+	id sVGrBpXkMmpK6wUAu9opvQ
+	(envelope-from <stable+bounces-266881-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 20:16:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 925D369BDE6
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 20:09:41 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8073169BE7E
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 20:16:52 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FvR2WSXb;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266879-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-266879-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="k1msFA/7";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266881-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266881-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 102F2302F49E
-	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 18:09:41 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 873783051A5C
+	for <lists+stable@lfdr.de>; Wed, 17 Jun 2026 18:16:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F0B033DED9;
-	Wed, 17 Jun 2026 18:09:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DE31359A89;
+	Wed, 17 Jun 2026 18:16:47 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC1823750CB;
-	Wed, 17 Jun 2026 18:09:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE55B363C6F;
+	Wed, 17 Jun 2026 18:16:45 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781719777; cv=none; b=nJZkGJjdSzeBXIFkUR2/dj9zPjEoaIB0e6yguTcWyed3qOgGZq2kFDpYUA09QCGG2+fKfg4Vhh16amMEGAvOjO/8TcwCO2N2NJGjFVJK03hTFpcJ1FTtas8dURjA3MpxShtOQm6GGPzKJJDfcM2HxqsTFb9/nAeWQXAhFcXJbJM=
+	t=1781720207; cv=none; b=TJh5Snj5xrkl99w/zSLN/8sndVApjplw1hiOtadPG0HlumOtW5bGK9JZCpsQrnnSNJaUq1RRwOBAEaERvn2d23IEK8tiwlJw/WN6QseDwctrch3JRbv1UGqnLd+yrQ2y6PgQqxmzhaPU/acxiuCfDWTswOyx+WDCUnPP14BCN84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781719777; c=relaxed/simple;
-	bh=tPxlq0qL8ZiBrQmoi8Rx8xtOxDUmm2s8o0hFeRA4jX4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tBijIhHiuyh1luAIM6ugyFG6g2MdieUiZnyqN3Iqi8JB89Ds+1CumyXXdFLFs45GDNJWaCdm33YwEyzKxe926T9TK4ICYteN5UnCSHqH/4CRoLTQmgXdVrf2edrer/LD2CdTMYSuQCy5poYLJvG080RuT7SAWe6WZo1RQkG5Asw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FvR2WSXb; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F19B1F000E9;
-	Wed, 17 Jun 2026 18:09:36 +0000 (UTC)
+	s=arc-20240116; t=1781720207; c=relaxed/simple;
+	bh=xbHMwvM6x2G3KatvY6TnhzSyOv9ROm2RTS6MG7iHj/g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cgGab2M93aGg7f8C75lQmk5YTGuXhPcisPqWhtSaMnREw5DMmlYvQvDpSuymsiAo5MtCnaII+XJuBaz9BwXDFuO86jkhlrn34TlETUuL25Vv3F9AScKe7WNAKEmG/f7shmj/ZDUXMVnbwG/q7xe6DWWTFAbPrxTdZMutoF+etig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k1msFA/7; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0867F1F000E9;
+	Wed, 17 Jun 2026 18:16:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781719776;
-	bh=jWEa6RP1Pi3Ycy/oGmflXx0TMIdx6fHkv2r2sAHUe5M=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=FvR2WSXb120GdkouzMt5pxNolEXMByOMorJ2qh7bQ5fpzAlqYLc4BrvcueSaoHTXa
-	 Cn1vkCsT+oHzPgJW2IWomMhsHj1FYD0FAlZURjHcNCRiqHpa11+nDYxxO95Adikfrm
-	 Sy6AdDOCZBPOeDzqGhismne1s7GGF9TG81ifMqvtfgHuZg/nMwxfIwUdlL5FyVlBTP
-	 qmMZm8/JW4us9Tpyy3+ZoJtliXwZ6/woJo0rnPBm2lTLVAeu14AcCiGWgMsSEre9je
-	 e4kcQe46sD7adaUGKfRwq0A99LjZhoUGdYz3+ICnCC19PxB91DLbZ+lL+IfKvDRsym
-	 n9s7yl3xl7NHQ==
-Date: Wed, 17 Jun 2026 18:09:34 +0000
-From: Jaegeuk Kim <jaegeuk@kernel.org>
-To: Wenjie Qi <qwjhust@gmail.com>
-Cc: chao@kernel.org, geoo115@gmail.com, yangyongpeng@xiaomi.com,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	linux-f2fs-devel@lists.sourceforge.net, qiwenjie@xiaomi.com
-Subject: Re: [f2fs-dev] [PATCH v5] f2fs: use post-decrement count for cp_wait
- wakeup
-Message-ID: <ajLi3nLqyS31Y6J4@google.com>
-References: <20260616135637.1439319-1-qiwenjie@xiaomi.com>
+	s=k20260515; t=1781720205;
+	bh=34T8fjVS2ijKeY073d7cPWfK3Eup8GlZsznBtOHwLAk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=k1msFA/7sWqjtak7jhvFWE52RHjJvxyaPLUVFiyCdcgtn/EOS7R3ztlAs5wt4PZuf
+	 nldlzfXpwh6i33uufNBV07/pzvjDHT2tQG5GVWd5k4twbHnYbhMkHapJP/UfO5xHg6
+	 /o7Q6iVlKAQhD6+0me4dvgaqprajFvit0hvB6F/OHvOoTRWQ3cq9+g/bWbED2WpTcB
+	 R1d+1oNzdRyprLGeuVOlOfRn/wbKcl4sd8i6DzEEvhvmTUsTW591TMj/S4ei08Bt1l
+	 j/swA4TBUewBZGsillQb1ERsNdzD38OQv8Q30e9RTfC15CrWGF2RJChQwlnouNyFLr
+	 Gz5PyhzE0vCGg==
+Message-ID: <89da8f81-9e6c-4923-be0e-7e29c7fdb68b@kernel.org>
+Date: Wed, 17 Jun 2026 20:16:42 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260616135637.1439319-1-qiwenjie@xiaomi.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] slab: recognize @GFP parameter as optional in
+ kernel-doc
+Content-Language: en-US
+To: Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org
+Cc: "Harry Yoo (Oracle)" <harry@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+ stable@vger.kernel.org, Kees Cook <kees@kernel.org>,
+ Jonathan Corbet <corbet@lwn.net>
+References: <20260617163125.2716279-1-rdunlap@infradead.org>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <20260617163125.2716279-1-rdunlap@infradead.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-5.16 / 15.00];
 	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-266879-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:qwjhust@gmail.com,m:chao@kernel.org,m:geoo115@gmail.com,m:yangyongpeng@xiaomi.com,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:linux-f2fs-devel@lists.sourceforge.net,m:qiwenjie@xiaomi.com,s:lists@lfdr.de];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[kernel.org,gmail.com,xiaomi.com,vger.kernel.org,lists.sourceforge.net];
+	TAGGED_FROM(0.00)[bounces-266881-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:rdunlap@infradead.org,m:linux-kernel@vger.kernel.org,m:harry@kernel.org,m:akpm@linux-foundation.org,m:linux-mm@kvack.org,m:stable@vger.kernel.org,m:kees@kernel.org,m:corbet@lwn.net,s:lists@lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER(0.00)[vbabka@kernel.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[jaegeuk@kernel.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jaegeuk@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FROM_NEQ_ENVFROM(0.00)[vbabka@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,infradead.org:email,lwn.net:email,kvack.org:email,linux-foundation.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 925D369BDE6
+X-Rspamd-Queue-Id: 8073169BE7E
 
-On 06/16, Wenjie Qi wrote:
-> f2fs_write_end_io() decrements the writeback page counter and then
-> reads it again with get_pages() to decide whether the last
-> F2FS_WB_CP_DATA completion should wake cp_wait.
+On 6/17/26 18:31, Randy Dunlap wrote:
+> Since the @GFP parameter in kmalloc_obj() etc. is now optional, change
+> the kernel-doc to indicate that it is optional. This avoids kernel-doc
+> warnings:
 > 
-> Use atomic_dec_return() for F2FS_WB_CP_DATA completions so the wakeup
-> decision is made from the value produced by the decrement itself. Keep
-> the existing dec_page_count() path for other writeback counters.
-
-Is there a race condition to do this? If so, can you describe? And, I think
-we need a wrapper function instead of calling nr_pages directly.
-
+> WARNING: include/linux/slab.h:1101 Excess function parameter 'GFP' description in 'kmalloc_obj'
+> WARNING: include/linux/slab.h:1113 Excess function parameter 'GFP' description in 'kmalloc_objs'
+> WARNING: include/linux/slab.h:1128 Excess function parameter 'GFP' description in 'kmalloc_flex'
 > 
-> Fixes: e234088758fc ("f2fs: avoid wait if IO end up when do_checkpoint for better performance")
-> Fixes: ce2739e482bc ("f2fs: fix to avoid UAF in f2fs_write_end_io()")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Wenjie Qi <qiwenjie@xiaomi.com>
+> Fixes: e19e1b480ac7 ("add default_gfp() helper macro and use it in the new *alloc_obj() helpers")
+> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+> Acked-by: Harry Yoo (Oracle) <harry@kernel.org>
+
+Added to slab/for-next, thanks!
+
 > ---
->  fs/f2fs/data.c | 12 +++++++-----
->  1 file changed, 7 insertions(+), 5 deletions(-)
+> v2: add default value for GFP flags to the description (Harry)
 > 
-> diff --git a/fs/f2fs/data.c b/fs/f2fs/data.c
-> index d83a21998ec2..58d23eb74ec2 100644
-> --- a/fs/f2fs/data.c
-> +++ b/fs/f2fs/data.c
-> @@ -392,15 +392,17 @@ static void f2fs_write_end_io(struct bio *bio)
->  		if (f2fs_in_warm_node_list(folio))
->  			f2fs_del_fsync_node_entry(sbi, folio);
->  
-> -		dec_page_count(sbi, type);
-> -
->  		/*
->  		 * we should access sbi before folio_end_writeback() to
->  		 * avoid racing w/ kill_f2fs_super()
->  		 */
-> -		if (type == F2FS_WB_CP_DATA && !get_pages(sbi, type) &&
-> -				wq_has_sleeper(&sbi->cp_wait))
-> -			wake_up(&sbi->cp_wait);
-> +		if (type == F2FS_WB_CP_DATA) {
-> +			if (!atomic_dec_return(&sbi->nr_pages[type]) &&
-> +			    wq_has_sleeper(&sbi->cp_wait))
-> +				wake_up(&sbi->cp_wait);
-> +		} else {
-> +			dec_page_count(sbi, type);
-> +		}
->  
->  		folio_clear_f2fs_gcing(folio);
->  		folio_end_writeback(folio);
+> Cc: Vlastimil Babka <vbabka@kernel.org>
+> Cc: Harry Yoo <harry@kernel.org>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: linux-mm@kvack.org
+> Cc: stable@vger.kernel.org
+> Cc: Kees Cook <kees@kernel.org>
+> Cc: Jonathan Corbet <corbet@lwn.net>
 > 
-> base-commit: c0b65f6129c7fbb526e921dd60261650f1b2bef9
-> -- 
-> 2.43.0
+>  include/linux/slab.h |    6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
 > 
-> 
-> 
-> _______________________________________________
-> Linux-f2fs-devel mailing list
-> Linux-f2fs-devel@lists.sourceforge.net
-> https://lists.sourceforge.net/lists/listinfo/linux-f2fs-devel
+> --- linux-next-20260615.orig/include/linux/slab.h
+> +++ linux-next-20260615/include/linux/slab.h
+> @@ -1094,7 +1094,7 @@ void *kmalloc_nolock(size_t size, gfp_t
+>  /**
+>   * kmalloc_obj - Allocate a single instance of the given type
+>   * @VAR_OR_TYPE: Variable or type to allocate.
+> - * @GFP: GFP flags for the allocation.
+> + * @...: optional GFP flags for the allocation (GFP_KERNEL when not specified).
+>   *
+>   * Returns: newly allocated pointer to a @VAR_OR_TYPE on success, or NULL
+>   * on failure.
+> @@ -1106,7 +1106,7 @@ void *kmalloc_nolock(size_t size, gfp_t
+>   * kmalloc_objs - Allocate an array of the given type
+>   * @VAR_OR_TYPE: Variable or type to allocate an array of.
+>   * @COUNT: How many elements in the array.
+> - * @GFP: GFP flags for the allocation.
+> + * @...: optional GFP flags for the allocation (GFP_KERNEL when not specified).
+>   *
+>   * Returns: newly allocated pointer to array of @VAR_OR_TYPE on success,
+>   * or NULL on failure.
+> @@ -1119,7 +1119,7 @@ void *kmalloc_nolock(size_t size, gfp_t
+>   * @VAR_OR_TYPE: Variable or type to allocate (with its flex array).
+>   * @FAM: The name of the flexible array member of the structure.
+>   * @COUNT: How many flexible array member elements are desired.
+> - * @GFP: GFP flags for the allocation.
+> + * @...: optional GFP flags for the allocation (GFP_KERNEL when not specified).
+>   *
+>   * Returns: newly allocated pointer to @VAR_OR_TYPE on success, NULL on
+>   * failure. If @FAM has been annotated with __counted_by(), the allocation
+
 
