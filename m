@@ -1,421 +1,156 @@
-Return-Path: <stable+bounces-267266-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267272-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id BBcuEhVYNGrpVQYAu9opvQ
-	(envelope-from <stable+bounces-267266-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 22:41:57 +0200
+	id t/sUCBtaNGq9VgYAu9opvQ
+	(envelope-from <stable+bounces-267272-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 22:50:35 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92AA16A2A54
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 22:41:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BA786A2AB7
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 22:50:34 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=crowdstrike.com header.s=default header.b="UdFD mLE";
-	dkim=pass header.d=crowdstrike.com header.s=google header.b=TZuXKPsc;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267266-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267266-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=reject) header.from=crowdstrike.com;
+	dkim=pass header.d=mongodb.com header.s=google header.b=EJpP9pwA;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267272-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267272-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=reject) header.from=mongodb.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 64D1A300A135
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 20:41:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DB6F1301A38E
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 20:50:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C06A343D8A;
-	Thu, 18 Jun 2026 20:41:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 300BB302163;
+	Thu, 18 Jun 2026 20:50:31 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-00206402.pphosted.com (mx0a-00206402.pphosted.com [148.163.148.77])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DA8F2D0605
-	for <stable@vger.kernel.org>; Thu, 18 Jun 2026 20:41:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B9362E737B
+	for <stable@vger.kernel.org>; Thu, 18 Jun 2026 20:50:29 +0000 (UTC)
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781815314; cv=pass; b=kLsXeBW4uBNK8Rou2y/pEzTyF9aVPVTfG6RrzPiY4KtcgHcYk2r8Of7F3PK9K85dZQtb88Xtj0JBkMS/rnLD5jRRTirO0wyqAiZPGceW8+cii5G8XVNRFIehpPKZtfNIHIhglunU42VrdI0s6YD8gqRYsU1CF91w5zOfxhesfLg=
+	t=1781815831; cv=pass; b=ShhAQeJxACsIpDj01xE/Qz+VlJ8xl7anEyunJYXBnDWpSY81F0EHPjTuUo19uvKi4bAXsFqfu5+Y0fadlLaUx2mRd/wlwwXUTltlUHLErFmrs6rsG9uF99D7KufYHZa430AC5M1u/FUyw1b4I/khV+3yhVtzETuYkCbOr4EnRLw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781815314; c=relaxed/simple;
-	bh=oy7K0n0jFWqeWX4aHH29R1d5bUVx8XK5bTOk3DVMP8Y=;
+	s=arc-20240116; t=1781815831; c=relaxed/simple;
+	bh=N7+ML8b+QHv4xdu2zCfe8zZhdw3YE/RabD+YMSHfnCo=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YpqXtrGskOy+BFfjOXhts//vjd2jPB/NP3nH6uIrZa+zU6hMhvx9aLik8NhrlyroOF2g1Dhca9uTPUmH25d463yP6rW/go6Jo5dtjLxQU4RzXe7LTG0XEgpr0or5XdAUeh4dlh98dDGbLKQhzrY3W24JDrmVQ6PjxxurJwQ+au8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=crowdstrike.com; spf=pass smtp.mailfrom=crowdstrike.com; dkim=pass (2048-bit key) header.d=crowdstrike.com header.i=@crowdstrike.com header.b=UdFDmLE8; dkim=pass (2048-bit key) header.d=crowdstrike.com header.i=@crowdstrike.com header.b=TZuXKPsc; arc=pass smtp.client-ip=148.163.148.77
-Received: from pps.filterd (m0354652.ppops.net [127.0.0.1])
-	by mx0a-00206402.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65IJiSPK3008093
-	for <stable@vger.kernel.org>; Thu, 18 Jun 2026 20:41:51 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crowdstrike.com;
-	 h=cc:content-transfer-encoding:content-type:date:from
-	:in-reply-to:message-id:mime-version:references:subject:to; s=
-	default; bh=cs7RGxrnXS+Vrnax0XTysU0w8PM1gCqppDj7/q0PDDY=; b=UdFD
-	mLE8A3Ej4JB39Hd6v7UCe3Ps+P4PJNK9Wndq+5VUCopzQHKAEpm1xY4Nt5gBS4de
-	ZMGZdG/adbbWEAEFgYo0S5C+TPqFQR3DZW1mxb3Bpc3aqcqqixwRfEBnuKsg8QFY
-	hR2xLcFCp+pfq1RuyP6gC9Afx6NqyEiNxp4pSK0qO0Zd+iEWcTeDoxEaO8dfj6fh
-	MEmatxvpmKZlX2qTX3BXQuo+rKfWvxuEpWE+GK7darHVUzDF3JSFdb2eyjAzNsIs
-	qJs0AYGDlKbqaxQb//YntP/csoTDHasC1BV88jgWrnSPa/ky7pKzknSS3dajZe0x
-	JrRPBpLccexZz3s/BA==
-Received: from mail-yw1-f200.google.com (mail-yw1-f200.google.com [209.85.128.200])
-	by mx0a-00206402.pphosted.com (PPS) with ESMTPS id 4evq3k8866-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Thu, 18 Jun 2026 20:41:51 +0000 (GMT)
-Received: by mail-yw1-f200.google.com with SMTP id 00721157ae682-7e9dbc4039bso26255517b3.1
-        for <stable@vger.kernel.org>; Thu, 18 Jun 2026 13:41:51 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781815311; cv=none;
+	 To:Cc:Content-Type; b=szrKN5bCNxi19T2SnNPftcE+GrkO8i1i91W27xR/V6kYA4lA5GJdgEpucZo7UQT5SVk2ZkdBNABS4+gLObLxES7WZyLH23MXfpyCQhP7zirJIcl+t3qB9aH/wxifFAXj4hyVNt6d1dfylsl/nrvAB1vrFNlXc881acwsDdf63Dk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mongodb.com; spf=fail smtp.mailfrom=mongodb.com; dkim=pass (1024-bit key) header.d=mongodb.com header.i=@mongodb.com header.b=EJpP9pwA; arc=pass smtp.client-ip=209.85.208.42
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-68bfcf11050so2387727a12.0
+        for <stable@vger.kernel.org>; Thu, 18 Jun 2026 13:50:29 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781815828; cv=none;
         d=google.com; s=arc-20240605;
-        b=NrR5HzeFSYWgydvElF8kExFRnzaHDv+rC815neJDLwVG4dYWgwb/0tX6SUmNTQo2aW
-         vIOQH1rBSo6+fzkQaBsUg1qkZb8mK4iwK+ytNql6Eg9uG0qmXqKBeWrfOW+RVRkf9EXU
-         1KR0sxY9xBfS9i1Sk4bKvdTJNi2d6k3GvEPTw3wDB87mVqXlUJ2HxMMAOgkmwQP3wo1t
-         hRJUNsufrCjL2mhDLK+F/ZvbwFz5pHrBMza0eZPW8hGhQZVHabdr8iPpegB+U1bGDndW
-         8TScY1ClZq5UEbb1vuOofN6MYchquxB1g+jHbjmfbPpGWV35M+/YOJO9bUxaYwul1PNA
-         Wlig==
+        b=O7+xLbE2cjNoWSw9aqW7rCcRlNz+JdsrPQjUTphnOPEXZhDbTjldkyaN4/XT87L2CN
+         wKD8rzB1MOrRLD7NY4yrSs9dJoKf89Ovf4s7TgUNzwPXmrbd5IZJKJHJ7DK3VVfyO7GA
+         cCNmxmC4DEMxnH3USBtXd5roHALLJpoL7yBYPehsybmoh7+5e+O3fLdlbYc6KbHt7CFZ
+         /s+jb/xvhg1fSGVrVsGZcrAZcyMc9PT5bzuG4+qtU18k3J575oQpAmzxueSGAIdaFN0f
+         xav11JXtMl330yHy0O2XNABpxwylRAEF0M45DsH5rRSGWBQ4uuVUqSAxYmHASp2rEYu3
+         54Rw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=cs7RGxrnXS+Vrnax0XTysU0w8PM1gCqppDj7/q0PDDY=;
-        fh=8Eo9Y+Ic7jCVAmjnYYwTPelh0bw6QnAseCGPVdA1zD0=;
-        b=Fq/NlZke5JUVQBDwsISPznHZdheHM1IheG7l8qfwcNvU3EncI6Ld+prlc/HoGQxtg1
-         vzChEuZ7Kp52WRwQ4VY1EyVLwMXYJ/4Kbv37BAKpq1eqmtBZpt8NZy3Du0UlEYXZSwC8
-         kRdvuczX9rn507XM79HKSuzKqIMOAzEId8jWiLxh5IsquDgS1DzN8khyP+7Iq8bUiWUJ
-         yVhrAvAHpc7LVPpAJDZwbcLEk1vSM9+PRKi+urvOJM+9uM4V99taOJkHv5cJB5oJ5m2p
-         k3xqA0ON/3LEMJkt9dlrdLZd5g6RlMm99nijeP3Hq9Ht9wfeY7Mp+mPep2LdgOesOEUr
-         hxCg==;
+        bh=N7+ML8b+QHv4xdu2zCfe8zZhdw3YE/RabD+YMSHfnCo=;
+        fh=F49qhPvpuSxSz5wBw+fqBqyjDHWRdpkJ478oFBD6r7E=;
+        b=ZDB+rgdSqXZvM3NQ2ilJvyLHc6P+d/SQp3PllmA0Knscv7ZfOo2EpXIMFrvEqivL2u
+         3DS50oCkFqY6inkkdOYIw51vI0Vke15tikJFOHMDBaOk5XaH7N6Jko0HArpk3xwSJuh6
+         2o80WUEFMkiMg4M1GbM9Dx8pA++lchzTFmhoit6x5C4JGDAmcJt9hI8hF5FqbWxiCtOZ
+         4Zb6LX2v4xAzoVQKArrBLGDjswWC9VGSgetj0asyoi2vHF+HVo0AEjuS6pNC/b/Q1ktt
+         KA23cBWogaZNanbNvFgVMRrXGw9O8Is91IcZlhum6LFL2pRUfbdZiYWs/ZuSvzkPT1Ar
+         v2OA==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=crowdstrike.com; s=google; t=1781815311; x=1782420111; darn=vger.kernel.org;
+        d=mongodb.com; s=google; t=1781815828; x=1782420628; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=cs7RGxrnXS+Vrnax0XTysU0w8PM1gCqppDj7/q0PDDY=;
-        b=TZuXKPsc6/iWmgMcDHJL6K5lIMrKRr2xIJuI2fy3v7vgLsfofeFSmHmoN0g0onkbdo
-         UfnhzcH4AbJi/sGNNNsKw+jN0aG1AF+K3sg5+PushDDMWUJdX0DgIZOUbyWW6ajeSlkQ
-         iCYhvE9WLbg4prwzOD6cdp6YuoocuDDejLVyMwYwF6h6oHnRObd0DHkU5D56RrHhUVSc
-         RBTfEnnkkvHoLLAEi4wQPSXm2cENRVMLondrE65TO2NxDSfYH6GtKE7aXYVIOWcKbeNl
-         iy0Gp7mjbuuh1EEKa2dhpYlrXPdkDmvFdx7WohJdUUMi+pu9N5068lYXA7GnUNvyZT1G
-         4JbA==
+        bh=N7+ML8b+QHv4xdu2zCfe8zZhdw3YE/RabD+YMSHfnCo=;
+        b=EJpP9pwAYu83Zh2Rb7S6dpMJee0yu5At07YRw8qcMg4QjxXDulrnCIy0C+9EeS0jM9
+         d2vSnc9Qdy29T40isS+JAuYhkdIDo9DhUiw3CPA2sKxsUO3sdgSE5YokMBiy7hxtSSN9
+         W4sUap7cKZ2IqMuLgpxHC6QskxhjfBs79aATs=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781815311; x=1782420111;
+        d=1e100.net; s=20251104; t=1781815828; x=1782420628;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=cs7RGxrnXS+Vrnax0XTysU0w8PM1gCqppDj7/q0PDDY=;
-        b=eyMbGdxKvm4+6zQEPyE6i+t4n0TAGIlMq25kUhAoUo8nv10QxkSRbhBKXkFURCiR+3
-         4uFX7XFDbSY/j0KV/0HrUWjxR53xSQOAKPlq48S5SWhSMvJeFh3mBE2mLSbY8Fi75v1/
-         1w4+t05o5xbQwuJG7+4H/QcIYk2lcmeP1GbGLNEZarKJGKpv/oxKqInLVMcv/mSw+uoP
-         k+uo1DqRHG2g/nrBIMwHSw3LX9eHG/M49ChjXAWhIt5SuuIwA60yeP5ajt+COKdzzQFH
-         TNPR1XPXY8c7znLdDaJDjUo0rweH+nnmhC0HMAZM6zdCnGmhJqEH9f243YJ09/M9C7Uw
-         A4pA==
-X-Gm-Message-State: AOJu0YwNmwijvm7uu9j0JfLdXjL0VW2IavtViKiLrFyjvdlukAIlTVRQ
-	qAXt1cOB4JMgzW/JEpysppOAisgpKK3n4godjjsWQ1bD/GpPo56WJ2Gg1Cxniy4XwuZs9hWWEyZ
-	7FsExPtjJ0Hr291xVIfc0lTjYx/nz07UeFSEl560AmnxZ3pxMSNv7/KJAcIPeW3Tuu1NKZCfDz5
-	oC24WvDnOTerSG+3r8ClJl8UI2jTixyieS
-X-Gm-Gg: AfdE7cnT5DK7rFSl1Mo4y509hFHOPigXaTEli6Vv+GhhdgEobB8Nn46918g+Jc2nno6
-	yVf249h+AdNj51ANddF5uaGxywc7UvvU+LHHl5kws2CFnsMEfV6CELy0yMrVxA9R+p/EyRWcohU
-	8aXtYkZIJJJhMp/KV5XxxDd76IOdISBCaZvETFzqTUgD/p4aG1JUeib7c+hr3SyjzPFQ==
-X-Received: by 2002:a05:690c:6989:b0:7c0:56f:5b6f with SMTP id 00721157ae682-80122eb6b6cmr6121357b3.19.1781815310519;
-        Thu, 18 Jun 2026 13:41:50 -0700 (PDT)
-X-Received: by 2002:a05:690c:6989:b0:7c0:56f:5b6f with SMTP id
- 00721157ae682-80122eb6b6cmr6120997b3.19.1781815309792; Thu, 18 Jun 2026
- 13:41:49 -0700 (PDT)
+        bh=N7+ML8b+QHv4xdu2zCfe8zZhdw3YE/RabD+YMSHfnCo=;
+        b=mtfBKZkHmeYazXlkzmBoVE3J1jRX3uk7j3x8CqDeGU43x37SatK097GfLEi+S93N1v
+         40TrdH124QPaZZ41423m9AWTdOWxXl1Kzhwhwlp74o2yvV7FoClCW4B5NPM9fjR8zAdi
+         xP/VGHL0l5r5psXrQ9nOw217CsF6aJD5MejT6yTqWaaAgMw/m1YsP5dP73G7SlxWB45u
+         2WfGQAUg8v4N7Xes9A6RLJ3sJJ2PAgTeirowfdvWrnKrCVs1xgKLPKU6y4FpDKC/qNMV
+         nqTc3ACarr044Tmk3ERZ8fbbY6C2CqwKn3lEtrKv8QHGMSG4qmOKt/ZOH0XIkquGUyZz
+         ISRw==
+X-Gm-Message-State: AOJu0YyBGxrY2ITzAM3GSt59ZTV6K8sBB03TmYHiBffbExCp1Auz+RvA
+	sWkF+DckDiK1Vf80rix+lXOS0W/e7ajRZRe+/LyA9mXGY7Y1T+f1PcIHO4D1NTLjSimeSy6pmQs
+	4cqqiZttaZgUTauyp1NeE+uFZC8ez2kbOUxXs07020w==
+X-Gm-Gg: AfdE7clFqR9I3IYn9cMOrl+z1WMDoXe4e7pbwKd/s+24ZJXAzEmlZbliAKeLbtTif9S
+	jZtJarR8xKWzx+g2pERDw/4svDVgUGPfyuZTLbW8oxWbJVamyDOD4QB0mSz+Ih7slFcUOmcuDwX
+	bhtd7h7aug/IpwMDiE1PLtYSyi3F0qvw5g0xaqTTSIlGZnMVKehVhKRYrAbs9q7W0T6Wwuc6bU7
+	KL375jrUuHWffW2JVFPLxXL7ST3E6JXQFfshs1T+wwYrr/zcQUAMO+nwoOmiJJ9AwAXTRIVYDOo
+	f+CRhd3mdfm63t4=
+X-Received: by 2002:a17:906:6207:b0:bfb:1853:c34c with SMTP id
+ a640c23a62f3a-c097b389874mr40144266b.14.1781815827926; Thu, 18 Jun 2026
+ 13:50:27 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAOu3gNibeo3ov09CYpmzuqewB0EOsajB3hPU9pQmb_zoAUraHg@mail.gmail.com>
- <2026061837-enroll-fracture-d6f9@gregkh>
-In-Reply-To: <2026061837-enroll-fracture-d6f9@gregkh>
-From: Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
-Date: Thu, 18 Jun 2026 16:41:36 -0400
-X-Gm-Features: AVVi8CeoXPD-KXyWz_sAdNZW0u3n-M6-XlTFlQtVORk1WGOYU3a6bXr2YpvVXxE
-Message-ID: <CAOu3gNgnkcPTW9wusNtjmdWy+pbEXrEa2tFhSv6pRALkH8=u6A@mail.gmail.com>
-Subject: Re: [stable request ] backpot Fix ftrace symbol table corruption on
- kernels with CONFIG_X86_KERNEL_IBT=y to 6.6.y and 6.12.y
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, sashal@kernel.org,
-        Steven Rostedt <rostedt@goodmis.org>, vmalik@redhat.com,
-        jmarchan@redhat.com, Martin Kelly <martin.kelly@crowdstrike.com>,
-        Justin Deschamp <justin.deschamp@crowdstrike.com>,
-        DL Linux Open Source Team <linux-open-source@crowdstrike.com>
+References: <20260618151426.308099-1-mark.rutland@arm.com>
+In-Reply-To: <20260618151426.308099-1-mark.rutland@arm.com>
+From: Mathias Stearn <mathias@mongodb.com>
+Date: Thu, 18 Jun 2026 22:50:00 +0200
+X-Gm-Features: AVVi8CensPWmx9w1RaQWAU0DXlTxh-QWmcYKTBcAjsiIIZ-rezr9iAxfVStsHb4
+Message-ID: <CAHnCjA3HBwt-rtgmyfanu9wA0eNc3oQqHemPOwUVfp9kotuEwg@mail.gmail.com>
+Subject: Re: [PATCH 7.0] arm64/entry: Fix arm64-specific rseq brokenness
+To: Mark Rutland <mark.rutland@arm.com>
+Cc: stable@vger.kernel.org, catalin.marinas@arm.com, peterz@infradead.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-ORIG-GUID: pE-alqSVOHVfPLD4wsTxocWxPWtymmEQ
-X-Proofpoint-GUID: pE-alqSVOHVfPLD4wsTxocWxPWtymmEQ
-X-Authority-Analysis: v=2.4 cv=QrVuG1yd c=1 sm=1 tr=0 ts=6a34580f cx=c_pps
- a=NMvoxGxYzVyQPkMeJjVPKg==:117 a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10
- a=KZhmPCYDdY0A:10 a=VkNPw1HP01LnGYTKEx00:22 a=T2KQ53IYiC3MXPrxx8bB:22
- a=2KvRFfd_T_-xjmS8C1aD:22 a=VwQbUJbxAAAA:8 a=pl6vuDidAAAA:8 a=meVymXHHAAAA:8
- a=20KFwNOVAAAA:8 a=p0WdMEafAAAA:8 a=AtNCUuVRAAAA:8 a=ag1SF4gXAAAA:8
- a=ZdX3Yq3PCo0EtC3wvNsA:9 a=QEXdDO2ut3YA:10 a=kLokIza1BN8a-hAJ3hfR:22
- a=2JgSa4NbpEOStq-L5dxp:22 a=O8dPV651JBBHpX4z-X7Z:22 a=Yupwre4RP9_Eg_Bd0iYG:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjE4MDE4OSBTYWx0ZWRfX940QB76H5ZRw
- 9IoWoPFIoWXq6JthsV0b9xq942BobuJce/4c3fryuZgem1NZYkoQSnCClCV+Y+oDlmlbvrmj8Ga
- wm1RuaKYMxCsTMTN0udsuqy7PhXqiakXOG2S0flwNC1DRGC+QShW1zycH108oThJWoyHqCtmCwQ
- XCbaMDtwcfD/JdPFQJhncfC6dl4RIVHt50onz49VYhiCfyLBHnR8aOaR8qgm2WW6xqZSuBuOpJc
- PGdyu6L3tvGrMI8oVUeSBJVCNqcRBWcLFhqOnh4gGKQGU1QGIIoETqnPq1B+o5M5oMM4Rg8Gvak
- GqNsVFcwC6YZgUX4NfxKZFt0u83K7Mxx5aCt3EVFGcZL8/15T6UT0TyBomrLtCg3ee12oqOCOBf
- lJRHpXT/CTujONGOQX+petA0UWlnMSdSPpwBmGLKrsIFpytKbJi8AYr/vRZ1Ii0gvvXTmkDXnNG
- tJUTTCEz8MPqpbGToDw==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjE4MDE4OSBTYWx0ZWRfX94yWAibDjCZC
- DArVqGBCCsX9znLJkeyDsOsvSJpU4UZNPQmCHGj0VNJoXAHOqYkjukb09Pd9T5iDkKKDvnpRGdM
- vyL1VLaI5ErVQyfwuXYkKepiVPcVhhL5kw7oOeovsyJhelWI9utZ
-X-Proofpoint-Virus-Version: vendor=nai engine=6900 definitions=11821
- signatures=596817
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 adultscore=0 malwarescore=0 spamscore=0 phishscore=0
- suspectscore=0 clxscore=1015 lowpriorityscore=0 impostorscore=0
- priorityscore=1501 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2606180189
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[crowdstrike.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[crowdstrike.com:s=default,crowdstrike.com:s=google];
+	DMARC_POLICY_ALLOW(-0.50)[mongodb.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	R_DKIM_ALLOW(-0.20)[mongodb.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[crowdstrike.com:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-267266-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-267272-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[andrey.grodzovsky@crowdstrike.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,m:sashal@kernel.org,m:rostedt@goodmis.org,m:vmalik@redhat.com,m:jmarchan@redhat.com,m:martin.kelly@crowdstrike.com,m:justin.deschamp@crowdstrike.com,m:linux-open-source@crowdstrike.com,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:mark.rutland@arm.com,m:stable@vger.kernel.org,m:catalin.marinas@arm.com,m:peterz@infradead.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[mathias@mongodb.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[andrey.grodzovsky@crowdstrike.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[mathias@mongodb.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[mongodb.com:+];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	REDIRECTOR_URL(0.00)[urldefense.com];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,vger.kernel.org:from_smtp,crowdstrike.com:dkim,crowdstrike.com:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,urldefense.com:url]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,mail.gmail.com:mid,mongodb.com:dkim,mongodb.com:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 92AA16A2A54
+X-Rspamd-Queue-Id: 5BA786A2AB7
 
-On Thu, Jun 18, 2026 at 12:46=E2=80=AFPM Greg KH <gregkh@linuxfoundation.or=
-g> wrote:
+On Thu, Jun 18, 2026 at 5:14=E2=80=AFPM Mark Rutland <mark.rutland@arm.com>=
+ wrote:
+> Mathias Stearn reports that since v6.19, there are two big issues
+> affecting rseq:
+> [...]
+> The other rseq fixes made it into v7.1 and were all backported to v7.0.y
+> as of v7.0.10. We forgot to CC stable, so this patch was missed.
 >
-> On Thu, Jun 18, 2026 at 12:03:13PM -0400, Andrey Grodzovsky wrote:
-> > Hello stable team,
-> >
-> > We are requesting backport of a 27-patch series that fixes a critical
-> > bug where ftrace hooks silently fail on kernels with
-> > CONFIG_X86_KERNEL_IBT=3Dy. While the bug is most visible with
-> > fentry/trampoline-based hooks, it affects ftrace more broadly as it
-> > corrupts the symbol lookup table ftrace uses to determine function
-> > addresses.
-> >
-> > The Bug
-> > =3D=3D=3D=3D=3D=3D=3D
-> >
-> > On kernels with Intel IBT enabled, certain fentry hooks silently fail
-> > to fire with no error. When IBT is enabled, ENDBR64 becomes the first
-> > instruction of every function, pushing __fentry__ to offset +4. Weak
-> > overridden functions (e.g. acct_process / paddr_vmcoreinfo_note) retain
-> > entries in __mcount_loc at this offset. When the kernel binary-searches
-> > the ftrace table during hook attachment, the presence of these duplicat=
-e
-> > weak entries causes non-deterministic results =E2=80=94 depending on wh=
-ich entry
-> > the search lands on, the trampoline hook either fires or silently
-> > doesn't.
-> >
-> > This was originally reported to the BPF mailing list in October 2024:
-> > https://urldefense.com/v3/__https://lore.kernel.org/bpf/7136605d24de9b1=
-fc62d02a355ef11c950a94153.camel@crowdstrike.com/T/*u__;Iw!!BmdzS3_lV9HdKG8!=
-xIv1YgayLfbu--18FVj-TfKphY1BTeDKw96R2VIwf_hMsCHTwvIY5tXSH0JiobtGGr612f24EfG=
-3jscILAdzmr5YkXlw610SMKc$
-> >
-> > CONFIG_X86_KERNEL_IBT was introduced in kernel 5.18, making all kernels
-> > from 5.18 through 6.14 potentially affected. This includes production
-> > systems on RHEL 10 (kernel 6.12), Fedora 40+, Debian 13, and Ubuntu
-> > 22.04/24.04 LTS variants. On affected kernels, trampoline hooks
-> > silently don't fire, and ftrace function tracing may produce incorrect
-> > results due to corrupted symbol resolution.
-> >
-> > The Fix
-> > =3D=3D=3D=3D=3D=3D=3D
-> >
-> > Steven Rostedt's patch series (v5, merged to mainline in Linux 6.15
-> > via 'Merge tag trace-sorttable-v6.15'):
-> > https://urldefense.com/v3/__https://lore.kernel.org/all/20250218195918.=
-255228630@goodmis.org/__;!!BmdzS3_lV9HdKG8!xIv1YgayLfbu--18FVj-TfKphY1BTeDK=
-w96R2VIwf_hMsCHTwvIY5tXSH0JiobtGGr612f24EfG3jscILAdzmr5YkXlwR9cri4I$
-> >
-> > The fix zeroes out weak function entries in __mcount_loc at build time
-> > via scripts/sorttable.c, so they are never added to the ftrace table
-> > and can never corrupt binary searches.
-> >
-> > Prior Art - Red Hat Backport
-> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D
-> > Red Hat has published a KB article acknowledging the issue:
-> > https://urldefense.com/v3/__https://access.redhat.com/solutions/7143835=
-__;!!BmdzS3_lV9HdKG8!xIv1YgayLfbu--18FVj-TfKphY1BTeDKw96R2VIwf_hMsCHTwvIY5t=
-XSH0JiobtGGr612f24EfG3jscILAdzmr5YkXlwTmZKzAY$
-> >
-> > Red Hat independently identified and backported the fix patchset
-> > plus other patches that were required for correct merge and operation
-> > - details below.
-> > They merged it into the RHEL 10 kernel (kernel 6.12).
-> >
-> > Their work is publicly available at:
-> > https://urldefense.com/v3/__https://gitlab.com/redhat/centos-stream/src=
-/kernel/centos-stream-10/-/merge_requests/2689__;!!BmdzS3_lV9HdKG8!xIv1Ygay=
-Lfbu--18FVj-TfKphY1BTeDKw96R2VIwf_hMsCHTwvIY5tXSH0JiobtGGr612f24EfG3jscILAd=
-zmr5YkXlwwWz7xxk$
-> >
-> > All patches are from upstream, no RHEL-specific modifications
-> > were made. Viktor Malik (vmalik@redhat.com) and Jerome Marchand
-> > (jmarchan@redhat.com) from Red Hat's kernel team are CC'd.
-> >
-> > These are the patches we are asking to backport.
-> >
-> > Patches Requested
-> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> >
-> > Group 1 - sorttable.c rewrite (14 patches, merged Linux 6.14):
-> >
-> > 28b24394c6e9 scripts/sorttable: Remove unused macro defines
-> > 4f48a28b37d5 scripts/sorttable: Remove unused write functions
-> > 6f2c2f93a190 scripts/sorttable: Remove unneeded Elf_Rel
-> > 66990c003306 scripts/sorttable: Have the ORC code use the _r() function=
-s to read
-> > 7ffc0d0819f4 scripts/sorttable: Make compare_extable() into two functio=
-ns
-> > 157fb5b3cfd2 scripts/sorttable: Convert Elf_Ehdr to union
-> > 545f6cf8f4c9 scripts/sorttable: Replace Elf_Shdr Macro with a union
-> > 200d015e73b4 scripts/sorttable: Convert Elf_Sym MACRO over to a union
-> > 1dfb59a228dd scripts/sorttable: Add helper functions for Elf_Ehdr
-> > 67afb7f50440 scripts/sorttable: Add helper functions for Elf_Shdr
-> > 17bed33ac12f scripts/sorttable: Add helper functions for Elf_Sym
-> > 1b649e6ab8dc scripts/sorttable: Use uint64_t for mcount sorting
-> > 58d87678a0f4 scripts/sorttable: Move code from sorttable.h into sorttab=
-le.c
-> > 4acda8edefa1 scripts/sorttable: Get start/stop_mcount_loc from ELF file=
- directly
-> >
-> > Replaces the old macro-heavy sorttable.h architecture with a clean
-> > union-based design and proper ELF symbol lookup. Required prerequisite
-> > for the core fix =E2=80=94 the fix patches cannot apply without it.
-> >
-> >
-> > Group 2 - Additional prerequisite (1 patch, merged Linux 6.14):
-> >
-> > 1e5f6771c247 scripts/sorttable: Use a structure of function pointers
-> > for elf helpers
-> >
-> > Groups all ELF helper function pointers into a single struct (requested
-> > by Linus Torvalds after the rewrite landed). Required by the core fix.
-> >
-> >
-> > Group 3 - The core IBT fix (6 patches, merged Linux 6.15):
-> >
-> > b3d09d06e052 arm64: scripts/sorttable: Implement sorting mcount_loc at
-> > boot for arm64
-> > a02656593225 scripts/sorttable: Have mcount rela sort use direct values
-> > 5fb964f5ba53 scripts/sorttable: Always use an array for the mcount_loc =
-sorting
-> > ef378c3b8233 scripts/sorttable: Zero out weak functions in mcount_loc t=
-able
-> > 4a3efc6baff9 ftrace: Update the mcount_loc check of skipped entries
-> > 264143c4e544 ftrace: Have ftrace pages output reflect freed pages
-> >
-> > The core fix. Zeroes out weak function entries in __mcount_loc at build
-> > time; boot-time code skips zeroed/KASLR-shifted entries when building
-> > the ftrace table.
-> >
-> >
-> > Group 4 - Post-merge correctness fixes (6 patches, merged Linux 6.15):
-> >
-> > be55257fab18 ftrace: Do not over-allocate ftrace memory
-> > 6eeca746fa5f ftrace: Test mcount_loc addr before calling ftrace_call_ad=
-dr()
-> > da0f622b344b ftrace: Check against is_kernel_text() instead of kaslr_of=
-fset()
-> > 46514b3c2c17 scripts/sorttable: Use normal sort if theres no relocs in
-> > the mcount section
-> > dc208c69c033 scripts/sorttable: Allow matches to functions before funct=
-ion entry
-> > 023f124a6417 scripts/sorttable: Fix endianness handling in build-time
-> > mcount sort
-> >
-> > Fixes breakage found immediately after the core fix merged: arm64 crash
-> > on invalid addresses, kaslr_offset() not portable across non-x86
-> > architectures, arm64+clang using direct mcount_loc instead of Elf_Rela,
-> > arm64 -fpatchable-function-entry offset causing valid functions to be
-> > incorrectly zeroed, and cross-compile endianness double-conversion
-> > zeroing all mcount entries on s390/big-endian targets. Without these
-> > the fix is broken on arm64 and big-endian targets.
-> >
-> >
-> > All 27 patches touch only scripts/sorttable.c, scripts/sorttable.h,
-> > scripts/https://urldefense.com/v3/__http://link-vmlinux.sh__;!!BmdzS3_l=
-V9HdKG8!xIv1YgayLfbu--18FVj-TfKphY1BTeDKw96R2VIwf_hMsCHTwvIY5tXSH0JiobtGGr6=
-12f24EfG3jscILAdzmr5YkXlwvKl1eso$ , kernel/trace/ftrace.c, and
-> > arch/arm64/Kconfig. They are build-time and boot-time changes only
-> > with no impact on the runtime kernel ABI.
-> >
-> > Requested Stable Branches
-> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D
-> >
-> > - 6.12.y (LTS)
-> > - 6.6.y (LTS)
-> >
-> >
-> > Testing
-> > =3D=3D=3D=3D=3D=3D=3D
-> >
-> > We built and tested the 27-patch series against both linux-6.6.y (at
-> > 6.6.142) and linux-6.12.y (at 6.12.93) on an x86_64 machine with
-> > CONFIG_X86_KERNEL_IBT=3Dy. Both series applied cleanly with zero
-> > conflicts.
-> >
-> > Indirect test:
-> > grep __ftrace_invalid_address___ \
-> >   /sys/kernel/tracing/available_filter_functions | wc -l
-> >
-> > 6.6.142 unpatched: 562  patched: 0
-> > 6.12.93 unpatched: 589  patched: 0
-> >
-> > Direct test (bpftrace kprobe vs fentry on put_task_struct_rcu_user):
-> > 6.6.142 unpatched: fentry=3D0,  kprobe=3D46  (silent failure confirmed)
-> > 6.6.142 patched:   fentry=3D46, kprobe=3D46  (fixed)
-> >
-> > 6.12.93 unpatched: Can't reproduce because of the non-deterministic
-> > nature of the bug expression per a kernel build.
-> >
-> > ftrace kernel selftests (tools/testing/selftests/ftrace):
-> >
-> > Kernel                      PASS  FAIL
-> > 6.6.142 unpatched   119     2
-> > 6.6.142 patched       119     2
-> > 6.12.93 unpatched   135     0
-> > 6.12.93 patched       135     0
-> >
-> > The 2 pre-existing failures on 6.6 (kprobe_args_char,
-> > kprobe_args_string) are present on both patched and unpatched kernels
-> > and are unrelated to this series.
-> >
-> > We are happy to assist with testing on additional architectures or
-> > stable branches.
->
-> Great, can you send the full backported, and tested, series of patches
-> to us with your signed-off-by so we can take them that way and we know
-> that they work properly?
->
-> thanks,
->
-> greg k-h
+> This isn't needed for earlier stable trees.
 
-Sent seperate patch-sets for 6.6.y and 6.12.y
-
-Thanks,
-Andrey
+What about 6.19 itself, or is that not a stable tree? AFAIK it isn't a
+priority for us (MongoDB) like 7.0 is, but I felt like mentioning it
+for completeness, since rseq is quite broken on arm64 with 6.19 today.
 
