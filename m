@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-266994-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267000-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Y0cJDuZ1M2qwCAYAu9opvQ
-	(envelope-from <stable+bounces-266994-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 06:36:54 +0200
+	id 1cvKIiB2M2rvCAYAu9opvQ
+	(envelope-from <stable+bounces-267000-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 06:37:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A646D69D81D
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 06:36:53 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE60569D846
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 06:37:51 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b="Bf46RUE/";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266994-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266994-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=XyOLVhWt;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267000-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-267000-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=uniontech.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 78D6C3028F24
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 04:36:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D1D2B3034BC9
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 04:37:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B35253101BC;
-	Thu, 18 Jun 2026 04:36:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C1D2370AC2;
+	Thu, 18 Jun 2026 04:37:25 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtpbgjp3.qq.com (smtpbgjp3.qq.com [54.92.39.34])
+Received: from smtpbguseast2.qq.com (smtpbguseast2.qq.com [54.204.34.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CEA92D0C7B
-	for <stable@vger.kernel.org>; Thu, 18 Jun 2026 04:36:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE82B2D0C7B
+	for <stable@vger.kernel.org>; Thu, 18 Jun 2026 04:37:22 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781757411; cv=none; b=Cqje1t/TplmBnRxxBd2ZPpD1oEzEr+AteM9fKeGYjr/OcW43Yik2cxYFHDRNqdeBv57wpOLnA68YnYipYgmNITTEyrjXOF2xEwRqb1kbvAktZ9VKgWkYRluGmvIwhh1XmtdbQwgWikRgjA/GMbMMIPXdM7z+YEEr5TgmDaANHZc=
+	t=1781757445; cv=none; b=J16dXfLAenqcbLX4ET3efOFvvNWAsRzOgr5e3DQB/4t7duHBraTfBlJlLYIH7PsGOJVj+A1GnqgJJ4HQyg+Fh7kR6/bAjGK94lGPUCDL4j75koI1RD24G8bCAvGOyImAiciN62Ji7wrMwN6TTvLIbU14l/iwgBB+n8EOTIpaV0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781757411; c=relaxed/simple;
-	bh=wdf+rXznXZNDTv5ZJFXbXqpt33joiwj9yqIBa4R0G1U=;
+	s=arc-20240116; t=1781757445; c=relaxed/simple;
+	bh=J6M1+G57SdDxIbpa/TNyJmYbgpzB7hWOH4hVGYNSaDA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qHcnmzjRL6SLU8E/5+nhXX7WktcVEWLJRL1do6r3C1aOmgv+WaZdznZSWsW+IjFpJEACJmkg6X2IZa46v6gVDQ16OI5TujeoFOqhWZZYnqBqD04QOpJ/eWjqMFHknGyhacRXBB9PeoFQqAwfLpWoNgtANBy/COn9fwfu6ryldYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=Bf46RUE/; arc=none smtp.client-ip=54.92.39.34
+	 MIME-Version; b=leiBcmDN1SmJWC7+XuzqY82A8qsHNhWM3h/AwszTj+gR6y3xSNly7UW9lngFSWtTG3jS8/Ww9+MJXA/HGYe1zxjso/48mHlhoIEPJx6VqeQ4SqcRDhNk4gl2oHz3BOz3duHrAULKe2IeVX78nn50/JNIJjpC2gpWWaP28y6d1jA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=XyOLVhWt; arc=none smtp.client-ip=54.204.34.130
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1781757395;
-	bh=MnefkohG4c0xDrVpUWDXL5gvGrSQKUWA+hcyK6JHJT8=;
+	s=onoh2408; t=1781757405;
+	bh=sHRDXDoa7m2c+QUwr+QPltnfug7RdU8fDOZaZ0X8gQE=;
 	h=From:To:Subject:Date:Message-Id:MIME-Version;
-	b=Bf46RUE/EILPQ4IHQ9zG/wYmNcRym6ZoWwRJInYlYnUG4F+LRyOK/DnK+qWZA+dEG
-	 btghycRXcZM2T4devfeHJg8KqzNVIuAIjurjFuf7nixUi4kaG/QoOgz6V4vvfdE5eY
-	 q/2UFhttmosQ1UfY+0Vp2pA8TEwZmyTA8JkQ5ilM=
-X-QQ-mid: zesmtpsz6t1781757390t268869b1
-X-QQ-Originating-IP: dSRwpbLmnS1Ik2Bd1Fp9FLzPNsuOICo+oeA5sAk181g=
+	b=XyOLVhWt0rbTIU5+FUNGJYMa2LG/jL00MwPOoeeIDzGKfFgc0NBMDTchCcwe7Fexv
+	 oR9agyA4Y29ZOxreLMrxt9JCPyBWKTQcGBDP4sHMm7P3LqlmkSCcnUo5mrTiRqWgyQ
+	 1jnBLsTBdhFF5xNh0ygRsvoD/BEYjeymAQ8nk3lQ=
+X-QQ-mid: zesmtpsz6t1781757399td8270fb4
+X-QQ-Originating-IP: A01eYbD4wgkBj0zZ4xxXAdg3H1Fh3OMadHmq+nBxhnI=
 Received: from localhost.localdomain ( [113.57.152.160])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Thu, 18 Jun 2026 12:36:28 +0800 (CST)
+	id ; Thu, 18 Jun 2026 12:36:32 +0800 (CST)
 X-QQ-SSF: 0000000000000000000000000000000
 X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 1755222019539035511
-EX-QQ-RecipientCnt: 14
+X-BIZMAIL-ID: 771141314634641624
+EX-QQ-RecipientCnt: 18
 From: Wentao Guan <guanwentao@uniontech.com>
 To: sashal@kernel.org,
 	gregkh@linuxfoundation.org,
@@ -64,10 +64,14 @@ Cc: stable@vger.kernel.org,
 	rollkingzzc@gmail.com,
 	toke@redhat.com,
 	victor@mojatatu.com,
-	yimingqian591@gmail.com
-Subject: [PATCH 5.10.y 7/8] net/sched: fix pedit partial COW leading to page cache corruption
-Date: Thu, 18 Jun 2026 12:35:39 +0800
-Message-Id: <20260618043539.1557035-8-guanwentao@uniontech.com>
+	yimingqian591@gmail.com,
+	Pedro Tammela <pctammela@mojatatu.com>,
+	Ido Schimmel <idosch@idosch.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 5.10.y 8/8] net/sched: act_pedit: free pedit keys on bail from offset check
+Date: Thu, 18 Jun 2026 12:35:41 +0800
+Message-Id: <20260618043539.1557035-9-guanwentao@uniontech.com>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20260618043539.1557035-1-guanwentao@uniontech.com>
 References: <20260618043539.1557035-1-guanwentao@uniontech.com>
@@ -77,288 +81,142 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
 Feedback-ID: zesmtpsz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz3a-0
-X-QQ-XMAILINFO: OCe9AHS8pZALL+Kfoe4sPy0YUkjaAGOmbMELKikKlk+qvOuHY47js6I4
-	82ew68wbCX4ZLQuSOmwgTHiXyuZFrVIXyveyusgoBUjnXWC09/5FtjRKGBj8WwoJVbPEZNp
-	kQIVBXR81FdCLcanUvM8I8lDENjVYQmxJsAK5pu3JrFHC1SPLQtiQQUgOFn+sbF3qNBoXNN
-	q+msoBDZ1nvNupLpKO7WZUsBfn9Pcq6g6HzVWQwvQqXBAvG3XENBe4iXJapJLgnO2j5603j
-	qFBraofFuh13ozh9qQD2BIrh7+neVkwD2zm32Tuvs2B4Xs3yz9G+qJtByAEeiXmsHtGwfpH
-	zg4tzVFS/kpW+1Yi1BFYMdWj/vRh3f6ZBARyZIbIHCmG0SLQBFHOI4KPoViHhItOiamPLQX
-	buOMxaoAdPTnvweSorMgDCbA2lAv4hTd3rMJoOHLJfyaBax36C/JQ/GP4FQz6mQS3ybzgGV
-	vo2lSCSrEiLU4NHol8JpHJYHC+PrzBiOGlKTjhVcancwDEqZ+6wXNs16iRcE7x+2Z0iRGVJ
-	2ixTH8p8WDWwYUbJ/n0mlK7cCd53EU6ndIClEtLU+JOxrNFmWHSRzDwB1gkdH3YZwzLKFuy
-	XSudfSTIqT/bW3ukodkuKrJD8hFcZuGRjv+Vb/jGQH0oiAzDj8gJIsdV3k2Kb65X3pINTiD
-	0HEcMJ2ec+djam96ps2CDUqjuZfJggq9aWsdp2BDm1XXiEGCOy8TxdtusgG/ctaq4KS0sXR
-	LPx33MFkISrDvZ5EHGVX3DnJ/QMlpltceIiIRFmODbC76a0OMTTF9Pvn9Agb+avDxtc7HTM
-	Dy6RwyBNhbK6WowTmzymPnkqP7EKl+jA+G/se55SF/gseTxLuPMZIN56J5eFmarb3+1TYxE
-	bpXwRtspxnLxvF1/6fOE0GeChdlrdalNKgVE/bo5XT6ccHsX9se1EJLDSVWY1FuWj92ICcd
-	fKPV5J0nPQNzjHXcfhbCLEoPIMFc1RPYZ3FKNxZGg/3d/XlI+5dTAGXON09Sa7e2ztCObK2
-	fOgZOzJhH+bZ7ZjsjJys1Lrr6/xy3RUAzTvwNBy22eE5tExGcNljsAI/irO+ny/inXg18Iq
-	M9u4Vg503xQe5jaB7ytiu38Xta6WaZnjhEBq0H4yAcf5PI1zGDDm+dd0ob7bwo7E2UYR4DI
-	4LOMqWzCjKBMJu2Z03P+7H69wc9+4ieDtR2xpYiEdBqRDWI=
-X-QQ-XMRINFO: OWPUhxQsoeAVwkVaQIEGSKwwgKCxK/fD5g==
+X-QQ-XMAILINFO: N8RLcQ8dzVhjA66qWVPVa92ExhA2Pa1aJWlYC+DwfIIPWNVRDxlINgAw
+	JNcJfHoEomOmnFnWGSAMu4TGbxq99t0p2Rind1FNVymV2bfsNByxBVdSAE1GBtBl1bl3WXj
+	4wLG8BLSIMSOjHMrZnMfa9mejRcyMdcd+1trzjayR3tZ59bpr8s2Eis1f5aVvkPznK+Qakf
+	CIrLiPmRZRH7ZA5r35UCngYahqXZ1Lr0iIQ9DrSPr7OcFqyQi9JtuEVPVPB5HHf+JAiDuRc
+	mptF8S/RIV0WNemZcso7e1wQxLBrhQWNJnpzL2CIeELUmO75lyxMB18ufdIcHQW46f6y8wM
+	TLgCGWMqwxrEKi8jXv5XlqWRnqbAyfMdWq0UQVIuaSyOZxufM2SOf3wc/seDc+GF9lqMyRP
+	XaTuxT13RY5Q/ZN7pSCn8b9sQGWDdzY26AaDmkX8lr6bRzMeFwFxAMelYFG8iHMt5s+vlz+
+	WxyQ+jRPZGsVkZrK67AVNuQuwcVLX2XsUDgRmkIRR1HTvLeFWILl6P5uAJmWrgdDIL36MKF
+	KmWjH3q9FT2JlEdPKGfxcfj+bojD8Gjo3AHixsTSH/KK/yaRqzxg+oBw7RFQ1KnfqrdzWks
+	wNEtusiHi+ILDZ9X04rQ6Oe09ub/vD1M6Cae/GcXIudVh9Vf5bz4t/9YMZe45f8MqKhw6D8
+	GsTUz3kXtmi9ZkjIf5HLnqoNbXjne31n/MjniilQjk1EMi0u177OhurMfcTA+dXeGGjxbuR
+	zBZVSSeZsn4etBQ/jkT1KWN/d0zD9Nr8grrRVxqQp0aGzh5J/fKsWgOjj0tLECHxzb4h/q2
+	ElrYDvHLVXliG+/hKeCJK3cH6ykwF3hLFSAg2gtDWzq6NJjkxjJl9J3kJaKwW2tO596W8um
+	jClXvQjzVRP8/tZ6A9uYNbu7w3YkQ7qXAibpUbL+SZQ5I6zZNo4qhS34OTuTBMVYyuPhHF8
+	CnlT7LE6fVowJNub7hTaIopg4ebDlWy9vL8MICSVyyHDdZiZJMxQQTf85uRl/xlLydAx4O1
+	mZ1qHzdFjomQq6sHAaoPhhjLUg5cISfnnVu67s95SaWM02U3WJfGVeTAOgO6GJdOa1fOs2o
+	p3sf5ulrqwrKbmCUwFsWrPSdjRk4eMb2AtpFLbgqgUSe3nB0f1XFSsp2+wTKLYAEMOSjYkI
+	yXU5HBiwEZNyo8Op0Qgn0XrBkBlIxRMEovz8
+X-QQ-XMRINFO: NyFYKkN4Ny6FuXrnB5Ye7Aabb3ujjtK+gg==
 X-QQ-RECHKSPAM: 0
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[uniontech.com,none];
 	R_DKIM_ALLOW(-0.20)[uniontech.com:s=onoh2408];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,redhat.com,mojatatu.com,kernel.org,oss.qualcomm.com];
+	TAGGED_FROM(0.00)[bounces-267000-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-266994-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:sashal@kernel.org,m:gregkh@linuxfoundation.org,m:guanwentao@uniontech.com,m:stable@vger.kernel.org,m:2045gemini@gmail.com,m:dcaratti@redhat.com,m:jhs@mojatatu.com,m:keenanat2000@gmail.com,m:kuba@kernel.org,m:rajat.gupta@oss.qualcomm.com,m:rollkingzzc@gmail.com,m:toke@redhat.com,m:victor@mojatatu.com,m:yimingqian591@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER(0.00)[guanwentao@uniontech.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	FORGED_RECIPIENTS(0.00)[m:sashal@kernel.org,m:gregkh@linuxfoundation.org,m:guanwentao@uniontech.com,m:stable@vger.kernel.org,m:2045gemini@gmail.com,m:dcaratti@redhat.com,m:jhs@mojatatu.com,m:keenanat2000@gmail.com,m:kuba@kernel.org,m:rajat.gupta@oss.qualcomm.com,m:rollkingzzc@gmail.com,m:toke@redhat.com,m:victor@mojatatu.com,m:yimingqian591@gmail.com,m:pctammela@mojatatu.com,m:idosch@idosch.org,m:idosch@nvidia.com,m:pabeni@redhat.com,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,redhat.com,mojatatu.com,kernel.org,oss.qualcomm.com,idosch.org,nvidia.com];
+	DKIM_TRACE(0.00)[uniontech.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	FORGED_SENDER_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[guanwentao@uniontech.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[uniontech.com:+];
-	TO_DN_NONE(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[uniontech.com:dkim,uniontech.com:email,uniontech.com:mid,uniontech.com:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mojatatu.com:email,uniontech.com:dkim,uniontech.com:email,uniontech.com:mid,uniontech.com:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,idosch.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A646D69D81D
+X-Rspamd-Queue-Id: DE60569D846
 
-From: Rajat Gupta <rajat.gupta@oss.qualcomm.com>
+From: Pedro Tammela <pctammela@mojatatu.com>
 
-[ Upstream commit 899ee91156e57784090c5565e4f31bd7dbffbc5a ]
+[ Upstream commit 1b483d9f5805c7e3d628d4995e97f4311fcb82eb ]
 
-tcf_pedit_act() computes the COW range for skb_ensure_writable()
-once before the key loop using tcfp_off_max_hint, but the hint does
-not account for the runtime header offset added by typed keys. This
-can leave part of the write region un-COW'd.
+Ido Schimmel reports a memleak on a syzkaller instance:
+   BUG: memory leak
+   unreferenced object 0xffff88803d45e400 (size 1024):
+     comm "syz-executor292", pid 563, jiffies 4295025223 (age 51.781s)
+     hex dump (first 32 bytes):
+       28 bd 70 00 fb db df 25 02 00 14 1f ff 02 00 02  (.p....%........
+       00 32 00 00 1f 00 00 00 ac 14 14 3e 08 00 07 00  .2.........>....
+     backtrace:
+       [<ffffffff81bd0f2c>] kmemleak_alloc_recursive include/linux/kmemleak.h:42 [inline]
+       [<ffffffff81bd0f2c>] slab_post_alloc_hook mm/slab.h:772 [inline]
+       [<ffffffff81bd0f2c>] slab_alloc_node mm/slub.c:3452 [inline]
+       [<ffffffff81bd0f2c>] __kmem_cache_alloc_node+0x25c/0x320 mm/slub.c:3491
+       [<ffffffff81a865d9>] __do_kmalloc_node mm/slab_common.c:966 [inline]
+       [<ffffffff81a865d9>] __kmalloc+0x59/0x1a0 mm/slab_common.c:980
+       [<ffffffff83aa85c3>] kmalloc include/linux/slab.h:584 [inline]
+       [<ffffffff83aa85c3>] tcf_pedit_init+0x793/0x1ae0 net/sched/act_pedit.c:245
+       [<ffffffff83a90623>] tcf_action_init_1+0x453/0x6e0 net/sched/act_api.c:1394
+       [<ffffffff83a90e58>] tcf_action_init+0x5a8/0x950 net/sched/act_api.c:1459
+       [<ffffffff83a96258>] tcf_action_add+0x118/0x4e0 net/sched/act_api.c:1985
+       [<ffffffff83a96997>] tc_ctl_action+0x377/0x490 net/sched/act_api.c:2044
+       [<ffffffff83920a8d>] rtnetlink_rcv_msg+0x46d/0xd70 net/core/rtnetlink.c:6395
+       [<ffffffff83b24305>] netlink_rcv_skb+0x185/0x490 net/netlink/af_netlink.c:2575
+       [<ffffffff83901806>] rtnetlink_rcv+0x26/0x30 net/core/rtnetlink.c:6413
+       [<ffffffff83b21cae>] netlink_unicast_kernel net/netlink/af_netlink.c:1339 [inline]
+       [<ffffffff83b21cae>] netlink_unicast+0x5be/0x8a0 net/netlink/af_netlink.c:1365
+       [<ffffffff83b2293f>] netlink_sendmsg+0x9af/0xed0 net/netlink/af_netlink.c:1942
+       [<ffffffff8380c39f>] sock_sendmsg_nosec net/socket.c:724 [inline]
+       [<ffffffff8380c39f>] sock_sendmsg net/socket.c:747 [inline]
+       [<ffffffff8380c39f>] ____sys_sendmsg+0x3ef/0xaa0 net/socket.c:2503
+       [<ffffffff838156d2>] ___sys_sendmsg+0x122/0x1c0 net/socket.c:2557
+       [<ffffffff8381594f>] __sys_sendmsg+0x11f/0x200 net/socket.c:2586
+       [<ffffffff83815ab0>] __do_sys_sendmsg net/socket.c:2595 [inline]
+       [<ffffffff83815ab0>] __se_sys_sendmsg net/socket.c:2593 [inline]
+       [<ffffffff83815ab0>] __x64_sys_sendmsg+0x80/0xc0 net/socket.c:2593
 
-Fix by moving skb_ensure_writable() inside the per-key loop where
-the actual write offset is known, and add overflow checking on the
-offset arithmetic. For negative offsets (e.g. Ethernet header edits
-at ingress), use skb_cow() to COW the headroom instead. Guard
-offset_valid() against INT_MIN, where negation is undefined.
+The recently added static offset check missed a free to the key buffer when
+bailing out on error.
 
-Fixes: 8b796475fd78 ("net/sched: act_pedit: really ensure the skb is writable")
-Reported-by: Yiming Qian <yimingqian591@gmail.com>
-Reported-by: Keenan Dong <keenanat2000@gmail.com>
-Reported-by: Han Guidong <2045gemini@gmail.com>
-Reported-by: Zhang Cen <rollkingzzc@gmail.com>
-Reviewed-by: Han Guidong <2045gemini@gmail.com>
-Tested-by: Han Guidong <2045gemini@gmail.com>
-Reviewed-by: Davide Caratti <dcaratti@redhat.com>
-Tested-by: Davide Caratti <dcaratti@redhat.com>
-Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Tested-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Reviewed-by: Victor Nogueira <victor@mojatatu.com>
-Tested-by: Victor Nogueira <victor@mojatatu.com>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: Rajat Gupta <rajat.gupta@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260531123221.48732-1-jhs@mojatatu.com
-[rename include file from linux/unaligned.h to asm/unaligned.h]
-Conflicts:
-	include/net/tc_act/tc_pedit.h
-	net/sched/act_pedit.c
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
-(cherry picked from commit 44e1ecb811c3e0823a20854735cb9b2a4e71978c)
+Fixes: e1201bc781c2 ("net/sched: act_pedit: check static offsets a priori")
+Reported-by: Ido Schimmel <idosch@idosch.org>
+Signed-off-by: Pedro Tammela <pctammela@mojatatu.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Tested-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://lore.kernel.org/r/20230425144725.669262-1-pctammela@mojatatu.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+(cherry picked from commit 1b483d9f5805c7e3d628d4995e97f4311fcb82eb)
 Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
 ---
- include/net/tc_act/tc_pedit.h |  1 -
- net/sched/act_pedit.c         | 77 +++++++++++++++++++----------------
- 2 files changed, 41 insertions(+), 37 deletions(-)
+ net/sched/act_pedit.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/include/net/tc_act/tc_pedit.h b/include/net/tc_act/tc_pedit.h
-index 83fe399317818..a26d4cd3b8d6f 100644
---- a/include/net/tc_act/tc_pedit.h
-+++ b/include/net/tc_act/tc_pedit.h
-@@ -14,7 +14,6 @@ struct tcf_pedit_key_ex {
- struct tcf_pedit_parms {
- 	struct tc_pedit_key	*tcfp_keys;
- 	struct tcf_pedit_key_ex	*tcfp_keys_ex;
--	u32 tcfp_off_max_hint;
- 	unsigned char tcfp_nkeys;
- 	unsigned char tcfp_flags;
- 	struct rcu_head rcu;
 diff --git a/net/sched/act_pedit.c b/net/sched/act_pedit.c
-index ecad6fc39dc3d..250f4ffa48371 100644
+index 250f4ffa48371..78dddb1a21a20 100644
 --- a/net/sched/act_pedit.c
 +++ b/net/sched/act_pedit.c
-@@ -14,6 +14,8 @@
- #include <linux/module.h>
- #include <linux/init.h>
- #include <linux/slab.h>
-+#include <linux/overflow.h>
-+#include <asm/unaligned.h>
- #include <net/netlink.h>
- #include <net/pkt_sched.h>
- #include <linux/tc_act/tc_pedit.h>
-@@ -226,7 +228,6 @@ static int tcf_pedit_init(struct net *net, struct nlattr *nla,
- 		goto out_release;
- 	}
- 
--	nparms->tcfp_off_max_hint = 0;
- 	nparms->tcfp_flags = parm->flags;
- 	nparms->tcfp_nkeys = parm->nkeys;
- 
-@@ -254,14 +255,6 @@ static int tcf_pedit_init(struct net *net, struct nlattr *nla,
- 						   BITS_PER_TYPE(int) - 1,
- 						   nparms->tcfp_keys[i].shift);
- 
--		/* The AT option can read a single byte, we can bound the actual
--		 * value with uchar max.
--		 */
--		cur += (0xff & offmask) >> nparms->tcfp_keys[i].shift;
--
--		/* Each key touches 4 bytes starting from the computed offset */
--		nparms->tcfp_off_max_hint =
--			max(nparms->tcfp_off_max_hint, cur + 4);
- 	}
- 
- 	p = to_pedit(*a);
-@@ -302,15 +295,12 @@ static void tcf_pedit_cleanup(struct tc_action *a)
- 		call_rcu(&parms->rcu, tcf_pedit_cleanup_rcu);
- }
- 
--static bool offset_valid(struct sk_buff *skb, int offset)
-+static bool offset_valid(struct sk_buff *skb, int offset, int len)
- {
--	if (offset > 0 && offset > skb->len)
--		return false;
--
--	if  (offset < 0 && -offset > skb_headroom(skb))
-+	if (offset < -(int)skb_headroom(skb))
- 		return false;
- 
--	return true;
-+	return offset <= (int)skb->len - len;
- }
- 
- static void pedit_skb_hdr_offset(struct sk_buff *skb,
-@@ -346,18 +336,10 @@ static int tcf_pedit_act(struct sk_buff *skb, const struct tc_action *a,
- 	struct tcf_pedit_key_ex *tkey_ex;
- 	struct tcf_pedit_parms *parms;
- 	struct tc_pedit_key *tkey;
--	u32 max_offset;
- 	int i;
- 
- 	parms = rcu_dereference_bh(p->parms);
- 
--	max_offset = (skb_transport_header_was_set(skb) ?
--		      skb_transport_offset(skb) :
--		      skb_network_offset(skb)) +
--		     parms->tcfp_off_max_hint;
--	if (skb_ensure_writable(skb, min(skb->len, max_offset)))
--		goto done;
--
- 	tcf_lastuse_update(&p->tcf_tm);
- 	tcf_action_update_bstats(&p->common, skb);
- 
-@@ -365,10 +347,11 @@ static int tcf_pedit_act(struct sk_buff *skb, const struct tc_action *a,
- 	tkey_ex = parms->tcfp_keys_ex;
- 
- 	for (i = parms->tcfp_nkeys; i > 0; i--, tkey++) {
-+		int write_offset, write_len;
- 		int offset = tkey->off;
- 		int hoffset = 0;
--		u32 *ptr, hdata;
--		u32 val;
-+		u32 cur_val, val;
-+		u32 *ptr;
- 
- 		if (tkey_ex) {
- 			htype = tkey_ex->htype;
-@@ -381,13 +364,15 @@ static int tcf_pedit_act(struct sk_buff *skb, const struct tc_action *a,
- 
- 		if (tkey->offmask) {
- 			u8 *d, _d;
-+			int at_offset;
- 
--			if (!offset_valid(skb, hoffset + tkey->at)) {
-+			if (check_add_overflow(hoffset, (int)tkey->at, &at_offset) ||
-+			    !offset_valid(skb, at_offset, sizeof(_d))) {
- 				pr_info_ratelimited("tc action pedit 'at' offset %d out of bounds\n",
- 						    hoffset + tkey->at);
- 				goto bad;
- 			}
--			d = skb_header_pointer(skb, hoffset + tkey->at,
-+			d = skb_header_pointer(skb, at_offset,
- 					       sizeof(_d), &_d);
- 			if (!d)
- 				goto bad;
-@@ -399,31 +384,51 @@ static int tcf_pedit_act(struct sk_buff *skb, const struct tc_action *a,
- 			}
+@@ -247,7 +247,7 @@ static int tcf_pedit_init(struct net *net, struct nlattr *nla,
+ 		if (!offmask && cur % 4) {
+ 			NL_SET_ERR_MSG_MOD(extack, "Offsets must be on 32bit boundaries");
+ 			ret = -EINVAL;
+-			goto put_chain;
++			goto out_free_keys;
  		}
  
--		if (!offset_valid(skb, hoffset + offset)) {
--			pr_info_ratelimited("tc action pedit offset %d out of bounds\n", hoffset + offset);
-+		if (check_add_overflow(hoffset, offset, &write_offset)) {
-+			pr_info_ratelimited("tc action pedit offset overflow\n");
- 			goto bad;
- 		}
+ 		/* sanitize the shift value for any later use */
+@@ -272,6 +272,8 @@ static int tcf_pedit_init(struct net *net, struct nlattr *nla,
  
--		ptr = skb_header_pointer(skb, hoffset + offset,
--					 sizeof(hdata), &hdata);
--		if (!ptr)
-+		if (!offset_valid(skb, write_offset, sizeof(*ptr))) {
-+			pr_info_ratelimited("tc action pedit offset %d out of bounds\n",
-+					    write_offset);
- 			goto bad;
-+		}
-+
-+		if (write_offset < 0) {
-+			if (skb_cow(skb, -write_offset))
-+				goto bad;
-+			if (write_offset + (int)sizeof(*ptr) > 0) {
-+				if (skb_ensure_writable(skb,
-+							min_t(int, skb->len,
-+							      write_offset + (int)sizeof(*ptr))))
-+					goto bad;
-+			}
-+		} else {
-+			if (check_add_overflow(write_offset, (int)sizeof(*ptr),
-+					       &write_len))
-+				goto bad;
-+			if (skb_ensure_writable(skb, min_t(int, skb->len,
-+							   write_len)))
-+				goto bad;
-+		}
-+
-+		ptr = (u32 *)(skb->data + write_offset);
-+		cur_val = get_unaligned(ptr);
- 		/* just do it, baby */
- 		switch (cmd) {
- 		case TCA_PEDIT_KEY_EX_CMD_SET:
- 			val = tkey->val;
- 			break;
- 		case TCA_PEDIT_KEY_EX_CMD_ADD:
--			val = (*ptr + tkey->val) & ~tkey->mask;
-+			val = (cur_val + tkey->val) & ~tkey->mask;
- 			break;
- 		default:
- 			pr_info_ratelimited("tc action pedit bad command (%d)\n", cmd);
- 			goto bad;
- 		}
+ 	return ret;
  
--		*ptr = ((*ptr & tkey->mask) ^ val);
--		if (ptr == &hdata)
--			skb_store_bits(skb, hoffset + offset, ptr, 4);
-+		put_unaligned((cur_val & tkey->mask) ^ val, ptr);
- 	}
- 
- 	goto done;
++out_free_keys:
++	kfree(nparms->tcfp_keys);
+ put_chain:
+ 	if (goto_ch)
+ 		tcf_chain_put_by_act(goto_ch);
 -- 
 2.30.2
 
