@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-267176-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267177-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id YV/rAx8eNGroOwYAu9opvQ
-	(envelope-from <stable+bounces-267176-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 18:34:39 +0200
+	id bj9VKRQeNGrbOwYAu9opvQ
+	(envelope-from <stable+bounces-267177-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 18:34:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E1686A19DB
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 18:34:38 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16BD76A19A5
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 18:34:28 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=0leil.net header.s=20231125 header.b=nJsKeg+G;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267176-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-267176-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=0leil.net header.s=20231125 header.b=g0fPEter;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267177-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267177-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=reject) header.from=0leil.net;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8EA75305A8FA
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 16:34:26 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 12CB7303B4D0
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 16:34:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E433F2EA151;
-	Thu, 18 Jun 2026 16:34:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BD662EDD69;
+	Thu, 18 Jun 2026 16:34:26 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-bc0d.mail.infomaniak.ch (smtp-bc0d.mail.infomaniak.ch [45.157.188.13])
+Received: from smtp-8fac.mail.infomaniak.ch (smtp-8fac.mail.infomaniak.ch [83.166.143.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28FF42EDD69
-	for <stable@vger.kernel.org>; Thu, 18 Jun 2026 16:34:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6384130C153
+	for <stable@vger.kernel.org>; Thu, 18 Jun 2026 16:34:24 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781800465; cv=none; b=JAeVzePALByzT13JHJD57OzFNK++w6tvuz0clrMtIsI3OBJ6ra3ugUhH5FXcFcYsOhkVsM9KnGvSsbGvocwRZldhKxZFBvT28R25WxJKE9cCQhcwxTP50WT4OVtjLDCF2o2Macn0KjluzOQav9h8eZWmibLxVDjPXco1q5BnG6I=
+	t=1781800466; cv=none; b=CgmWM0EhwNMAwlczXhf9EB8n+FdT3q36kdN+lFXQgk9uuTPXZjoypGnUHzmCRSve1EoW9FaoUoMoogX21P4EwZiG/7VlGCuIVu3BMHa71VFvt/QU3vlBrpN0Lx5HbM2MS1npVF2bLClVOkK9DhGFxCjO2Cn607qGcHyiJ0FExeo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781800465; c=relaxed/simple;
-	bh=sH4Ke66JIpnc0MZHo3EIyfu1ZYY+mgAZrrnNVgq4yPg=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=rxjjK+ZTNHeTKU6fD5u+Kwmx0c+4chz3KE3dC8MDW/82LENzwiV5gJYmQZH1rQYQNLoK/Yyl0AW8ntDiEdpogHSMru2NQ+5vKh2Y1of/6WurwChdPn7di/reCHvvEFIgo0QqeVm5UKyympbIrFs4a1rWO1qRZFxAXFvDNuhTQ0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=0leil.net; spf=pass smtp.mailfrom=0leil.net; dkim=pass (2048-bit key) header.d=0leil.net header.i=@0leil.net header.b=nJsKeg+G; arc=none smtp.client-ip=45.157.188.13
+	s=arc-20240116; t=1781800466; c=relaxed/simple;
+	bh=gvDtyKKRc5B9UEF59xuKQspNmOi26PAt5LZIsgw98KI=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=a9dtAvIgGDClhiUmQroaLsIQr3XmSkX5g1iP8FQHSsjdnsrr0o/Hg8Tui+wGGO2m++qFUqS2pL83Y/Z3i2nbVCFD1MWL8CkGbaVa2oY9k/5vOEKh5Gttk6T1GlhKTfZmq/ogAXmlQ1irG8g3RJ5xXdkEZmplz6RbtZbtIRwrhco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=0leil.net; spf=pass smtp.mailfrom=0leil.net; dkim=pass (2048-bit key) header.d=0leil.net header.i=@0leil.net header.b=g0fPEter; arc=none smtp.client-ip=83.166.143.172
 Received: from smtp-3-0000.mail.infomaniak.ch (smtp-3-0000.mail.infomaniak.ch [10.4.36.107])
-	by smtp-4-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4gh5sN2wKGzrD2;
-	Thu, 18 Jun 2026 18:34:16 +0200 (CEST)
+	by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4gh5sP0Vb8zsVv;
+	Thu, 18 Jun 2026 18:34:17 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=0leil.net;
 	s=20231125; t=1781800456;
-	bh=PHAWjs2Y1yJ4pF784Wz2QgiwURvcLQMB3ILixgzZUmg=;
-	h=From:Subject:Date:To:Cc:From;
-	b=nJsKeg+Gzquz90VmPRmUQAvcfpXfE0vRjqm75lM0E2WISsTFpnXqzjWRMd6sb+sPp
-	 HwrQ88ezCGzaSD7gYQE2Mz1v6s/NWpwAdV5FqsBA1SxQ1Rpf5jnBMP+MJO4cCbKhH8
-	 rPlBwjvMPGpWDHmWXvcr5RUULkEPNy4t6ACdF+WhA0DO7chnFXzr7d+jK9ePrjfOM2
-	 Lq9j4xMDApRj9ifDJxdv67AIFrqi5h8VUXMuDkzimwJZpjlVOklIEkaCR3UODZanPh
-	 QuizTgRE3se7mnq4j7GhyCNR9H/xuc02/fEOMZ6W1A3M9odtyT3c5yLNL1LIn+TO8C
-	 xABidE4dW2z/A==
-Received: from unknown by smtp-3-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4gh5sL3fJDzhjJ;
-	Thu, 18 Jun 2026 18:34:14 +0200 (CEST)
+	bh=hqg/IL1ba3qKpxYFJe4fZUb6gzeztPvCmhL1/+z0Agg=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=g0fPEterWrHYmuncwppr6AtO1Tqkkw1wkedjki0bDLgYY/DFDgd7DQQSypVng2U57
+	 LdGGQ4AN37FLMRrW+sg8ZxCGOafLdiRRBwf9S3/ODXMdWPQnK4r6mX5wVv/wzAvO6X
+	 h7LVNYuGos303oWf1ENLjnkszKvFRrSllAWdEDNSYWuYnJ+iWR6scjS2b5G3eKmmaq
+	 oYPtITgWqbTXQqDXZ9zOZwfZiXagILDazfUQ9hvjjKvD/aDjO4SacFTB26hxtXTmPO
+	 fFImLWrCuqXC59ug++wbe6KNmYiLjjSCnOL81oIN7OxLhAKWTQfkl3n3NC3Wq7C9lG
+	 5qXAjLseo8PRA==
+Received: from unknown by smtp-3-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4gh5sN1694zhxm;
+	Thu, 18 Jun 2026 18:34:16 +0200 (CEST)
 From: Quentin Schulz <foss+kernel@0leil.net>
-Subject: [PATCH 6.12.y v2 0/3] gpiolib: backport 16fdabe143fc
-Date: Thu, 18 Jun 2026 18:34:00 +0200
-Message-Id: <20260618-6-12-cve-2026-31732-v2-0-42cc54b7bf04@cherry.de>
+Date: Thu, 18 Jun 2026 18:34:01 +0200
+Subject: [PATCH 6.12.y v2 1/3] gpiolib: Extract gpiochip_choose_fwnode()
+ for wider use
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,11 +61,9 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/32NwQ6CMBBEf4Xs2SW7JW7Vk/9hOEC7Sj2AabGRE
- P5dwLvHmbx5M0PSGDTBpZghag4pDP0azKEA1zX9QzH4NYMhIyR8QkE26LLi1mDFtjIoFVnxRxZ
- rCNblK+o9fHbrDaRkU05Q//r0bp/qxk25kV1I4xCn/T7zzv99yoyE1jXkqT2TtHR1ncY4lV6hX
- pblC/IaTQTQAAAA
-X-Change-ID: 20260618-6-12-cve-2026-31732-63076d516720
+Message-Id: <20260618-6-12-cve-2026-31732-v2-1-42cc54b7bf04@cherry.de>
+References: <20260618-6-12-cve-2026-31732-v2-0-42cc54b7bf04@cherry.de>
+In-Reply-To: <20260618-6-12-cve-2026-31732-v2-0-42cc54b7bf04@cherry.de>
 To: Linus Walleij <linus.walleij@linaro.org>, 
  Bartosz Golaszewski <brgl@bgdev.pl>, 
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>
@@ -72,113 +71,105 @@ Cc: linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
  Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, 
  stable@vger.kernel.org, Quentin Schulz <quentin.schulz@cherry.de>, 
  Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
- Mathieu Dubois-Briand <mathieu.dubois-briand@bootlin.com>, 
- Tzung-Bi Shih <tzungbi@kernel.org>, Linus Walleij <linusw@kernel.org>, 
- Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+ Mathieu Dubois-Briand <mathieu.dubois-briand@bootlin.com>
 X-Mailer: b4 0.15-dev-47773
 X-Infomaniak-Routing: alpha
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[0leil.net,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[0leil.net:s=20231125];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-267177-lists,stable=lfdr.de,kernel];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-267176-lists,stable=lfdr.de,kernel];
-	FORGED_RECIPIENTS(0.00)[m:linus.walleij@linaro.org,m:brgl@bgdev.pl,m:gregkh@linuxfoundation.org,m:linux-gpio@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:bartosz.golaszewski@linaro.org,m:stable@vger.kernel.org,m:quentin.schulz@cherry.de,m:andriy.shevchenko@linux.intel.com,m:mathieu.dubois-briand@bootlin.com,m:tzungbi@kernel.org,m:linusw@kernel.org,m:bartosz.golaszewski@oss.qualcomm.com,s:lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
+	FORGED_RECIPIENTS(0.00)[m:linus.walleij@linaro.org,m:brgl@bgdev.pl,m:gregkh@linuxfoundation.org,m:linux-gpio@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:bartosz.golaszewski@linaro.org,m:stable@vger.kernel.org,m:quentin.schulz@cherry.de,m:andriy.shevchenko@linux.intel.com,m:mathieu.dubois-briand@bootlin.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[foss@0leil.net,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[lists@lfdr.de];
 	DKIM_TRACE(0.00)[0leil.net:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[foss@0leil.net,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[0leil.net:dkim,0leil.net:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,cherry.de:mid,cherry.de:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[0leil.net:dkim,0leil.net:from_mime,intel.com:email,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,cherry.de:mid,cherry.de:email,bootlin.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 6E1686A19DB
+X-Rspamd-Queue-Id: 16BD76A19A5
 
-Backport 16fdabe143fc ("gpio: Fix resource leaks on errors in
-gpiochip_add_data_with_key()") to 6.12.y. To make the git diff more
-similar with the upstream commit, also backport 375790f18396 ("gpiolib:
-Extract gpiochip_choose_fwnode() for wider use") and 550300b9a295
-("gpiolib: Remove redundant assignment of return variable").
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-The changes between 16fdabe143fc and the third patch of this series is
-(according to git-range-diff):
+[ Upstream commit 375790f18396b2ba706e031b150c58cd37b45a11 ]
 
-"""
-      ## drivers/gpio/gpiolib.c ##
-     @@ drivers/gpio/gpiolib.c: static const struct device_type gpio_dev_type = {
-    @@ drivers/gpio/gpiolib.c: int gpiochip_add_data_with_key(struct gpio_chip *gc, voi
-     +	}
-     +
-     +	gdev->can_sleep = gc->can_sleep;
-    -+	rwlock_init(&gdev->line_state_lock);
-    -+	RAW_INIT_NOTIFIER_HEAD(&gdev->line_state_notifier);
-    ++	BLOCKING_INIT_NOTIFIER_HEAD(&gdev->line_state_notifier);
-     +	BLOCKING_INIT_NOTIFIER_HEAD(&gdev->device_notifier);
-     +#ifdef CONFIG_PINCTRL
-     +	INIT_LIST_HEAD(&gdev->pin_ranges);
-    @@ drivers/gpio/gpiolib.c: int gpiochip_add_data_with_key(struct gpio_chip *gc, voi
-     -	gdev->ngpio = gc->ngpio;
-     -	gdev->can_sleep = gc->can_sleep;
-     -
-    --	rwlock_init(&gdev->line_state_lock);
-    --	RAW_INIT_NOTIFIER_HEAD(&gdev->line_state_notifier);
-    +-	BLOCKING_INIT_NOTIFIER_HEAD(&gdev->line_state_notifier);
-     -	BLOCKING_INIT_NOTIFIER_HEAD(&gdev->device_notifier);
-     -
-     -	ret = init_srcu_struct(&gdev->srcu);
-    @@ drivers/gpio/gpiolib.c: int gpiochip_add_data_with_key(struct gpio_chip *gc, voi
-     @@ drivers/gpio/gpiolib.c: int gpiochip_add_data_with_key(struct gpio_chip *gc, void *data,
-      		ret = gpiodev_add_to_list_unlocked(gdev);
-      		if (ret) {
-    - 			gpiochip_err(gc, "GPIO integer space overlap, cannot add chip\n");
-    + 			chip_err(gc, "GPIO integer space overlap, cannot add chip\n");
-     -			goto err_cleanup_desc_srcu;
-     +			goto err_put_device;
-      		}
-"""
+Extract gpiochip_choose_fwnode() for the future use in another function.
 
-s/gpiochip_err/chip_err/ aside, the rest of the diff comes from feature
-commits which do not fit the rules for backporting to stable.
-
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Tested-by: Mathieu Dubois-Briand <mathieu.dubois-briand@bootlin.com>
+Reviewed-by: Mathieu Dubois-Briand <mathieu.dubois-briand@bootlin.com>
+Link: https://lore.kernel.org/r/20250213195621.3133406-2-andriy.shevchenko@linux.intel.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Stable-dep-of: 16fdabe143fc ("gpio: Fix resource leaks on errors in gpiochip_add_data_with_key()")
 Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
 ---
-Changes in v2:
-- added stable@vger.kernel.org in Cc, apologies for the noise.
-- Link to v1: https://patch.msgid.link/20260618-6-12-cve-2026-31732-v1-0-7ca0d0b906b0@cherry.de
+ drivers/gpio/gpiolib.c | 24 ++++++++++++++++--------
+ 1 file changed, 16 insertions(+), 8 deletions(-)
 
----
-Andy Shevchenko (2):
-      gpiolib: Extract gpiochip_choose_fwnode() for wider use
-      gpiolib: Remove redundant assignment of return variable
+diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
+index 5c8cd81656963..d48a57b899f79 100644
+--- a/drivers/gpio/gpiolib.c
++++ b/drivers/gpio/gpiolib.c
+@@ -883,6 +883,21 @@ void *gpiochip_get_data(struct gpio_chip *gc)
+ }
+ EXPORT_SYMBOL_GPL(gpiochip_get_data);
+ 
++/*
++ * If the calling driver provides the specific firmware node,
++ * use it. Otherwise use the one from the parent device, if any.
++ */
++static struct fwnode_handle *gpiochip_choose_fwnode(struct gpio_chip *gc)
++{
++	if (gc->fwnode)
++		return gc->fwnode;
++
++	if (gc->parent)
++		return dev_fwnode(gc->parent);
++
++	return NULL;
++}
++
+ int gpiochip_get_ngpios(struct gpio_chip *gc, struct device *dev)
+ {
+ 	u32 ngpios = gc->ngpio;
+@@ -942,14 +957,7 @@ int gpiochip_add_data_with_key(struct gpio_chip *gc, void *data,
+ 	gc->gpiodev = gdev;
+ 	gpiochip_set_data(gc, data);
+ 
+-	/*
+-	 * If the calling driver did not initialize firmware node,
+-	 * do it here using the parent device, if any.
+-	 */
+-	if (gc->fwnode)
+-		device_set_node(&gdev->dev, gc->fwnode);
+-	else if (gc->parent)
+-		device_set_node(&gdev->dev, dev_fwnode(gc->parent));
++	device_set_node(&gdev->dev, gpiochip_choose_fwnode(gc));
+ 
+ 	gdev->id = ida_alloc(&gpio_ida, GFP_KERNEL);
+ 	if (gdev->id < 0) {
 
-Tzung-Bi Shih (1):
-      gpio: Fix resource leaks on errors in gpiochip_add_data_with_key()
-
- drivers/gpio/gpiolib.c | 156 +++++++++++++++++++++++++------------------------
- 1 file changed, 79 insertions(+), 77 deletions(-)
----
-base-commit: 1d3a00d3bacff25652c96e1527610c69e91f7c38
-change-id: 20260618-6-12-cve-2026-31732-63076d516720
-
-Best regards,
---  
-Quentin Schulz <quentin.schulz@cherry.de>
+-- 
+2.54.0
 
 
