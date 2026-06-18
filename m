@@ -1,235 +1,172 @@
-Return-Path: <stable+bounces-267051-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267036-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id zdZ+CQOvM2ofFAYAu9opvQ
-	(envelope-from <stable+bounces-267051-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 10:40:35 +0200
+	id mlCBK62nM2ryEgYAu9opvQ
+	(envelope-from <stable+bounces-267036-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 10:09:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EA9769E83C
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 10:40:34 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE60A69E576
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 10:09:16 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=broadcom.com header.s=google header.b="fnPi7h/+";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267051-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-267051-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=reject) header.from=broadcom.com;
+	dkim=fail ("headers rsa verify failed") header.d=w6rz.net header.s=default header.b="H/vZoKpl";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267036-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-267036-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=none;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B135B302DB5D
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 08:37:44 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B61ED300A67A
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 08:09:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A656D3B47F5;
-	Thu, 18 Jun 2026 08:37:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F02763D79FE;
+	Thu, 18 Jun 2026 08:08:59 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oa1-f98.google.com (mail-oa1-f98.google.com [209.85.160.98])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from omta036.useast.a.cloudfilter.net (omta036.useast.a.cloudfilter.net [44.202.169.35])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E88E3B3C13
-	for <stable@vger.kernel.org>; Thu, 18 Jun 2026 08:37:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90C293BE644
+	for <stable@vger.kernel.org>; Thu, 18 Jun 2026 08:08:58 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781771862; cv=none; b=DUuCkIvbynHG9RDSIqks5sXcZRaDCm0Yyu2MgVvng8rzK9NNNrgerB23b/0InoyHLwYYfgfYLiJbAhhiKbId+ulNral+sQEC13HXqg21sIRIbtYHGwWSkC1pctaXGn7bDWLcl4hi/WpQagDuqoDZiysyyJH/J0+wNnNaEw6+iDk=
+	t=1781770139; cv=none; b=YXpdGwQA08dDJE9/Av+6KbJj8XflkUqsvH7FQIvnFgK0qt1v9F8kIqQblDOSIDG0HIUoOgmwRt3Q/0Mw+Yqzk75FfLn9/E/ES0VQ5vw+rBJM1d/c2SW3IcJcTWGV8q1UnedDlNJ+BjPiV5CUxMl3Nvd35jWke/ViBzJznwIg4Fg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781771862; c=relaxed/simple;
-	bh=aIbJosctl5OF9ZsLu4oXkOHrco919wfqLXR+++iz1xc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=FjFPU9yDWxSMbYiqSbAfawBU5X3AxRz/CyPMBizu9HfRg6UN+Yk0hOOb8skA3m2yW8Ykyg9z6AV4nbA1+48sMbFOfuUYq/xS4Kwp9LNIm9AyvDyxrBAXtpB/Ph8TdTchnoi7avB/JVDcz0tkMwNncGUT89924bBa7c3FqgrR8uQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=fnPi7h/+; arc=none smtp.client-ip=209.85.160.98
-Received: by mail-oa1-f98.google.com with SMTP id 586e51a60fabf-43cce34c881so537311fac.2
-        for <stable@vger.kernel.org>; Thu, 18 Jun 2026 01:37:37 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781771856; x=1782376656;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:dkim-signature:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=o9hVwQ2uFHG9yjsxEMthJtly1U3KRAfycxfm9+vQlLA=;
-        b=FuJiFk0mVny0ieKfPhR8GNHby0Nk25kPf6dJNGPCU86s2QtD30cvQqHyoFj32LoxzB
-         i8Zd3js+GglUHDUcMn8TLAJl8OjHUruXvTzAaHVqsf8sUrl985aSBXhyhDXWWCM5afoz
-         UDEdunDzw10osAVYcDT7snvYLw+Ixy6IL9m2kvJ+hNZptDnLzQyuQsbfkaNxMCrpBu2R
-         75jRk8VIBw8KtXViIlZliM+rn5Eu1jahCSFQRb/3szs8yhIOfC3YaLzPHjfvAmFoiZa4
-         09zHujpkxsaE8uP2OO59ZKaC10nWcfFyr3HDvkahoQSPIaqEfqLX5pqEZGtLnt1bXdiQ
-         acbw==
-X-Gm-Message-State: AOJu0YwuBCwNbdq+5uxoYieerCDb9MhRwyRkB1VWAr1zQB6FoLxqhR6V
-	Kc8BfthBI/PYgOOftDCmzJV9S6Hai0xE7rhYADpYQimE6xNYBaaRHTWmaIn97mRiFqU0FYua2HP
-	GAif10pf6dLhj6G9jaIiaGQ+umQvy/hdbShaEvaUzt9g59OsxK3Sw8BI5wiIIEHG1e0oJzqDR6h
-	VBfqlKjiggFZxeckQE/MgoIMOC68XYVWMbEjDqr+4Z9cXcTkxm0xtWju6ZT7upxVIo0wmHMRqZK
-	1oK34aSiDgyZnQpgw==
-X-Gm-Gg: Acq92OGySevtMV0x+VQ2hZq3TLZdEDuOcD93Oz9dHIHUy9e2kzzY9zGhKg6ZhvZfdjw
-	Vi7SEpoCf88FnEOmS+AEUooBvAbjNV3xOk/t7IIpAzlstvhYfuiXjgK9oWAxudw+Dxyyg9T9u8V
-	Wd32tHESbV7tijG/sdnyL+OGcKuXnNo3UfTLsQ30lnqZWJuqAwtHl7voSSADY2EKm27Mj1Ot088
-	skW17l563DkbNtwnwzcOEeuZ3880Ux6CtJ3uRv0UrYGa0duIIWM0TmD1SHNrHgMoiPbL3B2C8No
-	YQ2sdCEk7OMYngEpwpEkpHkkK7A50WWh8Q4u+idx3PDgsPMUizFBQd3VRtfE9cIuugS8sA1dYPV
-	e9nGyL6vYJ3WDNzSQLqfJEIdw0Y4OZ73dd+3u1ONRVsieIP7UQg4liKPoQ8PKlm09sMm2uPpW1Y
-	vn3r0ymoh7SVa8ImZz9vRL43eryjuTM01YAK82gtGMesAZwONCbg==
-X-Received: by 2002:a05:6820:81d2:b0:69e:8932:7fe9 with SMTP id 006d021491bc7-6a0b6161128mr5829196eaf.41.1781771856115;
-        Thu, 18 Jun 2026 01:37:36 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-23.dlp.protect.broadcom.com. [144.49.247.23])
-        by smtp-relay.gmail.com with ESMTPS id 586e51a60fabf-44308a3588dsm843314fac.3.2026.06.18.01.37.35
-        for <stable@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 18 Jun 2026 01:37:36 -0700 (PDT)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-dy1-f199.google.com with SMTP id 5a478bee46e88-304f23c55b2so677187eec.0
-        for <stable@vger.kernel.org>; Thu, 18 Jun 2026 01:37:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1781771855; x=1782376655; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=o9hVwQ2uFHG9yjsxEMthJtly1U3KRAfycxfm9+vQlLA=;
-        b=fnPi7h/+J2SSTjCUSzrMopCYHYLHUIfXhy7fUkFFuJ3ZYuFFnAN88eLJ7ca9wc+Mv3
-         Uk5ttiN7FpOJ5UM/EZNSwALdHsc3zPxqqIT2wOzrKSd1HqJlD4rResvS9Ua5YIC5NnCA
-         /XDh5FfLTugpc0OmaVWsnjGz/J6tZe+KC1haw=
-X-Received: by 2002:a05:7300:2209:b0:304:acc:f079 with SMTP id 5a478bee46e88-30bca09e535mr4462731eec.27.1781771854698;
-        Thu, 18 Jun 2026 01:37:34 -0700 (PDT)
-X-Received: by 2002:a05:7300:2209:b0:304:acc:f079 with SMTP id 5a478bee46e88-30bca09e535mr4462680eec.27.1781771853897;
-        Thu, 18 Jun 2026 01:37:33 -0700 (PDT)
-Received: from shivania.lvn.broadcom.net ([192.19.161.250])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3081e48e412sm27475037eec.4.2026.06.18.01.37.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Jun 2026 01:37:33 -0700 (PDT)
-From: Shivani Agarwal <shivani.agarwal@broadcom.com>
-To: stable@vger.kernel.org,
-	gregkh@linuxfoundation.org
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	xiaosuo@gmail.com,
-	iri@resnulli.us,
-	jhs@mojatatu.com,
-	ajay.kaher@broadcom.com,
-	alexey.makhalov@broadcom.com,
-	vamsi-krishna.brahmajosyula@broadcom.com,
-	yin.ding@broadcom.com,
-	tapas.kundu@broadcom.com,
-	GangMin Kim <km.kim1503@gmail.com>,
-	Bin Lan <lanbincn@139.com>,
-	Shivani Agarwal <shivani.agarwal@broadcom.com>
-Subject: [PATCH v5.10 2/2] net/sched: cls_u32: use skb_header_pointer_careful()
-Date: Thu, 18 Jun 2026 01:08:07 -0700
-Message-Id: <20260618080807.1269070-3-shivani.agarwal@broadcom.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260618080807.1269070-1-shivani.agarwal@broadcom.com>
-References: <20260618080807.1269070-1-shivani.agarwal@broadcom.com>
+	s=arc-20240116; t=1781770139; c=relaxed/simple;
+	bh=kQDq92TZ0/zcHt7npGEiWArikkJTnEfK8CahfQQCh3I=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MbTE2Hctn5hkdF9qvrIFF5zNnakXBKprfQtg8vEBkUM1oy08XZ/xASUEkzoqPmN4LTncRb/GjLcyA1Z0bCvd85EHHEadtZQud9LwJik0zFu7phKuefTJCLj3NJBZwEmrqx616C9sBRuUzLAk85z6JWjKXwXbg94XBgElfzSkZAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=H/vZoKpl; arc=none smtp.client-ip=44.202.169.35
+Received: from eig-obgw-5006b.ext.cloudfilter.net ([10.0.29.217])
+	by cmsmtp with ESMTPS
+	id a6EvwbSA0gwLna7o1waPqc; Thu, 18 Jun 2026 08:08:57 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id a7o1wEOEzhFZUa7o1wJ5AN; Thu, 18 Jun 2026 08:08:57 +0000
+X-Authority-Analysis: v=2.4 cv=RduQC0tv c=1 sm=1 tr=0 ts=6a33a799
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=9GQXaQUDpQhx98mIA28A:9 a=QEXdDO2ut3YA:10
+ a=nmWuMzfKamIsx3l42hEX:22 a=L5EjiQpGQaFGZdqT14z7:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=gzqjjqtIMvK8LPow+2uCg6tEti/DxqjjGl3o0uxALdQ=; b=H/vZoKplcQSatQ2uBy7vh/6yGF
+	d9KK6Qa+bx3spHSdQrBTeyX1uNifkMBfxrg7TnljgjYXbzKPXw40oVGCUcvWzVS0Fi6vi46Nd5ZZK
+	xk0JOp+W0GiPZbA4D+wRdpog3QDMeI8TC8NVxVEdfuFT6N+F/6mW2jteMrc+3JjNiLKn0aJT9OffL
+	nvuCliSc3tQxfk//5PYUXfDAaRpM2fk7FR22sQggBDFnaOrfc2T/wOTH7FEFBjoH+aJHkx5vCPEde
+	W7op6NLPlFr7K1J9319/WZo5IZK5B1mG8NC3oiCZ38CGh60WVH4zKDD/L2SGN9rGnOFNYx4it+qKQ
+	DfsLWkjQ==;
+Received: from c-73-162-206-103.hsd1.ca.comcast.net ([73.162.206.103]:52572 helo=[10.0.1.180])
+	by box5620.bluehost.com with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
+	(Exim 4.99.2)
+	(envelope-from <re@w6rz.net>)
+	id 1wa7o0-00000002SGv-27Pn;
+	Thu, 18 Jun 2026 02:08:56 -0600
+Message-ID: <0dd0ada3-28f8-4369-942c-4d1f65c2a1de@w6rz.net>
+Date: Thu, 18 Jun 2026 01:08:54 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.12 000/261] 6.12.94-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org, sr@sladewatkins.com
+References: <20260616145044.869532709@linuxfoundation.org>
+Content-Language: en-US
+From: Ron Economos <re@w6rz.net>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 73.162.206.103
+X-Source-L: No
+X-Exim-ID: 1wa7o0-00000002SGv-27Pn
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-73-162-206-103.hsd1.ca.comcast.net ([10.0.1.180]) [73.162.206.103]:52572
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 39
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfCs0L9ObqqfypBo43v/xz4dr5nXRKioiMB2rwY20FW77wBQJZVaJ3ygOEb/NVrNnjf8l6ww2PKN7YMIOkjlh7Z3b0ORCrfMsOUzT4Ti1VLPJcmpcxBjA
+ Pxl2Yj1BLuAObUcC9Vk3KA3FlX8Xh9Zrpcv7EXCWIpIhJtoVPjDjgWSvwJWwE4isSOO3s75mVMgmcA==
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	WHITELIST_DMARC(-7.00)[broadcom.com:D:+];
-	SEM_URIBL(3.50)[139.com:email];
+X-Spamd-Result: default: False [1.04 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_REJECT(1.00)[w6rz.net:s=default];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
-	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-267051-lists,stable=lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,vger.kernel.org:from_smtp,msgid.link:url,139.com:email,broadcom.com:dkim,broadcom.com:email,broadcom.com:mid,broadcom.com:from_mime];
-	FROM_HAS_DN(0.00)[];
-	R_DKIM_ALLOW(0.00)[broadcom.com:s=google];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:horms@kernel.org,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:xiaosuo@gmail.com,m:iri@resnulli.us,m:jhs@mojatatu.com,m:ajay.kaher@broadcom.com,m:alexey.makhalov@broadcom.com,m:vamsi-krishna.brahmajosyula@broadcom.com,m:yin.ding@broadcom.com,m:tapas.kundu@broadcom.com,m:km.kim1503@gmail.com,m:lanbincn@139.com,m:shivani.agarwal@broadcom.com,m:kmkim1503@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[shivani.agarwal@broadcom.com,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	FREEMAIL_CC(0.00)[davemloft.net,google.com,kernel.org,redhat.com,vger.kernel.org,gmail.com,resnulli.us,mojatatu.com,broadcom.com,139.com];
-	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[shivani.agarwal@broadcom.com,stable@vger.kernel.org];
-	DMARC_POLICY_ALLOW(0.00)[broadcom.com,reject];
-	DKIM_TRACE(0.00)[broadcom.com:+];
-	TAGGED_RCPT(0.00)[stable];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	R_SPF_ALLOW(0.00)[+ip4:172.234.253.10:c];
-	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-267036-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	DMARC_NA(0.00)[w6rz.net];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	FORGED_SENDER(0.00)[re@w6rz.net,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,m:patches@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:torvalds@linux-foundation.org,m:akpm@linux-foundation.org,m:linux@roeck-us.net,m:shuah@kernel.org,m:patches@kernelci.org,m:lkft-triage@lists.linaro.org,m:pavel@nabladev.com,m:jonathanh@nvidia.com,m:f.fainelli@gmail.com,m:sudipm.mukherjee@gmail.com,m:rwarsow@gmx.de,m:conor@kernel.org,m:hargar@microsoft.com,m:broonie@kernel.org,m:achill@achill.org,m:sr@sladewatkins.com,m:ffainelli@gmail.com,m:sudipmmukherjee@gmail.com,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	HAS_X_ANTIABUSE(0.00)[];
+	DKIM_TRACE(0.00)[w6rz.net:-];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[re@w6rz.net,stable@vger.kernel.org];
+	HAS_X_SOURCE(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[w6rz.net:email,w6rz.net:mid,w6rz.net:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 6EA9769E83C
+X-Rspamd-Queue-Id: AE60A69E576
 
-From: Eric Dumazet <edumazet@google.com>
+On 6/16/26 07:57, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.12.94 release.
+> There are 261 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Thu, 18 Jun 2026 14:49:57 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.94-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-[ Upstream commit cabd1a976375780dabab888784e356f574bbaed8 ]
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-skb_header_pointer() does not fully validate negative @offset values.
-
-Use skb_header_pointer_careful() instead.
-
-GangMin Kim provided a report and a repro fooling u32_classify():
-
-BUG: KASAN: slab-out-of-bounds in u32_classify+0x1180/0x11b0
-net/sched/cls_u32.c:221
-
-Fixes: fbc2e7d9cf49 ("cls_u32: use skb_header_pointer() to dereference data safely")
-Reported-by: GangMin Kim <km.kim1503@gmail.com>
-Closes: https://lore.kernel.org/netdev/CANn89iJkyUZ=mAzLzC4GdcAgLuPnUoivdLaOs6B9rq5_erj76w@mail.gmail.com/T/
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260128141539.3404400-3-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Bin Lan <lanbincn@139.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[ Shivani: Modified to apply on 5.10.y ]
-Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
----
- net/sched/cls_u32.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
-
-diff --git a/net/sched/cls_u32.c b/net/sched/cls_u32.c
-index f2a0c1068..e501390cc 100644
---- a/net/sched/cls_u32.c
-+++ b/net/sched/cls_u32.c
-@@ -149,10 +149,8 @@ static int u32_classify(struct sk_buff *skb, const struct tcf_proto *tp,
- 			int toff = off + key->off + (off2 & key->offmask);
- 			__be32 *data, hdata;
- 
--			if (skb_headroom(skb) + toff > INT_MAX)
--				goto out;
--
--			data = skb_header_pointer(skb, toff, 4, &hdata);
-+			data = skb_header_pointer_careful(skb, toff, 4,
-+							  &hdata);
- 			if (!data)
- 				goto out;
- 			if ((*data ^ key->val) & key->mask) {
-@@ -202,8 +200,9 @@ static int u32_classify(struct sk_buff *skb, const struct tcf_proto *tp,
- 		if (ht->divisor) {
- 			__be32 *data, hdata;
- 
--			data = skb_header_pointer(skb, off + n->sel.hoff, 4,
--						  &hdata);
-+			data = skb_header_pointer_careful(skb,
-+							  off + n->sel.hoff,
-+							  4, &hdata);
- 			if (!data)
- 				goto out;
- 			sel = ht->divisor & u32_hash_fold(*data, &n->sel,
-@@ -217,7 +216,7 @@ static int u32_classify(struct sk_buff *skb, const struct tcf_proto *tp,
- 			if (n->sel.flags & TC_U32_VAROFFSET) {
- 				__be16 *data, hdata;
- 
--				data = skb_header_pointer(skb,
-+				data = skb_header_pointer_careful(skb,
- 							  off + n->sel.offoff,
- 							  2, &hdata);
- 				if (!data)
--- 
-2.53.0
+Tested-by: Ron Economos <re@w6rz.net>
 
 
