@@ -1,68 +1,68 @@
-Return-Path: <stable+bounces-267242-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267240-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id nkymFNxXNGrMVQYAu9opvQ
-	(envelope-from <stable+bounces-267242-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 22:41:00 +0200
+	id QAm+NHxXNGqUVQYAu9opvQ
+	(envelope-from <stable+bounces-267240-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 22:39:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F8A16A2A2E
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 22:40:59 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C6C66A29B8
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 22:39:24 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=crowdstrike.com header.s=default header.b="C3fz PY4";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267242-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-267242-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=crowdstrike.com header.s=default header.b="Wls/ z1I";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267240-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-267240-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=reject) header.from=crowdstrike.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7E92D3046D4F
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 20:39:26 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id EE25F3016036
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 20:39:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 422DB3403FD;
-	Thu, 18 Jun 2026 20:39:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 014563469E7;
+	Thu, 18 Jun 2026 20:39:23 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-00206402.pphosted.com (mx0b-00206402.pphosted.com [148.163.152.16])
+Received: from mx0a-00206402.pphosted.com (mx0a-00206402.pphosted.com [148.163.148.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3DE23491E1
-	for <stable@vger.kernel.org>; Thu, 18 Jun 2026 20:39:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB61B3403FD
+	for <stable@vger.kernel.org>; Thu, 18 Jun 2026 20:39:20 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781815165; cv=none; b=Ws1aURao2AgRwBsvZO8z3xqF6kYdVEVttIEg5C7Bqv0xXNvfDTn9OrTisbqwGSGbnMrIZLKd5sEN8bj41R9EgdyxOIthbg/6UvhqtWK5WEuC76XvfavoiwfbCIP27pfFtYOmjwzNVdNOklipwceQwqNfF7XP14Vyv2RyR9ru/sI=
+	t=1781815162; cv=none; b=U0AAQZxEKJ9p1k7PiJcli/WtWeHaFtbWeVTS5HTwyE/skoS2KefoU1opN/NZw5IOLvu01+C5blM0ZUMtQwgMCL0yG1RTCUUQnr+awfSdFkMZcCKsdNhQb4w1mUbYVPtHOCDf46ioUcMZeD7DRfYc/kejB5vBFueQYnYBS2aKT0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781815165; c=relaxed/simple;
-	bh=9rLYG1gJsinzpYSvBZuHOeFPMTgjam1YoY5VVfQFVGA=;
+	s=arc-20240116; t=1781815162; c=relaxed/simple;
+	bh=/eCs5PgOc6vglHwSEhYWBH1vyD6HWIvdmgKmt92Qdsw=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=H19H/DBhdrF8giNFFB8a2Vm4p1V3cCY2VGLrSWxoJBIjBJQuKDwNt3lQME1MIsWKiXRMpbZ+kp3rXaIRYM0VJAZc8o4AYKkND90mkz32umruo6IOMNVnRYxEVLuXQS11QgRw3H7nhLusmIDNaASsnhcVeM4DwOz+Xf41VE7kDss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=crowdstrike.com; spf=pass smtp.mailfrom=crowdstrike.com; dkim=pass (2048-bit key) header.d=crowdstrike.com header.i=@crowdstrike.com header.b=C3fzPY4n; arc=none smtp.client-ip=148.163.152.16
-Received: from pps.filterd (m0354653.ppops.net [127.0.0.1])
-	by mx0b-00206402.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65IIsgdU3939561;
-	Thu, 18 Jun 2026 20:39:14 GMT
+	 MIME-Version:Content-Type; b=eWfCnhCV1ACiRx59faygCgPFLWwil539YoSCHACJYdXDNDbg+Nu8NXlr2uPV1zjQ9NHf2feccqmhFmkNmkpr+3XKjSmaQKrEmcztQt2a9qiLOXV6l/vuOz/6OMG0P1zhiVm3p1ngUqN8RIy57Kh9rbrvA1C+ZwtmuQisF7AbODo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=crowdstrike.com; spf=pass smtp.mailfrom=crowdstrike.com; dkim=pass (2048-bit key) header.d=crowdstrike.com header.i=@crowdstrike.com header.b=Wls/z1Ir; arc=none smtp.client-ip=148.163.148.77
+Received: from pps.filterd (m0354652.ppops.net [127.0.0.1])
+	by mx0a-00206402.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65IJiHrE3007917;
+	Thu, 18 Jun 2026 20:39:15 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crowdstrike.com;
 	 h=cc:content-transfer-encoding:content-type:date:from
 	:in-reply-to:message-id:mime-version:references:subject:to; s=
-	default; bh=ls9nTPmrQlx5Okf2YFflw7H2OCAams0lLg1U8EMSNTQ=; b=C3fz
-	PY4nlMFxKsAQOUHi8fCxnkt5dR9LpXAPU0kzau2aRHOH/wk0tZjthszOCnPnbMNs
-	uA4f2o5umKLMal6/6aEBVyPPBq/b07Q2M+sBriPx+Lc4P5xl8O7wX0wDAcxRyb3z
-	3R/SvmUucYR/94OlI3U2y15jolC1HhFCX5QcxChisqwkIr57/Rxmh6+TegD5QpFd
-	ZnYFIKC6l29Eh9HKRR6+plM/73zc0p/FVEkkheGh4rOfL1toWCTUSTrMeCiDfNK5
-	OmjgtttLOdXdzoVa6Wwx8Zn2mpR8CJOw2yb4PAln0lL8SakXpBF3X2yQJ8z0siYq
-	rvfjsUSG4atr3vhU3g==
+	default; bh=x5dIxY0KI/s4CGjvzWtTNN1wNgcd9Z6bdhBuW0RF094=; b=Wls/
+	z1Ir1gbL5VCLf+cFVKkUzRF5XFh4HLo3JCpHmqgPLtA/IdRil9j20Llbsk29DTUh
+	tRR56VYsl1aY0vZmbEzMmS1F2Q62Aa1FMhRWJ6v9TsLmtW7x68T98AbkTP4cpMxs
+	v+4uE+qrVX7tsbGw5UZWtkKYF1EH7nr3zZQ4gRCZgtmD35CFzJMG7CVOPfbuQ5A3
+	vWssZON7tJS2Cd5rZFfCq63Zk4n9Hn4I1+Ogj1vSCvTpzBlzDVxcL6Qsm11iQvW3
+	7/ux/T9+nAWDK9ZzktNAY6eek2p34LKBRps2peoUiE54PqG/knoMo2O2nmC5bZTh
+	JDc8TgYoKJJcxgGPnQ==
 Received: from mail.crowdstrike.com (dragosx.crowdstrike.com [208.42.231.60] (may be forged))
-	by mx0b-00206402.pphosted.com (PPS) with ESMTPS id 4ev5c6v1ax-2
+	by mx0a-00206402.pphosted.com (PPS) with ESMTPS id 4evq3k87vh-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 18 Jun 2026 20:39:13 +0000 (GMT)
+	Thu, 18 Jun 2026 20:39:15 +0000 (GMT)
 Received: from LL-DJCZ134.crowdstrike.sys (10.100.11.122) by
  04WPEXCH006.crowdstrike.sys (10.100.11.70) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Thu, 18 Jun 2026 20:39:12 +0000
+ 15.2.2562.43; Thu, 18 Jun 2026 20:39:13 +0000
 From: Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
 To: <stable@vger.kernel.org>
 CC: <gregkh@linuxfoundation.org>, <sashal@kernel.org>, <rostedt@goodmis.org>,
         <vmalik@redhat.com>, <jmarchan@redhat.com>,
         <martin.kelly@crowdstrike.com>
-Subject: [PATCH 6.6.y 04/27] scripts/sorttable: Have the ORC code use the _r() functions to read
-Date: Thu, 18 Jun 2026 16:38:42 -0400
-Message-ID: <50048eb4cf1919493585ba6beb29fa8822c1b37f.1781814096.git.andrey.grodzovsky@crowdstrike.com>
+Subject: [PATCH 6.6.y 05/27] scripts/sorttable: Make compare_extable() into two functions
+Date: Thu, 18 Jun 2026 16:38:43 -0400
+Message-ID: <bb9c224af8b85d27d2a3e5d41df1aa7fe32ff9fc.1781814099.git.andrey.grodzovsky@crowdstrike.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <cover.1781814083.git.andrey.grodzovsky@crowdstrike.com>
 References: <cover.1781814083.git.andrey.grodzovsky@crowdstrike.com>
@@ -76,34 +76,34 @@ Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-ClientProxiedBy: 04WPEXCH006.crowdstrike.sys (10.100.11.70) To
  04WPEXCH006.crowdstrike.sys (10.100.11.70)
-X-Authority-Analysis: v=2.4 cv=Eez4hvmC c=1 sm=1 tr=0 ts=6a345772 cx=c_pps
+X-Proofpoint-ORIG-GUID: XRJfQxGGBgZTALHjfVyS6KSbbNtOuYsZ
+X-Proofpoint-GUID: XRJfQxGGBgZTALHjfVyS6KSbbNtOuYsZ
+X-Authority-Analysis: v=2.4 cv=QrVuG1yd c=1 sm=1 tr=0 ts=6a345773 cx=c_pps
  a=1d8vc5iZWYKGYgMGCdbIRA==:117 a=1d8vc5iZWYKGYgMGCdbIRA==:17
- a=wzDLvsUvY-im7TRT:21 a=EjBHVkixTFsA:10 a=FelO9ux0wxsA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=T2KQ53IYiC3MXPrxx8bB:22 a=GCXdLZfFv8EKBZhKOxZ5:22
- a=VwQbUJbxAAAA:8 a=meVymXHHAAAA:8 a=7CQSdrXTAAAA:8 a=7d_E57ReAAAA:8
- a=Z4Rwk6OoAAAA:8 a=JfrnYn6hAAAA:8 a=cpyHj8QvAAAA:8 a=i0EeH86SAAAA:8
- a=pl6vuDidAAAA:8 a=1UX6Do5GAAAA:8 a=20KFwNOVAAAA:8 a=GGcVmEvbB2xf_gawNiMA:9
+ a=EjBHVkixTFsA:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=T2KQ53IYiC3MXPrxx8bB:22 a=2KvRFfd_T_-xjmS8C1aD:22 a=VwQbUJbxAAAA:8
+ a=meVymXHHAAAA:8 a=7CQSdrXTAAAA:8 a=7d_E57ReAAAA:8 a=Z4Rwk6OoAAAA:8
+ a=JfrnYn6hAAAA:8 a=cpyHj8QvAAAA:8 a=i0EeH86SAAAA:8 a=pl6vuDidAAAA:8
+ a=1UX6Do5GAAAA:8 a=20KFwNOVAAAA:8 a=IdAk5Fh7ePpybWqhdtEA:9
  a=2JgSa4NbpEOStq-L5dxp:22 a=a-qgeE7W1pNrGK8U0ZQC:22 a=jhqOcbufqs7Y1TYCrUUU:22
  a=HkZW87K1Qel5hWWM3VKY:22 a=1CNFftbPRP8L7MoqJWF3:22 a=BPjOrAZP5zzvMhA9psHf:22
  a=Et2XPkok5AAZYJIKzHr1:22
-X-Proofpoint-GUID: KW_bQPt1EqfVdZYm6PJ1x0FibWPR-0nR
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjE4MDE4OSBTYWx0ZWRfX1dw7VQr1WJyt
- Pn9U+UHAPi+84RzwcF/ZCGEau4NUcUeynUFSyl8RxYLrT0Rq/oXT3OvSZE1y5WZtHzEU04Ug/2S
- hNUvXyr7pjPAtpVgBB3KC6fHlnCDWL6CPPV+RgNwafjPO/BxsYsu
-X-Proofpoint-ORIG-GUID: KW_bQPt1EqfVdZYm6PJ1x0FibWPR-0nR
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjE4MDE4OSBTYWx0ZWRfX6c9dZ3sQD1pL
- BEuVhvDqJdOJk/eeUO3Cx45na5pwn8T+UHE6UnrJ3nK9qKJi5xf7gffpFR7mKtzXIDd/jHqUVvq
- 1eFLkx73Zn9E+DTuoJibSKo13S0HDwkNm15fKUMCyFMCJXr1u2a0naQEKBm830q/L77AghbAHpj
- wRu4KZG44AtCqmFl2wUlotQUxkK5hxekbrrrG7su2TnZ2hiY7mWj+e17n6WzJJcuNul3MTvX3hH
- Ki6oW2IB2VHceh2ccwU/7kNx1DCSNBvkoRVNLPL5brK9Rm56Yb0+qQT55OoTGvcUnXLEzaTwi1f
- Sf0yRPIX9w3jDCXcJwUrDvWPqBdguQyRKftWZYn3kesXAETwn1Z8F3BTda4LcVz9fkUTy2zEb5/
- DxHgrEdz2OwS6YsL4DOGf7OJXvs5Ge4VPM24+Xaol7a3Cyx+l+T45UucLmh1WFs+HekpdOfgmCO
- ypWZIo4QzeTulO7qA4g==
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjE4MDE4OSBTYWx0ZWRfX1/QEcY0V+aPS
+ fIMC9bnTdDgyacfKj1VkmZRc6z7z30LZ0B+gS30rLsrNlQcGgGkmNzjVFccAJXvspH/8F8uPhPu
+ ZSMmqh9rmT5TYK7key2GR8GgbzPHL1gGb7qB3tJmNzoVhg7QG6khsRKmTKSsqtdUCUfS0frEYFq
+ P5NGjKZjquuPbXK/OBRj9Aonu60vAwuI4vF5qNyMUwloL+YZkG0iUEwskKVIP5HBIMdItVeGfRN
+ rard7iDtYCOg6OIgo9wsfd0WCqZDGQsFCqHJT5Sd8W8LIJT8mFB/4DMwjP1vG5JVHcZelQ0RWMA
+ HlJDwIpDuTl7o0RbFlrK5cs3MaJljnWVvxscvOXDrmPuqWkqiJAewRtYEOQPBuhVaiShOTo+dZ5
+ riaYO7K02Jg6IKAubNRZ/yMIEc8oxShlHgXnvqpFA9FkMnWcPIi3tz+4PRcHHR6V5xOQmng/rQu
+ dyyHZdKeyLwaS1MEGEg==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjE4MDE4OSBTYWx0ZWRfX8C9dqmLlEXhR
+ oMwQG2hYIEIf+gDxHZyvut2KPFGq5Yck/E8jBKeXhdqKvGOOpgVj76Ck3Gm8TF/tl3y9lLUK8rf
+ XRM6kxVmomuEnogkAv5g+tuT1xCuJmAmVAEDx5Fq44rkInRNUurk
 X-Proofpoint-Virus-Version: vendor=nai engine=6900 definitions=11821
  signatures=596817
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 malwarescore=0 suspectscore=0 bulkscore=0 spamscore=0
- clxscore=1015 impostorscore=0 lowpriorityscore=0 adultscore=0
+ bulkscore=0 adultscore=0 malwarescore=0 spamscore=0 phishscore=0
+ suspectscore=0 clxscore=1015 lowpriorityscore=0 impostorscore=0
  priorityscore=1501 classifier=typeunknown authscore=0 authtc= authcc=
  route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
  definitions=main-2606180189
@@ -114,13 +114,13 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[crowdstrike.com,reject];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[crowdstrike.com:s=default];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_NONE(0.00)[];
-	TAGGED_FROM(0.00)[bounces-267242-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-267240-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:sashal@kernel.org,m:rostedt@goodmis.org,m:vmalik@redhat.com,m:jmarchan@redhat.com,m:martin.kelly@crowdstrike.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[andrey.grodzovsky@crowdstrike.com,stable@vger.kernel.org];
@@ -137,20 +137,34 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9F8A16A2A2E
+X-Rspamd-Queue-Id: 7C6C66A29B8
 
 From: Steven Rostedt <rostedt@goodmis.org>
 
-[ Upstream commit 66990c003306c240d570b3ba274ec4f68cf18c91 ]
+[ Upstream commit 7ffc0d0819f438779ed592e2e2e3576f43ce14f0 ]
 
-The ORC code reads the section information directly from the file. This
-currently works because the default read function is for 64bit little
-endian machines. But if for some reason that ever changes, this will
-break. Instead of having a surprise breakage, use the _r() functions that
-will read the values from the file properly.
+Instead of having the compare_extable() part of the sorttable.h header
+where it get's defined twice, since it is a very simple function, just
+define it twice in sorttable.c, and then it can use the proper read
+functions for the word size and endianess and the Elf_Addr macro can be
+removed from sorttable.h.
+
+Also add a micro optimization. Instead of:
+
+    if (a < b)
+        return -1;
+    if (a > b)
+        return 1;
+    return 0;
+
+That can be shorten to:
+
+   if (a < b)
+      return -1;
+   return a > b;
 
 Cc: bpf <bpf@vger.kernel.org>
 Cc: Masami Hiramatsu <mhiramat@kernel.org>
@@ -166,36 +180,91 @@ Cc: Zheng Yejian <zhengyejian1@huawei.com>
 Cc: Martin  Kelly <martin.kelly@crowdstrike.com>
 Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
 Cc: Josh Poimboeuf <jpoimboe@redhat.com>
-Link: https://lore.kernel.org/20250105162344.721480386@goodmis.org
+Link: https://lore.kernel.org/20250105162344.945299671@goodmis.org
 Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
 ---
- scripts/sorttable.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ scripts/sorttable.c | 20 ++++++++++++++++++++
+ scripts/sorttable.h | 14 --------------
+ 2 files changed, 20 insertions(+), 14 deletions(-)
 
+diff --git a/scripts/sorttable.c b/scripts/sorttable.c
+index 4dcdbf7a5..3e2c17e91 100644
+--- a/scripts/sorttable.c
++++ b/scripts/sorttable.c
+@@ -173,6 +173,26 @@ static inline unsigned int get_secindex(unsigned int shndx,
+ 	return r(&symtab_shndx_start[sym_offs]);
+ }
+ 
++static int compare_extable_32(const void *a, const void *b)
++{
++	Elf32_Addr av = r(a);
++	Elf32_Addr bv = r(b);
++
++	if (av < bv)
++		return -1;
++	return av > bv;
++}
++
++static int compare_extable_64(const void *a, const void *b)
++{
++	Elf64_Addr av = r8(a);
++	Elf64_Addr bv = r8(b);
++
++	if (av < bv)
++		return -1;
++	return av > bv;
++}
++
+ /* 32 bit and 64 bit are very similar */
+ #include "sorttable.h"
+ #define SORTTABLE_64
 diff --git a/scripts/sorttable.h b/scripts/sorttable.h
-index 18d07fdb2..58f7ab5f5 100644
+index 58f7ab5f5..36655ff16 100644
 --- a/scripts/sorttable.h
 +++ b/scripts/sorttable.h
-@@ -299,14 +299,14 @@ static int do_sort(Elf_Ehdr *ehdr,
- #if defined(SORTTABLE_64) && defined(UNWINDER_ORC_ENABLED)
- 		/* locate the ORC unwind tables */
- 		if (!strcmp(secstrings + idx, ".orc_unwind_ip")) {
--			orc_ip_size = s->sh_size;
-+			orc_ip_size = _r(&s->sh_size);
- 			g_orc_ip_table = (int *)((void *)ehdr +
--						   s->sh_offset);
-+						   _r(&s->sh_offset));
- 		}
- 		if (!strcmp(secstrings + idx, ".orc_unwind")) {
--			orc_size = s->sh_size;
-+			orc_size = _r(&s->sh_size);
- 			g_orc_table = (struct orc_entry *)((void *)ehdr +
--							     s->sh_offset);
-+							     _r(&s->sh_offset));
- 		}
+@@ -23,7 +23,6 @@
+ #undef sort_mcount_loc
+ #undef elf_mcount_loc
+ #undef do_sort
+-#undef Elf_Addr
+ #undef Elf_Ehdr
+ #undef Elf_Shdr
+ #undef Elf_Sym
+@@ -38,7 +37,6 @@
+ # define sort_mcount_loc	sort_mcount_loc_64
+ # define elf_mcount_loc		elf_mcount_loc_64
+ # define do_sort		do_sort_64
+-# define Elf_Addr		Elf64_Addr
+ # define Elf_Ehdr		Elf64_Ehdr
+ # define Elf_Shdr		Elf64_Shdr
+ # define Elf_Sym		Elf64_Sym
+@@ -52,7 +50,6 @@
+ # define sort_mcount_loc	sort_mcount_loc_32
+ # define elf_mcount_loc		elf_mcount_loc_32
+ # define do_sort		do_sort_32
+-# define Elf_Addr		Elf32_Addr
+ # define Elf_Ehdr		Elf32_Ehdr
+ # define Elf_Shdr		Elf32_Shdr
+ # define Elf_Sym		Elf32_Sym
+@@ -160,17 +157,6 @@ static void *sort_orctable(void *arg)
+ }
  #endif
- 	} /* for loop */
+ 
+-static int compare_extable(const void *a, const void *b)
+-{
+-	Elf_Addr av = _r(a);
+-	Elf_Addr bv = _r(b);
+-
+-	if (av < bv)
+-		return -1;
+-	if (av > bv)
+-		return 1;
+-	return 0;
+-}
+ #ifdef MCOUNT_SORT_ENABLED
+ pthread_t mcount_sort_thread;
+ 
 -- 
 2.34.1
 
