@@ -1,69 +1,69 @@
-Return-Path: <stable+bounces-267219-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267221-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id eIQXHD9SNGpFUwYAu9opvQ
-	(envelope-from <stable+bounces-267219-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 22:17:03 +0200
+	id acWCOklSNGpKUwYAu9opvQ
+	(envelope-from <stable+bounces-267221-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 22:17:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC5CB6A27EB
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 22:17:02 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 444C76A27F3
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 22:17:13 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=crowdstrike.com header.s=default header.b="tQv7 YDZ";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267219-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267219-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=crowdstrike.com header.s=default header.b="hcpM +wq";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267221-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-267221-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=reject) header.from=crowdstrike.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 72718303674B
+	by sea.lore.kernel.org (Postfix) with ESMTP id D8F9C303CE37
 	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 20:16:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DB172EBBA4;
-	Thu, 18 Jun 2026 20:16:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2869F31A065;
+	Thu, 18 Jun 2026 20:16:21 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-00206402.pphosted.com (mx0a-00206402.pphosted.com [148.163.148.77])
+Received: from mx0b-00206402.pphosted.com (mx0b-00206402.pphosted.com [148.163.152.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DAE1279907
-	for <stable@vger.kernel.org>; Thu, 18 Jun 2026 20:16:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C8733128B2
+	for <stable@vger.kernel.org>; Thu, 18 Jun 2026 20:16:19 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781813780; cv=none; b=pjZ/nB2DWfVs9WjT0tbeLZwV/EZshhF6QKT16tVXh1TF2vZzFD0N9ZddaAcLfVT0I27OA+tdJvWiCGE75jKx0xdtCNKW6XNbx+5THMC2u6yck72is3zDs915vtg9FR2y79plLMvPCLf6vqSkuprZUhI4AKjqNNEaqpDqz/l/vR8=
+	t=1781813780; cv=none; b=L2+tJUBwA6Y5Hwa6BuoxVlNEH9z/j0YAchNVvD8rWLAhACYWjNxLG43HYb4k2gPyDO0rr9ZOo0JYDONTnumQbAdn1suzgscK4YQAhqp7nDf4AqSAPha2jeOGvNA+EnoQZxczqwtuRML7IJs2c7GTqyCTBpuU19mEQbrdpQ5YYUo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1781813780; c=relaxed/simple;
-	bh=rWgWHV2P1yJJ+07BZZ4WNYUPVg4uFLq/Z7KKq4+beOY=;
+	bh=3BJYXWx0x90ajusZc72bripIcniu6U+EyNszpXf5Aic=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ErWiKFL+bS0/rzyZZ/b3mo/CzJQjFIoz8XTTL8YeC/EEg9hj5hAzX0tKrw6esSvlE6dlvS79gzzw/aLlZmLd1oU9b9Kpn5uAHGLkd410lRqB4dw55SEbrFv+UTafPvSPodJVCw687/dkHNeQ2VvnAgeIQq6/5noarFPsV+Gxw5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=crowdstrike.com; spf=pass smtp.mailfrom=crowdstrike.com; dkim=pass (2048-bit key) header.d=crowdstrike.com header.i=@crowdstrike.com header.b=tQv7YDZv; arc=none smtp.client-ip=148.163.148.77
-Received: from pps.filterd (m0354651.ppops.net [127.0.0.1])
-	by mx0a-00206402.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65IJiCAU4006048;
-	Thu, 18 Jun 2026 20:16:11 GMT
+	 MIME-Version:Content-Type; b=AiGSR4dSRH/5tBl4Zd9Ob2j8hNxee599l8+Qisx5weOa9DAbMPWc/MQZgAfaSZ+x9+mE8sp6uoEEBu/F9S7JcVnxyhobpF92fQSYAIy2y7WvQxiHtFeHlnQ2blRaRCm1T+JnqTxudlue9JVFeIXB04lVQkbXSssQhP+MMbuLN10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=crowdstrike.com; spf=pass smtp.mailfrom=crowdstrike.com; dkim=pass (2048-bit key) header.d=crowdstrike.com header.i=@crowdstrike.com header.b=hcpM+wqC; arc=none smtp.client-ip=148.163.152.16
+Received: from pps.filterd (m0354654.ppops.net [127.0.0.1])
+	by mx0b-00206402.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65IIsrKX3988528;
+	Thu, 18 Jun 2026 20:16:13 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crowdstrike.com;
 	 h=cc:content-transfer-encoding:content-type:date:from
 	:in-reply-to:message-id:mime-version:references:subject:to; s=
-	default; bh=ab/Dy0Bz3NC6jIImwndvoa2P40Kh4O4B10CkC0fu1K4=; b=tQv7
-	YDZvMOv2Zwcc508KwnqZbyerOtQ0bwvV3jBh1zoRp/Uk6r7yXsDRaHqpQ3WeYLd/
-	+eGTqMbhXmfrvJLPLikWrTmByhlyNwspLiinIRbpafD7/mhS0BOGb6TOVijCoow2
-	TEuCwwn44MhsqdBNmdNEErJWrgWebUwY2Nh3s8esWhpWBHOM7GQ02/0BlB7B1RBk
-	6P4AbiS+OJEO4Vd/+/ISKz7h9BfoujGNi3qqp8/QCslbzFO/ZFvv6vjQWlQQYZPe
-	wAV7wluaOIc9pEw7kDwPgtAK0hnPPCf/OgTMwT0qSCcx+nG9KJ2TrZzHvrTLGVsq
-	E/jlEMdKF72qlNUo3g==
+	default; bh=LdIzLtvT7EqTpbeVB/8mRlOmGIWJfFc+C6MKxe6Ru10=; b=hcpM
+	+wqC0KizhjcuimR992gV6Dz3uzKcIC4E6GoLbn1qXmBR0BhmOm4lkCfVgGJMhceW
+	ZA8R/6tBQNmpyRXVIghMZZVWluLV9RocuuYNeQbQ/yiptdh9T1SeXC1HAR5iBxFL
+	ZkDdTuT/T/TKjNhOv0PgzJdDklH8F8BYhR/1lqkfVNOvjI6C6hJ6wUyRdbbC10T0
+	zsi5EeWBcFkbfsX1+VRdiH8XMeXkVnDjNtmFPqVwgM/dKNAtWrrAswQDJgCUxyMd
+	zKi3d3VHuBpoz9iZKnMIN9hW+cm24UM+a/sh0cfddPN8QeNOFlmh+QK8wLKAxhjN
+	lAgZyAzwozP9TwGWkA==
 Received: from mail.crowdstrike.com (dragosx.crowdstrike.com [208.42.231.60] (may be forged))
-	by mx0a-00206402.pphosted.com (PPS) with ESMTPS id 4evq3jg4k6-1
+	by mx0b-00206402.pphosted.com (PPS) with ESMTPS id 4ev4w5uyve-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 18 Jun 2026 20:16:11 +0000 (GMT)
+	Thu, 18 Jun 2026 20:16:13 +0000 (GMT)
 Received: from LL-DJCZ134.crowdstrike.sys (10.100.11.122) by
  04WPEXCH006.crowdstrike.sys (10.100.11.70) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Thu, 18 Jun 2026 20:16:09 +0000
+ 15.2.2562.43; Thu, 18 Jun 2026 20:16:11 +0000
 From: Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
 To: <stable@vger.kernel.org>
 CC: <gregkh@linuxfoundation.org>, <sashal@kernel.org>, <rostedt@goodmis.org>,
         <vmalik@redhat.com>, <jmarchan@redhat.com>,
         <martin.kelly@crowdstrike.com>, <justin.deschamp@crowdstrike.com>,
         <linux-open-source@crowdstrike.com>
-Subject: [PATCH 6.12.y 19/27] scripts/sorttable: Zero out weak functions in mcount_loc table
-Date: Thu, 18 Jun 2026 16:15:33 -0400
-Message-ID: <ec4eda957478678f39fc5cfe27a29ab345e1bb51.1781809966.git.andrey.grodzovsky@crowdstrike.com>
+Subject: [PATCH 6.12.y 20/27] ftrace: Update the mcount_loc check of skipped entries
+Date: Thu, 18 Jun 2026 16:15:34 -0400
+Message-ID: <60ec429dd94faa00507cc8f10127ee80a89bd2d9.1781809971.git.andrey.grodzovsky@crowdstrike.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <cover.1781809906.git.andrey.grodzovsky@crowdstrike.com>
 References: <cover.1781809906.git.andrey.grodzovsky@crowdstrike.com>
@@ -77,36 +77,36 @@ Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-ClientProxiedBy: 04WPEXCH006.crowdstrike.sys (10.100.11.70) To
  04WPEXCH006.crowdstrike.sys (10.100.11.70)
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjE4MDE4NSBTYWx0ZWRfX/s/vsVbKWsd3
- ekv9lZrNYQOrCoi0UfX/bb2pRLKc2dmpx32ukalUQxyByFjuGmRnNfDsQ4M9o5swDmW8FqgeQmJ
- Dp7GBBOgOkFC5QT9A5maYSpCSduuHSju5AEbrFhGlpAROplcXy1V
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjE4MDE4NSBTYWx0ZWRfX1U3shv61yEFF
- 9pGmagwOem7TQe8SW9GRR5Ce8zcn8zbWqzHAWuMYzd6y9F42108Nym+sSTCv8chi9BtuHsfs/6D
- y5UIk8hVf+d0lXMuICzw+zdCxBCTyDq8iq6JuthVGk55KGFh26AhU8EZWCkCqLbRtfRahlQMS6t
- zmLaOPgkzNxp4+A0ZEpi8V7+eU3kFRqkNNukPTQyHXtK8W81I1EZ/02wHm6cZR/8B+Ct9onKVpy
- SZGrAVODItB2o2kqhehxuUmekxhCdAy6T0EYkhruMd+E77H7qbv+NUygG7RPt7R+Y6XQOyUYS6a
- ecIQxFZNDgXMC0t1n1Jdj4MR0FCQETkPns7UjPLzQfZsUUargv+AicPHxn8vtmESGhI7LgLjlfG
- kdJWu7Qv7LX2o2VgZEg2rPPzCFv2VYz/q6iJvQsP5BTE9aDGGHkFFQsXxfoyZCgLmojNiGcIptg
- e76fFvovB8y6UrjPJ5A==
-X-Proofpoint-ORIG-GUID: kZAvTI3kkmq8mVilnJ8_sJtK-w8AxOt_
-X-Proofpoint-GUID: kZAvTI3kkmq8mVilnJ8_sJtK-w8AxOt_
-X-Authority-Analysis: v=2.4 cv=AvLeGu9P c=1 sm=1 tr=0 ts=6a34520b cx=c_pps
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjE4MDE4NiBTYWx0ZWRfX/td5KEz4yJBc
+ KfCoj7E+0J1C/Tfl79A5BtrYyHIHU8Z4ZBt/X8jrmPeQ1KZF99cWOv68Q3LZYcOFjbSh2DCxXP+
+ 9fLXsl5/y3OLHcKgOjtDyCKhAdsJs8dvBjASF0gEicg8XFnJwDeHWaCwHT43cpoqpGAjT6240uu
+ a28ejUB/fTWDe9XzjrmdO9XNeTWqLIc3TCI6LIwh5Vu6Q5JA3ZDGUN3Qu8jVQPwfM3IM48vM61N
+ PuTLabh2FCIYOUut3xm8LDpkOv/Qswy4W6M/1gc02UnapWtQuj0MeM7l79I/rs5bfEcV3edcUHa
+ ksB18y8Nkqdpr3saZZwj+0fJIETCBFs9vlSLr1D8ESByhWQk+MB86KzRAk1QuX/bKqPLNfFR4DU
+ 8S43O9vQoK4QYwmIJ/6CvtIUYViqUVsGxF53paNlK3ATUskcHLBqkxxJvgaal+hhYkfES2Dyjta
+ BtiBj3IgKEteTPKsfjw==
+X-Authority-Analysis: v=2.4 cv=JtDBas4C c=1 sm=1 tr=0 ts=6a34520d cx=c_pps
  a=1d8vc5iZWYKGYgMGCdbIRA==:117 a=1d8vc5iZWYKGYgMGCdbIRA==:17
  a=EjBHVkixTFsA:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=T2KQ53IYiC3MXPrxx8bB:22 a=b3B37AjAgz0HnGB3MuNd:22 a=VwQbUJbxAAAA:8
+ a=T2KQ53IYiC3MXPrxx8bB:22 a=R_n4Uisa8axJ7jemP0ek:22 a=VwQbUJbxAAAA:8
  a=meVymXHHAAAA:8 a=7CQSdrXTAAAA:8 a=7d_E57ReAAAA:8 a=Z4Rwk6OoAAAA:8
  a=JfrnYn6hAAAA:8 a=cpyHj8QvAAAA:8 a=i0EeH86SAAAA:8 a=pl6vuDidAAAA:8
- a=1UX6Do5GAAAA:8 a=20KFwNOVAAAA:8 a=VnNF1IyMAAAA:8 a=vVLE5V-PJzaAi0G2y4QA:9
+ a=1UX6Do5GAAAA:8 a=20KFwNOVAAAA:8 a=VnNF1IyMAAAA:8 a=c2Yqh1CnMV39eQAqYPYA:9
  a=2JgSa4NbpEOStq-L5dxp:22 a=a-qgeE7W1pNrGK8U0ZQC:22 a=jhqOcbufqs7Y1TYCrUUU:22
  a=HkZW87K1Qel5hWWM3VKY:22 a=1CNFftbPRP8L7MoqJWF3:22 a=BPjOrAZP5zzvMhA9psHf:22
  a=Et2XPkok5AAZYJIKzHr1:22
+X-Proofpoint-ORIG-GUID: vE0cN0JgEmKqvpi1PhXOfjnXLvH9NQ-k
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjE4MDE4NiBTYWx0ZWRfX6/4YKWYriP58
+ uQYdrzc5ua4GV0cBwRFYTJGLz0yVAlnQZHyaFSVnatSmelgFN1/K21MBdHQWxClibECwhXC0ezY
+ lBADalSKk25dUoCXNtJXFLy287IiFg+quTJ6fG2BDdD17/W5ozlP
+X-Proofpoint-GUID: vE0cN0JgEmKqvpi1PhXOfjnXLvH9NQ-k
 X-Proofpoint-Virus-Version: vendor=nai engine=6900 definitions=11821
  signatures=596817
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 adultscore=0 suspectscore=0 spamscore=0 clxscore=1015
- malwarescore=0 impostorscore=0 phishscore=0 lowpriorityscore=0 bulkscore=0
+ priorityscore=1501 impostorscore=0 malwarescore=0 suspectscore=0 phishscore=0
+ clxscore=1015 lowpriorityscore=0 adultscore=0 bulkscore=0 spamscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2606180185
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2606180186
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
@@ -114,13 +114,13 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[crowdstrike.com,reject];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[crowdstrike.com:s=default];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_NONE(0.00)[];
-	TAGGED_FROM(0.00)[bounces-267219-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-267221-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:sashal@kernel.org,m:rostedt@goodmis.org,m:vmalik@redhat.com,m:jmarchan@redhat.com,m:martin.kelly@crowdstrike.com,m:justin.deschamp@crowdstrike.com,m:linux-open-source@crowdstrike.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[andrey.grodzovsky@crowdstrike.com,stable@vger.kernel.org];
@@ -137,72 +137,18 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: BC5CB6A27EB
+X-Rspamd-Queue-Id: 444C76A27F3
 
 From: Steven Rostedt <rostedt@goodmis.org>
 
-[ Upstream commit ef378c3b8233855497a414b9d67bf22592c928a4 ]
+[ Upstream commit 4a3efc6baff931da9a85c6d2e42c87bd9a827399 ]
 
-When a function is annotated as "weak" and is overridden, the code is not
-removed. If it is traced, the fentry/mcount location in the weak function
-will be referenced by the "__mcount_loc" section. This will then be added
-to the available_filter_functions list. Since only the address of the
-functions are listed, to find the name to show, a search of kallsyms is
-used.
-
-Since kallsyms will return the function by simply finding the function
-that the address is after but before the next function, an address of a
-weak function will show up as the function before it. This is because
-kallsyms does not save names of weak functions. This has caused issues in
-the past, as now the traced weak function will be listed in
-available_filter_functions with the name of the function before it.
-
-At best, this will cause the previous function's name to be listed twice.
-At worse, if the previous function was marked notrace, it will now show up
-as a function that can be traced. Note that it only shows up that it can
-be traced but will not be if enabled, which causes confusion.
-
- https://lore.kernel.org/all/20220412094923.0abe90955e5db486b7bca279@kernel.org/
-
-The commit b39181f7c6907 ("ftrace: Add FTRACE_MCOUNT_MAX_OFFSET to avoid
-adding weak function") was a workaround to this by checking the function
-address before printing its name. If the address was too far from the
-function given by the name then instead of printing the name it would
-print: __ftrace_invalid_address___<invalid-offset>
-
-The real issue is that these invalid addresses are listed in the ftrace
-table look up which available_filter_functions is derived from. A place
-holder must be listed in that file because set_ftrace_filter may take a
-series of indexes into that file instead of names to be able to do O(1)
-lookups to enable filtering (many tools use this method).
-
-Even if kallsyms saved the size of the function, it does not remove the
-need of having these place holders. The real solution is to not add a weak
-function into the ftrace table in the first place.
-
-To solve this, the sorttable.c code that sorts the mcount regions during
-the build is modified to take a "nm -S vmlinux" input, sort it, and any
-function listed in the mcount_loc section that is not within a boundary of
-the function list given by nm is considered a weak function and is zeroed
-out.
-
-Note, this does not mean they will remain zero when booting as KASLR
-will still shift those addresses. To handle this, the entries in the
-mcount_loc section will be ignored if they are zero or match the
-kaslr_offset() value.
-
-Before:
-
- ~# grep __ftrace_invalid_address___ /sys/kernel/tracing/available_filter_functions | wc -l
- 551
-
-After:
-
- ~# grep __ftrace_invalid_address___ /sys/kernel/tracing/available_filter_functions | wc -l
- 0
+Now that weak functions turn into skipped entries, update the check to
+make sure the amount that was allocated would fit both the entries that
+were allocated as well as those that were skipped.
 
 Cc: bpf <bpf@vger.kernel.org>
 Cc: Masami Hiramatsu <mhiramat@kernel.org>
@@ -223,232 +169,47 @@ Cc: Catalin Marinas <catalin.marinas@arm.com>
 Cc: Will Deacon <will@kernel.org>
 Cc: Vasily Gorbik <gor@linux.ibm.com>
 Cc: Alexander Gordeev <agordeev@linux.ibm.com>
-Link: https://lore.kernel.org/20250218200022.883095980@goodmis.org
+Link: https://lore.kernel.org/20250218200023.055162048@goodmis.org
 Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
 ---
- kernel/trace/ftrace.c   |   6 +-
- scripts/link-vmlinux.sh |   4 +-
- scripts/sorttable.c     | 128 +++++++++++++++++++++++++++++++++++++++-
- 3 files changed, 134 insertions(+), 4 deletions(-)
+ kernel/trace/ftrace.c | 23 ++++++++++++++++++++++-
+ 1 file changed, 22 insertions(+), 1 deletion(-)
 
 diff --git a/kernel/trace/ftrace.c b/kernel/trace/ftrace.c
-index c8a6c0bb9..40620e3e7 100644
+index 40620e3e7..4f0d05e08 100644
 --- a/kernel/trace/ftrace.c
 +++ b/kernel/trace/ftrace.c
-@@ -7048,6 +7048,7 @@ static int ftrace_process_locs(struct module *mod,
- 	unsigned long count;
- 	unsigned long *p;
- 	unsigned long addr;
-+	unsigned long kaslr;
- 	unsigned long flags = 0; /* Shut up gcc */
- 	int ret = -ENOMEM;
+@@ -7155,7 +7155,28 @@ static int ftrace_process_locs(struct module *mod,
  
-@@ -7096,6 +7097,9 @@ static int ftrace_process_locs(struct module *mod,
- 		ftrace_pages->next = start_pg;
- 	}
- 
-+	/* For zeroed locations that were shifted for core kernel */
-+	kaslr = !mod ? kaslr_offset() : 0;
+ 	/* We should have used all pages unless we skipped some */
+ 	if (pg_unuse) {
+-		WARN_ON(!skipped);
++		unsigned long pg_remaining, remaining = 0;
++		unsigned long skip;
 +
- 	p = start;
- 	pg = start_pg;
- 	while (p < end) {
-@@ -7107,7 +7111,7 @@ static int ftrace_process_locs(struct module *mod,
- 		 * object files to satisfy alignments.
- 		 * Skip any NULL pointers.
- 		 */
--		if (!addr) {
-+		if (!addr || addr == kaslr) {
- 			skipped++;
- 			continue;
- 		}
-diff --git a/scripts/link-vmlinux.sh b/scripts/link-vmlinux.sh
-index a9b3f34a7..94f794ca1 100755
---- a/scripts/link-vmlinux.sh
-+++ b/scripts/link-vmlinux.sh
-@@ -173,12 +173,14 @@ mksysmap()
- 
- sorttable()
- {
--	${objtree}/scripts/sorttable ${1}
-+	${NM} -S ${1} > .tmp_vmlinux.nm-sort
-+	${objtree}/scripts/sorttable -s .tmp_vmlinux.nm-sort ${1}
- }
- 
- cleanup()
- {
- 	rm -f .btf.*
-+	rm -f .tmp_vmlinux.nm-sort
- 	rm -f System.map
- 	rm -f vmlinux
- 	rm -f vmlinux.map
-diff --git a/scripts/sorttable.c b/scripts/sorttable.c
-index ec02a2852..23c7e0e6c 100644
---- a/scripts/sorttable.c
-+++ b/scripts/sorttable.c
-@@ -580,6 +580,98 @@ static void rela_write_addend(Elf_Rela *rela, uint64_t val)
- 	e.rela_write_addend(rela, val);
- }
- 
-+struct func_info {
-+	uint64_t	addr;
-+	uint64_t	size;
-+};
++		/* Count the number of entries unused and compare it to skipped. */
++		pg_remaining = (ENTRIES_PER_PAGE << pg->order) - pg->index;
 +
-+/* List of functions created by: nm -S vmlinux */
-+static struct func_info *function_list;
-+static int function_list_size;
++		if (!WARN(skipped < pg_remaining, "Extra allocated pages for ftrace")) {
 +
-+/* Allocate functions in 1k blocks */
-+#define FUNC_BLK_SIZE	1024
-+#define FUNC_BLK_MASK	(FUNC_BLK_SIZE - 1)
++			skip = skipped - pg_remaining;
 +
-+static int add_field(uint64_t addr, uint64_t size)
-+{
-+	struct func_info *fi;
-+	int fsize = function_list_size;
++			for (pg = pg_unuse; pg; pg = pg->next)
++				remaining += 1 << pg->order;
 +
-+	if (!(fsize & FUNC_BLK_MASK)) {
-+		fsize += FUNC_BLK_SIZE;
-+		fi = realloc(function_list, fsize * sizeof(struct func_info));
-+		if (!fi)
-+			return -1;
-+		function_list = fi;
-+	}
-+	fi = &function_list[function_list_size++];
-+	fi->addr = addr;
-+	fi->size = size;
-+	return 0;
-+}
++			skip = DIV_ROUND_UP(skip, ENTRIES_PER_PAGE);
 +
-+/* Only return match if the address lies inside the function size */
-+static int cmp_func_addr(const void *K, const void *A)
-+{
-+	uint64_t key = *(const uint64_t *)K;
-+	const struct func_info *a = A;
-+
-+	if (key < a->addr)
-+		return -1;
-+	return key >= a->addr + a->size;
-+}
-+
-+/* Find the function in function list that is bounded by the function size */
-+static int find_func(uint64_t key)
-+{
-+	return bsearch(&key, function_list, function_list_size,
-+		       sizeof(struct func_info), cmp_func_addr) != NULL;
-+}
-+
-+static int cmp_funcs(const void *A, const void *B)
-+{
-+	const struct func_info *a = A;
-+	const struct func_info *b = B;
-+
-+	if (a->addr < b->addr)
-+		return -1;
-+	return a->addr > b->addr;
-+}
-+
-+static int parse_symbols(const char *fname)
-+{
-+	FILE *fp;
-+	char addr_str[20]; /* Only need 17, but round up to next int size */
-+	char size_str[20];
-+	char type;
-+
-+	fp = fopen(fname, "r");
-+	if (!fp) {
-+		perror(fname);
-+		return -1;
-+	}
-+
-+	while (fscanf(fp, "%16s %16s %c %*s\n", addr_str, size_str, &type) == 3) {
-+		uint64_t addr;
-+		uint64_t size;
-+
-+		/* Only care about functions */
-+		if (type != 't' && type != 'T' && type != 'W')
-+			continue;
-+
-+		addr = strtoull(addr_str, NULL, 16);
-+		size = strtoull(size_str, NULL, 16);
-+		if (add_field(addr, size) < 0)
-+			return -1;
-+	}
-+	fclose(fp);
-+
-+	qsort(function_list, function_list_size, sizeof(struct func_info), cmp_funcs);
-+
-+	return 0;
-+}
-+
- static pthread_t mcount_sort_thread;
- static bool sort_reloc;
- 
-@@ -752,6 +844,21 @@ static void *sort_mcount_loc(void *arg)
- 		goto out;
- 	}
- 
-+	/* zero out any locations not found by function list */
-+	if (function_list_size) {
-+		for (void *ptr = vals; ptr < vals + size; ptr += long_size) {
-+			uint64_t key;
-+
-+			key = long_size == 4 ? r((uint32_t *)ptr) : r8((uint64_t *)ptr);
-+			if (!find_func(key)) {
-+				if (long_size == 4)
-+					*(uint32_t *)ptr = 0;
-+				else
-+					*(uint64_t *)ptr = 0;
-+			}
++			/*
++			 * Check to see if the number of pages remaining would
++			 * just fit the number of entries skipped.
++			 */
++			WARN(skip != remaining, "Extra allocated pages for ftrace: %lu with %lu skipped",
++			     remaining, skipped);
 +		}
-+	}
-+
- 	compare_values = long_size == 4 ? compare_values_32 : compare_values_64;
- 
- 	qsort(vals, count, long_size, compare_values);
-@@ -801,6 +908,8 @@ static void get_mcount_loc(struct elf_mcount_loc *emloc, Elf_Shdr *symtab_sec,
- 		return;
- 	}
- }
-+#else /* MCOUNT_SORT_ENABLED */
-+static inline int parse_symbols(const char *fname) { return 0; }
- #endif
- 
- static int do_sort(Elf_Ehdr *ehdr,
-@@ -1256,14 +1365,29 @@ int main(int argc, char *argv[])
- 	int i, n_error = 0;  /* gcc-4.3.0 false positive complaint */
- 	size_t size = 0;
- 	void *addr = NULL;
-+	int c;
-+
-+	while ((c = getopt(argc, argv, "s:")) >= 0) {
-+		switch (c) {
-+		case 's':
-+			if (parse_symbols(optarg) < 0) {
-+				fprintf(stderr, "Could not parse %s\n", optarg);
-+				return -1;
-+			}
-+			break;
-+		default:
-+			fprintf(stderr, "usage: sorttable [-s nm-file] vmlinux...\n");
-+			return 0;
-+		}
-+	}
- 
--	if (argc < 2) {
-+	if ((argc - optind) < 1) {
- 		fprintf(stderr, "usage: sorttable vmlinux...\n");
- 		return 0;
- 	}
- 
- 	/* Process each file in turn, allowing deep failure. */
--	for (i = 1; i < argc; i++) {
-+	for (i = optind; i < argc; i++) {
- 		addr = mmap_file(argv[i], &size);
- 		if (!addr) {
- 			++n_error;
+ 		/* Need to synchronize with ftrace_location_range() */
+ 		synchronize_rcu();
+ 		ftrace_free_pages(pg_unuse);
 -- 
 2.34.1
 
