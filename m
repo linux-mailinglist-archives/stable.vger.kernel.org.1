@@ -1,175 +1,170 @@
-Return-Path: <stable+bounces-267103-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267104-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id VskoFFrUM2rTGwYAu9opvQ
-	(envelope-from <stable+bounces-267103-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 13:19:54 +0200
+	id Q7QlMPDTM2rFGwYAu9opvQ
+	(envelope-from <stable+bounces-267104-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 13:18:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F6C169FB4C
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 13:19:53 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3479D69FB2B
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 13:18:08 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=intel.com header.s=Intel header.b=HyAvz85d;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267103-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267103-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=intel.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=cdHOPrIW;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267104-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-267104-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AC42530590B7
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 11:13:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E7E0D3039F4A
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 11:14:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55EEC3F0AAC;
-	Thu, 18 Jun 2026 11:13:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55E083F0A95;
+	Thu, 18 Jun 2026 11:14:38 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF24A3EE1DB;
-	Thu, 18 Jun 2026 11:13:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D44F73F0ABC
+	for <stable@vger.kernel.org>; Thu, 18 Jun 2026 11:14:36 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781781198; cv=none; b=Ow3qGb3lUUT7Le9XGfryW01lwM4Bn2xWhk34ihffGOb0avnyquzmPFnDzwvw+5WEAEaMde1IJNjCRnOvoCIGgwe9yqQOdBjh/nicDomdh24ywuitwUD3p7Fysvk9QrIXPnfIF0tfgidVCIM6K9e10SPwn7NpATRUDeqSGhwPE4o=
+	t=1781781278; cv=none; b=QbZQ0Crt/S3mQvSxnrUCWmUJ1uSH4b/L3OWHYEICog/He5OG6eNtapm0p6biotpovmmcCzJw3XrT4saMfZNXoOTskmJe6PB5CheayWJ4TE41RBDG8Iz8Ps9xnW0uQrvoD1UujlaB5RRThT4ZCe3o1mON8aXTX55H6xSLOH658xc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781781198; c=relaxed/simple;
-	bh=SexmYc3raGJTTWWvAJwngK2R5oweGHq9hSkCaNk/t7E=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=oiRs5J2ocsYBga4wQM2PxA4OXHovpmzAplV7JN+rH4dg0+ompeoSUZqazwPnL3TI1bjo//DErU/8paloiEI4EehcpYJ6VzKm72m/hohLnsdQaI/hXD4/CIH5n8yyFk5YocRKSx7l2r/eWBrSTGUvQJteoeMUMoMC7wxYqHsv3oQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HyAvz85d; arc=none smtp.client-ip=198.175.65.21
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1781781195; x=1813317195;
-  h=from:to:cc:subject:in-reply-to:references:date:
-   message-id:mime-version;
-  bh=SexmYc3raGJTTWWvAJwngK2R5oweGHq9hSkCaNk/t7E=;
-  b=HyAvz85d22k+aBSE5NYV7FzvbZ49pIniecYB+DSrpp0AETGpfgTqbtHN
-   EfH7+HivA1VSwmGkhJaheEtF6RhTwFnNdxXLdzNEGBSd8eW29aSsxz5xo
-   rDQAkQkJOrkIqhGQD+1XbIN3grCbBW49lzDEc8ae6LszyflkLbZWjV2jS
-   NtKbJF7zrmpABZ0pc6RKUsWqNGZN7vNvUtpW6m3YaSndwRcGRQmackEAE
-   Mfav+sKw44BAMfFuIMcKU/XD4IuM0HF9fLdYKezn16tRtQprAejDk6/V1
-   KcRvyH4IJvXFOKIEGD44NfKaQbCqEWjogJK8JCl9JIy6UwTCkyP3oJHMT
-   Q==;
-X-CSE-ConnectionGUID: bbSv1/WuSbaooNH+sGvcZw==
-X-CSE-MsgGUID: hR43GDi2TiKtqUVqyDZJ/A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11820"; a="82510587"
-X-IronPort-AV: E=Sophos;i="6.24,211,1774335600"; 
-   d="scan'208";a="82510587"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jun 2026 04:13:15 -0700
-X-CSE-ConnectionGUID: NodSaJeHQoWWY68QIbNlXA==
-X-CSE-MsgGUID: iGItxHOSR8WwPGXbD7T0xg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,211,1774335600"; 
-   d="scan'208";a="253445719"
-Received: from rvuia-mobl.ger.corp.intel.com (HELO localhost) ([10.245.244.2])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jun 2026 04:13:11 -0700
-From: Jani Nikula <jani.nikula@linux.intel.com>
-To: Ma Ke <make_ruc2021@163.com>, rodrigo.vivi@intel.com,
- joonas.lahtinen@linux.intel.com, tursulin@ursulin.net, airlied@gmail.com,
- simona@ffwll.ch, hansg@kernel.org, matthew.d.roper@intel.com,
- vivek.kasireddy@intel.com
-Cc: intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
- akpm@linux-foundation.org, Ma Ke <make_ruc2021@163.com>,
- stable@vger.kernel.org
-Subject: Re: [PATCH v2] drm/i915/dsi: fix i2c adapter reference leak in
- i2c_adapter_lookup()
-In-Reply-To: <20260618110446.518501-1-make_ruc2021@163.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
- 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
-References: <20260618110446.518501-1-make_ruc2021@163.com>
-Date: Thu, 18 Jun 2026 14:13:08 +0300
-Message-ID: <8f89e5af148cab8daca10ca4f7214e4e9207c29f@intel.com>
+	s=arc-20240116; t=1781781278; c=relaxed/simple;
+	bh=0xisGoATiu0CNcq48G/i11ypGmwcHZBkKbRPSzbckeY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=SFV1H6si5opwysutFW7TFVGljET+cAnFAarMYFbeUUbTcbqV83PNd97DqxFqzFITmQUddbnMGIkVRXWAjXG61W1Yi5vmOSSMbB2DqH9NDoBaA54mT3lu5Q0AOVmm2xjuujd9Jc9miDZ+iGjKJScC8cKHaoJoglz4oR7Hrab3hqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cdHOPrIW; arc=none smtp.client-ip=209.85.221.48
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-45ef779c1c2so647230f8f.1
+        for <stable@vger.kernel.org>; Thu, 18 Jun 2026 04:14:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781781275; x=1782386075; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=rXeyrG62+aF39kKcXSYXLiE3a7D4Ivb39fzeBzQrUlo=;
+        b=cdHOPrIW7CkLt0cUKuey9H/eSPmzExKvmf8bfwDMDDm6ARotg5bmPLWChAVHVZAGFV
+         5N2T/zWFhAePYrIbd8CyyxCvJ5iZqjsLnlXzgl2wdP2A1gZWn0QmOrKfOrY6lBKTuVSM
+         KZXorcp/nf2nT+OjcLGYMbYN9Xet6BtumWoDEB9fSWsnjR2oWTnlL+JUpcLEtoQttzHR
+         pMdvSfhkbaz9rAoO282zRWyhOseNICcHlfq6c/IB+vBrI7y4f5+UZWqRigRnrFuv5fGk
+         3BfC7BMUgFS6Ihc5yehg8J7SijDFXG/kC1zt3LcSC6dV9laZZEhHv05tfeYPM0SYXWp1
+         Or/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781781275; x=1782386075;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=rXeyrG62+aF39kKcXSYXLiE3a7D4Ivb39fzeBzQrUlo=;
+        b=ce8ZbWfKy7ZA2UWCFmAkEBzQj3vWycckXXw+1WZeUDQO3pN77O2dfptyGE4793ujZ0
+         O5AShdMgxO30gt4DIg+Bp0jJhBVYjd3prZCH5oktcvkGtW2cOFhe4VM/dC3eMiuEaPZ9
+         UGMIuvsL2rrvs9YeXjO36mMoFu9adDG28yZM0A3bp/Y5Tp6vNiKUkk4k4tpZjuCX9PA+
+         2PymaRb5ZROyPYdj0c2bGNjVjPmYQajzAhjpk2C/RqFbmWuCGXPLtRYjZUZ7+HWJ9qjM
+         9vMddycY+wUhSxkKtYdka08YJ7gmRf/qW5QugYPZpKYBgT15x92Cr/kJpPrWhz96E+Si
+         6hJw==
+X-Forwarded-Encrypted: i=1; AFNElJ/OHfyO4c1eQP3is0yIMH1hnvnLM2hlUelyDAqzQ4UpJ7T4m+WxQR4EZephHuhKlbi8FioX8to=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyAN5Zjd7M8JokoQc288DrEqhjwIQDzr9HZRT9Hfhwz/XxA006L
+	q9kyet3+uddwV9iiHq4J5oPOgJa8C8VgWCnahFXVaUD/aAYEXvtPMbUJ
+X-Gm-Gg: AfdE7clKpPRsEqIwchlBhDYAi5OmRTF8MD0+9Y4ZejtYskfKJ777KtsvdHrd6W/EQkZ
+	xsDaQrkD5j0qXIJb7sCSAtay3ANWmkonkYleB3OUYXqq2sJhDXItJwFiRpJ2RmqOUQifnhfknGO
+	N/472yziFoZoYWYQuU8DRlpdCJJVyfSNNCwECzm7h5itpYV9UejhRu2LS63VUof7kzrFasNbreN
+	hgq2sS9+wRztId0DkNXbyOKR9bWhTXhQZlggbCgBWjMhGJ7CKRKGDPtPikNvLs1MILPurGvdNZO
+	SCN929sMzRQ5u+UASjfNszXMEio9qMKI1gq9M8qceaLStZt0Qu3VfvhlFiAXsOg4/3YPTz2lFxE
+	TWCZzliXUcd9PnjGbhO9gUUald84otxdgXq/RzYOGCXF4O3FkoJJT3Mvc36nCMZaUPY8hqkcDJu
+	h5uTjyKvsc69VmmkBVJ9pPIYB/B/8Rnw==
+X-Received: by 2002:a05:600c:1c24:b0:490:c2a3:1782 with SMTP id 5b1f17b1804b1-492333f8042mr133951675e9.35.1781781274936;
+        Thu, 18 Jun 2026 04:14:34 -0700 (PDT)
+Received: from [192.168.1.21] ([41.140.50.249])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4923a1d2d9esm35375345e9.1.2026.06.18.04.14.28
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 18 Jun 2026 04:14:33 -0700 (PDT)
+Message-ID: <60f91bcd-49a7-4c9e-8488-45608184b20f@gmail.com>
+Date: Thu, 18 Jun 2026 12:14:27 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5.15 000/410] 5.15.210-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+ hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
+ sr@sladewatkins.com
+References: <20260617080316.111043001@linuxfoundation.org>
+Content-Language: en-US
+From: Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20260617080316.111043001@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-4.66 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[intel.com:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	FREEMAIL_CC(0.00)[lists.freedesktop.org,vger.kernel.org,linux-foundation.org,163.com];
+	TAGGED_FROM(0.00)[bounces-267104-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-267103-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:make_ruc2021@163.com,m:rodrigo.vivi@intel.com,m:joonas.lahtinen@linux.intel.com,m:tursulin@ursulin.net,m:airlied@gmail.com,m:simona@ffwll.ch,m:hansg@kernel.org,m:matthew.d.roper@intel.com,m:vivek.kasireddy@intel.com,m:intel-gfx@lists.freedesktop.org,m:intel-xe@lists.freedesktop.org,m:dri-devel@lists.freedesktop.org,m:linux-kernel@vger.kernel.org,m:akpm@linux-foundation.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[jani.nikula@linux.intel.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,m:patches@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:torvalds@linux-foundation.org,m:akpm@linux-foundation.org,m:linux@roeck-us.net,m:shuah@kernel.org,m:patches@kernelci.org,m:lkft-triage@lists.linaro.org,m:pavel@nabladev.com,m:jonathanh@nvidia.com,m:sudipm.mukherjee@gmail.com,m:rwarsow@gmx.de,m:conor@kernel.org,m:hargar@microsoft.com,m:broonie@kernel.org,m:achill@achill.org,m:sr@sladewatkins.com,m:sudipmmukherjee@gmail.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[ffainelli@gmail.com,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	RCPT_COUNT_TWELVE(0.00)[19];
 	FORWARDED(0.00)[lists@lfdr.de];
-	HAS_ORG_HEADER(0.00)[];
-	FREEMAIL_TO(0.00)[163.com,intel.com,linux.intel.com,ursulin.net,gmail.com,ffwll.ch,kernel.org];
-	DKIM_TRACE(0.00)[intel.com:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jani.nikula@linux.intel.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ffainelli@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,intel.com:dkim,intel.com:mid,linux.intel.com:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,broadcom.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9F6C169FB4C
+X-Rspamd-Queue-Id: 3479D69FB2B
 
-On Thu, 18 Jun 2026, Ma Ke <make_ruc2021@163.com> wrote:
-> i2c_adapter_lookup() acquires a reference on the i2c adapter through
-> i2c_acpi_find_adapter_by_handle() but not releases it.  Each
-> invocation of this ACPI resource callback leaks one device reference,
-> potentially leading to resource exhaustion over repeated driver
-> load/unload cycles.
->
-> Calling path: i2c_acpi_find_adapter_by_handle() -> bus_find_device()
-> -> get_device.
->
-> Found by code review.
->
-> Signed-off-by: Ma Ke <make_ruc2021@163.com>
-> Cc: stable@vger.kernel.org
-> Fixes: 8cbf89db2941 ("drm/i915/dsi: Parse the I2C element from the VBT MIPI sequence block (v3)")
-> ---
-> Changes in v2:
-> - Changed email to trigger CI, no code change.
 
-Sorry, that won't do anything. Please just let us deal with it. :)
 
-BR,
-Jani.
+On 6/17/2026 1:03 AM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.15.210 release.
+> There are 410 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Fri, 19 Jun 2026 08:02:26 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.210-rc2.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-> ---
->  drivers/gpu/drm/i915/display/intel_dsi_vbt.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/gpu/drm/i915/display/intel_dsi_vbt.c b/drivers/gpu/drm/i915/display/intel_dsi_vbt.c
-> index fe12041e913c..2097c5d17cb7 100644
-> --- a/drivers/gpu/drm/i915/display/intel_dsi_vbt.c
-> +++ b/drivers/gpu/drm/i915/display/intel_dsi_vbt.c
-> @@ -460,8 +460,10 @@ static int i2c_adapter_lookup(struct acpi_resource *ares, void *data)
->  		return 1;
->  
->  	adapter = i2c_acpi_find_adapter_by_handle(adapter_handle);
-> -	if (adapter)
-> +	if (adapter) {
->  		intel_dsi->i2c_bus_num = adapter->nr;
-> +		put_device(&adapter->dev);
-> +	}
->  
->  	return 1;
->  }
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENEIRC:
 
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
 -- 
-Jani Nikula, Intel
+Florian
+
 
