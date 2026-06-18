@@ -1,144 +1,160 @@
-Return-Path: <stable+bounces-267060-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267061-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 9CseDoqxM2qTFAYAu9opvQ
-	(envelope-from <stable+bounces-267060-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 10:51:22 +0200
+	id 1LPMJrexM2qaFAYAu9opvQ
+	(envelope-from <stable+bounces-267061-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 10:52:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C069E69E9A1
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 10:51:21 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B95F69E9BF
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 10:52:07 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=nabladev.com header.s=dkim header.b=LnfTT7Ot;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267060-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267060-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=reject) header.from=nabladev.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=CElUw2+a;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=drnQVzBN;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267061-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267061-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=linutronix.de;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id F1888302F4B1
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 08:51:17 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A26923079EF6
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 08:51:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C9B33B777F;
-	Thu, 18 Jun 2026 08:51:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C51AD3B7763;
+	Thu, 18 Jun 2026 08:51:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8CAC1E8342;
-	Thu, 18 Jun 2026 08:51:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E47C8271A71;
+	Thu, 18 Jun 2026 08:51:48 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781772673; cv=none; b=p8ENkjhLhHxiMrqgAZzvRRzDZUOeD8paUIv6PVcw3M4zTcjhfehARO2xaxt8RxNYv9klKdIWkJrJbSvbl1AT4muknpJ/2N5oDBArwrFfPmuamQ/jzzRKlEGkdWBCbrLh1uGJg0wPanzHKaSMObMNKcmOVPRjTOrFNAaa2JR2dnY=
+	t=1781772710; cv=none; b=Ltbv7cc/S36xSzToikEXgAaawNp1pBws1B76omWW75KqM6SSjZk/rVpa9Q/GeMQ+cEd+6IkSTqzefFOog1d3Pd2vwkIZ6noBSscztYYLjUOPTzgefPnIkylh69WTQW9k62HGVFETF7XaCL26iwSfqvai/kjsJuTlHtrNAzkTotA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781772673; c=relaxed/simple;
-	bh=zO3V54C5HHRae0L772OfE4dD3EmL4beK+4OIz4Un73c=;
+	s=arc-20240116; t=1781772710; c=relaxed/simple;
+	bh=rb9yxoM4gbLjOHysapp1CE0nRgIbFjR/UGC4LqOwwl4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=vAqtcN9oZnmrhptHmhjT4ieOPLujsUWLiFqCsnwGxDem7BEQiLcXK4LSmPl0gp4j6O/SyMAO/+I8YsjYha2LDmUKjuMdNbZ3WbvQcO9bh2/IBbc7m+g76ukr1UiFfNHGRxwFIJ2idDkmVChyfDEwGtveVSJHhMHY/sy3d1PYRgg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=LnfTT7Ot; arc=none smtp.client-ip=178.251.229.89
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6E0BA115367;
-	Thu, 18 Jun 2026 10:50:58 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
-	s=dkim; t=1781772663;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references; bh=LF/JZdcxFgRK0iBWPnF0l7Y1owU5r6zC4pFS1bPYe+k=;
-	b=LnfTT7OtQzupS0TOAp1wDSUfO3E40mrTTOfaEDOSo7Ks1zW2Hl5+UmPXfvckGdH8NNDEC4
-	Cy8EkrjWBaG3cggkBE6zvzl1YjW+mU4jXW2GRPnPQ/DZpgf+zFINGsmaU+wTQuQtrpdG1r
-	TnFu0W8SvCqX1cRIaZJmFH5nyseLfJJZ9/YZe9wIF/f8wr+ADIrIqdnW35Wjb5LPCmkTWg
-	a4gWI9lOQn+MDGo06J+iT9Q3L84Gu0nhfks2/1TKktxCcZQf+FciLHlsf9K3TEwJp58ntb
-	q1ilIQlHus5UNQpjFFQ7/DgSpRI1/lN9xs+5wcn5D0tFlmkpAcTdQqZlacnMPg==
-Date: Thu, 18 Jun 2026 10:50:53 +0200
-From: Pavel Machek <pavel@nabladev.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org,
-	pavel@nabladev.com, jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
-	hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
-	sr@sladewatkins.com
-Subject: Re: [PATCH 7.0 000/378] 7.0.13-rc1 review
-Message-ID: <ajOxbajb7j2Wmnio@duo.ucw.cz>
-References: <20260616145109.744539446@linuxfoundation.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=CKlYxdpyJLKzch3Vub/I6ACFTghuQIqE0s6mVKOJUB8yC2Cng4gY35AVy/mIntmuZkS90O1kSyVgSpn/SAXquynXPznNsQ6KsxzGZ2Q/QKtV+9mz46u8ZK0RqzLVKgkjDx3gGwFFSgUBSBbTmurd0NO6xRkNV3kD5ZrQqdX21Ns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=CElUw2+a; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=drnQVzBN; arc=none smtp.client-ip=193.142.43.55
+Date: Thu, 18 Jun 2026 10:51:44 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1781772706;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=llqq9V9VjLh585KO4zW2vlsOrn2+ajRbUyv9ZWD/6zg=;
+	b=CElUw2+aPATzep1WCEkmjPtFAp1sbh3YKl01We2WpctaIbU8Xg97+9L2qb1HFk0ZqlJAEC
+	vhaOc+82IlOYuAG+QwfkauZjUeQSNXCnSNOT2oWN/dIChGRdq1cpMbGXaa3BcOGrGRBagx
+	7oHnY0rUwLk5yIWErLlPqRyu5oKvXl8clkHs+MliLImKZPDdHTr0ljWMKdjdH4A0NLqm5/
+	YRcGdD4a+1a6MOhDmpsWtVUp6V5gNS6xBL6bRf+cvsgSkuJCt/n0IfDxIlkT53sZ9iIAWv
+	jygaaKoAXiPYjM77leioC/QEkD8STIB3LEedFR4hV5LNePBHfPkXqOxJ3AVInQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1781772706;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=llqq9V9VjLh585KO4zW2vlsOrn2+ajRbUyv9ZWD/6zg=;
+	b=drnQVzBNhpMpquE9C9RseUnfgR5Bn1EsaWINEsFZlTvoIAR95f3hpRoR+cwqWgKVK/j+/F
+	IGTHlaENYmLBcJAQ==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Petr Mladek <pmladek@suse.com>, Jakub Kicinski <kuba@kernel.org>,
+	John Ogness <john.ogness@linutronix.de>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Vlad Poenaru <vlad.wing@gmail.com>,
+	Thomas Gleixner <tglx@kernel.org>, netdev@vger.kernel.org,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, Breno Leitao <leitao@debian.org>,
+	Clark Williams <clrkwllms@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	linux-rt-devel@lists.linux.dev, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, Frederic Weisbecker <frederic@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>
+Subject: Re: [PATCH net] netpoll: run NAPI poll in softirq context to avoid
+ rq->lock self-deadlock
+Message-ID: <20260618085144.ka6d07jR@linutronix.de>
+References: <20260610183621.3915271-1-vlad.wing@gmail.com>
+ <20260611191114.5bc43a59@kernel.org>
+ <20260616103529.Yh9Dxsjp@linutronix.de>
+ <20260616081128.04e2c8dd@kernel.org>
+ <20260616153122.keHMKvVT@linutronix.de>
+ <ajJy92ES-Q8ro97A@pathway.suse.cz>
+ <20260617111504.GK49951@noisy.programming.kicks-ass.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="FURrPcz5idKMhdAZ"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-X-Last-TLS-Session-Version: TLSv1.3
+In-Reply-To: <20260617111504.GK49951@noisy.programming.kicks-ass.net>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.76 / 15.00];
-	SIGNED_PGP(-2.00)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[nabladev.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
-	R_DKIM_ALLOW(-0.20)[nabladev.com:s=dkim];
+	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-267060-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FORGED_SENDER(0.00)[pavel@nabladev.com,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,m:patches@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:torvalds@linux-foundation.org,m:akpm@linux-foundation.org,m:linux@roeck-us.net,m:shuah@kernel.org,m:patches@kernelci.org,m:lkft-triage@lists.linaro.org,m:pavel@nabladev.com,m:jonathanh@nvidia.com,m:f.fainelli@gmail.com,m:sudipm.mukherjee@gmail.com,m:rwarsow@gmx.de,m:conor@kernel.org,m:hargar@microsoft.com,m:broonie@kernel.org,m:achill@achill.org,m:sr@sladewatkins.com,m:ffainelli@gmail.com,m:sudipmmukherjee@gmail.com,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-267061-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	FORGED_SENDER(0.00)[bigeasy@linutronix.de,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[23];
+	FORGED_RECIPIENTS(0.00)[m:peterz@infradead.org,m:pmladek@suse.com,m:kuba@kernel.org,m:john.ogness@linutronix.de,m:senozhatsky@chromium.org,m:vlad.wing@gmail.com,m:tglx@kernel.org,m:netdev@vger.kernel.org,m:davem@davemloft.net,m:edumazet@google.com,m:pabeni@redhat.com,m:horms@kernel.org,m:leitao@debian.org,m:clrkwllms@kernel.org,m:rostedt@goodmis.org,m:linux-rt-devel@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:frederic@kernel.org,m:mingo@redhat.com,m:vincent.guittot@linaro.org,m:dietmar.eggemann@arm.com,m:kprateek.nayak@amd.com,m:vladwing@gmail.com,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[suse.com,kernel.org,linutronix.de,chromium.org,gmail.com,vger.kernel.org,davemloft.net,google.com,redhat.com,debian.org,goodmis.org,lists.linux.dev,linaro.org,arm.com,amd.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[nabladev.com:+];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pavel@nabladev.com,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[bigeasy@linutronix.de,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linutronix.de:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gitlab.com:url,vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linutronix.de:dkim,linutronix.de:mid,linutronix.de:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C069E69E9A1
+X-Rspamd-Queue-Id: 4B95F69E9BF
 
+On 2026-06-17 13:15:04 [+0200], Peter Zijlstra wrote:
+> 
+> Can't we push all the legacy consoles into a single legacy kthread? I
+> mean, converting all consoles is of course awesome, but should we really
+> wait for that?
 
---FURrPcz5idKMhdAZ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+That would be 
 
-Hi!
+diff --git a/kernel/printk/internal.h b/kernel/printk/internal.h
+index 85fbf1801cbe0..c72f8d7027aee 100644
+--- a/kernel/printk/internal.h
++++ b/kernel/printk/internal.h
+@@ -27,11 +27,7 @@ int devkmsg_sysctl_set_loglvl(const struct ctl_table *table, int write,
+  * nbcon consoles have had their chance to print the panic messages
+  * first.
+  */
+-#ifdef CONFIG_PREEMPT_RT
+ # define force_legacy_kthread()	(true)
+-#else
+-# define force_legacy_kthread()	(false)
+-#endif
+ 
+ #ifdef CONFIG_PRINTK
+ 
+and if I remember correctly it was due to delayed CI output limited to
+RT. But this does not fix stable down to 5.10 LTS.
 
-> This is the start of the stable review cycle for the 7.0.13 release.
-> There are 378 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-
-CIP testing did not find any problems here:
-
-https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-7.0.y
-
-Tested-by: Pavel Machek (CIP) <pavel@nabladev.com>
-
-Best regards,
-                                                                Pavel
-
---FURrPcz5idKMhdAZ
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCajOxbQAKCRAw5/Bqldv6
-8n0VAJ47EQw1pKPmg4x6mBTUKiVoNEELIQCfXitiZO5RCm8+icmQnozeDrH5Usk=
-=nk/W
------END PGP SIGNATURE-----
-
---FURrPcz5idKMhdAZ--
+Sebastian
 
