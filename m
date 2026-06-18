@@ -1,158 +1,236 @@
-Return-Path: <stable+bounces-266963-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266964-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id OVXeMppCM2oQ+wUAu9opvQ
-	(envelope-from <stable+bounces-266963-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 02:58:02 +0200
+	id cBskNHxCM2oK+wUAu9opvQ
+	(envelope-from <stable+bounces-266964-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 02:57:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E62B69CF1D
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 02:58:02 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5264669CF09
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 02:57:32 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BzvG7YBd;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266963-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266963-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=XiZ5FrA9;
+	dkim=pass header.d=redhat.com header.s=google header.b=fv6lSR9d;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266964-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-266964-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D9318304C13E
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 00:57:07 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3B6E930A90D5
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 00:57:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA8D927A907;
-	Thu, 18 Jun 2026 00:57:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 514CB274FE8;
+	Thu, 18 Jun 2026 00:57:19 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9541327466A;
-	Thu, 18 Jun 2026 00:57:04 +0000 (UTC)
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781744225; cv=none; b=Ft1kJ9U3Oly9esNZGtX0J0xUJnbDNJWD1ndvNnyXqJzduk/k3cNZya1vZcrEqsuGhsPfeC4io6VletvBXY3o3xhBtkvo4BRRa0XYuSkTbVBQ/qx8JHrdWO5KqPUZz+Ymhp4EpCcDdWhutkSGNYs5L+mEvNgFJ1/xQDQAjULIg5w=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781744225; c=relaxed/simple;
-	bh=6Z4Q4SHb73Mx95B4ZI8V5uOZVQrl/2f/XsP/iI3CXkY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qG24smX7CySd2aaQJlyq4mSyD1KGBlhe2YVY6PlQuxBZZ2DqBDB8FmeIWesN0sIH16R/52GEW+aurvhSQBahmULVdtFTrHH5kiejoJuQ9TJTiTaDLfb5xJvbih1t4oIsUgfUkdbOVcgX/cwAMpunpx9CCgZJeS9xiGFZKw2FO0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BzvG7YBd; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23B301F000E9;
-	Thu, 18 Jun 2026 00:57:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781744224;
-	bh=vj1ysZXTzQEftM04gbB5WCu/uXQrIziK86sFp/rbmQE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=BzvG7YBdMMtJ2AqIrAKsD7LQV9XdMyH5w+jvu/0hi1pAnks/GEAGun40xtq8a+j0n
-	 ZKjopGiUxwhtnsAdY9WjnLujhgVVr+vuNJlN7jZQjqVQQC3hnisf52E+cOOW47zHSO
-	 mIkNjYcIPF8MMgnpCNVW/vgU4ARygL0kMQu4huZBWdEWJ54MDXRck2NofGTbLieEcP
-	 6QDKfv9dAEQaRJACGJwjWFcNXbLV5EsgsrBhx0mhfLpoMoz0vwdezEAxNz8HduN2Wt
-	 Yivavv1q7OtrtjkOp4vgAQtPqmobPg1CUINZF18h5i3qb6lVThJWOtUFYiaH7qI78o
-	 3+TEy+4uwE48w==
-From: SeongJae Park <sj@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: SeongJae Park <sj@kernel.org>,
-	"# 6 . 2 . x" <stable@vger.kernel.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH 2/2] mm/damon/sysfs-schemes: put stats for scheme_add_dirs() internal error
-Date: Wed, 17 Jun 2026 17:56:48 -0700
-Message-ID: <20260618005650.83868-3-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260618005650.83868-1-sj@kernel.org>
-References: <20260618005650.83868-1-sj@kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E4382749CF
+	for <stable@vger.kernel.org>; Thu, 18 Jun 2026 00:57:17 +0000 (UTC)
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781744239; cv=pass; b=loIq3ghUfXXAWyI1qCFv+s90Cr2P4oLDRNGzbSmZeju6yl9O90GUS8Gg2rd4VFp2vFCkbfWLEyT7u+zLpedy6SVfSDgkQMFmW64ALk64EXwnMY/jsoxcyFleDo/XxRUMtMDTP+SEEWKpSL0W2kqzM16q8TyGWT1vYldz/Xw8Vfs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781744239; c=relaxed/simple;
+	bh=r4IaJvvyIT6el7i2weVkvEk5QehixTD6dFSGgLsOExE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=fAMzFQiPutBr5RLrDaXMH0YE7d9H1xU/5gReJyLfSmGPxzFk0D4mYvPg/TtaNmsyYzfZzTlvsvkynQL3uz9MiIplvJU0fsFEJ/Cq+NO/zwqVkCJ7I3D7DtXWhCgT00LimpJnvT251cX9cwaAhOEkiglK0Lk8ukhDF8vGA5bk+go=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XiZ5FrA9; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=fv6lSR9d; arc=pass smtp.client-ip=170.10.133.124
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1781744236;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=LIF8cjycHSBcMVtLMb8AxYPq8NTa82BvKAmKc4vxWAU=;
+	b=XiZ5FrA9DJ3vzWcxR9eY5D1tQ5TBU9UXTganM78Da/jawra+j1oqAtVqadp5SDK++e08MG
+	A7IYq9M/ZrpxXHuF4+l5e9RN9RE6hpJONoIHS/8jSe3cW5kN8OYm9HOJtFL6hnTk/E/ZF0
+	WOwDSsfijoyzIuQ7AFFWV942UylVUp4=
+Received: from mail-oi1-f197.google.com (mail-oi1-f197.google.com
+ [209.85.167.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-68-je63qzjOOOS3XOn9y0u-AQ-1; Wed, 17 Jun 2026 20:57:15 -0400
+X-MC-Unique: je63qzjOOOS3XOn9y0u-AQ-1
+X-Mimecast-MFC-AGG-ID: je63qzjOOOS3XOn9y0u-AQ_1781744234
+Received: by mail-oi1-f197.google.com with SMTP id 5614622812f47-4862fcd9a3cso715825b6e.2
+        for <stable@vger.kernel.org>; Wed, 17 Jun 2026 17:57:15 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781744234; cv=none;
+        d=google.com; s=arc-20240605;
+        b=ctIX5afMhzBJLGcGz6voSU+zGKDmnqWuPb5pFi4OCX5YcqDBPR0r+sg0qXVnWNBVku
+         idivhaKZhHnR8eqBRHeH+8UZv7ymAhtlzvgZuxORr7wQQyOt72pk9mq9XSiZ3Xp7GGmY
+         PqTMWlQJyvaJW7RKuzAKdzulGJ0ggHsNNxsVqB1/Xef1MFvv2HjRUsWWBNYyVFej7iIe
+         cwfdPsTCbFGarLl23lvDcI16Soy8wa2aP61vYz7uDZLpB7gNubUNsGL50wVaGcsuRPbt
+         zrw3W6Q3BPNlUnxwQa6KWU7ECZPQI2aOKqn+xuCdOPrmZrgsi1Cb/IytTT2aR+zOt5WX
+         GiYQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=LIF8cjycHSBcMVtLMb8AxYPq8NTa82BvKAmKc4vxWAU=;
+        fh=yMh1RpebrlhVOsMIWIy/n2A2l2IK52rdqE546yhthBo=;
+        b=VLTeS1DaKe7QF689zpQUvSKtn6QT/Hy3HfHHowiEa9ZdoUs7/jevwuC+bezDM0CXXk
+         ei6+MjQE4KouSvYxBSA34VmM71X5t3FLs/L3d+UjKjTxaOzYJ3cKUN+AnBaTlcGq0ezj
+         fUM3N6BjiEccxnDIaQ6/dPIRRdc0cnscs5aWKWiIe+HKCzGGUCXpkhruck9og6/3xERl
+         /ng+WJwAMV7UW2CKIaCT6NIxZ70eKrG8vA+UkUipERFYw/aGNfznaBaHZ3wKcDC1JaPG
+         zw2hmJuL5gGF7UCe4HD/P2zF8UPEjTLL6OVj7hJK6kvhtrNLjLPInowwhlRi0sg4PyOm
+         ed4w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1781744234; x=1782349034; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LIF8cjycHSBcMVtLMb8AxYPq8NTa82BvKAmKc4vxWAU=;
+        b=fv6lSR9d1Jg2nCeUtN9wn/iv29OT6Y6huLncqVvDO0hRz+MNb3dyugER7XQzpzFuXc
+         SY5KacwgK1LPU2Ft2gjeUBJa2HqrLyI8NMlxka3szURpqFbBGIT6K/O5mLjoPCgDZgz1
+         PYVxvcUlYSJYaZaWYwVQgFQFOa1pi4uthn07FzSxdEtYTH4WxKcfJX9Ylm3lYEZAc3x2
+         mmJP9RiEWpbJcbAVPRtys0iUvyk52rBxPLchOhi9ve3Jer38FP3wmiJYGpQqxmeAsm7+
+         0dUHbxaa7cT5s+k/evxzzAT0xRnli++HQ4DkEvJDJA7elEL99bIhYbo9F2mD8HHSfNqY
+         WfEg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781744234; x=1782349034;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=LIF8cjycHSBcMVtLMb8AxYPq8NTa82BvKAmKc4vxWAU=;
+        b=gxn2AK568mJcWzgrp5E5jRd7PbeFDXFgA5ednhXPTxMF6rfCip3lr7Ugg7NzDvbC0o
+         SH8Aum7Og59J2h868xMQyg7jHzYg+/Nxk77lwCtDwJvMs2Rmwvxa7PcgSs7lgGfWaxsB
+         H9kcnHI+dsfpLCOy9oQYoGEkvOeCj5KAvhEIJyO9O9CK+mrkol5diOCW/4ATJqlSI3V7
+         NBEEzq0gC3wucos5n05D7VDxRxYVrDXxN64U9tZ3h+JY9OK1L1ljVZ1450QZ3OvoTQcy
+         n80fJPeWAZ59Z4a3GxVwINKutWvJPz0iz50YTE4IVCU5lHfZANj1k6y5s4NcCEL2fn/g
+         9fpA==
+X-Forwarded-Encrypted: i=1; AFNElJ84EV74p1BbjznCwqdbCVzosE0F6ddf+5sVMumcum8FBfB+jDIVSMBYYbMZUKHX7IVhkDyq9KM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy4kF0va2+IacggWMdzdJ8MR1/Jh9P70CfJgK9wGk6h9+J1NDEV
+	iO4Mf1eqAru8mRM/QBTYLVcw2FWHJgeCPdtgwglAKZ6KI9ns7e3QTUha7NCc4zgod4rIub/1Kbj
+	Ian+hA4ZOkAAG0B9kVAngzn02zHCEkNUu5E5ggikZF8GoFCkc7BLqU34c93XsXc84b/vYslfpH9
+	tMoVLhKJ/1OHkSeSqoNZQaRlekjT19c6Qy
+X-Gm-Gg: Acq92OEMQPUko0LRkfCggOBLei/YghsXz3xrE/44U4cxHY6w0SQu0na7K6Y8zyKmaa/
+	aK55gBkuURUqudLgSlDG5CQMbx5gDvCmTFXXEyN88d1K3mhb8Wu5BFr21HBY+6iCLn+SpdkNtP8
+	1if1x7tM0R3lveiw24DUUQG53gGJ2SaRj4uLOmves/ib0UMGXFDNALAkD1WZsndlkHf9IFIwKz9
+	JdGcW5CMHu/oUb/p5rNE3BGD6kz
+X-Received: by 2002:a05:6808:3442:b0:467:13b5:8ae6 with SMTP id 5614622812f47-4895d0e6f4emr242151b6e.4.1781744234297;
+        Wed, 17 Jun 2026 17:57:14 -0700 (PDT)
+X-Received: by 2002:a05:6808:3442:b0:467:13b5:8ae6 with SMTP id
+ 5614622812f47-4895d0e6f4emr242131b6e.4.1781744233829; Wed, 17 Jun 2026
+ 17:57:13 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260430014817.2006885-1-desnesn@redhat.com> <CACaw+eyKh7buHDoDyTOe8O65FP5cSXYdzCcQvwqKw=1DwX26oA@mail.gmail.com>
+ <20260502235517.089ba5bf.michal.pecio@gmail.com> <CACaw+ewOTVh49tnkz+cRr0SD_Z-LmYrMWhFUrsik6YF83mPBtA@mail.gmail.com>
+ <20260503071749.6abda137.michal.pecio@gmail.com> <CACaw+ew8uV5g1G-6qZGtVBEYZ3k+fvFrOq3XMyq-Nuhbq5mdnA@mail.gmail.com>
+ <20260503213111.117db3a1.michal.pecio@gmail.com> <20260504093118.615ff480.michal.pecio@gmail.com>
+ <20260518083339.507e24bd.michal.pecio@gmail.com> <CACaw+ewSWTo72fSk2Q7ZzCM8pNuyrX5ua+qA=SZOQuNNMKSA5Q@mail.gmail.com>
+ <20260522110328.0d3eecd8.michal.pecio@gmail.com> <CACaw+ezqEO_PgjGeYCLq5hA2eKczFXgmZLa8qjPtVJZCGwsdsg@mail.gmail.com>
+ <20260523022944.59799d83.michal.pecio@gmail.com> <CACaw+exPdwXVsJc5Xr=vN1WJt8XR46=X0-8PP=+5dWY5zUrKeQ@mail.gmail.com>
+ <20260523102815.5c05c70a.michal.pecio@gmail.com> <CACaw+ezMnQh2_oqbZ0jF99+wOADMU2vSMqxh9BoJoefjAC_ixw@mail.gmail.com>
+ <20260527103221.7f8b15b0.michal.pecio@gmail.com> <CACaw+exN3fdzGQE7oK-hRE3KpMrA3ckPDRAcXaFbd=ySXf8E5A@mail.gmail.com>
+In-Reply-To: <CACaw+exN3fdzGQE7oK-hRE3KpMrA3ckPDRAcXaFbd=ySXf8E5A@mail.gmail.com>
+From: Desnes Nunes <desnesn@redhat.com>
+Date: Wed, 17 Jun 2026 21:57:02 -0300
+X-Gm-Features: AVVi8Cf7Uiv1UFfqctPnTUuo9KLx6CyYhY3_twtj7WI22l-VLlYMs9UQJvgzio4
+Message-ID: <CACaw+ewuPm-eOACKX3Ux0UwJBRSftoBm7H+rxE2Z9E7KzWb5ew@mail.gmail.com>
+Subject: Re: [PATCH RFT RFC] usb: xhci: Kill hosts with HCE or HSE on command timeout
+To: Michal Pecio <michal.pecio@gmail.com>
+Cc: David Woodhouse <dwmw2@infradead.org>, Lu Baolu <baolu.lu@linux.intel.com>, 
+	linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org, 
+	gregkh@linuxfoundation.org, mathias.nyman@intel.com, stable@vger.kernel.org, 
+	iommu@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.66 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-266964-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-266963-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:akpm@linux-foundation.org,m:sj@kernel.org,m:stable@vger.kernel.org,m:damon@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:linux-mm@kvack.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[sj@kernel.org,stable@vger.kernel.org];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sj@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FREEMAIL_TO(0.00)[gmail.com];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:michal.pecio@gmail.com,m:dwmw2@infradead.org,m:baolu.lu@linux.intel.com,m:linux-kernel@vger.kernel.org,m:linux-usb@vger.kernel.org,m:gregkh@linuxfoundation.org,m:mathias.nyman@intel.com,m:stable@vger.kernel.org,m:iommu@lists.linux.dev,m:michalpecio@gmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[desnesn@redhat.com,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[redhat.com:+];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[desnesn@redhat.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	RCPT_COUNT_SEVEN(0.00)[9];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,mail.gmail.com:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3E62B69CF1D
+X-Rspamd-Queue-Id: 5264669CF09
 
-damon_sysfs_scheme_add_dirs() setup the tried_regions directory after
-the stats directory setup is completed.  When the tried_regions
-directory setup is failed, the setup function ensures the reference for
-the tried regions directory is released.  Hence the error path should
-put references on setup succeeded directory objects, starting from the
-stats directory.  However, the error path is putting the tried_regions
-directory instead of the stats directory.
+Hello IOMMU mailing list,
 
-As a direct result, the stats directory object is leaked.  Worse yet, if
-the tried_regions directory setup failed from the initial allocation,
-the scheme->tried_regions field remains uninitialized.  The following
-kobject_put(&scheme->tried_regions->kobj) call in the error path will
-dereference the uninitialized memory.  The setup failures should not be
-common.  But once it happens, the consequence is quite bad.
+On Wed, Jun 10, 2026 at 12:32=E2=80=AFPM Desnes Nunes <desnesn@redhat.com> =
+wrote:
+>
+> I have just found out the solution for the bug.
+>
+...
+> In scalable mode, a PCI bus may populate only the upper root half
+> (UCTP) when all devices on that bus have devfn >=3D 0x80. On bus 0x80, I
+> have e1000e at 80:1f.6 (devfn 0xfe) and xHCI at 80:14.0 (devfn 0xa0),
+> so the hardware root entry correctly has lo=3D0 and hi=3DUCTP present.
+>
+> However, after copy_translation_tables(), I noticed that root[128].hi
+> was zeroed-out (Present bit cleared) and another (expected) different
+> value on root[128].lo.
+>
+> In short, the culprit here is having a zeroed LCTP, since at
+> copy_context_table() the allocation of new_ce for LCTP context entries
+> currently governs the pos variable; which is later used to save new_ce
+> entries for UCTP at tbl[tbl + pos].
+> On the first iteration idx will be zero, old_ce_phys will be empty,
+> thus this moves the loop straight to devfn=3D0x80. At devfn 0x80, idx
+> wraps to 0 again ( (devfn * 2) mod 256), but since no new_ce was
+> previouly allocated for LCTP context entries, pos will remain zero
+> while copying UCTP context entries.  After all upper context entries
+> are saved, tbl will receive new_ce from UCTP at tbl[tbl_idx + 0], and
+> not tbl[tbl_idx + 1]. These will be later written in
+> copy_translation_tables() to iommu->root_entry[bus].lo and
+> iommu->root_entry[bus].hi, which causes the bug.
+>
+> In summary, the hardware tables were correct, but the copy path
+> misplaced the UCTP table for bus 0x80 when dealing with a LCTP
+> zeroed-out during kdump.
+>
+> To fix this, I created a v3 patch that uses devfn to better track
+> which half we are copying, so UCTP-only buses (lo=3D0, hi=3DP) are
+> installed into the upper root half.
 
-Fix this issue by correctly putting the stats directory instead of the
-tried_regions directory.
+0001-iommu-vt-d-Fix-UCTP-context-table-slot-when-copying-.rfc.patch
 
-The issue was discovered [1] by Sashiko.
+> I am doing some final tests now, but since this was a lot to digest,
+> comments at this stage will be most appreciated.
 
-[1] https://lore.kernel.org/20260617005223.96813-1-sj@kernel.org
+FYI, all of my last tests looked OK.
 
-Fixes: 5181b75f438d ("mm/damon/sysfs-schemes: implement schemes/tried_regions directory")
-Cc: <stable@vger.kernel.org> # 6.2.x
-Signed-off-by: SeongJae Park <sj@kernel.org>
----
- mm/damon/sysfs-schemes.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+> To IOMMU maintainers: should I send this patch to the iommu mailing
+> list and move the discussion there?
 
-diff --git a/mm/damon/sysfs-schemes.c b/mm/damon/sysfs-schemes.c
-index 7c00aa78b2f50..0134111c3c1ff 100644
---- a/mm/damon/sysfs-schemes.c
-+++ b/mm/damon/sysfs-schemes.c
-@@ -2513,12 +2513,12 @@ static int damon_sysfs_scheme_add_dirs(struct damon_sysfs_scheme *scheme)
- 		goto put_filters_watermarks_quotas_access_pattern_out;
- 	err = damon_sysfs_scheme_set_tried_regions(scheme);
- 	if (err)
--		goto put_tried_regions_out;
-+		goto put_stats_out;
- 	return 0;
- 
--put_tried_regions_out:
--	kobject_put(&scheme->tried_regions->kobj);
--	scheme->tried_regions = NULL;
-+put_stats_out:
-+	kobject_put(&scheme->stats->kobj);
-+	scheme->stats = NULL;
- put_filters_watermarks_quotas_access_pattern_out:
- 	kobject_put(&scheme->ops_filters->kobj);
- 	scheme->ops_filters = NULL;
--- 
-2.47.3
+I meant as a new submission to IOMMU maling list, since this started
+in xHCI at the usb mailing list.
+Of course, that is if nobody has any comments or objections to the patch.
+
+Best Regards,
+
+Desnes
+
 
