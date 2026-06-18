@@ -1,210 +1,144 @@
-Return-Path: <stable+bounces-267059-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267060-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id SP4DLyyxM2qBFAYAu9opvQ
-	(envelope-from <stable+bounces-267059-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 10:49:48 +0200
+	id 9CseDoqxM2qTFAYAu9opvQ
+	(envelope-from <stable+bounces-267060-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 10:51:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E8C269E963
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 10:49:48 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C069E69E9A1
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 10:51:21 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b="K7/9yTiB";
-	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=eLaoBEDe;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267059-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267059-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=reject) header.from=qualcomm.com;
+	dkim=pass header.d=nabladev.com header.s=dkim header.b=LnfTT7Ot;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267060-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267060-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=reject) header.from=nabladev.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7E71A3079976
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 08:49:17 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id F1888302F4B1
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 08:51:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BADF3B71DF;
-	Thu, 18 Jun 2026 08:49:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C9B33B777F;
+	Thu, 18 Jun 2026 08:51:13 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B95D83B47C6
-	for <stable@vger.kernel.org>; Thu, 18 Jun 2026 08:49:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8CAC1E8342;
+	Thu, 18 Jun 2026 08:51:11 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781772555; cv=none; b=sxMx4x9bVqbc8DbPfKNc0+X85nCbqlNN2z7wPuraYOmdunyBN9RpvfuiMCtUVgZqB3ROGkbDBG/XObDCoOMGGqGD89YIUWmnt10UaNVCoQErUpSaup0YOgvqbdAXjovdgqmexE7XHp41xB6EPVpexk4/1wrLwr+rJIcDyb71mBg=
+	t=1781772673; cv=none; b=p8ENkjhLhHxiMrqgAZzvRRzDZUOeD8paUIv6PVcw3M4zTcjhfehARO2xaxt8RxNYv9klKdIWkJrJbSvbl1AT4muknpJ/2N5oDBArwrFfPmuamQ/jzzRKlEGkdWBCbrLh1uGJg0wPanzHKaSMObMNKcmOVPRjTOrFNAaa2JR2dnY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781772555; c=relaxed/simple;
-	bh=vwZ3ox+S8EieIsKYJeZmQbcya6G6wNYQsljtLPXCGxg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SBOc/PGE0voJHMUR2wX9bNlmONF4UUuvhYU6LMdBiEHPiN1H9OJZ8Q4cVgk9gluePVJ/mbLTnrKXMzNtlZ6yZBCKXi+c7/ctitL+jDeFXrg7calqkKmXlMoL4pVVM1NcknRV3iuKXVyT2jAeyTcwRBYfd2Y8IK+eN89fCdB9Lfc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=K7/9yTiB; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=eLaoBEDe; arc=none smtp.client-ip=205.220.180.131
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65I8G1j51157459
-	for <stable@vger.kernel.org>; Thu, 18 Jun 2026 08:49:13 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	+bHBfnOAx1pzFWwgZXfmA4+mbnnhL+GXgdNbrmQVFYI=; b=K7/9yTiBl5cqHQg5
-	fvVraopTRGu2bBf6exdrN6Q7F9Fewv2IYgq2+73Jjjit2s9x5kQtkAt4wsxSL0E5
-	RmAwUof+CnqpAOVBuQx5P71IDfIrK4eGaza1dGlDUYlpY/vYvXj7C3mRNSeDexNG
-	XrtdMpLDxPJt9I5XhfTNRO+si8a+LumH2ska9EZNN4339ySmmwcAoV+f8S89yXgF
-	TdcmVzq0gHX8+yCEGvLrK0JiFuDdoFXunCj9w473ozI1NnK4n/kPDU3MEOs2jL3c
-	qxdZyGf4ZtqbkCjdg7HPuCHOzvk0rCIzJLmGGRNP7EggezpZxXWuJClP1r8stgm6
-	Mz/WjA==
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com [209.85.222.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4ev19a2kqb-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Thu, 18 Jun 2026 08:49:13 +0000 (GMT)
-Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-9157263095fso18970185a.0
-        for <stable@vger.kernel.org>; Thu, 18 Jun 2026 01:49:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1781772553; x=1782377353; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=+bHBfnOAx1pzFWwgZXfmA4+mbnnhL+GXgdNbrmQVFYI=;
-        b=eLaoBEDe1w4x6U2m/1h+ntxHFwnG6AZwiB/Cgdkq12aC6TvFE6V2JAXXqXpAOGJ9M0
-         5tBrSKytprmobrr/gct5dddaywFh1Jd5BeWd/Xxev2BgaBN1ZWBZ70bCCYAO07xiSxuW
-         RpmNd7QHGzCQjUdvGQOfhrZXNYDczsQb9S+jvLzyMtfBRfJ2zYcj7PonXVfKMjAQHysX
-         3+arkQ2UpssZltjpo65Q3j5+fNeEUvf5/E46LnrKZSyx4pp7XZgH0bw7k247hXqwFN7e
-         c8QdfO3LGSZjbM0aMCeUdRgFyV7kZFWjCEVe+A3T2MWD3QWvwu3yosXEP+c4KExtML53
-         ufww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781772553; x=1782377353;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=+bHBfnOAx1pzFWwgZXfmA4+mbnnhL+GXgdNbrmQVFYI=;
-        b=oN46+MylRgMbptoLlLeZenvu3SL21buPQcmaqYpc1Je526omPX6QEfgD4+ot4zXwGp
-         RN3mabbytVAALydkP5CRleXju3hz6Z5RcG3hzrOsZjDR/YwEr/TDPEoLFadn7eCQNTF3
-         IOTwYPYGx7VeHaoPHtQ2rTcF5saUIKdpA+iY/dbA6hQeo1sKI5gN3Eesmfwx9EQSvZ0J
-         yL0XG4b1p5iT9v689r+2NQhtFnVZ/O8hkrPPW1T0p3AIEIj+O0H8Z/CJeqlY2nHEtdn8
-         aEBgmBWsYfe9OC5cDN+6LKCBtPUZWwZaLL5kOSxrm1nfsjDq12pPi8w5mU8PbMu8QTSF
-         zWmA==
-X-Forwarded-Encrypted: i=1; AFNElJ/w2VZPySXVb1CRRTAYtQBXynK49KU4QH8lA6tU10Ce9AEP9ekXwykWBg8vl6CayLdcydprbh0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yza1z1Tg00gIap34DkOPXMN2RK7sNm9UbnvBmQ8C5PrkGdcVBZU
-	efLTuVfgzQdS8fHKzeZS6oV2/eKqw/euamhoBzUmKstj+7I9x8gQ82LTdOmAb1ab8KyscAl8Wct
-	Flc16GGAWhBx9nGop8jpXGU1pzzAKOwPWDzwfQQRJJWgE0Dy6AmYL2Y4PR8A=
-X-Gm-Gg: Acq92OFY9vZP4zf8DC4ZD3xVIK3dee1HMSpRSuKR8RXLQrNLff7dqtDeCL0VgepgprH
-	APtyDbkxAJnNffpetbTFEPeCCHexqaVm+Mltv5dut4W6Hn47V1akjvuVNSsKzz/P4+yosE7w8uA
-	bY0FMi/2cacYLQUWym7IPkpWKtlARbERTIm97t0e42Nf75wXqruTIYiRpFJrajjy1tsl5MJrGb7
-	aDCu4SI0cGFsZ2+fBUmKOs+BpU89O02Hxkwy4BEkfZEqKrOyrCyZixOqnvpElFAFaIz8HIX3ZXj
-	jEvXyPBo2sETd3AgU+P9lHEcQwppb+wqCmwlmjijGDc2TS6zB8HoPUq+qgWG6WQ4fOKK4NOky6h
-	a5RJ3LDbVffYY/SxqHSbQxzl/NmXWXMyyGEI=
-X-Received: by 2002:a05:620a:3910:b0:915:fad5:9096 with SMTP id af79cd13be357-91f2ba5e3bbmr276505785a.7.1781772552891;
-        Thu, 18 Jun 2026 01:49:12 -0700 (PDT)
-X-Received: by 2002:a05:620a:3910:b0:915:fad5:9096 with SMTP id af79cd13be357-91f2ba5e3bbmr276503885a.7.1781772552496;
-        Thu, 18 Jun 2026 01:49:12 -0700 (PDT)
-Received: from [192.168.120.170] ([178.235.128.140])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bfdb4b22544sm897196166b.14.2026.06.18.01.49.09
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 18 Jun 2026 01:49:11 -0700 (PDT)
-Message-ID: <d9e778ea-8a67-4576-9c96-9cfd859a266a@oss.qualcomm.com>
-Date: Thu, 18 Jun 2026 10:49:08 +0200
+	s=arc-20240116; t=1781772673; c=relaxed/simple;
+	bh=zO3V54C5HHRae0L772OfE4dD3EmL4beK+4OIz4Un73c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=vAqtcN9oZnmrhptHmhjT4ieOPLujsUWLiFqCsnwGxDem7BEQiLcXK4LSmPl0gp4j6O/SyMAO/+I8YsjYha2LDmUKjuMdNbZ3WbvQcO9bh2/IBbc7m+g76ukr1UiFfNHGRxwFIJ2idDkmVChyfDEwGtveVSJHhMHY/sy3d1PYRgg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=LnfTT7Ot; arc=none smtp.client-ip=178.251.229.89
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6E0BA115367;
+	Thu, 18 Jun 2026 10:50:58 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
+	s=dkim; t=1781772663;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 in-reply-to:references; bh=LF/JZdcxFgRK0iBWPnF0l7Y1owU5r6zC4pFS1bPYe+k=;
+	b=LnfTT7OtQzupS0TOAp1wDSUfO3E40mrTTOfaEDOSo7Ks1zW2Hl5+UmPXfvckGdH8NNDEC4
+	Cy8EkrjWBaG3cggkBE6zvzl1YjW+mU4jXW2GRPnPQ/DZpgf+zFINGsmaU+wTQuQtrpdG1r
+	TnFu0W8SvCqX1cRIaZJmFH5nyseLfJJZ9/YZe9wIF/f8wr+ADIrIqdnW35Wjb5LPCmkTWg
+	a4gWI9lOQn+MDGo06J+iT9Q3L84Gu0nhfks2/1TKktxCcZQf+FciLHlsf9K3TEwJp58ntb
+	q1ilIQlHus5UNQpjFFQ7/DgSpRI1/lN9xs+5wcn5D0tFlmkpAcTdQqZlacnMPg==
+Date: Thu, 18 Jun 2026 10:50:53 +0200
+From: Pavel Machek <pavel@nabladev.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org,
+	pavel@nabladev.com, jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+	hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
+	sr@sladewatkins.com
+Subject: Re: [PATCH 7.0 000/378] 7.0.13-rc1 review
+Message-ID: <ajOxbajb7j2Wmnio@duo.ucw.cz>
+References: <20260616145109.744539446@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] pinctrl: qcom: Unconditionally mark gpio as wakeup
- enable
-To: Sneh Mankad <sneh.mankad@oss.qualcomm.com>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Linus Walleij <linusw@kernel.org>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, linux-gpio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Maulik Shah <maulik.shah@oss.qualcomm.com>
-References: <20260616-enable_wakeup_capable_gpios-v3-1-fb59647d89cb@oss.qualcomm.com>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <20260616-enable_wakeup_capable_gpios-v3-1-fb59647d89cb@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Authority-Analysis: v=2.4 cv=YbmNIQRf c=1 sm=1 tr=0 ts=6a33b109 cx=c_pps
- a=50t2pK5VMbmlHzFWWp8p/g==:117 a=PRfkaYvzSr8QmIIGAkY2Sg==:17
- a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=3WHJM1ZQz_JShphwDgj5:22
- a=rd1qytcpxr8NqP3Khf4A:9 a=QEXdDO2ut3YA:10 a=IoWCM6iH3mJn3m4BftBB:22
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjE4MDA4MCBTYWx0ZWRfX56JBYjpj9fbD
- w8GYao45XRr1v1aEFyxRm/GhHYy3U3MFEHqAIh9VvCEulKUUGPJhH7Qz4bI2Z0uCvzTclnrbBxW
- 8wXJ41k7IhLJfRVJcotaesMOUTBafes=
-X-Proofpoint-GUID: 7wPwHLHXoJCUgVIQmutXyA6-YDm8M5f7
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjE4MDA4MCBTYWx0ZWRfXz38Ljk41dbHs
- 8AoJF/eMI4qWx2Af01mnFcbaO3Lskk13rtw/8F8ipTDK03MypYojw+atcsqsAuWyEv5KqRbhdC2
- dPe7/BkNXWslF/PN+/u1yoC0kGWux7vO/onlVZ+vNlyCIxoOEEUDPvWrCmzGPwSfknpcuTqBr5r
- NRCD3tt9vm2mMRticg5Sp+UAOVhyJEM/Pf3FuMfKZ2fzL9PqA/lfzS7r2SnEGT+Wa7K/+8DnRSW
- ZF1Tc5uHgjaedb5/wWKgRcKuNuCSLven85hty6SPwSN2f0Qe3C2kJkHPv473lMBUtCqmJSaiV8x
- NqWRRQc7jcO1d15yJXmepajhy0VAew+1QoiZFThBYeKBkTiSg4TO5UjDp/oomZ5zm8VxwLzHI/k
- xuXkXCbl2EkeW9fvwjoKNMCiCvob+O24C8GTbcAE7PLWcrHQwwzNinnUxyOdwVl/Yz6ONtCuamx
- cPDcw+n8V7L7c/ZOLEQ==
-X-Proofpoint-ORIG-GUID: 7wPwHLHXoJCUgVIQmutXyA6-YDm8M5f7
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-18_01,2026-06-17_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 adultscore=0 lowpriorityscore=0 bulkscore=0 malwarescore=0
- clxscore=1015 impostorscore=0 spamscore=0 phishscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2606180080
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="FURrPcz5idKMhdAZ"
+Content-Disposition: inline
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+X-Last-TLS-Session-Version: TLSv1.3
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-2.76 / 15.00];
+	SIGNED_PGP(-2.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+	DMARC_POLICY_ALLOW(-0.50)[nabladev.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	R_DKIM_ALLOW(-0.20)[nabladev.com:s=dkim];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-267059-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-267060-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FORGED_SENDER(0.00)[pavel@nabladev.com,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[konrad.dybcio@oss.qualcomm.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:sneh.mankad@oss.qualcomm.com,m:andersson@kernel.org,m:linusw@kernel.org,m:neil.armstrong@linaro.org,m:krzk@kernel.org,m:linux-arm-msm@vger.kernel.org,m:linux-gpio@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:maulik.shah@oss.qualcomm.com,s:lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oss.qualcomm.com:dkim,oss.qualcomm.com:mid,oss.qualcomm.com:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,qualcomm.com:dkim,vger.kernel.org:from_smtp];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[konrad.dybcio@oss.qualcomm.com,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,m:patches@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:torvalds@linux-foundation.org,m:akpm@linux-foundation.org,m:linux@roeck-us.net,m:shuah@kernel.org,m:patches@kernelci.org,m:lkft-triage@lists.linaro.org,m:pavel@nabladev.com,m:jonathanh@nvidia.com,m:f.fainelli@gmail.com,m:sudipm.mukherjee@gmail.com,m:rwarsow@gmx.de,m:conor@kernel.org,m:hargar@microsoft.com,m:broonie@kernel.org,m:achill@achill.org,m:sr@sladewatkins.com,m:ffainelli@gmail.com,m:sudipmmukherjee@gmail.com,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[nabladev.com:+];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[pavel@nabladev.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gitlab.com:url,vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5E8C269E963
+X-Rspamd-Queue-Id: C069E69E9A1
 
-On 6/16/26 1:54 PM, Sneh Mankad wrote:
-> GPIO interrupts that are wakeup capable need to be forwarded to wakeup
-> capable parent irqchip. This is done via writing to it's wakeup_enable bit.
-> 
-> Currently the bit is set only for PDC irqchip by checking skip_wake_irqs.
-> skip_wake_irqs is set to differentiate between parent irqchips MPM and
-> PDC. It is set when the parent irqchip is PDC to inform pinctrl about
-> skipping the IRQ setting up at TLMM.
-> 
-> However, the functionality to forward GPIO interrupts during SoC low
-> power mode is needed regardless of which parent irqchip it is.
-> Without the functionality it is impossible for MPM irqchip to detect the
-> GPIO interrupt during SoC low power mode since for MPM irqchip the
-> skip_wake_irqs is always false.
 
-This is a much better commit message, thank you!
+--FURrPcz5idKMhdAZ
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-One question remains - should we set skip_wake_irqs for MPM too?
+Hi!
 
-My understanding is that no, since the MPM HW is simpler and doesn't
-have a register for acking IRQs, so we need to do it from the recipient
-(TLMM). Is that right?
+> This is the start of the stable review cycle for the 7.0.13 release.
+> There are 378 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-Konrad
+CIP testing did not find any problems here:
+
+https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-7.0.y
+
+Tested-by: Pavel Machek (CIP) <pavel@nabladev.com>
+
+Best regards,
+                                                                Pavel
+
+--FURrPcz5idKMhdAZ
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCajOxbQAKCRAw5/Bqldv6
+8n0VAJ47EQw1pKPmg4x6mBTUKiVoNEELIQCfXitiZO5RCm8+icmQnozeDrH5Usk=
+=nk/W
+-----END PGP SIGNATURE-----
+
+--FURrPcz5idKMhdAZ--
 
