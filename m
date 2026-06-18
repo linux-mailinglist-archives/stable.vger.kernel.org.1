@@ -1,157 +1,203 @@
-Return-Path: <stable+bounces-267133-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267135-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id uEceN8jwM2rbJQYAu9opvQ
-	(envelope-from <stable+bounces-267133-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 15:21:12 +0200
+	id jRTAEpDyM2pZJgYAu9opvQ
+	(envelope-from <stable+bounces-267135-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 15:28:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61C486A06EC
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 15:21:12 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5F916A0843
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 15:28:47 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Lsh9OVVw;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267133-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-267133-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ePH305ta;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267135-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-267135-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3322A304F15F
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 13:17:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8DB86309A2D4
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 13:26:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98BDC280A56;
-	Thu, 18 Jun 2026 13:17:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 908503DA5D8;
+	Thu, 18 Jun 2026 13:26:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 723F88F49;
-	Thu, 18 Jun 2026 13:17:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E02F3905E0;
+	Thu, 18 Jun 2026 13:26:49 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781788658; cv=none; b=PDBz6Bqulq5Rc+6IhBWTU/xqZKd+NQ/SsRQMkZkpCNmNsyQ/sMWitKhhLg5wbO29pGs/EyOa5qGFVg8AYtZcoo6/LD8h6CPMAinOFmM+hMerfm72zK0bNQbO9mtqTotLXzFE8O42I7j8izlj5qxsLhFCYt+JiTsmSNP0MGWhrKo=
+	t=1781789210; cv=none; b=tPi3eTdMf0oFa6qd8LcAYJxypUQWbBOXXJ+30EUBlLW3kBrckasQuGrd7IQchJeaO3XKDNsk2CZhRComvxd8q+9VVgWqNnYF+inKlRo9RgafBOSCLDvhdEOJJSxIRnHmnBN3hG2f9/Mf9dTyaqYBExFufIcLw835YUgKG4VvAds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781788658; c=relaxed/simple;
-	bh=7lvUVxJQgs9T1NCRLLxwh4ARAP8CzLsEZiKAGOX/lzM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=klla90WqQuikTW9q/LxyV6Bd27zoNOcvz8SF7pDDE5Q0R9Enu7kXpLGvB7B8urrqyfQVfuUJJrOFgnb025VLs0n1tg2Da0HmHJo+P5hmnjGOckERPLQegJzwODUKP1AOaUsqA4TJPq6scvwxCvJf6W+BcQPZmQ4tPCL9bUPo4FY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Lsh9OVVw; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A527A1F000E9;
-	Thu, 18 Jun 2026 13:17:36 +0000 (UTC)
+	s=arc-20240116; t=1781789210; c=relaxed/simple;
+	bh=QLElcu9hzb0P9ZXwyhxlrodftHCw/3tjsGb+QSKtCgU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=OkTb5D9RmDLAQXe3WCctNpUh8Nu7HeifXXfNnJP3CtBEvONOrzsGAi2fr9gRXlzDKxicUZcgbqqirNNDlTtojfWHAPmyXob70T6REBWRNn3RAgCqaHUOiYWFgzmI9jwYvXs84Mc3SHOy3mSjWazOnKIIDnvWBLEeXfp3GZAIfQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ePH305ta; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 866741F00ACA;
+	Thu, 18 Jun 2026 13:26:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781788657;
-	bh=jpPKPCapCqBNEJwlVjxbOvVvWYzXbHXZeR9b6lZQkF8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Lsh9OVVwU538PN+8v4cAH5Rts8f9CsCeYUjOjksuOLzFWz3+Om4ASpg6IibKTwQNA
-	 8SGTaGbaKFOxEBSSd5uBBmSdVFS+47fH0aWu/bgRESiddQvd0B/NL1PC8EwqX6HxHi
-	 vqT6SIlP9IDGsKiaVVBfztU+hHplMlTC/u2WhUQMvxAe/sNq0g6WXf4U12/P/UDhr2
-	 vtvkmmQhcCU+IcAxYD1phKAtroB6iyrRc8p2yhjbQpD3n2RpXRWSfvDQVG1gOhd8Uw
-	 IIYuRvEC7wqE8O//9QVYl+9qJKZKhgZUX40oveBSHaZ1alkty4p4q0uPZUejXaORgo
-	 kgUpdQG9dyj8Q==
-Date: Thu, 18 Jun 2026 07:17:35 -0600
-From: Keith Busch <kbusch@kernel.org>
-To: Christoph Hellwig <hch@lst.de>
-Cc: Keith Busch <kbusch@meta.com>, linux-block@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, dm-devel@lists.linux.dev,
-	axboe@kernel.dk, brauner@kernel.org, djwong@kernel.org,
-	viro@zeniv.linux.org.uk, stable@vger.kernel.org
-Subject: Re: [PATCH 1/1] block: validate user space vectors during extraction
-Message-ID: <ajPv7yOoYsR5O6kf@kbusch-mbp>
-References: <20260617233235.1016063-1-kbusch@meta.com>
- <20260617233235.1016063-2-kbusch@meta.com>
- <20260618102627.GA23200@lst.de>
+	s=k20260515; t=1781789208;
+	bh=oP8CklMUaboQLSuBeJTlR6jjiTi2cbJtmz4ndwNg7Hs=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=ePH305taClEHRX7/p9PObb/G1F17AsBqD1kbzlA8VsxNnxeR/tdpMunsl/VAi3g6c
+	 nCU3YpNI3iOaZZtZ7aVcwhVEyZu24FzADcHAc3LK6j0CKmHYLPyYIhrMdlUd5hfCZN
+	 ah+iD48ZN/VukYANVT49OjnF54g0koiUcAsbdRoz6dle+YDdBYAhEwJEW24Lw4LMGX
+	 9dFfgDwAgENyr8KGA14FItdKASNGvJshTz8VxG3YLMWr4Q6QFe8l+WgE0jq8vw4YAx
+	 23DaOJ+hCdCKO5DCnoeC9K134vJVVDdjOAyeeqcUdUatB5D3BBQloFA9FZcXD85H5Z
+	 cKQl69mYXkSIA==
+From: Simon Horman <horms@kernel.org>
+To: doruk@0sec.ai
+Cc: Simon Horman <horms@kernel.org>,
+	saeedm@nvidia.com,
+	leon@kernel.org,
+	tariqt@nvidia.com,
+	mbloch@nvidia.com,
+	sd@queasysnail.net,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	borisp@nvidia.com,
+	raeds@nvidia.com,
+	ehakim@nvidia.com,
+	netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH net v2] net/mlx5e: macsec: fix use-after-free of metadata_dst on RX SC delete
+Date: Thu, 18 Jun 2026 14:18:58 +0100
+Message-ID: <20260618131857.894379-2-horms@kernel.org>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260617100558.83654-1-doruk@0sec.ai>
+References: <20260617100558.83654-1-doruk@0sec.ai>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260618102627.GA23200@lst.de>
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-4.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-267135-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:doruk@0sec.ai,m:horms@kernel.org,m:saeedm@nvidia.com,m:leon@kernel.org,m:tariqt@nvidia.com,m:mbloch@nvidia.com,m:sd@queasysnail.net,m:andrew+netdev@lunn.ch,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:borisp@nvidia.com,m:raeds@nvidia.com,m:ehakim@nvidia.com,m:netdev@vger.kernel.org,m:linux-rdma@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:andrew@lunn.ch,s:lists@lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[19];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:hch@lst.de,m:kbusch@meta.com,m:linux-block@vger.kernel.org,m:linux-fsdevel@vger.kernel.org,m:dm-devel@lists.linux.dev,m:axboe@kernel.dk,m:brauner@kernel.org,m:djwong@kernel.org,m:viro@zeniv.linux.org.uk,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[kbusch@kernel.org,stable@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-267133-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[kbusch@kernel.org,stable@vger.kernel.org];
+	FORGED_SENDER(0.00)[horms@kernel.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[horms@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	TAGGED_RCPT(0.00)[stable,netdev];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,kbusch-mbp:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,sashiko.dev:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 61C486A06EC
+X-Rspamd-Queue-Id: D5F916A0843
 
-On Thu, Jun 18, 2026 at 12:26:27PM +0200, Christoph Hellwig wrote:
-> On Wed, Jun 17, 2026 at 04:32:35PM -0700, Keith Busch wrote:
-> > @@ -1251,6 +1251,11 @@ int bio_iov_iter_get_pages(struct bio *bio, struct iov_iter *iter,
-> >  
-> >  	if (iov_iter_is_bvec(iter)) {
-> >  		bio_iov_bvec_set(bio, iter);
-> > +
-> > +		if (mp_bvec_iter_offset(bio->bi_io_vec, bio->bi_iter) &
-> > +							vec_align_mask)
-> > +			return -EINVAL;
-> 
-> Can you add a comment here?  Especially as the bvec iter doesn't actually
-> require all individual bvecs to be aligned and I'm not entirely sure this
-> handles all case - writing down the rules might help a bit with that.
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+Full review at: https://sashiko.dev
+---
+net/mlx5e: macsec: fix use-after-free of metadata_dst on RX SC delete
 
-The rationale is that the only iter_bvec users come from io_uring
-registered buffers, which are virtually contiguous. Subsequent IO
-referencing it provides only an offset and a length, so the only
-possible unlaignment could bne the first offset (we've already verified
-the total length earlier). Every subsequent vector must be page aligned
-at a minimum, which is the largest possible dma alignment the block
-layer allows, so we don't need to check the rest.
- 
-> >  		ret = iov_iter_extract_bvecs(iter, bio->bi_io_vec,
-> >  				BIO_MAX_SIZE - bio->bi_iter.bi_size,
-> > -				&bio->bi_vcnt, bio->bi_max_vecs, flags);
-> > +				&bio->bi_vcnt, bio->bi_max_vecs,
-> > +				vec_align_mask, flags);
-> >  		if (ret <= 0) {
-> > +			if (ret == -EINVAL) {
-> > +				bio_release_pages(bio, false);
-> > +				bio_clear_flag(bio, BIO_PAGE_PINNED);
-> > +				bio->bi_iter.bi_size = 0;
-> > +				bio->bi_vcnt = 0;
-> > +				return ret;
-> > +			}
-> 
-> Do we need all this cleanups beyoned the bio_release_pages()?  Most
-> callers just free the bio, so should not care about it, and the error
-> handling in __blkdev_direct_IO that calls bio_endio looks buggy for
-> other reasons..
+This commit fixes a use-after-free in the MACsec RX datapath by replacing
+a synchronous metadata_dst_free() with dst_release() when an RX SC is
+deleted. It also updates the datapath to use dst_hold_safe() to avoid
+acquiring a reference to a dying destination entry.
 
-Yeah, it's exactly for the __blkdev_direct_IO() error handling, though I
-think clearing either the PINNED flag or bi_vcnt is sufficient after
-bio_release_pages(). The rest is just resetting the bio to the initial
-state since I didn't want to return both an error and something that
-looks like a partially constructed bio, even if no one currently cares.
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c
+> --- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c
+> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c
+> @@ -829,7 +829,7 @@ static void macsec_del_rxsc_ctx(struct mlx5e_macsec *macsec, struct mlx5e_macsec
+>  	 */
+>  	list_del_rcu(&rx_sc->rx_sc_list_element);
+>  	xa_erase(&macsec->sc_xarray, rx_sc->sc_xarray_element->fs_id);
+> -	metadata_dst_free(rx_sc->md_dst);
+> +	dst_release(&rx_sc->md_dst->dst);
+>  	kfree(rx_sc->sc_xarray_element);
 
-But since you mention it, __blkdev_direct_IO's handling does look wrong,
-so maybe I can clean that up first.
+[Severity: Critical]
+This is a pre-existing issue, but is it safe to synchronously call kfree()
+on rx_sc->sc_xarray_element here?
+
+The RX datapath accesses the xarray under rcu_read_lock() in
+mlx5e_macsec_offload_handle_rx_skb(). If sc_xarray_element is fetched via
+xa_load() by a concurrent reader just before xa_erase() runs, won't this
+kfree() free the element while the reader is still accessing it, leading to
+a use-after-free?
+
+>  	kfree_rcu_mightsleep(rx_sc);
+>  }
+
+[ ... ]
+
+> @@ -1697,8 +1697,8 @@ void mlx5e_macsec_offload_handle_rx_skb(struct net_device *netdev,
+>  	sc_xarray_element = xa_load(&macsec->sc_xarray, fs_id);
+>  	rx_sc = sc_xarray_element->rx_sc;
+
+[Severity: Critical]
+This isn't a bug introduced by this patch, but does xa_load() return NULL
+if the fs_id has already been erased by xa_erase() in the deletion path?
+
+If packets matched by hardware before the rule was deleted are still
+lingering in the software RX queues, xa_load() might return NULL.
+Dereferencing sc_xarray_element->rx_sc immediately after could cause a
+NULL pointer dereference. Could we add a NULL check here before accessing
+sc_xarray_element?
+
+[Severity: Critical]
+This is also a pre-existing issue, but is rx_sc fully initialized when it
+becomes visible to RCU readers?
+
+In mlx5e_macsec_add_rxsc(), it appears sc_xarray_element is published to
+the xarray via xa_alloc() before rx_sc->md_dst is allocated and
+initialized:
+
+mlx5e_macsec_add_rxsc() {
+    ...
+    err = xa_alloc(&macsec->sc_xarray, &sc_xarray_element->fs_id, ...);
+    ...
+    rx_sc->md_dst = metadata_dst_alloc(0, METADATA_MACSEC, GFP_KERNEL);
+    ...
+}
+
+Since xa_alloc() assigns the lowest available index, the new fs_id could be
+recycled from a recently deleted SC. If a lingering packet with the old
+fs_id is processed by the datapath, it could find the newly published
+element and attempt to call dst_hold_safe(&rx_sc->md_dst->dst).
+
+Because rx_sc->md_dst is still NULL at that moment, could this cause a NULL
+pointer dereference?
+
+>  	if (rx_sc) {
+> -		dst_hold(&rx_sc->md_dst->dst);
+> -		skb_dst_set(skb, &rx_sc->md_dst->dst);
+> +		if (dst_hold_safe(&rx_sc->md_dst->dst))
+> +			skb_dst_set(skb, &rx_sc->md_dst->dst);
+>  	}
+>  
+>  	rcu_read_unlock();
 
