@@ -1,130 +1,184 @@
-Return-Path: <stable+bounces-267174-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267176-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id TojqAH0cNGoqOwYAu9opvQ
-	(envelope-from <stable+bounces-267174-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 18:27:41 +0200
+	id YV/rAx8eNGroOwYAu9opvQ
+	(envelope-from <stable+bounces-267176-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 18:34:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 475606A1967
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 18:27:40 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E1686A19DB
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 18:34:38 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hlY5dcHw;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267174-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267174-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=0leil.net header.s=20231125 header.b=nJsKeg+G;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267176-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-267176-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=reject) header.from=0leil.net;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1B6C03033507
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 16:27:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8EA75305A8FA
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 16:34:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC6883019A9;
-	Thu, 18 Jun 2026 16:27:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E433F2EA151;
+	Thu, 18 Jun 2026 16:34:25 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtp-bc0d.mail.infomaniak.ch (smtp-bc0d.mail.infomaniak.ch [45.157.188.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE31D1DC985;
-	Thu, 18 Jun 2026 16:27:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28FF42EDD69
+	for <stable@vger.kernel.org>; Thu, 18 Jun 2026 16:34:23 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781800057; cv=none; b=dl4qQb529RsglhYlfv9gcfF+ac4FvZ3gEbJcC+zKcHwyFBJhNBfQgmadb8v3JQ/vx2lvTjCSeODjBwZ9XmJW9kNNW6DOOrzAiT9pTm040u5XKiEjZ8tEMuOgeZyfmqq2DFJPPeU+QIs5rdb3psarD2JxomJRdD4g3DY3MgHeQNY=
+	t=1781800465; cv=none; b=JAeVzePALByzT13JHJD57OzFNK++w6tvuz0clrMtIsI3OBJ6ra3ugUhH5FXcFcYsOhkVsM9KnGvSsbGvocwRZldhKxZFBvT28R25WxJKE9cCQhcwxTP50WT4OVtjLDCF2o2Macn0KjluzOQav9h8eZWmibLxVDjPXco1q5BnG6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781800057; c=relaxed/simple;
-	bh=hDbhm1IAaZUIWZQchTNsmYp0wDA7JG5CsEgKLQo+WeY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bdMjX3C5QkFXU4QGruLjOp4cETku4SqPOdtqHa6Dqy6vx1rKoO/bWqA7UgoF/44RlXgBTM2GxLMpiFet7QifARnXq90rSBhb7eozGRh9KBCbXxn1wxT/SBcUVDSOX8lAAeNZPTlgKHhrhH22RuA1vWDL+9NA8OqAZ0Ab0F9UUcg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hlY5dcHw; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 791F21F000E9;
-	Thu, 18 Jun 2026 16:27:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781800056;
-	bh=hDbhm1IAaZUIWZQchTNsmYp0wDA7JG5CsEgKLQo+WeY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hlY5dcHwzatI7ydD9NMrwhkmZTZ8k+kfAPV9tGeXFV/z8BBmRyVNpuG4zGSHljfdm
-	 IyKJKrUQJYdtL8m5iMGbadW8uPda/Vo15zCBU7VCkEEFcdHxegtGfHzv9hcE+iblJa
-	 qrTiLW4NHH8JtBkRxZ3rePqQp3q7KueeiYNUXZu3GAQ3wX6yuz4pXp72s/2OdBeuFg
-	 zrZcTwLk9hkLVP60PZ+ydhf+EYQ/G39EHE34QTjZMg9uTlkH+ynyaC3bmPeW37w6oW
-	 qDLzgRJx7ik2gneVFDl+H6JkhbV+xNNWykK6sMWNKJ3lX7nu2act/vvbU0K5t7jEFS
-	 lR8kmwwLb4PMA==
-From: Sasha Levin <sashal@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Cc: Sasha Levin <sashal@kernel.org>,
-	stable@vger.kernel.org,
-	patches@lists.linux.dev,
-	Weiming Shi <bestswngs@gmail.com>,
-	Xiang Mei <xmei5@asu.edu>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Vegard Nossum <vegard.nossum@oracle.com>
-Subject: Re: [PATCH 6.12 100/261] netfilter: nf_log: validate MAC header was set before dumping it
-Date: Thu, 18 Jun 2026 12:27:33 -0400
-Message-ID: <20260618134208.nf-log-mac-header-a84b6fedbc97@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <9d7e82ba-3f92-4ef4-bba9-c62c019252c9@oracle.com>
-References: <20260616145044.869532709@linuxfoundation.org> <20260616145049.667194632@linuxfoundation.org> <ed09740a-561f-41e4-8d7b-ade8f6ae0763@oracle.com> <2026061823-film-pastrami-44cf@gregkh> <9d7e82ba-3f92-4ef4-bba9-c62c019252c9@oracle.com>
+	s=arc-20240116; t=1781800465; c=relaxed/simple;
+	bh=sH4Ke66JIpnc0MZHo3EIyfu1ZYY+mgAZrrnNVgq4yPg=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=rxjjK+ZTNHeTKU6fD5u+Kwmx0c+4chz3KE3dC8MDW/82LENzwiV5gJYmQZH1rQYQNLoK/Yyl0AW8ntDiEdpogHSMru2NQ+5vKh2Y1of/6WurwChdPn7di/reCHvvEFIgo0QqeVm5UKyympbIrFs4a1rWO1qRZFxAXFvDNuhTQ0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=0leil.net; spf=pass smtp.mailfrom=0leil.net; dkim=pass (2048-bit key) header.d=0leil.net header.i=@0leil.net header.b=nJsKeg+G; arc=none smtp.client-ip=45.157.188.13
+Received: from smtp-3-0000.mail.infomaniak.ch (smtp-3-0000.mail.infomaniak.ch [10.4.36.107])
+	by smtp-4-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4gh5sN2wKGzrD2;
+	Thu, 18 Jun 2026 18:34:16 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=0leil.net;
+	s=20231125; t=1781800456;
+	bh=PHAWjs2Y1yJ4pF784Wz2QgiwURvcLQMB3ILixgzZUmg=;
+	h=From:Subject:Date:To:Cc:From;
+	b=nJsKeg+Gzquz90VmPRmUQAvcfpXfE0vRjqm75lM0E2WISsTFpnXqzjWRMd6sb+sPp
+	 HwrQ88ezCGzaSD7gYQE2Mz1v6s/NWpwAdV5FqsBA1SxQ1Rpf5jnBMP+MJO4cCbKhH8
+	 rPlBwjvMPGpWDHmWXvcr5RUULkEPNy4t6ACdF+WhA0DO7chnFXzr7d+jK9ePrjfOM2
+	 Lq9j4xMDApRj9ifDJxdv67AIFrqi5h8VUXMuDkzimwJZpjlVOklIEkaCR3UODZanPh
+	 QuizTgRE3se7mnq4j7GhyCNR9H/xuc02/fEOMZ6W1A3M9odtyT3c5yLNL1LIn+TO8C
+	 xABidE4dW2z/A==
+Received: from unknown by smtp-3-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4gh5sL3fJDzhjJ;
+	Thu, 18 Jun 2026 18:34:14 +0200 (CEST)
+From: Quentin Schulz <foss+kernel@0leil.net>
+Subject: [PATCH 6.12.y v2 0/3] gpiolib: backport 16fdabe143fc
+Date: Thu, 18 Jun 2026 18:34:00 +0200
+Message-Id: <20260618-6-12-cve-2026-31732-v2-0-42cc54b7bf04@cherry.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/32NwQ6CMBBEf4Xs2SW7JW7Vk/9hOEC7Sj2AabGRE
+ P5dwLvHmbx5M0PSGDTBpZghag4pDP0azKEA1zX9QzH4NYMhIyR8QkE26LLi1mDFtjIoFVnxRxZ
+ rCNblK+o9fHbrDaRkU05Q//r0bp/qxk25kV1I4xCn/T7zzv99yoyE1jXkqT2TtHR1ncY4lV6hX
+ pblC/IaTQTQAAAA
+X-Change-ID: 20260618-6-12-cve-2026-31732-63076d516720
+To: Linus Walleij <linus.walleij@linaro.org>, 
+ Bartosz Golaszewski <brgl@bgdev.pl>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, 
+ stable@vger.kernel.org, Quentin Schulz <quentin.schulz@cherry.de>, 
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+ Mathieu Dubois-Briand <mathieu.dubois-briand@bootlin.com>, 
+ Tzung-Bi Shih <tzungbi@kernel.org>, Linus Walleij <linusw@kernel.org>, 
+ Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+X-Mailer: b4 0.15-dev-47773
+X-Infomaniak-Routing: alpha
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-4.66 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	DMARC_POLICY_ALLOW(-0.50)[0leil.net,reject];
+	R_DKIM_ALLOW(-0.20)[0leil.net:s=20231125];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-267174-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[kernel.org,vger.kernel.org,lists.linux.dev,gmail.com,asu.edu,netfilter.org,oracle.com];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:harshit.m.mogalapalli@oracle.com,m:sashal@kernel.org,m:stable@vger.kernel.org,m:patches@lists.linux.dev,m:bestswngs@gmail.com,m:xmei5@asu.edu,m:pablo@netfilter.org,m:vegard.nossum@oracle.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-267176-lists,stable=lfdr.de,kernel];
+	FORGED_RECIPIENTS(0.00)[m:linus.walleij@linaro.org,m:brgl@bgdev.pl,m:gregkh@linuxfoundation.org,m:linux-gpio@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:bartosz.golaszewski@linaro.org,m:stable@vger.kernel.org,m:quentin.schulz@cherry.de,m:andriy.shevchenko@linux.intel.com,m:mathieu.dubois-briand@bootlin.com,m:tzungbi@kernel.org,m:linusw@kernel.org,m:bartosz.golaszewski@oss.qualcomm.com,s:lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	FORGED_SENDER(0.00)[foss@0leil.net,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	DKIM_TRACE(0.00)[0leil.net:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[foss@0leil.net,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[0leil.net:dkim,0leil.net:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,cherry.de:mid,cherry.de:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 475606A1967
+X-Rspamd-Queue-Id: 6E1686A19DB
 
-On Thu, Jun 18, 2026 at 05:08:46PM +0530, Harshit Mogalapalli wrote:
->Now, this particular backport "[PATCH 6.12 100/261] netfilter: nf_log:
->validate MAC header was set before dumping it" assumes that check is
->already present. Not sure what's the best way to handle it. Drop this as
->well and backport them separately along with the prerequisite:
->62443dc21114 ("netfilter: require Ethernet MAC header before using
->eth_hdr()") ?
+Backport 16fdabe143fc ("gpio: Fix resource leaks on errors in
+gpiochip_add_data_with_key()") to 6.12.y. To make the git diff more
+similar with the upstream commit, also backport 375790f18396 ("gpiolib:
+Extract gpiochip_choose_fwnode() for wider use") and 550300b9a295
+("gpiolib: Remove redundant assignment of return variable").
 
-you're right that a84b6fedbc97 on its own only covers the fallback path
-and leaves the eth_hdr() consumers unguarded without the prereq.
+The changes between 16fdabe143fc and the third patch of this series is
+(according to git-range-diff):
 
-rather than dropping it, i'll queue 62443dc21114 ("netfilter: require
-Ethernet MAC header before using eth_hdr()") on top in all the affected
-versions (5.15, 6.1, 6.6, 6.12, 6.18, 7.0) so the gap is fully closed.
+"""
+      ## drivers/gpio/gpiolib.c ##
+     @@ drivers/gpio/gpiolib.c: static const struct device_type gpio_dev_type = {
+    @@ drivers/gpio/gpiolib.c: int gpiochip_add_data_with_key(struct gpio_chip *gc, voi
+     +	}
+     +
+     +	gdev->can_sleep = gc->can_sleep;
+    -+	rwlock_init(&gdev->line_state_lock);
+    -+	RAW_INIT_NOTIFIER_HEAD(&gdev->line_state_notifier);
+    ++	BLOCKING_INIT_NOTIFIER_HEAD(&gdev->line_state_notifier);
+     +	BLOCKING_INIT_NOTIFIER_HEAD(&gdev->device_notifier);
+     +#ifdef CONFIG_PINCTRL
+     +	INIT_LIST_HEAD(&gdev->pin_ranges);
+    @@ drivers/gpio/gpiolib.c: int gpiochip_add_data_with_key(struct gpio_chip *gc, voi
+     -	gdev->ngpio = gc->ngpio;
+     -	gdev->can_sleep = gc->can_sleep;
+     -
+    --	rwlock_init(&gdev->line_state_lock);
+    --	RAW_INIT_NOTIFIER_HEAD(&gdev->line_state_notifier);
+    +-	BLOCKING_INIT_NOTIFIER_HEAD(&gdev->line_state_notifier);
+     -	BLOCKING_INIT_NOTIFIER_HEAD(&gdev->device_notifier);
+     -
+     -	ret = init_srcu_struct(&gdev->srcu);
+    @@ drivers/gpio/gpiolib.c: int gpiochip_add_data_with_key(struct gpio_chip *gc, voi
+     @@ drivers/gpio/gpiolib.c: int gpiochip_add_data_with_key(struct gpio_chip *gc, void *data,
+      		ret = gpiodev_add_to_list_unlocked(gdev);
+      		if (ret) {
+    - 			gpiochip_err(gc, "GPIO integer space overlap, cannot add chip\n");
+    + 			chip_err(gc, "GPIO integer space overlap, cannot add chip\n");
+     -			goto err_cleanup_desc_srcu;
+     +			goto err_put_device;
+      		}
+"""
 
-thanks for catching it.
+s/gpiochip_err/chip_err/ aside, the rest of the diff comes from feature
+commits which do not fit the rules for backporting to stable.
 
---
-Thanks,
-Sasha
+Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
+---
+Changes in v2:
+- added stable@vger.kernel.org in Cc, apologies for the noise.
+- Link to v1: https://patch.msgid.link/20260618-6-12-cve-2026-31732-v1-0-7ca0d0b906b0@cherry.de
+
+---
+Andy Shevchenko (2):
+      gpiolib: Extract gpiochip_choose_fwnode() for wider use
+      gpiolib: Remove redundant assignment of return variable
+
+Tzung-Bi Shih (1):
+      gpio: Fix resource leaks on errors in gpiochip_add_data_with_key()
+
+ drivers/gpio/gpiolib.c | 156 +++++++++++++++++++++++++------------------------
+ 1 file changed, 79 insertions(+), 77 deletions(-)
+---
+base-commit: 1d3a00d3bacff25652c96e1527610c69e91f7c38
+change-id: 20260618-6-12-cve-2026-31732-63076d516720
+
+Best regards,
+--  
+Quentin Schulz <quentin.schulz@cherry.de>
+
 
