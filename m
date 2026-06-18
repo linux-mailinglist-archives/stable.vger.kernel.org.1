@@ -1,217 +1,241 @@
-Return-Path: <stable+bounces-267207-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267270-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 3EX1Ev1RNGogUwYAu9opvQ
-	(envelope-from <stable+bounces-267207-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 22:15:57 +0200
+	id w26PHaVYNGorVgYAu9opvQ
+	(envelope-from <stable+bounces-267270-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 22:44:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7F996A27B5
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 22:15:56 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1D2F6A2A87
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 22:44:20 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=crowdstrike.com header.s=default header.b="oYx/b724";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267207-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267207-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=crowdstrike.com header.s=default header.b="l32F /tU";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267270-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267270-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=reject) header.from=crowdstrike.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2C3D0301957A
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 20:15:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0C8E7301038F
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 20:44:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 097203128B2;
-	Thu, 18 Jun 2026 20:15:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EC68343D8A;
+	Thu, 18 Jun 2026 20:44:10 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-00206402.pphosted.com (mx0a-00206402.pphosted.com [148.163.148.77])
+Received: from mx0b-00206402.pphosted.com (mx0b-00206402.pphosted.com [148.163.152.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C4F428C037
-	for <stable@vger.kernel.org>; Thu, 18 Jun 2026 20:15:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0DB22FB969
+	for <stable@vger.kernel.org>; Thu, 18 Jun 2026 20:44:08 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781813754; cv=none; b=K0LIre376/ztW/3SxyF7VAMg9p1xfPoW+OyuH9A1oLAcpp6iUH5lc3buaO+Vo23+DrFwT9ofUAziqXHOFJr6ceW3pzvpPvyOOuGwJ5QJhtmlN3KrmIxq/FpfGj5r7d+zdw7cgS2w9g+OMQ7dxFn/rg3+jYt59IDVeDB5XeUtcGU=
+	t=1781815450; cv=none; b=BfWFgjhHgdxtseXGfq7mGOk08zkNvfMJ3zuuQbVB3FbtVFGohqrYOqlWJGj2z02H5usBR0wHIk8TRgRUsMAzqH5KZYZvblJeOp8maFQS0xuwVWAYEGzGKF/UznPb0+p+0T8J2M3SIUeJYQsm9uhPpmVbOvwxJDxu0LOXTSlyAUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781813754; c=relaxed/simple;
-	bh=ODlJQjSR9sWkeTUDz3e/n3OU4llQhnVtEP96uZtTQzA=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ZTwXmy6bAW4uV1YUtUANoJfD01Lyx+is6Izg9v8q9IQt3m9NtdjpLAcI0f5MjG4p7S/cJRBAaeNnzohfaB0hJ0DdP9EiruQZWcgLAFGrDA0FMHHgylPHrEO2leGCl7VhPODeNW8H91C4SzBfseI4IMCrqGesLstTAf/Rx6BkLXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=crowdstrike.com; spf=pass smtp.mailfrom=crowdstrike.com; dkim=pass (2048-bit key) header.d=crowdstrike.com header.i=@crowdstrike.com header.b=oYx/b724; arc=none smtp.client-ip=148.163.148.77
-Received: from pps.filterd (m0354652.ppops.net [127.0.0.1])
-	by mx0a-00206402.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65IJiT7q3008102;
-	Thu, 18 Jun 2026 20:15:46 GMT
+	s=arc-20240116; t=1781815450; c=relaxed/simple;
+	bh=OaptE1/gtm9u+e09m8G9kP/lKwda4A+s3AUca3DbC5U=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=EKRaXPHpe1rkYU6kKKAj9ZSdi2whpFQKI91+EpWW7SPrh/hrsWAQQf76e55R3ozM0jTksMvYQygMkXVbV6V7wF8MJUFeycXOmQRDZyFyIGsNUTNDKB3uLV40vbZlg1o7XzvUsPPZy35xJaDFA7HTv1sIkAKSJ1scgL9cnGqKbSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=crowdstrike.com; spf=pass smtp.mailfrom=crowdstrike.com; dkim=pass (2048-bit key) header.d=crowdstrike.com header.i=@crowdstrike.com header.b=l32F/tUK; arc=none smtp.client-ip=148.163.152.16
+Received: from pps.filterd (m0354654.ppops.net [127.0.0.1])
+	by mx0b-00206402.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65IIsrKO3988528;
+	Thu, 18 Jun 2026 20:15:48 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crowdstrike.com;
 	 h=cc:content-transfer-encoding:content-type:date:from
-	:message-id:mime-version:subject:to; s=default; bh=m9LV7vn+MVpwS
-	PAkn51YE07dplchoiEyjajMPf1U+48=; b=oYx/b724FiYG1I0ilMZL1CAM4zqDA
-	sRO/WYpDEfyHYzXMZOkwanzS4fSwyOAQTcRsZwEAhty/jruncPIwj9sTWeDqRSYv
-	pdTVUZFcvL/cYnOTOkqvCW9wfEuPI5INIi++Qw7vWAerx8EjizV4B7PTT7FpVlDp
-	zq7JlftwR0iWc13H+kvJhpIQqtzOYWX+XWZ09ivSHdvFSN9/oEQkcEvNpB/zcjbB
-	BQOfmFy4TdEaIdOABJRMemXxAvTZv84dPo3b9BBgbweZWYfgwpHcmavxwHSDz4wH
-	3qPXidf14rWO5xWV2aUeL+h6FOn+wkEoFYfo9Dsfw/wdV8iJv0uSydAYA==
+	:in-reply-to:message-id:mime-version:references:subject:to; s=
+	default; bh=NNpQ667LkrO398pV4xoIsO5z3sKp4xshONvEXwtcKH0=; b=l32F
+	/tUKgxxJD+CHPNywcS1sRhEpAdmLjB3rXmxziGPpsQgjw/eJcqePE6ZiE2cOH52i
+	k36OmCZWT8DHVd+qFqrsxvU3iSS5k7LXeKnOQysDuuHPawjy39Z3f8sbhb3FCcx6
+	D2+aEiFPipjuOdYdenmqFqkvQx6mhastmlZC6kZs3XPeC5XOyStz220d9DlLSCjx
+	5IOvsUkJ+qo3CzW60rK1YIA7/ef5F10UTgHqOJi80P7w8we2YogWUvYTNAERDwaR
+	giwsQhXS/WQozSVyi0R/icstPWq/QgAm3d8Gyc230XfSKzjQFF01w7NsH17ZH+tp
+	helFhaGNJKEplPoQKQ==
 Received: from mail.crowdstrike.com (dragosx.crowdstrike.com [208.42.231.60] (may be forged))
-	by mx0a-00206402.pphosted.com (PPS) with ESMTPS id 4evq3k84g5-1
+	by mx0b-00206402.pphosted.com (PPS) with ESMTPS id 4ev4w5uyse-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 18 Jun 2026 20:15:46 +0000 (GMT)
+	Thu, 18 Jun 2026 20:15:47 +0000 (GMT)
 Received: from LL-DJCZ134.crowdstrike.sys (10.100.11.122) by
  04WPEXCH006.crowdstrike.sys (10.100.11.70) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Thu, 18 Jun 2026 20:15:44 +0000
+ 15.2.2562.43; Thu, 18 Jun 2026 20:15:45 +0000
 From: Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
 To: <stable@vger.kernel.org>
 CC: <gregkh@linuxfoundation.org>, <sashal@kernel.org>, <rostedt@goodmis.org>,
         <vmalik@redhat.com>, <jmarchan@redhat.com>,
         <martin.kelly@crowdstrike.com>, <justin.deschamp@crowdstrike.com>,
         <linux-open-source@crowdstrike.com>
-Subject: [PATCH 6.12.y 00/27] ftrace/sorttable: Fix ftrace symbol table corruption with CONFIG_X86_KERNEL_IBT=y
-Date: Thu, 18 Jun 2026 16:15:14 -0400
-Message-ID: <cover.1781809906.git.andrey.grodzovsky@crowdstrike.com>
+Subject: [PATCH 6.12.y 01/27] scripts/sorttable: Remove unused macro defines
+Date: Thu, 18 Jun 2026 16:15:15 -0400
+Message-ID: <f1cd060da6cd86ab48f12660a85f7059f3aa016c.1781809913.git.andrey.grodzovsky@crowdstrike.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <cover.1781809906.git.andrey.grodzovsky@crowdstrike.com>
+References: <cover.1781809906.git.andrey.grodzovsky@crowdstrike.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-ClientProxiedBy: 04WPEXCH006.crowdstrike.sys (10.100.11.70) To
  04WPEXCH006.crowdstrike.sys (10.100.11.70)
-X-Proofpoint-ORIG-GUID: iAxQb8phpPq5aJXk1eKpRVxHjddRZXNE
-X-Proofpoint-GUID: iAxQb8phpPq5aJXk1eKpRVxHjddRZXNE
-X-Authority-Analysis: v=2.4 cv=QrVuG1yd c=1 sm=1 tr=0 ts=6a3451f2 cx=c_pps
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjE4MDE4NSBTYWx0ZWRfXzUazJDfAWGPC
+ vJh7uYOuPlUFIZd5aOMabtM/0+tnTpKMuH3twMKxgimLQ1MYdcUkp1j665zuC5IEns4ZqAI91HJ
+ AefuG0I1Xp0iqN645nQN7eqDvi81/HwcPrce8R0xzKsuNPSRpKDIKYbvUnoawlNZM9paNKWwRR0
+ ZkrUPSPGpu4iSfxaCX8WJGrbpWz4CS1m9KCXnseh3GvDQMrugdj/MZ7BSV0iL/3V0BHBJB7s7le
+ 8iFKeS6ReR9uqIPxl1v8ibPa/nce9xmo4wIT9r6FVjv+Zw2W/wkpEpBM/hitSAA++qrbsNLAwlw
+ E3tYdxBJLpr8YWE3ff+MlzYdCqoTMbqE+MdAx8bjm05A7CkuPGxl7cwHmdp1h491nUH6gXENnC1
+ I401QZ8esn+7p+NNQ3LLczBCcQxqHOAXSUdSCOXsg72fOf1WTjmRAm5xRlthBCl1KjwIk3GBHsg
+ QQ3jZUMymd+gAjnWodQ==
+X-Authority-Analysis: v=2.4 cv=JtDBas4C c=1 sm=1 tr=0 ts=6a3451f3 cx=c_pps
  a=1d8vc5iZWYKGYgMGCdbIRA==:117 a=1d8vc5iZWYKGYgMGCdbIRA==:17
- a=EjBHVkixTFsA:10 a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=T2KQ53IYiC3MXPrxx8bB:22 a=2KvRFfd_T_-xjmS8C1aD:22
- a=VwQbUJbxAAAA:8 a=meVymXHHAAAA:8 a=pGLkceISAAAA:8 a=p0WdMEafAAAA:8
- a=FKHNVGkEP0QFufyHOfwA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=2JgSa4NbpEOStq-L5dxp:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjE4MDE4NSBTYWx0ZWRfXyEynmFZB49mp
- 8boZCcKsb/xYMBB+6A1nkBrjhICqmYf92llu0GPoaSWM5TxNli8k/9KljaagNFNkWv2O/9VgCgJ
- H13ARubriSU8+LsJsy/vv9BD0o+sqCdK1ivFla3o4mwcVRVp53bD6g7YQfcXzKtZiZhrx3UwYdT
- 6irpfRJ9QvRww7JSzPuLCBYPIIPIg/CbxZITqmr1P+MfYEAf6pemwd36id3RrUFWX2HPo/Vicf9
- G61M4kovA3w3+BA1JuapDODHsFMLjti6gIlATMiL6YoS/bkqOfGc5Ft3RWA/ne1U+lNDZja5dgg
- 7peLeHPjNQOPbqiU86J6qv9+cEwvPw5OFniGoWPSzrUCOaEbibJL9jsgpQ6y1rx6ddASBG5VnPu
- wcys8UCZ/owyfclBpEh8GdOGDBoqGF559wHLK2YnYZkcohPmamM9S99bLZeXdhaJO21rKdqTG5x
- QASXPZP6Ug19qo7ZNIA==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjE4MDE4NSBTYWx0ZWRfX8VGJgwoinGAm
- BHL1ETnlfsPwIwxW7gR0TtE7HThwS3ISsJ3HnvRETx4C5LZ4tv4bHJoQAH84SPbt1fCMByusyR/
- dAhrRWobBGdwKhCotreSttXkdVa0zSlB6i8lZv/nz4Qtuc4uAMtA
+ a=EjBHVkixTFsA:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=T2KQ53IYiC3MXPrxx8bB:22 a=R_n4Uisa8axJ7jemP0ek:22 a=VwQbUJbxAAAA:8
+ a=meVymXHHAAAA:8 a=7CQSdrXTAAAA:8 a=7d_E57ReAAAA:8 a=Z4Rwk6OoAAAA:8
+ a=JfrnYn6hAAAA:8 a=cpyHj8QvAAAA:8 a=i0EeH86SAAAA:8 a=pl6vuDidAAAA:8
+ a=1UX6Do5GAAAA:8 a=20KFwNOVAAAA:8 a=0YzJpPVHDIj9ECx9jcYA:9
+ a=2JgSa4NbpEOStq-L5dxp:22 a=a-qgeE7W1pNrGK8U0ZQC:22 a=jhqOcbufqs7Y1TYCrUUU:22
+ a=HkZW87K1Qel5hWWM3VKY:22 a=1CNFftbPRP8L7MoqJWF3:22 a=BPjOrAZP5zzvMhA9psHf:22
+ a=Et2XPkok5AAZYJIKzHr1:22
+X-Proofpoint-ORIG-GUID: IolkH_q6zg1nJb9vBTwntSeBK7vZuUFj
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjE4MDE4NSBTYWx0ZWRfX/QnlFTgpto6L
+ i1sCJl7H+vCuf5EPUJR7sFLhffaVAn1qn5OLCd3J2oID5uHGwdbO2+JMMDk2VjkBSTQzswple44
+ oUJrIBP33n9mb0zIFrVeNQCDS0ANt2crWbzkPJ1sK0vB7GjlRPy/
+X-Proofpoint-GUID: IolkH_q6zg1nJb9vBTwntSeBK7vZuUFj
 X-Proofpoint-Virus-Version: vendor=nai engine=6900 definitions=11821
  signatures=596817
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 adultscore=0 malwarescore=0 spamscore=0 phishscore=0
- suspectscore=0 clxscore=1015 lowpriorityscore=0 impostorscore=0
- priorityscore=1501 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2606180185
+ priorityscore=1501 impostorscore=0 malwarescore=0 suspectscore=0 phishscore=0
+ clxscore=1015 lowpriorityscore=0 adultscore=0 bulkscore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2606180185
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[crowdstrike.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[crowdstrike.com:s=default];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	DKIM_TRACE(0.00)[crowdstrike.com:+];
-	FORGED_SENDER(0.00)[andrey.grodzovsky@crowdstrike.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:sashal@kernel.org,m:rostedt@goodmis.org,m:vmalik@redhat.com,m:jmarchan@redhat.com,m:martin.kelly@crowdstrike.com,m:justin.deschamp@crowdstrike.com,m:linux-open-source@crowdstrike.com,s:lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-267207-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[andrey.grodzovsky@crowdstrike.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TO_DN_NONE(0.00)[];
+	TAGGED_FROM(0.00)[bounces-267270-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:sashal@kernel.org,m:rostedt@goodmis.org,m:vmalik@redhat.com,m:jmarchan@redhat.com,m:martin.kelly@crowdstrike.com,m:justin.deschamp@crowdstrike.com,m:linux-open-source@crowdstrike.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[andrey.grodzovsky@crowdstrike.com,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[andrey.grodzovsky@crowdstrike.com,stable@vger.kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[9];
 	ALIAS_RESOLVED(0.00)[];
+	DKIM_TRACE(0.00)[crowdstrike.com:+];
 	TAGGED_RCPT(0.00)[stable];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gitlab.com:url,vger.kernel.org:from_smtp]
+	FORGED_SENDER_FORWARDING(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D7F996A27B5
+X-Rspamd-Queue-Id: C1D2F6A2A87
 
-This series backports the upstream fix for ftrace symbol table
-corruption on kernels with CONFIG_X86_KERNEL_IBT=y. Weak overridden
-functions corrupt the ftrace symbol table at boot, causing
-non-deterministic hook attachment failures across all ftrace consumers
-— most visibly fentry/trampoline-based hooks, but affecting any code
-that relies on ftrace symbol lookups.
+From: Steven Rostedt <rostedt@goodmis.org>
 
-The fix was merged to mainline in Linux 6.15 via:
-  https://lore.kernel.org/all/20250218195918.255228630@goodmis.org/
+[ Upstream commit 28b24394c6e9a3166fcb4480cba054562526657c ]
 
-The original backport request and bug description sent to stable:
-  https://lore.kernel.org/stable/CAOu3gNibeo3ov09CYpmzuqewB0EOsajB3hPU9pQmb_zoAUraHg@mail.gmail.com/
+The code of sorttable.h was copied from the recordmcount.h  which defined
+a bunch of Elf MACROs so that they could be used between 32bit and 64bit
+functions. But there's several MACROs that sorttable.h does not use but
+was copied over. Remove them to clean up the code.
 
-Red Hat independently backported this same set of patches to their
-RHEL 10 kernel (6.12). Their work is at:
-  https://gitlab.com/redhat/centos-stream/src/kernel/centos-stream-10/-/merge_requests/2689
+Cc: bpf <bpf@vger.kernel.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Nicolas Schier <nicolas@fjasle.eu>
+Cc: Zheng Yejian <zhengyejian1@huawei.com>
+Cc: Martin  Kelly <martin.kelly@crowdstrike.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Josh Poimboeuf <jpoimboe@redhat.com>
+Link: https://lore.kernel.org/20250105162344.128870118@goodmis.org
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
+---
+ scripts/sorttable.h | 27 ---------------------------
+ 1 file changed, 27 deletions(-)
 
-The 27 patches are organized in four groups:
-  - Patches 01-14: sorttable.c rewrite (prereq, merged 6.14)
-  - Patch  15:     function pointer struct cleanup (prereq, merged 6.14)
-  - Patches 16-21: the core IBT fix series (merged 6.15)
-  - Patches 22-27: post-merge correctness fixes for arm64 and s390
-
-All patches applied cleanly to 6.12.y (at 6.12.93). Tested on x86_64
-with CONFIG_X86_KERNEL_IBT=y:
-
-  grep __ftrace_invalid_address___ \
-    /sys/kernel/tracing/available_filter_functions | wc -l
-  Before: 589   After: 0
-
-ftrace kernel selftests (tools/testing/selftests/ftrace):
-  135 passed, 0 failed, 0 regressions introduced.
-
-Guenter Roeck (1):
-  ftrace: Do not over-allocate ftrace memory
-
-Steven Rostedt (25):
-  scripts/sorttable: Remove unused macro defines
-  scripts/sorttable: Remove unused write functions
-  scripts/sorttable: Remove unneeded Elf_Rel
-  scripts/sorttable: Have the ORC code use the _r() functions to read
-  scripts/sorttable: Make compare_extable() into two functions
-  scripts/sorttable: Convert Elf_Ehdr to union
-  scripts/sorttable: Replace Elf_Shdr Macro with a union
-  scripts/sorttable: Convert Elf_Sym MACRO over to a union
-  scripts/sorttable: Add helper functions for Elf_Ehdr
-  scripts/sorttable: Add helper functions for Elf_Shdr
-  scripts/sorttable: Add helper functions for Elf_Sym
-  scripts/sorttable: Use uint64_t for mcount sorting
-  scripts/sorttable: Move code from sorttable.h into sorttable.c
-  scripts/sorttable: Get start/stop_mcount_loc from ELF file directly
-  scripts/sorttable: Use a structure of function pointers for elf
-    helpers
-  arm64: scripts/sorttable: Implement sorting mcount_loc at boot for
-    arm64
-  scripts/sorttable: Have mcount rela sort use direct values
-  scripts/sorttable: Always use an array for the mcount_loc sorting
-  scripts/sorttable: Zero out weak functions in mcount_loc table
-  ftrace: Update the mcount_loc check of skipped entries
-  ftrace: Have ftrace pages output reflect freed pages
-  ftrace: Test mcount_loc addr before calling ftrace_call_addr()
-  ftrace: Check against is_kernel_text() instead of kaslr_offset()
-  scripts/sorttable: Use normal sort if theres no relocs in the mcount
-    section
-  scripts/sorttable: Allow matches to functions before function entry
-
-Vasily Gorbik (1):
-  scripts/sorttable: Fix endianness handling in build-time mcount sort
-
- arch/arm64/Kconfig      |    1 +
- kernel/trace/ftrace.c   |   68 ++-
- scripts/link-vmlinux.sh |    4 +-
- scripts/sorttable.c     | 1119 +++++++++++++++++++++++++++++++++++++--
- scripts/sorttable.h     |  500 -----------------
- 5 files changed, 1133 insertions(+), 559 deletions(-)
- delete mode 100644 scripts/sorttable.h
-
+diff --git a/scripts/sorttable.h b/scripts/sorttable.h
+index a7c5445ba..14d0c4d84 100644
+--- a/scripts/sorttable.h
++++ b/scripts/sorttable.h
+@@ -27,19 +27,10 @@
+ #undef Elf_Ehdr
+ #undef Elf_Shdr
+ #undef Elf_Rel
+-#undef Elf_Rela
+ #undef Elf_Sym
+-#undef ELF_R_SYM
+-#undef Elf_r_sym
+-#undef ELF_R_INFO
+-#undef Elf_r_info
+-#undef ELF_ST_BIND
+ #undef ELF_ST_TYPE
+-#undef fn_ELF_R_SYM
+-#undef fn_ELF_R_INFO
+ #undef uint_t
+ #undef _r
+-#undef _w
+ 
+ #ifdef SORTTABLE_64
+ # define extable_ent_size	16
+@@ -52,19 +43,10 @@
+ # define Elf_Ehdr		Elf64_Ehdr
+ # define Elf_Shdr		Elf64_Shdr
+ # define Elf_Rel		Elf64_Rel
+-# define Elf_Rela		Elf64_Rela
+ # define Elf_Sym		Elf64_Sym
+-# define ELF_R_SYM		ELF64_R_SYM
+-# define Elf_r_sym		Elf64_r_sym
+-# define ELF_R_INFO		ELF64_R_INFO
+-# define Elf_r_info		Elf64_r_info
+-# define ELF_ST_BIND		ELF64_ST_BIND
+ # define ELF_ST_TYPE		ELF64_ST_TYPE
+-# define fn_ELF_R_SYM		fn_ELF64_R_SYM
+-# define fn_ELF_R_INFO		fn_ELF64_R_INFO
+ # define uint_t			uint64_t
+ # define _r			r8
+-# define _w			w8
+ #else
+ # define extable_ent_size	8
+ # define compare_extable	compare_extable_32
+@@ -76,19 +58,10 @@
+ # define Elf_Ehdr		Elf32_Ehdr
+ # define Elf_Shdr		Elf32_Shdr
+ # define Elf_Rel		Elf32_Rel
+-# define Elf_Rela		Elf32_Rela
+ # define Elf_Sym		Elf32_Sym
+-# define ELF_R_SYM		ELF32_R_SYM
+-# define Elf_r_sym		Elf32_r_sym
+-# define ELF_R_INFO		ELF32_R_INFO
+-# define Elf_r_info		Elf32_r_info
+-# define ELF_ST_BIND		ELF32_ST_BIND
+ # define ELF_ST_TYPE		ELF32_ST_TYPE
+-# define fn_ELF_R_SYM		fn_ELF32_R_SYM
+-# define fn_ELF_R_INFO		fn_ELF32_R_INFO
+ # define uint_t			uint32_t
+ # define _r			r
+-# define _w			w
+ #endif
+ 
+ #if defined(SORTTABLE_64) && defined(UNWINDER_ORC_ENABLED)
 -- 
 2.34.1
 
