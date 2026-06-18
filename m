@@ -1,93 +1,93 @@
-Return-Path: <stable+bounces-267050-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267051-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id deFXEa6uM2oUFAYAu9opvQ
-	(envelope-from <stable+bounces-267050-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 10:39:10 +0200
+	id zdZ+CQOvM2ofFAYAu9opvQ
+	(envelope-from <stable+bounces-267051-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 10:40:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7FB469E818
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 10:39:09 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EA9769E83C
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 10:40:34 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=broadcom.com header.s=google header.b=Z3PbnRG7;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267050-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267050-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=broadcom.com header.s=google header.b="fnPi7h/+";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267051-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-267051-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=reject) header.from=broadcom.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0992C3052E48
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 08:37:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B135B302DB5D
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 08:37:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 187943B47FA;
-	Thu, 18 Jun 2026 08:37:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A656D3B47F5;
+	Thu, 18 Jun 2026 08:37:42 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oo1-f97.google.com (mail-oo1-f97.google.com [209.85.161.97])
+Received: from mail-oa1-f98.google.com (mail-oa1-f98.google.com [209.85.160.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A1383B38AA
-	for <stable@vger.kernel.org>; Thu, 18 Jun 2026 08:37:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E88E3B3C13
+	for <stable@vger.kernel.org>; Thu, 18 Jun 2026 08:37:37 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781771854; cv=none; b=IVrn41FbpEKjmhkQaajzoONKWmzU18SgnoheJHq8eiyzWrTtIEaTLoi/FEUjPiwkyiDm+sVly/6Yl/wD9MPRmSv8Kho2IzkDHnYGVBm1HsHFhB8hSxa1uJRYOpjEOA36cZv9lef81YDN2R6bwm/5EQLyNYAB2Urc6iLiwbLWMFY=
+	t=1781771862; cv=none; b=DUuCkIvbynHG9RDSIqks5sXcZRaDCm0Yyu2MgVvng8rzK9NNNrgerB23b/0InoyHLwYYfgfYLiJbAhhiKbId+ulNral+sQEC13HXqg21sIRIbtYHGwWSkC1pctaXGn7bDWLcl4hi/WpQagDuqoDZiysyyJH/J0+wNnNaEw6+iDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781771854; c=relaxed/simple;
-	bh=pOwuoiQjzretG7oDfDmFYA3hIp2H88a2vhblAg1egbk=;
+	s=arc-20240116; t=1781771862; c=relaxed/simple;
+	bh=aIbJosctl5OF9ZsLu4oXkOHrco919wfqLXR+++iz1xc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=R2CkqTUwYtUcXIpp3Fgbu2+qIyk12sIk7C8yfje9qbibKMkx47Daox1/xZxflRBHf+zTePnb6WtQdrGrtd+5iSmSMFo74Z7vigXn5DqY20OgPLg8DqQAcRtDBjxBMHJxqZboudOxZ+w3hnf7qrs0FktmVK3Wq7gfVc0no+I+9kM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=Z3PbnRG7; arc=none smtp.client-ip=209.85.161.97
-Received: by mail-oo1-f97.google.com with SMTP id 006d021491bc7-69de16f5f79so355595eaf.0
-        for <stable@vger.kernel.org>; Thu, 18 Jun 2026 01:37:33 -0700 (PDT)
+	 MIME-Version; b=FjFPU9yDWxSMbYiqSbAfawBU5X3AxRz/CyPMBizu9HfRg6UN+Yk0hOOb8skA3m2yW8Ykyg9z6AV4nbA1+48sMbFOfuUYq/xS4Kwp9LNIm9AyvDyxrBAXtpB/Ph8TdTchnoi7avB/JVDcz0tkMwNncGUT89924bBa7c3FqgrR8uQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=fnPi7h/+; arc=none smtp.client-ip=209.85.160.98
+Received: by mail-oa1-f98.google.com with SMTP id 586e51a60fabf-43cce34c881so537311fac.2
+        for <stable@vger.kernel.org>; Thu, 18 Jun 2026 01:37:37 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781771852; x=1782376652;
+        d=1e100.net; s=20251104; t=1781771856; x=1782376656;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:dkim-signature:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ali2EOfmsyhEzhaOAaUOh+zn1fjnnog9jkuNp7bauLU=;
-        b=lYhyJsQ74UJ2vH4YWaDgrh28KZfbKzlXvBhy+/S0ik9vo9XHibuK20Uqmfi81Viibq
-         ssiSReRoNBg18YsOV02rOKBouZ3PVBwMVYcwIZa3jb6V6IN+kNaK05CFR//qodFeGKp4
-         kMcOb3nSi9D0wfVJUV4jYIUShiy+g1mxFG02xKsnf+DQl/dIfXuDm2uS45l7kPpxdIdR
-         xQSBm7bff+uuD8M9dWPvFmqLB7vxqI6jc17C0h6TivltUg6ZrwrvtYzeUJkNVJ8327gv
-         Ov+Oi4dGzLLjj6FwRK2iu+o2b0hnBHncnKa6Teao2+IVqHYyk7pNE+kOM5zwrHw50WHT
-         3uOg==
-X-Gm-Message-State: AOJu0YxN1TfyWnyPuyDrRq48r38zbc3HiRAG5nEb9d7shuDoMaQf4TUV
-	ooKmQesYJ/yaLvDzOk/7v2zO9iOINRTGrVb7ax4KGGAhKnbCUWfmEymCmTvkk3S+0Fcb8Y2z2Ph
-	sWgeY8Ymubu2Py0/U7oXqUESgEfCRxaU1ghe6kLPi/ZszI2Mi1z6lbGmmJP/DQ5g0Y+o4zVwq1Q
-	N/tXAoO8XhAN+jJ418FBkFmGQslOUQOKv8K0KlGptdiXlsVC7mrbLyn3dPWBfVRnrCdUtVBvfHM
-	ju1Q6MsD2+Qt1paSg==
-X-Gm-Gg: Acq92OET2LKk/LCA4cStviYt20CVyWuBF9DTzu5HhEEGk0qvL0hw6M9bGNs4vMvy6Bi
-	tlvVpJHed6zeqSZ4C7PLZpj9BU9AqFDbgZOvORs12B//sqzQVKChICYULBCp8/Zzcsl9nKKdprJ
-	ZZT+jElZ2vapgz+0N384mNxYwU9/8oXNFPKXwWA5O7/01BaSa8mYZajrMQmSBnQzSnbr++ObvXK
-	nUo1a1SbqLZJ2BNKaRkQQlVUHwl41jdbr+TRpTuuaHtUydpAgaaith1oLwOo76ZjOKdJMYClrlw
-	sBgHPQubW83Eso0/KzEdyXEpAqfO30A1oTMsAmrJlKQmg8ylxj33d5jFOWrU4M7HhroZwq7jeXy
-	VE2QAcrTlbpLrrtx863yDW4vNMqdcSNSTY112Eb6/7h/6RYYn/yL27Sf6T8B0qS9sXR1FEAMOKF
-	dbhEWWXHYvVYCZSfK3rksf/3UAcuE5tR9umi5NrYsTCOf34fRLmXdE
-X-Received: by 2002:a05:6820:174a:b0:69e:2e0a:58dd with SMTP id 006d021491bc7-6a0b618d9demr6160889eaf.38.1781771852264;
-        Thu, 18 Jun 2026 01:37:32 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-117.dlp.protect.broadcom.com. [144.49.247.117])
-        by smtp-relay.gmail.com with ESMTPS id 006d021491bc7-69f00ec4a46sm822672eaf.14.2026.06.18.01.37.31
+        bh=o9hVwQ2uFHG9yjsxEMthJtly1U3KRAfycxfm9+vQlLA=;
+        b=FuJiFk0mVny0ieKfPhR8GNHby0Nk25kPf6dJNGPCU86s2QtD30cvQqHyoFj32LoxzB
+         i8Zd3js+GglUHDUcMn8TLAJl8OjHUruXvTzAaHVqsf8sUrl985aSBXhyhDXWWCM5afoz
+         UDEdunDzw10osAVYcDT7snvYLw+Ixy6IL9m2kvJ+hNZptDnLzQyuQsbfkaNxMCrpBu2R
+         75jRk8VIBw8KtXViIlZliM+rn5Eu1jahCSFQRb/3szs8yhIOfC3YaLzPHjfvAmFoiZa4
+         09zHujpkxsaE8uP2OO59ZKaC10nWcfFyr3HDvkahoQSPIaqEfqLX5pqEZGtLnt1bXdiQ
+         acbw==
+X-Gm-Message-State: AOJu0YwuBCwNbdq+5uxoYieerCDb9MhRwyRkB1VWAr1zQB6FoLxqhR6V
+	Kc8BfthBI/PYgOOftDCmzJV9S6Hai0xE7rhYADpYQimE6xNYBaaRHTWmaIn97mRiFqU0FYua2HP
+	GAif10pf6dLhj6G9jaIiaGQ+umQvy/hdbShaEvaUzt9g59OsxK3Sw8BI5wiIIEHG1e0oJzqDR6h
+	VBfqlKjiggFZxeckQE/MgoIMOC68XYVWMbEjDqr+4Z9cXcTkxm0xtWju6ZT7upxVIo0wmHMRqZK
+	1oK34aSiDgyZnQpgw==
+X-Gm-Gg: Acq92OGySevtMV0x+VQ2hZq3TLZdEDuOcD93Oz9dHIHUy9e2kzzY9zGhKg6ZhvZfdjw
+	Vi7SEpoCf88FnEOmS+AEUooBvAbjNV3xOk/t7IIpAzlstvhYfuiXjgK9oWAxudw+Dxyyg9T9u8V
+	Wd32tHESbV7tijG/sdnyL+OGcKuXnNo3UfTLsQ30lnqZWJuqAwtHl7voSSADY2EKm27Mj1Ot088
+	skW17l563DkbNtwnwzcOEeuZ3880Ux6CtJ3uRv0UrYGa0duIIWM0TmD1SHNrHgMoiPbL3B2C8No
+	YQ2sdCEk7OMYngEpwpEkpHkkK7A50WWh8Q4u+idx3PDgsPMUizFBQd3VRtfE9cIuugS8sA1dYPV
+	e9nGyL6vYJ3WDNzSQLqfJEIdw0Y4OZ73dd+3u1ONRVsieIP7UQg4liKPoQ8PKlm09sMm2uPpW1Y
+	vn3r0ymoh7SVa8ImZz9vRL43eryjuTM01YAK82gtGMesAZwONCbg==
+X-Received: by 2002:a05:6820:81d2:b0:69e:8932:7fe9 with SMTP id 006d021491bc7-6a0b6161128mr5829196eaf.41.1781771856115;
+        Thu, 18 Jun 2026 01:37:36 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-23.dlp.protect.broadcom.com. [144.49.247.23])
+        by smtp-relay.gmail.com with ESMTPS id 586e51a60fabf-44308a3588dsm843314fac.3.2026.06.18.01.37.35
         for <stable@vger.kernel.org>
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 18 Jun 2026 01:37:32 -0700 (PDT)
+        Thu, 18 Jun 2026 01:37:36 -0700 (PDT)
 X-Relaying-Domain: broadcom.com
 X-CFilter-Loop: Reflected
-Received: by mail-dy1-f199.google.com with SMTP id 5a478bee46e88-30bdfcf7c14so2894745eec.0
-        for <stable@vger.kernel.org>; Thu, 18 Jun 2026 01:37:31 -0700 (PDT)
+Received: by mail-dy1-f199.google.com with SMTP id 5a478bee46e88-304f23c55b2so677187eec.0
+        for <stable@vger.kernel.org>; Thu, 18 Jun 2026 01:37:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1781771851; x=1782376651; darn=vger.kernel.org;
+        d=broadcom.com; s=google; t=1781771855; x=1782376655; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ali2EOfmsyhEzhaOAaUOh+zn1fjnnog9jkuNp7bauLU=;
-        b=Z3PbnRG7RwUZNKm8nE+twtL1ioxcp80xQhoiFoIcELbKVpRmTdeTtHkO4hnauimVlf
-         PciG5XllfT0QaCFWHvr2+6euHEIk4+xeeMeHFKVAt8+zjcGkeri75tbkDv/bi9FDbgOu
-         97VjlMarbuULn1IId0mSY0ytf/8NO9HZDSg60=
-X-Received: by 2002:a05:7300:8608:b0:30b:c6f0:1cd9 with SMTP id 5a478bee46e88-30bca0cd6e3mr4005751eec.26.1781771850989;
-        Thu, 18 Jun 2026 01:37:30 -0700 (PDT)
-X-Received: by 2002:a05:7300:8608:b0:30b:c6f0:1cd9 with SMTP id 5a478bee46e88-30bca0cd6e3mr4005706eec.26.1781771850085;
-        Thu, 18 Jun 2026 01:37:30 -0700 (PDT)
+        bh=o9hVwQ2uFHG9yjsxEMthJtly1U3KRAfycxfm9+vQlLA=;
+        b=fnPi7h/+J2SSTjCUSzrMopCYHYLHUIfXhy7fUkFFuJ3ZYuFFnAN88eLJ7ca9wc+Mv3
+         Uk5ttiN7FpOJ5UM/EZNSwALdHsc3zPxqqIT2wOzrKSd1HqJlD4rResvS9Ua5YIC5NnCA
+         /XDh5FfLTugpc0OmaVWsnjGz/J6tZe+KC1haw=
+X-Received: by 2002:a05:7300:2209:b0:304:acc:f079 with SMTP id 5a478bee46e88-30bca09e535mr4462731eec.27.1781771854698;
+        Thu, 18 Jun 2026 01:37:34 -0700 (PDT)
+X-Received: by 2002:a05:7300:2209:b0:304:acc:f079 with SMTP id 5a478bee46e88-30bca09e535mr4462680eec.27.1781771853897;
+        Thu, 18 Jun 2026 01:37:33 -0700 (PDT)
 Received: from shivania.lvn.broadcom.net ([192.19.161.250])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3081e48e412sm27475037eec.4.2026.06.18.01.37.29
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3081e48e412sm27475037eec.4.2026.06.18.01.37.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Jun 2026 01:37:29 -0700 (PDT)
+        Thu, 18 Jun 2026 01:37:33 -0700 (PDT)
 From: Shivani Agarwal <shivani.agarwal@broadcom.com>
 To: stable@vger.kernel.org,
 	gregkh@linuxfoundation.org
@@ -106,11 +106,12 @@ Cc: davem@davemloft.net,
 	vamsi-krishna.brahmajosyula@broadcom.com,
 	yin.ding@broadcom.com,
 	tapas.kundu@broadcom.com,
+	GangMin Kim <km.kim1503@gmail.com>,
 	Bin Lan <lanbincn@139.com>,
 	Shivani Agarwal <shivani.agarwal@broadcom.com>
-Subject: [PATCH v5.10 1/2] net: add skb_header_pointer_careful() helper
-Date: Thu, 18 Jun 2026 01:08:06 -0700
-Message-Id: <20260618080807.1269070-2-shivani.agarwal@broadcom.com>
+Subject: [PATCH v5.10 2/2] net/sched: cls_u32: use skb_header_pointer_careful()
+Date: Thu, 18 Jun 2026 01:08:07 -0700
+Message-Id: <20260618080807.1269070-3-shivani.agarwal@broadcom.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260618080807.1269070-1-shivani.agarwal@broadcom.com>
 References: <20260618080807.1269070-1-shivani.agarwal@broadcom.com>
@@ -123,90 +124,111 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	WHITELIST_DMARC(-7.00)[broadcom.com:D:+];
 	SEM_URIBL(3.50)[139.com:email];
+	SUSPICIOUS_RECIPS(1.50)[];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	BAD_REP_POLICIES(0.10)[];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-267050-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FREEMAIL_CC(0.00)[davemloft.net,google.com,kernel.org,redhat.com,vger.kernel.org,gmail.com,resnulli.us,mojatatu.com,broadcom.com,139.com];
+	TAGGED_FROM(0.00)[bounces-267051-lists,stable=lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,vger.kernel.org:from_smtp,msgid.link:url,139.com:email,broadcom.com:dkim,broadcom.com:email,broadcom.com:mid,broadcom.com:from_mime];
+	FROM_HAS_DN(0.00)[];
 	R_DKIM_ALLOW(0.00)[broadcom.com:s=google];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:horms@kernel.org,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:xiaosuo@gmail.com,m:iri@resnulli.us,m:jhs@mojatatu.com,m:ajay.kaher@broadcom.com,m:alexey.makhalov@broadcom.com,m:vamsi-krishna.brahmajosyula@broadcom.com,m:yin.ding@broadcom.com,m:tapas.kundu@broadcom.com,m:lanbincn@139.com,m:shivani.agarwal@broadcom.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:horms@kernel.org,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:xiaosuo@gmail.com,m:iri@resnulli.us,m:jhs@mojatatu.com,m:ajay.kaher@broadcom.com,m:alexey.makhalov@broadcom.com,m:vamsi-krishna.brahmajosyula@broadcom.com,m:yin.ding@broadcom.com,m:tapas.kundu@broadcom.com,m:km.kim1503@gmail.com,m:lanbincn@139.com,m:shivani.agarwal@broadcom.com,m:kmkim1503@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[shivani.agarwal@broadcom.com,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	FREEMAIL_CC(0.00)[davemloft.net,google.com,kernel.org,redhat.com,vger.kernel.org,gmail.com,resnulli.us,mojatatu.com,broadcom.com,139.com];
 	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[shivani.agarwal@broadcom.com,stable@vger.kernel.org];
 	DMARC_POLICY_ALLOW(0.00)[broadcom.com,reject];
 	DKIM_TRACE(0.00)[broadcom.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ALIAS_RESOLVED(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[broadcom.com:dkim,broadcom.com:email,broadcom.com:mid,broadcom.com:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,139.com:email,msgid.link:url,linuxfoundation.org:email,vger.kernel.org:from_smtp];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[shivani.agarwal@broadcom.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	R_SPF_ALLOW(0.00)[+ip4:172.234.253.10:c];
+	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	R_SPF_ALLOW(0.00)[+ip6:2600:3c0a:e001:db::/64:c];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A7FB469E818
+X-Rspamd-Queue-Id: 6EA9769E83C
 
 From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 13e00fdc9236bd4d0bff4109d2983171fbcb74c4 ]
+[ Upstream commit cabd1a976375780dabab888784e356f574bbaed8 ]
 
-This variant of skb_header_pointer() should be used in contexts
-where @offset argument is user-controlled and could be negative.
+skb_header_pointer() does not fully validate negative @offset values.
 
-Negative offsets are supported, as long as the zone starts
-between skb->head and skb->data.
+Use skb_header_pointer_careful() instead.
 
+GangMin Kim provided a report and a repro fooling u32_classify():
+
+BUG: KASAN: slab-out-of-bounds in u32_classify+0x1180/0x11b0
+net/sched/cls_u32.c:221
+
+Fixes: fbc2e7d9cf49 ("cls_u32: use skb_header_pointer() to dereference data safely")
+Reported-by: GangMin Kim <km.kim1503@gmail.com>
+Closes: https://lore.kernel.org/netdev/CANn89iJkyUZ=mAzLzC4GdcAgLuPnUoivdLaOs6B9rq5_erj76w@mail.gmail.com/T/
 Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260128141539.3404400-2-edumazet@google.com
+Link: https://patch.msgid.link/20260128141539.3404400-3-edumazet@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Adjust context ]
 Signed-off-by: Bin Lan <lanbincn@139.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 [ Shivani: Modified to apply on 5.10.y ]
 Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
 ---
- include/linux/skbuff.h | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ net/sched/cls_u32.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
-diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
-index 8abbb64bd..a2daeba8b 100644
---- a/include/linux/skbuff.h
-+++ b/include/linux/skbuff.h
-@@ -3686,6 +3686,18 @@ skb_header_pointer(const struct sk_buff *skb, int offset, int len, void *buffer)
- 				    skb_headlen(skb), buffer);
- }
+diff --git a/net/sched/cls_u32.c b/net/sched/cls_u32.c
+index f2a0c1068..e501390cc 100644
+--- a/net/sched/cls_u32.c
++++ b/net/sched/cls_u32.c
+@@ -149,10 +149,8 @@ static int u32_classify(struct sk_buff *skb, const struct tcf_proto *tp,
+ 			int toff = off + key->off + (off2 & key->offmask);
+ 			__be32 *data, hdata;
  
-+/* Variant of skb_header_pointer() where @offset is user-controlled
-+ * and potentially negative.
-+ */
-+static inline void * __must_check
-+skb_header_pointer_careful(const struct sk_buff *skb, int offset,
-+			   int len, void *buffer)
-+{
-+	if (unlikely(offset < 0 && -offset > skb_headroom(skb)))
-+		return NULL;
-+	return skb_header_pointer(skb, offset, len, buffer);
-+}
-+
- /**
-  *	skb_needs_linearize - check if we need to linearize a given skb
-  *			      depending on the given device features.
+-			if (skb_headroom(skb) + toff > INT_MAX)
+-				goto out;
+-
+-			data = skb_header_pointer(skb, toff, 4, &hdata);
++			data = skb_header_pointer_careful(skb, toff, 4,
++							  &hdata);
+ 			if (!data)
+ 				goto out;
+ 			if ((*data ^ key->val) & key->mask) {
+@@ -202,8 +200,9 @@ static int u32_classify(struct sk_buff *skb, const struct tcf_proto *tp,
+ 		if (ht->divisor) {
+ 			__be32 *data, hdata;
+ 
+-			data = skb_header_pointer(skb, off + n->sel.hoff, 4,
+-						  &hdata);
++			data = skb_header_pointer_careful(skb,
++							  off + n->sel.hoff,
++							  4, &hdata);
+ 			if (!data)
+ 				goto out;
+ 			sel = ht->divisor & u32_hash_fold(*data, &n->sel,
+@@ -217,7 +216,7 @@ static int u32_classify(struct sk_buff *skb, const struct tcf_proto *tp,
+ 			if (n->sel.flags & TC_U32_VAROFFSET) {
+ 				__be16 *data, hdata;
+ 
+-				data = skb_header_pointer(skb,
++				data = skb_header_pointer_careful(skb,
+ 							  off + n->sel.offoff,
+ 							  2, &hdata);
+ 				if (!data)
 -- 
 2.53.0
 
