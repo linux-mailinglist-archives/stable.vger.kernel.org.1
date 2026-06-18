@@ -1,222 +1,172 @@
-Return-Path: <stable+bounces-267034-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267031-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id fu1FLhSlM2p9EgYAu9opvQ
-	(envelope-from <stable+bounces-267034-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 09:58:12 +0200
+	id uvUJKMukM2p0EgYAu9opvQ
+	(envelope-from <stable+bounces-267031-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 09:56:59 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2841669E45D
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 09:58:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D9FE69E444
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 09:56:59 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b="LF21c/WG";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267034-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-267034-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=uniontech.com;
+	dkim=fail ("headers rsa verify failed") header.d=w6rz.net header.s=default header.b=3C3BfGDS;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267031-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-267031-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=none;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F372530AB296
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 07:55:59 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 56AEB305D441
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 07:55:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C0D13D79F1;
-	Thu, 18 Jun 2026 07:55:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 409443D7D89;
+	Thu, 18 Jun 2026 07:55:32 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtpbgjp3.qq.com (smtpbgjp3.qq.com [54.92.39.34])
+Received: from omta36.uswest2.a.cloudfilter.net (omta36.uswest2.a.cloudfilter.net [35.89.44.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47B933D7D61
-	for <stable@vger.kernel.org>; Thu, 18 Jun 2026 07:55:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE9592EEE61
+	for <stable@vger.kernel.org>; Thu, 18 Jun 2026 07:55:30 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781769356; cv=none; b=b3negSYqEFyvFA8VzXmP3tAtWRWOmquja4NSqjldx18MGkj+ES75z8HIyqUTTTXYEyQwbavc1bJoHsAIsookdvGPpMBkEv/bgO2CPmHbwtGqTD89RrUdbThKzMn09TvxGactJKxtU6+ZymylTb9DOrQsrv7ovejWE7DpHkT6z58=
+	t=1781769332; cv=none; b=Wx33UY91+CY0FvF8CGhdPssqWe6id/N6SDTvWFMNGcMMhr5s3F5YYl1xWeqivrdNoCaSif1y5uCOmGl6sCGjwjCBlvSDPp8s3QOEujXvs7XxQDmRPrJw1OpVFUQitMIJrl5YTDH0QU9m2CX3hA+OVvOD7w90qF6LZOhpZJV5XoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781769356; c=relaxed/simple;
-	bh=6s9vHquvyrsTuoLIwzkNynuU8aGAJv+Ye4HARWfy2qc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=gHIKfvzpMX7UnawDbIUZD8OueYxlISoDPFDhbnNxLVSZyMCyDRRTwmefkpkKUrG9caPppNhPJor7M040fi93+lD4Qau3pjb+l+jatkvK1v2qNsqPDlXa9RgPQDb5OkpXwvHjFmiyBcyHD0Rf2gk9ReA/dKuo4LT2wDyZZRg82w0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=LF21c/WG; arc=none smtp.client-ip=54.92.39.34
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1781769329;
-	bh=tctqlVWawdsuxnP4bC5T4IOw+WFZXrYBfMPLs5KGnwI=;
-	h=From:To:Subject:Date:Message-Id:MIME-Version;
-	b=LF21c/WGMPdPmId6q8Oeh40oIHElbkdra3V83JdtWmFhFbQLZmoIIB/fFPVhI0nPT
-	 eggBlYEAyDMQBwlSynK6O+GtV9LrBQks8odbitiBc9JOOWe6niAmv108hg5aPTYW1u
-	 43HLZsq4+wNW9J7HB7pIx3IOHl+OKTO1iG3Q1d7U=
-X-QQ-mid: esmtpgz14t1781769323t7de58de5
-X-QQ-Originating-IP: G0Y92piYEjNztn+bBfime/5bcbO/bLrFAZDCJyjxHts=
-Received: from localhost.localdomain ( [113.57.152.160])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Thu, 18 Jun 2026 15:55:06 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 818916248080913179
-EX-QQ-RecipientCnt: 18
-From: Wentao Guan <guanwentao@uniontech.com>
-To: sashal@kernel.org,
-	gregkh@linuxfoundation.org,
-	guanwentao@uniontech.com
-Cc: stable@vger.kernel.org,
-	2045gemini@gmail.com,
-	dcaratti@redhat.com,
-	jhs@mojatatu.com,
-	keenanat2000@gmail.com,
-	kuba@kernel.org,
-	rajat.gupta@oss.qualcomm.com,
-	rollkingzzc@gmail.com,
-	toke@redhat.com,
-	victor@mojatatu.com,
-	yimingqian591@gmail.com,
-	Pedro Tammela <pctammela@mojatatu.com>,
-	Ido Schimmel <idosch@idosch.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 5.10.y v2 9/9] net/sched: act_pedit: free pedit keys on bail from offset check
-Date: Thu, 18 Jun 2026 15:53:52 +0800
-Message-Id: <20260618075342.1599593-10-guanwentao@uniontech.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20260618075342.1599593-1-guanwentao@uniontech.com>
-References: <20260618075342.1599593-1-guanwentao@uniontech.com>
+	s=arc-20240116; t=1781769332; c=relaxed/simple;
+	bh=lsw2NKpnZyGv/KbLbCvKp3VzNnrn+Cv6YRuiD4SbVVw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=pVEpPV22qs9vRwJMHTjVwJ5NvB/AGwSVvY4M0oL5ENFqnT2RlOP44sYQkwpvIFbOsI5DoJ3ckPlKIRe2Z8tfVUteDJnYp5lfipFVWsIrA8QY1dzEuyo+7RLIWtBnSStvvQOsGJ6YPk7eS+KJRcbiE0rPt3/AqwBYkJ2GB5gUSBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=3C3BfGDS; arc=none smtp.client-ip=35.89.44.35
+Received: from eig-obgw-6007b.ext.cloudfilter.net ([10.0.30.166])
+	by cmsmtp with ESMTPS
+	id ZyQcw4ed1PpWVa7b0wX8Kt; Thu, 18 Jun 2026 07:55:30 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id a7b0wlPOqcYN5a7b0wrizv; Thu, 18 Jun 2026 07:55:30 +0000
+X-Authority-Analysis: v=2.4 cv=QN5oRhLL c=1 sm=1 tr=0 ts=6a33a472
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=9GQXaQUDpQhx98mIA28A:9 a=QEXdDO2ut3YA:10
+ a=nmWuMzfKamIsx3l42hEX:22 a=L5EjiQpGQaFGZdqT14z7:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=qzVgGAp2WXckS03rSt5tczZni3Kqe09p+5UtyAYOQgg=; b=3C3BfGDSzP3s5uVNUHCYty9Q6i
+	8Xz399VQn+iLmFoyU0V73XBMRHshkZzkGpx9PsmZvLVHExS/tq85gpLZ6NVZgeTLAxyCDKlFh8s14
+	0oIv8OpLRKEEA7hjDUXX3FKLFkZ52eLIinet+revuCVCBqs+6GRzGNsPX3WB5+RMe7pG5Vy1aywOp
+	NiTfSHmqUKGJytKfco9Ez96xJCQ/S2W5pY1E7C8WJSuFMDlkggqXErUUGCdMlvlTiZIis7xp2Gfor
+	M3rYrJjsBrut0zOMNOQxCONXP3j08JF6wVeHaLFNLg+rF6UptD0rUdNKlPzuCUnyuGnO5JdCyD4iv
+	2kRzvSUg==;
+Received: from c-73-162-206-103.hsd1.ca.comcast.net ([73.162.206.103]:34426 helo=[10.0.1.180])
+	by box5620.bluehost.com with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
+	(Exim 4.99.2)
+	(envelope-from <re@w6rz.net>)
+	id 1wa7ay-00000002IIg-1nWC;
+	Thu, 18 Jun 2026 01:55:28 -0600
+Message-ID: <813234fa-9083-4637-b81e-85e9e69e7795@w6rz.net>
+Date: Thu, 18 Jun 2026 00:55:26 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: esmtpgz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz3a-0
-X-QQ-XMAILINFO: MILA/v8A9aHmnZZOexDepKnesFB3qsURjMOYokgwFG1mEotczaTqR4QH
-	NMzhqxWleMvTn2/aTVbwmzGJKQuNk3riaJFOgTcwyzeF41BLgojAuGV6E4E82cUIreWzvW/
-	0quse3b2u2RuitKfOrNmSaPaieq2rTP/NBdJJ+7B5rocixrDtq4VHhPxnyg9H8VdYs3pIlz
-	Hpl9FWtREnkMSarXV0Na7I0Et9XPSCGhE909sYk+9shkmquw9WfsorXJjh6T4VEtQNu/8t7
-	0iVcboyJ/dGhJeiQ18GWGsQr6dJyzRX00Q4DK39bqQXMHOQ59f9bUt8P3Ao3fF959L9zCxL
-	L1MjonYsfFrifOKpjli/D5rLcDSgPB/uLSfA72fe5lIMzDbM+7wI7edRxpybnZbRZqyxGTS
-	kKDTZy4tPPqa+iSf32IAmUDipPYfOnH92pLFXrH0UFbvJY/W5dlz9zKe9auDa/kbdL2o44U
-	0wyHZUVn0n7jUFmhqF+h+2JtSUiXyQGYeesmB0/asYF2oveZ3HKmdVjNVhXbczrC/o65St/
-	dLxox87IoHnpV8he0lEHK8gxIErj4zmYxNYklvN/9DnZPf13BhB3p0FWKwA3w+DKF9zvKUp
-	ktN9YQeCLW84IgYSG30Oo5a/1XJJ4FB54mSGylP3SRbZLuLwdrdUB/FJn0yiANZbsM7qO0V
-	UnyYa2dIwh46ddMBhxwiUHL5QvlPM0sPloySBKoXTW4x7nEMq28wiLhP5UgJHqI0MyuxHd9
-	uLV31LYXVzvoSr/qlDRVS25d19hHas000WXIpiF3b0cnpgZbezwpzadR+cmq7zxDB2efDgc
-	dd5DJK3Yd3W61jujVT2yYt6yH4kOMjxGXx79O4xIGRIa0+xMLDSkI++zyRhxPINVk8L+tFV
-	qa0b7F6KRq4uM0dqT8xyRppJLp5Jr5nWYus404kw/kecKV4AoYoRNU6DtUYj17vWduOm3XK
-	D7DYNZLSoOmztkh92MQuxEEItKSyMEXwYBs37TxR1B1SIGec3/DjFtDUICQyxJ455U02FYT
-	TeHaAxpM8eK9lYJszalfuN8FyMbG/gLHfud+lArhp6v0vHcMvsxjyYPyRhq5xskXZPtp9H5
-	m6z1QBgh4dnGDo/j9nW2ItpMFHm1i6bEfa7pGv+tm9OrePPAqGTGyXTGV4AmoBqZnLtLJE2
-	q3bMwKSJ/NheANQnrBDdnHgiH5A7heYXpenvKGnFHq90VkmAuyyZwCOv4A==
-X-QQ-XMRINFO: MSVp+SPm3vtSI1QTLgDHQqIV1w2oNKDqfg==
-X-QQ-RECHKSPAM: 0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 7.0 000/378] 7.0.13-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org, sr@sladewatkins.com
+References: <20260616145109.744539446@linuxfoundation.org>
+Content-Language: en-US
+From: Ron Economos <re@w6rz.net>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 73.162.206.103
+X-Source-L: No
+X-Exim-ID: 1wa7ay-00000002IIg-1nWC
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-73-162-206-103.hsd1.ca.comcast.net ([10.0.1.180]) [73.162.206.103]:34426
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 39
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfHdLOr6UrM3XHhUYst547AkpQko2QVxXhEjUWJ78QNFiE/MlJ8m55uUa9iiiTQvwCsNu6rxPiaZDrGP3fncUwuaQOIFKx4AaBKnV2hiNz4bNOBcb/teL
+ /nNCiy5U3Ukz6JPg32Qam3PY+6WAg+l1/ulboSvOunCRw+q4OE4Xad+hwfKX2S7iZv+lJj9pIE8zxg==
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [1.04 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	R_DKIM_REJECT(1.00)[w6rz.net:s=default];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[uniontech.com,none];
-	R_DKIM_ALLOW(-0.20)[uniontech.com:s=onoh2408];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-267034-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-267031-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[guanwentao@uniontech.com,stable@vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	FORGED_RECIPIENTS(0.00)[m:sashal@kernel.org,m:gregkh@linuxfoundation.org,m:guanwentao@uniontech.com,m:stable@vger.kernel.org,m:2045gemini@gmail.com,m:dcaratti@redhat.com,m:jhs@mojatatu.com,m:keenanat2000@gmail.com,m:kuba@kernel.org,m:rajat.gupta@oss.qualcomm.com,m:rollkingzzc@gmail.com,m:toke@redhat.com,m:victor@mojatatu.com,m:yimingqian591@gmail.com,m:pctammela@mojatatu.com,m:idosch@idosch.org,m:idosch@nvidia.com,m:pabeni@redhat.com,s:lists@lfdr.de];
+	DMARC_NA(0.00)[w6rz.net];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	FORGED_SENDER(0.00)[re@w6rz.net,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,m:patches@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:torvalds@linux-foundation.org,m:akpm@linux-foundation.org,m:linux@roeck-us.net,m:shuah@kernel.org,m:patches@kernelci.org,m:lkft-triage@lists.linaro.org,m:pavel@nabladev.com,m:jonathanh@nvidia.com,m:f.fainelli@gmail.com,m:sudipm.mukherjee@gmail.com,m:rwarsow@gmx.de,m:conor@kernel.org,m:hargar@microsoft.com,m:broonie@kernel.org,m:achill@achill.org,m:sr@sladewatkins.com,m:ffainelli@gmail.com,m:sudipmmukherjee@gmail.com,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,redhat.com,mojatatu.com,kernel.org,oss.qualcomm.com,idosch.org,nvidia.com];
-	DKIM_TRACE(0.00)[uniontech.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[guanwentao@uniontech.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
+	HAS_X_ANTIABUSE(0.00)[];
+	DKIM_TRACE(0.00)[w6rz.net:-];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[re@w6rz.net,stable@vger.kernel.org];
+	HAS_X_SOURCE(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,mojatatu.com:email,nvidia.com:email,vger.kernel.org:from_smtp,uniontech.com:dkim,uniontech.com:email,uniontech.com:mid,uniontech.com:from_mime,idosch.org:email]
+	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,w6rz.net:email,w6rz.net:mid,w6rz.net:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2841669E45D
+X-Rspamd-Queue-Id: 5D9FE69E444
 
-From: Pedro Tammela <pctammela@mojatatu.com>
+On 6/16/26 07:53, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 7.0.13 release.
+> There are 378 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Thu, 18 Jun 2026 14:49:57 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v7.x/stable-review/patch-7.0.13-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-7.0.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-[ Upstream commit 1b483d9f5805c7e3d628d4995e97f4311fcb82eb ]
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-Ido Schimmel reports a memleak on a syzkaller instance:
-   BUG: memory leak
-   unreferenced object 0xffff88803d45e400 (size 1024):
-     comm "syz-executor292", pid 563, jiffies 4295025223 (age 51.781s)
-     hex dump (first 32 bytes):
-       28 bd 70 00 fb db df 25 02 00 14 1f ff 02 00 02  (.p....%........
-       00 32 00 00 1f 00 00 00 ac 14 14 3e 08 00 07 00  .2.........>....
-     backtrace:
-       [<ffffffff81bd0f2c>] kmemleak_alloc_recursive include/linux/kmemleak.h:42 [inline]
-       [<ffffffff81bd0f2c>] slab_post_alloc_hook mm/slab.h:772 [inline]
-       [<ffffffff81bd0f2c>] slab_alloc_node mm/slub.c:3452 [inline]
-       [<ffffffff81bd0f2c>] __kmem_cache_alloc_node+0x25c/0x320 mm/slub.c:3491
-       [<ffffffff81a865d9>] __do_kmalloc_node mm/slab_common.c:966 [inline]
-       [<ffffffff81a865d9>] __kmalloc+0x59/0x1a0 mm/slab_common.c:980
-       [<ffffffff83aa85c3>] kmalloc include/linux/slab.h:584 [inline]
-       [<ffffffff83aa85c3>] tcf_pedit_init+0x793/0x1ae0 net/sched/act_pedit.c:245
-       [<ffffffff83a90623>] tcf_action_init_1+0x453/0x6e0 net/sched/act_api.c:1394
-       [<ffffffff83a90e58>] tcf_action_init+0x5a8/0x950 net/sched/act_api.c:1459
-       [<ffffffff83a96258>] tcf_action_add+0x118/0x4e0 net/sched/act_api.c:1985
-       [<ffffffff83a96997>] tc_ctl_action+0x377/0x490 net/sched/act_api.c:2044
-       [<ffffffff83920a8d>] rtnetlink_rcv_msg+0x46d/0xd70 net/core/rtnetlink.c:6395
-       [<ffffffff83b24305>] netlink_rcv_skb+0x185/0x490 net/netlink/af_netlink.c:2575
-       [<ffffffff83901806>] rtnetlink_rcv+0x26/0x30 net/core/rtnetlink.c:6413
-       [<ffffffff83b21cae>] netlink_unicast_kernel net/netlink/af_netlink.c:1339 [inline]
-       [<ffffffff83b21cae>] netlink_unicast+0x5be/0x8a0 net/netlink/af_netlink.c:1365
-       [<ffffffff83b2293f>] netlink_sendmsg+0x9af/0xed0 net/netlink/af_netlink.c:1942
-       [<ffffffff8380c39f>] sock_sendmsg_nosec net/socket.c:724 [inline]
-       [<ffffffff8380c39f>] sock_sendmsg net/socket.c:747 [inline]
-       [<ffffffff8380c39f>] ____sys_sendmsg+0x3ef/0xaa0 net/socket.c:2503
-       [<ffffffff838156d2>] ___sys_sendmsg+0x122/0x1c0 net/socket.c:2557
-       [<ffffffff8381594f>] __sys_sendmsg+0x11f/0x200 net/socket.c:2586
-       [<ffffffff83815ab0>] __do_sys_sendmsg net/socket.c:2595 [inline]
-       [<ffffffff83815ab0>] __se_sys_sendmsg net/socket.c:2593 [inline]
-       [<ffffffff83815ab0>] __x64_sys_sendmsg+0x80/0xc0 net/socket.c:2593
-
-The recently added static offset check missed a free to the key buffer when
-bailing out on error.
-
-Fixes: e1201bc781c2 ("net/sched: act_pedit: check static offsets a priori")
-Reported-by: Ido Schimmel <idosch@idosch.org>
-Signed-off-by: Pedro Tammela <pctammela@mojatatu.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Tested-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://lore.kernel.org/r/20230425144725.669262-1-pctammela@mojatatu.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
----
- net/sched/act_pedit.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/net/sched/act_pedit.c b/net/sched/act_pedit.c
-index 35fa94ba0edf8..0601deea04d72 100644
---- a/net/sched/act_pedit.c
-+++ b/net/sched/act_pedit.c
-@@ -250,7 +250,7 @@ static int tcf_pedit_init(struct net *net, struct nlattr *nla,
- 		if (!offmask && cur % 4) {
- 			NL_SET_ERR_MSG_MOD(extack, "Offsets must be on 32bit boundaries");
- 			ret = -EINVAL;
--			goto put_chain;
-+			goto out_free_keys;
- 		}
- 
- 		/* sanitize the shift value for any later use */
-@@ -275,6 +275,8 @@ static int tcf_pedit_init(struct net *net, struct nlattr *nla,
- 
- 	return ret;
- 
-+out_free_keys:
-+	kfree(nparms->tcfp_keys);
- put_chain:
- 	if (goto_ch)
- 		tcf_chain_put_by_act(goto_ch);
--- 
-2.30.2
+Tested-by: Ron Economos <re@w6rz.net>
 
 
