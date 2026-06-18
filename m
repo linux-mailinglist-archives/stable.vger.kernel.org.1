@@ -1,145 +1,197 @@
-Return-Path: <stable+bounces-267202-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267204-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id xkWjJ4BINGovTwYAu9opvQ
-	(envelope-from <stable+bounces-267202-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 21:35:28 +0200
+	id OeBLHCNMNGqrUAYAu9opvQ
+	(envelope-from <stable+bounces-267204-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 21:50:59 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F32D66A25D2
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 21:35:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE8E66A267B
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 21:50:58 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=ideasonboard.com header.s=mail header.b=vzUoUQo8;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267202-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267202-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=ideasonboard.com;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=NLxsnCT+;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267204-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267204-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A4998301ABB4
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 19:35:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0390D301E3E3
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 19:50:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E913C338910;
-	Thu, 18 Jun 2026 19:35:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4201C33D50F;
+	Thu, 18 Jun 2026 19:50:52 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f175.google.com (mail-oi1-f175.google.com [209.85.167.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 293771CAA6C;
-	Thu, 18 Jun 2026 19:35:20 +0000 (UTC)
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781811322; cv=none; b=EQlimjpZvvVJvHMH0nS5YOS5SSrSAWFf3ZLcO6fJes6Fo3oekIBnl1ArNfe7tQbeih7i91fJN+n612HsADq/rfhjYqBFU/bNJNbFLDm75JfD3x+bPkHRvOglO3Ln19fJpPOascQwmuHAUiuIl6iDe/fTO4JFvmH9Nda6tDzu2ig=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781811322; c=relaxed/simple;
-	bh=4/UBLJbjm/QFsB7OizJsoc5gC5wP5K1TM71MH+Bf0b0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dwoqXESRRZKdFpZdBgHgOIqtb39s/iXJk6pe+5+6Q1q2UE6egYdxmbhbgNcPiY3tWsh2nl1obn58DnDjYT99qI6fr+UKPne23odOqXMlU1hQpNx4x9kCn7DYjKyQ2YOcjBQVT1gjmQKY+U1pCfbYaR9LX74Nd6CWdyJsHizKlsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=vzUoUQo8; arc=none smtp.client-ip=213.167.242.64
-Received: from [192.168.0.43] (chfd-03-b2-v4wan-176392-cust229.vm15.cable.virginm.net [82.19.20.230])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 826BB741;
-	Thu, 18 Jun 2026 21:34:43 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1781811283;
-	bh=4/UBLJbjm/QFsB7OizJsoc5gC5wP5K1TM71MH+Bf0b0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=vzUoUQo8Kianftd/0vqgU0q302Itbz3Y7bSgrX1cBjorA1bh/SiJ3eBAjWB+8hQQo
-	 qAplmGQIRsPv0LTAz/G33hpVHfmfC50FX1UEaoeU6URYOEU+4wsxCepADMdruqo8A9
-	 LTGv/pjG8xi64YKaqisbGoZF4f0vQOls4QHq5j1U=
-Message-ID: <5663f0e9-cde5-4943-9e77-267cd92f8742@ideasonboard.com>
-Date: Thu, 18 Jun 2026 20:35:15 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4B313314DE
+	for <stable@vger.kernel.org>; Thu, 18 Jun 2026 19:50:50 +0000 (UTC)
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781812252; cv=pass; b=OHkLbx3eny37GsogxVHUQm8jy/VSxmgmMQ/jDiHz+zibbCPZEaWvFnThnRj5qmEHVuIs5WZSFc8JJ2CkKjMD+chM/WfuDGiSeHrT7c3NZ0K5uO5aN4p9AA+BHXGVA/qKUx9NYT8kuN5b3Lo8xLxyEMYazjMfLOpkPupdKh5h7/0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781812252; c=relaxed/simple;
+	bh=P9K6WR14chQp/Ykaia/hOnkHUL4bXVc8ij7gFNX9Z9E=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=B6Z07AvwkSP7oIWOzBxO28TUNdcwe53XwmTWPAMUTDftjeNd0gG31Tsoo807EfKJUcUlrek/+Lzz23HKsBnTuwe+6j7x9BaGIkGNrnCpckvGQHfVazOB41SkaR9U2xa1bJdUuv5Pi4rdSmBlK42fo63ZxRiJ2snyuYvVmhQdWt0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NLxsnCT+; arc=pass smtp.client-ip=209.85.167.175
+Received: by mail-oi1-f175.google.com with SMTP id 5614622812f47-488b3fd8d0dso588815b6e.1
+        for <stable@vger.kernel.org>; Thu, 18 Jun 2026 12:50:50 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781812250; cv=none;
+        d=google.com; s=arc-20240605;
+        b=gnjGbSuvJAU7mrF36dJGne7G4qphTX+UszLtdSEVtTi6iGU/I3JI2nSWirL8H9HBUy
+         4BgcKOPEGCftHK6OduUqWj7kt7wQXhmKLccYOTCkSmCs5qIDCAo+VsREMUsJzoO5DDy+
+         n4RY/i4xk964cYM+wtaK3iToz265j0LA6z+OQO0zFB1x9xUY7HSVQAP1c1/oX13XFsmm
+         EAbq/PDIRxQn9zCYStkQ7lNHNo6jvmK6AiaA0STjz9gp0WwJ+7zZzGPqgnP0wh6vUj5d
+         Zb3u5RHeiD9GOVpFEq2o9b6JQlwOekJPh0V5zhn0atZ4FFPWVbSDf0zC3hgBlsiWPm0T
+         f3Hg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=m8uk5CE0hl2VcGC6A9L2aPBCej9W50w25Jg10wWbW2o=;
+        fh=W1TPaP6BOWsQfjatMKYXGmX2DuXbSVHiarRVogwR8Ko=;
+        b=QW58UXOpBmUSJZlyUSXdJ3qQb1SIiYTMt5CdzqpcMLqRZF0ucR+zSzjFkvNUR7XHwZ
+         HK7+X/s1lsnVtjNJ0NAjW0VwNNHtztccgbuUwCwwfK7E2uXbHIGuwv4lOzUBAtktEFgT
+         Oj+nc5Zu0pkwa9O/T/j0G7CI1V7DXT0rpq8Bg5UVGE5mj3yDcJZJMqEMiYOYF84XHotH
+         J7nqwJOZio8GHEsRgqavZQmuvm2/bWPOMnzjvZn07IXn10byo+B83DpVRIqlkUT4oLMs
+         LVk3pooBXuBOn0OviKQKL8S+OH8vNVJzGph6nkarFkwEQkw0hS32Xq4p0CMl8z0/XOLw
+         ySBw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781812250; x=1782417050; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=m8uk5CE0hl2VcGC6A9L2aPBCej9W50w25Jg10wWbW2o=;
+        b=NLxsnCT+owKQf9pE1V+vntJwbRp9CQfRJMlTzKZ3tvOg/tbdIQKyvWgHsFPUeyrkN9
+         QFBgeahcF1Wv3EGhN1PXruIg7YeKNamWDPEIeeGpUWERVc+0/pr6c14kY9aP7iS5kbpe
+         QXk/+NuA9xknKbne7OgnUNaTpllJ0wAOAOLn0J1Za2upAKy417PbyOUQexSyMD2SszHE
+         rMExqjNx4oF+KsmhSqHVuJ9zZvfQ2dsuZb3+Fz3m4+MlBa/wEmtN5cmYbsIS1lQabDp1
+         oJNqYu1LZYwTAeJJ/WLGKf+ilxH9HqDC5Y/4/3TA+89WS1FYzL53dD+X/YLXrv1At8nr
+         fl8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781812250; x=1782417050;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=m8uk5CE0hl2VcGC6A9L2aPBCej9W50w25Jg10wWbW2o=;
+        b=Pp0reN/EHBzCpFW37Z3XmVJGWkxrm1VDExpUMifHO2wp6tVqPRthAE2lhEkaCIDTC8
+         Uow6UfWCIj5wsh8j71iabHIpuMjM3Z52O+zQw/1wwoqmZ0UqWMj0dnqQwaRkJVtcILtB
+         MG7zKgh0DqPfispxp43vy1DMpcmn5DfVoJVTfPYjnQQSz4Kd331P9gxrmBShvtNpnovS
+         93vpaK+oUFO9fPBa61pE4Ae86fXE/OaMBFFnrqnUZ8X5unuLB5C+5HLeyaPV5bDFfi9X
+         Y+RYgV9/tIilSdCtEnd5wH+ERtcBmQLg22FrYW9q+NJa73Z1EfKp2Ur+/sXIEHkvW7+X
+         ab3w==
+X-Forwarded-Encrypted: i=1; AFNElJ/hvkSnmOfCI2vkmmBU8oHQz+nA4u8BI/0ZNsxR9eFVXakKr39lubNcvHiRt2WKKbIrR3/K1qU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxNVNCd812C4KdixuUCSwP7+LTRwtASdOTuP3mJI9N+2hShGejk
+	RKhJHul2aGLm1HiZsBd5Se0Ah1TcVWmz+RdYadF3R2btPbqgP/Zr+U0zvrlxy1CxWEgLEjIKhIt
+	10dzhy8m/M2MHJVZgBNfR+WVOfE4jjV4=
+X-Gm-Gg: AfdE7cmnq//368YHsnJl58aw3UDl1Tk+fCXsdh/ocfMFWv5wXK9XP5+IXNOw/NZ6lyd
+	cmwkO/cumOdx4eAhd22um8QNWhnKz7lxooXITCdFZyRR3EU2Op5Kq0Nf2OIXrYq/tGIQSzzM5XM
+	b4J9oaKqlz1p03XW8Qbdhk2ZSpGOnW7fIJ6OIJRUdFjmCrhJ+Ee+0YeNYhYihmfDiNMA0mASw3/
+	iFDxa+sKtIHGlYTk3aVTuw1LWJsTYyG/Y9xQXaQg53Ee+gC64UGyJuKf7ypq0l9Kh97yz7BeuWv
+	R8MejkH89i6h00DdDWJdYsSVyuo=
+X-Received: by 2002:a05:6809:184:10b0:489:6f90:2f2d with SMTP id
+ 5614622812f47-4896f9030c5mr155901b6e.20.1781812249493; Thu, 18 Jun 2026
+ 12:50:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+References: <20260610215649.98274-1-devnexen@gmail.com> <5663f0e9-cde5-4943-9e77-267cd92f8742@ideasonboard.com>
+In-Reply-To: <5663f0e9-cde5-4943-9e77-267cd92f8742@ideasonboard.com>
+From: David CARLIER <devnexen@gmail.com>
+Date: Thu, 18 Jun 2026 20:50:38 +0100
+X-Gm-Features: AVVi8Cc0IYNE825PggY2ZAv2H0gQHi_P04Y0cM-7LkS7GzGPut8mV1A8QGwa_sg
+Message-ID: <CA+XhMqwEJxtqBxTAF4XSJxkXW_FGYgEzU1E89bydVvJofnnLRg@mail.gmail.com>
 Subject: Re: [PATCH] media: mali-c55: Fix scaler factor overflow for large
  crop sizes
-To: David Carlier <devnexen@gmail.com>,
- Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>, linux-media@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260610215649.98274-1-devnexen@gmail.com>
-Content-Language: en-US
-From: Dan Scally <dan.scally@ideasonboard.com>
-In-Reply-To: <20260610215649.98274-1-devnexen@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+To: Dan Scally <dan.scally@ideasonboard.com>
+Cc: Jacopo Mondi <jacopo.mondi@ideasonboard.com>, 
+	Mauro Carvalho Chehab <mchehab@kernel.org>, linux-media@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[ideasonboard.com,none];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[ideasonboard.com:s=mail];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:devnexen@gmail.com,m:jacopo.mondi@ideasonboard.com,m:mchehab@kernel.org,m:linux-media@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:dan.scally@ideasonboard.com,m:jacopo.mondi@ideasonboard.com,m:mchehab@kernel.org,m:linux-media@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[dan.scally@ideasonboard.com,stable@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-267202-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,ideasonboard.com];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-267204-lists,stable=lfdr.de];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FORGED_SENDER(0.00)[devnexen@gmail.com,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[6];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dan.scally@ideasonboard.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[ideasonboard.com:+];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[devnexen@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,ideasonboard.com:email,vger.kernel.org:from_smtp,mail.gmail.com:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: F32D66A25D2
+X-Rspamd-Queue-Id: BE8E66A267B
 
-Hi David, sorry this one slipped through the cracks
+Hi Dan,
 
-On 10/06/2026 22:56, David Carlier wrote:
-> The horizontal and vertical scaling factors multiply the crop dimensions
-> by MALI_C55_RSZ_SCALER_FACTOR, a Q4.20 factor of (1 << 20). Both operands
-> are 32-bit, so the multiplication wraps before the result is stored in
-> the u64 scale variables. For any crop dimension of 4096 or more (the
-> maximum is 8192) the value overflows; an 8192 to 4096 downscale yields a
-> TINC of zero, so the scaler never advances and the output is corrupted.
-> 
-> Cast the crop dimensions to u64 before the multiplication.
-> 
-> Fixes: d5f281f3dd29 ("media: mali-c55: Add Mali-C55 ISP driver")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: David Carlier <devnexen@gmail.com>
-> ---
->   drivers/media/platform/arm/mali-c55/mali-c55-resizer.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/media/platform/arm/mali-c55/mali-c55-resizer.c b/drivers/media/platform/arm/mali-c55/mali-c55-resizer.c
-> index c4f46651d..0713e7d43 100644
-> --- a/drivers/media/platform/arm/mali-c55/mali-c55-resizer.c
-> +++ b/drivers/media/platform/arm/mali-c55/mali-c55-resizer.c
-> @@ -422,8 +422,8 @@ static int mali_c55_rsz_program_resizer(struct mali_c55_resizer *rsz,
->   	mali_c55_resizer_program_coefficients(rsz);
->   
->   	/* Program the V/H scaling factor in Q4.20 format. */
-> -	h_scale = crop->width * MALI_C55_RSZ_SCALER_FACTOR;
-> -	v_scale = crop->height * MALI_C55_RSZ_SCALER_FACTOR;
-> +	h_scale = (u64)crop->width * MALI_C55_RSZ_SCALER_FACTOR;
-> +	v_scale = (u64)crop->height * MALI_C55_RSZ_SCALER_FACTOR;
+On Thu, 18 Jun 2026 at 20:35, Dan Scally <dan.scally@ideasonboard.com> wrote:
+>
+> Hi David, sorry this one slipped through the cracks
+>
+> On 10/06/2026 22:56, David Carlier wrote:
+> > The horizontal and vertical scaling factors multiply the crop dimensions
+> > by MALI_C55_RSZ_SCALER_FACTOR, a Q4.20 factor of (1 << 20). Both operands
+> > are 32-bit, so the multiplication wraps before the result is stored in
+> > the u64 scale variables. For any crop dimension of 4096 or more (the
+> > maximum is 8192) the value overflows; an 8192 to 4096 downscale yields a
+> > TINC of zero, so the scaler never advances and the output is corrupted.
+> >
+> > Cast the crop dimensions to u64 before the multiplication.
+> >
+> > Fixes: d5f281f3dd29 ("media: mali-c55: Add Mali-C55 ISP driver")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: David Carlier <devnexen@gmail.com>
+> > ---
+> >   drivers/media/platform/arm/mali-c55/mali-c55-resizer.c | 4 ++--
+> >   1 file changed, 2 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/drivers/media/platform/arm/mali-c55/mali-c55-resizer.c b/drivers/media/platform/arm/mali-c55/mali-c55-resizer.c
+> > index c4f46651d..0713e7d43 100644
+> > --- a/drivers/media/platform/arm/mali-c55/mali-c55-resizer.c
+> > +++ b/drivers/media/platform/arm/mali-c55/mali-c55-resizer.c
+> > @@ -422,8 +422,8 @@ static int mali_c55_rsz_program_resizer(struct mali_c55_resizer *rsz,
+> >       mali_c55_resizer_program_coefficients(rsz);
+> >
+> >       /* Program the V/H scaling factor in Q4.20 format. */
+> > -     h_scale = crop->width * MALI_C55_RSZ_SCALER_FACTOR;
+> > -     v_scale = crop->height * MALI_C55_RSZ_SCALER_FACTOR;
+> > +     h_scale = (u64)crop->width * MALI_C55_RSZ_SCALER_FACTOR;
+> > +     v_scale = (u64)crop->height * MALI_C55_RSZ_SCALER_FACTOR;
+>
+> Might be nicer to define the macro with ULL instead of a cast, what do you think?
 
-Might be nicer to define the macro with ULL instead of a cast, what do you think?
-
-Thanks
-Dan
-
->   
->   	do_div(h_scale, scale->width);
->   	do_div(v_scale, scale->height);
-
+even better, using BIT_ULL here ;) cheers.
+>
+> Thanks
+> Dan
+>
+> >
+> >       do_div(h_scale, scale->width);
+> >       do_div(v_scale, scale->height);
+>
 
