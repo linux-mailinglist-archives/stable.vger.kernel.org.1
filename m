@@ -1,214 +1,140 @@
-Return-Path: <stable+bounces-267001-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267002-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id fBctKkZ4M2rtCQYAu9opvQ
-	(envelope-from <stable+bounces-267001-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 06:47:02 +0200
+	id asdIIQh6M2o4CgYAu9opvQ
+	(envelope-from <stable+bounces-267002-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 06:54:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08A0969D89D
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 06:47:02 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED24F69D909
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 06:54:31 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="fv/1urIo";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267001-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-267001-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
+	dkim=pass header.d=alien8.de header.s=alien8 header.b=K1sEMdqb;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267002-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267002-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=alien8.de;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BEADE300E273
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 04:46:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9E1DC303E2A2
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 04:54:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0967F35DA55;
-	Thu, 18 Jun 2026 04:46:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FD9D2FFDE3;
+	Thu, 18 Jun 2026 04:54:28 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8831F257854
-	for <stable@vger.kernel.org>; Thu, 18 Jun 2026 04:46:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2E8817A2F6;
+	Thu, 18 Jun 2026 04:54:25 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781757988; cv=none; b=RHOB15/IFl5OYY8hRI0EnHTB7qPI9I1U3UcmLGNv/el74RGM4shmykjkH0g7g0qBTWRfhNJCAf7TbmWaMFOCW4YENV6oVvwzwTOkMYw3/nr/3xwEVz4WvtF5aHlNM5LONN+iT6zqkv+6vvIwFX/TiW2RXn/lc4f3/kTz2RtL9+w=
+	t=1781758468; cv=none; b=saFyoPZtutqEYoDJK4opKkZBzxJodx9evZ0Ia67Z+Mz6a9oGmc3YzB+/nlSyK36sFcaasWLzTZIGWsFSvE7w6s1OEsPgBua1VRm0hFLx0qWKgukFku6xiEuUld6rRAMnJLmYZ5oH8pcs91MB1+bHtgBRb+hJeGhjGelXLNPcREY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781757988; c=relaxed/simple;
-	bh=ip04cpuJ6gZcMJKZUo/58OpvKcONH5fc81aL2U5VDTU=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Geu6WxvN3VuTjtOut5fMPERoig8IHHQjpoImKnWgbD2gt3ANt/dlTTsKLHkQACxBR7Xa4pH8z5vr2Ea45n+n7Cz8i233Zdm5RUF6/OW8mRyvgdGlDbv0j5Pumeoh9xKdNbAkn1yknuvXQexRdnuHvCQ7ZnJLTDqRMwJShd2M5Xg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fv/1urIo; arc=none smtp.client-ip=209.85.128.51
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-490ac10e337so2518055e9.3
-        for <stable@vger.kernel.org>; Wed, 17 Jun 2026 21:46:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781757986; x=1782362786; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=P2406RcRfSwFwzqOnhnwujT4ewtnrCh+0Xd1gHWd5a4=;
-        b=fv/1urIoRFzw1+c5+quRncujEA7ZIby/KMaL4roCUxUMtPUzfP56t4tmLZTmOvcZOj
-         8/lM4Earcxaxm+LUAT0V0i3PaiZRrByZfneMVMgC3nOoHohCfhGA39nkY0hNLLHIUTks
-         K7bSxhyVhBLQR1UnsFj1kYBq3XBJgQl9+9MpeUVo2CJCmK6ztAV637gP2lJTGjmMwzSb
-         QL+ZVKmVfO7RDaNTmWp4bJIQTlBVz8rrHNzWzQmAG6NkD1Q6BGRGocyMPUlNO4U3hk8p
-         4Y8c5MAhnEqz/hg5AKLGDq6Q/1kJqKuWWYliIYVS2mu0LFcyGhwQQHCmGjN3V1S6/JZV
-         xDUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781757986; x=1782362786;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=P2406RcRfSwFwzqOnhnwujT4ewtnrCh+0Xd1gHWd5a4=;
-        b=X97vtMNPW5EARgR2uY30+d6pFzq3nH+xba0Z6nXBzVNmXMLZNQyyjVekTwpXBSzTr+
-         9d/60E8yK3zvmwvpNohNtgnUpL41ab8UPQcgZFQ3jwMbsrtsCcL9QJ4s3dC6wcmVeFw+
-         fRbCDnsTM3wKh5ISO2PfGG+RDbqMXnsvnJe7eWFYlmn/PqtdqM5bYGiIB7LKbDT3swFS
-         RqD9OzA3F6v4kI+A8dm0S+/x7lmmSrUZaBfoZhMHXl5KnISs+iRy6BSWXhJKi8CSeQ2Z
-         D9JH9nGK6hoUR+vgLfYTAV9nn8e7O9FeNttWP+jp7EQ2C1jJKZBiRywCHR1IeLBdEz6N
-         T2bw==
-X-Forwarded-Encrypted: i=1; AFNElJ9cH4AamUa+xuG/pazou1Sk5O/1Cxfi2dlBwXYurnmRq00GMZ69FBjWJWKV1LtQczq7T2l8408=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx+qfWKKIYQUmnh/6wZbvQBHfRIOglMSEozfW9Cj3uQV8iqbcS6
-	P4fHZn7efaCSuYp+F/ejJhqW7/aXcUXa8IpbuUuiAKkbGOObX95zjwre
-X-Gm-Gg: Acq92OGzMdUoyy4c6J8XobuaN9Kcu96H12ZEMwibLE8agprNyFsdzE1ESzKo7E/By27
-	CkB6dRyx6TmNjm298a4lHo0qWKEMFDvhGntMFXEDxnaR6IGvVn5qCZUWSXB5lk76lwA1gpcD3Xo
-	QhRchDL38oasU4Dd8z9M+aeoSxDAJIvpHNg4XD/8lFzHa9+ffmBlLgNq/Z0tod2m+34IR5EM2S1
-	rI1tI0kH62LeilKnJL0/BO2QcY0wgmjceiBI7+nfOhtwUBkMHRXGzT05BXGXbC1X8Bn7WIO/3m0
-	asfpeCP28l8cZNSohAH5D0wkPzCfu6FziiY0456TVWlSm8rQXZX8Ubk/ANTzs1556bL2Oa6YZJr
-	T3zHm3Bhubaz7TRv7plvkqeVmuIppa/cN+ixLJvnOli9IUYyyAB63PLJJTTDLH5MQ6Z020qZdW0
-	DRsX9fPJWIojBzKoDpjMMq1w==
-X-Received: by 2002:a05:600c:4fcf:b0:490:c024:2ec8 with SMTP id 5b1f17b1804b1-4923819e3f0mr31138725e9.0.1781757985830;
-        Wed, 17 Jun 2026 21:46:25 -0700 (PDT)
-Received: from foxbook (bfg19.neoplus.adsl.tpnet.pl. [83.28.44.19])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4923a1d585esm19139325e9.2.2026.06.17.21.46.24
-        (version=TLS1_2 cipher=AES128-SHA bits=128/128);
-        Wed, 17 Jun 2026 21:46:25 -0700 (PDT)
-Date: Thu, 18 Jun 2026 06:46:21 +0200
-From: Michal Pecio <michal.pecio@gmail.com>
-To: Desnes Nunes <desnesn@redhat.com>
-Cc: David Woodhouse <dwmw2@infradead.org>, Lu Baolu
- <baolu.lu@linux.intel.com>, linux-kernel@vger.kernel.org,
- linux-usb@vger.kernel.org, gregkh@linuxfoundation.org,
- mathias.nyman@intel.com, stable@vger.kernel.org, iommu@lists.linux.dev
-Subject: Re: Intel IOMMU bug: xHCI faults during crash kernel boot
-Message-ID: <20260618064621.01217209.michal.pecio@gmail.com>
-In-Reply-To: <CACaw+ewuPm-eOACKX3Ux0UwJBRSftoBm7H+rxE2Z9E7KzWb5ew@mail.gmail.com>
-References: <20260430014817.2006885-1-desnesn@redhat.com>
-	<20260503071749.6abda137.michal.pecio@gmail.com>
-	<CACaw+ew8uV5g1G-6qZGtVBEYZ3k+fvFrOq3XMyq-Nuhbq5mdnA@mail.gmail.com>
-	<20260503213111.117db3a1.michal.pecio@gmail.com>
-	<20260504093118.615ff480.michal.pecio@gmail.com>
-	<20260518083339.507e24bd.michal.pecio@gmail.com>
-	<CACaw+ewSWTo72fSk2Q7ZzCM8pNuyrX5ua+qA=SZOQuNNMKSA5Q@mail.gmail.com>
-	<20260522110328.0d3eecd8.michal.pecio@gmail.com>
-	<CACaw+ezqEO_PgjGeYCLq5hA2eKczFXgmZLa8qjPtVJZCGwsdsg@mail.gmail.com>
-	<20260523022944.59799d83.michal.pecio@gmail.com>
-	<CACaw+exPdwXVsJc5Xr=vN1WJt8XR46=X0-8PP=+5dWY5zUrKeQ@mail.gmail.com>
-	<20260523102815.5c05c70a.michal.pecio@gmail.com>
-	<CACaw+ezMnQh2_oqbZ0jF99+wOADMU2vSMqxh9BoJoefjAC_ixw@mail.gmail.com>
-	<20260527103221.7f8b15b0.michal.pecio@gmail.com>
-	<CACaw+exN3fdzGQE7oK-hRE3KpMrA3ckPDRAcXaFbd=ySXf8E5A@mail.gmail.com>
-	<CACaw+ewuPm-eOACKX3Ux0UwJBRSftoBm7H+rxE2Z9E7KzWb5ew@mail.gmail.com>
+	s=arc-20240116; t=1781758468; c=relaxed/simple;
+	bh=XbsBg4/NU2BYteToLiNpLXmkDRCx96cS07G2DulvX3k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Qxu9q4gOaJLOIlXIBVZ4OIheQle6NvTyHmVmq5qZAC41kwrkdP2c2iPlXh1a8y8WPzkIqwQQ+XjsmGfwVYSbspt7ElXVVafTBa/P1EKV4xEOUc5ghg0IslpjkHX/S39kSvSOUwvoJOHttObGjEX1pAtDRT/5U6AQ5VX+xWV9GV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=K1sEMdqb; arc=none smtp.client-ip=65.109.113.108
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id A13F240E01C9;
+	Thu, 18 Jun 2026 04:54:23 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id C-lO53s-ZwwY; Thu, 18 Jun 2026 04:54:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1781758453; bh=AzjJMSaRuItbT1wFHbmHrKfkEbN7VtEXIhfW20rUmA8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=K1sEMdqb9zTUKp3cIzAga+tFk9ZWh+XI+q2DW2ek2tkRmjXKAd9q+uOHzX85qKD3o
+	 hzk6Fyox9hVN+oGU4S4kON49VPphq1J9unqb5smTxK3x3SSJ5kWsjF1E7fF+cjcGFM
+	 6hSpvOoHRBlLOjTY+2hJASRAofoJSD/OlMAVgZdkJwpBa86Se2uw6SqKYKD8Gjw/oB
+	 oT9QGfV+bvArM/kT+e4uoloH2ApHSJAfWfYvhhEqQxiacmkwcU8E/Mi8zIwSjsJ9Lt
+	 TeG8o+pEY4KVsHgln16WfarBZ/qye224Y05Zp0NfaFVKKdzGvaRkX67qrW7tmGXnQR
+	 ca/vibvQLjag2Xr+aGTKsUKnB0ExnKMpXvltR31GTkWiZ93OA/btII6q0BFPrEFMEr
+	 e1STYRb0lNtcIHJIrxM6MLrURlQMRXXxrvcWSyiM9TfgZ1xfPXrxn8LnO1UZlOloIQ
+	 N1njCQMnzHhh1G4EFI1E8eJO2QKXAdrqVcOaHxD11yP0pfSeXpQkiNJOO1X5LNj7ka
+	 GGico1s7pr9398Wzh9gwjWH9TzmR7GLqEw9u/TpZCUGL6L11HVd0gdRbwKavRd5YVb
+	 NU+vs2yz0zTSsPOrr0lL4Ja5Sx55yHs9ueEcmzbosi4Mn6l7QFyq2Nw91D23CqmqHg
+	 svbMt042iXVCksUTm9sqxuzA=
+Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::3a])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 34E0F40E015A;
+	Thu, 18 Jun 2026 04:54:03 +0000 (UTC)
+Date: Wed, 17 Jun 2026 21:54:00 -0700
+From: Borislav Petkov <bp@alien8.de>
+To: Thorsten Blum <thorsten.blum@linux.dev>
+Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Chao Fan <fanc.fnst@cn.fujitsu.com>, stable@vger.kernel.org,
+	Borislav Petkov <bp@suse.de>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] x86/boot: Reject truncated acpi_rsdp= values
+Message-ID: <20260618045400.GCajN56AKctO0qB-sF@fat_crate.local>
+References: <20260617130417.36651-4-thorsten.blum@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260617130417.36651-4-thorsten.blum@linux.dev>
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[alien8.de,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[alien8.de:s=alien8];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-267001-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-267002-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:desnesn@redhat.com,m:dwmw2@infradead.org,m:baolu.lu@linux.intel.com,m:linux-kernel@vger.kernel.org,m:linux-usb@vger.kernel.org,m:gregkh@linuxfoundation.org,m:mathias.nyman@intel.com,m:stable@vger.kernel.org,m:iommu@lists.linux.dev,s:lists@lfdr.de];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER(0.00)[michalpecio@gmail.com,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	FORGED_RECIPIENTS(0.00)[m:thorsten.blum@linux.dev,m:tglx@kernel.org,m:mingo@redhat.com,m:dave.hansen@linux.intel.com,m:x86@kernel.org,m:hpa@zytor.com,m:fanc.fnst@cn.fujitsu.com,m:stable@vger.kernel.org,m:bp@suse.de,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[alien8.de:+];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[bp@alien8.de,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[michalpecio@gmail.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[bp@alien8.de,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,fat_crate.local:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 08A0969D89D
+X-Rspamd-Queue-Id: ED24F69D909
 
-On Wed, 17 Jun 2026 21:57:02 -0300, Desnes Nunes wrote:
-> Hello IOMMU mailing list,
->=20
-> On Wed, Jun 10, 2026 at 12:32=E2=80=AFPM Desnes Nunes <desnesn@redhat.com=
-> wrote:
-> >
-> > I have just found out the solution for the bug.
-> > =20
-> ...
-> > In scalable mode, a PCI bus may populate only the upper root half
-> > (UCTP) when all devices on that bus have devfn >=3D 0x80. On bus
-> > 0x80, I have e1000e at 80:1f.6 (devfn 0xfe) and xHCI at 80:14.0
-> > (devfn 0xa0), so the hardware root entry correctly has lo=3D0 and
-> > hi=3DUCTP present.
-> >
-> > However, after copy_translation_tables(), I noticed that
-> > root[128].hi was zeroed-out (Present bit cleared) and another
-> > (expected) different value on root[128].lo.
-> >
-> > In short, the culprit here is having a zeroed LCTP, since at
-> > copy_context_table() the allocation of new_ce for LCTP context
-> > entries currently governs the pos variable; which is later used to
-> > save new_ce entries for UCTP at tbl[tbl + pos].
-> > On the first iteration idx will be zero, old_ce_phys will be empty,
-> > thus this moves the loop straight to devfn=3D0x80. At devfn 0x80, idx
-> > wraps to 0 again ( (devfn * 2) mod 256), but since no new_ce was
-> > previouly allocated for LCTP context entries, pos will remain zero
-> > while copying UCTP context entries.  After all upper context entries
-> > are saved, tbl will receive new_ce from UCTP at tbl[tbl_idx + 0],
-> > and not tbl[tbl_idx + 1]. These will be later written in
-> > copy_translation_tables() to iommu->root_entry[bus].lo and
-> > iommu->root_entry[bus].hi, which causes the bug.
-> >
-> > In summary, the hardware tables were correct, but the copy path
-> > misplaced the UCTP table for bus 0x80 when dealing with a LCTP
-> > zeroed-out during kdump.
-> >
-> > To fix this, I created a v3 patch that uses devfn to better track
-> > which half we are copying, so UCTP-only buses (lo=3D0, hi=3DP) are
-> > installed into the upper root half. =20
->=20
-> 0001-iommu-vt-d-Fix-UCTP-context-table-slot-when-copying-.rfc.patch
->=20
-> > I am doing some final tests now, but since this was a lot to digest,
-> > comments at this stage will be most appreciated. =20
->=20
-> FYI, all of my last tests looked OK.
->=20
-> > To IOMMU maintainers: should I send this patch to the iommu mailing
-> > list and move the discussion there? =20
->=20
-> I meant as a new submission to IOMMU maling list, since this started
-> in xHCI at the usb mailing list.
-> Of course, that is if nobody has any comments or objections to the
-> patch.
+On Wed, Jun 17, 2026 at 03:04:18PM +0200, Thorsten Blum wrote:
+> cmdline_find_option() returns the full length of the argument value even
+> if it is truncated. However, get_cmdline_acpi_rsdp() only checks whether
+> acpi_rsdp= is present and does not reject truncated values that do not
+> fit in the buffer.
+> 
+> Reject truncated values early to prevent boot_kstrtoul() from parsing a
+> partial value and thus from silently using the wrong RSDP address.
 
-Looks like no one from IOMMU pays much attention in the first place.
-Let's see if a subject change helps.
+And?
 
-If you have a working patch which fixes this, just submit it following
-usual rules in Documentation/process/submitting-patches.rst.
+If it uses the wrong address, it'll crash'n'burn later. As it should be.
 
-Regards,
-Michal
+Or are we protecting people from shooting themselves in foot now too?
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
