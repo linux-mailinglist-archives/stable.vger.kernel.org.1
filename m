@@ -1,141 +1,214 @@
-Return-Path: <stable+bounces-266981-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266983-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id KEsjKftoM2o1AgYAu9opvQ
-	(envelope-from <stable+bounces-266981-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 05:41:47 +0200
+	id yrDPFnBpM2pqAgYAu9opvQ
+	(envelope-from <stable+bounces-266983-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 05:43:44 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 206E769D5AC
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 05:41:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C408769D5B7
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 05:43:43 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=km9wEf8X;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266981-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-266981-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=Xar4hgfl;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266983-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-266983-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=uniontech.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DACF7301F7B3
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 03:41:17 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D91B0302E7C0
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 03:43:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3925F30F523;
-	Thu, 18 Jun 2026 03:41:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AAC930F80C;
+	Thu, 18 Jun 2026 03:43:39 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtpbgbr2.qq.com (smtpbgbr2.qq.com [54.207.22.56])
+Received: from smtpbguseast3.qq.com (smtpbguseast3.qq.com [54.243.244.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 155A12EA151
-	for <stable@vger.kernel.org>; Thu, 18 Jun 2026 03:41:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1BAD14884C
+	for <stable@vger.kernel.org>; Thu, 18 Jun 2026 03:43:36 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781754074; cv=none; b=GYkjKbO744apWzcJp1E3hQXQHhK2lptmtc0W1LzaQYL0dHqtcvRi7ehYRxkXFoD5A73qxdozpPUzfGDXS0h0jCyStdSR5dB75DgT7OIaSlZEeRn4Hhx/ZTwAr96MMeQ0iz0e4+E0Bv7pn0nN5jkoAI2GE0Ebwvq6itCKyV5gDRM=
+	t=1781754219; cv=none; b=aJWpyAthbcitFE3oZsAHgIO8DnwKFKWAGn2aL9yeKlF2diIPLIppsqpHOsS+iVvpRwEqNSVwLdXY6jm5ep9Mz+akZ9Tobpxq8J/LTRCgdp0XZ2cZgaB2GabP+4jAYkXmTdI/LpGKATfsfE3QnKqX7CdRAsyfgzlrETmOtctnQng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781754074; c=relaxed/simple;
-	bh=fLsq97/BGCyzzS2m73aGOVu4opLXQ8uaKueGxwCiIHY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=BlmZp4t6gKovbcZAFYukXowVV8GVo/COyONSJ+FDeC9IQDuznlvwyw8xrlIUUArq+U5QJLUThMOnvZJkKB0XQtBZm9bRibFPRn9z5kpFSfvDi10lwa5BBjurxDvsADfu7nuropS85wInjLmTeH4QqhqMDb39QA3BmhhwP3zC/PM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=km9wEf8X; arc=none smtp.client-ip=54.207.22.56
+	s=arc-20240116; t=1781754219; c=relaxed/simple;
+	bh=M/SY2oHM6heqUzd5oIg6bRcDLp15Xu/sq8tRBYhnyuk=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=o33H+WCAkk6IF4W9bx6Y2TwTfvkPLIbgCghaFJ5/pMc1hf67oaQgqekIk7PGlrxxEcwCz524Z2/ruD2LQNygYLFBprqwSKmqtueprgcockgaQzMDTQupODm7cUxnYrbZUawQ/2jiBGkYOmvl503RVcn9WNfqAoVIBEseEhJI7/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=Xar4hgfl; arc=none smtp.client-ip=54.243.244.52
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1781754044;
-	bh=CEUiOwwzVKGdfDsZSCyJdpDXQ6zMJK5mTH5dI8f+kCM=;
+	s=onoh2408; t=1781754195;
+	bh=aKRH9vsLdSP6xszzoF1c3cSPDafELHO/23Y48eGZWAk=;
 	h=From:To:Subject:Date:Message-Id:MIME-Version;
-	b=km9wEf8Xfosdpj3AAgY3Qmo9dp7nIucmIA6lPsgsE5x9tYNBAM/HgtUe4IMGnOB0y
-	 B5tSNqYFvr9jYhRspXI2/2qe/QS3eV4SGC8QlvLAL3CmGkpijT/W8G0zGCeB3wxfkP
-	 fdJv9tJYfhxQn9d4Uv8zsMqit4P+Qho41auDv/xY=
-X-QQ-mid: zesmtpsz8t1781754038t7a064297
-X-QQ-Originating-IP: YM6rGjxPQUmIwengeyDA3EUh9j6VUsjBu+tRV9s6S3E=
+	b=Xar4hgflGnDLP7Yi5sLh1G0XxU9AJDPSoxMlTwJMQsFKBbgRNBQSxBWRRp1N4mw3A
+	 E6QPqK2lAyOl6BvbXk40Dwwf2EW/Qd6fYAdPq+b43pz0BfDUFeyi/m5aELMlM2MwSt
+	 QlALQj6OYuJVwTa1xWJCCX3gdw0us6GiWhl3PBl0=
+X-QQ-mid: esmtpsz16t1781754176t2cb8eb53
+X-QQ-Originating-IP: ryqksIF/MZ9pwBPnAEH3OlDBJglMXN+2/sunf8kgwJU=
 Received: from localhost.localdomain ( [113.57.152.160])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Thu, 18 Jun 2026 11:40:37 +0800 (CST)
+	id ; Thu, 18 Jun 2026 11:42:53 +0800 (CST)
 X-QQ-SSF: 0000000000000000000000000000000
 X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 17446448977059131167
-EX-QQ-RecipientCnt: 4
+X-BIZMAIL-ID: 5472547804747186854
+EX-QQ-RecipientCnt: 17
 From: Wentao Guan <guanwentao@uniontech.com>
 To: sashal@kernel.org,
-	gregkh@linuxfoundation.org
+	gregkh@linuxfoundation.org,
+	guanwentao@uniontech.com
 Cc: stable@vger.kernel.org,
-	Wentao Guan <guanwentao@uniontech.com>
-Subject: [PATCH 6.1.y 0/3] net/sched: fix pedit partial COW leading to page cache corruption
-Date: Thu, 18 Jun 2026 11:40:34 +0800
-Message-Id: <20260618034034.1525175-1-guanwentao@uniontech.com>
+	2045gemini@gmail.com,
+	dcaratti@redhat.com,
+	jhs@mojatatu.com,
+	keenanat2000@gmail.com,
+	kuba@kernel.org,
+	rajat.gupta@oss.qualcomm.com,
+	rollkingzzc@gmail.com,
+	toke@redhat.com,
+	victor@mojatatu.com,
+	yimingqian591@gmail.com,
+	Pedro Tammela <pctammela@mojatatu.com>,
+	Simon Horman <simon.horman@corigine.com>,
+	"David S . Miller" <davem@davemloft.net>
+Subject: [PATCH 6.1.y 1/3] net/sched: act_pedit: check static offsets a priori
+Date: Thu, 18 Jun 2026 11:42:48 +0800
+Message-Id: <20260618034250.1525454-1-guanwentao@uniontech.com>
 X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20260618034034.1525175-1-guanwentao@uniontech.com>
+References: <20260618034034.1525175-1-guanwentao@uniontech.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpsz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz3a-0
-X-QQ-XMAILINFO: Na0AtHk21uUlvnER75r4zzxxEpm1jLYwcxu5hbDjaDSRfeohUXfrKRmO
-	I4EBAvvGO777tDfdWn2bHnjmoGUACI1idyBkVbenD8v39Tnuvjs1z3npQi+80w7qDSHtFbp
-	0QWoaaViLV3jO1938E9ZL4YGLi4T+OjvB9BuJ183QdbXkXO8CQF87AmJSUfV2MoZLUtpF2m
-	jOP5IwIAVX++xVLfMS18pgORQtdETXOLoBMCZtT5ReDdigDvIF3DTQzceywd3cTiU2UPuAN
-	M6f2XALhwAW1tQvZlajcOgPrN/krZLIOXLQGBDZTtndlyAVICbXMlM5DLTevEf4E/wOKEM9
-	aLpY5JJGQem1nhMSNCknBjn2XF7jiHLuORvxBlThqNnytxG7DfF9FhbqJMkafWmuaGZZW/1
-	/oM0nofl6tjQfBI847ACLxKkbPmuNoDd7zX33lrkcGnmZIn7ZWchssjrVzT5LwpkY6ybnxc
-	7+Rl4Z8DMHzXeK6dtvuUCBOwzp9ZYuLsuTVrx0GUSGTfYzdVuAMieXCEnM433XcKp+zuWP4
-	SDQC8rdWiD6x+OLX/D9+jEB7nad167DwefV1iWsIfyJbJjKiNIUbS0GkBK5WsPu2ECtTyTk
-	Ql7J695RfJ1mnmhdoksUKtUynD5bnESzaUsFLhAmXVGLTOm5WXHbAckQPrk+VlxOHpCp6O0
-	Wf8phE8pPUEzWLJF3a+hYMWM5qjOai9LNnwOQh6nJeevXSg16U62iSAq+WUdcTQ084uy3XH
-	p9BxS5heeolIUZDuHty76xaDi2h+a2rDVEfR51iAu/rL+mj30pHhj3TUt7POgHaRM0D4kQp
-	iN6DcHNqdwbL5FICbWEaDaW8Dfp3wXSjo0Gfnr3G+/I6OMo91UgsHT/LUM9EBPm6P50jhus
-	1ejl9+kebH7MdgjiiEdjQvTPWdGy+z7uK2MZvv1nD4oUgCx38wYkgUgGOmpEAvClnTdw3EL
-	sFNPYQzpTR5upHecFwnSpAr/BD9x0sKHRW5WMJKBiuEBj7IgbDzUkZ3QH6hNMWlYEHTXx4b
-	2KgoXhz3BjJ5YYEmyAbrMakrYqYWZNois872IwyI1zo5bTLY+1ClVA3apERV6vqETZ68G6I
-	w==
-X-QQ-XMRINFO: NI4Ajvh11aEjEMj13RCX7UuhPEoou2bs1g==
+Feedback-ID: esmtpsz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz3a-0
+X-QQ-XMAILINFO: NcdhUYIpzyYIAib7Z5TtV6S1PTChVUe0V5KCIykPFoZYHYdzqM/DgMR8
+	x3jmn8/peMYFPPg2uUshn5c3JEYLZUrhjUssUDxLkp5X+D43OABOFGrYgpY4F1TgNdMon6g
+	b1flRxNMelqTKpMNqlitdfqM3Wsv9464PAx8q4k9lvV+XcsBFj5AwwhXkkY/2ZKJDH+TAGt
+	XBo6A1ZyE26s8Jv27SX5zwI/dPewnQjOZbLmQC07pr27PLzxD8/tYN3TGiY1pa6KN4yE6lA
+	b18lKp6/uhyHK7T6u4lpJaNMjBsgXxkp2958V8Dr3BAuGSZjOHA9Vm0wB5SduXHNVRxuuPD
+	Sm7p1bM71UfI6IAxq19IYB71GNssE8yaZH9LP87GBZ9VmPC5mI+RwqLfmP38tmsXrnlPdC/
+	X4qf7Sgfr9lGS87o4CIWzWGWlM1g5kteppBJhhOYE58pipwdk5tTzr5cdf5y8TQyJsqqT4k
+	JtSQIgJdW/TVbR+RY8uWwCa72hxHvqehodYUVAoiwrInQE+okhc7JrYk6Z40tTi++k8ZIVf
+	SvYS35d8tAgykZWe2fgoyKEc+4NJ5XDyzTtJPO2TjWpbZzpOSdqLoHOx0NwYxFFLz9ACzSd
+	s4ryHlDdcjSCKWFxNijCJi+svkuO9Mw1LdOvOCc8RX8Il5Dl2W2L7lNEUxAojTqgMQ4uuM3
+	R6di/EThAmbq6lwYhrR459+ttrshAwk8CgGuybYbDtHuPc0M682ZiI4q4Jkzk3eETK0WVGi
+	QKEEKJ3NHRdS1sqHCU9Xw+5rcZwYq0NoXR4UdR9wiPDWef8+/PaUHxJvQis0MJx65S7fmjS
+	m3XQvk6mihIgu5RMdtOSFKI70YMM8CK32nL6Zxi1d0sU6pjmfYfX8Z2BQOys9fDT7oB94nI
+	R8vwFTsILUatEFZRsuhObQswEdxFv1hxgwHw1d1KP+5fL9jMV6OZia/nz3EfBWZYLZFDbIY
+	3CjsHwdWMsYm3fpvwMaVMLu+j7DsOS2tpyeh9wt+MTxEKswOYisyKxBJG98poYNqutDTlHk
+	Bdw2NUynHDPhSl3bVtlFcEHKvf/x4esMAvcQIEF1zPMxCJWXjYuDfqTTne6MBIqYKl5ji5/
+	cV4uLEP9mnP
+X-QQ-XMRINFO: MPJ6Tf5t3I/ylTmHUqvI8+Wpn+Gzalws3A==
 X-QQ-RECHKSPAM: 0
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[uniontech.com,none];
 	R_DKIM_ALLOW(-0.20)[uniontech.com:s=onoh2408];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-266983-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-266981-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER(0.00)[guanwentao@uniontech.com,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	FORGED_RECIPIENTS(0.00)[m:sashal@kernel.org,m:gregkh@linuxfoundation.org,m:guanwentao@uniontech.com,m:stable@vger.kernel.org,m:2045gemini@gmail.com,m:dcaratti@redhat.com,m:jhs@mojatatu.com,m:keenanat2000@gmail.com,m:kuba@kernel.org,m:rajat.gupta@oss.qualcomm.com,m:rollkingzzc@gmail.com,m:toke@redhat.com,m:victor@mojatatu.com,m:yimingqian591@gmail.com,m:pctammela@mojatatu.com,m:simon.horman@corigine.com,m:davem@davemloft.net,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:sashal@kernel.org,m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,m:guanwentao@uniontech.com,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,redhat.com,mojatatu.com,kernel.org,oss.qualcomm.com,corigine.com,davemloft.net];
 	DKIM_TRACE(0.00)[uniontech.com:+];
-	RCPT_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[guanwentao@uniontech.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,uniontech.com:dkim,uniontech.com:mid,uniontech.com:from_mime]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,uniontech.com:dkim,uniontech.com:email,uniontech.com:mid,uniontech.com:from_mime,corigine.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 206E769D5AC
+X-Rspamd-Queue-Id: C408769D5B7
 
-Fixes CVE-2026-46331: net/sched: fix pedit partial COW leading to page cache corruption
+From: Pedro Tammela <pctammela@mojatatu.com>
 
-Link: https://lore.kernel.org/all/2026061625-CVE-2026-46331-47be@gregkh/
+[ Upstream commit e1201bc781c28766720e78a5e099ffa568be4d74 ]
 
-Pedro Tammela (2):
-  net/sched: act_pedit: check static offsets a priori
-  net/sched: act_pedit: rate limit datapath messages
+Static key offsets should always be on 32 bit boundaries. Validate them on
+create/update time for static offsets and move the datapath validation
+for runtime offsets only.
 
-Rajat Gupta (1):
-  net/sched: fix pedit partial COW leading to page cache corruption
+iproute2 already errors out if a given offset and data size cannot be
+packed to a 32 bit boundary. This change will make sure users which
+create/update pedit instances directly via netlink also error out,
+instead of finding out when packets are traversing.
 
- include/net/tc_act/tc_pedit.h |  1 -
- net/sched/act_pedit.c         | 99 +++++++++++++++++++----------------
- 2 files changed, 55 insertions(+), 45 deletions(-)
+Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Signed-off-by: Pedro Tammela <pctammela@mojatatu.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+(cherry picked from commit e1201bc781c28766720e78a5e099ffa568be4d74)
+Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
+---
+ net/sched/act_pedit.c | 20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
+diff --git a/net/sched/act_pedit.c b/net/sched/act_pedit.c
+index aee2e13f1db62..2bdc44efee779 100644
+--- a/net/sched/act_pedit.c
++++ b/net/sched/act_pedit.c
+@@ -250,8 +250,16 @@ static int tcf_pedit_init(struct net *net, struct nlattr *nla,
+ 	memcpy(nparms->tcfp_keys, parm->keys, ksize);
+ 
+ 	for (i = 0; i < nparms->tcfp_nkeys; ++i) {
++		u32 offmask = nparms->tcfp_keys[i].offmask;
+ 		u32 cur = nparms->tcfp_keys[i].off;
+ 
++		/* The AT option can be added to static offsets in the datapath */
++		if (!offmask && cur % 4) {
++			NL_SET_ERR_MSG_MOD(extack, "Offsets must be on 32bit boundaries");
++			ret = -EINVAL;
++			goto put_chain;
++		}
++
+ 		/* sanitize the shift value for any later use */
+ 		nparms->tcfp_keys[i].shift = min_t(size_t,
+ 						   BITS_PER_TYPE(int) - 1,
+@@ -260,7 +268,7 @@ static int tcf_pedit_init(struct net *net, struct nlattr *nla,
+ 		/* The AT option can read a single byte, we can bound the actual
+ 		 * value with uchar max.
+ 		 */
+-		cur += (0xff & nparms->tcfp_keys[i].offmask) >> nparms->tcfp_keys[i].shift;
++		cur += (0xff & offmask) >> nparms->tcfp_keys[i].shift;
+ 
+ 		/* Each key touches 4 bytes starting from the computed offset */
+ 		nparms->tcfp_off_max_hint =
+@@ -429,12 +437,12 @@ static int tcf_pedit_act(struct sk_buff *skb, const struct tc_action *a,
+ 					       sizeof(_d), &_d);
+ 			if (!d)
+ 				goto bad;
+-			offset += (*d & tkey->offmask) >> tkey->shift;
+-		}
+ 
+-		if (offset % 4) {
+-			pr_info("tc action pedit offset must be on 32 bit boundaries\n");
+-			goto bad;
++			offset += (*d & tkey->offmask) >> tkey->shift;
++			if (offset % 4) {
++				pr_info("tc action pedit offset must be on 32 bit boundaries\n");
++				goto bad;
++			}
+ 		}
+ 
+ 		if (!offset_valid(skb, hoffset + offset)) {
 -- 
 2.30.2
 
