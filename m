@@ -1,63 +1,64 @@
-Return-Path: <stable+bounces-267123-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267124-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 3F7RJKTqM2qVIQYAu9opvQ
-	(envelope-from <stable+bounces-267123-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 14:55:00 +0200
+	id nVZCM7jqM2qjIQYAu9opvQ
+	(envelope-from <stable+bounces-267124-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 14:55:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 320C16A037B
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 14:55:00 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F7D26A0391
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 14:55:20 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Yc/kN8br";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267123-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267123-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AjjFUF8w;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267124-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-267124-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 327C53014A88
+	by sea.lore.kernel.org (Postfix) with ESMTP id 597B93043998
 	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 12:54:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF5B63F4DC3;
-	Thu, 18 Jun 2026 12:54:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28A5E38D017;
+	Thu, 18 Jun 2026 12:54:59 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6403438D017
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC5853ED3A6
 	for <stable@vger.kernel.org>; Thu, 18 Jun 2026 12:54:57 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781787298; cv=none; b=Lflgjw6ob56Bt7Jy3X4eTuC3g8jYJsYMv5iovEcp9083jCfoQFe+NdaIMZR7zQkt29ctcqCWPmSrkNcUm1LmpkOTYSD2RtORFdiN9ID4hv8w5QPhSMgKFv+l4AQN1p5TAF5A3SYI4UbbXKtISb0VrxrHN0lGNxpUSVK4sjopEkg=
+	t=1781787298; cv=none; b=uA5UkGJF7hxGFcAQgN3aXCGZnPW4P8j7152gXZ+qqzy9sO8CrkMvwlL9J5Brap0iQfwZiEuSzkNb5azF3Mz/cu6PhlyHqQ+RH9oQfNgDZs1gCGC15EbfQLpG0pnEc1YstJg2tavO1Go/1alcWp3dYTuTD6NMx+aWeU4z+DsOSLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1781787298; c=relaxed/simple;
-	bh=FR+7HU/gfPMJoTUZu04I8IWJat58qtDEZ3qmEvlxNys=;
+	bh=L5VWPd2CEy4kKL9ReM6/uL7vjyCnA0xqd9ypm5wNkHA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=i5vOwVuqHlJB6dQ2pBduBjbViQlUf7qROZ5GnSdsso43bhX6pETXv9JrtmNS8Eshjp2U7Iik12Ztyilb9w6nasOJDJwtp2lk0yCSWpSDDW9o3GcuAbuuYfVwFKqLH9u0Ky3HYAeZF1pYQcsVKzTBLPDD2VMIMXVRjMT9/9snb2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Yc/kN8br; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 749261F00A3D;
-	Thu, 18 Jun 2026 12:54:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=eqM3HXY//opquBaQuiL6sMK2xhcol4lZZWM2cKUH67KMw1CkGeRxoqvuyPGbXh4U/3VQcItGTvda9atAlFBqXCTcJqG6jchtDxpYqqjnG9/B6qLWSV/PsT6RMRm86KCKKA5vNi2bWoogAV3MGmDIc2a8KSDFcuOJ9JBspaTk4aY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AjjFUF8w; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4756E1F00A3A;
+	Thu, 18 Jun 2026 12:54:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1781787297;
-	bh=IZgEjk8sDXs+mW0OIITLItlPWq6PTflrACOXvxELKx4=;
+	bh=flBgdtvXvRHpTvheYBcZqbHhVDR5K/r+l512Q9ZCpbY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Yc/kN8brZKDaDR8HSYqFl5potRETc5MTHHtOcYYOqd2O0wq/XMqVb8hxPr+idT7LA
-	 yVJjMEQS8T5wjv4YCsedeWrPECvwiFEixzEasFhKW/dm+ye6DpuLx99T2fgRCDg+pr
-	 W2pWWRO1ghdxWJ+v2f7l9S/2dOT3tTIomgErRXIL4fjb+4TqHjQo4OZIrumXY8KYww
-	 BATi6zoeKdQygzryqHNN8GK+4wHn4osqlczWf9Zo/bAd5KKlTlcrO3BfgsIgMIPNqN
-	 xoG65e5DQMX647VKyqdL+rrQfcN8MyQM2kzxX6Dn0hwvrvmt0aq4XLdMgQvUh+RGy5
-	 ZzGMtosXkNnfg==
+	b=AjjFUF8wkRt0XqqdQ5ud99NIHv09YBcfDxyQRGYBGKAEyP2laNeRWlLo/wpU1OKdG
+	 wTrBf6ZvA/tE7Kfh3/Rxw4d6hM6VZ3TTUeH822sdVnZe9jEt0L6g5kNM7pMTJVKEJK
+	 p96VFcsX+jEh6c0F7tO5zjArZ2jYT8A1eS5l78OxWsGLeuiNYQEQ3vbInwpF4amn72
+	 KD4iaWz2pIw5wL9OIr2Av60RyzvNhPGUWw7LwL3Q7lGWVb/1T6Rhwrp6KAAPyIAyN7
+	 P4/2wVMldsBIyqPfHCaUFaZLPB+NROH63EM+E8YHm8nhc4Hlx84bO5Zs0eg6JOliMF
+	 hgASYozlLpIeQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
+	Jose Maria Casanova Crespo <jmcasanova@igalia.com>,
 	Iago Toral Quiroga <itoral@igalia.com>,
-	Melissa Wen <mwen@igalia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y 1/3] drm/v3d: Store the active job inside the queue's state
-Date: Thu, 18 Jun 2026 08:54:52 -0400
-Message-ID: <20260618125454.649776-1-sashal@kernel.org>
+Subject: [PATCH 6.12.y 2/3] drm/v3d: Fix vaddr leak when indirect CSD has zeroed workgroups
+Date: Thu, 18 Jun 2026 08:54:53 -0400
+Message-ID: <20260618125454.649776-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026061521-hardship-pebbly-50b5@gregkh>
+In-Reply-To: <20260618125454.649776-1-sashal@kernel.org>
 References: <2026061521-hardship-pebbly-50b5@gregkh>
+ <20260618125454.649776-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -73,11 +74,11 @@ X-Spamd-Result: default: False [-4.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:mcanal@igalia.com,m:itoral@igalia.com,m:mwen@igalia.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:mcanal@igalia.com,m:jmcasanova@igalia.com,m:itoral@igalia.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FROM_HAS_DN(0.00)[];
@@ -86,7 +87,7 @@ X-Spamd-Result: default: False [-4.16 / 15.00];
 	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-267123-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-267124-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -96,266 +97,58 @@ X-Spamd-Result: default: False [-4.16 / 15.00];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,igalia.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 320C16A037B
+X-Rspamd-Queue-Id: 1F7D26A0391
 
 From: Maíra Canal <mcanal@igalia.com>
 
-[ Upstream commit 0d3768826d38c0ac740f8b45cd13346630535f2b ]
+[ Upstream commit ae7676952790f421c40918e2586a2c9f12a682b6 ]
 
-Instead of storing the queue's active job in four different variables,
-store the active job inside the queue's state. This way, it's possible
-to access all active jobs using an index based in `enum v3d_queue`.
+v3d_rewrite_csd_job_wg_counts_from_indirect() maps both the indirect
+buffer and the workgroup buffer and is expected to release them before
+returning. When any of the workgroup counts read from the buffer is zero,
+the function bailed out early and skipped the cleanup, leaking the vaddr
+mappings of both BOs.
 
+Jump to the cleanup path instead of returning directly, so the mappings
+are always dropped.
+
+Cc: stable@vger.kernel.org
+Fixes: 18b8413b25b7 ("drm/v3d: Create a CPU job extension for a indirect CSD job")
+Suggested-by: Jose Maria Casanova Crespo <jmcasanova@igalia.com>
 Reviewed-by: Iago Toral Quiroga <itoral@igalia.com>
-Reviewed-by: Melissa Wen <mwen@igalia.com>
-Link: https://lore.kernel.org/r/20250826-v3d-queue-lock-v3-2-979efc43e490@igalia.com
+Link: https://patch.msgid.link/20260602-v3d-fix-indirect-csd-v4-1-654309e32bc0@igalia.com
 Signed-off-by: Maíra Canal <mcanal@igalia.com>
 Stable-dep-of: 7f93fad5ea0a ("drm/v3d: Skip CSD when it has zeroed workgroups")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/v3d/v3d_drv.h   |  7 ++--
- drivers/gpu/drm/v3d/v3d_gem.c   |  7 ++--
- drivers/gpu/drm/v3d/v3d_irq.c   | 62 +++++++++++++--------------------
- drivers/gpu/drm/v3d/v3d_sched.c | 26 +++++++++-----
- 4 files changed, 48 insertions(+), 54 deletions(-)
+ drivers/gpu/drm/v3d/v3d_sched.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/v3d/v3d_drv.h b/drivers/gpu/drm/v3d/v3d_drv.h
-index d4b0549205c29e..b6e11968fba47b 100644
---- a/drivers/gpu/drm/v3d/v3d_drv.h
-+++ b/drivers/gpu/drm/v3d/v3d_drv.h
-@@ -59,6 +59,9 @@ struct v3d_queue_state {
- 
- 	/* Stores the GPU stats for this queue in the global context. */
- 	struct v3d_stats stats;
-+
-+	/* Currently active job for this queue */
-+	struct v3d_job *active_job;
- };
- 
- /* Performance monitor object. The perform lifetime is controlled by userspace
-@@ -147,10 +150,6 @@ struct v3d_dev {
- 
- 	struct work_struct overflow_mem_work;
- 
--	struct v3d_bin_job *bin_job;
--	struct v3d_render_job *render_job;
--	struct v3d_tfu_job *tfu_job;
--	struct v3d_csd_job *csd_job;
- 	struct v3d_cpu_job *cpu_job;
- 
- 	struct v3d_queue_state queue[V3D_MAX_QUEUES];
-diff --git a/drivers/gpu/drm/v3d/v3d_gem.c b/drivers/gpu/drm/v3d/v3d_gem.c
-index 6b6ba7a68fcb40..cf3b93101429c2 100644
---- a/drivers/gpu/drm/v3d/v3d_gem.c
-+++ b/drivers/gpu/drm/v3d/v3d_gem.c
-@@ -304,16 +304,15 @@ void
- v3d_gem_destroy(struct drm_device *dev)
- {
- 	struct v3d_dev *v3d = to_v3d_dev(dev);
-+	enum v3d_queue q;
- 
- 	v3d_sched_fini(v3d);
- 
- 	/* Waiting for jobs to finish would need to be done before
- 	 * unregistering V3D.
- 	 */
--	WARN_ON(v3d->bin_job);
--	WARN_ON(v3d->render_job);
--	WARN_ON(v3d->tfu_job);
--	WARN_ON(v3d->csd_job);
-+	for (q = 0; q < V3D_MAX_QUEUES; q++)
-+		WARN_ON(v3d->queue[q].active_job);
- 
- 	drm_mm_takedown(&v3d->mm);
- 
-diff --git a/drivers/gpu/drm/v3d/v3d_irq.c b/drivers/gpu/drm/v3d/v3d_irq.c
-index b98e1a4b33c71c..2464ea4d935d04 100644
---- a/drivers/gpu/drm/v3d/v3d_irq.c
-+++ b/drivers/gpu/drm/v3d/v3d_irq.c
-@@ -42,6 +42,8 @@ v3d_overflow_mem_work(struct work_struct *work)
- 		container_of(work, struct v3d_dev, overflow_mem_work);
- 	struct drm_device *dev = &v3d->drm;
- 	struct v3d_bo *bo = v3d_bo_create(dev, NULL /* XXX: GMP */, 256 * 1024);
-+	struct v3d_queue_state *queue = &v3d->queue[V3D_BIN];
-+	struct v3d_bin_job *bin_job;
- 	struct drm_gem_object *obj;
- 	unsigned long irqflags;
- 
-@@ -61,13 +63,15 @@ v3d_overflow_mem_work(struct work_struct *work)
- 	 * some binner pool anyway.
- 	 */
- 	spin_lock_irqsave(&v3d->job_lock, irqflags);
--	if (!v3d->bin_job) {
-+	bin_job = (struct v3d_bin_job *)queue->active_job;
-+
-+	if (!bin_job) {
- 		spin_unlock_irqrestore(&v3d->job_lock, irqflags);
- 		goto out;
- 	}
- 
- 	drm_gem_object_get(obj);
--	list_add_tail(&bo->unref_head, &v3d->bin_job->render->unref_list);
-+	list_add_tail(&bo->unref_head, &bin_job->render->unref_list);
- 	spin_unlock_irqrestore(&v3d->job_lock, irqflags);
- 
- 	v3d_mmu_flush_all(v3d);
-@@ -79,6 +83,20 @@ v3d_overflow_mem_work(struct work_struct *work)
- 	drm_gem_object_put(obj);
- }
- 
-+static void
-+v3d_irq_signal_fence(struct v3d_dev *v3d, enum v3d_queue q,
-+		     void (*trace_irq)(struct drm_device *, uint64_t))
-+{
-+	struct v3d_queue_state *queue = &v3d->queue[q];
-+	struct v3d_fence *fence = to_v3d_fence(queue->active_job->irq_fence);
-+
-+	v3d_job_update_stats(queue->active_job, q);
-+	trace_irq(&v3d->drm, fence->seqno);
-+
-+	queue->active_job = NULL;
-+	dma_fence_signal(&fence->base);
-+}
-+
- static irqreturn_t
- v3d_irq(int irq, void *arg)
- {
-@@ -102,41 +120,17 @@ v3d_irq(int irq, void *arg)
- 	}
- 
- 	if (intsts & V3D_INT_FLDONE) {
--		struct v3d_fence *fence =
--			to_v3d_fence(v3d->bin_job->base.irq_fence);
--
--		v3d_job_update_stats(&v3d->bin_job->base, V3D_BIN);
--		trace_v3d_bcl_irq(&v3d->drm, fence->seqno);
--
--		v3d->bin_job = NULL;
--		dma_fence_signal(&fence->base);
--
-+		v3d_irq_signal_fence(v3d, V3D_BIN, trace_v3d_bcl_irq);
- 		status = IRQ_HANDLED;
- 	}
- 
- 	if (intsts & V3D_INT_FRDONE) {
--		struct v3d_fence *fence =
--			to_v3d_fence(v3d->render_job->base.irq_fence);
--
--		v3d_job_update_stats(&v3d->render_job->base, V3D_RENDER);
--		trace_v3d_rcl_irq(&v3d->drm, fence->seqno);
--
--		v3d->render_job = NULL;
--		dma_fence_signal(&fence->base);
--
-+		v3d_irq_signal_fence(v3d, V3D_RENDER, trace_v3d_rcl_irq);
- 		status = IRQ_HANDLED;
- 	}
- 
- 	if (intsts & V3D_INT_CSDDONE(v3d->ver)) {
--		struct v3d_fence *fence =
--			to_v3d_fence(v3d->csd_job->base.irq_fence);
--
--		v3d_job_update_stats(&v3d->csd_job->base, V3D_CSD);
--		trace_v3d_csd_irq(&v3d->drm, fence->seqno);
--
--		v3d->csd_job = NULL;
--		dma_fence_signal(&fence->base);
--
-+		v3d_irq_signal_fence(v3d, V3D_CSD, trace_v3d_csd_irq);
- 		status = IRQ_HANDLED;
- 	}
- 
-@@ -168,15 +162,7 @@ v3d_hub_irq(int irq, void *arg)
- 	V3D_WRITE(V3D_HUB_INT_CLR, intsts);
- 
- 	if (intsts & V3D_HUB_INT_TFUC) {
--		struct v3d_fence *fence =
--			to_v3d_fence(v3d->tfu_job->base.irq_fence);
--
--		v3d_job_update_stats(&v3d->tfu_job->base, V3D_TFU);
--		trace_v3d_tfu_irq(&v3d->drm, fence->seqno);
--
--		v3d->tfu_job = NULL;
--		dma_fence_signal(&fence->base);
--
-+		v3d_irq_signal_fence(v3d, V3D_TFU, trace_v3d_tfu_irq);
- 		status = IRQ_HANDLED;
- 	}
- 
 diff --git a/drivers/gpu/drm/v3d/v3d_sched.c b/drivers/gpu/drm/v3d/v3d_sched.c
-index 90eef062766c8d..8c08592346d4df 100644
+index 8c08592346d4df..f2a2c17a58c687 100644
 --- a/drivers/gpu/drm/v3d/v3d_sched.c
 +++ b/drivers/gpu/drm/v3d/v3d_sched.c
-@@ -208,14 +208,18 @@ static struct dma_fence *v3d_bin_job_run(struct drm_sched_job *sched_job)
- 	struct dma_fence *fence;
- 	unsigned long irqflags;
+@@ -419,7 +419,7 @@ v3d_rewrite_csd_job_wg_counts_from_indirect(struct v3d_cpu_job *job)
+ 	wg_counts = (uint32_t *)(bo->vaddr + indirect_csd->offset);
  
--	if (unlikely(job->base.base.s_fence->finished.error))
-+	if (unlikely(job->base.base.s_fence->finished.error)) {
-+		spin_lock_irqsave(&v3d->job_lock, irqflags);
-+		v3d->queue[V3D_BIN].active_job = NULL;
-+		spin_unlock_irqrestore(&v3d->job_lock, irqflags);
- 		return NULL;
-+	}
+ 	if (wg_counts[0] == 0 || wg_counts[1] == 0 || wg_counts[2] == 0)
+-		return;
++		goto unmap_bo;
  
- 	/* Lock required around bin_job update vs
- 	 * v3d_overflow_mem_work().
- 	 */
- 	spin_lock_irqsave(&v3d->job_lock, irqflags);
--	v3d->bin_job = job;
-+	v3d->queue[V3D_BIN].active_job = &job->base;
- 	/* Clear out the overflow allocation, so we don't
- 	 * reuse the overflow attached to a previous job.
- 	 */
-@@ -263,10 +267,12 @@ static struct dma_fence *v3d_render_job_run(struct drm_sched_job *sched_job)
- 	struct drm_device *dev = &v3d->drm;
- 	struct dma_fence *fence;
+ 	args->cfg[0] = wg_counts[0] << V3D_CSD_CFG012_WG_COUNT_SHIFT;
+ 	args->cfg[1] = wg_counts[1] << V3D_CSD_CFG012_WG_COUNT_SHIFT;
+@@ -444,6 +444,7 @@ v3d_rewrite_csd_job_wg_counts_from_indirect(struct v3d_cpu_job *job)
+ 		}
+ 	}
  
--	if (unlikely(job->base.base.s_fence->finished.error))
-+	if (unlikely(job->base.base.s_fence->finished.error)) {
-+		v3d->queue[V3D_RENDER].active_job = NULL;
- 		return NULL;
-+	}
- 
--	v3d->render_job = job;
-+	v3d->queue[V3D_RENDER].active_job = &job->base;
- 
- 	/* Can we avoid this flush?  We need to be careful of
- 	 * scheduling, though -- imagine job0 rendering to texture and
-@@ -309,10 +315,12 @@ v3d_tfu_job_run(struct drm_sched_job *sched_job)
- 	struct drm_device *dev = &v3d->drm;
- 	struct dma_fence *fence;
- 
--	if (unlikely(job->base.base.s_fence->finished.error))
-+	if (unlikely(job->base.base.s_fence->finished.error)) {
-+		v3d->queue[V3D_TFU].active_job = NULL;
- 		return NULL;
-+	}
- 
--	v3d->tfu_job = job;
-+	v3d->queue[V3D_TFU].active_job = &job->base;
- 
- 	fence = v3d_fence_create(v3d, V3D_TFU);
- 	if (IS_ERR(fence))
-@@ -355,10 +363,12 @@ v3d_csd_job_run(struct drm_sched_job *sched_job)
- 	struct dma_fence *fence;
- 	int i, csd_cfg0_reg;
- 
--	if (unlikely(job->base.base.s_fence->finished.error))
-+	if (unlikely(job->base.base.s_fence->finished.error)) {
-+		v3d->queue[V3D_CSD].active_job = NULL;
- 		return NULL;
-+	}
- 
--	v3d->csd_job = job;
-+	v3d->queue[V3D_CSD].active_job = &job->base;
- 
- 	v3d_invalidate_caches(v3d);
- 
++unmap_bo:
+ 	v3d_put_bo_vaddr(indirect);
+ 	v3d_put_bo_vaddr(bo);
+ }
 -- 
 2.53.0
 
