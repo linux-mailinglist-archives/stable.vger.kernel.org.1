@@ -1,69 +1,69 @@
-Return-Path: <stable+bounces-267209-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267268-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id lLXOMgRSNGonUwYAu9opvQ
-	(envelope-from <stable+bounces-267209-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 22:16:04 +0200
+	id hi7pGShYNGrxVQYAu9opvQ
+	(envelope-from <stable+bounces-267268-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 22:42:16 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F56E6A27BD
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 22:16:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 08D7C6A2A5C
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 22:42:16 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=crowdstrike.com header.s=default header.b="cVSL HuA";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267209-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-267209-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=crowdstrike.com header.s=default header.b="DEM1 4Ge";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267268-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-267268-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=reject) header.from=crowdstrike.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D1B7A3037BA3
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 20:16:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F055D3018BDD
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 20:42:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B3FB2FB969;
-	Thu, 18 Jun 2026 20:16:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC5E3347533;
+	Thu, 18 Jun 2026 20:42:10 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-00206402.pphosted.com (mx0a-00206402.pphosted.com [148.163.148.77])
+Received: from mx0b-00206402.pphosted.com (mx0b-00206402.pphosted.com [148.163.152.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFD73279907
-	for <stable@vger.kernel.org>; Thu, 18 Jun 2026 20:15:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 232262FB969
+	for <stable@vger.kernel.org>; Thu, 18 Jun 2026 20:42:09 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781813760; cv=none; b=DG5LIiS7UvSMGskVMleEaCNUdU3i1v3bGpU3UDhf8tz4APlkqSXM5tjBlMqmneWz42+VLkiUcBLyXYwtHkyJlrTaRFsDCdRxR3QYtGf64jzEqzeA+ejXow9s5xh64JjJ5oVBoNgowPzPbe3w9wR+4E3Un8I27f/B9gCJvAWDSA0=
+	t=1781815330; cv=none; b=dnRXHBOESMxsBN+H6Hu8nEQzd+bnt/itP7dk29kY92o9AEACQ/PIBl6MXWv0sxjgL++UtOLLSjUyEE/KMnOmhZqSzzpAtpA4D8mtGs1xSd7PQCAZHxxgrpqa5tYbGyc3dlzQVhqWjbZXSD4qKK6Lggz9E/UnsR2mqCT8m/OTO4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781813760; c=relaxed/simple;
-	bh=/eCs5PgOc6vglHwSEhYWBH1vyD6HWIvdmgKmt92Qdsw=;
+	s=arc-20240116; t=1781815330; c=relaxed/simple;
+	bh=My3xmgJq2lsybi1jw06RzcvHBgxZZZGRCIyQJ7yxezQ=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=g+ZuiVvLObGC5Sc10UaCuz8GKNkN9whDwcjEzsxX5NoNZmYCrTS3YAkJvvYd8dtVdSOW3SrrvmyuhHU3OrOtemWxT0nHDE05Lf1TsK04PYzLJ9+mz900hduV/OataOJy1s798+UVhVtR5tZTnmKgiUEJ86n7WIz64BvRjhG7fvk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=crowdstrike.com; spf=pass smtp.mailfrom=crowdstrike.com; dkim=pass (2048-bit key) header.d=crowdstrike.com header.i=@crowdstrike.com header.b=cVSLHuAe; arc=none smtp.client-ip=148.163.148.77
-Received: from pps.filterd (m0354650.ppops.net [127.0.0.1])
-	by mx0a-00206402.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65IIsaw73922544;
-	Thu, 18 Jun 2026 20:15:53 GMT
+	 MIME-Version:Content-Type; b=rpZ2mIGlM1XHkXSzahe2vqxIitKF5pvSpF3UfFDDswILMOsT9oTsDIIdD/iRXAqQRZlcg9OsAPKJ/zdVWQStI48Iiobe2Ejndy+lHDr7eFRd+lg0OD779AVuHZQu6EqZ2MUAFqqiyKBbb8NlrzBbecAxtNboQ5dijlBjk01pmwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=crowdstrike.com; spf=pass smtp.mailfrom=crowdstrike.com; dkim=pass (2048-bit key) header.d=crowdstrike.com header.i=@crowdstrike.com header.b=DEM14Ge8; arc=none smtp.client-ip=148.163.152.16
+Received: from pps.filterd (m0354655.ppops.net [127.0.0.1])
+	by mx0b-00206402.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65IIscCd3950445;
+	Thu, 18 Jun 2026 20:15:54 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crowdstrike.com;
 	 h=cc:content-transfer-encoding:content-type:date:from
 	:in-reply-to:message-id:mime-version:references:subject:to; s=
-	default; bh=x5dIxY0KI/s4CGjvzWtTNN1wNgcd9Z6bdhBuW0RF094=; b=cVSL
-	HuAeJk4928kvPD1fZ07MngotwfDlqyL7InYy6YicG7mPWNdJyBy2vGeRTIZSU48v
-	PX3JXJO3de07u8Ngap0vbo7Qk0CLc8dHLVT3jtIC2grceM4GxGJPgEFttkr0INX/
-	9bsm0Z2cOVa5IY8EC4r3PwEVYYIFukwcMAKIqUeDqzuAc+SEWTeeH95bR/DuVvqe
-	eu5f7VIcs3JBkQTrwS7gINd3VAJcUr+CLEodVbHnuiDw63Ai/XKN9wEnfz14ueL+
-	87p6+4cg6OyvHTeUWz4+nOvoVLhoBAEQk6D/3AeKXbLrnZhvevONvxPjdqmRRZJe
-	HAu7R8od0Wf8lTrJLA==
+	default; bh=IOvChE/duvk5DudeUJL7HsfzCodbD6lya2dRn+IaZGA=; b=DEM1
+	4Ge8rWle4TVRkpk0u3Y/d9vBiMq/v5AGGxwnSXszu1+vrkUoPsuH6SeUp5N3sA1c
+	jtBoCcHC1TeahgyuqdRD0magh2KcyEZEWsKL1Li6xvewdOBO0rZ1IA1kt8tGxrje
+	0xhQJwzNewEgA5KKkd/KbKcWqTuzgcwgq+HifRASSM9rRG7FP9xjduKyQyN48NEU
+	TE3brekJdT39EASUWkTn5vOMuEuSXRoWjI/LmNNhwTW0AlojoGXrAMLfK/jkpeKV
+	3QLXd5Pxv7Xont2IPmuHCk6QQ+4XPYO9e5Q/tZ5yyizUu8dJ9ivKygg7Z2nV26Vr
+	/At/BFVY5iJNH8AQ5A==
 Received: from mail.crowdstrike.com (dragosx.crowdstrike.com [208.42.231.60] (may be forged))
-	by mx0a-00206402.pphosted.com (PPS) with ESMTPS id 4ev4y0vc3s-1
+	by mx0b-00206402.pphosted.com (PPS) with ESMTPS id 4evd10aqhu-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 18 Jun 2026 20:15:52 +0000 (GMT)
+	Thu, 18 Jun 2026 20:15:54 +0000 (GMT)
 Received: from LL-DJCZ134.crowdstrike.sys (10.100.11.122) by
  04WPEXCH006.crowdstrike.sys (10.100.11.70) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Thu, 18 Jun 2026 20:15:51 +0000
+ 15.2.2562.43; Thu, 18 Jun 2026 20:15:52 +0000
 From: Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
 To: <stable@vger.kernel.org>
 CC: <gregkh@linuxfoundation.org>, <sashal@kernel.org>, <rostedt@goodmis.org>,
         <vmalik@redhat.com>, <jmarchan@redhat.com>,
         <martin.kelly@crowdstrike.com>, <justin.deschamp@crowdstrike.com>,
         <linux-open-source@crowdstrike.com>
-Subject: [PATCH 6.12.y 05/27] scripts/sorttable: Make compare_extable() into two functions
-Date: Thu, 18 Jun 2026 16:15:19 -0400
-Message-ID: <355a7e43ce293504ed0abde5792b981a7c317d51.1781809922.git.andrey.grodzovsky@crowdstrike.com>
+Subject: [PATCH 6.12.y 06/27] scripts/sorttable: Convert Elf_Ehdr to union
+Date: Thu, 18 Jun 2026 16:15:20 -0400
+Message-ID: <ffbf4890fa9bdef1135c98294fc40bbe5f918004.1781809926.git.andrey.grodzovsky@crowdstrike.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <cover.1781809906.git.andrey.grodzovsky@crowdstrike.com>
 References: <cover.1781809906.git.andrey.grodzovsky@crowdstrike.com>
@@ -77,34 +77,34 @@ Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-ClientProxiedBy: 04WPEXCH006.crowdstrike.sys (10.100.11.70) To
  04WPEXCH006.crowdstrike.sys (10.100.11.70)
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjE4MDE4NSBTYWx0ZWRfX0CzglgXqfFRh
- Xw8S3UffJFeRB9TaB1RqbywGToLZOmQs3ILdl+WWe5iWuFbIiuy/whqCc3O1eItCjWW2Ef9rmTr
- iExGq6e/UCY+0fH5/+RX8FF+KBmCc1F4sddXMwesqUCtJWuYjaxFK9PZXqklrO2XV/bdmyuKjgd
- 0fu/3e0C51M4i+95duGxQnrg3Zusep3wZHyvSwN1bQmounHKMtpBOjvgcKKtdFGZbql/52kJQou
- ojekq2v9wzZVBXF25V9xcdxXXzw15q5dtoVfbcBI+jM5BHhhSTbgAl3tktxS3rcSAA+ytUvtSXQ
- LKuQGwe4TrVU4w+iFDJS4LPEABBa6lXekasl+ZOdcltLJiI6TIAiaqpc/1xTtaE6IlRMZJvEIra
- 1QdV5WvOqPJTaKkbxw1e34TGpuRIpZFsDbc9WewCGuYqBNZykGqTNV7esAQARReOGeCwbsm+vlV
- NA+Qp5hD6nqMPKtcMkQ==
-X-Proofpoint-ORIG-GUID: SmbIhQkGwCmdHHE0ariYAML4lt1u2nM0
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjE4MDE4NSBTYWx0ZWRfX3Ye/hPSCEI07
- B6gTF2Tk4cbwsgIhxc+tNmYdf5p7R3f1E5w7uRDRME2aqJgNzY9dJAKiT6WYk0WNbe0vIbA1ws9
- f+A6ZvJtgzW3km8fZhkjA7af5INM8O0lP3VN4NAoBDnPJSFhDQXZ
-X-Authority-Analysis: v=2.4 cv=Ood/DS/t c=1 sm=1 tr=0 ts=6a3451f8 cx=c_pps
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjE4MDE4NSBTYWx0ZWRfX0KjjBHeTttDP
+ bMMkcn6X6/SJhUAvtClN+11EW/Cog9cIyju+rioUSUTMazkcx8KeaaBJhKFXbIIgyhQZXVFrl25
+ z2Ditn7MuK/In2p08fXKew2ZeoY4KW9juQNRrKFDhdbqkkUDMQfBOZ48vr6hPbFdz5eokS+fE62
+ uSjh21ek5muBqlmPQHIFPLR0te+Up14NkRli9I67DR1TfH8kZbTEO3PgITPFXptEkS86P5r+Q/8
+ 4KWD6ulbPQdLCEszcN2VID/q9EW19R5nd1UG/lXyvtNP2/kD6l+39Yta30BjWtSMIQXRbggQcUo
+ VaLJzHmOghbmiDKZvWVF/RuNNHGTqvoPpeIfl2KTfE+/zJo5pSJMw1TkeZc7tkhPjYjyLLoJAsw
+ mRI/3UhW9mPqg99PWD+yrGdO7WPLY6xDvd52WIEz6+x7few0yT37jZx68WKvaDXlBNQcBBBK0h9
+ 3vsnmbgdd1Ld9K1Et7Q==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjE4MDE4NSBTYWx0ZWRfX0xayFkkTqhxH
+ VPq6Q3E8oT5//i258nc7Lbc1fFSy1WQbjrq9p0BFWTVsTt8gJD+8z8x042InZu1DjB3e9wmAYmW
+ CugkEDuMnJMSRKKu3/STWjdirVH7Uag36XiY8RBg5klsvluoLSwg
+X-Proofpoint-ORIG-GUID: 4RDy_I40yP46RcenIvyWQ4mkvNXEwMAf
+X-Proofpoint-GUID: 4RDy_I40yP46RcenIvyWQ4mkvNXEwMAf
+X-Authority-Analysis: v=2.4 cv=L7UtheT8 c=1 sm=1 tr=0 ts=6a3451fa cx=c_pps
  a=1d8vc5iZWYKGYgMGCdbIRA==:117 a=1d8vc5iZWYKGYgMGCdbIRA==:17
  a=EjBHVkixTFsA:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=T2KQ53IYiC3MXPrxx8bB:22 a=t04HzT_fAfAF5W-3wVZy:22 a=VwQbUJbxAAAA:8
+ a=T2KQ53IYiC3MXPrxx8bB:22 a=vDKVRhTs-M86Ea50iKLw:22 a=VwQbUJbxAAAA:8
  a=meVymXHHAAAA:8 a=7CQSdrXTAAAA:8 a=7d_E57ReAAAA:8 a=Z4Rwk6OoAAAA:8
  a=JfrnYn6hAAAA:8 a=cpyHj8QvAAAA:8 a=i0EeH86SAAAA:8 a=pl6vuDidAAAA:8
- a=1UX6Do5GAAAA:8 a=20KFwNOVAAAA:8 a=IdAk5Fh7ePpybWqhdtEA:9
+ a=1UX6Do5GAAAA:8 a=20KFwNOVAAAA:8 a=Qq8QHfOQB_7rfYQ4AIIA:9
  a=2JgSa4NbpEOStq-L5dxp:22 a=a-qgeE7W1pNrGK8U0ZQC:22 a=jhqOcbufqs7Y1TYCrUUU:22
  a=HkZW87K1Qel5hWWM3VKY:22 a=1CNFftbPRP8L7MoqJWF3:22 a=BPjOrAZP5zzvMhA9psHf:22
  a=Et2XPkok5AAZYJIKzHr1:22
-X-Proofpoint-GUID: SmbIhQkGwCmdHHE0ariYAML4lt1u2nM0
 X-Proofpoint-Virus-Version: vendor=nai engine=6900 definitions=11821
  signatures=596817
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 bulkscore=0 impostorscore=0 suspectscore=0 clxscore=1015
- phishscore=0 adultscore=0 priorityscore=1501 malwarescore=0 spamscore=0
+ impostorscore=0 phishscore=0 adultscore=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 spamscore=0 lowpriorityscore=0 clxscore=1015 bulkscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2606180185
 X-Rspamd-Action: no action
@@ -120,7 +120,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_NONE(0.00)[];
-	TAGGED_FROM(0.00)[bounces-267209-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-267268-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:sashal@kernel.org,m:rostedt@goodmis.org,m:vmalik@redhat.com,m:jmarchan@redhat.com,m:martin.kelly@crowdstrike.com,m:justin.deschamp@crowdstrike.com,m:linux-open-source@crowdstrike.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[andrey.grodzovsky@crowdstrike.com,stable@vger.kernel.org];
@@ -140,31 +140,21 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 1F56E6A27BD
+X-Rspamd-Queue-Id: 08D7C6A2A5C
 
 From: Steven Rostedt <rostedt@goodmis.org>
 
-[ Upstream commit 7ffc0d0819f438779ed592e2e2e3576f43ce14f0 ]
+[ Upstream commit 157fb5b3cfd2cb5950314f926a76e567fc1921c5 ]
 
-Instead of having the compare_extable() part of the sorttable.h header
-where it get's defined twice, since it is a very simple function, just
-define it twice in sorttable.c, and then it can use the proper read
-functions for the word size and endianess and the Elf_Addr macro can be
-removed from sorttable.h.
+In order to remove the double #include of sorttable.h for 64 and 32 bit
+to create duplicate functions for both, replace the Elf_Ehdr macro with a
+union that defines both Elf64_Ehdr and Elf32_Ehdr, with field e64 for the
+64bit version, and e32 for the 32bit version.
 
-Also add a micro optimization. Instead of:
+Then a macro etype can be used instead to get to the proper value.
 
-    if (a < b)
-        return -1;
-    if (a > b)
-        return 1;
-    return 0;
-
-That can be shorten to:
-
-   if (a < b)
-      return -1;
-   return a > b;
+This will eventually be replaced with just single functions that can
+handle both 32bit and 64bit ELF parsing.
 
 Cc: bpf <bpf@vger.kernel.org>
 Cc: Masami Hiramatsu <mhiramat@kernel.org>
@@ -180,90 +170,180 @@ Cc: Zheng Yejian <zhengyejian1@huawei.com>
 Cc: Martin  Kelly <martin.kelly@crowdstrike.com>
 Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
 Cc: Josh Poimboeuf <jpoimboe@redhat.com>
-Link: https://lore.kernel.org/20250105162344.945299671@goodmis.org
+Link: https://lore.kernel.org/20250105162345.148224465@goodmis.org
 Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Andrey Grodzovsky <andrey.grodzovsky@crowdstrike.com>
 ---
- scripts/sorttable.c | 20 ++++++++++++++++++++
- scripts/sorttable.h | 14 --------------
- 2 files changed, 20 insertions(+), 14 deletions(-)
+ scripts/sorttable.c | 36 ++++++++++++++++++++----------------
+ scripts/sorttable.h | 12 ++++++------
+ 2 files changed, 26 insertions(+), 22 deletions(-)
 
 diff --git a/scripts/sorttable.c b/scripts/sorttable.c
-index 4dcdbf7a5..3e2c17e91 100644
+index 3e2c17e91..67cbbfc82 100644
 --- a/scripts/sorttable.c
 +++ b/scripts/sorttable.c
-@@ -173,6 +173,26 @@ static inline unsigned int get_secindex(unsigned int shndx,
- 	return r(&symtab_shndx_start[sym_offs]);
- }
+@@ -64,6 +64,11 @@
+ #define EM_LOONGARCH	258
+ #endif
  
-+static int compare_extable_32(const void *a, const void *b)
-+{
-+	Elf32_Addr av = r(a);
-+	Elf32_Addr bv = r(b);
++typedef union {
++	Elf32_Ehdr	e32;
++	Elf64_Ehdr	e64;
++} Elf_Ehdr;
 +
-+	if (av < bv)
-+		return -1;
-+	return av > bv;
-+}
-+
-+static int compare_extable_64(const void *a, const void *b)
-+{
-+	Elf64_Addr av = r8(a);
-+	Elf64_Addr bv = r8(b);
-+
-+	if (av < bv)
-+		return -1;
-+	return av > bv;
-+}
-+
- /* 32 bit and 64 bit are very similar */
- #include "sorttable.h"
- #define SORTTABLE_64
+ static uint32_t (*r)(const uint32_t *);
+ static uint16_t (*r2)(const uint16_t *);
+ static uint64_t (*r8)(const uint64_t *);
+@@ -266,10 +271,10 @@ static void sort_relative_table_with_data(char *extab_image, int image_size)
+ static int do_file(char const *const fname, void *addr)
+ {
+ 	int rc = -1;
+-	Elf32_Ehdr *ehdr = addr;
++	Elf_Ehdr *ehdr = addr;
+ 	table_sort_t custom_sort = NULL;
+ 
+-	switch (ehdr->e_ident[EI_DATA]) {
++	switch (ehdr->e32.e_ident[EI_DATA]) {
+ 	case ELFDATA2LSB:
+ 		r	= rle;
+ 		r2	= r2le;
+@@ -284,18 +289,18 @@ static int do_file(char const *const fname, void *addr)
+ 		break;
+ 	default:
+ 		fprintf(stderr, "unrecognized ELF data encoding %d: %s\n",
+-			ehdr->e_ident[EI_DATA], fname);
++			ehdr->e32.e_ident[EI_DATA], fname);
+ 		return -1;
+ 	}
+ 
+-	if (memcmp(ELFMAG, ehdr->e_ident, SELFMAG) != 0 ||
+-	    (r2(&ehdr->e_type) != ET_EXEC && r2(&ehdr->e_type) != ET_DYN) ||
+-	    ehdr->e_ident[EI_VERSION] != EV_CURRENT) {
++	if (memcmp(ELFMAG, ehdr->e32.e_ident, SELFMAG) != 0 ||
++	    (r2(&ehdr->e32.e_type) != ET_EXEC && r2(&ehdr->e32.e_type) != ET_DYN) ||
++	    ehdr->e32.e_ident[EI_VERSION] != EV_CURRENT) {
+ 		fprintf(stderr, "unrecognized ET_EXEC/ET_DYN file %s\n", fname);
+ 		return -1;
+ 	}
+ 
+-	switch (r2(&ehdr->e_machine)) {
++	switch (r2(&ehdr->e32.e_machine)) {
+ 	case EM_386:
+ 	case EM_AARCH64:
+ 	case EM_LOONGARCH:
+@@ -318,14 +323,14 @@ static int do_file(char const *const fname, void *addr)
+ 		break;
+ 	default:
+ 		fprintf(stderr, "unrecognized e_machine %d %s\n",
+-			r2(&ehdr->e_machine), fname);
++			r2(&ehdr->e32.e_machine), fname);
+ 		return -1;
+ 	}
+ 
+-	switch (ehdr->e_ident[EI_CLASS]) {
++	switch (ehdr->e32.e_ident[EI_CLASS]) {
+ 	case ELFCLASS32:
+-		if (r2(&ehdr->e_ehsize) != sizeof(Elf32_Ehdr) ||
+-		    r2(&ehdr->e_shentsize) != sizeof(Elf32_Shdr)) {
++		if (r2(&ehdr->e32.e_ehsize) != sizeof(Elf32_Ehdr) ||
++		    r2(&ehdr->e32.e_shentsize) != sizeof(Elf32_Shdr)) {
+ 			fprintf(stderr,
+ 				"unrecognized ET_EXEC/ET_DYN file: %s\n", fname);
+ 			break;
+@@ -334,20 +339,19 @@ static int do_file(char const *const fname, void *addr)
+ 		break;
+ 	case ELFCLASS64:
+ 		{
+-		Elf64_Ehdr *const ghdr = (Elf64_Ehdr *)ehdr;
+-		if (r2(&ghdr->e_ehsize) != sizeof(Elf64_Ehdr) ||
+-		    r2(&ghdr->e_shentsize) != sizeof(Elf64_Shdr)) {
++		if (r2(&ehdr->e64.e_ehsize) != sizeof(Elf64_Ehdr) ||
++		    r2(&ehdr->e64.e_shentsize) != sizeof(Elf64_Shdr)) {
+ 			fprintf(stderr,
+ 				"unrecognized ET_EXEC/ET_DYN file: %s\n",
+ 				fname);
+ 			break;
+ 		}
+-		rc = do_sort_64(ghdr, fname, custom_sort);
++		rc = do_sort_64(ehdr, fname, custom_sort);
+ 		}
+ 		break;
+ 	default:
+ 		fprintf(stderr, "unrecognized ELF class %d %s\n",
+-			ehdr->e_ident[EI_CLASS], fname);
++			ehdr->e32.e_ident[EI_CLASS], fname);
+ 		break;
+ 	}
+ 
 diff --git a/scripts/sorttable.h b/scripts/sorttable.h
-index 58f7ab5f5..36655ff16 100644
+index 36655ff16..be8b52949 100644
 --- a/scripts/sorttable.h
 +++ b/scripts/sorttable.h
-@@ -23,7 +23,6 @@
+@@ -23,12 +23,12 @@
  #undef sort_mcount_loc
  #undef elf_mcount_loc
  #undef do_sort
--#undef Elf_Addr
- #undef Elf_Ehdr
+-#undef Elf_Ehdr
  #undef Elf_Shdr
  #undef Elf_Sym
-@@ -38,7 +37,6 @@
+ #undef ELF_ST_TYPE
+ #undef uint_t
+ #undef _r
++#undef etype
+ 
+ #ifdef SORTTABLE_64
+ # define extable_ent_size	16
+@@ -37,12 +37,12 @@
  # define sort_mcount_loc	sort_mcount_loc_64
  # define elf_mcount_loc		elf_mcount_loc_64
  # define do_sort		do_sort_64
--# define Elf_Addr		Elf64_Addr
- # define Elf_Ehdr		Elf64_Ehdr
+-# define Elf_Ehdr		Elf64_Ehdr
  # define Elf_Shdr		Elf64_Shdr
  # define Elf_Sym		Elf64_Sym
-@@ -52,7 +50,6 @@
+ # define ELF_ST_TYPE		ELF64_ST_TYPE
+ # define uint_t			uint64_t
+ # define _r			r8
++# define etype			e64
+ #else
+ # define extable_ent_size	8
+ # define compare_extable	compare_extable_32
+@@ -50,12 +50,12 @@
  # define sort_mcount_loc	sort_mcount_loc_32
  # define elf_mcount_loc		elf_mcount_loc_32
  # define do_sort		do_sort_32
--# define Elf_Addr		Elf32_Addr
- # define Elf_Ehdr		Elf32_Ehdr
+-# define Elf_Ehdr		Elf32_Ehdr
  # define Elf_Shdr		Elf32_Shdr
  # define Elf_Sym		Elf32_Sym
-@@ -160,17 +157,6 @@ static void *sort_orctable(void *arg)
- }
+ # define ELF_ST_TYPE		ELF32_ST_TYPE
+ # define uint_t			uint32_t
+ # define _r			r
++# define etype			e32
  #endif
  
--static int compare_extable(const void *a, const void *b)
--{
--	Elf_Addr av = _r(a);
--	Elf_Addr bv = _r(b);
--
--	if (av < bv)
--		return -1;
--	if (av > bv)
--		return 1;
--	return 0;
--}
- #ifdef MCOUNT_SORT_ENABLED
- pthread_t mcount_sort_thread;
+ #if defined(SORTTABLE_64) && defined(UNWINDER_ORC_ENABLED)
+@@ -222,7 +222,7 @@ static int do_sort(Elf_Ehdr *ehdr,
+ 		   table_sort_t custom_sort)
+ {
+ 	int rc = -1;
+-	Elf_Shdr *s, *shdr = (Elf_Shdr *)((char *)ehdr + _r(&ehdr->e_shoff));
++	Elf_Shdr *s, *shdr = (Elf_Shdr *)((char *)ehdr + _r(&ehdr->etype.e_shoff));
+ 	Elf_Shdr *strtab_sec = NULL;
+ 	Elf_Shdr *symtab_sec = NULL;
+ 	Elf_Shdr *extab_sec = NULL;
+@@ -249,12 +249,12 @@ static int do_sort(Elf_Ehdr *ehdr,
+ 	unsigned int orc_num_entries = 0;
+ #endif
+ 
+-	shstrndx = r2(&ehdr->e_shstrndx);
++	shstrndx = r2(&ehdr->etype.e_shstrndx);
+ 	if (shstrndx == SHN_XINDEX)
+ 		shstrndx = r(&shdr[0].sh_link);
+ 	secstrings = (const char *)ehdr + _r(&shdr[shstrndx].sh_offset);
+ 
+-	shnum = r2(&ehdr->e_shnum);
++	shnum = r2(&ehdr->etype.e_shnum);
+ 	if (shnum == SHN_UNDEF)
+ 		shnum = _r(&shdr[0].sh_size);
  
 -- 
 2.34.1
