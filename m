@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-267161-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267163-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id c6+sIZQMNGrvMAYAu9opvQ
-	(envelope-from <stable+bounces-267161-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 17:19:48 +0200
+	id sz/MMsoMNGooMQYAu9opvQ
+	(envelope-from <stable+bounces-267163-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 17:20:42 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D84F56A12E8
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 17:19:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39B1A6A1307
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 17:20:42 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=c4otBAAd;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267161-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267161-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HK9ZrErr;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267163-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267163-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EC24C30FDEE2
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 15:15:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DCEBF31105FE
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 15:15:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FFEE3FBB6C;
-	Thu, 18 Jun 2026 15:15:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 977253F58D9;
+	Thu, 18 Jun 2026 15:15:36 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1DA33FBB76;
-	Thu, 18 Jun 2026 15:15:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EBB83FC5A8;
+	Thu, 18 Jun 2026 15:15:32 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781795731; cv=none; b=iBPSGOilxMtvX00E4m5Z/5dZRBUQKHzpb41D5rL+pBe3uUNPk37dYah8dzr21uQDXVWotX95s5MunxHwHzc9ug9IkJ8Jx0aVQitVG/PPj+kULTHXJr8cE0d3sUskvu84AS72HF6w/IBRL6Uc01HJ+5E9eljcaOz2f5m1SEPrfxU=
+	t=1781795736; cv=none; b=ZGvz+3j5fjLcqGZ6lK2FHWo7RSHINT7Z0x9U0XC1H4u/Se68Dcn8VHbcqb8N0SqfDrHeXE29cmm8gqI4FT+QOqgmKvdHHZSMETVioH75Exwvvr72Jb1Wn4Y88uy7S58bHePzfj59DN5pR+ko3fg3eTOw+XEsnHJ4eVUu4yiu1wY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781795731; c=relaxed/simple;
-	bh=HWdAP7bN8wgLM9Uk9w1J0MsTcc9ctSj3NsL8gL3RJmM=;
+	s=arc-20240116; t=1781795736; c=relaxed/simple;
+	bh=a7LFJkRoCnBEG+IV6eG6YWf+u+LzueVya0LdGjnZf+o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZZocpNmGkuj70KawF60QZHDqoTrduxLaliFkzOXKJpOCWsXmwGtB0oO++9IX2+N7m/8fxyXGgRcMyFsqSBLtiHbTk/RQuaxlb7ZamKtziUL7dIuAu1SR8Stj1l94YiPbXT/6Rb2luNAj0sIyhEU5zeV09FosomZA348mrdocoYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c4otBAAd; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 940931F000E9;
-	Thu, 18 Jun 2026 15:15:29 +0000 (UTC)
+	 MIME-Version; b=B+npSv0Zl5Uvhqr6+FyoWP3yLwwfiSwlEYwBnVlVbqfGZ4L4OoyLFyqj6vEb8KYCsuSc8A/seAAsfGmsfErEgndvKdvzI3zu3DSTr9tCu8KZd/tcna9+qnHa2oMw1iNQ4APYbKrJnvU5amXxMk9S+5NgZg6kEheZBptVNRMQJ5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HK9ZrErr; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E30B11F00A3D;
+	Thu, 18 Jun 2026 15:15:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781795730;
-	bh=f+ZFI7Qgbe7xnOZyetZ4L3vI22eJ2l2ckq5hmR8a2XY=;
+	s=k20260515; t=1781795732;
+	bh=AYOzMyZwHARxR0NZjcHLGHg4Al6n3ZFtJVQObKKPsUw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=c4otBAAdK7g3o77FEZQlZkjkONMzdQBJ0R4LsRPs5AkdB02wLhURfZ5fgv/dnc1eW
-	 x7EtoweTcNqhD8+CSvHCtoKjG06LMUpEU/sMWCBNiThl/khQFDDxnamTr2pbeGL6Na
-	 u14I1gBO1NVF5qzQ5SVCCdRULpcy/o1xKdvuLG5e7MsJQv3LbGBjInCHNIgPOQenbQ
-	 KhCLsKOe/KUMaBEfTu3BFjCxi1nmosMs/FD4xSVEcOCkvC5kKCj6yWaz5QhLzePkE9
-	 t7HRJH/vG4FA3T7JSX7bq6rso8OyVWf6DKuJY7ytEGZHa3AePC67Ma5zeGjIYBXC+w
-	 6MQCZ6V9CAJxA==
+	b=HK9ZrErrT/G95PukbMmY9I40KAE9YhFy3SmSqjosNPeVV2aV0AkD03Jgs7TOMMfZq
+	 n/tbanT6cTPQsFXcukot33O/Oj4S8PCSNWnsO3Q4DiqKUjySk6MMkWkD4IPxuOqnpD
+	 i1zAMudAtaqZvqEywGXUnC7lC3dr3rzv2PaoC2U17ulAqHJzGkAXEVzb3D3UKLgcJP
+	 FAOf4f30h4xKXQfLH5Xnud+AjFDIk87Gc/7CZZWMpcQmAgQWLMGxsJKXpiUgzZbYMn
+	 k9uUcaymjMkUWdt9cbqeKAhJeQQcfEBi9cdDNZG5Vdvt9/34wKztKESNfzq+B1verL
+	 UUZ8B8/n3awbQ==
 From: SeongJae Park <sj@kernel.org>
 To: 
 Cc: SeongJae Park <sj@kernel.org>,
@@ -54,9 +54,9 @@ Cc: SeongJae Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v1.2 02/11] mm/damon/sysfs: kobject_del() region and target (error) dirs
-Date: Thu, 18 Jun 2026 08:15:06 -0700
-Message-ID: <20260618151517.5366-3-sj@kernel.org>
+Subject: [RFC PATCH v1.2 03/11] mm/damon/sysfs-schemes: kobject_del() scheme dirs
+Date: Thu, 18 Jun 2026 08:15:07 -0700
+Message-ID: <20260618151517.5366-4-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260618151517.5366-1-sj@kernel.org>
 References: <20260618151517.5366-1-sj@kernel.org>
@@ -80,11 +80,11 @@ X-Spamd-Result: default: False [-3.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-267161-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-267163-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS(0.00)[m:sj@kernel.org,m:stable@vger.kernel.org,m:akpm@linux-foundation.org,m:damon@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:linux-mm@kvack.org,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_SENDER(0.00)[sj@kernel.org,stable@vger.kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
@@ -100,55 +100,50 @@ X-Spamd-Result: default: False [-3.66 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D84F56A12E8
+X-Rspamd-Queue-Id: 39B1A6A1307
 
 On CONFIG_DEBUG_KOBJECT_RELEASE enabled kernel, lack of kobject_del()
 could cause directories creation failures due to the name conflicts. Fix
-those issues for the normal creation path of region directories and the
-error path of target directories, by adding kobject_del() calls.
+those issues for scheme directories by adding kobject_del() calls.
 
-Fixes: 2031b14ea757 ("mm/damon/sysfs: support the physical address space monitoring")
+Fixes: 7e84b1f8212a ("mm/damon/sysfs: support DAMON-based Operation Schemes")
 Cc: <stable@vger.kernel.org> # 5.18.x
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- mm/damon/sysfs.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ mm/damon/sysfs-schemes.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
-index dba1c67fc188f..3c349f0fe80f0 100644
---- a/mm/damon/sysfs.c
-+++ b/mm/damon/sysfs.c
-@@ -107,8 +107,10 @@ static void damon_sysfs_regions_rm_dirs(struct damon_sysfs_regions *regions)
- 	struct damon_sysfs_region **regions_arr = regions->regions_arr;
- 	int i;
+diff --git a/mm/damon/sysfs-schemes.c b/mm/damon/sysfs-schemes.c
+index 0134111c3c1ff..13f5fae01800b 100644
+--- a/mm/damon/sysfs-schemes.c
++++ b/mm/damon/sysfs-schemes.c
+@@ -2683,6 +2683,7 @@ void damon_sysfs_schemes_rm_dirs(struct damon_sysfs_schemes *schemes)
  
--	for (i = 0; i < regions->nr; i++)
-+	for (i = 0; i < regions->nr; i++) {
-+		kobject_del(&regions_arr[i]->kobj);
- 		kobject_put(&regions_arr[i]->kobj);
-+	}
- 	regions->nr = 0;
- 	kfree(regions_arr);
- 	regions->regions_arr = NULL;
-@@ -372,13 +374,15 @@ static int damon_sysfs_targets_add_dirs(struct damon_sysfs_targets *targets,
- 
- 		err = damon_sysfs_target_add_dirs(target);
+ 	for (i = 0; i < schemes->nr; i++) {
+ 		damon_sysfs_scheme_rm_dirs(schemes_arr[i]);
++		kobject_del(&schemes_arr[i]->kobj);
+ 		kobject_put(&schemes_arr[i]->kobj);
+ 	}
+ 	schemes->nr = 0;
+@@ -2724,13 +2725,15 @@ static int damon_sysfs_schemes_add_dirs(struct damon_sysfs_schemes *schemes,
+ 			goto out;
+ 		err = damon_sysfs_scheme_add_dirs(scheme);
  		if (err)
 -			goto out;
 +			goto del_out;
  
- 		targets_arr[i] = target;
- 		targets->nr++;
+ 		schemes_arr[i] = scheme;
+ 		schemes->nr++;
  	}
  	return 0;
  
 +del_out:
-+	kobject_del(&target->kobj);
++	kobject_del(&scheme->kobj);
  out:
- 	damon_sysfs_targets_rm_dirs(targets);
- 	kobject_put(&target->kobj);
+ 	damon_sysfs_schemes_rm_dirs(schemes);
+ 	kobject_put(&scheme->kobj);
 -- 
 2.47.3
 
