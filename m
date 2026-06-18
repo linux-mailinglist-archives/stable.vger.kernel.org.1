@@ -1,190 +1,148 @@
-Return-Path: <stable+bounces-267276-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267277-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 5GmmOJFmNGpMXAYAu9opvQ
-	(envelope-from <stable+bounces-267276-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 23:43:45 +0200
+	id GWtFDaBoNGovXQYAu9opvQ
+	(envelope-from <stable+bounces-267277-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 23:52:32 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BCD46A2CCF
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 23:43:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 741576A2CFF
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 23:52:31 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=google header.b=RGzzoStW;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267276-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267276-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=linuxfoundation.org;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=STgThfhb;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267277-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267277-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 087063043F95
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 21:42:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 39D1E303828A
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 21:52:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 732C2332916;
-	Thu, 18 Jun 2026 21:42:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5793A26AA91;
+	Thu, 18 Jun 2026 21:52:27 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7224325706
-	for <stable@vger.kernel.org>; Thu, 18 Jun 2026 21:42:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C39D22D4C3;
+	Thu, 18 Jun 2026 21:52:26 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781818971; cv=none; b=LMtKFYTihS+fdBxfimCGNJSfksOitTNTs/QCIqBeJBq6ZLK3jSR5QWcaIlSkNW6zeVNXTfK6EpM/gBtdYncsN+UVzm7txckJp6J8LXaokpn4oA8BS3bPrnDEqly+9QMHpevUnZ115ATLvhBKrbHxH0Wdm+1fJjQoAijsc022mlw=
+	t=1781819547; cv=none; b=LxZrh3L9MIZx2pHCs5zteB9cJaJ3O/tOcZM8hhpNzqVE1vvXQT9uLGpftu7SnGmx/SelEFO0EndIGqpVHav4lhnQibVhi+qK8/R2cvqqyPDeOEl0k4xlYRjuSYBIwaNG5Y58Kg/gzT5Hr8eMViQVx+js54XD5HHfmZMW0xM5PdM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781818971; c=relaxed/simple;
-	bh=0vL8OtmpIyLy51Fv9riLDUryAsugbB3gKKFEHjgNdjE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gdekuVQ9LH3tHMvRA29u1t6wHukm93Qz5yh8Z9RKoRhI9BrPc/vuC+QXzI0wDLzwkVnWLoYLv8A5Ys/HMLopEGeNhufDYK6K+4T07TnOfCgAa01z0MpdtOxXRP76JraQL3TFi6B+Zf/n+lrB7bnZFS4XDZjM1RlCSKJFJlB3fBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RGzzoStW; arc=none smtp.client-ip=209.85.218.48
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-bec450b950dso201819066b.2
-        for <stable@vger.kernel.org>; Thu, 18 Jun 2026 14:42:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1781818968; x=1782423768; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=5p66b7ErYnujJAGTcgTXIBPkgQepiYPJRliMjdpdxZU=;
-        b=RGzzoStWu2dmRsTrIk5xaZ9/7EduSff/1L8EoR8RN9feJsXUUxaEYqGjo5X3ycTS6J
-         dH8A5aZijs0QzLJFCpBifbLMNZu0uP0eWK/bwOe76SlaT3DX4rwLvKi7kgpYcFVos/pH
-         tBXRWxnTiTziAb0d+N1YL+Khiko7E3v1YfBv4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781818968; x=1782423768;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5p66b7ErYnujJAGTcgTXIBPkgQepiYPJRliMjdpdxZU=;
-        b=jRVkK8DmgQXQu+hvf2qxA95KK/123+SJ/fmcg8Lvn5ITbbDvwyvAwZ6MZg9LhJA+/l
-         mawm/FAOBSZrtknjcQmGJQUiTghp5Al0iFDBqFRD4la2792QbSMT+LDEfOVSivk0KBfV
-         KKPXcpc1o5CXeSzmYLSQzW0H4YIaVi1W+nFZ8UAiuOjqPyrbLD2nXWb4dD3jTIOS3EL9
-         0uMdmyz4p1ViUyghevfMwWa6T1uzgiKanfhJTgnXeF6sOMnGgk/s4rCr54xMOmhVgq5W
-         4ftQPSBG9E7+0jZPly2NruTnJ5iySOh5c/W9gmhIS7cMmMyhDGDEjNpWkCqOekaOM3Y/
-         dS1A==
-X-Forwarded-Encrypted: i=1; AFNElJ/yUQzR/oYY50gCsfsbWka6M8UX19eNFT4e4PPvF2ayJMcn4559WUUSB8HbSKMcMij3+bg0C/4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyb9rHoUMlDGZR/QX4zsDGHepgzle+IqJsolwc2YAdHrreCVnK/
-	5h4R7iZZZJYre8bEb/T9a1Uo45gGGq3EMVz0ctsV9W3GdoN0Qhdp2VwToF8uTTPeewHbejJis0n
-	lkSmA4To=
-X-Gm-Gg: AfdE7ckXvACGDzhUN5sg3agEMbI5Bzmpw0pyd9o1Cmd2Y+Pgy73Bo78wCaLdyekcBg3
-	IZYwTGWLOPocH5JeO4nJnVDzOsIL2Jr9gvGOevBlDpFcnQ4ykIfCqY3jOiNhWKZ+uRxW3uQnf/g
-	ZA9MF0VEfUZuK+TQ/y3fI5wZgtSqHz7llFBdCgDJbGv2jRcFVWQt9cCMytG6kCFwkgiILJ9O7Je
-	pR+m8gtkb6fnYr3byiyvvxNrMDELdV41wUHky9Eat5FWwagQS/GSLje6MV+iTBPUBAUV98uXcqd
-	i9/jC1YVtAiAIcj4pYrGPNTxyC9bSVGKwegjDBtR/D9GPGyGWIz/W0GFz6LHlNC7NH4Cr+wHyfo
-	++wSx8A8S79Z6+PKROqz/01z3v4rF5ebmM5XWb3KfzypCqYdKmAK9cVwTAWVlhIZz54Rn3xic60
-	prWeoAZ1W/aJRr7ydnRak8qT4sISy1X2k/TeTjsBTXviIPpZanTpU2FS7G6BBL
-X-Received: by 2002:a17:907:d02:b0:bec:2ad0:cba5 with SMTP id a640c23a62f3a-c097cfb117emr39253666b.29.1781818968160;
-        Thu, 18 Jun 2026 14:42:48 -0700 (PDT)
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com. [209.85.218.54])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c0a844f53dcsm7898966b.8.2026.06.18.14.42.47
-        for <stable@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 18 Jun 2026 14:42:47 -0700 (PDT)
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-bec450b950dso201816266b.2
-        for <stable@vger.kernel.org>; Thu, 18 Jun 2026 14:42:47 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ8KZXvp2SGKPDHcX3bQlut8K6HSrmZDdcJBuexpVkaHUPHhXUG8RM+E1tfDVwQGCwG4T3z8MaQ=@vger.kernel.org
-X-Received: by 2002:a17:907:96a6:b0:bd4:8b66:c374 with SMTP id
- a640c23a62f3a-c097af88bffmr48299266b.9.1781818967276; Thu, 18 Jun 2026
- 14:42:47 -0700 (PDT)
+	s=arc-20240116; t=1781819547; c=relaxed/simple;
+	bh=v41KJ4v+dQvq/CxvSaOJ/jvjxo+BqduvdqvMxfSacHw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WzIRSP8WsrtmtISvRmNO5eDCpwceikJ7h1Lwsj3+JywBjvgyRcrGw/jt3v5KZEOqbcMYuThjAchEru4uTWxfdFcLY++9heO6aRqCCdyUIHJM9b73Mg+iKMQeIY3GYmfEaoHpynsQQjrohvPbM5pHHQ+WRPRN+aE6QTrr5kKCWVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=STgThfhb; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD7291F000E9;
+	Thu, 18 Jun 2026 21:52:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781819545;
+	bh=zOQ59vanl4P6qfmRFaXM/RAmGrRLBBPBrQiFh5bwZz0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=STgThfhbmVFgko+VFg32ANBYYi1oVlspsO02ppuCMmb/wnGPbf+Bd/sDU+EMn6D6B
+	 +Y5e3glHoBE2P8v67jYdJbpn57YxpxDfVzpUbsmHgc1kRD9u6vwTzgZhs2CxytBI2Z
+	 oLPZQPHJhnM1E+mVfgXD/F6y1hfEe/XquAQrFq39lbTXF/b0UjsETb5rpyeRvIddCR
+	 1NCbHNz8M3HATnXEOCj92KsShnBHbk8RQtl79g2540LYQyo7natXJtuE3oZ8DLYz8o
+	 iy79Je36he7vQ3J95kiP45YlL9Uavr1q0k/sQ8RTaFGLuPuRzC4tICIgF0PWnNc1wp
+	 crBSKvBGOXFFw==
+Date: Thu, 18 Jun 2026 14:52:24 -0700
+From: Oliver Upton <oupton@kernel.org>
+To: Wei-Lin Chang <weilin.chang@arm.com>
+Cc: kvmarm@lists.linux.dev, Marc Zyngier <maz@kernel.org>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>, stable@vger.kernel.org,
+	Sashiko <sashiko-bot@kernel.org>
+Subject: Re: [PATCH RESEND v2 3/5] KVM: arm64: nv: Re-translate VNCR before
+ injecting abort
+Message-ID: <ajRomJ-Y3EOxJUU-@kernel.org>
+References: <20260609185514.746507-1-oupton@kernel.org>
+ <20260609185514.746507-4-oupton@kernel.org>
+ <yw6b7zx2qxjckkut4lzkuqekh2omttwmulvqbslk27wt3vu6mp@ostr7avq6a7e>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260618183442.BBCD71F000E9@smtp.kernel.org> <CAHk-=wiQ_10MRYYW+aRfLP4Ah9gDrShOvLESXtz+Q32-9M9Y9w@mail.gmail.com>
- <9bbaa053-ea06-4b36-98ba-dc487a28964e@kernel.org>
-In-Reply-To: <9bbaa053-ea06-4b36-98ba-dc487a28964e@kernel.org>
-From: Linus Torvalds <torvalds@linuxfoundation.org>
-Date: Thu, 18 Jun 2026 14:42:30 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wjWhvmy5xUcTMCJZats2cUJ5iGU4o5Kdt+OvRepu+MUeQ@mail.gmail.com>
-X-Gm-Features: AVVi8CfUDD-8OyBQi60IPQ8Cw_tmpKz1_FAb_-Rqt7HFrCB8V1vZaaUbe2FX8yM
-Message-ID: <CAHk-=wjWhvmy5xUcTMCJZats2cUJ5iGU4o5Kdt+OvRepu+MUeQ@mail.gmail.com>
-Subject: Re: + userfaultfd-prevent-registration-of-special-vmas.patch added to
- mm-hotfixes-unstable branch
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, mm-commits@vger.kernel.org, 
-	vladimirelitokarev@gmail.com, viro@zeniv.linux.org.uk, stable@vger.kernel.org, 
-	peterx@redhat.com, oleg@redhat.com, jack@suse.cz, brauner@kernel.org, 
-	rppt@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <yw6b7zx2qxjckkut4lzkuqekh2omttwmulvqbslk27wt3vu6mp@ostr7avq6a7e>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-5.16 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linux-foundation.org,vger.kernel.org,gmail.com,zeniv.linux.org.uk,redhat.com,suse.cz,kernel.org];
-	TAGGED_FROM(0.00)[bounces-267276-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-267277-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:david@kernel.org,m:akpm@linux-foundation.org,m:mm-commits@vger.kernel.org,m:vladimirelitokarev@gmail.com,m:viro@zeniv.linux.org.uk,m:stable@vger.kernel.org,m:peterx@redhat.com,m:oleg@redhat.com,m:jack@suse.cz,m:brauner@kernel.org,m:rppt@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[oupton@kernel.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS(0.00)[m:weilin.chang@arm.com,m:kvmarm@lists.linux.dev,m:maz@kernel.org,m:joey.gouly@arm.com,m:suzuki.poulose@arm.com,m:yuzenghui@huawei.com,m:stable@vger.kernel.org,m:sashiko-bot@kernel.org,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[torvalds@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[torvalds@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	MISSING_XM_UA(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[oupton@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,mail.gmail.com:mid]
+	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4BCD46A2CCF
+X-Rspamd-Queue-Id: 741576A2CFF
 
-On Thu, 18 Jun 2026 at 14:07, David Hildenbrand (Arm) <david@kernel.org> wrote:
->
-> Maybe we should rename and possibly split that up, like
->
->         VM_NO_MLOCK
->         VM_NO_VMA_MERGE
+Hey Wei-Lin,
 
-That sounds saner, indeed.
+Sorry for the latency on my end.
 
-> And then have some generic "there are really special things mapped in here"
->
->         VM_HAS_SPECIAL_MAPPINGS
+On Wed, Jun 10, 2026 at 02:46:18PM +0100, Wei-Lin Chang wrote:
+> Just a comment using this thread:
+> 
+> While reading this, I found this part of the code (not this patch in
+> particular) a little bit difficult to reason about. I think it's because
+> kvm_translate_vncr() is doing many things, and there are multiple
+> potential failure reasons e.g. s1 walk fault, no memslot, gmem/user mem
+> faultin errors, MMU notifier check, etc., and they are all mux'ed into
+> an error code with some context visible by the caller.
+> 
+> So in kvm_handle_vncr_abort() we demux the error code and handle the
+> errors with the help of the context (vt, is_gmem). We essentially have
+> to keep track of what error codes correspond to what error reasons.
+> 
+> Do you think it is better if we refactor and handle the errors when they
+> occur? Like inject the exception back to vEL2 right after getting the
+> results of __kvm_translate_va(), and finish up the abort handling there.
+> Same for other cases.
+> 
+> I can try it out and make it concrete if you also think this is
+> reasonable. Probably after this series gets applied when the comments
+> from Marc & Sashiko are addressed. (I reviewed and don't have additional
+> comments though.)
 
-I think maybe we should stop using "bitmasks of VM_xyz bits" and start
-moving to a "helper inlines for vma testing".
+Yeah, returning error codes for 'normal' behavior is extremely difficult
+to work with. TBH, I'd rather we go a step further and rework the whole
+software PTW to only return errors in the case that we have to report it
+to userspace.
 
-That way we could make hugetlb not set DONTEXPAND at all, if we
-instead just introduce a
+Otherwise, aborted walks due to guest behavior should ideally return 1
+and and inspect the walk result to differentiate between a successful /
+aborted translation.
 
-   static inline bool vma_can_merge(const struct vm_area_struct *vma)
-   {
-        if (vma->vm_flags & VM_SPECIAL)
-                return false;
-        if (vma_is_hugetlb(vma))
-                return false;
-        return true;
-    }
-
-Ok, so that vma_is_hugetlb() thing doesn'ty exist - but we do have a
-VMA_HUGETLB_BIT to implement it. I wrote it that way mainly in an
-effort to make it all make sense logically.
-
-And maybe we could get rid of VM_SPECIAL entirely at some point usign
-these kinds of helpers - by making "vma_can_merge()" and others that
-currently use VM_SPECIAL use the *actual* real bits explicitly and
-simply making each rule have simple and logical tests.
-
-And the reason we should pass in the vma - not just vm_flags - is that
-often things like "is the vma anonymous" is part of the decision of
-what can be done.
-
-I think this would make the code both more flexible _and_ more
-understandable if we had these kinds of helpers for different
-situations rather than have VM_SPECIAL kinds of flag combinations.
-
-But I'm just throwing this out as an idea. Maybe there are better ways
-to deal with this. The current code does seem rather annoying.
-
-                Linus
+Thanks,
+Oliver
 
