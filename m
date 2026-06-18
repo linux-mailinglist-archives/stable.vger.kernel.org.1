@@ -1,227 +1,142 @@
-Return-Path: <stable+bounces-266980-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266981-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 1lbXI4JoM2rtAQYAu9opvQ
-	(envelope-from <stable+bounces-266980-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 05:39:46 +0200
+	id KEsjKftoM2o1AgYAu9opvQ
+	(envelope-from <stable+bounces-266981-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 05:41:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A94D69D57F
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 05:39:45 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 206E769D5AC
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 05:41:47 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=lGRy8jaW;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266980-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266980-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
+	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=km9wEf8X;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266981-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-266981-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=uniontech.com;
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B0007302B23A
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 03:39:13 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DACF7301F7B3
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 03:41:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9004735E922;
-	Thu, 18 Jun 2026 03:39:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3925F30F523;
+	Thu, 18 Jun 2026 03:41:15 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpbgbr2.qq.com (smtpbgbr2.qq.com [54.207.22.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D840435E1D9
-	for <stable@vger.kernel.org>; Thu, 18 Jun 2026 03:39:05 +0000 (UTC)
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781753947; cv=pass; b=hPsHenwHCOKX79DJ/0KWyn+L1UIBOJ0aMKHI6bd+e743omWx0rFaZZoMOtIQEgWeCtTRfONFY6xtlJWJP3aIJsGBs7Ioz1KJ9JLqqDPbZteJeU9MM1ES6x1wdFg3W1nPcL0hH19NB/ZsDNMl25ayX0DMTCO7ECqlOFRUq3jQvnE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781753947; c=relaxed/simple;
-	bh=tECTmax46r8pOZwIj9tnn9W17stC2dPd293+J8mrZn8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PLQyLwyP07T//BHp8xoSEu7EgHbWgUxJHo8rsfDelzoXpY2alZiiCTlQA8CkL+xtKVg9MAH+JmrUVNakK33QgbCqiDUx5WNxMNxR8MzaB3b+ch6CY66uD1jcNX9ZijFik7N/9VfQTcqIRsXiMuB418XkfSH52oBVoCaA7kJNmZg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lGRy8jaW; arc=pass smtp.client-ip=209.85.167.45
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-5aa5e0d57e5so364620e87.1
-        for <stable@vger.kernel.org>; Wed, 17 Jun 2026 20:39:05 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781753944; cv=none;
-        d=google.com; s=arc-20240605;
-        b=E1fH5qvWSysbP31sT/oQiYfkio7KI79Q3d39UAXAuRdhN9buODZeHBwqe+wRVUmrdY
-         w6ee+JWwV5lrkE019G8IoPMUunfdDsMXZF2Kvx4TwVjltO+34oalQCfRvZqta4CKpwzf
-         3rPCCAPkiJZ2NevCkHxLJeVDs7kMfEmPOPdkx+TF/qAyFihgENrROmcOrLXrGrdaev25
-         p/zNFpuiBGes0XN1NydORkrzd+4PEi8Q5Hcx72eOWgp1sLc0ZRgQGVwmFsoERNmLovQ7
-         94C/lAohTJkP9+dAZegGBLl6JdC4IgW0HOthbY7J6oKYeUIqFfyIRE1dBpmme+uiI4T8
-         Czkw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=/4mOw+yDAuFvZjmWaPS16AJUikWnWazx6iUEAOgniKk=;
-        fh=Q9UgxcntFDWuTom4ud5zWUuW77zm5qPLjkTweIkF7OQ=;
-        b=HNpvebzox1W9DM3rFZbZJ6SyCqCaQ/7M3ogVBsrEleHU8IrVlOlFHS/bMdVOLBGKxp
-         MqQGAbMJuR5gkl50+XVx9yX7c/WuWHcsAmZo7awy2Uf0xfbaBbKLraJFhEirrczb7cWk
-         1oq7hG7p4vrUheu42TsRJTcojROrcX52LhcP61cIdWTmZN8XaqwOt5eOsbYS5Oed50e3
-         YpboFDTLx7fe8wTWBZbG3i4tVohIWlY68gi84ChaQ0VzHZWpqSDQk2jUhjK8zqhLVqyP
-         QZCyMloZrneBQfLC4Rhs1hsfrCESDHV0MysZGkMwiMTGrBIkO5zrRT3+IDlWSTTGLARM
-         w//g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781753944; x=1782358744; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/4mOw+yDAuFvZjmWaPS16AJUikWnWazx6iUEAOgniKk=;
-        b=lGRy8jaW+KtDsyWZviyNy9sHQVDPvEGOuEBUhwLrMehLAql1XW+37uD8/RYutcMDQ6
-         sOgeJ4SWalfulOPrajKx4U5za9MOQWrhhwgzUwgprmH5oFTA8pAstRqd4hApOQwhL7s1
-         wyCQse/U+AypSW3tP4FH7/zRffMYMknRIiOnd6urnFpS6g8HkGaWCcsCBGAla6dyYQot
-         a3aXnxAM4Xl6pxcsm3wJwqJZiNrpvgsubJzpNPYF10Q1jkVOs23NifKjngC5sMIxEHVp
-         aJAAyZZWYtoaDaBCGEwBJm/G6Ql0ponOE2VjcUjCHWK87iIlx+tgfKgtLd9MVsGJ550q
-         BSuQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781753944; x=1782358744;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=/4mOw+yDAuFvZjmWaPS16AJUikWnWazx6iUEAOgniKk=;
-        b=jTx+1lOebJRsfgLYXfgnPN9Y1RnCnpVlodLzrnjeMIfJ7bu8exV3pQjx4tsTB8orYB
-         lxr+lv3/rbhVUNsPw9+JDYNOzCQqETKb3SCCw8GLuj+LHGxjpzvLQXiIP9iMqUDUwuGl
-         ihYFc2e9BQ4Pu7hGJtPww7Mxniao8+PhQ5V0CnCSQyT+V7ce9sKeQlFu6HIF1m6hQt9f
-         8qfSKBcNF21V0JW/T8ZAXRegwyvragl1RpJ4DVOjHk6Ps0PuMFqTfqTzy0VEQukkN88j
-         b3CGTbMlNaDMYs0Dl+ZB94tSIlJNj7tSLAFIyUyIDRITuN+9vDf9yuvtQSR/ougf0mXJ
-         g71A==
-X-Forwarded-Encrypted: i=1; AFNElJ+uNb/mP0J65STsSrhMsl3tS7rMeV7/i6LvzunbGGipw6I1t9+4MYxjF1RZBiZV6nd96fyvhWM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxJwOoHq2Uddsdf2ik6fA75G5DqiXi9HTJgOmcw6dkGsCHRxQ+Z
-	q+oW7whhUwmFFqSSWRC24AtMBPpBww2TNzgzTl0ZRdzIn5Ra/hfNKjU52vXWBF6dzIGQi8XIOWZ
-	PezYzeXUYL1L8SxsqtAiTaRo1nyXIy4lwlSLA545izQ==
-X-Gm-Gg: AfdE7cmV4gWMXiusPKkEKRmpHKd6A0Ny2ut8NttVWlEGZFkeFownsPu8G6Rae6rREiN
-	pnwB7GPs/m6o9GYNbmpLu9z/9S9jsSYKzO2JEifewZaKf6Cb17iknuU1jDBQrJ/Rk/6PdhVuk7v
-	NkYTYWm3SdXLEDGlaUwA6B2ZM3D/RJyG/6TQLzV5EYSFF1yoPd7hvT2LZLIMhX0aFlDPWXkgDPP
-	VVgy7LbaSau1QQVhr0dhsUooX6udvcOUuuZhPcY/7C5CaeGLtG9pPC/SuJwMLS8ZE/50mcuLg==
-X-Received: by 2002:ac2:51ca:0:b0:5aa:719c:a21c with SMTP id
- 2adb3069b0e04-5ad47db1520mr1680794e87.20.1781753943777; Wed, 17 Jun 2026
- 20:39:03 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 155A12EA151
+	for <stable@vger.kernel.org>; Thu, 18 Jun 2026 03:41:08 +0000 (UTC)
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781754074; cv=none; b=GYkjKbO744apWzcJp1E3hQXQHhK2lptmtc0W1LzaQYL0dHqtcvRi7ehYRxkXFoD5A73qxdozpPUzfGDXS0h0jCyStdSR5dB75DgT7OIaSlZEeRn4Hhx/ZTwAr96MMeQ0iz0e4+E0Bv7pn0nN5jkoAI2GE0Ebwvq6itCKyV5gDRM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781754074; c=relaxed/simple;
+	bh=fLsq97/BGCyzzS2m73aGOVu4opLXQ8uaKueGxwCiIHY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=BlmZp4t6gKovbcZAFYukXowVV8GVo/COyONSJ+FDeC9IQDuznlvwyw8xrlIUUArq+U5QJLUThMOnvZJkKB0XQtBZm9bRibFPRn9z5kpFSfvDi10lwa5BBjurxDvsADfu7nuropS85wInjLmTeH4QqhqMDb39QA3BmhhwP3zC/PM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=km9wEf8X; arc=none smtp.client-ip=54.207.22.56
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1781754044;
+	bh=CEUiOwwzVKGdfDsZSCyJdpDXQ6zMJK5mTH5dI8f+kCM=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version;
+	b=km9wEf8Xfosdpj3AAgY3Qmo9dp7nIucmIA6lPsgsE5x9tYNBAM/HgtUe4IMGnOB0y
+	 B5tSNqYFvr9jYhRspXI2/2qe/QS3eV4SGC8QlvLAL3CmGkpijT/W8G0zGCeB3wxfkP
+	 fdJv9tJYfhxQn9d4Uv8zsMqit4P+Qho41auDv/xY=
+X-QQ-mid: zesmtpsz8t1781754038t7a064297
+X-QQ-Originating-IP: YM6rGjxPQUmIwengeyDA3EUh9j6VUsjBu+tRV9s6S3E=
+Received: from localhost.localdomain ( [113.57.152.160])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Thu, 18 Jun 2026 11:40:37 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 17446448977059131167
+EX-QQ-RecipientCnt: 4
+From: Wentao Guan <guanwentao@uniontech.com>
+To: sashal@kernel.org,
+	gregkh@linuxfoundation.org
+Cc: stable@vger.kernel.org,
+	Wentao Guan <guanwentao@uniontech.com>
+Subject: [PATCH 6.1.y 0/3] net/sched: fix pedit partial COW leading to page cache corruption
+Date: Thu, 18 Jun 2026 11:40:34 +0800
+Message-Id: <20260618034034.1525175-1-guanwentao@uniontech.com>
+X-Mailer: git-send-email 2.30.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260616135637.1439319-1-qiwenjie@xiaomi.com> <ajLi3nLqyS31Y6J4@google.com>
-In-Reply-To: <ajLi3nLqyS31Y6J4@google.com>
-From: Wenjie Qi <qwjhust@gmail.com>
-Date: Thu, 18 Jun 2026 11:38:52 +0800
-X-Gm-Features: AVVi8CcgdoCv5inzD3awJAiF2PsHp7vdlxGgu4pq57dsMZoNd6hxUCzgTuyajF0
-Message-ID: <CAGFpFsRfSsBjuhGmXC8_NohcPFEAZncWKFnmbazo5EhrNqCM-A@mail.gmail.com>
-Subject: Re: [f2fs-dev] [PATCH v5] f2fs: use post-decrement count for cp_wait wakeup
-To: Jaegeuk Kim <jaegeuk@kernel.org>
-Cc: chao@kernel.org, geoo115@gmail.com, yangyongpeng@xiaomi.com, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	linux-f2fs-devel@lists.sourceforge.net, qiwenjie@xiaomi.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpsz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz3a-0
+X-QQ-XMAILINFO: Na0AtHk21uUlvnER75r4zzxxEpm1jLYwcxu5hbDjaDSRfeohUXfrKRmO
+	I4EBAvvGO777tDfdWn2bHnjmoGUACI1idyBkVbenD8v39Tnuvjs1z3npQi+80w7qDSHtFbp
+	0QWoaaViLV3jO1938E9ZL4YGLi4T+OjvB9BuJ183QdbXkXO8CQF87AmJSUfV2MoZLUtpF2m
+	jOP5IwIAVX++xVLfMS18pgORQtdETXOLoBMCZtT5ReDdigDvIF3DTQzceywd3cTiU2UPuAN
+	M6f2XALhwAW1tQvZlajcOgPrN/krZLIOXLQGBDZTtndlyAVICbXMlM5DLTevEf4E/wOKEM9
+	aLpY5JJGQem1nhMSNCknBjn2XF7jiHLuORvxBlThqNnytxG7DfF9FhbqJMkafWmuaGZZW/1
+	/oM0nofl6tjQfBI847ACLxKkbPmuNoDd7zX33lrkcGnmZIn7ZWchssjrVzT5LwpkY6ybnxc
+	7+Rl4Z8DMHzXeK6dtvuUCBOwzp9ZYuLsuTVrx0GUSGTfYzdVuAMieXCEnM433XcKp+zuWP4
+	SDQC8rdWiD6x+OLX/D9+jEB7nad167DwefV1iWsIfyJbJjKiNIUbS0GkBK5WsPu2ECtTyTk
+	Ql7J695RfJ1mnmhdoksUKtUynD5bnESzaUsFLhAmXVGLTOm5WXHbAckQPrk+VlxOHpCp6O0
+	Wf8phE8pPUEzWLJF3a+hYMWM5qjOai9LNnwOQh6nJeevXSg16U62iSAq+WUdcTQ084uy3XH
+	p9BxS5heeolIUZDuHty76xaDi2h+a2rDVEfR51iAu/rL+mj30pHhj3TUt7POgHaRM0D4kQp
+	iN6DcHNqdwbL5FICbWEaDaW8Dfp3wXSjo0Gfnr3G+/I6OMo91UgsHT/LUM9EBPm6P50jhus
+	1ejl9+kebH7MdgjiiEdjQvTPWdGy+z7uK2MZvv1nD4oUgCx38wYkgUgGOmpEAvClnTdw3EL
+	sFNPYQzpTR5upHecFwnSpAr/BD9x0sKHRW5WMJKBiuEBj7IgbDzUkZ3QH6hNMWlYEHTXx4b
+	2KgoXhz3BjJ5YYEmyAbrMakrYqYWZNois872IwyI1zo5bTLY+1ClVA3apERV6vqETZ68G6I
+	w==
+X-QQ-XMRINFO: NI4Ajvh11aEjEMj13RCX7UuhPEoou2bs1g==
+X-QQ-RECHKSPAM: 0
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[uniontech.com,none];
+	R_DKIM_ALLOW(-0.20)[uniontech.com:s=onoh2408];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-266980-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[qwjhust@gmail.com,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[kernel.org,gmail.com,xiaomi.com,vger.kernel.org,lists.sourceforge.net];
-	TO_DN_SOME(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:jaegeuk@kernel.org,m:chao@kernel.org,m:geoo115@gmail.com,m:yangyongpeng@xiaomi.com,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:linux-f2fs-devel@lists.sourceforge.net,m:qiwenjie@xiaomi.com,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-266981-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[guanwentao@uniontech.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:sashal@kernel.org,m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,m:guanwentao@uniontech.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[uniontech.com:+];
+	RCPT_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[qwjhust@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FROM_NEQ_ENVFROM(0.00)[guanwentao@uniontech.com,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[xiaomi.com:email,mail.gmail.com:mid,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,uniontech.com:dkim,uniontech.com:mid,uniontech.com:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7A94D69D57F
+X-Rspamd-Queue-Id: 206E769D5AC
 
-  The race is between dec_page_count() and the later get_pages() check:
-  another CP-data writeback can be submitted after the counter reaches zero
-  but before get_pages() observes it, so the zero transition may miss the
-  cp_wait wakeup.
+Fixes CVE-2026-46331: net/sched: fix pedit partial COW leading to page cache corruption
 
-  v6 also adds dec_page_count_return() and uses it instead of accessing
-  nr_pages directly.  The wakeup logic is unchanged from v5.
+Link: https://lore.kernel.org/all/2026061625-CVE-2026-46331-47be@gregkh/
 
-https://lore.kernel.org/linux-f2fs-devel/20260618031008.2447279-1-qiwenjie@=
-xiaomi.com/T/#u
+Pedro Tammela (2):
+  net/sched: act_pedit: check static offsets a priori
+  net/sched: act_pedit: rate limit datapath messages
 
-On Thu, Jun 18, 2026 at 2:09=E2=80=AFAM Jaegeuk Kim <jaegeuk@kernel.org> wr=
-ote:
->
-> On 06/16, Wenjie Qi wrote:
-> > f2fs_write_end_io() decrements the writeback page counter and then
-> > reads it again with get_pages() to decide whether the last
-> > F2FS_WB_CP_DATA completion should wake cp_wait.
-> >
-> > Use atomic_dec_return() for F2FS_WB_CP_DATA completions so the wakeup
-> > decision is made from the value produced by the decrement itself. Keep
-> > the existing dec_page_count() path for other writeback counters.
->
-> Is there a race condition to do this? If so, can you describe? And, I thi=
-nk
-> we need a wrapper function instead of calling nr_pages directly.
->
-> >
-> > Fixes: e234088758fc ("f2fs: avoid wait if IO end up when do_checkpoint =
-for better performance")
-> > Fixes: ce2739e482bc ("f2fs: fix to avoid UAF in f2fs_write_end_io()")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Wenjie Qi <qiwenjie@xiaomi.com>
-> > ---
-> >  fs/f2fs/data.c | 12 +++++++-----
-> >  1 file changed, 7 insertions(+), 5 deletions(-)
-> >
-> > diff --git a/fs/f2fs/data.c b/fs/f2fs/data.c
-> > index d83a21998ec2..58d23eb74ec2 100644
-> > --- a/fs/f2fs/data.c
-> > +++ b/fs/f2fs/data.c
-> > @@ -392,15 +392,17 @@ static void f2fs_write_end_io(struct bio *bio)
-> >               if (f2fs_in_warm_node_list(folio))
-> >                       f2fs_del_fsync_node_entry(sbi, folio);
-> >
-> > -             dec_page_count(sbi, type);
-> > -
-> >               /*
-> >                * we should access sbi before folio_end_writeback() to
-> >                * avoid racing w/ kill_f2fs_super()
-> >                */
-> > -             if (type =3D=3D F2FS_WB_CP_DATA && !get_pages(sbi, type) =
-&&
-> > -                             wq_has_sleeper(&sbi->cp_wait))
-> > -                     wake_up(&sbi->cp_wait);
-> > +             if (type =3D=3D F2FS_WB_CP_DATA) {
-> > +                     if (!atomic_dec_return(&sbi->nr_pages[type]) &&
-> > +                         wq_has_sleeper(&sbi->cp_wait))
-> > +                             wake_up(&sbi->cp_wait);
-> > +             } else {
-> > +                     dec_page_count(sbi, type);
-> > +             }
-> >
-> >               folio_clear_f2fs_gcing(folio);
-> >               folio_end_writeback(folio);
-> >
-> > base-commit: c0b65f6129c7fbb526e921dd60261650f1b2bef9
-> > --
-> > 2.43.0
-> >
-> >
-> >
-> > _______________________________________________
-> > Linux-f2fs-devel mailing list
-> > Linux-f2fs-devel@lists.sourceforge.net
-> > https://lists.sourceforge.net/lists/listinfo/linux-f2fs-devel
+Rajat Gupta (1):
+  net/sched: fix pedit partial COW leading to page cache corruption
+
+ include/net/tc_act/tc_pedit.h |  1 -
+ net/sched/act_pedit.c         | 99 +++++++++++++++++++----------------
+ 2 files changed, 55 insertions(+), 45 deletions(-)
+
+-- 
+2.30.2
+
 
