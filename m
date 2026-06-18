@@ -1,100 +1,79 @@
-Return-Path: <stable+bounces-267117-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267167-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ePHeD0TiM2qMHgYAu9opvQ
-	(envelope-from <stable+bounces-267117-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 14:19:16 +0200
+	id 5nIaOp4UNGq8NwYAu9opvQ
+	(envelope-from <stable+bounces-267167-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 17:54:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09FDD69FF81
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 14:19:15 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F5636A15D6
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 17:54:06 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Z8Mri2I0;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267117-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-267117-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="B/UXhSHs";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267167-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267167-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 4E6E7300E16F
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 12:19:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2584330A38E2
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 15:52:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D88B63F44CB;
-	Thu, 18 Jun 2026 12:19:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF1BB2E736A;
+	Thu, 18 Jun 2026 15:52:09 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA6AB3E9588
-	for <stable@vger.kernel.org>; Thu, 18 Jun 2026 12:19:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F35962EEE95
+	for <stable@vger.kernel.org>; Thu, 18 Jun 2026 15:52:07 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781785149; cv=none; b=kzjehqXRGXvihvHLcVjc70ghWJ+FCClys3/rKCUt2cQTySheShY08U4ILxM3Iv+tTO6wMZi7/onXDHvY/ORF2yh60M+EHAwcx9lfUp0qKnGgdA71lLkj52Gr2OAqqXhNhfXUz3u2MzM62q/1KisQAOwCg0jPEQC/+d9VzQ4Xue4=
+	t=1781797929; cv=none; b=EFcNNGT2mBVJjhuCxjJRxIZxjZ39ztMKCwyU/bXHq7xk20aEncYfhdc2wDt38bKmrWp5LjYi19F6NWUg4bBFxuizNIA2odRCTZBFWJF5hWFtF2sXg6tSfkrv0xDhRL8VK4/WmhpdHuc8Q2IfMJd/Nadc/+/67l8v9rPPLVgF3YU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781785149; c=relaxed/simple;
-	bh=1h85HEiwu5SrvP6LXSFmCX8HYJCZmpF9jCx93UjL+R4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CQGKMxmQyqkc+YOe/Kgc3ImcDuRFzzL4KSbgYZfCm76Q0OgF9q1Xig/ZvYXjGN/Lb34QPfzfaub2HkCw+eqBCbEGFVAj5OkIeLBi5C12ACtPgV64ilTJ8GPjqA1g06pLCJWzyzo7YMdSOJwMdyhnvUy7HQiZ9oYB9Wyb6tZBNmY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z8Mri2I0; arc=none smtp.client-ip=209.85.167.53
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-5aa6792e7b8so989845e87.1
-        for <stable@vger.kernel.org>; Thu, 18 Jun 2026 05:19:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781785145; x=1782389945; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=UqmSWHmzTjiXv/ea7OlEQSmT2M86q0mo+1Enkd+tLH4=;
-        b=Z8Mri2I03uhCf8ZQU9bkmM3N7GPUTMl+4ZjPcsDsqcCmbkD7GJ5iQfCLQ0uxyOGklx
-         nBDEYg0NEV/V6LOs2lO21+S1RQr2Pv799svKwZvOPke+3yjE0pATWAW6w2u8sLQ8V2yt
-         Av/YJO7vXd30SByDTBmEtEoT8g9bEd7TmHgzBrVDLZwujwPBGYsbfDnmoLUxOqy1YPAV
-         xxOoIkDZy/H/unUv97wFzSRKOpaG8Yyt3yB03HJZivotuBiZlKYJYFxW891/VudVxd2P
-         O+SJCTAg6nVu7bUcGagB99IEzkNC18TDp0kUP6vTiPSVC+tGa8s9+VVzdRuf51KklwHv
-         qDag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781785145; x=1782389945;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UqmSWHmzTjiXv/ea7OlEQSmT2M86q0mo+1Enkd+tLH4=;
-        b=b1jjYD0OUwK7c4SXzc6GTL7a5smRFxoxTtSnUbMP9jqBNOYGNpcm8fcM0vDV7DHEzl
-         5Zf0QVhEEti04BdTH2XzI/hbBq/58EB2hm6c396QV4DmNPst+g1AqShF7lJUjJl4J+jP
-         PrJSpBSHJ+dHOiwq+2xpHlm4B4BXsmetTgbHq5+D8CX4kGiu8RXF65Lbh4LgwcynViEw
-         HPVH8ReQljUWtrn5W9aOotrg1zpjEOR/zk4j4Z2kSl++Frnq7fqR5nO2bseCFK8IRqpj
-         42JAZWTbU7V63yIHQPM9E+wydQg3L7ZKLRfgcTq2SIZx5HU3XMvBbpBm2H32tcwNf8GG
-         6FhA==
-X-Gm-Message-State: AOJu0YzraduQDmyRzoBuCa12d2bZkhB6gtx34PnhzalvIgXgXiunSRcy
-	7w5xCUSuJ3ZPj2AIVmIluAxLXIacNupaWegBjT7ovJA4PWRYASge4AlEY2D9n4jCtr0=
-X-Gm-Gg: AfdE7ckMvc5KMaseFX0whvA+Nj/MbTyE43uuUZnwSkAF0n6SCUo9P7xb0L6e9IK5Tdl
-	pOYMHJDn1e74fBpdEyp7uQqj4Q872t9YgfGK4qp9iDNRo3tEJyv3ek+A6FI/rLGyk0mKMGqdaal
-	Xrmm9faxnWsiOwLrY8ZxLiH77zWK3W3bqFxcu57dobmgjirVif/pzsSUmqNnpdTH95gZU9EbcGZ
-	atkLixsJ6IIAb+JVWmD8N+GeiEdBXYl1p0ckpcioZSHpBnu8ch2VSsO5RMYsSU2l8+qsManNMrD
-	no0wC3Uy8Aure3pTcMB5KWa50OzqLPIJb04iZ8zHJgKvPoF63vyS05phXlXPmcvxANrho0kERU0
-	G4Aw25B07e6nROqoOUjGS+o6oVdKfZVP7CACvbXYLbcFcKNqjl3Sk/sfyVIVZI/WUQ7vGZGKLH8
-	vGLIiOVsZVn2c4wMnxq3Qp3qi5AAo7hg==
-X-Received: by 2002:a05:6512:3509:b0:5ad:3035:fa47 with SMTP id 2adb3069b0e04-5ad4dadd259mr879893e87.53.1781785144944;
-        Thu, 18 Jun 2026 05:19:04 -0700 (PDT)
-Received: from grower.astralinux.ru ([81.9.21.4])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5ad4eb57734sm657424e87.34.2026.06.18.05.19.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Jun 2026 05:19:04 -0700 (PDT)
-From: Alexander Martyniuk <alexevgmart@gmail.com>
-To: stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Alexander Martyniuk <alexevgmart@gmail.com>,
-	Eric Van Hensbergen <ericvh@gmail.com>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Tomas Bortoli <tomasbortoli@gmail.com>,
-	v9fs-developer@lists.sourceforge.net,
-	netdev@vger.kernel.org,
+	s=arc-20240116; t=1781797929; c=relaxed/simple;
+	bh=zD16fMf0ZMJoNAbDkUkjkvBtlSpglsJNvNSt8JU7lxs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=EhsDNnXWotIE71RYWl1MDCubVzKHwdP5/HJy5MX3BIzx9HLTVhAk4RtJTLWDay6ytmzmsJ+cgbRqwo8Wrvw9uQKklGSOCqXIiSeKeLjbl6+Vl2Yqmd2nxUENQuPZW/3F/1QCg7aMk0tyFSiQb1LnlaS/MoCCj9YjPsfMkl6mJh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=B/UXhSHs; arc=none smtp.client-ip=170.10.133.124
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1781797927;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=FfHVYwJjeckBljNNeVdi/xVk7ybji0LvQllDM/zHzBw=;
+	b=B/UXhSHsAoMaHueRnw5Wyllz72CxkNDRyByPnelYNhQi0ieSm9wQ/ZHuyRdxacx/wB2vEQ
+	aowcEjnNgEIw+Vcoq+YyqUYhRGtZwkwJexFUALWtD2ge6POLY7fDAx2oneq8UlIKzRKdwD
+	USmOSWmisF6gL8XsuN+1AwOsUlbxmK8=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-262-w1m1GuJdP_61FAdfGaPBaA-1; Thu,
+ 18 Jun 2026 11:52:03 -0400
+X-MC-Unique: w1m1GuJdP_61FAdfGaPBaA-1
+X-Mimecast-MFC-AGG-ID: w1m1GuJdP_61FAdfGaPBaA_1781797922
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B755B1956057;
+	Thu, 18 Jun 2026 15:52:01 +0000 (UTC)
+Received: from warthog.procyon.org.com (unknown [10.44.50.44])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 8FD073000232;
+	Thu, 18 Jun 2026 15:51:58 +0000 (UTC)
+From: David Howells <dhowells@redhat.com>
+To: Christian Brauner <christian@brauner.io>
+Cc: David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	linux-afs@lists.infradead.org,
+	linux-fsdevel@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	v9fs@lists.linux.dev,
-	lvc-project@linuxtesting.org,
-	Hangyu Hua <hbh25y@gmail.com>
-Subject: [PATCH 5.10] net: 9p: fix refcount leak in p9_read_work() error handling
-Date: Thu, 18 Jun 2026 15:19:21 +0000
-Message-ID: <20260618151940.76321-1-alexevgmart@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	Matvey Kovalev <matvey.kovalev@ispras.ru>,
+	stable@vger.kernel.org
+Subject: [PATCH v3 03/20] afs: fix NULL pointer dereference in afs_get_tree()
+Date: Thu, 18 Jun 2026 16:51:22 +0100
+Message-ID: <20260618155141.2513212-4-dhowells@redhat.com>
+In-Reply-To: <20260618155141.2513212-1-dhowells@redhat.com>
+References: <20260618155141.2513212-1-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -102,77 +81,96 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [3.34 / 15.00];
-	DATE_IN_FUTURE(4.00)[3];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-267117-lists,stable=lfdr.de];
-	FORGED_SENDER(0.00)[alexevgmart@gmail.com,stable@vger.kernel.org];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[gmail.com,ionkov.net,codewreck.org,davemloft.net,kernel.org,lists.sourceforge.net,vger.kernel.org,crudebyte.com,lists.linux.dev,linuxtesting.org];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:alexevgmart@gmail.com,m:ericvh@gmail.com,m:lucho@ionkov.net,m:asmadeus@codewreck.org,m:davem@davemloft.net,m:kuba@kernel.org,m:tomasbortoli@gmail.com,m:v9fs-developer@lists.sourceforge.net,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:ericvh@kernel.org,m:linux_oss@crudebyte.com,m:v9fs@lists.linux.dev,m:lvc-project@linuxtesting.org,m:hbh25y@gmail.com,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[dhowells@redhat.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-267167-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:christian@brauner.io,m:dhowells@redhat.com,m:marc.dionne@auristor.com,m:linux-afs@lists.infradead.org,m:linux-fsdevel@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:matvey.kovalev@ispras.ru,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	DKIM_TRACE(0.00)[redhat.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[alexevgmart@gmail.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[dhowells@redhat.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	ALIAS_RESOLVED(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,codewreck.org:email]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,auristor.com:email,ispras.ru:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 09FDD69FF81
+X-Rspamd-Queue-Id: 4F5636A15D6
 
-From: Hangyu Hua <hbh25y@gmail.com>
+From: Matvey Kovalev <matvey.kovalev@ispras.ru>
 
-commit 4ac7573e1f9333073fa8d303acc941c9b7ab7f61 upstream.
+afs_alloc_sbi() uses kzalloc for memory allocation. And, if
+ctx->dyn_root is not null, as->cell and as->volume are null.
+In trace_afs_get_tree() they are dereferenced.
 
-p9_req_put need to be called when m->rreq->rc.sdata is NULL to avoid
-temporary refcount leak.
+KASAN error message:
 
-Link: https://lkml.kernel.org/r/20220712104438.30800-1-hbh25y@gmail.com
-Fixes: 728356dedeff ("9p: Add refcount to p9_req_t")
-Signed-off-by: Hangyu Hua <hbh25y@gmail.com>
-[Dominique: commit wording adjustments, p9_req_put argument fixes for rebase]
-Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
-[Alexander: this branch doesn't contain 8b11ff098af4 ("9p: Add client parameter
- to p9_req_put()"), therefore the parameter is removed from the added line]
-Signed-off-by: Alexander Martyniuk <alexevgmart@gmail.com>
+KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
+CPU: 2 PID: 18478 Comm: syz-executor.7 Not tainted 5.10.246-syzkaller #0
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.12.0-1
+04/01/2014
+RIP: 0010:perf_trace_afs_get_tree+0x1d9/0x550
+include/trace/events/afs.h:1365
+
+Call Trace:
+trace_afs_get_tree include/trace/events/afs.h:1365 [inline]
+afs_get_tree+0x922/0x1350 fs/afs/super.c:599
+vfs_get_tree+0x8e/0x300 fs/super.c:1572
+do_new_mount fs/namespace.c:3011 [inline]
+path_mount+0x14a5/0x2220 fs/namespace.c:3341
+do_mount fs/namespace.c:3354 [inline]
+__do_sys_mount fs/namespace.c:3562 [inline]
+__se_sys_mount fs/namespace.c:3539 [inline]
+__x64_sys_mount+0x283/0x300 fs/namespace.c:3539
+ do_syscall_64+0x33/0x50 arch/x86/entry/common.c:46
+entry_SYSCALL_64_after_hwframe+0x67/0xd1
+
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Fixes: 80548b03991f5 ("afs: Add more tracepoints")
+Cc: stable@vger.kernel.org
+Signed-off-by: Matvey Kovalev <matvey.kovalev@ispras.ru>
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: linux-afs@lists.infradead.org
 ---
-Backport fix for CVE-2022-50114
- net/9p/trans_fd.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/afs/super.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/9p/trans_fd.c b/net/9p/trans_fd.c
-index 40d458c438df..bd6a54e6f427 100644
---- a/net/9p/trans_fd.c
-+++ b/net/9p/trans_fd.c
-@@ -346,6 +346,7 @@ static void p9_read_work(struct work_struct *work)
- 			p9_debug(P9_DEBUG_ERROR,
- 				 "No recv fcall for tag %d (req %p), disconnecting!\n",
- 				 m->rc.tag, m->rreq);
-+			p9_req_put(m->rreq);
- 			m->rreq = NULL;
- 			err = -EIO;
- 			goto error;
--- 
-2.47.3
+diff --git a/fs/afs/super.c b/fs/afs/super.c
+index 942f3e9800d7..dec091e569c4 100644
+--- a/fs/afs/super.c
++++ b/fs/afs/super.c
+@@ -587,7 +587,8 @@ static int afs_get_tree(struct fs_context *fc)
+ 	}
+ 
+ 	fc->root = dget(sb->s_root);
+-	trace_afs_get_tree(as->cell, as->volume);
++	if (!ctx->dyn_root)
++		trace_afs_get_tree(as->cell, as->volume);
+ 	_leave(" = 0 [%p]", sb);
+ 	return 0;
+ 
+
 
