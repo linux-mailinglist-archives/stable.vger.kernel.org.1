@@ -1,160 +1,332 @@
-Return-Path: <stable+bounces-267147-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267148-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id VzJTLh39M2pJKQYAu9opvQ
-	(envelope-from <stable+bounces-267147-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 16:13:49 +0200
+	id xEj3BCL9M2pLKQYAu9opvQ
+	(envelope-from <stable+bounces-267148-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 16:13:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A4766A0DC2
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 16:13:49 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A02666A0DCB
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 16:13:53 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IvSWdDCv;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267147-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267147-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TVhkytjm;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267148-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-267148-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DA2E8301014F
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 14:13:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5E9B03010C26
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 14:13:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D6773F58F6;
-	Thu, 18 Jun 2026 14:13:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5E9C3F4845;
+	Thu, 18 Jun 2026 14:13:48 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 579143B2FC2
-	for <stable@vger.kernel.org>; Thu, 18 Jun 2026 14:13:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 709843E9588
+	for <stable@vger.kernel.org>; Thu, 18 Jun 2026 14:13:47 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781792025; cv=none; b=Ol47+d9TnGghte0iYX5UrZlpPKvfPjzHWm+GOgd4UQLTlKG6YgNv4jTqI+zESouoZ88/N7fP7wMS2TKautaOD82l8F5k+X3ulCSgTIzL6u0ahpmpiurdSIzJZn2wTmwZvqKt3LxO4mvsFWzrbGfYdnfc+uU0peXi+0kxmBrz2jQ=
+	t=1781792028; cv=none; b=pMYBdbWL0oiyHeT1fsdh6a6/KbZEkPLFdMd6y+SCRLGo6rHQj2SotHT1oxIRIREmKlJJ+OtoH35myY3QH0xEYBlDx8W5rbq7Ox13lMmLxHCGMy5DO7GleXYeE9oxDmsSJZgPGLhxNh2g9rUUdiXl7MzmPoCc/ZrGiVppL1XvAtE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781792025; c=relaxed/simple;
-	bh=DwZgQ33ZS7bqms5nbl0ue8JaNS+VOe3nrHPr9k+PPVo=;
+	s=arc-20240116; t=1781792028; c=relaxed/simple;
+	bh=1+gDdmIftQZHRz1xUJIA80OXW0+fsUMvkUfFYTgfW9A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tgnoaE2UJrfnv8B6OePJrFjlF9M8Y7k+nqv+mKVX8piuk4hapYvyyc4/05k7tl3VeoSUKP6joW+jfgtFRGdLRtt/hk0D8bOtrKHirkLJVNpvcxH+CAm1wrdLZ/blSoYDnIboFTw0mo4aOcR6XJUduqkVvO07wohJavGLjl8nIUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IvSWdDCv; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7941B1F000E9;
-	Thu, 18 Jun 2026 14:13:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=OCkREjRtqQyuyjhCv7YA0RjvhRDo5VPk3WyB1jjJ973UmHpoJXwTeX2zskB5xhFiqDczM3PYMn5pEJ3EinPtLeil3brqwG13l2G2nwrngf3x0ebhj7Yaf/h9R0VEuAo8eh9IWLTpUUk0S2hUI1gK1vOef7FzIFz3QD8Z/7EcVlg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TVhkytjm; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEC131F000E9;
+	Thu, 18 Jun 2026 14:13:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781792024;
-	bh=aehrTraPV6Mblmer2c6D81tWkH6Ag1jZINaxqlPSDEo=;
+	s=k20260515; t=1781792027;
+	bh=hJNXYiJ4ne/Dtjiz/6O8TVBXS1tY92r8cXrYxBVsCI4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=IvSWdDCvgObqFrSP1DKVA87o6VKg4Jdy7+Nr1RDt0oyNt4Cgaq1B7vO9Lkh3x8Jc4
-	 mWrYJeEielajx/Q5UIomUrukP5UQNSFslFrd5yc8A60K4cJcKMUTgYFkJXm9Gcibxx
-	 Ev3JJ5CvRcZI7TqwplPV98cXhkS+HH7zl4Ovjwk+8Yioiz/ALdb1Ui3x91yAL0ndl7
-	 gpja+bR+gNILln145O+V340tQDCVNpFweTfOJa/DWCAbGfotj3S8grRnN5g3INGO+L
-	 pHjwliCAgWpwV8lgQubP/i3sbWjab5tGUdeRyiao5bhXQoDMXcsMHGp8fWnvG7sH/G
-	 8ZgboPHlmxqZg==
+	b=TVhkytjmiwK3eAydGk4o++3HUzRblh123xVEpZYeFjm5050rhuxpAsLqOiXIPedPa
+	 j24UxeydNJyzdobgGQ3LpZ8roLLOdbs7423Ay+pNk1sSLX1ff3MVeJ0Ks1A18oOVrH
+	 0Vu6yrX9KFn/Z1bhHkK4M3nzeX7usDY9b5NrG6+ULg3iSHerskMFmHFv5jhXezgrUE
+	 PQjAN31T+UhTOeoscgsawEFVoO8+MQpyszLvZRWgLYE9mTBpPrlFQzEKbLA1zre2CX
+	 35Ci8REhZ0y57Ie4cdfDwha9VwWQUrkbItiRSILqnbpZQKXAJISVjKdj7RR4fNwd14
+	 ltcHcFejNcuRw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Helen Koike <koike@igalia.com>,
-	syzbot+b8ca586b9fc235f0c0df@syzkaller.appspotmail.com,
-	Thomas Gleixner <tglx@kernel.org>,
+Cc: =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
+	Iago Toral Quiroga <itoral@igalia.com>,
+	Melissa Wen <mwen@igalia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y] debugobjects: Do not fill_pool() if pi_blocked_on
-Date: Thu, 18 Jun 2026 10:13:40 -0400
-Message-ID: <20260618141340.734280-1-sashal@kernel.org>
+Subject: [PATCH 6.1.y 1/2] drm/v3d: Store the active job inside the queue's state
+Date: Thu, 18 Jun 2026 10:13:44 -0400
+Message-ID: <20260618141345.734343-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026061611-defective-unbundle-fbc8@gregkh>
-References: <2026061611-defective-unbundle-fbc8@gregkh>
+In-Reply-To: <2026061526-coil-arbitrary-316e@gregkh>
+References: <2026061526-coil-arbitrary-316e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-4.16 / 15.00];
 	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-267147-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:mcanal@igalia.com,m:itoral@igalia.com,m:mwen@igalia.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:koike@igalia.com,m:syzbot+b8ca586b9fc235f0c0df@syzkaller.appspotmail.com,m:tglx@kernel.org,m:sashal@kernel.org,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-267148-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[5];
 	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable,b8ca586b9fc235f0c0df];
+	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,syzkaller.appspot.com:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 0A4766A0DC2
+X-Rspamd-Queue-Id: A02666A0DCB
 
-From: Helen Koike <koike@igalia.com>
+From: Maíra Canal <mcanal@igalia.com>
 
-[ Upstream commit 5f41161059fd0f1bbf18c90f3180e38cc45a14eb ]
+[ Upstream commit 0d3768826d38c0ac740f8b45cd13346630535f2b ]
 
-On RT enabled kernels, fill_pool() ends up calling rtlock_lock(), which
-asserts if current::pi_blocked_on is set, because a task can obviously only
-block on one lock as otherwise the priority inheritenace chain gets
-corrupted.
+Instead of storing the queue's active job in four different variables,
+store the active job inside the queue's state. This way, it's possible
+to access all active jobs using an index based in `enum v3d_queue`.
 
-Prevent this by expanding the conditional to take current::pi_blocked_on
-into account.
-
-Fixes: 4bedcc28469a ("debugobjects: Make them PREEMPT_RT aware")
-Reported-by: syzbot+b8ca586b9fc235f0c0df@syzkaller.appspotmail.com
-Signed-off-by: Helen Koike <koike@igalia.com>
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Link: https://patch.msgid.link/20260511215359.3351259-1-koike@igalia.com
-Closes: https://syzkaller.appspot.com/bug?extid=b8ca586b9fc235f0c0df
+Reviewed-by: Iago Toral Quiroga <itoral@igalia.com>
+Reviewed-by: Melissa Wen <mwen@igalia.com>
+Link: https://lore.kernel.org/r/20250826-v3d-queue-lock-v3-2-979efc43e490@igalia.com
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
+Stable-dep-of: 7f93fad5ea0a ("drm/v3d: Skip CSD when it has zeroed workgroups")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/debugobjects.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/v3d/v3d_drv.h   |  8 +++-----
+ drivers/gpu/drm/v3d/v3d_gem.c   |  5 +++--
+ drivers/gpu/drm/v3d/v3d_irq.c   | 24 ++++++++++++++----------
+ drivers/gpu/drm/v3d/v3d_sched.c | 26 ++++++++++++++++++--------
+ 4 files changed, 38 insertions(+), 25 deletions(-)
 
-diff --git a/lib/debugobjects.c b/lib/debugobjects.c
-index 8c3b483a8fb44a..f9d53a0af4238f 100644
---- a/lib/debugobjects.c
-+++ b/lib/debugobjects.c
-@@ -597,13 +597,23 @@ static struct debug_obj *lookup_object_or_alloc(void *addr, struct debug_bucket
- 	return NULL;
- }
+diff --git a/drivers/gpu/drm/v3d/v3d_drv.h b/drivers/gpu/drm/v3d/v3d_drv.h
+index a366ea208787df..c1e389635de816 100644
+--- a/drivers/gpu/drm/v3d/v3d_drv.h
++++ b/drivers/gpu/drm/v3d/v3d_drv.h
+@@ -26,6 +26,9 @@ struct v3d_queue_state {
  
-+static inline bool debug_objects_is_pi_blocked_on(void)
-+{
-+#ifdef CONFIG_RT_MUTEXES
-+	return current->pi_blocked_on != NULL;
-+#else
-+	return false;
-+#endif
-+}
+ 	u64 fence_context;
+ 	u64 emit_seqno;
 +
- static void debug_objects_fill_pool(void)
++	/* Currently active job for this queue */
++	struct v3d_job *active_job;
+ };
+ 
+ /* Performance monitor object. The perform lifetime is controlled by userspace
+@@ -110,11 +113,6 @@ struct v3d_dev {
+ 
+ 	struct work_struct overflow_mem_work;
+ 
+-	struct v3d_bin_job *bin_job;
+-	struct v3d_render_job *render_job;
+-	struct v3d_tfu_job *tfu_job;
+-	struct v3d_csd_job *csd_job;
+-
+ 	struct v3d_queue_state queue[V3D_MAX_QUEUES];
+ 
+ 	/* Spinlock used to synchronize the overflow memory
+diff --git a/drivers/gpu/drm/v3d/v3d_gem.c b/drivers/gpu/drm/v3d/v3d_gem.c
+index 8b6450a96ebc39..6d5fa39423b24a 100644
+--- a/drivers/gpu/drm/v3d/v3d_gem.c
++++ b/drivers/gpu/drm/v3d/v3d_gem.c
+@@ -1115,14 +1115,15 @@ void
+ v3d_gem_destroy(struct drm_device *dev)
  {
- 	/*
- 	 * On RT enabled kernels the pool refill must happen in preemptible
--	 * context:
-+	 * context and not enqueued on an rt_mutex:
+ 	struct v3d_dev *v3d = to_v3d_dev(dev);
++	enum v3d_queue q;
+ 
+ 	v3d_sched_fini(v3d);
+ 
+ 	/* Waiting for jobs to finish would need to be done before
+ 	 * unregistering V3D.
  	 */
--	if (!IS_ENABLED(CONFIG_PREEMPT_RT) || preemptible())
-+	if (!IS_ENABLED(CONFIG_PREEMPT_RT) ||
-+	    (preemptible() && !debug_objects_is_pi_blocked_on()))
- 		fill_pool();
- }
+-	WARN_ON(v3d->bin_job);
+-	WARN_ON(v3d->render_job);
++	for (q = 0; q < V3D_MAX_QUEUES; q++)
++		WARN_ON(v3d->queue[q].active_job);
+ 
+ 	drm_mm_takedown(&v3d->mm);
+ 
+diff --git a/drivers/gpu/drm/v3d/v3d_irq.c b/drivers/gpu/drm/v3d/v3d_irq.c
+index 641315dbee8b29..1717504742a665 100644
+--- a/drivers/gpu/drm/v3d/v3d_irq.c
++++ b/drivers/gpu/drm/v3d/v3d_irq.c
+@@ -40,6 +40,8 @@ v3d_overflow_mem_work(struct work_struct *work)
+ 		container_of(work, struct v3d_dev, overflow_mem_work);
+ 	struct drm_device *dev = &v3d->drm;
+ 	struct v3d_bo *bo = v3d_bo_create(dev, NULL /* XXX: GMP */, 256 * 1024);
++	struct v3d_queue_state *queue = &v3d->queue[V3D_BIN];
++	struct v3d_bin_job *bin_job;
+ 	struct drm_gem_object *obj;
+ 	unsigned long irqflags;
+ 
+@@ -59,13 +61,15 @@ v3d_overflow_mem_work(struct work_struct *work)
+ 	 * some binner pool anyway.
+ 	 */
+ 	spin_lock_irqsave(&v3d->job_lock, irqflags);
+-	if (!v3d->bin_job) {
++	bin_job = (struct v3d_bin_job *)queue->active_job;
++
++	if (!bin_job) {
+ 		spin_unlock_irqrestore(&v3d->job_lock, irqflags);
+ 		goto out;
+ 	}
+ 
+ 	drm_gem_object_get(obj);
+-	list_add_tail(&bo->unref_head, &v3d->bin_job->render->unref_list);
++	list_add_tail(&bo->unref_head, &bin_job->render->unref_list);
+ 	spin_unlock_irqrestore(&v3d->job_lock, irqflags);
+ 
+ 	V3D_CORE_WRITE(0, V3D_PTB_BPOA, bo->node.start << PAGE_SHIFT);
+@@ -99,11 +103,11 @@ v3d_irq(int irq, void *arg)
+ 
+ 	if (intsts & V3D_INT_FLDONE) {
+ 		struct v3d_fence *fence =
+-			to_v3d_fence(v3d->bin_job->base.irq_fence);
++			to_v3d_fence(v3d->queue[V3D_BIN].active_job->irq_fence);
+ 
+ 		trace_v3d_bcl_irq(&v3d->drm, fence->seqno);
+ 
+-		v3d->bin_job = NULL;
++		v3d->queue[V3D_BIN].active_job = NULL;
+ 		dma_fence_signal(&fence->base);
+ 
+ 		status = IRQ_HANDLED;
+@@ -111,11 +115,11 @@ v3d_irq(int irq, void *arg)
+ 
+ 	if (intsts & V3D_INT_FRDONE) {
+ 		struct v3d_fence *fence =
+-			to_v3d_fence(v3d->render_job->base.irq_fence);
++			to_v3d_fence(v3d->queue[V3D_RENDER].active_job->irq_fence);
+ 
+ 		trace_v3d_rcl_irq(&v3d->drm, fence->seqno);
+ 
+-		v3d->render_job = NULL;
++		v3d->queue[V3D_RENDER].active_job = NULL;
+ 		dma_fence_signal(&fence->base);
+ 
+ 		status = IRQ_HANDLED;
+@@ -123,11 +127,11 @@ v3d_irq(int irq, void *arg)
+ 
+ 	if (intsts & V3D_INT_CSDDONE) {
+ 		struct v3d_fence *fence =
+-			to_v3d_fence(v3d->csd_job->base.irq_fence);
++			to_v3d_fence(v3d->queue[V3D_CSD].active_job->irq_fence);
+ 
+ 		trace_v3d_csd_irq(&v3d->drm, fence->seqno);
+ 
+-		v3d->csd_job = NULL;
++		v3d->queue[V3D_CSD].active_job = NULL;
+ 		dma_fence_signal(&fence->base);
+ 
+ 		status = IRQ_HANDLED;
+@@ -162,11 +166,11 @@ v3d_hub_irq(int irq, void *arg)
+ 
+ 	if (intsts & V3D_HUB_INT_TFUC) {
+ 		struct v3d_fence *fence =
+-			to_v3d_fence(v3d->tfu_job->base.irq_fence);
++			to_v3d_fence(v3d->queue[V3D_TFU].active_job->irq_fence);
+ 
+ 		trace_v3d_tfu_irq(&v3d->drm, fence->seqno);
+ 
+-		v3d->tfu_job = NULL;
++		v3d->queue[V3D_TFU].active_job = NULL;
+ 		dma_fence_signal(&fence->base);
+ 
+ 		status = IRQ_HANDLED;
+diff --git a/drivers/gpu/drm/v3d/v3d_sched.c b/drivers/gpu/drm/v3d/v3d_sched.c
+index 41493cf3d03b81..ff91cdb75bb912 100644
+--- a/drivers/gpu/drm/v3d/v3d_sched.c
++++ b/drivers/gpu/drm/v3d/v3d_sched.c
+@@ -80,14 +80,18 @@ static struct dma_fence *v3d_bin_job_run(struct drm_sched_job *sched_job)
+ 	struct dma_fence *fence;
+ 	unsigned long irqflags;
+ 
+-	if (unlikely(job->base.base.s_fence->finished.error))
++	if (unlikely(job->base.base.s_fence->finished.error)) {
++		spin_lock_irqsave(&v3d->job_lock, irqflags);
++		v3d->queue[V3D_BIN].active_job = NULL;
++		spin_unlock_irqrestore(&v3d->job_lock, irqflags);
+ 		return NULL;
++	}
+ 
+ 	/* Lock required around bin_job update vs
+ 	 * v3d_overflow_mem_work().
+ 	 */
+ 	spin_lock_irqsave(&v3d->job_lock, irqflags);
+-	v3d->bin_job = job;
++	v3d->queue[V3D_BIN].active_job = &job->base;
+ 	/* Clear out the overflow allocation, so we don't
+ 	 * reuse the overflow attached to a previous job.
+ 	 */
+@@ -134,10 +138,12 @@ static struct dma_fence *v3d_render_job_run(struct drm_sched_job *sched_job)
+ 	struct drm_device *dev = &v3d->drm;
+ 	struct dma_fence *fence;
+ 
+-	if (unlikely(job->base.base.s_fence->finished.error))
++	if (unlikely(job->base.base.s_fence->finished.error)) {
++		v3d->queue[V3D_RENDER].active_job = NULL;
+ 		return NULL;
++	}
+ 
+-	v3d->render_job = job;
++	v3d->queue[V3D_RENDER].active_job = &job->base;
+ 
+ 	/* Can we avoid this flush?  We need to be careful of
+ 	 * scheduling, though -- imagine job0 rendering to texture and
+@@ -179,10 +185,12 @@ v3d_tfu_job_run(struct drm_sched_job *sched_job)
+ 	struct drm_device *dev = &v3d->drm;
+ 	struct dma_fence *fence;
+ 
+-	if (unlikely(job->base.base.s_fence->finished.error))
++	if (unlikely(job->base.base.s_fence->finished.error)) {
++		v3d->queue[V3D_TFU].active_job = NULL;
+ 		return NULL;
++	}
+ 
+-	v3d->tfu_job = job;
++	v3d->queue[V3D_TFU].active_job = &job->base;
+ 
+ 	fence = v3d_fence_create(v3d, V3D_TFU);
+ 	if (IS_ERR(fence))
+@@ -221,10 +229,12 @@ v3d_csd_job_run(struct drm_sched_job *sched_job)
+ 	struct dma_fence *fence;
+ 	int i;
+ 
+-	if (unlikely(job->base.base.s_fence->finished.error))
++	if (unlikely(job->base.base.s_fence->finished.error)) {
++		v3d->queue[V3D_CSD].active_job = NULL;
+ 		return NULL;
++	}
+ 
+-	v3d->csd_job = job;
++	v3d->queue[V3D_CSD].active_job = &job->base;
+ 
+ 	v3d_invalidate_caches(v3d);
  
 -- 
 2.53.0
