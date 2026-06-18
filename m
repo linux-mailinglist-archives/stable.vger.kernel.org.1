@@ -1,172 +1,173 @@
-Return-Path: <stable+bounces-267035-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267049-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id jnpbMV6mM2rNEgYAu9opvQ
-	(envelope-from <stable+bounces-267035-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 10:03:42 +0200
+	id TZBjNkuuM2r8EwYAu9opvQ
+	(envelope-from <stable+bounces-267049-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 10:37:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A1FD69E520
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 10:03:42 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 548FC69E7D9
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 10:37:30 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=fail ("headers rsa verify failed") header.d=w6rz.net header.s=default header.b=0XbmN58u;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267035-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267035-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=none;
+	dkim=pass header.d=broadcom.com header.s=google header.b=Sf55AFj3;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267049-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-267049-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=reject) header.from=broadcom.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5DBF5304B7C0
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 08:02:46 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 601C83016C03
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 08:37:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9012E3D9678;
-	Thu, 18 Jun 2026 08:02:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1E323AF64F;
+	Thu, 18 Jun 2026 08:37:25 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from omta038.useast.a.cloudfilter.net (omta038.useast.a.cloudfilter.net [44.202.169.37])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f99.google.com (mail-ua1-f99.google.com [209.85.222.99])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F0583D9DB0
-	for <stable@vger.kernel.org>; Thu, 18 Jun 2026 08:02:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F73F548EE
+	for <stable@vger.kernel.org>; Thu, 18 Jun 2026 08:37:24 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781769757; cv=none; b=SVbbDP1Tp1+JnhBFpM7CCou3+djZW60KeDWmPyhvjQWMlBXM6x0JIgx16L8V1TE+4Eex/h2oV7IB+IpI7zpC7pLH9oqbh4P6CuQaIB7d2L5o3C9PSngfDHnYJWXX2W1s/5ZNehNQu3S1HrswbZWitbFDluCmmC+Rn/EolQg+JYA=
+	t=1781771845; cv=none; b=XlBRVIHchRW0FoIKzMr4CqxaugG0TEzxoX76S1ybOlFDydRvwyRclpZmP78+NKNRDClZBG0k/DCpszF9uHov+TfubsWblnQIe9OSsWeGJeJJeGUP0uT+2UFlAzhYO6LPQ8+Llu9+DUEi+ruVvsRIxlBlv1BA9+1Gje4J5eG4nHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781769757; c=relaxed/simple;
-	bh=TvFE4tGHf2RZ6ILic0wX5yx04G98MgXtRv2R8lhd14Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IJnuiQzJFVRsYre+CUFKTFxpyL93Y3uqQyi4AgWfPx4UUNy4fSTV6GKNMmiULNi+xw1lE2vbQjV/6YqrrBYrqfHRWsFvYDpFN0p0g/mKcNlOIPKWF5o3WoaqBHi1Eois3JXMC1pOHRNffDjxoPbQWorINoaojSG1f+0BudNi6Z4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=0XbmN58u; arc=none smtp.client-ip=44.202.169.37
-Received: from eig-obgw-5007b.ext.cloudfilter.net ([10.0.29.167])
-	by cmsmtp with ESMTPS
-	id a3xmw9t7yKSRRa7hlw4JfO; Thu, 18 Jun 2026 08:02:29 +0000
-Received: from box5620.bluehost.com ([162.241.219.59])
-	by cmsmtp with ESMTPS
-	id a7hkwtz6r9e09a7hlwjVIT; Thu, 18 Jun 2026 08:02:29 +0000
-X-Authority-Analysis: v=2.4 cv=SY/3duRu c=1 sm=1 tr=0 ts=6a33a615
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
- a=HaFmDPmJAAAA:8 a=9GQXaQUDpQhx98mIA28A:9 a=QEXdDO2ut3YA:10
- a=nmWuMzfKamIsx3l42hEX:22 a=L5EjiQpGQaFGZdqT14z7:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=xMNwgo/lkKMJCS8Mt489WM0G0veblTtY9Wz5haT6LLs=; b=0XbmN58uYyG/+k888i8TudVon0
-	9QrGzOlskpKLF3pd8kOZ8KJKMbAGVqp1CJXt/IbQdwowhLgrZRB14dAek4aBssS4XV1oE47/iOl6z
-	u1URdIScXHGmbUU/8z2FCc8stuZe7NKKQQakRIo+RzZBbNfbYRlquDpuTUqyC4SwRWZn+MU/fPFd+
-	uW0bE/xZTkjGvIqslirVESVphUXQhXeYiS9hftLxm/18E7iaLCNDHhrS7yVk02b6KRae2UBUzLXG4
-	WnDSbwkqBZTCBnV5kjgre6ECeJ0U4hbbaEQ3clKrijjjhy8Nm5FG7yD2xhikLT1Flnh41D3P1yF04
-	RQ1R1h2w==;
-Received: from c-73-162-206-103.hsd1.ca.comcast.net ([73.162.206.103]:46348 helo=[10.0.1.180])
-	by box5620.bluehost.com with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
-	(Exim 4.99.2)
-	(envelope-from <re@w6rz.net>)
-	id 1wa7hk-00000002PRd-1QTl;
-	Thu, 18 Jun 2026 02:02:28 -0600
-Message-ID: <afe43ba2-1fd4-4a77-a589-5a4886615dda@w6rz.net>
-Date: Thu, 18 Jun 2026 01:02:26 -0700
+	s=arc-20240116; t=1781771845; c=relaxed/simple;
+	bh=UplzPm21o1txOIp6An/0DELClqRkTlgQ428lKTxQj6k=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=SKHIfnVUWFZM23KPLIB/HUA5b6rE0XTU3BdhcGXucDhVMd606rlAWRuXO7c0Ui40Dfeu7HOlJefx/DLxvFAOp5dSW99NPhkdr2OFPhyfdBwcU/c/a3iq8/ONWWidXVtc6FE4Opssx7LQMvLYJf8BtWZSL6WvcpjQiXy0ZTwHbSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=Sf55AFj3; arc=none smtp.client-ip=209.85.222.99
+Received: by mail-ua1-f99.google.com with SMTP id a1e0cc1a2514c-96392241154so509957241.1
+        for <stable@vger.kernel.org>; Thu, 18 Jun 2026 01:37:24 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781771843; x=1782376643;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=VeJxbhN0Ht9jvhVm/ZNGkhtjcsRPRqpGEyUnibfRpak=;
+        b=RbYyEO98mn/gxF2b3g/WpGwJ2wSC9keDxSXaNU/PS2NvqRuIQmxuMFxJDTbbO5MnJ1
+         qouiQfcYXNNVm8anJ/Xej+KDeRBVkZSoylUpx8u0fK1JCOGo721WkN3mVQpBb0s4dcOP
+         /JoJrX/FbvurWeYsJO7IUr47ymA0Gm8I2nzVD1ZAFb0C8lX/Pm+3aYFZXzAjGSoW6+H6
+         C/Ugiw8huOzIk0lREAjYyc+8YiF4nCGxxPxFNebRHsnR5nVIgzE45F6+Um/G/Sb8cyj3
+         8USjUqTANLqvoa0TP5iRwubCqTD4fKqEzv5gVAdq9JY0xCxtce++FD8yJqsCCRBdeUlw
+         Kurg==
+X-Gm-Message-State: AOJu0YwZJn7R0R0Aac0ZgZljK3kZSgvdOnLCfukATpqkhE/EVjU8juPD
+	jsLewVOLrQnrl9JbRuq4ThgNQIEL1XSFCKx14pt8qvR0ZBUWCmgCFW1QHczLQkBfzn2jSlMs5AF
+	PC+APAlNxDkuzdw/vsGMxkTBTMq3afabQBr2hRlA37gcvB6LURcW8GllTHutIWrqd/oUxnKJOgg
+	/VA9ZJredekVny1sIqTaT6Z5DmEpZC8RRF8449TAGJuHhm3OWepAS0chzeQLyOFrH2ewihbQFZ8
+	p1skbfKRuljAkg+RQ==
+X-Gm-Gg: AfdE7ckJ8xKtDChGnvnBEfkQXC0OH05poJLXCmZE494OYfFYXSnrpukkCEIaymADUU1
+	xV/DtKPWomSV1uR8A4CCmCE9n9UJbCAGkGz9cQ7TmK6ch/LNAk/ZzvfyJGwvYhBZK7+U5gjyOAQ
+	maRKnBD7tCHcq3YNOtbXxRkMyAf1PSLd7Mn5hTS9f9mhZ0CQlvaucm1QEQUcdHBWH97lUoWGbQS
+	nZyuZVHtUkMuncHz+cAD+2MO1lPD7f37vsKtgzfyYl22fKBcub1w0JQlyuZpI1VhPDDEG6zZ9cf
+	d/clCI5jobmvbWdJn2tZ2VHSzJb2VUpfpsqw8JVN4uWMF1eZaxDJmgna0eizn0H3e3/ydDUKgWf
+	Hi8whMF0BxLim5l14iQmzgQhICHCXoLC55FE8JqKub+beKHKVm1qwn5C3s+0ZZelzcIqzaPOfT/
+	e4LyBdwbn52fWHmlHZh0vpevueM1/q1ATsbRVuskySLzql0LI3/A==
+X-Received: by 2002:a05:6102:534a:b0:631:37cb:1e64 with SMTP id ada2fe7eead31-7245cfe81a7mr4373655137.4.1781771843192;
+        Thu, 18 Jun 2026 01:37:23 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-29.dlp.protect.broadcom.com. [144.49.247.29])
+        by smtp-relay.gmail.com with ESMTPS id a1e0cc1a2514c-966d7981ba9sm367012241.2.2026.06.18.01.37.22
+        for <stable@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 18 Jun 2026 01:37:23 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-dy1-f197.google.com with SMTP id 5a478bee46e88-30bccca5620so778725eec.1
+        for <stable@vger.kernel.org>; Thu, 18 Jun 2026 01:37:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1781771841; x=1782376641; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=VeJxbhN0Ht9jvhVm/ZNGkhtjcsRPRqpGEyUnibfRpak=;
+        b=Sf55AFj3jHVyUjOxJ1MUAZOe3d4FF+RvfjWztEAjQwigkZ1TEkdvWB1GqtxD3y0Ib5
+         UoD/so3X5cE/pJ7IHAoLEBKZZD7RuiQVQcPZIBHTOIMxy4d8fHSuQ6UmkEbNVW0O/QKo
+         sGNLWMf/3+5ts+A7W/hTGX2F7Y1uUbS8Uoicw=
+X-Received: by 2002:a05:693c:3942:b0:2d8:7302:d3d with SMTP id 5a478bee46e88-30bc998fb73mr4625544eec.8.1781771841664;
+        Thu, 18 Jun 2026 01:37:21 -0700 (PDT)
+X-Received: by 2002:a05:693c:3942:b0:2d8:7302:d3d with SMTP id 5a478bee46e88-30bc998fb73mr4625503eec.8.1781771840833;
+        Thu, 18 Jun 2026 01:37:20 -0700 (PDT)
+Received: from shivania.lvn.broadcom.net ([192.19.161.250])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3081e48e412sm27475037eec.4.2026.06.18.01.37.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 18 Jun 2026 01:37:20 -0700 (PDT)
+From: Shivani Agarwal <shivani.agarwal@broadcom.com>
+To: stable@vger.kernel.org,
+	gregkh@linuxfoundation.org
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	xiaosuo@gmail.com,
+	iri@resnulli.us,
+	jhs@mojatatu.com,
+	ajay.kaher@broadcom.com,
+	alexey.makhalov@broadcom.com,
+	vamsi-krishna.brahmajosyula@broadcom.com,
+	yin.ding@broadcom.com,
+	tapas.kundu@broadcom.com,
+	Shivani Agarwal <shivani.agarwal@broadcom.com>
+Subject: [PATCH v5.10 0/2] Fix CVE-2026-23204
+Date: Thu, 18 Jun 2026 01:08:05 -0700
+Message-Id: <20260618080807.1269070-1-shivani.agarwal@broadcom.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.18 000/325] 6.18.36-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org, sr@sladewatkins.com
-References: <20260616145057.827196531@linuxfoundation.org>
-Content-Language: en-US
-From: Ron Economos <re@w6rz.net>
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 73.162.206.103
-X-Source-L: No
-X-Exim-ID: 1wa7hk-00000002PRd-1QTl
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-73-162-206-103.hsd1.ca.comcast.net ([10.0.1.180]) [73.162.206.103]:46348
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 19
-X-Org: HG=bhshared;ORG=bluehost;
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfPdStjuEvsYMMoqM7yDhkHsKLzjR06Pv4dLw4C6Rqf1YBJXVleqWVUC9ZtdDYzI+ttgRACFjxLBITHWBmEbEXnYJWt3olUsvV0jaFM4nz9/SDIdS1meq
- gxOzqtHLZ4keESSz3gVrmFrT30FeNrW5bwfnOZK+lfsHI1f24S9pOi/Z5apUx2Kb5qnmwqremVZXow==
+Content-Transfer-Encoding: 8bit
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [1.04 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	R_DKIM_REJECT(1.00)[w6rz.net:s=default];
+X-Spamd-Result: default: False [-7.66 / 15.00];
+	WHITELIST_DMARC(-7.00)[broadcom.com:D:+];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[broadcom.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[broadcom.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-267035-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-267049-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	FREEMAIL_CC(0.00)[davemloft.net,google.com,kernel.org,redhat.com,vger.kernel.org,gmail.com,resnulli.us,mojatatu.com,broadcom.com];
 	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[w6rz.net];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	FORGED_SENDER(0.00)[re@w6rz.net,stable@vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,m:patches@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:torvalds@linux-foundation.org,m:akpm@linux-foundation.org,m:linux@roeck-us.net,m:shuah@kernel.org,m:patches@kernelci.org,m:lkft-triage@lists.linaro.org,m:pavel@nabladev.com,m:jonathanh@nvidia.com,m:f.fainelli@gmail.com,m:sudipm.mukherjee@gmail.com,m:rwarsow@gmx.de,m:conor@kernel.org,m:hargar@microsoft.com,m:broonie@kernel.org,m:achill@achill.org,m:sr@sladewatkins.com,m:ffainelli@gmail.com,m:sudipmmukherjee@gmail.com,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:horms@kernel.org,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:xiaosuo@gmail.com,m:iri@resnulli.us,m:jhs@mojatatu.com,m:ajay.kaher@broadcom.com,m:alexey.makhalov@broadcom.com,m:vamsi-krishna.brahmajosyula@broadcom.com,m:yin.ding@broadcom.com,m:tapas.kundu@broadcom.com,m:shivani.agarwal@broadcom.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	HAS_X_ANTIABUSE(0.00)[];
-	DKIM_TRACE(0.00)[w6rz.net:-];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER(0.00)[shivani.agarwal@broadcom.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[re@w6rz.net,stable@vger.kernel.org];
-	HAS_X_SOURCE(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[shivani.agarwal@broadcom.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[broadcom.com:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,w6rz.net:email,w6rz.net:mid,w6rz.net:from_mime]
+	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3A1FD69E520
+X-Rspamd-Queue-Id: 548FC69E7D9
 
-On 6/16/26 07:56, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.18.36 release.
-> There are 325 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Thu, 18 Jun 2026 14:49:57 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.18.36-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.18.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+To fix CVE-2026-23204, commit cabd1a976375 is required; however,
+it depends on commit 13e00fdc9236. Therefore, both patches
+have been backported to v5.10.
 
-Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
+Eric Dumazet (2):
+  net: add skb_header_pointer_careful() helper
+  net/sched: cls_u32: use skb_header_pointer_careful()
 
-Tested-by: Ron Economos <re@w6rz.net>
+ include/linux/skbuff.h | 12 ++++++++++++
+ net/sched/cls_u32.c    | 13 ++++++-------
+ 2 files changed, 18 insertions(+), 7 deletions(-)
+
+-- 
+2.53.0
 
 
