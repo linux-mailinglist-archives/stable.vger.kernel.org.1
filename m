@@ -1,144 +1,177 @@
-Return-Path: <stable+bounces-267067-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267069-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 1mhGFYyzM2rxFAYAu9opvQ
-	(envelope-from <stable+bounces-267067-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 10:59:56 +0200
+	id hq3fK162M2p6FQYAu9opvQ
+	(envelope-from <stable+bounces-267069-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 11:11:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C53969EAA2
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 10:59:55 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4763969EC10
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 11:11:58 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=nabladev.com header.s=dkim header.b=GXb6L0Q6;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267067-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-267067-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=reject) header.from=nabladev.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=oBrr+YUW;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267069-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-267069-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=163.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 3EDB03028AC4
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 08:55:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4B95D3015C9E
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 09:08:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DD133B71DE;
-	Thu, 18 Jun 2026 08:55:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 541A43890EA;
+	Thu, 18 Jun 2026 09:08:28 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E45E3B6C09;
-	Thu, 18 Jun 2026 08:55:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E48112FD696;
+	Thu, 18 Jun 2026 09:08:23 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781772912; cv=none; b=uqYP99ud5OS9fSWaRK0adxgpfPKjWvUa5xRO7tFe1hrrPBhCPgwZzGTLTgc5WTBZNuPovPct0Zt4BPg+Iz22XUr217hMiV3Lq0BMDLwuKji1G0hfqS9mTSdeNceiEdkkxqM6y3F84mTfrovqZR0q1YjHpaMlMupGxfDQ9QR2i7o=
+	t=1781773708; cv=none; b=Lbedkaw4h0OTRwFHdk5JmDQKLCs5PAa0nu4BcB6r2RdVr2x81Q0eKiEvrpMWU1I+TK9Ox4+Nxc+MiapzLW8A8WQEx5kMWKVxjz8H4+pJ1+LUZqINRy0pxNilaZFtvF7FE2HWNZCEtkkCKPdTwmXam2FOmZcL/AzBrT8dq70C250=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781772912; c=relaxed/simple;
-	bh=bHcv1lP/sbWMG6OS9TQBnfhz042PTakXTaAM/YnYgDg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TM6e00/iX9bzyH7ntJt49b2ZV+mZR/9OxJTsZ9HKDekcQ82qE1DS8uiFx68tc5zxDGK6DjmpgyxGFtWAnHv9iqpi0tsqGs2vdb1peq5pg3SMn6wv9XcCcEmjUeFbCyjt6JpND7SFh0A1fxfi2vO35k21iuJumeuFy1ch/89Mb/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=GXb6L0Q6; arc=none smtp.client-ip=178.251.229.89
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5FEB9115766;
-	Thu, 18 Jun 2026 10:55:08 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
-	s=dkim; t=1781772909;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references; bh=5mHHbSCxRhbTiPsgEHNsX6NKZxyP4pLuDQeG+2PLmaQ=;
-	b=GXb6L0Q6XB2T/nuhA1kyKFAIDQZgc+HuIE0vdCV/NAxQk7N06HkQJdp+SraQhxFSSiqxDJ
-	KhFFWFP2DCTo+OkCBmYjs/vEYALC6tqxBd1LPzs0GE+JuDk/pTkPbARkz3ugZvMgEUXiZF
-	N8ESeApRWvu0XUGxy6hrvdkmEHyNidwZ/EXFRum8g2OQHelyyrptbkgnMzCLPoSu9h/h9F
-	3H1+Qmsg7ChsLyfdKC3OK2bTQhvRr42n4dOsUy3zvKc4t4quODueAl0cJAjvfOsh2PnwOE
-	YHiF0+TlgI9EviXWF7UFY7fooREa6W9KZMU+LsFt1we8nIjoyWc2YuJFJrb+Yw==
-Date: Thu, 18 Jun 2026 10:55:07 +0200
-From: Pavel Machek <pavel@nabladev.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org,
-	pavel@nabladev.com, jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
-	hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
-	sr@sladewatkins.com
-Subject: Re: [PATCH 5.10 000/342] 5.10.259-rc1 review
-Message-ID: <ajOya2lY8V3HnR_d@duo.ucw.cz>
-References: <20260616145048.348037099@linuxfoundation.org>
+	s=arc-20240116; t=1781773708; c=relaxed/simple;
+	bh=d70WQx/n/AVuK7JXgawnfxZsw9Rdcp0QKyX9m4DWYmc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=aMdTWNQaCGBns7bXqSuD8wAG/TqR1Qdu9xlFoDdfZjJVXS4oDbHtwwhzfiuH83r8Q3oHz0R9bWBnYTZJapDfsxwY4Od+aqPPv1AffziDSALFQTi366tj/16muI+A6VjEsCn+0pRhltt+tkFiGj6WMBoeKEhZnPslUt2+SV95N78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=oBrr+YUW; arc=none smtp.client-ip=220.197.31.3
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=U9
+	LYbpliEyA7kvkqFWLXwY8GVKQIfZ2rB1s2So+u1ns=; b=oBrr+YUWD7lwiohoK+
+	fwZUUc1NrlgsaVOGSpvOxzsMwWJa/90GA+BUSM8O2c1YdptOQlBVLUsr/psGyzeX
+	Ov5SzusWUHKsS3I30lZZqlXxj4y/dIrAZ/s7h0Ui/xB61vH+sm0u754lL7pPWjAv
+	W1xBUrcbicKjCOp+pgYcUwCLk=
+Received: from ubuntu.. (unknown [])
+	by gzsmtp5 (Coremail) with SMTP id QCgvCgCnMQdWtTNqaIBlCw--.16948S4;
+	Thu, 18 Jun 2026 17:07:38 +0800 (CST)
+From: Ma Ke <make_ruc2021@163.com>
+To: sre@kernel.org,
+	marex@denx.de,
+	hansg@kernel.org
+Cc: linux-pm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org,
+	Ma Ke <make_ruc2021@163.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] power: supply: bq25890: Fix power_supply reference leak
+Date: Thu, 18 Jun 2026 17:07:26 +0800
+Message-ID: <20260618090726.2863439-1-make_ruc2021@163.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="sMuaL4XH5S+pL0ax"
-Content-Disposition: inline
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:QCgvCgCnMQdWtTNqaIBlCw--.16948S4
+X-Coremail-Antispam: 1Uf129KBjvJXoW7ZrW7Gr4UKw1UZryxuryUWrg_yoW8tFy8pF
+	Z5CF98Kr48XF4fAw4ktw1v9Fyak34xCFy3Ar1xGw1vqw13Jr1DXry8JFZaqry8Gr97GFs2
+	yw43tr4xCFnxGaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pRkhLbUUUUU=
+X-CM-SenderInfo: 5pdnvshuxfjiisr6il2tof0z/xtbC0xrq9WoztVoUGAAA3s
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.76 / 15.00];
-	SIGNED_PGP(-2.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[nabladev.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
-	R_DKIM_ALLOW(-0.20)[nabladev.com:s=dkim];
+	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-267067-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,m:patches@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:torvalds@linux-foundation.org,m:akpm@linux-foundation.org,m:linux@roeck-us.net,m:shuah@kernel.org,m:patches@kernelci.org,m:lkft-triage@lists.linaro.org,m:pavel@nabladev.com,m:jonathanh@nvidia.com,m:f.fainelli@gmail.com,m:sudipm.mukherjee@gmail.com,m:rwarsow@gmx.de,m:conor@kernel.org,m:hargar@microsoft.com,m:broonie@kernel.org,m:achill@achill.org,m:sr@sladewatkins.com,m:ffainelli@gmail.com,m:sudipmmukherjee@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[pavel@nabladev.com,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[nabladev.com:+];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pavel@nabladev.com,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,linux-foundation.org,163.com];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-267069-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[make_ruc2021@163.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:sre@kernel.org,m:marex@denx.de,m:hansg@kernel.org,m:linux-pm@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:akpm@linux-foundation.org,m:make_ruc2021@163.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[163.com];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[make_ruc2021@163.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[163.com:+];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,gitlab.com:url,nabladev.com:dkim,nabladev.com:email,nabladev.com:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,duo.ucw.cz:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 6C53969EAA2
+X-Rspamd-Queue-Id: 4763969EC10
 
+bq25890_fw_probe() acquires a reference to a secondary charger via
+power_supply_get_by_name(). This helper internally calls
+class_find_device() which gets a reference on the found device.
+However, the driver does not release this reference on error paths.
+The devm cleanup callback also does not put the reference, so normal
+driver unload leaks it as well.
 
---sMuaL4XH5S+pL0ax
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Fix the leak by adding a power_supply_put() call in the new error
+label of bq25890_fw_probe() and in the devm cleanup routine.
 
-Hi!
+Found by code review.
 
-> This is the start of the stable review cycle for the 5.10.259 release.
-> There are 342 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+Signed-off-by: Ma Ke <make_ruc2021@163.com>
+Cc: stable@vger.kernel.org
+Fixes: d54bf877fd87 ("power: supply: bq25890: Add support for having a secondary charger IC")
+---
+ drivers/power/supply/bq25890_charger.c | 17 +++++++++++++++--
+ 1 file changed, 15 insertions(+), 2 deletions(-)
 
-CIP testing did not find any problems here:
+diff --git a/drivers/power/supply/bq25890_charger.c b/drivers/power/supply/bq25890_charger.c
+index 868e86e1749b..85318a06b66c 100644
+--- a/drivers/power/supply/bq25890_charger.c
++++ b/drivers/power/supply/bq25890_charger.c
+@@ -1411,7 +1411,8 @@ static int bq25890_fw_probe(struct bq25890_device *bq)
+ 	if (ret == 0) {
+ 		if (val > 100) {
+ 			dev_err(bq->dev, "Error linux,iinlim-percentage %u > 100\n", val);
+-			return -EINVAL;
++			ret = -EINVAL;
++			goto err_put_charger;
+ 		}
+ 		bq->iinlim_percentage = val;
+ 	} else {
+@@ -1426,12 +1427,19 @@ static int bq25890_fw_probe(struct bq25890_device *bq)
+ 
+ 	ret = bq25890_fw_read_u32_props(bq);
+ 	if (ret < 0)
+-		return ret;
++		goto err_put_charger;
+ 
+ 	init->ilim_en = device_property_read_bool(bq->dev, "ti,use-ilim-pin");
+ 	init->boostf = device_property_read_bool(bq->dev, "ti,boost-low-freq");
+ 
+ 	return 0;
++
++err_put_charger:
++	if (bq->secondary_chrg) {
++		power_supply_put(bq->secondary_chrg);
++		bq->secondary_chrg = NULL;
++	}
++	return ret;
+ }
+ 
+ static void bq25890_non_devm_cleanup(void *data)
+@@ -1440,6 +1448,11 @@ static void bq25890_non_devm_cleanup(void *data)
+ 
+ 	cancel_delayed_work_sync(&bq->pump_express_work);
+ 
++	if (bq->secondary_chrg) {
++		power_supply_put(bq->secondary_chrg);
++		bq->secondary_chrg = NULL;
++	}
++
+ 	if (bq->id >= 0) {
+ 		mutex_lock(&bq25890_id_mutex);
+ 		idr_remove(&bq25890_id, bq->id);
+-- 
+2.43.0
 
-https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-5.10.y
-
-Tested-by: Pavel Machek (CIP) <pavel@nabladev.com>
-
-Best regards,
-                                                                Pavel
-
---sMuaL4XH5S+pL0ax
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCajOyawAKCRAw5/Bqldv6
-8lKVAJ40HZ9NyMc8/aOuSBUOnJgWjCpKUQCgmN6u4rsS6Sijz/yJ8n6YrzUwzxs=
-=PpX+
------END PGP SIGNATURE-----
-
---sMuaL4XH5S+pL0ax--
 
