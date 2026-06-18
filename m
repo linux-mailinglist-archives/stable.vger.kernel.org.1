@@ -1,136 +1,201 @@
-Return-Path: <stable+bounces-267020-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267021-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id VfIEGk+dM2opEQYAu9opvQ
-	(envelope-from <stable+bounces-267020-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 09:25:03 +0200
+	id 3GPGJ2ChM2rmEQYAu9opvQ
+	(envelope-from <stable+bounces-267021-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 09:42:24 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A940069E101
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 09:25:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED60469E2BD
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 09:42:23 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=secunet.com header.s=202301 header.b=mmB0avIp;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267020-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267020-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=secunet.com;
+	dkim=pass header.d=suse.com header.s=google header.b=FEGYsRBN;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267021-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267021-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=suse.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D5C02300CE53
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 07:24:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1DFEB30097CF
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 07:41:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 501423C6A51;
-	Thu, 18 Jun 2026 07:24:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A457135E1B3;
+	Thu, 18 Jun 2026 07:41:29 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f66.google.com (mail-ej1-f66.google.com [209.85.218.66])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD77935DA6A;
-	Thu, 18 Jun 2026 07:24:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 894F1227EA4
+	for <stable@vger.kernel.org>; Thu, 18 Jun 2026 07:41:27 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781767499; cv=none; b=g35xnSD98et6HsGAMvdmC9PF+isBlvQmPksZfKfhANBIoifDk6Tdqu7cG0ibrrlIvAV7jF5LDPZcktBpLV6prNkZOUHV7EHUdBxV2NVV4ugCodvw8OmAN9MCAEfeDHnPJCDjwlU39ofiaSDUgoiTKFP0aaGLyADfFdrolwhcK40=
+	t=1781768489; cv=none; b=Nnci2xwpL/JCoUEC3Xw7Awp4eR3u97KY5SExvm0gRbB+7PyOVVaPslPGIjjbav4wSIU/o7IScMHgVVmK3hqngPIPd+19l0MKu+yQYLZZvjLbSn1rYe0Vs4mX44X+8TkHjbCgGl/Be5GL8rwgPOZ/40th0otC2UbypKVpLsjdjdQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781767499; c=relaxed/simple;
-	bh=eMVOWU/uMx0ikdQOoo93BMnnHU4y7zNCRnmm1Qt2lIA=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=inO+gUQJLGqjkmVgD7ul6MWL8b8R2HSsWJlKYB2zQSPVrdFE5oYWySTrVIbQaFEB7HG4H/Xj0U7wQzxzXDOZkJ6lprMe5BVgS83a2u5kFE4kWlx+nK8qR/5PqX+Qyu7x0EnZvNLJ6ekGlXuaTwlIZgR8tB8W6Qr4H/UkOtVfBLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=mmB0avIp; arc=none smtp.client-ip=62.96.220.36
-Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id 70FA820764;
-	Thu, 18 Jun 2026 09:24:56 +0200 (CEST)
-X-Virus-Scanned: by secunet
-Received: from mx1.secunet.com ([127.0.0.1])
- by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id r284IHQRo832; Thu, 18 Jun 2026 09:24:55 +0200 (CEST)
-Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id B285420704;
-	Thu, 18 Jun 2026 09:24:55 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com B285420704
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1781767495;
-	bh=Eg5VCvmtQtwL/jJ+RT6x7dXc6NpwkPsoEfGg0bhj0sI=;
-	h=Date:From:To:CC:Subject:References:In-Reply-To:From;
-	b=mmB0avIpZRDM8FuOAEBNrOU3jZgjRGPagIbya3Jb591qIcemYSIERZBUHKHhcOIZG
-	 njo5BfZwhptaBcEieS+v74fj62epqZ4NIxtvRu7OauYoqLodWhi8RMe9eQa+a7fnsi
-	 8I91jGYKOI57nXO2AmiMdcHQrA5b198dQowEbx37Av1MtZPNVLXYiWg6j6LVR5zg3j
-	 nrA1cQjwFG++yyV2HyGUKoctuHafSprBiWQv6nWvp46YJ5T9Q5v82H0fjUwZeq7Wzq
-	 Kxufq57NGWNvYT/nSKRj0c90O56KhgApEKejh3rWbY91QLY5BNJgCx2zDZN1Z0xvxf
-	 tFSgy7WOIy1yQ==
-Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Thu, 18 Jun
- 2026 09:24:55 +0200
-Received: (nullmailer pid 3963291 invoked by uid 1000);
-	Thu, 18 Jun 2026 07:24:54 -0000
-Date: Thu, 18 Jun 2026 09:24:54 +0200
-From: Steffen Klassert <steffen.klassert@secunet.com>
-To: Sabrina Dubroca <sd@queasysnail.net>
-CC: <netdev@vger.kernel.org>, <stable@vger.kernel.org>, Aaron Esau
-	<aaron1esau@gmail.com>, Yiming Qian <yimingqian591@gmail.com>
-Subject: Re: [PATCH ipsec] espintcp: use sk_msg_free_partial to fix partial
- send
-Message-ID: <ajOdRs75eyKgFSfj@secunet.com>
-References: <68ef5bdae251f605b0743d2e51c2a5cb285e5772.1781270325.git.sd@queasysnail.net>
+	s=arc-20240116; t=1781768489; c=relaxed/simple;
+	bh=ScYW2N5cjq2izfTgndEasj5dLBugxLYTWzSBPFyhcUg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VD3K6dI6/xN8V/I2kO6PHmusifWhXbu8ZV+zQO2KXb5yF9o39afGtCHx1MOg6/tZHFMPWWj+E4MHwefsCb4FMYHkyEziN8QkJ2OOkZISug8n2JDSAbImDlHKi6mpKuBzT8N2O42JRXVMrZ8anytTRzoWflRc+wiECBWUBM//bp0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=FEGYsRBN; arc=none smtp.client-ip=209.85.218.66
+Received: by mail-ej1-f66.google.com with SMTP id a640c23a62f3a-c07fcdd75d3so16096966b.1
+        for <stable@vger.kernel.org>; Thu, 18 Jun 2026 00:41:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1781768486; x=1782373286; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=u0WP4UbMHgsRq9pCJnlsjfImjR5xHttu6tCXtUn+z5c=;
+        b=FEGYsRBNxtklzjLQQZL6XkKF1jYj+MM0rZZuToLhbzJYN+5viPGOwwkR+nTtoX7JXm
+         7y/Gy75eNCeSkRss9Pk9/+0ppVbgapz1q62yYhxJn/eHy52Z/HXpbERrz9GzMOTqkyWx
+         Vz+BAfuCjGT2iux3rv3IH2lkbxDyG4AAm0v5updEcAE+SUa5H4du5heuN6UNXSb8B9s+
+         a8FC33U3oq+1EbMShYspf88sDqidXuxGUQuZ+K5FzHNaoI/Va/ZOULej35TyFeloogyW
+         DpFTqirRA7RdJm25P5MUCCOucqclDyvGHN/C6zFEDyfzkUhZcYcqzSPeaqwLQNBCVsEv
+         EPMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781768486; x=1782373286;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=u0WP4UbMHgsRq9pCJnlsjfImjR5xHttu6tCXtUn+z5c=;
+        b=mQWpwj2AAJfhwpVds4ihKf4kvvLkfkZwL7WimaqhXvZwjVMGkGSPFPJZBXGIuarAhp
+         nibHUaoUlIQIfBOvurjcdjmb4CpYlLjUBAkwyPwZhZJ+kqcGYcA+y6M1vWqVhLPcu4xx
+         GB4yPGqtcfMgboB0MqQvOjQEIO6Lu3tXTWIISJ2PrYq9OXJP1bp0KNouSHM2PC36F7mt
+         EJzc9PDIGLmH33yLznyurUGOHRr2jdBFTermRDtipXDWGaWQBH+4P5Wx8cJwMqs5I0Ld
+         6OCnSEpt/Ud8+c/yVatqj4VG4rxGn6Dss9N0VlbWpoTi+VPtxY2KzmI4KWidbumU3MwI
+         cRXQ==
+X-Gm-Message-State: AOJu0YyYKAS+NzsC0bMO4Wy4PUl+aX0Pyzc0/off3w966nJnM/S6bs0f
+	ra+0V3RTQ5UEvcQYdutBdv4QSiA7SxJPkRJeYm81ztn1w1so4aPwoM4E40SuB4poXY86z61d+np
+	LR77Fwx0HE1hx
+X-Gm-Gg: AfdE7cmrhmVwRTMSZMW6FoPFyGvqqqZ7rYh13ABWGuVh94RDrDelQL9x1kzUCCNlb4p
+	Fc3PxrGh+adIj6qlIAxozVQdZikSx7RuBkqi9Ycio1oxfKaC1Nxn14DEt11dQUPLutJ05UarrXl
+	6lJhm+IrB/0cThiL7I5ncOlkmrlCjbe8a9GMvCZTuF96R1cmbkZwIehCOiq/Na1cWBsnrX3PdAr
+	jAbLEgAQ3oFFET6lu0n80SWsgpmZVxVfa3RkRvhwflz1xajrJAJTflb9b1duO/5Y7VhubvJ/utb
+	XXcOp+46Xswj809wtBhmhsp3xy4h3Sbi1VZoU3JsrluW8DvSlCsRY+F10QBzr6nuLkY9auEGFUY
+	REBEbf2vENI5pl5/pRXpDGSgbTH0oZb4WkOzqWKoc4kaJFWtkiDLnnvPKryh67ElugqJf1lw1yz
+	RPPBeqmlEu79zZXZkloursNeRkf4eHM77RCjyx
+X-Received: by 2002:a17:907:a28f:b0:bed:eb8b:d404 with SMTP id a640c23a62f3a-c074b27224dmr109123466b.16.1781768485763;
+        Thu, 18 Jun 2026 00:41:25 -0700 (PDT)
+Received: from localhost (27-53-24-58.adsl.fetnet.net. [27.53.24.58])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84531dbbe7fsm3277519b3a.14.2026.06.18.00.41.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 18 Jun 2026 00:41:24 -0700 (PDT)
+From: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+To: stable@vger.kernel.org
+Cc: Shung-Hsi Yu <shung-hsi.yu@suse.com>,
+	Ihor Solodrai <ihor.solodrai@pm.me>,
+	Andrii Nakryiko <andrii@kernel.org>
+Subject: [PATCH stable 6.1 1/1] selftests/bpf: Check for timeout in perf_link test
+Date: Thu, 18 Jun 2026 15:41:11 +0800
+Message-ID: <20260618074114.16091-1-shung-hsi.yu@suse.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <68ef5bdae251f605b0743d2e51c2a5cb285e5772.1781270325.git.sd@queasysnail.net>
-X-ClientProxiedBy: EXCH-04.secunet.de (10.32.0.184) To EXCH-01.secunet.de
- (10.32.0.171)
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[secunet.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[suse.com:s=google];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[secunet.com:s=202301];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-267020-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:sd@queasysnail.net,m:netdev@vger.kernel.org,m:stable@vger.kernel.org,m:aaron1esau@gmail.com,m:yimingqian591@gmail.com,s:lists@lfdr.de];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FORGED_SENDER(0.00)[steffen.klassert@secunet.com,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,secunet.com:dkim,secunet.com:mid,secunet.com:from_mime];
-	MISSING_XM_UA(0.00)[];
+	TAGGED_FROM(0.00)[bounces-267021-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[shung-hsi.yu@suse.com,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:shung-hsi.yu@suse.com,m:ihor.solodrai@pm.me,m:andrii@kernel.org,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[steffen.klassert@secunet.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[shung-hsi.yu@suse.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[secunet.com:+];
-	ALIAS_RESOLVED(0.00)[];
+	DKIM_TRACE(0.00)[suse.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:dkim,suse.com:email,suse.com:mid,suse.com:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A940069E101
+X-Rspamd-Queue-Id: ED60469E2BD
 
-On Fri, Jun 12, 2026 at 04:11:39PM +0200, Sabrina Dubroca wrote:
-> sk_msg_free_partial() ensures consistency of the skmsg at every
-> iteration, without having to manually handle uncharges and offsets.
-> This simplifies the code, and fixes some bugs in skmsg accounting when
-> we don't send the full contents.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: e27cca96cd68 ("xfrm: add espintcp (RFC 8229)")
-> Reported-by: Aaron Esau <aaron1esau@gmail.com>
-> Reported-by: Yiming Qian <yimingqian591@gmail.com>
-> Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+From: Ihor Solodrai <ihor.solodrai@pm.me>
 
-Applied, thanks a lot Sabrina!
+commit e6c209da7e0e9aaf955a7b59e91ed78c2b6c96fb upstream.
+
+Recently perf_link test started unreliably failing on libbpf CI:
+  * https://github.com/libbpf/libbpf/actions/runs/11260672407/job/31312405473
+  * https://github.com/libbpf/libbpf/actions/runs/11260992334/job/31315514626
+  * https://github.com/libbpf/libbpf/actions/runs/11263162459/job/31320458251
+
+Part of the test is running a dummy loop for a while and then checking
+for a counter incremented by the test program.
+
+Instead of waiting for an arbitrary number of loop iterations once,
+check for the test counter in a loop and use get_time_ns() helper to
+enforce a 100ms timeout.
+
+v1: https://lore.kernel.org/bpf/zuRd072x9tumn2iN4wDNs5av0nu5nekMNV4PkR-YwCT10eFFTrUtZBRkLWFbrcCe7guvLStGQlhibo8qWojCO7i2-NGajes5GYIyynexD-w=@pm.me/
+
+Signed-off-by: Ihor Solodrai <ihor.solodrai@pm.me>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20241011153104.249800-1-ihor.solodrai@pm.me
+Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+---
+ .../testing/selftests/bpf/prog_tests/perf_link.c  | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
+
+diff --git a/tools/testing/selftests/bpf/prog_tests/perf_link.c b/tools/testing/selftests/bpf/prog_tests/perf_link.c
+index 224eba6fef2e..d734526d6a16 100644
+--- a/tools/testing/selftests/bpf/prog_tests/perf_link.c
++++ b/tools/testing/selftests/bpf/prog_tests/perf_link.c
+@@ -4,8 +4,12 @@
+ #include <pthread.h>
+ #include <sched.h>
+ #include <test_progs.h>
++#include "testing_helpers.h"
+ #include "test_perf_link.skel.h"
+ 
++#define BURN_TIMEOUT_MS 100
++#define BURN_TIMEOUT_NS BURN_TIMEOUT_MS * 1000000
++
+ static void burn_cpu(void)
+ {
+ 	volatile int j = 0;
+@@ -32,6 +36,7 @@ void serial_test_perf_link(void)
+ 	int run_cnt_before, run_cnt_after;
+ 	struct bpf_link_info info;
+ 	__u32 info_len = sizeof(info);
++	__u64 timeout_time_ns;
+ 
+ 	/* create perf event */
+ 	memset(&attr, 0, sizeof(attr));
+@@ -63,8 +68,14 @@ void serial_test_perf_link(void)
+ 	ASSERT_GT(info.prog_id, 0, "link_prog_id");
+ 
+ 	/* ensure we get at least one perf_event prog execution */
+-	burn_cpu();
+-	ASSERT_GT(skel->bss->run_cnt, 0, "run_cnt");
++	timeout_time_ns = get_time_ns() + BURN_TIMEOUT_NS;
++	while (true) {
++		burn_cpu();
++		if (skel->bss->run_cnt > 0)
++			break;
++	        if (!ASSERT_LT(get_time_ns(), timeout_time_ns, "run_cnt_timeout"))
++			break;
++	}
+ 
+ 	/* perf_event is still active, but we close link and BPF program
+ 	 * shouldn't be executed anymore
+-- 
+2.54.0
+
 
