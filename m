@@ -1,118 +1,71 @@
-Return-Path: <stable+bounces-267068-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267053-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id RPW9FGW1M2pIFQYAu9opvQ
-	(envelope-from <stable+bounces-267068-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 11:07:49 +0200
+	id vY5yDLyvM2o4FAYAu9opvQ
+	(envelope-from <stable+bounces-267053-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 10:43:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA10169EB7C
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 11:07:48 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B96C69E887
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 10:43:39 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=broadcom.com header.s=google header.b="Dr/Ydqrn";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267068-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-267068-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=reject) header.from=broadcom.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=suse.de (policy=none);
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267053-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267053-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6421A304C978
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 09:03:52 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6FC643048F14
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 08:43:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 723ED3859F7;
-	Thu, 18 Jun 2026 09:03:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3DC73B3C1B;
+	Thu, 18 Jun 2026 08:43:35 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f100.google.com (mail-pj1-f100.google.com [209.85.216.100])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2364C1A680F
-	for <stable@vger.kernel.org>; Thu, 18 Jun 2026 09:03:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9752039E175
+	for <stable@vger.kernel.org>; Thu, 18 Jun 2026 08:43:34 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781773431; cv=none; b=AC0d/ixyJDf2FG9xQfoPH6LtM1egiF+yfLCS/zKGc6IRbpxi/A47bxNg1d5NTy2OIHkW34LWdUX6gsQMjhpxU+9cpAdstL5pSRoMjRRbV/D5k7YRZAjsgDLwwldRFMuldP0gQi3WKB5ZsDgvE2u4JtHpyS+pWlaElgFoJLcuJTM=
+	t=1781772215; cv=none; b=F/uhphQeG0mEbFL5aLoFfBMKoHUpnF07zRH+LAV2y1l2jCMwgmbSPEtIh0AE9AqMFAjSRTEvjHC4edrNAWDnZ/QjH+k22r5v1uCakPy3FNK/ee5+MAUpNumJYYNk3Ztd3lKogaLWJL7pxcMXvLLPGURt6JnDhdP1DUAwZsGAq9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781773431; c=relaxed/simple;
-	bh=pDfYODN8eSb3Osdiy8pGUbcCjj+Vd5hRyuhJN7tkHGY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=l+ehOR+LTCFJd3yO1LwHmBlap8wTN/YyhrJ9goCp2LfegQKaXsWrNdASt61NlBn0gX22CkDWveNSqPMT5KZZuvELvtRVuAjTkYlzgIjr9MwU6eB0QPEj1NvAxWXkiYQHaN4WePBFOybLb4vLw3M82wOs4ntQftNp1CbPHeqMqNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=Dr/Ydqrn; arc=none smtp.client-ip=209.85.216.100
-Received: by mail-pj1-f100.google.com with SMTP id 98e67ed59e1d1-37c5b9d42efso970058a91.1
-        for <stable@vger.kernel.org>; Thu, 18 Jun 2026 02:03:49 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781773429; x=1782378229;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=QpNixvCXNM3odqaYWueSGP2Z43EAIlNiUuWGIkEd9i8=;
-        b=R+VYEvPgF/cdJQ4c1d4fgvSWifi874intzLRe6y3wE1XLMvCotyglOSYYL4vubz8AV
-         HZWBsNERCly9cGQyvYEwjiUYwXkevTrm2V69aXP90fhiVyIQ+x1kPDHKgr680oXJOb5W
-         zTpRCJSgBUa3+xV66WaPpskVZ+h9DMBQJ0YX0CNaT6nyGAVfOkTopWLtPpwCyapiVun+
-         vv/SxLdaXYNeXsdU4jST9+gUpLDAhRFnP7aW82jZ2tjQTLEeT0/XkSyJhxsjGV7mRjk1
-         8KjpZSRFLrCjQwUEX9Tr3T5gdQ1/n5e0SxeLrGCZRveJ2o1cJatXAQmD47As4dYLWJt7
-         sY4Q==
-X-Gm-Message-State: AOJu0Yw7S1zxhxk/eb2eJZPFUm8mvNcb9q9426VfxQiYS4dEsKLP90/u
-	3PCQQkdb8/0wMuXVXksCXK1qVHHEniStSGBX/YpGG7nlqGLgj76MH2krHr8zhfT+WTO6czschOX
-	mWrSlxjE1g1LRcrp/UqkJqd80fjUzRwd/87OXoTe5M9vc5P1cLLI4kf7ATtvljie7fQPDoBC4yp
-	pXlrkChrIGZgLzrNRcGmHXH9Aq0BKOFPmZYp/DfjmgQQigkpgwJVOnBimUEgTyI0r+Cx4B49xj7
-	tU61eeh5T8XI+msPQ==
-X-Gm-Gg: AfdE7cmq0DNDKe1DlT3mtPsRTgp5RFlPXmC4op98/dC7Die9OfXTb+YXgL1nsCPPkgG
-	Q+8sktzUUUtG5LbQDybG/0NzXtIZIzzxD3A8K7ahGZMcz8+EHbb+HoEdXdCWEsP3HkSm4IBQdqB
-	4tvUiVlPx4hbEMVFp7Qf/UuDSUExSmh7F9cv6rKl2VR+lwyxhQvyLZ0elcUrs/4zKow60mMohLi
-	9Y9HUoJ6Xbyj2hE6Nbuez7QM7nI/SX7NNBBk8gZpXFqI5kFVdrsvoAFGoA7BAK63qO66IRktYrg
-	PTfVDH+z6vNFoVOxZYId960NG90iIbeuFrOa4MBBhQ31AoOtyaFS4+HCUpKnbIbgvsFvdTkGM/K
-	oNHfIjeTSozUMJmyOms3NN0X042W1pyj3+QHhY2JfcC7iZynzKntKItZffUG6qbXtEhOl25ek5B
-	0L1N9GcpHnGOV+WkI0JsfOk8U6e2Lmq3IL/WLhV+K1hJFL41JFs56i
-X-Received: by 2002:a17:903:458f:b0:2c6:829b:b0c2 with SMTP id d9443c01a7336-2c6de51bea1mr27529165ad.11.1781773429290;
-        Thu, 18 Jun 2026 02:03:49 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-117.dlp.protect.broadcom.com. [144.49.247.117])
-        by smtp-relay.gmail.com with ESMTPS id d9443c01a7336-2c42c5336d5sm16061345ad.0.2026.06.18.02.03.49
-        for <stable@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 18 Jun 2026 02:03:49 -0700 (PDT)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-51956be1f44so33616181cf.1
-        for <stable@vger.kernel.org>; Thu, 18 Jun 2026 02:03:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1781773428; x=1782378228; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=QpNixvCXNM3odqaYWueSGP2Z43EAIlNiUuWGIkEd9i8=;
-        b=Dr/Ydqrnwbh4TDAFnHL3FK7c9/Rv/ES8ODcuQahihVpAlAZWYGJb3gyzyybRI8NjpO
-         YBBOLM/1Gt6yBlv/pDpl6C8fnEnql4CCMW5USxOQU4nFITglkckgSy3hqJkJscqf7MYj
-         rlnjuWlh4EKQsZ6SmByMvOUMijYrOV5j4x3YQ=
-X-Received: by 2002:a05:622a:22a4:b0:517:5ed7:d28f with SMTP id d75a77b69052e-519c4de0e85mr37505931cf.25.1781773427916;
-        Thu, 18 Jun 2026 02:03:47 -0700 (PDT)
-X-Received: by 2002:a05:622a:22a4:b0:517:5ed7:d28f with SMTP id d75a77b69052e-519c4de0e85mr37505371cf.25.1781773427211;
-        Thu, 18 Jun 2026 02:03:47 -0700 (PDT)
-Received: from shivania.lvn.broadcom.net ([192.19.161.250])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-517fb61eaf4sm191285561cf.4.2026.06.18.02.03.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Jun 2026 02:03:46 -0700 (PDT)
-From: Shivani Agarwal <shivani.agarwal@broadcom.com>
-To: stable@vger.kernel.org,
-	gregkh@linuxfoundation.org
-Cc: pablo@netfilter.org,
-	fw@strlen.de,
-	phil@nwl.cc,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	ajay.kaher@broadcom.com,
-	alexey.makhalov@broadcom.com,
-	vamsi-krishna.brahmajosyula@broadcom.com,
-	yin.ding@broadcom.com,
-	tapas.kundu@broadcom.com,
-	Yiming Qian <yimingqian591@gmail.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Shivani Agarwal <shivani.agarwal@broadcom.com>
-Subject: [PATCH v6.6-v6.1] netfilter: nf_tables: always walk all pending catchall elements
-Date: Thu, 18 Jun 2026 01:34:38 -0700
-Message-Id: <20260618083438.1269242-1-shivani.agarwal@broadcom.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1781772215; c=relaxed/simple;
+	bh=TvHusb0g939oPosC320VvvM65kScmHjEVsYI8sTCMWE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ZAwmACCV2JwL+at9FtJsYY1x+xYK3CsJzmqzZAoIxb82aYahnkkWuZi/qaIGDHBXi2H3QAcb1fZlhznF5ftZE1NAKkDYLOp2z1klqbmEqw8Up2BDEcswN6ei9zVJS4usL94cig+sO7oolA8qcWkP2J8u/R+bWIgUiHRYn3nB80w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; arc=none smtp.client-ip=195.135.223.131
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id D9A5775EE4;
+	Thu, 18 Jun 2026 08:43:32 +0000 (UTC)
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 95726779AB;
+	Thu, 18 Jun 2026 08:43:32 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id iGVEI7SvM2pAPwAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Thu, 18 Jun 2026 08:43:32 +0000
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: javierm@redhat.com,
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	airlied@gmail.com,
+	simona@ffwll.ch
+Cc: dri-devel@lists.freedesktop.org,
+	sashiko-reviews@lists.linux.dev,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	stable@vger.kernel.org
+Subject: [PATCH v2 1/4] drm/sysfb: Do not page-align visible size of the framebuffer
+Date: Thu, 18 Jun 2026 10:41:57 +0200
+Message-ID: <20260618084327.46567-2-tzimmermann@suse.de>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260618084327.46567-1-tzimmermann@suse.de>
+References: <20260618084327.46567-1-tzimmermann@suse.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -120,97 +73,82 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Spam-Flag: NO
+X-Spam-Score: -4.00
+X-Spam-Level: 
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-7.66 / 15.00];
-	WHITELIST_DMARC(-7.00)[broadcom.com:D:+];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [0.14 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[broadcom.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[broadcom.com:s=google];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
+	DMARC_POLICY_SOFTFAIL(0.10)[suse.de : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-267068-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[22];
-	FREEMAIL_CC(0.00)[netfilter.org,strlen.de,nwl.cc,davemloft.net,google.com,kernel.org,redhat.com,vger.kernel.org,broadcom.com,gmail.com];
+	FORGED_RECIPIENTS(0.00)[m:javierm@redhat.com,m:maarten.lankhorst@linux.intel.com,m:mripard@kernel.org,m:airlied@gmail.com,m:simona@ffwll.ch,m:dri-devel@lists.freedesktop.org,m:sashiko-reviews@lists.linux.dev,m:tzimmermann@suse.de,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-267053-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:pablo@netfilter.org,m:fw@strlen.de,m:phil@nwl.cc,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:horms@kernel.org,m:netfilter-devel@vger.kernel.org,m:coreteam@netfilter.org,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:ajay.kaher@broadcom.com,m:alexey.makhalov@broadcom.com,m:vamsi-krishna.brahmajosyula@broadcom.com,m:yin.ding@broadcom.com,m:tapas.kundu@broadcom.com,m:yimingqian591@gmail.com,m:sashal@kernel.org,m:shivani.agarwal@broadcom.com,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[shivani.agarwal@broadcom.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[shivani.agarwal@broadcom.com,stable@vger.kernel.org];
+	FREEMAIL_TO(0.00)[redhat.com,linux.intel.com,kernel.org,gmail.com,ffwll.ch];
+	FORGED_SENDER(0.00)[tzimmermann@suse.de,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[broadcom.com:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,broadcom.com:dkim,broadcom.com:email,broadcom.com:mid,broadcom.com:from_mime,strlen.de:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[tzimmermann@suse.de,stable@vger.kernel.org];
 	ALIAS_RESOLVED(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	R_DKIM_NA(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	RCPT_COUNT_SEVEN(0.00)[9];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: CA10169EB7C
+X-Rspamd-Queue-Id: 8B96C69E887
 
-From: Florian Westphal <fw@strlen.de>
+Only return the actually visible size of the system framebuffer in
+drm_sysfb_get_visible_size_si(). Drivers use this size value for
+reserving access to framebuffer memory. Increasing the value can
+make later attempts to do so fail.
 
-[ Upstream commit 7cb9a23d7ae40a702577d3d8bacb7026f04ac2a9 ]
-
-During transaction processing we might have more than one catchall element:
-1 live catchall element and 1 pending element that is coming as part of the
-new batch.
-
-If the map holding the catchall elements is also going away, its
-required to toggle all catchall elements and not just the first viable
-candidate.
-
-Otherwise, we get:
- WARNING: ./include/net/netfilter/nf_tables.h:1281 at nft_data_release+0xb7/0xe0 [nf_tables], CPU#2: nft/1404
- RIP: 0010:nft_data_release+0xb7/0xe0 [nf_tables]
- [..]
- __nft_set_elem_destroy+0x106/0x380 [nf_tables]
- nf_tables_abort_release+0x348/0x8d0 [nf_tables]
- nf_tables_abort+0xcf2/0x3ac0 [nf_tables]
- nfnetlink_rcv_batch+0x9c9/0x20e0 [..]
-
-Fixes: 628bd3e49cba ("netfilter: nf_tables: drop map element references from preparation phase")
-Reported-by: Yiming Qian <yimingqian591@gmail.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-[ Shivani: Modified to apply on v6.6.y-v6.1.y ]
-Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Fixes: 32ae90c66fb6 ("drm/sysfb: Add efidrm for EFI displays")
+Fixes: a84eb6abe2b6 ("drm/sysfb: Add vesadrm for VESA displays")
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Javier Martinez Canillas <javierm@redhat.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v6.16+
 ---
- net/netfilter/nf_tables_api.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/gpu/drm/sysfb/drm_sysfb_screen_info.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 196ac4e76..0581f6479 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -620,7 +620,6 @@ static void nft_map_catchall_deactivate(const struct nft_ctx *ctx,
+diff --git a/drivers/gpu/drm/sysfb/drm_sysfb_screen_info.c b/drivers/gpu/drm/sysfb/drm_sysfb_screen_info.c
+index 749290196c6a..361b7233600c 100644
+--- a/drivers/gpu/drm/sysfb/drm_sysfb_screen_info.c
++++ b/drivers/gpu/drm/sysfb/drm_sysfb_screen_info.c
+@@ -67,7 +67,7 @@ EXPORT_SYMBOL(drm_sysfb_get_stride_si);
+ u64 drm_sysfb_get_visible_size_si(struct drm_device *dev, const struct screen_info *si,
+ 				  unsigned int height, unsigned int stride, u64 size)
+ {
+-	u64 vsize = PAGE_ALIGN(height * stride);
++	u64 vsize = height * stride;
  
- 		elem.priv = catchall->elem;
- 		nft_setelem_data_deactivate(ctx->net, set, &elem);
--		break;
- 	}
+ 	return drm_sysfb_get_validated_size0(dev, "visible size", vsize, size);
  }
- 
-@@ -5241,7 +5240,6 @@ static void nft_map_catchall_activate(const struct nft_ctx *ctx,
- 
- 		elem.priv = catchall->elem;
- 		nft_setelem_data_activate(ctx->net, set, &elem);
--		break;
- 	}
- }
- 
 -- 
-2.53.0
+2.54.0
 
 
