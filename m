@@ -1,147 +1,183 @@
-Return-Path: <stable+bounces-267074-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267075-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id A2LBFgS6M2oZFgYAu9opvQ
-	(envelope-from <stable+bounces-267074-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 11:27:32 +0200
+	id bf44LoO5M2r9FQYAu9opvQ
+	(envelope-from <stable+bounces-267075-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 11:25:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA4A069EDB4
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 11:27:31 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E4E769ED78
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 11:25:23 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YSwp5csZ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267074-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267074-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=qTAvaI3H;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267075-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267075-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=reject) header.from=mailbox.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7EFAD30E0D57
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 09:22:13 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3D4E9303AFB8
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 09:25:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E2F43D47B5;
-	Thu, 18 Jun 2026 09:22:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AC3F3D8914;
+	Thu, 18 Jun 2026 09:25:12 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCCA63C5DBA;
-	Thu, 18 Jun 2026 09:22:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12E683D7D8C
+	for <stable@vger.kernel.org>; Thu, 18 Jun 2026 09:25:03 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781774525; cv=none; b=ggQLHl3Xb56dr2/miZjuMJ2lN9lhLgawPxPehao7IQG+MKvBO+XJ8cQCMfISA0V8HegSHcX1KMwhTdQLVLcSecSy2dPmOR28MghvRB/FvjXyEhVWb4WqyzhZLtLLdYF1cG33d8rQk3Z2waCwUOMh4+ULNyZOCE/mhmJcd3SCs2c=
+	t=1781774711; cv=none; b=eXFMQFUKzjOIk9Ax5qO9/7DlSHR9ovCQas1RKsniqI//T1T3Zx0Q/SzsJv2FxNYCMjbGdo20bg/ARZ01++jCE1XywDJJQTZNRnQuVUfGSDJs1SpC3bmeTDGoDEBbEoUq5n4g0CKTK9DMHS6Y1Mnm0pLkODXotqEfOO5c/FmlpSE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781774525; c=relaxed/simple;
-	bh=MbPWjRUf/gRHlRilzCV7APbvVzO7gSq3myyNmmtRYOc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jd7Jva+4nEeQcFeAriIfVZWk5x8dnt2dHgXMOA7LuR4rG06nQ1ehSeKZ3FXn3YHxUzB0vLjVWDZJKZux8ITnwfDnF1+ePZDraUN55eSZ130HH/lRFhMp1rUbGBP4dY1TjPiOoB3/VMFSUXjwyMmOVpxvrqAL6eU35+/Rniv/RlE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YSwp5csZ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DE001F00A3A;
-	Thu, 18 Jun 2026 09:22:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781774524;
-	bh=fa1YYlGkltIgjHpqfoqi7k9iBQEAbJ8vTgNEroVuY9I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=YSwp5csZN+Y3+vwnpxpSHCoq2gC39DvV77NePEnEfzCcHL5be79JeYXXCpyupWgAi
-	 +3qx2AcqReAT85/HxxNrF4B6upV9Vgo/RnUsEYaz4cz9WAkn1wGagC9tlMEAMsUcQ5
-	 dCvPc8xFygRYqxXYyJjgiajWboF2LCmANKUu/7z/DL7UCN8omkperqkIqVu2EJevfo
-	 sC+kHFBdn6hPjrtmZO+eyQBkxWGrW9ZaZ0qObBt/kXpKf2n99Z30fR+gN0dCdF4Y0v
-	 DV3TMvIRNOXMWz5dfQ2zCBAnLSwHhDm6oWk7SP2tgC6s+f/EQ4fHADJH5PInYah7l2
-	 gyHtiomXiCfCA==
-Date: Thu, 18 Jun 2026 10:21:59 +0100
-From: Simon Horman <horms@kernel.org>
-To: Ross Porter <ross.porter@canonical.com>
-Cc: linux-kselftest@vger.kernel.org, netdev@vger.kernel.org,
-	stable@vger.kernel.org,
-	Edoardo Canepa <edoardo.canepa@canonical.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Shuah Khan <shuah@kernel.org>, Oscar Maes <oscmaes92@gmail.com>,
-	Brett A C Sheffield <bacs@librecast.net>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/1] selftests: net: fix file owner for
- broadcast_ether_dst test
-Message-ID: <20260618092159.GI827683@horms.kernel.org>
-References: <20260610062230.71573-1-ross.porter@canonical.com>
- <20260610062230.71573-2-ross.porter@canonical.com>
+	s=arc-20240116; t=1781774711; c=relaxed/simple;
+	bh=urG1iZTE5pMhTITDBPpLAnh71/kpYVN05V0eeMNJzkg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=X/T2InRqdsiYBQIU4ljXG5ZBmQ1obDTC19ns74gT6ge4J8PfnwSs6pv50yFZmDB9g9rIhgIQJUpObAbR1unFrKAEdSIzG192ztmahMWAwNeKvhHajthjh7UxiS2/QcnKaEStOB7mWRk5G2RsQS/nYgJUY5U5aFWTCa8CXTK52cU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=qTAvaI3H; arc=none smtp.client-ip=80.241.56.161
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [10.196.197.102])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4ggwKy2sknz9tsq;
+	Thu, 18 Jun 2026 11:24:54 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1781774694;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=jQyI2dSUVTbIxU9Z89sIcmzDm/G1DUgMHNgWI4ZJ5/k=;
+	b=qTAvaI3HKCPIAYsKjyBofzfFDje80NOiTqnRWVgGELAxvZdo3vL4ARJhwNO/BP0uhxbcQ4
+	XaFoZoXbAFpvBBJOeEBjbl5utDzlPLQEp5XHPDJUUsxdcGVKbUw/XEcEuzwTt15SEcEv+b
+	kH4PLI4gJ0Jzp3xTkGZ53i6iJKuAe/qm8OY1fMyaiiRy9GWy1QSL2h+kfmN67niTHIB7XE
+	TJuKKgoSCTZupEfDs+9KPPNFL70RV3rRuMcJCJmembYPcWBIxpJzXfDRWI3GiMxkqw/1Tg
+	FIZYIkzDoEAX2EyuKJJa8dLEDjEdBoCQFabTSBsw/ZYI7vphhPv6fwc2xbxfAw==
+Message-ID: <d177cd76-4f98-4a23-b461-5fc0c0dd521d@mailbox.org>
+Date: Thu, 18 Jun 2026 11:24:49 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260610062230.71573-2-ross.porter@canonical.com>
+Subject: Re: [PATCH 2/3] drm/amd/display: check GRPH_FLIP status before
+ sending event
+To: Leo Li <sunpeng.li@amd.com>
+Cc: Harry.Wentland@amd.com, mario.limonciello@amd.com, wiagn233@outlook.com,
+ sysdadmin@m1k.cloud, timur.kristof@gmail.com, xaver.hugl@kde.org,
+ mario.kleiner.de@gmail.com, stable@vger.kernel.org,
+ amd-gfx@lists.freedesktop.org
+References: <20260616201828.389985-1-sunpeng.li@amd.com>
+ <20260616201828.389985-3-sunpeng.li@amd.com>
+ <a74f1233-d63f-4bcb-a379-3c9a6332cfb4@mailbox.org>
+ <75732f3e-8ffd-4cac-b205-8f6cf705daab@mailbox.org>
+ <7bf196dd-c43a-44b5-91e2-ee7ab40fd6f5@amd.com>
+From: =?UTF-8?Q?Michel_D=C3=A4nzer?= <michel.daenzer@mailbox.org>
+Content-Language: en-CA
+In-Reply-To: <7bf196dd-c43a-44b5-91e2-ee7ab40fd6f5@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-MBO-RS-META: xun9c4djyi6xzuuhzar54e78hjto4g44
+X-MBO-RS-ID: 50ad6863b3a1faeff7c
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-5.16 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	DMARC_POLICY_ALLOW(-0.50)[mailbox.org,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[mailbox.org:s=mail20150812];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-267075-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-267074-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:ross.porter@canonical.com,m:linux-kselftest@vger.kernel.org,m:netdev@vger.kernel.org,m:stable@vger.kernel.org,m:edoardo.canepa@canonical.com,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:shuah@kernel.org,m:oscmaes92@gmail.com,m:bacs@librecast.net,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	FORWARDED(0.00)[lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[horms@kernel.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[vger.kernel.org,canonical.com,davemloft.net,google.com,kernel.org,redhat.com,gmail.com,librecast.net];
+	FREEMAIL_CC(0.00)[amd.com,outlook.com,m1k.cloud,gmail.com,kde.org,vger.kernel.org,lists.freedesktop.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:sunpeng.li@amd.com,m:Harry.Wentland@amd.com,m:mario.limonciello@amd.com,m:wiagn233@outlook.com,m:sysdadmin@m1k.cloud,m:timur.kristof@gmail.com,m:xaver.hugl@kde.org,m:mario.kleiner.de@gmail.com,m:stable@vger.kernel.org,m:amd-gfx@lists.freedesktop.org,m:timurkristof@gmail.com,m:mariokleinerde@gmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[michel.daenzer@mailbox.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[horms@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[michel.daenzer@mailbox.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[mailbox.org:+];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[horms.kernel.org:mid,vger.kernel.org:from_smtp,canonical.com:email,launchpad.net:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,amd.com:email,mailbox.org:dkim,mailbox.org:mid,mailbox.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: DA4A069EDB4
+X-Rspamd-Queue-Id: 5E4E769ED78
 
-On Wed, Jun 10, 2026 at 06:22:29PM +1200, Ross Porter wrote:
-> Ensure the output file is always owned by root (even if tcpdump was 
-> compiled with `--with-user`), by passing the `-Z root` argument when 
-> invoking it.
-
-Hi Ross,
-
-I think that the motivation, described in the cover letter,
-belongs here so it can be found more easily using git..
-
-Also, as there is only one patch in the series, the cover letter
-could be dropped.
-
-And lastly, this should be targeted at net as it's a but fix
-for code present there.
-
-Subject: [PATCH net] ...
-
-For more information on the Networking development workflow see
-https://docs.kernel.org/process/maintainer-netdev.html
-
+On 6/17/26 21:27, Leo Li wrote:
+> On 2026-06-17 04:56, Michel Dänzer wrote:
+>> On 6/17/26 10:07, Michel Dänzer wrote:
+>>> On 6/16/26 22:18, sunpeng.li@amd.com wrote:
+>>>>
+>>>> * Add a flip_programmed completion. Arm it (reinit_completion) under
+>>>>   event_lock together with prepare_flip_isr(), and signal it
+>>>>   (complete_all) right after update_planes_and_stream_adapter() programs
+>>>>   the flip. It starts in the "completed" state at crtc init.
+>>>
+>>> Is the completion really necessary? Wouldn't moving the acrtc->pflip_status = AMDGPU_FLIP_SUBMITTED assignment after the flip programming suffice?
 > 
-> Cc: stable@vger.kernel.org
-> Reported-by: Edoardo Canepa <edoardo.canepa@canonical.com>
-> Closes: https://bugs.launchpad.net/ubuntu-kernel-tests/+bug/2129815
-> Fixes: bf59028ea8d4 ("selftests: net: add test for destination in broadcast packets")
-> Suggested-by: Edoardo Canepa <edoardo.canepa@canonical.com>
-> Tested-by: Ross Porter <ross.porter@canonical.com>
-> Signed-off-by: Ross Porter <ross.porter@canonical.com>
+> [...]
+> >> Or even just moving the unlocking of event_lock after the flip programming.
+> 
+> I initially thought about doing so. But the possibility of update_planes_and_stream_adapter() sleeping made me think otherwise.
 
-...
+That is a problem.
+
+If the flip programming could be done while holding event_lock, this could be made 100% reliable, avoiding the issue below.
+
+
+> I suppose the worst case scenario with arming acrtc->event/pflip_status after programming is we deliver the event a frame later than it needs to be (which is also the case with the current patch), thus stalling the next commit via flip_done, and making userspace think it missed the programming deadline.
+
+Yep. Hopefully won't happen too often in practice?
+
+
+>>>> diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+>>>> index 00f7a3b445ebf..571198c46c0c2 100644
+>>>> --- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+>>>> +++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+>>>> @@ -4384,17 +4384,17 @@ static void amdgpu_dm_commit_planes(struct drm_atomic_state *state,
+>>>>  		 * from 0 -> n planes we have to skip a hardware generated event
+>>>>  		 * and rely on sending it from software.
+>>>>  		 */
+>>>> +		spin_lock_irqsave(&pcrtc->dev->event_lock, flags);
+>>>>  		if (acrtc_attach->base.state->event &&
+>>>>  		    acrtc_state->active_planes > 0) {
+>>>>  			drm_crtc_vblank_get(pcrtc);
+>>>>  
+>>>> -			spin_lock_irqsave(&pcrtc->dev->event_lock, flags);
+>>>> -
+>>>>  			WARN_ON(acrtc_attach->pflip_status != AMDGPU_FLIP_NONE);
+>>>> +			/* Arm flip completion handling and event delivery */
+>>>> +			reinit_completion(&acrtc_attach->dm_irq_params.flip_programmed);
+>>>>  			prepare_flip_isr(acrtc_attach);
+>>>> -
+>>>> -			spin_unlock_irqrestore(&pcrtc->dev->event_lock, flags);
+>>>>  		}
+>>>> +		spin_unlock_irqrestore(&pcrtc->dev->event_lock, flags);
+>>>>  
+>>>>  		if (acrtc_state->stream) {
+>>>>  			if (acrtc_state->freesync_vrr_info_changed)
+>>>
+>>> Pulling event_lock out of the if block doesn't make any difference (other than locking it unnecessarily when the block isn't entered 🙂, does it?
+> 
+> FWIU the crtc_state->event pointer itself should be guarded under event_lock, since it can be NULL'd concurrently.
+
+Gotcha, I was fooled by the acrtc_attach->base.state->event disguise. :)
+
 
 -- 
-pw-bot: changes-requested
+Earthling Michel Dänzer       \        GNOME / Xwayland / Mesa developer
+https://redhat.com             \               Libre software enthusiast
 
