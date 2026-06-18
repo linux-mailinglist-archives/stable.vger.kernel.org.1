@@ -1,170 +1,236 @@
-Return-Path: <stable+bounces-267116-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267118-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 0fcAB0TgM2pZHgYAu9opvQ
-	(envelope-from <stable+bounces-267116-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 14:10:44 +0200
+	id 28uFNznlM2opHwYAu9opvQ
+	(envelope-from <stable+bounces-267118-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 14:31:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E98E69FF00
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 14:10:43 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5890E6A0105
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 14:31:53 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=FdRkwK9C;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267116-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267116-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=suse.de (policy=none);
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267118-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-267118-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id ABB7B3067F08
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 12:07:30 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5B2CD30258B6
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 12:31:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1396B3F1AC5;
-	Thu, 18 Jun 2026 12:07:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F21A3563E1;
+	Thu, 18 Jun 2026 12:31:51 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA85232BF5C
-	for <stable@vger.kernel.org>; Thu, 18 Jun 2026 12:07:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E45A637AA65
+	for <stable@vger.kernel.org>; Thu, 18 Jun 2026 12:31:49 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781784449; cv=none; b=t27td1ZP9mvGclBYtIQoPwBwn2FLeoeKVYIG/Q2amV/N2PubfFv57F0Oo09tiTJ4+OB/lqMOsXm4NvW0WOGVFSN6DIb6LenwEzJ2QfMfPD8zDS6lZs0McPi62JHbEG2P535sA7Cg6wltMVaQHlQeag6ZmmAk5yqlgtODfm2Ajac=
+	t=1781785911; cv=none; b=imBhinwRtcR7l6zNjTHChEzfQYG/o9tEhMYoaEM8BuMJp6e6cOiMgl/sO77abNCQ2PO9Bt3eWVf9k22bsrzZTpqgDpHdzQjSjNQo1pgwjux1yC4iYariYH5phcTWX5GzO0WIQxvR7w5LfCyVQwPa+sJ9t/2aJE8jOCb9uS4jvG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781784449; c=relaxed/simple;
-	bh=rvUJtS+4F0/HkiQYZkn4KPT8KMj4ZyTWCGc1dug5DVM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sqvJFRexrX4K5glludWFtWL1EJriAzzjrZyh2jDtxsUo1a7w9t9Q+DOvTLbs7BPCfDuzxsK0hiCSPOJUT+2YeYckMdid+8JbEr4H9+ZeYrft5Y8DAT1qpKxgTCK8CJ9yuXgh2dfv+T53JDFn3obdMLN+Bg2oi0ZoxccOhRpOrEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FdRkwK9C; arc=none smtp.client-ip=209.85.128.48
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-490c1915793so6682725e9.2
-        for <stable@vger.kernel.org>; Thu, 18 Jun 2026 05:07:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781784447; x=1782389247; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=uAFu3iieP1epU57dc1h0pgsCpphj+R9P3j26Urr6Nvk=;
-        b=FdRkwK9CWg+IcwCXunKeexBh+9wT/hagtNvz0B5dvEjvxFqiGM0iEF3Mdw6ypcbXsg
-         647gidMAmKVwJ4QyRqRZ5H7Jk4Ky4nsGfwI2eZTlofsxClH5+AhuBTEdb3jUXxFoxsfr
-         Cnqsm5jhWb9gDe4PHFMn5eFCwludvBhZpoZgybzEP88lpihzNUvg/DYqtlHGWsOioGwj
-         KjjWwEl3z9ExQavewagH7pt5XGC6CFsFgkrYyHxY7/tz5IW1enMMyOmGKaHL34y5TXOO
-         O2N4wKfNw5Zo/tKT2bpQ7yz8RUCU4YJw0v3zUHmdjpR/l148ysQVgB1WoXZoA3/EWGBj
-         ujFw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781784447; x=1782389247;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=uAFu3iieP1epU57dc1h0pgsCpphj+R9P3j26Urr6Nvk=;
-        b=DSrnm1PEo9hc8f6tbNnNDvjKgMB0H+8zXixYMcVmsONH7CWGfdwpuODOCppDyvgVAS
-         q29yAQSI6VOlYs/xIdH6Oo6I7HkRovsyxGYzCE/n1RxdAbbm+fqmMFOzPWMeMTSzb2TO
-         zUn+pv1NCBFKqrBfxVDvzto41zCRyxApvUn9fVRFg5y0xiu2/35gkFYoWq7Wfg1TYN51
-         mnVzr4IPlJDi47VRD1Ng2i2MVVmB3JPnMSN7qU9ysXDBeUAuSqAAafsdJuDck31f5tW1
-         EXwidv6pf5rgQPQdO7a4yxCcHcnKIPxYooC7iFiYmHDkE+gLXyjZLnj5ZzMalLOkdU1U
-         9LyA==
-X-Forwarded-Encrypted: i=1; AFNElJ/USpdcoR9DRqv7ATl59W+c5iaiy4iPrrCEnlU4IY8ZUaH8ElSkmM0yJVDdnHnFo1PNE4O8x8A=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxeJTtQ+8YPPXnVSY3iY9QYK6Hq0sjDO602REJtgfXemE4VAf74
-	MW9lTMenu+MNilAUZkKXA3gnxXWICxHOzJQB9VTYT2vTXgCa+4uU0/sv
-X-Gm-Gg: AfdE7cn0M9pxPXgF0Ml9J2sFmhNJXtEuAZzfu5q/gRBdWvbrb6/qrv+cTPrl+K/6/oF
-	R7/Ts3sj3/mvlLa7BjgoM8SCyHJuzu3AoqYLbzlPCeJzxKQADsgW3OY5ILMogRNO7tmPvI7PDAS
-	GkQ/zo52yCZ0HGNuJt3zLpOLxBY78uxrTtfWFaCO7HN34NHwPjAPDHQ07ouz/6xSXNQfydZ+W55
-	Gg440MnQ6Jdad9FUBMaOP6MORQe06NFpYnvFdpvG3YRt3NbmfHG7RgUeGu88ZsNAS0dpJ0I6ipR
-	2D7OGqcyotjBBputZtfRKPmP+3cJsQmFDvCmVNwNjC/vWlYPBgZQwlTZv85Niu8r2JD5c/Qiy4z
-	A/xoTuYIjoCcPnoZupgX+SYecSxHjmy8eZo/miKE/AgCo0ELh036+qe3/ACcPyquLsI/O4zK6ee
-	BnlX7KtL3VE6SgQoXnRcenhDwaPE9dkA==
-X-Received: by 2002:a05:600c:c178:b0:490:4b89:535d with SMTP id 5b1f17b1804b1-49234100907mr131154445e9.1.1781784446971;
-        Thu, 18 Jun 2026 05:07:26 -0700 (PDT)
-Received: from [192.168.1.21] ([41.140.50.249])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4922fa47d1csm243843195e9.4.2026.06.18.05.07.24
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 18 Jun 2026 05:07:25 -0700 (PDT)
-Message-ID: <93a18d21-cc98-4dae-9433-a6a68d88d0ee@gmail.com>
-Date: Thu, 18 Jun 2026 13:07:23 +0100
+	s=arc-20240116; t=1781785911; c=relaxed/simple;
+	bh=mDZcyD6Qym7NLV78zpK4l6Yxyrba1PoSuj/nb7H/FI8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=sdx951OVnz49I4fqv+OfSyBZ+9WMm1aaFsV48Vkw/58tNalpcK+v/YYgWVloFc8mTWvHcXafciVHYnqfnFy2ru51N/5DeN2D+Y7TI38+k3pMNKOdxJaPZl27zX26QB7S9aEeZFA1aWoI52KEntwLSMWiHdliz8rGxQtfsjUkbM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; arc=none smtp.client-ip=195.135.223.130
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 566626D354;
+	Thu, 18 Jun 2026 12:31:48 +0000 (UTC)
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E2822779AB;
+	Thu, 18 Jun 2026 12:31:47 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id cLQENjPlM2rTJQAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Thu, 18 Jun 2026 12:31:47 +0000
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: shiyongbang@huawei.com,
+	tiantao6@hisilicon.com,
+	kong.kongxinwei@hisilicon.com,
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	airlied@gmail.com,
+	simona@ffwll.ch
+Cc: dri-devel@lists.freedesktop.org,
+	sashiko-reviews@lists.linux.dev,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Rongrong Zou <zourongrong@gmail.com>,
+	Sean Paul <seanpaul@chromium.org>,
+	Xinliang Liu <xinliang.liu@linaro.org>,
+	Dmitry Baryshkov <lumag@kernel.org>,
+	Baihan Li <libaihan@huawei.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v4 1/6] drm/hibmc: Use drm_atomic_helper_check_plane_state()
+Date: Thu, 18 Jun 2026 14:28:39 +0200
+Message-ID: <20260618123142.92298-2-tzimmermann@suse.de>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260618123142.92298-1-tzimmermann@suse.de>
+References: <20260618123142.92298-1-tzimmermann@suse.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.18 000/325] 6.18.36-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
- sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
- hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
- sr@sladewatkins.com
-References: <20260616145057.827196531@linuxfoundation.org>
-Content-Language: en-US
-From: Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Spam-Flag: NO
+X-Spam-Score: -4.00
+X-Spam-Level: 
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [0.14 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	DMARC_POLICY_SOFTFAIL(0.10)[suse.de : SPF not aligned (relaxed), No valid DKIM,none];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-267116-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[16];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,m:patches@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:torvalds@linux-foundation.org,m:akpm@linux-foundation.org,m:linux@roeck-us.net,m:shuah@kernel.org,m:patches@kernelci.org,m:lkft-triage@lists.linaro.org,m:pavel@nabladev.com,m:jonathanh@nvidia.com,m:sudipm.mukherjee@gmail.com,m:rwarsow@gmx.de,m:conor@kernel.org,m:hargar@microsoft.com,m:broonie@kernel.org,m:achill@achill.org,m:sr@sladewatkins.com,m:sudipmmukherjee@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[ffainelli@gmail.com,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	RCPT_COUNT_TWELVE(0.00)[19];
+	TAGGED_FROM(0.00)[bounces-267118-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:shiyongbang@huawei.com,m:tiantao6@hisilicon.com,m:kong.kongxinwei@hisilicon.com,m:maarten.lankhorst@linux.intel.com,m:mripard@kernel.org,m:airlied@gmail.com,m:simona@ffwll.ch,m:dri-devel@lists.freedesktop.org,m:sashiko-reviews@lists.linux.dev,m:tzimmermann@suse.de,m:zourongrong@gmail.com,m:seanpaul@chromium.org,m:xinliang.liu@linaro.org,m:lumag@kernel.org,m:libaihan@huawei.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[tzimmermann@suse.de,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[lists.freedesktop.org,lists.linux.dev,suse.de,gmail.com,chromium.org,linaro.org,kernel.org,huawei.com,vger.kernel.org];
+	FREEMAIL_TO(0.00)[huawei.com,hisilicon.com,linux.intel.com,kernel.org,gmail.com,ffwll.ch];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tzimmermann@suse.de,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	R_DKIM_NA(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ffainelli@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,broadcom.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,linaro.org:email,huawei.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 6E98E69FF00
+X-Rspamd-Queue-Id: 5890E6A0105
 
+Call drm_atomic_helper_check_plane_state() from the primary plane's
+atomic-check helper and replace the custom implementation.
 
+All plane's implementations of atomic_check should call the shared
+_check_plane_state() helper first. It adjusts the plane state for
+correct positioning, rotation and scaling of the plane. Do this
+even if the plane's CRTC has been disabled by setting the parameter
+can_update_disabled. The original code returned early in this case,
+but it's safe to so and cleaner to have all plane state initialized.
 
-On 6/16/2026 7:56 AM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.18.36 release.
-> There are 325 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Thu, 18 Jun 2026 14:49:57 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.18.36-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.18.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+As we don't set can_position, drm_atomic_helper_check_plane_state()'s
+visibility check tests if the plane covers all of the CRTC. This is
+a small change from the original code, which tested if the plane is
+exactly the size of the CRTC. With the new test, the plane still has
+to cover all of the CRTC, but can be larger than the CRTC's size. A
+later patch can fully implement this feature in hibmc.
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENEIRC:
+If the plane is disabled, the helper clears the visibility flag in the
+plane state. On errors or if the plane is not visible, the atomic-check
+helper can return early. Implement all this in hibmc and drop the custom
+code that does some of it.
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+v2:
+- extend the commit description (Yongbang)
+
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Fixes: da52605eea8f ("drm/hisilicon/hibmc: Add support for display engine")
+Reviewed-by: Yongbang Shi <shiyongbang@huawei.com>
+Cc: Rongrong Zou <zourongrong@gmail.com>
+Cc: Sean Paul <seanpaul@chromium.org>
+Cc: Xinliang Liu <xinliang.liu@linaro.org>
+Cc: Dmitry Baryshkov <lumag@kernel.org>
+Cc: Baihan Li <libaihan@huawei.com>
+Cc: Yongbang Shi <shiyongbang@huawei.com>
+Cc: <stable@vger.kernel.org> # v4.10+
+---
+ .../gpu/drm/hisilicon/hibmc/hibmc_drm_de.c    | 46 ++++++-------------
+ 1 file changed, 14 insertions(+), 32 deletions(-)
+
+diff --git a/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_de.c b/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_de.c
+index 3066dc9ebc64..7c0b88c774b5 100644
+--- a/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_de.c
++++ b/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_de.c
+@@ -72,46 +72,28 @@ static int hibmc_get_best_clock_idx(const struct drm_display_mode *mode)
+ static int hibmc_plane_atomic_check(struct drm_plane *plane,
+ 				    struct drm_atomic_commit *state)
+ {
+-	struct drm_plane_state *new_plane_state = drm_atomic_get_new_plane_state(state,
+-										 plane);
+-	struct drm_framebuffer *fb = new_plane_state->fb;
+-	struct drm_crtc *crtc = new_plane_state->crtc;
+-	struct drm_crtc_state *crtc_state;
+-	u32 src_w = new_plane_state->src_w >> 16;
+-	u32 src_h = new_plane_state->src_h >> 16;
+-
+-	if (!crtc || !fb)
+-		return 0;
++	struct drm_plane_state *new_plane_state =
++		drm_atomic_get_new_plane_state(state, plane);
++	struct drm_crtc_state *new_crtc_state = NULL;
++	int ret;
+ 
+-	crtc_state = drm_atomic_get_crtc_state(state, crtc);
+-	if (IS_ERR(crtc_state))
+-		return PTR_ERR(crtc_state);
++	if (new_plane_state->crtc)
++		new_crtc_state = drm_atomic_get_new_crtc_state(state, new_plane_state->crtc);
+ 
+-	if (src_w != new_plane_state->crtc_w || src_h != new_plane_state->crtc_h) {
+-		drm_dbg_atomic(plane->dev, "scale not support\n");
+-		return -EINVAL;
+-	}
+-
+-	if (new_plane_state->crtc_x < 0 || new_plane_state->crtc_y < 0) {
+-		drm_dbg_atomic(plane->dev, "crtc_x/y of drm_plane state is invalid\n");
+-		return -EINVAL;
+-	}
+-
+-	if (!crtc_state->enable)
++	ret = drm_atomic_helper_check_plane_state(new_plane_state, new_crtc_state,
++						  DRM_PLANE_NO_SCALING,
++						  DRM_PLANE_NO_SCALING,
++						  false, true);
++	if (ret)
++		return ret;
++	else if (!new_plane_state->visible)
+ 		return 0;
+ 
+-	if (new_plane_state->crtc_x + new_plane_state->crtc_w >
+-	    crtc_state->adjusted_mode.hdisplay ||
+-	    new_plane_state->crtc_y + new_plane_state->crtc_h >
+-	    crtc_state->adjusted_mode.vdisplay) {
+-		drm_dbg_atomic(plane->dev, "visible portion of plane is invalid\n");
+-		return -EINVAL;
+-	}
+-
+ 	if (new_plane_state->fb->pitches[0] % 128 != 0) {
+ 		drm_dbg_atomic(plane->dev, "wrong stride with 128-byte aligned\n");
+ 		return -EINVAL;
+ 	}
++
+ 	return 0;
+ }
+ 
 -- 
-Florian
+2.54.0
 
 
