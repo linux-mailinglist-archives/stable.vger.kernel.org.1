@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-267177-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267175-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id bj9VKRQeNGrbOwYAu9opvQ
-	(envelope-from <stable+bounces-267177-lists+stable=lfdr.de@vger.kernel.org>)
+	id EW/yIRQeNGraOwYAu9opvQ
+	(envelope-from <stable+bounces-267175-lists+stable=lfdr.de@vger.kernel.org>)
 	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 18:34:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16BD76A19A5
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 18:34:28 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D24F16A19A3
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 18:34:27 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=0leil.net header.s=20231125 header.b=g0fPEter;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267177-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267177-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=0leil.net header.s=20231125 header.b=BU1XZ7FU;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267175-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267175-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=reject) header.from=0leil.net;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 12CB7303B4D0
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 16:34:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4FD99303CEB8
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 16:34:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BD662EDD69;
-	Thu, 18 Jun 2026 16:34:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D345A2EF66B;
+	Thu, 18 Jun 2026 16:34:20 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-8fac.mail.infomaniak.ch (smtp-8fac.mail.infomaniak.ch [83.166.143.172])
+Received: from smtp-bc0a.mail.infomaniak.ch (smtp-bc0a.mail.infomaniak.ch [45.157.188.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6384130C153
-	for <stable@vger.kernel.org>; Thu, 18 Jun 2026 16:34:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F22A83033E8
+	for <stable@vger.kernel.org>; Thu, 18 Jun 2026 16:34:18 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781800466; cv=none; b=CgmWM0EhwNMAwlczXhf9EB8n+FdT3q36kdN+lFXQgk9uuTPXZjoypGnUHzmCRSve1EoW9FaoUoMoogX21P4EwZiG/7VlGCuIVu3BMHa71VFvt/QU3vlBrpN0Lx5HbM2MS1npVF2bLClVOkK9DhGFxCjO2Cn607qGcHyiJ0FExeo=
+	t=1781800460; cv=none; b=dCiXQybA+00M/uKR3uiNJOb2g/3EUOQVueWklVooVgTpA1mWgPtbECM1GegFjulRJU5it3Hw/9n1aPJL7f0AiXlyK5cWCd98Cm0ufK3bDL6mZPyZB4XGp4YZii5tA4oIQnm8CQfw3rndEUWQjnYcIdOMlmV3FaKa2EYcwUjkBhs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781800466; c=relaxed/simple;
-	bh=gvDtyKKRc5B9UEF59xuKQspNmOi26PAt5LZIsgw98KI=;
+	s=arc-20240116; t=1781800460; c=relaxed/simple;
+	bh=ME3ZcMKS/hWLtou4vdCJXrzxiRlawZIdnuFhqaSkM/4=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=a9dtAvIgGDClhiUmQroaLsIQr3XmSkX5g1iP8FQHSsjdnsrr0o/Hg8Tui+wGGO2m++qFUqS2pL83Y/Z3i2nbVCFD1MWL8CkGbaVa2oY9k/5vOEKh5Gttk6T1GlhKTfZmq/ogAXmlQ1irG8g3RJ5xXdkEZmplz6RbtZbtIRwrhco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=0leil.net; spf=pass smtp.mailfrom=0leil.net; dkim=pass (2048-bit key) header.d=0leil.net header.i=@0leil.net header.b=g0fPEter; arc=none smtp.client-ip=83.166.143.172
-Received: from smtp-3-0000.mail.infomaniak.ch (smtp-3-0000.mail.infomaniak.ch [10.4.36.107])
-	by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4gh5sP0Vb8zsVv;
+	 In-Reply-To:To:Cc; b=Vkf/CzcY87FyXKquc+Q0txQdJbKT6wfUdcKawZjNLjUr5BzyBOrrk+nAKuKjqXHCd9cOVH8EGPdIns5t5jb1YMicr7VrukwXZLrdZdLRFK+IDjcr/jHMGWwl2W6yMY8uIXPwIlHP7qbXj2v24b8DGZF5OhdP6U8PtTPnd4NKYas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=0leil.net; spf=pass smtp.mailfrom=0leil.net; dkim=pass (2048-bit key) header.d=0leil.net header.i=@0leil.net header.b=BU1XZ7FU; arc=none smtp.client-ip=45.157.188.10
+Received: from smtp-3-0000.mail.infomaniak.ch (unknown [IPv6:2001:1600:4:17::246b])
+	by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4gh5sP4YSzzt14;
 	Thu, 18 Jun 2026 18:34:17 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=0leil.net;
-	s=20231125; t=1781800456;
-	bh=hqg/IL1ba3qKpxYFJe4fZUb6gzeztPvCmhL1/+z0Agg=;
+	s=20231125; t=1781800457;
+	bh=TkQ3lby2jZ3TWGL6H0BK6IVgs2BEGZiYajsHidsHN40=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=g0fPEterWrHYmuncwppr6AtO1Tqkkw1wkedjki0bDLgYY/DFDgd7DQQSypVng2U57
-	 LdGGQ4AN37FLMRrW+sg8ZxCGOafLdiRRBwf9S3/ODXMdWPQnK4r6mX5wVv/wzAvO6X
-	 h7LVNYuGos303oWf1ENLjnkszKvFRrSllAWdEDNSYWuYnJ+iWR6scjS2b5G3eKmmaq
-	 oYPtITgWqbTXQqDXZ9zOZwfZiXagILDazfUQ9hvjjKvD/aDjO4SacFTB26hxtXTmPO
-	 fFImLWrCuqXC59ug++wbe6KNmYiLjjSCnOL81oIN7OxLhAKWTQfkl3n3NC3Wq7C9lG
-	 5qXAjLseo8PRA==
-Received: from unknown by smtp-3-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4gh5sN1694zhxm;
+	b=BU1XZ7FU7HEG61JK2fZ2/EvFTLUxOZqkMPoc1xq+AAgRvBDUYsFWpFtQ7kPzyliyG
+	 rsx5FJeC6RywRA9N2l0aAL+UCDEQx/JOG/Ef3bDnQKKXbFuJjUyZNdgAoOq0PiDhfm
+	 DH1FikikxfGxxazDO3WrVxANkiKJvQEKJ3NAd+Bnq2v5Qk+8yef6uH0Ovi1Kh3ltbN
+	 cnnA3WJBO7l7Xnyqwniw09eCL9PaPsT2DEJxNv0gPp99bhdflP8ik3fqcQwgV99Oo5
+	 sL/3OreNMzGlLlCy91WZanegT4wGGorKzqCxLG9MY/EVL7/tEAOR4uJRJj+CZU3zSO
+	 eAH125VrWYtVQ==
+Received: from unknown by smtp-3-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4gh5sN5l5czfv2;
 	Thu, 18 Jun 2026 18:34:16 +0200 (CEST)
 From: Quentin Schulz <foss+kernel@0leil.net>
-Date: Thu, 18 Jun 2026 18:34:01 +0200
-Subject: [PATCH 6.12.y v2 1/3] gpiolib: Extract gpiochip_choose_fwnode()
- for wider use
+Date: Thu, 18 Jun 2026 18:34:02 +0200
+Subject: [PATCH 6.12.y v2 2/3] gpiolib: Remove redundant assignment of
+ return variable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,7 +61,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260618-6-12-cve-2026-31732-v2-1-42cc54b7bf04@cherry.de>
+Message-Id: <20260618-6-12-cve-2026-31732-v2-2-42cc54b7bf04@cherry.de>
 References: <20260618-6-12-cve-2026-31732-v2-0-42cc54b7bf04@cherry.de>
 In-Reply-To: <20260618-6-12-cve-2026-31732-v2-0-42cc54b7bf04@cherry.de>
 To: Linus Walleij <linus.walleij@linaro.org>, 
@@ -70,22 +70,21 @@ To: Linus Walleij <linus.walleij@linaro.org>,
 Cc: linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
  Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, 
  stable@vger.kernel.org, Quentin Schulz <quentin.schulz@cherry.de>, 
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
- Mathieu Dubois-Briand <mathieu.dubois-briand@bootlin.com>
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 X-Mailer: b4 0.15-dev-47773
 X-Infomaniak-Routing: alpha
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[0leil.net,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[0leil.net:s=20231125];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-267177-lists,stable=lfdr.de,kernel];
+	TAGGED_FROM(0.00)[bounces-267175-lists,stable=lfdr.de,kernel];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:linus.walleij@linaro.org,m:brgl@bgdev.pl,m:gregkh@linuxfoundation.org,m:linux-gpio@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:bartosz.golaszewski@linaro.org,m:stable@vger.kernel.org,m:quentin.schulz@cherry.de,m:andriy.shevchenko@linux.intel.com,m:mathieu.dubois-briand@bootlin.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:linus.walleij@linaro.org,m:brgl@bgdev.pl,m:gregkh@linuxfoundation.org,m:linux-gpio@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:bartosz.golaszewski@linaro.org,m:stable@vger.kernel.org,m:quentin.schulz@cherry.de,m:andriy.shevchenko@linux.intel.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[foss@0leil.net,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[0leil.net:+];
@@ -98,76 +97,81 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[foss@0leil.net,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[0leil.net:dkim,0leil.net:from_mime,intel.com:email,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,cherry.de:mid,cherry.de:email,bootlin.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[cherry.de:mid,cherry.de:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:email,bgdev.pl:email,0leil.net:dkim,0leil.net:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 16BD76A19A5
+X-Rspamd-Queue-Id: D24F16A19A3
 
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 375790f18396b2ba706e031b150c58cd37b45a11 ]
+[ Upstream commit 550300b9a295a591e0721a31f8c964a4bc08d51c ]
 
-Extract gpiochip_choose_fwnode() for the future use in another function.
+In some functions the returned variable is assigned to 0 and then
+reassigned to the actual value. Remove redundant assignments.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+In one case make it more clear that the assignment is not needed.
+
 Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Tested-by: Mathieu Dubois-Briand <mathieu.dubois-briand@bootlin.com>
-Reviewed-by: Mathieu Dubois-Briand <mathieu.dubois-briand@bootlin.com>
-Link: https://lore.kernel.org/r/20250213195621.3133406-2-andriy.shevchenko@linux.intel.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20250416095645.2027695-9-andriy.shevchenko@linux.intel.com
+Signed-off-by: Bartosz Golaszewski <brgl@bgdev.pl>
 Stable-dep-of: 16fdabe143fc ("gpio: Fix resource leaks on errors in gpiochip_add_data_with_key()")
 Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
 ---
- drivers/gpio/gpiolib.c | 24 ++++++++++++++++--------
- 1 file changed, 16 insertions(+), 8 deletions(-)
+ drivers/gpio/gpiolib.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-index 5c8cd81656963..d48a57b899f79 100644
+index d48a57b899f79..97a32e6f901fc 100644
 --- a/drivers/gpio/gpiolib.c
 +++ b/drivers/gpio/gpiolib.c
-@@ -883,6 +883,21 @@ void *gpiochip_get_data(struct gpio_chip *gc)
- }
- EXPORT_SYMBOL_GPL(gpiochip_get_data);
+@@ -939,7 +939,7 @@ int gpiochip_add_data_with_key(struct gpio_chip *gc, void *data,
+ 	struct gpio_device *gdev;
+ 	unsigned int desc_index;
+ 	int base = 0;
+-	int ret = 0;
++	int ret;
  
-+/*
-+ * If the calling driver provides the specific firmware node,
-+ * use it. Otherwise use the one from the parent device, if any.
-+ */
-+static struct fwnode_handle *gpiochip_choose_fwnode(struct gpio_chip *gc)
-+{
-+	if (gc->fwnode)
-+		return gc->fwnode;
-+
-+	if (gc->parent)
-+		return dev_fwnode(gc->parent);
-+
-+	return NULL;
-+}
-+
- int gpiochip_get_ngpios(struct gpio_chip *gc, struct device *dev)
+ 	/*
+ 	 * First: allocate and populate the internal stat container, and
+@@ -959,11 +959,10 @@ int gpiochip_add_data_with_key(struct gpio_chip *gc, void *data,
+ 
+ 	device_set_node(&gdev->dev, gpiochip_choose_fwnode(gc));
+ 
+-	gdev->id = ida_alloc(&gpio_ida, GFP_KERNEL);
+-	if (gdev->id < 0) {
+-		ret = gdev->id;
++	ret = ida_alloc(&gpio_ida, GFP_KERNEL);
++	if (ret < 0)
+ 		goto err_free_gdev;
+-	}
++	gdev->id = ret;
+ 
+ 	ret = dev_set_name(&gdev->dev, GPIOCHIP_NAME "%d", gdev->id);
+ 	if (ret)
+@@ -2882,7 +2881,7 @@ EXPORT_SYMBOL_GPL(gpiod_direction_output);
+  */
+ int gpiod_enable_hw_timestamp_ns(struct gpio_desc *desc, unsigned long flags)
  {
- 	u32 ngpios = gc->ngpio;
-@@ -942,14 +957,7 @@ int gpiochip_add_data_with_key(struct gpio_chip *gc, void *data,
- 	gc->gpiodev = gdev;
- 	gpiochip_set_data(gc, data);
+-	int ret = 0;
++	int ret;
  
--	/*
--	 * If the calling driver did not initialize firmware node,
--	 * do it here using the parent device, if any.
--	 */
--	if (gc->fwnode)
--		device_set_node(&gdev->dev, gc->fwnode);
--	else if (gc->parent)
--		device_set_node(&gdev->dev, dev_fwnode(gc->parent));
-+	device_set_node(&gdev->dev, gpiochip_choose_fwnode(gc));
+ 	VALIDATE_DESC(desc);
  
- 	gdev->id = ida_alloc(&gpio_ida, GFP_KERNEL);
- 	if (gdev->id < 0) {
+@@ -2915,7 +2914,7 @@ EXPORT_SYMBOL_GPL(gpiod_enable_hw_timestamp_ns);
+  */
+ int gpiod_disable_hw_timestamp_ns(struct gpio_desc *desc, unsigned long flags)
+ {
+-	int ret = 0;
++	int ret;
+ 
+ 	VALIDATE_DESC(desc);
+ 
 
 -- 
 2.54.0
