@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-267025-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267027-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id las/ClSkM2pVEgYAu9opvQ
-	(envelope-from <stable+bounces-267025-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 09:55:00 +0200
+	id DsPnDmikM2pbEgYAu9opvQ
+	(envelope-from <stable+bounces-267027-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 09:55:20 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C28E69E3E1
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 09:54:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B72969E3F2
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 09:55:20 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=eweDyfXi;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267025-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-267025-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=FgiCgM9g;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267027-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-267027-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=uniontech.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8B8D8300361E
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 07:54:58 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8835D30054ED
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 07:55:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C5363D6CAA;
-	Thu, 18 Jun 2026 07:54:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FF313D7D6A;
+	Thu, 18 Jun 2026 07:55:16 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtpbguseast1.qq.com (smtpbguseast1.qq.com [54.204.34.129])
+Received: from smtpbg151.qq.com (smtpbg151.qq.com [18.169.211.239])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD5603BE632
-	for <stable@vger.kernel.org>; Thu, 18 Jun 2026 07:54:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D97C3C942B
+	for <stable@vger.kernel.org>; Thu, 18 Jun 2026 07:55:12 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781769295; cv=none; b=ni5PCfi0x/C58TgDStwHOrx376YkVNt/Uq2SGk8vPdznEJdKVZuufqMNr8SigacWtkPwANbqbF2kB9zygKm7zblRa6rUb26Bby5R3g4tvndtWTjBWcDrZjmVDMmwzrb4ilRVRj9NnGPiIp3cJttEse0K6ZLOWZkuezC1gbtX2zg=
+	t=1781769316; cv=none; b=VFiWF+VzasU8zVFSn2j7iDAJ/Xv/qUmMn40/qIMJWD0MX7jTTJdq+acbYvginohVzBHHRXPmp8oyP/SWNVrVwaAHFJdaxR1GJmFLMCOuYb8KguejaE1gqYZ8OaWqsFBLzy+nwYYHBD5s8hTtnuCAun3B5GkqXgRP0HCxd+y6I1E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781769295; c=relaxed/simple;
-	bh=2PiZn9SRQDeperRfDJVT6Knomjm6hgdo4VmiUanSiOY=;
+	s=arc-20240116; t=1781769316; c=relaxed/simple;
+	bh=ZuQswK1zCyX8/tExr4NnYe+pIBDFRSAbq7F5ht79lyA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=BybOYCdVLSF1O3eXalwIfWEhPCRqWEZdAFfAzS5xqdRXTUmFHxTbQyJfdyapTPAXfI0ETr/XBfAPn5TSB2eG7+MTALynerkdEDBg/K60xC8itaQlY9S/6iZGTeIs0O6zeXaw29wSyg4eGx8OdCESrjd/Sb2v5+eg5+Hi2daIT2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=eweDyfXi; arc=none smtp.client-ip=54.204.34.129
+	 MIME-Version; b=IZGm9DTVhxw4oDe7NdL+YGnQoXHBkz+gO7JKKKIs6V/eYyd/casCBBOUMRez+bt6PMz4LV2dTyapEKwTCj+rsfhk8wRY2ol0hiycQ9bN6qDnZQrIiCb9VRciKu+04QfIxNSrlrwZB8Kcf9T2NEx4Wj9U7Rp8sm0V+mbF35Gl+PE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=FgiCgM9g; arc=none smtp.client-ip=18.169.211.239
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1781769265;
-	bh=WPMa62+ZEbyp3pnV8JluZueKwkcDo0WT7AM20gDCKFI=;
+	s=onoh2408; t=1781769271;
+	bh=+YDHQEnDJstw7+yv0pqS8YPWpoSTO217VjyMOTLTxCU=;
 	h=From:To:Subject:Date:Message-Id:MIME-Version;
-	b=eweDyfXiHX4C/MuwE/H6kztsDVA2kTfW3oLYRnDMlXjL7VX3iWaWHN8TygAIMkmOu
-	 E4vMBqxzyMUJyqljnhCj1IsKVKvi/UtPQuWR1sles6pWyxXNAYMfRXkjUGpUdo9q22
-	 cWWlBXiWGdUuCuH6fnZZHxS0nSSkKPLQ+fw8DcPg=
-X-QQ-mid: esmtpgz14t1781769244t2f5646ce
-X-QQ-Originating-IP: AAH2ecRszZcVnWK6++s7kMBT1+rR0/gSD5JMGBHe89Q=
+	b=FgiCgM9gwXIdS+YQmtfRXpvCq8Iyzh2MciRHp7hRMy7VxZXVJiEyDqXRe31KTMSb4
+	 vsmVBvzDNVNSQaxom0+b+Wn8at3IN4gWn6ACkTu8gd0Kbf+QINg/FGMLn9+8J+4VVu
+	 hz3rrV6hx88jJvkauMX0z59TsSul0TpHVK6w2OFI=
+X-QQ-mid: esmtpgz14t1781769251t2103814c
+X-QQ-Originating-IP: V09Dd5XcI5toQ0g8PNEt8uQtXFLudbfxRqLyz5Zbs04=
 Received: from localhost.localdomain ( [113.57.152.160])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Thu, 18 Jun 2026 15:53:55 +0800 (CST)
+	id ; Thu, 18 Jun 2026 15:54:06 +0800 (CST)
 X-QQ-SSF: 0000000000000000000000000000000
 X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 5244681131725819264
+X-BIZMAIL-ID: 4443172193841458411
 EX-QQ-RecipientCnt: 17
 From: Wentao Guan <guanwentao@uniontech.com>
 To: sashal@kernel.org,
@@ -67,10 +67,10 @@ Cc: stable@vger.kernel.org,
 	yimingqian591@gmail.com,
 	Pedro Tammela <pctammela@mojatatu.com>,
 	Simon Horman <simon.horman@corigine.com>,
-	"David S . Miller" <davem@davemloft.net>
-Subject: [PATCH 5.10.y v2 1/9] net/sched: act_pedit: use NLA_POLICY for parsing 'ex' keys
-Date: Thu, 18 Jun 2026 15:53:36 +0800
-Message-Id: <20260618075342.1599593-2-guanwentao@uniontech.com>
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 5.10.y v2 2/9] net/sched: transition act_pedit to rcu and percpu stats
+Date: Thu, 18 Jun 2026 15:53:38 +0800
+Message-Id: <20260618075342.1599593-3-guanwentao@uniontech.com>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20260618075342.1599593-1-guanwentao@uniontech.com>
 References: <20260618075342.1599593-1-guanwentao@uniontech.com>
@@ -83,24 +83,24 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
 Feedback-ID: esmtpgz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz3a-0
-X-QQ-XMAILINFO: NdRGVRqcYnE4u+G299llEh0U8E0Jv2hv97Gs2GVRxnOy3wkJrbzCbOfi
-	zny5NlAa595DvnH64CqYFMP+3tnXXTNSG2xfuQlp49mOJdt0BNFyTx+SbS50pL1MlyvMSc5
-	DX3lSlu4XOgcpXpp9OQV7B9g+Lcgmpn9xSfJW74ChXuFx28ar7E7DzRZxW1MBXie/SF1hoo
-	IxsDyIdndUQmgVWSHESsnuWqI/UUsqOY1607V32/E+twmXZXrDf/FQsHExVku2aZPjAleKk
-	X+C9OcumYHS42avbKc+uxbtCmgnjj0mjS74cE97RHo5xEHF6RELL/IlOhdEFg2JuvIvh6JT
-	wX6Pwa3pUE9dqai+rgSiOVDItX+9NyzqlK6pfKAYH8igPB0IStIYubjLuIXf/Tx1uOWagIj
-	jdCmnKjuja16/ojqfEEfJHPld3SIxMyTIeALeTB1cxYA84y2VehL7ry9aJp94MxwjcDJGPE
-	3AnsBvlX1aUIlVPMY9GosJTECkRf0lNe01TgcuMyek4Nh/yEju+2Kgzc7Q9J+X1uqF/Ysqw
-	VSqFNEkgOi3gXZNXEUFvCW056c6TxseYj8Cb0blCUq+tLZBoN9q7zc1T1nQBMCFYG7/s9m/
-	//XELHBvjK8yUCDP4WRneSwbwud3A2FhAw2Ck+Pm0BPzwc0TJ6HVdi1ygj7XaNmwxXRfqJ/
-	nQ0/7aP7x+LvDG8r/7Haz9l0RwBsFAZwiFmwbPnu5tdPjQDbrCDFmHbgPJ6aJKlXFHS1InQ
-	+ThR5XC5zxbf3IA9JJpuyw9QUUoB/UAhQNN6nGCMf0K0blxLPDUpEM+CNUmqN/q5wLTMQOt
-	WOB9xkpoaSWCqZbRqEHEI1TkHXqi0r9MoFQtrbN0FD9FJFnHtjBz4UgWKY863H0YysSyrAQ
-	3p26CRNr37uE7B7B/lISQk1rrbxMc3R/adsJzka9edjLJlzLCiAQOcAiGiC0+oqnfXrfxZX
-	Jaga1lZcuWlc+q/IqU+217SfiGEaLCNVEFQ609jGKbW4bicFNIxFzT501RiWTeyILeu+cHD
-	BjSp/QMpqHiLWOCDt53vGMa/HrzaJKtMGQFJPPGEiHG3e6cAX1bcn4xqFcWYonHGwWiNf+a
-	A==
-X-QQ-XMRINFO: OD9hHCdaPRBwH5bRRRw8tsiH4UAatJqXfg==
+X-QQ-XMAILINFO: NBkE/PP8DpFYVIEfZC/gi5y4Xp0RAS/ca9FYQRnmm+Si2z08BpQOb1zq
+	s2y6NHc1QMjvgjP7Gm4HnDqh+mSquEbVPs1DP8cEhCzpte8DSWjgqMt/FBWYQCS6yJxxpjO
+	6lCyASgZv4uFAXu1ZPN5Jbkk2h/tvCtBwr4U0PBCdxDOoa61k5hwJaP1uygFcjGGdiuiFZV
+	1JBQ1qLI6kW4uWdlAHl/6QpRgBI3idc0BNn6F51A998zVSVrRkehtkmjVHnIG5DeuIn5WhC
+	lOGa8ZFUjF55eDvrCrLtlBnN6N+rX7R8f/vIigoDNMIAdALwSfQMsP++Ug0H9rtxr8fbYUC
+	filmSiZVHSgK7Qmc02q7LC+8VdDL7BG940eVuFCDP6nVGbyvPzEbn/IydYnnDYKJn+jRKls
+	0LULEl9iVCx6tTqAlqui1+Y92TZ4qev1edBqbO9h5ZlVdR3/r9kkr8amwUd8O+KOD2gzqB7
+	QfTEuiVgpkZMO7VBz0+mtkqXa4hXKJtfgYTtFP6VZ31sryFYxtQeIuibZtitUfVFgXWkfUJ
+	kZ0Rj4LcmFREtUwB4jjPPsWNhtuC18YCO6MEOEwYs/ZISZ+hx935kKlZ7m7zA2eRT32jY2N
+	1uGZ+IsUl+0Ua0gc9JfB2t55VFSxb3WsSmPWrQFAQhCrA0jpwlIkxz6pcexHvRvGL+22K6y
+	Ewr86/D99Iuq2Z6XH6IXnh6ebBzRqjAUNYeZr13dEpP0JcvIvTeWeLdxYJTBY2a32fwVNi7
+	0yB9vJDIxwWyC86BX51C6K2NjGDw3vV3mblJSEFljwZKYnFI2pa6InDI0SbyLlPZMIUa6hQ
+	0pand+CMch/GzE6gI7HCtyT39IKmQMVUHl0CAU1nnm6evbg7SxZE+Jvzb0ve+X6SL3uLPoj
+	rb95+O6HIiHvJIcVZHNTixHxrHSNuMvtbSgqP6avOAnZZS2euz6MBux2oSImMA9OLs/PFgd
+	aAMdyCe3pfjLJRYMAS2fm/xqmnS7NI/kgfKu9a4JlsvKmwoQVGEXFLihBh5m1y6TucdOPXF
+	Koi4oNRPcG3lmqVvKim2XjHMAkFzLZ+YNmihcB2P89qT/EvEibUfRj2ZahrUsc2vckZgD1F
+	ilwWSp7hti7I/RH6MqDD0k=
+X-QQ-XMRINFO: Nq+8W0+stu50tPAe92KXseR0ZZmBTk3gLg==
 X-QQ-RECHKSPAM: 0
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-0.66 / 15.00];
@@ -113,16 +113,16 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-267025-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-267027-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:sashal@kernel.org,m:gregkh@linuxfoundation.org,m:guanwentao@uniontech.com,m:stable@vger.kernel.org,m:2045gemini@gmail.com,m:dcaratti@redhat.com,m:jhs@mojatatu.com,m:keenanat2000@gmail.com,m:kuba@kernel.org,m:rajat.gupta@oss.qualcomm.com,m:rollkingzzc@gmail.com,m:toke@redhat.com,m:victor@mojatatu.com,m:yimingqian591@gmail.com,m:pctammela@mojatatu.com,m:simon.horman@corigine.com,m:davem@davemloft.net,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER(0.00)[guanwentao@uniontech.com,stable@vger.kernel.org];
 	RCPT_COUNT_TWELVE(0.00)[17];
-	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:sashal@kernel.org,m:gregkh@linuxfoundation.org,m:guanwentao@uniontech.com,m:stable@vger.kernel.org,m:2045gemini@gmail.com,m:dcaratti@redhat.com,m:jhs@mojatatu.com,m:keenanat2000@gmail.com,m:kuba@kernel.org,m:rajat.gupta@oss.qualcomm.com,m:rollkingzzc@gmail.com,m:toke@redhat.com,m:victor@mojatatu.com,m:yimingqian591@gmail.com,m:pctammela@mojatatu.com,m:simon.horman@corigine.com,m:pabeni@redhat.com,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,redhat.com,mojatatu.com,kernel.org,oss.qualcomm.com,corigine.com,davemloft.net];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,redhat.com,mojatatu.com,kernel.org,oss.qualcomm.com,corigine.com];
 	DKIM_TRACE(0.00)[uniontech.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
@@ -136,52 +136,438 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,mojatatu.com:email,uniontech.com:dkim,uniontech.com:email,uniontech.com:mid,uniontech.com:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 1C28E69E3E1
+X-Rspamd-Queue-Id: 1B72969E3F2
 
 From: Pedro Tammela <pctammela@mojatatu.com>
 
-[ Upstream commit 5036034572b79daa6d6600338e8e8229e2a44b09 ]
+[ Upstream commit 52cf89f78c01bf39973f3e70d366921d70faff7a ]
 
-Transform two checks in the 'ex' key parsing into netlink policies
-removing extra if checks.
+The software pedit action didn't get the same love as some of the
+other actions and it's still using spinlocks and shared stats in the
+datapath.
+Transition the action to rcu and percpu stats as this improves the
+action's performance dramatically on multiple cpu deployments.
 
+Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
 Signed-off-by: Pedro Tammela <pctammela@mojatatu.com>
 Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Conflicts:
+	net/sched/act_pedit.c
 Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
 ---
- net/sched/act_pedit.c | 11 +++--------
- 1 file changed, 3 insertions(+), 8 deletions(-)
+ include/net/tc_act/tc_pedit.h |  81 +++++++++++++++----
+ net/sched/act_pedit.c         | 148 ++++++++++++++++++++--------------
+ 2 files changed, 153 insertions(+), 76 deletions(-)
 
+diff --git a/include/net/tc_act/tc_pedit.h b/include/net/tc_act/tc_pedit.h
+index 3e02709a1df65..83fe399317818 100644
+--- a/include/net/tc_act/tc_pedit.h
++++ b/include/net/tc_act/tc_pedit.h
+@@ -4,22 +4,29 @@
+ 
+ #include <net/act_api.h>
+ #include <linux/tc_act/tc_pedit.h>
++#include <linux/types.h>
+ 
+ struct tcf_pedit_key_ex {
+ 	enum pedit_header_type htype;
+ 	enum pedit_cmd cmd;
+ };
+ 
+-struct tcf_pedit {
+-	struct tc_action	common;
+-	unsigned char		tcfp_nkeys;
+-	unsigned char		tcfp_flags;
+-	u32			tcfp_off_max_hint;
++struct tcf_pedit_parms {
+ 	struct tc_pedit_key	*tcfp_keys;
+ 	struct tcf_pedit_key_ex	*tcfp_keys_ex;
++	u32 tcfp_off_max_hint;
++	unsigned char tcfp_nkeys;
++	unsigned char tcfp_flags;
++	struct rcu_head rcu;
++};
++
++struct tcf_pedit {
++	struct tc_action common;
++	struct tcf_pedit_parms __rcu *parms;
+ };
+ 
+ #define to_pedit(a) ((struct tcf_pedit *)a)
++#define to_pedit_parms(a) (rcu_dereference(to_pedit(a)->parms))
+ 
+ static inline bool is_tcf_pedit(const struct tc_action *a)
+ {
+@@ -32,37 +39,81 @@ static inline bool is_tcf_pedit(const struct tc_action *a)
+ 
+ static inline int tcf_pedit_nkeys(const struct tc_action *a)
+ {
+-	return to_pedit(a)->tcfp_nkeys;
++	struct tcf_pedit_parms *parms;
++	int nkeys;
++
++	rcu_read_lock();
++	parms = to_pedit_parms(a);
++	nkeys = parms->tcfp_nkeys;
++	rcu_read_unlock();
++
++	return nkeys;
+ }
+ 
+ static inline u32 tcf_pedit_htype(const struct tc_action *a, int index)
+ {
+-	if (to_pedit(a)->tcfp_keys_ex)
+-		return to_pedit(a)->tcfp_keys_ex[index].htype;
++	u32 htype = TCA_PEDIT_KEY_EX_HDR_TYPE_NETWORK;
++	struct tcf_pedit_parms *parms;
++
++	rcu_read_lock();
++	parms = to_pedit_parms(a);
++	if (parms->tcfp_keys_ex)
++		htype = parms->tcfp_keys_ex[index].htype;
++	rcu_read_unlock();
+ 
+-	return TCA_PEDIT_KEY_EX_HDR_TYPE_NETWORK;
++	return htype;
+ }
+ 
+ static inline u32 tcf_pedit_cmd(const struct tc_action *a, int index)
+ {
+-	if (to_pedit(a)->tcfp_keys_ex)
+-		return to_pedit(a)->tcfp_keys_ex[index].cmd;
++	struct tcf_pedit_parms *parms;
++	u32 cmd = __PEDIT_CMD_MAX;
+ 
+-	return __PEDIT_CMD_MAX;
++	rcu_read_lock();
++	parms = to_pedit_parms(a);
++	if (parms->tcfp_keys_ex)
++		cmd = parms->tcfp_keys_ex[index].cmd;
++	rcu_read_unlock();
++
++	return cmd;
+ }
+ 
+ static inline u32 tcf_pedit_mask(const struct tc_action *a, int index)
+ {
+-	return to_pedit(a)->tcfp_keys[index].mask;
++	struct tcf_pedit_parms *parms;
++	u32 mask;
++
++	rcu_read_lock();
++	parms = to_pedit_parms(a);
++	mask = parms->tcfp_keys[index].mask;
++	rcu_read_unlock();
++
++	return mask;
+ }
+ 
+ static inline u32 tcf_pedit_val(const struct tc_action *a, int index)
+ {
+-	return to_pedit(a)->tcfp_keys[index].val;
++	struct tcf_pedit_parms *parms;
++	u32 val;
++
++	rcu_read_lock();
++	parms = to_pedit_parms(a);
++	val = parms->tcfp_keys[index].val;
++	rcu_read_unlock();
++
++	return val;
+ }
+ 
+ static inline u32 tcf_pedit_offset(const struct tc_action *a, int index)
+ {
+-	return to_pedit(a)->tcfp_keys[index].off;
++	struct tcf_pedit_parms *parms;
++	u32 off;
++
++	rcu_read_lock();
++	parms = to_pedit_parms(a);
++	off = parms->tcfp_keys[index].off;
++	rcu_read_unlock();
++
++	return off;
+ }
+ #endif /* __NET_TC_PED_H */
 diff --git a/net/sched/act_pedit.c b/net/sched/act_pedit.c
-index a44101b2f4419..510a3b5b8c0c1 100644
+index 510a3b5b8c0c1..0fbffebfbdc9d 100644
 --- a/net/sched/act_pedit.c
 +++ b/net/sched/act_pedit.c
-@@ -31,8 +31,9 @@ static const struct nla_policy pedit_policy[TCA_PEDIT_MAX + 1] = {
- };
+@@ -130,6 +130,17 @@ static int tcf_pedit_key_ex_dump(struct sk_buff *skb,
+ 	return -EINVAL;
+ }
  
- static const struct nla_policy pedit_key_ex_policy[TCA_PEDIT_KEY_EX_MAX + 1] = {
--	[TCA_PEDIT_KEY_EX_HTYPE]  = { .type = NLA_U16 },
--	[TCA_PEDIT_KEY_EX_CMD]	  = { .type = NLA_U16 },
-+	[TCA_PEDIT_KEY_EX_HTYPE] =
-+		NLA_POLICY_MAX(NLA_U16, TCA_PEDIT_HDR_TYPE_MAX),
-+	[TCA_PEDIT_KEY_EX_CMD] = NLA_POLICY_MAX(NLA_U16, TCA_PEDIT_CMD_MAX),
- };
- 
- static struct tcf_pedit_key_ex *tcf_pedit_keys_ex_parse(struct nlattr *nla,
-@@ -82,12 +83,6 @@ static struct tcf_pedit_key_ex *tcf_pedit_keys_ex_parse(struct nlattr *nla,
- 		k->htype = nla_get_u16(tb[TCA_PEDIT_KEY_EX_HTYPE]);
- 		k->cmd = nla_get_u16(tb[TCA_PEDIT_KEY_EX_CMD]);
- 
--		if (k->htype > TCA_PEDIT_HDR_TYPE_MAX ||
--		    k->cmd > TCA_PEDIT_CMD_MAX) {
--			err = -EINVAL;
--			goto err_out;
--		}
--
- 		k++;
++static void tcf_pedit_cleanup_rcu(struct rcu_head *head)
++{
++	struct tcf_pedit_parms *parms =
++		container_of(head, struct tcf_pedit_parms, rcu);
++
++	kfree(parms->tcfp_keys_ex);
++	kfree(parms->tcfp_keys);
++
++	kfree(parms);
++}
++
+ static int tcf_pedit_init(struct net *net, struct nlattr *nla,
+ 			  struct nlattr *est, struct tc_action **a,
+ 			  int ovr, int bind, bool rtnl_held,
+@@ -137,10 +148,9 @@ static int tcf_pedit_init(struct net *net, struct nlattr *nla,
+ 			  struct netlink_ext_ack *extack)
+ {
+ 	struct tc_action_net *tn = net_generic(net, pedit_net_id);
+-	struct nlattr *tb[TCA_PEDIT_MAX + 1];
+ 	struct tcf_chain *goto_ch = NULL;
+-	struct tc_pedit_key *keys = NULL;
+-	struct tcf_pedit_key_ex *keys_ex;
++	struct tcf_pedit_parms *oparms, *nparms;
++	struct nlattr *tb[TCA_PEDIT_MAX + 1];
+ 	struct tc_pedit *parm;
+ 	struct nlattr *pattr;
+ 	struct tcf_pedit *p;
+@@ -177,18 +187,25 @@ static int tcf_pedit_init(struct net *net, struct nlattr *nla,
+ 		return -EINVAL;
  	}
  
+-	keys_ex = tcf_pedit_keys_ex_parse(tb[TCA_PEDIT_KEYS_EX], parm->nkeys);
+-	if (IS_ERR(keys_ex))
+-		return PTR_ERR(keys_ex);
++	nparms = kzalloc(sizeof(*nparms), GFP_KERNEL);
++	if (!nparms)
++		return -ENOMEM;
++
++	nparms->tcfp_keys_ex =
++		tcf_pedit_keys_ex_parse(tb[TCA_PEDIT_KEYS_EX], parm->nkeys);
++	if (IS_ERR(nparms->tcfp_keys_ex)) {
++		ret = PTR_ERR(nparms->tcfp_keys_ex);
++		goto out_free;
++	}
+ 
+ 	index = parm->index;
+ 	err = tcf_idr_check_alloc(tn, &index, a, bind);
+ 	if (!err) {
+-		ret = tcf_idr_create(tn, index, est, a,
+-				     &act_pedit_ops, bind, false, flags);
++		ret = tcf_idr_create_from_flags(tn, index, est, a,
++						&act_pedit_ops, bind, flags);
+ 		if (ret) {
+ 			tcf_idr_cleanup(tn, index);
+-			goto out_free;
++			goto out_free_ex;
+ 		}
+ 		ret = ACT_P_CREATED;
+ 	} else if (err > 0) {
+@@ -200,7 +217,7 @@ static int tcf_pedit_init(struct net *net, struct nlattr *nla,
+ 		}
+ 	} else {
+ 		ret = err;
+-		goto out_free;
++		goto out_free_ex;
+ 	}
+ 
+ 	err = tcf_action_check_ctrlact(parm->action, tp, &goto_ch, extack);
+@@ -208,48 +225,50 @@ static int tcf_pedit_init(struct net *net, struct nlattr *nla,
+ 		ret = err;
+ 		goto out_release;
+ 	}
+-	p = to_pedit(*a);
+-	spin_lock_bh(&p->tcf_lock);
+ 
+-	if (ret == ACT_P_CREATED ||
+-	    (p->tcfp_nkeys && p->tcfp_nkeys != parm->nkeys)) {
+-		keys = kmalloc(ksize, GFP_ATOMIC);
+-		if (!keys) {
+-			spin_unlock_bh(&p->tcf_lock);
+-			ret = -ENOMEM;
+-			goto put_chain;
+-		}
+-		kfree(p->tcfp_keys);
+-		p->tcfp_keys = keys;
+-		p->tcfp_nkeys = parm->nkeys;
++	nparms->tcfp_off_max_hint = 0;
++	nparms->tcfp_flags = parm->flags;
++	nparms->tcfp_nkeys = parm->nkeys;
++
++	nparms->tcfp_keys = kmalloc(ksize, GFP_KERNEL);
++	if (!nparms->tcfp_keys) {
++		ret = -ENOMEM;
++		goto put_chain;
+ 	}
+-	memcpy(p->tcfp_keys, parm->keys, ksize);
+-	p->tcfp_off_max_hint = 0;
+-	for (i = 0; i < p->tcfp_nkeys; ++i) {
+-		u32 cur = p->tcfp_keys[i].off;
++
++	memcpy(nparms->tcfp_keys, parm->keys, ksize);
++
++	for (i = 0; i < nparms->tcfp_nkeys; ++i) {
++		u32 cur = nparms->tcfp_keys[i].off;
+ 
+ 		/* sanitize the shift value for any later use */
+-		p->tcfp_keys[i].shift = min_t(size_t, BITS_PER_TYPE(int) - 1,
+-					      p->tcfp_keys[i].shift);
++		nparms->tcfp_keys[i].shift = min_t(size_t,
++						   BITS_PER_TYPE(int) - 1,
++						   nparms->tcfp_keys[i].shift);
+ 
+ 		/* The AT option can read a single byte, we can bound the actual
+ 		 * value with uchar max.
+ 		 */
+-		cur += (0xff & p->tcfp_keys[i].offmask) >> p->tcfp_keys[i].shift;
++		cur += (0xff & nparms->tcfp_keys[i].offmask) >> nparms->tcfp_keys[i].shift;
+ 
+ 		/* Each key touches 4 bytes starting from the computed offset */
+-		p->tcfp_off_max_hint = max(p->tcfp_off_max_hint, cur + 4);
++		nparms->tcfp_off_max_hint =
++			max(nparms->tcfp_off_max_hint, cur + 4);
+ 	}
+ 
+-	p->tcfp_flags = parm->flags;
++	p = to_pedit(*a);
++
++	spin_lock_bh(&p->tcf_lock);
+ 	goto_ch = tcf_action_set_ctrlact(*a, parm->action, goto_ch);
++	oparms = rcu_replace_pointer(p->parms, nparms, 1);
++	spin_unlock_bh(&p->tcf_lock);
+ 
+-	kfree(p->tcfp_keys_ex);
+-	p->tcfp_keys_ex = keys_ex;
++	if (oparms)
++		call_rcu(&oparms->rcu, tcf_pedit_cleanup_rcu);
+ 
+-	spin_unlock_bh(&p->tcf_lock);
+ 	if (goto_ch)
+ 		tcf_chain_put_by_act(goto_ch);
++
+ 	return ret;
+ 
+ put_chain:
+@@ -257,19 +276,22 @@ static int tcf_pedit_init(struct net *net, struct nlattr *nla,
+ 		tcf_chain_put_by_act(goto_ch);
+ out_release:
+ 	tcf_idr_release(*a, bind);
++out_free_ex:
++	kfree(nparms->tcfp_keys_ex);
+ out_free:
+-	kfree(keys_ex);
++	kfree(nparms);
+ 	return ret;
+-
+ }
+ 
+ static void tcf_pedit_cleanup(struct tc_action *a)
+ {
+ 	struct tcf_pedit *p = to_pedit(a);
+-	struct tc_pedit_key *keys = p->tcfp_keys;
++	struct tcf_pedit_parms *parms;
+ 
+-	kfree(keys);
+-	kfree(p->tcfp_keys_ex);
++	parms = rcu_dereference_protected(p->parms, 1);
++
++	if (parms)
++		call_rcu(&parms->rcu, tcf_pedit_cleanup_rcu);
+ }
+ 
+ static bool offset_valid(struct sk_buff *skb, int offset)
+@@ -320,28 +342,30 @@ static int tcf_pedit_act(struct sk_buff *skb, const struct tc_action *a,
+ 			 struct tcf_result *res)
+ {
+ 	struct tcf_pedit *p = to_pedit(a);
++	struct tcf_pedit_parms *parms;
+ 	u32 max_offset;
+ 	int i;
+ 
+-	spin_lock(&p->tcf_lock);
++	parms = rcu_dereference_bh(p->parms);
+ 
+ 	max_offset = (skb_transport_header_was_set(skb) ?
+ 		      skb_transport_offset(skb) :
+ 		      skb_network_offset(skb)) +
+-		     p->tcfp_off_max_hint;
++		     parms->tcfp_off_max_hint;
+ 	if (skb_ensure_writable(skb, min(skb->len, max_offset)))
+-		goto unlock;
++		goto done;
+ 
+ 	tcf_lastuse_update(&p->tcf_tm);
++	tcf_action_update_bstats(&p->common, skb);
+ 
+-	if (p->tcfp_nkeys > 0) {
+-		struct tc_pedit_key *tkey = p->tcfp_keys;
+-		struct tcf_pedit_key_ex *tkey_ex = p->tcfp_keys_ex;
++	if (parms->tcfp_nkeys > 0) {
++		struct tc_pedit_key *tkey = parms->tcfp_keys;
++		struct tcf_pedit_key_ex *tkey_ex = parms->tcfp_keys_ex;
+ 		enum pedit_header_type htype =
+ 			TCA_PEDIT_KEY_EX_HDR_TYPE_NETWORK;
+ 		enum pedit_cmd cmd = TCA_PEDIT_KEY_EX_CMD_SET;
+ 
+-		for (i = p->tcfp_nkeys; i > 0; i--, tkey++) {
++		for (i = parms->tcfp_nkeys; i > 0; i--, tkey++) {
+ 			u32 *ptr, hdata;
+ 			int offset = tkey->off;
+ 			int hoffset;
+@@ -417,11 +441,10 @@ static int tcf_pedit_act(struct sk_buff *skb, const struct tc_action *a,
+ 	}
+ 
+ bad:
++	spin_lock(&p->tcf_lock);
+ 	p->tcf_qstats.overlimits++;
+-done:
+-	bstats_update(&p->tcf_bstats, skb);
+-unlock:
+ 	spin_unlock(&p->tcf_lock);
++done:
+ 	return p->tcf_action;
+ }
+ 
+@@ -440,30 +463,33 @@ static int tcf_pedit_dump(struct sk_buff *skb, struct tc_action *a,
+ {
+ 	unsigned char *b = skb_tail_pointer(skb);
+ 	struct tcf_pedit *p = to_pedit(a);
++	struct tcf_pedit_parms *parms;
+ 	struct tc_pedit *opt;
+ 	struct tcf_t t;
+ 	int s;
+ 
+-	s = struct_size(opt, keys, p->tcfp_nkeys);
++	spin_lock_bh(&p->tcf_lock);
++	parms = rcu_dereference_protected(p->parms, 1);
++	s = struct_size(opt, keys, parms->tcfp_nkeys);
+ 
+-	/* netlink spinlocks held above us - must use ATOMIC */
+ 	opt = kzalloc(s, GFP_ATOMIC);
+-	if (unlikely(!opt))
++	if (unlikely(!opt)) {
++		spin_unlock_bh(&p->tcf_lock);
+ 		return -ENOBUFS;
++	}
+ 
+-	spin_lock_bh(&p->tcf_lock);
+-	memcpy(opt->keys, p->tcfp_keys, flex_array_size(opt, keys, p->tcfp_nkeys));
++	memcpy(opt->keys, parms->tcfp_keys,
++	       flex_array_size(opt, keys, parms->tcfp_nkeys));
+ 	opt->index = p->tcf_index;
+-	opt->nkeys = p->tcfp_nkeys;
+-	opt->flags = p->tcfp_flags;
++	opt->nkeys = parms->tcfp_nkeys;
++	opt->flags = parms->tcfp_flags;
+ 	opt->action = p->tcf_action;
+ 	opt->refcnt = refcount_read(&p->tcf_refcnt) - ref;
+ 	opt->bindcnt = atomic_read(&p->tcf_bindcnt) - bind;
+ 
+-	if (p->tcfp_keys_ex) {
+-		if (tcf_pedit_key_ex_dump(skb,
+-					  p->tcfp_keys_ex,
+-					  p->tcfp_nkeys))
++	if (parms->tcfp_keys_ex) {
++		if (tcf_pedit_key_ex_dump(skb, parms->tcfp_keys_ex,
++					  parms->tcfp_nkeys))
+ 			goto nla_put_failure;
+ 
+ 		if (nla_put(skb, TCA_PEDIT_PARMS_EX, s, opt))
 -- 
 2.30.2
 
