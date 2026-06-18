@@ -1,169 +1,163 @@
-Return-Path: <stable+bounces-267056-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267057-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id t4beCAGwM2pGFAYAu9opvQ
-	(envelope-from <stable+bounces-267056-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 10:44:49 +0200
+	id HJxgE86vM2o/FAYAu9opvQ
+	(envelope-from <stable+bounces-267057-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 10:43:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id B20BD69E8C8
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 10:44:48 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2BCA69E8AE
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 10:43:57 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=suse.de (policy=none);
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267056-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-267056-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UR41z7fP;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267057-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267057-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 80E643029713
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 08:43:45 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B3EA93066B75
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 08:43:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01DF03B3C1B;
-	Thu, 18 Jun 2026 08:43:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58E783B3C13;
+	Thu, 18 Jun 2026 08:43:52 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E4453B38AA
-	for <stable@vger.kernel.org>; Thu, 18 Jun 2026 08:43:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39ECE20E334;
+	Thu, 18 Jun 2026 08:43:51 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781772221; cv=none; b=L940b22gIC8nsci6uM0k+SA7jDnCKP52adnpHQCU8qOTnlwDjBjnWdw+KXMDziwH2Dsy+2VPYOulz9A7y2BhGgwAhrgc+MdImk4K+hn0UQqUwVkjVGQMwlSxPenIuOHcFNGUDViMMXCqg52tUawHnhAqF3zxmxuP/WXYcghh2bI=
+	t=1781772232; cv=none; b=Za6yJ0AxpjrF2gH9+CyOcPVxI5QeQzCtu4ApD1UEPSjz5agOQdXoeGDX7C7ZjB3rSuFMu6L6LzWLVZe8znhUDFvzuea7h0rxOtCUOQXBU19VcOUIEyZw0NX3zwH54/r+G3QjXziCrXH3FY2e0m63Xlk1TcAYmKWDtEZsm3+bIuc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781772221; c=relaxed/simple;
-	bh=XU5HMB7igl97Og5kJ75ZgLq/RBPY6Y0kM+1wcDngq0c=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YgBhC36bOQSmBGWCohMvyT7LpfCflLuyLJheGGovN0hUE6hUVvl+lp/5Ywb7gyCxwnhBLELyGd7jI12yApUROmzTXQIGDGWTBpbU+wj/HgfooS+mCVRl2CwuACjbmFmI0cbFb/N9UD2jBe+sbtss+Fv1LrBcZj2abcrXmogLHa4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; arc=none smtp.client-ip=195.135.223.130
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id D12F16D221;
-	Thu, 18 Jun 2026 08:43:33 +0000 (UTC)
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8AB63779A8;
-	Thu, 18 Jun 2026 08:43:33 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id SN2lILWvM2pAPwAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Thu, 18 Jun 2026 08:43:33 +0000
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: javierm@redhat.com,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	airlied@gmail.com,
-	simona@ffwll.ch
-Cc: dri-devel@lists.freedesktop.org,
-	sashiko-reviews@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Sashiko <sashiko-bot@kernel.org>,
+	s=arc-20240116; t=1781772232; c=relaxed/simple;
+	bh=FyoE8GbvYTwS6GbEF4K/IhfVIv8iF4ZW99LFKKB1bpU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gUvONOjsG/dD6jMH34OpaclTdW6SNUW4FKruRRA12mEXbcyjdzzW8uYGphqCDxdpoqFzqDqoHIA4Zr34+6u2OIRdKVVv5pvBm/NT2fvhstbeXksf1ljAVIBLDPb5/4f2BA+Hs/1Y1uWI37QZqMl5X/NzQJnXi6drpu4sqcUxQv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UR41z7fP; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE5241F000E9;
+	Thu, 18 Jun 2026 08:43:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781772231;
+	bh=uMHM7UuTf2do2f7Hpoqk2j+rviNJ44WWlkZ4oTbhXQI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=UR41z7fPG6eVHeAWjFEh8fwBtmodmDzk+F3Lk7VGgBEcVCo7xuYoZlzv7ajxbUgqL
+	 8NHszgXK/0ld2fcayuwb183RFUP1LmOuiz8CbdQgQ+g0aO0woiBL8P+QQK+hbRFoDO
+	 scrCxeHw9o6SozJBMF197xUAr85od+/VUepcFepPuO7ob6AsDpPB7baAHXFqQU9bze
+	 tLh/Di3w+K881gfrWsflutns/P2W3oo92/VVrZ4xA6cB4Z+qMlmLgc5MtZAvTm2jQo
+	 anD2gB94b5c2C0p9yp04vf7bSzD4EtsceR/sSm0clC8omBqYDROVEDgjC8FNutME9t
+	 0mcXH1jXo+WWA==
+Date: Thu, 18 Jun 2026 11:43:44 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Linus Torvalds <torvalds@linuxfoundation.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+	Oleg Nesterov <oleg@redhat.com>, Peter Xu <peterx@redhat.com>,
+	vova tokarev <vladimirelitokarev@gmail.com>,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
 	stable@vger.kernel.org
-Subject: [PATCH v2 4/4] drm/sysfb: Avoid truncating maximum stride
-Date: Thu, 18 Jun 2026 10:42:00 +0200
-Message-ID: <20260618084327.46567-5-tzimmermann@suse.de>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260618084327.46567-1-tzimmermann@suse.de>
-References: <20260618084327.46567-1-tzimmermann@suse.de>
+Subject: Re: [PATCH] userfaultfd: prevent registration of special VMAs
+Message-ID: <ajOvwGs5xhnfBu-k@kernel.org>
+References: <20260617194059.2529406-1-rppt@kernel.org>
+ <5a993689-f730-406d-8515-8bb6025cc851@kernel.org>
+ <ajOtfdGgFQYL-T6f@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Pre-Result: action=no action;
-	module=replies;
-	Message is reply to one we originated
-X-Spam-Flag: NO
-X-Spam-Score: -4.00
-X-Spam-Level: 
-X-Rspamd-Pre-Result: action=no action;
-	module=replies;
-	Message is reply to one we originated
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ajOtfdGgFQYL-T6f@kernel.org>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.14 / 15.00];
+X-Spamd-Result: default: False [-5.16 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[suse.de : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:javierm@redhat.com,m:maarten.lankhorst@linux.intel.com,m:mripard@kernel.org,m:airlied@gmail.com,m:simona@ffwll.ch,m:dri-devel@lists.freedesktop.org,m:sashiko-reviews@lists.linux.dev,m:tzimmermann@suse.de,m:sashiko-bot@kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-267056-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FREEMAIL_TO(0.00)[redhat.com,linux.intel.com,kernel.org,gmail.com,ffwll.ch];
-	FORGED_SENDER(0.00)[tzimmermann@suse.de,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-267057-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:david@kernel.org,m:akpm@linux-foundation.org,m:torvalds@linuxfoundation.org,m:viro@zeniv.linux.org.uk,m:brauner@kernel.org,m:jack@suse.cz,m:oleg@redhat.com,m:peterx@redhat.com,m:vladimirelitokarev@gmail.com,m:linux-kernel@vger.kernel.org,m:linux-mm@kvack.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[linux-foundation.org,linuxfoundation.org,zeniv.linux.org.uk,kernel.org,suse.cz,redhat.com,gmail.com,vger.kernel.org,kvack.org];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[rppt@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[tzimmermann@suse.de,stable@vger.kernel.org];
-	ALIAS_RESOLVED(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	R_DKIM_NA(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
 	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[rppt@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,suse.de:email,suse.de:mid,suse.de:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B20BD69E8C8
+X-Rspamd-Queue-Id: F2BCA69E8AE
 
-Passing a maximum as 64-bit type to drm_sysfb_get_validated_int0()
-can truncate the value to 32 bits. Use drm_sysfb_get_validated_size0(),
-which uses 64-bit arithmetics. Then test the returned stride against
-the limits of int to avoid truncations in the returned value. A valid
-stride is in the range of [1, INT_MAX] inclusive.
+On Thu, Jun 18, 2026 at 11:34:12AM +0300, Mike Rapoport wrote:
+> On Thu, Jun 18, 2026 at 10:19:17AM +0200, David Hildenbrand (Arm) wrote:
+> > On 6/17/26 21:40, Mike Rapoport wrote:
+> > > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+> > > 
+> > > Vova Tokarev says:
+> > > 
+> > >   userfaultfd allows registration on shadow stack VMAs.  With userfaultfd
+> > >   access, you can register on the shadow stack, discard a page ... and
+> > >   inject a page with chosen return addresses via UFFDIO_COPY.
+> > > 
+> > > Update vma_can_userfault() to reject VM_SHADOW_STACK.
+> > > 
+> > > While on it, also reject VM_IO, VM_MIXEDMAP and VM_PFNMAP so that if a
+> > > driver would implement vm_uffd_ops, it wouldn't be possible to register
+> > > special VMAs with userfaultfd.
+> > > 
+> > > Reported-by: vova tokarev <vladimirelitokarev@gmail.com>
+> > > Fixes: 54007f818206 ("mm: Introduce VM_SHADOW_STACK for shadow stack memory")
+> > > Cc: <stable@vger.kernel.org>
+> > > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> > > ---
+> > >  mm/userfaultfd.c | 3 ++-
+> > >  1 file changed, 2 insertions(+), 1 deletion(-)
+> > > 
+> > > diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+> > > index 246af12bf801..b8d2d87ce8d7 100644
+> > > --- a/mm/userfaultfd.c
+> > > +++ b/mm/userfaultfd.c
+> > > @@ -2111,7 +2111,8 @@ static bool vma_can_userfault(struct vm_area_struct *vma, vm_flags_t vm_flags,
+> > >  {
+> > >  	const struct vm_uffd_ops *ops = vma_uffd_ops(vma);
+> > >  
+> > > -	if (vma->vm_flags & VM_DROPPABLE)
+> > > +	if (vma->vm_flags & (VM_DROPPABLE | VM_IO | VM_MIXEDMAP | VM_PFNMAP |
+> > > +			     VM_SHADOW_STACK))
+> > 
+> > I'm sure you considered VM_SPECIAL, which additionally includes VM_DONTEXPAND.
+> > 
+> > Would that be better, or what was the reason to allow VM_DONTEXPAND?
+> 
+> By itself VM_DONTEXPAND won't matter, as uffd can't resize a VMA.
+> But thinking more about it, it's better to make vma_can_userfault() more
+> restrictive and just use VM_SPECIAL.
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reported-by: Sashiko <sashiko-bot@kernel.org>
-Closes: https://lore.kernel.org/dri-devel/20260617114016.5A5991F000E9@smtp.kernel.org/
-Fixes: 32ae90c66fb6 ("drm/sysfb: Add efidrm for EFI displays")
-Fixes: a84eb6abe2b6 ("drm/sysfb: Add vesadrm for VESA displays")
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Javier Martinez Canillas <javierm@redhat.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v6.16+
----
-I've added Reported-by and Closes tags because this is a pre-existing issue.
----
- drivers/gpu/drm/sysfb/drm_sysfb_screen_info.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+Ah, hugetlb sets VM_DONTEXPAND, so it must me excluded to allow uffd with
+hugetlb.
 
-diff --git a/drivers/gpu/drm/sysfb/drm_sysfb_screen_info.c b/drivers/gpu/drm/sysfb/drm_sysfb_screen_info.c
-index 042d1b796696..1c479ce0e503 100644
---- a/drivers/gpu/drm/sysfb/drm_sysfb_screen_info.c
-+++ b/drivers/gpu/drm/sysfb/drm_sysfb_screen_info.c
-@@ -57,11 +57,17 @@ int drm_sysfb_get_stride_si(struct drm_device *dev, const struct screen_info *si
- 			    unsigned int width, unsigned int height, u64 size)
- {
- 	u64 lfb_linelength = si->lfb_linelength;
-+	s64 stride;
- 
- 	if (!lfb_linelength)
- 		lfb_linelength = drm_format_info_min_pitch(format, 0, width);
- 
--	return drm_sysfb_get_validated_int0(dev, "stride", lfb_linelength, div64_u64(size, height));
-+	stride = drm_sysfb_get_validated_size0(dev, "stride", lfb_linelength,
-+					       div64_u64(size, height));
-+	if (stride < INT_MIN || stride > INT_MAX)
-+		return -EINVAL;
-+
-+	return (int)stride; /* stride or negative errno code */
- }
- EXPORT_SYMBOL(drm_sysfb_get_stride_si);
- 
 -- 
-2.54.0
-
+Sincerely yours,
+Mike.
 
