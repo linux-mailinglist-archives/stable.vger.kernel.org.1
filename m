@@ -1,199 +1,155 @@
-Return-Path: <stable+bounces-267012-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267013-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id DTGaGkeSM2oADgYAu9opvQ
-	(envelope-from <stable+bounces-267012-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 08:37:59 +0200
+	id 84e8AO6SM2oyDgYAu9opvQ
+	(envelope-from <stable+bounces-267013-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 08:40:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEA7E69DDF6
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 08:37:58 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F01F69DE33
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 08:40:45 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=h+JkPenw;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267012-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-267012-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=cRMD+n+T;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267013-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-267013-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=intel.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DD5D1305FBBE
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 06:37:57 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A93EE300B093
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 06:40:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 091A832939C;
-	Thu, 18 Jun 2026 06:37:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1779C3438B4;
+	Thu, 18 Jun 2026 06:40:34 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF59442A82
-	for <stable@vger.kernel.org>; Thu, 18 Jun 2026 06:37:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E2E23370EC;
+	Thu, 18 Jun 2026 06:40:32 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781764674; cv=none; b=qwY+Q97HGdKAmH0Q/CRRCjBfUWhasbY8ma3+I8+Tz796TozEYlWkynNCrMgLcafMtUusX9YKqXZr9JhzBrZ2xsDmUJpVfhDNEBmaD76+KafEpcC3dHeVNiHXh1Q/qB4FqTsmM2FvDRI6qWzRJnyo/OXMSbeODe6GAngOW48LfDQ=
+	t=1781764833; cv=none; b=j3fNKePMD8UUuqdIr21U/C1mCYWzu8TMjvDS/902Ba8n+naq537DjONaHyQ39xKKDExu268300jwOLtWjyuKIpP8wHf4v8Cv/EZ5iP671k3qiWWl4l1UTpYTW7YtJXp/MpmvxRvfyPROQpl0/0OantxO3b2stlQ+8kmCKvaptbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781764674; c=relaxed/simple;
-	bh=nmwRkBcJk1AWDx8hk3Zl9lyX0co2UPbT+mxFAqpceJI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=G/U+UQztq3zXotRnnTwOwuwKO8Giy7izoGLCi4k8jZC0+2PhN46SnT5RkkucGjMi4hyYG2jeLxnKEzzUgKgYL5MiE8KbQl0MVrX42rjhKn4HPLe9Uqmsp5Cqtu0VXJyK+YPLpZm9zmoFywVFlc+JONUo+9tFhzmTDa5X08vIVFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h+JkPenw; arc=none smtp.client-ip=209.85.214.169
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2c0c1e0b0faso4195445ad.0
-        for <stable@vger.kernel.org>; Wed, 17 Jun 2026 23:37:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781764673; x=1782369473; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Mva/B6a1iolaNeqqoEQ3DAV0kliAQFp7oxE0v01gtHM=;
-        b=h+JkPenwilfk+NA1hp3iXxXyRkvNzVKb2R3J7QazpCZovQ0mSTnTnacCgvsbfgv+OH
-         eeF1pF+GyEDk48ElfsWpOH3KEgNRPhxUUDQA2a7LcEXAxwNnPAE6FUIKHZzs9rX87Coy
-         x5c2vP2noR8YPxqgR0GH7HkyOTAVQ/FVLJqavjxlyz2MBHpeC5uP6fnOdkvab60cRVsy
-         N3GCqoXhr4SHNltu8fhdgF5pW18fIP30UcFTFVYbKSydgV0hPcG2ZkluzhvRCT7syyAJ
-         0AIF5lQOvZHdekNp/6cYh8Vf1hUxE5Fsgy3rRcZX+OWUXvjQFe8e3Iq+pYJ8bF2ombNT
-         Ewww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781764673; x=1782369473;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Mva/B6a1iolaNeqqoEQ3DAV0kliAQFp7oxE0v01gtHM=;
-        b=YVYbTU8XqFSdH8/NgkPnV54hQdN6WtegWFcy4mJPh1ErcTSFYUy/vZNPjTVhEwK9sE
-         KIY55wqmn0j/M4IDVgDcIZwqdpAEcWkYX6UG0Z8UDfJPce71x1b/AUCbPVGW/KT0DWmk
-         mMtl8VUVmmFEt2bVfNglvugF2MVc8Zwc+hj1YrzkaXMnoQ+pa4PNRepg88qVKKUHQMDf
-         UskP3xyCe/CfhD/B6YjDHVL+hybboMJPhejJTe38g1dO2TyxeD1A6Xpn0RCP2m3bD3Tc
-         vv5f7lZ5qSU/i5re6bnoAysJW7GIk638L5PiC42BgP0Wa3C81J3JVrifBheepTKyPQgp
-         H1Ag==
-X-Forwarded-Encrypted: i=1; AFNElJ+VLuT4H190TfLaU2F8RWJ68qEUVcPW//1MlPNDwuKD0fPXZu/Zx7XQf4arUvt8tqTkFHs8Kkg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzXDmy0SbuSIxOP91XBqrj4oG823yf1409/spUWMRFgjY/i0pEh
-	QTk4pEos4UMOsrhBIQYcFJoUrabmyfikTp7b+Gft0QfSHodyhUhD/7ED
-X-Gm-Gg: AfdE7cnJzY0xMpPFcMqN6Wptd29Pr2HbGwrHL+hNTgclWh63WRdPeSOWMeTQaY7hqW/
-	7uTjs4My+pRhMmwBgeilvJKKydKlApR3dIzcoGpfPnCZk7eweMv04f/hoO96cdDOXGVD/Qhre0v
-	zHxBfZzeGAg4NLui6WHxRMb2DvjKcupx/wc7I0rU4FKuhYIAoHEC9d8EiUXn5RQ+kEL7zG3gbq4
-	qOCJIpaOyYufvKTrrLY29Izout2mHMGSYTYH9hSgcBa38dl7Mm/42MhmpO+hgcR18TEhu8uKk86
-	zZMqt/UgOGUZuctEHi1S1zdb82bxDNlqE2WuKTmBN0jAjTcUmXTqUatbvoHxrtq7NnsccK6lA3z
-	Fg9ejCY2uP+6elYahrk3O28SjJPpGqow0sQhd1kXL3xGBgqPnWaDKxC/jSAhiC+TjSu+Bd5XdQF
-	XrZZRHIW2HwO0st3jiOC+r4YRnNkZR5Bp3OXwaC7/fdkBvFktYZqddgOjFMcZN/Ur74+nV0ha+b
-	yvz971gKtvCLUUJ
-X-Received: by 2002:a17:903:41d1:b0:2c1:20fe:9d5a with SMTP id d9443c01a7336-2c6bc27e37amr70977595ad.35.1781764673015;
-        Wed, 17 Jun 2026 23:37:53 -0700 (PDT)
-Received: from nugod-NUC15CRHU5.tail9f095a.ts.net ([218.237.104.87])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c6e54e8257sm13505905ad.16.2026.06.17.23.37.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Jun 2026 23:37:52 -0700 (PDT)
-From: HyeongJun An <sammiee5311@gmail.com>
-To: Benjamin Tissoires <bentiss@kernel.org>,
-	Jiri Kosina <jikos@kernel.org>
-Cc: =?UTF-8?q?Filipe=20La=C3=ADns?= <lains@riseup.net>,
-	Lee Jones <lee@kernel.org>,
-	linux-input@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	HyeongJun An <sammiee5311@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] HID: logitech-dj: Fix maxfield check in DJ short report validation
-Date: Thu, 18 Jun 2026 15:37:37 +0900
-Message-ID: <20260618063737.211468-1-sammiee5311@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1781764833; c=relaxed/simple;
+	bh=BumMsBSMG1s9RkeZoB5IVq+5GgZbpDM82QYWrngLh0g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FHkOEVGPCqgt19kJQ599+WxZVDc+odhKvM6xfIHJSNNHmTStypJjp2GbQoOIOhtrTXBig2DHs2FNfnDUG3WeFwCPQUtN/JAi7HX++tti0KZiNfgLN13Zli84z5ZVgAW061ot3bIvre+oA70i4Bvp2c7s1R25t5KRJDuudMMSTrg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cRMD+n+T; arc=none smtp.client-ip=198.175.65.14
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1781764832; x=1813300832;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=BumMsBSMG1s9RkeZoB5IVq+5GgZbpDM82QYWrngLh0g=;
+  b=cRMD+n+TCBUEYZGcTEXskT9XwGj7BzP/QGvzIfSBJDw2JXwD8w/UZz5V
+   QsyNlqaGc2FLSySliPVk1riCoRUJK9FrYq30otMHCI81Em5eTzD9MfXvN
+   KilhV3751rR0aug9+aSaKSDQDF4IAcv7WL/0pYhxsmTB1aIaS5X1J6MpY
+   Cu/5Om3LM9rtaA/1d/9jJx570tN0R31WANv8NV+3rxob3HLPkQ4KGHb7f
+   pbvheLKkBqkgAOxsahR63TuLrEG5SUbZuiKm7JyOrqlyCokqEmNwUkeAA
+   X4KhVKv97X5cr3by+kIJQNnk9fgx1Fk7mfV8YvCD6wxyJaXl8lQJzrW7f
+   g==;
+X-CSE-ConnectionGUID: dM3Uw8fZSpyfQyhq7Ght1A==
+X-CSE-MsgGUID: nXTOOMkoQNCKJMH7yjPclw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11820"; a="86504824"
+X-IronPort-AV: E=Sophos;i="6.24,211,1774335600"; 
+   d="scan'208";a="86504824"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jun 2026 23:40:32 -0700
+X-CSE-ConnectionGUID: MB7qguYtRgqQyZ9s2rpayA==
+X-CSE-MsgGUID: ZleeRUKyTEOdeByrUeHoZw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,211,1774335600"; 
+   d="scan'208";a="248371127"
+Received: from ettammin-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.244.10])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jun 2026 23:40:28 -0700
+Date: Thu, 18 Jun 2026 09:40:25 +0300
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: Runyu Xiao <runyu.xiao@seu.edu.cn>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@kernel.org>,
+	Orson Zhai <orsonzhai@gmail.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Chunyan Zhang <zhang.lyra@gmail.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Clark Williams <clrkwllms@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Jan Kiszka <jan.kiszka@siemens.com>, linux-gpio@vger.kernel.org,
+	linux-rt-devel@lists.linux.dev, linux-kernel@vger.kernel.org,
+	jianhao.xu@seu.edu.cn, stable@vger.kernel.org
+Subject: Re: [PATCH 1/2] gpio: sch: use raw_spinlock_t in the irq startup path
+Message-ID: <ajOS2UR9pw_pUBxr@ashevche-desk.local>
+References: <20260617154035.1199948-1-runyu.xiao@seu.edu.cn>
+ <20260617154035.1199948-2-runyu.xiao@seu.edu.cn>
+ <20260618062839.4o1ewdEn@linutronix.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260618062839.4o1ewdEn@linutronix.de>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-3.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[intel.com:d:+,kernel.org:s:+];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[riseup.net,kernel.org,vger.kernel.org,gmail.com];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-267012-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[16];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:bentiss@kernel.org,m:jikos@kernel.org,m:lains@riseup.net,m:lee@kernel.org,m:linux-input@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:sammiee5311@gmail.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[sammiee5311@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-267013-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:bigeasy@linutronix.de,m:runyu.xiao@seu.edu.cn,m:linus.walleij@linaro.org,m:brgl@kernel.org,m:orsonzhai@gmail.com,m:baolin.wang@linux.alibaba.com,m:zhang.lyra@gmail.com,m:andy@kernel.org,m:clrkwllms@kernel.org,m:rostedt@goodmis.org,m:jan.kiszka@siemens.com,m:linux-gpio@vger.kernel.org,m:linux-rt-devel@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:jianhao.xu@seu.edu.cn,m:stable@vger.kernel.org,m:zhanglyra@gmail.com,s:lists@lfdr.de];
+	HAS_ORG_HEADER(0.00)[];
+	FORGED_SENDER(0.00)[andriy.shevchenko@intel.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[seu.edu.cn,linaro.org,kernel.org,gmail.com,linux.alibaba.com,goodmis.org,siemens.com,vger.kernel.org,lists.linux.dev];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sammiee5311@gmail.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[andriy.shevchenko@intel.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
 	RCVD_COUNT_FIVE(0.00)[5];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	MISSING_XM_UA(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:from_mime,seu.edu.cn:email,vger.kernel.org:from_smtp,linutronix.de:email,ashevche-desk.local:mid,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: CEA7E69DDF6
+X-Rspamd-Queue-Id: 1F01F69DE33
 
-Commit b6a57912854e ("HID: logitech-dj: Prevent REPORT_ID_DJ_SHORT
-related user initiated OOB write") added validation for the DJ short
-output report, but the error path dereferences rep->field[0] even when
-rep->maxfield is zero.
+On Thu, Jun 18, 2026 at 08:28:39AM +0200, Sebastian Andrzej Siewior wrote:
+> On 2026-06-17 23:40:34 [+0800], Runyu Xiao wrote:
+> > sch_irq_unmask() enables the GPIO IRQ and then updates the controller
+> > state through sch_irq_mask_unmask(), which takes sch->lock with
+> > spin_lock_irqsave().  The callback can be reached from irq_startup()
+> > while setting up a requested IRQ.  That path is not sleepable, but on
+> > PREEMPT_RT a regular spinlock_t becomes a sleeping lock.
+> …
+> > Fixes: 7a81638485c1 ("gpio: sch: Add edge event support")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Runyu Xiao <runyu.xiao@seu.edu.cn>
+> 
+> Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-Commit 8b9a097eb2fc ("HID: logitech-dj: fix wrong detection of bad
-DJ_SHORT output report") made the check conditional on rep being present,
-but a crafted descriptor can still create report ID 0x20 with only padding
-output items. hid-core registers the report, ignores the padding field,
-and leaves rep->maxfield as zero.
+There is already a v2.
 
-In that case the validation enters the rep->maxfield < 1 branch and then
-dereferences rep->field[0]->report_count while printing the error message,
-causing a NULL pointer dereference during probe. This is reproducible with
-uhid by emulating a Logitech receiver with a padding-only DJ short output
-report:
-
-  BUG: KASAN: null-ptr-deref in logi_dj_probe+0xb1/0x754 [hid_logitech_dj]
-  Read of size 4 at addr 0000000000000028 by task kworker/4:1/129
-  ...
-  Call Trace:
-   logi_dj_probe+0xb1/0x754 [hid_logitech_dj]
-   hid_device_probe+0x329/0x3f0 [hid]
-   really_probe+0x162/0x570
-   __device_attach+0x137/0x2c0
-   bus_probe_device+0x38/0xc0
-   device_add+0xa56/0xce0
-   hid_add_device+0x19c/0x280 [hid]
-   uhid_device_add_worker+0x2c/0xb0 [uhid]
-
-Reject the zero-field report before printing the field report_count.
-
-Fixes: b6a57912854e ("HID: logitech-dj: Prevent REPORT_ID_DJ_SHORT related user initiated OOB write")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-8
-Signed-off-by: HyeongJun An <sammiee5311@gmail.com>
----
- drivers/hid/hid-logitech-dj.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/hid/hid-logitech-dj.c b/drivers/hid/hid-logitech-dj.c
-index 381e4dc5aba7..9c574ab8b60b 100644
---- a/drivers/hid/hid-logitech-dj.c
-+++ b/drivers/hid/hid-logitech-dj.c
-@@ -1907,8 +1907,13 @@ static int logi_dj_probe(struct hid_device *hdev,
- 	output_report_enum = &hdev->report_enum[HID_OUTPUT_REPORT];
- 	rep = output_report_enum->report_id_hash[REPORT_ID_DJ_SHORT];
- 
--	if (rep && (rep->maxfield < 1 ||
--		    rep->field[0]->report_count != DJREPORT_SHORT_LENGTH - 1)) {
-+	if (rep && rep->maxfield < 1) {
-+		hid_err(hdev, "Expected size of DJ short report is %d, but got 0",
-+			DJREPORT_SHORT_LENGTH - 1);
-+		return -EINVAL;
-+	}
-+
-+	if (rep && rep->field[0]->report_count != DJREPORT_SHORT_LENGTH - 1) {
- 		hid_err(hdev, "Expected size of DJ short report is %d, but got %d",
- 			DJREPORT_SHORT_LENGTH - 1, rep->field[0]->report_count);
- 		return -EINVAL;
 -- 
-2.43.0
+With Best Regards,
+Andy Shevchenko
+
 
 
