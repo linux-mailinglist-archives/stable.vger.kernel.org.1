@@ -1,97 +1,162 @@
-Return-Path: <stable+bounces-267146-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267147-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ySI3OK/7M2qrKAYAu9opvQ
-	(envelope-from <stable+bounces-267146-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 16:07:43 +0200
+	id VzJTLh39M2pJKQYAu9opvQ
+	(envelope-from <stable+bounces-267147-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 16:13:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 736826A0CE5
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 16:07:43 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A4766A0DC2
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 16:13:49 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=lst.de (policy=none);
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267146-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267146-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IvSWdDCv;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267147-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267147-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1963E3014512
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 14:07:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DA2E8301014F
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 14:13:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 997403DDDC4;
-	Thu, 18 Jun 2026 14:07:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D6773F58F6;
+	Thu, 18 Jun 2026 14:13:45 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40DE61B4156;
-	Thu, 18 Jun 2026 14:07:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 579143B2FC2
+	for <stable@vger.kernel.org>; Thu, 18 Jun 2026 14:13:44 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781791656; cv=none; b=Ut9Ci0m56cdTvmaJTl/bos82gjfYZNmz3FmEu9rFU7pX7Hg9pxQo0YS5IPEsHVY/OEvJXyZIgS8UuWQLvC5cy36K9M1QMLhXwJI2Y9kfKxyo8zM2DSKg+mAX6eKcFcny/4v+XzCKd+ugLgc/5OC989zLU+bsQekGqKtNY+JMlPc=
+	t=1781792025; cv=none; b=Ol47+d9TnGghte0iYX5UrZlpPKvfPjzHWm+GOgd4UQLTlKG6YgNv4jTqI+zESouoZ88/N7fP7wMS2TKautaOD82l8F5k+X3ulCSgTIzL6u0ahpmpiurdSIzJZn2wTmwZvqKt3LxO4mvsFWzrbGfYdnfc+uU0peXi+0kxmBrz2jQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781791656; c=relaxed/simple;
-	bh=M7NmYC/Iylm9myghHwqILim55SAUt9QrM+UZYk0eJlw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KRawJlJFXwt1grWdTce9+51HRNf/7dKZoTLPk3b7SFc0Ncd7rN6OAfUDuJqK1fS4YLTJ2JiPRh22CAhaOkmN8fT5ukVciHlYESH3duX137laDrmgcsKMjXTt4jmrdhJ+h22rRv+BHHf8VzqgWt1eAOJOuQOIxuw6zObH+n3Mk14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lst.de; spf=pass smtp.mailfrom=lst.de; arc=none smtp.client-ip=213.95.11.211
-Received: by verein.lst.de (Postfix, from userid 2407)
-	id 557B668BEB; Thu, 18 Jun 2026 16:07:31 +0200 (CEST)
-Date: Thu, 18 Jun 2026 16:07:31 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: Connor Williamson <connordw@amazon.com>
-Cc: axboe@kernel.dk, linux-block@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	yukuai3@huawei.com, hch@lst.de, jack@suse.cz,
-	nh-open-source@amazon.com
-Subject: Re: [PATCH] block: remove redundant GD_NEED_PART_SCAN in
- add_disk_final()
-Message-ID: <20260618140731.GA3395@lst.de>
-References: <20260615130715.53693-1-connordw@amazon.com>
+	s=arc-20240116; t=1781792025; c=relaxed/simple;
+	bh=DwZgQ33ZS7bqms5nbl0ue8JaNS+VOe3nrHPr9k+PPVo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=tgnoaE2UJrfnv8B6OePJrFjlF9M8Y7k+nqv+mKVX8piuk4hapYvyyc4/05k7tl3VeoSUKP6joW+jfgtFRGdLRtt/hk0D8bOtrKHirkLJVNpvcxH+CAm1wrdLZ/blSoYDnIboFTw0mo4aOcR6XJUduqkVvO07wohJavGLjl8nIUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IvSWdDCv; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7941B1F000E9;
+	Thu, 18 Jun 2026 14:13:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781792024;
+	bh=aehrTraPV6Mblmer2c6D81tWkH6Ag1jZINaxqlPSDEo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=IvSWdDCvgObqFrSP1DKVA87o6VKg4Jdy7+Nr1RDt0oyNt4Cgaq1B7vO9Lkh3x8Jc4
+	 mWrYJeEielajx/Q5UIomUrukP5UQNSFslFrd5yc8A60K4cJcKMUTgYFkJXm9Gcibxx
+	 Ev3JJ5CvRcZI7TqwplPV98cXhkS+HH7zl4Ovjwk+8Yioiz/ALdb1Ui3x91yAL0ndl7
+	 gpja+bR+gNILln145O+V340tQDCVNpFweTfOJa/DWCAbGfotj3S8grRnN5g3INGO+L
+	 pHjwliCAgWpwV8lgQubP/i3sbWjab5tGUdeRyiao5bhXQoDMXcsMHGp8fWnvG7sH/G
+	 8ZgboPHlmxqZg==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Helen Koike <koike@igalia.com>,
+	syzbot+b8ca586b9fc235f0c0df@syzkaller.appspotmail.com,
+	Thomas Gleixner <tglx@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1.y] debugobjects: Do not fill_pool() if pi_blocked_on
+Date: Thu, 18 Jun 2026 10:13:40 -0400
+Message-ID: <20260618141340.734280-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026061611-defective-unbundle-fbc8@gregkh>
+References: <2026061611-defective-unbundle-fbc8@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260615130715.53693-1-connordw@amazon.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.36 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[lst.de : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-267146-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-267147-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:connordw@amazon.com,m:axboe@kernel.dk,m:linux-block@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:yukuai3@huawei.com,m:hch@lst.de,m:jack@suse.cz,m:nh-open-source@amazon.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[hch@lst.de,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:koike@igalia.com,m:syzbot+b8ca586b9fc235f0c0df@syzkaller.appspotmail.com,m:tglx@kernel.org,m:sashal@kernel.org,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[hch@lst.de,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	ALIAS_RESOLVED(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	R_DKIM_NA(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,lst.de:email,lst.de:mid,lst.de:from_mime]
+	TAGGED_RCPT(0.00)[stable,b8ca586b9fc235f0c0df];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,syzkaller.appspot.com:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 736826A0CE5
+X-Rspamd-Queue-Id: 0A4766A0DC2
 
-Looks good:
+From: Helen Koike <koike@igalia.com>
 
-Reviewed-by: Christoph Hellwig <hch@lst.de>
+[ Upstream commit 5f41161059fd0f1bbf18c90f3180e38cc45a14eb ]
+
+On RT enabled kernels, fill_pool() ends up calling rtlock_lock(), which
+asserts if current::pi_blocked_on is set, because a task can obviously only
+block on one lock as otherwise the priority inheritenace chain gets
+corrupted.
+
+Prevent this by expanding the conditional to take current::pi_blocked_on
+into account.
+
+Fixes: 4bedcc28469a ("debugobjects: Make them PREEMPT_RT aware")
+Reported-by: syzbot+b8ca586b9fc235f0c0df@syzkaller.appspotmail.com
+Signed-off-by: Helen Koike <koike@igalia.com>
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Link: https://patch.msgid.link/20260511215359.3351259-1-koike@igalia.com
+Closes: https://syzkaller.appspot.com/bug?extid=b8ca586b9fc235f0c0df
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ lib/debugobjects.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
+
+diff --git a/lib/debugobjects.c b/lib/debugobjects.c
+index 8c3b483a8fb44a..f9d53a0af4238f 100644
+--- a/lib/debugobjects.c
++++ b/lib/debugobjects.c
+@@ -597,13 +597,23 @@ static struct debug_obj *lookup_object_or_alloc(void *addr, struct debug_bucket
+ 	return NULL;
+ }
+ 
++static inline bool debug_objects_is_pi_blocked_on(void)
++{
++#ifdef CONFIG_RT_MUTEXES
++	return current->pi_blocked_on != NULL;
++#else
++	return false;
++#endif
++}
++
+ static void debug_objects_fill_pool(void)
+ {
+ 	/*
+ 	 * On RT enabled kernels the pool refill must happen in preemptible
+-	 * context:
++	 * context and not enqueued on an rt_mutex:
+ 	 */
+-	if (!IS_ENABLED(CONFIG_PREEMPT_RT) || preemptible())
++	if (!IS_ENABLED(CONFIG_PREEMPT_RT) ||
++	    (preemptible() && !debug_objects_is_pi_blocked_on()))
+ 		fill_pool();
+ }
+ 
+-- 
+2.53.0
 
 
