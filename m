@@ -1,100 +1,81 @@
-Return-Path: <stable+bounces-267087-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267088-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id zLOyMXTKM2pcGQYAu9opvQ
-	(envelope-from <stable+bounces-267087-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 12:37:40 +0200
+	id 99nKFrHKM2ppGQYAu9opvQ
+	(envelope-from <stable+bounces-267088-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 12:38:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BAB569F642
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 12:37:40 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDC6369F669
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 12:38:40 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kroah.com header.s=fm1 header.b=giUpVldr;
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=DV9Hxf1t;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267087-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-267087-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=kroah.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=XqOMpXo8;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267088-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-267088-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=intel.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 74D44300E25C
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 10:35:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 343C8301FB33
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 10:37:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C67BB3D6CC4;
-	Thu, 18 Jun 2026 10:35:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C26203ECBD9;
+	Thu, 18 Jun 2026 10:36:58 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from flow-b1-smtp.messagingengine.com (flow-b1-smtp.messagingengine.com [202.12.124.136])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 793C2310763;
-	Thu, 18 Jun 2026 10:35:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78A703EFD2D;
+	Thu, 18 Jun 2026 10:36:56 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781778927; cv=none; b=Fy7093DjwhbjUqHSDWuKcYh9ZHOhWReU/PsxcSGTwgDNk1K7waEGdWBR5gMCb1dQI1mRV0ZKyZzRlTFY7Agea5lotiPZQv4OnVna8C+gh6gWerE/+N7di3mbP+zbLjHbbYe6V8+pVNN9kOCE8VczdO9q0DdSO9yb4w7F2RXXvbM=
+	t=1781779018; cv=none; b=um0Gobvz7MgzgXno/il3YNwKwtM1iP3OoT7sWQ6Vo8lksA9ocfEVwwFNrtM8jlfeEA2zhO6yuVYLQq/VhbWK9Jc1fvJXz2FjFFt92x76Xg5J5dzHSYlCh6jfj4uWmYbOIGCrI4kI7MauwYcAT20sr2hOo0xjQ4VZWecw5lwqntU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781778927; c=relaxed/simple;
-	bh=0xfIjTO0RWsLfP/KT2Av7niNAq3U56p3TGwTb9L2U7c=;
+	s=arc-20240116; t=1781779018; c=relaxed/simple;
+	bh=7Nzbpjv7n37f4sbGVDcMQ7ne6oZ93Z4YkgglX3MKqUk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sVAhaaQOXGRK9t31qhwP4sHcK6HYPWtZZ0hQYTpf8NGyFcEm6cJmIiNZR1TU+tkwoSana9Y4xzaVxqGLOVtCzxA2EgjDk9PUHM6ZLuIVPAP8vYqlQcxavxKEhGt4t09jGFkoBlbFkor+8Ck5q8bqnvwrO1K/JTL9uC2lCkQMCz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=giUpVldr; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=DV9Hxf1t; arc=none smtp.client-ip=202.12.124.136
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailflow.stl.internal (Postfix) with ESMTP id 295211300A85;
-	Thu, 18 Jun 2026 06:35:24 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Thu, 18 Jun 2026 06:35:24 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm1; t=1781778923; x=1781786123; bh=c+JFVYRbkx
-	6rCQdKVL0JqSwq3chaKNZzvhRn0PAwsOw=; b=giUpVldr5njeIFaRPz2fkJfBjT
-	GhKbRWCiVZKb4jS8dX4t2KoJ9VQX7slJhG+hwWwM4a5/PWEcYmHfsfuMCXw0oxBW
-	tmrYE9MmuJSaf/ZiDWKMo8WuD7ESHJLSLbAx4AlSPIqutIsDH5+K6UIjKCCgPyjD
-	5q1DaE+UYnWko3qz8eD96eXhMdEcwpP5HDtMFQQ2OY8kEr7KkPo82oRbm5USmTue
-	2C+oFj6auO1JiNPjeoAItiBc1mhXO43IIelpS3Czt16ytHBaeBcxOynCWjepa8Q8
-	lcFlP5aeYHB92gqfkeECduY/JRYe+/lYpI/dqNM5sLcflpdYN+8AdX58tQSA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1781778923; x=1781786123; bh=c+JFVYRbkx6rCQdKVL0JqSwq3chaKNZzvhR
-	n0PAwsOw=; b=DV9Hxf1t9L2Aywf1VjFPD4vnhnRw9AWIBtfWpXtbTCy8kSto64S
-	TIT2HabyGQ0H27FI6IGLNX2gDz1a8/ynkMWgkqCOHc1x7xwXxQKP1ir96ssL/3Mr
-	Wk5AG6GSA82SPlfksMeUrkuWbpTnL/akRh4gQqMAcyGszYahvFiiQG1ZaL4xJkEE
-	o5FPKjsf7lm+yrpqvniV/VnRBnau0x3yU3US+8PBlv6F0gl946OF2THWGgNlxn0c
-	ongIlAghgq1nLanj//cWto3TKttcxim6EXE4MDrH+sras/Qw8f5Krul5Bq/Z5exN
-	SJOv0pVhZvRnTGlM/nMBVgP+uH4S6J+QJpA==
-X-ME-Sender: <xms:68kzat-I270Q1pj-MjYOL21Vj4OeBqz1-9AR2ZRrUskb8KfkKhkeGQ>
-    <xme:68kzatnvCH8slU1aCoEuzXfBv1BnZIFV0MdbUeG7rCwovH-ZHq67nYEZw5tCU6I_R
-    3dAqsxbmuOvMxonJXAr1gipV4ai_sZOnrXYs2TeB0rUF8ttyg>
-X-ME-Received: <xmr:68kzamj8anE5ePz182Yz8jn61bkh5I3sRPOuLk3U9D6CswgngBXj4y5scoMfBT7nXuXrES0z5qp4VPfPkSpPFaZ7Xw>
-X-ME-Proxy-Cause: dmFkZTEOAOj02d/ZKUn9vAh5IMWX/a/uWTsZrk95sDIEQElrszD8yGRvVRq+MI8mGf8LjP
-    RQVAV4njIE8vYUg0goHwoGnl1iWxq8UGXbDqqjrag/z22f0/NhXpEN6hcQjlDAy9rpmdwq
-    Zr4XhfoQV5UBarJI95cR+MDwdvIlZYvLx/eI5R2J+F8RJio5GUOKD3Pf32WygkS2LK9naU
-    VT5X+URE547nGLXQVfokPS0MKuxGGSt+bF3NPPw3TdMwn9OwZNPBkNzoSam2VcrZhZDp79
-    pP6QHUG+Wt9kjx7pEc4SaEPdDTYuonhGN44aBOEqoW9U4OEjNop98QT0CgsFAGlh+EdaBU
-    aznMH0YR6o4dS6lzTzQcx/EY1/dFQ+nbru5vUO9GIHrFmwT9LKxuZtBlugvIyGblR0VnB9
-    83A7yQ6njTnM1nUg9zNNAodmzzySA7Umh9Kmzu/vOmHQM6mQ3bMZUrrvCYV8cGoH8r8n81
-    NSzfkBZnopQiCr3LbRnglYY/uPaVVBJdolSFmorJbDosmG/g/NJcRTZ85xYvq5Ilh8ADFc
-    DgiW94m7dD9oIgL28h73pIj4FYWydQvTRuHDsEChOnvYfS4zvXHzJ+xUKAhFhY5NMDGA6n
-    srVAAjZuQIr5n5249kEjmd/sYUDeCkCt7lf0V+V6vuJC4c6U91y9C/o2wuvQ
-X-ME-Proxy: <xmx:68kzalbSpZznxiMMdkYpxB_L_TLpY49c3pYnbAPw6d1IG9gDwhgpPQ>
-    <xmx:68kzaqGLR6TjdFE4ZmSPcUebQhfcVoUbxkXLsD7IMLwCosZsFux1VQ>
-    <xmx:68kzaiawsFDcMdl35khrpckGfKR4BUdG1gxvWn2M4YWHbq_RFDJ2FA>
-    <xmx:68kzar1FT3olSv0W8VVzCgp7R3w2K515k-rH261mx7vlhIWfiuyFqQ>
-    <xmx:68kzanBDuY2CPyhevtmRL9HcntqUlK9ytbnx3BpDRbwP-kG8INNXDES9>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 18 Jun 2026 06:35:22 -0400 (EDT)
-Date: Thu, 18 Jun 2026 12:35:36 +0200
-From: Greg KH <greg@kroah.com>
-To: rdhan@smu.edu.sg
-Cc: Andrew Morton <akpm@osdl.org>, Antonino Daplas <adaplas@pol.net>,
-	stable@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Helge Deller <deller@gmx.de>
-Subject: Re: [PATCH] fbcon: Avoid OOB font access if console rotation fails
-Message-ID: <2026061826-yield-reemerge-7fe9@gregkh>
-References: <20260618-prep-base-v5-15-209-v1-1-cfcf596dca7a@smu.edu.sg>
+	 Content-Type:Content-Disposition:In-Reply-To; b=q31rPs7CyJQrRSihAurb9p+1TQApDtKo/TZTMCcQDlLhcFTv28XCk/st/v1RSIo4evcaWONnM6j+QN4H4hYkVs7t662Cze6eliPONJdd+ktMSnZmDWbsDCf+S6Y0kKduma6cQd0eSJcJmlwwNULm94s4qquEo/QPxbNkMX2kVdk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XqOMpXo8; arc=none smtp.client-ip=198.175.65.16
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1781779017; x=1813315017;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=7Nzbpjv7n37f4sbGVDcMQ7ne6oZ93Z4YkgglX3MKqUk=;
+  b=XqOMpXo8sDmI4gdiOlGStlcIdKWt8i8qsemLmYOehLbErPS7BneYbSND
+   xKbvX5/FimTCM2xyMAUXUe1MF9ZCuEmWWuKillNkM7NsNw4SN9XNukuiA
+   ORmy0aZ06vydL0vvWiUoWRImcGYrA7muGDiAJH/zVTve1eUQWXoFEz+mW
+   pqRJGzdCsCyjvfvx3eZqe6QMyBx7e7V7f8ESCgS8Wkv1uuXzNXDSmwr5d
+   h7w94mBMKpZq41G3ZAX8sTYYxmvtpyAQYwFbqAmoPSnBHeAmm+9Inqfgy
+   FfCtMv3Fp/znftzEmuHjUIMtIeFqcMmWCRNe9aEXQggHY0YMClePS4sR+
+   g==;
+X-CSE-ConnectionGUID: EjHPzUYZReGofZ9gUnRomQ==
+X-CSE-MsgGUID: Eb/DhaFxTpucKfDZ98K1Hw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11820"; a="82809107"
+X-IronPort-AV: E=Sophos;i="6.24,211,1774335600"; 
+   d="scan'208";a="82809107"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jun 2026 03:36:55 -0700
+X-CSE-ConnectionGUID: UD73svXlT8+CLuyW2NIlsQ==
+X-CSE-MsgGUID: c7sLMmdpT6+AATQhlFdaCA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,211,1774335600"; 
+   d="scan'208";a="247188126"
+Received: from black.igk.intel.com ([10.91.253.5])
+  by orviesa006.jf.intel.com with ESMTP; 18 Jun 2026 03:36:52 -0700
+Received: by black.igk.intel.com (Postfix, from userid 1008)
+	id C781198; Thu, 18 Jun 2026 12:36:50 +0200 (CEST)
+Date: Thu, 18 Jun 2026 13:36:49 +0300
+From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To: Fan Wu <fanwu01@zju.edu.cn>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Johan Hovold <johan@kernel.org>,
+	Pooja Katiyar <pooja.katiyar@intel.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] usb: typec: ucsi: ccg: Fix use-after-free of ucsi on
+ remove
+Message-ID: <ajPKQduMwyVn_X48@kuha>
+References: <20260616132011.103279-1-fanwu01@zju.edu.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -103,74 +84,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260618-prep-base-v5-15-209-v1-1-cfcf596dca7a@smu.edu.sg>
+In-Reply-To: <20260616132011.103279-1-fanwu01@zju.edu.cn>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-4.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[intel.com:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kroah.com,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[kroah.com:s=fm1,messagingengine.com:s=fm1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-267087-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-267088-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[osdl.org,pol.net,vger.kernel.org,lists.freedesktop.org,suse.de,gmx.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER(0.00)[greg@kroah.com,stable@vger.kernel.org];
+	FORGED_SENDER(0.00)[heikki.krogerus@linux.intel.com,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:rdhan@smu.edu.sg,m:akpm@osdl.org,m:adaplas@pol.net,m:stable@vger.kernel.org,m:dri-devel@lists.freedesktop.org,m:linux-fbdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:tzimmermann@suse.de,m:deller@gmx.de,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:fanwu01@zju.edu.cn,m:gregkh@linuxfoundation.org,m:johan@kernel.org,m:pooja.katiyar@intel.com,m:dmitry.baryshkov@oss.qualcomm.com,m:linux-usb@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kroah.com:+,messagingengine.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DKIM_TRACE(0.00)[intel.com:+];
 	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[greg@kroah.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[heikki.krogerus@linux.intel.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kroah.com:dkim,kroah.com:from_mime,suse.de:email,gmx.de:email,gregkh:mid,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,intel.com:dkim,intel.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 6BAB569F642
+X-Rspamd-Queue-Id: EDC6369F669
 
-On Thu, Jun 18, 2026 at 02:30:17PM +0800, HAN Ruidong via B4 Relay wrote:
-> From: HAN Ruidong <rdhan@smu.edu.sg>
+On Tue, Jun 16, 2026 at 01:20:11PM +0000, Fan Wu wrote:
+> The threaded IRQ handler ccg_irq_handler() calls ucsi_notify_common(),
+> which on a connector-change event calls ucsi_connector_change() and
+> schedules connector work.  In ucsi_ccg_remove(), ucsi_destroy() frees
+> uc->ucsi (kfree) before free_irq() is called, so a handler invocation
+> already in flight may access the freed object after ucsi_destroy().
 > 
-> [ Upstream commit e4ef723d8975a2694cc90733a6b888a5e2841842 ]
+>   CPU 0 (remove)            | CPU 1 (threaded IRQ)
+>     ucsi_destroy(uc->ucsi)  |   ccg_irq_handler()
+>       kfree(ucsi) // FREE   |     ucsi_notify_common(uc->ucsi) // USE
 > 
-> Clear the font buffer if the reallocation during console rotation fails
-> in fbcon_rotate_font(). The putcs implementations for the rotated buffer
-> will return early in this case. See [1] for an example.
+> Move free_irq() before ucsi_destroy() in the remove path.  It is kept
+> after ucsi_unregister(): ucsi_unregister() cancels connector work whose
+> handler issues GET_CONNECTOR_STATUS through ucsi_send_command_common(),
+> which waits for a completion that is signalled from the IRQ handler, so
+> the IRQ must stay active until that work has been cancelled.
 > 
-> Currently, fbcon_rotate_font() keeps the old buffer, which is too small
-> for the rotated font. Printing to the rotated console with a high-enough
-> character code will overflow the font buffer.
+> The probe error path already orders free_irq() before ucsi_destroy().
 > 
-> v2:
-> - fix typos in commit message
+> This bug was found by static analysis.
 > 
-> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-> Fixes: 6cc50e1c5b57 ("[PATCH] fbcon: Console Rotation - Add support to rotate font bitmap")
-> Cc: stable@vger.kernel.org # v2.6.15+
-> Link: https://elixir.bootlin.com/linux/v6.19/source/drivers/video/fbdev/core/fbcon_ccw.c#L144 # [1]
-> Signed-off-by: Helge Deller <deller@gmx.de>
-> [ renamed `par` to `ops` to match the v5.15 local pointer name ]
-> Signed-off-by: HAN Ruidong <rdhan@smu.edu.sg>
+> Fixes: e32fd989ac1c ("usb: typec: ucsi: ccg: Move to the new API")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Fan Wu <fanwu01@zju.edu.cn>
+
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+
 > ---
->  drivers/video/fbdev/core/fbcon_rotate.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
+>  drivers/usb/typec/ucsi/ucsi_ccg.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/usb/typec/ucsi/ucsi_ccg.c b/drivers/usb/typec/ucsi/ucsi_ccg.c
+> index d83a0051c737..c089000bd448 100644
+> --- a/drivers/usb/typec/ucsi/ucsi_ccg.c
+> +++ b/drivers/usb/typec/ucsi/ucsi_ccg.c
+> @@ -1513,8 +1513,8 @@ static void ucsi_ccg_remove(struct i2c_client *client)
+>  	cancel_work_sync(&uc->work);
+>  	pm_runtime_disable(uc->dev);
+>  	ucsi_unregister(uc->ucsi);
+> -	ucsi_destroy(uc->ucsi);
+>  	free_irq(uc->irq, uc);
+> +	ucsi_destroy(uc->ucsi);
+>  }
+> 
+>  static const struct of_device_id ucsi_ccg_of_match_table[] = {
+> --
+> 2.45.2
 
-What stable tree(s) is this for?
-
-thanks,
-
-greg k-h
+-- 
+heikki
 
