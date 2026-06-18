@@ -1,178 +1,163 @@
-Return-Path: <stable+bounces-267197-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267198-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id W4mnI/xANGoPTAYAu9opvQ
-	(envelope-from <stable+bounces-267197-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 21:03:24 +0200
+	id vKEEKSxCNGqrTAYAu9opvQ
+	(envelope-from <stable+bounces-267198-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 21:08:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA5BA6A247E
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 21:03:23 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C650C6A24B5
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 21:08:27 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ndh2oNXb;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267197-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-267197-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=none;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Wl+1BwnS;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267198-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267198-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 99823307B111
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 18:58:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 99C71300F5C1
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 19:08:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AF26411666;
-	Thu, 18 Jun 2026 18:58:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B758A31E846;
+	Thu, 18 Jun 2026 19:08:25 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7ECF2E7380;
-	Thu, 18 Jun 2026 18:58:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44B531E2858
+	for <stable@vger.kernel.org>; Thu, 18 Jun 2026 19:08:24 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781809112; cv=none; b=sMilpLgowBRPFRVZNgAsvwrmrgNdHX718t1QsAankf50FYvOL1WigjFJkxcc9BmI0oKYWeM7ACioSzq2xqOkUeuz97K/eIN2lE+rwbCEIbRHvT1GE1Y5rqrml3IDcFjAC0vfdW3kHm8YAZ3FlcQTVbuudyJ2f0zMtc5QC5wbP1g=
+	t=1781809705; cv=none; b=RNyoK6SipUb6QFAEmYfRfjZXFV/jxwWx/3eewjCkq0u1NNGfr8xIuThJsRDc0s1qs1z5E6+bgo2xnV26jQGubMr9LlRSLeKHXJr0EirLjdGAjpLz+virmUxOaQsrRrULFIs3XAUfS0kPPFxpKSUGRNKRszmCtxNSWy4Dq802klk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781809112; c=relaxed/simple;
-	bh=fwaUZzNMvaZc2BPbZsPy9GK/Y+EIKakI6c48Ze86IEc=;
-	h=Date:To:From:Subject:Message-Id; b=VK/2Bjfk5HiqblbnVrDqgbAu7GOfmixd84iq4sFkDqNxmcLIZBFWuu1ee/t4+/ahvkpQyxYAb1vn0YeMLHJVWR2ugHSSFjYlkJudJTQVxrKekW9UUfxu0AfkMX1waktJsvIn/q2R0+kbVtTg+1KNVuVwPEy+YQsGTZ79zn4Io50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=ndh2oNXb; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 978911F00A3A;
-	Thu, 18 Jun 2026 18:58:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1781809110;
-	bh=XmZqcRfe6Zcbmv4JeSN5ep1uMN8ny2VjQolVW7Zqd/Y=;
-	h=Date:To:From:Subject;
-	b=ndh2oNXb9RJeTIJ3iwd7r/RJdzoMV/97KXlMplTonz5cq9OtYNFtwpG/awXl8Ykwg
-	 DMYL4a+2ZCDtrSdEaEils3gWbfYAH5QZrSRl/li+S/uOgSNwE3L8/HQzlxhGkUjEea
-	 fSD+aBxP0OnimAwh4UbrK3oYQU77B5KFmASgQQOk=
-Date: Thu, 18 Jun 2026 11:58:30 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,sj@kernel.org,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-damon-sysfs-schemes-put-stats-for-scheme_add_dirs-internal-error.patch added to mm-hotfixes-unstable branch
-Message-Id: <20260618185830.978911F00A3A@smtp.kernel.org>
+	s=arc-20240116; t=1781809705; c=relaxed/simple;
+	bh=uWwOFvwEc45Hrb3GxEXn1zAZJItEeuuxA+gHvapbv40=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=PqvcG6Bhu4qX8PN+keF+0gvc0fD7zP1nPFm3ClEstKh/pQv9D3wjs4AMMPnPbUSs2GKd2SszCJZVbR/LnVOt9wt542Lp/P0/MCvNytweoCj4XtU+jd5EMXOQScHn3H6Hd6EVlfAMXrT9ztlrMkuRzXfKHmJvye0m6H20/OBL+G4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wl+1BwnS; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CB341F000E9;
+	Thu, 18 Jun 2026 19:08:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781809703;
+	bh=yb0UAf/yqEzSFlgCt9l1ukkfO49DR5r46K8a0+iuXc8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=Wl+1BwnSaF0e1zPO6Hjz4pqyhMobWPmZX/O1DE6yfrOmyuQCwsjZeKTxP6nFWh/zj
+	 zEBbfGD79ACdQi5pWitRwY8yua37p0KlzWlIpqDnaFqCgdGFMLJJaCLfLuiAna0kq4
+	 UMDE8u57nleVTTyGFUq+CR7vKvICdBmGHNKIKmgXp/zf2AOmLZrlRBLIfK6vIg5SYy
+	 ulsMP/bha+qtM986outmHJ230gXBzJrP89mEcdS8VBdCTmDM1RDeVq0KLl77qO7Ecx
+	 3UX0Pdprha1vI6hiwiw01pO+obEA3z/WjuDWY9rViresaaQnyy3T5Lfi5guaVj1OYe
+	 pH6KJ7vb3VOCw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Helen Koike <koike@igalia.com>,
+	syzbot+b8ca586b9fc235f0c0df@syzkaller.appspotmail.com,
+	Thomas Gleixner <tglx@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10.y] debugobjects: Do not fill_pool() if pi_blocked_on
+Date: Thu, 18 Jun 2026 15:08:21 -0400
+Message-ID: <20260618190821.985317-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026061612-grievance-elm-4367@gregkh>
+References: <2026061612-grievance-elm-4367@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-267198-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-267197-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:mm-commits@vger.kernel.org,m:stable@vger.kernel.org,m:sj@kernel.org,m:akpm@linux-foundation.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:koike@igalia.com,m:syzbot+b8ca586b9fc235f0c0df@syzkaller.appspotmail.com,m:tglx@kernel.org,m:sashal@kernel.org,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[lists@lfdr.de];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[linux-foundation.org];
-	FORGED_SENDER(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	URIBL_MULTI_FAIL(0.00)[sea.lore.kernel.org:server fail,msgid.link:server fail,syzkaller.appspot.com:server fail,igalia.com:server fail,appspotmail.com:server fail,vger.kernel.org:server fail];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_NONE(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	ALIAS_RESOLVED(0.00)[];
+	TAGGED_RCPT(0.00)[stable,b8ca586b9fc235f0c0df];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,smtp.kernel.org:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux-foundation.org:dkim,linux-foundation.org:email,linux-foundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,appspotmail.com:email,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,syzkaller.appspot.com:url,igalia.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: DA5BA6A247E
+X-Rspamd-Queue-Id: C650C6A24B5
 
+From: Helen Koike <koike@igalia.com>
 
-The patch titled
-     Subject: mm/damon/sysfs-schemes: put stats for scheme_add_dirs() internal error
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-damon-sysfs-schemes-put-stats-for-scheme_add_dirs-internal-error.patch
+[ Upstream commit 5f41161059fd0f1bbf18c90f3180e38cc45a14eb ]
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-damon-sysfs-schemes-put-stats-for-scheme_add_dirs-internal-error.patch
+On RT enabled kernels, fill_pool() ends up calling rtlock_lock(), which
+asserts if current::pi_blocked_on is set, because a task can obviously only
+block on one lock as otherwise the priority inheritenace chain gets
+corrupted.
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+Prevent this by expanding the conditional to take current::pi_blocked_on
+into account.
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via various
-branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there most days
-
-------------------------------------------------------
-From: SeongJae Park <sj@kernel.org>
-Subject: mm/damon/sysfs-schemes: put stats for scheme_add_dirs() internal error
-Date: Wed, 17 Jun 2026 17:56:48 -0700
-
-damon_sysfs_scheme_add_dirs() setup the tried_regions directory after the
-stats directory setup is completed.  When the tried_regions directory
-setup is failed, the setup function ensures the reference for the tried
-regions directory is released.  Hence the error path should put references
-on setup succeeded directory objects, starting from the stats directory. 
-However, the error path is putting the tried_regions directory instead of
-the stats directory.
-
-As a direct result, the stats directory object is leaked.  Worse yet, if
-the tried_regions directory setup failed from the initial allocation, the
-scheme->tried_regions field remains uninitialized.  The following
-kobject_put(&scheme->tried_regions->kobj) call in the error path will
-dereference the uninitialized memory.  The setup failures should not be
-common.  But once it happens, the consequence is quite bad.
-
-Fix this issue by correctly putting the stats directory instead of the
-tried_regions directory.
-
-The issue was discovered [1] by Sashiko.
-
-Link: https://lore.kernel.org/20260618005650.83868-3-sj@kernel.org
-Link: https://lore.kernel.org/20260617005223.96813-1-sj@kernel.org [1]
-Fixes: 5181b75f438d ("mm/damon/sysfs-schemes: implement schemes/tried_regions directory")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org> # 6.2.x
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 4bedcc28469a ("debugobjects: Make them PREEMPT_RT aware")
+Reported-by: syzbot+b8ca586b9fc235f0c0df@syzkaller.appspotmail.com
+Signed-off-by: Helen Koike <koike@igalia.com>
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Link: https://patch.msgid.link/20260511215359.3351259-1-koike@igalia.com
+Closes: https://syzkaller.appspot.com/bug?extid=b8ca586b9fc235f0c0df
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
+ lib/debugobjects.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
- mm/damon/sysfs-schemes.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
---- a/mm/damon/sysfs-schemes.c~mm-damon-sysfs-schemes-put-stats-for-scheme_add_dirs-internal-error
-+++ a/mm/damon/sysfs-schemes.c
-@@ -2283,12 +2283,12 @@ static int damon_sysfs_scheme_add_dirs(s
- 		goto put_filters_watermarks_quotas_access_pattern_out;
- 	err = damon_sysfs_scheme_set_tried_regions(scheme);
- 	if (err)
--		goto put_tried_regions_out;
-+		goto put_stats_out;
- 	return 0;
+diff --git a/lib/debugobjects.c b/lib/debugobjects.c
+index 49fc61c08ee34e..17ece4d67d929e 100644
+--- a/lib/debugobjects.c
++++ b/lib/debugobjects.c
+@@ -600,13 +600,23 @@ static struct debug_obj *lookup_object_or_alloc(void *addr, struct debug_bucket
+ 	return NULL;
+ }
  
--put_tried_regions_out:
--	kobject_put(&scheme->tried_regions->kobj);
--	scheme->tried_regions = NULL;
-+put_stats_out:
-+	kobject_put(&scheme->stats->kobj);
-+	scheme->stats = NULL;
- put_filters_watermarks_quotas_access_pattern_out:
- 	kobject_put(&scheme->ops_filters->kobj);
- 	scheme->ops_filters = NULL;
-_
-
-Patches currently in -mm which might be from sj@kernel.org are
-
-mm-damon-sysfs-schemes-fix-dir-put-orders-in-access_pattern_add_dirs.patch
-mm-damon-sysfs-schemes-put-stats-for-scheme_add_dirs-internal-error.patch
-mm-damon-core-always-put-unsuccessfully-committed-target-pids.patch
++static inline bool debug_objects_is_pi_blocked_on(void)
++{
++#ifdef CONFIG_RT_MUTEXES
++	return current->pi_blocked_on != NULL;
++#else
++	return false;
++#endif
++}
++
+ static void debug_objects_fill_pool(void)
+ {
+ 	/*
+ 	 * On RT enabled kernels the pool refill must happen in preemptible
+-	 * context:
++	 * context and not enqueued on an rt_mutex:
+ 	 */
+-	if (!IS_ENABLED(CONFIG_PREEMPT_RT) || preemptible())
++	if (!IS_ENABLED(CONFIG_PREEMPT_RT) ||
++	    (preemptible() && !debug_objects_is_pi_blocked_on()))
+ 		fill_pool();
+ }
+ 
+-- 
+2.53.0
 
 
