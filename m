@@ -1,319 +1,210 @@
-Return-Path: <stable+bounces-267111-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267113-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 32ZgBOPYM2rCHAYAu9opvQ
-	(envelope-from <stable+bounces-267111-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 13:39:15 +0200
+	id r9caOwXbM2omHQYAu9opvQ
+	(envelope-from <stable+bounces-267113-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 13:48:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73F1E69FCAB
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 13:39:14 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AF9C69FD15
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 13:48:21 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=jRW3Z24O;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=uFsw4YqU;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267111-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-267111-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=reject ("cv is fail on i=2")
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=tMU9azvM;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267113-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267113-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=amazon.com;
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 84714306D3FE
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 11:39:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 581CF307B09D
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 11:47:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B49D3BF699;
-	Thu, 18 Jun 2026 11:39:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B4363C09FF;
+	Thu, 18 Jun 2026 11:47:01 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+Received: from pdx-out-001.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-001.esa.us-west-2.outbound.mail-perimeter.amazon.com [44.245.243.92])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17EBD3B2FC2
-	for <stable@vger.kernel.org>; Thu, 18 Jun 2026 11:39:11 +0000 (UTC)
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781782752; cv=fail; b=L/GEQdpYTepR/tJfb5QJhQNuDR+vbhxhSKxg0lv4I+d2q7diRbdaW0+ILndDafc1FvF67910wj9fbEmighT7/Gq1NKIydlQ1KxXwWmDgm+dI5ebHcrv3H4sy7cS1iyy9+sYDRuGUwnVOXJuTTFFbVIWOAabpzV8nC8LsM6f578s=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781782752; c=relaxed/simple;
-	bh=JyJtyU2KQKBCliE7mz+GnoEsvBCJEPuKCJmTMIlxXqQ=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=pl4iYLpskksH8n3ukcEMIbegr9QqYZUNYrK28QVC9glKgbT7b6tpF4mM2HjGrrebVvgrMclXyXJVnkOcdzmLglgNACxtyEeCAy6e4MhjzcQBCMs2ZculZ6upqAKWb6VJVXsiAGPBmBzRkAG/ASemgx0TijsMD/Pdm5r3hEmnKgM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=jRW3Z24O; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=uFsw4YqU; arc=fail smtp.client-ip=205.220.177.32
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65I5SmsE2354906;
-	Thu, 18 Jun 2026 11:39:02 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	corp-2025-04-25; bh=oNgTUp2mkgNSshSHfBe7bskkFU5nS/qW2PHbH8nARA4=; b=
-	jRW3Z24OigAne+nokiUNMCUxrIwsqowppQ3mK+6IPGxkM/j5oKYKZjrt2kVNbvwX
-	UUkH//rRX61oCZUe5XpyRWKeQWPHuYczzR8rWhMF7hVaxnjTObv0ZJLrxVk0elQY
-	Jq43RESriGqz8uKmbTczP5wJEk3e+fOZhppvu3l1tFIUPm9eDQEbx5II3rIvskdE
-	CPDa6p8v6huzyWH96NXSolS8+nO595YTz+y6fPiYYYylmBJtcXmUYmGiPAn/5ON/
-	TWn8XyJX8zoDG4wX/nsiGz98bz4d6fWHttZi9PT+uqskk74U7QsyaboD7rx+yl62
-	FtXIU1SVB+SuG7FjPw97rg==
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4euefujcj0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 18 Jun 2026 11:39:01 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.7/8.18.1.7) with ESMTP id 65IBcf3H015557;
-	Thu, 18 Jun 2026 11:39:01 GMT
-Received: from bn1pr04cu002.outbound.protection.outlook.com (mail-eastus2azon11010040.outbound.protection.outlook.com [52.101.56.40])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4ev1bqs7yx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 18 Jun 2026 11:39:01 +0000 (GMT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ZccjHmbfauvR/SuESbJ5IqhHxGIyWSUYk+k/HY93je8AdJBMpFpmTBOcJCF7Xs0wcWypDlyfkFNX2DjuvnUW65FWdnRQF/xXiFq11RpkLyzt8Fkoq+V6Iy0gqqbQNwIfIG0z2GYxxk1Z+ItpM5yzY4grkZnCbyQmTIz7LL4PPWah+9KwvVek7eI3xTVsGWv2owXOLuBtYKqh+od8xq1w4sEsSeMRFaTaw5+v9jO050yNsWkDa1Jb5DaF6C5w2zlb42bk8qGGN2H+pHhFTxkjHCcLhEJd43NlTwwVjKmd3I61a75OMP+t4XDh4t36zUiQaG+dFvCmhX7lBBcvTgswJw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=oNgTUp2mkgNSshSHfBe7bskkFU5nS/qW2PHbH8nARA4=;
- b=XBrXisIoeIewv9F5LQZ+X81YFB2OXkDqr3Ar5PCrRsbtqgpkhL7dlmv91RCdexg62qNlA0LB88tS3gM0czQHz64XBj7mXODeZ1gOS3prxM0lyV/7meBEehV5IEDCNxVLCHcrFRgh4YlyDmZjiegVefL3jlCZ3etysK468pyFlIUCtkkWf2MrFV+MSoI8WSeSrn7mD6OF1Xl5hrh8K03atqUbmAz9FvnjVwyRgI7z9WMeTJw9oL10YI/ne7RpFlhzZ6nleL7PKxcTn5kYaQYTplawfE021u/jY6mnboQQAvLVb8RNWYFihnR36htptykrFLd94Qikjx2F43uHctFRYA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C42B03DB960;
+	Thu, 18 Jun 2026 11:46:59 +0000 (UTC)
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781783221; cv=none; b=Jbs18qWeooMJ82d17Umk9TMYV8dS6Yn9gMprMJ063viU+ZjY/N33Y7pe3qkSjAqQPxnGYMv9rSVojxvq0RR71xnBBwyl/JiJtLEhsSXetrEUtGJMLim0GxQ4ZSxL2kNZlfAegfCDbTSrkEZvT69YACyKf3TvXvfLfSkZyUTjHyU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781783221; c=relaxed/simple;
+	bh=JlHQpb3Akaav7Z1DtiBkWE/hvieT8Kz6OIdHLEk4zwI=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=fULMDOq2b09ZtkhKSD3Aq2ztz+be9CJPWt0HC5f4kFq0mNQ0agCgG4catdXQ1xEK3x/aiA33vxatE2EGbJGrf8oBU1X/SaCLQaDvL+BMrBIiI1mgd/JQB4KMqmim3aGfEVwNpCiyrJH44i0iIic7z8rvd2Fap20Jo2+I7yg9UsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.at; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=tMU9azvM; arc=none smtp.client-ip=44.245.243.92
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=oNgTUp2mkgNSshSHfBe7bskkFU5nS/qW2PHbH8nARA4=;
- b=uFsw4YqUOS+uPDPchceaGRdY7rdO3vaY3+iv2aivKvJ4xPpxxX2kRb91VAzkQwlsqmkVUuFbilI5k8lyx6n8n85in+Zt7S7W+YU7jFwp9QEfGWFqgIDdx/8vVt503aAkQbDhzERfjcdrgWikg8fVvw5p+ONVodx02Hr7pxLokco=
-Received: from DS3PR10MB997700.namprd10.prod.outlook.com (2603:10b6:8:347::19)
- by PH8PR10MB997767.namprd10.prod.outlook.com (2603:10b6:510:39f::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.139.11; Thu, 18 Jun
- 2026 11:38:56 +0000
-Received: from DS3PR10MB997700.namprd10.prod.outlook.com
- ([fe80::4c1c:3bb:c4c9:8e7a]) by DS3PR10MB997700.namprd10.prod.outlook.com
- ([fe80::4c1c:3bb:c4c9:8e7a%7]) with mapi id 15.21.0139.009; Thu, 18 Jun 2026
- 11:38:56 +0000
-Message-ID: <9d7e82ba-3f92-4ef4-bba9-c62c019252c9@oracle.com>
-Date: Thu, 18 Jun 2026 17:08:46 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.12 100/261] netfilter: nf_log: validate MAC header was
- set before dumping it
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-        Weiming Shi <bestswngs@gmail.com>, Xiang Mei <xmei5@asu.edu>,
-        Pablo Neira Ayuso <pablo@netfilter.org>,
-        Sasha Levin <sashal@kernel.org>,
-        Vegard Nossum <vegard.nossum@oracle.com>
-References: <20260616145044.869532709@linuxfoundation.org>
- <20260616145049.667194632@linuxfoundation.org>
- <ed09740a-561f-41e4-8d7b-ade8f6ae0763@oracle.com>
- <2026061823-film-pastrami-44cf@gregkh>
-Content-Language: en-US
-From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-In-Reply-To: <2026061823-film-pastrami-44cf@gregkh>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SJ0PR13CA0055.namprd13.prod.outlook.com
- (2603:10b6:a03:2c2::30) To DS3PR10MB997700.namprd10.prod.outlook.com
- (2603:10b6:8:347::19)
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1781783219; x=1813319219;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=taecWU3jnHxMf9ugrv3nPfNpQVzrtNwEuDwfkVyBLUY=;
+  b=tMU9azvMEdGufl/yCWnyHYXSJkOzBnYpAgLUPgA0c2pGk5zU2W1tyuRR
+   T7pPtVk33vDxCXfhrzxq7yHzLpszmKSHtj0B+mIRwmiIWOG6NQYpi0sY0
+   xBQksG+DmWzPPyXBDRUkSaaQu/01+D9ECTWq/iMPuy9kbWQx52kUac3Y5
+   TqGumEZyCmIfBwTD8UOoOjWeFe6m23UrlVUNaTHg+wwFjOQ2DmHxFZVDo
+   DBgX5AcdhqFc0my2XiuDR1gQJsx7U5ae9QS20XxJ71H2bVuFXJsUNo+QV
+   KSt/2DRTpYKJjQ1t8njenX5+X8tt3topEA7MiMV5XTzLohYRIBEDALJMl
+   w==;
+X-CSE-ConnectionGUID: c4GMWpK3RbqlBrK7ugd/cA==
+X-CSE-MsgGUID: QGsarvsbTPCQq9heOoEMKw==
+X-IronPort-AV: E=Sophos;i="6.24,211,1774310400"; 
+   d="scan'208";a="21522631"
+Received: from ip-10-5-9-48.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.9.48])
+  by internal-pdx-out-001.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jun 2026 11:46:56 +0000
+Received: from EX19MTAUWA001.ant.amazon.com [205.251.233.236:18253]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.4.192:2525] with esmtp (Farcaster)
+ id e9395c1f-d102-4c51-9d42-2f9d744b53c6; Thu, 18 Jun 2026 11:46:56 +0000 (UTC)
+X-Farcaster-Flow-ID: e9395c1f-d102-4c51-9d42-2f9d744b53c6
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWA001.ant.amazon.com (10.250.64.218) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
+ Thu, 18 Jun 2026 11:46:56 +0000
+Received: from bcd0741a98fd.amazon.com (10.1.213.12) by
+ EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
+ Thu, 18 Jun 2026 11:46:54 +0000
+From: Michael Tautschnig <tautschn@amazon.com>
+To: <gregkh@linuxfoundation.org>
+CC: <linux-staging@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+	<stable@vger.kernel.org>, Michael Tautschnig <tautschn@amazon.com>
+Subject: Re: [PATCH] staging: vme_user: fix heap OOB in buffer_from_user and buffer_to_user
+Date: Thu, 18 Jun 2026 13:46:24 +0200
+Message-ID: <20260618114624.71348-1-tautschn@amazon.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <2026061535-hardened-presuming-96b2@gregkh>
+References: <20260614195318.40397-1-tautschn@amazon.com> <2026061535-hardened-presuming-96b2@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS3PR10MB997700:EE_|PH8PR10MB997767:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9a99177e-5c4f-47b9-18d0-08decd2e2e20
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|1800799024|366016|376014|4143699003|56012099006|6133799003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	rLgyEP9dCjfS5J82o54Wjzqz0frQqSLk6FrmDzHO/rSIC3pfqinSsN4ZaYyVOG1MOBF39Z48r5dTz4SJhNMug0trWfdlCExAxxTRDbdrZLvmc1QSx/6t03dGK9kbhjpNLwGSJL90ah1wEG9TpyS2sLIpFwticaVbuEGe1D4TziRcVnCbEiLIwr5yFSJboEE6DPZjo93V5jzUnnL9EZK3mZr62bVYvYMmDGaJsIjn4qtjXHjanOglpn3CF2HmNU9Nnx+dxB7R/4m5ZvTP6rt6ccXfeS4XCH1VepuCNjVVS0PUOA+EwHMytB77jf3aMi1avwuHWZy3Lp3ZfpTNN6AgzWoZCKTNDT+9m54bOM2ECbcS93BWC0kYaEwuJjM0urJh9qFb4/jBd4t63jLIKp4B4VRMVZlRDHS1hqCMa1jhW45eG7o1ZyNfZsBpXvPj+wQVJOlax0LXI2cnbm0Izt3lltGjG0RwD+r4wQmxoq0q9itBr/k1i9HzaQE366fADB3tLoYUgjyx1Mt97nzoxq4bHAxxHRtr1KgFNm/ixRGcV0B0xdLgJjJtZz+23S6BjsB71dfsMu3pybzZqBamq0m3kTeJQFXTHC4FERJLnX4ggC/SiULmr7FotTj+4VIAgWv1yvGcGzIigXeIOEO1cHdJCZ6rAjII43Ar18ClSYToGivcBpPjD3Y4xj1Xq1c/6A0V
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS3PR10MB997700.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(366016)(376014)(4143699003)(56012099006)(6133799003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?R3prdHdXamtUdFRDY3M4RTcrZzk0T01Gc1R0VjFQc0VxZ3BIZzU2NVJJb1kx?=
- =?utf-8?B?UTV3OC9pbktxQXl2WUVyZWJQNHBhR05nMkNxU25aQVJoa0lKdWJOaFMzdTda?=
- =?utf-8?B?MEJLOEVQZUNYamdQeTAvVWZPSndUTndTOW1nUlNkSTJuZS9vdEl1dXBHcFF2?=
- =?utf-8?B?Q2hQaTNuSTQvdkdhQnJaUmo3Umw0VFlwN1hUdThJYUhLV1VIc3RRZ3E1MVZ3?=
- =?utf-8?B?MWZFbHFTNC9kWkFsYlFac2xKTlZ5UVBXYy9WMWkwSjJkeWk3eTJsZHByWHRh?=
- =?utf-8?B?S2lKZmY4UGhBS1hzVng4MTBIaVBpM1AxcDdnbUNaaTd2cnNhdFN2akVXSEJY?=
- =?utf-8?B?WGYzSXVGazBvajNmcDhCMXd0RGFCQ3phenJQYnpudWtLMDkrWm9UOFE0enhS?=
- =?utf-8?B?bVA2ZDhRTkhpUDZqN24zaUtXSnk3eHNoQ0dEOUdMMHNnNlpQY3JzR3QyN3h1?=
- =?utf-8?B?NHlGQzY4Snl4a29UL0RkWkZSZzNPUVB4OUNqdENTZnZ4TE9aWE5FQVEvQkR2?=
- =?utf-8?B?S04zZTdUTGo1enA2RUVscTFvcFA5NTJHODdnOFhkTFVkbzNacDk0UjFBem5J?=
- =?utf-8?B?N0d4WmVoa3lQemRFaXpqdUlDZzJJUXF2UGQ1azJFNjRMUzU5SEtLWjBkeXVC?=
- =?utf-8?B?NExiNGxjdXcvNUo2ckRPNzFIZnh6d0F0dnFuZktBS2RmaytGMzV3NVNTR2p3?=
- =?utf-8?B?V0xCb2FnbXRxV1psaGJkSGxPZzFJdHZ4Zm50VnZwODIxdThVZ09UbXhlbk4x?=
- =?utf-8?B?aUpLeTNpcG96YXRsWTRBaTI0cjFLZFRlRE04MWhtc01RcnIrRzAzSUdsdXow?=
- =?utf-8?B?UEtaUTRxREFKdUg1a2QwVHNZUTFCUVR4WDhWUWNzNUorM3BrK0wvZ1o2RXJH?=
- =?utf-8?B?OWdSR0NKeVFLYVBzZWtScTF2K0s2clB3MWVjSDgvZFZ2ZW5tVnAvQSszUEhk?=
- =?utf-8?B?S3lYSDNzNlZZMG14d2p3TTdrQTRQbzBhUUhtaGY1MnZZWFRrSWZaUzVoMlVD?=
- =?utf-8?B?WmEvN2ZQYjlWNVVGTkV3NG5oM2t5WFdzVHFPQUxWN21WQnlYdzhzYXpNeVRl?=
- =?utf-8?B?YWI5SW9PWVdwSUY4SWM4SUNDbWEwSndGUHpqMlFacWVLRGIraVExd2ozSk1t?=
- =?utf-8?B?RzJOcGtNckFsMW0xVU1vOFpoM1BvTXdpV1pRRW9zdTk2TW5MWTlQd0dMSm1U?=
- =?utf-8?B?L3cwM25RSWFnaHd2Qkl5Nmc3aGlhWDVaUEQzQ2ZqL01zeWRJRHdPUDY0b1RT?=
- =?utf-8?B?V1Bqb2lmclR5b1BKYVo0MVFJNUVyZmZaSzJaVml2WE9XSENFQWIzSmN0N0Yz?=
- =?utf-8?B?dlA0Vk5GUVZlY0lFenNPN1VnS2grRWMyZmpuT1psSjNHdnI4OEoyclRZaEp4?=
- =?utf-8?B?aFNXYjdTcjVMNWl1dGRzQVZ0OW5LU0psazdNZ0lmZW02QUc1TUlFNFZ2d2c5?=
- =?utf-8?B?WjZDbDFlYjFiZ1JYOHd4MmNNU1NqWXJjRS84c2M1VmNoMGczM2p0aENPbTdJ?=
- =?utf-8?B?L2Q0dzkreURBYUwrMzVOWHRHWGpsdi9oZFJjajVSWUZMeXp1RVY2UXc1RUp3?=
- =?utf-8?B?cW9kSWhVdk8yc0tYRWFMUERVMXBmYmIrOWJTb0lCRElqM2dYdWFCQ1hrM0Q4?=
- =?utf-8?B?cVdTa1JtakRxYW55M3VSWkl4aGVGMVJEZEZqeDlHUUpodThsK2IvangzeENZ?=
- =?utf-8?B?RjdkU0c5WjVGODEweUJ6Z2ZWa05VdEtDbVJyYWhqaUlNTTUzM2Y2RVVoV0pW?=
- =?utf-8?B?MExmMHIzWFRwbm9wSmt4bkwycmVNRUREUWVhdlhxRnlKKzRIZnc1enBEOGtQ?=
- =?utf-8?B?NVhyZG9TeEVzcmllbWJ0N2NJTjQxbkNXVTdOdW4vMC9ySE1idjg2aThvNzRY?=
- =?utf-8?B?R08vRWVEUEc5aWtPdENvZmNQbTJNNjg2cVBqY2YxWDFuREtPSFpycmRBdUZ0?=
- =?utf-8?B?WFcvWmFiZ2tPNmVYMmpBd2FtbUphUzBiNzRPVC9oeUI3RFBxd1Vydk43NlZB?=
- =?utf-8?B?dDZsT3U5dkhXSk1uMGtlbEVpTlQxZU1ENzFDVUZpdjNJZWJUS2ZWUGRqNDBy?=
- =?utf-8?B?WlVBaU5PMENSSEtuUkV5aEx0K0N1dGxLMlJqNjNzdWNjVFhTR3Q2QWgyRVRt?=
- =?utf-8?B?emxUREhRRDErUkY1aUhxWDl0UWRhQVVQWUNqU0k3azM3VXQ5NVNnQWJsSFZB?=
- =?utf-8?B?ZzMxd1RlVFdQVzArcWQvbHVyZ2ZqTGZkampMeXNRSGpFRzJibFJJcnorSDNn?=
- =?utf-8?B?eEZ3aGtpVU84RDdsZEpzRGVacXJpbVJIY25jYmczbXBXeVFnZGtQUHJTNEU3?=
- =?utf-8?B?aVErdnAzQktqRTRVSlJaNEk5a1lLQWlKWW9qb3NZVFlud3NpUlZ4U1ZBbWdY?=
- =?utf-8?Q?HRRVwh5+Nrx4EcQCF5WS9a1tFeQvILrlIfP2Z?=
-X-Exchange-RoutingPolicyChecked:
-	fA/134EWrk3JFr5D+yFKYiIthJDAppH8uiy+d88UIwjN7OtWVS7JzOm7X1bKu0BHhhUUSFJ0hD9W+um3PUx+Q1Xxp6lqbGtdhhb2tMP8t3GVnwVLa1Z+83fPdXUVcnu5P2zv/+DgdVpapvzEp2s5XF0psEL1hcqAA/CRKDWJrj5BG26yEzMDaR2ma9UJID/i52VMpfok8d5KLYN/L5QCpMIsoDrDYmRXpv12/LfwMZJO2Jc4p+yC7BzTnhStt5uYMoL8wAlcGjH+QeE286GBzl0P4L5LGJdJZ5DU7vNDKEGMFEQhConHKz7/+wTbsixlMeUv0ZS5c5lW+FK2aFwJQA==
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	qpm3c5pCFEYPuoIwFUCZ5GST8wT5S8jgqXYYoBaH/sOTjJrNPkULbgcUlfh0r3essz1Et6TZ/JBaMf1kjFBpFNvkLOz53nMtKfHyOu7qnRDJbT0hN4g768gV9XjIEpO8wRjQuDjKfNh9yfUaG6RHK34nZCY6036JljefcbKpcM7YNe+xQVOuW4Ta0HVvcqUOmcXWB61bKcAXeoYR5iwb3SV1LpDiyDgZZmbXPG3z8iaft5i9c4KkmupjwwYbuEVLMWxbkZmTYELhBWInQo+6F430WsqxpHJnfaX56nXcNa5KrnMCr3JIv9+eJWTdss8d+dZCAiKevkwebS560XytQD0XmOqgA7KTmiTSoqMit0d4N1Fo20zbRcFfk6YBANRkKBqiiEITAqGg2ybw019myu+71YeJmdkm14N6vyghM4bwWsz4MgTKQ9u7TId6MQ/k0UaJDGIMOpDg0At1zY+GXR5CZbOrqkHMY196ylgrR3Mj7YWnYLVymQzc4hBd1n8GY5D8QKD806FwaIf7CRtZ3ahel+VKjJ6vpuAtjQg7f1O6qsxKhN49Ihf0o1vNH8/UQ/2k1xTHh+4JAT7/wbp75+Ml4cQSI+JscsuBCWvyMO8=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9a99177e-5c4f-47b9-18d0-08decd2e2e20
-X-MS-Exchange-CrossTenant-AuthSource: DS3PR10MB997700.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Jun 2026 11:38:56.0323
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 2UVrQtvvBdGAvb82zC8aGxO+GwNkYH4CVx79NJizNBhk6t4Ef2BTcfbtRvqkqDfb2PQ31wh+XPY4zNTqB2R9VXRI3abcqtrOEqaE1KQi6Iv3WcgT43KtkugDjnYFPd6i
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR10MB997767
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-18_01,2026-06-18_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0
- bulkscore=0 malwarescore=0 mlxscore=0 adultscore=0 spamscore=0
- mlxlogscore=417 suspectscore=0 lowpriorityscore=0 classifier=spam adjust=0
- reason=mlx scancount=1 engine=8.19.0-2606160000 definitions=main-2606180108
-X-Authority-Analysis: v=2.4 cv=S4XpBosP c=1 sm=1 tr=0 ts=6a33d8d5 b=1 cx=c_pps
- a=e1sVV491RgrpLwSTMOnk8w==:117 a=e1sVV491RgrpLwSTMOnk8w==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=FelO9ux0wxsA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=jiCTI4zE5U7BLdzWsZGv:22 a=x4eqshVgHu-cdnggieHk:22 a=VwQbUJbxAAAA:8
- a=q6QsLP1BYBS-U5lR-CgA:9 a=QEXdDO2ut3YA:10 a=5yU3S35YU4bGjq-dph-N:22
- a=Bho9c0fBagfJEIQBS7DQ:22 cc=ntf awl=host:13723
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjE4MDEwOCBTYWx0ZWRfX1RDIhQCrLF1e
- SYJgH42DKg4NYqD5kJFb08hLl1XFWzV+qzBwoweEviHOu1v3E+0ik69V2PpACxuyFuYFrzZ811k
- JdHcFv96DP4DUgzi8yzf9Q8wii2ProlH9SF+J+ezzhUxAd2cDoba
-X-Proofpoint-ORIG-GUID: cSeTwSmg1ftzgIn-EfR_WPAdE6RwM0qX
-X-Proofpoint-GUID: cSeTwSmg1ftzgIn-EfR_WPAdE6RwM0qX
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjE4MDEwOCBTYWx0ZWRfXwKoD+O82PNz7
- KP5B+CCslaR+eBUuClleEHASWW+uKDD8wpsipT9u9eug+bgh39GXRNs8bDkdvEVWAkfH4gV+WWK
- +3KfTFrr7/2mhHeWUhu6nXTocJQ528KqYTcKq7AWo7irGt1M1IdYrqkZbuQxpIkjGXcomabdNjN
- 4zltqNH9e906+i9MWizZfTaQn/Qy5KQkeWKAh3ZRTV9I3xAdnaaXre8IA0UWWlRZflHOOimU7jX
- ER47bcOlC1n1NL6IIPAeYsI6zDb0Au3Cc2A9HuM+xKcBi76ouKxJCHpbSLUSitZW5kTkInPhj5D
- TAIcGldzgWoKK/vAkXYfXqidZPxDWluBWTOmOPBnhhICQ00AIR56lrKLSpn9bTZEaey/LJvXjVC
- smgn++tSlpazbrQh4Z8jnNLfrPV2ND7cfwH++UeWg3i1fMCidDHC0xKxId/hbVn15gC5g+O/QAz
- 7Aleb+3KMA4A57IeduBwE/+Ev/xHHUYZkMIt2ZS0=
+X-ClientProxiedBy: EX19D031UWA002.ant.amazon.com (10.13.139.96) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-7.16 / 15.00];
-	WHITELIST_DMARC(-7.00)[oracle.com:D:+];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[oracle.com,reject];
-	R_DKIM_ALLOW(-0.20)[oracle.com:s=corp-2025-04-25,oracle.onmicrosoft.com:s=selector2-oracle-onmicrosoft-com];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+X-Spamd-Result: default: False [-11.16 / 15.00];
+	WHITELIST_DMARC(-7.00)[amazon.com:D:+];
+	WHITELIST_SPF_DKIM(-3.00)[amazon.com:d:+,kernel.org:s:+];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[amazon.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[amazon.com:s=amazoncorp2];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,gmail.com,asu.edu,netfilter.org,kernel.org,oracle.com];
-	TAGGED_FROM(0.00)[bounces-267111-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,oracle.onmicrosoft.com:dkim,vger.kernel.org:from_smtp];
-	FORGED_SENDER(0.00)[harshit.m.mogalapalli@oracle.com,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,m:patches@lists.linux.dev,m:bestswngs@gmail.com,m:xmei5@asu.edu,m:pablo@netfilter.org,m:sashal@kernel.org,m:vegard.nossum@oracle.com,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[oracle.com:+,oracle.onmicrosoft.com:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TAGGED_FROM(0.00)[bounces-267113-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[harshit.m.mogalapalli@oracle.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:linux-staging@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:tautschn@amazon.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[tautschn@amazon.com,stable@vger.kernel.org];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux.dev:email,vger.kernel.org:from_smtp,get_maintainers.pl:url];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tautschn@amazon.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[amazon.com:+];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_SEVEN(0.00)[9]
+	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 73F1E69FCAB
+X-Rspamd-Queue-Id: 4AF9C69FD15
 
-Hi Greg,
+On Mon, Jun 15, 2026 at 04:27:38AM +0200, Greg Kroah-Hartman wrote:
+> Nice, but why did you not use get_maintainers.pl to determine who to
+> send this to?  You cut out the staging list?
 
->> Upstream has this before the eth_hdr() users in dump_mac_header():
->>
->>      if (!skb_mac_header_was_set(skb) || skb_mac_header_len(skb) < ETH_HLEN)
->>          return;
->>
->>      nf_log_buf_add(m, "MACSRC=%pM MACDST=%pM ",
->>                     eth_hdr(skb)->h_source, eth_hdr(skb)->h_dest);
->>
->>
->> but 6.12.y still has:
->>
->>        nf_log_buf_add(m, "MACSRC=%pM MACDST=%pM ",
->>                       eth_hdr(skb)->h_source, eth_hdr(skb)->h_dest);
->>        nf_log_dump_vlan(m, skb);
->>
->>
->>
->>
->>> Add the skb_mac_header_was_set() check the ARPHRD_ETHER path already
->>> uses, and replace the open-coded MAC header length test with
->>> skb_mac_header_len(). Only skbs with an unset MAC header are affected;
->>> valid ones are dumped as before.
->> ...
->>
->> The posted backport fixes the fallback MAC dump path, but upstream only
->> assumes the Ethernet decode path is already safe because of 62443dc21114
->> ("netfilter: require Ethernet MAC header before using eth_hdr()"). I donot
->> see that commit in 6.12.y, so NF_LOG_MACDECODE can still reach
->> eth_hdr(skb) without proving the MAC header was set and long enough.
->>
->> I think 6.12.y misses commit: 62443dc21114 ("netfilter: require
->> Ethernet MAC header before using eth_hdr()") so this backport might not
->> be complete, thoughts?
->>
->> Maybe we need to backport 62443dc21114 ("netfilter: require
->> Ethernet MAC header before using eth_hdr()") as well ?
-> 
-> So that would need to be backported to all stable queues, as that commit
-> showed up in 7.1, right?
-> 
+My fault -- v1 went only to you and stable@.  v2 is Cc'd to
+linux-staging@lists.linux.dev and linux-kernel@vger.kernel.org per
+scripts/get_maintainer.pl (VME is S: Orphan, so that's the full set).
 
-Correct, I think that is the case, but haven't backported it to stable 
-locally to see if it applies or not. Looks like the fix needs to be 
-backported to all LTS kernels.
+> > +	/* Clamp to the fixed kern_buf (size_buf): the VME window
+> > +	 * (image_size) may exceed PCI_BUF_SIZE, so *ppos + count can
+> > +	 * run past kern_buf otherwise.
+> > +	 */
+>
+> Not a network driver, so you can use normal coding style for comments.
 
-I agree with Git History presented by AUTOSEL: 
-https://lore.kernel.org/stable/20260420132314.1023554-287-sashal@kernel.org/, 
-particularly no single fixes tag thing, some code paths have commit 
-1da177e4c3f4 (ip6t_eui64) as root cause and others that are fixed have 
-different broken commits, so I agree it needs to be backported to older 
-kernels.
+Fixed in v2 -- switched to the normal (non-networking) multi-line comment
+style.
 
-Now, this particular backport "[PATCH 6.12 100/261] netfilter: nf_log: 
-validate MAC header was set before dumping it" assumes that check is 
-already present. Not sure what's the best way to handle it. Drop this as 
-well and backport them separately along with the prerequisite: 
-62443dc21114 ("netfilter: require Ethernet MAC header before using 
-eth_hdr()") ?
+> > +	if (*ppos >= image[minor].size_buf)
+> > +		return 0;
+>
+> No error?
+[...]
+> Again, why not return an error?
 
+This is the end-of-buffer case, and returning 0 matches what the driver
+already does: vme_user_read()/vme_user_write() already "return 0" when
+*ppos > image_size - 1.  A 0-byte return at/after the end of the buffer
+is the normal read(2)/write(2) convention (EOF for read; for write it
+mirrors the driver's existing behaviour).  Returning an error here would
+make the SLAVE path diverge from both the existing *ppos check two lines
+up and the MASTER path, which seemed wrong for a Cc: stable fix.
+
+> > +	if (count > image[minor].size_buf - *ppos)
+> > +		count = image[minor].size_buf - *ppos;
+>
+> Why are you covering up for userspace errors, shouldn't this just fail?
+[...]
+> Same here, shouldn't this fail?
+
+The clamp mirrors behaviour that already exists in this driver rather
+than inventing new policy: vme_user_read()/vme_user_write() already clamp
+count to image_size - *ppos (a short transfer), and the MASTER-path
+resource_to_user()/resource_from_user() already clamp count to size_buf.
+A short transfer is standard read/write semantics -- userspace is
+expected to loop -- so the SLAVE path was simply missing the size_buf
+bound that MASTER already has; it clamped to the VME window (image_size,
+up to 4 GiB from the user-set slave.size) instead of the fixed 128 KiB
+kern_buf.  v2 keeps the established short-transfer contract and just
+fixes the bound.
+
+That said, you're the maintainer: if you'd rather an over-large request
+fail outright (e.g. -EFBIG / -ENOSPC) I'm happy to send that, but I'd do
+it as a separate, clearly-marked behaviour change rather than fold it
+into the stable fix.
+
+> And no chance for this to wrap again, right?
+
+No wrap in the added code: the caller already rejects *ppos < 0, and the
+early "if (*ppos >= size_buf) return 0;" means 0 <= *ppos < size_buf at
+the subtraction, so "size_buf - *ppos" is a positive u64 and the
+"count > size_buf - *ppos" comparison can't overflow.
+
+It also tightens a pre-existing wrap: the caller's
+"if (*ppos + count > image_size)" adds loff_t + size_t and can overflow
+for a huge count; the new "count > size_buf - *ppos" re-bounds count
+regardless, so the copy stays within kern_buf even if that earlier clamp
+is bypassed.
+
+v2 also adds Fixes: f00a86d98a1e ("Staging: vme: add VME userspace
+driver") and keeps the KASAN reproducer in the changelog.
 
 Thanks,
-Harshit
-> Note, it was part of the AUTOSEL group, but those were dropped en-mass
-> as people were complaining about them.
-> 
-> thanks,
-> 
-> greg k-h
+Michael
+
+
+Amazon Development Center Austria GmbH
+Brueckenkopfgasse 1
+8020 Graz
+Oesterreich
+Sitz in Graz
+Firmenbuchnummer: FN 439453 f
+Firmenbuchgericht: Landesgericht fuer Zivilrechtssachen Graz
+
+
 
 
