@@ -1,260 +1,202 @@
-Return-Path: <stable+bounces-267004-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267005-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id IwYRByGDM2pBDAYAu9opvQ
-	(envelope-from <stable+bounces-267004-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 07:33:21 +0200
+	id 5ZDCBz6DM2pEDAYAu9opvQ
+	(envelope-from <stable+bounces-267005-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 07:33:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F31469DB5F
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 07:33:20 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F28669DB67
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 07:33:49 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=seu.edu.cn header.s=default header.b=mZqh4SBN;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267004-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267004-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=seu.edu.cn;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=BpFyOwU8;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267005-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-267005-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=fail reason="SPF not aligned (relaxed), DKIM not aligned (relaxed)" header.from=debian.org (policy=none);
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E8DDC30166FF
-	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 05:33:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A09CE301571D
+	for <lists+stable@lfdr.de>; Thu, 18 Jun 2026 05:33:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40CB33128B2;
-	Thu, 18 Jun 2026 05:33:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55847318EE4;
+	Thu, 18 Jun 2026 05:33:29 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-m49198.qiye.163.com (mail-m49198.qiye.163.com [45.254.49.198])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 461AF309DDF;
-	Thu, 18 Jun 2026 05:33:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EAF014A4F0
+	for <stable@vger.kernel.org>; Thu, 18 Jun 2026 05:33:27 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781760794; cv=none; b=Efx/mSqC/GgjVql8YiG3+RFSbI6YRWzpwWbl6/d8dHpWtwdBp7YdffpniE2R7XXCJsqMJKj5gM5KaCQ0J4Y9q2s94Fbwx7hwH7K90IbDPtnSmhTVo0E5IE0lSAM1IweOZR0bVw9ax8Ih9TAluQ/VY4wtGXe/dl6C0ni3KkIFBS8=
+	t=1781760809; cv=none; b=LS+T8xaVMFC6zD+OokU1ohtCLuuliN95u+sTxxvjN6RoEQY6dghlwYuMOt0rhXVK+QawBo2pJx2EwvBikofp2VATF4pQ9qX2br1lfzbQo8EER7JuxCqZMXzs2Le5eG1BM9BKgm/0wVyQB0nVm68ii2nAIuTSOOlPazQKJEa53J0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781760794; c=relaxed/simple;
-	bh=aXOtkf4WsDbHyMK7huKIGzIXPy+7TLxtDfWWc9gIp4s=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=fmTzsycqxFbQHIkmTRjMXkS5CbjMJnrr6mAuSAI+qMTnLEcukz1I08RK9Uy9ab0kwrlhwwSzyAnmmKWdhOq5HBjGfmGE0qsWbqYbJMbGTBw+u0kvySL7UV3dHq0r2cedLHaHprnKQYUVIKDd+aQG7GesQflIq5xe/48bvjpYyDg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=mZqh4SBN; arc=none smtp.client-ip=45.254.49.198
-Received: from PC-202605011814.localdomain (unknown [222.191.246.242])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 42dcad2b0;
-	Thu, 18 Jun 2026 13:27:57 +0800 (GMT+08:00)
-From: Runyu Xiao <runyu.xiao@seu.edu.cn>
-To: Azael Avalos <coproscefalo@gmail.com>,
-	Hans de Goede <hansg@kernel.org>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Cc: Matthew Garrett <matthew.garrett@nebula.com>,
-	Pierre Ducroquet <pinaraf@pinaraf.info>,
-	platform-driver-x86@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	jianhao.xu@seu.edu.cn,
-	runyu.xiao@seu.edu.cn,
-	stable@vger.kernel.org
-Subject: [PATCH] platform/x86: toshiba_acpi: use brightness_set_blocking for LED callbacks
-Date: Thu, 18 Jun 2026 13:27:51 +0800
-Message-Id: <20260618052751.3859461-1-runyu.xiao@seu.edu.cn>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1781760809; c=relaxed/simple;
+	bh=sW5xyKDUaPnM6cUopV3mk+CIkNTSQ52tQUCTumc8JbU=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=q6EvqfZkg5ULJDPxh5Jbo3n0ntq3aaohjsBvUZ5WT+LGJ7GcATp7yd8lsK5p+QZEWxHqWIf8JYaPtBrIKuJ/dAmL2pHJmhasOhOtAR77DFLhaQrGDUgN+nH4j7ksZV0O1I74oLXhWWueBYWy2o8l3/urJvnN/NwOtbm5jDF+ag0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BpFyOwU8; arc=none smtp.client-ip=209.85.221.52
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-464192ab2e1so106707f8f.0
+        for <stable@vger.kernel.org>; Wed, 17 Jun 2026 22:33:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781760806; x=1782365606; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=i0uwRadVCrKcgbTyVtvSnT1KA2KxE6PBBbL07wYsqME=;
+        b=BpFyOwU8+Z37WqrUzfwXK3biAX6IAjrKoM1+fF1fszq11Njgdx7c4aHSEAdbH9h1BN
+         fDbvqGi5SlNFzPNWWwlpBk+rNHnK3nEucxgHVQwOcR9Gr5ZshSkISXaYXhnSbfwkvJcu
+         NtXA2yzJJ9poltaVOW8V/+A85cT+vXCmr61qR8QmZMbBH40CBHP8si0qkitso3riSFE5
+         0mQZ81XZCUFwYv8lbeN4px/OhV6brUWta7WS7s22zqYYiBFHvl0Ph2Pi+dRzusFntJxE
+         ChkHTFEpW4TzCk6AWOmAEsMIXYjGDE/270vWev3O31F5jSN7VNKR1QmWCWnwNTen6QNW
+         J97g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781760806; x=1782365606;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :sender:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=i0uwRadVCrKcgbTyVtvSnT1KA2KxE6PBBbL07wYsqME=;
+        b=d4EUs4Vh4jzY1tswRjozVnUtXf9cTMc4D4XR3o13yevDte46RhgKLrFJxn5iPUgFft
+         ZmZBG8pQIDmV5DbGR6GiES9yN2EEJfIC7rWZXVzdOOh2LNf631aTnzLdb8my9HOUGiHc
+         Any2vU+t0bQCtCl7LZx9Tk3eCEzCqut/wND6wjuRyi73D+yfD2ZhqYvLZ6PLM3vz/aqi
+         Qt/VXpdsrvkHm/gElH4q76KY+AYNygiJYC2eWEVoXKKZZaJiOdvt2bmJiXyz4DQcLbhk
+         AaviaWuKFgCCKDv8Ka98l4Is8PsIcKv6sNOk2f9Tx+xRcBKTrFZOwLpbejAt/i7VejmO
+         7LXg==
+X-Gm-Message-State: AOJu0YweSGjdxtSuVqz/ssmjMYa3GU/yAqFXXFaR5odwFk8vlDGIVlOM
+	sotf0rtCBIat2jHRfgYb2SCRqxh8OTt+3Lbejen7HHfvmX9g1THPCDhi
+X-Gm-Gg: AfdE7cm/IczhP4V0bS7kLjr88NFzEBVcIywHbF5Lc3E1u2qUSV1c/jHuHdr2mAMTKqG
+	yMi49CEbUao/Ai7hDwhmnVoNflGSqN166OPv2rZbS7xuvFwShgg13LBUV4c9Jzuk5yg1ugk7qbL
+	oFpcYECQq+uUCsyKizzyTljH6fgaqN9YpoEI3jcOF++ZlqAub16LoMAtvXO6A05jli1dA1F1XSQ
+	knFoKNmfYF20ush0LlUENm6L3J/Lw76tPZwDOYJl5jjoH0UQRmIEJs6u6MS2hcfP7Biggwj8wpE
+	we7LH1BJmTJ1vD8VEAVvIuwRC2zTui+v79BDMnAKakAYQWLeP5i4VTbIauTxymZ0581wiMcXYvJ
+	Qh94BQWSmPih8XKmfAboXFGkhrpwAmYXBp9r4O7beQeAZTS57nFmdWBOnUZxZsA57wJYxpnyQvc
+	avKzcSt1SvcuAvAkkDVYiTBEylEOgmQyy/01O7ABmqsaHe1Z+F
+X-Received: by 2002:a05:6000:178a:b0:461:bfd6:510c with SMTP id ffacd0b85a97d-463ab043b6fmr2966327f8f.3.1781760805582;
+        Wed, 17 Jun 2026 22:33:25 -0700 (PDT)
+Received: from eldamar.lan (c-82-192-247-196.customer.ggaweb.ch. [82.192.247.196])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-461eaa0d1c7sm16536416f8f.7.2026.06.17.22.33.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 17 Jun 2026 22:33:24 -0700 (PDT)
+Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
+Received: by eldamar.lan (Postfix, from userid 1000)
+	id 93682BE2EE7; Thu, 18 Jun 2026 07:33:23 +0200 (CEST)
+Date: Thu, 18 Jun 2026 07:33:23 +0200
+From: Salvatore Bonaccorso <carnil@debian.org>
+To: stable <stable@vger.kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Cc: Eric Dumazet <edumazet@google.com>,
+	Noam Rathaus <noamr@ssd-disclosure.com>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
+	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Ben Hutchings <ben@decadent.org.uk>
+Subject: Please backport d289d5307762 ("ip6_vti: set netns_immutable on the
+ fallback device.") to 6.6.y and older
+Message-ID: <ajODI0ViiySkNjK5@eldamar.lan>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9ed933481c03a1kunmaacbda658fda4
-X-HM-MType: 10
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlDQ0hNVkJJTkhISh1IQ0hOT1YeHw
-	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlJSUlVSkJKVUlPTVVJT0lZV1kWGg8SFR0UWUFZT0tIVUpLSE
-	pPSExVSktLVUpCS0tZBg++
-DKIM-Signature: a=rsa-sha256;
-	b=mZqh4SBNK7HMCdyazIRL1l/j8GtUc0IcUnBJNnYlV+nNan2o8AEXIh4nCrxboDXWkhm13yAlK5QUP9JPyfF/GYGU6UR1+A19oVsCkP4Znlbh6K+D6PpBbsfQaBmGdjavlMOHv9Irqre2LHg6W5nrlUw7ikMd5n94WWZdXuuBQDY=; s=default; c=relaxed/relaxed; d=seu.edu.cn; v=1;
-	bh=EPcnrvimrQhPreNz1Um05FU9CjglFVRs+DukObGdwFk=;
-	h=date:mime-version:subject:message-id:from;
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.56 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[seu.edu.cn,none];
-	R_DKIM_ALLOW(-0.20)[seu.edu.cn:s=default];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
+	DMARC_POLICY_SOFTFAIL(0.10)[debian.org : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-267004-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:coproscefalo@gmail.com,m:hansg@kernel.org,m:ilpo.jarvinen@linux.intel.com,m:matthew.garrett@nebula.com,m:pinaraf@pinaraf.info,m:platform-driver-x86@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:jianhao.xu@seu.edu.cn,m:runyu.xiao@seu.edu.cn,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,kernel.org,linux.intel.com];
+	TAGGED_FROM(0.00)[bounces-267005-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:sashal@kernel.org,m:edumazet@google.com,m:noamr@ssd-disclosure.com,m:steffen.klassert@secunet.com,m:nicolas.dichtel@6wind.com,m:kuba@kernel.org,m:ben@decadent.org.uk,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[runyu.xiao@seu.edu.cn,stable@vger.kernel.org];
+	TO_DN_ALL(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[carnil@debian.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[runyu.xiao@seu.edu.cn,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[seu.edu.cn:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[carnil@debian.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[seu.edu.cn:dkim,seu.edu.cn:email,seu.edu.cn:mid,seu.edu.cn:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,ssd-disclosure.com:email,6wind.com:email,eldamar.lan:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 6F31469DB5F
+X-Rspamd-Queue-Id: 6F28669DB67
 
-The Toshiba illumination, eco mode, and keyboard backlight callbacks all
-go through ACPI/HCI/SCI helpers that may sleep, but the driver still
-registers them as brightness_set callbacks.
+Hi
 
-This issue was found by our static analysis tool and then manually
-reviewed against the current tree.
+d289d5307762 ("ip6_vti: set netns_immutable on the fallback device.")
+was already queued for 7.0.13-rc1 and 6.18.36-rc1:
+https://lore.kernel.org/all/20260616145117.258480602@linuxfoundation.org/
+https://lore.kernel.org/all/20260616145103.487984074@linuxfoundation.org/
+but not for the older series as needed.
 
-A minimal Lockdep reproducer that keeps the original registration and
-call chains is enough to trigger the warning in all three cases:
+A backport for 6.12.y was added in
+https://lore.kernel.org/stable/ajJ6TSzxuWdfQkxf@eldamar.lan/ .
 
-  toshiba_illumination_set() -> sci_open()/sci_write() -> tci_raw()
-  toshiba_kbd_backlight_set() -> hci_write() -> tci_raw()
-  toshiba_eco_mode_set_status() -> tci_raw()
+Here is the backport for 6.6.y and older for versions which do not
+have netns_local.
 
-All three paths reach ACPI object evaluation while
-led_trigger_event_atomic() is still holding spin_lock_irqsave(),
-and Lockdep reports sleeping function called from invalid context with
-acpi_os_wait_semaphore() on the stack.
+Does that look ok?
 
-Convert the three callbacks to brightness_set_blocking and return proper
-status codes from the firmware transactions.
+Regards,
+Salvatore
 
-Fixes: 360f0f39d0c5 ("toshiba_acpi: Add keyboard backlight support")
-Fixes: 6c3f6e6c575a ("toshiba-acpi: Add support for Toshiba Illumination.")
-Fixes: def6c4e25d31 ("toshiba_acpi: Add ECO mode led support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Runyu Xiao <runyu.xiao@seu.edu.cn>
+From baba4cc5ae46577aa7fc4f163c0dc44833298d9d Mon Sep 17 00:00:00 2001
+From: Eric Dumazet <edumazet@google.com>
+Date: Mon, 8 Jun 2026 15:59:18 +0000
+Subject: [PATCH] ip6_vti: set netns_immutable on the fallback device.
+
+[ Upstream commit d289d5307762d1838aaece22c6b6fcad9e8865f9 ]
+
+john1988 and Noam Rathaus reported that vti6_init_net() does not set the
+netns_immutable flag on the per-netns fallback tunnel device (ip6_vti0).
+
+Other similar tunnel drivers (like ip6_tunnel, sit, ip6_gre, and ip_tunnel)
+correctly set this flag during their fallback device initialization to
+prevent them from being moved to another network namespace.
+
+Fixes: 61220ab34948 ("vti6: Enable namespace changing")
+Reported-by: Noam Rathaus <noamr@ssd-disclosure.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Steffen Klassert <steffen.klassert@secunet.com>
+Reviewed-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Link: https://patch.msgid.link/20260608155918.787644-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[Salvatore Bonaccorso: Backport for version without 0c493da86374 ("net:
+rename netns_local to netns_immutable") in v6.15-rc1 and without
+05c1280a2bcf ("netdev_features: convert NETIF_F_NETNS_LOCAL to
+dev->netns_local") in v6.12-rc1 and use NETIF_F_NETNS_LOCAL device
+feature.]
+Signed-off-by: Salvatore Bonaccorso <carnil@debian.org>
 ---
-Notes:
-  - Not tested on Toshiba hardware.
+ net/ipv6/ip6_vti.c | 1 +
+ 1 file changed, 1 insertion(+)
 
- drivers/platform/x86/toshiba_acpi.c | 42 ++++++++++++++++++++---------
- 1 file changed, 30 insertions(+), 12 deletions(-)
-
-diff --git a/drivers/platform/x86/toshiba_acpi.c b/drivers/platform/x86/toshiba_acpi.c
-index 5ad3a7183d33..22a831c9e8c4 100644
---- a/drivers/platform/x86/toshiba_acpi.c
-+++ b/drivers/platform/x86/toshiba_acpi.c
-@@ -486,8 +486,8 @@ static void toshiba_illumination_available(struct toshiba_acpi_dev *dev)
- 	dev->illumination_supported = 1;
- }
+diff --git a/net/ipv6/ip6_vti.c b/net/ipv6/ip6_vti.c
+index 04e4368fe465..33b21ecd51ba 100644
+--- a/net/ipv6/ip6_vti.c
++++ b/net/ipv6/ip6_vti.c
+@@ -1155,6 +1155,7 @@ static int __net_init vti6_init_net(struct net *net)
+ 		goto err_alloc_dev;
+ 	dev_net_set(ip6n->fb_tnl_dev, net);
+ 	ip6n->fb_tnl_dev->rtnl_link_ops = &vti6_link_ops;
++	ip6n->fb_tnl_dev->features |= NETIF_F_NETNS_LOCAL;
  
--static void toshiba_illumination_set(struct led_classdev *cdev,
--				     enum led_brightness brightness)
-+static int toshiba_illumination_set(struct led_classdev *cdev,
-+				    enum led_brightness brightness)
- {
- 	struct toshiba_acpi_dev *dev = container_of(cdev,
- 			struct toshiba_acpi_dev, led_dev);
-@@ -496,14 +496,20 @@ static void toshiba_illumination_set(struct led_classdev *cdev,
- 
- 	/* First request : initialize communication. */
- 	if (!sci_open(dev))
--		return;
-+		return -EIO;
- 
- 	/* Switch the illumination on/off */
- 	state = brightness ? 1 : 0;
- 	result = sci_write(dev, SCI_ILLUMINATION, state);
- 	sci_close(dev);
--	if (result == TOS_FAILURE)
-+	if (result == TOS_FAILURE) {
- 		pr_err("ACPI call for illumination failed\n");
-+		return -EIO;
-+	}
-+	if (result == TOS_NOT_SUPPORTED)
-+		return -ENODEV;
-+
-+	return result == TOS_SUCCESS ? 0 : -EIO;
- }
- 
- static enum led_brightness toshiba_illumination_get(struct led_classdev *cdev)
-@@ -624,7 +630,7 @@ static enum led_brightness toshiba_kbd_backlight_get(struct led_classdev *cdev)
- 	return state ? LED_FULL : LED_OFF;
- }
- 
--static void toshiba_kbd_backlight_set(struct led_classdev *cdev,
-+static int toshiba_kbd_backlight_set(struct led_classdev *cdev,
- 				     enum led_brightness brightness)
- {
- 	struct toshiba_acpi_dev *dev = container_of(cdev,
-@@ -635,8 +641,14 @@ static void toshiba_kbd_backlight_set(struct led_classdev *cdev,
- 	/* Set the keyboard backlight state */
- 	state = brightness ? 1 : 0;
- 	result = hci_write(dev, HCI_KBD_ILLUMINATION, state);
--	if (result == TOS_FAILURE)
-+	if (result == TOS_FAILURE) {
- 		pr_err("ACPI call to set KBD Illumination mode failed\n");
-+		return -EIO;
-+	}
-+	if (result == TOS_NOT_SUPPORTED)
-+		return -ENODEV;
-+
-+	return result == TOS_SUCCESS ? 0 : -EIO;
- }
- 
- /* TouchPad support */
-@@ -737,8 +749,8 @@ toshiba_eco_mode_get_status(struct led_classdev *cdev)
- 	return out[2] ? LED_FULL : LED_OFF;
- }
- 
--static void toshiba_eco_mode_set_status(struct led_classdev *cdev,
--				     enum led_brightness brightness)
-+static int toshiba_eco_mode_set_status(struct led_classdev *cdev,
-+				       enum led_brightness brightness)
- {
- 	struct toshiba_acpi_dev *dev = container_of(cdev,
- 			struct toshiba_acpi_dev, eco_led);
-@@ -749,8 +761,14 @@ static void toshiba_eco_mode_set_status(struct led_classdev *cdev,
- 	/* Switch the Eco Mode led on/off */
- 	in[2] = (brightness) ? 1 : 0;
- 	status = tci_raw(dev, in, out);
--	if (ACPI_FAILURE(status))
-+	if (ACPI_FAILURE(status)) {
- 		pr_err("ACPI call to set ECO led failed\n");
-+		return -EIO;
-+	}
-+	if (out[0] == TOS_NOT_SUPPORTED)
-+		return -ENODEV;
-+
-+	return out[0] == TOS_SUCCESS ? 0 : -EIO;
- }
- 
- /* Accelerometer support */
-@@ -3366,7 +3384,7 @@ static int toshiba_acpi_add(struct acpi_device *acpi_dev)
- 	if (dev->illumination_supported) {
- 		dev->led_dev.name = "toshiba::illumination";
- 		dev->led_dev.max_brightness = 1;
--		dev->led_dev.brightness_set = toshiba_illumination_set;
-+		dev->led_dev.brightness_set_blocking = toshiba_illumination_set;
- 		dev->led_dev.brightness_get = toshiba_illumination_get;
- 		led_classdev_register(&acpi_dev->dev, &dev->led_dev);
- 	}
-@@ -3375,7 +3393,7 @@ static int toshiba_acpi_add(struct acpi_device *acpi_dev)
- 	if (dev->eco_supported) {
- 		dev->eco_led.name = "toshiba::eco_mode";
- 		dev->eco_led.max_brightness = 1;
--		dev->eco_led.brightness_set = toshiba_eco_mode_set_status;
-+		dev->eco_led.brightness_set_blocking = toshiba_eco_mode_set_status;
- 		dev->eco_led.brightness_get = toshiba_eco_mode_get_status;
- 		led_classdev_register(&dev->acpi_dev->dev, &dev->eco_led);
- 	}
-@@ -3391,7 +3409,7 @@ static int toshiba_acpi_add(struct acpi_device *acpi_dev)
- 		dev->kbd_led.name = "toshiba::kbd_backlight";
- 		dev->kbd_led.flags = LED_BRIGHT_HW_CHANGED;
- 		dev->kbd_led.max_brightness = 1;
--		dev->kbd_led.brightness_set = toshiba_kbd_backlight_set;
-+		dev->kbd_led.brightness_set_blocking = toshiba_kbd_backlight_set;
- 		dev->kbd_led.brightness_get = toshiba_kbd_backlight_get;
- 		led_classdev_register(&dev->acpi_dev->dev, &dev->kbd_led);
- 	}
+ 	err = vti6_fb_tnl_dev_init(ip6n->fb_tnl_dev);
+ 	if (err < 0)
 -- 
-2.34.1
+2.53.0
+
 
