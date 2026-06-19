@@ -1,238 +1,195 @@
-Return-Path: <stable+bounces-267404-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267408-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id JRSwNWBQNWo9sgYAu9opvQ
-	(envelope-from <stable+bounces-267404-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 16:21:20 +0200
+	id u0+gGcFUNWrltAYAu9opvQ
+	(envelope-from <stable+bounces-267408-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 16:40:01 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 385AF6A6605
-	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 16:21:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BCAF56A675E
+	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 16:40:00 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=chromium.org header.s=google header.b=aRWvAqtC;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267404-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-267404-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=chromium.org;
+	dkim=pass header.d=wp.pl header.s=20241105 header.b="zlM90/qC";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267408-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-267408-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=wp.pl;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id ED152300D443
-	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 14:20:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 38846308590A
+	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 14:38:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09B17383310;
-	Fri, 19 Jun 2026 14:20:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE17F2701D9;
+	Fri, 19 Jun 2026 14:38:40 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vs1-f53.google.com (mail-vs1-f53.google.com [209.85.217.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx4.wp.pl (mx4.wp.pl [212.77.101.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68A9E19C556
-	for <stable@vger.kernel.org>; Fri, 19 Jun 2026 14:20:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA1CC339870
+	for <stable@vger.kernel.org>; Fri, 19 Jun 2026 14:38:36 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781878842; cv=none; b=NUJXXvFfirhm55jcHZLfiw1ayqtWWM7qRcB73yY2k0mhaDGtzN4UjxvY+QXu22VPnJUaviyzh8lybsyri65NDZK0VD3Yu7F/1y5rD5vVQJgQLYsfOQhfGY5ikjKpl1g4ErQiJ93K9aIMHxnixabEFRBQhTts34CK3vub0dOE3FM=
+	t=1781879920; cv=none; b=jyEO6nqljRNFW0Z8l0fxZKc4b1jlQEZkd2/oUlftDUXYESpsQX0RUx4I8YipsDQO5UuLZgTudgoUGJpXScfu/6ydf2Sgxjc/nUc5xzfPHeybeoIR58U9QerpgvUKGypW791nYGxpqlIPUHGyhAdDxsAWH/cSl+O3sqSRRcamvwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781878842; c=relaxed/simple;
-	bh=gJs7xtR7xm1gIzB99bRuyJh0Tdg/gw9Rplvwc1PxAUk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=azRvh8V1LGiv4M46YDSBDwNOIY8TOvmvCzOvwekN7BCuDhHBQ3JWuWX56DWiRHu914U3YTAbwgN21yWevOOpeF3cLWzncxpZ+JbwOVs8/8nf9EqgrD49ISrmQpuPGwqSntWV/XRFMhUDRVbNrt9fOCteg+xtqF10fVSUmNNmR0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=aRWvAqtC; arc=none smtp.client-ip=209.85.217.53
-Received: by mail-vs1-f53.google.com with SMTP id ada2fe7eead31-6c28cd29891so1157869137.1
-        for <stable@vger.kernel.org>; Fri, 19 Jun 2026 07:20:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1781878840; x=1782483640; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fbcGH9ITMmOI3YSas2gsikCqBTKnvtgdWwDyBNbyusg=;
-        b=aRWvAqtCr2x05huhxmKwNaJBrys3UqNzAciCQOoKz/if8WEjubM+KR5qMqyS1XRPBk
-         m0CFSS9LIutiL0+cI4QvU+RiwzUQAMkGOxwS+4bLcyjT7tU3U6x/srJqTEEHZxV/SH9m
-         9fZMqCLVY76jNTNFJQIoA4wIt7k8RechF7ZhQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781878840; x=1782483640;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=fbcGH9ITMmOI3YSas2gsikCqBTKnvtgdWwDyBNbyusg=;
-        b=JvwiIejKvQKALRyMm4XVMxqU/BLKZGX/3ZfNOzffAQfV7EnFmeBvfsDylZ6qVKSX1f
-         SnhcVpQDHrF1+VE81TrjzvyUIlKe+AHvpXD74fRuGieBsUG3+brDNlkNlRqhRZTl9OTo
-         VgH4p5gwqn5jFp5GkdQcLfXlnsmoc9D6ay2WMObAxWSwFXLtjMcdqtFzEvGHPY7kgslG
-         gm0eeOsjVnkanMMxsceHTIfi2Crcgt3gmyZzPxRY+f0fXAVFVAx/h+9lWm6VT5NEtX9C
-         x0UPEM4Ez9h68NXF0djRhp6rc+y8YirH+r9j0skMjYa+9MF03qsZZnK/Zo66dUR4DlYo
-         2wkA==
-X-Forwarded-Encrypted: i=1; AFNElJ8e4vyDrA07g1TJqtwrL9Hz41CSO0iZsCW4+pYkETxVb4gJZR0osIwqESaylKKmj7buN7yr1Ao=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzfb/sXKF71LBbbyiDR/Ce7PZ31rqlu9fBMFhyxiKXLeCRxOFIQ
-	8oZ5Q12xD5QTxx7uL19hQ+XurWAm0JyJQEGk5I7HimBKO963SEFDju7QCFXpP1Mpg2M+BwitfEM
-	FP3kPIg==
-X-Gm-Gg: AfdE7cn2jJaX1oTEc5iQ3A0BWu24DagGdwRk7y1NIESmkZMEyft658xzfIrfBlF8Em5
-	oukiFLBixByfSfVzgf/ph3HNmPr99pcJvgtd/JbyPVacfMKiQ5DfWwduKrlV8rG3EVwSdXUwvNY
-	cam5GSKPBAs9XMltKs0lhqHD7X6PZum0oOBfXHr1W5m+j+vbR8oH+fsDo1X0zK8FKiuiZSJkLbr
-	ZjXH0FMwE2aw3qXt/yXksOA8cX1nAVv6lNMoDwNvWesyGSUP1g9rDAzKLf/lMjXJQWNds15L35F
-	DywdgzXE7isnj9zLZDAzOnDFASvU4Mqvon7hu4899MNPTp5ZJHMeHoATpXbIwsN6ijrVqEnGluj
-	nowomF+hphF/yxAGjJPaYiT9WBYKdL+8dB5udLDHotCiLFUcC9bFbv9wDikkk3oRMGVVnYna3mb
-	guo1q6Z1jVDbmc7LTFU5xwTxv0sZ8Bzsi08wG4gzjyR9C0sGV06eE=
-X-Received: by 2002:a05:6102:5121:b0:631:d586:893e with SMTP id ada2fe7eead31-72a1d205a0fmr2217420137.5.1781878840293;
-        Fri, 19 Jun 2026 07:20:40 -0700 (PDT)
-Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com. [209.85.160.182])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-920a0e4ad99sm253798885a.5.2026.06.19.07.20.38
-        for <stable@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 19 Jun 2026 07:20:39 -0700 (PDT)
-Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-519ed52bcc6so186221cf.0
-        for <stable@vger.kernel.org>; Fri, 19 Jun 2026 07:20:38 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ/YzjB/rtxhE7mXjYjHOCXq9J9pr98HKVGlA9ijf1ZibLDurKrbhopu1uy0hfSNn1xCPKzZ8KU=@vger.kernel.org
-X-Received: by 2002:ac8:7d8e:0:b0:516:4f62:85ec with SMTP id
- d75a77b69052e-519e8d1f14dmr7406931cf.17.1781878838041; Fri, 19 Jun 2026
- 07:20:38 -0700 (PDT)
+	s=arc-20240116; t=1781879920; c=relaxed/simple;
+	bh=NyrScO0dVhsACym1fuSEanidTYHc8ErpZjn2GEDMaOc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fJN/sUqTb+6l2puL7faxnXtF8c0MgQNbn+n9+byepA+w5Fqbl56OD3m+XfsvxhFlSjaT0ob1Sx+jqGVaeICDRk8Xf5sG8jsK00l8b5RlR00tGy6ehbNna2iIBrwK9Cspf4Kru8nLGBj843zgulwNMwZXU9RlrI326yZCQjTke6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl; spf=pass smtp.mailfrom=wp.pl; dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b=zlM90/qC; arc=none smtp.client-ip=212.77.101.11
+Received: (wp-smtpd smtp.wp.pl 14198 invoked from network); 19 Jun 2026 16:31:54 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=20241105;
+          t=1781879515; bh=bzmFSpOZzFRmYN5ZZP9uYyPTRaSCgyKCPlBppCnsT2Y=;
+          h=From:To:Cc:Subject;
+          b=zlM90/qCL/UfNlVhvtPmLU6t2hZ445V3dKgJs/dpYyovkuYI5ILXYhH7D35FYrRGL
+           EgSKvYkL02ZBSrhWHhrwMrek4ZkGgv20+D4UHZARUBwZ3jdGJ7Xz+SXAt9tzdNP8b+
+           C8uxNJO/PtruJHSzDFQIqiBe/qKbssn/Jwx7kcp7Tik6iR5Qnnv/OQlrvwmoRPnx8O
+           xkF7EVjENcmwM9znw/tnAVO5U8fakZaVBZ2Mo8xW/8hLlO+gdl7VRBtlzR7isNmv1a
+           3/X6Yhs7p8PjFownw2OgZIPksiOF8S79ya7Xy9wAPgaIKB/9vwLkIT4wRdEyaIAxbm
+           qEcLHvEESj2kA==
+Received: from 77-236-11-197.static.play.pl (HELO localhost) (stf_xl@wp.pl@[77.236.11.197])
+          (envelope-sender <stf_xl@wp.pl>)
+          by smtp.wp.pl (WP-SMTPD) with TLS_AES_256_GCM_SHA384 encrypted SMTP
+          for <runyu.xiao@seu.edu.cn>; 19 Jun 2026 16:31:54 +0200
+Date: Fri, 19 Jun 2026 16:31:49 +0200
+From: Stanislaw Gruszka <stf_xl@wp.pl>
+To: Runyu Xiao <runyu.xiao@seu.edu.cn>
+Cc: Gertjan van Wingerde <gwingerde@gmail.com>,
+	"John W . Linville" <linville@tuxdriver.com>,
+	Ivo van Doorn <IvDoorn@gmail.com>, linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH wireless] wifi: rt2x00: avoid full teardown before work
+ setup in probe
+Message-ID: <20260619143149.GA61690@wp.pl>
+References: <20260619073104.1809161-1-runyu.xiao@seu.edu.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260609121329.1262170-1-senozhatsky@chromium.org>
- <CAGp9LzpBUReZtrTEKgUr-+yvB+3tcs5hw7ziC4WaMRFNa2AYpg@mail.gmail.com> <87tsqyirsn.wl-tiwai@suse.de>
-In-Reply-To: <87tsqyirsn.wl-tiwai@suse.de>
-From: Tomasz Figa <tfiga@chromium.org>
-Date: Fri, 19 Jun 2026 23:20:20 +0900
-X-Gmail-Original-Message-ID: <CAAFQd5BtO7vL_A2i84CoF1Dk7Bmp_DZQJgoNAB-HyGA89=XDUQ@mail.gmail.com>
-X-Gm-Features: AVVi8Cfvj7Tldb-rRHpdw6zA1vefldpMM6jJzOD0R18t-VmMpCoygqlJxAYuFRA
-Message-ID: <CAAFQd5BtO7vL_A2i84CoF1Dk7Bmp_DZQJgoNAB-HyGA89=XDUQ@mail.gmail.com>
-Subject: Re: [PATCH] Bluetooth: btmtksdio: fix infinite loop in btmtksdio_txrx_work()
-To: Takashi Iwai <tiwai@suse.de>
-Cc: Sean Wang <sean.wang@kernel.org>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
-	Marcel Holtmann <marcel@holtmann.org>, Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
-	Mark-yw Chen <mark-yw.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, 
-	linux-bluetooth@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260619073104.1809161-1-runyu.xiao@seu.edu.cn>
+X-WP-MailID: d787dc5315198eeb299b0b41783dca5e
+X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
+X-WP-SPAM: NO 0000001 [MeLR]                               
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[chromium.org,none];
+	DMARC_POLICY_ALLOW(-0.50)[wp.pl,none];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[chromium.org:s=google];
+	R_DKIM_ALLOW(-0.20)[wp.pl:s=20241105];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-267408-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	FORGED_RECIPIENTS(0.00)[m:runyu.xiao@seu.edu.cn,m:gwingerde@gmail.com,m:linville@tuxdriver.com,m:IvDoorn@gmail.com,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[stf_xl@wp.pl,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[gmail.com,tuxdriver.com,vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-267404-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:tiwai@suse.de,m:sean.wang@kernel.org,m:senozhatsky@chromium.org,m:marcel@holtmann.org,m:luiz.dentz@gmail.com,m:mark-yw.chen@mediatek.com,m:sean.wang@mediatek.com,m:linux-bluetooth@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:linux-mediatek@lists.infradead.org,m:stable@vger.kernel.org,m:luizdentz@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[tfiga@chromium.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[kernel.org,chromium.org,holtmann.org,gmail.com,mediatek.com,vger.kernel.org,lists.infradead.org];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tfiga@chromium.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[chromium.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[stf_xl@wp.pl,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[wp.pl:+];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FREEMAIL_FROM(0.00)[wp.pl];
+	MID_RHS_MATCH_FROM(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,chromium.org:dkim,chromium.org:email,chromium.org:from_mime,suse.de:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,wp.pl:dkim,wp.pl:mid,wp.pl:from_mime,seu.edu.cn:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 385AF6A6605
+X-Rspamd-Queue-Id: BCAF56A675E
 
-[Resending without HTML... Damn Gmail]
+Hi, 
 
-On Fri, Jun 19, 2026 at 10:27=E2=80=AFPM Takashi Iwai <tiwai@suse.de> wrote=
-:
+On Fri, Jun 19, 2026 at 03:31:04PM +0800, Runyu Xiao wrote:
+> rt2x00lib_probe_dev() uses the full rt2x00lib_remove_dev() teardown for
+> all probe failures. However, drv_data allocation and workqueue allocation
+> can fail before intf_work, autowakeup_work and sleep_work have been
+> initialized.
+> 
+> Do not enter the full remove path until the probe has reached the point
+> where those work items are set up. Return directly for drv_data allocation
+> failure, and use a small early cleanup path for workqueue allocation
+> failure.
 >
-> On Wed, 10 Jun 2026 08:52:31 +0200,
-> Sean Wang wrote:
-> >
-> > Hi,
-> >
-> > On Tue, Jun 9, 2026 at 7:19=E2=80=AFAM Sergey Senozhatsky
-> > <senozhatsky@chromium.org> wrote:
-> > >
-> > > Every once in a while we see a hung btmtksdio_flush() task:
-> > >
-> > >  INFO: task kworker/u17:0:189 blocked for more than 122 seconds.
-> > >  __cancel_work_timer+0x3f4/0x460
-> > >  cancel_work_sync+0x1c/0x2c
-> > >  btmtksdio_flush+0x2c/0x40
-> > >  hci_dev_open_sync+0x10c4/0x2190
-> > >  [..]
-> > >
-> > > It all boils down to incorrect time_is_before_jiffies() usage in
-> > > btmtksdio_txrx_work().  The btmtksdio_txrx_work() loop is expected
-> > > to be terminated if running for longer than 5*HZ.  However the
-> > > timeout check is twisted:  time_is_before_jiffies(old_jiffies + 5*HZ)
-> > > evaluates to true when old_jiffies + 5*HZ is in the past i.e. when a
-> > > timeout has occurred.  Using OR with time_is_before_jiffies(txrx_time=
-out)
-> > > means that:
-> > > - before the 5-second timeout: the condition is `int_status || false`=
-,
-> > >   so it loops as long as there are pending interrupts.
-> > > - after the 5-second timeout: the condition becomes `int_status || tr=
-ue`,
-> > >   which is always true.
-> > >
-> > > When the loop becomes infinite btmtksdio_txrx_work() loop never
-> > > terminates and never releases the SDIO host.
-> > >
-> > > Fix loop termination condition to actually enforce a 5*HZ timeout.
-> > >
-> > > Fixes: 26270bc189ea4 ("Bluetooth: btmtksdio: move interrupt service t=
-o work")
-> > > Cc: stable@vger.kernel.org
-> > > Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-> > > ---
-> > >  drivers/bluetooth/btmtksdio.c | 2 +-
-> > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > >
-> > > diff --git a/drivers/bluetooth/btmtksdio.c b/drivers/bluetooth/btmtks=
-dio.c
-> > > index 5b0fab7b89b5..c6f80c419e90 100644
-> > > --- a/drivers/bluetooth/btmtksdio.c
-> > > +++ b/drivers/bluetooth/btmtksdio.c
-> > > @@ -620,7 +620,7 @@ static void btmtksdio_txrx_work(struct work_struc=
-t *work)
-> > >                         if (btmtksdio_rx_packet(bdev, rx_size) < 0)
-> > >                                 bdev->hdev->stat.err_rx++;
-> > >                 }
-> > > -       } while (int_status || time_is_before_jiffies(txrx_timeout));
-> > > +       } while (int_status && time_is_after_jiffies(txrx_timeout));
-> >
-> > yes, loop continues only while there is interrupt work and the timeout
-> > deadline is still in the future
->
-> I stumbled on this while backporting to distro kernels, and I wonder
-> whether this change is correct.
->
-> IIUC, this essentially makes the loop exiting right after the first
-> cycle; the patch changed from time_is_before_jiffies() to *_after_*(),
-> not only the logical OR to AND, and *_after_*() returns false, so the
-> whole condition becomes false, too.
+> This issue was found by our static analysis tool and then confirmed by
+> manual review of rt2x00lib_probe_dev() and rt2x00lib_remove_dev(). The
+> early probe exits should not call a common teardown path that assumes the
+> later work setup has already completed.
+> 
+> A QEMU PoC forced alloc_ordered_workqueue() to fail before the work
+> initializers are reached. The resulting fail path entered
+> rt2x00lib_remove_dev(), and DEBUG_OBJECTS reported invalid work drains with
+> rt2x00lib_probe_dev() and rt2x00lib_remove_dev() in the stack.
 
-The intention is for the loop to keep running as long as there is
-still an interrupt left to handle (int_status !=3D 0) and the timeout
-has not elapsed (jiffies < txrx_timeout).
+Thanks for finding and fixing those bugs. The patch looks fine, but I think
+it could be a bit simpler, see the comments below.
 
-Note that time_is_after_jiffies(x) returns true if x > jiffies (or jiffies =
-< x):
+> Fixes: 1ebbc48520a0 ("rt2x00: Introduce concept of driver data in struct rt2x00_dev.")
+> Fixes: 0439f5367c8d ("rt2x00: Move TX/RX work into dedicated workqueue")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Runyu Xiao <runyu.xiao@seu.edu.cn>
+> ---
+>  drivers/net/wireless/ralink/rt2x00/rt2x00dev.c | 12 ++++++++++--
+>  1 file changed, 10 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c b/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
+> index f8a6f9c968a1..847b64e586f6 100644
+> --- a/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
+> +++ b/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
+> @@ -1382,7 +1382,7 @@ int rt2x00lib_probe_dev(struct rt2x00_dev *rt2x00dev)
+>  			                      GFP_KERNEL);
+>  		if (!rt2x00dev->drv_data) {
+>  			retval = -ENOMEM;
+> -			goto exit;
+> +			return retval;
 
-/**
- * time_is_after_jiffies - return true if a is after jiffies
- * @a: time (unsigned long) to compare to jiffies
- *
- * Return: %true is time a is after jiffies, otherwise %false.
- */
-#define time_is_after_jiffies(a) time_before(jiffies, a)
+This can be just "return -ENOMEM;"
 
-Or am I missing something?
+>  		}
+>  	}
+>  
+> @@ -1416,7 +1416,7 @@ int rt2x00lib_probe_dev(struct rt2x00_dev *rt2x00dev)
+>  	    alloc_ordered_workqueue("%s", 0, wiphy_name(rt2x00dev->hw->wiphy));
+>  	if (!rt2x00dev->workqueue) {
+>  		retval = -ENOMEM;
+> -		goto exit;
+> +		goto exit_free_drv_data;
+>  	}
+>  
+>  	INIT_WORK(&rt2x00dev->intf_work, rt2x00lib_intf_scheduled);
+I think should be sufficient to move INIT_*WORK's lines before
+alloc_ordered_workqueue() to avoid cancel_*_work_sync() on uninitialized data.
+And other de-init code from rt2x00lib_remove_dev() should work fine at this
+point.
 
-Best,
-Tomasz
+Regards
+Stanislaw
+> @@ -1488,6 +1488,14 @@ int rt2x00lib_probe_dev(struct rt2x00_dev *rt2x00dev)
+>  exit:
+>  	rt2x00lib_remove_dev(rt2x00dev);
+>  
+> +	return retval;
+> +
+> +exit_free_drv_data:
+> +	clear_bit(DEVICE_STATE_PRESENT, &rt2x00dev->flags);
+> +
+> +	kfree(rt2x00dev->drv_data);
+> +	rt2x00dev->drv_data = NULL;
+> +
+>  	return retval;
+>  }
+>  EXPORT_SYMBOL_GPL(rt2x00lib_probe_dev);
+> -- 
+> 2.34.1
+> 
 
