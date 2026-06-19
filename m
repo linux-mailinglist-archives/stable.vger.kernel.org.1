@@ -1,187 +1,146 @@
-Return-Path: <stable+bounces-267426-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267428-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id mwW6N2dpNWqTvgYAu9opvQ
-	(envelope-from <stable+bounces-267426-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 18:08:07 +0200
+	id Q4uIAXBwNWqfwQYAu9opvQ
+	(envelope-from <stable+bounces-267428-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 18:38:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7E596A6F1E
-	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 18:08:07 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78EEE6A7149
+	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 18:38:07 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=krisman.be header.s=MBO0001 header.b=iFvfCnfV;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267426-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267426-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=krisman.be;
+	dkim=pass header.d=grrlz.net header.s=stigmate header.b=odmKolQf;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267428-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-267428-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=reject) header.from=grrlz.net;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A55453028312
-	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 16:07:54 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6F0DC300CD8E
+	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 16:38:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A121C3BB110;
-	Fri, 19 Jun 2026 16:07:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B59513C062F;
+	Fri, 19 Jun 2026 16:38:01 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
+Received: from confino.investici.org (confino.investici.org [93.190.126.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97B403BB682;
-	Fri, 19 Jun 2026 16:07:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E665396579;
+	Fri, 19 Jun 2026 16:37:57 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781885262; cv=none; b=RPpZXFEG/sunr1v+mYhx5CjAE7wC39LZDaAjcARLbrqkl5gGG2Wvq8utdekver/ZwfWVftGvDjsiInSXteIGyyRp/XXwu8FELHMuo8Oo9i9J7LCOY63K4VSxySG3WT1oaXEAReF1jfYJkODR4Xowi7nn9TAPMVLupD9RRliZhuY=
+	t=1781887081; cv=none; b=BkKYP35YGqJfODC3VDIxnq4i1slYlpqzSTlmrQLSVjwVES8WgTUV5bUJXvjeDBnsr6HxxUo1vl55mzI0d2aiaT50tr3Gzqf3MZ/lBfrJH6iCQjbZt8kgJlxGXFnKgctvsUp+kUSujf7HHgSBU88eQkylEvu2FqQTkm7/Dg9FTUQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781885262; c=relaxed/simple;
-	bh=fE67BqjDyTheSgqd4EZb5JKPlSAJ3XTJgI08s/KrHZQ=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=c4Z6EFFpnyJJ6J/QDz9coebSmg0duKO5ijkIcP5gfEwgIo+7ZYAq5xF7z+FZLkaLtGC9QWQYzL3B9t7W0qaLvac020kloSK4b7Hmo4iPd1fcBGsGi/4lDb0u25/Pis7HmuLIpEGPt6ewRg4ZzYyQcDWBrmq/pMEIbCuIXOlIaEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=krisman.be; spf=pass smtp.mailfrom=krisman.be; dkim=pass (2048-bit key) header.d=krisman.be header.i=@krisman.be header.b=iFvfCnfV; arc=none smtp.client-ip=80.241.56.172
-Received: from smtp102.mailbox.org (smtp102.mailbox.org [10.196.197.102])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4ghjD66TF5z9tll;
-	Fri, 19 Jun 2026 18:07:34 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=krisman.be; s=MBO0001;
-	t=1781885255;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9yD4xHJw2ixlS54/w1wwmeUxIlbpa8OqFoDWj8fXiZY=;
-	b=iFvfCnfVzZyPln9esVpNbq5l7C+0oARS3Lvf8iWOzCduA+XDjoAKv6ubs39TTbv1XNUnJC
-	vHwsFy4eAjJ7eGfDeRKeiO6JaMG4xrOh2G2of6GTUYk8fUJkRlZVQX1Rswgrl4Q/2ykqGy
-	PSZTCPoJoNmjUJ/LNV396/zodn3QLAt1mPm2YKUuFBnDam9UMeQdrGRKC1D6vd8is+VShg
-	YhlSZOeLAR6hoVtWoJlzih55kcGxg5Gbxim6z+gZnvSKesO+vpZ8CyPNSvGgJ11M70ZBTk
-	4SREkuweUa1dE2Rc12DhDsBjwDQCnpsJukUt/BNQZrmQs1hKbppzDXTxpWxQQw==
-From: Gabriel Krisman Bertazi <gabriel@krisman.be>
-To: Cyber_black <Cyberblackk@proton.me>, "io-uring@vger.kernel.org"
- <io-uring@vger.kernel.org>
-Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "axboe@kernel.dk" <axboe@kernel.dk>, "stable@vger.kernel.org"
- <stable@vger.kernel.org>, "gregkh@linuxfoundation.org"
- <gregkh@linuxfoundation.org>
-Subject: Re: [BUG] io_uring: possible CQE32 overflow flush inconsistency in
- __io_cqring_overflow_flush()
-In-Reply-To: <6oAi5ghNgkCrElyHzHJrE8l3g7Dg7Uc9PpeZmbGD93Xic5x5MI54B1pehHhjiGrb5VB0icQvFaemtH-Pvb8bJkivv6qxD_NZUEvwyFkk62k=@proton.me>
-References: <6oAi5ghNgkCrElyHzHJrE8l3g7Dg7Uc9PpeZmbGD93Xic5x5MI54B1pehHhjiGrb5VB0icQvFaemtH-Pvb8bJkivv6qxD_NZUEvwyFkk62k=@proton.me>
-Date: Fri, 19 Jun 2026 12:07:30 -0400
-Message-ID: <87ik7eqzst.fsf@mailhost.krisman.be>
+	s=arc-20240116; t=1781887081; c=relaxed/simple;
+	bh=5TE/fAmXRPtPGSlZYKZiW19YWz48RJ5l1BFj7iPZLSE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BmMOOqHIipPJm9yGBT608lPFGEOVF4DV3Lph0n8p3sThj+N/+A9LmerrAWYS21I6KJCbiEsj3wCFq3IX76ADCdHr+4+acWvVAyas93Jpo9rzo5mteVTPA1iiL4LP9/216krnJH8HN6iTBIV87nJUdtSTUt2IRpEgEbNt2/5heAY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=grrlz.net; spf=pass smtp.mailfrom=grrlz.net; dkim=pass (1024-bit key) header.d=grrlz.net header.i=@grrlz.net header.b=odmKolQf; arc=none smtp.client-ip=93.190.126.19
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=grrlz.net;
+	s=stigmate; t=1781887075;
+	bh=ZIaJqAqwQPglNeMJRjyw5Ro90LLu19Fa82nqcYlrad0=;
+	h=From:To:Cc:Subject:Date:From;
+	b=odmKolQf9V+gOFhyNtzo8W7ipkFvg3gyXfqIke+gCK3l0YckWwFHQ59cKK2hcUx7x
+	 iRrcRQTUGHch4e+7ccOxSAjgrEyXmPdOiu2bDDArmIXJux9vdggPnh9hvdY8XCsTzK
+	 Blye44HvSluq4FU39BBx7D//OUu37w5yuR6a69tc=
+Received: from mx1.investici.org (unknown [127.0.0.1])
+	by confino.investici.org (Postfix) with ESMTP id 4ghjv70Z8lz115M;
+	Fri, 19 Jun 2026 16:37:55 +0000 (UTC)
+Received: by mx1.investici.org (Postfix) id 4ghjv63xkJz114y;
+	Fri, 19 Jun 2026 16:37:54 +0000 (UTC)
+From: Bradley Morgan <include@grrlz.net>
+To: Thomas Gleixner <tglx@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>
+Cc: linux-kernel@vger.kernel.org,
+	Bradley Morgan <include@grrlz.net>,
+	stable@vger.kernel.org
+Subject: [PATCH 1/2] cpu: hotplug: preserve per instance callback errors
+Date: Fri, 19 Jun 2026 16:37:17 +0000
+Message-ID: <20260619163719.12103-1-include@grrlz.net>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[krisman.be,none];
-	R_DKIM_ALLOW(-0.20)[krisman.be:s=MBO0001];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[grrlz.net,reject];
+	R_DKIM_ALLOW(-0.20)[grrlz.net:s=stigmate];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:Cyberblackk@proton.me,m:io-uring@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:axboe@kernel.dk,m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER(0.00)[gabriel@krisman.be,stable@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-267426-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-267428-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[include@grrlz.net,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:tglx@kernel.org,m:peterz@infradead.org,m:linux-kernel@vger.kernel.org,m:include@grrlz.net,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gabriel@krisman.be,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[krisman.be:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[include@grrlz.net,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[grrlz.net:+];
+	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[proton.me:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,mailhost.krisman.be:mid,linuxfoundation.org:email]
+	ALIAS_RESOLVED(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,grrlz.net:dkim,grrlz.net:email,grrlz.net:mid,grrlz.net:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A7E596A6F1E
+X-Rspamd-Queue-Id: 78EEE6A7149
 
-Cyber_black <Cyberblackk@proton.me> writes:
+cpuhp_invoke_callback() unwinds earlier callbacks for the same
+hotplug state when one instance fails. The rollback path currently
+reuses ret, so a successful rollback can hide the original error and
+make the failed transition look successful.
 
-> On Fri, Jun 19, 2026 at 04:49:32AM +0000, Greg KH wrote:> Please turn thi=
-s into a real patch that you have gregkh@linuxfoundation.org to verify it
->> resolves the issue so you get full credit for the fix.
->
-> Hi Greg,
->
-> Apologies for the previous mail's format. The patch compiles cleanly
-> on arm64. My current environment does not support io_uring (ENOSYS)
-> so I was unable to run the liburing suite, but the fix itself is
-> straightforward.
+Keep the rollback result separate from the original error.
 
-What's the context, was this sent against stable?  The issue exists
-in mainline.
+Fixes: 724a86881d03 ("smp/hotplug: Callback vs state-machine consistency")
+Cc: stable@vger.kernel.org
+Signed-off-by: Bradley Morgan <include@grrlz.net>
+---
+ kernel/cpu.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-> From 522b70bdd3ac64c64dd21842cb5901e59a1fb058 Mon Sep 17 00:00:00 2001
-> From: Eneshan Erdogan Karaca <cyberblackk@proton.me>
-> Date: Fri, 19 Jun 2026 07:59:58 +0000
-> Subject: [PATCH] io_uring: fix cqe_size/is_cqe32 inconsistency in overflow
-> =C2=A0flush
+diff --git a/kernel/cpu.c b/kernel/cpu.c
+index f975bb34915b..0f32086f9ed4 100644
+--- a/kernel/cpu.c
++++ b/kernel/cpu.c
+@@ -174,7 +174,7 @@ static int cpuhp_invoke_callback(unsigned int cpu, enum cpuhp_state state,
+ 	struct cpuhp_step *step = cpuhp_get_step(state);
+ 	int (*cbm)(unsigned int cpu, struct hlist_node *node);
+ 	int (*cb)(unsigned int cpu);
+-	int ret, cnt;
++	int ret, cnt, rollback_ret;
+ 
+ 	if (st->fail == state) {
+ 		st->fail = CPUHP_INVALID;
+@@ -238,12 +238,12 @@ static int cpuhp_invoke_callback(unsigned int cpu, enum cpuhp_state state,
+ 			break;
+ 
+ 		trace_cpuhp_multi_enter(cpu, st->target, state, cbm, node);
+-		ret = cbm(cpu, node);
+-		trace_cpuhp_exit(cpu, st->state, state, ret);
++		rollback_ret = cbm(cpu, node);
++		trace_cpuhp_exit(cpu, st->state, state, rollback_ret);
+ 		/*
+ 		 * Rollback must not fail,
+ 		 */
+-		WARN_ON_ONCE(ret);
++		WARN_ON_ONCE(rollback_ret);
+ 	}
+ 	return ret;
+ }
+-- 
+2.53.0
 
-Ideally, send it as a patch to the list with [PATCH] so it doesn't vanish u=
-nder a [BUG]
-tag.
->
-> When IORING_SETUP_CQE32 is set, Block A doubles cqe_size to handle
-> 32-byte CQEs. Block B then resets is_cqe32 to false so that
-> io_get_cqe_overflow() uses its own ctx flag check internally, but
-> fails to reset cqe_size. This leaves cqe_size=3D32 while a 16-byte
-> slot is allocated, causing memcpy() to write beyond the allocated
-> CQE slot.
-
-How was this found?  Do you have a syzbot or a trigger?  The fix looks
-good but the patch appears corrupted, with a bunch of NBSP.
-
->
-> Fix this by also resetting cqe_size when is_cqe32 is cleared.
->
-> Signed-off-by: Eneshan Erdogan Karaca <cyberblackk@proton.me>
-> ---
-> =C2=A0io_uring/io_uring.c | 4 +++-
-> =C2=A01 file changed, 3 insertions(+), 1 deletion(-)
->
-> diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
-> index 1ea2fca34a36..f9690291633a 100644
-> --- a/io_uring/io_uring.c
-> +++ b/io_uring/io_uring.c
-> @@ -543,8 +543,10 @@ static void __io_cqring_overflow_flush(struct io_rin=
-g_ctx *ctx, bool dying)
-> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 is_cqe32 =3D true;
-> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 cqe_size <<=3D 1;
-> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 }
-> - =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 if (ctx->flags & IORIN=
-G_SETUP_CQE32)
-> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 if (ctx->flags & IORIN=
-G_SETUP_CQE32) {
-> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 is_cqe32 =3D false;
-> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 cqe_size =3D sizeof(struct io_uring_cqe);
-> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 }
-> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 if (!dying) {
-> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 if (!io_get_cqe_overflow(ctx, &cqe, true, is_cqe32))
-> --
-> 2.34.1
->
-> Thanks,
-> Eneshan Erdogan Karaca
-
---=20
-Gabriel Krisman Bertazi
 
