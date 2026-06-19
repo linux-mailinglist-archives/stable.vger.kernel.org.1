@@ -1,68 +1,62 @@
-Return-Path: <stable+bounces-267444-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267446-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 68SIHoCoNWo+2gYAu9opvQ
-	(envelope-from <stable+bounces-267444-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 22:37:20 +0200
+	id uDATJNyqNWpS2wYAu9opvQ
+	(envelope-from <stable+bounces-267446-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 22:47:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7F7A6A7A87
-	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 22:37:19 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1173D6A7B3A
+	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 22:47:24 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
 	dkim=none;
 	dmarc=none;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267444-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267444-lists+stable=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267446-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267446-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CDC833018770
-	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 20:37:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C65343053EA2
+	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 20:47:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D5E13B42F8;
-	Fri, 19 Jun 2026 20:37:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A2463B71DE;
+	Fri, 19 Jun 2026 20:47:18 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from proxima.lasnet.de (proxima.lasnet.de [78.47.171.185])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85857330B07;
-	Fri, 19 Jun 2026 20:37:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAFD0305679;
+	Fri, 19 Jun 2026 20:47:16 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781901437; cv=none; b=goselWMjCgCk1DzgTbBZcwxI282HpByTqMTB2CN7jdRLp6+HIh1HBPtsVso8wG6ZJZyOlq3N1WoSfKnNzQouy98JDfJ/X4jKQVCOTtJaztNEEfcHLI9fw7wEm0Byb90dKIeC0YH/t1Q22wrhMWzqfeVc/zlZ0sejN4z3QRdUZ2c=
+	t=1781902038; cv=none; b=AQxsybLRvr1DW0FQJXf8HCmOtxciGR2iorLhrdA5n7AZc9cyamru3xOAYwfepbp07OMX6L77HbGHS3mQfRpbI9oxIbGgbF30pLeCb2O1U1swhnDTPHmklv2ivsjRY+rpPasAcAOH2NGH7ri1dPqW/jbThg53z1pW/mw9+rTcFh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781901437; c=relaxed/simple;
-	bh=iFfs3WLa/OJizP0KzsUBLr3lLPEkBA01wgfbq3aVAj0=;
+	s=arc-20240116; t=1781902038; c=relaxed/simple;
+	bh=W4sjcb3Prlb75DVEnVTqZCcKEmcVLgxZ4fTRXOtD4nE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Vhqn4iG/ugycn8BPlfIyvvfX3FDEK5fo6F6CGr8QKzyPgVbxD3TcMHl0+ze4kBpO3vyIrkfeWd5wMu66rQZ2pAXjm5YYxch98k2W5or61jKhIkcurhJLznMfaC6Kl+sVJgs8EutzvKT3wAcBdVspfAgh3IAroOwwJnq8VYR3aBc=
+	 MIME-Version:Content-Type; b=DUQIn17+SN3tqEGjb1yfx3s2ygAxnzr5nEMrQgKaJuRP0valT5OoRimI56eACuk8CVEnd5VBdLTUHOMsIkBg6ywL8XQdttbIH3S1lkQU8NhzyXwLRLIgWJH4gUQFvlbCwroVz6F2HIQ3m3/RzPiVOPxBcHEiSKg5sSxuE3Uxaow=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=datenfreihafen.org; spf=pass smtp.mailfrom=datenfreihafen.org; arc=none smtp.client-ip=78.47.171.185
 Received: from work.datenfreihafen.local (unknown [46.253.254.161])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
 	(Authenticated sender: stefan@sostec.de)
-	by proxima.lasnet.de (Postfix) with ESMTPSA id 895C1C0879;
-	Fri, 19 Jun 2026 22:37:11 +0200 (CEST)
+	by proxima.lasnet.de (Postfix) with ESMTPSA id E2F0CC0221;
+	Fri, 19 Jun 2026 22:47:13 +0200 (CEST)
 From: Stefan Schmidt <stefan@datenfreihafen.org>
-To: Miquel Raynal <miquel.raynal@bootlin.com>,
-	Alexander Aring <alex.aring@gmail.com>,
-	Shitalkumar Gandhi <shital.gandhi45@gmail.com>
+To: alex.aring@gmail.com,
+	miquel.raynal@bootlin.com,
+	Doruk Tan Ozturk <doruk@0sec.ai>
 Cc: Stefan Schmidt <stefan@datenfreihafen.org>,
-	Simon Horman <horms@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	aleksander.lobakin@intel.com,
 	linux-wpan@vger.kernel.org,
 	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Shitalkumar Gandhi <shitalkumar.gandhi@cambiumnetworks.com>
-Subject: Re: [PATCH wpan v3] ieee802154: ca8210: fix pointer truncation in kfifo on 64-bit
-Date: Fri, 19 Jun 2026 22:37:04 +0200
-Message-ID: <178190141126.801651.17491492135340386862.b4-ty@datenfreihafen.org>
+	security@kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH net v2] mac802154: llsec: add skb_cow_data() before in-place crypto
+Date: Fri, 19 Jun 2026 22:47:07 +0200
+Message-ID: <178190201874.812652.7427337929247870005.b4-ty@datenfreihafen.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520105750.30144-1-shitalkumar.gandhi@cambiumnetworks.com>
-References: <20260520105750.30144-1-shitalkumar.gandhi@cambiumnetworks.com>
+In-Reply-To: <20260526183726.56100-1-doruk@0sec.ai>
+References: <20260525161806.96158-1-doruk@0sec.ai> <20260526183726.56100-1-doruk@0sec.ai>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -75,58 +69,54 @@ X-Rspamd-Action: no action
 X-Spamd-Result: default: False [0.04 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:miquel.raynal@bootlin.com,m:alex.aring@gmail.com,m:shital.gandhi45@gmail.com,m:stefan@datenfreihafen.org,m:horms@kernel.org,m:andrew+netdev@lunn.ch,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:linux-wpan@vger.kernel.org,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:shitalkumar.gandhi@cambiumnetworks.com,m:alexaring@gmail.com,m:shitalgandhi45@gmail.com,m:andrew@lunn.ch,s:lists@lfdr.de];
 	DMARC_NA(0.00)[datenfreihafen.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[bootlin.com,gmail.com];
-	FORGED_SENDER(0.00)[stefan@datenfreihafen.org,stable@vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	TAGGED_FROM(0.00)[bounces-267444-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TAGGED_FROM(0.00)[bounces-267446-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:alex.aring@gmail.com,m:miquel.raynal@bootlin.com,m:doruk@0sec.ai,m:stefan@datenfreihafen.org,m:aleksander.lobakin@intel.com,m:linux-wpan@vger.kernel.org,m:netdev@vger.kernel.org,m:security@kernel.org,m:stable@vger.kernel.org,m:alexaring@gmail.com,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[stefan@datenfreihafen.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_TO(0.00)[gmail.com,bootlin.com,0sec.ai];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[stefan@datenfreihafen.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	R_DKIM_NA(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	MID_RHS_MATCH_FROM(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[datenfreihafen.org:mid,datenfreihafen.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D7F7A6A7A87
+X-Rspamd-Queue-Id: 1173D6A7B3A
 
-Hello Shitalkumar Gandhi.
+Hello Doruk Tan Ozturk.
 
-On Wed, 20 May 2026 16:27:50 +0530, Shitalkumar Gandhi wrote:
-> ca8210_test_int_driver_write() and ca8210_test_int_user_read() exchange
-> a kmalloc'd buffer pointer through a struct kfifo, but pass a literal
-> '4' as the byte count to kfifo_in()/kfifo_out().
-> 
-> This is correct on 32-bit (pointer = 4 bytes), but on 64-bit only the
-> low 4 bytes of the 8-byte pointer are written into the FIFO. The reader
-> then reads back 4 bytes into an 8-byte local pointer variable, leaving
-> the upper 4 bytes uninitialized stack data. The first dereference of
-> the reconstructed pointer (fifo_buffer[1]) accesses an arbitrary kernel
-> address and generally results in an oops.
+On Tue, 26 May 2026 20:37:26 +0200, Doruk Tan Ozturk wrote:
+> llsec_do_encrypt_unauth(), llsec_do_encrypt_auth(),
+> llsec_do_decrypt_unauth(), and llsec_do_decrypt_auth() all perform
+> in-place cryptographic transformations on skb data.  They build a
+> scatterlist with sg_init_one() pointing into the skb's linear data area
+> and then pass the same scatterlist as both src and dst to the crypto API
+> (e.g. crypto_skcipher_encrypt/decrypt, crypto_aead_encrypt/decrypt).
 > 
 > [...]
 
 Applied to wpan/wpan-next.git, thanks!
 
-[1/1] ieee802154: ca8210: fix pointer truncation in kfifo on 64-bit
-      https://git.kernel.org/wpan/wpan-next/c/6d7f7bcf225b
+[1/1] mac802154: llsec: add skb_cow_data() before in-place crypto
+      https://git.kernel.org/wpan/wpan-next/c/84a04eb5b210
 
 regards,
 Stefan Schmidt
