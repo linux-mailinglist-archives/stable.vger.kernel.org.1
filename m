@@ -1,95 +1,112 @@
-Return-Path: <stable+bounces-267357-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267358-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id oU5DGdEQNWo6mgYAu9opvQ
-	(envelope-from <stable+bounces-267357-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 11:50:09 +0200
+	id KisKEcsRNWpjmgYAu9opvQ
+	(envelope-from <stable+bounces-267358-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 11:54:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id E41536A5099
-	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 11:50:08 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id E640B6A50FD
+	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 11:54:18 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=nzJimoNp;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267357-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-267357-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=A3bXkiJs;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267358-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-267358-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=suse.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4EFEE30054E6
-	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 09:50:08 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6289A301E754
+	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 09:54:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D17233D6DD;
-	Fri, 19 Jun 2026 09:50:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D21E368974;
+	Fri, 19 Jun 2026 09:54:05 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B99C740D569
-	for <stable@vger.kernel.org>; Fri, 19 Jun 2026 09:50:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 534A4368D71
+	for <stable@vger.kernel.org>; Fri, 19 Jun 2026 09:54:01 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781862607; cv=none; b=GCqNtXXOnapdmmbSLF+kHMYEvOW2ftRhLs10wJgdbwH8rOgTSqV1f2FkAG005viKoBPSRqohhLKBs4neXtGpojk50fHR1YrBKwXcqigwDvrg9OdCI9H95g9G5eUc4gyF8Ny7g7HqouYv9Xf7CGNbGNtHOVw6IYsFVJTjo0Flqpo=
+	t=1781862845; cv=none; b=aX4r3h5Syvmr1agaCBwytHO3GK9gTjkw3qb0tHCOM+m/NmGEHkeMKX5RSanu+e95KOFOCkoP0iEWGqhY1ONSGAE/gQ9xlU1kWkz+aNUTrfGRwGSeVMpkGgRLq6SzUUSoXbIKMkeVHObO3ngW0DCZtnJ+v8tw73wwV7AURLHR+10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781862607; c=relaxed/simple;
-	bh=UAuG4vuG5CgKeF6G4DlWpnMnvTmR9AFwp6RBEUHrfe8=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Z23oOe7GF8CRBQQSzfCe6ASH8x+OqQzbtzlBC6UgImk64tIyuGrKgYrMkcDPin8TAHiZ9NB1Nvc89B6MjymSY3f+3aUKbHj1CXWF5P2zEqi3zulW5ig7yNIURGnzUAHKCccIrPsg+3epchg43TvhoOYAZLW2E6zTLvTkEOxf0yo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nzJimoNp; arc=none smtp.client-ip=209.85.128.44
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-491b390f9e9so16898605e9.0
-        for <stable@vger.kernel.org>; Fri, 19 Jun 2026 02:50:03 -0700 (PDT)
+	s=arc-20240116; t=1781862845; c=relaxed/simple;
+	bh=aGauklNPabtsO7LQIp29AL9IE+hawJEwI3Iyt1CmxkU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QMSTvA/0IqGNxwWIlPzMS/YF57F0gy0jvG0Rwo0y4htZQv9wbLI5pK/Bnk78syOqzGpa4SW+pcZJpuNIx1rCsWcvDbpsPKlfv6CDgcpeJjosINsCeOM7dwu1W0nAv4P/2kw9ELUwlCs4fRKJitb9Kf7pM8UoowmioKLCJip9Bqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=A3bXkiJs; arc=none smtp.client-ip=209.85.221.43
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-46066e640easo1184630f8f.1
+        for <stable@vger.kernel.org>; Fri, 19 Jun 2026 02:54:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781862602; x=1782467402; darn=vger.kernel.org;
+        d=suse.com; s=google; t=1781862840; x=1782467640; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=U+dCt2TtpuobcPqEN3sLtws+gA8QvpbrhpYYtvYzphQ=;
-        b=nzJimoNpU6NehT9fs0yByheSQnCHQbl/BdFPHa1k1l98ZLjoNL7EwZ4zLERa4IrNkz
-         Tbht4828SdC2FaKlI5gcQYFl9pbaqXCDCAcjkVzomWS65Hyo7d6528qCtkS/dF/7d0x4
-         ZMm4Q/3GoPBJj4yiiINfoebnDI3H7arTBSSWfsgX9zTn5VXeRke/izVCWilw+/lT6acg
-         Oc0+GIzmmyw5r/74pUrABU+vlRAC9VFrrBFS/Ik+J7tkYxEz5JH5ITDh93e4Jx4gQbwm
-         QxIhGktyNVx/Bt4xH7wkXFwPp2aY2NOLGfag0+gWp4al/0TEyiJsHJNovjy3zsC6LdqE
-         08fQ==
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=es6lhLq2EOm7yOBpWKOLsnIHgXPOu61O1PDmQl8gQmU=;
+        b=A3bXkiJsZvFlPgQQlnTMBCxmcRsMid8/k+Imw5Eq8zqVVC6tThSs4GQ+Xb+Ecprm8i
+         f387gbqIb9sutCUCYoZ6fXIp25C/3ezfkjiWFSvX6zDYxUjVYgKKb7ESyIw6qFkPpuYA
+         +7F1nkn7qH+LQaaMiAZt+8dG3QMs4VLa0+pnuiugm4LLPU5T9cavhZAM3od1xfSagaRN
+         kRAMrsM0+Rst436u06NiqGHiLJxGXU3VH4ZktoGeFOBG+qOmbkB02eTqixTHJRhW/+GF
+         QCnHihBvUYp6rN1LZlI6Mto0uWsYtELmEtqtIEjrwwMMYWOyrfN/x4yIGjoTWcjzFev9
+         2ULA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781862602; x=1782467402;
+        d=1e100.net; s=20251104; t=1781862840; x=1782467640;
         h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=U+dCt2TtpuobcPqEN3sLtws+gA8QvpbrhpYYtvYzphQ=;
-        b=LvRzDAEhk+7phuVccIljef2pupvGoTzAfamf54VelY/I46SbJoRo5xM6MF4s4IRfyf
-         YuBn1IVbDk6haznq8lzGkvC42UlN+mB7GqrBgcdBr5QJfnS7q+lyjSK9pIdhy++ZiXpr
-         aJjoZqivVu3qvVSXTjfMnS4BIr9wVrAMP0W2BPMIUeFblyab4pOc5cXCRjywUZTpMcEj
-         qOphap08/DuQt6/tsm99lVjNPydA/uBItqI2jNKoA/dggJj4DUGx9wkFUR4bAJppM7K/
-         7I8sRqvPn/b/kNWEIRvRrH/LdCyDzXyNZsgyQAdZQuffFd5RrU7piJwoLHdV2fRAMz2l
-         suBg==
-X-Forwarded-Encrypted: i=1; AFNElJ+sMrQ/Rz2Q4eFv5BhKQGnprNFxTLwpQCcIWI95F3z8EwxogPFiWMCzSC7hqP5rGXz4mf15kKw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxzf0q1dt98WTr+lFquVS6YA1g33XqP1Nx3BpR9JtxDTwvfsmVN
-	O9kTqC4Z9Vefy7zPa1CrKFukHn/e4HEKgXhGfc/9ZHb4UCuiFF3KJJ3q83Gfeg==
-X-Gm-Gg: AfdE7clNi+gwfoleK7YQxGWPc+brpmqUFLHFwU8f3KiNlcmN1HKq7THC8zNsTW7e1kw
-	4mV7ro0XjObk6Smwv4bujdBTQ4DukyNXsj/6o82YwjS0pL5H1qwBeXLPnps8c8L8WCQYaDcfkFc
-	6DMCO1Bd9WK9gDC3aalPTgJNRYZeyRYfXey571K190oa8UXSoX1IALKSQmTbPTOlSmgCMmm4Igm
-	x9BLbJqa5l7hHuyVJ+F2oEhXihq+mmqbyKgxxVq2x1sEKwU9XdnJ1HCvEyOzRdRcmtWzdDDG+Vm
-	83xcl1XddESCJWhG6o3H1JQA1totIHx7A7rr/9eOOVsDQAX1iR0Ynp4+piy9dSWp+oDYyNZaW4z
-	cBvrCspOY/9rwLPCquhSQKCjJid7xZM1mWFcduN9iTaD3mSghJFyqtGFGxNgug4R0tElQExyPIV
-	+7HSS4DBIPZUU=
-X-Received: by 2002:a05:600c:4e05:b0:490:9782:3eb8 with SMTP id 5b1f17b1804b1-49240e6c534mr44224975e9.25.1781862601718;
-        Fri, 19 Jun 2026 02:50:01 -0700 (PDT)
-Received: from krava ([176.74.159.170])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4923fcd7027sm57929595e9.1.2026.06.19.02.50.01
+        bh=es6lhLq2EOm7yOBpWKOLsnIHgXPOu61O1PDmQl8gQmU=;
+        b=dpZtkV4nD9B8EmHjA1y/U43pGptjKcGJpVfjCkNE/p3rn08jOMro3AHCB6IhtWHqYm
+         NkH/w4apeJZnsoZFseqcuihdpBUQD1bzCVu07GBFDSwKtMTznPLWE5E3N5abW6M0kwff
+         kchuuj7sC7AkaV+rThIrsqSJzYgnuCvGw2hAmqnzMz6BAAebtBDNaEF88jacFRL88YkO
+         /1XAfZeHsW/3+Mqc/f8dEpCPvR0eHn+/MSW6ri9cS6nmtVjsv9QSk1ZgAUk9evgt+cpq
+         kSKJJeBrWEIIXx7H06531zLVFJmwm00NXCfhrrFwsqew6x2YT8iQ5OXzcKLfDeBdYRxF
+         xi8A==
+X-Forwarded-Encrypted: i=1; AFNElJ+WU/jB4BZ8Hkq/WxsJGUo9ySq3YXPSPRjLIdoTxqMUE7V0n/jFEoYzoMu4/3hKzXdDV6GcHMg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxfqo9DaBuPvhbuDwsJ41tWJegGHmM9QitjZPetLCTpVzVsMGrY
+	83tZnc+9cpDnhpPXqdI5tNnZfmq5lybVSsA5I9bVsx+jpqV4LrlUWNNSSmldrExJVOI=
+X-Gm-Gg: AfdE7ck3FsAe30UHqJ3wOUZN2DTuoSb/81xO6TxPl68aSksitZF1bei8ZY5aHPZIXZe
+	VEyrs0YJcYGeXvh7qb/VCaDWyBul1lRvJlnvUU6FE4KN0oyUTuJ05LAvhVtcirQ2ksGsnS0Zc6+
+	JiHkcCSCdZ0LqC49hcBNfeFtFL6K5a44sLzZiWF5B0rUun9V/tjZTVbxxvWrpKfEc+4Do0WMxSP
+	ijsvGMxjp0fzGS8D3GhwvzpvOrvkKp+pVKZCTvkETWpubwOuPd3EUFEYNC3YeRPF6q2CTBuDN2q
+	NbmjxEuBWZX1tHGhRMzPvLGFz800006wPdR7KAA8LAggKmJPZCIqAwC1z80Ps/N17a7IU/K6WAY
+	FSJ90D0GIxgopKNdq5D3BTI3dpsJr4V6/gVkgiCGcdg5cHYi6jwM+HbosBqS0p43bJURU6zJIT1
+	tLRLaR9isBkqZy5Vg=
+X-Received: by 2002:adf:f751:0:b0:45e:d6b2:e6a5 with SMTP id ffacd0b85a97d-46509d58218mr4397934f8f.34.1781862839762;
+        Fri, 19 Jun 2026 02:53:59 -0700 (PDT)
+Received: from pathway.suse.cz ([176.114.240.130])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-46508a04c15sm6766712f8f.3.2026.06.19.02.53.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Jun 2026 02:50:01 -0700 (PDT)
-From: Jiri Olsa <olsajiri@gmail.com>
-X-Google-Original-From: Jiri Olsa <jolsa@kernel.org>
-Date: Fri, 19 Jun 2026 11:49:59 +0200
-To: Tristan Madani <tristmd@gmail.com>
-Cc: Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Xu Kuohai <xukuohai@huawei.com>,
-	Eduard Zingerman <eddyz87@gmail.com>, bpf@vger.kernel.org,
-	stable@vger.kernel.org,
-	Tristan Madani <tristan@talencesecurity.com>
-Subject: Re: [PATCH] bpf: Reset register bounds before narrowing retval range
- in check_mem_access()
-Message-ID: <ajUQxyD2fu8M4wal@krava>
-References: <20260617120815.3910671-1-tristmd@gmail.com>
+        Fri, 19 Jun 2026 02:53:59 -0700 (PDT)
+Date: Fri, 19 Jun 2026 11:53:51 +0200
+From: Petr Mladek <pmladek@suse.com>
+To: John Ogness <john.ogness@linutronix.de>
+Cc: Breno Leitao <leitao@debian.org>, Peter Zijlstra <peterz@infradead.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Vlad Poenaru <vlad.wing@gmail.com>,
+	Thomas Gleixner <tglx@kernel.org>, netdev@vger.kernel.org,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Clark Williams <clrkwllms@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	linux-rt-devel@lists.linux.dev, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, Frederic Weisbecker <frederic@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>
+Subject: Re: [PATCH net] netpoll: run NAPI poll in softirq context to avoid
+ rq->lock self-deadlock
+Message-ID: <ajURr1G-12EJ4u-d@pathway.suse.cz>
+References: <20260610183621.3915271-1-vlad.wing@gmail.com>
+ <20260611191114.5bc43a59@kernel.org>
+ <20260616103529.Yh9Dxsjp@linutronix.de>
+ <20260616170257.GH49951@noisy.programming.kicks-ass.net>
+ <20260616141719.67684bf0@kernel.org>
+ <ajJ46o4fomfxY5CX@pathway.suse.cz>
+ <20260617111958.GL49951@noisy.programming.kicks-ass.net>
+ <ajKi4wtA8U1iZkMD@gmail.com>
+ <87tsr1m6y5.fsf@jogness.linutronix.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -98,94 +115,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260617120815.3910671-1-tristmd@gmail.com>
+In-Reply-To: <87tsr1m6y5.fsf@jogness.linutronix.de>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[suse.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-267357-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:tristmd@gmail.com,m:ast@kernel.org,m:daniel@iogearbox.net,m:andrii@kernel.org,m:xukuohai@huawei.com,m:eddyz87@gmail.com,m:bpf@vger.kernel.org,m:stable@vger.kernel.org,m:tristan@talencesecurity.com,s:lists@lfdr.de];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FORGED_SENDER(0.00)[olsajiri@gmail.com,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[kernel.org,iogearbox.net,huawei.com,gmail.com,vger.kernel.org,talencesecurity.com];
+	RCPT_COUNT_TWELVE(0.00)[23];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-267358-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:john.ogness@linutronix.de,m:leitao@debian.org,m:peterz@infradead.org,m:kuba@kernel.org,m:bigeasy@linutronix.de,m:senozhatsky@chromium.org,m:vlad.wing@gmail.com,m:tglx@kernel.org,m:netdev@vger.kernel.org,m:davem@davemloft.net,m:edumazet@google.com,m:pabeni@redhat.com,m:horms@kernel.org,m:clrkwllms@kernel.org,m:rostedt@goodmis.org,m:linux-rt-devel@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:frederic@kernel.org,m:mingo@redhat.com,m:vincent.guittot@linaro.org,m:dietmar.eggemann@arm.com,m:kprateek.nayak@amd.com,m:vladwing@gmail.com,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[pmladek@suse.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[debian.org,infradead.org,kernel.org,linutronix.de,chromium.org,gmail.com,vger.kernel.org,davemloft.net,google.com,redhat.com,goodmis.org,lists.linux.dev,linaro.org,arm.com,amd.com];
 	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[olsajiri@gmail.com,stable@vger.kernel.org];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FROM_NEQ_ENVFROM(0.00)[pmladek@suse.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[suse.com:+];
+	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	TO_DN_SOME(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,krava:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,suse.com:dkim,suse.com:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E41536A5099
+X-Rspamd-Queue-Id: E640B6A50FD
 
-On Wed, Jun 17, 2026 at 12:08:15PM +0000, Tristan Madani wrote:
-> From: Tristan Madani <tristan@talencesecurity.com>
+On Wed 2026-06-17 19:13:30, John Ogness wrote:
+> On 2026-06-17, Breno Leitao <leitao@debian.org> wrote:
+> > On Wed, Jun 17, 2026 at 01:19:58PM +0200, Peter Zijlstra wrote:
+> >> But anything using locking is not ->write_atomic() and should be driven
+> >> from a kthread, no?
+> >
+> > Good point. If that's the case, netconsole might not ever be able to drop
+> > CON_NBCON_ATOMIC_UNSAFE for any network-based console driver at all. 
 > 
-> When the BPF verifier processes a context load of an LSM hook return
-> value, it calls __mark_reg_s32_range() to narrow the register to the
-> hook's valid range. However, __mark_reg_s32_range() intersects the new
-> range with the register's existing bounds using max_t()/min_t() rather
-> than replacing them.
+> It depends on what it needs to synchronize against. For example, the
+> UART consoles cannot write if the port lock is taken by another
+> context. And the port lock is the sole lock for writing to the UART. To
+> deal with this, we added wrappers [0] for acquiring/releasing the port
+> lock. The wrappers acquire the nbcon hardware after taking the port
+> lock.
+>
+> The write_atomic() implementations for UART consoles do not take the
+> port lock. Only the nbcon hardware is acquired (which can be done from
+> any context). This automatically provides the synchronization based on
+> the port lock.
 > 
-> If the destination register carries stale bounds from a prior instruction
-> (e.g. BPF_MOV64_IMM), the intersection can produce a range narrower than
-> reality. The verifier then believes it knows the register's exact value,
-> while at runtime the actual hook return value is loaded, creating a
-> verifier/runtime mismatch that can be used to bypass BPF memory safety
-> checks.
+> > As far as I can tell, there isn't a network driver today whose transmit
+> > path is completely lockless, so, even if we make netpoll lockless.
+> >
+> > It's unlikely any NIC will ever achieve this, given that NIC TX
+> > fundamentally relies on a shared DMA ring and doorbell register, which
+> > inherently cannot be made lockless.
+> >
+> > So, is it correct to state that CON_NBCON_ATOMIC_UNSAFE will be part of
+> > netconsole forever-ish?
 > 
-> The else branch already calls mark_reg_unknown() to reset register state
-> before any narrowing. Apply the same reset in the is_retval path so
-> stale bounds are cleared before __mark_reg_s32_range() intersects.
+> Is there some lock that can be taken to synchronize all writing of
+> packets to the network? If yes, the netconsole can use a similar
+> solution.
 
-hi,
-you need to specify the bpf tree in the subject "[PATCH bpf] ..."
+We need to be careful here. If more locks depend on the nbcon
+ownership than it might become a kind of big kernel lock.
 
-jirka
+It might suffer from lock contention.
 
+Another complication is that it is supposed to be a tail lock.
 
-> 
-> Fixes: 5d99e198be27 ("bpf, lsm: Add check for BPF LSM return value")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
-> ---
->  kernel/bpf/verifier.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-> index 54c6953a8b84..7e30dddc7721 100644
-> --- a/kernel/bpf/verifier.c
-> +++ b/kernel/bpf/verifier.c
-> @@ -7532,6 +7532,7 @@ static int check_mem_access(struct bpf_verifier_env *env, int insn_idx, u32 regn
->  			 */
->  			if (info.reg_type == SCALAR_VALUE) {
->  				if (info.is_retval && get_func_retval_range(env->prog, &range)) {
-> +					mark_reg_unknown(env, regs, value_regno);
->  					err = __mark_reg_s32_range(env, regs, value_regno,
->  								   range.minval, range.maxval);
->  					if (err)
-> -- 
-> 2.47.3
-> 
-> 
+Finally, it might create tricky lockdep dependencies. But nbcon
+context locking is not tracked by locked so it is not easy to be sure.
+
+More details:
+
+I always forget the details. But it seems that sleeping is allowed
+in the nbcon context, see cant_migrate() in nbcon_device_try_acquire().
+Which might break when someone tries to take it in atomic context.
+
+AFAIK, the motivation was to allow using the normal (sleeping)
+spin locks for serial console synchronization in RT. The nested nbcon
+context locking should not disable the preemption when called
+in NBCON_PRIO_NORMAL context.
+
+It would still allow to take the nbcon context in atomic context
+when called in NBCON_PRIO_EMERGENCY or _PANIC context because
+nbcon_context_try_acquire() is able to take over the ownership
+even from a sleeping NBCON_PRIO_NORMAL context.
+
+But we need to make sure that outer locks behave the same.
+In practice, they must be normal spin_locks. We could probably
+add some lockdep annotation to catch eventual problems.
+
+Sigh, I hope that I have got it right. I seem to be a bit lost
+this week.
+
+> [0] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/include/linux/serial_core.h?h=v7.1#n715
+
+Best Regards,
+Petr
 
