@@ -1,167 +1,140 @@
-Return-Path: <stable+bounces-267296-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267297-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id VPtWESacNGoJcwYAu9opvQ
-	(envelope-from <stable+bounces-267296-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 03:32:22 +0200
+	id rD0dMGOeNGofdAYAu9opvQ
+	(envelope-from <stable+bounces-267297-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 03:41:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C216C6A38E9
-	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 03:32:21 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B1316A3932
+	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 03:41:55 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=rcpassos.me header.s=purelymail1 header.b=eXFCRXrN;
-	dkim=pass header.d=purelymail.com header.s=purelymail1 header.b=fSPL2SI4;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267296-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267296-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=reject) header.from=rcpassos.me;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IUN23Jw1;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267297-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267297-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id F423A301B325
-	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 01:32:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3A56E3075C2B
+	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 01:40:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 653962E62C4;
-	Fri, 19 Jun 2026 01:32:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F336330D35;
+	Fri, 19 Jun 2026 01:40:19 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from sendmail.purelymail.com (sendmail.purelymail.com [34.202.193.197])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A7331F938
-	for <stable@vger.kernel.org>; Fri, 19 Jun 2026 01:32:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39D4B331ECD;
+	Fri, 19 Jun 2026 01:40:18 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781832737; cv=none; b=P2KlIARTuoz9cvlEKLXtvg8yiVAiuSJ29/Ag6ngMGl/g4v/meJQSTJstkRZPH/7bBzz+goWq0Vozwvx2d0dE2YWeWQ/UVXFtl14siH1EjvQrueaYESg/7hn+GFWAJwyJfpuVou4vlIuzCK5LDi7zJow+WIcan/coZtkeSbXCkLs=
+	t=1781833219; cv=none; b=S+Wx75BzoUNhqeq4NC1oJy42yq8scVDeEqOfao5u2+16MNBTFfZJZC3ShoCv6hnVTu2NYmZx0glVqkdG2XG/Z+maO+h87QKifMGQDPu92/FTASqX3bX8G5Uhy5TaDAy+kgx/ioPyj8uIkMWYKVp3bNjEnAnFlVdHGLtNhVEjlHI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781832737; c=relaxed/simple;
-	bh=ZOBjPR5wT4rMhM30c/8jHxiVlE1wPBUkLSgw9fG/Zyw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Oesg4FasgkxboIui7gtyxP/UyuYPTWsZyCjjlD1cWmK0mcyBzJhlFYVy5eS7TjK9ATCINnEHQu6g/gPwb+r0zHhrypq4Kupuhb2IC+x+HSf0nos9D+NC9j1p6qMpdncxfGTPqV9uZrlOBuvAQo3Z0maSBl79Y6dJdQPCFhT6qSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rcpassos.me; spf=pass smtp.mailfrom=rcpassos.me; dkim=pass (2048-bit key) header.d=rcpassos.me header.i=@rcpassos.me header.b=eXFCRXrN; dkim=pass (2048-bit key) header.d=purelymail.com header.i=@purelymail.com header.b=fSPL2SI4; arc=none smtp.client-ip=34.202.193.197
-DKIM-Signature: a=rsa-sha256; b=eXFCRXrNiJ7KTDusefbwy+k9nu3mDfdgkGwdO2dC4+uWHLhAvILzUyUZxrmh6BArnpLyOYfQpLASZtGN8pFafVCWU+iFZBzD3pMb0AJ/NfLcOWgzDxXhkffKdL78s5VN11xpFfcQrWYHQ0AW2gEFZTLRYmugyA5GsEbBb4WgyevqtaO1TrnaP+RmkcjWxVyr8BGeg8bDUYL4l8t13JzXePAce0/89+YOTQKFLDx/qkQE9iUglSWfk6VOGCqVAqYNS//Ucru+xZbpVTNqAW5GTZBT5kLBa61kyfHcly61t2R29RmlZxTyQWOYzJ6GzbW1JYv2Hle5ZEh0+aw00xD+sA==; s=purelymail1; d=rcpassos.me; v=1; bh=ZOBjPR5wT4rMhM30c/8jHxiVlE1wPBUkLSgw9fG/Zyw=; h=Received:From:To:Subject:Date;
-DKIM-Signature: a=rsa-sha256; b=fSPL2SI4VaoexEh7Wl0WolSFR7LN21jaXSkuZKFwiDAAmGNbyDTeWbVe8SifhbY1qNkmLsF7pXVds7pzyakeUP2lZuhdvFIhd/cCdsgiKSaRiVmMjH9G/yx2H6KGRdfrZIEhPCVYkSxU1dPG0M844tJ0KGKEklpqO5enjA+DA7qWKeNzjjAN2pqdT7l0Cu5yGb4YNqOhTaXXdNUzPPITSoGifODTaRIDK7xpwILxb68iGyLbcylrvY9fw0d1tg3iozp+DEMAkE9GqNeatqnEyhX5oMOO7eZFCaQLf+hb+wqpRv+OoI1HU14GjG3OfhUUnXK99xbrmB9Xnkdrmk7K0Q==; s=purelymail1; d=purelymail.com; v=1; bh=ZOBjPR5wT4rMhM30c/8jHxiVlE1wPBUkLSgw9fG/Zyw=; h=Feedback-ID:Received:From:To:Subject:Date;
-Feedback-ID: 45355:7809:null:purelymail
-X-Pm-Original-To: stable@vger.kernel.org
-Received: by smtp.purelymail.com (Purelymail SMTP) with ESMTPSA id 879635646;
-          (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
-          Fri, 19 Jun 2026 01:32:05 +0000 (UTC)
-From: Rafael Passos <rafael@rcpassos.me>
-To: stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Benjamin Tissoires <bentiss@kernel.org>
-Cc: Jiri Kosina <jikos@kernel.org>,
-	Rafael Passos <rafael@rcpassos.me>,
-	Lucas Zampieri <lcasmz54@gmail.com>
-Subject: [PATCH 7.1] HID: Input: Add battery list cleanup with devm action
-Date: Thu, 18 Jun 2026 22:32:07 -0300
-Message-ID: <20260619013207.1968584-1-rafael@rcpassos.me>
-X-Mailer: git-send-email 2.53.0
+	s=arc-20240116; t=1781833219; c=relaxed/simple;
+	bh=OMGc/FfEktxfQRVv4yh+XP3iVxW1FKHFnlBq/V1UXQc=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=Msz1SWmjVW8FiylBQOiQ4cQffako3oXTGoduwY/TNfdkNTMEM4Lk+nOva1mxjX1foPLEUeNPzdxw56lcAJ8W1UGMdShqEbg8lYz3Orpq4x1x6hbW8gpLQ83fubVgLN6PabiabdFToR6PIGd1HwndP0bfUoBHnNC7/bSfX/W+oLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IUN23Jw1; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 157281F000E9;
+	Fri, 19 Jun 2026 01:40:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781833218;
+	bh=mK5BfPSbPbNmSJfkqLieA0AlM+6/LqQH26cAtdI2oDo=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=IUN23Jw1+XGWT5l1yVU3NFefMJJ0MOtP4RlpoJA9TKHI1IV1YXDrDQ1H7dAOPZcAk
+	 BxYrS/KO+vOoaPLLV1PrQTsH1gdQpwFlKzuegdgdy3mgqCvAhJqTePAFTTVsL2et/O
+	 9TMU8W4V6EhyJRkzdnxj9T9SaVbp/cO/XDdYe/q01XgmT67aE9qPW8jAQL/A2F2DGL
+	 pT2NJQwazkqmLfYAMV1o/1eA9r6vkWc3xnZbqUe7RhxxhlRXJq1vYZQQoBGgx0yW7B
+	 vza5f9ihvmcRm8unhr8e1TVN5FDJ/P0bQc8hQR8il6jIvgP59+geM8KiuNCOmSAFdo
+	 9JsbEHIshMDgQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 938E23A78A7C;
+	Fri, 19 Jun 2026 01:40:12 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-MIME-Autoconverted: from 8bit to quoted-printable by Purelymail
-Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v4] tipc: fix slab-use-after-free Read in
+ tipc_aead_decrypt_done
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178183321113.3155315.15934048751827396777.git-patchwork-notify@kernel.org>
+Date: Fri, 19 Jun 2026 01:40:11 +0000
+References: <20260617075818.37431-1-doruk@0sec.ai>
+In-Reply-To: <20260617075818.37431-1-doruk@0sec.ai>
+To: Doruk Tan Ozturk <doruk@0sec.ai>
+Cc: jmaloy@redhat.com, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ aleksander.lobakin@intel.com, tung.quang.nguyen@est.tech,
+ tipc-discussion@lists.sourceforge.net, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-5.16 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[rcpassos.me,reject];
-	R_DKIM_ALLOW(-0.20)[rcpassos.me:s=purelymail1,purelymail.com:s=purelymail1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-267296-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:bentiss@kernel.org,m:jikos@kernel.org,m:rafael@rcpassos.me,m:lcasmz54@gmail.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-267297-lists,stable=lfdr.de,netdevbpf];
+	FROM_NEQ_ENVFROM(0.00)[patchwork-bot@kernel.org,stable@vger.kernel.org];
+	FORGED_SENDER(0.00)[patchwork-bot@kernel.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER(0.00)[rafael@rcpassos.me,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	FORGED_RECIPIENTS(0.00)[m:doruk@0sec.ai,m:jmaloy@redhat.com,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:horms@kernel.org,m:aleksander.lobakin@intel.com,m:tung.quang.nguyen@est.tech,m:tipc-discussion@lists.sourceforge.net,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[kernel.org,rcpassos.me,gmail.com];
-	DKIM_TRACE(0.00)[rcpassos.me:+,purelymail.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	FROM_NO_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	ALIAS_RESOLVED(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rafael@rcpassos.me,stable@vger.kernel.org];
-	RCPT_COUNT_FIVE(0.00)[6];
-	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C216C6A38E9
+X-Rspamd-Queue-Id: 4B1316A3932
 
-commit 426e5846eba75feaf1c9c6c119cb153610192da1 upstream.
+Hello:
 
-The batteries list (hdev->batteries) is not cleaned up during
-hidinput_disconnect(), but struct hid_battery entries are allocated
-with devm_kzalloc.
-When a driver is unbound (e.g. during devicereprobe), devm frees those
-entries while their list_head nodesremain dangling in hdev->batteries,
-which persists across rebinds.
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-Link: https://lore.kernel.org/all/20260602011949.2825852-1-rafael@rcpassos.=
-me/
-Fixes: 4a58ae85c3f9 ("HID: input: Add support for multiple batteries per de=
-vice")
-Signed-off-by: Rafael Passos <rafael@rcpassos.me>
-Acked-by: Lucas Zampieri <lcasmz54@gmail.com>
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
----
+On Wed, 17 Jun 2026 09:58:18 +0200 you wrote:
+> tipc_aead_decrypt() goes straight from tipc_bearer_hold(b) to
+> crypto_aead_decrypt(req) without taking a reference on the netns, unlike
+> the encrypt path. When crypto_aead_decrypt() is offloaded asynchronously
+> (e.g. the SIMD aead wrapper queuing to cryptd), the cryptd worker runs
+> tipc_aead_decrypt_done() later. If the bearer's netns is torn down in the
+> meantime, cleanup_net() -> tipc_exit_net() -> tipc_crypto_stop() frees the
+> per-netns tipc_crypto, and the completion then reads it:
+> tipc_aead_decrypt_done() dereferences aead->crypto->stats and
+> aead->crypto->net, and tipc_crypto_rcv_complete() dereferences
+> aead->crypto->aead[] and the node table -- reading freed memory.
+> 
+> [...]
 
-Hi,
-This patch missed the 7.1 rc7 window.
-Booting fails without it on some devices with batteries.
-I hope it makes it to 7.1.1 :)
-This isn't needed for earlier trees.
+Here is the summary with links:
+  - [net,v4] tipc: fix slab-use-after-free Read in tipc_aead_decrypt_done
+    https://git.kernel.org/netdev/net/c/bda3348872a2
 
-Thanks,
-Rafael Passos
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
- drivers/hid/hid-input.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
-
-diff --git a/drivers/hid/hid-input.c b/drivers/hid/hid-input.c
-index d73cfa2e73d3..c7b8c4ff7a33 100644
---- a/drivers/hid/hid-input.c
-+++ b/drivers/hid/hid-input.c
-@@ -519,6 +519,13 @@ static struct hid_battery *hidinput_find_battery(struc=
-t hid_device *dev,
- =09return NULL;
- }
-=20
-+static void hidinput_cleanup_battery(void *res)
-+{
-+=09struct hid_battery *bat =3D res;
-+
-+=09list_del(&bat->list);
-+}
-+
- static int hidinput_setup_battery(struct hid_device *dev, unsigned report_=
-type,
- =09=09=09=09  struct hid_field *field, bool is_percentage)
- {
-@@ -610,6 +617,12 @@ static int hidinput_setup_battery(struct hid_device *d=
-ev, unsigned report_type,
-=20
- =09power_supply_powers(bat->ps, &dev->dev);
- =09list_add_tail(&bat->list, &dev->batteries);
-+
-+=09error =3D devm_add_action_or_reset(&dev->dev,
-+=09=09=09=09=09 hidinput_cleanup_battery, bat);
-+=09if (error)
-+=09=09return error;
-+
- =09return 0;
-=20
- err_free_name:
---=20
-2.53.0
 
 
