@@ -1,154 +1,142 @@
-Return-Path: <stable+bounces-267457-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267458-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id qSaeK1vVNWqf5AYAu9opvQ
-	(envelope-from <stable+bounces-267457-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 20 Jun 2026 01:48:43 +0200
+	id R4D6BdfWNWr45AYAu9opvQ
+	(envelope-from <stable+bounces-267458-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 20 Jun 2026 01:55:03 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C9706A80D8
-	for <lists+stable@lfdr.de>; Sat, 20 Jun 2026 01:48:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E6536A80F9
+	for <lists+stable@lfdr.de>; Sat, 20 Jun 2026 01:55:02 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZPE66xHL;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267457-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267457-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MFSFWYrM;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267458-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267458-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 73ED53048554
-	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 23:48:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DEA6D300D46C
+	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 23:54:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45C5D35E1B3;
-	Fri, 19 Jun 2026 23:48:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 565043655FC;
+	Fri, 19 Jun 2026 23:54:55 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F342228CB8;
-	Fri, 19 Jun 2026 23:48:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40CEF19D092;
+	Fri, 19 Jun 2026 23:54:54 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781912916; cv=none; b=Ya0IjbvTXykTa5SyALIzssrfiugnqZB7L6z8OuP7jGV5MSxseeQ1JdpizKudSOG5331SJMg0cLLfe5FGne6bnrzdad0l76UCfwYyhv4hiLZ0t+KJeXXT/gL3LIWNKnwMSnjXzd4CgjOVYaybvGo3fGhADF/Ydl+m55tOjewydac=
+	t=1781913295; cv=none; b=afIdoAz/yuAhUq1DHxtmTHiwhgoL/P5WkxSKJSh2nZK3WcE2VeagMVNCpXPo0VFlUQRe/T5IHkA12uDxAm+7gLG1KCigiZOgtCipWi/BVnFkW5eSvVcalkdFnKy/2kjQbbBLOiwnTF8+5plF3nDIyrFxF0pKPIy4G8hk4xNobNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781912916; c=relaxed/simple;
-	bh=eqjqJ+7h1dJRVBsyBO+sVdsJZmi82KGRNCk5UaQJRAg=;
-	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
-	 Subject:From:To:Cc:Date; b=HB5TKg27c4AknnMPvjM99jCCLb+bvrpna5pXsPtiPgitgNmQ6BPIT9L2H0fIzewkTZ6cFDYEUKRYDaR4JHbVZnioC5DKh7/oI2ejCHZbjMwo1lS/+wYCSRgf7vCbcAaSQfSWjcMh/LVrpCupVt76ItJAjDyvSk/oQMsls3eTL9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZPE66xHL; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 593421F000E9;
-	Fri, 19 Jun 2026 23:48:34 +0000 (UTC)
+	s=arc-20240116; t=1781913295; c=relaxed/simple;
+	bh=4uDAlJGIuj1sxAgSiHnZekE5owd/QoOV8Dk33leZ13Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=h+TblBg3dtQjAhl+JHFhZndGgVntqh4WyEgbOxJDTqY0bGa50eXp9jlfxiC9zJMoe6GkZVCv5qAbsEEj8d0d9kaULSGehRT66KKBfEQzqfRFOsD+K2hPSj4OpBrmr6fT7daGkLXL5m/YBvsT7Q6vhateHqt0MRbHklbYkffYSgM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MFSFWYrM; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF6ED1F000E9;
+	Fri, 19 Jun 2026 23:54:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781912914;
-	bh=g4GIzilWlhtH+Qv/ZD/5kYORu50P/Wnuw4dHhWv8iuw=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=ZPE66xHLvytGOiz28iX+1N7cX4t1xx5btWlJllVIFPv0jXmo3MY/1QfLzVaOveGff
-	 GjZo4kI0Ko9GUFeQ+4JB3Q5hLYViuKsSMaRwXWibEikx97jrwY52ZFlxIJoeEubXkk
-	 O56r2rMMkLzeZpLJu00nyZtlCjqcZ9ib17TIJ4lb+ZL0xmGsmh6XD3GSNbIknkTqq0
-	 kvAOZi8kIi7JnvoCS/0Q5bSbo2BqLs1jOIP5lbVZ+AU6NmgHDdMGsnZBoQmcqLVwXp
-	 c2DbNfXP1w3XGBTuekumzPXrybNDig5J2baLcXn9AHqMDCwWyWUweoSrtHn6KC/dmw
-	 S2a2IDJL4VlAA==
-Content-Type: multipart/mixed; boundary="===============5738735854790552785=="
+	s=k20260515; t=1781913293;
+	bh=T2U6mD5Mi888Hcm8xp1sqPPOMOUnXskbr2jM/AcqYN0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=MFSFWYrMI30DpGUYSviB3mF0oMxLpUDKjrBft2OtFxA5uWy0f01420l8cek0mMKZm
+	 SPBoIfC1iKg02qhAv6VtWy2neMROUeTEPxOE3SLlr/WZ/N7wgLVl910xr3NObOx+Ub
+	 8vT92jPm0m5RzKdtlZM++nW7awockcRqxBZlg4s03nT1z3hwSSje+94MrTRPc6yDAV
+	 xutiuMxLRaImQGCgxbm0wP5QbIsg2dcQAapoHOGx2j8FYUuGxtQwgYEzT/AnVSKtme
+	 uhaMtdDBzVia1xtMuLlxV5mfVa/ZLQ3XAZTTOnxcYeBjYqLv/5Ixk1+duLPC0tHkeR
+	 pKwQXvtH2vAKw==
+Date: Fri, 19 Jun 2026 16:54:53 -0700
+From: Kees Cook <kees@kernel.org>
+To: guoren@kernel.org
+Cc: arnd@arndb.de, palmer@rivosinc.com, tglx@linutronix.de,
+	peterz@infradead.org, luto@kernel.org, conor.dooley@microchip.com,
+	heiko@sntech.de, jszhang@kernel.org, lazyparser@gmail.com,
+	falcon@tinylab.org, chenhuacai@kernel.org, apatel@ventanamicro.com,
+	atishp@atishpatra.org, mark.rutland@arm.com, bjorn@kernel.org,
+	palmer@dabbelt.com, bjorn@rivosinc.com, daniel.thompson@linaro.org,
+	linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-riscv@lists.infradead.org, stable@vger.kernel.org,
+	Guo Ren <guoren@linux.alibaba.com>
+Subject: Re: [PATCH] riscv: entry: Fixup do_trap_break from kernel side
+Message-ID: <202606191652.38297DE51@keescook>
+References: <20230702025708.784106-1-guoren@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <506d461e2bc29b76c549782e4eba5ddff2182853ed187f5a972998ab37ff94d9@mail.kernel.org>
-In-Reply-To: <20260620-resolve-btfids-implicit-args-use-after-free-v2-1-4132e1f639f0@mainlining.org>
-References: <20260620-resolve-btfids-implicit-args-use-after-free-v2-1-4132e1f639f0@mainlining.org>
-Subject: Re: [PATCH v2] resolve_btfids: preserve tag and parameter names when processing implicit args
-From: bot+bpf-ci@kernel.org
-To: aelin@mainlining.org,ast@kernel.org,daniel@iogearbox.net,andrii@kernel.org,eddyz87@gmail.com,memxor@gmail.com,martin.lau@linux.dev,song@kernel.org,yonghong.song@linux.dev,jolsa@kernel.org,emil@etsalapatis.com,ihor.solodrai@linux.dev
-Cc: bpf@vger.kernel.org,linux-kernel@vger.kernel.org,stable@vger.kernel.org,aelin@mainlining.org,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
-Date: Fri, 19 Jun 2026 23:48:34 +0000 (UTC)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230702025708.784106-1-guoren@kernel.org>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.66 / 15.00];
+X-Spamd-Result: default: False [-4.66 / 15.00];
 	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	CTYPE_MIXED_BOGUS(1.00)[];
+	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[multipart/mixed,text/plain];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+,1:+];
-	TAGGED_FROM(0.00)[bounces-267457-lists,stable=lfdr.de,bpf-ci];
+	TAGGED_FROM(0.00)[bounces-267458-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[kees@kernel.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:guoren@kernel.org,m:arnd@arndb.de,m:palmer@rivosinc.com,m:tglx@linutronix.de,m:peterz@infradead.org,m:luto@kernel.org,m:conor.dooley@microchip.com,m:heiko@sntech.de,m:jszhang@kernel.org,m:lazyparser@gmail.com,m:falcon@tinylab.org,m:chenhuacai@kernel.org,m:apatel@ventanamicro.com,m:atishp@atishpatra.org,m:mark.rutland@arm.com,m:bjorn@kernel.org,m:palmer@dabbelt.com,m:bjorn@rivosinc.com,m:daniel.thompson@linaro.org,m:linux-arch@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-riscv@lists.infradead.org,m:stable@vger.kernel.org,m:guoren@linux.alibaba.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[vger.kernel.org,mainlining.org,kernel.org,iogearbox.net,gmail.com,linux.dev,meta.com];
-	FORGED_RECIPIENTS(0.00)[m:aelin@mainlining.org,m:ast@kernel.org,m:daniel@iogearbox.net,m:andrii@kernel.org,m:eddyz87@gmail.com,m:memxor@gmail.com,m:martin.lau@linux.dev,m:song@kernel.org,m:yonghong.song@linux.dev,m:jolsa@kernel.org,m:emil@etsalapatis.com,m:ihor.solodrai@linux.dev,m:bpf@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:martin.lau@kernel.org,m:clm@meta.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[bot@kernel.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[mainlining.org,kernel.org,iogearbox.net,gmail.com,linux.dev,etsalapatis.com];
-	FROM_NEQ_ENVFROM(0.00)[bot@kernel.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[arndb.de,rivosinc.com,linutronix.de,infradead.org,kernel.org,microchip.com,sntech.de,gmail.com,tinylab.org,ventanamicro.com,atishpatra.org,arm.com,dabbelt.com,linaro.org,vger.kernel.org,lists.infradead.org,linux.alibaba.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCPT_COUNT_TWELVE(0.00)[24];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FROM_NO_DN(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[kees@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 1C9706A80D8
+X-Rspamd-Queue-Id: 5E6536A80F9
 
---===============5738735854790552785==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+*thread encromancy*
 
-> process_kfunc_with_implicit_args() obtains parameter names through
-> btf__name_by_offset() and passes them to btf__add_func_param() while
-> constructing a new function prototype. Tag names are processed in a
-> similar fashion.
->
-> The returned name pointer references memory owned by the BTF object.
-> btf__add_func_param(), btf__add_decl_tag(), etc. modify the same BTF and
-> may grow its internal storage, invalidating previously returned string
-> pointers.
->
-> This can result in btf__add_func_param(), btf__add_decl_tag(), etc.
-> dereferencing a stale pointer when copying the string, leading to crashes
-> in strset__add_str().
+On Sat, Jul 01, 2023 at 10:57:07PM -0400, guoren@kernel.org wrote:
+> From: Guo Ren <guoren@linux.alibaba.com>
+> 
+> The irqentry_nmi_enter/exit would force the current context into in_interrupt.
+> That would trigger the kernel to dead panic, but the kdb still needs "ebreak" to
+> debug the kernel.
+> 
+> Move irqentry_nmi_enter/exit to exception_enter/exit could correct handle_break
+> of the kernel side.
+> 
+> Before the fixup:
+> $echo BUG > /sys/kernel/debug/provoke-crash/DIRECT
+>   lkdtm: Performing direct entry BUG
+>   ------------[ cut here ]------------
+>   kernel BUG at drivers/misc/lkdtm/bugs.c:78!
+> [...]
+>   Kernel panic - not syncing: Aiee, killing interrupt handler!
 
-This isn't a bug, but could the crash path in strset__add_str() be spelled
-out a little more?
+This appears to still be unfixed. What's the blocker? The solutions in
+this thread seem to work...
 
-btf__name_by_offset() returns a pointer into btf->strs_set->strs_data (while
-the BTF is still modifiable and btf->strs_data is NULL), and
-strset_str_append() in tools/lib/bpf/strset.c already reconstructs that
-pointer if the buffer was reallocated before it copies:
+I'd like to be exercising an Oops path via KUnit (for KCFI), and riscv
+just instantly falls over instead of thread-killing on the exception.
 
-tools/lib/bpf/strset.c:strset_str_append() {
-	...
-	old_data = set->strs_data;
-	...
-	if (old_data != set->strs_data)
-		s = set->strs_data + (old_s - old_data);
+Thanks!
 
-	memcpy((void *)s, ...);
-	...
-}
+-Kees
 
-Given that reconstruction, what crash in strset__add_str() remains, or is the
-strdup intended as a defensive/robustness change rather than a fix for an
-observed crash?
-
-
----
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
-
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/27852582382
---===============5738735854790552785==--
+-- 
+Kees Cook
 
