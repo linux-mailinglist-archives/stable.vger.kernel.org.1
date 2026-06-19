@@ -1,274 +1,131 @@
-Return-Path: <stable+bounces-267439-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267445-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id oXNKOi+lNWrh2AYAu9opvQ
-	(envelope-from <stable+bounces-267439-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 22:23:11 +0200
+	id wHnoG9ioNWpj2gYAu9opvQ
+	(envelope-from <stable+bounces-267445-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 22:38:48 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44E8F6A7A04
-	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 22:23:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01D106A7AA9
+	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 22:38:48 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=PdIuRNGk;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267439-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-267439-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267445-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-267445-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8E5043035A89
-	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 20:23:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 806DE3055831
+	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 20:38:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14C0832720D;
-	Fri, 19 Jun 2026 20:23:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 925D93B9D8C;
+	Fri, 19 Jun 2026 20:38:39 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from proxima.lasnet.de (proxima.lasnet.de [78.47.171.185])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C62632D42B
-	for <stable@vger.kernel.org>; Fri, 19 Jun 2026 20:22:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03C72330B30;
+	Fri, 19 Jun 2026 20:38:37 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781900580; cv=none; b=cMXig3qbv2amjCwhqk+RYX+HzesyT/78l7ahtSEbxCH/yBs64ABsxo2Rsl4JzGo1T7lJ5RP/kPdvCWdhWoU1Isip7V9ErZRqR+75PSJonxm6SqeKARLet8coursKhADRRO3BKFAqH3IdK/RSgYsP+FZithfnGWH0EuaYHRPv/2k=
+	t=1781901519; cv=none; b=OgUi/rKaVuCpniqclDvTx7ehms/aDsyomoHpFEMMfLPePB8z4YbEhfRxXXsD7NzM7IoOnvREnLfRIPdJUVxidRgT2v0HqwenNtxvGOH9DMfhICFA4SuiQkxgs6KbL715Orsdb32SAKme3Edcttun20n3+iHbySjZsHsmwoos2PY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781900580; c=relaxed/simple;
-	bh=KEHvri2C+4rwq4Wz41q+2TtCvRVzvXyvnlqX/inZMjo=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=cGILCwHhQ+NGluoeXGyEib0KXE1Re8vEzAF97UDJcnad7d/3NduZCS104pGt6+ekZfTm08zdLggGXJJeBdr9MzQD/O6zYt0RJvgHkG9mY3qCtl3o514CvisizG+9A5BLLXL1iBE1u3B61mXV+44uqfmHzDaXg+X0tMSE5ftUpFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PdIuRNGk; arc=none smtp.client-ip=209.85.160.180
-Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-51a019e9ea9so4694511cf.2
-        for <stable@vger.kernel.org>; Fri, 19 Jun 2026 13:22:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781900578; x=1782505378; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vyiYsQofQELQbzMq1inRUoCbXJl9QmJD7EW7nh7MVlI=;
-        b=PdIuRNGkcQCaSFwNvB/JW56XrqfArYQ7dOw3LyJmakiEDScwSf7OFKvKQSCLHhZAGC
-         WF5JEWeY2jZop7gFk8+K1pbLpVFg27/dHhnQBw7XmM3ip5g40cBpzOa6hVOGfUsRvnH2
-         TxXfUnu9QEknsiyYGlXm2IFsrkpA6KQeM3DvylRPuTSUP7EfGsk3GY+BMivTqppVb6ET
-         nDQmDJ6/jt8YRg+eaKhyEKqV05HsiiSRmzVbC95udotZiKQlAJVQ0Q1ppdROTMo1uYKb
-         2mBTS9Wg4pwMHQaWj6veLDcfEyqAAwrfN/+4c/RQDkBQymQ+JgzIctb0TFh4lNzHYr2m
-         Nktw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781900578; x=1782505378;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=vyiYsQofQELQbzMq1inRUoCbXJl9QmJD7EW7nh7MVlI=;
-        b=B+3sAGiSoBEKN5m8yAlJUp6+leoAI+zH5x1TblrrIemf+FnISe5MLtn9O6cxSIKMat
-         ErL0dOZIHFSkMIqguC7R0ggEJlBE146/bdcKK8nxUQIJPze1cdYAYaDmCjOZZjdjSgfN
-         Q1kqQtThOpmaK0aqRHEGBo4T08lP3LPb6f652ANW0YEkKxkP9bSe47Cs+qsSogAyho6k
-         SOinxiCbns65uwlmAilkiQ0rKUG6lcOCaE5EHQzjtX37I++L/1pFBabHSiCPe0KcW9gQ
-         OjfbhSmveUjfYMAqRFRW0/1G5gTKRPU2A+6X4SnzFS5Exumr4dMc4QBvcmHCZHxoavbD
-         JNGQ==
-X-Gm-Message-State: AOJu0YyJSgyCmd40yS3mF2gNgF6QAnuUKRWTnZT4TrBzqM4HcWWYLWaP
-	aojhBN4i6Ox88m6K+hF6spw2QbbuhZwbQuZZIDk45MgQXuTDuj3C8YTD
-X-Gm-Gg: AfdE7clSNdMak0y/+5I7AXrQeVLu5QNHAPrUcSi+tCSjnJAW9RIm0UKYXOjzMV7+AOw
-	en2CLzeaYBdql/u+Fth/HhOjWUN5qy7LRjvUPpkcS89fiIQYj9SfFGxGUdSResRtXtXYNF6BYcQ
-	sDnug8r1IwlHrEdC5pHuGGAZkT/BevFnKsvn5tTJCNh+NbkbcuNXlYKmIliYH5hPIqymGtgv2fR
-	Jtz1OQEWvD/bZ6NYq30MJCCukTEaCF6Kt/ggdjTHzaWsFR+vkTX6LnARXhm9g5fKeXthKZC99Qn
-	C94PiH50lK/NE5ei8c+Bhl8KLknkUdnxFU+UwyJmDi4peAUnr4eOWAos86T76/avWYp/rXd6WEI
-	glQBh8RaG6hgXXbougLFe0Vfvd5Q09oH1hvAVBgaMGOWxlaqKO/R5AKv81JiIWrWbVRbeOuiK5N
-	+JiiQKf+wvVGR4DxY=
-X-Received: by 2002:a05:622a:4d88:b0:51a:56d:1bec with SMTP id d75a77b69052e-51a06937de4mr19411811cf.32.1781900578158;
-        Fri, 19 Jun 2026 13:22:58 -0700 (PDT)
-Received: from TurinLinux.. ([37.19.212.13])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-51a0984da98sm3921561cf.15.2026.06.19.13.22.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Jun 2026 13:22:57 -0700 (PDT)
-From: Nicholas Dudar <main.kalliope@gmail.com>
-To: main.kalliope@gmail.com
-Cc: stable@vger.kernel.org,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.1.y 3/3] KVM: nVMX: Fold requested virtual interrupt check into has_nested_events()
-Date: Fri, 19 Jun 2026 16:22:25 -0400
-Message-Id: <20260619202225.2749389-4-main.kalliope@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260619202225.2749389-1-main.kalliope@gmail.com>
-References: <20260619202225.2749389-1-main.kalliope@gmail.com>
+	s=arc-20240116; t=1781901519; c=relaxed/simple;
+	bh=kKmXsHMakcX+AcUV5b9G2IEP7NtVx3VprW8uWnQOD1I=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=D1FlLcPnVesf3JwKZCSjp2LusSFfKeLGk7cqzMZd1bWLnGTiOA76Ef2Pl7JxTkUs3dKceNK0Yj4967FT+ak4HkJ6XNNUDmC5w02pby5gNeID12rJSml2LwK28A+2FsaiVST99B4T3P8kTa4ESC2YjGwDmuJZ6BoQcsOZ30cGubc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=datenfreihafen.org; spf=pass smtp.mailfrom=datenfreihafen.org; arc=none smtp.client-ip=78.47.171.185
+Received: from work.datenfreihafen.local (unknown [46.253.254.161])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: stefan@sostec.de)
+	by proxima.lasnet.de (Postfix) with ESMTPSA id 54EBAC0CC3;
+	Fri, 19 Jun 2026 22:30:08 +0200 (CEST)
+From: Stefan Schmidt <stefan@datenfreihafen.org>
+To: alex.aring@gmail.com,
+	miquel.raynal@bootlin.com,
+	Shitalkumar Gandhi <shital.gandhi45@gmail.com>
+Cc: Stefan Schmidt <stefan@datenfreihafen.org>,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-wpan@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Shitalkumar Gandhi <shitalkumar.gandhi@cambiumnetworks.com>
+Subject: Re: [PATCH] ieee802154: ca8210: fix cas_ctl leak on spi_async failure
+Date: Fri, 19 Jun 2026 22:29:42 +0200
+Message-ID: <178190096345.793016.14917236922404403238.b4-ty@datenfreihafen.org>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260421073259.2259783-1-shitalkumar.gandhi@cambiumnetworks.com>
+References: <20260421073259.2259783-1-shitalkumar.gandhi@cambiumnetworks.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [0.04 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-267439-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[mainkalliope@gmail.com,stable@vger.kernel.org];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:main.kalliope@gmail.com,m:stable@vger.kernel.org,m:seanjc@google.com,m:mainkalliope@gmail.com,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_TO(0.00)[gmail.com];
+	FORGED_RECIPIENTS(0.00)[m:alex.aring@gmail.com,m:miquel.raynal@bootlin.com,m:shital.gandhi45@gmail.com,m:stefan@datenfreihafen.org,m:andrew+netdev@lunn.ch,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:linux-wpan@vger.kernel.org,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:shitalkumar.gandhi@cambiumnetworks.com,m:alexaring@gmail.com,m:shitalgandhi45@gmail.com,m:andrew@lunn.ch,s:lists@lfdr.de];
+	DMARC_NA(0.00)[datenfreihafen.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[gmail.com,bootlin.com];
+	FORGED_SENDER(0.00)[stefan@datenfreihafen.org,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	TAGGED_FROM(0.00)[bounces-267445-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mainkalliope@gmail.com,stable@vger.kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
-	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[stefan@datenfreihafen.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	R_DKIM_NA(0.00)[];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,datenfreihafen.org:mid,datenfreihafen.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 44E8F6A7A04
+X-Rspamd-Queue-Id: 01D106A7AA9
 
-From: Sean Christopherson <seanjc@google.com>
+Hello Shitalkumar Gandhi.
 
-commit 321ef62b0c5f6f57bb8500a2ca5986052675abbf upstream.
+On Tue, 21 Apr 2026 13:02:59 +0530, Shitalkumar Gandhi wrote:
+> ca8210_spi_transfer() allocates cas_ctl with kzalloc_obj(GFP_ATOMIC)
+> and relies entirely on the SPI completion callback
+> ca8210_spi_transfer_complete() to free it.
+> 
+> The spi_async() API only invokes the completion callback on successful
+> submission.  On failure it returns a negative error code without ever
+> queuing the callback, which leaves cas_ctl and its embedded spi_message
+> and spi_transfer orphaned.  Every kfree(cas_ctl) in the driver is
+> inside the completion callback, so there is no other reclamation path.
+> 
+> [...]
 
-Check for a Requested Virtual Interrupt, i.e. a virtual interrupt that is
-pending delivery, in vmx_has_nested_events() and drop the one-off
-kvm_x86_ops.guest_apic_has_interrupt() hook.
+Applied to wpan/wpan-next.git, thanks!
 
-In addition to dropping a superfluous hook, this fixes a bug where KVM
-would incorrectly treat virtual interrupts _for L2_ as always enabled due
-to kvm_arch_interrupt_allowed(), by way of vmx_interrupt_blocked(),
-treating IRQs as enabled if L2 is active and vmcs12 is configured to exit
-on IRQs, i.e. KVM would treat a virtual interrupt for L2 as a valid wake
-event based on L1's IRQ blocking status.
+[1/1] ieee802154: ca8210: fix cas_ctl leak on spi_async failure
+      https://git.kernel.org/wpan/wpan-next/c/e09390e439bd
 
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240607172609.3205077-6-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-[ Nicholas Dudar: backport to 6.1.y. 6.1.y predates the vmx main.c /
-  x86_ops.h split, so drop .guest_apic_has_interrupt from vmx_x86_ops in
-  vmx.c rather than vt_x86_ops in main.c. The function is static in vmx.c, so
-  upstream's x86_ops.h prototype removal does not apply. 6.1.y keeps the
-  current hwapic_isr_update signature. ]
-Signed-off-by: Nicholas Dudar <main.kalliope@gmail.com>
----
- arch/x86/include/asm/kvm-x86-ops.h |  1 -
- arch/x86/include/asm/kvm_host.h    |  1 -
- arch/x86/kvm/vmx/nested.c          |  4 ++++
- arch/x86/kvm/vmx/vmx.c             | 21 ---------------------
- arch/x86/kvm/x86.c                 | 10 +---------
- 5 files changed, 5 insertions(+), 32 deletions(-)
-
-diff --git a/arch/x86/include/asm/kvm-x86-ops.h b/arch/x86/include/asm/kvm-x86-ops.h
-index c068565fe..1cfe83263 100644
---- a/arch/x86/include/asm/kvm-x86-ops.h
-+++ b/arch/x86/include/asm/kvm-x86-ops.h
-@@ -81,7 +81,6 @@ KVM_X86_OP(check_apicv_inhibit_reasons)
- KVM_X86_OP(refresh_apicv_exec_ctrl)
- KVM_X86_OP_OPTIONAL(hwapic_irr_update)
- KVM_X86_OP_OPTIONAL(hwapic_isr_update)
--KVM_X86_OP_OPTIONAL_RET0(guest_apic_has_interrupt)
- KVM_X86_OP_OPTIONAL(load_eoi_exitmap)
- KVM_X86_OP_OPTIONAL(set_virtual_apic_mode)
- KVM_X86_OP_OPTIONAL(set_apic_access_page_addr)
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index fe5c0f86a..31395c434 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -1549,7 +1549,6 @@ struct kvm_x86_ops {
- 	void (*refresh_apicv_exec_ctrl)(struct kvm_vcpu *vcpu);
- 	void (*hwapic_irr_update)(struct kvm_vcpu *vcpu, int max_irr);
- 	void (*hwapic_isr_update)(struct kvm_vcpu *vcpu, int isr);
--	bool (*guest_apic_has_interrupt)(struct kvm_vcpu *vcpu);
- 	void (*load_eoi_exitmap)(struct kvm_vcpu *vcpu, u64 *eoi_exit_bitmap);
- 	void (*set_virtual_apic_mode)(struct kvm_vcpu *vcpu);
- 	void (*set_apic_access_page_addr)(struct kvm_vcpu *vcpu);
-diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-index ad07e83d2..f7a790a28 100644
---- a/arch/x86/kvm/vmx/nested.c
-+++ b/arch/x86/kvm/vmx/nested.c
-@@ -3979,6 +3979,10 @@ static bool vmx_has_nested_events(struct kvm_vcpu *vcpu, bool for_injection)
- 
- 	vppr = *((u32 *)(vapic + APIC_PROCPRI));
- 
-+	max_irr = vmx_get_rvi();
-+	if ((max_irr & 0xf0) > (vppr & 0xf0))
-+		return true;
-+
- 	if (vmx->nested.pi_pending && vmx->nested.pi_desc &&
- 	    pi_test_on(vmx->nested.pi_desc)) {
- 		max_irr = pi_find_highest_vector(vmx->nested.pi_desc);
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index e5d162e97..2e6454e4c 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -4063,26 +4063,6 @@ void pt_update_intercept_for_msr(struct kvm_vcpu *vcpu)
- 	}
- }
- 
--static bool vmx_guest_apic_has_interrupt(struct kvm_vcpu *vcpu)
--{
--	struct vcpu_vmx *vmx = to_vmx(vcpu);
--	void *vapic_page;
--	u32 vppr;
--	int rvi;
--
--	if (WARN_ON_ONCE(!is_guest_mode(vcpu)) ||
--		!nested_cpu_has_vid(get_vmcs12(vcpu)) ||
--		WARN_ON_ONCE(!vmx->nested.virtual_apic_map.gfn))
--		return false;
--
--	rvi = vmx_get_rvi();
--
--	vapic_page = vmx->nested.virtual_apic_map.hva;
--	vppr = *((u32 *)(vapic_page + APIC_PROCPRI));
--
--	return ((rvi & 0xf0) > (vppr & 0xf0));
--}
--
- static void vmx_msr_filter_changed(struct kvm_vcpu *vcpu)
- {
- 	struct vcpu_vmx *vmx = to_vmx(vcpu);
-@@ -8266,7 +8246,6 @@ static struct kvm_x86_ops vmx_x86_ops __initdata = {
- 	.check_apicv_inhibit_reasons = vmx_check_apicv_inhibit_reasons,
- 	.hwapic_irr_update = vmx_hwapic_irr_update,
- 	.hwapic_isr_update = vmx_hwapic_isr_update,
--	.guest_apic_has_interrupt = vmx_guest_apic_has_interrupt,
- 	.sync_pir_to_irr = vmx_sync_pir_to_irr,
- 	.deliver_interrupt = vmx_deliver_interrupt,
- 	.dy_apicv_has_pending_interrupt = pi_has_pending_interrupt,
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 10ef8a435..208a713d7 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -13046,12 +13046,6 @@ void kvm_arch_flush_shadow_memslot(struct kvm *kvm,
- 	kvm_page_track_flush_slot(kvm, slot);
- }
- 
--static inline bool kvm_guest_apic_has_interrupt(struct kvm_vcpu *vcpu)
--{
--	return (is_guest_mode(vcpu) &&
--		static_call(kvm_x86_guest_apic_has_interrupt)(vcpu));
--}
--
- static inline bool kvm_vcpu_has_events(struct kvm_vcpu *vcpu)
- {
- 	if (!list_empty_careful(&vcpu->async_pf.done))
-@@ -13077,9 +13071,7 @@ static inline bool kvm_vcpu_has_events(struct kvm_vcpu *vcpu)
- 	     static_call(kvm_x86_smi_allowed)(vcpu, false)))
- 		return true;
- 
--	if (kvm_arch_interrupt_allowed(vcpu) &&
--	    (kvm_cpu_has_interrupt(vcpu) ||
--	    kvm_guest_apic_has_interrupt(vcpu)))
-+	if (kvm_arch_interrupt_allowed(vcpu) && kvm_cpu_has_interrupt(vcpu))
- 		return true;
- 
- 	if (kvm_hv_has_stimer_pending(vcpu))
--- 
-2.34.1
-
+regards,
+Stefan Schmidt
 
