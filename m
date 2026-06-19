@@ -1,269 +1,201 @@
-Return-Path: <stable+bounces-267409-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267411-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id NzAbJO5XNWoXtgYAu9opvQ
-	(envelope-from <stable+bounces-267409-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 16:53:34 +0200
+	id 2sO7Mm1ZNWqvtgYAu9opvQ
+	(envelope-from <stable+bounces-267411-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 16:59:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFD506A684E
-	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 16:53:33 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3C216A68B3
+	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 16:59:57 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=chromium.org header.s=google header.b=hUcq2Y3r;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267409-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-267409-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=chromium.org;
+	dkim=pass header.d=0leil.net header.s=20231125 header.b=nsJMKOx8;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267411-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-267411-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=reject) header.from=0leil.net;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 03FA33011063
-	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 14:53:33 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C65DF302A0BB
+	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 14:59:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF4C63B14D3;
-	Fri, 19 Jun 2026 14:53:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1D773B3C1D;
+	Fri, 19 Jun 2026 14:59:23 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp-42a8.mail.infomaniak.ch (smtp-42a8.mail.infomaniak.ch [84.16.66.168])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C9CC1EF36E
-	for <stable@vger.kernel.org>; Fri, 19 Jun 2026 14:53:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD61830677D
+	for <stable@vger.kernel.org>; Fri, 19 Jun 2026 14:59:21 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781880809; cv=none; b=Z8Y88DedoPD2puKHzACBqHsfAebtTUb0WoELd+x+aESUfVeeWMJ+CGT9zRSWZGSn6R8TChqwyIdzqNJv0Qv1+CEx/xxEC9w9n9s7o5mIF9WtHrF8/2Xxcej3aIS3LNscihsPyZcNPxTSqdAkRblQ/yVUg6USnefpRjvM31irvDQ=
+	t=1781881163; cv=none; b=citwUYKulAEb5DI2DM3KWyPcY0URLNRzZJWeAFI9di+6LsqtYtIRF2OpAkJzqSNV+WhD7nW6VFl7yYRXbWWZgAGU6EzcL4lQIgci7fmAl3rieFe4QIf+m6nzugpivM8V5k6bdkMJTdnhJPVYzg++Qx6F5X6ydXowxafqL94nxV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781880809; c=relaxed/simple;
-	bh=IDlu9n3OLeJ5duMNxqd8I4MTVuzqBDGkDqPg20cC17o=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pmYz28kx8tGcKNo7TUjdPkV0SeaxJxv0HUIuIlsqdfcSyI0b+mkgRVeeSj3atZ3AEJT9wcUCZ3O25+ppVcfjkxThgWec7Az5QTIMlkXaRdjfqGOkd6NOwG9E+vGzStH5+W55wzNzGV0N8sf6neoQrRmaAYiHq5omwTvdLkRI5Gw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=hUcq2Y3r; arc=none smtp.client-ip=209.85.222.175
-Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-9159951f05aso243932885a.0
-        for <stable@vger.kernel.org>; Fri, 19 Jun 2026 07:53:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1781880807; x=1782485607; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XIGBVuVVm03R19snYPTC5iI7SwI4WcfAC4ZQNabDd18=;
-        b=hUcq2Y3rPMsOGuflCDGlqJpyw54Fg2iC0h/0BpKj92M6/gyyQYqQ0hekTNXv7Y4UyE
-         yOq0ojIhtl1m63J7PtLcijsIUogA6+uyagVvzyofDlesmdCo1qlUtzk9ZTlFRUmVDfaF
-         iKMMym5wS7BSXXkAzLcpwvApaXvZRRuMN/9UQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781880807; x=1782485607;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=XIGBVuVVm03R19snYPTC5iI7SwI4WcfAC4ZQNabDd18=;
-        b=E4l8skmPY7FdH+j2TpORbKs9zUjcfIDRL2CHWWYNTNScyl7UKyuVwyRvC8E+JCFSJm
-         uZYCO2S4WDir69dVFkz8dmTB6+M0vI1ol/s+aiXP1jYv1P4D+4inw/rrD7gmWui/IMp4
-         7Caps+nQfFoUnFlMS7gneO7ew0/eQ+9WyWOoEoE86UIGi9rSKcYy/yxN/+rIMhA5r0S6
-         9QWgFzUNONwoj2/86tJgaJdQ3XzghxwfZboAC1JbDuHlp4eQG5hAXXNA3PDf1TJv9JUJ
-         UvmpJy2giMgv49h6S9LlyF9DSSkTm9wNhwwYJRSIcKhdUEXHGyb97yQ7yrtEqsm2H2FY
-         4rrg==
-X-Forwarded-Encrypted: i=1; AFNElJ+OndinIFO5Rqb2dZB8bIbSSUlZuBnTmNQWiFwfK3ssunNmXQVYa7VoqMcynCCjdBaAmL0mR+I=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yylj7408Rm8pxWLlY1WW+5io8B5cllQpbpSZ1QA5rRs5c6xiVzi
-	wqfRM3d2pGCrAFbiAdldNZTtcBRkNahznkEXZjg42hjaoqH31Mpx5F3x5Lk3IzbGXNGnNDBDTTf
-	vYQ/x6A==
-X-Gm-Gg: AfdE7cnJaqfzGlErwnRdH+0/Ny5thVykLlAcwcd/hCgHiva/tQN0KJURTfhKvu7Q9AJ
-	Oy4mMT46gxwokeqHZ5E6hWx/fZuHsJC9YtdNTD9gqDHgRcUcFzLWT1bNxCPkWxmnB8XzQ0W6vu8
-	IKykjeyfXsUsJC5vddswVpxpR/YFfTqKqjn5Npz42j4KWr/OuJXkI62BqWeOOcLO5DGcw+2i4gc
-	3tiOeyGhv80DRDsSrsufvmedWJ4ckPcGiA6x/lzSE0surqtvFsAJuBoy7n5OCVOM6E9oe6y7LNs
-	8GGaBFuu3R2J1d00gsf1paPmXzECy6k1wYX3yx8hMduIQJVS9/OL6llwggxXHiKGJHZPP6rHm0g
-	IjsWTAjZCqeibGVBThy2WvuvEVv4Hr56xoqyVgaHXWJZ1lhTyknpHTf80XHn7vzdKIdTH2nfgjN
-	9gp5ZGVLmCGLQTHu1nfCvL7k5HGagarqoeiicH8UIr2mtBuFqkTl0=
-X-Received: by 2002:a05:620a:1a23:b0:915:f360:e97b with SMTP id af79cd13be357-920d1218025mr412192785a.6.1781880807022;
-        Fri, 19 Jun 2026 07:53:27 -0700 (PDT)
-Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com. [209.85.160.174])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-920a4348cfdsm258287885a.31.2026.06.19.07.53.26
-        for <stable@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 19 Jun 2026 07:53:26 -0700 (PDT)
-Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-51765531803so303441cf.0
-        for <stable@vger.kernel.org>; Fri, 19 Jun 2026 07:53:26 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ9CSJZImhhayre7qkVOfIhud6VCI2k+8vVpM5nTGAteZcptutbwN3RO292BTiJY8BCTY0QhaKs=@vger.kernel.org
-X-Received: by 2002:ac8:5e0d:0:b0:50f:b69a:f4a8 with SMTP id
- d75a77b69052e-519e890ed52mr6854591cf.7.1781880805032; Fri, 19 Jun 2026
- 07:53:25 -0700 (PDT)
+	s=arc-20240116; t=1781881163; c=relaxed/simple;
+	bh=C4DPjZRWPUMXX3xECIA8+kcIUFCzquihhDLXlumQIS8=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=BtPLxLC4ZJrTEsyb/0vb4sdvnj+wZu8HsgYjp0pRbaPPNxB58otADVrpfJFF0x3XZ3PxWVxzXR5r9ehEF9a2NkFxdqidImC859FjJ85K/CDfvb18xdLehTYOMMHdNGFr4M72EMc1BHqqjm+LKjQaSE0ZkaNFKCC/29fUhZDNVVo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=0leil.net; spf=pass smtp.mailfrom=0leil.net; dkim=pass (2048-bit key) header.d=0leil.net header.i=@0leil.net header.b=nsJMKOx8; arc=none smtp.client-ip=84.16.66.168
+Received: from smtp-4-0000.mail.infomaniak.ch (unknown [IPv6:2001:1600:7:10::a6b])
+	by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4ghgjF1fBqzBKX;
+	Fri, 19 Jun 2026 16:59:13 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=0leil.net;
+	s=20231125; t=1781881152;
+	bh=q4pLR8MGAZ8d9SmRRP76vD76u+1xaZltcCBwaFGE/2w=;
+	h=From:Subject:Date:To:Cc:From;
+	b=nsJMKOx8Z1w0QYVP6wjFyw3dKLPGb+kiHzpY7AZYcvYAwA+TYDlgps+Gp7bcQo1YA
+	 lVjx9EG6iSQ/YxpbP9CIIgTjFqtjxmMy3vvxRyfdTcaOi+cEBIRO/kVvLsx/IXGI0i
+	 KtbJaqSK6LeAvMkNYqbgehukIMNucZM6SnmU+ub0/Lm8dzVMMS8djZWZPgdiP18ffZ
+	 2qcKgUeXTkD3DcS8KIgpvGOc53Uq2bbysjbDyGD0EvdqrxWSekww3u19zilE6akhGS
+	 4dgLj+HMb5DkREkA103scsi9cLKU7jT2iSpTT142Sg12qfjmhG9Chld0wmRRJC90sj
+	 DC1dkFoPF9Pww==
+Received: from unknown by smtp-4-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4ghgjB391lzsBb;
+	Fri, 19 Jun 2026 16:59:10 +0200 (CEST)
+From: Quentin Schulz <foss+kernel@0leil.net>
+Subject: [PATCH 6.12.y 0/7] eventpoll: backport
+ a6dc643c69311677c574a0f17a3f4d66a5f3744b
+Date: Fri, 19 Jun 2026 16:58:40 +0200
+Message-Id: <20260619-6-12-cve-2026-46242-v1-0-e15a6de43c11@cherry.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260609121329.1262170-1-senozhatsky@chromium.org>
- <CAGp9LzpBUReZtrTEKgUr-+yvB+3tcs5hw7ziC4WaMRFNa2AYpg@mail.gmail.com>
- <87tsqyirsn.wl-tiwai@suse.de> <CAAFQd5DyDQo9vBH80YYQBW7Bgf64F1m9q44-jhf1cc75XYpftA@mail.gmail.com>
- <87jyruiomq.wl-tiwai@suse.de>
-In-Reply-To: <87jyruiomq.wl-tiwai@suse.de>
-From: Tomasz Figa <tfiga@chromium.org>
-Date: Fri, 19 Jun 2026 23:53:07 +0900
-X-Gmail-Original-Message-ID: <CAAFQd5DDH3LynVPUxS3Wj7xQoUMcOWfxk8cRhXaHyEY-dj5fDA@mail.gmail.com>
-X-Gm-Features: AVVi8CcjnxCeHWkLS06U6AojxhWztkixD9Fe53sN6dMUH6hUtZPXwg6RxFcRCjE
-Message-ID: <CAAFQd5DDH3LynVPUxS3Wj7xQoUMcOWfxk8cRhXaHyEY-dj5fDA@mail.gmail.com>
-Subject: Re: [PATCH] Bluetooth: btmtksdio: fix infinite loop in btmtksdio_txrx_work()
-To: Takashi Iwai <tiwai@suse.de>
-Cc: Sean Wang <sean.wang@kernel.org>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
-	Marcel Holtmann <marcel@holtmann.org>, Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
-	Mark-yw Chen <mark-yw.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, 
-	linux-bluetooth@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWMQQ6CQAwAv0J6toQWqNGvGA9Qu1gPaHaVaAh/Z
+ 8HjTDIzQ7LoluBczBBt8uTPMQMdCtB7Nw6GfssMXLFUQicUJEadDDeDjXDD2NdqIeixrTuCXL6
+ iBf/u1wtISVz+4Pr36dM/TN/bEpZlBbeyVXV/AAAA
+X-Change-ID: 20260619-6-12-cve-2026-46242-b3ceffc753a1
+To: Alexander Viro <viro@zeniv.linux.org.uk>, 
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+ Davidlohr Bueso <dave@stgolabs.net>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ Soheil Hassas Yeganeh <soheil@google.com>, 
+ Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>
+Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, Quentin Schulz <quentin.schulz@cherry.de>, 
+ Linus Torvalds <torvalds@linux-foundation.org>, 
+ Jaeyoung Chung <jjy600901@snu.ac.kr>
+X-Mailer: b4 0.15-dev-47773
+X-Infomaniak-Routing: alpha
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[chromium.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[chromium.org:s=google];
+	DMARC_POLICY_ALLOW(-0.50)[0leil.net,reject];
+	R_DKIM_ALLOW(-0.20)[0leil.net:s=20231125];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-267409-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:tiwai@suse.de,m:sean.wang@kernel.org,m:senozhatsky@chromium.org,m:marcel@holtmann.org,m:luiz.dentz@gmail.com,m:mark-yw.chen@mediatek.com,m:sean.wang@mediatek.com,m:linux-bluetooth@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:linux-mediatek@lists.infradead.org,m:stable@vger.kernel.org,m:luizdentz@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[tfiga@chromium.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[kernel.org,chromium.org,holtmann.org,gmail.com,mediatek.com,vger.kernel.org,lists.infradead.org];
+	TAGGED_FROM(0.00)[bounces-267411-lists,stable=lfdr.de,kernel];
+	FORGED_RECIPIENTS(0.00)[m:viro@zeniv.linux.org.uk,m:brauner@kernel.org,m:jack@suse.cz,m:dave@stgolabs.net,m:akpm@linux-foundation.org,m:soheil@google.com,m:edumazet@google.com,m:pabeni@redhat.com,m:linux-fsdevel@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:quentin.schulz@cherry.de,m:torvalds@linux-foundation.org,m:jjy600901@snu.ac.kr,s:lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tfiga@chromium.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[chromium.org:+];
-	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	FORGED_SENDER(0.00)[foss@0leil.net,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	DKIM_TRACE(0.00)[0leil.net:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[foss@0leil.net,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ALIAS_RESOLVED(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[chromium.org:dkim,chromium.org:email,chromium.org:from_mime,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,suse.de:email,mail.gmail.com:mid]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,0leil.net:dkim,0leil.net:from_mime,cherry.de:mid,cherry.de:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: EFD506A684E
+X-Rspamd-Queue-Id: A3C216A68B3
 
-On Fri, Jun 19, 2026 at 11:36=E2=80=AFPM Takashi Iwai <tiwai@suse.de> wrote=
-:
->
-> On Fri, 19 Jun 2026 16:17:31 +0200,
-> Tomasz Figa wrote:
-> >
-> >
-> > On Fri, Jun 19, 2026 at 10:27=E2=80=AFPM Takashi Iwai <tiwai@suse.de> w=
-rote:
-> > >
-> > > On Wed, 10 Jun 2026 08:52:31 +0200,
-> > > Sean Wang wrote:
-> > > >
-> > > > Hi,
-> > > >
-> > > > On Tue, Jun 9, 2026 at 7:19=E2=80=AFAM Sergey Senozhatsky
-> > > > <senozhatsky@chromium.org> wrote:
-> > > > >
-> > > > > Every once in a while we see a hung btmtksdio_flush() task:
-> > > > >
-> > > > >  INFO: task kworker/u17:0:189 blocked for more than 122 seconds.
-> > > > >  __cancel_work_timer+0x3f4/0x460
-> > > > >  cancel_work_sync+0x1c/0x2c
-> > > > >  btmtksdio_flush+0x2c/0x40
-> > > > >  hci_dev_open_sync+0x10c4/0x2190
-> > > > >  [..]
-> > > > >
-> > > > > It all boils down to incorrect time_is_before_jiffies() usage in
-> > > > > btmtksdio_txrx_work().  The btmtksdio_txrx_work() loop is expecte=
-d
-> > > > > to be terminated if running for longer than 5*HZ.  However the
-> > > > > timeout check is twisted:  time_is_before_jiffies(old_jiffies + 5=
-*HZ)
-> > > > > evaluates to true when old_jiffies + 5*HZ is in the past i.e. whe=
-n a
-> > > > > timeout has occurred.  Using OR with time_is_before_jiffies
-> > (txrx_timeout)
-> > > > > means that:
-> > > > > - before the 5-second timeout: the condition is `int_status || fa=
-lse`,
-> > > > >   so it loops as long as there are pending interrupts.
-> > > > > - after the 5-second timeout: the condition becomes `int_status |=
-| true
-> > `,
-> > > > >   which is always true.
-> > > > >
-> > > > > When the loop becomes infinite btmtksdio_txrx_work() loop never
-> > > > > terminates and never releases the SDIO host.
-> > > > >
-> > > > > Fix loop termination condition to actually enforce a 5*HZ timeout=
-.
-> > > > >
-> > > > > Fixes: 26270bc189ea4 ("Bluetooth: btmtksdio: move interrupt servi=
-ce to
-> > work")
-> > > > > Cc: stable@vger.kernel.org
-> > > > > Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-> > > > > ---
-> > > > >  drivers/bluetooth/btmtksdio.c | 2 +-
-> > > > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > > > >
-> > > > > diff --git a/drivers/bluetooth/btmtksdio.c b/drivers/bluetooth/
-> > btmtksdio.c
-> > > > > index 5b0fab7b89b5..c6f80c419e90 100644
-> > > > > --- a/drivers/bluetooth/btmtksdio.c
-> > > > > +++ b/drivers/bluetooth/btmtksdio.c
-> > > > > @@ -620,7 +620,7 @@ static void btmtksdio_txrx_work(struct work_s=
-truct
-> > *work)
-> > > > >                         if (btmtksdio_rx_packet(bdev, rx_size) < =
-0)
-> > > > >                                 bdev->hdev->stat.err_rx++;
-> > > > >                 }
-> > > > > -       } while (int_status || time_is_before_jiffies(txrx_timeou=
-t));
-> > > > > +       } while (int_status && time_is_after_jiffies(txrx_timeout=
-));
-> > > >
-> > > > yes, loop continues only while there is interrupt work and the time=
-out
-> > > > deadline is still in the future
-> > >
-> > > I stumbled on this while backporting to distro kernels, and I wonder
-> > > whether this change is correct.
-> > >
-> > > IIUC, this essentially makes the loop exiting right after the first
-> > > cycle; the patch changed from time_is_before_jiffies() to *_after_*()=
-,
-> > > not only the logical OR to AND, and *_after_*() returns false, so the
-> > > whole condition becomes false, too.
-> >
-> > The intention is for the loop to keep running as long as there is still=
- an
-> > interrupt left to handle (int_status !=3D 0) and the timeout has not el=
-apsed
-> > (jiffies < txrx_timeout).
-> >
-> > Note that time_is_after_jiffies(x) returns true if x > jiffies (or jiff=
-ies <
-> > x):
-> >
-> >     /**
-> >      * time_is_after_jiffies - return true if a is after jiffies
-> >      * @a: time (unsigned long) to compare to jiffies
-> >      *
-> >      * Return: %true is time a is after jiffies, otherwise %false.
-> >      */
-> >     #define time_is_after_jiffies(a) time_before(jiffies, a)
-> >
-> > Or am I missing something?
->
-> Doh, scratch my comment.  It's enough confusing about time_after() vs
-> time_is_after_jiffies().  Too hot here to review something today :-<
->
-> Sorry for the noise!
+Backport a6dc643c6931 ("eventpoll: fix ep_remove struct eventpoll /
+struct file UAF") to 6.12.y. So the patch applies cleanly, commit
+86e87059e6d1 ("eventpoll: move epi_fget() up"), commit 0bade234723e
+("eventpoll: rename ep_remove_safe() back to ep_remove()"), commit
+0feaf644f718 ("eventpoll: drop vestigial __ prefix from
+ep_remove_{file,epi}()"), commit e9e5cd40d7c4 ("eventpoll: kill
+__ep_remove()"), commit 0f7bdfd41300 ("eventpoll: split __ep_remove()")
+and commit 3d9fd0abc94d ("eventpoll: use hlist_is_singular_node() in
+__ep_remove()") are also backported.
 
-Haha, no worries, it got me too! (In our internal discussion with
-Sergey) I had to look up the definition and think about it for quite a
-while to ensure it was really what we needed. ;)
+Note that backport of commit 86e87059e6d1 ("eventpoll: move epi_fget()
+up") conflicted due to missing commit 90ee6ed776c0 ("fs: port files to
+file_ref") and its dependent commit 08ef26ea9ab3 ("fs: add file_ref").
+The original commit is simply moving a function earlier in the file, so
+we do the same even if the content of the function is actually slightly
+different. I opted for this instead of backporting the other two commits
+because they look a bit more involved than I would like to for stable.
+They also do not apply cleanly so I drew the line before those two
+"dependencies" and didn't add them to the list of backported patches in
+this series.
 
-Best,
-Tomasz
+Note that backport of 0bade234723e ("eventpoll: rename ep_remove_safe()
+back to ep_remove()") is not necessary (e.g. 6.18.y doesn't have it), it
+just makes git-range-diff even smaller so I thought it was nice to add
+it. Maybe it'll make future backports easier too /me shrugs.
+
+The changes between 3d9fd0abc94d^..a6dc643c6931 (commit log excluded)
+and this series is (according to git-range-diff):
+
+"""
+      ## fs/eventpoll.c ##
+     @@ fs/eventpoll.c: static void ep_free(struct eventpoll *ep)
+    @@ fs/eventpoll.c: static void ep_free(struct eventpoll *ep)
+     +  struct file *file;
+     +
+     +  file = epi->ffd.file;
+    -+  if (!file_ref_get(&file->f_ref))
+    ++  if (!atomic_long_inc_not_zero(&file->f_count))
+     +          file = NULL;
+     +  return file;
+     +}
+    @@ fs/eventpoll.c: static __poll_t __ep_eventpoll_poll(struct file *file, poll_tabl
+     -  struct file *file;
+     -
+     -  file = epi->ffd.file;
+    --  if (!file_ref_get(&file->f_ref))
+    +-  if (!atomic_long_inc_not_zero(&file->f_count))
+     -          file = NULL;
+     -  return file;
+     -}
+"""
+
+in patch 6.
+
+Note that this series cleanly applies to v6.6.y as well but fails to
+build with the following error:
+
+/home/qschulz/work/upstream/linux/fs/eventpoll.c: In function ‘ep_remove’:
+/home/qschulz/work/upstream/linux/fs/eventpoll.c:804:16: error: cleanup argument not a function
+  804 |         struct file *file __free(fput) = NULL;
+      |                ^~~~
+make[4]: *** [/home/qschulz/work/upstream/linux/scripts/Makefile.build:243: fs/eventpoll.o] Error 1
+make[4]: *** Waiting for unfinished jobs....
+
+hence why I made this series 6.12.y-specific.
+
+Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
+---
+Christian Brauner (7):
+      eventpoll: use hlist_is_singular_node() in __ep_remove()
+      eventpoll: split __ep_remove()
+      eventpoll: kill __ep_remove()
+      eventpoll: drop vestigial __ prefix from ep_remove_{file,epi}()
+      eventpoll: rename ep_remove_safe() back to ep_remove()
+      eventpoll: move epi_fget() up
+      eventpoll: fix ep_remove struct eventpoll / struct file UAF
+
+ fs/eventpoll.c | 142 ++++++++++++++++++++++++++++++++-------------------------
+ 1 file changed, 79 insertions(+), 63 deletions(-)
+---
+base-commit: 0b8f247169e487eff2d4c2dd531bc43f7efda2cb
+change-id: 20260619-6-12-cve-2026-46242-b3ceffc753a1
+
+Best regards,
+--  
+Quentin Schulz <quentin.schulz@cherry.de>
+
 
