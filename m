@@ -1,206 +1,315 @@
-Return-Path: <stable+bounces-267360-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267365-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id WCVfLncSNWqBmgYAu9opvQ
-	(envelope-from <stable+bounces-267360-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 11:57:11 +0200
+	id IpUyObATNWrKmgYAu9opvQ
+	(envelope-from <stable+bounces-267365-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 12:02:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 513536A5114
-	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 11:57:11 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B4916A518D
+	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 12:02:24 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=I1GC+9f7;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267360-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-267360-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=linuxfoundation.org;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=rTqxvQZ3;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267365-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-267365-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id ABDA530058EA
-	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 09:57:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 97E1A301DB8D
+	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 10:00:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D29B367B74;
-	Fri, 19 Jun 2026 09:57:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1F2336920F;
+	Fri, 19 Jun 2026 10:00:07 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BE50369991;
-	Fri, 19 Jun 2026 09:57:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34EA633D4F2
+	for <stable@vger.kernel.org>; Fri, 19 Jun 2026 10:00:02 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781863027; cv=none; b=Rr1l/GZ5UBIuTWGk/gpi7xOVsM6yvc6C2C9Cm4MTBIjB8wXDG+uMfwPjVZZTDcArgPnC7+8KPigfg0QjZNGcckeFGXAKcYyWyhdap2JsGjeRJ6cb2QXPIsSJR2njToT6SZeTRO1u55X9pk2qCf1ACgW9nipRwQ8mQedW83iXPFI=
+	t=1781863207; cv=none; b=C8/eCuKx0dzm7jckKAitXkQQ4PsJAfTGS1cgLOz6J0Eoyg+bj37hRp+MEgOmP9OpjDMCzDuGGLClmF5E1jjN81BsoK7en66UZ4hfVMAzw/qrkIroDDw08J5rHmpc1aiiD2CvkGIilwaBzX9zkJbLHF9AOxQqZ0IsjRuw5xAuA34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781863027; c=relaxed/simple;
-	bh=5nn0vOFfEC8IB7QEw+QjZpLzYA1Lz8v2GLiPO0g9xsE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=vEwrhz4wadRzdetUSSL13UfN5QBHesNEVIlLpnHgDhXfs+RRWwMzkrdzkVIz+0yfI1y7cB7DJYjcnRQT3w0Y8iizxWyWhsKum2p4iMAOZgvFU51NW6PjXkTWVVXneSsrZ2w5qWJ7igWf70zQV2uiGZ3cn7OHISJXbJSmc1O+m+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I1GC+9f7; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4AFB1F000E9;
-	Fri, 19 Jun 2026 09:56:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781863020;
-	bh=DiFPSAGm3QGqD5XdKFqj9fbqyoJ+B1hzp8sXWp75HQo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=I1GC+9f7yX3P3COKWIaUtw1Eb2qTl4squBDTA0mNPUZdzie+DoBKGfyNe7Fwe8VUH
-	 hwqyaAI2x0WWuJJCe24F8dYSZwW0XbDcBhBICqV069Jcp0ypuTWj/eS1LNXsshWS41
-	 zwNml85wJ2PfaRbVoTP3DK0mp1HX1aiokJ9kAmPw=
-Date: Fri, 19 Jun 2026 11:55:53 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	Weiming Shi <bestswngs@gmail.com>, Xiang Mei <xmei5@asu.edu>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Ramanan Govindarajan <ramanan.govindarajan@oracle.com>,
-	Vegard Nossum <vegard.nossum@oracle.com>
-Subject: Re: [PATCH 5.15 193/411] netfilter: nf_log: validate MAC header was
- set before dumping it
-Message-ID: <2026061924-treat-enjoyably-08c8@gregkh>
-References: <20260616145100.376842714@linuxfoundation.org>
- <20260616145110.984893387@linuxfoundation.org>
- <167562b4-4472-4ead-a107-6eb83275825c@oracle.com>
+	s=arc-20240116; t=1781863207; c=relaxed/simple;
+	bh=HfmQkOtk9IaM+WPmz7eE7lkMj2hf2wlI6dSjVLexa2g=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qJSFugq2UNDWNqkVTjaGGncNaWrYR223BXAXBceszpBOOlYYoS9TFr8gKHdsKnTbEVHO/4ZNZUzjvNWAdVLPf3yXZ0wjtVVUvKUn/JSjMGTY57xtUj7FkGsKv/DkK59/KCBujHDOygF/VK2r0WVL1JvvcfhlZIKn77TlChxASek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rTqxvQZ3; arc=none smtp.client-ip=209.85.210.179
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-842307472d4so847613b3a.0
+        for <stable@vger.kernel.org>; Fri, 19 Jun 2026 03:00:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781863201; x=1782468001; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=8d76X3icq3/Ja/CPqgRT+rRdC5OqM1uOzKiEQhI8PbA=;
+        b=rTqxvQZ3BdDoqe3jN23HJOP5iuif+JPdlRrNuhMzi1QkLGv8es08fAX+yTs427RBCX
+         Rq9aMhqvBxFKfGxMeflz/996nDop0HjQ/fuugWruwMFIXCJyoysjBQoFn/kEjyPpuj4T
+         dGZVYQX5zhtHUcnHaQ8r6p4Q0+DY6/Emg5S6but9cW322mnFYjmjQN0/BxHyuR3Yne6M
+         LsrcmnIXFpVALIT5lNaaQEKQK7goFQI/0R9PlmvYon+U0kihW1b+t10fcFp9cQbNqiRV
+         YfhkFiCfKIPv3A+J2qY3+VBacuNQhEKpVwNi+p5sv45Mphm3+cBHy423ZHjiqpfVeQ1k
+         xphg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781863201; x=1782468001;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8d76X3icq3/Ja/CPqgRT+rRdC5OqM1uOzKiEQhI8PbA=;
+        b=NgM4CB/32cQ0KMNPJPAF97v4h9AFiObDBeJR2g+du0zHJ/LV1MhVMPii0Sge+pv8u/
+         CnQNmgwQT0WvXmCBQ3+9d/iSpgiRJ17dZAibicc9p+bnmUhz98JZyA7NuVXap2k7/gbH
+         N2DA7cXJIbQSFdW/InfgAXg5ekaJYHF6JH3QAWh0t+8OsQGagyNjiKFoMHQEUU1JSH+H
+         ZYkOnKvBDx3lJplklq2QeD6FhYsHEjPm7/pGvym5Bp+BdSQ6zVvggaiGPFqusNvFbg6F
+         sFzeXYSguUTjJP5PrxBBK5eY8WZaM+Fao8pOOGiz5wjiFpWXWBl7By7sxptZzcK3Owpn
+         NREw==
+X-Forwarded-Encrypted: i=1; AFNElJ8Kjz1aSa2q1h5q/ij0Ww/b9g/hhcIW/kOu2dzpzjyGrTUZ6dLRpTNkJo19JxEeRSbUBjixHcE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyHjYqjKL/+oSl/MKRbQf6RG3r7gWCZs/LccxYGtgHa7HXCUH1a
+	DlV8li/MUP/6ja3n8xSuBOUktKfd9Fh46oiYoQ7igeLtXMhtXW6/M1J7
+X-Gm-Gg: AfdE7cl7jTLJZuZQl4xQJsdW4LeawPdUfLOABAyRzx43tsstX5L9KAxqZ3220GZVy4x
+	WuW7VwBG+/0077TBAlcazvZN+25wNod4pbbQSpfrNXH1usJd26IJenPR0l1eUur3UAfiwU3vhl4
+	XvrX9dsdpxJgbqFiG5ipIYc82XcQ6+Pqzmt4zrcJAky4mJ9cC8swJ0zTbDN4OvMYNoxaBlysc/q
+	6q4SonDI43PujHaDAQkDlST3PO5oZpbJQUjhg/oKGBxxUgU7/xuASL+9mNiwBZVpwgRkcoDdPaM
+	h3a+LK+APuk0i1uIdxmN66wUP4onAn4s338mREopJcOP87BZ162+4mOd+uJk/vo3bL6zrh3pTaR
+	qXP9N7YdPg/W75IL+aiiywc/PHHGqz2o1DBZHHINeXkQGAjtfa1qcVen4lkbqwSL5WYMyz8k1MW
+	8W9/fq8r28FEX1hQ==
+X-Received: by 2002:a05:6a20:6a0f:b0:398:9b42:69f7 with SMTP id adf61e73a8af0-3bb34658412mr2933727637.39.1781863201220;
+        Fri, 19 Jun 2026 03:00:01 -0700 (PDT)
+Received: from ghost ([2409:40c2:6043:71b1:a047:7236:4a11:a43c])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c8a84c6e5fbsm2231370a12.7.2026.06.19.02.59.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 19 Jun 2026 03:00:00 -0700 (PDT)
+Received: from ghost.localdomain (localhost [127.0.0.1])
+	by ghost (OpenSMTPD) with ESMTP id 2d3f23de;
+	Fri, 19 Jun 2026 09:59:55 +0000 (UTC)
+From: Nikhil Solanke <nikhilsolanke5@gmail.com>
+To: linux-usb@vger.kernel.org
+Cc: gregkh@linuxfoundation.org,
+	linux-kernel@vger.kernel.org,
+	stern@rowland.harvard.edu,
+	michal.pecio@gmail.com,
+	stable@vger.kernel.org,
+	Nikhil Solanke <nikhilsolanke5@gmail.com>
+Subject: [PATCH] usbcore: Add quirk for 255-bytes initial config read
+Date: Fri, 19 Jun 2026 15:29:36 +0530
+Message-ID: <20260619095936.24080-1-nikhilsolanke5@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <167562b4-4472-4ead-a107-6eb83275825c@oracle.com>
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-267360-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,gmail.com,asu.edu,netfilter.org,kernel.org,oracle.com];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:harshit.m.mogalapalli@oracle.com,m:stable@vger.kernel.org,m:patches@lists.linux.dev,m:bestswngs@gmail.com,m:xmei5@asu.edu,m:pablo@netfilter.org,m:sashal@kernel.org,m:ramanan.govindarajan@oracle.com,m:vegard.nossum@oracle.com,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,vger.kernel.org,rowland.harvard.edu,gmail.com];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	TAGGED_FROM(0.00)[bounces-267365-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:linux-usb@vger.kernel.org,m:gregkh@linuxfoundation.org,m:linux-kernel@vger.kernel.org,m:stern@rowland.harvard.edu,m:michal.pecio@gmail.com,m:stable@vger.kernel.org,m:nikhilsolanke5@gmail.com,m:michalpecio@gmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[nikhilsolanke5@gmail.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[nikhilsolanke5@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,netfilter.org:email,asu.edu:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,harvard.edu:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 513536A5114
+X-Rspamd-Queue-Id: 4B4916A518D
 
-On Fri, Jun 19, 2026 at 10:58:54AM +0530, Harshit Mogalapalli wrote:
-> Hi Greg/Sasha,
-> 
-> 
-> On 16/06/26 20:27, Greg Kroah-Hartman wrote:
-> > 5.15-stable review patch.  If anyone has any objections, please let me know.
-> > 
-> > ------------------
-> > 
-> > From: Xiang Mei <xmei5@asu.edu>
-> > 
-> > [ Upstream commit a84b6fedbc97078788be78dbdd7517d143ad1a77 ]
-> > 
-> > The fallback path of dump_mac_header() guards the MAC header access
-> > only with "skb->mac_header != skb->network_header", without checking
-> > skb_mac_header_was_set(). When the MAC header is unset, mac_header is
-> > 0xffff, so the test passes and skb_mac_header(skb) returns
-> > skb->head + 0xffff, ~64 KiB past the buffer; the loop then reads
-> > dev->hard_header_len bytes out of bounds into the kernel log.
-> > 
-> > This is reachable via the netdev logger: nf_log_unknown_packet() calls
-> > dump_mac_header() unconditionally, and an skb sent through AF_PACKET
-> > with PACKET_QDISC_BYPASS reaches the egress hook with mac_header still
-> > unset (__dev_queue_xmit(), which would reset it, is bypassed).
-> > 
-> > Add the skb_mac_header_was_set() check the ARPHRD_ETHER path already
-> > uses, and replace the open-coded MAC header length test with
-> > skb_mac_header_len(). Only skbs with an unset MAC header are affected;
-> > valid ones are dumped as before.
-> > 
-> >   BUG: KASAN: slab-out-of-bounds in dump_mac_header (net/netfilter/nf_log_syslog.c:831)
-> >   Read of size 1 at addr ffff88800ea49d3f by task exploit/148
-> >   Call Trace:
-> >    kasan_report (mm/kasan/report.c:595)
-> >    dump_mac_header (net/netfilter/nf_log_syslog.c:831)
-> >    nf_log_netdev_packet (net/netfilter/nf_log_syslog.c:938 net/netfilter/nf_log_syslog.c:963)
-> >    nf_log_packet (net/netfilter/nf_log.c:260)
-> >    nft_log_eval (net/netfilter/nft_log.c:60)
-> >    nft_do_chain (net/netfilter/nf_tables_core.c:285)
-> >    nft_do_chain_netdev (net/netfilter/nft_chain_filter.c:307)
-> >    nf_hook_slow (net/netfilter/core.c:619)
-> >    nf_hook_direct_egress (net/packet/af_packet.c:257)
-> >    packet_xmit (net/packet/af_packet.c:280)
-> >    packet_sendmsg (net/packet/af_packet.c:3114)
-> >    __sys_sendto (net/socket.c:2265)
-> > 
-> > Fixes: 7eb9282cd0ef ("netfilter: ipt_LOG/ip6t_LOG: add option to print decoded MAC header")
-> > Reported-by: Weiming Shi <bestswngs@gmail.com>
-> > Assisted-by: Claude:claude-opus-4-8
-> > Signed-off-by: Xiang Mei <xmei5@asu.edu>
-> > Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-> > Signed-off-by: Sasha Levin <sashal@kernel.org>
-> 
-> 
-> I ran an AI assisted backport review over the 5.15.210 queue, and thr report
-> looks valid to me:
-> 
-> this 5.15.y backport fixed the IPv4 split helper but missed the equivalent
-> IPv6 helper.
-> 
-> So we would need a 5.15.y backport slightly deviate from upstream patch.
-> 
-> Upstream a84b6fedbc97 uses this guard before dumping fallback MAC bytes:
-> 
->         if (dev->hard_header_len && skb_mac_header_was_set(skb) &&
->             skb_mac_header_len(skb) != 0) {
->                 const unsigned char *p = skb_mac_header(skb);
-> 
-> The 5.15.y IPv4 helper has that guard, but final 5.15.y still has this in
-> dump_ipv6_mac_header():
-> 
->         if (dev->hard_header_len &&
->             skb->mac_header != skb->network_header) {
->                 const unsigned char *p = skb_mac_header(skb);
-> 
-> Upstream has one shared helper, so the new guard covers both IPv4 and IPv6.
-> 5.15.y still has split helpers, and the backport mapped the fix only to the
-> IPv4 side. The IPv6 netdev logging path can therefore still call
-> skb_mac_header(skb) after the old unsafe fallback predicate.
-> 
-> I think 5.15.y needs the same skb_mac_header_was_set() /
-> skb_mac_header_len() guard added to dump_ipv6_mac_header(), thoughts?
-> 
-> And this is because 5.15.y doesn't have commit: 39ab798fc14d ("netfilter:
-> nf_log_syslog: Merge MAC header dumpers") so we need a similar adaption in
-> 5.15.y
-> 
-> I am still thinking having a TODO for these sorts of things might be worth
-> it, particularly because we will miss these easily where upstream commit is
-> backported(so nothing to backport from a git perspective) but that doesn't
-> fit downstream perfectly(so more work to do). Btw, its just a thought :)
+Certain third-party USB game controllers exposing (or spoofing) an Xbox
+360-compatible interface (VID:PID 045e:028e) fail to enumerate under Linux.
+The device disconnects from the bus without responding to the initial
+GET_DESCRIPTOR(CONFIGURATION) request, and the kernel logs 'unable to read
+config index 0 descriptor/start: -71'.
 
-Yes, a TODO would be great for this type of thing, if you can come up
-with a way it can be tracked/handled, I'd be all for it.
+The device then falls back to a secondary Android HID mode (with a
+different VID:PID), losing XInput functionality including rumble support.
+The failure reproduces across multiple machines, host controller types, and
+kernel versions including current mainline and LTS. The device enumerates
+correctly and remains in XInput mode under Windows. Notably, the device
+enumerates correctly in Android mode when the same aklsjdasd 9-byte request
+is issued for that mode's configuration descriptor, confirming the firmware
+bug is specific to the XInput mode.
 
-tanks,
+usbmon traces from Linux and Wireshark/USBPcap traces from Windows are
+identical up to the point of failure, with no visible protocol-level
+difference explaining the divergence. The root cause was identified when
+Michal Pecio discovered via a QEMU bus-level capture that Windows does not
+use wLength=9 for the initial config descriptor request; it uses
+wLength=255. This is not visible in Windows Wireshark/USBPcap traces
+because Windows routes enumeration-phase traffic to sniffers only after
+initialization completes. Alan Stern subsequently confirmed this with a bus
+analyzer on a different USB 2.0 device, and Michal verified the behavior
+goes back to Windows 95 OSR2.1.
 
-greg k-h
+So, add a new quirk flag USB_QUIRK_CONFIG_SIZE which causes
+usb_get_configuration() to issue a 255 byte sized configuration request
+instead of USB_DT_CONFIG_SIZE (9) for the initial
+GET_DESCRIPTOR(CONFIGURATION) request, mimicking long-standing Windows
+behavior.
+
+Suggested-by: Nikhil Solanke <nikhilsolanke5@gmail.com>
+Suggested-by: Alan Stern <stern@rowland.harvard.edu>
+Suggested-by: Michal Pecio <michal.pecio@gmail.com>
+Closes: https://lore.kernel.org/linux-usb/CAFgddh+JWdT4LLwMc5qjM8q_pBu-fRo2qADR5ovAKoGHWMQrRw@mail.gmail.com/
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: <stable@vger.kernel.org>
+
+Signed-off-by: Nikhil Solanke <nikhilsolanke5@gmail.com>
+---
+ drivers/usb/core/config.c  | 56 +++++++++++++++++++++++++++-----------
+ drivers/usb/core/quirks.c  |  3 ++
+ include/linux/usb/quirks.h |  4 +++
+ 3 files changed, 47 insertions(+), 16 deletions(-)
+
+diff --git a/drivers/usb/core/config.c b/drivers/usb/core/config.c
+index 45e20c6d76c0..623425cef085 100644
+--- a/drivers/usb/core/config.c
++++ b/drivers/usb/core/config.c
+@@ -912,6 +912,8 @@ int usb_get_configuration(struct usb_device *dev)
+ 	unsigned char *bigbuffer;
+ 	struct usb_config_descriptor *desc;
+ 	int result;
++	size_t usb_dt_config_size = (dev->quirks & USB_QUIRK_CONFIG_SIZE)
++		? USB_DT_CONFIG_SIZE_QUIRK : USB_DT_CONFIG_SIZE;
+ 
+ 	if (ncfg > USB_MAXCONFIG) {
+ 		dev_notice(ddev, "too many configurations: %d, "
+@@ -938,7 +940,8 @@ int usb_get_configuration(struct usb_device *dev)
+ 	if (!dev->rawdescriptors)
+ 		return -ENOMEM;
+ 
+-	desc = kmalloc(USB_DT_CONFIG_SIZE, GFP_KERNEL);
++	desc = kmalloc(usb_dt_config_size, GFP_KERNEL);
++
+ 	if (!desc)
+ 		return -ENOMEM;
+ 
+@@ -946,7 +949,7 @@ int usb_get_configuration(struct usb_device *dev)
+ 		/* We grab just the first descriptor so we know how long
+ 		 * the whole configuration is */
+ 		result = usb_get_descriptor(dev, USB_DT_CONFIG, cfgno,
+-		    desc, USB_DT_CONFIG_SIZE);
++		    desc, usb_dt_config_size);
+ 		if (result < 0) {
+ 			dev_err(ddev, "unable to read config index %d "
+ 			    "descriptor/%s: %d\n", cfgno, "start", result);
+@@ -957,26 +960,39 @@ int usb_get_configuration(struct usb_device *dev)
+ 			break;
+ 		} else if (result < 4) {
+ 			dev_err(ddev, "config index %d descriptor too short "
+-			    "(expected %i, got %i)\n", cfgno,
+-			    USB_DT_CONFIG_SIZE, result);
++			    "(expected %zu, got %i)\n", cfgno,
++			    usb_dt_config_size, result);
+ 			result = -EINVAL;
+ 			goto err;
+ 		}
+-		length = max_t(int, le16_to_cpu(desc->wTotalLength),
+-		    USB_DT_CONFIG_SIZE);
++		/* If the device does returns the full length configuration
++		 * descriptor, skip the second read. Fallback to default
++		 * behavior otherwise.
++		 */
++		if (dev->quirks & USB_QUIRK_CONFIG_SIZE
++				&& result == le16_to_cpu(desc->wTotalLength)
++				&& result < USB_DT_CONFIG_SIZE_QUIRK) {
+ 
+-		/* Now that we know the length, get the whole thing */
+-		bigbuffer = kmalloc(length, GFP_KERNEL);
+-		if (!bigbuffer) {
+-			result = -ENOMEM;
+-			goto err;
+-		}
++			bigbuffer = (unsigned char *) desc;
++			desc = NULL;
++			length = result;
++		} else {
++			length = max_t(int, le16_to_cpu(desc->wTotalLength),
++			    usb_dt_config_size);
++
++			/* Now that we know the length, get the whole thing */
++			bigbuffer = kmalloc(length, GFP_KERNEL);
++			if (!bigbuffer) {
++				result = -ENOMEM;
++				goto err;
++			}
+ 
+-		if (dev->quirks & USB_QUIRK_DELAY_INIT)
+-			msleep(200);
++			if (dev->quirks & USB_QUIRK_DELAY_INIT)
++				msleep(200);
+ 
+-		result = usb_get_descriptor(dev, USB_DT_CONFIG, cfgno,
+-		    bigbuffer, length);
++			result = usb_get_descriptor(dev, USB_DT_CONFIG, cfgno,
++			    bigbuffer, length);
++		}
+ 		if (result < 0) {
+ 			dev_err(ddev, "unable to read config index %d "
+ 			    "descriptor/%s\n", cfgno, "all");
+@@ -1000,6 +1016,14 @@ int usb_get_configuration(struct usb_device *dev)
+ 	}
+ 
+ err:
++	/* Log failed device's VID:PID pair to make it easy to debug and fix
++	 * enumeration and initialization issues
++	 */
++	if (result < 0) {
++		dev_err(ddev, "Failed to initialize device %04x:%04x due to above errors.",
++		    le16_to_cpu(dev->descriptor.idVendor), le16_to_cpu(dev->descriptor.idProduct));
++	}
++
+ 	kfree(desc);
+ 	dev->descriptor.bNumConfigurations = cfgno;
+ 
+diff --git a/drivers/usb/core/quirks.c b/drivers/usb/core/quirks.c
+index 87810eff974e..92219684a604 100644
+--- a/drivers/usb/core/quirks.c
++++ b/drivers/usb/core/quirks.c
+@@ -142,6 +142,9 @@ static int quirks_param_set(const char *value, const struct kernel_param *kp)
+ 				break;
+ 			case 'q':
+ 				flags |= USB_QUIRK_FORCE_ONE_CONFIG;
++				break;
++			case 'r':
++				flags |= USB_QUIRK_CONFIG_SIZE;
+ 			/* Ignore unrecognized flag characters */
+ 			}
+ 		}
+diff --git a/include/linux/usb/quirks.h b/include/linux/usb/quirks.h
+index b3cc7beab4a3..f864571da870 100644
+--- a/include/linux/usb/quirks.h
++++ b/include/linux/usb/quirks.h
+@@ -81,4 +81,8 @@
+ /* Device claims zero configurations, forcing to 1 */
+ #define USB_QUIRK_FORCE_ONE_CONFIG		BIT(18)
+ 
++/* Use a 255 byte sized config descriptor request */
++#define USB_QUIRK_CONFIG_SIZE			BIT(19)
++#define USB_DT_CONFIG_SIZE_QUIRK		255
++
+ #endif /* __LINUX_USB_QUIRKS_H */
+-- 
+2.54.0
+
 
