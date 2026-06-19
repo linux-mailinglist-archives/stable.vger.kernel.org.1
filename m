@@ -1,131 +1,194 @@
-Return-Path: <stable+bounces-267445-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267440-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id wHnoG9ioNWpj2gYAu9opvQ
-	(envelope-from <stable+bounces-267445-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 22:38:48 +0200
+	id kyLBFo6nNWrO2QYAu9opvQ
+	(envelope-from <stable+bounces-267440-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 22:33:18 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01D106A7AA9
-	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 22:38:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE94E6A7A56
+	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 22:33:17 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=none;
-	dmarc=none;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267445-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-267445-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=g3D1LZ9i;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267440-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-267440-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 806DE3055831
-	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 20:38:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0B28F3055D45
+	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 20:32:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 925D93B9D8C;
-	Fri, 19 Jun 2026 20:38:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 696BA3C1983;
+	Fri, 19 Jun 2026 20:32:00 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from proxima.lasnet.de (proxima.lasnet.de [78.47.171.185])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03C72330B30;
-	Fri, 19 Jun 2026 20:38:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E1CF3B95EC
+	for <stable@vger.kernel.org>; Fri, 19 Jun 2026 20:31:54 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781901519; cv=none; b=OgUi/rKaVuCpniqclDvTx7ehms/aDsyomoHpFEMMfLPePB8z4YbEhfRxXXsD7NzM7IoOnvREnLfRIPdJUVxidRgT2v0HqwenNtxvGOH9DMfhICFA4SuiQkxgs6KbL715Orsdb32SAKme3Edcttun20n3+iHbySjZsHsmwoos2PY=
+	t=1781901119; cv=none; b=rr15DbuSebXtBXxoreA5TEjAxBg6wzRkVQ0EPDERX5ydY88FU62q48DwhEzDvfSMQUV2z8gdcWjhVe0XTpSDIgeY7gRmsil+LmoSipm+UsYfyt7c9F6W6K8YQp7DkSVVv1k1zPE5mISEKtGg6qphUOr1V7q79ow87UPUICX4vrc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781901519; c=relaxed/simple;
-	bh=kKmXsHMakcX+AcUV5b9G2IEP7NtVx3VprW8uWnQOD1I=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=D1FlLcPnVesf3JwKZCSjp2LusSFfKeLGk7cqzMZd1bWLnGTiOA76Ef2Pl7JxTkUs3dKceNK0Yj4967FT+ak4HkJ6XNNUDmC5w02pby5gNeID12rJSml2LwK28A+2FsaiVST99B4T3P8kTa4ESC2YjGwDmuJZ6BoQcsOZ30cGubc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=datenfreihafen.org; spf=pass smtp.mailfrom=datenfreihafen.org; arc=none smtp.client-ip=78.47.171.185
-Received: from work.datenfreihafen.local (unknown [46.253.254.161])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: stefan@sostec.de)
-	by proxima.lasnet.de (Postfix) with ESMTPSA id 54EBAC0CC3;
-	Fri, 19 Jun 2026 22:30:08 +0200 (CEST)
-From: Stefan Schmidt <stefan@datenfreihafen.org>
-To: alex.aring@gmail.com,
-	miquel.raynal@bootlin.com,
-	Shitalkumar Gandhi <shital.gandhi45@gmail.com>
-Cc: Stefan Schmidt <stefan@datenfreihafen.org>,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-wpan@vger.kernel.org,
-	netdev@vger.kernel.org,
+	s=arc-20240116; t=1781901119; c=relaxed/simple;
+	bh=/E8mnLJj+epl51cgxm9LLIajhOl8c3FpUCtgX8rsvr0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=r34sJ9auKV5GXXHkzrqIS/B8HC7yPSFiE/wXBThpZqY8dgQZ3KRTkqmaoUa3hyaaG8dVW6m1um/OaCjnvS7nfhjRuHrO15vF6JzfdLKfBmbkEAsjEVsffOlBAUNRtpHAZa6A0++6MpqCnaVHaSYgTMteLZ+Y7F1ELyjFs/9xkiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=g3D1LZ9i; arc=none smtp.client-ip=209.85.219.46
+Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-8dd3fe9cf10so20302146d6.0
+        for <stable@vger.kernel.org>; Fri, 19 Jun 2026 13:31:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781901113; x=1782505913; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=izLjqw/INKe5R0s/VDFVyTgV/leWjpu/ky1a2+ufVt0=;
+        b=g3D1LZ9ivgMH6fOJAX9xq+Y80kPJKqGw1FWrPjJXgMuxl+EoOmFRKi6yOqWQYwm+H8
+         +aFzBW7jhL85OWl7gxKr18141VpS1sJhFJsITN/EmUjdSDjM56gl24ULOUv0Lj03Ywg1
+         x7bot0pT1clTjBjA5UHzMa8QqFmTiLw2y9dT7QGY2bztftF13HERJYHaue/1csRZFT9w
+         9m6RM+8dTmoWYemwgSidHVLdgJ1CVgiluFj0XIN+PQHZepaC1OzUFixCWY+DHrvceIXx
+         qjdMGj1ik4PPXiGfSgJuLbXK1jeqKzudOgRZyKUYo8sT/bkaNTLBxWBlnRXIX0F+AzX1
+         WElw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781901113; x=1782505913;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=izLjqw/INKe5R0s/VDFVyTgV/leWjpu/ky1a2+ufVt0=;
+        b=CJng3ozFEbgDGaOiOzxi464uv/y0N3eVBCys4uK0ASwOOSQA/RnaOQ5e2kaP4EMrnj
+         z9LAgtn7xnFpwnXMuUdUkkLsDFz9ZCtxXksr7N6yuWh4nkWbGeMYG/r1SHAPrt26OiVa
+         vhdFR+r1rlzkbnbf9LYVWXCkfWhbTpFDFYoe/QfMiGHNrwF+A/PJE/wUqNiyu5AcmhTm
+         wf1ueWZMfAi8FAEDu3nTJnFipqJOvuvrXmVRXU9V6GU/Be9g0FMHNzGsk/zeroT654dY
+         SobqFhjLSHimw+u11oh+aK6TixgJQmFCEfc5/E9TqexzQ40qIc+eLDjtZrj8UnfQfxeX
+         5xjg==
+X-Gm-Message-State: AOJu0YyWqtAYQe1oL7brwy9gGHom97oTrx35Ypna3xg9Ml0whEnoRSDB
+	9Qv5zuNsuElLzceNH7+o+BKhNFLh1LI1qSR2t1sDov44OCPSaH1c1hdVCreqSP0b7Yg=
+X-Gm-Gg: AfdE7ckTHGwqm+b5ihPMVW4odJG6N4oa7o2+Q0ay4+2uLaksfrO+Z46bUvKam/FchqG
+	i04AY79bjltB2MxwrFLsMzuANj6QbDmCg0mgsEdpfPBOV400zEG9AdKgpNrv4VtcqthuHn4BII+
+	FcQtjALm4nn8Omct7UnL+ZKKQVfWtvAgd6rQWxBvaD+NuJtJaKx0IfdwU/Yz54GsAWB8JMvc60V
+	nA9O6AWouz54XaEMHOdVjk8VMdgETPOZW7m4+Mlv+bQOm88g/gK9c0hjD3W37G+WJcomtDRwblp
+	MoI3j9VYi9xHNX7IadQWB9GsyJGsjqdSCYusHU3wQgiU1rbw4Xd3YctVlIXrcDqIY+l9O8065g9
+	wfFDJK61n/o4+bqRVwg29n3VvFMgDlQDMZIaPcib/2BTt6fu7Dlai71KcJmMdqzEND6H/gF1KYS
+	IjsxZl4iS6bQULDUM=
+X-Received: by 2002:a0c:e00a:0:b0:8ce:cada:9ce9 with SMTP id 6a1803df08f44-8de40dfe555mr76250166d6.21.1781901113220;
+        Fri, 19 Jun 2026 13:31:53 -0700 (PDT)
+Received: from TurinLinux.. ([37.19.212.13])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8df7f015805sm11106986d6.1.2026.06.19.13.31.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 19 Jun 2026 13:31:52 -0700 (PDT)
+From: Nicholas Dudar <main.kalliope@gmail.com>
+To: stable@vger.kernel.org
+Cc: seanjc@google.com,
+	pbonzini@redhat.com,
+	gregkh@linuxfoundation.org,
+	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Shitalkumar Gandhi <shitalkumar.gandhi@cambiumnetworks.com>
-Subject: Re: [PATCH] ieee802154: ca8210: fix cas_ctl leak on spi_async failure
-Date: Fri, 19 Jun 2026 22:29:42 +0200
-Message-ID: <178190096345.793016.14917236922404403238.b4-ty@datenfreihafen.org>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260421073259.2259783-1-shitalkumar.gandhi@cambiumnetworks.com>
-References: <20260421073259.2259783-1-shitalkumar.gandhi@cambiumnetworks.com>
+	0wn@theori.io,
+	mlevitsk@redhat.com,
+	jmattson@google.com,
+	Nicholas Dudar <main.kalliope@gmail.com>
+Subject: [PATCH v2 6.1.y 0/3] KVM: nVMX: backport virtual-APIC host NULL-deref fix
+Date: Fri, 19 Jun 2026 16:31:04 -0400
+Message-Id: <20260619203107.2752678-1-main.kalliope@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.04 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:alex.aring@gmail.com,m:miquel.raynal@bootlin.com,m:shital.gandhi45@gmail.com,m:stefan@datenfreihafen.org,m:andrew+netdev@lunn.ch,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:linux-wpan@vger.kernel.org,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:shitalkumar.gandhi@cambiumnetworks.com,m:alexaring@gmail.com,m:shitalgandhi45@gmail.com,m:andrew@lunn.ch,s:lists@lfdr.de];
-	DMARC_NA(0.00)[datenfreihafen.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[gmail.com,bootlin.com];
-	FORGED_SENDER(0.00)[stefan@datenfreihafen.org,stable@vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	TAGGED_FROM(0.00)[bounces-267445-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FREEMAIL_CC(0.00)[google.com,redhat.com,linuxfoundation.org,vger.kernel.org,theori.io,gmail.com];
+	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[stefan@datenfreihafen.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	R_DKIM_NA(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_FROM(0.00)[bounces-267440-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:seanjc@google.com,m:pbonzini@redhat.com,m:gregkh@linuxfoundation.org,m:kvm@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:0wn@theori.io,m:mlevitsk@redhat.com,m:jmattson@google.com,m:main.kalliope@gmail.com,m:mainkalliope@gmail.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[mainkalliope@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[mainkalliope@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,datenfreihafen.org:mid,datenfreihafen.org:from_mime]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 01D106A7AA9
+X-Rspamd-Queue-Id: AE94E6A7A56
 
-Hello Shitalkumar Gandhi.
+This series backports the fix for a guest-triggerable host NULL pointer
+dereference in nested-VMX virtual-APIC handling. The bug is present in 6.1.y
+and fixed in 6.6.y and later.
 
-On Tue, 21 Apr 2026 13:02:59 +0530, Shitalkumar Gandhi wrote:
-> ca8210_spi_transfer() allocates cas_ctl with kzalloc_obj(GFP_ATOMIC)
-> and relies entirely on the SPI completion callback
-> ca8210_spi_transfer_complete() to free it.
-> 
-> The spi_async() API only invokes the completion callback on successful
-> submission.  On failure it returns a negative error code without ever
-> queuing the callback, which leaves cas_ctl and its embedded spi_message
-> and spi_transfer orphaned.  Every kfree(cas_ctl) in the driver is
-> inside the completion callback, so there is no other reclamation path.
-> 
-> [...]
+vmx_guest_apic_has_interrupt() tests vmx->nested.virtual_apic_map.gfn to
+decide the virtual-APIC page is mapped, then reads through
+vmx->nested.virtual_apic_map.hva. kvm_vcpu_unmap() clears .hva but not .gfn,
+so after the page is unmapped an L1 guest using virtual-interrupt delivery
+passes the .gfn check with .hva == NULL and the host faults reading
+NULL + APIC_PROCPRI (CR2 = 0xa0). 96c66e87deee introduced the .gfn check.
+The function is still present at 6.1.176.
 
-Applied to wpan/wpan-next.git, thanks!
+The upstream fix, 321ef62b0c5f, deletes the function. It carries a stable tag
+but did not apply to 6.1.y. The failed-apply notice [1] lists the SEV-SNP
+series as a dependency, but that series is not required, and the backport builds
+fine without it.
 
-[1/1] ieee802154: ca8210: fix cas_ctl leak on spi_async failure
-      https://git.kernel.org/wpan/wpan-next/c/e09390e439bd
+321ef62b0c5f edits the vmx_has_nested_events() body that 27c4fa42b11a adds,
+and 27c4fa42b11a calls pi_find_highest_vector() from d83c36d822be. The series
+is those three commits in that order. The rest of the June 2024 series is
+already in 6.1.y.
 
-regards,
-Stefan Schmidt
+Sean asked for the series to be backported rather than kvm_vcpu_unmap()
+patched [2].
+
+6.1.y predates the vmx main.c / x86_ops.h split, so patch 3 removes the hook
+from vmx_x86_ops in vmx.c. The resulting vmx_has_nested_events() matches
+6.6.y. The injection path is unchanged; only the wake path that reached the
+dereference changes.
+
+Reported by Taeyang Lee.
+
+[1] https://lore.kernel.org/all/2024072925-straw-mashing-54f6@gregkh
+[2] https://lore.kernel.org/all/CAH-2XvJo_JiyAnb21_LYxSz8xZ96oUVF25eTnDyALF+wnZw8ww@mail.gmail.com/
+
+Changes since v1:
+- v1 reached stable@ without this cover letter and with an incomplete Cc,
+  due to a git send-email error on my end. No code changed.
+
+Sean Christopherson (3):
+  KVM: nVMX: Add a helper to get highest pending from Posted Interrupt
+    vector
+  KVM: nVMX: Check for pending posted interrupts when looking for nested
+    events
+  KVM: nVMX: Fold requested virtual interrupt check into
+    has_nested_events()
+
+ arch/x86/include/asm/kvm-x86-ops.h |  1 -
+ arch/x86/include/asm/kvm_host.h    |  1 -
+ arch/x86/kvm/vmx/nested.c          | 45 +++++++++++++++++++++++++++---
+ arch/x86/kvm/vmx/posted_intr.h     | 10 +++++++
+ arch/x86/kvm/vmx/vmx.c             | 21 --------------
+ arch/x86/kvm/x86.c                 | 10 +------
+ 6 files changed, 52 insertions(+), 36 deletions(-)
+
+--
+2.34.1
 
