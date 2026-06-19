@@ -1,264 +1,124 @@
-Return-Path: <stable+bounces-267363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267353-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id LXorJxETNWqemgYAu9opvQ
-	(envelope-from <stable+bounces-267363-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 11:59:45 +0200
+	id dxLeNpQPNWoJmgYAu9opvQ
+	(envelope-from <stable+bounces-267353-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 11:44:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17A466A513F
-	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 11:59:45 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44A166A5061
+	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 11:44:52 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=broadcom.com header.s=google header.b=WyIWBXhZ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267363-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267363-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=reject) header.from=broadcom.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Q2mIeMKx;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267353-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267353-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A5890301AB8B
-	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 09:58:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3DC22301628F
+	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 09:44:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0863C36D9F1;
-	Fri, 19 Jun 2026 09:58:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56D433624DB;
+	Fri, 19 Jun 2026 09:44:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f99.google.com (mail-qv1-f99.google.com [209.85.219.99])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD2C63314DE
-	for <stable@vger.kernel.org>; Fri, 19 Jun 2026 09:58:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC92224B28;
+	Fri, 19 Jun 2026 09:44:48 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781863093; cv=none; b=O1jF9zEuNLdgf0t31XoV/5nW0/ahyeo4orb0aVINZMMJflyBaOkWb5jpkL5Pv57oKmf/VUT0UKPtp4VWipkdLwF5NoOGOPxC//FmFMugk+f+UuZyI/x7MIfAdo+jU05pBaWJAYhS/FsTx/bYt4zQKRXNubFfQloe5FETKgP36vg=
+	t=1781862290; cv=none; b=YNokJ43p7q2eg7xmv0Yqkap1FK2Zzka43a23zt/VMa+AVVuCxwbwvaEIpKXA95tyyC8JJW5wSrnw2uRIKj23kk4Augs/hg752X2qyeO08cpAxyiKqItX+x6WNipkKXJeVLyDvQT6wjvW+cQ68XXrCtIpF/lbop+UDFYqrr4GEDs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781863093; c=relaxed/simple;
-	bh=uTQGVxJp6sa5nGg1fan4r/Fv6LYC2ueA0DG3l4AmA8E=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=G3WrH2C+LTlDt4OqlOoq8xmn/jwqND3t72BU1kaId+21dRsT7bbRGbgDNkOzKRxhkVWVtwLXeUwzWSpb/qPdmE2R4qzJ2TFWRJS5diKKkJK4dbuHod/Z3rVc9idxzwDU23ol1Q7eyEFaV051UepPmYfePnjEbmvFTGqs/XA1gUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=WyIWBXhZ; arc=none smtp.client-ip=209.85.219.99
-Received: by mail-qv1-f99.google.com with SMTP id 6a1803df08f44-8de7bfa31d5so7758786d6.1
-        for <stable@vger.kernel.org>; Fri, 19 Jun 2026 02:58:08 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781863088; x=1782467888;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:dkim-signature:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=K+BCE++6dnn9vpZ/E1d7WFQ8H+QlVa8C9fwXmSQekOc=;
-        b=dYZE2qQhkwfgkz//M98ZRusD2miCDc/zlkKsQID6IUTDR/Y8n7TsSOckyfr29opSd3
-         1lu7Htwvt2GcxXMGRqbdD2vGxiqrwyYMdsYdHPbZtKDoLnnTBGvI8PHufiv5yUo3piGj
-         T6p/1BsLm6IhTKfnG/02HIu/QRgwwlacIiOZoDIfngu/DkXfxcgnTkdP2sxi/Ab7xElE
-         7cwfUdZvUY+Ia+UYtlXfNh7Tvl8AmSbGu3kzCSpsqGEYlxY4NDfQAQ75fA90fY+JUO5o
-         lf4dgM+HCxb7zL+lHkucfqF8+1OxlgFTzG2MVachkHtepgwTh0WJNagQq2hDWXubCz7B
-         f6og==
-X-Gm-Message-State: AOJu0YwC3mLyvhygpN++545pnJB7lUXZGFO6HA9Ako4XBUfRe0cyAhNc
-	tn2fO3+gtcUg0UsnpE/UJ69yujgSog4XSv0lXOwxdNo118LvO43/oObormz8+C2SqFCJS39uLFD
-	wBVbiiJupqtqZF/jvGdHivku/cG/WXizb6gty06s7bWRhNMEg2uDdSIyyBuSnSUzFCTbpkGHNVK
-	iB6SoCv2F00gdszVAoxAYyuKgLXbbCcTVo/YjxFaSYhybBloPf9UOslkU1ufy7v83w5rPUhVPw0
-	LOhP5wjRqnOXCDKvg==
-X-Gm-Gg: AfdE7clOie77BPNVEWrtxOyHUSnMblKzrn+iEwYVo/V80e75rbjDocZpSnQ+tnU/WUA
-	vVfuZWKBTz2o00FJ9rW0JuaVmF2VR6VfV0mO/vFk6PQ26uKkMposgcYWOt6pXJUbMPJFXuFlHuu
-	dPlqKXrp19KeZW6grZc2yh+dlrv3B7nZkMZHrrvYZx1YkpgNOYM9zm3grByIW9X26Xb5L1+k00P
-	ZpwsyaUBv68jreB3BbyAvSVTGTL6k/xbk1If81X3aRHhqZ4W/Sbh0DyqYDD54TqNHYJzeMjVwER
-	Z9pIDa4mZt1b4IKvpJPMLXEKMrBS68lGDTDaks4O3eaVZ/gr3Fkwbqo2VsQyYoYxXAGBP4v0bJO
-	5SbtDsnl3HC/E+cV1eY3wdvrOdk2aF8A+rznIoYuonhVI3/senRqc62T08THKiEwrHfOEu1qdFS
-	Xgbp3Uu1EyS2PrfQGaXoqwStXJvM9n3qf3SWhLX6Dnm3GBDF1M3g==
-X-Received: by 2002:a0c:f012:0:b0:8db:81cd:4e3e with SMTP id 6a1803df08f44-8de3f1b91fdmr42379296d6.4.1781863087623;
-        Fri, 19 Jun 2026 02:58:07 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-18.dlp.protect.broadcom.com. [144.49.247.18])
-        by smtp-relay.gmail.com with ESMTPS id 6a1803df08f44-8de61757140sm1001646d6.27.2026.06.19.02.58.07
-        for <stable@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 19 Jun 2026 02:58:07 -0700 (PDT)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-dy1-f197.google.com with SMTP id 5a478bee46e88-30c13bb8ca9so206665eec.0
-        for <stable@vger.kernel.org>; Fri, 19 Jun 2026 02:58:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1781863086; x=1782467886; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=K+BCE++6dnn9vpZ/E1d7WFQ8H+QlVa8C9fwXmSQekOc=;
-        b=WyIWBXhZupzBFdl1r8dQIqLHoIx7lcpk1uOHh8p4P+6Nwu4tyARNVP9EiDJbIEJutM
-         gfH4DdwDV36PILIutZIVEpHgFJaCIvGK2EGhsb+eIeVgsa3cGgwD/NlP95Xssbj4uIIm
-         hsjXbBK/xWIusy9F5RbiMiS5rusFFaQM/anY8=
-X-Received: by 2002:a05:7301:4083:b0:2da:2ec2:64e5 with SMTP id 5a478bee46e88-30c070ee980mr1774521eec.18.1781863086404;
-        Fri, 19 Jun 2026 02:58:06 -0700 (PDT)
-X-Received: by 2002:a05:7301:4083:b0:2da:2ec2:64e5 with SMTP id 5a478bee46e88-30c070ee980mr1774490eec.18.1781863085710;
-        Fri, 19 Jun 2026 02:58:05 -0700 (PDT)
-Received: from shivania.lvn.broadcom.net ([192.19.161.250])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30c06d5bec5sm1851910eec.26.2026.06.19.02.58.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Jun 2026 02:58:05 -0700 (PDT)
-From: Shivani Agarwal <shivani.agarwal@broadcom.com>
-To: stable@vger.kernel.org,
-	gregkh@linuxfoundation.org
-Cc: pablo@netfilter.org,
-	fw@strlen.de,
-	phil@nwl.cc,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	ajay.kaher@broadcom.com,
-	alexey.makhalov@broadcom.com,
-	vamsi-krishna.brahmajosyula@broadcom.com,
-	yin.ding@broadcom.com,
-	tapas.kundu@broadcom.com,
-	Inseo An <y0un9sa@gmail.com>,
-	Li hongliang <1468888505@139.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Shivani Agarwal <shivani.agarwal@broadcom.com>
-Subject: [PATCH v6.1 3/3] netfilter: nf_tables: unconditionally bump set->nelems before insertion
-Date: Fri, 19 Jun 2026 02:28:50 -0700
-Message-Id: <20260619092850.1274076-4-shivani.agarwal@broadcom.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260619092850.1274076-1-shivani.agarwal@broadcom.com>
-References: <20260619092850.1274076-1-shivani.agarwal@broadcom.com>
+	s=arc-20240116; t=1781862290; c=relaxed/simple;
+	bh=YJjsplBXA/Xq/QxZsOPrbiL8KWnBm27J4X4az8Skpfw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QCdRwrUREDgxsbWYLbwWFImaOR/0IjjJskX61xpgzimLRfJ6yf0fkNCiS9qMtbRBGsq3gaS6I47TmKFxBpAPMuXHVg0gxGOcCuaZAP95Qb/J/3K77UgzvnscpIELZ0xP2mkUvZ2gjdzjvxv737JL10RP5yYqfou8/dE23HqEc4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q2mIeMKx; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B154F1F000E9;
+	Fri, 19 Jun 2026 09:44:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1781862288;
+	bh=v1DvtncW9sxlEd80Ac4+Js1tO1vrXbjdLJ1eUD9a+dQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Q2mIeMKxr9w5K3LB/ZeItslA2luQpYE3eXU41HhAqxqjhA3Uq8AnDY5FRuL8fwO0/
+	 xH9N02VTtF5nD7w3UEIpjeuvhmlIxov9g8emBi5gb7cn6TBK+pJZBWN668/ClmI3/j
+	 lI/fDcpluPPefe3FMDLmf2cggPchXHvmbDe5q29s=
+Date: Fri, 19 Jun 2026 11:43:41 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Thorsten Leemhuis <regressions@leemhuis.info>
+Cc: Sasha Levin <sashal@kernel.org>,
+	Linux kernel regressions list <regressions@lists.linux.dev>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: Some 7.1-post fixes that might be worth picking up rather sooner
+ than later
+Message-ID: <2026061917-flinch-idealism-898f@gregkh>
+References: <91281f28-eccf-4681-8f62-faaa8a3ba529@leemhuis.info>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <91281f28-eccf-4681-8f62-faaa8a3ba529@leemhuis.info>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	WHITELIST_DMARC(-7.00)[broadcom.com:D:+];
-	SEM_URIBL(3.50)[139.com:email];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	BAD_REP_POLICIES(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-267363-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FREEMAIL_CC(0.00)[netfilter.org,strlen.de,nwl.cc,davemloft.net,google.com,kernel.org,redhat.com,vger.kernel.org,broadcom.com,gmail.com,139.com];
-	R_DKIM_ALLOW(0.00)[broadcom.com:s=google];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:pablo@netfilter.org,m:fw@strlen.de,m:phil@nwl.cc,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:horms@kernel.org,m:netfilter-devel@vger.kernel.org,m:coreteam@netfilter.org,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:ajay.kaher@broadcom.com,m:alexey.makhalov@broadcom.com,m:vamsi-krishna.brahmajosyula@broadcom.com,m:yin.ding@broadcom.com,m:tapas.kundu@broadcom.com,m:y0un9sa@gmail.com,m:1468888505@139.com,m:sashal@kernel.org,m:shivani.agarwal@broadcom.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[shivani.agarwal@broadcom.com,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[23];
 	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-267353-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:regressions@leemhuis.info,m:sashal@kernel.org,m:regressions@lists.linux.dev,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[lists@lfdr.de];
-	DMARC_POLICY_ALLOW(0.00)[broadcom.com,reject];
-	DKIM_TRACE(0.00)[broadcom.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[netfilter.org:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,strlen.de:email,vger.kernel.org:from_smtp,broadcom.com:dkim,broadcom.com:email,broadcom.com:mid,broadcom.com:from_mime,139.com:email];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[shivani.agarwal@broadcom.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	R_SPF_ALLOW(0.00)[+ip6:2600:3c0a:e001:db::/64:c];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,gregkh:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 17A466A513F
+X-Rspamd-Queue-Id: 44A166A5061
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+On Fri, Jun 19, 2026 at 08:04:35AM +0200, Thorsten Leemhuis wrote:
+> Hi Stable Team! From the regressions point I think it might be nice to
+> pick up the following changes for the next round of stable updates (e.g.
+> 7.1.2), as they seem to fix regressions I've seen multiple people report
+> with 7.1:
+> 
+> * 426e5846eba75f ("HID: Input: Add battery list cleanup with devm action")
+> * 12f58a6caad3be ("drm/amd/display: Fix Color Manager (3DLUT, Shaper,
+> Blend)") [v7.1-post]
+> * 342981fff32802 ("drm/amdgpu: drop retry loop in
+> amdgpu_hmm_range_get_pages") [v7.1-post] (Alex provided a backport for
+> this in
+> https://lore.kernel.org/all/20260616130531.738887-1-alexander.deucher@amd.com/
+> - this one affects 7.0.12, too)
 
-[ Upstream commit def602e498a4f951da95c95b1b8ce8ae68aa733a ]
+I took the first and last for now, the middle one is "big" so I'll wait
+for the next round of -rcs for it.
 
-In case that the set is full, a new element gets published then removed
-without waiting for the RCU grace period, while RCU reader can be
-walking over it already.
+thanks,
 
-To address this issue, add the element transaction even if set is full,
-but toggle the set_full flag to report -ENFILE so the abort path safely
-unwinds the set to its previous state.
-
-As for element updates, decrement set->nelems to restore it.
-
-A simpler fix is to call synchronize_rcu() in the error path.
-However, with a large batch adding elements to already maxed-out set,
-this could cause noticeable slowdown of such batches.
-
-Fixes: 35d0ac9070ef ("netfilter: nf_tables: fix set->nelems counting with no NLM_F_EXCL")
-Reported-by: Inseo An <y0un9sa@gmail.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-[ Minor conflict resolved. ]
-Signed-off-by: Li hongliang <1468888505@139.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-[ Shivani: Modified to apply on 6.1.y ]
-Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
----
- net/netfilter/nf_tables_api.c | 28 +++++++++++++++-------------
- 1 file changed, 15 insertions(+), 13 deletions(-)
-
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 15bfdf07c..196ac4e76 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -6388,6 +6388,7 @@ static int nft_add_set_elem(struct nft_ctx *ctx, struct nft_set *set,
- 	struct nft_data_desc desc;
- 	enum nft_registers dreg;
- 	struct nft_trans *trans;
-+	bool set_full = false;
- 	u64 timeout;
- 	u64 expiration;
- 	int err, i;
-@@ -6680,10 +6681,18 @@ static int nft_add_set_elem(struct nft_ctx *ctx, struct nft_set *set,
- 	if (err < 0)
- 		goto err_elem_free;
- 
-+	if (!(flags & NFT_SET_ELEM_CATCHALL)) {
-+		unsigned int max = nft_set_maxsize(set), nelems;
-+
-+		nelems = atomic_inc_return(&set->nelems);
-+		if (nelems > max)
-+			set_full = true;
-+	}
-+
- 	trans = nft_trans_elem_alloc(ctx, NFT_MSG_NEWSETELEM, set);
- 	if (trans == NULL) {
- 		err = -ENOMEM;
--		goto err_elem_free;
-+		goto err_set_size;
- 	}
- 
- 	ext->genmask = nft_genmask_cur(ctx->net);
-@@ -6715,23 +6724,16 @@ static int nft_add_set_elem(struct nft_ctx *ctx, struct nft_set *set,
- 		goto err_element_clash;
- 	}
- 
--	if (!(flags & NFT_SET_ELEM_CATCHALL)) {
--		unsigned int max = nft_set_maxsize(set);
--
--		if (!atomic_add_unless(&set->nelems, 1, max)) {
--			err = -ENFILE;
--			goto err_set_full;
--		}
--	}
--
- 	nft_trans_elem(trans) = elem;
- 	nft_trans_commit_list_add_tail(ctx->net, trans);
--	return 0;
- 
--err_set_full:
--	nft_setelem_remove(ctx->net, set, &elem);
-+	return set_full ? -ENFILE : 0;
-+
- err_element_clash:
- 	kfree(trans);
-+err_set_size:
-+	if (!(flags & NFT_SET_ELEM_CATCHALL))
-+		atomic_dec(&set->nelems);
- err_elem_free:
- 	nf_tables_set_elem_destroy(ctx, set, elem.priv);
- err_parse_data:
--- 
-2.53.0
-
+greg k-h
 
