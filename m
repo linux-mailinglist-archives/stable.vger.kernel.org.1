@@ -1,93 +1,93 @@
-Return-Path: <stable+bounces-267362-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267364-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 9VkDDbkSNWqNmgYAu9opvQ
-	(envelope-from <stable+bounces-267362-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 11:58:17 +0200
+	id R6jmGSMTNWqxmgYAu9opvQ
+	(envelope-from <stable+bounces-267364-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 12:00:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C03AC6A5127
-	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 11:58:16 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEE4E6A5154
+	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 12:00:02 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=broadcom.com header.s=google header.b=WCtI4nRV;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267362-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267362-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=broadcom.com header.s=google header.b=iO7vLZGs;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267364-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267364-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=reject) header.from=broadcom.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1BE7330055B3
-	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 09:58:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CAF5F3043463
+	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 09:58:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E9D2368D50;
-	Fri, 19 Jun 2026 09:58:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B928D36AB61;
+	Fri, 19 Jun 2026 09:58:14 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ua1-f100.google.com (mail-ua1-f100.google.com [209.85.222.100])
+Received: from mail-oo1-f97.google.com (mail-oo1-f97.google.com [209.85.161.97])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BD58367297
-	for <stable@vger.kernel.org>; Fri, 19 Jun 2026 09:58:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0E65369D5E
+	for <stable@vger.kernel.org>; Fri, 19 Jun 2026 09:58:07 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781863089; cv=none; b=jvhrLRmzHBbEixGe3mz/Pp02s0pRrIMc7PvFeWK6OZ11hFtvZUdDVQc64rMa2q22fxyPKTCPj8appLZJ7ojEDCOlPPfY6uc48LeGvNhivHFSl5BepiQgy5Cmq0A1OggbfmpWR1gwDXh+QLFv01idmIYWp+GHQJwc0jOGfNbLNXA=
+	t=1781863094; cv=none; b=Ze2LMbaRVf3eVnAY3C1mx5bVAPNJW0VJpFdq4V2g92YhDZaDB3a2rvtYG0fp0Aaz7NJINe2O/FgWwHRmj+M2yQoEBLf0PChOLDPgyjEuiKY+ncrdryqO0ALfcuOzXvm4xq47cvWPzbAhuSjXg9PxKT9KoI6SEvyV4jl0UBtm18s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781863089; c=relaxed/simple;
-	bh=gnqYplrvnOKhysmkaWxCDnkGO5zvC2BvTJjxuHPuzak=;
+	s=arc-20240116; t=1781863094; c=relaxed/simple;
+	bh=IEn6N3iU6QjaodYk5qDEpFHlgrN2QjMwqgISplwfHP4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=YPkkdol6109Ujr37MBmJppQLgYNPC27WxNkGc0h2JmSVyTrjKqhHAmKqoZSy1mIn0q5+Xnghq2BwZpNeirDMeBmlC+uxz9xM7ZffkFO1K+jLVZeDo9nMzQomPo2P6QA6imu6ulCImu8uqHI15IseBIiKDnuLo9Z2kf5V/1H8ZHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=WCtI4nRV; arc=none smtp.client-ip=209.85.222.100
-Received: by mail-ua1-f100.google.com with SMTP id a1e0cc1a2514c-966c74ebc1bso1404401241.2
-        for <stable@vger.kernel.org>; Fri, 19 Jun 2026 02:58:05 -0700 (PDT)
+	 MIME-Version; b=B35dhwD/vrTEiO7TsuF4nSKIsvSg/pm0QhlUtTdhV/Xn4fOg/PvGpM1gYRSYz3OKNeP3zufLd5NoxysAGTdRssZTHXj/zAtmVeA7FFRhkT6k1tpTqAYpQcyVW07h5tY2jl+35ZJLQlYp6Bc01RnisttQEC+e3CHTs2+JclHNLh4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=iO7vLZGs; arc=none smtp.client-ip=209.85.161.97
+Received: by mail-oo1-f97.google.com with SMTP id 006d021491bc7-6a0b1edbe32so1681967eaf.1
+        for <stable@vger.kernel.org>; Fri, 19 Jun 2026 02:58:07 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781863084; x=1782467884;
+        d=1e100.net; s=20251104; t=1781863086; x=1782467886;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:dkim-signature:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=RMj6/kEzjl1ru5UHUZhZ/YyeC10jEp1W8ogblv+QKRE=;
-        b=Zex5R9GW8LH8evFVNcC56LxqWUJcYM5xgkY1o4witsLGQ6IfEMXoAuJ70HTXC4OWOw
-         WlDC87tHJrZB+H42f37kqhR8dXMsCcGHX+b2d6pbWUpiURgq5y6hf7qBVvyIFg3uAUV6
-         ISbkUaPwg7V+Mj1yPlZ2SUeVhhpZUWQoKmmtIKUxD0lgN7Uh1xMhg7013aaZN/aB2GWl
-         kvzpG75eSqglKrEAJniLC1e8a6MGZS4CB+ymPqd3Ds9FUY4EEbIxbzN+00/X8M7V/tCw
-         0Bo1gIas9XUD9h1SKkaJ2oaZ5AXsLiI97MwrVmdQejMfafniSNJjJIZqxNhwvRG2ZcZo
-         CdiA==
-X-Gm-Message-State: AOJu0Yy1uACbzXKCe33BNHBjyJFs6RUglI/h07kCpksBlYZCzEJxuHJv
-	/CoeEPMAuoplZyzSZhesFjiiCZMtiF0lQlSd2ubcI8vJEG0n95m5a6DpXshuNmeTfQgGdhpMIUq
-	qpqXxvld13+L4WAC/5ky8SYvM8IpOXXmggkzYpTiNNIeE/BjCZIfSfzsdm4OZwn1Ew1RHqYlS0/
-	SdJ/lg9zA8WDb1x3P3IUx28ptX5EOqEOjbauZvgRvSBjcRDzjEHgTjKHVe1OpdQfJnXMO2jrk/c
-	XRv0EksPXf+peUR9g==
-X-Gm-Gg: AfdE7cm6mvKAxyAuHH7YbcRp48pp0naEmDn8haXV+OVPXisMZJIXbVIRS49MVygqDcU
-	I8RTo9BGw2qlAmQTiy3L/hjywDC/iaVYSlfx3/MVJiAWtBziX1jdRr2eOHMiG8kqOEpX35iBrSV
-	qwjdqJZaI3vqvLH/fyVgl1keYe5idOeWOvzfnam9GfUIu+cm0i21K3xfKs6CxtZmNgcRecYRlpX
-	GDXxivNOQFE/KtC/RjbfAS930pLwnIW6Uc/2vuL9hVwS/Oqc8XI5/4X0o7rFRCaoNweOHIA313d
-	TgF9wD00As/DpxhOpMhnRCyHdtOQa740+hGMuAujQrQ+CPCXHx9alk2bdpsDdwPaZ0YczUcJdOa
-	rGdT1+EQN0B388My423pSMfZOr4H9j+KcY1agipzitSPmEgNKv2WNpUOgSHCVKSZYHI8eCJ3ncJ
-	wwyRVZs/um0ucT0J3tYydi7iIR/9FOmx9p/nSArUBd/WCEtwN9F/QI
-X-Received: by 2002:a05:6102:390d:b0:643:80f1:350a with SMTP id ada2fe7eead31-72a0154bf73mr2372863137.2.1781863084322;
-        Fri, 19 Jun 2026 02:58:04 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-117.dlp.protect.broadcom.com. [144.49.247.117])
-        by smtp-relay.gmail.com with ESMTPS id ada2fe7eead31-72a3491308esm152545137.12.2026.06.19.02.58.03
+        bh=0w1vsxUJI0JQJt2Tz8nUeF9KKHPDE+aPNVG7KYxhUoA=;
+        b=du6xFcMJmvzA4JcnLbjmbBK3fyLsfM2fnbjbKphKPJqXrNooZRCx7teQRT3MSQD3oO
+         pJtBma7QnZZ5jVDME5PIPdaxaKDJDO6FvE3hFZ8MiNaNumqttT2pE/i7UL2bh1jQovud
+         8cl/XEaz2QdaMY6Zg1M5IWaxPRrUIqUaoHnBzvjY310EJxUEHmKBszfFDqZDLYXKGvDI
+         B5C4tjiTMxH0Kx63r54aVO5B+C/qS/cETSAPkWEvidJ/w884UQlxjWqR/lWtebV+3c8n
+         BkeM7K9shy0sN5m/sWkxLnIpyzRDG4W8Fa2cCyGY0vDopgBova3/GyzEwJSNbr7XWzwa
+         Q5Yg==
+X-Gm-Message-State: AOJu0YyWOWaZo5TDWOv2+UGxavcARck+lUR0ai3j/zcV1ARD/VDCqIEV
+	Jb28GRrNjzMEhLZXFKmwod/vaK704xhrO4Blr6zMum8gWMVm/cHFcq80OX+C9z9rOZdWtQzkxbx
+	IZjKiCSdA7EArwrrs1NnE+pJcELAH+7MsYRnWYzTQmUdyxM8Bi8JPiN1XlaUZZ1EFIqnW04HMar
+	GQ/AfjgDVY6Xs8ZLKA7J1liTAwCUL1VFYk1WYuM/ItMDmnHEisGfpGMKlTnTkX2JPrEg2i/W1GJ
+	Y8+Au5rebX4QHR3XA==
+X-Gm-Gg: AfdE7ckKbz8cGEqi7AoprIgMm9NIw7jKcHsf4m2wjAmqX20RGpBy/J/5aHUsY7ve/Ce
+	bUWr+jnHhlXKHHkMDFTZdRdvYapUHCNwe8OvrNM5Q7EsHradOL+7QhCccv3rucqs6oCIjqA6k+u
+	TOx8hIrZO+9ska+byt4ZHcV0rDX/aFp9e+qNtesRdla+Y4OBSuLpEVSHzFTAySp/Dtaig2H0Rqt
+	WJqBt0A/6V5ykCBneSrSvN48teO8fSwdNFrVuq8DHMWOcD5eGjGYOWKOuAm9V2aWWPcFeDZoQLT
+	1eu+pM3weq7+bEB5Q16GiPLs2t3ZtvLpApr00zCZ4VuHAxZe+03QqElAchCqUiCo3JtS2CT8EQY
+	+1QCWvkKdbXGj3HDMY2HduYEAo05npsR2IPai111n7UsScRBg9xL3spz+RfS8GDhOamoy2bCFsK
+	kPG4LLLG+K9LSd7BR8wGz6SWAY93NhzPvSdI77VK2dzNM/TzgEOg==
+X-Received: by 2002:a05:6820:1613:b0:69e:44bf:f44e with SMTP id 006d021491bc7-6a0ddece601mr1356834eaf.17.1781863086264;
+        Fri, 19 Jun 2026 02:58:06 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-18.dlp.protect.broadcom.com. [144.49.247.18])
+        by smtp-relay.gmail.com with ESMTPS id 006d021491bc7-6a0d8db7c4asm111771eaf.10.2026.06.19.02.58.05
         for <stable@vger.kernel.org>
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 19 Jun 2026 02:58:04 -0700 (PDT)
+        Fri, 19 Jun 2026 02:58:06 -0700 (PDT)
 X-Relaying-Domain: broadcom.com
 X-CFilter-Loop: Reflected
-Received: by mail-dy1-f199.google.com with SMTP id 5a478bee46e88-30c13bb8ca9so206613eec.0
-        for <stable@vger.kernel.org>; Fri, 19 Jun 2026 02:58:03 -0700 (PDT)
+Received: by mail-dy1-f200.google.com with SMTP id 5a478bee46e88-30bcb065bfdso3507660eec.0
+        for <stable@vger.kernel.org>; Fri, 19 Jun 2026 02:58:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1781863083; x=1782467883; darn=vger.kernel.org;
+        d=broadcom.com; s=google; t=1781863084; x=1782467884; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=RMj6/kEzjl1ru5UHUZhZ/YyeC10jEp1W8ogblv+QKRE=;
-        b=WCtI4nRVRHE+sflh9YeAaN74he+ZXuZaJvY5HUjbJtJlqv+PUhtodFVxLqL2N53z51
-         Q2HDeIwK7YTQeoSY/EtijfweP/J3Giq1GqWybrdnhnsDE9IpG7XQ34fmoAC+a0wFwDKY
-         XjYcsXKwXq1oyyyfGhbpRrTHKbvQ+xj8wQGpA=
-X-Received: by 2002:a05:7300:cd8d:b0:30b:bda8:a70b with SMTP id 5a478bee46e88-30c06fb6c08mr1706542eec.4.1781863082691;
-        Fri, 19 Jun 2026 02:58:02 -0700 (PDT)
-X-Received: by 2002:a05:7300:cd8d:b0:30b:bda8:a70b with SMTP id 5a478bee46e88-30c06fb6c08mr1706518eec.4.1781863082047;
-        Fri, 19 Jun 2026 02:58:02 -0700 (PDT)
+        bh=0w1vsxUJI0JQJt2Tz8nUeF9KKHPDE+aPNVG7KYxhUoA=;
+        b=iO7vLZGsqBmIVTW+0pGPaSRRyUP+dpNZEw7S/eShSb6pHeSLVi+tJjCdWGaoN9xK+v
+         L2h9loLIDatlYzUNDzHY8mSShqyJVnmssLWSYrztxv3h0Ruk22di6NIPRZ/2e54+2+uI
+         fd75CLXiGO6rxWGpqiM1J7urB34kAFjJ/uT2k=
+X-Received: by 2002:a05:7300:7fa7:b0:2fc:9d97:d59a with SMTP id 5a478bee46e88-30c0d17fb0emr888600eec.32.1781863084504;
+        Fri, 19 Jun 2026 02:58:04 -0700 (PDT)
+X-Received: by 2002:a05:7300:7fa7:b0:2fc:9d97:d59a with SMTP id 5a478bee46e88-30c0d17fb0emr888572eec.32.1781863083755;
+        Fri, 19 Jun 2026 02:58:03 -0700 (PDT)
 Received: from shivania.lvn.broadcom.net ([192.19.161.250])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30c06d5bec5sm1851910eec.26.2026.06.19.02.58.01
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30c06d5bec5sm1851910eec.26.2026.06.19.02.58.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Jun 2026 02:58:01 -0700 (PDT)
+        Fri, 19 Jun 2026 02:58:03 -0700 (PDT)
 From: Shivani Agarwal <shivani.agarwal@broadcom.com>
 To: stable@vger.kernel.org,
 	gregkh@linuxfoundation.org
@@ -108,10 +108,11 @@ Cc: pablo@netfilter.org,
 	vamsi-krishna.brahmajosyula@broadcom.com,
 	yin.ding@broadcom.com,
 	tapas.kundu@broadcom.com,
+	Sasha Levin <sashal@kernel.org>,
 	Shivani Agarwal <shivani.agarwal@broadcom.com>
-Subject: [PATCH v6.1 1/3] netfilter: nf_tables: always increment set element count
-Date: Fri, 19 Jun 2026 02:28:48 -0700
-Message-Id: <20260619092850.1274076-2-shivani.agarwal@broadcom.com>
+Subject: [PATCH v6.1 2/3] netfilter: nf_tables: fix set size with rbtree backend
+Date: Fri, 19 Jun 2026 02:28:49 -0700
+Message-Id: <20260619092850.1274076-3-shivani.agarwal@broadcom.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260619092850.1274076-1-shivani.agarwal@broadcom.com>
 References: <20260619092850.1274076-1-shivani.agarwal@broadcom.com>
@@ -130,19 +131,19 @@ X-Spamd-Result: default: False [-7.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[broadcom.com,reject];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[broadcom.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:pablo@netfilter.org,m:fw@strlen.de,m:phil@nwl.cc,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:horms@kernel.org,m:netfilter-devel@vger.kernel.org,m:coreteam@netfilter.org,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:ajay.kaher@broadcom.com,m:alexey.makhalov@broadcom.com,m:vamsi-krishna.brahmajosyula@broadcom.com,m:yin.ding@broadcom.com,m:tapas.kundu@broadcom.com,m:shivani.agarwal@broadcom.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:pablo@netfilter.org,m:fw@strlen.de,m:phil@nwl.cc,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:horms@kernel.org,m:netfilter-devel@vger.kernel.org,m:coreteam@netfilter.org,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:ajay.kaher@broadcom.com,m:alexey.makhalov@broadcom.com,m:vamsi-krishna.brahmajosyula@broadcom.com,m:yin.ding@broadcom.com,m:tapas.kundu@broadcom.com,m:sashal@kernel.org,m:shivani.agarwal@broadcom.com,s:lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER(0.00)[shivani.agarwal@broadcom.com,stable@vger.kernel.org];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[broadcom.com:dkim,broadcom.com:email,broadcom.com:mid,broadcom.com:from_mime,vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,strlen.de:email];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[broadcom.com:dkim,broadcom.com:email,broadcom.com:mid,broadcom.com:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,netfilter.org:email];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-267362-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[20];
+	TAGGED_FROM(0.00)[bounces-267364-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[21];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[broadcom.com:+];
@@ -155,54 +156,222 @@ X-Spamd-Result: default: False [-7.66 / 15.00];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C03AC6A5127
+X-Rspamd-Queue-Id: BEE4E6A5154
 
-From: Florian Westphal <fw@strlen.de>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit d4b7f29eb85c93893bc27388b37709efbc3c9a0e ]
+[ Upstream commit 8d738c1869f611955d91d8d0fd0012d9ef207201 ]
 
-At this time, set->nelems counter only increments when the set has
-a maximum size.
+The existing rbtree implementation uses singleton elements to represent
+ranges, however, userspace provides a set size according to the number
+of ranges in the set.
 
-All set elements decrement the counter unconditionally, this is
-confusing.
+Adjust provided userspace set size to the number of singleton elements
+in the kernel by multiplying the range by two.
 
-Increment the counter unconditionally to make this symmetrical.
-This would also allow changing the set maximum size after set creation
-in a later patch.
+Check if the no-match all-zero element is already in the set, in such
+case release one slot in the set size.
 
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Fixes: 0ed6389c483d ("netfilter: nf_tables: rename set implementations")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 [ Shivani: Modified to apply on 6.1.y ]
 Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
 ---
- net/netfilter/nf_tables_api.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ include/net/netfilter/nf_tables.h |  6 ++++
+ net/netfilter/nf_tables_api.c     | 49 +++++++++++++++++++++++++++++--
+ net/netfilter/nft_set_rbtree.c    | 43 +++++++++++++++++++++++++++
+ 3 files changed, 96 insertions(+), 2 deletions(-)
 
+diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
+index dafa0a32e..3329c2eae 100644
+--- a/include/net/netfilter/nf_tables.h
++++ b/include/net/netfilter/nf_tables.h
+@@ -422,6 +422,9 @@ struct nft_set_ext;
+  *	@remove: remove element from set
+  *	@walk: iterate over all set elements
+  *	@get: get set elements
++ *	@ksize: kernel set size
++ *	@usize: userspace set size
++ *	@adjust_maxsize: delta to adjust maximum set size
+  *	@privsize: function to return size of set private data
+  *	@init: initialize private data of new set instance
+  *	@destroy: destroy private data of set instance
+@@ -470,6 +473,9 @@ struct nft_set_ops {
+ 					       const struct nft_set *set,
+ 					       const struct nft_set_elem *elem,
+ 					       unsigned int flags);
++	u32				(*ksize)(u32 size);
++	u32				(*usize)(u32 size);
++	u32				(*adjust_maxsize)(const struct nft_set *set);
+ 	void				(*commit)(struct nft_set *set);
+ 	void				(*abort)(const struct nft_set *set);
+ 	u64				(*privsize)(const struct nlattr * const nla[],
 diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 0c4224282..ec4bfe53b 100644
+index ec4bfe53b..15bfdf07c 100644
 --- a/net/netfilter/nf_tables_api.c
 +++ b/net/netfilter/nf_tables_api.c
-@@ -6670,10 +6670,13 @@ static int nft_add_set_elem(struct nft_ctx *ctx, struct nft_set *set,
- 		goto err_element_clash;
- 	}
+@@ -4264,6 +4264,14 @@ static int nf_tables_fill_set_concat(struct sk_buff *skb,
+ 	return 0;
+ }
  
--	if (!(flags & NFT_SET_ELEM_CATCHALL) && set->size &&
--	    !atomic_add_unless(&set->nelems, 1, set->size + set->ndeact)) {
--		err = -ENFILE;
--		goto err_set_full;
-+	if (!(flags & NFT_SET_ELEM_CATCHALL)) {
-+		unsigned int max = set->size ? set->size + set->ndeact : UINT_MAX;
++static u32 nft_set_userspace_size(const struct nft_set_ops *ops, u32 size)
++{
++	if (ops->usize)
++		return ops->usize(size);
 +
-+		if (!atomic_add_unless(&set->nelems, 1, max)) {
-+			err = -ENFILE;
-+			goto err_set_full;
-+		}
++	return size;
++}
++
+ static int nf_tables_fill_set(struct sk_buff *skb, const struct nft_ctx *ctx,
+ 			      const struct nft_set *set, u16 event, u16 flags)
+ {
+@@ -4328,7 +4336,8 @@ static int nf_tables_fill_set(struct sk_buff *skb, const struct nft_ctx *ctx,
+ 	if (!nest)
+ 		goto nla_put_failure;
+ 	if (set->size &&
+-	    nla_put_be32(skb, NFTA_SET_DESC_SIZE, htonl(set->size)))
++	    nla_put_be32(skb, NFTA_SET_DESC_SIZE,
++			 htonl(nft_set_userspace_size(set->ops, set->size))))
+ 		goto nla_put_failure;
+ 
+ 	if (set->field_count > 1 &&
+@@ -4698,6 +4707,15 @@ static bool nft_set_is_same(const struct nft_set *set,
+ 	return true;
+ }
+ 
++static u32 nft_set_kernel_size(const struct nft_set_ops *ops,
++			       const struct nft_set_desc *desc)
++{
++	if (ops->ksize)
++		return ops->ksize(desc->size);
++
++	return desc->size;
++}
++
+ static int nf_tables_newset(struct sk_buff *skb, const struct nfnl_info *info,
+ 			    const struct nlattr * const nla[])
+ {
+@@ -4880,6 +4898,9 @@ static int nf_tables_newset(struct sk_buff *skb, const struct nfnl_info *info,
+ 		if (err < 0)
+ 			return err;
+ 
++		if (desc.size)
++			desc.size = nft_set_kernel_size(set->ops, &desc);
++
+ 		err = 0;
+ 		if (!nft_set_is_same(set, &desc, exprs, num_exprs, flags)) {
+ 			NL_SET_BAD_ATTR(extack, nla[NFTA_SET_NAME]);
+@@ -4902,6 +4923,9 @@ static int nf_tables_newset(struct sk_buff *skb, const struct nfnl_info *info,
+ 	if (IS_ERR(ops))
+ 		return PTR_ERR(ops);
+ 
++	if (desc.size)
++		desc.size = nft_set_kernel_size(ops, &desc);
++
+ 	udlen = 0;
+ 	if (nla[NFTA_SET_USERDATA])
+ 		udlen = nla_len(nla[NFTA_SET_USERDATA]);
+@@ -6327,6 +6351,27 @@ static bool nft_setelem_valid_key_end(const struct nft_set *set,
+ 	return true;
+ }
+ 
++static u32 nft_set_maxsize(const struct nft_set *set)
++{
++	u32 maxsize, delta;
++
++	if (!set->size)
++		return UINT_MAX;
++
++	if (set->ops->adjust_maxsize)
++		delta = set->ops->adjust_maxsize(set);
++	else
++		delta = 0;
++
++	if (check_add_overflow(set->size, set->ndeact, &maxsize))
++		return UINT_MAX;
++
++	if (check_add_overflow(maxsize, delta, &maxsize))
++		return UINT_MAX;
++
++	return maxsize;
++}
++
+ static int nft_add_set_elem(struct nft_ctx *ctx, struct nft_set *set,
+ 			    const struct nlattr *attr, u32 nlmsg_flags)
+ {
+@@ -6671,7 +6716,7 @@ static int nft_add_set_elem(struct nft_ctx *ctx, struct nft_set *set,
  	}
  
- 	nft_trans_elem(trans) = elem;
+ 	if (!(flags & NFT_SET_ELEM_CATCHALL)) {
+-		unsigned int max = set->size ? set->size + set->ndeact : UINT_MAX;
++		unsigned int max = nft_set_maxsize(set);
+ 
+ 		if (!atomic_add_unless(&set->nelems, 1, max)) {
+ 			err = -ENFILE;
+diff --git a/net/netfilter/nft_set_rbtree.c b/net/netfilter/nft_set_rbtree.c
+index 426becaad..26e1d994f 100644
+--- a/net/netfilter/nft_set_rbtree.c
++++ b/net/netfilter/nft_set_rbtree.c
+@@ -775,6 +775,46 @@ static bool nft_rbtree_estimate(const struct nft_set_desc *desc, u32 features,
+ 	return true;
+ }
+ 
++/* rbtree stores ranges as singleton elements, each range is composed of two
++ * elements ...
++ */
++static u32 nft_rbtree_ksize(u32 size)
++{
++	return size * 2;
++}
++
++/* ... hide this detail to userspace. */
++static u32 nft_rbtree_usize(u32 size)
++{
++	if (!size)
++		return 0;
++
++	return size / 2;
++}
++
++static u32 nft_rbtree_adjust_maxsize(const struct nft_set *set)
++{
++	struct nft_rbtree *priv = nft_set_priv(set);
++	struct nft_rbtree_elem *rbe;
++	struct rb_node *node;
++	const void *key;
++
++	node = rb_last(&priv->root);
++	if (!node)
++		return 0;
++
++	rbe = rb_entry(node, struct nft_rbtree_elem, node);
++	if (!nft_rbtree_interval_end(rbe))
++		return 0;
++
++	key = nft_set_ext_key(&rbe->ext);
++	if (memchr(key, 1, set->klen))
++		return 0;
++
++	/* this is the all-zero no-match element. */
++	return 1;
++}
++
+ const struct nft_set_type nft_set_rbtree_type = {
+ 	.features	= NFT_SET_INTERVAL | NFT_SET_MAP | NFT_SET_OBJECT | NFT_SET_TIMEOUT,
+ 	.ops		= {
+@@ -791,5 +831,8 @@ const struct nft_set_type nft_set_rbtree_type = {
+ 		.lookup		= nft_rbtree_lookup,
+ 		.walk		= nft_rbtree_walk,
+ 		.get		= nft_rbtree_get,
++		.ksize		= nft_rbtree_ksize,
++		.usize		= nft_rbtree_usize,
++		.adjust_maxsize = nft_rbtree_adjust_maxsize,
+ 	},
+ };
 -- 
 2.53.0
 
