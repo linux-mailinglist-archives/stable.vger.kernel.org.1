@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-267417-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267418-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id DLeVE0JbNWqStwYAu9opvQ
-	(envelope-from <stable+bounces-267417-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 17:07:46 +0200
+	id ynuFFa9aNWpItwYAu9opvQ
+	(envelope-from <stable+bounces-267418-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 17:05:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F33B6A6987
-	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 17:07:45 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E14A06A6939
+	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 17:05:18 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=0leil.net header.s=20231125 header.b=PJUnuDx+;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267417-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267417-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=0leil.net header.s=20231125 header.b=luRpEn9s;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267418-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267418-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=reject) header.from=0leil.net;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E4428305F178
-	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 15:05:08 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3C2393002B2C
+	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 15:05:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2040E3932E3;
-	Fri, 19 Jun 2026 15:05:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5853B3932E3;
+	Fri, 19 Jun 2026 15:05:17 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-190f.mail.infomaniak.ch (smtp-190f.mail.infomaniak.ch [185.125.25.15])
+Received: from smtp-bc0c.mail.infomaniak.ch (smtp-bc0c.mail.infomaniak.ch [45.157.188.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAAEF313E17
-	for <stable@vger.kernel.org>; Fri, 19 Jun 2026 15:05:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0A7F27467F
+	for <stable@vger.kernel.org>; Fri, 19 Jun 2026 15:05:14 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781881507; cv=none; b=C+vzPw0iqM5/znlojobVmXGAa7t8HAztMzptRNUJ8Sg9kKR505RvIDXn9XIQF+GqzLcC519QGyElWsRDWrFv184uCer9bRMMDWDiENja31GehAESN/QdjdQ2+dOz3ds6nO+xGvNDH1E2praPte1+PjM+NMASP01wc5iYtaDF7kc=
+	t=1781881517; cv=none; b=Ju7h++xBRnVDfod712gQ/mMEu6Y5FkjMrWfpE8gI0og0jbu87crJRPRP+DH+Igqm7mt5NCToznt404MXWHTNLXaV9OuvjqFJGryIsrhunyC59CN+IGKNeFWyDtKtvhJMCl6CgLTyQutuwwL7jHWtKi2FOAMy6FCkklmmYDkDtpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781881507; c=relaxed/simple;
-	bh=Nd7aoGI2jIJg0XJ97WeErtzBQ/wpsd2N/ztLqDcliLY=;
+	s=arc-20240116; t=1781881517; c=relaxed/simple;
+	bh=7xLsm9+GuD+ArEMSFPBN3QvywSaUNLAE3xk01dLL37I=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=NNGeROTsJhF5KWNEUCsqCEAkRiOFivwDzJI86+1cZYtHUXe67TDM6NI7VGgcyxIXh3/q82HVDv5D4Az457n1PT3REdRZcU/oV1HViPj10GobeCFSjD+RK8MU4aYyJMYoJm5VddW6+nNsrxe4keopYjvJ842GgJkIKAnSjNpIqeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=0leil.net; spf=pass smtp.mailfrom=0leil.net; dkim=pass (2048-bit key) header.d=0leil.net header.i=@0leil.net header.b=PJUnuDx+; arc=none smtp.client-ip=185.125.25.15
+	 In-Reply-To:To:Cc; b=jtGg+napvf/szvZeeGVq1urJ+e4oKT1C5eM9TXKCWAROPU5XZvHZKdiC9axzszTg2TMgqx+LFUg5r/MlY7o8rLIpowCesx+tf+z8g23LqmtHDG7Na6iP6RZSwiCQNjnR2Vpb+G1KeGPLz0GTaQBXRLhby00EoCueN+q5VP8dxto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=0leil.net; spf=pass smtp.mailfrom=0leil.net; dkim=pass (2048-bit key) header.d=0leil.net header.i=@0leil.net header.b=luRpEn9s; arc=none smtp.client-ip=45.157.188.12
 Received: from smtp-4-0000.mail.infomaniak.ch (smtp-4-0000.mail.infomaniak.ch [10.7.10.107])
-	by smtp-4-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4ghgjG5rhhzLYP;
-	Fri, 19 Jun 2026 16:59:14 +0200 (CEST)
+	by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4ghgjH4TmRz9vH;
+	Fri, 19 Jun 2026 16:59:15 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=0leil.net;
-	s=20231125; t=1781881154;
-	bh=U/IXRrLPUtA+9Gxy6cPTSupEJOAX/u+UMvxce3+F2c4=;
+	s=20231125; t=1781881155;
+	bh=ysxwfeYwNd5Kpj7JVpBssNtkt3y+xhrpB9VC8FO4w+k=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=PJUnuDx+RYL2iPVwuvOdC5BfcBOVaC+EKyxSRGHOLNZvhByaHpv3iH3mkWesfKEok
-	 0Ta3FIvQdXIc1z9/R+tdi2LZ8PR9OFQDpJ4QddyKVxk2cp65kC8/eK0WoGv5kVpJns
-	 hzec+QNAM7W0bKh9yJ1PbDiaVDD3BKCkRwvWntB9c025tKu7y842RyKBekc+rTgvBZ
-	 oeo4nDF3rAG6KH4U0PvGalRYYTMR2pdEAoC1u6VE3YWGAsHyoyCxMtxZUkW6gz4eJP
-	 IaqtTdiAT2w1V7ZA3PJfHK5jl7VToLxxFnCNlIGpzlfjY0hsQ/6dn/n5E1oBWKVQeU
-	 m3bsksnhzighw==
-Received: from unknown by smtp-4-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4ghgjF5C36zrfH;
-	Fri, 19 Jun 2026 16:59:13 +0200 (CEST)
+	b=luRpEn9sSJnMP3L1heBEy7xHNEQYa9QBxdIqyQdM6AccRSryh+mMZ/1pGX/q1WT2Q
+	 Gz6ng3YciGj+zzkK9motxxqjdbqNw9O9438bF4T43E9Z81zZ2vl9Dhrmit6IKtZFki
+	 4vG16N58xlbGfW/frbAhWN4LYPCpszQWnJHYUdBMlVy1B7aYsC6C3QiISSzgbIkTAH
+	 tDdAoyxhFjmpqhH9RR4Qf6EduUrykc75neobDZ7BkWAQ/5cZK8tOJ7T+pc2ZZ0fSqB
+	 WgXsQsTf1+wQt+2bJxg3/YUzGPqIMdB/ibcCofPaxYQFqQhimybYcjMmJZ+cJsIFa+
+	 SCdKai5TMigkw==
+Received: from unknown by smtp-4-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4ghgjG3dN5ztqr;
+	Fri, 19 Jun 2026 16:59:14 +0200 (CEST)
 From: Quentin Schulz <foss+kernel@0leil.net>
-Date: Fri, 19 Jun 2026 16:58:42 +0200
-Subject: [PATCH 6.12.y 2/7] eventpoll: split __ep_remove()
+Date: Fri, 19 Jun 2026 16:58:43 +0200
+Subject: [PATCH 6.12.y 3/7] eventpoll: kill __ep_remove()
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,7 +60,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260619-6-12-cve-2026-46242-v1-2-e15a6de43c11@cherry.de>
+Message-Id: <20260619-6-12-cve-2026-46242-v1-3-e15a6de43c11@cherry.de>
 References: <20260619-6-12-cve-2026-46242-v1-0-e15a6de43c11@cherry.de>
 In-Reply-To: <20260619-6-12-cve-2026-46242-v1-0-e15a6de43c11@cherry.de>
 To: Alexander Viro <viro@zeniv.linux.org.uk>, 
@@ -70,8 +70,7 @@ To: Alexander Viro <viro@zeniv.linux.org.uk>,
  Soheil Hassas Yeganeh <soheil@google.com>, 
  Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>
 Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, Quentin Schulz <quentin.schulz@cherry.de>, 
- Linus Torvalds <torvalds@linux-foundation.org>
+ stable@vger.kernel.org, Quentin Schulz <quentin.schulz@cherry.de>
 X-Mailer: b4 0.15-dev-47773
 X-Infomaniak-Routing: alpha
 X-Rspamd-Action: no action
@@ -79,21 +78,21 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[0leil.net,reject];
 	R_DKIM_ALLOW(-0.20)[0leil.net:s=20231125];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-267417-lists,stable=lfdr.de,kernel];
-	FORGED_RECIPIENTS(0.00)[m:viro@zeniv.linux.org.uk,m:brauner@kernel.org,m:jack@suse.cz,m:dave@stgolabs.net,m:akpm@linux-foundation.org,m:soheil@google.com,m:edumazet@google.com,m:pabeni@redhat.com,m:linux-fsdevel@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:quentin.schulz@cherry.de,m:torvalds@linux-foundation.org,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-267418-lists,stable=lfdr.de,kernel];
+	FORGED_RECIPIENTS(0.00)[m:viro@zeniv.linux.org.uk,m:brauner@kernel.org,m:jack@suse.cz,m:dave@stgolabs.net,m:akpm@linux-foundation.org,m:soheil@google.com,m:edumazet@google.com,m:pabeni@redhat.com,m:linux-fsdevel@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:quentin.schulz@cherry.de,s:lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	FORGED_SENDER(0.00)[foss@0leil.net,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[lists@lfdr.de];
 	DKIM_TRACE(0.00)[0leil.net:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
@@ -104,84 +103,134 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	ALIAS_RESOLVED(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[0leil.net:dkim,0leil.net:from_mime,vger.kernel.org:from_smtp,cherry.de:mid,cherry.de:email,linux-foundation.org:email,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[cherry.de:mid,cherry.de:email,msgid.link:url,vger.kernel.org:from_smtp,0leil.net:dkim,0leil.net:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9F33B6A6987
+X-Rspamd-Queue-Id: E14A06A6939
 
 From: Christian Brauner <brauner@kernel.org>
 
-[ Upstream commit 0f7bdfd413000985de09fc39eb9efa1e091a3ce0 ]
+[ Upstream commit e9e5cd40d7c403e19f21d0f7b8b8ba3a76b58330 ]
 
-Split __ep_remove() to delineate file removal from epoll item removal.
+Remove the boolean conditional in __ep_remove() and restructure the code
+so the check for racing with eventpoll_release_file() are only done in
+the ep_remove_safe() path where they belong.
 
-Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://patch.msgid.link/20260423-work-epoll-uaf-v1-2-2470f9eec0f5@kernel.org
+Link: https://patch.msgid.link/20260423-work-epoll-uaf-v1-3-2470f9eec0f5@kernel.org
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 Stable-dep-of: a6dc643c6931 ("eventpoll: fix ep_remove struct eventpoll / struct file UAF")
 Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
 ---
- fs/eventpoll.c | 27 +++++++++++++++++++++++----
- 1 file changed, 23 insertions(+), 4 deletions(-)
+ fs/eventpoll.c | 67 ++++++++++++++++++++++++++--------------------------------
+ 1 file changed, 30 insertions(+), 37 deletions(-)
 
 diff --git a/fs/eventpoll.c b/fs/eventpoll.c
-index 8f9dc2f4891ff..1cba4ae4a076b 100644
+index 1cba4ae4a076b..3ac8a26c3522f 100644
 --- a/fs/eventpoll.c
 +++ b/fs/eventpoll.c
-@@ -797,6 +797,9 @@ static void ep_free(struct eventpoll *ep)
+@@ -797,49 +797,18 @@ static void ep_free(struct eventpoll *ep)
  	kfree_rcu(ep, rcu);
  }
  
-+static void __ep_remove_file(struct eventpoll *ep, struct epitem *epi, struct file *file);
-+static bool __ep_remove_epi(struct eventpoll *ep, struct epitem *epi);
-+
+-static void __ep_remove_file(struct eventpoll *ep, struct epitem *epi, struct file *file);
+-static bool __ep_remove_epi(struct eventpoll *ep, struct epitem *epi);
+-
+-/*
+- * Removes a "struct epitem" from the eventpoll RB tree and deallocates
+- * all the associated resources. Must be called with "mtx" held.
+- * If the dying flag is set, do the removal only if force is true.
+- * This prevents ep_clear_and_put() from dropping all the ep references
+- * while running concurrently with eventpoll_release_file().
+- * Returns true if the eventpoll can be disposed.
+- */
+-static bool __ep_remove(struct eventpoll *ep, struct epitem *epi, bool force)
+-{
+-	struct file *file = epi->ffd.file;
+-
+-	lockdep_assert_irqs_enabled();
+-
+-	/*
+-	 * Removes poll wait queue hooks.
+-	 */
+-	ep_unregister_pollwait(ep, epi);
+-
+-	/* Remove the current item from the list of epoll hooks */
+-	spin_lock(&file->f_lock);
+-	if (epi->dying && !force) {
+-		spin_unlock(&file->f_lock);
+-		return false;
+-	}
+-
+-	__ep_remove_file(ep, epi, file);
+-	return __ep_remove_epi(ep, epi);
+-}
+-
  /*
-  * Removes a "struct epitem" from the eventpoll RB tree and deallocates
-  * all the associated resources. Must be called with "mtx" held.
-@@ -808,8 +811,6 @@ static void ep_free(struct eventpoll *ep)
- static bool __ep_remove(struct eventpoll *ep, struct epitem *epi, bool force)
+  * Called with &file->f_lock held,
+  * returns with it released
+  */
+-static void __ep_remove_file(struct eventpoll *ep, struct epitem *epi, struct file *file)
++static void __ep_remove_file(struct eventpoll *ep, struct epitem *epi,
++			     struct file *file)
  {
- 	struct file *file = epi->ffd.file;
--	struct epitems_head *to_free;
--	struct hlist_head *head;
+ 	struct epitems_head *to_free = NULL;
+ 	struct hlist_head *head = file->f_ep;
  
- 	lockdep_assert_irqs_enabled();
+ 	lockdep_assert_held(&ep->mtx);
++	lockdep_assert_held(&file->f_lock);
  
-@@ -825,8 +826,21 @@ static bool __ep_remove(struct eventpoll *ep, struct epitem *epi, bool force)
- 		return false;
- 	}
- 
--	to_free = NULL;
--	head = file->f_ep;
-+	__ep_remove_file(ep, epi, file);
-+	return __ep_remove_epi(ep, epi);
-+}
-+
-+/*
-+ * Called with &file->f_lock held,
-+ * returns with it released
-+ */
-+static void __ep_remove_file(struct eventpoll *ep, struct epitem *epi, struct file *file)
-+{
-+	struct epitems_head *to_free = NULL;
-+	struct hlist_head *head = file->f_ep;
-+
-+	lockdep_assert_held(&ep->mtx);
-+
  	if (hlist_is_singular_node(&epi->fllink, head)) {
  		/* See eventpoll_release() for details. */
- 		WRITE_ONCE(file->f_ep, NULL);
-@@ -840,6 +854,11 @@ static bool __ep_remove(struct eventpoll *ep, struct epitem *epi, bool force)
- 	hlist_del_rcu(&epi->fllink);
- 	spin_unlock(&file->f_lock);
- 	free_ephead(to_free);
-+}
+@@ -886,7 +855,25 @@ static bool __ep_remove_epi(struct eventpoll *ep, struct epitem *epi)
+  */
+ static void ep_remove_safe(struct eventpoll *ep, struct epitem *epi)
+ {
+-	if (__ep_remove(ep, epi, false))
++	struct file *file = epi->ffd.file;
 +
-+static bool __ep_remove_epi(struct eventpoll *ep, struct epitem *epi)
-+{
++	lockdep_assert_irqs_enabled();
 +	lockdep_assert_held(&ep->mtx);
++
++	ep_unregister_pollwait(ep, epi);
++
++	/* sync with eventpoll_release_file() */
++	if (unlikely(READ_ONCE(epi->dying)))
++		return;
++
++	spin_lock(&file->f_lock);
++	if (epi->dying) {
++		spin_unlock(&file->f_lock);
++		return;
++	}
++	__ep_remove_file(ep, epi, file);
++
++	if (__ep_remove_epi(ep, epi))
+ 		WARN_ON_ONCE(ep_refcount_dec_and_test(ep));
+ }
  
- 	rb_erase_cached(&epi->rbn, &ep->rbr);
+@@ -1118,7 +1105,7 @@ void eventpoll_release_file(struct file *file)
+ 	spin_lock(&file->f_lock);
+ 	if (file->f_ep && file->f_ep->first) {
+ 		epi = hlist_entry(file->f_ep->first, struct epitem, fllink);
+-		epi->dying = true;
++		WRITE_ONCE(epi->dying, true);
+ 		spin_unlock(&file->f_lock);
  
+ 		/*
+@@ -1127,7 +1114,13 @@ void eventpoll_release_file(struct file *file)
+ 		 */
+ 		ep = epi->ep;
+ 		mutex_lock(&ep->mtx);
+-		dispose = __ep_remove(ep, epi, true);
++
++		ep_unregister_pollwait(ep, epi);
++
++		spin_lock(&file->f_lock);
++		__ep_remove_file(ep, epi, file);
++		dispose = __ep_remove_epi(ep, epi);
++
+ 		mutex_unlock(&ep->mtx);
+ 
+ 		if (dispose && ep_refcount_dec_and_test(ep))
 
 -- 
 2.54.0
