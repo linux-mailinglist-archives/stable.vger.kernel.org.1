@@ -1,49 +1,40 @@
-Return-Path: <stable+bounces-267626-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267300-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id T6NNIab4OGoukwcAu9opvQ
-	(envelope-from <stable+bounces-267626-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 10:56:06 +0200
+	id l0i4NF2xNGr/ewYAu9opvQ
+	(envelope-from <stable+bounces-267300-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 05:02:53 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0EE16ADF7D
-	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 10:56:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F1C56A3A65
+	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 05:02:53 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
 	dkim=none;
 	dmarc=none;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267626-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267626-lists+stable=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267300-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267300-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 286363015D0B
-	for <lists+stable@lfdr.de>; Mon, 22 Jun 2026 08:55:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B989C304B57A
+	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 03:02:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52F483955C0;
-	Mon, 22 Jun 2026 08:55:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 764A433C52F;
+	Fri, 19 Jun 2026 03:02:41 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC1B935E1B5;
-	Mon, 22 Jun 2026 08:55:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5F8733B6F4;
+	Fri, 19 Jun 2026 03:02:29 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782118547; cv=none; b=pf34SyCZGJYd5kZIET/IKlRQCvP4QL5YrDepP1ov33VwXGNZDi1CJY33tN/C5S4KujPPJmbqgorhC6lIzJGR/VlGkrIV5IwEjX6eysTlpwwcUxfNWjSCtU4XH2SB5Q9uchkf++jzLFItK79rYC1RuLoyCk93jgMw/+mW15HS6aw=
+	t=1781838161; cv=none; b=ej79d1Aq4SeGmDdcLZ7orz18a4Lhk9IPzs7xpbqe0NsKXVT8qYunk6QanWQ8sVqvMIANor+4dbm4ayghgpgxiKOAp6+bogmU7v/wuvIW6+dw1O/JCX5dbVQV95xZ91yJnCBnTvtRsMqmNPOjfEI8THexcdusjDu6++Bncuo1pEE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782118547; c=relaxed/simple;
+	s=arc-20240116; t=1781838161; c=relaxed/simple;
 	bh=r4bodF9U8oMEN04T0y18dysLerS4jks16bI6avdd++w=;
-	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
-	 MIME-Version; b=LksZW7WgSTMyXfwshNE68a6GP9bl9EXc8wTAOsGVpmrgCH95kEYXOl019VUEbiRueD1OQ2jcVQtyPdYTn5F6CTcG1aCrFvga8lQ7/4Cgcb27q899VQq7ESouJ2pCi0iss7f+fiwCke5fRmPK4lifk1MmBeAjCJrmMRwzaOpmBiw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=none smtp.helo=mailgw.kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=FkiXvyvBDqjQr27sK3o7+ah2tnfeW8KzOyoS4khzGQtgsIrGcL7vhbxthEBU1DywGUzjM8PTaE8CtJNFzzV/pZgP8dSzWKoBQYmgxglnt0tAbCQisW6CJIuH6JMmz1Ggd9IS7yr0pg5WB5Fh9nxPUTuFiwvvBcfzz+kTucoZ9Io=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
 X-UUID: 4a0426106b8b11f1aa26b74ffac11d73-20260619
-Message-ID:<1782118512967996.3955.seg@mailgw.kylinos.cn>
-X-Spam-Fingerprint: 0
-X-GW-Reason: 11101
-X-Content-Feature:
-	ica/max.line-size 85
-	audit/email.address 4
-	dict/adv 1
-	dict/game 2
-	meta/cnt.alert 1
 X-CID-P-RULE: Release_Ham
 X-CID-O-INFO: VERSION:1.3.12,REQID:54b7c1a8-4e26-4de3-9828-59c9a56bcaa4,IP:0,U
 	RL:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
@@ -76,6 +67,7 @@ Cc: linux-phy@lists.infradead.org,
 	stable@vger.kernel.org
 Subject: [PATCH v6 4/4] phy: ti-pipe3: Fix clock leak in init error path
 Date: Fri, 19 Jun 2026 11:02:14 +0800
+Message-Id: <20260619030214.1779043-5-zenghongling@kylinos.cn>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260619030214.1779043-1-zenghongling@kylinos.cn>
 References: <20260619030214.1779043-1-zenghongling@kylinos.cn>
@@ -88,39 +80,38 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [0.04 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DATE_IN_PAST(1.00)[77];
 	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-267626-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[lists.infradead.org,vger.kernel.org,126.com,kylinos.cn,kernel.org];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:vkoul@kernel.org,m:neil.armstrong@linaro.org,m:johan@kernel.org,m:kishon@kernel.org,m:rogerq@ti.com,m:linux-phy@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:zhongling0719@126.com,m:zenghongling@kylinos.cn,m:sashiko@kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-267300-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DMARC_NA(0.00)[kylinos.cn];
+	FREEMAIL_CC(0.00)[lists.infradead.org,vger.kernel.org,126.com,kylinos.cn,kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER(0.00)[zenghongling@kylinos.cn,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:vkoul@kernel.org,m:neil.armstrong@linaro.org,m:johan@kernel.org,m:kishon@kernel.org,m:rogerq@ti.com,m:linux-phy@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:zhongling0719@126.com,m:zenghongling@kylinos.cn,m:sashiko@kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[zenghongling@kylinos.cn,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	R_DKIM_NA(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[11];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,kylinos.cn:from_mime,kylinos.cn:email]
+	R_DKIM_NA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,kylinos.cn:email,kylinos.cn:mid,kylinos.cn:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E0EE16ADF7D
+X-Rspamd-Queue-Id: 3F1C56A3A65
 
 When regmap_update_bits() fails in ti_pipe3_init() for PCIe mode,
 the function returns the error without calling ti_pipe3_disable_clocks().
