@@ -1,554 +1,383 @@
-Return-Path: <stable+bounces-267390-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267393-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id tTAPNRYyNWrjoQYAu9opvQ
-	(envelope-from <stable+bounces-267390-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 14:12:06 +0200
+	id LgXNFPwzNWqjogYAu9opvQ
+	(envelope-from <stable+bounces-267393-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 14:20:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FF8F6A59C6
-	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 14:12:06 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B77B6A5A83
+	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 14:20:11 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=FbxMf+Gd;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267390-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-267390-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=linuxfoundation.org;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=SYHIcvZi;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267393-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-267393-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=linux.dev;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DC4F030058E3
-	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 12:12:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 223613019066
+	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 12:19:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DA6638331C;
-	Fri, 19 Jun 2026 12:11:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50663372EEA;
+	Fri, 19 Jun 2026 12:19:38 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DE77324B2D;
-	Fri, 19 Jun 2026 12:11:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6C6637FF54
+	for <stable@vger.kernel.org>; Fri, 19 Jun 2026 12:19:31 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781871115; cv=none; b=IIJYA53t3DP3mi1xDLGsJ/9Bbuqdp+8p83n9TUk/GHpHDhFEiCT37EgF9KVyt1/yx60s/XegqtOA2fTSvpUP2jHkUdiq5ud/BW1rZybM/VMxXNBIa9E9bjgQgww+8t9nh9NfoSIXcrE8N6G/bruzKYBjOT3eP3Sn1LH64MHNW+E=
+	t=1781871577; cv=none; b=iidmt53s84BV9btaWf8An7ljyGBUPNG3We4obhifz/5kxvJLQ+CbTeD3u2u2u/Ou8SZTGlsl5bShk4rrAAAWJFj9LqpLkYZ5A5E5aVMI1Y4R/nKggg9m57V2mjUxDhkg4qWjB3gnma22nLgdqez1rPWJFImEfhp8SrFyhllMPqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781871115; c=relaxed/simple;
-	bh=YslTV6eV5fPq4eUf4UjTiAySUDmp+g4dwHtAwIyiDMY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RxIAPy6T/218Xl+HEk+TPpTNZ6nckfeRQT1wXmp4fYUUaVU2epe/hHL2GtmWNFbweOZaQLPcqDRPQnnk73Aj+q1xN/eNdAgO+ytNInRS8DwwQGBvkB7YEBxSkR7mxKeDvEuakwBatAEGvrLORuJmE01Z2qHFgzjNqfzUecHRjbM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FbxMf+Gd; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0C2B1F00A3D;
-	Fri, 19 Jun 2026 12:11:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781871109;
-	bh=ISuUVtKgAI9SWbS9/kCT68F0LDChQp4znL1i51x9Hcc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=FbxMf+Gd+riPdkNdxtmhaPrPNaOj00a7W5rWvQMSvyW4FdgqpcsLIKLrCn9JYQb95
-	 ZMIDhRPn1si6DVwGoZMvr5ETn+XLYjYTPFlogAeVPDDojcHQGjyd6Mx0fPjDI7Llgl
-	 nmDZpJmQup/WBVPpVVRtr/iUAXbJGmKnSBrAPasc=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: linux-kernel@vger.kernel.org,
+	s=arc-20240116; t=1781871577; c=relaxed/simple;
+	bh=ExKawaubyPeuHNklk9kp5tj2j1AuiNpfP++dc1luDY8=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=er4xzyHWIVy0nyb+JUIBnQ7Xy4h0mauKN/sAstRoc62tk/AXjOHjCWrKvq/MInTw/4PHh/Rxu8IkocERypk25RUcr9XmuWN8gJ6S57PLiHBO/u/Eg5OHluRItr/C2aNsxzEhybv5OeDQ5qvJQ/pOHRM3TAdv4gZIvwIs+PabU/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=SYHIcvZi; arc=none smtp.client-ip=91.218.175.185
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1781871569;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dLm3urJYs5AqA6zRwvG9Uk+mzQxTsxzJze3iYFghqEc=;
+	b=SYHIcvZiwt9Zl68PpyP3bg+XFvc+XdLp7zeGn6eskBJ+tAdJdOUp/LdciSnR683a5vNCDj
+	pFiY0QDo9Ns9Nh46Bko1USgKKqh2jJQtbIUeVp7zhhi9qj3NPju/qYoxadx8g5rbBm+By9
+	CT8eI/4HA8WsjAE7Vsvq1yXMAM86iPE=
+From: Lance Yang <lance.yang@linux.dev>
+To: richard.weiyang@gmail.com
+Cc: lance.yang@linux.dev,
 	akpm@linux-foundation.org,
-	torvalds@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	riel@surriel.com,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	harry@kernel.org,
+	jannh@google.com,
+	balbirs@nvidia.com,
+	ziy@nvidia.com,
+	sj@kernel.org,
+	linux-mm@kvack.org,
 	stable@vger.kernel.org
-Cc: lwn@lwn.net,
-	jslaby@suse.cz,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: Linux 7.1.1
-Date: Fri, 19 Jun 2026 14:10:31 +0200
-Message-ID: <2026061931-escapade-veneering-c707@gregkh>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <2026061931-reversal-stopped-29e3@gregkh>
-References: <2026061931-reversal-stopped-29e3@gregkh>
+Subject: Re: [Patch v2] mm/page_vma_mapped: revalidate and do proper check before return device-private pmd
+Date: Fri, 19 Jun 2026 20:19:09 +0800
+Message-Id: <20260619121909.90510-1-lance.yang@linux.dev>
+In-Reply-To: <20260619023025.vqx2dsitxffuuwh3@master>
+References: <20260619023025.vqx2dsitxffuuwh3@master>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [2.84 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [0.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
+	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:linux-kernel@vger.kernel.org,m:akpm@linux-foundation.org,m:torvalds@linux-foundation.org,m:stable@vger.kernel.org,m:lwn@lwn.net,m:jslaby@suse.cz,m:gregkh@linuxfoundation.org,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-267393-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-267390-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FORGED_SENDER(0.00)[lance.yang@linux.dev,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:richard.weiyang@gmail.com,m:lance.yang@linux.dev,m:akpm@linux-foundation.org,m:david@kernel.org,m:ljs@kernel.org,m:riel@surriel.com,m:liam@infradead.org,m:vbabka@kernel.org,m:harry@kernel.org,m:jannh@google.com,m:balbirs@nvidia.com,m:ziy@nvidia.com,m:sj@kernel.org,m:linux-mm@kvack.org,m:stable@vger.kernel.org,m:richardweiyang@gmail.com,s:lists@lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FROM_NEQ_ENVFROM(0.00)[lance.yang@linux.dev,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linux.dev:+];
+	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_TWELVE(0.00)[15]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 6FF8F6A59C6
+X-Rspamd-Queue-Id: 9B77B6A5A83
 
-diff --git a/Documentation/arch/arm64/silicon-errata.rst b/Documentation/arch/arm64/silicon-errata.rst
-index 211119ce7adc..ad04d1cdc0f0 100644
---- a/Documentation/arch/arm64/silicon-errata.rst
-+++ b/Documentation/arch/arm64/silicon-errata.rst
-@@ -128,16 +128,28 @@ stable kernels.
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-A76      | #3324349        | ARM64_ERRATUM_3194386       |
- +----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Cortex-A76      | #4193800        | ARM64_ERRATUM_4118414       |
-++----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Cortex-A76AE    | #4193801        | ARM64_ERRATUM_4118414       |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-A77      | #1491015        | N/A                         |
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-A77      | #1508412        | ARM64_ERRATUM_1508412       |
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-A77      | #3324348        | ARM64_ERRATUM_3194386       |
- +----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Cortex-A77      | #4193798        | ARM64_ERRATUM_4118414       |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-A78      | #3324344        | ARM64_ERRATUM_3194386       |
- +----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Cortex-A78      | #4193791        | ARM64_ERRATUM_4118414       |
-++----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Cortex-A78AE    | #4193793        | ARM64_ERRATUM_4118414       |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-A78C     | #3324346,3324347| ARM64_ERRATUM_3194386       |
- +----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Cortex-A78C     | #4193794        | ARM64_ERRATUM_4118414       |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-A710     | #2119858        | ARM64_ERRATUM_2119858       |
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-A710     | #2054223        | ARM64_ERRATUM_2054223       |
-@@ -146,6 +158,8 @@ stable kernels.
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-A710     | #3324338        | ARM64_ERRATUM_3194386       |
- +----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Cortex-A710     | #4193788        | ARM64_ERRATUM_4118414       |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-A715     | #2645198        | ARM64_ERRATUM_2645198       |
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-A715     | #3456084        | ARM64_ERRATUM_3194386       |
-@@ -158,20 +172,32 @@ stable kernels.
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-X1       | #3324344        | ARM64_ERRATUM_3194386       |
- +----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Cortex-X1       | #4193791        | ARM64_ERRATUM_4118414       |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-X1C      | #3324346        | ARM64_ERRATUM_3194386       |
- +----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Cortex-X1C      | #4193792        | ARM64_ERRATUM_4118414       |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-X2       | #2119858        | ARM64_ERRATUM_2119858       |
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-X2       | #2224489        | ARM64_ERRATUM_2224489       |
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-X2       | #3324338        | ARM64_ERRATUM_3194386       |
- +----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Cortex-X2       | #4193788        | ARM64_ERRATUM_4118414       |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-X3       | #3324335        | ARM64_ERRATUM_3194386       |
- +----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Cortex-X3       | #4193786        | ARM64_ERRATUM_4118414       |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-X4       | #3194386        | ARM64_ERRATUM_3194386       |
- +----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Cortex-X4       | #4118414        | ARM64_ERRATUM_4118414       |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-X925     | #3324334        | ARM64_ERRATUM_3194386       |
- +----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Cortex-X925     | #4193781        | ARM64_ERRATUM_4118414       |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Neoverse-N1     | #1188873,1418040| ARM64_ERRATUM_1418040       |
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Neoverse-N1     | #1349291        | N/A                         |
-@@ -182,6 +208,8 @@ stable kernels.
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Neoverse-N1     | #3324349        | ARM64_ERRATUM_3194386       |
- +----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Neoverse-N1     | #4193800        | ARM64_ERRATUM_4118414       |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Neoverse-N2     | #2139208        | ARM64_ERRATUM_2139208       |
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Neoverse-N2     | #2067961        | ARM64_ERRATUM_2067961       |
-@@ -190,20 +218,34 @@ stable kernels.
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Neoverse-N2     | #3324339        | ARM64_ERRATUM_3194386       |
- +----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Neoverse-N2     | #4193789        | ARM64_ERRATUM_4118414       |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Neoverse-N3     | #3456111        | ARM64_ERRATUM_3194386       |
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Neoverse-V1     | #1619801        | N/A                         |
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Neoverse-V1     | #3324341        | ARM64_ERRATUM_3194386       |
- +----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Neoverse-V1     | #4193790        | ARM64_ERRATUM_4118414       |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Neoverse-V2     | #3324336        | ARM64_ERRATUM_3194386       |
- +----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Neoverse-V2     | #4193787        | ARM64_ERRATUM_4118414       |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Neoverse-V3     | #3312417        | ARM64_ERRATUM_3194386       |
- +----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Neoverse-V3     | #4193784        | ARM64_ERRATUM_4118414       |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Neoverse-V3AE   | #3312417        | ARM64_ERRATUM_3194386       |
- +----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Neoverse-V3AE   | #4193784        | ARM64_ERRATUM_4118414       |
-++----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | C1-Premium      | #4193780        | ARM64_ERRATUM_4118414       |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | C1-Pro          | #4193714        | ARM64_ERRATUM_4193714       |
- +----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | C1-Ultra        | #4193780        | ARM64_ERRATUM_4118414       |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | MMU-500         | #841119,826419  | ARM_SMMU_MMU_500_CPRE_ERRATA|
- |                |                 | #562869,1047329 |                             |
- +----------------+-----------------+-----------------+-----------------------------+
-@@ -256,6 +298,8 @@ stable kernels.
- +----------------+-----------------+-----------------+-----------------------------+
- | NVIDIA         | Carmel Core     | N/A             | NVIDIA_CARMEL_CNP_ERRATUM   |
- +----------------+-----------------+-----------------+-----------------------------+
-+| NVIDIA         | Olympus core    | T410-OLY-1029   | ARM64_ERRATUM_4118414       |
-++----------------+-----------------+-----------------+-----------------------------+
- | NVIDIA         | T241 GICv3/4.x  | T241-FABRIC-4   | N/A                         |
- +----------------+-----------------+-----------------+-----------------------------+
- | NVIDIA         | T241 MPAM       | T241-MPAM-1     | N/A                         |
-@@ -323,3 +367,5 @@ stable kernels.
- +----------------+-----------------+-----------------+-----------------------------+
- | Microsoft      | Azure Cobalt 100| #3324339        | ARM64_ERRATUM_3194386       |
- +----------------+-----------------+-----------------+-----------------------------+
-+| Microsoft      | Azure Cobalt 100| #4193789        | ARM64_ERRATUM_4118414       |
-++----------------+-----------------+-----------------+-----------------------------+
-diff --git a/Makefile b/Makefile
-index 408f070d49b8..39baa3275447 100644
---- a/Makefile
-+++ b/Makefile
-@@ -1,7 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0
- VERSION = 7
- PATCHLEVEL = 1
--SUBLEVEL = 0
-+SUBLEVEL = 1
- EXTRAVERSION =
- NAME = Baby Opossum Posse
- 
-diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-index fe60738e5943..10c69474f276 100644
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -1154,6 +1154,44 @@ config ARM64_ERRATUM_4193714
- 
- 	  If unsure, say Y.
- 
-+config ARM64_ERRATUM_4118414
-+	bool "Various: Completion of affected memory accesses might not be guaranteed by completion of a TLBI"
-+	default y
-+	select ARM64_WORKAROUND_REPEAT_TLBI
-+	help
-+	  This option adds a workaround for the following errata:
-+
-+	  * ARM C1-Premium erratum 4193780
-+	  * ARM C1-Ultra erratum 4193780
-+	  * ARM Cortex-A76 erratum 4193800
-+	  * ARM Cortex-A76AE erratum 4193801
-+	  * ARM Cortex-A77 erratum 4193798
-+	  * ARM Cortex-A78 erratum 4193791
-+	  * ARM Cortex-A78AE erratum 4193793
-+	  * ARM Cortex-A78C erratum 4193794
-+	  * ARM Cortex-A710 erratum 4193788
-+	  * ARM Cortex-X1 erratum 4193791
-+	  * ARM Cortex-X1C erratum 4193792
-+	  * ARM Cortex-X2 erratum 4193788
-+	  * ARM Cortex-X3 erratum 4193786
-+	  * ARM Cortex-X4 erratum 4118414
-+	  * ARM Cortex-X925 erratum 4193781
-+	  * ARM Neoverse-N1 erratum 4193800
-+	  * ARM Neoverse-N2 erratum 4193789
-+	  * ARM Neoverse-V1 erratum 4193790
-+	  * ARM Neoverse-V2 erratum 4193787
-+	  * ARM Neoverse-V3 erratum 4193784
-+	  * ARM Neoverse-V3AE erratum 4193784
-+	  * Microsoft Azure Cobalt 100 4193789
-+	  * NVIDIA Olympus erratum T410-OLY-1029
-+
-+	  On affected cores, some memory accesses might not be completed by
-+	  broadcast TLB invalidation.
-+
-+	  This issue is also known as CVE-2025-10263.
-+
-+	  If unsure, say Y.
-+
- config CAVIUM_ERRATUM_22375
- 	bool "Cavium erratum 22375, 24313"
- 	default y
-diff --git a/arch/arm64/include/asm/cputype.h b/arch/arm64/include/asm/cputype.h
-index 7b518e81dd15..1b9f0cda1336 100644
---- a/arch/arm64/include/asm/cputype.h
-+++ b/arch/arm64/include/asm/cputype.h
-@@ -97,8 +97,10 @@
- #define ARM_CPU_PART_CORTEX_X925	0xD85
- #define ARM_CPU_PART_CORTEX_A725	0xD87
- #define ARM_CPU_PART_CORTEX_A720AE	0xD89
-+#define ARM_CPU_PART_C1_ULTRA		0xD8C
- #define ARM_CPU_PART_NEOVERSE_N3	0xD8E
- #define ARM_CPU_PART_C1_PRO		0xD8B
-+#define ARM_CPU_PART_C1_PREMIUM		0xD90
- 
- #define APM_CPU_PART_XGENE		0x000
- #define APM_CPU_VAR_POTENZA		0x00
-@@ -189,8 +191,10 @@
- #define MIDR_CORTEX_X925 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X925)
- #define MIDR_CORTEX_A725 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A725)
- #define MIDR_CORTEX_A720AE MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A720AE)
-+#define MIDR_C1_ULTRA MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_C1_ULTRA)
- #define MIDR_NEOVERSE_N3 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_N3)
- #define MIDR_C1_PRO MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_C1_PRO)
-+#define MIDR_C1_PREMIUM MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_C1_PREMIUM)
- #define MIDR_THUNDERX	MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX)
- #define MIDR_THUNDERX_81XX MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX_81XX)
- #define MIDR_THUNDERX_83XX MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX_83XX)
-diff --git a/arch/arm64/kernel/cpu_errata.c b/arch/arm64/kernel/cpu_errata.c
-index 5377e4c2eba2..4b0d5d932897 100644
---- a/arch/arm64/kernel/cpu_errata.c
-+++ b/arch/arm64/kernel/cpu_errata.c
-@@ -340,7 +340,37 @@ static const struct arm64_cpu_capabilities arm64_repeat_tlbi_list[] = {
- 		ERRATA_MIDR_RANGE(MIDR_CORTEX_A510, 0, 0, 1, 1),
- 	},
- #endif
--	{},
-+#ifdef CONFIG_ARM64_ERRATUM_4118414
-+	{
-+		ERRATA_MIDR_RANGE_LIST(((const struct midr_range[]) {
-+			MIDR_ALL_VERSIONS(MIDR_C1_PREMIUM),
-+			MIDR_ALL_VERSIONS(MIDR_C1_ULTRA),
-+			MIDR_ALL_VERSIONS(MIDR_CORTEX_A76),
-+			MIDR_ALL_VERSIONS(MIDR_CORTEX_A76AE),
-+			MIDR_ALL_VERSIONS(MIDR_CORTEX_A77),
-+			MIDR_ALL_VERSIONS(MIDR_CORTEX_A78),
-+			MIDR_ALL_VERSIONS(MIDR_CORTEX_A78AE),
-+			MIDR_ALL_VERSIONS(MIDR_CORTEX_A78C),
-+			MIDR_ALL_VERSIONS(MIDR_CORTEX_A710),
-+			MIDR_ALL_VERSIONS(MIDR_CORTEX_X1),
-+			MIDR_ALL_VERSIONS(MIDR_CORTEX_X1C),
-+			MIDR_ALL_VERSIONS(MIDR_CORTEX_X2),
-+			MIDR_ALL_VERSIONS(MIDR_CORTEX_X3),
-+			MIDR_ALL_VERSIONS(MIDR_CORTEX_X4),
-+			MIDR_ALL_VERSIONS(MIDR_CORTEX_X925),
-+			MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N1),
-+			MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N2),
-+			MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V1),
-+			MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V2),
-+			MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V3),
-+			MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V3AE),
-+			MIDR_ALL_VERSIONS(MIDR_NVIDIA_OLYMPUS),
-+			MIDR_ALL_VERSIONS(MIDR_MICROSOFT_AZURE_COBALT_100),
-+			{}
-+		})),
-+	},
-+#endif
-+	{}
- };
- #endif
- 
-@@ -693,7 +723,7 @@ const struct arm64_cpu_capabilities arm64_errata[] = {
- #endif
- #ifdef CONFIG_ARM64_WORKAROUND_REPEAT_TLBI
- 	{
--		.desc = "Qualcomm erratum 1009, or ARM erratum 1286807, 2441009",
-+		.desc = "Broken broadcast TLBI completion",
- 		.capability = ARM64_WORKAROUND_REPEAT_TLBI,
- 		.type = ARM64_CPUCAP_LOCAL_CPU_ERRATUM,
- 		.matches = cpucap_multi_entry_cap_matches,
-diff --git a/drivers/base/bus.c b/drivers/base/bus.c
-index 8b6722ff8590..d17bd91490ee 100644
---- a/drivers/base/bus.c
-+++ b/drivers/base/bus.c
-@@ -544,10 +544,10 @@ static const struct attribute_group driver_override_dev_group = {
-  */
- int bus_add_device(struct device *dev)
- {
--	struct subsys_private *sp = bus_to_subsys(dev->bus);
-+	struct subsys_private *sp;
- 	int error;
- 
--	if (!sp) {
-+	if (!dev->bus) {
- 		/*
- 		 * This is a normal operation for many devices that do not
- 		 * have a bus assigned to them, just say that all went
-@@ -556,6 +556,13 @@ int bus_add_device(struct device *dev)
- 		return 0;
- 	}
- 
-+	sp = bus_to_subsys(dev->bus);
-+	if (!sp) {
-+		pr_err("%s: cannot add device '%s' to unregistered bus '%s'\n",
-+		       __func__, dev_name(dev), dev->bus->name);
-+		return -EINVAL;
-+	}
-+
- 	/*
- 	 * Reference in sp is now incremented and will be dropped when
- 	 * the device is removed from the bus
-diff --git a/drivers/base/faux.c b/drivers/base/faux.c
-index fb3e42f21362..3d1d1eafb473 100644
---- a/drivers/base/faux.c
-+++ b/drivers/base/faux.c
-@@ -133,6 +133,9 @@ struct faux_device *faux_device_create_with_groups(const char *name,
- 	struct device *dev;
- 	int ret;
- 
-+	if (!faux_bus_root)
-+		return NULL;
-+
- 	faux_obj = kzalloc_obj(*faux_obj);
- 	if (!faux_obj)
- 		return NULL;
-@@ -232,19 +235,12 @@ EXPORT_SYMBOL_GPL(faux_device_destroy);
- 
- int __init faux_bus_init(void)
- {
-+	struct device *root;
- 	int ret;
- 
--	faux_bus_root = kzalloc_obj(*faux_bus_root);
--	if (!faux_bus_root)
--		return -ENOMEM;
--
--	dev_set_name(faux_bus_root, "faux");
--
--	ret = device_register(faux_bus_root);
--	if (ret) {
--		put_device(faux_bus_root);
--		return ret;
--	}
-+	root = root_device_register("faux");
-+	if (IS_ERR(root))
-+		return PTR_ERR(root);
- 
- 	ret = bus_register(&faux_bus_type);
- 	if (ret)
-@@ -254,12 +250,14 @@ int __init faux_bus_init(void)
- 	if (ret)
- 		goto error_driver;
- 
-+	faux_bus_root = root;
-+
- 	return ret;
- 
- error_driver:
- 	bus_unregister(&faux_bus_type);
- 
- error_bus:
--	device_unregister(faux_bus_root);
-+	root_device_unregister(root);
- 	return ret;
- }
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_hmm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_hmm.c
-index e452444b33b0..99bc9ad67d5b 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_hmm.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_hmm.c
-@@ -174,7 +174,6 @@ int amdgpu_hmm_range_get_pages(struct mmu_interval_notifier *notifier,
- 	const u64 max_bytes = SZ_2G;
- 
- 	struct hmm_range *hmm_range = &range->hmm_range;
--	unsigned long timeout;
- 	unsigned long *pfns;
- 	unsigned long end;
- 	int r;
-@@ -201,15 +200,9 @@ int amdgpu_hmm_range_get_pages(struct mmu_interval_notifier *notifier,
- 		pr_debug("hmm range: start = 0x%lx, end = 0x%lx",
- 			hmm_range->start, hmm_range->end);
- 
--		timeout = jiffies + msecs_to_jiffies(HMM_RANGE_DEFAULT_TIMEOUT);
--
--retry:
- 		r = hmm_range_fault(hmm_range);
--		if (unlikely(r)) {
--			if (r == -EBUSY && !time_after(jiffies, timeout))
--				goto retry;
-+		if (unlikely(r))
- 			goto out_free_pfns;
--		}
- 
- 		if (hmm_range->end == end)
- 			break;
-diff --git a/drivers/hid/hid-input.c b/drivers/hid/hid-input.c
-index d73cfa2e73d3..c7b8c4ff7a33 100644
---- a/drivers/hid/hid-input.c
-+++ b/drivers/hid/hid-input.c
-@@ -519,6 +519,13 @@ static struct hid_battery *hidinput_find_battery(struct hid_device *dev,
- 	return NULL;
- }
- 
-+static void hidinput_cleanup_battery(void *res)
-+{
-+	struct hid_battery *bat = res;
-+
-+	list_del(&bat->list);
-+}
-+
- static int hidinput_setup_battery(struct hid_device *dev, unsigned report_type,
- 				  struct hid_field *field, bool is_percentage)
- {
-@@ -610,6 +617,12 @@ static int hidinput_setup_battery(struct hid_device *dev, unsigned report_type,
- 
- 	power_supply_powers(bat->ps, &dev->dev);
- 	list_add_tail(&bat->list, &dev->batteries);
-+
-+	error = devm_add_action_or_reset(&dev->dev,
-+					 hidinput_cleanup_battery, bat);
-+	if (error)
-+		return error;
-+
- 	return 0;
- 
- err_free_name:
-diff --git a/fs/fcntl.c b/fs/fcntl.c
-index beab8080badf..92d643a14196 100644
---- a/fs/fcntl.c
-+++ b/fs/fcntl.c
-@@ -929,11 +929,11 @@ void send_sigio(struct fown_struct *fown, int fd, int band)
- 			send_sigio_to_task(p, fown, fd, band, type);
- 		rcu_read_unlock();
- 	} else {
--		read_lock(&tasklist_lock);
-+		rcu_read_lock();
- 		do_each_pid_task(pid, type, p) {
- 			send_sigio_to_task(p, fown, fd, band, type);
- 		} while_each_pid_task(pid, type, p);
--		read_unlock(&tasklist_lock);
-+		rcu_read_unlock();
- 	}
-  out_unlock_fown:
- 	read_unlock_irqrestore(&fown->lock, flags);
-@@ -975,11 +975,11 @@ int send_sigurg(struct file *file)
- 			send_sigurg_to_task(p, fown, type);
- 		rcu_read_unlock();
- 	} else {
--		read_lock(&tasklist_lock);
-+		rcu_read_lock();
- 		do_each_pid_task(pid, type, p) {
- 			send_sigurg_to_task(p, fown, type);
- 		} while_each_pid_task(pid, type, p);
--		read_unlock(&tasklist_lock);
-+		rcu_read_unlock();
- 	}
-  out_unlock_fown:
- 	read_unlock_irqrestore(&fown->lock, flags);
+
+On Fri, Jun 19, 2026 at 02:30:25AM +0000, Wei Yang wrote:
+>On Wed, Jun 17, 2026 at 08:18:15AM +0000, Wei Yang wrote:
+>>On Wed, Jun 17, 2026 at 10:32:11AM +0800, Lance Yang wrote:
+>>>
+>>>On Tue, Jun 16, 2026 at 11:50:22PM +0000, Wei Yang wrote:
+>>>>On Tue, Jun 16, 2026 at 08:30:01PM +0800, Lance Yang wrote:
+>>>>>
+>>>>>On Tue, Jun 16, 2026 at 06:34:36AM +0000, Wei Yang wrote:
+>>>>>[...]
+>>>>>>diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
+>>>>>>index 2ccbabfb2cc1..21635fab209c 100644
+>>>>>>--- a/mm/page_vma_mapped.c
+>>>>>>+++ b/mm/page_vma_mapped.c
+>>>>>>@@ -243,40 +243,28 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
+>>>>>> 		 */
+>>>>>> 		pmde = pmdp_get_lockless(pvmw->pmd);
+>>>>>> 
+>>>>>>-		if (pmd_trans_huge(pmde) || pmd_is_migration_entry(pmde)) {
+>>>>>>-			pvmw->ptl = pmd_lock(mm, pvmw->pmd);
+>>>>>>-			pmde = *pvmw->pmd;
+>>>>>>-			if (!pmd_present(pmde)) {
+>>>>>>-				softleaf_t entry;
+>>>>>>-
+>>>>>>-				if (!thp_migration_supported() ||
+>>>>>>-				    !(pvmw->flags & PVMW_MIGRATION))
+>>>>>>-					return not_found(pvmw);
+>>>>>>-				entry = softleaf_from_pmd(pmde);
+>>>>>>-
+>>>>>>-				if (!softleaf_is_migration(entry) ||
+>>>>>>-				    !check_pmd(softleaf_to_pfn(entry), pvmw))
+>>>>>>-					return not_found(pvmw);
+>>>>>>-				return true;
+>>>>>>-			}
+>>>>>>-			if (likely(pmd_trans_huge(pmde))) {
+>>>>>>-				if (pvmw->flags & PVMW_MIGRATION)
+>>>>>>-					return not_found(pvmw);
+>>>>>>-				if (!check_pmd(pmd_pfn(pmde), pvmw))
+>>>>>>-					return not_found(pvmw);
+>>>>>>-				return true;
+>>>>>>-			}
+>>>>>>-			/* THP pmd was split under us: handle on pte level */
+>>>>>>-			spin_unlock(pvmw->ptl);
+>>>>>>-			pvmw->ptl = NULL;
+>>>>>>-		} else if (!pmd_present(pmde)) {
+>>>>>>-			const softleaf_t entry = softleaf_from_pmd(pmde);
+>>>>>>-
+>>>>>>-			if (softleaf_is_device_private(entry)) {
+>>>>>>-				pvmw->ptl = pmd_lock(mm, pvmw->pmd);
+>>>>>>-				return true;
+>>>>>>-			}
+>>>>>>+		if (pmd_present(pmde)) {
+>>>>>>+			if (!pmd_leaf(pmde))
+>>>>>>+				goto pte_table;
+>>>>>>+			if (pvmw->flags & PVMW_MIGRATION)
+>>>>>>+				return not_found(pvmw);
+>>>>>>+			if (!check_pmd(pmd_pfn(pmde), pvmw))
+>>>>>>+				return not_found(pvmw);
+>>>>>>+		} else if (pmd_is_migration_entry(pmde)) {
+>>>>>>+			softleaf_t entry = softleaf_from_pmd(pmde);
+>>>>>>+
+>>>>>>+			if (!(pvmw->flags & PVMW_MIGRATION))
+>>>>>>+				return not_found(pvmw);
+>>>>>
+>>>>>Looked at history a bit, and I wonder if this changed something old
+>>>>>here ...
+>>>>>
+>>>>>Since 616b8371539a ("mm: thp: enable thp migration in generic path"), PMD
+>>>>>migration handling took PTL before doing PVMW_MIGRATION/PFN checks,
+>>>>>including not_found() cases. So lockless PMD read was just a filter ...
+>>>>>
+>>>>>With this fix, true case gets final pmd_same() check, but this
+>>>>>not_found() case happens before taking PTL.
+>>>>>
+>>>>>So a !PVMW_MIGRATION walker could race with someone, e.g.
+>>>>>remove_migration_pmd(): we make the not_found() decision from old PMD
+>>>>>value that still says "migration", while real *pvmw->pmd may already be
+>>>>>present again. We return without ever taking PTL :)
+>>>>>
+>>>>
+>>>>Hi, Lance
+>>>>
+>>>>Thanks for take a look.
+>>>>
+>>>>I am trying to understand the scenario you mentioned. Let's say A migrate a
+>>>>pmd and B want to unmap the pmd.
+>>>>
+>>>>            A                                        B
+>>>>
+>>>>  try to migrate a pmd
+>>>>  pmd is set to migration entry
+>>>>                                           unmap the pmd ...
+>>>>  managed to finish migration
+>>>>                                           ...still see migration entry,
+>>>>                                           so skipped and unmap fail
+>>>>
+>>>>Would this be a timing case? Even B grab the PTL, it still could see migration
+>>>>entry if B visit pmd before A finish migration.
+>>>>
+>>>>Maybe I miss something, look forward your insight.
+>>>
+>>>Right, seeing migration entry while migration is still ongoing is fine.
+>>>
+>>>What I meant was this ordering:
+>>>
+>>>  CPU 0: pmde = pmdp_get_lockless(...); /* migration */
+>>>  CPU 1: remove_migration_pmd() restores PMD to present
+>>>  CPU 0: returns not_found() from old pmde, without ever taking PTL and
+>>>         rechecking *pvmw->pmd
+>>>
+>>>So issue is not seeing migration entry itself, but making final
+>>>not_found() decision from stale lockless PMD value ...
+>>>
+>>>Before this patch, PMD migration case took PTL before making that
+>>>decision ...
+>>>
+>>
+>>Yes, this patch changes the decision making condition for pmd entry. Thanks
+>>for pointing out.
+>>
+>>Hmm... I took another look into current pte handling and find for pte entry,
+>>we did two phase check:
+>>
+>>  * map_pte() without ptl
+>>  * check_pte() with ptl
+>>
+>>While check_pte() do extra pfn range check, map_pte() doesn't.
+>>
+>>This means for pte entry, we may face the same situation as you describe: 
+>>make the decision before grab PTL. Till now, it looks reasonable.
+>>
+>>But one thing jumped at me, PVMW_SYNC. When this flag is specified, all check
+>>is done under PTL. But now for pmd entry, we don't have a chance to do so.
+>>
+>>And as the comment says in try_to_migrate_one()
+>>
+>>	/*
+>>	 * When racing against e.g. zap_pte_range() on another cpu,
+>>	 * in between its ptep_get_and_clear_full() and folio_remove_rmap_*(),
+>>	 * try_to_migrate() may return before folio_mapped() has become false,
+>>	 * if page table locking is skipped: use TTU_SYNC to wait for that.
+>>	 */
+>>
+>>I tracked down to commit a98a2f0c8ce1 ('mm/rmap: split migration into its own
+>>function'), but not getting more detail on reasoning. Not fully understand it
+>>yet, but it seems there is some race between migration and unmap which is
+>>protected by PTL?
+>>
+>>Will look into this to get more detail.
+>>
+>
+>After going through the history, I found this:
+>
+>   commit 732ed55823fc3ad998d43b86bf771887bcc5ec67
+>   Author: Hugh Dickins <hughd@google.com>
+>   Date:   Tue Jun 15 18:23:53 2021 -0700
+>   
+>       mm/thp: try_to_unmap() use TTU_SYNC for safe splitting
+>
+>This one fix the race mentioned above: we expect mapcount is 0, but is not.
+
+Cool, thanks!
+
+I do want to spend more time on this refactor. It is touching some subtle
+page_vma_mapped_walk() rules, so I don't want to skim and guess ...
+
+One case I can pin down now is device-private: the PTE side gives us a
+clear rule to compare against :)
+
+On the PTE side:
+
+1) PVMW_SYNC set, PVMW_MIGRATION set
+
+  map_pte() uses pte_offset_map_lock(), so it takes PTL first.
+  check_pte() then runs under PTL. Since PVMW_MIGRATION is set,
+  check_pte() requires a migration entry, so device-private is rejected.
+
+2) PVMW_SYNC set, PVMW_MIGRATION clear
+
+  map_pte() takes PTL first. check_pte() then runs under PTL.
+  Since PVMW_MIGRATION is clear, device-private can be a normal mapping,
+  but check_pte() still checks entry type and PFN range.
+
+3) PVMW_SYNC clear, PVMW_MIGRATION set
+
+  map_pte() first does a lockless read. A non-present, non-none PTE can
+  still be a candidate, so map_pte() takes PTL. check_pte() then rejects
+  device-private, because PVMW_MIGRATION requires a migration entry.
+
+4) PVMW_SYNC clear, PVMW_MIGRATION clear
+
+  map_pte() first does a lockless read. A device-private PTE can be a
+  normal mapping candidate, so map_pte() takes PTL. check_pte() then
+  checks entry type and PFN range under PTL.
+
+On the PMD device-private side, before this patch, all four cases go
+through the same code once the lockless PMD read sees a device-private
+entry:
+
+- lockless read PMD into pmde
+- pmde is non-present
+- decode pmde as a softleaf entry
+- entry is device-private
+- take pmd_lock()
+- return true
+
+So compared with the PTE side:
+
+A) PVMW_SYNC set, PVMW_MIGRATION set
+
+  PTE rejects device-private under PTL.
+
+  PMD returns true.
+
+  This does not match. The PMD code misses the PVMW_MIGRATION direction
+  check, and does not reread/revalidate PMD under pmd_lock().
+
+B) PVMW_SYNC set, PVMW_MIGRATION clear
+
+  PTE can accept device-private, but only after locked check_pte()
+  validation.
+
+  PMD also returns true.
+
+  The direction is OK, but the final check is missing. PMD returns true
+  from the lockless PMD classification, without PMD revalidation and
+  without check_pmd() PFN-range check.
+
+C) PVMW_SYNC clear, PVMW_MIGRATION set
+
+  PTE can reach locked check_pte() from the lockless candidate, but
+  check_pte() rejects device-private.
+  
+  PMD returns true.
+
+  Same mismatch as case A: missing PVMW_MIGRATION direction check, and no
+  locked PMD revalidation.
+
+D) PVMW_SYNC clear, PVMW_MIGRATION clear
+
+  PTE can accept device-private after locked validation.
+
+  PMD also returns true.
+
+  Direction is OK here as well, but the PMD code still has no final
+  locked check matching check_pte(): no PMD reread/revalidation, and no
+  check_pmd() PFN-range check.
+
+>
+>IIUC, if we apply the change in this patch, the affected case is
+>pmd_is_migration_entry(). In case someone else has cleared it but not update
+>mapcount yet, try_to_migrate() would return before folio_mapped() is false.
+>
+>Thanks Lance for raise the question.
+>
+>If above analysis is true, I haven't got a neat way to take this into
+>consideration.
+>
+>BTW, for a fix, I am thinking to keep it simple and direct. So how about leave
+>the refactor as a followup cleanup?
+
+So for a fix, let's line up the PTE and PMD rules first :D
+
+Cheers, Lance
+
+>-- 
+>Wei Yang
+>Help you, Help me
+>
 
