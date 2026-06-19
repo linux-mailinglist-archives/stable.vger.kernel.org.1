@@ -1,170 +1,187 @@
-Return-Path: <stable+bounces-267415-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267426-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 86dzBnNaNWoxtwYAu9opvQ
-	(envelope-from <stable+bounces-267415-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 17:04:19 +0200
+	id mwW6N2dpNWqTvgYAu9opvQ
+	(envelope-from <stable+bounces-267426-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 18:08:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34E4B6A6915
-	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 17:04:17 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7E596A6F1E
+	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 18:08:07 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=intel.com header.s=Intel header.b=hyi2TgTc;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267415-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-267415-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=intel.com;
+	dkim=pass header.d=krisman.be header.s=MBO0001 header.b=iFvfCnfV;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267426-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267426-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=krisman.be;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A3BE930059A4
-	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 15:04:16 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A55453028312
+	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 16:07:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9633C3A254A;
-	Fri, 19 Jun 2026 15:04:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A121C3BB110;
+	Fri, 19 Jun 2026 16:07:42 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA08C2B9BA;
-	Fri, 19 Jun 2026 15:04:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97B403BB682;
+	Fri, 19 Jun 2026 16:07:38 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781881454; cv=none; b=oBHs2tyGSg29iFftOnd7MXaqT3dCw09aoVNrYmeiPGeDaqWYLRe4l+ELOpwGEnBHguY7Y4kHyprTqAopCbg6mgBvkCGFB82kjewHUt2BS2+Wninmc0YvZfR5Tg9QTQ+bn+x+0MmweTQ+jE09GACdw6iukMjeg1HVYUMHOFbjAGY=
+	t=1781885262; cv=none; b=RPpZXFEG/sunr1v+mYhx5CjAE7wC39LZDaAjcARLbrqkl5gGG2Wvq8utdekver/ZwfWVftGvDjsiInSXteIGyyRp/XXwu8FELHMuo8Oo9i9J7LCOY63K4VSxySG3WT1oaXEAReF1jfYJkODR4Xowi7nn9TAPMVLupD9RRliZhuY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781881454; c=relaxed/simple;
-	bh=lmThtTde8A2kexr9X/ktffpNfffqiuw7oczNDBREhOQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ZPCsZr7W1VN4L4hpTpncpGSSin9aU8xG8wV75DOawn2tsRJ2mfeG/tVDCG4OlSBCF6s3sd7+Q7sKppRT7A+C0BRR4FtOXvh2FVNs+hWZVoujgQrft+9DIU5XB2XRc8CD3jqJioXvmjD+1IItyfkxnrULV85XVoWRbpFzbP+CO/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hyi2TgTc; arc=none smtp.client-ip=192.198.163.16
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1781881453; x=1813417453;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=lmThtTde8A2kexr9X/ktffpNfffqiuw7oczNDBREhOQ=;
-  b=hyi2TgTcaCo/Kx1urDBoZlfJZoEWDJOjygkMBsn3CuZ5YPNBdfxP1Vcy
-   7Sh2q3vnkdrN5RONS4x+UJ4hJ5H9Nfce4J8hlwHyEXFkIgYP8VDN8fjVd
-   HY6KT4iqUuCru83oGxYf5rgFlOJRoX9eADpqMhglwt69RwwONloP5cdWm
-   ghEe2x6DF39mecziXuDhtwGHJyHnk3z0KZN18XtD5waYMIUS/ScxHDERo
-   qtKphbTAdb7RCiBNrjdf4CrjZtrEuZrxDaOrwIOsz3+HKLNFbc8Eu8oYW
-   rhCnZ6VZoG10Bo/BzIP1J6rOVxd437WL6d/QR6ttedRCTdd0DNwiJPep0
-   A==;
-X-CSE-ConnectionGUID: 9RYUyqU+S5WNtiiPHyRL1g==
-X-CSE-MsgGUID: fC7eTxE5RPKR76AI3LsSPQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11821"; a="70241292"
-X-IronPort-AV: E=Sophos;i="6.24,213,1774335600"; 
-   d="scan'208";a="70241292"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jun 2026 08:04:12 -0700
-X-CSE-ConnectionGUID: zyquARy1Tyu8HsdYh/rNcA==
-X-CSE-MsgGUID: QRPHrvk1Q1upV+C4KhZyPQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,213,1774335600"; 
-   d="scan'208";a="247508669"
-Received: from madhum (HELO madhum..) ([10.223.131.52])
-  by orviesa006.jf.intel.com with ESMTP; 19 Jun 2026 08:03:19 -0700
-From: madhu.m@intel.com
-To: gregkh@linuxfoundation.org
-Cc: heikki.krogerus@linux.intel.com,
-	stable@vger.kernel.org,
-	jthies@google.com,
-	akuchynski@chromium.org,
-	linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Madhu M <madhu.m@intel.com>
-Subject: [PATCH v2] usb: typec: ucsi: Pass full DP config payload in SET_NEW_CAM for DP alt mode
-Date: Fri, 19 Jun 2026 21:03:11 +0530
-Message-Id: <20260619153311.3526083-1-madhu.m@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <message-id-of-gregs-reply>
-References: <message-id-of-gregs-reply>
+	s=arc-20240116; t=1781885262; c=relaxed/simple;
+	bh=fE67BqjDyTheSgqd4EZb5JKPlSAJ3XTJgI08s/KrHZQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=c4Z6EFFpnyJJ6J/QDz9coebSmg0duKO5ijkIcP5gfEwgIo+7ZYAq5xF7z+FZLkaLtGC9QWQYzL3B9t7W0qaLvac020kloSK4b7Hmo4iPd1fcBGsGi/4lDb0u25/Pis7HmuLIpEGPt6ewRg4ZzYyQcDWBrmq/pMEIbCuIXOlIaEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=krisman.be; spf=pass smtp.mailfrom=krisman.be; dkim=pass (2048-bit key) header.d=krisman.be header.i=@krisman.be header.b=iFvfCnfV; arc=none smtp.client-ip=80.241.56.172
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [10.196.197.102])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4ghjD66TF5z9tll;
+	Fri, 19 Jun 2026 18:07:34 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=krisman.be; s=MBO0001;
+	t=1781885255;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9yD4xHJw2ixlS54/w1wwmeUxIlbpa8OqFoDWj8fXiZY=;
+	b=iFvfCnfVzZyPln9esVpNbq5l7C+0oARS3Lvf8iWOzCduA+XDjoAKv6ubs39TTbv1XNUnJC
+	vHwsFy4eAjJ7eGfDeRKeiO6JaMG4xrOh2G2of6GTUYk8fUJkRlZVQX1Rswgrl4Q/2ykqGy
+	PSZTCPoJoNmjUJ/LNV396/zodn3QLAt1mPm2YKUuFBnDam9UMeQdrGRKC1D6vd8is+VShg
+	YhlSZOeLAR6hoVtWoJlzih55kcGxg5Gbxim6z+gZnvSKesO+vpZ8CyPNSvGgJ11M70ZBTk
+	4SREkuweUa1dE2Rc12DhDsBjwDQCnpsJukUt/BNQZrmQs1hKbppzDXTxpWxQQw==
+From: Gabriel Krisman Bertazi <gabriel@krisman.be>
+To: Cyber_black <Cyberblackk@proton.me>, "io-uring@vger.kernel.org"
+ <io-uring@vger.kernel.org>
+Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "axboe@kernel.dk" <axboe@kernel.dk>, "stable@vger.kernel.org"
+ <stable@vger.kernel.org>, "gregkh@linuxfoundation.org"
+ <gregkh@linuxfoundation.org>
+Subject: Re: [BUG] io_uring: possible CQE32 overflow flush inconsistency in
+ __io_cqring_overflow_flush()
+In-Reply-To: <6oAi5ghNgkCrElyHzHJrE8l3g7Dg7Uc9PpeZmbGD93Xic5x5MI54B1pehHhjiGrb5VB0icQvFaemtH-Pvb8bJkivv6qxD_NZUEvwyFkk62k=@proton.me>
+References: <6oAi5ghNgkCrElyHzHJrE8l3g7Dg7Uc9PpeZmbGD93Xic5x5MI54B1pehHhjiGrb5VB0icQvFaemtH-Pvb8bJkivv6qxD_NZUEvwyFkk62k=@proton.me>
+Date: Fri, 19 Jun 2026 12:07:30 -0400
+Message-ID: <87ik7eqzst.fsf@mailhost.krisman.be>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.66 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[intel.com:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[krisman.be,none];
+	R_DKIM_ALLOW(-0.20)[krisman.be:s=MBO0001];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FORGED_RECIPIENTS(0.00)[m:Cyberblackk@proton.me,m:io-uring@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:axboe@kernel.dk,m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER(0.00)[gabriel@krisman.be,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-267426-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-267415-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[madhu.m@intel.com,stable@vger.kernel.org];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:heikki.krogerus@linux.intel.com,m:stable@vger.kernel.org,m:jthies@google.com,m:akuchynski@chromium.org,m:linux-usb@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:madhu.m@intel.com,s:lists@lfdr.de];
-	DKIM_TRACE(0.00)[intel.com:+];
-	FROM_NO_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[madhu.m@intel.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gabriel@krisman.be,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[krisman.be:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[chromium.org:email,vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,intel.com:dkim,intel.com:email,intel.com:mid,intel.com:from_mime]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[proton.me:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,mailhost.krisman.be:mid,linuxfoundation.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 34E4B6A6915
+X-Rspamd-Queue-Id: A7E596A6F1E
 
-From: Madhu M <madhu.m@intel.com>
+Cyber_black <Cyberblackk@proton.me> writes:
 
-In the UCSI Specification Revision 3.1 RC1, bits 32-63 of the SET_NEW_CAM
-command hold the 32-bit Alternate Mode Specific (AMSpecific) field.
+> On Fri, Jun 19, 2026 at 04:49:32AM +0000, Greg KH wrote:> Please turn thi=
+s into a real patch that you have gregkh@linuxfoundation.org to verify it
+>> resolves the issue so you get full credit for the fix.
+>
+> Hi Greg,
+>
+> Apologies for the previous mail's format. The patch compiles cleanly
+> on arm64. My current environment does not support io_uring (ENOSYS)
+> so I was unable to run the liburing suite, but the fix itself is
+> straightforward.
 
-For DisplayPort Alternate Mode, this field must contain the full
-32-bit DisplayPort configuration VDO payload that the OPM wants the
-connector to operate in, rather than just the pin assignment value.
-This AMSpecific value follows the DisplayPort Configurations defined
-in the DisplayPort Alt Mode on USB Type-C Specification v2.1a,
-Table 5-13: SOP DisplayPort Configurations.
+What's the context, was this sent against stable?  The issue exists
+in mainline.
 
-Fixes: af8622f6a585 ("usb: typec: ucsi: Support for DisplayPort alt mode")
-Cc: stable@vger.kernel.org
-Signed-off-by: Madhu M <madhu.m@intel.com>
-Reviewed-by: Jameson Thies <jthies@google.com>
-Reviewed-by: Andrei Kuchynski <akuchynski@chromium.org>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
----
-Changes in v2:
-- Add Fixes: tag and Cc: stable; the bug (passing only the pin-assignment
-  value instead of the full DP configuration VDO) dates back to the initial
-  UCSI DisplayPort alt mode support in af8622f6a585.
- drivers/usb/typec/ucsi/displayport.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+> From 522b70bdd3ac64c64dd21842cb5901e59a1fb058 Mon Sep 17 00:00:00 2001
+> From: Eneshan Erdogan Karaca <cyberblackk@proton.me>
+> Date: Fri, 19 Jun 2026 07:59:58 +0000
+> Subject: [PATCH] io_uring: fix cqe_size/is_cqe32 inconsistency in overflow
+> =C2=A0flush
 
-diff --git a/drivers/usb/typec/ucsi/displayport.c b/drivers/usb/typec/ucsi/displayport.c
-index 67a0991a7b76..2e3d7c734d9f 100644
---- a/drivers/usb/typec/ucsi/displayport.c
-+++ b/drivers/usb/typec/ucsi/displayport.c
-@@ -185,13 +185,12 @@ static int ucsi_displayport_status_update(struct ucsi_dp *dp)
- 
- static int ucsi_displayport_configure(struct ucsi_dp *dp)
- {
--	u32 pins = DP_CONF_GET_PIN_ASSIGN(dp->data.conf);
- 	u64 command;
- 
- 	if (!dp->override)
- 		return 0;
- 
--	command = UCSI_CMD_SET_NEW_CAM(dp->con->num, 1, dp->offset, pins);
-+	command = UCSI_CMD_SET_NEW_CAM(dp->con->num, 1, dp->offset, dp->data.conf);
- 
- 	return ucsi_send_command(dp->con->ucsi, command, NULL, 0);
- }
--- 
-2.34.1
+Ideally, send it as a patch to the list with [PATCH] so it doesn't vanish u=
+nder a [BUG]
+tag.
+>
+> When IORING_SETUP_CQE32 is set, Block A doubles cqe_size to handle
+> 32-byte CQEs. Block B then resets is_cqe32 to false so that
+> io_get_cqe_overflow() uses its own ctx flag check internally, but
+> fails to reset cqe_size. This leaves cqe_size=3D32 while a 16-byte
+> slot is allocated, causing memcpy() to write beyond the allocated
+> CQE slot.
 
+How was this found?  Do you have a syzbot or a trigger?  The fix looks
+good but the patch appears corrupted, with a bunch of NBSP.
+
+>
+> Fix this by also resetting cqe_size when is_cqe32 is cleared.
+>
+> Signed-off-by: Eneshan Erdogan Karaca <cyberblackk@proton.me>
+> ---
+> =C2=A0io_uring/io_uring.c | 4 +++-
+> =C2=A01 file changed, 3 insertions(+), 1 deletion(-)
+>
+> diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
+> index 1ea2fca34a36..f9690291633a 100644
+> --- a/io_uring/io_uring.c
+> +++ b/io_uring/io_uring.c
+> @@ -543,8 +543,10 @@ static void __io_cqring_overflow_flush(struct io_rin=
+g_ctx *ctx, bool dying)
+> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 is_cqe32 =3D true;
+> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 cqe_size <<=3D 1;
+> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 }
+> - =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 if (ctx->flags & IORIN=
+G_SETUP_CQE32)
+> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 if (ctx->flags & IORIN=
+G_SETUP_CQE32) {
+> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 is_cqe32 =3D false;
+> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 cqe_size =3D sizeof(struct io_uring_cqe);
+> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 }
+> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 if (!dying) {
+> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 if (!io_get_cqe_overflow(ctx, &cqe, true, is_cqe32))
+> --
+> 2.34.1
+>
+> Thanks,
+> Eneshan Erdogan Karaca
+
+--=20
+Gabriel Krisman Bertazi
 
