@@ -1,93 +1,93 @@
-Return-Path: <stable+bounces-267402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267403-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id sgdzGi1LNWpfrgYAu9opvQ
-	(envelope-from <stable+bounces-267402-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 15:59:09 +0200
+	id k6WaJDFLNWpirgYAu9opvQ
+	(envelope-from <stable+bounces-267403-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 15:59:13 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BBCD6A6394
-	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 15:59:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FD4D6A6399
+	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 15:59:13 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=LVbmKnVy;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=i1TNEJiz;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=LVbmKnVy;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=i1TNEJiz;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267402-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267402-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=k4Myi0Za;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=JIzdBTHA;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=k4Myi0Za;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=JIzdBTHA;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267403-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267403-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=suse.de;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A2160302F71F
-	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 13:58:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 96F283034B28
+	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 13:59:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42DE62FA0C4;
-	Fri, 19 Jun 2026 13:58:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55A302FA0C4;
+	Fri, 19 Jun 2026 13:59:00 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D56032857FA
-	for <stable@vger.kernel.org>; Fri, 19 Jun 2026 13:58:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB4F72FE59C
+	for <stable@vger.kernel.org>; Fri, 19 Jun 2026 13:58:58 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781877534; cv=none; b=nMcHFCAn9usUPhCHB8IK4shOvt+Ce0e5xWtQBF9qJB9qMEmeIyWVCE8+jx3sKE3/v3q57j9JxH7DLC7zMM5ZxSbpcD4fLm0wvnCeDVYC2K4w8jRgmBF0NajhmGpcsZdzl4K+eHRvo/tcfM2d2j9X7Gm5IwB+XLYNbbAiCe1/M+s=
+	t=1781877540; cv=none; b=AFPx1O12nZtB9RjyrN/IT3WCR4zIkT3/rGSzJhcAzBjHaOugpNUEEVENCbrRIW7KYSGjnouLaK/Lt4vfIkXz/cBzY3JEsbZFXTrmHD4HCrD6cmF5ZnDpm21/Xo1xLyfNV7x0u3lkY8mnOp49hE15AXXhHHJQSVHkmMkNFM7zAgg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781877534; c=relaxed/simple;
-	bh=44+OeX8EVKg4uBX+uvGDFfevKVZNh/84Muhlb95wgRE=;
+	s=arc-20240116; t=1781877540; c=relaxed/simple;
+	bh=aeOXSbeZ+sUGvFQZPqT3LNoWX8GnQZQtRoZthPBPB8E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dpXV8rJvbiJE5kNEkkjN/X+N/bjE+HlZkOu1VpF73NgnFwVoCgr+Yc1xGIPTYT/GsnokKR8vgEN2auki/Pdn+uiT/dPDo+YyG3mDTov98u8wEmkv5HJ6x2mj/VfwQ54/PxmkXVkWA/OdQZbYqoLKSIEYrnjRU7vFfkVxlo0oE1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=LVbmKnVy; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=i1TNEJiz; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=LVbmKnVy; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=i1TNEJiz; arc=none smtp.client-ip=195.135.223.131
+	 MIME-Version; b=lEjPN7LamF5Rp3N7ir6MIBr/PgknZ5bjreCI8xsb5fAKjI8SnGeeeyyyl5WiCbYmFT8Qec1JbOCW4PnZvzMyOeDVWvC0rh0A7+DZliugPt7W/f0rVtsRAUsN3XR50KwONUTGNhwAku1QPao9FrTLTIe5FvxEjrQuhzaD3Yl5o94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=k4Myi0Za; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=JIzdBTHA; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=k4Myi0Za; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=JIzdBTHA; arc=none smtp.client-ip=195.135.223.131
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 521CD75C75;
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 9EADD75D2F;
 	Fri, 19 Jun 2026 13:58:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
 	t=1781877531; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=GkdvrlHS3lnYj9qgqGygKFUVpGPS9nGNplKOGnyvVJE=;
-	b=LVbmKnVy+H5L4f6ZoZiThOcXym//ySP2v1pWmN65EV5lCwcmX5sNExM5xdVMTGIBmiliRm
-	H3rEbt4Not0zEHwHIusmeYHUH7z+pZrtmTK4/Jx0AWkx3TuaO3FdCvE+Z/Cv6qOoNg1y0n
-	H88iIMc/Pe34L2Z1488hRgQp+GxBHuI=
+	bh=FpDVnK0TvHBIKhkXL855ih+LuB40KwhHQbSuYGInKMA=;
+	b=k4Myi0Za8gqT0rQHGExxItBz+b3hJg/fGW16a6u/abiBcYjIHl23JoI+GE481zEYiOKSys
+	8LdpalJb+HZsuuI1kMc93wlTo38p7p1fFCF31Wbtm6wxdFGnKlWAjmr69WNhupnhBsodXV
+	hvCx4D/hUglcwx3axX5AQPcuBFsVHnY=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
 	s=susede2_ed25519; t=1781877531;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=GkdvrlHS3lnYj9qgqGygKFUVpGPS9nGNplKOGnyvVJE=;
-	b=i1TNEJiz1AP8HCdE+p+K9t6FrfS+45rB/jxLjpBvdYYZ3P69yZMjMkk15lpkE/47UyU5sU
-	FHmJEj0jFOxVTjBA==
+	bh=FpDVnK0TvHBIKhkXL855ih+LuB40KwhHQbSuYGInKMA=;
+	b=JIzdBTHAUw2sIqpx9TxSlCjsHs2BBU7yEjEiOvjPr0vyCG1tyOUG4nOvP8khZLtlVKdMkk
+	ds+X8qZqlN/andCQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
 	t=1781877531; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=GkdvrlHS3lnYj9qgqGygKFUVpGPS9nGNplKOGnyvVJE=;
-	b=LVbmKnVy+H5L4f6ZoZiThOcXym//ySP2v1pWmN65EV5lCwcmX5sNExM5xdVMTGIBmiliRm
-	H3rEbt4Not0zEHwHIusmeYHUH7z+pZrtmTK4/Jx0AWkx3TuaO3FdCvE+Z/Cv6qOoNg1y0n
-	H88iIMc/Pe34L2Z1488hRgQp+GxBHuI=
+	bh=FpDVnK0TvHBIKhkXL855ih+LuB40KwhHQbSuYGInKMA=;
+	b=k4Myi0Za8gqT0rQHGExxItBz+b3hJg/fGW16a6u/abiBcYjIHl23JoI+GE481zEYiOKSys
+	8LdpalJb+HZsuuI1kMc93wlTo38p7p1fFCF31Wbtm6wxdFGnKlWAjmr69WNhupnhBsodXV
+	hvCx4D/hUglcwx3axX5AQPcuBFsVHnY=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
 	s=susede2_ed25519; t=1781877531;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=GkdvrlHS3lnYj9qgqGygKFUVpGPS9nGNplKOGnyvVJE=;
-	b=i1TNEJiz1AP8HCdE+p+K9t6FrfS+45rB/jxLjpBvdYYZ3P69yZMjMkk15lpkE/47UyU5sU
-	FHmJEj0jFOxVTjBA==
+	bh=FpDVnK0TvHBIKhkXL855ih+LuB40KwhHQbSuYGInKMA=;
+	b=JIzdBTHAUw2sIqpx9TxSlCjsHs2BBU7yEjEiOvjPr0vyCG1tyOUG4nOvP8khZLtlVKdMkk
+	ds+X8qZqlN/andCQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 11D7D779AB;
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5791A779A8;
 	Fri, 19 Jun 2026 13:58:51 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id eFovAxtLNWpvfwAAD6G6ig
+	id YGAcFBtLNWpvfwAAD6G6ig
 	(envelope-from <tzimmermann@suse.de>); Fri, 19 Jun 2026 13:58:51 +0000
 From: Thomas Zimmermann <tzimmermann@suse.de>
 To: javierm@redhat.com,
@@ -100,9 +100,9 @@ Cc: dri-devel@lists.freedesktop.org,
 	sashiko-reviews@lists.linux.dev,
 	Thomas Zimmermann <tzimmermann@suse.de>,
 	stable@vger.kernel.org
-Subject: [PATCH 1/3] drm/sysfb: simpledrm: Improve framebuffer-size validation
-Date: Fri, 19 Jun 2026 15:56:34 +0200
-Message-ID: <20260619135847.309664-2-tzimmermann@suse.de>
+Subject: [PATCH 2/3] drm/sysfb: simpledrm: Improve panel-size validation
+Date: Fri, 19 Jun 2026 15:56:35 +0200
+Message-ID: <20260619135847.309664-3-tzimmermann@suse.de>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260619135847.309664-1-tzimmermann@suse.de>
 References: <20260619135847.309664-1-tzimmermann@suse.de>
@@ -128,7 +128,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-267402-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-267403-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS(0.00)[m:javierm@redhat.com,m:maarten.lankhorst@linux.intel.com,m:mripard@kernel.org,m:airlied@gmail.com,m:simona@ffwll.ch,m:rayyan@ansari.sh,m:dri-devel@lists.freedesktop.org,m:sashiko-reviews@lists.linux.dev,m:tzimmermann@suse.de,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FORGED_SENDER(0.00)[tzimmermann@suse.de,stable@vger.kernel.org];
@@ -151,58 +151,80 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TO_DN_SOME(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,suse.de:dkim,suse.de:email,suse.de:mid,suse.de:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7BBCD6A6394
+X-Rspamd-Queue-Id: 2FD4D6A6399
 
-Validate the framebuffer size from the firmware against the
+Validate the panel size from the device-tree node against the
 limitations of struct drm_display_mode. The type only stores sizes
-in 16-bit fields. Fail probing on errors.
+in 16-bit fields. Fail transparently on errors; do not warn.
 
 Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Fixes: 11e8f5fd223b ("drm: Add simpledrm driver")
-Cc: <stable@vger.kernel.org> # v5.14+
+Fixes: 2a6d731a8f16 ("drm/simpledrm: Allow physical width and height configuration via panel node")
+Cc: Rayyan Ansari <rayyan@ansari.sh>
+Cc: <stable@vger.kernel.org> # v6.4+
 ---
- drivers/gpu/drm/sysfb/simpledrm.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/sysfb/simpledrm.c | 35 ++++++++++++++++++++++++++++---
+ 1 file changed, 32 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/gpu/drm/sysfb/simpledrm.c b/drivers/gpu/drm/sysfb/simpledrm.c
-index fc168920f2c6..03bd19fadccd 100644
+index 03bd19fadccd..5c1db0785d92 100644
 --- a/drivers/gpu/drm/sysfb/simpledrm.c
 +++ b/drivers/gpu/drm/sysfb/simpledrm.c
-@@ -88,14 +88,14 @@ static int
- simplefb_get_width_pd(struct drm_device *dev,
- 		      const struct simplefb_platform_data *pd)
- {
--	return simplefb_get_validated_int0(dev, "width", pd->width);
-+	return drm_sysfb_get_validated_int0(dev, "width", pd->width, U16_MAX);
+@@ -200,6 +200,35 @@ simplefb_get_memory_of(struct drm_device *dev, struct device_node *of_node)
+ 	return res;
  }
  
- static int
- simplefb_get_height_pd(struct drm_device *dev,
- 		       const struct simplefb_platform_data *pd)
- {
--	return simplefb_get_validated_int0(dev, "height", pd->height);
-+	return drm_sysfb_get_validated_int0(dev, "height", pd->height, U16_MAX);
- }
- 
- static int
-@@ -144,7 +144,7 @@ simplefb_get_width_of(struct drm_device *dev, struct device_node *of_node)
- 
- 	if (ret)
- 		return ret;
--	return simplefb_get_validated_int0(dev, "width", width);
-+	return drm_sysfb_get_validated_int0(dev, "width", width, U16_MAX);
- }
- 
- static int
-@@ -155,7 +155,7 @@ simplefb_get_height_of(struct drm_device *dev, struct device_node *of_node)
- 
- 	if (ret)
- 		return ret;
--	return simplefb_get_validated_int0(dev, "height", height);
-+	return drm_sysfb_get_validated_int0(dev, "height", height, U16_MAX);
- }
- 
- static int
++static u16
++__simplefb_get_panel_size_mm_of(struct drm_device *dev, struct device_node *of_panel_node,
++				const char *name)
++{
++	int ret;
++	u32 value;
++
++	ret = of_property_read_u32(of_panel_node, name, &value);
++	if (ret || value > U16_MAX) {
++		drm_dbg(dev, "simplefb: cannot parse panel %s: value %u, error %d\n",
++			name, value, ret);
++		return 0; /* not an error, simply ignore */
++	}
++
++	return value;
++}
++
++static u16
++simplefb_get_panel_width_mm_of(struct drm_device *dev, struct device_node *of_panel_node)
++{
++	return __simplefb_get_panel_size_mm_of(dev, of_panel_node, "width-mm");
++}
++
++static u16
++simplefb_get_panel_height_mm_of(struct drm_device *dev, struct device_node *of_panel_node)
++{
++	return __simplefb_get_panel_size_mm_of(dev, of_panel_node, "height-mm");
++}
++
+ /*
+  * Simple Framebuffer device
+  */
+@@ -601,7 +630,7 @@ static struct simpledrm_device *simpledrm_device_create(struct drm_driver *drv,
+ 	struct drm_sysfb_device *sysfb;
+ 	struct drm_device *dev;
+ 	int width, height, stride;
+-	int width_mm = 0, height_mm = 0;
++	u16 width_mm = 0, height_mm = 0;
+ 	struct device_node *panel_node;
+ 	const struct drm_format_info *format;
+ 	struct resource *res, *mem = NULL;
+@@ -665,8 +694,8 @@ static struct simpledrm_device *simpledrm_device_create(struct drm_driver *drv,
+ 			return ERR_CAST(mem);
+ 		panel_node = of_parse_phandle(of_node, "panel", 0);
+ 		if (panel_node) {
+-			simplefb_read_u32_of(dev, panel_node, "width-mm", &width_mm);
+-			simplefb_read_u32_of(dev, panel_node, "height-mm", &height_mm);
++			width_mm = simplefb_get_panel_width_mm_of(dev, panel_node);
++			height_mm = simplefb_get_panel_height_mm_of(dev, panel_node);
+ 			of_node_put(panel_node);
+ 		}
+ 	} else {
 -- 
 2.54.0
 
