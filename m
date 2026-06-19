@@ -1,85 +1,53 @@
-Return-Path: <stable+bounces-267343-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267344-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id SRjcJnv1NGo+lQYAu9opvQ
-	(envelope-from <stable+bounces-267343-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 09:53:31 +0200
+	id TwsLEZv1NGpHlQYAu9opvQ
+	(envelope-from <stable+bounces-267344-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 09:54:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D7446A4757
-	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 09:53:31 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F4D76A4765
+	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 09:54:02 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=PkvNMFll;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267343-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-267343-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KDoJ64zw;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267344-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267344-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7323C3025C1B
-	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 07:53:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5E5D73028F32
+	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 07:53:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9729335B639;
-	Fri, 19 Jun 2026 07:53:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8723E34BA5B;
+	Fri, 19 Jun 2026 07:53:49 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6E9F31D72E
-	for <stable@vger.kernel.org>; Fri, 19 Jun 2026 07:53:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61F6C1FA859;
+	Fri, 19 Jun 2026 07:53:48 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781855608; cv=none; b=NjLPyOsLKa/r3iPs6nqEnTQSTMN4S5FvfAZwtCi7O4zDFvyAT7HESCKfdpGBRr45fnYe4n4rAD+A41i1Y/zHv5KXZYc8EF+jD6jm6j8r/TFZjBgjzIAmeYfwvOyebq2niG8rnULTQ5grRjUAtDXAHQFonkNZiFL4laBsHsXcwbE=
+	t=1781855629; cv=none; b=MPj0wjauM5pb3Aqk+90aHGttTnpLoKg8bzPKc+AjeWhrmaepCjYQtve7nevJugDe7bPa5LZ2l6C8PbKMqIBJHfExd26ciJ9ts1922M7vlIlU1kXqDSU7dtrtv28BCp6yPFODTdi3/i+jIcrxq7uM33cLb6tfSNaFyqA+ZhgWDa8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781855608; c=relaxed/simple;
-	bh=pX91VZCWjtVn5XntwhIUKqRT2u2/AIqeQRmuIFxuWiE=;
+	s=arc-20240116; t=1781855629; c=relaxed/simple;
+	bh=KTNTeKmcKrl0HzqrWjC4sT5hldMQ3qLGw0qHug62rao=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LkalquUILn61TB/b54Tfu27MY+s/mufmOBK/nAwlg1Ky7PeEPaqDK91DD+iUwLKA8PfkHusZSRowc0weVASuc9Rbw0H14CP+AmmCrvJbw9obU8cLe1jLkE6kUB7D4UQodgttOqejKOX7EOpcmhkqvSU0KbPKBcbUjHzhKsi3f9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PkvNMFll; arc=none smtp.client-ip=209.85.221.47
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-45eeba68948so1327329f8f.1
-        for <stable@vger.kernel.org>; Fri, 19 Jun 2026 00:53:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781855604; x=1782460404; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=pX91VZCWjtVn5XntwhIUKqRT2u2/AIqeQRmuIFxuWiE=;
-        b=PkvNMFllKGIedUb0Bm4nByFfWNXN+yPpPnOB5OBzqSj41TPUcJaRUjVD/BIu/IcAe4
-         M/am1Vm1FzjapfXqM/XhGZdpoEVJKgh00OihjuuU1bNsK6CKmLp/LO7zILR/RZL/bh+N
-         kz/GjVcWdYKyCDYWdwytS+3obKrsZhcbjhvjPO9TWUM6HN/SQITp2/ER/T1nMcL7oWYU
-         fqOTjX4GkBx3QxgM7t2w4kqXLdrYOw6cGqRHiMS3GH+kB8BsvkIXWZbKPxQet1jAev52
-         YvuPd0DlHSZnbxSMGkf9wZsGNHIljjPGFLTIHVU7fzVBR8qLsqDal6PAux3e4RJqSLpJ
-         MzRw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781855604; x=1782460404;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=pX91VZCWjtVn5XntwhIUKqRT2u2/AIqeQRmuIFxuWiE=;
-        b=CjX6EklusVHxd+iOau6aUICt6oxNOi7DOHqhAPkZQjoKfFMQcbyfiavc3JrbjvE7H3
-         UD+DhTSocC360ZuoXRkLpHB+p09nwEN5dHT+A1aTsEOY5oIQ4tsgS3wySqbHQlx1x1g6
-         oeIKLXP6nKujDumRTtZQGnJrVWj3p/f0606PmhdDWJ8e1ulImpFyRA0szNNN26CkBcgw
-         iORpn4KVhvxBfYl3tXrgAj9rlTI98b08+rqhJaerioc5eCc7IhZiMOH6ppHisfw8Tsqa
-         4bM4+JTcNTAVmv7p9YwaMR+bxUtnQoOOzq4P9gLsuOuvBL6+7pndPRPPG0BUfhmTo0MR
-         4Oyg==
-X-Forwarded-Encrypted: i=1; AFNElJ9cQugGH1iXpMhNeO5p7E8YQ8Ivuh2VTZXIX4kmkFcw146s2q5Um0o/B2GIlFJqbQ27cPe03QQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwQN1bPWIyuxe5w1BXhdi1wc1TtIm5rrpqP+stUUg4GcIEleXcR
-	9VXlP1XDz0TAbe6XyYyM3eeGbbKAXXfkap7B6ohm1ow8j12pV+TkN+WI
-X-Gm-Gg: AfdE7clPWZ0LHmhsb3e9ZfRVF4aqouevMWM8fI4l1D2KkAOZxpJ82AodhWlXUHDZWfb
-	eO8/C7Xqv27cKrsqNFHIYxBrts4Ana2nOO0TQLKgBw7dgcnyoRfnHylSPy/w0EubEwH0IEzig7V
-	qnwrbSzIVigo6tzjrdrc/YZCoVlKP9d9YS6DFZtfMFbWGZM/VEy5xrkOjAlig/CNnNkPlqSAlJV
-	q6e5HSMx6z/+Fweh1cOdUuthuQe/WPYihK8QnCrL8rPh9Ylq8vyT0zlmlZ+409NGE6cP0hyR4ht
-	3+PsnMFZt/OruCujkRTUkcBVOITJ6ln7s/ABCWYXAbeNPhwxjuzEcekpt1tsCXU9L7XFRkRHtUG
-	F+NnXej/eIUbaQ2hi8c2N9Oxhw+ZaJGT9FHzTIOJ7ynS1yQ4Ry/MjNGRzhZ325Axb04pu3JQUJO
-	gj3HKbdllGFiiiul7VazUh821YL85hoZzZVNl6BjKcCvg8DwTY73XYddmhbHnH9tR1zXn3HuAOQ
-	huwwdbbZpGmms0=
-X-Received: by 2002:adf:e5d0:0:b0:460:6a8f:5d36 with SMTP id ffacd0b85a97d-465085353bfmr3214856f8f.22.1781855603755;
-        Fri, 19 Jun 2026 00:53:23 -0700 (PDT)
-Received: from ?IPV6:2001:9e8:f106:a001:409c:b132:5c19:42ef? ([2001:9e8:f106:a001:409c:b132:5c19:42ef])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-46508a04b55sm5915595f8f.5.2026.06.19.00.53.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 19 Jun 2026 00:53:22 -0700 (PDT)
-Message-ID: <7130ff1c-7c6e-4a82-868b-7f6c60c98e7d@gmail.com>
-Date: Fri, 19 Jun 2026 09:53:20 +0200
+	 In-Reply-To:Content-Type; b=LK+lykSzmBbQ1fzzrdueTiZRZP8FOjPG0ZWkwHNL73Q8oNO+V/T8vqCjnNW2jt9iBGz9RHsrDM7QHGejzhVEtBL1HMzkctyxzEwNllIhWGVGTYbLCaiFgQLmzzx14pbzKWs5s+0Rvf2pBukpE4Qe+Zty0PArJ5oYWhjK3Do/gRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KDoJ64zw; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 438491F000E9;
+	Fri, 19 Jun 2026 07:53:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781855628;
+	bh=haVgRnmIpelVO1VhwqkMbIrQtyXdHS3KTFbeiyRjyPk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=KDoJ64zw/lO6HtsuNwxG8E4d+BZIDL0bFRDxNH/CWDCon5jPnqhetqGLWaQ/D0Bg/
+	 bLzioNiqdf+sW/ywkomoAME7mW+lzOT4VvVdpMBkt3Ly4ZlN3CBkCn12OSjIMzZ85u
+	 OpGY2jCoRJYj4bCS7YSWc/slpyRjXtsDuAIoTcUHTP9co+CXwORFjT6DpPp3HT1LdV
+	 V8SJcZP/D4mMZsYrSC5euXUxlxgQz3GEDgTaZHmKCqAU5KNFS5EA3CVu94sFcHOmED
+	 6HJrgKzSyU2Xc3wJUjLGt++9SbOdrvd4jeE3fcVNHM0l3DSXdH6SK9JCQ4kR+1x0Ws
+	 ypc+nKgSlupgQ==
+Message-ID: <cb30b646-31a0-4afe-aba2-3cb01f299c00@kernel.org>
+Date: Fri, 19 Jun 2026 09:53:43 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -87,79 +55,178 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] MIPS: smp: report dying CPU to RCU in stop_this_cpu()
+Subject: Re: + userfaultfd-prevent-registration-of-special-vmas.patch added to
+ mm-hotfixes-unstable branch
+To: Linus Torvalds <torvalds@linuxfoundation.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, mm-commits@vger.kernel.org,
+ vladimirelitokarev@gmail.com, viro@zeniv.linux.org.uk,
+ stable@vger.kernel.org, peterx@redhat.com, oleg@redhat.com, jack@suse.cz,
+ brauner@kernel.org, rppt@kernel.org,
+ "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+References: <20260618183442.BBCD71F000E9@smtp.kernel.org>
+ <CAHk-=wiQ_10MRYYW+aRfLP4Ah9gDrShOvLESXtz+Q32-9M9Y9w@mail.gmail.com>
+ <9bbaa053-ea06-4b36-98ba-dc487a28964e@kernel.org>
+ <CAHk-=wjWhvmy5xUcTMCJZats2cUJ5iGU4o5Kdt+OvRepu+MUeQ@mail.gmail.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
-To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Huacai Chen <chenhuacai@kernel.org>
-Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- linux-mips@vger.kernel.org, Clark Williams <clrkwllms@kernel.org>,
- Steven Rostedt <rostedt@goodmis.org>, Thomas Gleixner <tglx@kernel.org>,
- Jiayuan Chen <jiayuan.chen@linux.dev>, linux-rt-devel@lists.linux.dev,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260608093729.12111-1-jelonek.jonas@gmail.com>
- <20260619074323.IIq-0qan@linutronix.de>
-From: Jonas Jelonek <jelonek.jonas@gmail.com>
-In-Reply-To: <20260619074323.IIq-0qan@linutronix.de>
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <CAHk-=wjWhvmy5xUcTMCJZats2cUJ5iGU4o5Kdt+OvRepu+MUeQ@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-5.16 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-267343-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-267344-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:torvalds@linuxfoundation.org,m:akpm@linux-foundation.org,m:mm-commits@vger.kernel.org,m:vladimirelitokarev@gmail.com,m:viro@zeniv.linux.org.uk,m:stable@vger.kernel.org,m:peterx@redhat.com,m:oleg@redhat.com,m:jack@suse.cz,m:brauner@kernel.org,m:rppt@kernel.org,m:ljs@kernel.org,s:lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[jelonekjonas@gmail.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:bigeasy@linutronix.de,m:chenhuacai@kernel.org,m:tsbogend@alpha.franken.de,m:linux-mips@vger.kernel.org,m:clrkwllms@kernel.org,m:rostedt@goodmis.org,m:tglx@kernel.org,m:jiayuan.chen@linux.dev,m:linux-rt-devel@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER(0.00)[david@kernel.org,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[linux-foundation.org,vger.kernel.org,gmail.com,zeniv.linux.org.uk,redhat.com,suse.cz,kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jelonekjonas@gmail.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[david@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_FROM(0.00)[gmail.com]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4D7446A4757
+X-Rspamd-Queue-Id: 9F4D76A4765
 
-Hi,
+On 6/18/26 23:42, Linus Torvalds wrote:
+> On Thu, 18 Jun 2026 at 14:07, David Hildenbrand (Arm) <david@kernel.org> wrote:
+>>
+>> Maybe we should rename and possibly split that up, like
+>>
+>>         VM_NO_MLOCK
+>>         VM_NO_VMA_MERGE
+> 
+> That sounds saner, indeed.
+> 
+>> And then have some generic "there are really special things mapped in here"
+>>
+>>         VM_HAS_SPECIAL_MAPPINGS
+> 
+> I think maybe we should stop using "bitmasks of VM_xyz bits" and start
+> moving to a "helper inlines for vma testing".
 
-On 19.06.26 09:43, Sebastian Andrzej Siewior wrote:
-> On 2026-06-08 09:37:29 [+0000], Jonas Jelonek wrote:
->> smp_send_stop() parks all secondary CPUs in stop_this_cpu(). The function
->> marks the CPU offline for the scheduler via set_cpu_online(false) but
->> never informs RCU, so RCU keeps expecting a quiescent state from CPUs
->> that are now spinning forever with interrupts disabled.
-> …
->> Fixes: 91840be8f710 ("irq_work: Fix use-after-free in irq_work_single() on PREEMPT_RT")
->> CC: stable@vger.kernel.org
->> Signed-off-by: Jonas Jelonek <jelonek.jonas@gmail.com>
-> Sorry for being late.
->
-> Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
->
-> Sebastian
+100%
 
-Thanks to both of you. The patch has been accepted and merged already
-(silently) [1]. But I appreciate your reviews a lot.
+> 
+> That way we could make hugetlb not set DONTEXPAND at all, if we
+> instead just introduce a
+> 
+>    static inline bool vma_can_merge(const struct vm_area_struct *vma)
+>    {
+>         if (vma->vm_flags & VM_SPECIAL)
+>                 return false;
+>         if (vma_is_hugetlb(vma))
+>                 return false;
+>         return true;
+>     }
 
-Best,
-Jonas
+Yes. DONTEXPAND is a weird thing and I am afraid it's getting abused at other
+places.
 
-[1] https://git.kernel.org/pub/scm/linux/kernel/git/mips/linux.git/commit/?id=9f3f3bdc6d9dac1a5a8262ee7ad0f2ff1527a7e7
+> 
+> Ok, so that vma_is_hugetlb() thing doesn'ty exist - but we do have a
+
+We have is_vm_hugetlb_page() that we should probably rename.
+
+We probably need helpers for VMA vs. VMA flags, but I'd let Lorenzo figure that
+out. (CC)
+
+> VMA_HUGETLB_BIT to implement it. I wrote it that way mainly in an
+> effort to make it all make sense logically.
+> 
+> And maybe we could get rid of VM_SPECIAL entirely at some point usign
+> these kinds of helpers - by making "vma_can_merge()" and others that
+> currently use VM_SPECIAL use the *actual* real bits explicitly and
+> simply making each rule have simple and logical tests.
+
+Yes. Or make them build on each other (vma_maps_special_pages() or whatever)
+
+> 
+> And the reason we should pass in the vma - not just vm_flags - is that
+> often things like "is the vma anonymous" is part of the decision of
+> what can be done.
+
+Right, I think the problem is that sometimes (VMA modifications) we might have
+the updated flags but not the updated VMA. But again, I'm sure Lorenzo could
+figure that out.
+
+> 
+> I think this would make the code both more flexible _and_ more
+> understandable if we had these kinds of helpers for different
+> situations rather than have VM_SPECIAL kinds of flag combinations.
+> 
+> But I'm just throwing this out as an idea. Maybe there are better ways
+> to deal with this. The current code does seem rather annoying.
+
+Yes, thanks for raising that; it needs a proper rework with clear semantics.
+
+-- 
+Cheers,
+
+David
 
