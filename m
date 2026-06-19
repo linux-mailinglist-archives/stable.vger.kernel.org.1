@@ -1,66 +1,78 @@
-Return-Path: <stable+bounces-267407-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-267405-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id R/q2KmFUNWq4tAYAu9opvQ
-	(envelope-from <stable+bounces-267407-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 16:38:25 +0200
+	id t9MSAtdTNWqEtAYAu9opvQ
+	(envelope-from <stable+bounces-267405-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 16:36:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07E7C6A6735
-	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 16:38:25 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86F946A670A
+	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 16:36:06 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=astralinux.ru header.s=mail header.b=E5e0RmCZ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-267407-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-267407-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=astralinux.ru header.s=mail header.b=HfKAFaoe;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-267405-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-267405-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=astralinux.ru;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 13D973011C5E
-	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 14:38:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4487B3031332
+	for <lists+stable@lfdr.de>; Fri, 19 Jun 2026 14:35:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D45203AC0F1;
-	Fri, 19 Jun 2026 14:38:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44C5C3A1A27;
+	Fri, 19 Jun 2026 14:34:58 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-gw01.astralinux.ru (mail-gw01.astralinux.ru [37.230.196.243])
+Received: from mail-gw02.astralinux.ru (mail-gw02.astralinux.ru [93.188.205.243])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0266B3A1E69
-	for <stable@vger.kernel.org>; Fri, 19 Jun 2026 14:38:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9007D38E12B;
+	Fri, 19 Jun 2026 14:34:52 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781879896; cv=none; b=G5NTeonqHyw37s9Kn1Ukfs/iNlQpgANNJU+CrwGTAk2zHGOgxxXBZDxCg8Vn5txr9VOBj+Oi1oIpJgTCKByuE1y2R0IQ7Cx8NibmYrwn/2CwQEcRO+Dm0P5WZnZmxMhmwM5J1sqPAYwhO1NRCOJV6KKzMGYMXXHnbB0fJou7hVQ=
+	t=1781879698; cv=none; b=J2AbORJJ5YkI2esuM5f3GIwmlhJQLIzV44TY9Z4ZYGTDauF/GSFJTTunLGio5vtRudJDCzk2IPVp/u1c1JAuh5vt0X8pVMnLKwPCmhOIxZtnqonXuLKpi3sTdQLE3kRw1xi723Fp81zJNPNh32ipcXytVRKRbiLuJvbWkKllktM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781879896; c=relaxed/simple;
+	s=arc-20240116; t=1781879698; c=relaxed/simple;
 	bh=NU3782cVOybHYBLWoHmEeKhEJd3b7gxDgkIUQa1NAw8=;
-	h=From:To:Subject:Date:Message-Id:MIME-Version; b=U0JdXws/XY5mEQzaVi4aJZMCTOUHT5runAnU2mfTZHXfVYVPK9I/V5n8QmmXB7BFJxKpDRTYfpYx6fxAIX611eGqVUgcE18tk2wHbqDDlxaEfq+gC+ZHjVF9WXX8TVmuhekHEFHUaZOXbbu9owDmlNOaf+ffVjUUsebUT0jIhhk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=astralinux.ru; spf=pass smtp.mailfrom=astralinux.ru; dkim=pass (2048-bit key) header.d=astralinux.ru header.i=@astralinux.ru header.b=E5e0RmCZ; arc=none smtp.client-ip=37.230.196.243
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=a/gSHaIGZkVL5tr0AerqVjm3qFkuTEfxm8R0G1Ep3CPfr0DlaShq4mCldRs7s82/tkbVySwAa3pGSqqYtCqJH7gMLAlQO1OB+VxNoBBtWnNa1/bLWfiQZp4bRUrKIg9IwY+W8iwgTKYtRYIMUYPQpKD5R4LOPEggbBCS9KufH5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=astralinux.ru; spf=pass smtp.mailfrom=astralinux.ru; dkim=pass (2048-bit key) header.d=astralinux.ru header.i=@astralinux.ru header.b=HfKAFaoe; arc=none smtp.client-ip=93.188.205.243
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=astralinux.ru;
-	s=mail; t=1781879561;
+	s=mail; t=1781879690;
 	bh=NU3782cVOybHYBLWoHmEeKhEJd3b7gxDgkIUQa1NAw8=;
-	h=From:To:Subject:Date:From;
-	b=E5e0RmCZmnFSIVKL40tyhHSkcLD/0QhRWf6LnyOW6nb+vlS1djsRl1msIdITxCohc
-	 Xa2iRn4LYmxNgF4wybwOi0Hf5IE3rLlYjwG4QyJVztU7VJZ0meBB2CrCnhwY+VmEWd
-	 vlkuMQcRHgCFHovPi+zwmEJ0ThdgOWORFY95BGN6sDTx9CgupImyStCs0l4gjE0B7e
-	 4E8Vgzo5+pU+/Lp6ucwBZDygasvkpunoQNs6LyvqYrtXK8QqpjIAvBxSEMH2VS6YgI
-	 YQrBGrtj8OF6Xe6qphlsyx8bAaMff8ufMW8lBySjFVVV+xW7r/mUNqBp8Os+Jo75hr
-	 zaoGpQPfvc4Yw==
-Received: from gca-sc-a-srv-ksmg01.astralinux.ru (localhost [127.0.0.1])
-	by mail-gw01.astralinux.ru (Postfix) with ESMTP id 6F14B25ACB;
-	Fri, 19 Jun 2026 17:32:41 +0300 (MSK)
-Received: from new-mail.astralinux.ru (unknown [10.205.207.5])
+	h=From:To:Cc:Subject:Date:From;
+	b=HfKAFaoerEI7vpsIf0jatdLBLYHWyjU4udLsVn71iSaO+woW4WdwwKfy/WMcYgurf
+	 ymheCG+6vLJn2nPAegaclrduMbEdVQ+FSNQCGdEMMSPFqTVd58NXPEv1a0VegNoFF2
+	 kCQEM5WbmpGoZ3hllc7Ja3tRbneJ6kdQrdopc0NylLKoH+6P90riq2EvCG3CsFlV9/
+	 R7/ZNe2/nBGkwLoqD2GCsKh14zR0iomBSnjrYnJv15zccr4mJrEL349skkO0NEVpVN
+	 n0NS6HeXujrSntL4zmMsAXVbOhkWZpYfHU7QVpd7HqTxWCNV7HfbvDB7nEHXaF7rMb
+	 1wnqNQyg8hjHQ==
+Received: from gca-msk-a-srv-ksmg01.astralinux.ru (localhost [127.0.0.1])
+	by mail-gw02.astralinux.ru (Postfix) with ESMTP id 79C5E1F9C8;
+	Fri, 19 Jun 2026 17:34:50 +0300 (MSK)
+Received: from new-mail.astralinux.ru (unknown [10.205.207.6])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail-gw01.astralinux.ru (Postfix) with ESMTPS;
-	Fri, 19 Jun 2026 17:32:40 +0300 (MSK)
+	by mail-gw02.astralinux.ru (Postfix) with ESMTPS;
+	Fri, 19 Jun 2026 17:34:49 +0300 (MSK)
 Received: from rbta-spb-lt-115149.astralinux.ru (rbta-spb-lt-115149.astralinux.ru [10.198.55.79])
-	by new-mail.astralinux.ru (Postfix) with ESMTPA id 4ghg6c507Nz2xxw;
-	Fri, 19 Jun 2026 17:32:40 +0300 (MSK)
+	by new-mail.astralinux.ru (Postfix) with ESMTPA id 4ghg942r2yzwQg6;
+	Fri, 19 Jun 2026 17:34:48 +0300 (MSK)
 From: Elizaveta Tereshkina <etereshkina@astralinux.ru>
 To: stable@vger.kernel.org,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Elizaveta Tereshkina <etereshkina@astralinux.ru>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Antoniu Miclaus <antoniu.miclaus@analog.com>,
+	Linus Walleij <linusw@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Subject: [PATCH 5.15/6.12] iio: light: bh1780: fix PM runtime leak on error path
-Date: Fri, 19 Jun 2026 17:32:30 +0300
-Message-Id: <20260619143231.678036-1-etereshkina@astralinux.ru>
+Date: Fri, 19 Jun 2026 17:34:43 +0300
+Message-Id: <20260619143443.678491-1-etereshkina@astralinux.ru>
 X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -72,14 +84,14 @@ Content-Transfer-Encoding: 8bit
 X-KSMG-AntiPhishing: NotDetected
 X-KSMG-AntiSpam-Auth: dkim=none
 X-KSMG-AntiSpam-Envelope-From: etereshkina@astralinux.ru
-X-KSMG-AntiSpam-Info: LuaCore: 108 0.3.108 b3af89ff4c48cefaff455d02ab4cd72c6de3312f, {Tracking_internal2}, {Tracking_from_domain_doesnt_match_to}, new-mail.astralinux.ru:7.1.1;127.0.0.199:7.1.2;astralinux.ru:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1, FromAlignment: s
+X-KSMG-AntiSpam-Info: LuaCore: 108 0.3.108 b3af89ff4c48cefaff455d02ab4cd72c6de3312f, {Tracking_internal2}, {Tracking_from_domain_doesnt_match_to}, astralinux.ru:7.1.1;new-mail.astralinux.ru:7.1.1;127.0.0.199:7.1.2;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1, FromAlignment: s
 X-KSMG-AntiSpam-Interceptor-Info: scan successful
-X-KSMG-AntiSpam-Lua-Profiles: 203954 [Jun 19 2026]
+X-KSMG-AntiSpam-Lua-Profiles: 203953 [Jun 19 2026]
 X-KSMG-AntiSpam-Method: none
 X-KSMG-AntiSpam-Rate: 0
 X-KSMG-AntiSpam-Status: not_detected
 X-KSMG-AntiSpam-Version: 6.1.1.22
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.0.7854, bases: 2026/06/19 14:09:00 #28254292
+X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.0.7854, bases: 2026/06/19 09:24:00 #28253626
 X-KSMG-AntiVirus-Status: NotDetected, skipped
 X-KSMG-LinksScanning: NotDetected
 X-KSMG-Message-Action: skipped
@@ -90,21 +102,21 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[astralinux.ru,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[astralinux.ru:s=mail];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-267407-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-267405-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:etereshkina@astralinux.ru,m:jic23@kernel.org,m:lars@metafoo.de,m:antoniu.miclaus@analog.com,m:linusw@kernel.org,m:sashal@kernel.org,m:ulf.hansson@linaro.org,m:linux-iio@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:lvc-project@linuxtesting.org,m:Stable@vger.kernel.org,m:Jonathan.Cameron@huawei.com,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[14];
 	FORGED_SENDER(0.00)[etereshkina@astralinux.ru,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWO(0.00)[2];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[astralinux.ru:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -116,9 +128,9 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ALIAS_RESOLVED(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,huawei.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,analog.com:email,linuxfoundation.org:email,astralinux.ru:dkim,astralinux.ru:email,astralinux.ru:mid,astralinux.ru:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:email,analog.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 07E7C6A6735
+X-Rspamd-Queue-Id: 86F946A670A
 
 From: Antoniu Miclaus <antoniu.miclaus@analog.com>
 
